@@ -57,13 +57,33 @@ int main( int /* argc */, char** /* argv */ )
     auto K         = SH3::getKSpace( bimage, params );
     auto surface   = SH3::makeDigitalSurface( bimage, K, params );
     auto surfels   = SH3::getSurfelRange( surface, params );
-    auto mean_curv = SHG3::getIIMeanCurvatures( bimage, surfels, params );
+    auto curv      = SHG3::getIIMeanCurvatures( bimage, surfels, params );
+    // To get Gauss curvatures, write instead:
+    // auto curv = SHG3::getIIGaussianCurvatures( bimage, surfels, params );
     auto cmap      = SH3::getColorMap( -0.5, 0.5, params );
     auto colors    = SH3::Colors( surfels.size() );
-    std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
+    std::transform( curv.cbegin(), curv.cend(), colors.begin(), cmap );
     bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
 				   "al-H-II.obj" );
     //! [dgtal_shortcuts_ssec2_1_6s]
+    ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
+
+  trace.beginBlock ( "Load vol file -> build digital surface -> estimate Gauss curvature -> save OBJ." );
+  {
+    auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
+    params( "colormap", "Tics" );
+    auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    auto K         = SH3::getKSpace( bimage, params );
+    auto surface   = SH3::makeDigitalSurface( bimage, K, params );
+    auto surfels   = SH3::getSurfelRange( surface, params );
+    auto curv      = SHG3::getIIGaussianCurvatures( bimage, surfels, params );
+    auto cmap      = SH3::getColorMap( -0.25, 0.25, params );
+    auto colors    = SH3::Colors( surfels.size() );
+    std::transform( curv.cbegin(), curv.cend(), colors.begin(), cmap );
+    bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
+				   "al-G-II.obj" );
     ++nb, nbok += ok ? 1 : 0;
   }
   trace.endBlock();

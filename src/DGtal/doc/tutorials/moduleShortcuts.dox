@@ -144,14 +144,19 @@ You may choose your traversal order ("Default", "DepthFirst", "BreadthFirst").
 
 \image html al-primal-bft-blender-small.png "Blender rendering of Al Capone with a breadth-first traversal colored according to distance (blue to red)."
 
-@subsubsection dgtal_shortcuts_ssec2_1_6 -> build digital surface -> estimate mean curvature -> save OBJ.
+@subsubsection dgtal_shortcuts_ssec2_1_6 -> build digital surface -> estimate curvatures -> save OBJ.
 
-This example requires ShortcutsGeometry. It shows how tu use the integral invariant curvature estimator on a digital shape model to estimate its mean curvature.
+This example requires ShortcutsGeometry. It shows how tu use the integral invariant curvature estimator on a digital shape model to estimate its mean or Gaussian curvature.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_6s
 
-\image html al-H-II-blender-small.png "Blender rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive). "
-
+<table>
+<tr><td>
+\image html al-H-II-blender-small.png "Blender rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive, scale is [-0.5, 0.5]). "
+<td></td>
+\image html al-G-II-blender-small.png "Blender rendering of Al Capone with estimated Gaus curvatures (blue is negative, white zero, red is positive, scale is [-0.25, 0.25]). "
+</td></tr>
+</table>
 
 @subsection dgtal_shortcuts_ssec2_2 Build polynomial shape -> ...
 
