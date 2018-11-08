@@ -203,6 +203,25 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
     
+  trace.beginBlock ( "Build polynomial shape -> digitize -> build digital surface -> save primal surface with VCM normals as obj." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_9s]
+    params( "polynomial", "goursat" )( "gridstep", 0.25 )
+      ( "Traversal", "Default" );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
+    auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    auto vcm_normals     = SHG3::getVCMNormalVectors( surface, surfels, params );
+    bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
+					 "goursat-primal-vcm.obj" );
+    //! [dgtal_shortcuts_ssec2_2_9s]
+    ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
   
   // trace.beginBlock ( "Setting up shape, space, etc" );
   // auto params         = SH3::defaultParameters()

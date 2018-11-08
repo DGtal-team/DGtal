@@ -22,7 +22,12 @@ and shapes, and to analyze their geometry.
 
 
 The following programs are related to this documentation:
-shortcuts.cpp.
+shortcuts.cpp, shortcuts-geometry.cpp
+
+@note All rendering are made with <a href="https://www.blender.org">Blender</a>.
+@see \ref moduleIntegralInvariant for Integral Invariant estimators.
+@see \ref moduleVCM for Voronoi Covariance Measure estimators.
+
 
 @section dgtal_shortcuts_sec1 Introduction
 
@@ -134,7 +139,7 @@ The following code extracts iso-surfaces in the given gray-scale 3D image and sa
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_4s
 
-\image html lobster-40-150-blender-small.png "Blender rendering of lobster 40 (red semi-transparent) and 150 (blue) isosurfaces."
+\image html lobster-40-150-blender-small.png "Rendering of lobster 40 (red semi-transparent) and 150 (blue) isosurfaces."
 
 @subsubsection dgtal_shortcuts_ssec2_1_5 -> build main digital surface -> breadth first traversal -> save OBJ with colored distance.
 
@@ -142,7 +147,7 @@ You may choose your traversal order ("Default", "DepthFirst", "BreadthFirst").
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_5s
 
-\image html al-primal-bft-blender-small.png "Blender rendering of Al Capone with a breadth-first traversal colored according to distance (blue to red)."
+\image html al-primal-bft-blender-small.png "Rendering of Al Capone with a breadth-first traversal colored according to distance (blue to red)."
 
 @subsubsection dgtal_shortcuts_ssec2_1_6 -> build digital surface -> estimate curvatures -> save OBJ.
 
@@ -152,44 +157,44 @@ This example requires ShortcutsGeometry. It shows how tu use the integral invari
 
 <table>
 <tr><td>
-\image html al-H-II-blender-small.png "Blender rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive, scale is [-0.5, 0.5]). "
+\image html al-H-II-blender-small.png "Rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive, scale is [-0.5, 0.5]). "
 <td></td>
-\image html al-G-II-blender-small.png "Blender rendering of Al Capone with estimated Gaus curvatures (blue is negative, white zero, red is positive, scale is [-0.25, 0.25]). "
+\image html al-G-II-blender-small.png "Rendering of Al Capone with estimated Gaus curvatures (blue is negative, white zero, red is positive, scale is [-0.25, 0.25]). "
 </td></tr>
 </table>
 
-@subsection dgtal_shortcuts_ssec2_2 Build polynomial shape -> ...
+@subsection dgtal_shortcuts_ssec2_2 Build polynomial shape -> digitize -> ...
 
-@subsubsection dgtal_shortcuts_ssec2_2_1 -> digitize -> noisify -> save as vol file.
+@subsubsection dgtal_shortcuts_ssec2_2_1  -> noisify -> save as vol file.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_1s
 
-@subsubsection dgtal_shortcuts_ssec2_2_2 -> digitize -> build indexed surface -> save primal surface as obj
+@subsubsection dgtal_shortcuts_ssec2_2_2  -> build surface -> save primal surface as obj
 
-@note The OBJ file is generally not a combintorial 2-manifold, since
+@note The OBJ file is generally not a combinatorial 2-manifold, since
 digital surfaces, seen as squares stitched together, are manifold only
 when they are well-composed.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_2s
 
-\image html goursat-primal-blender-small.png "Blender rendering of goursat-primal.obj."
+\image html goursat-primal-blender-small.png "Rendering of goursat-primal.obj."
 
 
-@subsubsection dgtal_shortcuts_ssec2_2_3 -> digitize -> build indexed surface on a subpart
+@subsubsection dgtal_shortcuts_ssec2_2_3  -> build indexed surface on a subpart
 
 You may choose which part of a domain is digitized as a binary image,
 here the first orthant is chosen.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_3s
 
-@subsubsection dgtal_shortcuts_ssec2_2_4 -> digitize -> noisify -> count components -> save OBJ with different colors.
+@subsubsection dgtal_shortcuts_ssec2_2_4  -> noisify -> count components -> save OBJ with different colors.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_2_4s
 
-\image html leopold-primal-cc-blender-small.png "Blender rendering of leopold-primal-cc.obj."
+\image html leopold-primal-cc-blender-small.png "Rendering of leopold-primal-cc.obj."
 
 
-@subsubsection dgtal_shortcuts_ssec2_2_5 -> digitize -> extract ground-truth geometry
+@subsubsection dgtal_shortcuts_ssec2_2_5  -> extract ground-truth geometry
 
 This example requires ShortcutsGeometry. It shows you how to recover
 ground-truth positions, normal vectors, mean and Gaussian curvatures
@@ -198,23 +203,23 @@ the point nearest to the given surfel centroid.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_5s
 
-@subsubsection dgtal_shortcuts_ssec2_2_6 -> digitize -> get pointels -> save projected quadrangulated surface.
+@subsubsection dgtal_shortcuts_ssec2_2_6  -> get pointels -> save projected quadrangulated surface.
 
 This example requires ShortcutsGeometry. It shows you how to get pointels from a digital surface and how to project the digital surface onto the given implicit shape.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_6s
 
-\image html goursat-quad-proj-lines-blender-small.png "Blender rendering of goursat-quad-proj.obj with quad edges in blue."
+\image html goursat-quad-proj-lines-blender-small.png "Rendering of goursat-quad-proj.obj with quad edges in blue."
 
-@subsubsection dgtal_shortcuts_ssec2_2_7 -> digitize -> extract mean curvature -> save as OBJ with colors
+@subsubsection dgtal_shortcuts_ssec2_2_7  -> extract mean curvature -> save as OBJ with colors
 
 This example requires ShortcutsGeometry. The ground-truth mean curvature is just displayed as a color, using the specified colormap.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_7s
 
-\image html goursat-H-blender-small.png "Blender rendering of goursat-H.obj"
+\image html goursat-H-blender-small.png "Rendering of goursat-H.obj"
 
-@subsubsection dgtal_shortcuts_ssec2_2_8 -> digitize -> extract ground-truth and estimated mean curvature -> display errors in OBJ with colors
+@subsubsection dgtal_shortcuts_ssec2_2_8  -> extract ground-truth and estimated mean curvature -> display errors in OBJ with colors
 
 This example requires ShortcutsGeometry. Both ground-truth and
 estimated mean curvature are computed. Then you have functions like
@@ -234,6 +239,21 @@ ShortcutsGeometry::getVectorsAngleDeviation to compare vectors.
 </td></td>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_2_9  -> build surface -> save primal surface with vcm normals as obj
+
+@note The OBJ file is generally not a combinatorial 2-manifold, since
+digital surfaces, seen as squares stitched together, are manifold only
+when they are well-composed.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_9s
+
+<table>
+<tr><td>
+\image html goursat-primal-blender-small.png "Rendering of goursat-primal.obj (no normals)."
+</td><td>
+\image html goursat-primal-vcm-blender-small.png "Rendering of goursat-primal-vcm.obj (normals estimated by VCM). Note that staircases effects are still very visible, although normals are good."
+</td></tr>
+</table>
 
 
 @section dgtal_shortcuts_sec2b Short 2D examples
