@@ -69,40 +69,45 @@ addons:
     - g++-5
 
 before_install:
-  - export DEC="false";
   - source .travis/before_global.sh
   - echo "C++ ===> $CXXCOMPILER"
-  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source .travis/install_eigen.sh  ; cd $TRAVIS_BUILD_DIR; fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source "$SRC_DIR/.travis/install_eigen.sh" ; fi
   - echo $EIGEN_ROOT
-  - if [ $CONFIG == "Documentation" ]; then export NEEDEXAMPLESANDTESTS="false"; export NEEDCORE="false"; export BUILD_DOC="true"; if [ $OriginalRepo == "true" ];  then if [ $TRAVIS_PULL_REQUEST == "false" ]; then export UPLOAD_DOC="true"; fi; fi; fi
-  - if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then export BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON";  fi
-  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then export DEC="true"; export BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWITH_EIGEN=true  -DWARNING_AS_ERROR=OFF  -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'";   fi
-  - if [ $CONFIG == "DGtalTools" ]; then export NEEDEXAMPLESANDTESTS="false"; export BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=off";  fi
-  - if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in .travis/dgtal_rsa.enc -out .travis/dgtal_rsa -d; chmod 600 .travis/dgtal_rsa; BUILD_DOC="true"; fi
-  - if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
-  - if [ $BUILD_DOC == "true" ]; then .travis/install_doxygen.sh;  export BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
+  - if [ $CONFIG == "Documentation" ]; then export BUILD_DOC="true"; if [ $OriginalRepo == "true" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then export UPLOAD_DOC="true"; fi; fi
+  - if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then export BUILD_ALL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON"; fi
+  - if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then export BUILD_ALL="true"; export BUILD_DEC="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"; fi
+  - if [ $CONFIG == "DGtalTools" ]; then export BUILD_DGTAL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"; fi
+  - if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in "$SRC_DIR/.travis/dgtal_rsa.enc" -out "$SRC_DIR/.travis/dgtal_rsa" -d; chmod 600 "$SRC_DIR/.travis/dgtal_rsa"; fi
+  - if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
+  - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/install_doxygen.sh";  export BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
 
 
 ########
 # Deps.
 ########
 before_script:
-  - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done.";   fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then source .travis/install_deps_macos.sh; fi
-
+  - if [ $TRAVIS_OS_NAME == linux ]; then echo "All done."; fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.sh"; fi
+  - source "$SRC_DIR/.travis/fix_step_dependencies.sh"
 
 ############
 # Main rules
 ############
 script:
-  - echo "---- $BTYPE ---$BUILD_DOC---$UPLOAD_DOC"
-  - .travis/main_build.sh
-  - if [ $CONFIG == "DGtalTools" ]; then  .travis/getAndCheckDGtalTools.sh ; fi
-  - if [ $CONFIG == "Documentation" ]; then .travis/checkDoxygenDocumentation.sh; fi
+  - "$SRC_DIR/.travis/configure_build.sh"
+  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_dgtal.sh"; fi
+  - if [ $BUILD_DEC == "true" ]; then "$SRC_DIR/.travis/build_dec.sh"; fi
+  - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
+  - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/build_tests.sh"; fi
+  - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/check_tests.sh"; fi
+  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_all.sh"; fi
+  - if [ $CONFIG == "DGtalTools" ]; then "$SRC_DIR/.travis/getAndCheckDGtalTools.sh" ; fi
+  - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/build_doc.sh"; fi
+  - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/checkDoxygenDocumentation.sh"; fi
 
 
 ###########
 ## Building the documentation
 ###########
 after_success:
-  - if [ $UPLOAD_DOC == "true" ]; then echo "Uploading the doc..."; .travis/publish_doc.sh;  fi
+  - if [ $UPLOAD_DOC == "true" ]; then echo "Uploading the doc..."; "$SRC_DIR/.travis/publish_doc.sh";  fi

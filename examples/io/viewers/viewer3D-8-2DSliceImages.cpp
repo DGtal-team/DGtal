@@ -29,7 +29,7 @@
 
 /**
  * \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
- *  \example io/viewers/viewer3D-8-2DSliceImages.#include "viewer3D-8-2DSliceImages.h"
+ * \example io/viewers/viewer3D-8-2DSliceImages.cpp
  *
  */
 
