@@ -214,6 +214,26 @@ This example requires ShortcutsGeometry. The ground-truth mean curvature is just
 
 \image html goursat-H-blender-small.png "Blender rendering of goursat-H.obj"
 
+@subsubsection dgtal_shortcuts_ssec2_2_8 -> digitize -> extract ground-truth and estimated mean curvature -> display errors in OBJ with colors
+
+This example requires ShortcutsGeometry. Both ground-truth and
+estimated mean curvature are computed. Then you have functions like
+ShortcutsGeometry::getScalarsAbsoluteDifference and
+ShortcutsGeometry::getStatistic to measure errors or
+ShortcutsGeometry::getVectorsAngleDeviation to compare vectors.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_8s
+
+<table>
+<tr><td>
+\image html goursat-H-blender-small.png "Ground truth mean curvature"
+</td><td>
+\image html goursat-H-ii-blender-small.png "Estimated II mean curvature"
+</td><td>
+\image html goursat-H-ii-err-blender-small.png "Highlight estimation errors (blue small, red high)"
+</td></td>
+</table>
+
 
 
 @section dgtal_shortcuts_sec2b Short 2D examples
@@ -411,7 +431,10 @@ The following name conventions for types are used:
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range
-
+  - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
+  - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
+  - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors
+  - ShortcutsGeometry::getStatistic: return the statistic of the given range of values.
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 

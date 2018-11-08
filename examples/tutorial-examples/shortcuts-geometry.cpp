@@ -90,7 +90,7 @@ int main( int /* argc */, char** /* argv */ )
   
   trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth geometry." );
   {
-    auto params          = SH3::defaultParameters();
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_5s]
     params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -123,7 +123,7 @@ int main( int /* argc */, char** /* argv */ )
 
   trace.beginBlock ( "Build polynomial shape -> digitize -> get pointels -> save projected quadrangulated surface." );
   {
-    auto params          = SH3::defaultParameters();
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_6s]
     params( "polynomial", "goursat" )( "gridstep", 0.25 );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -149,7 +149,7 @@ int main( int /* argc */, char** /* argv */ )
 
   trace.beginBlock ( "Build polynomial shape -> digitize -> extract mean curvature -> save as OBJ with colors." );
   {
-    auto params          = SH3::defaultParameters();
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_7s]
     params( "polynomial", "goursat" )( "gridstep", 0.25 )( "colormap", "Tics" );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -166,6 +166,40 @@ int main( int /* argc */, char** /* argv */ )
 					 "goursat-H.obj" );
     //! [dgtal_shortcuts_ssec2_2_7s]
     ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
+
+  trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth and estimated mean curvature -> display errors in OBJ with colors." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_8s]
+    params( "polynomial", "goursat" )( "gridstep", 0.25 )( "colormap", "Tics" )
+      ( "R-radius", 5.0 );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto bimage          = SH3::makeBinaryImage      ( digitized_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto surface         = SH3::makeLightDigitalSurface( bimage, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    auto t_curv          = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
+    auto ii_curv         = SHG3::getIIMeanCurvatures( bimage, surfels, params );
+    auto cmap            = SH3::getColorMap( -0.5, 0.5, params );
+    auto colors          = SH3::Colors( surfels.size() );
+    std::transform( t_curv.cbegin(),  t_curv.cend(),  colors.begin(), cmap );
+    bool ok_t  = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H.obj" );
+    std::transform( ii_curv.cbegin(), ii_curv.cend(), colors.begin(), cmap );
+    bool ok_ii = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H-ii.obj" );
+    auto errors          = SHG3::getScalarsAbsoluteDifference( t_curv, ii_curv );
+    auto stat_errors     = SHG3::getStatistic( errors );
+    auto cmap_errors     = SH3::getColorMap( 0.0, stat_errors.max(), params );
+    std::transform( errors.cbegin(), errors.cend(), colors.begin(), cmap_errors );
+    bool ok_err = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H-ii-err.obj" );
+    trace.info() << "Error Loo=" << SHG3::getScalarsNormLoo( t_curv, ii_curv )
+		 << " L1="       << SHG3::getScalarsNormL1 ( t_curv, ii_curv )
+		 << " L2="       << SHG3::getScalarsNormL2 ( t_curv, ii_curv )
+		 << std::endl;
+    //! [dgtal_shortcuts_ssec2_2_8s]
+    ++nb, nbok += ( ok_t && ok_ii && ok_err ) ? 1 : 0;
   }
   trace.endBlock();
     
