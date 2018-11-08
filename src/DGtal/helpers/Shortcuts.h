@@ -1611,7 +1611,6 @@ namespace DGtal
       output_mtl << "#  MTL format"<< std::endl;
       output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
       // Number and output vertices.
-      trace.info() << "Number and output vertices"  << std::endl;
       const KSpace&     K = refKSpace( digsurf );
       Cell2Index      c2i;
       auto       pointels = getPointelRange( c2i, digsurf );
