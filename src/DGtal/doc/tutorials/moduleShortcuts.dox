@@ -324,7 +324,7 @@ The following name conventions for types are used:
 - Shortcuts::PolygonalSurface: represents a polygonal surface which
   may have boundaries (use HalfEdgeDataStructure).
 
-- Shortcuts::Colormap: represents a colormap, i.e. a function
+- Shortcuts::ColorMap: represents a colormap, i.e. a function
   assigning a color to a real value.
 
 @subsection dgtal_shortcuts_ssec3_3 Main methods

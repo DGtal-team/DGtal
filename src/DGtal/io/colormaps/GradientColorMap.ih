@@ -28,6 +28,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cmath>
 #include <vector>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -265,6 +266,8 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   ASSERT_MSG(min < max, "Max should be strictly greather than Min in a colormap.");
   if ( colors.size() < 2 )
     return DGtal::Color::None;
+  if ( ! ( std::isfinite( value ) || std::isinf( value ) ) )
+    return DGtal::Color::Black;
   if ( value < min   ) value = min;
   if ( max   < value ) value = max;
   double scale = static_cast<double>( value - min ) / (max - min);
