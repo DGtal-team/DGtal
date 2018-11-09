@@ -409,7 +409,7 @@ The following name conventions for types are used:
   - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given (indexed or not) digital surface.
   - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
   - Shortcuts::makeLightDigitalSurfaces: creates the vector of all light digital surfaces of the binary image or any one of its big components, can also output representant surfels
-  - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image or from an indexed digital surface.
+  - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image, from a digitized implicit shape or from an indexed digital surface.
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
@@ -448,9 +448,9 @@ The following name conventions for types are used:
   - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
-  - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range
-  - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range
-  - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range
+  - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors

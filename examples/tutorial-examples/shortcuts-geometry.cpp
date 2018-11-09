@@ -222,6 +222,24 @@ int main( int /* argc */, char** /* argv */ )
     ++nb, nbok += ok ? 1 : 0;
   }
   trace.endBlock();
+
+  trace.beginBlock ( "Build polynomial shape -> digitize implicitly -> estimate II normals." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_10s]
+    params( "polynomial", "goursat" )( "gridstep", 0.25 )
+      ( "surfaceTraversal", "DepthFirst" );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    auto ii_normals      = SHG3::getIINormalVectors( digitized_shape, surfels, params );
+    trace.info() << "#ii_normals=" << ii_normals.size() << std::endl;
+    //! [dgtal_shortcuts_ssec2_2_10s]
+    // ++nb, nbok += ok ? 1 : 0;
+  }
+  trace.endBlock();
   
   // trace.beginBlock ( "Setting up shape, space, etc" );
   // auto params         = SH3::defaultParameters()

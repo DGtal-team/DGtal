@@ -75,6 +75,7 @@ namespace DGtal
     typedef ShortcutsGeometry< TKSpace >             Self;
     using Base::parametersKSpace;
     using Base::getKSpace;
+    using Base::parametersDigitizedImplicitShape3D;
     
     // ----------------------- Usual space types --------------------------------------
   public:
@@ -619,6 +620,98 @@ namespace DGtal
       orientVectors( n_estimations, n_trivial );
       return n_estimations;
     }
+
+    /// Given a digitized implicit shape \a dshape, a sequence of \a surfels,
+    /// and some parameters \a params, returns the normal Integral
+    /// Invariant (VCM) estimation at the specified surfels, in the
+    /// same order.
+    ///
+    /// @param[in] bimage the characteristic function of the shape as a binary image (inside is true, outside is false).
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    /// @param[in] params the parameters:
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+    ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
+    ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
+    ///   - offset          [   5.0]: the digital dilation of the digital space,
+    ///                       useful when you process shapes and that you add noise.
+    ///   - closed          [     1]: specifies if the Khalimsky space is closed (!=0) or not (==0)
+    ///
+    /// @return the vector containing the estimated normals, in the
+    /// same order as \a surfels.
+    ///
+    /// @note It is better to have surfels in a specific order, as
+    /// given for instance by a depth-first traversal (@see getSurfelRange)
+    static RealVectors
+    getIINormalVectors( CountedPtr< DigitizedImplicitShape3D > dshape,
+			const SurfelRange&      surfels,
+			const Parameters&       params
+			= parametersGeometryEstimation()
+			| parametersKSpace()
+			| parametersDigitizedImplicitShape3D() )
+    {
+      auto K =  getKSpace( params );
+      return getIINormalVectors( *dshape, K, surfels, params );
+    }
+    
+    /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
+    /// space \a K, a sequence of \a surfels, and some parameters \a
+    /// params, returns the normal Integral Invariant (VCM) estimation
+    /// at the specified surfels, in the same order.
+    ///
+    /// @tparam TPointPredicate any type of map Point -> boolean.
+    /// @param[in] shape a function Point -> boolean telling if you are inside the shape.
+    /// @param[in] surfels the sequence of surfels at which we compute the normals
+    /// @param[in] params the parameters:
+    ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+    ///
+    /// @return the vector containing the estimated normals, in the
+    /// same order as \a surfels.
+    ///
+    /// @note It is better to have surfels in a specific order, as
+    /// given for instance by a depth-first traversal (@see getSurfelRange)
+    template <typename TPointPredicate>
+    static RealVectors
+    getIINormalVectors( const TPointPredicate&  shape,
+			const KSpace&           K,
+			const SurfelRange&      surfels,
+			const Parameters&       params
+			= parametersGeometryEstimation()
+			| parametersKSpace() )
+    {
+      typedef functors::IINormalDirectionFunctor<Space> IINormalFunctor;
+      typedef IntegralInvariantCovarianceEstimator
+	<KSpace, TPointPredicate, IINormalFunctor>          IINormalEstimator;
+
+      RealVectors n_estimations;
+      int        verbose = params[ "verbose"   ].as<int>();
+      Scalar     h       = params[ "gridstep"  ].as<Scalar>();
+      Scalar     r       = params[ "r-radius"  ].as<Scalar>();
+      Scalar     alpha   = params[ "alpha"     ].as<Scalar>();
+      if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+      if ( verbose > 0 ) {
+	trace.info() << "- II normal alpha=" << alpha << std::endl;
+	trace.info() << "- II normal r=" << (r*h)  << " (continuous) "
+		     << r << " (discrete)" << std::endl;
+      }
+      IINormalFunctor     functor;
+      functor.init( h, r*h );
+      IINormalEstimator   ii_estimator( functor );
+      ii_estimator.attach( K, shape );
+      ii_estimator.setParams( r );
+      ii_estimator.init( h, surfels.begin(), surfels.end() );
+      ii_estimator.eval( surfels.begin(), surfels.end(),
+			 std::back_inserter( n_estimations ) );
+      const RealVectors n_trivial = getTrivialNormalVectors( K, surfels );
+      orientVectors( n_estimations, n_trivial );
+      return n_estimations;
+    }
+
 
     /// Given a digital shape \a bimage, a sequence of \a surfels,
     /// and some parameters \a vm, returns the mean curvature Integral
