@@ -745,7 +745,7 @@ namespace DGtal
     ///
     /// @note It is better to have surfels in a specific order, as
     /// given for instance by a depth-first traversal (@see getSurfelRange)
-    static RealVectors
+    static Scalars
     getIIMeanCurvatures( CountedPtr< DigitizedImplicitShape3D > dshape,
 			 const SurfelRange&      surfels,
 			 const Parameters&       params
@@ -868,7 +868,7 @@ namespace DGtal
     ///
     /// @note It is better to have surfels in a specific order, as
     /// given for instance by a depth-first traversal (@see getSurfelRange)
-    static RealVectors
+    static Scalars
     getIIGaussianCurvatures( CountedPtr< DigitizedImplicitShape3D > dshape,
 			 const SurfelRange&      surfels,
 			 const Parameters&       params
