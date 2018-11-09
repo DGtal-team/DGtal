@@ -27,7 +27,7 @@ objects as DGtal compatible functors.
 @section functorholder The FunctorHolder class
 
 @note
-Almost all the snippets used in the following explanations come from
+Almost all snippets used in the following explanations come from
 the example file @ref exampleFunctorHolder.cpp
 
 
@@ -40,7 +40,7 @@ concept (@ref concepts::CUnaryFunctor so far), and especially the
 @ref boost::Assignable concept.
 
 More precisely, the storage mode depends on the lifetime of the given
-object, deduced from its passing mode :
+object, deduced from its passing mode:
 
 - if the given object is passed by left-value reference (long lifetime),
   it will be stored as a reference (using [<tt>std::reference_wrapper</tt>](https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper)).
@@ -111,12 +111,12 @@ penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utilit
 
 As warned before, @ref FunctorHolder is not meant to be directly constructed
 but instead through the helper (factory) @ref holdFunctor.
-You can hold any type of callable object :
+You can hold any type of callable object: a function, a functor, a lambda function,...
 
 @subsection holding_a_function Holding a function
 
 If you want to refer to an existing function, you can directly pass its name
-to @ref holdFunctor :
+to @ref holdFunctor "":
 @snippet exampleFunctorHolder.cpp signed_dist_to_unit_circle
 @snippet exampleFunctorHolder.cpp Holding a function
 
@@ -134,7 +134,7 @@ by reference).
 
 @warning
 To avoid this possible performance penalty, you should pass the function
-through a lambda :
+through a lambda:
 @snippet exampleFunctorHolder.cpp Holding a function through a lambda
 @snippet exampleFunctorHolder.cpp Holding a templated function through a lambda
 thus giving the compiler free hands to inline it.
@@ -262,7 +262,7 @@ the result type of a @ref holdFunctor call.
 Moreover, it becomes impossible when passing a lambda in an inline way.
 
 Thus, it is recommended to use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword as the type placeholder
-for any instance of @ref FunctorHolder :
+for any instance of @ref FunctorHolder "":
 @snippet exampleFunctorHolder.cpp Storing a FunctorHolder
 
 
@@ -294,7 +294,7 @@ function signature and deduce its type using [<tt>decltype</tt>](https://en.cppr
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder in caller
 
-If it is more easier to get the return type using the actual parameters,
+If it is easier to get the return type using the actual parameters,
 you can use the trailing return syntax:
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return in caller
@@ -508,7 +508,7 @@ makePointFunctorHolder( TFunctor && aFunctor )
   }
 @endcode
 
-It is a little bit more tricky : we use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval)
+It is a little bit more tricky: we use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval)
 in order to generate a fake point, we give it as a parameter to the functor and
 we deduce the result type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype).
 The use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) allows us to remove any reference and const specifier
@@ -560,7 +560,7 @@ specialization is discarded without generating a compilation error.
 
 @note
 So, the idea is to modify the function signature so that it becomes invalid for
-some types. To do so, we can add some code in :
+some types. To do so, we can add some code in:
 - the template parameters declaration,
 - the arguments list,
 - the return type.
@@ -697,7 +697,7 @@ constructor cannot be choosen as a valid overload during a copy construction.
 @subsubsection functorconstimage_helper The helper (factory)
 
 The helper is very similar to the one introduced in
-@ref pointfunctorholder_helper :
+@ref pointfunctorholder_helper "":
 @code
 template <
   typename TValue,
