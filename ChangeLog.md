@@ -3,22 +3,22 @@
 
 ## New Features / Critical Changes
 - *Base package*
-  - Adding FunctorHolder to transform any callable object into a valid
-    DGtal functor.
+  - Adding FunctorHolder to transform any callable object (e.g. function,
+    functor, lambda function,...) into a valid DGtal functor.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Documentation*
-  - Module page about functions, functors and lambdas in DGTal.
+  - Module page about functions, functors and lambdas in DGtal.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Image package*
-  - Adding FunctorConstImage to transform any callable object into a
-    CConstImage model.
+  - Adding FunctorConstImage to transform any callable object (e.g. function,
+    functor, lambda function,...) into a CConstImage model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Kernel package*
-  - Adding PointFunctorHolder to transform any callable object into a
-    CPointFunctor model.
+  - Adding PointFunctorHolder to transform any callable object (e.g. function,
+    functor, lambda function,...) into a CPointFunctor model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 ## Bug Fixes
