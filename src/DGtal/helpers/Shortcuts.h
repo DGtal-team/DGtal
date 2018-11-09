@@ -1171,12 +1171,16 @@ namespace DGtal
       return result;
     }
 
+    
     /// Creates a explicit digital surface representing the boundaries in
     /// the binary image \a bimage, or any one of its big components
     /// according to parameters.
     ///
-    /// @param[in] bimage a binary image representing the
-    /// characteristic function of a digital shape.
+    /// @tparam TPointPredicate any type representing a point
+    /// predicate (e.g. a BinaryImage or a DigitizedImplicitShape3D).
+    ///
+    /// @param[in] bimage any point predicate: Point -> boolean that
+    /// represents the characteristic function of a digital shape
     ///
     /// @param[in] K the Khalimsky space whose domain encompasses the
     /// digital shape.
@@ -1186,9 +1190,10 @@ namespace DGtal
     ///
     /// @return a smart pointer on the explicit digital surface
     /// representing the boundaries in the binary image.
+    template <typename TPointPredicate>
     static CountedPtr< DigitalSurface >
     makeDigitalSurface
-    ( CountedPtr<BinaryImage> bimage,
+    ( CountedPtr< TPointPredicate > bimage,
       const KSpace&           K,
       const Parameters&       params = parametersDigitalSurface() )
     {
