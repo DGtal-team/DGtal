@@ -41,6 +41,7 @@
 - *Geometry*
    - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D
    - Fix a possible issue with data structures orderings in L-MST3D accumulation step
+   - Add missing API to StandardDSS6Computer i.e., isInDSS.
 
 ## New Features / Critical Changes
 
