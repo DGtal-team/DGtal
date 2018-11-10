@@ -29,6 +29,8 @@
     [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
   - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
     [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
+  - Filter data passed to acos in order to avoid division by zero or an argument
+    out of range. (Kacper Pluta, [#1359](https://github.com/DGtal-team/DGtal/pull/1359))
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
@@ -71,6 +73,14 @@
 - *DEC*
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
+    
+- *Math*
+  - Fix possible division by zero in the MultiStatistics class. 
+  (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
+
+- *Image*
+  - Fix bug in ImageLinearCellEmbedder.
+    (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
 
 # DGtal 0.9.4.1
 
