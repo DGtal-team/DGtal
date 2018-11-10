@@ -189,12 +189,14 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     static Parameters parametersShapeGeometry()
     {
       return Parameters
 	( "projectionMaxIter", 20 )
 	( "projectionAccuracy", 0.0001 )
-	( "projectionGamma",    0.5 );
+	( "projectionGamma",    0.5 )
+	( "gridstep",           1.0 );
     }
     
     /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -211,6 +213,7 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the true normals, in the same
     /// order as \a surfels.
@@ -226,7 +229,7 @@ namespace DGtal
       int     maxIter = params[ "projectionMaxIter"  ].as<int>();
       double accuracy = params[ "projectionAccuracy" ].as<double>();
       double    gamma = params[ "projectionGamma"    ].as<double>();
-      double gridstep = 1.0; // not used, dummy value
+      Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
       true_estimator.attach( *shape );
       true_estimator.setParams( K, PositionFunctor(), maxIter, accuracy, gamma );
       true_estimator.init( gridstep, surfels.begin(), surfels.end() );
@@ -245,6 +248,7 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the projected points.
     static RealPoints
@@ -277,6 +281,7 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the true normals, in the same
     /// order as \a surfels.
@@ -292,7 +297,7 @@ namespace DGtal
       int     maxIter = params[ "projectionMaxIter"  ].as<int>();
       double accuracy = params[ "projectionAccuracy" ].as<double>();
       double    gamma = params[ "projectionGamma"    ].as<double>();
-      double gridstep = 1.0; // not used, dummy value
+      Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
       true_estimator.attach( *shape );
       true_estimator.setParams( K, NormalFunctor(), maxIter, accuracy, gamma );
       true_estimator.init( gridstep, surfels.begin(), surfels.end() );
@@ -315,6 +320,7 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the mean curvatures, in the same
     /// order as \a surfels.
@@ -330,7 +336,7 @@ namespace DGtal
       int     maxIter = params[ "projectionMaxIter"  ].as<int>();
       double accuracy = params[ "projectionAccuracy" ].as<double>();
       double    gamma = params[ "projectionGamma"    ].as<double>();
-      double gridstep = 1.0; // not used, dummy value
+      Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
       true_estimator.attach( *shape );
       true_estimator.setParams( K, MeanCurvatureFunctor(), maxIter, accuracy, gamma );
       true_estimator.init( gridstep, surfels.begin(), surfels.end() );
@@ -354,6 +360,7 @@ namespace DGtal
     ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
     ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
     ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the gaussian curvatures, in the same
     /// order as \a surfels.
@@ -369,7 +376,7 @@ namespace DGtal
       int     maxIter = params[ "projectionMaxIter"  ].as<int>();
       double accuracy = params[ "projectionAccuracy" ].as<double>();
       double    gamma = params[ "projectionGamma"    ].as<double>();
-      double gridstep = 1.0; // not used, dummy value
+      Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
       true_estimator.attach( *shape );
       true_estimator.setParams( K, GaussianCurvatureFunctor(), maxIter, accuracy, gamma );
       true_estimator.init( gridstep, surfels.begin(), surfels.end() );
@@ -398,7 +405,6 @@ namespace DGtal
 	( "verbose",           1 )
 	( "t-ring",          3.0 )
 	( "kernel",        "hat" )
-	( "gridstep",        1.0 )
 	( "R-radius",       10.0 )
 	( "r-radius",        3.0 )
 	( "alpha",          0.33 )
@@ -497,6 +503,7 @@ namespace DGtal
     ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
     ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
     ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
+    ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
     ///
     /// @return the vector containing the estimated normals, in the
     /// same order as \a surfels.

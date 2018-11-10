@@ -209,7 +209,7 @@ This example requires ShortcutsGeometry. It shows you how to get pointels from a
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_6s
 
-\image html goursat-quad-proj-lines-blender-small.png "Rendering of goursat-quad-proj.obj with quad edges in blue."
+\image html goursat-quad-proj-lines-ok-blender-small.png "Rendering of goursat-quad-proj.obj with quad edges in blue."
 
 @subsubsection dgtal_shortcuts_ssec2_2_7  -> extract mean curvature -> save as OBJ with colors
 
