@@ -89,7 +89,7 @@ namespace DGtal
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( ConstIterator itb, ConstIterator ite,
                                                                  OutputIterator result )
   {
-    assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
+    assert ( ( myBegin != myEnd ) && isValid ( ) && std::distance ( myBegin, itb ) >= 0 && std::distance ( myEnd, ite ) <= 0 && ( itb != ite ) );
     dssSegments->setSubRange ( itb, ite );
     std::vector < Value > outValues ( std::distance ( itb, ite ) );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
