@@ -120,8 +120,6 @@ namespace DGtal {
      * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
      *
-     * NOTE THAT THIS VERSION DOES NOT SUPPORT DSS FILTRATION! YOU HAVE BEEN WARNED!
-     *
      * @param itb begin iterator
      * @param ite end iterator
      * @param result writable iterator over a container which stores estimated tangent directions.
@@ -165,6 +163,10 @@ namespace DGtal {
      * @ return estimated tangent
      */
     Value treat_orphant ( OrphantDSSIterator begin, OrphantDSSIterator end, const Point & p );
+    template < typename DSSesIterator, typename OrphantIterator >
+
+    void treat_orphants ( DSSesIterator begin, DSSesIterator end, OrphantIterator obegin, OrphantIterator oend,
+                          std::multimap < Point, Value > & outValues );
 
 
     // ------------------------- Private Datas --------------------------------

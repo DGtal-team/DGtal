@@ -198,7 +198,7 @@ public:
    * @param indexOfPointInDSS index of given point in aDSS
    * @param dssLen length of aDSS
    */
-  Value operator() ( const TDSS& aDSS, const int & indexOfPointInDSS, const int & dssLen ) const
+  Value operator() ( const TDSS& aDSS, const unsigned int indexOfPointInDSS, const unsigned int dssLen ) const
   {
     Value result;
     typename DSS::Point3d directionZ3;

@@ -88,6 +88,31 @@ namespace DGtal
 
 
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < typename DSSesIterator, typename OrphantIterator >
+  inline
+  void
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treat_orphants ( DSSesIterator begin,
+                                                                                      DSSesIterator end,
+                                                                                      OrphantIterator obegin,
+                                                                                      OrphantIterator oend,
+                                                                                      std::multimap < Point, Value > & outValues )
+  {
+    for ( auto DSS = begin; DSS != end; ++DSS )
+    {
+      for ( auto orphant = obegin; orphant != oend; ++orphant )
+      {
+        if ( ! DSS->isInDSS ( orphant ) && myDSSFilter.admissibility ( *DSS, *orphant ) )
+        {
+          unsigned int dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
+          int pos = myDSSFilter. position ( *DSS, *orphant );
+          outValues.insert ( std::make_pair ( *orphant,  myFunctor ( *DSS, pos, dssLen ) ) );
+        }
+      }
+    }
+  }
+
+
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
@@ -137,21 +162,39 @@ namespace DGtal
   inline
   OutputIterator
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval ( ConstIterator itb, ConstIterator ite,
-                                                                 OutputIterator result )
+                                                                            OutputIterator result )
   {
     assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
     std::multimap < Point, Value > outValues;
     dssSegments->setSubRange ( itb, ite );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
-  
+    std::vector< Point > orphants;
+
     for(; DSS != lastDSS; ++DSS)
     {
+      // coolect potential orphants
+      if ( myDSSFilter ( *DSS ) )
+      {
+        for ( const auto & point : *DSS )
+          if ( std::find ( orphants.cbegin (  ), orphants.cend ( ), point ) == orphants.cend ( ) )
+            orphants.push_back ( point );
+        continue;
+      }
+
       auto dssLen = std::distance ( DSS.begin(), DSS.end() );
       for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
-        outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( *DSS, indexOfPointInDSS+1, dssLen+1 ) ) );
+      {
+        outValues.insert ( std::make_pair ( *(DSS.begin ( ) + indexOfPointInDSS),
+                           myFunctor ( *DSS, indexOfPointInDSS + 1, dssLen + 1 ) ) );
+        // if a point is covered then it is not an orphant
+        auto orphant = std::find ( orphants.cbegin ( ), orphants.cend ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
+        if ( orphant != orphants.cend ( ) )
+          orphants.erase ( orphant );
+      }
     }
-
+    if ( ! orphants.empty ( ) )
+      treat_orphants ( dssSegments->begin ( ),  dssSegments->end ( ), orphants.cbegin ( ), orphants.cend ( ), outValues );
     accumulate< OutputIterator >( outValues, itb, ite, result );
     return result;
   }
