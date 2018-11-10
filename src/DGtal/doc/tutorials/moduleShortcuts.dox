@@ -241,6 +241,8 @@ ShortcutsGeometry::getVectorsAngleDeviation to compare vectors.
 
 @subsubsection dgtal_shortcuts_ssec2_2_9  -> build surface -> save primal surface with vcm normals as obj
 
+This example requires ShortcutsGeometry.
+
 @note The OBJ file is generally not a combinatorial 2-manifold, since
 digital surfaces, seen as squares stitched together, are manifold only
 when they are well-composed.
@@ -255,6 +257,13 @@ when they are well-composed.
 </td></tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_2_10 -> digitize implicitly -> estimate II normals and curvature.
+
+This example requires ShortcutsGeometry. You may also analyze the geometry of a digital implicitly defined surface without generating a binary image and only traverse the surface.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_10s
+
+\image html goursat-imphi-H-ii-blender-small.png "Rendering of goursat-imp-H-ii.obj with a gridstep of 0.03125, more than 2e6 surfels."
 
 @section dgtal_shortcuts_sec2b Short 2D examples
 
