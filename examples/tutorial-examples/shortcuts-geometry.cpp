@@ -224,32 +224,24 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
 
-  trace.beginBlock ( "Build polynomial shape -> digitize implicitly -> estimate II normals." );
+  trace.beginBlock ( "Build polynomial shape -> digitize implicitly -> estimate II normals and curvature." );
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_10s]
     params( "polynomial", "goursat" )( "gridstep", .25 );
-
     auto implicit_shape  = SH3::makeImplicitShape3D     ( params );
     auto dig_shape       = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto K               = SH3::getKSpace               ( params );
     auto surface         = SH3::makeDigitalSurface      ( dig_shape, K, params );
-    params( "surfaceTraversal", "DepthFirst" );
-    auto surfels         = SH3::getSurfelRange          ( surface, params );
-    params( "surfaceTraversal", "Default" );
-    auto def_surfels     = SH3::getSurfelRange          ( surface, params );
-    //auto ii_normals      = SHG3::getIINormalVectors     ( dig_shape, surfels, params );
-    auto ii_normals      = SHG3::getTrivialNormalVectors( K, surfels );
-    trace.info() << "#ii_normals   =" << ii_normals.size() << std::endl;
-    trace.beginBlock( "II with default traversal" );
-    auto ii_mean_curv2   = SHG3::getIIMeanCurvatures    ( dig_shape, def_surfels, params );
+    auto surfels         = SH3::getSurfelRange          ( surface, params( "surfaceTraversal", "DepthFirst" ) );
+    auto def_surfels     = SH3::getSurfelRange          ( surface, params( "surfaceTraversal", "Default" ) );
+    auto ii_normals      = SHG3::getIINormalVectors     ( dig_shape, surfels, params );
+    trace.beginBlock( "II with default traversal (slower)" );
+    auto ii_mean_curv    = SHG3::getIIMeanCurvatures    ( dig_shape, def_surfels, params );
     trace.endBlock();
-    trace.beginBlock( "II with depth-first traversal" );
-    auto ii_mean_curv    = SHG3::getIIMeanCurvatures    ( dig_shape, surfels, params );
+    trace.beginBlock( "II with depth-first traversal (faster)" );
+    auto ii_mean_curv2   = SHG3::getIIMeanCurvatures    ( dig_shape, surfels, params );
     trace.endBlock();
-    //auto ii_gauss_curv   = SHG3::getIIGaussianCurvatures( dig_shape, surfels, params );
-    trace.info() << "#ii_mean_curv =" << ii_mean_curv.size() << std::endl;
-    //trace.info() << "#ii_gauss_curv=" << ii_gauss_curv.size() << std::endl;
     auto cmap            = SH3::getColorMap             ( -0.5, 0.5, params );
     auto colors          = SH3::Colors                  ( def_surfels.size() );
     auto match           = SH3::getRangeMatch           ( def_surfels, surfels );
@@ -257,154 +249,11 @@ int main( int /* argc */, char** /* argv */ )
     for ( SH3::Idx i = 0; i < colors.size(); i++ )
       colors[ i ] = cmap( ii_mean_curv[ match[ i ] ] ); 
     bool ok_H  = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-imp-H-ii.obj" );
-    // for ( SH3::Idx i = 0; i < colors.size(); i++ )
-    //   colors[ i ] = cmap( ii_gauss_curv[ match[ i ] ] ); 
-    // bool ok_G  = SH3::saveOBJ( surface, normals, colors, "goursat-imp-G-ii.obj" );
     //! [dgtal_shortcuts_ssec2_2_10s]
-    //++nb, nbok += ( ok_H && ok_G ) ? 1 : 0;
+    ++nb, nbok += ( ok_H && ii_mean_curv.size() == ii_mean_curv2.size() ) ? 1 : 0;
   }
   trace.endBlock();
   
-  // trace.beginBlock ( "Setting up shape, space, etc" );
-  // auto params         = SH3::defaultParameters()
-  //   | SHG3::defaultParameters();
-  // params( "polynomial", "goursat" )( "gridstep", 0.5 )
-  //   ( "surfaceComponents", "All" )( "surfelAdjacency",   0 );
-  // auto implicit_shape = SH3::makeImplicitShape3D( params );
-  // auto K              = SH3::getKSpace( params );
-  // auto digital_shape  = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  // auto binary_image   = SH3::makeBinaryImage( digital_shape, params );
-  // trace.endBlock();
-  
-  // trace.beginBlock ( "Compute true geometry" );
-  // //params( "surfaceTraversal", "DepthFirst" )( "verbose", 0 );
-  // params( "surfaceTraversal", "Default" )( "verbose", 0 );
-  // auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
-  // auto surfels     = SH3::getSurfelRange( surface, params );
-  // auto positions   = SHG3::getPositions( implicit_shape, K, surfels, params ); 
-  // auto normals     = SHG3::getNormalVectors( implicit_shape, K, surfels, params ); 
-  // auto mean_curv   = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params ); 
-  // auto gauss_curv  = SHG3::getGaussianCurvatures( implicit_shape, K, surfels, params ); 
-  // SH3::RealPoint p = positions.front();
-  // SH3::RealPoint q = p;
-  // for ( auto&& r : positions ) {
-  //   p = p.inf( r ); q = q.sup( r );
-  // }
-  // SH3::Scalar   h0 =  1000.0;
-  // SH3::Scalar   h1 = -1000.0;
-  // for ( auto&& h : mean_curv ) {
-  //   h0 = std::min( h0, h );	h1 = std::max( h1, h );
-  // }
-  // SH3::Scalar   g0 =  1000.0;
-  // SH3::Scalar   g1 = -1000.0;
-  // for ( auto&& g : gauss_curv ) {
-  //   g0 = std::min( g0, g );	g1 = std::max( g1, g );
-  // }
-  // std::cout << "#position = " << positions.size()
-  // 	      << " p=" << p << " q=" << q << std::endl;
-  // std::cout << "#normals = " << normals.size() << std::endl;
-  // std::cout << "H_min = " << h0 << " H_max = " << h1;
-  // std::cout << " expected: H_min = 0.0912870 H_max = 0.263523" << std::endl;
-  // std::cout << "G_min = " << g0 << " G_max = " << g1;
-  // std::cout << " expected: G_min = 0.0074074 G_max = 0.0666666" << std::endl;
-  // trace.endBlock();
-  
-  // trace.beginBlock ( "Estimate geometry" );
-  // auto     t_normals = SHG3::getTrivialNormalVectors( K, surfels );
-  // auto    ct_normals = SHG3::getCTrivialNormalVectors( surface, surfels, params );
-  // auto   vcm_normals = SHG3::getVCMNormalVectors( surface, surfels, params );
-  // auto    ii_normals = SHG3::getIINormalVectors( binary_image, surfels, params );
-  // // Need to reorient II normals with CTrivial (otherwise unstable orientation).
-  // SHG3::orientVectors( ii_normals, ct_normals );
-  // auto   t_angle_dev = SHG3::getVectorsAngleDeviation( normals, t_normals );
-  // auto  ct_angle_dev = SHG3::getVectorsAngleDeviation( normals, ct_normals );
-  // auto vcm_angle_dev = SHG3::getVectorsAngleDeviation( normals, vcm_normals );
-  // auto  ii_angle_dev = SHG3::getVectorsAngleDeviation( normals, ii_normals );
-  // auto        stat_t = SHG3::getStatistic(   t_angle_dev );
-  // auto       stat_ct = SHG3::getStatistic(  ct_angle_dev );
-  // auto      stat_vcm = SHG3::getStatistic( vcm_angle_dev );
-  // auto       stat_ii = SHG3::getStatistic(  ii_angle_dev );
-  // std::cout << "Trivial  angle_dev  mean="
-  // 	    << stat_t.mean() << " max=" << stat_t.max() << std::endl;
-  // std::cout << "CTrivial angle_dev  mean="
-  // 	    << stat_ct.mean() << " max=" << stat_ct.max() << std::endl;
-  // std::cout << "VCM      angle_dev  mean="
-  // 	    << stat_vcm.mean() << " max=" << stat_vcm.max() << std::endl;
-  // std::cout << "II       angle_dev  mean="
-  // 	    << stat_ii.mean() << " max=" << stat_ii.max() << std::endl;
-  // auto M = std::max( std::max( stat_t.max(),   stat_ct.max() ),
-  // 		     std::max( stat_vcm.max(), stat_ii.max() ) );
-  // trace.endBlock();
-  // trace.beginBlock ( "Save as OBj with normals" );
-  // {
-  //   auto default_surfels = SH3::getSurfelRange( surface, Parameters( "Traversal", "Default" ) );
-  //   auto match    = SH3::getRangeMatch( default_surfels, surfels );
-  //   auto polysurf = SH3::makePrimalPolygonalSurface( surface );
-  //   auto normals  = SH3::getMatchedRange( vcm_normals, match );
-  //   // for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //   // 	normals[ i ] = vcm_normals[ match[ i ] ]; 
-  //   bool ok       = SH3::saveOBJ( polysurf, normals, SH3::Colors(),
-  // 				  "goursat-vcm-n.obj" );
-  //   ++nb, nbok += ok ? 1 : 0; 
-  //   auto cmap     = SH3::getColorMap( -0.3, 0.3 );
-  //   auto colors   = SH3::Colors( normals.size() );
-  //   for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //     colors[ i ] = cmap( mean_curv[ match[ i ] ] ); 
-  //   bool ok2      = SH3::saveOBJ( polysurf, normals, colors,
-  // 				  "goursat-vcm-mcurv.obj" );
-  //   ++nb, nbok += ok2 ? 1 : 0; 
-  //   auto errcmap  = SH3::getColorMap( 0.0, M, Parameters( "colormap", "Tics" ) );
-  //   // Output error for trivial normals
-  //   normals       = SH3::getMatchedRange( t_normals, match );
-  //   for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //     colors[ i ] = errcmap( t_angle_dev[ match[ i ] ] ); 
-  //   bool ok_t     = SH3::saveOBJ( polysurf, normals, colors, "goursat-t-err.obj" );
-  //   // Output error for convolved trivial normals
-  //   normals       = SH3::getMatchedRange( ct_normals, match );
-  //   for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //     colors[ i ] = errcmap( ct_angle_dev[ match[ i ] ] ); 
-  //   bool ok_ct    = SH3::saveOBJ( polysurf, normals, colors, "goursat-ct-err.obj" );
-  //   // Output error for vcm trivial normals
-  //   normals       = SH3::getMatchedRange( vcm_normals, match );
-  //   for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //     colors[ i ] = errcmap( vcm_angle_dev[ match[ i ] ] ); 
-  //   bool ok_vcm   = SH3::saveOBJ( polysurf, normals, colors, "goursat-vcm-err.obj" );
-  //   // Output error for ii trivial normals
-  //   normals       = SH3::getMatchedRange( ii_normals, match );
-  //   for ( SH3::Idx i = 0; i < normals.size(); i++ )
-  //     colors[ i ] = errcmap( ii_angle_dev[ match[ i ] ] ); 
-  //   bool ok_ii    = SH3::saveOBJ( polysurf, normals, colors, "goursat-ii-err.obj" );
-  //   ++nb, nbok += ok_t   ? 1 : 0; 
-  //   ++nb, nbok += ok_ct  ? 1 : 0; 
-  //   ++nb, nbok += ok_vcm ? 1 : 0; 
-  //   ++nb, nbok += ok_ii  ? 1 : 0; 
-  // }
-  // trace.endBlock();
-  
-  // {
-  //   trace.beginBlock ( "Gauss curv example" );
-  //   auto params         = SH3::defaultParameters()
-  //     | SHG3::defaultParameters();
-  //   params( "polynomial", "leopold" )( "gridstep", 0.125 )
-  //     ( "surfaceComponents", "All" )( "surfelAdjacency",   0 )
-  //     ( "surfaceTraversal", "Default" )( "verbose", 0 )
-  //     ( "projectionMaxIter", 50 )( "projectionAccuracy", 0.00001 )
-  //     ( "projectionGamma", 0.05 ); // leopold requires less gamma in projections.
-  //   auto implicit_shape = SH3::makeImplicitShape3D( params );
-  //   auto K              = SH3::getKSpace( params );
-  //   auto digital_shape  = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  //   auto binary_image   = SH3::makeBinaryImage( digital_shape, params );
-  //   auto surface     = SH3::makeLightDigitalSurface( binary_image, K, params );
-  //   auto surfels     = SH3::getSurfelRange( surface, params );
-  //   auto normals     = SHG3::getNormalVectors( implicit_shape, K, surfels, params ); 
-  //   auto gauss_curv  = SHG3::getMeanCurvatures( implicit_shape, K, surfels, params );
-  //   auto cmap        = SH3::getColorMap( -0.01, 0.01, Parameters( "colormap", "Tics" ) );
-  //   auto colors      = SH3::Colors( normals.size() );
-  //   std::transform( gauss_curv.cbegin(), gauss_curv.cend(), colors.begin(), cmap );
-  //   bool ok          = SH3::saveOBJ( surface, normals, colors, "leopold-G.obj" );
-  //   ++nb, nbok += ok ? 1 : 0; 
-  //   trace.endBlock();
-  // }
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;
 }
