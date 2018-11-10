@@ -125,7 +125,8 @@ int main( int /* argc */, char** /* argv */ )
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_6s]
-    params( "polynomial", "goursat" )( "gridstep", 0.25 );
+    const double h       = 0.25;
+    params( "polynomial", "goursat" )( "gridstep", h );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto binary_image    = SH3::makeBinaryImage      ( digitized_shape, params );
@@ -136,8 +137,8 @@ int main( int /* argc */, char** /* argv */ )
     auto pointels        = SH3::getPointelRange( c2i, surface );
     SH3::RealPoints pos( pointels.size() );
     std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
-		    [&] (const SH3::Cell& c) { return embedder( c ); } ); 
-    auto ppos            = SHG3::getPositions( implicit_shape, pos, params );
+		    [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+    auto ppos     = SHG3::getPositions( implicit_shape, pos, params );
     bool ok       = SH3::saveOBJ( surface,
 				  [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
 				  SH3::RealVectors(), SH3::Colors(),
@@ -227,33 +228,40 @@ int main( int /* argc */, char** /* argv */ )
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_10s]
-    params( "polynomial", "goursat" )( "gridstep", 0.25 )
-      ( "surfaceTraversal", "DepthFirst" );
+    params( "polynomial", "goursat" )( "gridstep", .25 );
+
     auto implicit_shape  = SH3::makeImplicitShape3D     ( params );
     auto dig_shape       = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto K               = SH3::getKSpace               ( params );
     auto surface         = SH3::makeDigitalSurface      ( dig_shape, K, params );
+    params( "surfaceTraversal", "DepthFirst" );
     auto surfels         = SH3::getSurfelRange          ( surface, params );
-    auto ii_normals      = SHG3::getIINormalVectors     ( dig_shape, surfels, params );
-    auto ii_mean_curv    = SHG3::getIIMeanCurvatures    ( dig_shape, surfels, params );
-    auto ii_gauss_curv   = SHG3::getIIGaussianCurvatures( dig_shape, surfels, params );
-    trace.info() << "#ii_normals   =" << ii_normals.size() << std::endl;
-    trace.info() << "#ii_mean_curv =" << ii_mean_curv.size() << std::endl;
-    trace.info() << "#ii_gauss_curv=" << ii_gauss_curv.size() << std::endl;
     params( "surfaceTraversal", "Default" );
     auto def_surfels     = SH3::getSurfelRange          ( surface, params );
+    //auto ii_normals      = SHG3::getIINormalVectors     ( dig_shape, surfels, params );
+    auto ii_normals      = SHG3::getTrivialNormalVectors( K, surfels );
+    trace.info() << "#ii_normals   =" << ii_normals.size() << std::endl;
+    trace.beginBlock( "II with default traversal" );
+    auto ii_mean_curv2   = SHG3::getIIMeanCurvatures    ( dig_shape, def_surfels, params );
+    trace.endBlock();
+    trace.beginBlock( "II with depth-first traversal" );
+    auto ii_mean_curv    = SHG3::getIIMeanCurvatures    ( dig_shape, surfels, params );
+    trace.endBlock();
+    //auto ii_gauss_curv   = SHG3::getIIGaussianCurvatures( dig_shape, surfels, params );
+    trace.info() << "#ii_mean_curv =" << ii_mean_curv.size() << std::endl;
+    //trace.info() << "#ii_gauss_curv=" << ii_gauss_curv.size() << std::endl;
     auto cmap            = SH3::getColorMap             ( -0.5, 0.5, params );
     auto colors          = SH3::Colors                  ( def_surfels.size() );
     auto match           = SH3::getRangeMatch           ( def_surfels, surfels );
     auto normals         = SH3::getMatchedRange         ( ii_normals, match );
     for ( SH3::Idx i = 0; i < colors.size(); i++ )
       colors[ i ] = cmap( ii_mean_curv[ match[ i ] ] ); 
-    bool ok_H  = SH3::saveOBJ( surface, normals, colors, "goursat-imp-H-ii.obj" );
-    for ( SH3::Idx i = 0; i < colors.size(); i++ )
-      colors[ i ] = cmap( ii_gauss_curv[ match[ i ] ] ); 
-    bool ok_G  = SH3::saveOBJ( surface, normals, colors, "goursat-imp-G-ii.obj" );
+    bool ok_H  = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-imp-H-ii.obj" );
+    // for ( SH3::Idx i = 0; i < colors.size(); i++ )
+    //   colors[ i ] = cmap( ii_gauss_curv[ match[ i ] ] ); 
+    // bool ok_G  = SH3::saveOBJ( surface, normals, colors, "goursat-imp-G-ii.obj" );
     //! [dgtal_shortcuts_ssec2_2_10s]
-    ++nb, nbok += ( ok_H && ok_G ) ? 1 : 0;
+    //++nb, nbok += ( ok_H && ok_G ) ? 1 : 0;
   }
   trace.endBlock();
   
