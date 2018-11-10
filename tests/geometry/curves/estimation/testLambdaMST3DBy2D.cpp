@@ -66,12 +66,12 @@ TEST_CASE( "LambdaMST3DBy2D test" )
     contour.push_back ( Point ( 9, 25, 27 ) );
     contour.push_back ( Point ( 8, 25, 28 ) );
 
-    lmst.init ( contour.begin ( ), contour.end ( ) ) ;
+    lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X ) ;
     lmst.eval ( contour.front ( ) );
 
-    lmst.init ( contour.begin ( ), contour.end ( ) );
+    lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X );
     vector < RealVector > tangent;
-    lmst.eval ( contour.begin ( ), contour.end ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
+    lmst.eval ( contour.cbegin ( ), contour.cend ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

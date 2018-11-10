@@ -66,14 +66,14 @@ namespace DGtal {
     typedef PointVector < 3, int > Point3D;
     typedef PointVector < 2, int > Point2D;
     typedef PointVector < 2, double > RealVector2D;
-    typedef std::list < Point2D > TCurve2D;
+    typedef std::vector < Point2D > TCurve2D;
     typedef ArithmeticalDSSComputer < typename TCurve2D::const_iterator, int, CONNECTIVITY > SegmentComputer2D;
     typedef SaturatedSegmentation < SegmentComputer2D > Segmentation2D;
-    
+    typedef typename Functor::MAIN_AXIS MAIN_AXIS;
+
     // ----------------------- Private types ------------------------------
   private:
     typedef LambdaMST2D < Segmentation2D, LambdaFunctor > TEstimator;
-    typedef typename Functor::MAIN_AXIS MAIN_AXIS;
     typedef functors::Projector < SpaceND < 2, int > > Projector2d;
     
     // ----------------------- Standard services ------------------------------
@@ -84,14 +84,15 @@ namespace DGtal {
      * Initialisation.
      * @param itB begin iterator
      * @param itE end iterator
+     * @param axis the main axis of the functional 3D curve
      */
-    void init ( Iterator3D itB, Iterator3D itE );
+    void init ( Iterator3D itB, Iterator3D itE, MAIN_AXIS axis );
     
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid ( ) const;
     
     /**
      * @param point to calculate A and B for it
@@ -114,17 +115,17 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   protected:
     
-    void ExtendFront ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, Iterator3D it );
-    void ExtendBack ( TCurve2D & curveXY, TCurve2D & curveXZ, TCurve2D & curveYZ, Iterator3D it );
-    MAIN_AXIS detectMainAxis ( const TCurve2D & tXY, const TCurve2D & tXZ, const TCurve2D & tYZ, const Point3D & point );
-    unsigned int CurveRank ( const TCurve2D & curve, const Point2D & point );
-    RealVector2D Estimate2DTangent ( const TCurve2D & curve, const Point2D & point );
-    
+    RealVector2D Estimate2DTangent ( TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, const Point2D & point );
+    template < typename OutputIterator >
+    OutputIterator Estimate2DTangent ( TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, OutputIterator result );
+
     // ------------------------- Private Datas --------------------------------
   private:
     Iterator3D myBegin;
     Iterator3D myEnd;
     Functor myFunctor;
+    MAIN_AXIS myAxis;
+    TCurve2D tXY, tXZ, tYZ;
     /// projectors
     Projector2d myProjXY, myProjXZ, myProjYZ;
   }; // end of class LambdaMST3DBy2DEstimator
