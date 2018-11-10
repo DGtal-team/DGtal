@@ -101,7 +101,7 @@ namespace DGtal
     {
       for ( auto orphant = obegin; orphant != oend; ++orphant )
       {
-        if ( ! DSS->isInDSS ( orphant ) && myDSSFilter.admissibility ( *DSS, *orphant ) )
+        if ( ! DSS->isInDSS ( *orphant ) && myDSSFilter.admissibility ( *DSS, *orphant ) )
         {
           unsigned int dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
           int pos = myDSSFilter. position ( *DSS, *orphant );
