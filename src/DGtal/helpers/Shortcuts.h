@@ -2259,7 +2259,7 @@ namespace DGtal
     {
       std::vector< TValue > result( match.size() );
       for ( Idx i = 0; i < result.size(); i++ )
-	result[ i ] = range[ match[ i ] ]; 
+	  result[ i ] = range[ match[ i ] ]; 
       return result;
     }
     
