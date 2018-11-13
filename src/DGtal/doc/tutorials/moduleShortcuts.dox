@@ -135,7 +135,7 @@ If you wish to display them with two different colors, you may write:
 
 @subsubsection dgtal_shortcuts_ssec2_1_4 -> extract 2 triangulated isosurfaces -> save as OBJ
 
-The following code extracts iso-surfaces in the given gray-scale 3D image and saves them as OBJ file with color information.
+The following code extracts all iso-surfaces in the given gray-scale 3D image and saves them as OBJ file with color information.
 
 \snippet examples/tutorial-examples/shortcuts.cpp dgtal_shortcuts_ssec2_1_4s
 
