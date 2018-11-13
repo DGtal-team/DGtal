@@ -379,7 +379,7 @@ The following name conventions for types are used:
 @subsection dgtal_shortcuts_ssec3_3 Main methods
 
 -# General methods
-  - Shortcuts::defaultParameters: return the set of all shorcut parameters.
+  - Shortcuts::defaultParameters: returns the set of all shorcut parameters.
 
 -# ImplicitShape3D methods
   - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
