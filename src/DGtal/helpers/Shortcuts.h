@@ -89,7 +89,7 @@ namespace DGtal
   /**
    * Description of template class 'Shortcuts' <p> \brief Aim: This
    * class is used to simplify shape and surface creation. With it,
-   * you can create new shapes and surface in a few lines. The
+   * you can create new shapes and surface with few lines of code. The
    * drawback is that you use specific types or objects, which could
    * lead to faster code or more compact data structures.
    *
