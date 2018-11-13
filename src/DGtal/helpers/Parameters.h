@@ -173,7 +173,7 @@ namespace DGtal
     bool isValid() const;
     
   protected:
-    std::map< std::string, ParameterValue > _parameters;
+    std::map< std::string, ParameterValue > myParameters;
   };
 
   /**
