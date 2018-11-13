@@ -48,7 +48,7 @@ typedef Shortcuts<Z3i::KSpace> SH3;
 \endcode
 
 The general philosophy of the shorcut module is to choose reasonnable
-data structures so as to minimize the number of lines to build
+data structures in order to minimize the number of lines to build
 frequent digital geometry code. For instance, the following lines
 builds a shape that represents the digitization of an ellipsoid.
 
