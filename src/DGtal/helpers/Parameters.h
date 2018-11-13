@@ -107,7 +107,7 @@ namespace DGtal
     T    as() const;
     void selfDisplay ( std::ostream & out ) const;
   protected:
-    std::string _value;
+    std::string myValue;
   };
 
   /**
