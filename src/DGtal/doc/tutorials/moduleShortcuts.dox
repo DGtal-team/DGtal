@@ -68,7 +68,7 @@ simply updated by the user with the function operator().
 \note Big objects (like images, explicit shapes, explicit surfaces) are always returned
 or passed as smart pointers (with CountedPtr). Smaller objects (like
 vectors of scalars, etc) are efficiently passed by value. Hence you
-never have to take care of their life-length and you do not need to
+never have to take care of their lifetime and you do not need to
 delete them explicitly.
 
 
