@@ -265,7 +265,7 @@ This example requires ShortcutsGeometry. You may also analyze the geometry of a 
 
 \image html goursat-imphi-H-ii-blender-small.png "Rendering of goursat-imp-H-ii.obj with a gridstep of 0.03125, more than 2e6 surfels."
 
-@section dgtal_shortcuts_sec2b Short 2D examples
+@section dgtal_shortcuts_sec2b Few 2D examples
 
 We give below some minimalistic examples to show that shortcuts can
 save a lot of lines of code. All examples need at least the following lines:
