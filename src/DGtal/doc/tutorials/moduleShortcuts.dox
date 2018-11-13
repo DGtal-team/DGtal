@@ -382,7 +382,7 @@ The following name conventions for types are used:
   - Shortcuts::defaultParameters: returns the set of all shorcut parameters.
 
 -# ImplicitShape3D methods
-  - Shortcuts::getPolynomialList: return the list of polynomial shapes predefined for implicit shapes 
+  - Shortcuts::getPolynomialList: returns the list of polynomial shapes predefined for implicit shapes 
   - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds a 3D implicit shape
 
