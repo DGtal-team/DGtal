@@ -113,7 +113,7 @@ auto params = SH3::defaultParameters()
 
 @subsubsection dgtal_shortcuts_ssec2_1_3 -> extract 2 isosurfaces -> build mesh -> displays them
 
-The following code extracts iso-surfaces in the given gray-scale 3D image and builds meshes, which can be displayed.
+The following code extracts iso-surfaces (maybe multiple connected components) in the given gray-scale 3D image and builds meshes, which can be displayed.
 
 @note Iso-surfaces are built by duality from digital surfaces. The
 output triangulated surfaces share similarities with marching-cubes
