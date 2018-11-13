@@ -2438,7 +2438,7 @@ namespace DGtal
       auto  surfelmap = surface->surfels();
       SurfelRange surfels;
       for ( auto&& idx : idxsurfels )
-	surfels.push_back( surfelmap[ idx ] );
+	  surfels.push_back( surfelmap[ idx ] );
       return outputSurfelsAsObj( output, surfels, embedder );
     }
 
