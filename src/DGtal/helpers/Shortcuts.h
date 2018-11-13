@@ -1056,7 +1056,7 @@ namespace DGtal
       int nb_tries_to_find_a_bel = params[ "nbTriesToFindABel" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
 
-      // We have to search for a surfel that belong to a big connected component.
+      // We have to search for a surfel that belongs to a big connected component.
       CountedPtr<LightDigitalSurface> ptrSurface;
       Surfel       bel;
       Scalar       minsize    = bimage->extent().norm();
