@@ -799,15 +799,15 @@ namespace DGtal
       float qSlope = params[ "qSlope"   ].as<float>();
       std::function< unsigned char( float ) > f
 	= [qShift,qSlope] (float v)
-	{ return (unsigned char)
-	  std::min( 255.0f, std::max( 0.0f, qSlope * v + qShift ) ); };
+	{ return (unsigned char) std::min( 255.0f, std::max( 0.0f, qSlope * v + qShift ) ); };
       Domain domain = fimage->domain();
       auto   gimage = makeGrayScaleImage( domain );
       auto       it = gimage->begin();
-      for ( auto p : domain ) {
-	float val = (*fimage)( p );
-	*it++      = f( val );
-      }
+      for ( auto p : domain )
+	{
+	  float val = (*fimage)( p );
+	  *it++      = f( val );
+	}
       return gimage;
     }
 
@@ -831,15 +831,15 @@ namespace DGtal
       double qSlope = params[ "qSlope"   ].as<double>();
       std::function< unsigned char( double ) > f
 	= [qShift,qSlope] (double v)
-	{ return (unsigned char)
-	  std::min( 255.0, std::max( 0.0, qSlope * v + qShift ) ); };
+	{ return (unsigned char) std::min( 255.0, std::max( 0.0, qSlope * v + qShift ) ); };
       Domain domain = fimage->domain();
       auto   gimage = makeGrayScaleImage( domain );
       auto       it = gimage->begin();
-      for ( auto p : domain ) {
-	double val = (*fimage)( p );
-	*it++      = f( val );
-      }
+      for ( auto p : domain )
+	{
+	  double val = (*fimage)( p );
+	  *it++      = f( val );
+	}
       return gimage;
     }
 
@@ -901,10 +901,11 @@ namespace DGtal
       Domain domain = dshape->getDomain();
       auto   fimage = makeFloatImage( domain );
       auto       it = fimage->begin();
-      for ( auto p : domain ) {
-	float val = (float) (*shape)( p );
-	*it++      = val;
-      }
+      for ( auto p : domain )
+	{
+	  float val = (float) (*shape)( p );
+	  *it++      = val;
+	}
       return fimage;
     }
 
@@ -966,10 +967,11 @@ namespace DGtal
       Domain domain = dshape->getDomain();
       auto   fimage = makeDoubleImage( domain );
       auto       it = fimage->begin();
-      for ( auto p : domain ) {
-	double val = (double) (*shape)( p );
-	*it++      = val;
-      }
+      for ( auto p : domain )
+	{
+	  double val = (double) (*shape)( p );
+	  *it++      = val;
+	}
       return fimage;
     }
     
@@ -1062,26 +1064,27 @@ namespace DGtal
       Scalar       minsize    = bimage->extent().norm();
       unsigned int nb_surfels = 0;
       unsigned int tries      = 0;
-      do {
-        try { // Search initial bel
-          bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
-        } catch (DGtal::InputException e) {
-          trace.error() << "[Shortcuts::makeLightDigitalSurface]"
-			<< " ERROR Unable to find bel." << std::endl;
-          return ptrSurface;
-        }
-	// this pointer will be acquired by the surface.
-        LightSurfaceContainer* surfContainer
-	  = new LightSurfaceContainer( K, *bimage, surfAdj, bel );
-        ptrSurface = CountedPtr<LightDigitalSurface>
-	  ( new LightDigitalSurface( surfContainer ) ); // acquired
-        nb_surfels = ptrSurface->size();
-      } while ( ( nb_surfels < 2 * minsize ) && ( tries++ < 150 ) );
-      if( tries >= 150 ) {
+      do
+	{
+	  try { // Search initial bel
+	    bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
+	  } catch (DGtal::InputException e) {
+	    trace.error() << "[Shortcuts::makeLightDigitalSurface]"
+			  << " ERROR Unable to find bel." << std::endl;
+	    return ptrSurface;
+	  }
+	  // this pointer will be acquired by the surface.
+	  LightSurfaceContainer* surfContainer
+	    = new LightSurfaceContainer( K, *bimage, surfAdj, bel );
+	  ptrSurface = CountedPtr<LightDigitalSurface>
+	    ( new LightDigitalSurface( surfContainer ) ); // acquired
+	  nb_surfels = ptrSurface->size();
+	}
+      while ( ( nb_surfels < 2 * minsize ) && ( tries++ < 150 ) );
+      if( tries >= 150 )
 	trace.warning() << "[Shortcuts::makeLightDigitalSurface]"
 			<< "ERROR cannot find a proper bel in a big enough component."
 			<< std::endl;
-      }
       return ptrSurface;
     }
 
@@ -1141,11 +1144,12 @@ namespace DGtal
     {
       std::vector< CountedPtr<LightDigitalSurface> > result;
       std::string component      = params[ "surfaceComponents" ].as<std::string>();
-      if ( component == "AnyBig" ) {
-	result.push_back( makeLightDigitalSurface( bimage, K, params ) );
-	surfel_reps.push_back( *( result[ 0 ]->begin() ) );
-	return result;
-      }	
+      if ( component == "AnyBig" )
+	{
+	  result.push_back( makeLightDigitalSurface( bimage, K, params ) );
+	  surfel_reps.push_back( *( result[ 0 ]->begin() ) );
+	  return result;
+	}	
       bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
       SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
       // Extracts all boundary surfels
@@ -1305,7 +1309,8 @@ namespace DGtal
 	( new IdxDigitalSurface() );
       bool ok = ptrSurface->build( ptrSurfContainer );
       if ( !ok )
-	trace.warning() << "[Shortcuts::makeIdxDigitalSurface] Error building indexed digital surface." << std::endl;
+	trace.warning() << "[Shortcuts::makeIdxDigitalSurface]"
+			<< " Error building indexed digital surface." << std::endl;
       return ptrSurface;
     }
 
@@ -1353,13 +1358,15 @@ namespace DGtal
       if ( surfaces.empty() ) return CountedPtr<IdxDigitalSurface>( 0 );
       const KSpace& K = surfaces[ 0 ]->container().space();
       SurfelSet     surfels;
-      for ( std::size_t i = 0; i < surfaces.size(); ++i ) {
-	const KSpace& Ki = surfaces[ i ]->container().space();
-	if ( ( Ki.lowerBound() != K.lowerBound() )
-	     || ( Ki.upperBound() != K.upperBound() ) )
-	  trace.warning() << "[Shortcuts::makeIdxDigitalSurface] Incompatible digital spaces for surface " << i << std::endl;
-	surfels.insert( surfaces[ i ]->begin(), surfaces[ i ]->end() );
-      }
+      for ( std::size_t i = 0; i < surfaces.size(); ++i )
+	{
+	  const KSpace& Ki = surfaces[ i ]->container().space();
+	  if ( ( Ki.lowerBound() != K.lowerBound() )
+	       || ( Ki.upperBound() != K.upperBound() ) )
+	    trace.warning() << "[Shortcuts::makeIdxDigitalSurface]"
+			    << " Incompatible digital spaces for surface " << i << std::endl;
+	  surfels.insert( surfaces[ i ]->begin(), surfaces[ i ]->end() );
+	}
       return makeIdxDigitalSurface( surfels, K, params );
     }    
 
@@ -1391,15 +1398,18 @@ namespace DGtal
       result.reserve( surface->size() );
       const KSpace& K = refKSpace( surface );
       Idx n = 0;
-      for ( auto&& surfel : *surface ) {
-	CellRange primal_vtcs = getPointelRange( K, surfel );
-	for ( auto&& primal_vtx : primal_vtcs ) {
-	  if ( ! c2i.count( primal_vtx ) ) {
-	    result.push_back( primal_vtx );
-	    c2i[ primal_vtx ] = n++;
-	  }
+      for ( auto&& surfel : *surface )
+	{
+	  CellRange primal_vtcs = getPointelRange( K, surfel );
+	  for ( auto&& primal_vtx : primal_vtcs )
+	    {
+	      if ( ! c2i.count( primal_vtx ) )
+		{
+		  result.push_back( primal_vtx );
+		  c2i[ primal_vtx ] = n++;
+		}
+	    }
 	}
-      }
       return result;
     }
 
@@ -1601,12 +1611,15 @@ namespace DGtal
       BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
       std::string mtlfile;
       auto lastindex = objfile.find_last_of(".");
-      if ( lastindex == std::string::npos ) {
-	mtlfile  = objfile + ".mtl";
-	objfile  = objfile + ".obj";
-      } else {
-	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
-      }
+      if ( lastindex == std::string::npos )
+	{
+	  mtlfile  = objfile + ".mtl";
+	  objfile  = objfile + ".obj";
+	}
+      else
+	{
+	  mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+	}
       std::ofstream output_obj( objfile.c_str() );
       output_obj << "#  OBJ format" << std::endl;
       output_obj << "# DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor" << std::endl;
@@ -1619,19 +1632,22 @@ namespace DGtal
       const KSpace&     K = refKSpace( digsurf );
       Cell2Index      c2i;
       auto       pointels = getPointelRange( c2i, digsurf );
-      for ( auto&& pointel : pointels ) {
-	    RealPoint p = embedder( pointel );
-	    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-      }	
+      for ( auto&& pointel : pointels )
+	{
+	  RealPoint p = embedder( pointel );
+	  output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	}	
       // Taking care of normals
       Idx nbfaces = digsurf->size();
       bool has_normals = ( nbfaces == normals.size() );
-      if ( has_normals ) {
-	for ( Idx f = 0; f < nbfaces; ++f ) {
-	  const auto& p = normals[ f ];
-	  output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+      if ( has_normals )
+	{
+	  for ( Idx f = 0; f < nbfaces; ++f )
+	    {
+	      const auto& p = normals[ f ];
+	      output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	    }
 	}
-      }
       // Taking care of materials
       bool has_material = ( nbfaces == diffuse_colors.size() );
       Idx   idxMaterial = 0;
@@ -1639,48 +1655,48 @@ namespace DGtal
       // MeshHelpers::exportMTLNewMaterial
       // 	( output_mtl, idxMaterial, ambient_color, Color::Black, specular_color );
       // mapMaterial[ Color::Black ] = idxMaterial++;
-      if ( has_material ) {
-	for ( Idx f = 0; f < nbfaces; ++f ) {
-	  Color c = diffuse_colors[ f ];
-	  if ( mapMaterial.count( c ) == 0 ) {
-	    MeshHelpers::exportMTLNewMaterial
-	      ( output_mtl, idxMaterial, ambient_color, c, specular_color );
-	    mapMaterial[ c ] = idxMaterial++;
-	  }
+      if ( has_material )
+	{
+	  for ( Idx f = 0; f < nbfaces; ++f )
+	    {
+	      Color c = diffuse_colors[ f ];
+	      if ( mapMaterial.count( c ) == 0 )
+		{
+		  MeshHelpers::exportMTLNewMaterial
+		    ( output_mtl, idxMaterial, ambient_color, c, specular_color );
+		  mapMaterial[ c ] = idxMaterial++;
+		}
+	    }
 	}
-      } else {
-	MeshHelpers::exportMTLNewMaterial
-	  ( output_mtl, idxMaterial, ambient_color, diffuse_color, specular_color );
-      }
-
+      else
+	{
+	  MeshHelpers::exportMTLNewMaterial
+	    ( output_mtl, idxMaterial, ambient_color, diffuse_color, specular_color );
+	}
+      
       // Taking care of faces
       Idx f = 0;
-      for ( auto&& surfel : *digsurf ) {
-	output_obj << "usemtl material_"
-		   << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
-		   << std::endl; 
-	output_obj << "f";
-	auto primal_vtcs = getPointelRange( K, surfel );
-	// The +1 in lines below is because indexing starts at 1 in OBJ file format.
-	if ( has_normals ) {
-	  for ( auto&& primal_vtx : primal_vtcs )
-	    output_obj << " " << (c2i[ primal_vtx ]+1) << "//" << (f+1);
-	} else {
-	  for ( auto&& primal_vtx : primal_vtcs )
-	    output_obj << " " << (c2i[ primal_vtx ]+1);
+      for ( auto&& surfel : *digsurf )
+	{
+	  output_obj << "usemtl material_"
+		     << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
+		     << std::endl; 
+	  output_obj << "f";
+	  auto primal_vtcs = getPointelRange( K, surfel );
+	  // The +1 in lines below is because indexing starts at 1 in OBJ file format.
+	  if ( has_normals )
+	    {
+	      for ( auto&& primal_vtx : primal_vtcs )
+		output_obj << " " << (c2i[ primal_vtx ]+1) << "//" << (f+1);
+	    }
+	  else
+	    {
+	      for ( auto&& primal_vtx : primal_vtcs )
+		output_obj << " " << (c2i[ primal_vtx ]+1);
+	    }
+	  output_obj << std::endl;
+	  f += 1;
 	}
-	output_obj << std::endl;
-	f += 1;
-      }
-      // output_obj << "usemtl material_" << 0 << std::endl;
-      // for ( auto&& surfel : *digsurf ) {
-      // 	output_obj << "l";
-      // 	auto primal_vtcs = getPointelRange( K, surfel );
-      // 	// The +1 in lines below is because indexing starts at 1 in OBJ file format.
-      // 	for ( auto&& primal_vtx : primal_vtcs )
-      // 	  output_obj << " " << (c2i[ primal_vtx ]+1);
-      // 	output_obj << std::endl;
-      // }
       output_mtl.close();
       return output_obj.good();
     }
@@ -2137,12 +2153,15 @@ namespace DGtal
     {
       std::string mtlfile;
       auto lastindex = objfile.find_last_of(".");
-      if ( lastindex == std::string::npos ) {
-	mtlfile  = objfile + ".mtl";
-	objfile  = objfile + ".obj";
-      } else {
-	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
-      }
+      if ( lastindex == std::string::npos )
+	{
+	  mtlfile  = objfile + ".mtl";
+	  objfile  = objfile + ".obj";
+	}
+      else
+	{
+	  mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+	}
       std::ofstream output( objfile.c_str() );
       bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
 	( output, mtlfile, *polysurf, normals, diffuse_colors,
@@ -2176,12 +2195,15 @@ namespace DGtal
     {
       std::string mtlfile;
       auto lastindex = objfile.find_last_of(".");
-      if ( lastindex == std::string::npos ) {
-	mtlfile  = objfile + ".mtl";
-	objfile  = objfile + ".obj";
-      } else {
-	mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
-      }
+      if ( lastindex == std::string::npos )
+	{
+	  mtlfile  = objfile + ".mtl";
+	  objfile  = objfile + ".obj";
+	}
+      else
+	{
+	  mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+	}
       std::ofstream output( objfile.c_str() );
       bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
 	( output, mtlfile, *trisurf, normals, diffuse_colors,
@@ -2231,14 +2253,16 @@ namespace DGtal
       for ( auto val : s2 ) M[ val ] = idx++;
       IdxRange V( s1.size() );
       idx = 0;
-      for ( auto val : s1 ) {
-	auto it = M.find( val );
-	if ( it != M.end() ) V[ idx++ ] = it->second;
-	else {
-	  if ( perfect ) return IdxRange();
-	  V[ idx++ ] = s2.size();
+      for ( auto val : s1 )
+	{
+	  auto it = M.find( val );
+	  if ( it != M.end() ) V[ idx++ ] = it->second;
+	  else
+	    {
+	      if ( perfect ) return IdxRange();
+	      V[ idx++ ] = s2.size();
+	    }
 	}
-      }
       return V;
     }
 
@@ -2332,26 +2356,29 @@ namespace DGtal
       // Number and output vertices.
       std::map< Cell, Size > vtx_numbering;
       Size n = 1;  // OBJ vertex numbering start at 1 
-      for ( auto&& s : surfels ) {
-	auto primal_vtcs = getPointelRange( K, s );
-	for ( auto&& primal_vtx : primal_vtcs ) {
-	  if ( ! vtx_numbering.count( primal_vtx ) ) {
-	    vtx_numbering[ primal_vtx ] = n++;
-	    // Output vertex positions
-	    RealPoint p = embedder( primal_vtx );
-	    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-	  }
+      for ( auto&& s : surfels )
+	{
+	  auto primal_vtcs = getPointelRange( K, s );
+	  for ( auto&& primal_vtx : primal_vtcs )
+	    {
+	      if ( ! vtx_numbering.count( primal_vtx ) )
+		{
+		  vtx_numbering[ primal_vtx ] = n++;
+		  // Output vertex positions
+		  RealPoint p = embedder( primal_vtx );
+		  output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+		}
+	    }
 	}
-      }
       // Outputs all faces
-      for ( auto&& s : surfels ) {
-	output << "f";
-	auto primal_vtcs = getPointelRange( K, s, true );
-	for ( auto&& primal_vtx : primal_vtcs ) {
-	  output << " " << vtx_numbering[ primal_vtx ];
-	}
-	output << std::endl;
-      }      
+      for ( auto&& s : surfels )
+	{
+	  output << "f";
+	  auto primal_vtcs = getPointelRange( K, s, true );
+	  for ( auto&& primal_vtx : primal_vtcs )
+	    output << " " << vtx_numbering[ primal_vtx ];
+	  output << std::endl;
+	}      
       return output.good();
     }
     
@@ -2359,7 +2386,8 @@ namespace DGtal
     /// (surfels=face), as an OBJ file (3D only). Note that faces are
     /// oriented consistently (normals toward outside).
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like
+    /// Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
@@ -2380,13 +2408,17 @@ namespace DGtal
     /// oriented consistently (normals toward outside). Each vertex is
     /// mapped to a 3D point using the given cell embedder.
     ///
-    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
+    /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like
+    /// Shortcuts::LightDigitalSurface or Shortcuts::DigitalSurface.
     ///
     /// @tparam TCellEmbedder any model of CCellEmbedder
     ///
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on a digital surface.
-    /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
+    ///
+    /// @param[in] embedder the embedder for mapping surfel vertices
+    /// (cells of dimension 0) to points in space.
+    ///
     /// @return 'true' if the output stream is good.
     template < typename TAnyDigitalSurface,
 	       typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
@@ -2425,7 +2457,10 @@ namespace DGtal
     /// @tparam TCellEmbedder any model of CCellEmbedder
     /// @param[out] output the output stream.
     /// @param[in] surface a smart pointer on an indexed digital surface.
-    /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
+    ///
+    /// @param[in] embedder the embedder for mapping surfel vertices
+    /// (cells of dimension 0) to points in space.
+    ///
     /// @return 'true' if the output stream is good.
     template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
     static bool
@@ -2450,7 +2485,10 @@ namespace DGtal
     /// concepts::CDigitalSurfaceContainer.
     ///
     /// @param[out] output the output stream.
-    /// @param[in] surface a smart pointer on a digital surface (a DigitalSurface or a LightDigitalSurface).
+    ///
+    /// @param[in] surface a smart pointer on a digital surface (a
+    /// DigitalSurface or a LightDigitalSurface).
+    ///
     /// @param[in] params the parameters:
     ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
@@ -2477,8 +2515,13 @@ namespace DGtal
     /// @tparam TCellEmbedder any model of CCellEmbedder
     ///
     /// @param[out] output the output stream.
-    /// @param[in] surface a smart pointer on a digital surface (either DigitalSurface or LightDigitalSurface).
-    /// @param[in] embedder the embedder for mapping (unsigned) surfels (cells of dimension 2) to points in space.
+    ///
+    /// @param[in] surface a smart pointer on a digital surface
+    /// (either DigitalSurface or LightDigitalSurface).
+    ///
+    /// @param[in] embedder the embedder for mapping (unsigned)
+    /// surfels (cells of dimension 2) to points in space.
+    ///
     /// @param[in] params the parameters:
     ///   - faceSubdivision ["Centroid"]: "No"|"Naive"|"Centroid" specifies how dual faces are subdivided when exported.
     ///
@@ -2505,69 +2548,83 @@ namespace DGtal
       std::map< Vertex, Size > vtx_numbering;
       std::map< Face,   Size > sub_numbering;
       Size n = 1;  // OBJ vertex numbering start at 1 
-      for ( auto && s : *surface ) {
-	if ( ! vtx_numbering.count( s ) ) {
-	  vtx_numbering[ s ] = n++;
-	  // Output vertex positions
-	  RealPoint p = embedder( K.unsigns( s ) );
-	  output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+      for ( auto && s : *surface )
+	{
+	  if ( ! vtx_numbering.count( s ) )
+	    {
+	      vtx_numbering[ s ] = n++;
+	      // Output vertex positions
+	      RealPoint p = embedder( K.unsigns( s ) );
+	      output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+	    }
 	}
-      }
       auto faces = surface->allClosedFaces();
       // Prepare centroids if necessary
-      if ( subdivide == 2 ) {
-	for ( auto&& f : faces ) {
-	  auto vtcs = surface->verticesAroundFace( f );
-	  Size   nv = vtcs.size();
-	  if ( nv > 3 ) {
-	    sub_numbering[ f ] = n++;
-	    RealPoint p = RealPoint::zero;
-	    for ( auto&& s : vtcs ) p += embedder( K.unsigns( s ) );
-	    p /= nv;
-	    output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-	  }
-	}
-      }
-      // Outputs closed faces.
-      if ( subdivide == 0 ) { // No subdivision
-	for ( auto&& f : faces ) {
-	  output << "f";
-	  auto vtcs = surface->verticesAroundFace( f );
-	  std::reverse( vtcs.begin(), vtcs.end() );
-	  for ( auto&& s : vtcs )
-	    output << " " << vtx_numbering[ s ];
-	  output << std::endl;
-	}
-      } else if ( subdivide == 1 ) { // naive subdivision
-	for ( auto&& f : faces ) {
-	  auto vtcs = surface->verticesAroundFace( f );
-	  Size   nv = vtcs.size();
-	  for ( Size i = 1; i < nv - 1; ++i )
-	    output << "f " << vtx_numbering[ vtcs[ 0 ] ]
-		   << " "  << vtx_numbering[ vtcs[ i+1 ] ]
-		   << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
-	}
-      } else if ( subdivide == 2 ) { // centroid subdivision
-	for ( auto&& f : faces ) {
-	  auto vtcs = surface->verticesAroundFace( f );
-	  Size   nv = vtcs.size();
-	  if ( nv == 3 )
-	    output << "f " << vtx_numbering[ vtcs[ 0 ] ]
-		   << " "  << vtx_numbering[ vtcs[ 2 ] ]
-		   << " "  << vtx_numbering[ vtcs[ 1 ] ] << std::endl;
-	  else {
-	    Size c = sub_numbering[ f ];
-	    for ( Size i = 0; i < nv; ++i ) {
-	      output << "f " << c
-		     << " "  << vtx_numbering[ vtcs[ (i+1)%nv ] ]
-		     << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
+      if ( subdivide == 2 )
+	{
+	  for ( auto&& f : faces )
+	    {
+	      auto vtcs = surface->verticesAroundFace( f );
+	      Size   nv = vtcs.size();
+	      if ( nv > 3 )
+		{
+		  sub_numbering[ f ] = n++;
+		  RealPoint p = RealPoint::zero;
+		  for ( auto&& s : vtcs ) p += embedder( K.unsigns( s ) );
+		  p /= nv;
+		  output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+		}
 	    }
-	  }
 	}
-      }
+      // Outputs closed faces.
+      if ( subdivide == 0 )
+	{ // No subdivision
+	  for ( auto&& f : faces )
+	    {
+	      output << "f";
+	      auto vtcs = surface->verticesAroundFace( f );
+	      std::reverse( vtcs.begin(), vtcs.end() );
+	      for ( auto&& s : vtcs )
+		output << " " << vtx_numbering[ s ];
+	      output << std::endl;
+	    }
+	}
+      else if ( subdivide == 1 )
+	{ // naive subdivision
+	  for ( auto&& f : faces )
+	    {
+	      auto vtcs = surface->verticesAroundFace( f );
+	      Size   nv = vtcs.size();
+	      for ( Size i = 1; i < nv - 1; ++i )
+		output << "f " << vtx_numbering[ vtcs[ 0 ] ]
+		       << " "  << vtx_numbering[ vtcs[ i+1 ] ]
+		       << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
+	    }
+	}
+      else if ( subdivide == 2 )
+	{ // centroid subdivision
+	  for ( auto&& f : faces )
+	    {
+	      auto vtcs = surface->verticesAroundFace( f );
+	      Size   nv = vtcs.size();
+	      if ( nv == 3 )
+		output << "f " << vtx_numbering[ vtcs[ 0 ] ]
+		       << " "  << vtx_numbering[ vtcs[ 2 ] ]
+		       << " "  << vtx_numbering[ vtcs[ 1 ] ] << std::endl;
+	      else {
+		Size c = sub_numbering[ f ];
+		for ( Size i = 0; i < nv; ++i )
+		  {
+		    output << "f " << c
+			   << " "  << vtx_numbering[ vtcs[ (i+1)%nv ] ]
+			   << " "  << vtx_numbering[ vtcs[ i ] ] << std::endl;
+		  }
+	      }
+	    }
+	}
       return output.good();
     }
-
+    
 
     // -------------------- map I/O services ------------------------------------------
   public:
@@ -2675,11 +2732,12 @@ namespace DGtal
       const TValueWriter& writer )
     {
       SCellWriter w;
-      for ( auto&& v : anyMap ) {
-	w( output, K, v.first );
-	writer( output, v.second );
-	output << std::endl;
-      }
+      for ( auto&& v : anyMap )
+	{
+	  w( output, K, v.first );
+	  writer( output, v.second );
+	  output << std::endl;
+	}
       return output.good();
     }
     
@@ -2704,11 +2762,12 @@ namespace DGtal
       const TValueWriter& writer )
     {
       CellWriter w;
-      for ( auto&& v : anyMap ) {
-	w( output, K, v.first );
-	writer( output, v.second );
-	output << std::endl;
-      }
+      for ( auto&& v : anyMap )
+	{
+	  w( output, K, v.first );
+	  writer( output, v.second );
+	  output << std::endl;
+	}
       return output.good();
     }
     
@@ -2721,9 +2780,10 @@ namespace DGtal
     {
       auto faces = K.uFaces( K.unsigns( s ) );
       CellRange primal_vtcs;
-      for ( auto&& f : faces ) {
-	if ( K.uDim( f ) == 0 ) primal_vtcs.push_back( f );
-      }
+      for ( auto&& f : faces )
+	{
+	  if ( K.uDim( f ) == 0 ) primal_vtcs.push_back( f );
+	}
       return primal_vtcs;
     }
     
@@ -2797,13 +2857,19 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const
+    {
+      out << "[Shortcuts]";
+    }
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+      return true;
+    }
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -2835,7 +2901,6 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/helpers/Shortcuts.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
