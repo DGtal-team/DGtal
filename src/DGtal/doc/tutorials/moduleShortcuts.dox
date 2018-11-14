@@ -40,6 +40,8 @@ To use shortcuts, you must include the following header:
 And choose an appropriate Khalimsky space according to the dimension
 of the object you will be processing.
 
+@see moduleCellularTopology
+
 \code
 // Using standard 2D digital space.
 typedef Shortcuts<Z2i::KSpace> SH2;
@@ -259,7 +261,9 @@ when they are well-composed.
 
 @subsubsection dgtal_shortcuts_ssec2_2_10 -> digitize implicitly -> estimate II normals and curvature.
 
-This example requires ShortcutsGeometry. You may also analyze the geometry of a digital implicitly defined surface without generating a binary image and only traverse the surface.
+This example requires ShortcutsGeometry. You may also analyze the
+geometry of a digital implicitly defined surface without generating a
+binary image and only traverse the surface.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_10s
 
@@ -320,7 +324,10 @@ parameters.
 
 @subsection dgtal_shortcuts_ssec3_2 Types
 
-The following name conventions for types are used:
+The following name conventions for types are used. They are defined
+according to your choice of cellular grid space when defining the
+Shortcuts type. For instance, if Z3i::KSpace was chosen, then
+Shortcuts::Point is Z3i::KSpace::Point.
 
 - Shortcuts::Point: represents a point with integer coordinates.
 - Shortcuts::Vector: represents a vector with integer coordinates.
