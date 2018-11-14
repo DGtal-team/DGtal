@@ -343,7 +343,7 @@ int main()
   }
 
   {
-    std::cout << "Copying a lambda helb by rvalue reference" << std::endl;
+    std::cout << "Copying a lambda held by rvalue reference" << std::endl;
     //! [Copying a lambda by rvalue ref]
     int init_cnt = 0;
     auto fn = DGtal::functors::holdFunctor( [init_cnt] () mutable { return ++init_cnt; } );

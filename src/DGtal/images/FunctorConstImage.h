@@ -287,11 +287,16 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
  * @tparam  TDomain   The domain type (auto-deduced).
  * @tparam  TFunctor  The functor type (auto-deduced).
  * @param   aDomain   The image domain.
- * @param   aFunctor  The functor that generates the image.
+ * @param   aFunctor  The functor (unary or binary) that generates the image.
  * @return an instance of the appropriate FunctorConstImage type.
+ *
+ * @note You don't have to choose between the version for unary or binary functor:
+ *  this choice is automatically done using SFINAE technique.
  *
  * @see FunctorConstImage and @ref moduleImages for more informations.
  */
+
+// Auto-deduction of the return type in case of an unary functor.
 template <
   typename TDomain,
   typename TFunctor
@@ -311,6 +316,7 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
       >{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
+// Auto-deduction of the return type in case of a binary functor.
 template <
   typename TDomain,
   typename TFunctor
