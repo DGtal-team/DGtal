@@ -38,26 +38,26 @@
 // ----------------------------------------------------------------------------
 inline
 DGtal::ParameterValue::ParameterValue ( const std::string& v )
-  : _value( v )
+  : myValue( v )
 {}
 // ----------------------------------------------------------------------------
 template <typename X>
 DGtal::ParameterValue::ParameterValue ( const X& v )
-  : _value( ValueConverter< X, std::string>::cast( v ) )
+  : myValue( detail::ValueConverter< X, std::string>::cast( v ) )
 {} 
 // ----------------------------------------------------------------------------
 template <typename T>
 T
 DGtal::ParameterValue::as() const
 {
-  return ValueConverter< std::string, T >::cast( _value );
+  return detail::ValueConverter< std::string, T >::cast( myValue );
 }
 // ----------------------------------------------------------------------------
 inline
 void
 DGtal::ParameterValue::selfDisplay ( std::ostream & out ) const
 {
-  out << _value;
+  out << myValue;
 }
 
 // ----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ inline
 DGtal::Parameters::Self&
 DGtal::Parameters::operator()( std::string name, ParameterValue pv )
 {
-  _parameters[ name ] = pv;
+  myParameters[ name ] = pv;
   return *this;
 }
 // ----------------------------------------------------------------------------
@@ -80,8 +80,8 @@ DGtal::Parameters::Self&
 DGtal::Parameters::operator()( const Parameters& params )
 {
   // if keys collide, values of params overrides this's values.
-  for(auto& it : params._parameters)
-    _parameters[it.first] = it.second;
+  for(auto& it : params.myParameters)
+    myParameters[it.first] = it.second;
   return *this;
 }
 // ----------------------------------------------------------------------------
@@ -97,16 +97,16 @@ inline
 DGtal::ParameterValue
 DGtal::Parameters::operator[]( std::string name ) const
 {
-  auto it = _parameters.find( name );
-  return ( it != _parameters.end() ) ? it->second : ParameterValue( "UNSET PARAMETER" );
+  auto it = myParameters.find( name );
+  return ( it != myParameters.end() ) ? it->second : ParameterValue( "UNSET PARAMETER" );
 }
 // ----------------------------------------------------------------------------
 inline
 bool
 DGtal::Parameters::count( std::string name ) const
 {
-  auto it = _parameters.find( name );
-  return it != _parameters.end();
+  auto it = myParameters.find( name );
+  return it != myParameters.end();
 }
 
 // ----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ void
 DGtal::Parameters::selfDisplay ( std::ostream & out ) const
 {
   out << "{ ";
-  for ( auto it = _parameters.begin(), itE = _parameters.end();
+  for ( auto it = myParameters.begin(), itE = myParameters.end();
 	it != itE; )
     {
       out << it->first << ": " << it->second;

@@ -48,49 +48,52 @@
 
 namespace DGtal
 {
-  /// Generic definition of a class for converting type X toward type Y.
-  template <typename X, typename Y>
-  struct ValueConverter {
-    /// By default, it is impossible to do such conversions.
-    static Y cast( const X& value )
-    {
-      ASSERT( false
-	      && "[ValueConverter<X,Y>::cast] there is no such generic type converter." );
-      return Y();
-    }
-  };
+  namespace detail
+  {
+    /// Generic definition of a class for converting type X toward type Y.
+    template <typename X, typename Y>
+      struct ValueConverter {
+	/// By default, it is impossible to do such conversions.
+	static Y cast( const X& value )
+	{
+	  ASSERT( false
+		  && "[ValueConverter<X,Y>::cast] there is no such generic type converter." );
+	  return Y();
+	}
+      };
     
-  /// Specialized definitions of a class for converting type X toward type Y.
-  template <>
-  struct ValueConverter< std::string, double >{
-    static double cast( const std::string& value )
-    { return atof( value.c_str() ); }
-  };
-  
-  /// Specialized definitions of a class for converting type X toward type Y.
-  template <>
-  struct ValueConverter< std::string, float >{
-    static float cast( const std::string& value )
-    { return (float) atof( value.c_str() ); }
-  };
+    /// Specialized definitions of a class for converting type X toward type Y.
+    template <>
+      struct ValueConverter< std::string, double >{
+      static double cast( const std::string& value )
+      { return atof( value.c_str() ); }
+    };
+    
+    /// Specialized definitions of a class for converting type X toward type Y.
+    template <>
+      struct ValueConverter< std::string, float >{
+      static float cast( const std::string& value )
+      { return (float) atof( value.c_str() ); }
+    };
 
-  /// Specialized definitions of a class for converting type X toward type Y.
-  template <>
-  struct ValueConverter< std::string, int >{
-    static int cast( const std::string& value )
-    { return atoi( value.c_str() ); }
-  };
-  /// Specialized definitions of a class for converting type X toward type Y.
-  template < typename X >
-  struct ValueConverter< X, std::string >{
-    static std::string cast( const X& value )
-    {
-      std::ostringstream ss;
-      ss << value;
-      return ss.str();
-    }
-  };
-      
+    /// Specialized definitions of a class for converting type X toward type Y.
+    template <>
+      struct ValueConverter< std::string, int >{
+      static int cast( const std::string& value )
+      { return atoi( value.c_str() ); }
+    };
+    /// Specialized definitions of a class for converting type X toward type Y.
+    template < typename X >
+      struct ValueConverter< X, std::string >{
+      static std::string cast( const X& value )
+      {
+	std::ostringstream ss;
+	ss << value;
+	return ss.str();
+      }
+    };
+
+  } // namespace detail
     
   /// This class represents a parameter value as a string. It
   /// mimicks parameter values of boost::program_options.
