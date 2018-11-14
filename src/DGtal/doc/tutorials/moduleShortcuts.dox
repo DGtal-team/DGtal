@@ -59,7 +59,7 @@ build a shape that represents the digitization of an ellipsoid.
   // Set your own parameters with operator().
   params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 );
   auto implicit_shape  = SH3::makeImplicitShape3D( params );
-  auto kspace          = SH3::makeKSpaceDigitizedImplicitShape3D( params );
+  auto kspace          = SH3::getKSpace( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   std::cout << *digitized_shape << std::endl;
 \endcode
