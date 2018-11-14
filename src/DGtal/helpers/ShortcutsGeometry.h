@@ -530,47 +530,53 @@ namespace DGtal
       if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
       Surfel2PointEmbedding embType = embedding == 0 ? Pointels :
                                       embedding == 1 ? InnerSpel : OuterSpel;
-      if ( verbose > 0 ) {
-	trace.info() << "- VCM normal kernel=" << kernel << " emb=" << embedding
-		     << " alpha=" << alpha << std::endl;
-	trace.info() << "- VCM normal r=" << (r*h)  << " (continuous) "
-		     << r << " (discrete)" << std::endl;
-	trace.info() << "- VCM normal R=" << (R*h)  << " (continuous) "
-		     << R << " (discrete)" << std::endl;
-	trace.info() << "- VCM normal t=" << t << " (discrete)" << std::endl;
-      }
-      if ( kernel == "hat" ) {
-	typedef functors::HatPointFunction<Point,Scalar>             KernelFunction;
-	typedef VoronoiCovarianceMeasureOnDigitalSurface
-	  < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-	typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
-	typedef VCMDigitalSurfaceLocalEstimator
-	  < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
-	KernelFunction chi_r( 1.0, r );
-	VCMNormalEstimator estimator;
-	estimator.attach( *surface );
-	estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
-	estimator.init( h, surfels.begin(), surfels.end() );
-	estimator.eval( surfels.begin(), surfels.end(),
-			std::back_inserter( n_estimations ) );
-      } else if ( kernel == "ball" ) {
-	typedef functors::BallConstantPointFunction<Point,Scalar>    KernelFunction;
-	typedef VoronoiCovarianceMeasureOnDigitalSurface
-	  < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-	typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
-	typedef VCMDigitalSurfaceLocalEstimator
-	  < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
-	KernelFunction chi_r( 1.0, r );
-	VCMNormalEstimator estimator;
-	estimator.attach( *surface );
-	estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
-	estimator.init( h, surfels.begin(), surfels.end() );
-	estimator.eval( surfels.begin(), surfels.end(),
-			std::back_inserter( n_estimations ) );
-      } else {
-	trace.warning() << "[ShortcutsGeometry::getVCMNormalVectors] Unknown kernel: "
-			<< kernel << std::endl;
-      }
+      if ( verbose > 0 )
+	{
+	  trace.info() << "- VCM normal kernel=" << kernel << " emb=" << embedding
+		       << " alpha=" << alpha << std::endl;
+	  trace.info() << "- VCM normal r=" << (r*h)  << " (continuous) "
+		       << r << " (discrete)" << std::endl;
+	  trace.info() << "- VCM normal R=" << (R*h)  << " (continuous) "
+		       << R << " (discrete)" << std::endl;
+	  trace.info() << "- VCM normal t=" << t << " (discrete)" << std::endl;
+	}
+      if ( kernel == "hat" )
+	{
+	  typedef functors::HatPointFunction<Point,Scalar>             KernelFunction;
+	  typedef VoronoiCovarianceMeasureOnDigitalSurface
+	    < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
+	  typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+	  typedef VCMDigitalSurfaceLocalEstimator
+	    < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+	  KernelFunction chi_r( 1.0, r );
+	  VCMNormalEstimator estimator;
+	  estimator.attach( *surface );
+	  estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
+	  estimator.init( h, surfels.begin(), surfels.end() );
+	  estimator.eval( surfels.begin(), surfels.end(),
+			  std::back_inserter( n_estimations ) );
+	}
+      else if ( kernel == "ball" )
+	{
+	  typedef functors::BallConstantPointFunction<Point,Scalar>    KernelFunction;
+	  typedef VoronoiCovarianceMeasureOnDigitalSurface
+	    < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
+	  typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+	  typedef VCMDigitalSurfaceLocalEstimator
+	    < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+	  KernelFunction chi_r( 1.0, r );
+	  VCMNormalEstimator estimator;
+	  estimator.attach( *surface );
+	  estimator.setParams( embType, R, r, chi_r, t, Metric(), verbose > 0 );
+	  estimator.init( h, surfels.begin(), surfels.end() );
+	  estimator.eval( surfels.begin(), surfels.end(),
+			  std::back_inserter( n_estimations ) );
+	}
+      else
+	{
+	  trace.warning() << "[ShortcutsGeometry::getVCMNormalVectors] Unknown kernel: "
+			  << kernel << std::endl;
+	}
       return n_estimations;
     }
 
@@ -679,11 +685,12 @@ namespace DGtal
       Scalar     r       = params[ "r-radius"  ].as<Scalar>();
       Scalar     alpha   = params[ "alpha"     ].as<Scalar>();
       if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-      if ( verbose > 0 ) {
-	trace.info() << "- II normal alpha=" << alpha << std::endl;
-	trace.info() << "- II normal r=" << (r*h)  << " (continuous) "
-		     << r << " (discrete)" << std::endl;
-      }
+      if ( verbose > 0 )
+	{
+	  trace.info() << "- II normal alpha=" << alpha << std::endl;
+	  trace.info() << "- II normal r=" << (r*h)  << " (continuous) "
+		       << r << " (discrete)" << std::endl;
+	}
       IINormalFunctor     functor;
       functor.init( h, r*h );
       IINormalEstimator   ii_estimator( functor );
@@ -805,11 +812,12 @@ namespace DGtal
       Scalar   r       = params[ "r-radius"  ].as<Scalar>();
       Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
       if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-      if ( verbose > 0 ) {
-	trace.info() << "- II mean curvature alpha=" << alpha << std::endl;
-	trace.info() << "- II mean curvature r=" << (r*h)  << " (continuous) "
-		     << r << " (discrete)" << std::endl;
-      }
+      if ( verbose > 0 )
+	{
+	  trace.info() << "- II mean curvature alpha=" << alpha << std::endl;
+	  trace.info() << "- II mean curvature r=" << (r*h)  << " (continuous) "
+		       << r << " (discrete)" << std::endl;
+	}
       IIMeanCurvFunctor   functor;
       functor.init( h, r*h );
       IIMeanCurvEstimator ii_estimator( functor );
@@ -928,11 +936,12 @@ namespace DGtal
       Scalar   r       = params[ "r-radius"  ].as<Scalar>();
       Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
       if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-      if ( verbose > 0 ) {
-	trace.info() << "- II Gaussian curvature alpha=" << alpha << std::endl;
-	trace.info() << "- II Gaussian curvature r=" << (r*h)  << " (continuous) "
-		     << r << " (discrete)" << std::endl;
-      }
+      if ( verbose > 0 )
+	{
+	  trace.info() << "- II Gaussian curvature alpha=" << alpha << std::endl;
+	  trace.info() << "- II Gaussian curvature r=" << (r*h)  << " (continuous) "
+		       << r << " (discrete)" << std::endl;
+	}
       IIGaussianCurvFunctor   functor;
       functor.init( h, r*h );
       IIGaussianCurvEstimator ii_estimator( functor );
@@ -986,19 +995,22 @@ namespace DGtal
 			      const RealVectors& v2 )
     {
       Scalars v( v1.size() );
-      if ( v1.size() == v2.size() ) {
-	auto outIt = v.begin();
-	for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.cend();
-	      it1 != itE1; ++it1, ++it2 )
-	  {
-	    Scalar angle_error = acos( (*it1).dot( *it2 ) );
-	    *outIt++ = angle_error;
-	  }
-      } else {
-	trace.warning() << "[ShortcutsGeometry::getVectorsAngleDeviation]"
-			<< " v1.size()=" << v1.size() << " should be equal to "
-			<< " v2.size()=" << v2.size() << std::endl;
-      }
+      if ( v1.size() == v2.size() )
+	{
+	  auto outIt = v.begin();
+	  for ( auto it1 = v1.cbegin(), it2 = v2.cbegin(), itE1 = v1.cend();
+		it1 != itE1; ++it1, ++it2 )
+	    {
+	      Scalar angle_error = acos( (*it1).dot( *it2 ) );
+	      *outIt++ = angle_error;
+	    }
+	}
+      else
+	{
+	  trace.warning() << "[ShortcutsGeometry::getVectorsAngleDeviation]"
+			  << " v1.size()=" << v1.size() << " should be equal to "
+			  << " v2.size()=" << v2.size() << std::endl;
+	}
       return v;
     }
     
