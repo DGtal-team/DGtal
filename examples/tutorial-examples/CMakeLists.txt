@@ -7,6 +7,7 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   freemanChainFromImage
   FMMErosion
   2DSliceImageFromVol
+  shortcuts
   shortcuts-geometry
 )
 
@@ -24,7 +25,6 @@ if (  WITH_VISU3D_QGLVIEWER )
    shapeDTViewer
    volDTGranulo
    polyhedralizer
-  shortcuts
    )
   FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
