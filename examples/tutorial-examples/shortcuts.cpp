@@ -33,7 +33,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -75,7 +74,7 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
 
-  trace.beginBlock ( "Load vol file -> extract 2 isosurfaces -> build mesh -> displays them." );
+  trace.beginBlock ( "Load vol file -> extract 2 isosurfaces -> build mesh" );
   {
     auto params    = SH3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_1_3s]
@@ -90,14 +89,6 @@ int main( int /* argc */, char** /* argv */ )
     //! [dgtal_shortcuts_ssec2_1_3s]
     ++nb, nbok += ( mesh150->nbVertex() < mesh40->nbVertex() )
       && ( mesh40->nbVertex() == 273182 ) ? 1 : 0;
-    // // If you wish to display them.
-    // QApplication application(argc,argv);
-    // Viewer3D<> viewer;
-    // viewer.show();
-    // viewer << CustomColors3D( Color::Black, Color::Red  ) << *mesh40;
-    // viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh150;
-    // viewer << Viewer3D<>::updateDisplay;
-    // application.exec();
   }
   trace.endBlock();
 
