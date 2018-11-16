@@ -199,9 +199,9 @@ And then visualize the resulting obj and mtl file by using for instance blender:
 
 @note You do not need a Board3D to export an OBJ file. There are
 custom methods to export OBJ files for some classes:
-    - \ref Mesh: use MeshWriter::export2OBJ
-    - \ref TriangulatedSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
-    - \ref PolygonalSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
+    - Mesh: use MeshWriter::export2OBJ
+    - TriangulatedSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
+    - PolygonalSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
     - you may also use class \ref Shortcuts, see \ref moduleShortcuts
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
