@@ -129,6 +129,22 @@ You will obtain such a small height field display (with previous tube mesh):
    \image latex testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."  width=5cm
 
 @see  tests/shapes/testMesh.cpp
+
+\section sectmoduleMesh3 Converting to/from TriangulatedSurface and PolygonalSurface
+
+Class \ref Mesh does not provide a topology between the face
+elements. If you wish to do so, you should consider using classes \ref
+TriangulatedSurface and \ref PolygonalSurface. You can also use conversions:
+    - \ref Mesh toward \ref TriangulatedSurface with MeshHelpers::mesh2TriangulatedSurface
+    - \ref Mesh toward \ref PolygonalSurface with MeshHelpers::mesh2PolygonalSurface
+    - \ref TriangulatedSurface toward \ref Mesh  with MeshHelpers::triangulatedSurface2Mesh
+    - \ref PolygonalSurface toward \ref Mesh  with MeshHelpers::polygonalSurface2Mesh
+
+See also \ref moduleShortcuts.
+
+@note Classes \ref TriangulatedSurface and \ref PolygonalSurface have
+also specialized methods to export them as OBJ files,.
+
 */
 
 }
