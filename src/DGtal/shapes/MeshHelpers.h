@@ -107,7 +107,10 @@ namespace DGtal
     /// @tparam Point the type for points.
     /// @param[in]  polysurf the input polygonal surface mesh.
     /// @param[out] trisurf the output triangulated surface.
-    /// @param[in]  centroid when 'true' creates a vertex in the middle of non triangular faces, otherwise naively subdivides the face keeping first vertex for each triangular face.
+    ///
+    /// @param[in] centroid when 'true' creates a vertex in the middle
+    /// of non triangular faces and a fan around it, otherwise naively
+    /// subdivides the face as a fan around the first vertex.
     ///
     /// @note The vertices of \a trisurf are the same as the one of \a
     /// polysurf, except if there are newly created vertices (centroid
