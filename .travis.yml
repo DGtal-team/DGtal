@@ -109,5 +109,13 @@ script:
 ###########
 ## Building the documentation
 ###########
-after_success:
-  - if [ $UPLOAD_DOC == "true" ]; then echo "Uploading the doc..."; "$SRC_DIR/.travis/publish_doc.sh";  fi
+deploy:
+    provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    on:
+        branch: master
+    local-dir: documentation
+    repo: <github-username>/<documentation-repository>
+    target-branch: master
