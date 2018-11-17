@@ -185,6 +185,7 @@ This example should provides a comparable visualization.
 
 
 \subsection DGtalGLV_OBJExport Export objects with Board3D
+
 To export 3d objects into OBJ format you need simply to use the Board3D class which inherits to the Display3D class. You can for instance follow these steps:
 
 
@@ -194,8 +195,14 @@ And then visualize the resulting obj and mtl file by using for instance blender:
 
 \image html   dgtalBoard3D-1-points.png "Visualisation of exported OBJ file with blender."
 
-@advanced By setting a second paramter to true when calling the saveOBJ, the geometrical objects will be scaled so that they fit in a [-1/2, 1/2]^3 domain.
+@advanced By setting a second parameter to true when calling the saveOBJ, the geometrical objects will be scaled so that they fit in a [-1/2, 1/2]^3 domain.
 
+@note You do not need a Board3D to export an OBJ file. There are
+custom methods to export OBJ files for some classes:
+    - Mesh: use MeshWriter::export2OBJ
+    - TriangulatedSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
+    - PolygonalSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
+    - you may also use class \ref Shortcuts, see \ref moduleShortcuts
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *

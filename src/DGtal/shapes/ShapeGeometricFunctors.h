@@ -208,9 +208,61 @@ namespace DGtal
       /// The shape of interest.
       CountedConstPtrOrConstPtr<Shape> myShape;
     };
+
+    /**
+     * Description of template class 'ShapeGaussianCurvatureFunctor' <p>
+     * \brief Aim: A functor RealPoint -> Quantity that returns the
+     * gaussian curvature at given point.
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a gaussianCurvature.
+     */
+    template <typename TShape>
+    struct ShapeGaussianCurvatureFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef Scalar Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeGaussianCurvatureFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> RealVector giving the normal vector.
+         @param p any point on the shape.
+         @return the normal at point p (as the normalized gradient).
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+        return myShape->gaussianCurvature( p );
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    };
     
   } // namespace ShapeGeometricFunctors
-  }
+  } // namespace functors
 } // namespace DGtal
 
 
