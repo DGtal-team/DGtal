@@ -1,6 +1,12 @@
 
 # DGtal 1.0
 
+## New Features / Critical Changes
+
+- *Helpers*
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix

@@ -185,6 +185,21 @@ DGtal::Statistic<TQuantity>::samples() const
 
 template <typename TQuantity>
 inline
+unsigned int 
+DGtal::Statistic<TQuantity>::size() const
+{
+  return myValues.size();
+}
+template <typename TQuantity>
+inline
+TQuantity
+DGtal::Statistic<TQuantity>::operator[]( unsigned int i ) const
+{
+  return i < size() ? myValues[ i ] : Quantity();
+}
+
+template <typename TQuantity>
+inline
 double
 DGtal::Statistic<TQuantity>::mean() const
 {
