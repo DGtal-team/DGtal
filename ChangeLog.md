@@ -1,6 +1,12 @@
 
 # DGtal 1.0
 
+## New Features / Critical Changes
+
+- *Helpers*
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
@@ -11,6 +17,9 @@
 - Miscellaneous
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
+
+  - Change from private to public access of types Input and Output in SCellToPoint
+    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
 
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
@@ -26,10 +35,14 @@
     [#1336](https://github.com/DGtal-team/DGtal/pull/1336))
   - Fix compilation warning: const qualifier ignored in cast (Pablo Hernandez,
     [#1337](https://github.com/DGtal-team/DGtal/pull/1337))
+  - Filter data passed to acos in order to avoid division by zero or an argument
+    out of range. (Kacper Pluta, [#1359](https://github.com/DGtal-team/DGtal/pull/1359))
 
 - *IO*
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
+  - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -39,7 +52,20 @@
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+  - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
 
+- *DEC*
+  - Adding missing headers in some files of DEC.
+    (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
+    
+- *Math*
+  - Fix possible division by zero in the MultiStatistics class. 
+  (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
+
+- *Image*
+  - Fix bug in ImageLinearCellEmbedder.
+    (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
 
 # DGtal 0.9.4.1
 
