@@ -38,6 +38,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
+template <typename TPoint>
+inline
+DGtal::PolygonalSurface<TPoint>::PolygonalSurface
+( Clone<HalfEdgeDataStructure> heds,
+  Clone<PositionsStorage>      pos )
+  : myHEDS( heds ), myPositions( pos )
+{
+  isHEDSValid = ( myPositions.size() == myHEDS.nbVertices() );
+}
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline

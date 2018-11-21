@@ -73,7 +73,7 @@ namespace DGtal {
   template <typename KSpace>
   class SCellToPoint
   {
-
+  public:
     typedef typename KSpace::Point Output;
     typedef typename KSpace::SCell Input;
 
