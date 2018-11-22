@@ -246,7 +246,7 @@ struct TestImage
   using Value = double;
 
   template < typename TImage >
-  static 
+  static
   void checkThat( TImage & anImage )
     {
       checkImage(anImage);
@@ -258,8 +258,9 @@ struct TestImage
 
 // Context data for 3D image tests
 using TestImage3D = TestImage<3>;
-template <> const TestImage3D::Domain TestImage3D::domain{ {0, 1, 2}, {12, 8, 11} };
-template <> const TestImage3D::Domain TestImage3D::subDomain{ {0, 2, 4}, {8, 7, 10} };
+using Point3D = TestImage3D::Domain::Point;
+template <> const TestImage3D::Domain TestImage3D::domain{ Point3D{0, 1, 2}, Point3D{12, 8, 11} };
+template <> const TestImage3D::Domain TestImage3D::subDomain{ Point3D{0, 2, 4}, Point3D{8, 7, 10} };
 
 // Test cases
 TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with C-style array", "[CArray][FullDomain]" )
