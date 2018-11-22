@@ -48,7 +48,7 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
     myIteratorEnd(myUpperBound,
         myLowerBound,
         myUpperBound)
-{ 
+{
   ++myIteratorEnd;
 }
 
@@ -74,8 +74,8 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &lowerPoint,
   ASSERT_MSG( // Check that begin() == end() for empty domains.
       ConstIterator(myUpperBound+Point::diagonal(1), myUpperBound+Point::diagonal(1), myUpperBound) == ++ConstIterator(myUpperBound, myUpperBound+Point::diagonal(1), myUpperBound),
       "ConstIterator is not compatible with the definition of an empty domain."
-  ); 
-  
+  );
+
   ++myIteratorEnd;
 }
 
@@ -104,8 +104,8 @@ DGtal::HyperRectDomain<TSpace>
     myIteratorEnd(myUpperBound,
       myLowerBound,
       myUpperBound)
-{ 
-  ++myIteratorEnd; 
+{
+  ++myIteratorEnd;
 }
 
 //-----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ DGtal::HyperRectDomain<TSpace>
     {
       myLowerBound = other.myLowerBound;
       myUpperBound = other.myUpperBound;
-      myPredicate = other.myPredicate;    
+      myPredicate = other.myPredicate;
       new(&myIteratorBegin) ConstIterator(myLowerBound,myLowerBound,myUpperBound);
       new(&myIteratorEnd) ConstIterator(myUpperBound,myLowerBound,myUpperBound);
       ++myIteratorEnd;

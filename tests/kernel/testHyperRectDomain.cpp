@@ -67,7 +67,7 @@ bool testSimpleHyperRectDomain()
   RealPoint d ( td2 );
 
   trace.beginBlock ( "HyperRectDomain init" );
-  
+
   unsigned int nb = 0;
   unsigned int nbok = 0;
 
@@ -83,7 +83,7 @@ bool testSimpleHyperRectDomain()
 
   // Domain characterized by points a and b
   HyperRectDomain<Space4Type> myHyperRectDomain ( a, b );
-  
+
   ++nb; nbok += myHyperRectDomain.lowerBound() == a && myHyperRectDomain.upperBound() == b ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Domain = " << myHyperRectDomain << std::endl;
 
@@ -116,7 +116,7 @@ bool testSimpleHyperRectDomain()
   HyperRectDomain<Space4Type> myHyperRectDomainTer;
 
   myHyperRectDomainTer = myHyperRectDomain;
-  
+
   ++nb; nbok += myHyperRectDomainTer.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomainTer.upperBound() == myHyperRectDomain.upperBound() && myHyperRectDomainTer.size() == 20 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Domain size= " << myHyperRectDomainTer.size() << std::endl;
 
