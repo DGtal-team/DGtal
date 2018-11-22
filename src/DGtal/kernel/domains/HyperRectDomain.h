@@ -126,12 +126,20 @@ namespace DGtal
     HyperRectDomain();
 
     /**
-     * Constructor from  two points \param aPointA and \param aPointB
+     * Constructor from two points \param lowerPoint and \param upperPoint
      * defining the space diagonal.
-     *
      */
-    HyperRectDomain ( const Point &aPointA, const Point &aPointB );
+    HyperRectDomain ( const Point &lowerPoint, const Point &upperPoint );
 
+    /**
+     * Constructor from two points \param lowerPoint and \param upperPoint
+     * with real coordinates and that define the space diagonal.
+     *
+     * The domain actualy defined is the smallest domain with integer bounds
+     * that contains the two given points.
+     */
+    HyperRectDomain ( const typename Space::RealPoint &lowerPoint,
+                      const typename Space::RealPoint &upperPoint );
 
     /**
      * Destructor.

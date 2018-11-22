@@ -82,6 +82,17 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &lowerPoint,
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain (
+  const typename Space::RealPoint &lowerPoint,
+  const typename Space::RealPoint &upperPoint ) :
+    HyperRectDomain( Point(lowerPoint, functors::Floor<>()),
+                     Point(upperPoint, functors::Ceil<>()) )
+{
+}
+
+//-----------------------------------------------------------------------------
+template<typename TSpace>
+inline
 DGtal::HyperRectDomain<TSpace>
 ::HyperRectDomain( const typename DGtal::HyperRectDomain<TSpace> &aDomain) :
     myLowerBound(aDomain.lowerBound()),
