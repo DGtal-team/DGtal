@@ -257,7 +257,6 @@ int main( int /* argc */, char** /* argv */ )
   trace.beginBlock ( "Build polynomial shape -> save several projected quadrangulated surface and digitized boundaries." );
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
-    //! [dgtal_shortcuts_ssec2_2_6s]
     std::vector<double> gridsteps {0.5, 0.25, 0.125};
     for ( auto h : gridsteps ) {
       params( "polynomial", "goursat" )( "gridstep", h );
@@ -286,7 +285,6 @@ int main( int /* argc */, char** /* argv */ )
       ++nb, nbok += ok      ? 1 : 0;
       ++nb, nbok += proj_ok ? 1 : 0;
     }
-    //! [dgtal_shortcuts_ssec2_2_6s]
   }
   trace.endBlock();
 
