@@ -67,6 +67,10 @@
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
 
+- *Helpers*
+  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps. (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
+
 # DGtal 0.9.4.1
 
 ## Bug Fixes
