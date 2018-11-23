@@ -346,6 +346,26 @@ DGtal::PolygonalSurface<TPoint>::verticesAroundFace( const Face & f ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
+typename DGtal::PolygonalSurface<TPoint>::ArcRange 
+DGtal::PolygonalSurface<TPoint>::arcsAroundFace( const Face & f ) const
+{
+  ArcRange result;
+  const Index start_hei = myHEDS.halfEdgeIndexFromFaceIndex( f );
+  Index hei = start_hei;
+  do {
+    result.push_back( hei );
+    const HalfEdge& he = myHEDS.halfEdge( hei );
+    ASSERT( ( he.face == f )
+	    && "[PolygonalSurface::arcsAroundFace] invalid face." );
+    hei = he.next;
+  } while ( hei != start_hei );
+  ASSERT( result.size() >= 3 );
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
 bool
 DGtal::PolygonalSurface<TPoint>::isVertexBoundary( const Vertex& v ) const
 {
