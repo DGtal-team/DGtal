@@ -43,7 +43,6 @@
 #include <DGtal/io/readers/GenericReader.h>
 #include <DGtal/io/colormaps/ColorBrightnessColorMap.h>
 #include <DGtal/io/viewers/Viewer3D.h>
-#include <DGtal/io/boards/Board3D.h>
 #include <DGtal/io/colormaps/TickedColorMap.h>
 #include "DGtal/io/readers/GenericReader.h"
 
@@ -107,7 +106,6 @@ void convergence(const Options& options, Shape& shape,
   trace.beginBlock("Extracting Digital Surface");
 
   typedef Z3i::KSpace KSpace;
-  Board3D<Space, KSpace> board;
 
 //! [surface_extract]
   typedef GaussDigitizer<Z3i::Space, Shape> Digitizer;

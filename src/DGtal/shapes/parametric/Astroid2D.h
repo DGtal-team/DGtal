@@ -17,86 +17,91 @@
 #pragma once
 
 /**
- * @file Ball2D.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @file Astroid2D.h
+ * @author Chouaib Fellah, Adrien Krähenbühl (\c krahenbuhl@unistra.fr )
+ * Laboratoire des sciences de l'ingénieur, de l'informatique et de l'imagerie - ICube (UMR 7357), France
  *
- * @date 2011/04/12
+ * @date 2018/06/12
  *
- * Header file for module Ball2D.cpp
+ * Header file for module Astroid2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Ball2D_RECURSES)
-#error Recursive header files inclusion detected in Ball2D.h
-#else // defined(Ball2D_RECURSES)
+#if defined(Astroid2D_RECURSES)
+#error Recursive header files inclusion detected in Astroid2D.h
+#else // defined(Astroid2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Ball2D_RECURSES
+#define Astroid2D_RECURSES
 
-#if !defined Ball2D_h
+#if !defined Astroid2D_h
 /** Prevents repeated inclusion of headers. */
-#define Ball2D_h
+#define Astroid2D_h
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
-#include "DGtal/shapes/parametric/StarShaped2D.h"
-//////////////////////////////////////////////////////////////////////////////
+#include <DGtal/base/Common.h>
+#include <DGtal/shapes/parametric/StarShaped2D.h>
+#include <cmath>
+///////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Ball2D
+  // template class Astroid2D
   /**
-   * Description of template class 'Ball2D' <p>
+   * Description of template class 'Astroid2D' <p>
    * \brief Aim: Model of the concept StarShaped
-   * represents any circle in the plane.
+   * represents an astroid.
    *
    */
   template <typename TSpace>
-  class Ball2D final:  public StarShaped2D<TSpace>
+  class Astroid2D : public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
+    typedef typename Space::Point Point2D;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
-   
+
     /**
      * Destructor.
      */
-    ~Ball2D();
-    
-    /**
-     * Constructor. 
-     * @param x0 the x-coordinate of the circle center.
-     * @param y0 the y-coordinate of the circle center.
-     * @param r the radius of the circle.
-     */
-    Ball2D( const double x0, const double y0, const double r );
+    ~Astroid2D();
 
     /**
-     * Constructor. 
-     * @param aPoint the circle center.
-     * @param r the radius of the circle.
+     * Constructor.
+     * @param x0 the x-coordinate of the astroid center.
+     * @param y0 the y-coordinate of the astroid center.
+     * @param a  coefficient along x-axis
+     * @param b  coefficient along y-axis
      */
-    Ball2D(const RealPoint2D &aPoint, const double r);
+   Astroid2D( const double x0, const double y0,
+              const double a, const double b );
 
     /**
-     * Constructor. 
-     * @param aPoint the circle center.
-     * @param r the radius of the circle.
+     * Constructor.
+     * @param aPoint the astroid center
+     * @param a      coefficient along x-axis
+     * @param b      coefficient along y-axis
      */
-    Ball2D(const Point &aPoint, const double r);
+    Astroid2D( const RealPoint2D &aPoint, const double a, const double b );
 
-    
-  // ------------- Implementation of 'StarShaped' services ------------------
-  public:
+     /**
+      * Constructor.
+      * @param aPoint the astroid center
+      * @param a      coefficient along x-axis
+      * @param b      coefficient along y-axis
+      */
+    Astroid2D( const Point2D &aPoint, const double a, const double b );
+
+
+   // ------------- Implementation of 'StarShaped' services -------------------
+    public:
 
     /**
      * @return the lower bound of the shape bounding box.
@@ -104,7 +109,7 @@ namespace DGtal
      */
     RealPoint2D getLowerBound() const
     {
-      return RealPoint2D(myCenter[0] - myRadius, myCenter[1] - myRadius);
+      return RealPoint2D(-myA - myCenter[0] , -myB - myCenter[1] );
     }
 
     /**
@@ -113,7 +118,7 @@ namespace DGtal
      */
     RealPoint2D getUpperBound() const
     {
-      return RealPoint2D(myCenter[0] + myRadius, myCenter[1] + myRadius);
+      return RealPoint2D(myA - myCenter[0] , myB - myCenter[1]);
     }
 
     /**
@@ -123,7 +128,7 @@ namespace DGtal
     {
       return myCenter;
     }
-   
+
     /**
      * @param p any point in the plane.
      *
@@ -155,21 +160,25 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)).
      */
     RealVector2D xpp( const double t ) const;
-    
 
-    // ------------------------- data ----------------------------
+
+    // ------------------------- data -----------------------------------------
   private:
-
-    /**
-     * Radius of the circle.
-     */
-    double myRadius;
 
     /**
      * Center of the circle.
      */
     RealPoint2D myCenter;
-    
+
+    /**
+     * Coefficient along x-axis
+     */
+    double myA;
+
+    /**
+     * Coefficient along y-axis
+     */
+    double myB;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -179,6 +188,7 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
+
 
     /**
      * Checks the validity/consistency of the object.
@@ -194,7 +204,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    Ball2D();
+    Astroid2D();
 
   private:
 
@@ -203,7 +213,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    //  Ball2D ( const Ball2D & other );
+    //  Astroid2D ( const Astroid2D & other );
 
     /**
      * Assignment.
@@ -211,35 +221,36 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    Ball2D & operator= ( const Ball2D & other );
+    Astroid2D & operator= ( const Astroid2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Ball2D
+  }; // end of class Astroid2D
+
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Ball2D'.
+   * Overloads 'operator<<' for displaying objects of class 'Astroid2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Ball2D' to write.
+   * @param object the object of class 'Astroid2D' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
-  std::ostream&
-  operator<< ( std::ostream & out, const Ball2D<T> & object );
+   template <typename T>
+   std::ostream&
+   operator<< ( std::ostream & out, const Astroid2D<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/parametric/Ball2D.ih"
+#include "DGtal/shapes/parametric/Astroid2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Ball2D_h
+#endif // !defined Astroid2D_h
 
-#undef Ball2D_RECURSES
-#endif // else defined(Ball2D_RECURSES)
+#undef Astroid2D_RECURSES
+#endif // else defined(Astroid2D_RECURSES)

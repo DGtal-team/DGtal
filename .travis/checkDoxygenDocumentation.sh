@@ -8,16 +8,33 @@ DOXYGENLOG=${BUILD_DIR}/doxygen.log
 ## We first check that the doxygen.log is empty
 if [[ -f "$DOXYGENLOG" ]]
 then
-    if [[ -s "$DOXYGENLOG" ]]
+
+    # Filtering doxygen log (e.g. to ignore some bugs)
+    # See https://github.com/doxygen/doxygen/issues/6352
+    rm -f /tmp/doxygen.*.log
+    awk '/unexpected token TK_EOF as the argument of ref/ \
+        {print $0 > "/tmp/doxygen.ignored.log"; next} \
+        {print $0 > "/tmp/doxygen.kept.log"}' \
+        "$DOXYGENLOG"
+
+    if [[ -s "/tmp/doxygen.kept.log" ]]
     then
         return_code=1
         echo "Doxygen log file not empty !"
         echo "====================================="
-        cat "$DOXYGENLOG"
+        cat "/tmp/doxygen.kept.log"
         echo "====================================="
     else
         echo "Doxygen log OK"
         return_code=0
+    fi
+
+    if [[ -s "/tmp/doxygen.ignored.log" ]]
+    then
+        echo "Ignored doxygen log messages:"
+        echo "====================================="
+        cat "/tmp/doxygen.ignored.log"
+        echo "====================================="
     fi
 else
   return_code=1

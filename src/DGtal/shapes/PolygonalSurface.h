@@ -224,6 +224,18 @@ namespace DGtal
      */
     PolygonalSurface() : isHEDSValid( false ) {}
 
+    /**
+     * Constructor from half-edge data structure and vector of positions.
+     *
+     * @param heds any valid half-edge data structure (cloned).
+     *
+     * @param pos any vector of point giving the positions of all
+     * vertices (its size should match the number of vertices in \a
+     * heds).
+     */
+    PolygonalSurface( Clone<HalfEdgeDataStructure> heds,
+		      Clone<PositionsStorage>      pos );
+
     /// Clears everything.
     void clear();
 
