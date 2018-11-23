@@ -103,7 +103,18 @@ namespace DGtal
      */
     TickedColorMap(const Value & aMin,
                    const Value & aMax,
-                   const Color &color = Color::White);
+                   const Color &color = Color::White );
+    
+    /**
+     * Constructor from colormap
+     *
+     * @pre aMin < aMax.
+     *
+     * @param colormap the background colormap (copied).
+     * @param color the color of the ticks.
+     */
+    TickedColorMap( const ColorMap & other,
+                    const Color &    color = Color::White );
     
     /**
      * Computes the color associated with a value in a given range.
