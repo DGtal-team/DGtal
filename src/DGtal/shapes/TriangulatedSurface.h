@@ -487,6 +487,17 @@ namespace DGtal
     VertexRange verticesAroundFace( const Face & f ) const;
 
     /**
+       If f is incident to the arcs (s,t) and (t,u) (say), then
+       (s,t,u) is a subsequence of the returned sequence.
+
+       @param f any valid face on the surface (open or closed ).
+
+       @return the sequence of arcs that touches this face in their
+       natural order (the range size should be 3).
+    */
+    ArcRange arcsAroundFace( const Face & f ) const;
+
+    /**
        @param v any vertex.
        @return 'true' if and only if vertex \a v lies on a boundary.
        @note O(1) operation
