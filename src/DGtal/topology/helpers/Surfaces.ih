@@ -1088,6 +1088,36 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
   return numberCellFilled;
 }
 
+template <typename TKSpace>
+typename DGtal::Surfaces<TKSpace>::CellRange
+DGtal::Surfaces<TKSpace>::getPrimalVertices( const KSpace& K, const SCell& s )
+{
+  auto faces = K.uFaces( K.unsigns( s ) );
+  CellRange primal_vtcs;
+  for ( auto&& f : faces ) {
+    if ( K.uDim( f ) == 0 ) primal_vtcs.push_back( f );
+  }
+  return primal_vtcs;
+}
+    
+template <typename TKSpace>
+typename DGtal::Surfaces<TKSpace>::CellRange
+DGtal::Surfaces<TKSpace>::getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw )
+{
+  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  CellRange vtcs = getPrimalVertices( K, s );
+  std::swap( vtcs[ 2 ], vtcs[ 3 ] );
+  auto  orth_dir = K.sOrthDir( s );
+  auto    direct = K.sDirect( s, orth_dir ) ? ccw : ! ccw;
+  Vector    s0s1 = K.uCoords( vtcs[ 1 ] ) - K.uCoords( vtcs[ 0 ] );
+  Vector    s0s2 = K.uCoords( vtcs[ 2 ] ) - K.uCoords( vtcs[ 0 ] );
+  Vector       t = s0s1.crossProduct( s0s2 );
+  if ( ( ( t[ orth_dir ] > 0.0 ) && direct )
+       || ( ( t[ orth_dir ] < 0.0 ) && ! direct ) )
+    std::reverse( vtcs.begin(), vtcs.end() );
+  return vtcs;
+}
+
 
 
 

@@ -51,6 +51,8 @@
 #include "DGtal/shapes/parametric/NGon2D.h"
 #include "DGtal/shapes/parametric/AccFlower2D.h"
 #include "DGtal/shapes/parametric/Ellipse2D.h"
+#include "DGtal/shapes/parametric/Astroid2D.h"
+#include "DGtal/shapes/parametric/Lemniscate2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -64,8 +66,8 @@ namespace DGtal
    * \brief Aim: collects all models of CImplicitShape concept to create a shape factory.
    *
    */
-  
-  
+
+
 
 } // namespace DGtal
 //                                                                           //

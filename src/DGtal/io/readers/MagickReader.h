@@ -43,7 +43,14 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+
+#if defined(WITH_MAGICK)
 #include <Magick++.h>
+#else // defined WITH_MAGICK
+#error "DGtal has not been built with imagemagick support. Consider adding -DWITH_MAGICK=true when building the project with cmake."
+#endif // defined WITH_MAGICK
+
+
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
