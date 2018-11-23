@@ -72,6 +72,7 @@
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/TickedColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
@@ -186,6 +187,7 @@ namespace DGtal
       typedef ::DGtal::Color                                      Color;
       typedef std::vector< Color >                                Colors;
       typedef GradientColorMap<Scalar>                            ColorMap;
+      typedef TickedColorMap<Scalar,ColorMap>                     ZeroTicColorMap;
     
       // ----------------------- Static services --------------------------------------
     public:
@@ -2219,11 +2221,13 @@ namespace DGtal
 
       /// @return the parameters and their default values which are
       /// related to utilities
-      ///   - colormap   [ "Tics" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Tics" specifies standard colormaps (if invalid, falls back to "Tics").
+      ///   - colormap   [ "Custom" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Error"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
+      ///   - zero-tic   [      0.0 ]: if positive defines a black zone ]-zt,zt[ in the colormap.
       static Parameters parametersUtilities()
       {
         return Parameters
-          ( "colormap", "Tics" ); 
+          ( "colormap", "Custom" )
+          ( "zero-tic", 0.0 ); 
       }
 
       /// Given two ranges with same elements but not necessarily in the
@@ -2291,7 +2295,7 @@ namespace DGtal
       /// @param[in] min the minimum considered value for the colormap.
       /// @param[in] max the maximum considered value for the colormap.
       /// @param[in] params the parameters:
-      ///   - colormap   [ "Jet" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
+      ///   - colormap   [ "Custom" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Error"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
       /// @return a colormap according to the specified parameters
       static ColorMap
         getColorMap( Scalar            min,
@@ -2307,7 +2311,15 @@ namespace DGtal
         else if ( cmap == "Summer" ) return ColorMap( min, max, CMAP_SUMMER );
         else if ( cmap == "Autumn" ) return ColorMap( min, max, CMAP_AUTUMN );
         else if ( cmap == "Winter" ) return ColorMap( min, max, CMAP_WINTER );
-        // Custom
+        else if ( cmap == "Error" )
+          {
+            ColorMap gradcmap( min, max );
+            gradcmap.addColor( Color( 255, 255, 255 ) );
+            gradcmap.addColor( Color( 255,   0,   0 ) );
+            gradcmap.addColor( Color( 0,   0,   0 ) );
+            return gradcmap;
+          }
+        // Custom colormap 
         ColorMap gradcmap( min, max );
         gradcmap.addColor( Color( 0, 0, 255 ) );
         gradcmap.addColor( Color( 0, 255, 255 ) );
@@ -2319,18 +2331,23 @@ namespace DGtal
 
       /// @param[in] min the minimum considered value for the colormap.
       /// @param[in] max the maximum considered value for the colormap.
+      /// @param[in] params the parameters:
+      ///   - colormap   [ "Custom" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Error"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
+      ///   - zero-tic   [      0.0 ]: if positive defines a black zone ]-zt,zt[ in the colormap.
       /// @return a colormap according to the specified parameters adapted to make darker tics for a background "Tics" colormap.
-      static ColorMap
-        getTicsColorMap( Scalar           min,
-                         Scalar           max )
+      static ZeroTicColorMap
+        getZeroTicColorMap( Scalar           min,
+                            Scalar           max,
+                            const Parameters& params = parametersUtilities() )
       {
-        ColorMap gradcmap( min, max );
-        gradcmap.addColor( Color( 0, 0, 155 ) );
-        gradcmap.addColor( Color( 0, 155, 155 ) );
-        gradcmap.addColor( Color( 155, 155, 155 ) );
-        gradcmap.addColor( Color( 155, 155, 0 ) );
-        gradcmap.addColor( Color( 155, 0, 0 ) );
-        return gradcmap;
+        auto cmap = getColorMap( min, max, params );
+        auto ztic = params[ "zero-tic" ].as<double>();
+        ZeroTicColorMap ztic_cmap( cmap, Color::Black );
+        if ( ztic <= 0.0 ) return ztic_cmap;
+        if ( min <= 0.0 && 0.0 <= max )
+          ztic_cmap.addTick( 0.0, ztic );
+        ztic_cmap.finalize();
+        return ztic_cmap;
       }
 
     
