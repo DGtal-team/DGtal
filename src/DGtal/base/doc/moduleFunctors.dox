@@ -26,10 +26,42 @@ objects as DGtal compatible functors.
 
 @section functorholder The FunctorHolder class
 
-@note
-Almost all snippets used in the following explanations come from
-the example file @ref exampleFunctorHolder.cpp
+@subsection functorholder_intro Introduction and preliminary example
 
+Starting with C++11, we can define functions directly in a code block,
+just before using it,
+using [<tt>lambdas</tt>](https://en.cppreference.com/w/cpp/language/lambda).
+For small and single-used functions, it may allow to write clearer code by
+keeping all important informations together and avoids defining the function
+out of context.
+
+However, lambdas cannot be directly used in DGtal since many functors must
+comply with concepts that depends on its usage.
+These concepts may require to define some typedef and always require that
+the model is assignable.
+Since lambdas don't meet any of these constraints, it forces the coder to
+define a specific class.
+
+Starting with DGtal 1.0, @ref FunctorHolder and its derivatives
+(see @ref functorholder_derivates)
+are available and allow to use lambdas (and other callable object) in an easier
+way.
+
+First, store your lambda in an holder that matches the targeted usage:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-hold
+The usage of the `auto` keyword is here mandatory and the reason why is explained in
+@ref auto_holdfunctor.
+
+Then, use the created functor with you favorite algorithm:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DT
+The `decltype` specifier is used to deduce the type of the functor,
+see @ref passing_functorholder.
+
+Finally, export the result:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DTvis
+@image html examplePointFunctorHolder.png  "Distance transformation of Mickey"
+@image latex examplePointFunctorHolder.png  "Distance transformation of Mickey"
+It has never been so easy to calculate the distance map to Mickey!
 
 @subsection functorholder_aim Aim
 
@@ -63,6 +95,10 @@ However, you can transfer ownership of the object to FunctorHolder by moving
 it using [<tt>std::move</tt>](https://en.cppreference.com/w/cpp/utility/move).
 As a consequence, the type of the returned FunctorHolder cannot be guessed
 easily and the use of the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword is thus mandatory.
+
+@note
+Almost all snippets used in the following explanations come from
+the example file @ref exampleFunctorHolder.cpp
 
 @see FunctorHolder, holdFunctor
 
@@ -106,6 +142,13 @@ you can have a performance ratio of about 26.7 between using a [<tt>std::functio
 and @ref FunctorHolder.
 Even with more complex operations, there is still a significant performance
 penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) over @ref FunctorHolder.
+
+@subsection functorholder_derivates Which derivative class of FunctorHolder should I use ?
+Depending on the concept you want to fullfil, here are the available classes that rely on @ref FunctorHolder "":
+- for a @ref concepts::CUnaryFunctor model, use @ref FunctorHolder.
+- for a @ref concepts::CPointFunctor model, use @ref PointFunctorHolder.
+- for a @ref concepts::CConstImage model, use @ref FunctorConstImage.
+
 
 @section holding_an_object Holding a callable object
 
