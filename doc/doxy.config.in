@@ -890,6 +890,7 @@ IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
                          @top_srcdir@/src/DGtal/math/doc/images \
                          @top_srcdir@/src/DGtal/geometry/doc/images \
                          @top_srcdir@/src/DGtal/topology/doc/images \
+                         @top_srcdir@/src/DGtal/base/doc/images \
                          @top_srcdir@/src/DGtal/shapes/doc/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
