@@ -35,6 +35,7 @@
 #include <fstream>
 #include <vector>
 #include <type_traits>
+#include <functional>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
@@ -68,12 +69,12 @@ TEST_CASE( "2D Point Vector Unit tests" )
   Point2D p2( t2 );
   RealPoint2D p3(t3);
   RealPoint2D p4(t4);
-  
+
   Point3D p1_3d( p1[0], p1[1] );
   Point3D p2_3d( p2[0], p2[1] );
   RealPoint3D p3_3d( p3[0], p3[1] );
   RealPoint3D p4_3d( p4[0], p4[1] );
-  
+
   SECTION("Cross products with integers")
     {
       REQUIRE( p1.crossProduct(p2) == p1_3d.crossProduct(p2_3d)[2] );
@@ -81,7 +82,7 @@ TEST_CASE( "2D Point Vector Unit tests" )
       REQUIRE( p2.crossProduct(p1) == p2_3d.crossProduct(p1_3d)[2] );
       REQUIRE( crossProduct(p2, p1) == crossProduct(p2_3d, p1_3d)[2] );
     }
-  
+
   SECTION("Cross products with reals")
     {
       REQUIRE( p3.crossProduct(p4) == p3_3d.crossProduct(p4_3d)[2] );
@@ -89,7 +90,7 @@ TEST_CASE( "2D Point Vector Unit tests" )
       REQUIRE( p4.crossProduct(p3) == p4_3d.crossProduct(p3_3d)[2] );
       REQUIRE( crossProduct(p4, p3) == crossProduct(p4_3d, p3_3d)[2] );
     }
-  
+
   SECTION("Cross products with mixed integers/reals")
     {
       REQUIRE( p1.crossProduct(p3) == p1_3d.crossProduct(p3_3d)[2] );
@@ -116,7 +117,7 @@ TEST_CASE( "3D Point Vector Unit tests" )
   Point p2( t2 );
   RealPoint p3(t3);
   RealPoint p4(t4);
-  
+
   SECTION("Cross products with integers")
     {
       COMPARE_VALUE_AND_TYPE( p1.crossProduct(p2), Point(-6, 12, -6) );
@@ -124,7 +125,7 @@ TEST_CASE( "3D Point Vector Unit tests" )
       COMPARE_VALUE_AND_TYPE( p2.crossProduct(p1), Point(6, -12, 6) );
       COMPARE_VALUE_AND_TYPE( crossProduct(p2, p1), Point(6, -12, 6) );
     }
-  
+
   SECTION("Cross products with reals")
     {
       COMPARE_VALUE_AND_TYPE( p3.crossProduct(p4), RealPoint(-7., 14., -7.) );
@@ -132,7 +133,7 @@ TEST_CASE( "3D Point Vector Unit tests" )
       COMPARE_VALUE_AND_TYPE( p4.crossProduct(p3), RealPoint(7., -14., 7.) );
       COMPARE_VALUE_AND_TYPE( crossProduct(p4, p3), RealPoint(7., -14., 7.) );
     }
-  
+
   SECTION("Cross products with mixed integers/reals")
     {
       COMPARE_VALUE_AND_TYPE( p1.crossProduct(p3), RealPoint(-0.5, 1., -0.5) );
@@ -162,17 +163,119 @@ TEST_CASE( "4D Point Vector Unit tests" )
   Point p2( t2 );
   RealPoint p3(t3);
   RealPoint p4(t4);
+  RealPoint p1r(p1);
+  RealPoint p2r(p2);
 
+  SECTION("Construction")
+    {
+      REQUIRE( p1 == Point( {1, 2, 3, 4} ) );
+      REQUIRE( p1r == RealPoint( {1., 2., 3., 4.} ) );
+
+      REQUIRE( p1 == Point( p1r ) );
+      REQUIRE( p1 == Point( RealPoint( {0.5, 2.1, 3.1, 3.9} ), DGtal::functors::Round<>() ) );
+      REQUIRE( p1 == Point( Point(0, 0, 1, 3), Point(1, 2, 2, 1), std::plus<Integer>() ) );
+    }
+
+  SECTION("Assignments")
+    {
+      Point dummy1;
+      dummy1 = p1;
+      REQUIRE( p1 == dummy1 );
+
+      Point dummy2(1, 3, 3, 5);
+      dummy2.partialCopy( Point(0, 2, 0, 4),  {1, 3} );
+      REQUIRE( p1 == dummy2 );
+
+      Point dummy3(2, 2, 1, 4);
+      dummy3.partialCopyInv( Point(1, 0, 3, 0),  {1, 3} );
+      REQUIRE( p1 == dummy3 );
+
+      RealPoint dummy1r;
+      dummy1r = p1;
+      REQUIRE( p1r == dummy1r );
+
+      RealPoint dummy2r(1, 3, 3, 5);
+      dummy2r.partialCopy( Point(0, 2, 0, 4),  {1, 3} );
+      REQUIRE( p1r == dummy2r );
+
+      RealPoint dummy3r(2, 2, 1, 4);
+      dummy3r.partialCopyInv( Point(1, 0, 3, 0),  {1, 3} );
+      REQUIRE( p1r == dummy3r );
+
+      Point dummy4(1, 3, 3, 5);
+      dummy4.partialCopy( RealPoint(0, 1.5, 0, 4.1),  {1, 3}, DGtal::functors::Round<>() );
+      REQUIRE( p1 == dummy4 );
+
+      Point dummy5(2, 2, 1, 4);
+      dummy5.partialCopyInv( RealPoint(1.1, 0, 2.5, 0),  {1, 3}, DGtal::functors::Round<>() );
+      REQUIRE( p1 == dummy5 );
+    }
 
   SECTION("Comparisons")
     {
+      // Partial equality
+      REQUIRE( p1.partialEqual( RealPoint(0, 2, 0, 4), {1, 3} ) );
+      REQUIRE( ! p1.partialEqual( RealPoint(0, 1, 0, 4), {1, 3} ) );
+      REQUIRE( p1.partialEqualInv( RealPoint(1, 0, 3, 0), {1, 3} ) );
+      REQUIRE( ! p1.partialEqualInv( RealPoint(1, 0, 2, 0), {1, 3} ) );
+
+      // Two equal points of same type
       REQUIRE( p1 == p1bis );
+      REQUIRE( p1bis == p1 );
+      REQUIRE( ! (p1 != p1bis) );
+      REQUIRE( ! (p1bis != p1) );
+      REQUIRE( p1 <= p1bis );
+      REQUIRE( p1 >= p1bis );
+      REQUIRE( p1bis >= p1 );
+      REQUIRE( p1bis <= p1 );
+      REQUIRE( ! (p1 < p1bis) );
+      REQUIRE( ! (p1 > p1bis) );
+      REQUIRE( ! (p1bis > p1) );
+      REQUIRE( ! (p1bis < p1) );
+
+      // Two equal points of different types
+      REQUIRE( p1 == p1r );
+      REQUIRE( p1r == p1 );
+      REQUIRE( ! (p1 != p1r) );
+      REQUIRE( ! (p1r != p1) );
+      REQUIRE( p1 <= p1r );
+      REQUIRE( p1 >= p1r );
+      REQUIRE( p1r >= p1 );
+      REQUIRE( p1r <= p1 );
+      REQUIRE( ! (p1 < p1r) );
+      REQUIRE( ! (p1 > p1r) );
+      REQUIRE( ! (p1r > p1) );
+      REQUIRE( ! (p1r < p1) );
+
+      // Two ordered points of same type
+      REQUIRE( ! (p1 == p2) );
+      REQUIRE( ! (p2 == p1) );
+      REQUIRE( p1 != p2 );
+      REQUIRE( p2 != p1 );
+      REQUIRE( p1 <= p2 );
+      REQUIRE( ! (p1 >= p2) );
+      REQUIRE( p2 >= p1 );
+      REQUIRE( ! (p2 <= p1) );
       REQUIRE( p1 < p2 );
-      
-      RealPoint realInitializerlist( { 3.5, 4.2, 2.2, 3.2 } );
-      REQUIRE( p1 != realInitializerlist );
+      REQUIRE( ! (p1 > p2) );
+      REQUIRE( p2 > p1 );
+      REQUIRE( ! (p2 < p1) );
+
+      // Two ordered points of different types
+      REQUIRE( ! (p1 == p2r) );
+      REQUIRE( ! (p2r == p1) );
+      REQUIRE( p1 != p2r );
+      REQUIRE( p2r != p1 );
+      REQUIRE( p1 <= p2r );
+      REQUIRE( ! (p1 >= p2r) );
+      REQUIRE( p2r >= p1 );
+      REQUIRE( ! (p2r <= p1) );
+      REQUIRE( p1 < p2r );
+      REQUIRE( ! (p1 > p2r) );
+      REQUIRE( p2r > p1 );
+      REQUIRE( ! (p2r < p1) );
     }
-  
+
   SECTION("Min/Max of vector components")
     {
       REQUIRE( p3.max() == 2.0 );
@@ -204,11 +307,11 @@ TEST_CASE( "4D Point Vector Unit tests" )
       PointVector<25,int> aPoint25;
       for (unsigned int i=0;i<25;++i)
         aPoint25[i] = i;
-      
+
       int sum = 0;
       for (PointVector<25,int>::ConstIterator it = aPoint25.begin() ;  it != aPoint25.end(); ++it)
         sum += (*it);
-      
+
       CAPTURE(aPoint25);
       CAPTURE(sum);
       REQUIRE( sum == 300 );
@@ -299,7 +402,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       p3 -= p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(5.5, 4.5, 7., -5.) );
       p3 /= p4; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
     }
-  
+
   SECTION("Other operators with reals")
     {
       COMPARE_VALUE_AND_TYPE( p3.inf(p4), RealPoint(1.,-4.5,2.,-2.) );
@@ -316,7 +419,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( cosineSimilarity(p3, p3) == Approx(0.) );
       REQUIRE( cosineSimilarity(p3, -p3) == Approx(pi) );
       REQUIRE( cosineSimilarity(p3, RealPoint(1.0,1.0,2.0,2.0)) == Approx(pi/2) );
-      
+
       REQUIRE( p3.isLower(p4) == false );
       REQUIRE( isLower(p3, p4) == false );
       REQUIRE( p4.isUpper(p3) == false );
@@ -327,7 +430,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( p4.isUpper(p3) == true );
       REQUIRE( isUpper(p4, p3) == true );
     }
-  
+
   SECTION("Arithmetical Operators with mixed integers/reals")
     {
       COMPARE_VALUE_AND_TYPE( p1 + p4, RealPoint(6.5,-2.5,6.5,6.5) );
@@ -347,7 +450,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       COMPARE_VALUE_AND_TYPE( 2 * p3, RealPoint(2.,-2.,4.,-4.) );
       COMPARE_VALUE_AND_TYPE( p3 / 2, RealPoint(0.5,-0.5,1.,-1.) );
       COMPARE_VALUE_AND_TYPE( 2 / p3, RealPoint(2.,-2.,1.,-1.) );
-      
+
       COMPARE_VALUE_AND_TYPE( p1 + 2.5, RealPoint(3.5,4.5,5.5,6.5) );
       COMPARE_VALUE_AND_TYPE( 2.5 + p1, RealPoint(3.5,4.5,5.5,6.5) );
       COMPARE_VALUE_AND_TYPE( p1 - 2.5, RealPoint(-1.5,-0.5,0.5,1.5) );
@@ -367,7 +470,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       p3 -= p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -2., 6., -8.) );
       p3 /= p1; COMPARE_VALUE_AND_TYPE( p3, RealPoint(1., -1., 2., -2.) );
     }
-  
+
   SECTION("Other operators with mixed integers/reals")
     {
       COMPARE_VALUE_AND_TYPE( p1.inf(p3), RealPoint(1.,-1.,2.,-2.) );
@@ -382,7 +485,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( p4.dot(p1) == 17.0 );
       REQUIRE( dotProduct(p4, p1) == 17.0 );
       REQUIRE( dotProduct(p1, p4) == 17.0 );
-      
+
       REQUIRE( p1.cosineSimilarity(RealPoint(p1)) == Approx(0.) );
       REQUIRE( p1.cosineSimilarity(-RealPoint(p1)) == Approx(pi) );
       REQUIRE( p1.cosineSimilarity( RealPoint(-2,1,-4,3) ) == Approx(pi/2) );
@@ -396,7 +499,7 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( cosineSimilarity(p3, Point(1,-1,2,-2)) == Approx(0.) );
       REQUIRE( cosineSimilarity(p3, -Point(1,-1,2,-2)) == Approx(pi) );
       REQUIRE( cosineSimilarity(p3, Point(1,1,2,2)) == Approx(pi/2) );
-      
+
       REQUIRE( p2.isLower(p4) == false );
       REQUIRE( isLower(p2, p4) == false );
       REQUIRE( p4.isUpper(p2) == false );
