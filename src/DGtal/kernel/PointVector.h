@@ -571,6 +571,14 @@ namespace DGtal
       typename TContainer >
   class PointVector
   {
+
+    // Friend with all PointVectors
+    template <
+      DGtal::Dimension otherDim,
+      typename TOtherEuclideanRing,
+      typename TOtherContainer >
+    friend class PointVector;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -740,76 +748,118 @@ namespace DGtal
       typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
     Self & operator= ( const PointVector<dim, OtherComponent, OtherContainer> & v );
 
-    /**
-     * Partial copy of a given PointVector. Only coordinates in dimensions
-     * are copied.
+    /** @brief Partial copy of a given PointVector.
+     * Only coordinates in @a dimensions are copied.
      *
-     * @param pv the object to copy.
-     * @param dimensions the dimensions of v to copy
-     *        (Size between 0 and N, all differents).
-     * @return a reference on 'this'.
-     * TODO
-     */
-    Self& partialCopy ( const Self & pv,
-                        std::initializer_list<Dimension> dimensions);
-
-    /**
-     * Inverse partial copy of a given PointVector. Only coordinates not
-     * in dimensions are copied.
+     * @tparam OtherComponent Component type of the point to copy from.
+     * @tparam OtherContainer Storage type of the point to copy from.
      *
      * @param pv the object to copy.
      * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
-    Self& partialCopyInv ( const Self & pv,
-                           std::initializer_list<Dimension> dimensions);
-
-    /**
-     * Partial copy of a given PointVector. Only coordinates in dimensions
-     * are copied.
-     *
-     * @param pv the object to copy.
-     * @param dimensions the dimensions of v to copy
-     *        (Size between 0 and N, all differents).
-     * @return a reference on 'this'.
-     */
-    Self& partialCopy ( const Self & pv,
+    template <
+      typename OtherComponent,
+      typename OtherContainer,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    Self& partialCopy ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
                         const std::vector<Dimension> &dimensions);
 
-    /**
-     * Partial copy of a given PointVector. Only coordinates not
-     * in dimensions are copied.
+    /** @brief Partial copy of a given PointVector.
+     * Only coordinates not in @a dimensions are copied.
+     *
+     * @tparam OtherComponent Component type of the point to copy from.
+     * @tparam OtherContainer Storage type of the point to copy from.
      *
      * @param pv the object to copy.
      * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
-    Self& partialCopyInv ( const Self & pv,
+    template <
+      typename OtherComponent,
+      typename OtherContainer,
+      typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
+    Self& partialCopyInv ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
                            const std::vector<Dimension> &dimensions);
 
-    /**
-     * Partial equality.
+    /** @brief Partial copy of a given PointVector using a functor.
+     * Only coordinates in @a dimensions are copied.
+     *
+     * @tparam OtherComponent Component type of the point to copy from.
+     * @tparam OtherContainer Storage type of the point to copy from.
+     * @tparam UnaryFunctor   Type of the functor applied to copied values.
+     *
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @param f  the functor applied to copied values.
+     *
+     * @return a reference on 'this'.
+     */
+    template <
+      typename OtherComponent,
+      typename OtherContainer,
+      typename UnaryFunctor >
+    Self& partialCopy ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
+                        const std::vector<Dimension> & dimensions,
+                        const UnaryFunctor & f);
+
+    /** @brief Partial copy of a given PointVector using a functor.
+     * Only coordinates not in @a dimensions are copied.
+     *
+     * @tparam OtherComponent Component type of the point to copy from.
+     * @tparam OtherContainer Storage type of the point to copy from.
+     * @tparam UnaryFunctor   Type of the functor applied to copied values.
+     *
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
+     *        (Size between 0 and N, all differents).
+     * @param f  the functor applied to copied values.
+     *
+     * @return a reference on 'this'.
+     */
+    template <
+      typename OtherComponent,
+      typename OtherContainer,
+      typename UnaryFunctor >
+    Self& partialCopyInv ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
+                           const std::vector<Dimension> & dimensions,
+                           const UnaryFunctor & f);
+
+    /** @brief Partial equality.
+     * Only coordinates in @a dimensions are compared.
+     *
+     * @tparam OtherComponent Component type of the point to compare with.
+     * @tparam OtherContainer Storage type of the point to compare with.
      *
      * @param pv Point/Vector to compare to this.
      * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for given dimensions .
-     * TODO
      */
-    bool partialEqual ( const Self & pv,
+    template <
+      typename OtherComponent,
+      typename OtherContainer >
+    bool partialEqual ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
                         const std::vector<Dimension> &dimensions )  const;
 
-    /**
-     * Partial inverse equality.
+    /** @brief Partial inverse equality.
+     * Only coordinates not in @a dimensions are compared.
+     *
+     * @tparam OtherComponent Component type of the point to compare with.
+     * @tparam OtherContainer Storage type of the point to compare with.
      *
      * @param pv Point/Vector to compare to this.
      * @param dimensions  Dimensions along which to compare the points.
      *
      * @return true iff points are equal for dimensions not in dimensions.
      */
-    bool partialEqualInv ( const Self & pv,
+    template <
+      typename OtherComponent,
+      typename OtherContainer >
+    bool partialEqualInv ( const PointVector<dim, OtherComponent, OtherContainer> & pv,
                            const std::vector<Dimension> &dimensions )  const;
 
     // ----------------------- Iterator services ------------------------------

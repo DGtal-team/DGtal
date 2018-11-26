@@ -315,68 +315,89 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator= ( const DGtal::PointV
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename OtherContainer,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
 DGtal::PointVector<dim, TComponent, TContainer>::partialCopy
-  ( const Self & pv,
-    std::initializer_list<DGtal::Dimension> dimensions )
-{
-  std::vector<DGtal::Dimension> dims;
-  dims.reserve(dimensions.size());
-  for (const DGtal::Dimension *c = dimensions.begin (); c != dimensions.end (); ++c)
-    dims.push_back(*c);
-  return partialCopy(pv, dims);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::partialCopyInv
-( const Self & pv,
-  std::initializer_list<DGtal::Dimension> dimensions )
-{
-  std::vector<DGtal::Dimension> dims;
-  dims.reserve(dimensions.size());
-  for (const DGtal::Dimension *c = dimensions.begin (); c != dimensions.end (); ++c)
-    dims.push_back(*c);
-  return partialCopyInv(pv, dims);
-}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
-DGtal::PointVector<dim, TComponent, TContainer>&
-DGtal::PointVector<dim, TComponent, TContainer>::partialCopy
-( const Self & pv,
+( const DGtal::PointVector<dim, OtherComponent, OtherContainer> & pv,
   const std::vector<DGtal::Dimension> &dimensions)
 {
   std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
   for ( DGtal::Dimension i = 0; i < dim; ++i )
   {
-    if ( dims.test(i) ) myArray[i] = pv.myArray[i];
+    if ( dims.test(i) ) myArray[i] = static_cast<TComponent>(pv.myArray[i]);
   }
   return *this;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename OtherContainer,
+  typename std::enable_if< std::is_same< TComponent, DGtal::ArithmeticConversionType<TComponent, OtherComponent> >::value, int >::type>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>&
 DGtal::PointVector<dim, TComponent, TContainer>::partialCopyInv
-( const Self & pv,
+( const DGtal::PointVector<dim, OtherComponent, OtherContainer> & pv,
   const std::vector<DGtal::Dimension> &dimensions)
 {
   std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
   for ( DGtal::Dimension i = 0; i < dim; ++i )
   {
-    if ( !dims.test(i) ) myArray[i] = pv.myArray[i];
+    if ( !dims.test(i) ) myArray[i] = static_cast<TComponent>(pv.myArray[i]);
   }
   return *this;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename OtherContainer,
+  typename UnaryFunctor >
+inline
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::partialCopy
+( const DGtal::PointVector<dim, OtherComponent, OtherContainer> & pv,
+  const std::vector<DGtal::Dimension> &dimensions,
+  const UnaryFunctor &f)
+{
+  std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
+  for ( DGtal::Dimension i = 0; i < dim; ++i )
+  {
+    if ( dims.test(i) ) myArray[i] = static_cast<TComponent>(f(pv.myArray[i]));
+  }
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <
+  typename OtherComponent,
+  typename OtherContainer,
+  typename UnaryFunctor >
+inline
+DGtal::PointVector<dim, TComponent, TContainer>&
+DGtal::PointVector<dim, TComponent, TContainer>::partialCopyInv
+( const DGtal::PointVector<dim, OtherComponent, OtherContainer> & pv,
+  const std::vector<DGtal::Dimension> &dimensions,
+  const UnaryFunctor &f)
+{
+  std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
+  for ( DGtal::Dimension i = 0; i < dim; ++i )
+  {
+    if ( !dims.test(i) ) myArray[i] = static_cast<TComponent>(f(pv.myArray[i]));
+  }
+  return *this;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <typename TOtherComponent, typename TOtherContainer>
 inline
 bool
 DGtal::PointVector<dim, TComponent, TContainer>::partialEqual
-( const Self & pv,
+( const DGtal::PointVector<dim, TOtherComponent, TOtherContainer> & pv,
   const std::vector<DGtal::Dimension> &dimensions ) const
 {
   std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
@@ -388,10 +409,11 @@ DGtal::PointVector<dim, TComponent, TContainer>::partialEqual
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template <typename TOtherComponent, typename TOtherContainer>
 inline
 bool
 DGtal::PointVector<dim, TComponent, TContainer>::partialEqualInv
-( const Self & pv,
+( const DGtal::PointVector<dim, TOtherComponent, TOtherContainer> & pv,
   const std::vector<DGtal::Dimension> &dimensions ) const
 {
   std::bitset<dim> dims = setDimensionsIn<dim>(dimensions);
