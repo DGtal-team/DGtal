@@ -187,7 +187,7 @@ namespace DGtal
       typedef ::DGtal::Color                                      Color;
       typedef std::vector< Color >                                Colors;
       typedef GradientColorMap<Scalar>                            ColorMap;
-      typedef TickedColorMap<Scalar,ColorMap>                     ZeroTicColorMap;
+      typedef TickedColorMap<Scalar,ColorMap>                     ZeroTickedColorMap;
     
       // ----------------------- Static services --------------------------------------
     public:
@@ -2335,14 +2335,14 @@ namespace DGtal
       ///   - colormap   [ "Custom" ]: "Cool"|"Copper"|"Hot"|"Jet"|"Spring"|"Summer"|"Autumn"|"Winter"|"Error"|"Custom" specifies standard colormaps (if invalid, falls back to "Custom").
       ///   - zero-tic   [      0.0 ]: if positive defines a black zone ]-zt,zt[ in the colormap.
       /// @return a colormap according to the specified parameters adapted to make darker tics for a background "Tics" colormap.
-      static ZeroTicColorMap
-        getZeroTicColorMap( Scalar           min,
-                            Scalar           max,
-                            const Parameters& params = parametersUtilities() )
+      static ZeroTickedColorMap
+        getZeroTickedColorMap( Scalar           min,
+                               Scalar           max,
+                               const Parameters& params = parametersUtilities() )
       {
         auto cmap = getColorMap( min, max, params );
         auto ztic = params[ "zero-tic" ].as<double>();
-        ZeroTicColorMap ztic_cmap( cmap, Color::Black );
+        ZeroTickedColorMap ztic_cmap( cmap, Color::Black );
         if ( ztic <= 0.0 ) return ztic_cmap;
         if ( min <= 0.0 && 0.0 <= max )
           ztic_cmap.addTick( 0.0, ztic );

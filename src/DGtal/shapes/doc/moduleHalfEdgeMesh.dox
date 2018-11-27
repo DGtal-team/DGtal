@@ -346,7 +346,7 @@ MeshHelpers::exportOBJ or the more complete
 MeshHelpers::exportOBJwithFaceNormalAndColor.
 
 In its present form, class TriangulatedSurface does not provide any
-visualization methods. However it is simple to convert a
+visualization methods. However it is simpler to convert a
 TriangulatedSurface to/from a Mesh for I/O or for visualization (see
 \ref HEM_sec2_4).
 
@@ -514,11 +514,11 @@ PolygonalSurface and conversely.
 - MeshHelpers::mesh2PolygonalSurface builds a polygonal surface (class PolygonalSurface)
   from an arbitrary mesh (class Mesh). 
 
-- MeshHelpers::polygonalSurface2TriangulatedSurface uilds a polygonal
+- MeshHelpers::polygonalSurface2TriangulatedSurface builds a polygonal
   surface from a triangulated surface (faces are triangulated
   according to parameters).
 
-- MeshHelpers::polygonalSurface2Mesh Builds a mesh (class Mesh)
+- MeshHelpers::polygonalSurface2Mesh builds a mesh (class Mesh)
   from a polygonal surface (class PolygonalSurface). Note that
   the mesh looses the topology of the polygonal surface, since it
   is essentially a soup of triangles. It is useful for display or for
@@ -580,7 +580,7 @@ MeshHelpers::exportOBJ or the more complete
 MeshHelpers::exportOBJwithFaceNormalAndColor.
 
 In its present form, class PolygonalSurface does not provide any
-visualization methods. However it is simple to convert a
+visualization methods. However it is simpler to convert a
 PolygonalSurface to/from a Mesh for I/O or for visualization (see \ref
 HEM_sec3_4).
 
