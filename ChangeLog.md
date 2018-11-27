@@ -61,7 +61,7 @@
 
 - *Math*
   - Fix possible division by zero in the MultiStatistics class.
-    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
+    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
 
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
@@ -70,6 +70,11 @@
 - *Kernel*
   - Adding square norm method to Point/Vector class. (David Coeurjolly,
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
+
+- *Helpers*
+  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
+    (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
 
 # DGtal 0.9.4.1
 

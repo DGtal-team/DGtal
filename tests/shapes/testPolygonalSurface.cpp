@@ -149,8 +149,14 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Arc  a13      = polymesh.arc( 1, 3 );
       Face f        = polymesh.faceAroundArc( a13 );
+      ArcRange    A = polymesh.arcsAroundFace( f );
       VertexRange T = polymesh.verticesAroundFace( f );
+      REQUIRE( A.size() == 4 );
       REQUIRE( T.size() == 4 );
+      REQUIRE( polymesh.head( A[ 0 ] ) == T[ 0 ] );
+      REQUIRE( polymesh.head( A[ 1 ] ) == T[ 1 ] );
+      REQUIRE( polymesh.head( A[ 2 ] ) == T[ 2 ] );
+      REQUIRE( polymesh.head( A[ 3 ] ) == T[ 3 ] );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 1 );
       REQUIRE( T[ 1 ] == 3 );
