@@ -58,14 +58,18 @@
 - *DEC*
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
-    
+
 - *Math*
-  - Fix possible division by zero in the MultiStatistics class. 
-  (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
+  - Fix possible division by zero in the MultiStatistics class.
+    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
 
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
+
+- *Kernel*
+  - Adding square norm method to Point/Vector class. (David Coeurjolly,
+    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
 
 # DGtal 0.9.4.1
 
