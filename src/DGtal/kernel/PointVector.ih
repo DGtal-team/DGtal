@@ -667,14 +667,11 @@ inline
 double
 DGtal::PointVector<dim, TComponent, TContainer>::sqnorm () const
 {
-  double tmp = 0.0;
   ASSERT ( dim > 0 );
+  double tmp = 0.0;
   double v;
   for ( DGtal::Dimension i = 0; i < dimension; i++ )
-  {
-    v =NumberTraits<Component>::castToDouble(myArray[ i ]);
-    tmp += v*v;
-  }
+    tmp += std::pow(NumberTraits<Component>::castToDouble(myArray[ i ]), 2);
   return tmp;
 }
 //------------------------------------------------------------------------------
