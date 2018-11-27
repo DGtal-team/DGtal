@@ -731,6 +731,17 @@ namespace DGtal
     double norm( const NormType type = L_2 ) const;
 
     /**
+     * Computes the square L2 norm of a point/vector.
+     * \warning This method performs a conversion
+     * from the type T to double for each components to compute the
+     * norms.
+     *
+     * @return the square norm of the point/vector as a double.
+     */
+    double sqnorm( ) const;
+
+    
+    /**
      * Computes the 1-norm of a vector.
      *
      * @return the absolute sum of the components of this vector.

@@ -665,6 +665,22 @@ negate()
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 double
+DGtal::PointVector<dim, TComponent, TContainer>::sqnorm () const
+{
+  double tmp = 0.0;
+  ASSERT ( dim > 0 );
+  double v;
+  for ( DGtal::Dimension i = 0; i < dimension; i++ )
+  {
+    v =NumberTraits<Component>::castToDouble(myArray[ i ]);
+    tmp += v*v;
+  }
+  return tmp;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
+double
 DGtal::PointVector<dim, TComponent, TContainer>::norm (const
 						       typename Self::NormType aType ) const
 {
