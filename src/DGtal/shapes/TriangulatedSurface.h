@@ -489,6 +489,9 @@ namespace DGtal
     /**
        @param f any valid face on the surface. (open or closed ).
 
+       @note By construction, each @e anArc returned by the method on
+       a face @a f is such that `this->faceAroundArc(anArc) == f`.
+
        @return the sequence of arcs that touches this face in their
        natural order (the range size should be 3).
     */

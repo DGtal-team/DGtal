@@ -443,7 +443,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
 -# Utilities
   - Shortcuts::parametersUtilities: parameters related to colormaps.
   - Shortcuts::getColorMap: returns the specified colormap.
-  - Shortcuts::getZeroTicColorMap: returns the specified colormap with a tic around zero.
+  - Shortcuts::getZeroTickedColorMap: returns the specified colormap with a tic around zero.
   - Shortcuts::getRangeMatch: returns the perfect or approximate  match/correspondence between two ranges.
   - Shortcuts::getMatchedRange: returns the perfectly or approximately matched/corresponding range.
   - Shortcuts::getPrimalVertices: returns the vertices (possibly consistently ordered along the face) of the given signed cell.

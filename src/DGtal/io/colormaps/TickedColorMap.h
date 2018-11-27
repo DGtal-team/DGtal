@@ -110,7 +110,7 @@ namespace DGtal
      *
      * @pre aMin < aMax.
      *
-     * @param colormap the background colormap (copied).
+     * @param other the background colormap (copied).
      * @param color the color of the ticks.
      */
     TickedColorMap( const ColorMap & other,
