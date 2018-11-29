@@ -127,8 +127,13 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
     THEN( "The face along (1,2) is a triangle (0,1,2)" ) {
       Arc  a12      = trimesh.arc( 1, 2 );
       Face f        = trimesh.faceAroundArc( a12 );
+      ArcRange    A = trimesh.arcsAroundFace( f );
       VertexRange T = trimesh.verticesAroundFace( f );
+      REQUIRE( A.size() == 3 );
       REQUIRE( T.size() == 3 );
+      REQUIRE( trimesh.head( A[ 0 ] ) == T[ 0 ] );
+      REQUIRE( trimesh.head( A[ 1 ] ) == T[ 1 ] );
+      REQUIRE( trimesh.head( A[ 2 ] ) == T[ 2 ] );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 0 );
       REQUIRE( T[ 1 ] == 1 );
