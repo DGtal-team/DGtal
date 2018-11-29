@@ -79,13 +79,16 @@ namespace DGtal
   {
     // ----------------------- Types ------------------------------
   public:
-    typedef TKSpace KSpace;
-    typedef typename KSpace::Integer Integer;
-    typedef typename KSpace::Point Point;
-    typedef typename KSpace::Cell Cell;
-    typedef typename KSpace::SCell SCell;
+    typedef TKSpace                      KSpace;
+    typedef typename KSpace::Integer     Integer;
+    typedef typename KSpace::Point       Point;
+    typedef typename KSpace::Vector      Vector;
+    typedef typename KSpace::Cell        Cell;
+    typedef typename KSpace::SCell       SCell;
+    typedef typename KSpace::Surfel      Surfel;
     typedef typename KSpace::DirIterator DirIterator;
-
+    typedef std::vector<Cell>            CellRange;
+    
     // ----------------------- Static services ------------------------------
   public:
 
@@ -837,6 +840,21 @@ namespace DGtal
                    bool incrementMode=true );
 
     
+    /// Given a space \a K and an oriented cell \a s, returns its vertices.
+    /// @param K any cellular grid space.
+    /// @param s any signed cell.
+    /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+    static
+    CellRange getPrimalVertices( const KSpace& K, const SCell& s );
+    
+    /// Given a space \a K and a surfel \a s, returns its vertices in ccw or cw order.
+    /// @param K any cellular grid space of dimension 3.
+    /// @param s any surfel, a signed cell of dimension 2.
+    /// @param ccw when 'true', the order corresponds to a ccw orientation seen from the exterior normal to the surfel, otherwise it is a cw order.
+    /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+    /// @note useful when exporting faces to OBJ format. 
+    static
+    CellRange getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw );
     
 
     // ----------------------- Standard services ------------------------------
