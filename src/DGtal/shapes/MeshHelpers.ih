@@ -405,13 +405,13 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
       Color c = diffuse_colors[ f ];
       if ( mapMaterial.count( c ) == 0 ) {
 	exportMTLNewMaterial( output_mtl, idxMaterial,
-			   ambient_color, c, specular_color );
+                              ambient_color, c, specular_color );
 	mapMaterial[ c ] = idxMaterial++;
       }
     }
   } else {
     exportMTLNewMaterial( output_mtl, idxMaterial,
-		       ambient_color, diffuse_color, specular_color );
+                          ambient_color, diffuse_color, specular_color );
   }
   // Taking care of faces
   for ( auto f : faces ) {
