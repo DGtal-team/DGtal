@@ -1,12 +1,20 @@
 
 # DGtal 1.0
 
+## New Features / Critical Changes
+
+- *Helpers*
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
   - Fixing documentation checks and updating Travis scripts
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
+  - Fixing warning of Clang when including GraphicsMagick v1.3.31
+    (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
 
 - Miscellaneous
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
@@ -60,6 +68,10 @@
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
+
+- *Helpers*
+  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps. (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
 
 # DGtal 0.9.4.1
 
