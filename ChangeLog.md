@@ -13,6 +13,8 @@
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
   - Fixing documentation checks and updating Travis scripts
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
+  - Fixing warning of Clang when including GraphicsMagick v1.3.31
+    (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
 
 - Miscellaneous
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
