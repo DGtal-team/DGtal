@@ -736,9 +736,9 @@ namespace DGtal
      * from the type T to double for each components to compute the
      * norms.
      *
-     * @return the square norm of the point/vector as a double.
+     * @return the squared norm of the point/vector as a double.
      */
-    double sqnorm( ) const;
+    double squaredNorm( ) const;
 
     
     /**
