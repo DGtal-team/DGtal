@@ -665,7 +665,7 @@ negate()
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 double
-DGtal::PointVector<dim, TComponent, TContainer>::sqnorm () const
+DGtal::PointVector<dim, TComponent, TContainer>::squaredNorm () const
 {
   ASSERT ( dim > 0 );
   double tmp = 0.0;
