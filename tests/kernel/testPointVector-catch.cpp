@@ -87,6 +87,7 @@ TEST_CASE( "Point Vector Unit tests" )
       CAPTURE( normalized );
       REQUIRE( aPoint.norm ( Point::L_1 ) == 6 );
       REQUIRE( aPoint.norm ( Point::L_infty ) == 3 );
+      REQUIRE( aPoint.squaredNorm() ==  Approx(aPoint.norm()*aPoint.norm()) );
       REQUIRE( normalized[0] == Approx( 0.801784) );
       REQUIRE( normalized[1] == Approx( -0.267261) );
       REQUIRE( normalized[2] == Approx( 0.534522) );
