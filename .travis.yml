@@ -118,7 +118,7 @@ deploy:
     github-token: $SECRET_GITHUB_TOKEN
     keep-history: true
     on:
-        branch: master
+        condition: $BUILD_DOC=="true"
     local-dir: documentation
-    repo: DGtal-team/dgtal.github.io
+    repo: DGtal-team/testingdgtal.github.io
     target-branch: master
