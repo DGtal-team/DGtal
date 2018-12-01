@@ -288,6 +288,33 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
 
+  trace.beginBlock ( "Build polynomial shape -> digitize -> digital surface -> save primal surface and VCM normal field as obj." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_11s]
+    params( "polynomial", "goursat" )( "gridstep", 0.5 )
+      ( "Traversal", "Default" );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
+    auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    auto vcm_normals     = SHG3::getVCMNormalVectors( surface, surfels, params );
+    auto embedder        = SH3::getSCellEmbedder( K );
+    SH3::RealPoints positions( surfels.size() );
+    std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
+		    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+    bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
+					 "goursat-primal-vcm.obj" );
+    bool ok2             = SH3::saveOBJ( positions, vcm_normals, 0.05, SH3::Colors(),
+					 "goursat-primal-vcm-normals.obj",
+					 SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+    //! [dgtal_shortcuts_ssec2_2_11s]
+    ++nb, nbok += ok ? 1 : 0;
+    ++nb, nbok += ok2 ? 1 : 0;
+  }
+  trace.endBlock();
   
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;
