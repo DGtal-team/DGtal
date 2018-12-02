@@ -51,9 +51,9 @@ namespace concepts
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class ParametricCurve
+// class 3DParametricCurve
 /**
-Description of \b concept '\b ParametricCurve' <p>
+Description of \b concept '\b 3DParametricCurve' <p>
 @ingroup Concepts
 @brief Aim:
 
@@ -62,7 +62,7 @@ Description of \b concept '\b ParametricCurve' <p>
 ### Associated types :
 
 ### Notation
- - \e X : A type that is a model of ParametricCurve
+ - \e X : A type that is a model of 3DParametricCurve
  - \e x, \e y : object of type X
 
 ### Definitions
@@ -77,11 +77,11 @@ Description of \b concept '\b ParametricCurve' <p>
 
 ### Models
 
-   A dummy model (for concept checking) is CParametricCurveArchetype.
+   A dummy model (for concept checking) is C3DParametricCurveArchetype.
 
 ### Notes
 
-@tparam T the type that should be a model of ParametricCurve.
+@tparam T the type that should be a model of 3DParametricCurve.
  */
 template <typename T>
 struct C3DParametricCurve
@@ -99,7 +99,7 @@ public:
         // check const methods.
         checkConstConstraints();
     }
-    void checkConstConstraints() const
+    virtual void checkConstConstraints() const
     {
         ConceptUtils::sameType( x , self.xp ( 0.1f ) );
         ConceptUtils::sameType( x , self.x ( 0.1f ) );
@@ -114,9 +114,43 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept ParametricCurve
+}; // end of concept 3DParametricCurve
 
 
+
+/////////////////////////////////////////////////////////////////////////////
+// class 3DParametricCurveDecorator
+/**
+Description of \b concept '\b 3DParametricCurveDecorator' <p>
+@ingroup Concepts
+@brief Aim:
+
+### Refinement of 3DParametricCurve
+
+### Associated types :
+
+### Notation
+ - \e X : A type that is a model of DParametricCurveDecorator
+ - \e x, \e y : object of type X
+
+### Definitions
+
+### Valid expressions and semantics
+
+| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+|       |            |                   |               |              |           |                |            |
+
+### Invariants
+
+### Models
+
+   A dummy model (for concept checking) is C3DParametricCurveDecoratorArchtype.
+
+### Notes
+
+@tparam T the type that should be a model of 3DParametricCurve.
+ */
 template <typename T>
 struct C3DParametricCurveDecorator : public C3DParametricCurve< T >
 {
@@ -138,7 +172,7 @@ protected:
   typename T::TypeCurve curve;
   // ------------------------- Private Datas --------------------------------
   // ------------------------- Internals ------------------------------------
-}; // end of concept ParametricCurve
+}; // end of concept 3DParametricCurve
 
    } // namespace concepts
 } // namespace DGtal
