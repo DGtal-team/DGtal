@@ -51,4 +51,24 @@ $MAGICK_FILTER_MODULE_PATH
 # Preparing folders
 mkdir -p "$SRC_DIR/deps/local"
 
+#############################
+#############################
+echo "C++ ===> $CXXCOMPILER"
+if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source "$SRC_DIR/.travis/install_eigen.sh" ; fi
+echo $EIGEN_ROOT
+if [ $CONFIG == "Documentation" ]; then export BUILD_DOC="true"; if [ $OriginalRepo == "true" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then export UPLOAD_DOC="true"; fi; fi
+if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then export BUILD_ALL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON"; fi
+if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then export BUILD_ALL="true"; export BUILD_DEC="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"; fi
+if [ $CONFIG == "DGtalTools" ]; then export BUILD_DGTAL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"; fi
+if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in "$SRC_DIR/.travis/dgtal_rsa.enc" -out "$SRC_DIR/.travis/dgtal_rsa" -d; chmod 600 "$SRC_DIR/.travis/dgtal_rsa"; fi
+if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
+if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/install_doxygen.sh";  export BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
+
+
+## OS dependent deps
+if [ $TRAVIS_OS_NAME == linux ]; then echo "All done."; fi
+if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.sh"; fi
+source "$SRC_DIR/.travis/fix_step_dependencies.sh"
+
+
 $SCRIPT_END
