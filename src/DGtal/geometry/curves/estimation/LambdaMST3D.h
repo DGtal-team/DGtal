@@ -156,12 +156,12 @@ namespace DGtal {
     void accumulate ( std::multimap < Point, Value > & outValues, ConstIterator itb, ConstIterator ite, OutputIterator & result );
 
     /**
-     * @brief Use the DSS filter defined conditions to ensure estimation over not covered points.
+     * @brief Use the DSS filter defined conditions to ensure estimation over not covered points - orphans.
      *
      * @param begin begin iterator
      * @param end end iterator
      * @param p a point of the underlying curve
-     * @ return estimated tangent
+     * @return estimated tangent
      */
     Value treatOrphan(OrphantDSSIterator begin, OrphantDSSIterator end, const Point &p);
     template < typename DSSesIterator, typename OrphantIterator >
