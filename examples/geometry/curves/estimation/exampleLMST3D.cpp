@@ -57,7 +57,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
-using namespace functors;
+using namespace DGtal::functors;
 
 ///////////////////////////////////////////////////////////////////////////////
 
