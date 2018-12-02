@@ -122,3 +122,8 @@ deploy:
     local-dir: documentation
     repo: DGtal-team/testingdgtal.github.io
     target-branch: master
+
+
+stages:
+  - compile
+  - deploy
