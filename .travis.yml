@@ -48,6 +48,9 @@ matrix:
     - os: osx
       compiler: gcc
 
+stages:
+    - compile
+    - deploy
 
 addons:
   apt:
@@ -96,29 +99,28 @@ before_script:
 ############
 # Main rules
 ############
-script:
-  - "$SRC_DIR/.travis/configure_build.sh"
-  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_dgtal.sh"; fi
-  - if [ $BUILD_DEC == "true" ]; then "$SRC_DIR/.travis/build_dec.sh"; fi
-  - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
-  - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/build_tests.sh"; fi
-  - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/check_tests.sh"; fi
-  - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_all.sh"; fi
-  - if [ $CONFIG == "DGtalTools" ]; then "$SRC_DIR/.travis/getAndCheckDGtalTools.sh" ; fi
-  - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/build_doc.sh"; fi
-  - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/checkDoxygenDocumentation.sh"; fi
-
-
-###########
-## Building the documentation
-###########
-deploy:
-    provider: pages
-    skip-cleanup: true
-    github-token: $SECRET_GITHUB_TOKEN
-    keep-history: true
-    on:
-        condition: $BUILD_DOC=="true"
-    local-dir: documentation
-    repo: DGtal-team/testingdgtal.github.io
-    target-branch: master
+jobs:
+  include:
+   - stage: compile
+     script:
+       - "$SRC_DIR/.travis/configure_build.sh"
+       - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_dgtal.sh"; fi
+       - if [ $BUILD_DEC == "true" ]; then "$SRC_DIR/.travis/build_dec.sh"; fi
+       - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
+       - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/build_tests.sh"; fi
+       - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/check_tests.sh"; fi
+       - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_all.sh"; fi
+       - if [ $CONFIG == "DGtalTools" ]; then "$SRC_DIR/.travis/getAndCheckDGtalTools.sh" ; fi
+       - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/build_doc.sh"; fi
+       - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/checkDoxygenDocumentation.sh"; fi
+   - stage: deploy
+     deploy:
+         provider: pages
+         skip-cleanup: true
+         github-token: $SECRET_GITHUB_TOKEN
+         keep-history: true
+         on:
+                condition: $BUILD_DOC=="true"
+         local-dir: documentation
+         repo: DGtal-team/dgtal.github.io
+           target-branch: master
