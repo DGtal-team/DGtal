@@ -42,7 +42,7 @@ method. Note that, the name of the method reflects the fact that this is a very 
 simply samples a curve with a given step parameter, and ugly because it is a numerical method that
 does not have any solid theoretical basis rooted in digital geometry. But in comparison to other known methods,
  that generate 26-connected digital curves, it does not require the coordinates' functions to be re-parametrized by
-each other, which often would involve existence of inverses of such functions. Such inverses even when exist can
+each other, which often would involve existence of inverses of such functions. Such inverses even when they exist can
 be difficult to find.
 
 In short the algorithm implemented in UglyNaiveParametricCurveDigitizer3D.h is as follows.
