@@ -69,7 +69,7 @@ namespace DGtal
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treat_orphant ( OrphantDSSIterator begin, OrphantDSSIterator end,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphan ( OrphantDSSIterator begin, OrphantDSSIterator end,
                                                                                      const Point & p )
   {
     Value tangent, prev, partial;
@@ -91,7 +91,7 @@ namespace DGtal
   template < typename DSSesIterator, typename OrphantIterator >
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treat_orphants ( DSSesIterator begin,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphans ( DSSesIterator begin,
                                                                                       DSSesIterator end,
                                                                                       OrphantIterator obegin,
                                                                                       OrphantIterator oend,
@@ -99,13 +99,13 @@ namespace DGtal
   {
     for ( auto DSS = begin; DSS != end; ++DSS )
     {
-      for ( auto orphant = obegin; orphant != oend; ++orphant )
+      for ( auto orphan = obegin; orphan != oend; ++orphan )
       {
-        if ( ! DSS->isInDSS ( *orphant ) && myDSSFilter.admissibility ( *DSS, *orphant ) )
+        if ( ! DSS->isInDSS ( *orphan ) && myDSSFilter.admissibility ( *DSS, *orphan ) )
         {
           unsigned int dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
-          int pos = myDSSFilter. position ( *DSS, *orphant );
-          outValues.insert ( std::make_pair ( *orphant,  myFunctor ( *DSS, pos, dssLen ) ) );
+          int pos = myDSSFilter. position ( *DSS, *orphan );
+          outValues.insert ( std::make_pair ( *orphan,  myFunctor ( *DSS, pos, dssLen ) ) );
         }
       }
     }
@@ -147,7 +147,7 @@ namespace DGtal
     }
 
     if ( isOrphant && admissibleDSS.size ( ) > 0 )
-      tangent = treat_orphant ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
+      tangent = treatOrphant ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
     else if ( isOrphant && admissibleDSS.size ( ) == 0 )
       throw std::runtime_error ( "The DSS filter is not well constructed! The point is not DSS covered!" );
 
@@ -169,16 +169,16 @@ namespace DGtal
     dssSegments->setSubRange ( itb, ite );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
-    std::vector< Point > orphants;
+    std::vector< Point > orphans;
 
     for(; DSS != lastDSS; ++DSS)
     {
-      // coolect potential orphants
+      // coolect potential orphans
       if ( myDSSFilter ( *DSS ) )
       {
         for ( const auto & point : *DSS )
-          if ( std::find ( orphants.cbegin (  ), orphants.cend ( ), point ) == orphants.cend ( ) )
-            orphants.push_back ( point );
+          if ( std::find ( orphans.cbegin (  ), orphans.cend ( ), point ) == orphans.cend ( ) )
+            orphans.push_back ( point );
         continue;
       }
 
@@ -187,14 +187,14 @@ namespace DGtal
       {
         outValues.insert ( std::make_pair ( *(DSS.begin ( ) + indexOfPointInDSS),
                            myFunctor ( *DSS, indexOfPointInDSS + 1, dssLen + 1 ) ) );
-        // if a point is covered then it is not an orphant
-        auto orphant = std::find ( orphants.cbegin ( ), orphants.cend ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
-        if ( orphant != orphants.cend ( ) )
-          orphants.erase ( orphant );
+        // if a point is covered then it is not an orphan
+        auto orphan = std::find ( orphans.cbegin ( ), orphans.cend ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
+        if ( orphan != orphans.cend ( ) )
+          orphans.erase ( orphan );
       }
     }
-    if ( ! orphants.empty ( ) )
-      treat_orphants ( dssSegments->begin ( ),  dssSegments->end ( ), orphants.cbegin ( ), orphants.cend ( ), outValues );
+    if ( ! orphans.empty ( ) )
+      treatOrphans ( dssSegments->begin ( ),  dssSegments->end ( ), orphans.cbegin ( ), orphans.cend ( ), outValues );
     accumulate< OutputIterator >( outValues, itb, ite, result );
     return result;
   }
