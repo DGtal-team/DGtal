@@ -69,7 +69,7 @@ namespace DGtal
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphan ( OrphantDSSIterator begin, OrphantDSSIterator end,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphan ( OrphanDSSIterator begin, OrphanDSSIterator end,
                                                                                      const Point & p )
   {
     Value tangent, prev, partial;
@@ -88,14 +88,14 @@ namespace DGtal
 
 
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
-  template < typename DSSesIterator, typename OrphantIterator >
+  template < typename DSSesIterator, typename OrphanIterator >
   inline
   void
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphans ( DSSesIterator begin,
-                                                                                      DSSesIterator end,
-                                                                                      OrphantIterator obegin,
-                                                                                      OrphantIterator oend,
-                                                                                      std::multimap < Point, Value > & outValues )
+                                                                                    DSSesIterator end,
+                                                                                    OrphanIterator obegin,
+                                                                                    OrphanIterator oend,
+                                                                                    std::multimap < Point, Value > & outValues )
   {
     for ( auto DSS = begin; DSS != end; ++DSS )
     {
@@ -119,7 +119,7 @@ namespace DGtal
   {
     assert ( isValid() );
     std::vector < SegmentComputer > admissibleDSS;
-    bool isOrphant = true;
+    bool isOrphan = true;
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
     Value tangent, partial, prev;
@@ -130,7 +130,7 @@ namespace DGtal
         continue;
 
       // collect DSSes that may need to be required to ensure coverage if the only covering DSS was filtered out
-      if ( isOrphant && ! DSS->isInDSS ( p ) && myDSSFilter.admissibility ( *DSS, p ) )
+      if ( isOrphan && ! DSS->isInDSS ( p ) && myDSSFilter.admissibility ( *DSS, p ) )
         admissibleDSS.push_back ( *DSS );
 
       if ( DSS->isInDSS ( p ) )
@@ -142,13 +142,13 @@ namespace DGtal
         if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
 	      partial.first = -partial.first;
         tangent += partial;
-        isOrphant = false;
+        isOrphan = false;
       }
     }
 
-    if ( isOrphant && admissibleDSS.size ( ) > 0 )
-      tangent = treatOrphant ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
-    else if ( isOrphant && admissibleDSS.size ( ) == 0 )
+    if ( isOrphan && admissibleDSS.size ( ) > 0 )
+      tangent = treatOrphan ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
+    else if ( isOrphan && admissibleDSS.size ( ) == 0 )
       throw std::runtime_error ( "The DSS filter is not well constructed! The point is not DSS covered!" );
 
     if ( tangent.second != 0. )
