@@ -245,9 +245,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront()
         myEnd++;
         return true;
     }
-    if ( test == 1 )
-        return true;
-    else return false;
+    return test == 1;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -284,7 +282,7 @@ DGtal::Naive3DDSSComputer<TIterator, TInteger,connectivity>::isExtendableFront()
     if ( myXYalgo.isExtendableFront() && !blockXY ) test++;
     if ( myXZalgo.isExtendableFront() && !blockXZ ) test++;
     if ( myYZalgo.isExtendableFront() && !blockYZ ) test++;
-    return test >= 2 ? true : false;
+    return test >= 2;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
