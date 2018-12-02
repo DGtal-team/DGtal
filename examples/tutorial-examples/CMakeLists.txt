@@ -7,6 +7,8 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   freemanChainFromImage
   FMMErosion
   2DSliceImageFromVol
+  shortcuts
+  shortcuts-geometry
 )
 
 

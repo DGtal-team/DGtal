@@ -50,7 +50,22 @@
 #ifndef WITH_MAGICK
 #pragma error "You must activate imagemagick (-DWITH_MAGICK=true) to include this file"
 #endif
-#include <Magick++.h>
+
+// Specific inclusion method to fix warning with GraphicsMagic 1.3.31 and Clang.
+// The warning comes from two "diagnostic pop" with missing corresponding push.
+// "MagickLibAddendum" is defined in ImageMagick since 9 years but not in GraphicsMagic.
+#if !defined(MagickLibAddendum) && defined(__clang__)
+#  pragma clang diagnostic push
+#  pragma clang diagnostic push
+#  include <Magick++.h>
+#  if MagickLibVersion != 0x221900
+#    pragma clang diagnostic pop
+#    pragma clang diagnostic pop
+#  endif
+#else
+#  include <Magick++.h>
+#endif
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
