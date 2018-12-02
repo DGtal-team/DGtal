@@ -56,6 +56,7 @@ namespace DGtal {
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
+   * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
    */
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
@@ -155,18 +156,18 @@ namespace DGtal {
     void accumulate ( std::multimap < Point, Value > & outValues, ConstIterator itb, ConstIterator ite, OutputIterator & result );
 
     /**
-     * @brief Use the DSS filter defined conditions to ensure estiamtion over not covered points.
+     * @brief Use the DSS filter defined conditions to ensure estimation over not covered points.
      *
      * @param begin begin iterator
      * @param end end iterator
      * @param p a point of the underlying curve
      * @ return estimated tangent
      */
-    Value treat_orphant ( OrphantDSSIterator begin, OrphantDSSIterator end, const Point & p );
+    Value treatOrphan(OrphantDSSIterator begin, OrphantDSSIterator end, const Point &p);
     template < typename DSSesIterator, typename OrphantIterator >
 
-    void treat_orphants ( DSSesIterator begin, DSSesIterator end, OrphantIterator obegin, OrphantIterator oend,
-                          std::multimap < Point, Value > & outValues );
+    void treatOrphans(DSSesIterator begin, DSSesIterator end, OrphantIterator obegin, OrphantIterator oend,
+                       std::multimap<Point, Value> &outValues);
 
 
     // ------------------------- Private Datas --------------------------------
