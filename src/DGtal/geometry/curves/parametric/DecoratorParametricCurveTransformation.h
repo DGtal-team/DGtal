@@ -71,7 +71,7 @@ public:
     /**
      * Destructor.
      */
-    ~DecoratorParametricCurveTransformation() {}
+    ~DecoratorParametricCurveTransformation() = default;
 
     // ----------------------- Interface --------------------------------------
 public:
