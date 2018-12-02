@@ -185,7 +185,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Po
   if ( myXYalgo.isInDSS ( myProjXY ( point ) ) ) test++;
   if ( myXZalgo.isInDSS ( myProjXZ ( point ) ) ) test++;
   if ( myYZalgo.isInDSS ( myProjYZ ( point ) ) ) test++;
-  return test >= 2 ? true : false;
+  return test >= 2;
 }
 
 
@@ -198,7 +198,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Co
   if ( myXYalgo.isInDSS ( myProjXY ( *it ) ) ) test++;
   if ( myXZalgo.isInDSS ( myProjXZ ( *it ) ) ) test++;
   if ( myYZalgo.isInDSS ( myProjYZ ( *it ) ) ) test++;
-  return test >= 2 ? true : false;
+  return test >= 2;
 }
 
 
@@ -291,9 +291,7 @@ DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableFront
   //projection on yz-plane
   bool YZflag = myYZalgo.isExtendableFront();
 
-  if ( (XYflag)&&(XZflag)&&(YZflag) )
-    return true;
-  else return false;
+  return (XYflag && XZflag && YZflag);
 }
 
 
