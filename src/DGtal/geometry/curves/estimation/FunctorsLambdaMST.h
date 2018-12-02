@@ -239,16 +239,19 @@ public:
   typedef DSS DSSType;
   typedef typename IteratorCirculatorTraits< typename DSSType::ConstIterator >::Value Point;
 
+  /// Always returns false
   bool operator()( const DSSType & ) const
   {
      return false;
   }
 
+  /// Always returns false
   bool admissibility ( const DSSType &, const Point & ) const
   {
     return false;
   }
 
+  /// When called always throws an exception
   int position ( const DSSType &, const Point & ) const
   {
     throw std::runtime_error ( "You are not suppose to see this error!" );
