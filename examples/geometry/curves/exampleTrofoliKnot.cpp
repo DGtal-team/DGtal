@@ -36,7 +36,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/curves/parametric/Knot_3_1.h"
-#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
 #include "DGtal/io/DrawWithDisplay3DModifier.h"

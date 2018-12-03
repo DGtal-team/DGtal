@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file UglyNaiveParametricCurveDigitizer3D.ih
+ * @file NaiveParametricCurveDigitizer3D.ih
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
  *
  * @date 2014/09/26
  *
- * Implementation of inline methods defined in UglyNaiveParametricCurveDigitizer3D.h
+ * Implementation of inline methods defined in NaiveParametricCurveDigitizer3D.h
  *
  * This file is part of the DGtal library.
  */
@@ -50,7 +50,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  bool UglyNaiveParametricCurveDigitizer3D<T>::is26Connected ( const Point &x, const Point &y )
+  bool NaiveParametricCurveDigitizer3D<T>::is26Connected ( const Point &x, const Point &y )
   {
     if ( std::abs ( x[0] - y[0] ) < 2 && std::abs ( x[1] - y[1] ) < 2 && std::abs ( x[2] - y[2] ) < 2 && x != y )
       return true;
@@ -61,7 +61,7 @@ namespace DGtal
   // Implementation of inline methods                                          //
   template <typename T>
   inline
-  UglyNaiveParametricCurveDigitizer3D<T>::UglyNaiveParametricCurveDigitizer3D ()
+  NaiveParametricCurveDigitizer3D<T>::NaiveParametricCurveDigitizer3D ()
   {
       curve = nullptr;
       initOK = false;
@@ -72,7 +72,7 @@ namespace DGtal
   
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::attach ( const T * p_curve )
+  void NaiveParametricCurveDigitizer3D<T>::attach ( const T * p_curve )
   {
     curve = p_curve;
   }
@@ -80,7 +80,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::init ( long double tmin, long double tmax, long double timeStep )
+  void NaiveParametricCurveDigitizer3D<T>::init ( long double tmin, long double tmax, long double timeStep )
   {
     if ( tmin > tmax )
       throw std::runtime_error ( "Starting time is bigger than the end time!" );
@@ -97,7 +97,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  unsigned int UglyNaiveParametricCurveDigitizer3D<T>::setKNext ( unsigned int knext )
+  unsigned int NaiveParametricCurveDigitizer3D<T>::setKNext ( unsigned int knext )
   {
       if ( knext > 0 )
       {
@@ -112,7 +112,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  bool UglyNaiveParametricCurveDigitizer3D<T>::isValid ( ) const
+  bool NaiveParametricCurveDigitizer3D<T>::isValid ( ) const
   {
     if ( initOK && K_NEXT > 0 && curve != nullptr )
       return true;
@@ -123,7 +123,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights)
+  void NaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights)
   {
     if ( bbegin == bend )
       return;
@@ -159,7 +159,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::flashBuffers ( Buffer & buffer, DataInfo & weights )
+  void NaiveParametricCurveDigitizer3D<T>::flashBuffers ( Buffer & buffer, DataInfo & weights )
   {
     syncData ( buffer.begin(), buffer.end() - K_NEXT, weights );
     // keep the last few points for re-evaluation or because they may not be well evaluated yet.
@@ -170,7 +170,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::updateMetaDate ( const Point & p, const RealPoint & pc,
+  void NaiveParametricCurveDigitizer3D<T>::updateMetaDate ( const Point & p, const RealPoint & pc,
                                                                 DataInfo & weights, long double t )
   {
     if ( metaData )
@@ -184,7 +184,7 @@ namespace DGtal
 
    template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::cleanClosedPart ( )
+  void NaiveParametricCurveDigitizer3D<T>::cleanClosedPart ( )
   {
     bool isClosed = false;
     auto it = digitalCurve.end () - K_NEXT;
@@ -212,7 +212,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
+  void NaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
   {
     cleanClosedPart ();
     for ( auto it = digitalCurve.begin (); it != digitalCurve.end (); )
@@ -241,7 +241,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter )
+  void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter )
   {
     assert ( isValid() );
 
@@ -270,7 +270,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter,
+  void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter,
                                                           std::back_insert_iterator < MetaData > meta_inserter )
   {
     metaData = true;
@@ -282,9 +282,9 @@ namespace DGtal
 
   template <typename T>
   inline
-  void UglyNaiveParametricCurveDigitizer3D<T>::selfDisplay ( std::ostream & out ) const
+  void NaiveParametricCurveDigitizer3D<T>::selfDisplay ( std::ostream & out ) const
   {
-    out << "[UglyNaiveParametricCurveDigitizer3D]";
+    out << "[NaiveParametricCurveDigitizer3D]";
   }
   
 }
@@ -293,15 +293,15 @@ namespace DGtal
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'UglyNaiveParametricCurveDigitizer3D'.
+ * Overloads 'operator<<' for displaying objects of class 'NaiveParametricCurveDigitizer3D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'UglyNaiveParametricCurveDigitizer3D' to write.
+ * @param object the object of class 'NaiveParametricCurveDigitizer3D' to write.
  * @return the output stream after the writing.
  */
 template <typename T>
 inline
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::UglyNaiveParametricCurveDigitizer3D<T> & object )
+operator<< ( std::ostream & out, const DGtal::NaiveParametricCurveDigitizer3D<T> & object )
 {
   object.selfDisplay ( out );
   return out;

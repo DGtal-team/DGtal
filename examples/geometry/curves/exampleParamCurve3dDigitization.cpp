@@ -37,7 +37,7 @@
 
 //! [DigiHelixHeader]
 #include "DGtal/geometry/curves/parametric/EllipticHelix.h"
-#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 //! [DigiHelixHeader]
 
 #ifdef WITH_VISU3D_QGLVIEWER

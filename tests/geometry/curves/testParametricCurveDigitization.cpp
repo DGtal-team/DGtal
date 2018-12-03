@@ -47,7 +47,7 @@
 #include "DGtal/geometry/curves/parametric/Knot_5_2.h"
 #include "DGtal/geometry/curves/parametric/Knot_6_2.h"
 #include "DGtal/geometry/curves/parametric/Knot_7_4.h"
-#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 #include "DGtal/images/RigidTransformation3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,9 +60,9 @@ using namespace functors;
 TEST_CASE( "Elliptic Helix test" )
 {
     typedef EllipticHelix < Space > MyHelix;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >  DigitizerHelix;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyHelix >  DigitizerHelix;
+    typedef NaiveParametricCurveDigitizer3D < MyHelix >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyHelix >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -103,9 +103,9 @@ TEST_CASE( "Parametric Curve Decorator test" )
     typedef EllipticHelix < Space > MyHelix;
     typedef ForwardRigidTransformation3D < Space, RealPoint, RealPoint, Identity > ForwardTrans;
     typedef DecoratorParametricCurveTransformation < MyHelix, ForwardTrans > MyRotatedCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
-    typedef typename UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
+    typedef typename NaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyRotatedCurve >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -142,9 +142,9 @@ TEST_CASE( "Parametric Curve Decorator test" )
 TEST_CASE( "Knot 3_1 test" )
 {
     typedef Knot_3_1 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -175,9 +175,9 @@ TEST_CASE( "Knot 3_1 test" )
 TEST_CASE( "Knot 3_2 test" )
 {
     typedef Knot_3_2 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -208,9 +208,9 @@ TEST_CASE( "Knot 3_2 test" )
 TEST_CASE( "Knot 4_1 test" )
 {
     typedef Knot_4_1 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -241,9 +241,9 @@ TEST_CASE( "Knot 4_1 test" )
 TEST_CASE( "Knot 4_3 test" )
 {
     typedef Knot_4_3 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -274,9 +274,9 @@ TEST_CASE( "Knot 4_3 test" )
 TEST_CASE( "Knot 5_1 test" )
 {
     typedef Knot_5_1 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -307,9 +307,9 @@ TEST_CASE( "Knot 5_1 test" )
 TEST_CASE( "Knot 5_2 test" )
 {
     typedef Knot_5_2 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -340,9 +340,9 @@ TEST_CASE( "Knot 5_2 test" )
 TEST_CASE( "Knot 6_2 test" )
 {
     typedef Knot_6_2 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
@@ -373,9 +373,9 @@ TEST_CASE( "Knot 6_2 test" )
 TEST_CASE( "Knot 7_4 test" )
 {
     typedef Knot_7_4 < Space > MyKnot;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
-    typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+    typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
     MyDigitalCurve digitalCurve;
     MyMetaData metaData;
