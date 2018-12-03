@@ -575,9 +575,6 @@ Note that this 3D by 2D tangent estimator provides a similar interface to the tw
 
 See exampleLMST3DBy2D.cpp
 
-Finally, not that this version does not provide a fast estimation over ranges!
-
-
 */
 
 }

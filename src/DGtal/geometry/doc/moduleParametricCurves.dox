@@ -33,11 +33,11 @@ called parametric curves.  Each coordinate of a parametric curve, for a given pa
 by a corresponding function e.g., a parametric equation of a circle is given as \f$ \gamma : t
 \mapsto ( cos (t), sin(t) ) \f$.  This module is related to digitization of 3D parametric curves.
 
-In DGtal, each 3D parametric curve has in order to be digitized has to be of the model C3DParametricCurve.
+In DGtal, each 3D parametric curve must be a model of C3DParametricCurve to be digitized.
 
 \subsection digitHelix Digitization - The algorithm
 
-In this section we describe how to digitize 3D parametric curves using ugly-naive digitization
+In this section we describe how to digitize 3D parametric curves using naive digitization
 method. Note that, the name of the method reflects the fact that this is a very naive method, which
 simply samples a curve with a given step parameter, and ugly because it is a numerical method that
 does not have any solid theoretical basis rooted in digital geometry. But in comparison to other known methods,
