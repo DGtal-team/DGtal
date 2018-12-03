@@ -52,9 +52,7 @@ namespace DGtal
   inline
   bool NaiveParametricCurveDigitizer3D<T>::is26Connected ( const Point &x, const Point &y )
   {
-    if ( std::abs ( x[0] - y[0] ) < 2 && std::abs ( x[1] - y[1] ) < 2 && std::abs ( x[2] - y[2] ) < 2 && x != y )
-      return true;
-    return false;
+    return std::abs ( x[0] - y[0] ) < 2 && std::abs ( x[1] - y[1] ) < 2 && std::abs ( x[2] - y[2] ) < 2 && x != y;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -114,10 +112,7 @@ namespace DGtal
   inline
   bool NaiveParametricCurveDigitizer3D<T>::isValid ( ) const
   {
-    if ( initOK && K_NEXT > 0 && curve != nullptr )
-      return true;
-    else
-      return false;
+    return initOK && K_NEXT > 0 && curve != nullptr;
   }
 
 
