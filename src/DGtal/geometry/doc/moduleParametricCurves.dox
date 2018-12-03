@@ -39,13 +39,13 @@ In DGtal, each 3D parametric curve must be a model of C3DParametricCurve to be d
 
 In this section we describe how to digitize 3D parametric curves using naive digitization
 method. Note that, the name of the method reflects the fact that this is a very naive method, which
-simply samples a curve with a given step parameter, and ugly because it is a numerical method that
-does not have any solid theoretical basis rooted in digital geometry. But in comparison to other known methods,
- that generate 26-connected digital curves, it does not require the coordinates' functions to be re-parametrized by
+simply samples a curve with a given step parameter, and it is a numerical method that does not have any
+solid theoretical basis rooted in digital geometry. But in comparison to other known methods, that generate
+26-connected digital curves, it does not require the coordinates' functions to be re-parametrized by
 each other, which often would involve existence of inverses of such functions. Such inverses even when they exist can
 be difficult to find.
 
-In short the algorithm implemented in UglyNaiveParametricCurveDigitizer3D.h is as follows.
+In short the algorithm implemented in NaiveParametricCurveDigitizer3D.h is as follows.
 
 <b>Input:</b> a 3D parametric curve \f$ \gamma \f$ (model of C3DParametricCurve), sampling step \f$
 t \f$, and a sampling interval \f$ [t_{min}, t_{max}] \f$ such that \f$ t \in [t_{min}, t_{max}]
@@ -95,22 +95,22 @@ above). Also, the implemented version can treat closed curves and collect useful
 
 \subsection metData Additional Information
 
-The digitization implemented in UglyNaiveParametricCurveDigitizer3D can collect, for each point of
+The digitization implemented in NaiveParametricCurveDigitizer3D can collect, for each point of
 the output digital curve, information like
 
 - weights i.e., the point importance
 - time - a time value that minimize the distance between the integer point and \f$ \gamma \f$ for a given time step.
 
 Note that, the time information is not computed by default therefore if not needed the user should
-avoid calling <B>UglyNaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator,
+avoid calling <B>NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator,
 back_inserter_iterator)</B>, and use
-<B>UglyNaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator)</B>, instead.
+<B>NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator)</B>, instead.
 
 \section digiExample Examples
 
 Example below shows how to digitize an elliptic helix (see EllipticHelix.h).
 
-Before using UglyNaiveParametricCurveDigitizer3D, you must include the following headers:
+Before using NaiveParametricCurveDigitizer3D, you must include the following headers:
 
 @snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixHeader
 

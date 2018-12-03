@@ -35,7 +35,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/curves/parametric/EllipticHelix.h"
-#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.h"
+#include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 //! [DigiRotHelixHeader]
 #include "DGtal/geometry/curves/parametric/DecoratorParametricCurveTransformation.h"
 #include "DGtal/images/RigidTransformation3D.h"

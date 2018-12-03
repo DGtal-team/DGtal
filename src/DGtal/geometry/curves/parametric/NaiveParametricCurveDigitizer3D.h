@@ -17,13 +17,13 @@
 #pragma once
 
 /**
- * @file UglyNaiveParametricCurveDigitizer3D.h
+ * @file NaiveParametricCurveDigitizer3D.h
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
  *
  * @date 2018/08/06
  *
- * Header file for module UglyNaiveParametricCurveDigitizer3D
+ * Header file for module NaiveParametricCurveDigitizer3D
  *
  * This file is part of the DGtal library.
  */
@@ -53,15 +53,15 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CurveDigitizer
+// class NaiveParametricCurveDigitizer3D
 /**
- * Description of class 'UglyNaiveParametricCurveDigitizer3D' <p>
+ * Description of class 'NaiveParametricCurveDigitizer3D' <p>
  * \brief Aim: Digitization of 3D parametric curves.
  * This method produces, for good parameters step and k_next, a 26-connected
  * digital curves obtained from a digitization process of 3D parametric curves.
  */
 template <typename TParametricCurve>
-class UglyNaiveParametricCurveDigitizer3D
+class NaiveParametricCurveDigitizer3D
 {
     BOOST_CONCEPT_ASSERT(( concepts::C3DParametricCurve < TParametricCurve > ));
     // ----------------------- Standard services ------------------------------
@@ -71,11 +71,11 @@ public:
     typedef std::vector<Point> DigitalCurve;
     typedef std::vector< std::pair < long double, unsigned int > > MetaData;
 
-    UglyNaiveParametricCurveDigitizer3D();
+    NaiveParametricCurveDigitizer3D();
     /**
      * Destructor.
      */
-    ~UglyNaiveParametricCurveDigitizer3D() {}
+    ~NaiveParametricCurveDigitizer3D() = default;
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -129,7 +129,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    UglyNaiveParametricCurveDigitizer3D ( const UglyNaiveParametricCurveDigitizer3D & other );
+    NaiveParametricCurveDigitizer3D ( const NaiveParametricCurveDigitizer3D & other );
 
     /**
      * Assignment.
@@ -137,7 +137,7 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    UglyNaiveParametricCurveDigitizer3D & operator= ( const UglyNaiveParametricCurveDigitizer3D & other );
+    NaiveParametricCurveDigitizer3D & operator= ( const NaiveParametricCurveDigitizer3D & other );
 
     bool is26Connected ( const Point &x, const Point &y );
     void syncData ( ConstIterator, ConstIterator, DataInfo & );
@@ -161,7 +161,7 @@ private:
  */
 template <typename T>
 std::ostream&
-operator<< ( std::ostream & out, const UglyNaiveParametricCurveDigitizer3D<T> & object );
+operator<< ( std::ostream & out, const NaiveParametricCurveDigitizer3D<T> & object );
 
 
 } // namespace DGtal
@@ -170,7 +170,7 @@ operator<< ( std::ostream & out, const UglyNaiveParametricCurveDigitizer3D<T> & 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #if !defined(BUILD_INLINE)
-#include "DGtal/geometry/curves/parametric/UglyNaiveParametricCurveDigitizer3D.ih"
+#include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.ih"
 #endif
 
 
