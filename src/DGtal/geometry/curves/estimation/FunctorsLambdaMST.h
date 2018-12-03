@@ -302,7 +302,7 @@ public:
    * Checks if the DSS can be used for points that are not covered by any DSS longer than the threshold.
    * @param dss - the DSS to be checked if it is close enough to the point p
    * @param p - the point that is not covered by a long enough DSS
-   * @return
+   * @return true if the DSS (see dss) is close enough to the point (see p)
    */
   bool admissibility ( const DSSType & dss, const Point & p ) const
   {
