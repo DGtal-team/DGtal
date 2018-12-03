@@ -137,7 +137,7 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   protected:
 
-      typedef typename std::vector<SegmentComputer >::const_iterator OrphantDSSIterator;
+      typedef typename std::vector<SegmentComputer >::const_iterator OrphanDSSIterator;
     
     /**
      * @brief Accumulate partial results obtained for each point.
@@ -163,10 +163,10 @@ namespace DGtal {
      * @param p a point of the underlying curve
      * @return estimated tangent
      */
-    Value treatOrphan(OrphantDSSIterator begin, OrphantDSSIterator end, const Point &p);
-    template < typename DSSesIterator, typename OrphantIterator >
+    Value treatOrphan(OrphanDSSIterator begin, OrphanDSSIterator end, const Point &p);
+    template < typename DSSesIterator, typename OrphanIterator >
 
-    void treatOrphans(DSSesIterator begin, DSSesIterator end, OrphantIterator obegin, OrphantIterator oend,
+    void treatOrphans(DSSesIterator begin, DSSesIterator end, OrphanIterator obegin, OrphanIterator oend,
                        std::multimap<Point, Value> &outValues);
 
 
