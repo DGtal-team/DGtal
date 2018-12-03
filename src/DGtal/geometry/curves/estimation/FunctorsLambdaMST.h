@@ -252,7 +252,7 @@ public:
   }
 
   /// When called always throws an exception
-  int position ( const DSSType &, const Point & ) const
+  long int position ( const DSSType &, const Point & ) const
   {
     throw std::runtime_error ( "You are not suppose to see this error!" );
   }

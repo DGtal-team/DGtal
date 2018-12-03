@@ -108,7 +108,7 @@ namespace DGtal
       // ------------------------- Private Datas --------------------------------
     private:
       bool c;
-      int i;
+      long int i;
       T x;
       typename T::Point p;
       TDSS dss;
