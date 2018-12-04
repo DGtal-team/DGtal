@@ -2,6 +2,11 @@ language: cpp
 dist: trusty
 sudo: false
 
+# Reducing the depth when cloning using git
+# https://docs.travis-ci.com/user/customizing-the-build/#git-clone-depth
+git:
+  depth: 3
+
 compiler:
   - gcc
   - clang
