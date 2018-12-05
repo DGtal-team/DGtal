@@ -56,6 +56,8 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Upgrade build bot doxygen version to 1.8.14.
+    (David Coeurjolly, [#1372](https://github.com/DGtal-team/DGtal/pull/1372))
 
 - *DEC*
   - Adding missing headers in some files of DEC.
