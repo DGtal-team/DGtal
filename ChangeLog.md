@@ -77,7 +77,7 @@
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
   - Small fixes in ShortcutsGeometry concerning the II normal vector estimation.
-    (David Coeurjolly, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+    (David Coeurjolly, [#1372](https://github.com/DGtal-team/DGtal/pull/1372))
 
 
 # DGtal 0.9.4.1
