@@ -461,9 +461,9 @@ Shortcuts::Point is Z3i::KSpace::Point.
 
 -# GeometryEstimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
-  - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
-  - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
-  - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
+  - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) oriented normal vectors to the given surfel range  
+  - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) oriented normal vectors to the given surfel range
+  - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) oriented normal vectors to the given surfel range
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors (oriented using a trivial normal vector estimation) to the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
