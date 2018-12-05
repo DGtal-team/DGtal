@@ -72,10 +72,28 @@ public:
     typedef std::vector< std::pair < long double, unsigned int > > MetaData;
 
     NaiveParametricCurveDigitizer3D();
+
     /**
      * Destructor.
      */
     ~NaiveParametricCurveDigitizer3D() = default;
+
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    NaiveParametricCurveDigitizer3D ( const NaiveParametricCurveDigitizer3D & other ) = delete;
+
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    NaiveParametricCurveDigitizer3D & operator= ( const NaiveParametricCurveDigitizer3D & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -123,21 +141,6 @@ private:
     // This is defined here due the the problems with MS co
     struct KConstIter { typename DigitalCurve::const_iterator jt; unsigned int k; };
     struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    NaiveParametricCurveDigitizer3D ( const NaiveParametricCurveDigitizer3D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    NaiveParametricCurveDigitizer3D & operator= ( const NaiveParametricCurveDigitizer3D & other );
 
     bool is26Connected ( const Point &x, const Point &y );
     void syncData ( ConstIterator, ConstIterator, DataInfo & );
