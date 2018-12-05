@@ -968,7 +968,8 @@ namespace DGtal
       {
         std::transform( ref_v.cbegin(), ref_v.cend(), v.cbegin(), v.begin(), 
                         [] ( RealVector rw, RealVector w )
-                        { return rw.dot( w ) >= 0.0 ? w : -w; } );
+                       { RealVector proj = (w - w.dot(rw)*rw);
+                         return rw.dot( w ) >= 0.0 ? w : proj.getNormalized(); } );
       }
     
       /// Computes the statistic of a vector of scalars
