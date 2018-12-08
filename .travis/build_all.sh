@@ -5,7 +5,7 @@ $SCRIPT_BEGIN
 export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 
 # OS dependent deps
-source "$SRC_DIR/.travis/install_eigen.sh"
+source ~/.travis/install_eigen.sh
 echo $EIGEN_ROOT
 
 export BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=true"
