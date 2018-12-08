@@ -18,7 +18,7 @@ then
     mkdir build ; cd build
 
     cmake .. -DCMAKE_INSTALL_PREFIX="${SRC_DIR}/deps/local"
-    make && make install && cd "${SRC_DIR}" && export EIGEN_ROOT="$SRC_DIR/deps/local"
+    make -j 2 && make install && cd "${SRC_DIR}" && export EIGEN_ROOT="$SRC_DIR/deps/local"
 
 fi
 
