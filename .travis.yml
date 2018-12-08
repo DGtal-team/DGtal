@@ -47,8 +47,8 @@ jobs:
    - stage: "DGtalTools"
      name: "Testing DGtalTools against this DGtal branch"
      script: /bin/true
-  #   - source .travis/before_global.sh
-  #      - source .travis/getAndCheckDGtalTools.sh
+      - source .travis/before_global.sh
+      - source .travis/getAndCheckDGtalTools.sh
    - stage: "Deploy"
      name: "Building and deploying the documentation"
      script: /bin/true
