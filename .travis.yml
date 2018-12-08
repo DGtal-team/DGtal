@@ -42,13 +42,13 @@ addons:
 ############
 # Main rules
 ############
+script:
+  - echo "BALMMMA"
+  - /bin/true
+
 
 jobs:
  include:
-   - stage: "DGtal"
-     name: "Unit Tests"
-     script: /bin/true
-        #- source .travis/before_global.sh
    - stage: "DGtalTools"
      name: "Testing DGtalTools using this DGtal branch"
      script: /bin/true
