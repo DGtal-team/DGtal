@@ -45,9 +45,7 @@ addons:
 
 jobs:
  include:
-    - os: linux
-    - os: osx
-    - stage: "DGtal"
+   - stage: "DGtal"
      name: "Unit Tests"
      script: /bin/true
         #- source .travis/before_global.sh
