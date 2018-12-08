@@ -4,7 +4,6 @@ $SCRIPT_BEGIN
 #
 # Local install of Eigen on linux system
 #
-
 export EIGEN_ROOT="/usr/local/"
 
 if [ "$TRAVIS_OS_NAME" == linux ];

@@ -54,9 +54,9 @@ mkdir -p "$SRC_DIR/deps/local"
 #############################
 #############################
 echo "C++ ===> $CXXCOMPILER"
+
 if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source "$SRC_DIR/.travis/install_eigen.sh" ; fi
 echo $EIGEN_ROOT
-if [ $CONFIG == "Documentation" ]; then export BUILD_DOC="true"; if [ $OriginalRepo == "true" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then export UPLOAD_DOC="true"; fi; fi
 if [ $CONFIG == "Debug,Magick,GMP,ITK,FFTW3" ]; then export BUILD_ALL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON"; fi
 if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then export BUILD_ALL="true"; export BUILD_DEC="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"; fi
 if [ $CONFIG == "DGtalTools" ]; then export BUILD_DGTAL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"; fi
@@ -70,5 +70,18 @@ if [ $TRAVIS_OS_NAME == linux ]; then echo "All done."; fi
 if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.sh"; fi
 source "$SRC_DIR/.travis/fix_step_dependencies.sh"
 
+
+#############################
+#############################
+#Build directory
+cd "$BUILD_DIR"
+
+# Common build options
+export BTYPE="$BTYPE -DBUILD_TESTING=$BUILD_TESTS -DBUILD_EXAMPLES=$BUILD_EXAMPLES -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER"
+
+# Cmake
+echo "Using C++ = $CXXCOMPILER"
+echo "CMake options = $BTYPE"
+cmake "$SRC_DIR" $BTYPE
 
 $SCRIPT_END
