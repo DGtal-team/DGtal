@@ -35,12 +35,15 @@ export BJOBS=2 # See https://docs.travis-ci.com/user/reference/overview/#Virtual
 # Compiler configuration
 export CCOMPILER=$CC
 export CXXCOMPILER=$CXX
-if [ "$CC" == "gcc" ]
+
+if [ $TRAVIS_OS_NAME == linux ]
 then
+ if [ "$CC" == "gcc" ]
+ then
     export CCOMPILER=gcc-5
     export CXXCOMPILER=g++-5
+ fi
 fi
-
 # Build directory
 mkdir -p "$BUILD_DIR"
 
