@@ -74,7 +74,7 @@ export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true
 cd "$BUILD_DIR"
 
 # Common build options
-export BTYPE="$BTYPE -DBUILD_TESTING=$BUILD_TESTS -DBUILD_EXAMPLES=$BUILD_EXAMPLES -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER"
+export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER"
 
 # Cmake
 echo "Using C++ = $CXXCOMPILER"
@@ -85,7 +85,7 @@ cmake "$SRC_DIR" $BTYPE
 #     make all
 #############################
 cd "$BUILD_DIR"
-#source "$SRC_DIR/.travis/build_dec.sh"   #Sequential DEC examples, this would also build library
+source "$SRC_DIR/.travis/build_dec.sh"   #Sequential DEC examples, this would also build library
 make -j $BJOBS
 
 
