@@ -19,15 +19,6 @@ echo $SCRIPT_END
 
 $SCRIPT_BEGIN
 
-# Main steps configuration
-export BUILD_DOC="false"
-export UPLOAD_DOC="false"
-export BUILD_DGTAL="false"
-export BUILD_EXAMPLES="false"
-export BUILD_TESTS="false"
-export BUILD_DEC="false"
-export BUILD_ALL="false" # Build DGtal, examples and tests
-
 # Build default options
 export BTYPE=
 export BJOBS=2 # See https://docs.travis-ci.com/user/reference/overview/#Virtualisation-Environment-vs-Operating-System
@@ -88,6 +79,7 @@ cmake "$SRC_DIR" $BTYPE
 #############################
 #     make all
 #############################
+echo "Preparing the build..."
 cd "$BUILD_DIR"
 source "$SRC_DIR/.travis/build_dec.sh"   #Sequential DEC examples, this would also build library
 make -j $BJOBS
