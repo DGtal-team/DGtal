@@ -10,6 +10,13 @@ os:
   - linux
   - osx
 
+matrix:
+  fast_finish: true
+  exclude:
+    - os: osx
+      compiler: gcc
+
+
 cache: apt
 
 notifications:
