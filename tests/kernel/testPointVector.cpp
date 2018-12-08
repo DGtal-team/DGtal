@@ -36,6 +36,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
+#include <boost/array.hpp>
 
 #include "DGtalCatch.h"
 
@@ -121,6 +122,18 @@ TEST_CASE( "Point Vector Unit tests" )
       REQUIRE( p1.dot(p2) == 30 );
     }
 
+  
+  SECTION("Testing Containers")
+  {
+    typedef PointVector<3, int, boost::array<int, 3> > PA6;
+    PA6 pa(2,3,4);
+    CAPTURE(pa);
+    
+    typedef PointVector<3, int, std::array<int, 3> > PV6;
+    PV6 pv(2,3,4);
+    CAPTURE(pv) ;
+    
+  }
 }
 
 

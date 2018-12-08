@@ -52,16 +52,6 @@ bool testPointVectorContainers()
 {
   trace.beginBlock ( "Testing different point containers ..." );
 
-  typedef PointVector<3, int, boost::array<int, 3> > PA6;
-  PA6 pa(2,3,4);
-  
-  trace.info() <<"boost::array container "<< pa<<std::endl;
-  
-  typedef PointVector<3, int, std::array<int, 3> > PV6;
-  PV6 pv(1,3,4);
-  trace.info() <<"std::array container "<< pv<<std::endl;
-
-  trace.endBlock();
   
   return true;
 }
