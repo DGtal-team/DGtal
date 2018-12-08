@@ -63,6 +63,8 @@ jobs:
    - stage: "Documentation"
      name: "Building and deploying the documentation"
      script:  #need doxygen first
+       - .travis/install_doxygen.sh
        - .travis/before_global.sh
        - .travis/build_dgtal.sh
        - .travis/build_doc.sh
+       - .travis/checkDoxygenDocumentation.sh
