@@ -26,9 +26,6 @@ addons:
     - libhdf5-serial-dev
     - libboost-dev
     - libcairo2-dev
-    - doxygen
-    - doxygen-latex
-    - graphviz
     - libboost-system-dev
     - libboost-program-options-dev
     - libgmp-dev
@@ -43,17 +40,15 @@ addons:
 # Main rules
 ############
 script:
-  - echo "BALMMMA"
-  - /bin/true
-
+  - source .travis/before_global.sh
 
 jobs:
  include:
    - stage: "DGtalTools"
-     name: "Testing DGtalTools using this DGtal branch"
+     name: "Testing DGtalTools against this DGtal branch"
      script: /bin/true
-    #    - source .travis/before_global.sh
+  #   - source .travis/before_global.sh
   #      - source .travis/getAndCheckDGtalTools.sh
    - stage: "Deploy"
-     name: "Deploying Documentation"
+     name: "Building and deploying the documentation"
      script: /bin/true
