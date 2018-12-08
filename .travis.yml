@@ -26,28 +26,9 @@ notifications:
 #
 ########
 env:
-  - CONFIG="Debug,Magick,GMP,ITK,FFTW3"
-  - CONFIG="Debug,Cairo,QGLviewer,HDF5,EIGEN"
-  - CONFIG="Documentation"
-  - CONFIG="DGtalTools"
+  - CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 
 secure: "Ra00iyQ+5wm7G3XfaaI40aKgfcGTigfmEd+3/TY1hYcjYnJvNOG0dekolcMDSelE8SfqLcWYnK6+vtOCmyZuUWheUhA+83Tgq/bIH6dMzSvLkJdyq2D9me4sX6zx3ct90swP7Adj8EBHmv61pH5OBeEcmNWJNIZmNQs3+1awca4="
-
-
-matrix:
-  fast_finish: true
-  exclude:
-    - os: osx
-      env: CONFIG="Documentation"
-    - compiler: gcc
-      os: linux
-      env: CONFIG="Documentation"
-    - compiler: gcc
-      env: CONFIG="DGtalTools"
-    - os: osx
-      env: CONFIG="DGtalTools"
-    - os: osx
-      compiler: gcc
 
 
 addons:
@@ -72,6 +53,7 @@ addons:
     - libfftw3-dev
     - g++-5
 
+
 ############
 # Main rules
 ############
@@ -82,31 +64,11 @@ jobs:
      name: "Unit Tests"
      script:
         - source .travis/before_global.sh
-        - "$SRC_DIR/.travis/configure_build.sh"
-        - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_dgtal.sh"; fi
-        - if [ $BUILD_DEC == "true" ]; then "$SRC_DIR/.travis/build_dec.sh"; fi
-        - if [ $BUILD_EXAMPLES == "true" ]; then "$SRC_DIR/.travis/build_examples.sh"; fi
-        - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/build_tests.sh"; fi
-        - if [ $BUILD_TESTS == "true" ]; then "$SRC_DIR/.travis/check_tests.sh"; fi
-        - if [ $BUILD_DGTAL == "true" ]; then "$SRC_DIR/.travis/build_all.sh"; fi
-        - if [ $CONFIG == "DGtalTools" ]; then "$SRC_DIR/.travis/getAndCheckDGtalTools.sh" ; fi
-        - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/build_doc.sh"; fi
-        - if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/checkDoxygenDocumentation.sh"; fi
+  - stage: "DGtalTools"
+     name: "Testing DGtalTools using this DGtal branch"
+     script:
+        - source .travis/before_global.sh
+        - source .travis/getAndCheckDGtalTools.sh
    - stage: "Deploy"
      name: "Deploying Documentation"
      script: /bin/true
-
-###########
-## Building the documentation
-###########
-deploy:
-    provider: pages
-    skip-cleanup: true
-    github-token: $SECRET_GITHUB_TOKEN
-    keep-history: true
-    on:
-        condition: $BUILD_DOC=="true"
-    local-dir: documentation
-    repo: DGtal-team/testingdgtal.github.io
-    target-branch: master
- 
