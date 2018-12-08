@@ -2,9 +2,11 @@
 $SCRIPT_BEGIN
 
 ### Dec
-cd "$BUILD_DIR"
-make DGtal -j $BJOBS
-make exampleDiscreteExteriorCalculusChladni
+echo "op"
+echo cd "$BUILD_DIR"
+echo $BUILD_DIR
+echo make DGtal -j $BJOBS
+echo make exampleDiscreteExteriorCalculusChladni
 #make exampleDiscreteExteriorCalculusSolve
 #make exampleDECSurface
 make examplePropagation
