@@ -53,6 +53,10 @@ mkdir -p "$SRC_DIR/deps/local"
 
 #############################
 #############################
+
+export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
+
+
 echo "C++ ===> $CXXCOMPILER"
 
 if [ $CONFIG == "Debug,Cairo,QGLviewer,HDF5,EIGEN" ]; then source "$SRC_DIR/.travis/install_eigen.sh" ; fi

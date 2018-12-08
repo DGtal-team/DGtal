@@ -10,26 +10,12 @@ os:
   - linux
   - osx
 
-
 cache: apt
 
 notifications:
   slack: dgtal:FObxCZFoeQkkaRuktJD5uhnN
 
-########
-# matrix details:
-#    - one build for the documentation on macosx (clang) and only for commits on
-#      DGtal-team repo (no pull request). Encrypted var. required.
-#    - No gcc on macos
-#    - clang build of dgtaltools in linux only. In this case, some dependencies are considerd in DGtal (GMP, QGLViewer, CAIRO, HDF5, FFTW3)
-#    - Otherwise, 2 os x 2 configs
-#
-########
-env:
-  - CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
-
 secure: "Ra00iyQ+5wm7G3XfaaI40aKgfcGTigfmEd+3/TY1hYcjYnJvNOG0dekolcMDSelE8SfqLcWYnK6+vtOCmyZuUWheUhA+83Tgq/bIH6dMzSvLkJdyq2D9me4sX6zx3ct90swP7Adj8EBHmv61pH5OBeEcmNWJNIZmNQs3+1awca4="
-
 
 addons:
   apt:
@@ -64,7 +50,7 @@ jobs:
      name: "Unit Tests"
      script:
         - source .travis/before_global.sh
-  - stage: "DGtalTools"
+   - stage: "DGtalTools"
      name: "Testing DGtalTools using this DGtal branch"
      script:
         - source .travis/before_global.sh
