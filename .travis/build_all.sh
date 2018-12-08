@@ -39,5 +39,5 @@ cd "$BUILD_DIR"
 make examplePropagation
 make testDiscreteExteriorCalculusExtended
 make exampleDiscreteExteriorCalculusChladni
-make -j $BJOBS
+make -j $BJOBS && cd $SRC_DIR
 $SCRIPT_END
