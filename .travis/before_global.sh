@@ -85,7 +85,7 @@ cmake "$SRC_DIR" $BTYPE
 #     make all
 #############################
 cd "$BUILD_DIR"
-source "$SRC_DIR/.travis/build_dec"   #Sequential DEC examples, this would also build library
+source "$SRC_DIR/.travis/build_dec.sh"   #Sequential DEC examples, this would also build library
 make -j $BJOBS
 
 
