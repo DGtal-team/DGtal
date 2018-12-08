@@ -58,21 +58,14 @@ export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 
 # OS dependent deps
 if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.sh"; fi
-source "$SRC_DIR/.travis/install_eigen.sh" 
+source "$SRC_DIR/.travis/install_eigen.sh"
 echo $EIGEN_ROOT
 
-export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"
-
-
-#if [ $CONFIG == "DGtalTools" ]; then export BUILD_DGTAL="true"; export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true"; fi
-#if [ $UPLOAD_DOC == "true" ]; then openssl aes-256-cbc -K $encrypted_47769ec71275_key -iv $encrypted_47769ec71275_iv -in "$SRC_DIR/.travis/dgtal_rsa.enc" -out "$SRC_DIR/.travis/dgtal_rsa" -d; chmod 600 "$SRC_DIR/.travis/dgtal_rsa"; fi
-#if [ $BUILD_DOC == "true" ]; then wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile; fi
-#if [ $BUILD_DOC == "true" ]; then "$SRC_DIR/.travis/install_doxygen.sh";  export BTYPE="-DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.10/bin/doxygen"; fi
-
-
-#
-#source "$SRC_DIR/.travis/fix_step_dependencies.sh"
-
+export BTYPE="-DBUILD_EXAMPLES=true -DBUILD_TESTING=true"
+export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
+                     -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug \
+                     -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true\
+                     -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"
 
 #############################
 #     cmake
@@ -92,6 +85,7 @@ cmake "$SRC_DIR" $BTYPE
 #     make all
 #############################
 cd "$BUILD_DIR"
+source "$SRC_DIR/.travis/build_dec"   #Sequential DEC examples, this would also build library
 make -j $BJOBS
 
 
