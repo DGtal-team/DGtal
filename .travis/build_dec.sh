@@ -2,14 +2,10 @@
 $SCRIPT_BEGIN
 
 ### Dec
-echo "op"
-echo cd "$BUILD_DIR"
+cd "$BUILD_DIR"
 echo $BUILD_DIR
-echo make DGtal -j $BJOBS
-echo make exampleDiscreteExteriorCalculusChladni
-#make exampleDiscreteExteriorCalculusSolve
-#make exampleDECSurface
 make examplePropagation
 make testDiscreteExteriorCalculusExtended
+make exampleDiscreteExteriorCalculusChladni
 
 $SCRIPT_END
