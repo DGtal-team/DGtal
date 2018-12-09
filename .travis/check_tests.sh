@@ -3,8 +3,8 @@ $SCRIPT_BEGIN
 
 echo "Running the unit tests."
 ### DGtal Tests
+echo cd "$BUILD_DIR/tests"
 cd "$BUILD_DIR/tests"
-
 #if [ -f io/writers/testMagickWriter ]; then
 #    io/writers/testMagickWriter -s
 #fi
