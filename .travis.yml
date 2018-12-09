@@ -50,6 +50,8 @@ addons:
 script:
   - source .travis/before_global.sh
   - source .travis/build_all.sh
+  - cd "$TRAVIS_BUILD_DIR"
+  - echo "Checking, dir=$PWD"
   - source .travis/check_tests.sh
 
 jobs:
