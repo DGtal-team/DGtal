@@ -1,6 +1,7 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
+echo "Running the unit tests."
 ### DGtal Tests
 cd "$BUILD_DIR/tests"
 
