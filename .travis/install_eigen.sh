@@ -12,7 +12,7 @@ then
     wget http://bitbucket.org/eigen/eigen/get/3.2.10.tar.bz2
 
     bunzip2 3.2.10.tar.bz2
-    tar xvf 3.2.10.tar
+    tar xf 3.2.10.tar 
 
     cd eigen-eigen-b9cd8366d4e8
     mkdir build ; cd build
