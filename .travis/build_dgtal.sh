@@ -36,5 +36,5 @@ cmake "$SRC_DIR" $BTYPE
 echo "Preparing the build..."
 cd "$BUILD_DIR"
 #Sequential DEC examples, this would also build library
-make -j $BJOBS && cd "$SRC_DIR"
+make -j $BJOBS 
 $SCRIPT_END
