@@ -20,7 +20,7 @@ if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.
 #     cmake
 #############################
 #Build directory
-cd "$BUILD_DIR"
+cd $BUILD_DIR
 
 # Common build options
 export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMPILER"
