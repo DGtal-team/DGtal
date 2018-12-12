@@ -10,8 +10,8 @@ export BUILD_DIR="$SRC_DIR/build"
 export SET_OPTIONS=ev
 
 # Commands at script begin and end
-export SCRIPT_BEGIN="set +$SET_OPTIONS"
-export SCRIPT_END="set -$SET_OPTIONS ; cd \"$SRC_DIR\""
+export SCRIPT_BEGIN="set -$SET_OPTIONS"
+export SCRIPT_END="set +$SET_OPTIONS ; cd \"$SRC_DIR\""
 
 # Debug
 echo $SCRIPT_BEGIN

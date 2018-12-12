@@ -33,7 +33,7 @@ cmake "$SRC_DIR" $BTYPE
 #     make all
 #############################
 echo "Preparing the build..."
-cd "$BUILD_DIR"
+#cd "$BUILD_DIR"
 #Sequential DEC examples, this would also build library
 make examplePropagation
 make testDiscreteExteriorCalculusExtended
