@@ -37,33 +37,24 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
-
-
-
-
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
-
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
-  
+
+#include "DGtalCatch.h"
+
 
 using namespace DGtal;
 using namespace DGtal::functors;
 using namespace LibBoard;
 
-
-
-
-int main(int , char **)
+TEST_CASE( "HalfplaneUnit tests" )
 {
-
-
-
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef StraightLineFrom2Points<Point> StraightLine;
@@ -73,10 +64,8 @@ int main(int , char **)
   Point r1(2,0);
   Point r2(0,2);
   Point r3(10,4);
-
   StraightLine line(p,q);
-
-
+  
   //halfplane upward oriented and closed 
 //! [HalfPlaneTypedefUpClosed]
   typedef Point2ShapePredicate<StraightLine,true,true> UpClosedHalfPlane;
@@ -89,9 +78,7 @@ int main(int , char **)
 
   //Location
   trace.beginBlock("Creation of a halfplane and test some points");
-
   std::string res;
-
   trace.info() << "created line:" << std::endl;
   trace.info() << line << std::endl;
 
@@ -99,52 +86,20 @@ int main(int , char **)
   //line is an instance of StraightLine
   UpClosedHalfPlane hp(line);
   trace.info() << hp << std::endl;
-  trace.info() << "Does " << r1 << " belongs to hp (no)?" << std::endl;
-  res = hp(r1)?"yes":"no";
-  trace.info() << res << std::endl;
+    trace.info() << "Does " << r1 << " belongs to hp (no)?" << std::endl;
+  REQUIRE( !hp(r1) );
 //! [HalfPlaneUsage]
-
-  trace.info() << "Does " << r2 << " belongs to hp (yes)?" << std::endl;
-  res = hp(r2)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.info() << "Does " << r3 << " belongs to hp (yes)?" << std::endl;
-  res = hp(r3)?"yes":"no";
-  trace.info() << res << std::endl;
+  REQUIRE(hp(r2));
+  REQUIRE(hp(r3));
 
 
   UpOpenHalfPlane hp2(line);
-  trace.info() << hp2 << std::endl;
-
-  trace.info() << "Does " << r1 << " belongs to hp2 (no)?" << std::endl;
-  res = hp2(r1)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.info() << "Does " << r2 << " belongs to hp2 (yes)?" << std::endl;
-  res = hp2(r2)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.info() << "Does " << r3 << " belongs to hp2 (no)?" << std::endl;
-  res = hp2(r3)?"yes":"no";
-  trace.info() << res << std::endl;
+  REQUIRE(! hp2(r1));
+  REQUIRE(hp2(r2));
+  REQUIRE( ! hp2(r3) );
 
   DownClosedHalfPlane hp3(line);
-  trace.info() << hp3 << std::endl;
-
-  trace.info() << "Does " << r1 << " belongs to hp3 (yes)?" << std::endl;
-  res = hp3(r1)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.info() << "Does " << r2 << " belongs to hp3 (no)?" << std::endl;
-  res = hp3(r2)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.info() << "Does " << r3 << " belongs to hp3 (yes)?" << std::endl;
-  res = hp3(r3)?"yes":"no";
-  trace.info() << res << std::endl;
-
-  trace.endBlock();
-
-
-  return 0;
+  REQUIRE(hp3(r1));
+  REQUIRE(!hp3(r2));
+  REQUIRE(hp3(r3));
 }
