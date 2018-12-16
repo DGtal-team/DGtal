@@ -1,7 +1,7 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
-cd "$BUILD_DIR"
+#cd "$BUILD_DIR"
 
 export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 
@@ -36,7 +36,7 @@ cmake "$SRC_DIR" $BTYPE
 #     make all
 #############################
 echo "Preparing the build..."
-cd "$BUILD_DIR"
+#cd "$BUILD_DIR"
 #Sequential DEC examples, this would also build library
 make -j $BJOBS
 $SCRIPT_END
