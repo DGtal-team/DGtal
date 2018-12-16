@@ -56,7 +56,7 @@ script:
 jobs:
  include:
    - stage: "DGtalTools"
-     name: "Testing DGtalTools + DGtal"
+     name: "Testing DGtalTools + DGtal with examples"
      script:
        - source .travis/before_global.sh
        - source .travis/build_dgtal.sh
