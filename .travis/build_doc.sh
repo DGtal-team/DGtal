@@ -3,5 +3,5 @@ $SCRIPT_BEGIN
 
 ### DGtal Doc
 cd build
-make doc > buildDoc.log
+ninja doc > buildDoc.log
 $SCRIPT_END
