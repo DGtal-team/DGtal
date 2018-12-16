@@ -7,6 +7,7 @@ export SRC_DIR="$TRAVIS_BUILD_DIR"
 DGTALPATH="$SRC_DIR"
 echo "DGtal path = $DGTALPATH"
 echo "Build = $BUILD"
+echo "TRAVIS_BUILD_DIR= $TRAVIS_BUILD_DIR"
 git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
