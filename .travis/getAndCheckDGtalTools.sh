@@ -1,9 +1,12 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
+export SRC_DIR="$TRAVIS_BUILD_DIR"
+
 ## Get and test if DGtalTools compiles
 DGTALPATH="$SRC_DIR"
 echo "DGtal path = $DGTALPATH"
+echo "Build = $BUILD"
 git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
