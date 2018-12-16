@@ -29,7 +29,7 @@ echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
 echo "Pwd = $PWD"
 echo "SRC_dir=$SRC_DIR"
-cmake "$SRC_DIR" $BTYPE
+cmake "$SRC_DIR" $BTYPE -G Ninja
 
 #############################
 #     make all
@@ -38,7 +38,7 @@ echo "Preparing the build..."
 
 #Sequential DEC examples, this would also build library
 #make examplePropagation
-make testDiscreteExteriorCalculusExtended
+ninja testDiscreteExteriorCalculusExtended
 #make exampleDiscreteExteriorCalculusChladni
-make -j $BJOBS
+ninja
 $SCRIPT_END
