@@ -36,8 +36,7 @@ then
  fi
 fi
 # Build directory
-echo "Creating build folder= $BUILD_DIR"
-mkdir -p "$BUILD_DIR"
+mkdir -p build
 
 export MAGICK_CONFIG_PATH=".travis/delegate.mgk"
 $MAGICK_CODER_MODULE_PATH

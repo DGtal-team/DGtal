@@ -2,6 +2,6 @@
 $SCRIPT_BEGIN
 
 ### DGtal Doc
-cd "$BUILD_DIR"
+cd build
 make doc > buildDoc.log
 $SCRIPT_END

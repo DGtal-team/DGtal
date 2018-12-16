@@ -1,7 +1,6 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
-export SRC_DIR="$TRAVIS_BUILD_DIR"
 
 ## Get and test if DGtalTools compiles
 DGTALPATH="$SRC_DIR"
@@ -11,10 +10,9 @@ echo "TRAVIS_BUILD_DIR= $TRAVIS_BUILD_DIR"
 git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
-cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR  #inplace
-echo "cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR"
-echo cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR  #inplace
+cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR/build  #inplace
+echo "Running cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR/build"
+echo cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR/build  #inplace
   #inplace
 make -j $BJOBS
-
 $SCRIPT_END

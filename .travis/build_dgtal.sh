@@ -21,7 +21,7 @@ if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.
 #     cmake
 #############################
 #Build directory
-cd "$BUILD_DIR"
+cd build
 echo "Build folder= $BUILD_DIR"
 
 # Common build options
