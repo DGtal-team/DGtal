@@ -30,7 +30,7 @@ export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMP
 # Cmake
 echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
-cmake "$SRC_DIR" $BTYPE
+cmake "$SRC_DIR" $BTYPE -G Ninja
 
 #############################
 #     make all
@@ -38,5 +38,5 @@ cmake "$SRC_DIR" $BTYPE
 echo "Preparing the build..."
 #cd "$BUILD_DIR"
 #Sequential DEC examples, this would also build library
-make -j $BJOBS
+ninja
 $SCRIPT_END
