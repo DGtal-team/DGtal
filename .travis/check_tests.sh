@@ -4,7 +4,7 @@ $SCRIPT_BEGIN
 echo "Running the unit tests."
 ### DGtal Tests
 echo cd "$BUILD_DIR/tests"
-cd build/tests
+cd "$BUILD_DIR/tests"
 ctest -j $BJOBS --output-on-failure
 $SCRIPT_END
 
