@@ -12,6 +12,9 @@ git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
 cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR  #inplace
+echo "cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR"
+echo cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR  #inplace
+  #inplace
 make -j $BJOBS
 
 $SCRIPT_END
