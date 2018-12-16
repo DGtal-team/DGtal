@@ -11,7 +11,7 @@ echo "TRAVIS_BUILD_DIR= $TRAVIS_BUILD_DIR"
 git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
-cmake .. -DDGtal_DIR="$SRC_DIR" $BUILD   #inplace
+cmake .. -DDGtal_DIR=$TRAVIS_BUILD_DIR  #inplace
 make -j $BJOBS
 
 $SCRIPT_END
