@@ -42,6 +42,7 @@ addons:
     - libinsighttoolkit3-dev
     - libfftw3-dev
     - g++-5
+    - ninja-build
 
 ############
 # Main rules
