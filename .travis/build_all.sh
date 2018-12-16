@@ -27,13 +27,15 @@ export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMP
 # Cmake
 echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
+echo "Pwd = $PWD"
+
 cmake "$SRC_DIR" $BTYPE
 
 #############################
 #     make all
 #############################
 echo "Preparing the build..."
-#cd "$BUILD_DIR"
+cd "$BUILD_DIR"
 #Sequential DEC examples, this would also build library
 #make examplePropagation
 make testDiscreteExteriorCalculusExtended
