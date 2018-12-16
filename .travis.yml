@@ -16,7 +16,6 @@ matrix:
     - os: osx
       compiler: gcc
 
-
 cache: apt
 
 notifications:
