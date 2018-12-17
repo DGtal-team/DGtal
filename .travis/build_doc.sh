@@ -2,6 +2,5 @@
 $SCRIPT_BEGIN
 
 ### DGtal Doc
-ninja doc > buildDoc.log
-cat buildDoc.log
+make doc > buildDoc.log
 $SCRIPT_END
