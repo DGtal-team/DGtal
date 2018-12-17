@@ -74,7 +74,7 @@ jobs:
      name: "Building and deploying the documentation"
      script:  #need doxygen first
        - source .travis/before_global.sh
-       - source .travis/install_doxygen.sh
        - source .travis/cmake_dgtal.sh
+       - cd "$TRAVIS_BUILD_DIR/build/" 
        - source .travis/build_doc.sh
        - source .travis/checkDoxygenDocumentation.sh
