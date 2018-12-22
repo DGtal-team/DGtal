@@ -78,4 +78,4 @@ jobs:
        - source .travis/cmake_dgtal.sh
        - cd "$TRAVIS_BUILD_DIR/build"
        - source ../.travis/build_doc.sh
-       - source ../.travis/checkDoxygenDocumentation.sh
+      # - source ../.travis/checkDoxygenDocumentation.sh
