@@ -79,3 +79,11 @@ jobs:
        - cd "$TRAVIS_BUILD_DIR/build"
        - source ../.travis/build_doc.sh
       # - source ../.travis/checkDoxygenDocumentation.sh
+     deploy:
+       provider: pages
+       skip-cleanup: true
+       github-token: $GITHUB_TOKEN
+       keep-history: true
+       local-dir: html
+       repo: DGtal-team/DGtal
+       target-branch: doc
