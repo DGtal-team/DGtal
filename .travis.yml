@@ -84,6 +84,5 @@ jobs:
        skip-cleanup: true
        github-token: $GITHUB_TOKEN
        keep-history: true
-       local-dir: html
-       repo: DGtal-team/DGtal
-       target-branch: doc
+       repo: DGtal-team/dgtal.github.io
+       target-branch: master
