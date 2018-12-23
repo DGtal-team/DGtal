@@ -9,7 +9,7 @@ export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 source "$SRC_DIR/.travis/install_eigen.sh"
 echo $EIGEN_ROOT
 
-
+echo "SRCDIR=$SRC_DIR"
 echo "PWDDDDD = $PWD"
 
 export BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=false"
