@@ -81,7 +81,7 @@ jobs:
        - cd "$TRAVIS_BUILD_DIR/build"
        - source ../.travis/cmake_dgtal.sh
        - cd "$TRAVIS_BUILD_DIR/build"
-       - $HOME/doxygen/bin/doxygen --version
+       - $TRAVIS_BUILD_DIR/doxygen/bin/doxygen --version
        - source ../.travis/build_doc.sh
       # - source ../.travis/checkDoxygenDocumentation.sh
      deploy:
