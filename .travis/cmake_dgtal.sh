@@ -11,6 +11,7 @@ echo $EIGEN_ROOT
 cd build
 echo "SRCDIR=$SRC_DIR"
 echo "PWDDDDD = $PWD"
+echo " -DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.14/bin/doxygen"
 
 export BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=false"
 export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
