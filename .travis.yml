@@ -77,7 +77,7 @@ jobs:
        - source .travis/before_global.sh
        - source .travis/install_doxygen
        - cd "$TRAVIS_BUILD_DIR/build"
-       - source .travis/cmake_dgtal.sh
+       - source ../.travis/cmake_dgtal.sh
        - cd "$TRAVIS_BUILD_DIR/build"
        - source ../.travis/build_doc.sh
       # - source ../.travis/checkDoxygenDocumentation.sh
