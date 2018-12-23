@@ -41,4 +41,11 @@ export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMP
 echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
 cmake "$SRC_DIR" $BTYPE
+
+### Downloading tag file for DGtalTools
+wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+
+### DGtal Doc
+make doc > buildDoc.log
+
 $SCRIPT_END
