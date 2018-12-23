@@ -83,7 +83,7 @@ jobs:
        - cd "$TRAVIS_BUILD_DIR/build"
        - $TRAVIS_BUILD_DIR/doxygen/bin/doxygen --version
        - source ../.travis/build_doc.sh
-      # - source ../.travis/checkDoxygenDocumentation.sh
+       - source ../.travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
        skip-cleanup: true
