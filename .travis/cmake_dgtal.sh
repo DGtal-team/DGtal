@@ -13,9 +13,8 @@ export BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=false"
 export BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
                      -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug \
                      -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true\
-                     -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'"
-
-if [ $TRAVIS_OS_NAME == osx ]; then source "$SRC_DIR/.travis/install_deps_macos.sh"; fi
+                     -DWARNING_AS_ERROR=OFF -DEIGEN3_INCLUDE_DIR='$EIGEN_ROOT/include/eigen3'\
+                     -DDOXYGEN_EXECUTABLE=$HOME/doxygen/doxygen-1.8.14/bin/doxygen"
 
 #############################
 #     cmake
@@ -30,5 +29,5 @@ export BTYPE="$BTYPE -DCMAKE_CXX_COMPILER=$CXXCOMPILER -DCMAKE_C_COMPILER=$CCOMP
 # Cmake
 echo "Using C++ = $CXXCOMPILER"
 echo "CMake options = $BTYPE"
-cmake "$SRC_DIR" $BTYPE 
+cmake "$SRC_DIR" $BTYPE
 $SCRIPT_END
