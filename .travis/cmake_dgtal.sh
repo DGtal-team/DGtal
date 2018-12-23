@@ -8,7 +8,7 @@ export CONFIG="Debug,Magick,GMP,ITK,FFTW3,Debug,Cairo,QGLviewer,HDF5,EIGEN"
 # OS dependent deps
 source "$SRC_DIR/.travis/install_eigen.sh"
 echo $EIGEN_ROOT
-
+cd build
 echo "SRCDIR=$SRC_DIR"
 echo "PWDDDDD = $PWD"
 
