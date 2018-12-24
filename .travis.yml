@@ -86,4 +86,6 @@ jobs:
        github-token: $GITHUB_TOKEN
        keep-history: true
        repo: DGtal-team/dgtal.github.io
-       target-branch: master
+       target-branch: doc
+       verbose: true
+       local-dir: "$TRAVIS_BUILD_DIR/build/html"
