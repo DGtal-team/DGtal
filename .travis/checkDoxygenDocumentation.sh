@@ -3,7 +3,7 @@ $SCRIPT_BEGIN
 
 return_code=0
 
-DOXYGENLOG=${BUILD_DIR}/doxygen.log
+DOXYGENLOG=doxygen.log
 
 ## We first check that the doxygen.log is empty
 if [[ -f "$DOXYGENLOG" ]]
@@ -56,7 +56,7 @@ cd ..
 ## We check examples consistency
 #
 # TODO
-# 
+#
 
 $SCRIPT_END
 

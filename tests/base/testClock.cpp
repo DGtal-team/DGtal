@@ -78,16 +78,16 @@ bool test_MultipleLoop()
 
   c3.startClock();
   c.startClock();
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 
   c2.startClock();
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 
   tick2 = c2.stopClock();
 
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43450; i++)
     tmp = cos(tmp+i);
 
   tick1 = c.stopClock();
@@ -111,17 +111,17 @@ bool test_RestartClock()
 
 #if !defined(WIN32)
   
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 	usleep(20000);
   tick_accum += c_accum.restartClock();
 
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 	usleep(20000);
   tick_accum += c_accum.restartClock();
 
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 	usleep(20000);
   tick_accum += c_accum.restartClock();
