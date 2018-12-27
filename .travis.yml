@@ -80,7 +80,7 @@ jobs:
        - cd "$TRAVIS_BUILD_DIR/build"
        - source ../.travis/build_dgtal_doc.sh
        - cd "$TRAVIS_BUILD_DIR/build"
-       - source ../.travis/checkDoxygenDocumentation.sh
+       #- source ../.travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
        skip-cleanup: true
