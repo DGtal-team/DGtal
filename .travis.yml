@@ -52,7 +52,7 @@ addons:
     - graphviz
     - flex
     - bison
-    - texlive-base
+    - texlive
 
 ############
 # Main rules
