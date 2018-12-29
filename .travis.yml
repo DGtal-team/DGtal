@@ -86,7 +86,7 @@ jobs:
        skip-cleanup: true
        github-token: $GITHUB_TOKEN
        keep-history: true
-       repo: DGtal-team/Documentation-nightly
+       repo: DGtal-team/doc-nightly
        target-branch: master
        verbose: true
        local-dir: "$TRAVIS_BUILD_DIR/build/html"
