@@ -216,27 +216,29 @@ As discussed in @ref moduleVolumetric, both VoronoiMap and PowerMap (and their a
 subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
 @f$ corresponds to the cost of the @a closest() or @a
 closestPower() methods for the given metric, and @f$ H @f$ the cost
-of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
+of the @a hiddenBy() or @a hiddenByWeigthed() in dimension @f$ d @f$, the computational costs
 of the separable metrics can be summarized as follows:
 
 
 | Models of CSeparableMetric/CPowerSeparableMetric | C | H | Note |
 |--------------------------------------------------|---|---|------|
 | ExactPredicateLpSeparableMetric<p>               | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
-| InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
-| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
-| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(d) @f$ | @f$ O(d log(n)) @f$ | Exact computations|
+| InexactPredicateLpSeparableMetric with p at construction | @f$ O(d) @f$ | @f$ O(d  log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
+| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(d\cdot log(p)) @f$ | @f$ O(d log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
 | SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
 | experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | @cite dcoeurjo_metric14|
 
 
-Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
+Following this table, VoronoiMap and DistanceTransformatio  have the following computational cost:
 
  \f[  O(d\cdot n^d\cdot (C+H))  \f]
 
-For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@f$.
+The same complexity holds for  PowerMap and ReverseDistanceTransformation for @f$ l_p@f$ metrics.
+
+For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(d^2n^d)@f$.
 */
 }
 }
