@@ -66,8 +66,8 @@ discrete medial axis of the binary shape.
 In fact, the separable decomposition and the associated algorithmic
 tools can be used on a wider class of metrics (see  @cite Hirata1996  or
 @cite Maurer2003PAMI). For instance, all weighted \f$l_p\f$ metrics defined in
-@f$R^n@f$ by
- \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^n w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
+@f$\mathbb{R}^d@f$ by
+ \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^d w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
 can be considered.
 
 In DGtal, we have chosen to implement such volumetric tools such
