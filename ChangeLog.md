@@ -20,13 +20,6 @@
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
 
-- Miscellaneous
-  - Fix Small bug in Integral Invariant Volume Estimator in 2D
-    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
-
-  - Change from private to public access of types Input and Output in SCellToPoint
-    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
-
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
@@ -60,6 +53,8 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix cmputational costs of separable metric predicates in the documentation.
+    (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
 
 - *DEC*
   - Adding missing headers in some files of DEC.
@@ -80,6 +75,12 @@
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
+- *Miscellaneous*
+  - Fix Small bug in Integral Invariant Volume Estimator in 2D
+    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
+  - Change from private to public access of types Input and Output in SCellToPoint
+    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
 
 
 # DGtal 0.9.4.1
