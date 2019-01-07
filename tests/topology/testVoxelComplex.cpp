@@ -53,7 +53,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////
-// Fixture for object from a diamond set and DT26_6 topology.
+// Fixture for object from a diamond set
 ///////////////////////////////////////////////////////////////////////////
 struct Fixture_complex_diamond {
     ///////////////////////////////////////////////////////////
@@ -67,28 +67,27 @@ struct Fixture_complex_diamond {
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureObject =
-        DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
-    using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureObject>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace>;
+
+
+    ///////////////////////////////////////////////////////////
+    // Constructor
+    ///////////////////////////////////////////////////////////
+    Fixture_complex_diamond() :
+        complex_fixture(ks_fixture) {
+            create_complex_from_set(create_set());
+    }
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureObject obj_fixture;
     FixtureComplex complex_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
-    // Constructor
-    ///////////////////////////////////////////////////////////
-    Fixture_complex_diamond() : complex_fixture(ks_fixture) {
-        create_complex_from_object(create_object());
-    }
-
-    ///////////////////////////////////////////////////////////
     // Function members
     ///////////////////////////////////////////////////////////
-    FixtureObject &create_object() {
+    FixtureDigitalSet create_set() {
         using namespace DGtal;
 
         // trace.beginBlock ( "Create Fixture_object_diamond" );
@@ -98,26 +97,22 @@ struct Fixture_complex_diamond {
         Point c(0, 0, 0);
 
         // diamond of radius 4
-        FixtureDigitalSet diamond_set(domain);
+        FixtureDigitalSet set_fixture(domain);
         for (auto it = domain.begin(); it != domain.end(); ++it) {
             if ((*it - c).norm1() <= 3)
-                diamond_set.insertNew(*it);
+                set_fixture.insertNew(*it);
         }
-        diamond_set.erase(c);
+        set_fixture.erase(c);
 
-        FixtureDigitalTopology::ForegroundAdjacency adjF;
-        FixtureDigitalTopology::BackgroundAdjacency adjB;
-        FixtureDigitalTopology topo(
-            adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
-        return obj_fixture = FixtureObject(topo, diamond_set);
+        return set_fixture;
     }
 
-    FixtureComplex &create_complex_from_object(FixtureObject &input_obj) {
+    FixtureComplex &create_complex_from_set(const FixtureDigitalSet &input_set) {
 
-        ks_fixture.init(input_obj.domain().lowerBound(),
-                        input_obj.domain().upperBound(), true);
+        ks_fixture.init(input_set.domain().lowerBound(),
+                        input_set.domain().upperBound(), true);
         complex_fixture = FixtureComplex(ks_fixture);
-        complex_fixture.construct(input_obj);
+        complex_fixture.construct(input_set);
         return complex_fixture;
     }
 };
@@ -251,47 +246,27 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Faces of voxel",
 }
 
 TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
-                 "[neighborhood]") {
+        "[neighborhood]") {
     auto &vc = complex_fixture;
-    SECTION(" comparing neighbors from Kspace and from Object") {
+    SECTION(" get neighbors from Kspace") {
         {
             size_t dim_voxel = 3;
             auto it = vc.begin(dim_voxel);
             for (auto &&n : std::vector<int>(10))
                 ++it;
             auto cell = it->first;
-            auto point_from_objectSet_1 = vc.objPointFromVoxel(cell);
             auto point_from_kspace_1 = cell.preCell().coordinates;
-            SECTION(
-                " points from Kspace and digital set have different coords ") {
-                // point coordinates are different in the Kspace and in
-                // DigitalSet.
-                CHECK(point_from_objectSet_1 != point_from_kspace_1);
-                SECTION("But uCoords from KSpace gives same coords than the "
-                        "object set") {
-                    CHECK(vc.space().uCoords(cell) == point_from_objectSet_1);
-                    CHECK(vc.space().uKCoords(cell) == point_from_kspace_1);
-                }
-            }
+            size_t expected_num_adjacent_voxels = 12;
 
-            SECTION("properNeighborhood from Object with full topology"
-                    "outputs all adjacent voxels") {
-                auto neigh_obj =
-                    vc.object().neighborhood(point_from_objectSet_1);
-                CHECK(neigh_obj.size() == 12);
-                auto propN_obj =
-                    vc.object().properNeighborhood(point_from_objectSet_1);
-                CHECK(propN_obj.size() == 11);
+            SECTION("properNeighborhood from KSpace"
+                    "does not output all adjacent voxels.") {
 
-                SECTION("properNeighborhood from KSpace"
-                        "does not output all adjacent voxels.") {
+                size_t expected_kspace_neighborhood = 7;
+                auto neigh_k = vc.space().uNeighborhood(cell);
+                CHECK(neigh_k.size() == expected_kspace_neighborhood);
 
-                    auto neigh_k = vc.space().uNeighborhood(cell);
-                    CHECK(neigh_k.size() != neigh_obj.size());
-
-                    auto propN_k = vc.space().uProperNeighborhood(cell);
-                    CHECK(propN_k.size() != propN_obj.size());
-                }
+                auto propN_k = vc.space().uProperNeighborhood(cell);
+                CHECK(propN_k.size() == expected_kspace_neighborhood - 1);
             }
 
             SECTION("Getting associated pointels and voxels from input_cell") {
@@ -301,16 +276,16 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
                 for (auto &&p : pointel_set)
                     vc.spelsFromCell(voxel_set, p);
                 SECTION("Gets desired full adjancency for voxels") {
-                    CHECK(voxel_set.size() == 12);
+                    CHECK(voxel_set.size() == expected_num_adjacent_voxels);
                 }
                 auto clique = vc.Kneighborhood(cell);
-                CHECK(clique.nbCells(3) == 12);
+                CHECK(clique.nbCells(3) == expected_num_adjacent_voxels);
             }
         }
     }
 }
 
-TEST_CASE_METHOD(Fixture_complex_diamond, "Test Object Wrappers", "[object]") {
+TEST_CASE_METHOD(Fixture_complex_diamond, "Test Simplicity", "[simplicity]") {
     auto &vc = complex_fixture;
     size_t dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
@@ -329,21 +304,9 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test Object Wrappers", "[object]") {
         }
 
         // Border points are simple in diamond.
-        auto border_size = vc.object().border().size();
+        // auto border_size = vc.object().border().size();
+        size_t border_size = 44;
         REQUIRE(nsimples == border_size);
-    }
-
-    SECTION("querying object connectivity") {
-        REQUIRE(vc.isConnected() == true);
-    }
-}
-
-TEST_CASE_METHOD(Fixture_complex_diamond, "connectedComponents",
-                 "[object][functions][components]") {
-    auto &vc = complex_fixture;
-    SECTION("getting connected components") {
-        auto obj_components = functions::connectedComponents(vc.object(), true);
-        REQUIRE(obj_components.size() == 1);
     }
 }
 
@@ -370,7 +333,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test table wrappers",
         }
 
         // Border points are simple in diamond.
-        auto border_size = vc.object().border().size();
+        size_t border_size = 44;
         REQUIRE(nsimples == border_size);
     }
 }
@@ -382,29 +345,33 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_2", "[clique]") {
         ++itc;
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
+    auto neigh6 = vc.space().uProperNeighborhood(cell);
+    REQUIRE(neigh6.size() == 6);
+    KSpace::Cells cells;
+    for(auto & n : neigh6)
+        if(vc.belongs(n)) cells.push_back(n);
+    REQUIRE(cells.size() == 2);
 
-    auto voxel_point = vc.objPointFromVoxel(cell);
-    auto neigh6 = vc.object().geodesicNeighborhood(
-        DGtal::Z3i::adj6, voxel_point, sqrt(2.0) / 2.0);
-    REQUIRE(neigh6.size() == 2); // It is a corner
     std::vector<std::pair<bool, FixtureComplex::Clique>> cliques_p;
     bool verbose = true;
-    for (auto &&n : neigh6.pointSet()) {
-        cliques_p.emplace_back(vc.K_2(p_cell, n, verbose));
+    for (auto && cell_n : cells) {
+        auto cell_point = vc.space().uCoords(cell_n);
+        cliques_p.emplace_back(vc.K_2(p_cell, cell_point, verbose));
         auto &is_critical = cliques_p.back().first;
         auto &k2_clique = cliques_p.back().second;
         CHECK(is_critical == true);
         CHECK(k2_clique.nbCells(3) == 2);
     }
+
     SECTION(" Check same results for different K_2 interfaces") {
-        for (auto &&n : neigh6.pointSet()) {
-            auto cell_n = vc.space().uSpel(n);
+        for (auto && cell_n : cells) {
             auto co_face = vc.surfelBetweenAdjacentSpels(cell_n, cell);
 
+            auto cell_point = vc.space().uCoords(cell_n);
             using namespace DGtal::functions;
-            CHECK(isEqual(vc.K_2(p_cell, n, false).second,
+            CHECK(isEqual(vc.K_2(p_cell, cell_point, false).second,
                           vc.K_2(cell, cell_n, false).second) == true);
-            CHECK(isEqual(vc.K_2(p_cell, n, false).second,
+            CHECK(isEqual(vc.K_2(p_cell, cell_point, false).second,
                           vc.K_2(co_face, false).second) == true);
         } // endfor
     }     // then_interfaces
@@ -418,10 +385,6 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_1", "[clique]") {
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
 
-    auto voxel_point = vc.objPointFromVoxel(cell);
-    auto neigh6 = vc.object().geodesicNeighborhood(
-        DGtal::Z3i::adj6, voxel_point, sqrt(2.0) / 2.0);
-    REQUIRE(neigh6.size() == 2); // It is a corner
     SECTION("K_1 mask from a linel") {
         auto linel =
             vc.space().uCell(cell.preCell().coordinates + Point{0, 1, 1});
@@ -444,10 +407,6 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_0", "[clique]") {
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
 
-    auto voxel_point = vc.objPointFromVoxel(cell);
-    auto neigh6 = vc.object().geodesicNeighborhood(
-        DGtal::Z3i::adj6, voxel_point, sqrt(2.0) / 2.0);
-    REQUIRE(neigh6.size() == 2); // It is a corner
     SECTION("K_0 mask from a pointel") {
         auto pointel = vc.space().uPointel(p_cell);
         // auto pointel = vc.space().uPointel(Point{0,0,0});
@@ -482,6 +441,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Get All Critical Cliques of diamond",
     }
 }
 
+
 ///////////////////////////////////////////////////////////////////////////
 // Fixture for complex fig 4 of Asymmetric parallel 3D thinning scheme
 ///////////////////////////////////////////////////////////////////////////
@@ -493,19 +453,14 @@ struct Fixture_complex_fig4 {
     using Domain = DGtal::Z3i::Domain;
     using KSpace = DGtal::Z3i::KSpace;
 
-    using FixtureDigitalTopology = DGtal::Z3i::DT26_6;
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureObject =
-        DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
     using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
-    using FixtureComplex =
-        DGtal::VoxelComplex<KSpace, FixtureObject, FixtureMap>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureMap>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureObject obj_fixture;
     FixtureComplex complex_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
@@ -514,13 +469,13 @@ struct Fixture_complex_fig4 {
     // Constructor
     ///////////////////////////////////////////////////////////
     Fixture_complex_fig4() : complex_fixture(ks_fixture) {
-        create_complex_from_object(create_object());
+        create_complex_from_set(create_set());
     }
 
     ///////////////////////////////////////////////////////////
     // Function members
     ///////////////////////////////////////////////////////////
-    FixtureObject &create_object() {
+    FixtureDigitalSet create_set() {
         using namespace DGtal;
 
         Point p1(-10, -10, -10);
@@ -554,19 +509,15 @@ struct Fixture_complex_fig4 {
         Point r1(1, 3, -2);
         fig4_set.insertNew(r1);
 
-        FixtureDigitalTopology::ForegroundAdjacency adjF;
-        FixtureDigitalTopology::BackgroundAdjacency adjB;
-        FixtureDigitalTopology topo(
-            adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
-        return obj_fixture = FixtureObject(topo, fig4_set);
+        return fig4_set;
     }
 
-    FixtureComplex &create_complex_from_object(FixtureObject &input_obj) {
+    FixtureComplex &create_complex_from_set(const FixtureDigitalSet &input_set) {
 
-        ks_fixture.init(input_obj.domain().lowerBound(),
-                        input_obj.domain().upperBound(), true);
+        ks_fixture.init(input_set.domain().lowerBound(),
+                        input_set.domain().upperBound(), true);
         complex_fixture = FixtureComplex(ks_fixture);
-        complex_fixture.construct(input_obj);
+        complex_fixture.construct(input_set);
         return complex_fixture;
     }
 };
@@ -588,51 +539,68 @@ TEST_CASE_METHOD(Fixture_complex_fig4, "Get All Critical Cliques of fig4",
         CHECK(criticals[0].size() == 6);
     }
 }
+
+/* zeroSurance and oneSurface */
 TEST_CASE_METHOD(Fixture_complex_fig4, "zeroSurface and oneSurface",
                  "[isSurface][function]") {
     auto &vc = complex_fixture;
     using namespace DGtal::functions;
     using Point = FixtureComplex::Point;
     vc.clear();
-    vc.objectSet().clear();
     Point c(0, 0, 0);
     {
-        vc.objectSet().insertNew(c);
         vc.insertCell(3, vc.space().uSpel(c));
     }
     Point r(0, 1, 0);
     {
-        vc.objectSet().insertNew(r);
         vc.insertCell(3, vc.space().uSpel(r));
     }
     Point l(0, -1, 0);
     {
-        vc.objectSet().insertNew(l);
         vc.insertCell(3, vc.space().uSpel(l));
     }
+    // Init an object
+    using DigitalTopology = DGtal::Z3i::DT26_6;
+    using DigitalSet = DGtal::DigitalSetByAssociativeContainer<
+        DGtal::Z3i::Domain,
+        std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
+    using Object = DGtal::Object<DigitalTopology, DigitalSet>;
+    DigitalTopology::ForegroundAdjacency adjF;
+    DigitalTopology::BackgroundAdjacency adjB;
+    auto domain = DGtal::Z3i::Domain(ks_fixture.lowerBound(), ks_fixture.upperBound());
+    DigitalTopology topo(
+            adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
+
     SECTION("checking zero surfaces of original set") {
         std::set<Point> zeroSurfacesCells;
-        for (const auto &p : vc.objectSet()) {
-            auto small_obj = vc.object().properNeighborhood(p);
+        DigitalSet voxel_set(domain);
+        vc.dumpVoxels(voxel_set);
+        Object object(topo, voxel_set);
+        for (const auto &p : voxel_set) {
+            auto small_obj = object.properNeighborhood(p);
             if (isZeroSurface(small_obj))
                 zeroSurfacesCells.insert(p);
         }
         CHECK(zeroSurfacesCells.size() == 1);
     }
+
     SECTION("checking one surfaces of original set") {
         Point u(-1, 0, 0);
         {
-            vc.objectSet().insertNew(u);
             vc.insertCell(3, vc.space().uSpel(u));
         }
         Point d(1, 0, 0);
         {
-            vc.objectSet().insertNew(d);
             vc.insertCell(3, vc.space().uSpel(d));
         }
+
         std::set<Point> oneSurfacesCells;
-        for (const auto &p : vc.objectSet()) {
-            auto small_obj = vc.object().properNeighborhood(p);
+        DigitalSet voxel_set(domain);
+        vc.dumpVoxels(voxel_set);
+        Object object(topo, voxel_set);
+
+        for (const auto &p : voxel_set) {
+            auto small_obj = object.properNeighborhood(p);
             if (isOneSurface(small_obj))
                 oneSurfacesCells.insert(p);
         }
@@ -655,30 +623,27 @@ struct Fixture_isthmus {
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureObject =
-        DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
     using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
-    using FixtureComplex =
-        DGtal::VoxelComplex<KSpace, FixtureObject, FixtureMap>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureMap>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureObject obj_fixture;
     FixtureComplex complex_fixture;
+    FixtureDigitalSet set_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
     // Constructor
     ///////////////////////////////////////////////////////////
-    Fixture_isthmus() : complex_fixture(ks_fixture) {
-        create_complex_from_object(create_object());
+    Fixture_isthmus() : complex_fixture(ks_fixture), set_fixture(create_set()) {
+        create_complex_from_set(set_fixture);
     }
 
     ///////////////////////////////////////////////////////////
     // Function members
     ///////////////////////////////////////////////////////////
-    FixtureObject &create_object() {
+    FixtureDigitalSet create_set() {
         using namespace DGtal;
 
         Point p1(-10, -10, -10);
@@ -736,19 +701,15 @@ struct Fixture_isthmus {
         Point c62(-2, 6, -1);
         fig6_set.insertNew(c62);
 
-        FixtureDigitalTopology::ForegroundAdjacency adjF;
-        FixtureDigitalTopology::BackgroundAdjacency adjB;
-        FixtureDigitalTopology topo(
-            adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
-        return obj_fixture = FixtureObject(topo, fig6_set);
+        return fig6_set;
     }
 
-    FixtureComplex &create_complex_from_object(FixtureObject &input_obj) {
+    FixtureComplex &create_complex_from_set(const FixtureDigitalSet &input_set) {
 
-        ks_fixture.init(input_obj.domain().lowerBound(),
-                        input_obj.domain().upperBound(), true);
+        ks_fixture.init(input_set.domain().lowerBound(),
+                        input_set.domain().upperBound(), true);
         complex_fixture = FixtureComplex(ks_fixture);
-        complex_fixture.construct(input_obj);
+        complex_fixture.construct(input_set);
         return complex_fixture;
     }
 };
@@ -758,17 +719,20 @@ TEST_CASE_METHOD(Fixture_isthmus, "Thin disconnected complex",
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
-    // Delete one point and reconstruct complex.
     Point x(-1, 4, 0);
-    obj_fixture.pointSet().erase(x);
+    set_fixture.erase(x);
+    // Delete one point and reconstruct complex.
+    /* obj_fixture.pointSet().erase(x); */
     vc.clear();
-    vc.construct(obj_fixture);
+    vc.construct(set_fixture);
     SECTION("with skelUltimate") {
         auto vc_new = asymetricThinningScheme<FixtureComplex>(
             vc, selectFirst<FixtureComplex>, skelUltimate<FixtureComplex>);
         CHECK(vc_new.nbCells(3) == 2);
     }
 }
+
+
 TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]") {
     auto &vc = complex_fixture;
     using namespace DGtal::functions;
@@ -778,7 +742,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]") {
 
     SECTION("checking one isthmus") {
         std::set<Point> isthmus;
-        for (const auto &p : vc.objectSet()) {
+        for (const auto &p : set_fixture) {
             if (oneIsthmus(vc, ks.uSpel(p)))
                 isthmus.insert(p);
         }
@@ -789,7 +753,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]") {
 
     SECTION("checking 2 isthmus") {
         std::set<Point> isthmus;
-        for (const auto &p : vc.objectSet()) {
+        for (const auto &p : set_fixture) {
             if (twoIsthmus(vc, ks.uSpel(p)))
                 isthmus.insert(p);
         }
@@ -800,7 +764,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]") {
 
     SECTION("checking 1 and 2 isthmus") {
         std::set<Point> isthmus;
-        for (const auto &p : vc.objectSet()) {
+        for (const auto &p : set_fixture) {
             if (skelIsthmus(vc, ks.uSpel(p)))
                 isthmus.insert(p);
         }
@@ -811,7 +775,6 @@ TEST_CASE_METHOD(Fixture_isthmus, "Check isthmus", "[isthmus][function]") {
         CHECK(yit != isthmus.end());
     }
 }
-
 TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]") {
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
@@ -859,15 +822,14 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
         CHECK(vc_new.nbCells(3) == 5);
     }
     SECTION("with oneIsthmus") {
-        /* Not using LUT skel function (slow):
-        auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-            vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>, 0);
-        */
+        // Not using LUT skel function (slow):
+        //auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+        //    vc, selectRandom<FixtureComplex>, oneIsthmus<FixtureComplex>, 0);
+        //
         // with LUT:
         auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
         auto pointToMaskMap =
-            *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+            *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
         auto oneIsthmusTable =
             [&table, &pointToMaskMap](const FixtureComplex &fc,
                                       const FixtureComplex::Cell &c) {
@@ -878,15 +840,14 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
         CHECK(vc_new.nbCells(3) == 3);
     }
     SECTION("with twoIsthmus") {
-        /* Not using LUT skel function (slow):
-        auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-            vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>, 0);
-        */
+        // Not using LUT skel function (slow):
+        //auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+        //    vc, selectRandom<FixtureComplex>, twoIsthmus<FixtureComplex>, 0);
+        //
         // with LUT:
         auto table = *functions::loadTable(isthmusicity::tableTwoIsthmus);
         auto pointToMaskMap =
-            *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+            *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
         auto twoIsthmusTable =
             [&table, &pointToMaskMap](const FixtureComplex &fc,
                                       const FixtureComplex::Cell &c) {
@@ -897,15 +858,14 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
         CHECK(vc_new.nbCells(3) == 1);
     }
     SECTION("with skelIsthmus") {
-        /* Not using LUT skel function (slow):
-        auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
-            vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>, 0);
-        */
+        // Not using LUT skel function (slow):
+        //auto vc_new = persistenceAsymetricThinningScheme< FixtureComplex >(
+        //   vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>, 0);
+        //
         // with LUT:
         auto table = *functions::loadTable(isthmusicity::tableIsthmus);
         auto pointToMaskMap =
-            *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+            *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
         auto isthmusTable = [&table,
                              &pointToMaskMap](const FixtureComplex &fc,
                                               const FixtureComplex::Cell &c) {
@@ -914,26 +874,6 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
         auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
             vc, selectRandom<FixtureComplex>, isthmusTable, 0);
         CHECK(vc_new.nbCells(3) == 3);
-        // SECTION( "visualize the thining" ){
-        //   int argc(1);
-        //   char** argv(nullptr);
-        //   QApplication app(argc, argv);
-        //   Viewer3D<> viewer(ks_fixture);
-        //   viewer.show();
-        //
-        //   viewer.setFillColor(Color(200, 200, 200, 100));
-        //   for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
-        //     viewer << it->first;
-        //
-        //   viewer.setFillColor(Color(200, 200, 200, 100));
-        //   // All kspace voxels
-        //   viewer.setFillColor(Color(40, 200, 55, 30));
-        //   for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-        //     viewer << it->first;
-        //
-        //   viewer << Viewer3D<>::updateDisplay;
-        //   app.exec();
-        // }
     }
 }
 
@@ -951,30 +891,27 @@ struct Fixture_X {
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureObject =
-        DGtal::Object<FixtureDigitalTopology, FixtureDigitalSet>;
     using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
-    using FixtureComplex =
-        DGtal::VoxelComplex<KSpace, FixtureObject>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureObject obj_fixture;
     FixtureComplex complex_fixture;
+    FixtureDigitalSet set_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
     // Constructor
     ///////////////////////////////////////////////////////////
-    Fixture_X() : complex_fixture(ks_fixture) {
-        create_complex_from_object(create_object());
+    Fixture_X() : complex_fixture(ks_fixture), set_fixture(create_set()) {
+        create_complex_from_set(set_fixture);
     }
 
     ///////////////////////////////////////////////////////////
     // Function members
     ///////////////////////////////////////////////////////////
-    FixtureObject &create_object() {
+    FixtureDigitalSet create_set() {
         using namespace DGtal;
 
         Point p1(-30, -30, -30);
@@ -1022,22 +959,19 @@ struct Fixture_X {
             }
         }
 
-        FixtureDigitalTopology::ForegroundAdjacency adjF;
-        FixtureDigitalTopology::BackgroundAdjacency adjB;
-        FixtureDigitalTopology topo(
-            adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
-        return obj_fixture = FixtureObject(topo, a_set);
+		return a_set;
     }
 
-    FixtureComplex &create_complex_from_object(FixtureObject &input_obj) {
+    FixtureComplex &create_complex_from_set(FixtureDigitalSet &input_set) {
 
-        ks_fixture.init(input_obj.domain().lowerBound(),
-                        input_obj.domain().upperBound(), true);
+        ks_fixture.init(input_set.domain().lowerBound(),
+                        input_set.domain().upperBound(), true);
         complex_fixture = FixtureComplex(ks_fixture);
-        complex_fixture.construct(input_obj);
+        complex_fixture.construct(input_set);
         return complex_fixture;
     }
 };
+
 TEST_CASE_METHOD(Fixture_X, "X Thin",
                  "[x][persistence][isthmus][thin][function]") {
     using namespace DGtal::functions;
@@ -1071,19 +1005,19 @@ TEST_CASE_METHOD(Fixture_X, "X Thin with Isthmus, and tables",
     auto &ks = vc.space();
     bool verbose = true;
 
-    SECTION("Compute with skelIsthmus") {
-        trace.beginBlock("skelIsthmus");
-        auto vc_new = asymetricThinningScheme<FixtureComplex>(
-            vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>,
-            verbose);
-        trace.endBlock();
-    }
+    // Disabled to reduce test time
+    // SECTION("Compute with skelIsthmus") {
+    //     trace.beginBlock("Fixture_X skelIsthmus");
+    //     auto vc_new = asymetricThinningScheme<FixtureComplex>(
+    //         vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>,
+    //         verbose);
+    //     trace.endBlock();
+    // }
     SECTION("Compute with skelWithTable (isIsthmus)") {
-        trace.beginBlock("skelIsthmus with table");
+        trace.beginBlock("Fixture_X skelIsthmus with table");
         auto table = *functions::loadTable(isthmusicity::tableIsthmus);
         auto pointToMaskMap =
-            *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+            *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
         auto skelWithTableIsthmus =
             [&table, &pointToMaskMap](const FixtureComplex &fc,
                                       const FixtureComplex::Cell &c) {
@@ -1097,14 +1031,13 @@ TEST_CASE_METHOD(Fixture_X, "X Thin with Isthmus, and tables",
     }
 
     SECTION("Compute with skelWithTable (isIsthmus) and empty Object") {
-        trace.beginBlock("skelIsthmus with table (empty objectSet)");
+        trace.beginBlock("Fixture_X skelIsthmus with table (empty objectSet)");
         vc.setSimplicityTable(
             functions::loadTable(simplicity::tableSimple26_6));
-        vc.objectSet().clear();
+        vc.clear();
         auto table = *functions::loadTable(isthmusicity::tableIsthmus);
         auto pointToMaskMap =
-            *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+            *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
         auto skelWithTableIsthmus =
             [&table, &pointToMaskMap](const FixtureComplex &fc,
                                       const FixtureComplex::Cell &c) {
@@ -1123,15 +1056,14 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
-    auto &obj = vc.object();
     using Predicate = Z3i::DigitalSet;
     using L3Metric = ExactPredicateLpSeparableMetric<Z3i::Space, 3>;
     using DT = DistanceTransformation<Z3i::Space, Predicate, L3Metric>;
     bool verbose = true;
-    SECTION("Distance Map") {
+    SECTION("Fixture_X Distance Map") {
         trace.beginBlock("With a Distance Map");
         L3Metric l3;
-        DT dt(obj.domain(), obj.pointSet(), l3);
+        DT dt(set_fixture.domain(), set_fixture, l3);
         // Create wrap around selectMaxValue to use the thinning.
         auto selectDistMax = [&dt](const FixtureComplex::Clique &clique) {
             return selectMaxValue<DT, FixtureComplex>(dt, clique);
@@ -1143,8 +1075,7 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
         SECTION("persistenceThinning"){
             auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
             auto pointToMaskMap =
-                *functions::mapZeroPointNeighborhoodToConfigurationMask<
-                FixtureObject::Point>();
+                *functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
             auto oneIsthmusTable =
                 [&table, &pointToMaskMap](const FixtureComplex &fc,
                         const FixtureComplex::Cell &c) {

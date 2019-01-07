@@ -63,10 +63,7 @@ int main( int argc, char** argv )
   typedef std::bitset<67108864> ConfigMap; // 2^26
 
   using namespace Z3i;
-  using DigitalSet = DigitalSetByAssociativeContainer<
-	    Domain, std::unordered_set< typename Domain::Point> >;
-  using Object = Object<DT26_6, DigitalSet>;
-  using VoxelComplex = VoxelComplex<KSpace, Object>;
+  using VoxelComplex = VoxelComplex<KSpace>;
 
   std::function< bool(
 		 const VoxelComplex & ,
@@ -74,9 +71,9 @@ int main( int argc, char** argv )
 	       > skelFunction;
   string error_message(
       "Provide one of the following arguments for select function:\n"
-      "- skelIsthmus \n "
-      "- oneIsthmus \n "
-      "- twoIsthmus \n ");
+      "- skelIsthmus \n"
+      "- oneIsthmus \n"
+      "- twoIsthmus \n");
   if (argc != 2 ){
     cout << error_message << std::endl;
     return 1;

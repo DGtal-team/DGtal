@@ -67,13 +67,13 @@ void testIndent()
     trace.info()<< "This is an Info trace, level 2"<<endl;
     trace.error()<< "This is an Error trace, level 2 (followed by a loop)"<<endl;
 
-    for (unsigned int i=0 ; i< 4334450; i++)
+    for (unsigned int i=0 ; i< 450; i++)
         tmp = (long)cos((double)tmp+i);
 
     trace.endBlock();
     trace.info()<< "This is an Info trace, level 1 (followed by another loop)"<<endl;
 
-    for (unsigned int i=0 ; i< 4334450; i++)
+    for (unsigned int i=0 ; i< 430; i++)
         tmp = (long)cos((double)tmp+i);
 
     trace.endBlock();
@@ -121,30 +121,30 @@ void testTimings()
   
   trace.beginBlock("Level1");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 4350; i++)
     tmp = (long)cos((double)tmp+i);
   duration = trace.endBlock();
   
   trace.beginBlock("Level1B");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 4350; i++)
     tmp = (long)cos((double)tmp+i);
   
   trace.beginBlock("Level2");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 4350; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
   
   trace.beginBlock("Level2B");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 4350; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
   
   trace.beginBlock("Level2C");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 4450; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
   
@@ -152,7 +152,7 @@ void testTimings()
   
   trace.beginBlock("Level1C");
   trace.info()<<"..."<<std::endl;
-  for (unsigned int i=0 ; i< 4334450; i++)
+  for (unsigned int i=0 ; i< 430; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
 

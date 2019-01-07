@@ -948,6 +948,18 @@ negate()
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 double
+DGtal::PointVector<dim, TComponent, TContainer>::squaredNorm () const
+{
+  ASSERT ( dim > 0 );
+  double tmp = 0.0;
+  for ( DGtal::Dimension i = 0; i < dimension; i++ )
+    tmp += std::pow(NumberTraits<Component>::castToDouble(myArray[ i ]), 2);
+  return tmp;
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
+double
 DGtal::PointVector<dim, TComponent, TContainer>::norm (
     const typename Self::NormType aType ) const
 {

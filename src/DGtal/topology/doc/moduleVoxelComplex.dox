@@ -15,7 +15,7 @@ namespace DGtal {
 Part of the \ref packageTopology.
 
 This part of the manual describes how to represent and process
-arbitrary voxel complexes, which are cubical complexes with an associated DigitalObject.
+arbitrary voxel complexes, which are cubical complexes specialized to work with voxels.
 
 [TOC]
 
@@ -30,12 +30,6 @@ This is an implementation of the Critical Kernel framework based on M.Couprie an
 - A 3D Sequential Thinning Scheme Based on Critical Kernels: https://hal.archives-ouvertes.fr/hal-01217952/file/Critical3Dseq.pdf
 
 DGtalTools has an associated command line interface executable: criticalKernelsThinning3D.
-
-VoxelComplex inherits from CubicalComplex, adding an Object member storing
-the voxels(spels) of an input image. This allows
-the use of the isSimple method from Object ( Object::isSimple ), and also the ObjectBoostGraphInterface.h.
-At the cost of more memory and slower runtime. Future work here might try to use a isSimple
-method using exclusively CubicalComplex framework.
 
 @section dgtal_vcomplex_sec2 Definitions
 
@@ -87,8 +81,7 @@ Here we use \a critical \a kernels to ensure the same homotopy type after thinni
 
 @section dgtal_vcomplex_sec3 Initializing a voxel complex.
 
-A \b voxel \b complex \a V is a \b cubical \b complex (living in a Khalimsky space)
-with a member of type Object.
+A \b voxel \b complex \a V is a \b cubical \b complex (living in a Khalimsky space).
 
 To create a VoxelComplex, we need to specify in which Khalimsky
 space it lives and also, optionally, the type of container used for
@@ -102,26 +95,20 @@ using DigitalTopology = DGtal::Z3i::DT26_6;
 using DigitalSet =  DGtal::DigitalSetByAssociativeContainer<
     DGtal::Z3i::Domain,
     std::unordered_set< typename DGtal::Z3i::Domain::Point> >;
-using Object = DGtal::Object<DigitalTopology, DigitalSet>;
-using Complex = DGtal::VoxelComplex<KSpace, Object>;    // Type of VoxelComplex.
+
+using CellContainerMap = std::unordered_map<KSpace::Cell, DGtal::CubicalCellData>:
+using Complex = DGtal::VoxelComplex<KSpace, CellContainerMap>;    // Type of VoxelComplex.
 
 KSpace ks;                                               // The cellular grid space
 ks.init( Point( 0,0,0 ), Point( 100,100,100 ), true );   // Limits of the grid space
-// Voxel Complex needs a KSpace and can be populated with an object.
-// Create the object from a digital set and topology
+// Voxel Complex needs a KSpace and can be populated with a digital set.
 Point p1(-10, -10, -10);
 Point p2(10, 10, 10);
 Domain domain(p1, p2);
 Point c(0, 0, 0);
 DigitalSet a_set(domain);
-DigitalTopology::ForegroundAdjacency adjF;
-DigitalTopology::BackgroundAdjacency adjB;
-DigitalTopology topo( adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
-
-auto object = Object(topo, a_set);
-
 Complex complex( ks );
-complex.construct( object );
+complex.construct( a_set );
 // load LUT to check for simplicity faster.
 complex.setSimplicityTable(functions::loadTable(simplicity::tableSimple26_6));
 
@@ -141,7 +128,8 @@ that given a d-cell (pointel, linel, surfel, spel) returns a d-clique and a bool
 VoxelComplex::K_0,VoxelComplex::K_1, VoxelComplex::K_2, and VoxelComplex::K_3 return a pair<bool, Clique> where Clique=CubicalComplex,
 and the bool is true if the Clique is critical.
 
-VoxelComplex::K_3 applies to Voxels, and it uses the isSimple method of Object.
+VoxelComplex::K_3 applies to Voxels, it can either create a small object to use the isSimple method of Object,
+or if a pre-compute LUT table of simplicity is loaded, it will look up the result based on the occupancy of the neighborhood (recommended).
 
 VoxelComplex::K_2 applies to surfels,
 
@@ -184,7 +172,7 @@ testVoxelComplex.cpp provides example of how to use with isIsthmus table.
 auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
 // auto table = *functions::loadTable(isthmusicity::tableIsthmus);
 
-auto pointToMaskMap = *functions::mapZeroPointNeighborhoodToConfigurationMask< Object::Point>();
+auto pointToMaskMap = *functions::mapZeroPointNeighborhoodToConfigurationMask< Point>();
 
 auto isthmusTable = [&table, &pointToMaskMap](const Complex &fc, const Complex::Cell &c)
 {

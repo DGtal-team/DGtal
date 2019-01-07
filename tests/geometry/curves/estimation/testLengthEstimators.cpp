@@ -305,7 +305,6 @@ int main( int argc, char** argv )
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)
     && testLengthEstimatorsOnBall(r,0.001)
-    && testLengthEstimatorsOnBall(r,0.0001)
     && testDisplay(r,0.9);
   ;
 

@@ -8,7 +8,7 @@ IF (DOXYGEN_FOUND)
   ELSE  (CMAKE_BUILD_TOOL MATCHES "(msdev|devenv)")
     SET(DOXY_WARN_FORMAT "\"$file:$line: $text \"")
   ENDIF (CMAKE_BUILD_TOOL MATCHES "(msdev|devenv)")
-  
+
   # we need latex for doxygen because of the formulas
   FIND_PACKAGE(LATEX)
   IF    (NOT LATEX_COMPILER)
@@ -20,10 +20,10 @@ IF (DOXYGEN_FOUND)
   IF    (NOT DVIPS_CONVERTER)
     MESSAGE(STATUS "dvips command DVIPS_CONVERTER not found but usually required.")
   ENDIF (NOT DVIPS_CONVERTER)
-  
+  MESSAGE(STATUS "CHecking path: ${CMAKE_CURRENT_SOURCE_DIR}")
   IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
     MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in 
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config
       @ONLY )
     # use (configured) doxy.config from (out of place) BUILD tree:
@@ -37,7 +37,7 @@ IF (DOXYGEN_FOUND)
       IF   (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.in")
         # using template doxy.config.in
         MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doc/doxy.config")
-        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.in 
+        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.in
           ${CMAKE_CURRENT_BINARY_DIR}/doxy.config
           @ONLY )
         SET(DOXY_CONFIG "${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
@@ -49,10 +49,10 @@ IF (DOXYGEN_FOUND)
     ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config")
   ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
 
-  
+
   IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in")
     MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in 
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board
       @ONLY )
     # use (configured) doxy.config.Board from (out of place) BUILD tree:
@@ -66,7 +66,7 @@ IF (DOXYGEN_FOUND)
       IF   (EXISTS "${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in")
         # using template doxy.config.Board.in
         MESSAGE(STATUS "configured ${CMAKE_CMAKE_MODULE_PATH}/doc/doxy.config.Board.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
-        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in 
+        CONFIGURE_FILE(${CMAKE_MODULE_PATH}/doc/doxy.config.Board.in
           ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board
           @ONLY )
         SET(DOXY_CONFIG_BOARD "${CMAKE_CURRENT_BINARY_DIR}/doxy.config.Board")
@@ -78,31 +78,31 @@ IF (DOXYGEN_FOUND)
     ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board")
   ENDIF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.Board.in")
 
-  
+
   ADD_CUSTOM_TARGET(doc ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})
   ADD_CUSTOM_TARGET(doc-Board ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG_BOARD})
   ADD_CUSTOM_TARGET(doc-all ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})
   ADD_DEPENDENCIES(doc-all doc-Board)
-  
+
 #  ADD_CUSTOM_TARGET(doc)
-  
+
   # create a windows help .chm file using hhc.exe
   # HTMLHelp DLL must be in path!
   # fallback: use hhw.exe interactively
   IF    (WIN32)
     FIND_PACKAGE(HTMLHelp)
-    IF   (HTML_HELP_COMPILER)      
+    IF   (HTML_HELP_COMPILER)
       SET (TMP "${CMAKE_CURRENT_BINARY_DIR}\\Doc\\html\\index.hhp")
       STRING(REGEX REPLACE "[/]" "\\\\" HHP_FILE ${TMP} )
       # MESSAGE(SEND_ERROR "DBG  HHP_FILE=${HHP_FILE}")
       ADD_CUSTOM_TARGET(winhelp ${HTML_HELP_COMPILER} ${HHP_FILE})
       ADD_DEPENDENCIES (winhelp doc)
-     
+
       IF (NOT TARGET_DOC_SKIP_INSTALL)
       # install windows help?
-      # determine useful name for output file 
-      # should be project and version unique to allow installing 
-      # multiple projects into one global directory      
+      # determine useful name for output file
+      # should be project and version unique to allow installing
+      # multiple projects into one global directory
       IF   (EXISTS "${PROJECT_BINARY_DIR}/Doc/html/index.chm")
         IF   (PROJECT_NAME)
           SET(OUT "${PROJECT_NAME}")
@@ -114,15 +114,15 @@ IF (DOXYGEN_FOUND)
           IF   (${PROJECT_NAME}_VERSION_MINOR)
             SET(OUT  "${OUT}.${${PROJECT_NAME}_VERSION_MINOR}")
             IF   (${PROJECT_NAME}_VERSION_PATCH)
-              SET(OUT "${OUT}.${${PROJECT_NAME}_VERSION_PATCH}")      
+              SET(OUT "${OUT}.${${PROJECT_NAME}_VERSION_PATCH}")
             ENDIF(${PROJECT_NAME}_VERSION_PATCH)
           ENDIF(${PROJECT_NAME}_VERSION_MINOR)
         ENDIF(${PROJECT_NAME}_VERSION_MAJOR)
         # keep suffix
         SET(OUT  "${OUT}.chm")
-        
+
         #MESSAGE("DBG ${PROJECT_BINARY_DIR}/Doc/html/index.chm \n${OUT}")
-        # create target used by install and package commands 
+        # create target used by install and package commands
         INSTALL(FILES "${PROJECT_BINARY_DIR}/Doc/html/index.chm"
           DESTINATION "doc"
           RENAME "${OUT}"
@@ -132,6 +132,5 @@ IF (DOXYGEN_FOUND)
 
     ENDIF(HTML_HELP_COMPILER)
     # MESSAGE(SEND_ERROR "HTML_HELP_COMPILER=${HTML_HELP_COMPILER}")
-  ENDIF (WIN32) 
+  ENDIF (WIN32)
 ENDIF(DOXYGEN_FOUND)
-
