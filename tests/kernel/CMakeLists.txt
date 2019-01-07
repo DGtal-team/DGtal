@@ -2,11 +2,8 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testDigitalSet
    testDomainSpanIterator
    testHyperRectDomain
-   testHyperRectDomain-snippet
    testInteger
    testPointVector
-   testPointVector-catch
-   testPointVectorContainers
    testLinearAlgebra
    testImagesSetsUtilities
    testBasicPointFunctors
