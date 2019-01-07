@@ -77,6 +77,9 @@ namespace DGtal
    * @tparam TPoint a type defining the position in space of vertices.
    *
    * @see HalfEdgeDataStructure
+   *
+   * @note You may access the underlying half-edge data structure
+   * through PolygonalSurface::heds method.
    */
   template <typename TPoint>
   class PolygonalSurface
@@ -264,6 +267,10 @@ namespace DGtal
     /// @return the corresponding index of the polygonal face.
     FaceIndex addPolygonalFace( const PolygonalFace& f );
 
+    /// @return a const reference to the half-edge data structure.
+    const HalfEdgeDataStructure& heds() const
+    { return myHEDS; }
+    
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.
@@ -502,6 +509,17 @@ namespace DGtal
     */
     VertexRange verticesAroundFace( const Face & f ) const;
 
+    /**
+       @param f any valid face on the surface. (open or closed ).
+
+       @note By construction, each @e anArc returned by the method on
+       a face @a f is such that `this->faceAroundArc(anArc) == f`.
+
+       @return the sequence of arcs that touches this face in their
+       natural order (the range size should be 3).
+    */
+    ArcRange arcsAroundFace( const Face & f ) const;
+    
     /**
        @param v any vertex.
        @return 'true' if and only if vertex \a v lies on a boundary.
