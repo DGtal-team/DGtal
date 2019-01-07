@@ -253,6 +253,41 @@ int main( int /* argc */, char** /* argv */ )
     ++nb, nbok += ( ok_H && ii_mean_curv.size() == ii_mean_curv2.size() ) ? 1 : 0;
   }
   trace.endBlock();
+
+  trace.beginBlock ( "Build polynomial shape -> save several projected quadrangulated surface and digitized boundaries." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    std::vector<double> gridsteps {0.5, 0.25, 0.125};
+    for ( auto h : gridsteps ) {
+      params( "polynomial", "goursat" )( "gridstep", h );
+      auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+      auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+      auto binary_image    = SH3::makeBinaryImage      ( digitized_shape, params );
+      auto K               = SH3::getKSpace( params );
+      auto embedder        = SH3::getCellEmbedder( K );
+      auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
+      SH3::Cell2Index c2i;
+      auto pointels        = SH3::getPointelRange( c2i, surface );
+      SH3::RealPoints pos( pointels.size() );
+      std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
+		      [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+      auto ppos       = SHG3::getPositions( implicit_shape, pos, params );
+      auto fname      = std::string( "goursat-quad-" ) + std::to_string( h ) + std::string( ".obj" );
+      bool ok         = SH3::saveOBJ( surface,
+				      [&] (const SH3::Cell& c){ return pos[ c2i[ c ] ];},
+				      SH3::RealVectors(), SH3::Colors(),
+				      fname );
+      auto proj_fname = std::string( "goursat-quad-proj-" ) + std::to_string( h ) + std::string( ".obj" );
+      bool proj_ok    = SH3::saveOBJ( surface,
+				      [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
+				      SH3::RealVectors(), SH3::Colors(),
+				      proj_fname );
+      ++nb, nbok += ok      ? 1 : 0;
+      ++nb, nbok += proj_ok ? 1 : 0;
+    }
+  }
+  trace.endBlock();
+
   
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;

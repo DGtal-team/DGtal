@@ -24,7 +24,6 @@ SET(DGTAL_TESTS_SRC
    testCloneAndAliases
    testClone2
    testOwningOrAliasingPtr
-   testCatch
    testPartialTemplateSpecialization
    testContainerTraits
    testSetFunctions

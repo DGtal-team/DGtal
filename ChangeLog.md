@@ -24,6 +24,15 @@
 - *Helpers*
   - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
 
+## Changes
+
+- *Configuration/General*
+  - Simplifying Travis CI scripts (David Coeurjolly, [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
+
+- *Topology*
+  - Remove the internal object from VoxelComplex, improving performance
+    (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
@@ -77,14 +86,23 @@
 - *DEC*
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
-    
+
 - *Math*
-  - Fix possible division by zero in the MultiStatistics class. 
-  (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358)) 
+  - Fix possible division by zero in the MultiStatistics class.
+    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
 
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
+
+- *Kernel*
+  - Adding square norm method to Point/Vector class. (David Coeurjolly,
+    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
+
+- *Helpers*
+  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
+    (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
 
 # DGtal 0.9.4.1
 

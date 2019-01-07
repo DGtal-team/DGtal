@@ -850,8 +850,8 @@ int main( int /*argc*/, char** /*argv*/ )
   
   
 
-  unsigned int X =  500;
-  unsigned int Y =  500;
+  unsigned int X =  100;
+  unsigned int Y =  100;
   /// Probability that there is no data at this location.
   double PROB_NO_DATA =  0.5;
   /// If there is a possibility to have a data, this probability is
