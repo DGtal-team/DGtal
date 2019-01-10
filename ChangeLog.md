@@ -85,6 +85,8 @@
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
 
+- *Topology*
+  - Specializes the method DigitalSurface::facesAroundVertex in the 3D case, such that faces (ie pointels) are ordered counterclockwise with respect of the vertex (ie surfel) seen from the exterior. (Jacques-Olivier Lachaud, [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
 
 # DGtal 0.9.4.1
 
