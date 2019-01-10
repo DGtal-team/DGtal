@@ -144,7 +144,8 @@ namespace DGtal
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::SurfelConstIterator ConstIterator;
     typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
-    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Point     Point;
+    typedef typename KSpace::Vector    Vector;
     typedef typename KSpace::SurfelSet SurfelSet;
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
@@ -467,11 +468,18 @@ namespace DGtal
 
     /**
        @param v any vertex (surfel) of the surface.
-       @return the faces containing this vertex [v]: 0 in 2D, 4 in 3D,
-       12 in 4D, 2(n-1)(n-2) in nD.
-    */
-    FaceRange facesAroundVertex( const Vertex & v ) const;
 
+       @param order_ccw_in_3d when 'true', orders faces
+       counterclockwise around vertex (solely in 3d). It corresponds
+       to ordering the pointels counterclockwise around the given
+       surfel \a v.
+ 
+       @return the faces containing this vertex [v]: 0 in 2D, 4 in 3D,
+       12 in 4D, 2(n-1)(n-2) in nD, in no specific order.
+    */
+    FaceRange facesAroundVertex( const Vertex & v,
+				 bool order_ccw_in_3d = false ) const;
+    
     /**
       @param a any arc (s,t)
       @return the vertex t
