@@ -166,7 +166,7 @@ namespace DGtal {
     typedef typename TypeDGtalImage::ITKImagePointer ITKImagePointer;
     typedef typename Image::Domain Domain;
 
-    ITKImagePointer itk_image = TypeDGtalImage::ITKImage::New();
+    ITKImagePointer itk_image = nullptr;
 
     try
     {
