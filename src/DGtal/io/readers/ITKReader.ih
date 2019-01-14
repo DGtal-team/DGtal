@@ -142,9 +142,11 @@ namespace DGtal {
     {
       itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(
       filename.c_str(), itk::ImageIOFactory::ReadMode );
-      imageIO->SetFileName( filename.c_str() );
-      imageIO->ReadImageInformation();
-      componentType = imageIO->GetComponentType();
+      if (imageIO) {
+	imageIO->SetFileName( filename.c_str() );
+	imageIO->ReadImageInformation();
+	componentType = imageIO->GetComponentType();
+      }
     }
     catch ( itk::ExceptionObject & e )
     {
