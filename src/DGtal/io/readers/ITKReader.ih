@@ -72,85 +72,61 @@ namespace DGtal {
     case itk::ImageIOBase::UCHAR:
     {
       typedef ImageContainerByITKImage<Domain, unsigned char> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::CHAR:
     {
       typedef ImageContainerByITKImage<Domain, char> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::USHORT:
     {
       typedef ImageContainerByITKImage<Domain, unsigned short> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::SHORT:
     {
       typedef ImageContainerByITKImage<Domain, short> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::UINT:
     {
       typedef ImageContainerByITKImage<Domain, unsigned int> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::INT:
     {
       typedef ImageContainerByITKImage<Domain, int> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::ULONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::LONG:
     {
       typedef ImageContainerByITKImage<Domain, long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::ULONGLONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::LONGLONG:
     {
       typedef ImageContainerByITKImage<Domain, long long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::FLOAT:
     {
       typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::DOUBLE:
     {
       typedef ImageContainerByITKImage<Domain, double> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     }
