@@ -97,6 +97,20 @@ namespace DGtal {
       DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
+    case itk::ImageIOBase::UINT:
+    {
+      typedef ImageContainerByITKImage<Domain, unsigned int> DGtalITKImage;
+      Domain d;
+      DGtalITKImage im( d );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
+    case itk::ImageIOBase::INT:
+    {
+      typedef ImageContainerByITKImage<Domain, int> DGtalITKImage;
+      Domain d;
+      DGtalITKImage im( d );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
     case itk::ImageIOBase::ULONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long> DGtalITKImage;
