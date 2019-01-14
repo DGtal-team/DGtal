@@ -65,6 +65,7 @@ test_image(const string& filename)
 
     typedef typename std::vector<typename Image::Value> Values;
     Values values;
+    values.reserve(domain.size());
     for (typename Domain::Size kk=0; kk<domain.size(); kk++)
         values.push_back(rand());
 
