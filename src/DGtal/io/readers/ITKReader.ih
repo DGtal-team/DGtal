@@ -58,11 +58,9 @@ namespace DGtal {
   const TFunctor & aFunctor )
   {
     typedef typename Image::Domain Domain;
-    typedef typename Domain::Point Point;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
     BOOST_CONCEPT_ASSERT( (concepts::CUnaryFunctor<TFunctor, ValueOut, Value>));
     const IOComponentType componentType = getITKComponentType( filename );
-    typedef unsigned char ElementType;
     switch ( componentType )
     {
 
