@@ -103,22 +103,26 @@ bool testITKio()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  nb += 6;
+  nb += 8;
   trace.beginBlock ( "Testing 2D ITK image value types ..." );
   nbok += test_image<ImageSelector<Z2i::Domain, int>::Type>("image_2d_int.mha");
   nbok += test_image<ImageSelector<Z2i::Domain, bool>::Type>("image_2d_bool.mha");
   nbok += test_image<ImageSelector<Z2i::Domain, unsigned int>::Type>("image_2d_unsigned_int.mha");
   nbok += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_2d_unsigned_char.mha");
+  nbok += test_image<ImageSelector<Z2i::Domain, unsigned long>::Type>("image_2d_unsigned_long.mha");
+  nbok += test_image<ImageSelector<Z2i::Domain, long>::Type>("image_2d_long.mha");
   nbok += test_image<ImageSelector<Z2i::Domain, float>::Type>("image_2d_float.mha");
   nbok += test_image<ImageSelector<Z2i::Domain, double>::Type>("image_2d_double.mha");
   trace.endBlock();
 
-  nb += 6;
+  nb += 8;
   trace.beginBlock ( "Testing 3D ITK image value types ..." );
   nbok += test_image<ImageSelector<Z3i::Domain, int>::Type>("image_3d_int.mha");
   nbok += test_image<ImageSelector<Z3i::Domain, bool>::Type>("image_3d_bool.mha");
   nbok += test_image<ImageSelector<Z3i::Domain, unsigned int>::Type>("image_3d_unsigned_int.mha");
   nbok += test_image<ImageSelector<Z3i::Domain, unsigned char>::Type>("image_3d_unsigned_char.mha");
+  nbok += test_image<ImageSelector<Z3i::Domain, unsigned long>::Type>("image_3d_unsigned_long.mha");
+  nbok += test_image<ImageSelector<Z3i::Domain, long>::Type>("image_3d_long.mha");
   nbok += test_image<ImageSelector<Z3i::Domain, float>::Type>("image_3d_float.mha");
   nbok += test_image<ImageSelector<Z3i::Domain, double>::Type>("image_3d_double.mha");
   trace.endBlock();
