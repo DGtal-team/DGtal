@@ -61,7 +61,7 @@ DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFile
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
   try 
     {
-      infile.open (aFilename.c_str(), std::ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
   catch( ... )
     {
