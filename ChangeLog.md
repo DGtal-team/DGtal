@@ -53,7 +53,7 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
-  - Fix cmputational costs of separable metric predicates in the documentation.
+  - Fix computational costs of separable metric predicates in the documentation.
     (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
 
 - *DEC*
