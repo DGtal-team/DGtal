@@ -232,7 +232,7 @@ of the separable metrics can be summarized as follows:
 | experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | @cite dcoeurjo_metric14|
 
 
-Following this table, VoronoiMap and DistanceTransformatio  have the following computational cost:
+Following this table, VoronoiMap and DistanceTransformation  have the following computational cost:
 
  \f[  O(d\cdot n^d\cdot (C+H))  \f]
 
