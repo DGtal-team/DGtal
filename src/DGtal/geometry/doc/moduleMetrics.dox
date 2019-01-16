@@ -66,7 +66,7 @@ some of them are induced by norms.
 In DGtal, the concept of CMetricSpace is associated with metric space
 definition. A first refinement of this concept is the concept of
 CDigitalMetricSpace whose models implement distance functions on
-integer numbers (i.e. @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$)). For
+integer numbers (i.e. @f$(\mathbb{Z}^d, \mathbb{Z}, d)@f$)). For
 example,
 
  - @f$ l_p@f$ metrics (ExactPredicateLpSeparableMetric or
@@ -118,9 +118,9 @@ if RawValue is an @e exact @e type (e.g. model of CInteger with enough
 capacity to represent power p integers), rawDistance method can be used
 to perform exact metric comparison.  To sum up for any instance @e
 metric of the class ExactLpSeparableMetric for instance:
-- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^n |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
+- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^d |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
 - @e metric.rawDistance(x,y)  returns the power p of the distance as
-an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^n |x_i-y_i |^p\f$
+an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^d |x_i-y_i |^p\f$
 
 
 
@@ -217,28 +217,28 @@ subclasses) are parametrized by a generic separable metric (model of CSeparableM
 @f$ corresponds to the cost of the @a closest() or @a
 closestPower() methods for the given metric, and @f$ H @f$ the cost
 of the @a hiddenBy() or @a hiddenByWeigthed() in dimension @f$ d @f$, the computational costs
-of the separable metrics can be summarized as follows:
+of the separable metrics can be summarized as follows (for a domamain of size @f$ N^d @f$:
 
 
 | Models of CSeparableMetric/CPowerSeparableMetric | C | H | Note |
 |--------------------------------------------------|---|---|------|
-| ExactPredicateLpSeparableMetric<p>               | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric<p>               | @f$ O(log(p)) @f$ | @f$ O(log(p)log(N)) @f$ | Exact computations|
 | ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(d) @f$ | @f$ O(d log(n)) @f$ | Exact computations|
-| InexactPredicateLpSeparableMetric with p at construction | @f$ O(d) @f$ | @f$ O(d  log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
-| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(d\cdot log(p)) @f$ | @f$ O(d log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(d) @f$ | @f$ O(d\cdot log(N)) @f$ | Exact computations (H could be implemented in @f$ O(d) @f$)|
+| InexactPredicateLpSeparableMetric with p at construction | @f$ O(d) @f$ | @f$ O(d  \cdot log(N)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
+| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(d\cdot log(p)) @f$ | @f$ O(d\cdot log(p)  \cdot log(N)) @f$ | Exact computations|
 | ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
-| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
-| experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | @cite dcoeurjo_metric14|
+| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(m  \cdot log(N)) @f$ | relies on aMetric(p,q) computations in @f$ O(m) @f$ (the metric must satisfies some constraines, see @cite dcoeurjo_metric14)|
+| experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(N)) @f$ | @cite dcoeurjo_metric14|
 
 
 Following this table, VoronoiMap and DistanceTransformation  have the following computational cost:
 
- \f[  O(d\cdot n^d\cdot (C+H))  \f]
+ \f[  O(d\cdot N^d\cdot (C+H))  \f]
 
 The same complexity holds for  PowerMap and ReverseDistanceTransformation for @f$ l_p@f$ metrics.
 
-For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(d^2n^d)@f$.
+For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ O(d^2N^d)@f$.
 */
 }
 }
