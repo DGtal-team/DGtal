@@ -228,7 +228,7 @@ of the separable metrics can be summarized as follows (for a domamain of size @f
 | InexactPredicateLpSeparableMetric with p at construction | @f$ O(d) @f$ | @f$ O(d  \cdot log(N)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
 | ExactPredicateLpPowerSeparableMetric<p> | @f$ O(d\cdot log(p)) @f$ | @f$ O(d\cdot log(p)  \cdot log(N)) @f$ | Exact computations|
 | ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
-| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(m  \cdot log(N)) @f$ | relies on aMetric(p,q) computations in @f$ O(m) @f$ (the metric must satisfies some constraines, see @cite dcoeurjo_metric14)|
+| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(m  \cdot log(N)) @f$ | relies on aMetric(p,q) computations in @f$ O(m) @f$ (the metric must satisfy some constraines, see @cite dcoeurjo_metric14)|
 | experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(N)) @f$ | @cite dcoeurjo_metric14|
 
 
