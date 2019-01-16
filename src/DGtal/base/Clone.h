@@ -272,7 +272,30 @@ namespace DGtal
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR,
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
 		     COUNTED_CONST_PTR_OR_CONST_PTR };
-
+    /**
+       Debug method for displaying what's happening when using Clone mecanism
+       @param method the name of the conversion method
+       @param p the type of parameter
+    */
+    void display( const std::string& method, Parameter p ) const
+    {
+      std::cout << "[Clone<T>::" << method << " param=";
+      std::string sp;
+      switch (p) {
+      case CONST_LEFT_VALUE_REF: sp = "CONST_LEFT_VALUE_REF"; break;
+      case LEFT_VALUE_REF:       sp = "LEFT_VALUE_REF"; break;
+      case PTR:                  sp = "PTR"; break;
+      case CONST_PTR:            sp = "CONST_PTR"; break;
+      case COW_PTR:              sp = "COW_PTR"; break;
+      case COUNTED_PTR:          sp = "COUNTED_PTR"; break;
+      case RIGHT_VALUE_REF:      sp = "RIGHT_VALUE_REF"; break;
+      case COUNTED_PTR_OR_PTR:   sp = "COUNTED_PTR_OR_PTR"; break;
+      case COUNTED_CONST_PTR_OR_CONST_PTR: sp = "COUNTED_CONST_PTR_OR_CONST_PTR"; break;
+      default:                   sp = "UNKNOWN"; break;
+      }
+      std::cout << sp << "]" << std::endl;
+        
+    }
     /// Internal class that is used for a late deletion of an acquired pointer.
     struct TempPtr {
       /**
@@ -360,6 +383,7 @@ namespace DGtal
     */
     inline operator T() const
     {
+      // display( "operator T() const", myParam );
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF:
 	return T( * static_cast< const T* >( myPtr ) );
@@ -390,6 +414,7 @@ namespace DGtal
     */
     inline operator CowPtr<T>() const
     {
+      // display( "operator CowPtr<T>() const", myParam );
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF:
 	return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
@@ -398,11 +423,40 @@ namespace DGtal
       case COW_PTR:
 	return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
       case COUNTED_PTR:
-	return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
+	return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ), true );
       case RIGHT_VALUE_REF:
 	return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
       default: ASSERT( false && "[Clone::operator CowPtr<T>() const] Invalid cast for given type. " );
         return CowPtr<T>( 0 );
+      }
+    }
+
+    /**
+       Cast operator to a smart pointer on T instance. The object is duplicated or not
+       depending on the type of input parameter.
+
+      - const T & -> CountedPtr<T>     // immediate duplication 
+      - T* -> CountedPtr<T>            // acquired              
+      - CountedPtr<T> -> CountedPtr<T> // lazy duplication      
+      - CowPtr<T> -> CountedPtr<T>     // immediate duplication 
+      - T&& -> CountedPtr<T>           // move into member
+    */
+    inline operator CountedPtr<T>() const
+    {
+      // display( "operator CountedPtr<T>() const", myParam );
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF:
+	return CountedPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
+      case PTR:
+	return CountedPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
+      case COW_PTR:
+	return CountedPtr<T>( new T( * static_cast< const CowPtr<T>* >( myPtr )->get() ) );
+      case COUNTED_PTR:
+	return CountedPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
+      case RIGHT_VALUE_REF:
+	return CountedPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
+      default: ASSERT( false && "[Clone::operator CountedPtr<T>() const] Invalid cast for given type. " );
+        return CountedPtr<T>( 0 );
       }
     }
 
@@ -421,6 +475,7 @@ namespace DGtal
     */
     inline T* operator&() const
     {
+      // display( "T* operator &() const", myParam );
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF:
 	return new T( * static_cast< const T* >( myPtr ) );
