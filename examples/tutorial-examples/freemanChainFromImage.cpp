@@ -97,7 +97,7 @@ int main()
   //! [freemanChainFromImage-extraction]
   
 
-  GradientColorMap<int> cmap_grad( 0, (const int)vectContoursBdryPointels.size() );
+  GradientColorMap<int> cmap_grad( 0, (int)vectContoursBdryPointels.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
