@@ -137,26 +137,18 @@ namespace DGtal {
         > skelFunction
         )
     {
-      using Object = typename TVoxelComplex::Object;
-      using DigitalSet = typename Object::DigitalSet ;
-      using Point = typename Object::Point ;
-      using Domain = typename DigitalSet::Domain ;
+      using Domain = DGtal::Z3i::Domain;
+      using Point = typename Domain::Point ;
+      using DigitalSet = DigitalSetByAssociativeContainer<
+        Domain, std::unordered_set< Point > >;
       using DomainConstIterator = typename Domain::ConstIterator ;
       using KSpace = typename TVoxelComplex::KSpace;
-      using DigitalTopology = typename Object::DigitalTopology;
-      using ForegroundAdjacency = typename Object::ForegroundAdjacency;
-      using BackgroundAdjacency = typename Object::BackgroundAdjacency;
-      ForegroundAdjacency adjF;
-      BackgroundAdjacency adjB;
-      DigitalTopology dt( adjF, adjB,
-          DigitalTopologyProperties::JORDAN_DT);
 
       Point p1 = Point::diagonal( -1 );
       Point p2 = Point::diagonal(  1 );
       Point c = Point::diagonal( 0 );
       Domain domain( p1, p2 );
       DigitalSet shapeSet( domain );
-      Object shape( dt, shapeSet );
       unsigned int k = 0;
       for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
         if ( *it != c ) ++k;
@@ -166,11 +158,11 @@ namespace DGtal {
 
       KSpace ks;
       // Pad KSpace domain.
-      ks.init(shape.domain().lowerBound() + Point::diagonal( -1 ) ,
-          shape.domain().upperBound() + Point::diagonal( 1 ),
+      ks.init(domain.lowerBound() + Point::diagonal( -1 ) ,
+          domain.upperBound() + Point::diagonal( 1 ),
           true);
       TVoxelComplex vc(ks);
-      vc.construct(shape);
+      vc.construct(shapeSet);
       for ( unsigned int cfg = 0; cfg < nbCfg; ++cfg ){
         if ( ( cfg % 1000 ) == 0 )
           trace.progressBar( (double) cfg, (double) nbCfg );
