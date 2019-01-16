@@ -75,9 +75,13 @@ public:
     // no need for ~CowPtr - the CountedPtr takes care of everything.
     CowPtr(const CowPtr& r) noexcept             : myPtr(r.myPtr) {}
     /**
-     * @todo JOL: check this.
+     * Builds a copy-on-write pointer from a counted pointer. Requires
+     * an extra dummy parameter in order to solve ambiguities when
+     * casting from Clone<T> to CowPtr<T>.
+     *
+     * @param r any counted pointer
      */
-    CowPtr(const CountedPtr<T> & r)    : myPtr( r ) {}
+    CowPtr(const CountedPtr<T> & r, bool /* unused */ )    : myPtr( r ) {}
     CowPtr& operator=(const CowPtr& r)
     {
         if (this != &r)
