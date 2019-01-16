@@ -1827,19 +1827,30 @@ namespace DGtal
 			   << std::endl;
 	      }
 	    }
+	  // Simplify materials
+          Idx j = 0;
+          std::map<Color,Idx> map_colors;
+          for ( auto && c : diffuse_colors )
+            if ( ! map_colors.count( c ) )
+              map_colors[ c ] = j++;
+
 	  // Output materials
 	  bool has_material = ! diffuse_colors.empty();
           if ( has_material )
-	    for ( Idx i = 0; i < n; ++i )
+	    for ( auto&& pair : map_colors )
 	      MeshHelpers::exportMTLNewMaterial
-		( output_mtl, i, ambient_color, diffuse_colors[ i ], specular_color);
+		( output_mtl, pair.second, ambient_color, pair.first, specular_color);
+	    // for ( Idx i = 0; i < n; ++i )
+	    //   MeshHelpers::exportMTLNewMaterial
+	    //     ( output_mtl, i, ambient_color, diffuse_colors[ i ], specular_color);
           else
 	    MeshHelpers::exportMTLNewMaterial
 	      ( output_mtl, 0, ambient_color, diffuse_color, specular_color );
 	  // Output faces
 	  for ( Idx i = 0; i < n; ++i )
             {
-              output_obj << "usemtl material_" << ( has_material ? i : 0 )
+              output_obj << "usemtl material_" // << ( has_material ? i : 0 )
+                         << ( has_material ? map_colors[ diffuse_colors[ i ] ] : 0 )
                          << std::endl;
 	      Idx b = 8*i+1;
 	      for ( Idx j = 0; j < 8; j += 2 )
