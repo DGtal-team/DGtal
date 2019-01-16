@@ -11,6 +11,10 @@
 - *Configuration/General*
   - Simplifying Travis CI scripts (David Coeurjolly, [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
 
+- *Topology*
+  - Remove the internal object from VoxelComplex, improving performance
+    (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
@@ -55,6 +59,8 @@
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
   - Fix computational costs of separable metric predicates in the documentation.
     (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
+  - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
+    (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
 
 - *DEC*
   - Adding missing headers in some files of DEC.
