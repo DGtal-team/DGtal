@@ -121,7 +121,7 @@ ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
     }
     return c;
   }
-  catch ( InputException e )
+  catch ( InputException& e )
   {
       std::cerr << " "
     << " error in finding a bel." << std::endl;
