@@ -66,7 +66,8 @@ namespace DGtal {
 
     default:
     case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
-      std::cerr << "Unknown and unsupported component type!" << std::endl;
+      trace.warning() << "[ITKReader] Unknown and unsupported component type! File will be loaded with UCHAR component type" << std::endl;
+      //fallthrough
     case itk::ImageIOBase::UCHAR:
     {
       typedef ImageContainerByITKImage<Domain, unsigned char> DGtalITKImage;
