@@ -47,7 +47,14 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/io/ITKIOTrait.h"
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
 #include <itkImageFileReader.h>
+#if defined(__GNUG__)
+#endif
+#pragma GCC diagnostic pop
 
 namespace DGtal
 {
