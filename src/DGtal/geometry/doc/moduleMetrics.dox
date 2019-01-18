@@ -15,7 +15,8 @@
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
-namespace concepts{
+  namespace concepts{
+    
 //----------------------------------------
 /*!
 @page moduleMetrics Metric Spaces, Digital Metric Spaces and Related Concepts
@@ -36,8 +37,7 @@ map from @f$E@f$ to a sub-group @f$F@f$ of @f$\mathbb{R}@f$ such that
 @f$\forall a,b,c\in E@f$, 
 
 - (@e non-negative) @f$ d(a,b)\geq 0@f$ 
-- (@e identity @e of @e indiscernibles) @f$ d(a,b)= 0 \Leftrightarrow
-a=b@f$
+- (@e identity @e of @e indiscernibles) @f$ d(a,b)= 0 \Leftrightarrow a=b@f$
 - (@e symmetry) @f$d(a,b)=d(b,a)@f$ 
 - (@e triangular @e inequality) @f$d(a,c) \leq d(a,b) + d(b,c)@f$
 
@@ -47,8 +47,7 @@ additional requirements on the metric and thus norms:
 @definition Given a vector space EV, a @a norm is a map @f$g@f$ from  @f$EV@f$ to a sub-group
   @f$F@f$ of @f$\mathbb{R}@f$ such that @f$\forall \vec{x},\vec{y}\in EV@f$,
 -    (@e non-negative) @f$ g(\vec{x})\geq 0@f$
--    (@e identity @e of @e indiscernibles) @f$ g(\vec{x})= 0
-    \Leftrightarrow \vec{x}=\vec{0}@f$
+-    (@e identity @e of @e indiscernibles) @f$ g(\vec{x})= 0\Leftrightarrow \vec{x}=\vec{0}@f$
 -   (@e triangular @e inequality) @f$g(\vec{x}+\vec{y}) \leq
     g(\vec{x}) + g(\vec{y})@f$
 -    (@e homogeneity) @f$ \forall \lambda\in\mathbb{R}, \quad
@@ -118,7 +117,7 @@ if RawValue is an @e exact @e type (e.g. model of CInteger with enough
 capacity to represent power p integers), rawDistance method can be used
 to perform exact metric comparison.  To sum up for any instance @e
 metric of the class ExactLpSeparableMetric for instance:
-- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^n |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
+&- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^n |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
 - @e metric.rawDistance(x,y)  returns the power p of the distance as
 an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^n |x_i-y_i |^p\f$
 
