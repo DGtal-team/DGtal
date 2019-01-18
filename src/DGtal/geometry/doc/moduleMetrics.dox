@@ -17,7 +17,8 @@
 namespace DGtal { namespace concepts{
 
 /*!
-@page moduleMetrics Metric Spaces, Digital Metric Spaces and Related Concepts @writers David Coeurjolly
+@page moduleMetrics Metric Spaces, Digital Metric Spaces and Related Concepts
+@writers David Coeurjolly
 
 [TOC]
 
