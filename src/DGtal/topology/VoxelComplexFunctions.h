@@ -353,6 +353,10 @@ namespace DGtal
     /**
      * Get all connected components of the input object.
      *
+     * @tparam TObject Object Type
+     * @param input_obj input object
+     * @param verbose flag to be verbose at execution
+     *
      * @return vector of TObject containing the different
      * connected components of the object.
      *
@@ -369,7 +373,6 @@ namespace DGtal
     /**
      * Voxel Complex difference operation. Updates the voxel complex S1 as S1 - S2.
      * @tparam TKSpace the digital space in which lives the voxel complex.
-     * @tparam TObject the object type to store voxels and its connectivity.
      * @tparam TCellContainer the associative container used to store cells within the voxel complex.
      *
      * @param[in,out] S1 an input voxel complex, \a S1 - \a S2 as output.
@@ -377,30 +380,20 @@ namespace DGtal
      *
      * @return a reference to the modified voxel complex S1.
      */
-    template <typename TKSpace, typename TObject, typename TCellContainer>
-    inline VoxelComplex< TKSpace, TObject, TCellContainer >&
-    operator-=( VoxelComplex< TKSpace, TObject, TCellContainer >& S1,
-                const VoxelComplex< TKSpace, TObject, TCellContainer >& S2 )
+    template <typename TKSpace, typename TCellContainer>
+    inline VoxelComplex< TKSpace, TCellContainer >&
+    operator-=( VoxelComplex< TKSpace, TCellContainer >& S1,
+                const VoxelComplex< TKSpace, TCellContainer >& S2 )
     {
-      typedef VoxelComplex< TKSpace, TObject, TCellContainer > VC;
+      typedef VoxelComplex< TKSpace, TCellContainer > VC;
       for ( Dimension i = 0; i <= VC::dimension; ++i )
         setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
-      // Update Object. Assuming is an AssociativeContainer
-      auto & S1ObjPoints = S1.myObject.pointSet();
-      const auto & S2ObjPoints = S2.myObject.pointSet();
-      for(auto it2 = S2ObjPoints.begin(); it2 != S2ObjPoints.end(); ++it2)
-      {
-        const auto it_search = S1ObjPoints.find(*it2);
-        if(it_search != S1ObjPoints.end())
-          S1ObjPoints.erase(it_search);
-      }
       return S1;
     }
 
     /**
      * Voxel Complex difference operation. Returns the difference of \a S1 - \a S2.
      * @tparam TKSpace the digital space in which lives the voxel complex.
-     * @tparam TObject the object type to store voxels and its connectivity.
      * @tparam TCellContainer the associative container used to store cells within the voxel complex.
      *
      * @param[in] S1 an input voxel complex
@@ -408,24 +401,15 @@ namespace DGtal
      *
      * @return the voxel complex \a S1 - \a S2.
      */
-    template <typename TKSpace, typename TObject, typename TCellContainer>
-    inline VoxelComplex< TKSpace, TObject, TCellContainer >
-    operator-( const VoxelComplex< TKSpace, TObject, TCellContainer >& S1,
-               const VoxelComplex< TKSpace, TObject, TCellContainer >& S2 )
+    template <typename TKSpace, typename TCellContainer>
+    inline VoxelComplex< TKSpace, TCellContainer >
+    operator-( const VoxelComplex< TKSpace, TCellContainer >& S1,
+               const VoxelComplex< TKSpace, TCellContainer >& S2 )
     {
-      typedef VoxelComplex< TKSpace, TObject, TCellContainer > VC;
-      VC S = S1;
+      typedef VoxelComplex< TKSpace, TCellContainer > VC;
+      VC S(S1);
       for ( Dimension i = 0; i <= VC::dimension; ++i )
         setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
-      // Update Object. Assuming is an AssociativeContainer
-      auto & SObjPoints = S.myObject.pointSet();
-      const auto & S2ObjPoints = S2.myObject.pointSet();
-      for(auto it2 = S2ObjPoints.begin(); it2 != S2ObjPoints.end(); ++it2)
-      {
-        auto it_search = SObjPoints.find(*it2);
-        if(it_search != SObjPoints.end())
-          SObjPoints.erase(it_search);
-      }
       return S;
     }
 
