@@ -14,7 +14,7 @@ SET(DGTAL_TESTS_SRC
   testRigidTransformation2D
   testRigidTransformation3D
   testArrayImageAdapter
-  testFunctorConstImage
+  testConstImageFunctorHolder
   )
 
 if( WITH_HDF5 )

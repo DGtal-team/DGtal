@@ -60,14 +60,14 @@ namespace functors
  * The functor must accept a point and return a value whose type is @a Value.
  *
  * @warning This class is not meant to be directly constructed by the user.
- * Use instead the @ref makePointFunctorHolder helper that will choose the more
+ * Use instead the @ref holdPointFunctor helper that will choose the more
  * appropriate storage type for the functor depending on the given callable
  * object.
  *
  * A typical usage would be:
 @code
 using Point = PointVector<2, int>;
-auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
+auto fn = holdPointFunctor<Point>( // auto-deduced Value template
   [] (Point const& pt) { return pt.norm(); }
 );
 @endcode
@@ -77,7 +77,7 @@ auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
  * that a pointer to a function cannot be inlined:
 @code
 using Point = PointVector<2, int>;
-auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
+auto fn = holdPointFunctor<Point>( // auto-deduced Value template
   [] (Point const& pt) { return my_function(pt); }
 );
 @endcode
@@ -85,7 +85,7 @@ auto fn = makePointFunctorHolder<Point>( // auto-deduced Value template
  * You can find more informations about how to use this class appropriately
  * in the module about @ref moduleFunctors.
  *
- * @see makePointFunctorHolder, FunctorHolder, @ref moduleFunctors
+ * @see holdPointFunctor, FunctorHolder, @ref moduleFunctors
  */
 template <
   typename TPoint,
@@ -193,7 +193,7 @@ template <
   typename TFunctor
 >
 inline auto
-makePointFunctorHolder( TFunctor && aFunctor )
+holdPointFunctor( TFunctor && aFunctor )
     -> PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
   {
     return PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{
@@ -215,7 +215,7 @@ template <
   typename TFunctor
 >
 inline auto
-makePointFunctorHolder( TFunctor && aFunctor )
+holdPointFunctor( TFunctor && aFunctor )
     -> PointFunctorHolder<
           TPoint,
           typename std::decay<decltype(aFunctor(std::declval<TPoint>()))>::type,

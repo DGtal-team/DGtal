@@ -50,7 +50,7 @@ using namespace DGtal;
 int main()
 {
   //! [examplePointFunctorHolder-hold]
-  auto mickey = functors::makePointFunctorHolder<Z2i::Point>(
+  auto mickey = functors::holdPointFunctor<Z2i::Point>(
     [] ( Z2i::Point const& pt ) {
       return
            (pt - Z2i::Point(0, -5)).norm() > 3

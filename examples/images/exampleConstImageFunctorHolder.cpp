@@ -22,7 +22,7 @@
  *
  * @date 2018/07/18
  *
- * @brief An example file for @ref DGtal::functors::FunctorConstImage
+ * @brief An example file for @ref DGtal::functors::ConstImageFunctorHolder
  *
  * This file is part of the DGtal library.
  */
@@ -38,7 +38,7 @@
 #include <DGtal/io/colormaps/HueShadeColorMap.h>
 
 //! [include]
-#include "DGtal/images/FunctorConstImage.h"
+#include "DGtal/images/ConstImageFunctorHolder.h"
 //! [include]
 
 int main()
@@ -56,7 +56,7 @@ int main()
   //! [example1]
   const Domain domain1(Point(1,1), Point(16,16));
 
-  auto image1 = DGtal::functors::makeFunctorConstImage(
+  auto image1 = DGtal::functors::holdConstImageFunctor(
       domain1,
       [] (Point const& pt) { return 25 * ( std::cos( (pt - Point(4,4)).norm() ) + 1 ); }
   );
@@ -64,13 +64,13 @@ int main()
 
   aBoard.clear();
   DGtal::Display2DFactory::drawImage<HueShadeDouble>(aBoard, image1, 0, 225);
-  aBoard.saveSVG("FunctorConstImage_example1.svg");
+  aBoard.saveSVG("ConstImageFunctorHolder_example1.svg");
 
   // Image from a binary lambda
   //! [example2]
   const Domain domain2(Point(-1,1), Point(18,18));
 
-  auto image2 = DGtal::functors::makeFunctorConstImage(
+  auto image2 = DGtal::functors::holdConstImageFunctor(
       domain2,
       [] (Point const& pt, Domain const& d) { // we could also capture the domain
         return 2 * std::min( ( pt - d.lowerBound() ).norm(), ( pt - d.upperBound() ).norm() );
@@ -80,11 +80,11 @@ int main()
   
   aBoard.clear();
   DGtal::Display2DFactory::drawImage<HueShadeDouble>(aBoard, image2, 0, 225);
-  aBoard.saveSVG("FunctorConstImage_example2.svg");
+  aBoard.saveSVG("ConstImageFunctorHolder_example2.svg");
 
   // Image that depends on other images
   //! [example3]
-  auto image3 = DGtal::functors::makeFunctorConstImage(
+  auto image3 = DGtal::functors::holdConstImageFunctor(
       domain1,
       [&image1, &image2] (Point const& pt) { return image1(pt) + image2(pt); }
   );
@@ -92,6 +92,6 @@ int main()
   
   aBoard.clear();
   DGtal::Display2DFactory::drawImage<HueShadeDouble>(aBoard, image3, 0, 225);
-  aBoard.saveSVG("FunctorConstImage_example3.svg");
+  aBoard.saveSVG("ConstImageFunctorHolder_example3.svg");
   return 0;
 }
