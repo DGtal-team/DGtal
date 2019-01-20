@@ -3,7 +3,7 @@ $SCRIPT_BEGIN
 
 return_code=0
 
-DOXYGENLOG=doxygen.log
+DOXYGENLOG="$BUILD_DIR/doxygen.log"
 
 ## We first check that the doxygen.log is empty
 if [[ -f "$DOXYGENLOG" ]]
@@ -49,7 +49,7 @@ else
 fi
 
 
-## We check src code consitency
+## We check src code consistency
 cd "$SRC_DIR/src"
 "$SRC_DIR/.travis/check_src_file_tag.sh"
 if [[ $? == 0 ]]
