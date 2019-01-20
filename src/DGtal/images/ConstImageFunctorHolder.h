@@ -26,15 +26,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(FunctorConstImage_RECURSES)
-#error Recursive header files inclusion detected in FunctorConstImage.h
-#else // defined(FunctorConstImage_RECURSES)
+#if defined(ConstImageFunctorHolder_RECURSES)
+#error Recursive header files inclusion detected in ConstImageFunctorHolder.h
+#else // defined(ConstImageFunctorHolder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define FunctorConstImage_RECURSES
+#define ConstImageFunctorHolder_RECURSES
 
-#if !defined FunctorConstImage_h
+#if !defined ConstImageFunctorHolder_h
 /** Prevents repeated inclusion of headers. */
-#define FunctorConstImage_h
+#define ConstImageFunctorHolder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -66,21 +66,21 @@ namespace functors
  *    a value whose type is \a Value.
  *
  * @warning This class is not meant to be directly constructed by the user.
- * As illustrated below, use instead the makeFunctorConstImage helper that
+ * As illustrated below, use instead the holdConstImageFunctor helper that
  * will choose the more appropriate storage type for the functor depending
  * on the given callable object.
  *
  * A typical usage would be:
- * @snippet exampleFunctorConstImage.cpp example1
+ * @snippet exampleConstImageFunctorHolder.cpp example1
  * resulting in:
- * \image html FunctorConstImage_example1.png "Image generated from a point-dependent lambda."
- * \image latex FunctorConstImage_example1.png "Image generated from a point-dependent lambda." width=5cm
+ * \image html ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda."
+ * \image latex ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda." width=5cm
  *
  * In you want to use a function instead of a functor or lambda, consider
  * wrapping it into a lambda to avoid a performance penalty due to the fact
  * that a pointer to a function cannot be inlined:
 @code
-auto image = DGtal::makeFunctorConstImage(
+auto image = DGtal::holdConstImageFunctor(
     domain,
     [] (Point const& pt) { return my_function(pt); }
 );
@@ -90,9 +90,9 @@ auto image = DGtal::makeFunctorConstImage(
  * and you can find more informations about how to use this class appropriately
  * in the module about @ref moduleFunctors .
  *
- * @see makeFunctorConstImage, FunctorHolder, @ref moduleFunctors
+ * @see holdConstImageFunctor, FunctorHolder, @ref moduleFunctors
  *
- * @see exampleFunctorConstImage.cpp
+ * @see exampleConstImageFunctorHolder.cpp
  *
  */
 template <
@@ -100,7 +100,7 @@ template <
   typename TValue,
   typename TFunctor
 >
-class FunctorConstImage
+class ConstImageFunctorHolder
 {
   BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<TDomain> ));
 
@@ -108,7 +108,7 @@ class FunctorConstImage
 public:
 
   // DGtal types
-  using Self      = FunctorConstImage<TDomain, TValue, TFunctor>;
+  using Self      = ConstImageFunctorHolder<TDomain, TValue, TFunctor>;
   using Domain    = TDomain;
   using Point     = typename Domain::Point;
   using Vector    = typename Domain::Vector;
@@ -140,7 +140,7 @@ public:
    * @param aFunctor  The functor taking point as parameter.
    */
   template < class TGivenFunctor >
-  explicit FunctorConstImage( Domain const& aDomain, TGivenFunctor && aFunctor )
+  explicit ConstImageFunctorHolder( Domain const& aDomain, TGivenFunctor && aFunctor )
     : myDomain( aDomain )
     , myFunctor( std::forward<TGivenFunctor>(aFunctor) )
   {
@@ -205,7 +205,7 @@ public:
   inline
   void selfDisplay ( std::ostream & out ) const
     {
-      out << "[FunctorConstImage] holding a " << myFunctor << " on domain " << myDomain;
+      out << "[ConstImageFunctorHolder] holding a " << myFunctor << " on domain " << myDomain;
     }
 
   /** @brief Checks the validity/consistency of the object.
@@ -218,55 +218,55 @@ public:
     }
 
 public:
-  /// Constant range on a @ref FunctorConstImage
+  /// Constant range on a @ref ConstImageFunctorHolder
   class ConstRange
     {
   public:
-      ConstRange( Self const& aFunctorConstImage )
-        : myFunctorConstImage( aFunctorConstImage )
+      ConstRange( Self const& aConstImageFunctorHolder )
+        : myConstImageFunctorHolder( aConstImageFunctorHolder )
       {}
 
       using ConstIterator = typename Self::ConstIterator;
       using ConstReverseIterator = typename Self::ConstReverseIterator;
       using Point = typename Self::Point;
 
-      inline ConstIterator begin()  const { return { myFunctorConstImage.myDomain.begin(), myFunctorConstImage }; }
-      inline ConstIterator begin( Point const& aPoint ) const { return { myFunctorConstImage.myDomain.begin(aPoint), myFunctorConstImage }; }
-      inline ConstIterator end()    const { return { myFunctorConstImage.myDomain.end(), myFunctorConstImage }; }
+      inline ConstIterator begin()  const { return { myConstImageFunctorHolder.myDomain.begin(), myConstImageFunctorHolder }; }
+      inline ConstIterator begin( Point const& aPoint ) const { return { myConstImageFunctorHolder.myDomain.begin(aPoint), myConstImageFunctorHolder }; }
+      inline ConstIterator end()    const { return { myConstImageFunctorHolder.myDomain.end(), myConstImageFunctorHolder }; }
 
       inline ConstReverseIterator rbegin()  const { return ConstReverseIterator( end() ); }
       inline ConstReverseIterator rbegin( Point const& aPoint ) const { return ConstReverseIterator( ++begin(aPoint) ); }
       inline ConstReverseIterator rend()    const { return ConstReverseIterator( begin() ); }
 
   private:
-      Self const& myFunctorConstImage;
+      Self const& myConstImageFunctorHolder;
     }; // End of class ConstRange
-}; // End of class FunctorConstImage
+}; // End of class ConstImageFunctorHolder
 
-/** @brief Overloads 'operator<<' for displaying objects of class @ref FunctorConstImage.
+/** @brief Overloads 'operator<<' for displaying objects of class @ref ConstImageFunctorHolder.
  *
  * @param out the output stream where the object is written.
- * @param object the object of class @ref FunctorConstImage to write.
+ * @param object the object of class @ref ConstImageFunctorHolder to write.
  * @return the output stream after the writing.
  */
 template <typename TDomain, typename TValue, typename TFunctor>
 std::ostream&
-operator<< ( std::ostream & out, const FunctorConstImage<TDomain, TValue, TFunctor> & object )
+operator<< ( std::ostream & out, const ConstImageFunctorHolder<TDomain, TValue, TFunctor> & object )
 {
   object.selfDisplay(out);
   return out;
 }
 
-/** @brief FunctorConstImage construction helper with specification of the return type.
+/** @brief ConstImageFunctorHolder construction helper with specification of the return type.
  *
  * @tparam  TValue    The image value type.
  * @tparam  TDomain   The domain type (auto-deduced).
  * @tparam  TFunctor  The functor type (auto-deduced).
  * @param   aDomain   The image domain.
  * @param   aFunctor  The functor that generates the image.
- * @return an instance of the appropriate FunctorConstImage type.
+ * @return an instance of the appropriate ConstImageFunctorHolder type.
  *
- * @see FunctorConstImage
+ * @see ConstImageFunctorHolder
  */
 template <
   typename TValue,
@@ -274,26 +274,26 @@ template <
   typename TFunctor
 >
 inline auto
-makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
-    -> FunctorConstImage<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
   {
-    return FunctorConstImage<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+    return ConstImageFunctorHolder<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
   }
 
 //@{
 
-/** @brief FunctorConstImage construction helper with auto-deduction of the return type.
+/** @brief ConstImageFunctorHolder construction helper with auto-deduction of the return type.
  *
  * @tparam  TDomain   The domain type (auto-deduced).
  * @tparam  TFunctor  The functor type (auto-deduced).
  * @param   aDomain   The image domain.
  * @param   aFunctor  The functor (unary or binary) that generates the image.
- * @return an instance of the appropriate FunctorConstImage type.
+ * @return an instance of the appropriate ConstImageFunctorHolder type.
  *
  * @note You don't have to choose between the version for unary or binary functor:
  *  this choice is automatically done using SFINAE technique.
  *
- * @see FunctorConstImage and @ref moduleImages for more informations.
+ * @see ConstImageFunctorHolder and @ref moduleImages for more informations.
  */
 
 // Auto-deduction of the return type in case of an unary functor.
@@ -302,14 +302,14 @@ template <
   typename TFunctor
 >
 inline auto
-makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
-    -> FunctorConstImage<
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<
           TDomain,
           typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>()))>::type,
           decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
         >
   {
-    return FunctorConstImage<
+    return ConstImageFunctorHolder<
         TDomain,
         typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>()))>::type,
         decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
@@ -322,14 +322,14 @@ template <
   typename TFunctor
 >
 inline auto
-makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
-    -> FunctorConstImage<
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<
           TDomain,
           typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>(), aDomain))>::type,
           decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
         >
   {
-    return FunctorConstImage<
+    return ConstImageFunctorHolder<
         TDomain,
         typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>(), aDomain))>::type,
         decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
@@ -341,7 +341,7 @@ makeFunctorConstImage( TDomain const& aDomain, TFunctor && aFunctor )
 } // namespace functors
 } // namespace DGtal
 
-#endif // !defined FunctorConstImage_h
+#endif // !defined ConstImageFunctorHolder_h
 
-#undef FunctorConstImage_RECURSES
-#endif // else defined(FunctorConstImage_RECURSES)
+#undef ConstImageFunctorHolder_RECURSES
+#endif // else defined(ConstImageFunctorHolder_RECURSES)
