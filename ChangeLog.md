@@ -12,8 +12,8 @@
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Image package*
-  - Adding FunctorConstImage to transform any callable object (e.g. function,
-    functor, lambda function,...) into a CConstImage model.
+  - Adding ConstImageFunctorHolder to transform any callable object
+    (e.g. function, functor, lambda function,...) into a CConstImage model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Kernel package*
