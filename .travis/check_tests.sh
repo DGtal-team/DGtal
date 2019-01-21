@@ -1,11 +1,11 @@
 #!/bin/bash
 $SCRIPT_BEGIN
 
-echo "Running the unit tests."
 ### DGtal Tests
-echo "PWD = $PWD"
-ls
+echo "Running the unit tests."
+cd "$BUILD_DIR"
 ctest -j $BJOBS --output-on-failure
+
 $SCRIPT_END
 
 
