@@ -55,6 +55,8 @@
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix Color::Green definition (David Coeurjolly,
+    [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
