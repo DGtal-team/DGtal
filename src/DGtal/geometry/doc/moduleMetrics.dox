@@ -44,7 +44,8 @@ map from @f$E@f$ to a subgroup @f$F@f$ of @f$\mathbb{R}@f$ such that
 - (@e symmetry) @f$d(a,b)=d(b,a)@f$
 - (@e triangular @e inequality) @f$d(a,c) \leq d(a,b) + d(b,c)@f$
 
-When performing some geometry processing, one may consider  additional requirements on the metric and thus norms:
+When performing some geometry processing, one may consider additional
+requirements on the metric and thus norms:
 
 @definition Given a vector space EV, a @a norm is a map @f$g@f$ from  @f$EV@f$ to a subgroup   @f$F@f$ of @f$\mathbb{R}@f$ such that @f$\forall \vec{x},\vec{y}\in EV@f$,
 -    (@e non-negative) @f$ g(\vec{x})\geq 0@f$
@@ -61,14 +62,16 @@ In the following, we restrict our attention to metric spaces even if some of the
 In DGtal, the concept of CMetricSpace is associated with metric space
 definition. A first refinement of this concept is the concept of
 CDigitalMetricSpace whose models implement distance functions on
-integer numbers (i.e. @f$(\mathbb{Z}^d, \mathbb{Z}, d)@f$)). For
+integer numbers (i.e. @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$)). For
 example,
 
-- @f$ l_p@f$ metrics (ExactPredicateLpSeparableMetric or  InexactPredicateLpSeparableMetric) are models of CMetricSpace for  @f$p>1@f$
-
+- @f$ l_p@f$ metrics (ExactPredicateLpSeparableMetric or
+  InexactPredicateLpSeparableMetric) are models of CMetricSpace for
+  @f$p>1@f$.
 - Chamfer norms with axis symmetric unit ball (see experimental::ChamferNorm2D in dimension 2).
-
-- DigitalMetricAdapter which adapts any metric (model of    CMetricSpace) to digital space using the ceil function. This induces    a digital metric (ceil function preserves the    triangular inequality).
+- DigitalMetricAdapter which adapts any metric (model of CMetricSpace)
+  to digital space using the ceil function. This induces a digital
+  metric (ceil function preserves the triangular inequality).
 
 @dot
 digraph metric_concepts_2_vor {
@@ -107,9 +110,9 @@ if RawValue is an @e exact @e type (e.g. model of CInteger with enough
 capacity to represent power p integers), rawDistance method can be used
 to perform exact metric comparison.  To sum up for any instance @e
 metric of the class ExactLpSeparableMetric for instance:
-- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^d |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
+- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^n |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
 - @e metric.rawDistance(x,y)  returns the power p of the distance as
-an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^d |x_i-y_i |^p\f$
+an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^n |x_i-y_i |^p\f$
 
 
 
@@ -117,13 +120,6 @@ Similarly to metric models, @a Power @a Metrics are important for
 reverse distance reconstruction and medial axis extraction.  For @f$
 l_2@f$ metric, the power distance between a point @f$ x@f$ and a ball
 @f$(y,r)@f$ with centger @f$y@f$ and radius @f$r@f$, is defined by
-
-
-@note Models of CMetricSpace concept also implements a  @e rawDistance(x,y) method. This method returns a value of type @e RawValue which may be considered as an exact representation of the distance between x and y. For example, if we consider a @f$ l_p@f$ metric, the distance between x and y can be represented as the sum of power p terms (the distance without the order p square root). Hence, if RawValue is an @e exact @e type (e.g. model of CInteger with enough capacity to represent power p integers), rawDistance method can be used to perform exact metric comparison.  To sum up for any instance @e metric of the class ExactLpSeparableMetric for instance:
-- @e metric(x,y)   returns the distance as double, i.e. @f$\left ( \sum_{i=1}^d |x_i-y_i |^p \right )^{\frac{1}{p}}\f$
-- @e metric.rawDistance(x,y)  returns the power p of the distance as an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^d |x_i-y_i |^p\f$
-
-Similarly to metric models, @a Power @a Metrics are important for reverse distance reconstruction and medial axis extraction.  For @f$ l_2@f$ metric, the power distance between a point @f$ x@f$ and a ball @f$(y,r)@f$ with center @f$y@f$ and radius @f$r@f$, is defined by
 
 @f[ pow(x,y) = \| x - y\|_2^2  - r @f]
 
@@ -137,15 +133,31 @@ Such properties are related to a @e monotonicity property of the metric.  In dim
 
 @f[     u < x'' \implies d(p,s) \leq d(q,s) @f] and @f[    u > x'' \implies d(p,s) \geq d(q,s) @f]
 
-As discussed in @cite Hirata1996, any metric induced by a norm with axis symmetric unit ball is monotonic. Hence, all @f$l_p@f$ are monotonic, as well as most path based norms (chamfer norms, neighborhood sequence norms,...). Such properties are implemented in the concept of CSeparableMetric.
-Similarly, CPowerSeparableMetric can be defined as a refinement of CPowerMetric with monotonicity property of the power metric.
+As discussed in @cite Hirata1996, any metric induced by a norm with
+axis symmetric unit ball is monotonic. Hence, all @f$l_p@f$ are
+monotonic, as well as most path based norms (chamfer norms,
+neighborhood sequence norms,...). Such properties are implemented in
+the concept of CSeparableMetric.  Similarly, CPowerSeparableMetric can
+be defined as a refinement of CPowerMetric with monotonicity property
+of the power metric.
 
-The separable metric concept is a refinement of the CMetricSpace (resp. CPowerMetric) concept in which we require models to implement a method @a  hiddenBy(u,v,w,startingPoint,endPoint,dim): given three digital points @a u, @a v, @a w and an isothetic segment defined by the pair [@a startingPoint, @a endPoint] along the dimension @a dim, such method returns true if Voronoi cells of @a u and @a w @e hide the Voronoi cell if @a v on the segment. Such predicate can be illustrated as follows:
+The separable metric concept is a refinement of the CMetricSpace
+(resp. CPowerMetric) concept in which we require models to implement a
+method @a hiddenBy(u,v,w,startingPoint,endPoint,dim): given three
+digital points @a u, @a v, @a w and an isothetic segment defined by
+the pair [@a startingPoint, @a endPoint] along the dimension @a dim,
+such method returns true if Voronoi cells of @a u and @a w @e hide the
+Voronoi cell if @a v on the segment. Such predicate can be illustrated
+as follows:
 
 @image html hiddenBy.png "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
 @image latex hiddenBy.png  "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
 
-This predicate (with the @a closest() one as discussed above) is crucial for separable VoronoiMap/DistanceTransformation algorithms. The next section discusses about complexity of such volumetric algorithm with respect to computation costs of the two predicates.
+This predicate (with the @a closest() one as discussed above) is
+crucial for separable VoronoiMap/DistanceTransformation
+algorithms. The next section discusses about complexity of such
+volumetric algorithm with respect to computation costs of the two
+predicates.
 
 CPowerSeparableMetric concepts is a similar refinement of the CPowerMetric concept. Indeed, CPowerSeparableMetric models must implement an @a hiddenByPower(u, wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points {(u,wu),(v,wv),(w,ww)}.
 
@@ -168,28 +180,28 @@ separable metric (model of CSeparableMetric or
 CPowerSeparableMetric). If @f$ C @f$ corresponds to the cost of the @a
 closest() or @a closestPower() methods for the given metric, and @f$ H
 @f$ the cost of the @a hiddenBy() or @a hiddenByWeigthed() in
-dimension @f$ d @f$, the computational costs of the separable metrics
-can be summarized as follows (for a domain of size @f$ N^d @f$:
+dimension @f$ n @f$, the computational costs of the separable metrics
+can be summarized as follows (for a domain of size @f$ N^n @f$):
 
 | Models of CSeparableMetric/CPowerSeparableMetric | C | H | Note |
 |--------------------------------------------------|---|---|------|
 | ExactPredicateLpSeparableMetric<p>               | @f$ O(\log(p)) @f$ | @f$ O(\log(p)\cdot\log(N)) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
-| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(d) @f$ | @f$ O(d \cdot \log(N)) @f$ | Exact computations (H could be implemented in @f$ O(d) @f$)|
-| InexactPredicateLpSeparableMetric with p at construction | @f$ O(d) @f$ | @f$ O(d  \cdot \log(N)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
-| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(d\cdot \log(p)) @f$ | @f$ O(d\cdot \log(p)  \cdot \log(N)) @f$ | Exact computations|
-| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(d) @f$ | @f$ O(d) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(n) @f$ | @f$ O(n) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(n) @f$ | @f$ O(n \cdot \log(N)) @f$ | Exact computations (H could be implemented in @f$ O(n) @f$)|
+| InexactPredicateLpSeparableMetric with p at construction | @f$ O(n) @f$ | @f$ O(n  \cdot \log(N)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
+| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(n\cdot \log(p)) @f$ | @f$ O(n\cdot \log(p)  \cdot \log(N)) @f$ | Exact computations|
+| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(n) @f$ | @f$ O(n) @f$ | Exact computations|
 | SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(m  \cdot \log(N)) @f$ | relies on aMetric(p,q) computations in @f$ O(m) @f$ (the metric must satisfy some constraints, see @cite dcoeurjo_metric14)|
 | experimental::ChamferNorm2D | @f$ O(\log(p)) @f$ | @f$ O(\log^2(N)) @f$ | @cite dcoeurjo_metric14|
 
 
 Following this table, VoronoiMap and DistanceTransformation  have the following computational cost:
 
-\f[  O(d\cdot N^d\cdot (C+H))  \f]
+\f[  O(n\cdot N^n\cdot (C+H))  \f]
 
 The same complexity holds for  PowerMap and ReverseDistanceTransformation for @f$ l_p@f$ metrics.
 
-For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ O(d^2N^d)@f$.
+For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ O(n^2N^n)@f$.
 
 */
 }
