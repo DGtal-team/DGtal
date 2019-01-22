@@ -25,6 +25,8 @@
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
   - Fix compilation with Visual Studio (15.9.5) and some io tests
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
+  - Fixing & updating Travis: documentation deployement and DGtalTools job
+    (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
 
 - Miscellaneous
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
@@ -55,6 +57,8 @@
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix Color::Green definition (David Coeurjolly,
+    [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -66,6 +70,8 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
+    (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
 
 - *DEC*
   - Adding missing headers in some files of DEC.
