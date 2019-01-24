@@ -7,17 +7,17 @@
  * @section intro_sec_dgtal Introduction
 
 DGtal is a generic open source library for Digital Geometry
-programming whose main objective is to gather and structure different
+programming whose primary objective is to gather and structure different
 developments from the digital geometry and topology community. The
 benefits are numerous: to make easier the appropriation of our tools
-for a neophyte (new PhD students, researchers from other topics,
+for a neophyte (new Ph.D. students, researchers from other topics,
 ...), to permit better comparisons of new methods with already
-existing approaches, to construct a federative project. Furthermore we
-believe this is a necessary step for a better recognition of the
+existing approaches, to construct a federative project. Furthermore, we
+believe this is a necessary step for better recognition of the
 efficiency of discrete geometry techniques by the important image
-analysis community. As a consequence, DGtal is designed so as to
-simplify the construction of effective demonstration tools. New
-results are thus easily shared to a vast audience.
+analysis community. As a consequence, DGtal is designed to
+simplify the construction of useful demonstration tools. New
+results are thus easily shared with a vast audience.
 
 On a more technical level, DGtal is developed in C++. Similarly to
 other classical libraries such as CGAL, it follows the paradigm of
@@ -35,14 +35,14 @@ mechanism has been developed to display digital objects and export
 results in different vector formats.
 
 DGtal is a collaborative effort of the French ---for now--- digital
-geometry community. It is still a work in progress but show already
+geometry community. It is still a work in progress but shows already
 many promises to be the common basis for future developments made by
 the digital geometry community.
 
 
 DGtal is associated with the projects [DGtalTools](http://dgtal.org/dgtaltools/)
 and [DGtalTools-contrib](http://dgtal.org/dgtaltools/). Please have a look
-to the [DGtalTools online
+at the [DGtalTools online
 documentation](https://dgtal-team.github.io/doc-nightly/index.html) for additional 
 information.
 
