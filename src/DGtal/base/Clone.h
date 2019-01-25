@@ -273,13 +273,12 @@ namespace DGtal
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
 		     COUNTED_CONST_PTR_OR_CONST_PTR };
     /**
-       Debug method for displaying what's happening when using Clone mecanism
+       Debug method for displaying what's happening when using Clone mechanism
        @param method the name of the conversion method
        @param p the type of parameter
     */
     void display( const std::string& method, Parameter p ) const
     {
-      std::cout << "[Clone<T>::" << method << " param=";
       std::string sp;
       switch (p) {
       case CONST_LEFT_VALUE_REF: sp = "CONST_LEFT_VALUE_REF"; break;
@@ -293,7 +292,8 @@ namespace DGtal
       case COUNTED_CONST_PTR_OR_CONST_PTR: sp = "COUNTED_CONST_PTR_OR_CONST_PTR"; break;
       default:                   sp = "UNKNOWN"; break;
       }
-      std::cout << sp << "]" << std::endl;
+      trace.info() << "[Clone<T>::" << method << " param="
+                   << sp << "]" << std::endl;
         
     }
     /// Internal class that is used for a late deletion of an acquired pointer.
