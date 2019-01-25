@@ -34,7 +34,7 @@
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
-  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mecanism (Jacques-Olivier Lachaud,
+  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism (Jacques-Olivier Lachaud,
     [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
     [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
