@@ -563,8 +563,10 @@ edges or vertices and reciprocally.
 - DigitalSurface::inArcs (Vertex): the range of ingoing arcs from
   the given vertex.
 - DigitalSurface::facesAroundVertex (Vertex): the range of faces
-  containing this vertex [v]: 0 in 2D, 4 in 3D, 12 in 4D,
-  2(n-1)(n-2) in nD.
+  containing this vertex [v]: 0 in 2D, 4 in 3D, 12 in 4D, 2(n-1)(n-2)
+  in nD. Since DGtal 1.0, in 3D, the 4 faces may be ordered
+  counterclockwise around the vertex (seen from the exterior), if the
+  user specifies it. 
 - DigitalSurface::head (Arc): the head vertex of the given arc
 - DigitalSurface::tail (Arc): the tail vertex of the given arc
 - DigitalSurface::opposite (Arc): the opposite arc of the given arc
