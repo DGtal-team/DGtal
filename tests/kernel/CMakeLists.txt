@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testPointPredicateConcepts
    testPointHashFunctions
    testLinearizer
+   testPointFunctorHolder
    )
 
 
