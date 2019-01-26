@@ -4,7 +4,11 @@
 ## New Features / Critical Changes
 
 - *Helpers*
-  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with
+    DGtal. Integrate a lot of volume, digital surfaces, mesh,
+    surface, geometry, estimators functions, with many conversion
+    and input/output tools. (Jacques-Olivier Lachaud,
+    [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
 
 ## Changes
 
@@ -89,6 +93,13 @@
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
+- *Topology*
+  - Specializes the method DigitalSurface::facesAroundVertex in the
+    3D case, such that faces (ie pointels) are ordered
+    counterclockwise with respect of the vertex (ie surfel) seen from
+    the exterior. (Jacques-Olivier Lachaud,
+    [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
 
 - *Miscellaneous*
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
