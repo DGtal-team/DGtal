@@ -391,7 +391,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /**
      * Return all critical cliques for \b cubical.
-     * It calls @ref criticalCliquePairForD
+     * It calls @ref criticalCliquesForD
      *
      * @param cubical target complex to get critical cliques.
      * @param verbose print messages
@@ -545,11 +545,11 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     /*------------- Internal Methods --------------*/
     /**
      * pointToMask map, used internally in @ref VoxelComplex::isSimple for
-     * @ref LookUpTableFunctions.h::getSpelNeighborhoodConfigurationOccupancy
+     * @ref functions::getSpelNeighborhoodConfigurationOccupancy
      *
      * @return reference to pointToMaskMap member.
      *
-     * @see LookUpTableFunctions.h::pointToBitMaskMap()
+     * @see pointToMaskMap()
      */
     const PointToMaskMap &pointToMask() const;
 
