@@ -4,7 +4,11 @@
 ## New Features / Critical Changes
 
 - *Helpers*
-  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with
+    DGtal. Integrate a lot of volume, digital surfaces, mesh,
+    surface, geometry, estimators functions, with many conversion
+    and input/output tools. (Jacques-Olivier Lachaud,
+    [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
 
 ## Changes
 
@@ -23,13 +27,8 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
-
-- Miscellaneous
-  - Fix Small bug in Integral Invariant Volume Estimator in 2D
-    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
-
-  - Change from private to public access of types Input and Output in SCellToPoint
-    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
+  - Fixing & updating Travis: documentation deployement and DGtalTools job
+    (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
 
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
@@ -53,6 +52,8 @@
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix Color::Green definition (David Coeurjolly,
+    [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -64,6 +65,10 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix computational costs of separable metric predicates in the documentation.
+    (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
+  - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
+    (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
 
 - *DEC*
   - Adding missing headers in some files of DEC.
@@ -86,7 +91,18 @@
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
 
 - *Topology*
-  - Specializes the method DigitalSurface::facesAroundVertex in the 3D case, such that faces (ie pointels) are ordered counterclockwise with respect of the vertex (ie surfel) seen from the exterior. (Jacques-Olivier Lachaud, [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
+  - Specializes the method DigitalSurface::facesAroundVertex in the
+    3D case, such that faces (ie pointels) are ordered
+    counterclockwise with respect of the vertex (ie surfel) seen from
+    the exterior. (Jacques-Olivier Lachaud,
+    [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
+
+- *Miscellaneous*
+  - Fix Small bug in Integral Invariant Volume Estimator in 2D
+    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
+  - Change from private to public access of types Input and Output in SCellToPoint
+    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
+
 
 # DGtal 0.9.4.1
 
