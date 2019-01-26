@@ -1,6 +1,5 @@
 SET(DGTAL_EXAMPLES_SRC
-  exampleIteratorCompletion
-  exampleFunctorHolder
+  examplePointFunctorHolder
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
