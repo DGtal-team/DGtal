@@ -27,6 +27,8 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
+  - Fix compilation with Visual Studio (15.9.5) and some io tests
+    (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
 
@@ -48,6 +50,8 @@
     out of range. (Kacper Pluta, [#1359](https://github.com/DGtal-team/DGtal/pull/1359))
 
 - *IO*
+  - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
+    [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
