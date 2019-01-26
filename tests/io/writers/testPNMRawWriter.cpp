@@ -94,9 +94,10 @@ bool testPNMWriter()
 
   //TestingFunctor
   typedef DGtal::functors::Composer< Jet, functors::RedChannel, unsigned char> RedFunctor;
-  RedFunctor redFunctor( Jet(0,255), functors::RedChannel() ) ;
-  PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm",image, redFunctor);
-  
+  Jet jf( 0, 255 );
+  functors::RedChannel rf;
+  RedFunctor redFunctor( jf, rf );
+  PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm", image, redFunctor);
 
   //test Raw export
   RawWriter<Image>::exportRaw8("export-hue-twice.raw",image);
