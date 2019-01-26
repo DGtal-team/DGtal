@@ -23,6 +23,8 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
+  - Fix compilation with Visual Studio (15.9.5) and some io tests
+    (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
 
