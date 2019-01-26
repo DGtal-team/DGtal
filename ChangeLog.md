@@ -44,6 +44,8 @@
     out of range. (Kacper Pluta, [#1359](https://github.com/DGtal-team/DGtal/pull/1359))
 
 - *IO*
+  - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
+    [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
