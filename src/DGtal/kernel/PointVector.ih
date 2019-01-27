@@ -659,11 +659,15 @@ template <
     typename LeftEuclideanRing, typename LeftContainer,
     typename RightEuclideanRing, typename RightContainer >
 inline
-DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+DGtal::PointVector<3, DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>>
 DGtal::crossProduct ( DGtal::PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
              DGtal::PointVector<2, RightEuclideanRing, RightContainer> const& rhs )
   {
-    return lhs[0] * rhs[1] - lhs[1] * rhs[0];
+    return PointVector<3, ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>>(
+        0,
+        0,
+        lhs[0]*rhs[1] - lhs[1]*rhs[0]
+    );
   }
 //------------------------------------------------------------------------------
 template < DGtal::Dimension ptDim,

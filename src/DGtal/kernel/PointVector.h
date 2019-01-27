@@ -491,7 +491,7 @@ namespace DGtal
       typename LeftEuclideanRing, typename LeftContainer,
       typename RightEuclideanRing, typename RightContainer >
   inline
-  DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+  PointVector<3, DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>>
   crossProduct( PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
                 PointVector<2, RightEuclideanRing, RightContainer> const& rhs );
 
@@ -1264,7 +1264,7 @@ namespace DGtal
         typename LeftEuclideanRing, typename LeftContainer,
         typename RightEuclideanRing, typename RightContainer >
     friend inline
-    DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>
+    PointVector<3, DGtal::ArithmeticConversionType<LeftEuclideanRing, RightEuclideanRing>>
     crossProduct( PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
                   PointVector<2, RightEuclideanRing, RightContainer> const& rhs );
 
@@ -1426,7 +1426,7 @@ namespace DGtal
      */
     double squaredNorm( ) const;
 
-    
+
     /**
      * Computes the 1-norm of a vector.
      *
