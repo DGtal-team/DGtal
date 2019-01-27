@@ -243,7 +243,7 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 nbCells( Dimension d ) const
 {
-  return myCells[ d ].size();
+  return static_cast<typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size>(myCells[ d ].size());
 }
 
 //-----------------------------------------------------------------------------

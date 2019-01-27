@@ -555,7 +555,7 @@ LabelledMap( const LabelledMap & other )
   : myLabels( other.myLabels ),
     myFirstBlock( other.myFirstBlock )
 {
-  const unsigned int theSize = other.size();
+  const auto theSize = other.size();
   if ( theSize > N + 1 )
     {
       unsigned int s = N;
@@ -801,7 +801,7 @@ operator[]( const Key & key )
   bool exists = myLabels.test( key );
   if ( ! exists ) 
     {
-      unsigned int block_size = size();
+      auto block_size = size();
       myLabels.set( key ); // must be done before so that 'index' works.
       return blockInsert( myLabels.index( key ), block_size, Data() );
     }
