@@ -40,7 +40,7 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/base/BasicFunctors.h"
-
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/SphericalHoughNormalVectorEstimator.h"
 
@@ -89,15 +89,16 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
   typedef functors::SphericalHoughNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > SphericalHough;
   typedef functors::ConstValue<double> ConstFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, SphericalHough, ConstFunctor> Reporter;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, SphericalHough, ConstFunctor> Reporter;
   
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   SphericalHough estimator(embedder,1.0 , 0.001, 1000 , 10, 1);
   
+  LpMetric<Z3i::Space> l2;
   ConstFunctor constFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , constFunc);
+  Reporter reporter(surface, l2, estimator , constFunc);
   reporter.attach(surface);
-  reporter.setParams(l2Metric, estimator , constFunc, 10.0);
+  reporter.setParams(l2, estimator , constFunc, 10.0);
   reporter.init(1, surface.begin(),surface.end());
 
   REQUIRE( reporter.isValid() );
