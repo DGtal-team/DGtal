@@ -66,8 +66,8 @@ DGtal::LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval( const typen
   {
     if ( DSS->isInDSS ( *it ) )
     {
-      unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) );
-      unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
+      auto pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) );
+      auto dssLen = std::distance ( DSS.begin(), DSS.end() );
       SegmentComputer comp ( *DSS );
       partial = myFunctor ( comp, pos, dssLen );
       tangent += partial;

@@ -91,8 +91,8 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
     THEN( "Breadth-first visiting the mesh from vertex 3, visit 3, then {1,2}, then 0." )
       {
         BreadthFirstVisitor< TriMesh > visitor( trimesh, 3 );
-        std::vector<int> vertices;
-        std::vector<int> distances;
+        std::vector<unsigned long> vertices;
+        std::vector<unsigned long> distances;
         while ( ! visitor.finished() )
           {
             vertices.push_back( visitor.current().first );
