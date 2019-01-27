@@ -44,6 +44,7 @@
 #include "DGtal/shapes/Shapes.h"
 
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #ifdef WITH_CGAL
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
@@ -109,16 +110,16 @@ int main(  )
   //constant convolution functor
   typedef functors::ConstValue<double> ConstFunctor;
 
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorGaussian, ConstFunctor> ReporterK;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorMean, ConstFunctor> ReporterH;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormal, ConstFunctor> ReporterNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormalLeast, ConstFunctor> ReporterNormalLeast;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, FunctorGaussian, ConstFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, FunctorMean, ConstFunctor> ReporterH;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, FunctorNormal, ConstFunctor> ReporterNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, FunctorNormalLeast, ConstFunctor> ReporterNormalLeast;
 #endif
 
   ///For Elmentary convolution, we specify a Gaussian convolution
   ///kernel from the BasicFunctors.h file
   typedef functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>,
                                                  FunctorNormalElem, DGtal::functors::GaussianKernel> ReporterNormalElem;
   //! [SurfelFunctorsType]
 
@@ -140,10 +141,11 @@ int main(  )
   ReporterNormalLeast reporterL;
 #endif
 
+  LpMetric<Z3i::Space> l2;
   FunctorNormalElem estimatorNormalElem(embedder,1.0);
   ///sigma = 2.0 for the gaussian smoothing
   DGtal::functors::GaussianKernel gaussian(2.0);
-  ReporterNormalElem reporterElem(surface, l2Metric,
+  ReporterNormalElem reporterElem(surface, l2,
                                   estimatorNormalElem, gaussian);
   //! [SurfelFunctorsInstances]
 
@@ -159,10 +161,10 @@ int main(  )
   reporterN.init(1, surface.begin(), surface.end());
   reporterL.init(1, surface.begin(), surface.end());
 
-  reporterK.setParams(l2Metric, estimatorK, constFunctor, 5.0);
-  reporterH.setParams(l2Metric, estimatorH, constFunctor, 5.0);
-  reporterN.setParams(l2Metric, estimatorN, constFunctor, 5.0);
-  reporterL.setParams(l2Metric, estimatorL, constFunctor, 5.0);
+  reporterK.setParams(l2, estimatorK, constFunctor, 5.0);
+  reporterH.setParams(l2, estimatorH, constFunctor, 5.0);
+  reporterN.setParams(l2, estimatorN, constFunctor, 5.0);
+  reporterL.setParams(l2, estimatorL, constFunctor, 5.0);
 
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorMean::Quantity valH = reporterH.eval( surface.begin());
@@ -171,7 +173,7 @@ int main(  )
 #endif
   
   reporterElem.attach(surface);
-  reporterElem.setParams(l2Metric,
+  reporterElem.setParams(l2,
                          estimatorNormalElem, gaussian, 5.0);
   reporterElem.init(1.0, surface.begin(), surface.end());
   FunctorNormalElem::Quantity valElem = reporterElem.eval( surface.begin());
