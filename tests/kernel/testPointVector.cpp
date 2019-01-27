@@ -77,26 +77,26 @@ TEST_CASE( "2D Point Vector Unit tests" )
 
   SECTION("Cross products with integers")
     {
-      REQUIRE( p1.crossProduct(p2) == p1_3d.crossProduct(p2_3d)[2] );
-      REQUIRE( crossProduct(p1, p2) == crossProduct(p1_3d, p2_3d)[2] );
-      REQUIRE( p2.crossProduct(p1) == p2_3d.crossProduct(p1_3d)[2] );
-      REQUIRE( crossProduct(p2, p1) == crossProduct(p2_3d, p1_3d)[2] );
+      COMPARE_VALUE_AND_TYPE( p1.crossProduct(p2), p1_3d.crossProduct(p2_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p1, p2), crossProduct(p1_3d, p2_3d) );
+      COMPARE_VALUE_AND_TYPE( p2.crossProduct(p1), p2_3d.crossProduct(p1_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p2, p1), crossProduct(p2_3d, p1_3d) );
     }
 
   SECTION("Cross products with reals")
     {
-      REQUIRE( p3.crossProduct(p4) == p3_3d.crossProduct(p4_3d)[2] );
-      REQUIRE( crossProduct(p3, p4) == crossProduct(p3_3d, p4_3d)[2] );
-      REQUIRE( p4.crossProduct(p3) == p4_3d.crossProduct(p3_3d)[2] );
-      REQUIRE( crossProduct(p4, p3) == crossProduct(p4_3d, p3_3d)[2] );
+      COMPARE_VALUE_AND_TYPE( p3.crossProduct(p4), p3_3d.crossProduct(p4_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p3, p4), crossProduct(p3_3d, p4_3d) );
+      COMPARE_VALUE_AND_TYPE( p4.crossProduct(p3), p4_3d.crossProduct(p3_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p4, p3), crossProduct(p4_3d, p3_3d) );
     }
 
   SECTION("Cross products with mixed integers/reals")
     {
-      REQUIRE( p1.crossProduct(p3) == p1_3d.crossProduct(p3_3d)[2] );
-      REQUIRE( crossProduct(p1, p3) == crossProduct(p1_3d, p3_3d)[2] );
-      REQUIRE( p3.crossProduct(p1) == p3_3d.crossProduct(p1_3d)[2] );
-      REQUIRE( crossProduct(p3, p1) == crossProduct(p3_3d, p1_3d)[2] );
+      COMPARE_VALUE_AND_TYPE( p1.crossProduct(p3), p1_3d.crossProduct(p3_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p1, p3), crossProduct(p1_3d, p3_3d) );
+      COMPARE_VALUE_AND_TYPE( p3.crossProduct(p1), p3_3d.crossProduct(p1_3d) );
+      COMPARE_VALUE_AND_TYPE( crossProduct(p3, p1), crossProduct(p3_3d, p1_3d) );
     }
 }
 
