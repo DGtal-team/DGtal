@@ -216,7 +216,7 @@ int main()
   trace.info() << std::endl;
 
   Integer i = 1000;
-  srand((long)time(NULL));
+  srand((unsigned int)time(NULL));
   
   bool res = testDSLSubsegment<Integer,Fraction>(i);
   
