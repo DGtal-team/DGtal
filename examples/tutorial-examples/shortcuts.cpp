@@ -56,7 +56,7 @@ int main( int /* argc */, char** /* argv */ )
 					   params( "noise", 0.3 ) );
     auto ok        = SH3::saveBinaryImage( al_capone, "noisy-Al.vol" );
     //! [dgtal_shortcuts_ssec2_1_1s]
-    ++nb, nbok += ok ? 1 : 0; 
+    ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
   trace.beginBlock ( "Load vol file -> build main connected digital surface." );
@@ -68,7 +68,7 @@ int main( int /* argc */, char** /* argv */ )
     auto surface   = SH3::makeLightDigitalSurface( al_capone, K, params );
     trace.info() << "#surfels=" << surface->size() << std::endl;
     //! [dgtal_shortcuts_ssec2_1_2s]
-    ++nb, nbok += surface->size() == 21239 ? 1 : 0; 
+    ++nb; nbok += surface->size() == 21239 ? 1 : 0;
   }
   trace.endBlock();
 
@@ -85,7 +85,7 @@ int main( int /* argc */, char** /* argv */ )
     trace.info() << "#mesh150=" << mesh150->nbVertex()
 		 << " #mesh40=" << mesh40->nbVertex() << std::endl;
     //! [dgtal_shortcuts_ssec2_1_3s]
-    ++nb, nbok += ( mesh150->nbVertex() < mesh40->nbVertex() )
+    ++nb; nbok += ( mesh150->nbVertex() < mesh40->nbVertex() )
       && ( mesh40->nbVertex() == 273182 ) ? 1 : 0;
   }
   trace.endBlock();
@@ -105,8 +105,8 @@ int main( int /* argc */, char** /* argv */ )
 				   "lobster-150.obj", // opaque blue diffuse color
 				   SH3::Color( 30,30,30 ), SH3::Color( 0,0,255,255 ) );
     //! [dgtal_shortcuts_ssec2_1_4s]
-    ++nb, nbok += ok40  ? 1 : 0;
-    ++nb, nbok += ok150 ? 1 : 0;
+    ++nb; nbok += ok40  ? 1 : 0;
+    ++nb; nbok += ok150 ? 1 : 0;
   }
   trace.endBlock();
 
@@ -125,7 +125,7 @@ int main( int /* argc */, char** /* argv */ )
     for ( unsigned int i = 0; i < surfels.size(); ++i ) colors[ i ] = cmap( i );
     bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "al-primal-bft.obj" );
     //! [dgtal_shortcuts_ssec2_1_5s]
-    ++nb, nbok += ok ? 1 : 0; 
+    ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
 
@@ -140,7 +140,7 @@ int main( int /* argc */, char** /* argv */ )
     auto noisy_shape     = SH3::makeBinaryImage    ( digitized_shape, params );
     auto ok              = SH3::saveBinaryImage    ( noisy_shape, "noisy-ellipsoid.vol" );
     //! [dgtal_shortcuts_ssec2_2_1s]
-    ++nb, nbok += ok ? 1 : 0;
+    ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
 
@@ -156,7 +156,7 @@ int main( int /* argc */, char** /* argv */ )
     auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
     bool ok              = SH3::saveOBJ( surface, "goursat-primal.obj" );
     //! [dgtal_shortcuts_ssec2_2_2s]
-    ++nb, nbok += ok ? 1 : 0;
+    ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
 
@@ -177,7 +177,7 @@ int main( int /* argc */, char** /* argv */ )
     auto surface         = SH3::makeIdxDigitalSurface( binary_image, K, params );
     trace.info() << "#surfels=" << surface->size() << std::endl;
     //! [dgtal_shortcuts_ssec2_2_3s]
-    ++nb, nbok += surface->size() > 1000 ? 1 : 0;
+    ++nb; nbok += surface->size() > 1000 ? 1 : 0;
   }
   trace.endBlock();
 
@@ -213,7 +213,7 @@ int main( int /* argc */, char** /* argv */ )
       colors[ i ] = cmap( label[ all_surfels[ i ] ] );
     bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "leopold-primal-cc.obj" );
     //! [dgtal_shortcuts_ssec2_2_4s]
-    ++nb, nbok += ok ? 1 : 0;
+    ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
   
