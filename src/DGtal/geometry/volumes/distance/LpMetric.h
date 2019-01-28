@@ -216,7 +216,11 @@ namespace DGtal
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const LpMetric<T> & object );
+  operator<< ( std::ostream & out, const LpMetric<T> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
 } // namespace DGtal
 
