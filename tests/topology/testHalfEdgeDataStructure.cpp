@@ -45,7 +45,7 @@ using namespace DGtal;
 typedef HalfEdgeDataStructure::Triangle         Triangle;
 typedef HalfEdgeDataStructure::PolygonalFace    PolygonalFace;
 typedef HalfEdgeDataStructure::Edge             Edge;
-typedef HalfEdgeDataStructure::Arc              Arc;
+typedef HalfEdgeDataStructure::Arc              ArcT; //Arc already defined in wingdi.h
 typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
 
 HalfEdgeDataStructure makeTwoTriangles()
@@ -181,14 +181,14 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry[ 3 ] == 3 );
     }
     THEN( "The mesh has 4 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       std::sort( bdry.begin(), bdry.end() );
       REQUIRE( bdry.size() == 4 );
       // std::cout << " arc=(" << bdry[ 0 ].first << "," << bdry[ 0 ].second << ")" << std::endl;
-      REQUIRE( bdry[ 0 ] == Arc( 0, 2 ) );
-      REQUIRE( bdry[ 1 ] == Arc( 1, 0 ) );
-      REQUIRE( bdry[ 2 ] == Arc( 2, 3 ) );
-      REQUIRE( bdry[ 3 ] == Arc( 3, 1 ) );
+      REQUIRE( bdry[ 0 ] == ArcT( 0, 2 ) );
+      REQUIRE( bdry[ 1 ] == ArcT( 1, 0 ) );
+      REQUIRE( bdry[ 2 ] == ArcT( 2, 3 ) );
+      REQUIRE( bdry[ 3 ] == ArcT( 3, 1 ) );
     }
   }
   GIVEN( "Three triangles forming a fan around a vertex" ) {
@@ -208,13 +208,13 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry[ 2 ] == 3 );
     }
     THEN( "The mesh has 3 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       std::sort( bdry.begin(), bdry.end() );
       REQUIRE( bdry.size() == 3 );
       // std::cout << " arc=(" << bdry[ 0 ].first << "," << bdry[ 0 ].second << ")" << std::endl;
-      REQUIRE( bdry[ 0 ] == Arc( 0, 3 ) );
-      REQUIRE( bdry[ 1 ] == Arc( 1, 0 ) );
-      REQUIRE( bdry[ 2 ] == Arc( 3, 1 ) );
+      REQUIRE( bdry[ 0 ] == ArcT( 0, 3 ) );
+      REQUIRE( bdry[ 1 ] == ArcT( 1, 0 ) );
+      REQUIRE( bdry[ 2 ] == ArcT( 3, 1 ) );
     }
   }
   GIVEN( "Four triangles forming a tetrahedron" ) {
@@ -230,7 +230,7 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry.size() == 0 );
     }
     THEN( "The mesh has no boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       REQUIRE( bdry.size() == 0 );
     }
   }
@@ -247,15 +247,15 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry.size() == 6 );
     }
     THEN( "The mesh has 6 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       std::sort( bdry.begin(), bdry.end() );
       REQUIRE( bdry.size() == 6 );
-      REQUIRE( bdry[ 0 ] == Arc( 0, 2 ) );
-      REQUIRE( bdry[ 1 ] == Arc( 1, 5 ) );
-      REQUIRE( bdry[ 2 ] == Arc( 2, 4 ) );
-      REQUIRE( bdry[ 3 ] == Arc( 3, 1 ) );
-      REQUIRE( bdry[ 4 ] == Arc( 4, 0 ) );
-      REQUIRE( bdry[ 5 ] == Arc( 5, 3 ) );
+      REQUIRE( bdry[ 0 ] == ArcT( 0, 2 ) );
+      REQUIRE( bdry[ 1 ] == ArcT( 1, 5 ) );
+      REQUIRE( bdry[ 2 ] == ArcT( 2, 4 ) );
+      REQUIRE( bdry[ 3 ] == ArcT( 3, 1 ) );
+      REQUIRE( bdry[ 4 ] == ArcT( 4, 0 ) );
+      REQUIRE( bdry[ 5 ] == ArcT( 5, 3 ) );
     }
   }
   GIVEN( "The same ribbon with his hole closed" ) {
@@ -275,12 +275,12 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry[ 2 ] == 5 );
     }
     THEN( "The mesh has 3 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       std::sort( bdry.begin(), bdry.end() );
       REQUIRE( bdry.size() == 3 );
-      REQUIRE( bdry[ 0 ] == Arc( 1, 5 ) );
-      REQUIRE( bdry[ 1 ] == Arc( 3, 1 ) );
-      REQUIRE( bdry[ 2 ] == Arc( 5, 3 ) );
+      REQUIRE( bdry[ 0 ] == ArcT( 1, 5 ) );
+      REQUIRE( bdry[ 1 ] == ArcT( 3, 1 ) );
+      REQUIRE( bdry[ 2 ] == ArcT( 5, 3 ) );
     }
   }
   GIVEN( "A pyramid with a square base" ) {
@@ -296,7 +296,7 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry.size() == 0 );
     }
     THEN( "The mesh has 0 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       REQUIRE( bdry.size() == 0 );
     }
   }
@@ -313,7 +313,7 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry.size() == 0 );
     }
     THEN( "The mesh has 0 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       REQUIRE( bdry.size() == 0 );
     }
   }
@@ -330,7 +330,7 @@ SCENARIO( "HalfEdgeDataStructure build", "[halfedge][build]" )
       REQUIRE( bdry.size() == 6 );
     }
     THEN( "The mesh has 6 boundary arcs" ) {
-      std::vector<Arc> bdry = mesh.boundaryArcs();
+      std::vector<ArcT> bdry = mesh.boundaryArcs();
       REQUIRE( bdry.size() == 6 );
     }
   }

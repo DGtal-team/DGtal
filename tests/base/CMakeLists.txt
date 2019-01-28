@@ -27,7 +27,8 @@ SET(DGTAL_TESTS_SRC
    testPartialTemplateSpecialization
    testContainerTraits
    testSetFunctions
-   testSimpleRandomAccessRangeFromPoint)
+   testSimpleRandomAccessRangeFromPoint
+   testFunctorHolder)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

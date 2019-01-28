@@ -1,6 +1,6 @@
 #!/bin/bash
-$SCRIPT_BEGIN
 
+set_options=$- # Backup of set options
 set +e # The brew install has errors
 
 #
@@ -13,7 +13,9 @@ brew install qt5 graphicsmagick fftw eigen ninja
 brew install http://liris.cnrs.fr/david.coeurjolly/misc/libqglviewer.rb
 
 ## Temporary HDF5 build issue
-export BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
-export BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo "Forcing Qt5 on MacOS";
+BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
+BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo "Forcing Qt5 on MacOS";
 
-$SCRIPT_END
+# Restoring set options
+set -$set_options
+

@@ -112,12 +112,9 @@ namespace ConceptUtils
   
   /**
    * Type deduction will fail unless the arguments have the same type.
-   *
-   * @param t1 some object of type T.
-   * @param t2 some object of type T.
    */
   template <typename T>
-  void sameType( const T & t1, const T & t2 );
+  void sameType( const T & /* t1 */, const T & /* t2 */ ) {}
 
   /**
    * Test if T is equal to TagTrue.
