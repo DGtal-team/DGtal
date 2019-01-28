@@ -97,7 +97,7 @@ namespace DGtal
       /**
      * Constructor.
      *
-     * @param anExponent the exponent (p) of the lp metric.
+     * @param anExponent the exponent (@a p) of the lp metric.
      */
     LpMetric( const double anExponent): myExponent(anExponent)
     {}
