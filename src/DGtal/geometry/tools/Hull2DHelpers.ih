@@ -478,7 +478,7 @@ namespace DGtal
       auto dx =  a[0]-b[0];
       auto dc = b[0]*a[1]-a[0]*b[1];
       auto const pos = (b-a).dot(c-a);
-      isInside = 0 <= pos && pos <= (b-a).dot(b-a);
+      isInside = (0 <= pos) && (pos <= (b-a).dot(b-a));
       return std::abs(dy*c[0]+dx*c[1]+dc)/(std::sqrt(dy*dy+dx*dx));
     }
 
