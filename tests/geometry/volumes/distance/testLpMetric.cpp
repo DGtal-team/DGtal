@@ -53,6 +53,7 @@ TEST_CASE( "Testing LpMetric" )
   LpMetric<Z2i::Space> l55_2D(5.5);
   Z2i::Space::RealPoint a(0,0), b(1.0,1.0), c(0.5,0.5);
   Z3i::Space::RealPoint aa(0,0,0), bb(1.0,1.0,1.0);
+  trace.info() << l55_2D << std::endl;
   
   SECTION("Testing LpMetric distance values")
     {
