@@ -88,13 +88,6 @@ namespace DGtal
     typedef double RawValue;
     
     /**
-     * Default Constructor (p=2.0)
-     *
-     */
-    LpMetric(): myExponent(2.0) {}
-    
-
-      /**
      * Constructor.
      *
      * @param anExponent the exponent (@a p) of the lp metric.
@@ -158,8 +151,8 @@ namespace DGtal
     {
       RawValue tmp=0.0;
       for(auto i = 0; i < aP.size(); ++i)
-        tmp += std::pow(NumberTraits<typename Point::Coordinate>::castToDouble(std::abs(aP[i] - aQ[i])),
-                        myExponent);
+        tmp += static_cast<RawValue>(std::pow(NumberTraits<typename Point::Coordinate>::castToDouble(std::abs(aP[i] - aQ[i])),
+                                              myExponent));
       return tmp;
     }
 

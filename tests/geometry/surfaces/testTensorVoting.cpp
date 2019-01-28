@@ -111,7 +111,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   ConvFunctor convFunc(1.0);
   Reporter reporter;
   reporter.attach(surface);
-  LpMetric<Z3i::Space> l2double;
+  LpMetric<Z3i::Space> l2double(2.0);
   reporter.setParams(l2double, estimator , convFunc, 2.0);
 
   reporter.init(1, surface.begin(), surface.end());

@@ -94,7 +94,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   SphericalHough estimator(embedder,1.0 , 0.001, 1000 , 10, 1);
   
-  LpMetric<Z3i::Space> l2;
+  LpMetric<Z3i::Space> l2(2.0);
   ConstFunctor constFunc(1.0);
   Reporter reporter(surface, l2, estimator , constFunc);
   reporter.attach(surface);
