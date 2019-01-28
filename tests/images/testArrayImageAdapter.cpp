@@ -144,9 +144,6 @@ void checkImage( TImage& anImage )
   // Checks CImage concept.
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CImage<TImage>) );
 
-  size_t nb = 0;
-  size_t nbok = 0;
-
   // Full domain
   auto const domain = anImage.domain();
 
