@@ -175,15 +175,17 @@ bool testCube()
   typedef functors::TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
 
   typedef functors::GaussianKernel ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorVoting, ConvFunctor> Reporter;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, FunctorVoting, ConvFunctor> Reporter;
 
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   FunctorVoting estimator(embedder,1);
-
+  
+  LpMetric<Z3i::Space> l2(2.0);
+  
   ConvFunctor convFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter(surface, l2, estimator , convFunc);
   reporter.attach(surface);
-  reporter.setParams(l2Metric, estimator , convFunc, 2.0);
+  reporter.setParams(l2, estimator , convFunc, 2.0);
   reporter.init(1, surface.begin(),surface.end());
   trace.endBlock();
 
