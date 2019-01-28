@@ -53,10 +53,10 @@ TEST_CASE( "Testing LpMetric" )
   LpMetric<Z2i::Space> l55_2D(5.5);
   Z2i::Space::RealPoint a(0,0), b(1.0,1.0), c(0.5,0.5);
   Z3i::Space::RealPoint aa(0,0,0), bb(1.0,1.0,1.0);
-  trace.info() << l55_2D << std::endl;
   
   SECTION("Testing LpMetric distance values")
     {
+      CAPTURE( l55_2D) ;
       REQUIRE( l2_2D.rawDistance(a,b) == Approx(2.0) );
       REQUIRE( l2_3D.rawDistance(aa,bb) == Approx(3.0) );
       REQUIRE( l2_2D(a,b) == Approx(std::sqrt(2.0)) );
