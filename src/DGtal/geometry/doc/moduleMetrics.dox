@@ -66,7 +66,7 @@ integer numbers (i.e. @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$). For
 example,
 
 - LpMetric are models of CMetricSpace on @f$(\mathbb{R}^n, \mathbb{R}, d)@f$ spaces (i.e. all computations are performed
-on c++ "double").
+on C++ "double").
 - @f$ l_p@f$ metrics (ExactPredicateLpSeparableMetric or
   InexactPredicateLpSeparableMetric) are models of CMetricSpace on @f$(\mathbb{Z}^n, \mathbb{Z}, d)@f$ for
   @f$p>1@f$ with specific separabilty methods.
