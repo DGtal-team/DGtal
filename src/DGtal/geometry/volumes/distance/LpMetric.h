@@ -183,7 +183,7 @@ namespace DGtal
       if (dfirst < dsecond)
         return ClosestFIRST;
       else
-        if (dfirst>dsecond)
+        if (dfirst > dsecond)
           return ClosestSECOND;
       
       return ClosestBOTH;
