@@ -23,7 +23,6 @@
  *
  * @date 2019/27/01
  *
- * Header file for module LpMetric.cpp
  *
  * This file is part of the DGtal library.
  */
