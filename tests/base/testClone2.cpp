@@ -948,7 +948,7 @@ int main()
 {
   bool ok = true
     && testCloneCases() 
-    //    && testCloneTimings()
+    && testCloneTimings()
     && testAliasCases()
     && testConstAliasCases();
 
