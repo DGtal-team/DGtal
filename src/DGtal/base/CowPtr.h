@@ -75,11 +75,33 @@ public:
     // no need for ~CowPtr - the CountedPtr takes care of everything.
     CowPtr(const CowPtr& r) noexcept             : myPtr(r.myPtr) {}
     /**
-     * Builds a copy-on-write pointer from a counted pointer. Requires
-     * an extra dummy parameter in order to solve ambiguities when
-     * casting from Clone<T> to CowPtr<T>.
-     *
-     * @param r any counted pointer
+       Builds a copy-on-write pointer from a counted pointer. Requires
+       an extra dummy parameter in order to solve ambiguities when
+       casting from Clone<T> to CowPtr<T>.
+       
+       @param r any counted pointer
+       
+       @note Since 1.0, there is no more the direct constructor
+       CowPtr<T>::CowPtr( CountedPtr<T> ). Indeed, it was creating an
+       ambiguity when using conversion operator in class
+       Clone<T>. More precisely it was impossible to have two
+       conversion operators: Clone<T>::operator CountedPtr<T> and
+       Clone<T>::operator CowPtr<T> since this was creating a
+       compilation ambiguity. This is why there is now a dummy bool
+       parameter in this constructor. And there are the conversion
+       operator Clone<T>::operator CountedPtr<T> and
+       Clone<T>::operator CowPtr<T>.
+       
+       @code
+       struct B {};
+       struct A {
+         CowPtr<B> _bcow;
+         CountedPtr<B> _bcounted;
+         // both constructions below are valid and do lazy copy if possible.
+         A( Clone<B> b1, Clone<B> b2 ) : _bcow( b1 ), _bcounted( b2 ) {}
+       };
+       @endcode
+
      */
     CowPtr(const CountedPtr<T> & r, bool /* unused */ )    : myPtr( r ) {}
     CowPtr& operator=(const CowPtr& r)
