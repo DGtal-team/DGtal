@@ -31,7 +31,6 @@
 #include <cstdlib>
 #include <queue>
 #include "DGtal/base/SetFunctions.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1089,11 +1088,11 @@ computeCellType( const Cell& c, CellMapIterator& it_cell_up, Dimension n )
       uint32_t& data = (*it)->second.data;
       if ( ! ( data & COLLAPSIBLE ) ) return Any;
       if ( ! ( data & REMOVED ) )
-	{
-	  ++nb;
-	  if ( nb > 1 ) return Any;
-	  it_cell_up = *it;
-	}
+        {
+          ++nb;
+          if ( nb > 1 ) return Any;
+          it_cell_up = *it;
+        }
     }
   return ( nb != 0 ) ? Free : Maximal ;
 }
@@ -1148,7 +1147,7 @@ template <typename TKSpace, typename TCellContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		  const CubicalComplex<TKSpace, TCellContainer> & object )
+                  const CubicalComplex<TKSpace, TCellContainer> & object )
 {
   object.selfDisplay( out );
   return out;
