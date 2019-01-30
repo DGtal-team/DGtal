@@ -88,9 +88,9 @@ public:
        conversion operators: Clone<T>::operator CountedPtr<T> and
        Clone<T>::operator CowPtr<T> since this was creating a
        compilation ambiguity. This is why there is now a dummy bool
-       parameter in this constructor. And there are the conversion
-       operator Clone<T>::operator CountedPtr<T> and
-       Clone<T>::operator CowPtr<T>.
+       parameter in this constructor while both conversion operator
+       Clone<T>::operator CountedPtr<T> and Clone<T>::operator
+       CowPtr<T> are present.
        
        @code
        struct B {};
