@@ -139,7 +139,6 @@ namespace DGtal
   bool
   operator>=( const CubicalComplex< TKSpace, TCellContainer >&,
               const CubicalComplex< TKSpace, TCellContainer >& );
-  // } // namespace functions
 
 
   /////////////////////////////////////////////////////////////////////////////
