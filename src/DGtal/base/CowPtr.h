@@ -88,7 +88,7 @@ public:
        conversion operators: Clone<T>::operator CountedPtr<T> and
        Clone<T>::operator CowPtr<T> since this was creating a
        compilation ambiguity. This is why there is now a dummy bool
-       parameter in this constructor while both conversion operator
+       parameter in this constructor while both conversion operators
        Clone<T>::operator CountedPtr<T> and Clone<T>::operator
        CowPtr<T> are present.
        
