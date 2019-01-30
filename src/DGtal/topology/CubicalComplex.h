@@ -83,7 +83,6 @@ namespace DGtal
   template < typename TKSpace, typename TCellContainer >
   class CubicalComplex;
 
-  // namespace functions {
   template < typename TKSpace, typename TCellContainer >
   CubicalComplex< TKSpace, TCellContainer >&
   operator|=( CubicalComplex< TKSpace, TCellContainer >&,
