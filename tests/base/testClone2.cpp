@@ -241,7 +241,7 @@ struct CloneToValueMember {
 
 struct CloneToCountedMember { // requires explicit duplication
   inline CloneToCountedMember( Clone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
-    : myDummyTbl( a1 ) {} // : myDummyTbl( new DummyTbl( a1 ) ) {}
+    : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   CountedPtr<DummyTbl> myDummyTbl;
 };
