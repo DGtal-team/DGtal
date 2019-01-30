@@ -583,8 +583,6 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
 
-  using namespace DGtal::functions;
-
   KSpace K;
   K.init( Point( 0,0 ), Point( 5,3 ), true );
   Domain domain( Point( 0,0 ), Point( 5,3 ) );
