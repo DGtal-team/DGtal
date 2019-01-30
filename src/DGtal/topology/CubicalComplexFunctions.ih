@@ -164,7 +164,8 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
 	      // check faces to find a free face.
               back_insert_iterator< CMIVector > back_it( Q_low );
               K.directFacesIterators( back_it, cur_c );
-	      CellMapIterator best_free_face_it = K.end( 0 );
+              bool best_free_face_found = false;
+	      CellMapIterator best_free_face_it;
 	      for ( CMIVectorConstIterator it = Q_low.begin(), itE = Q_low.end();
                     it != itE; ++it )
 		{
@@ -172,17 +173,20 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
                   uint32_t& data         = low_ic->second.data;
                   // trace.info() << "    + Cell " << low_ic->first << " data=" << data << std::endl;
 		  if ( ( data & CC::REMOVED ) || ! ( data & CC::COLLAPSIBLE ) ) continue;
-		  const Cell& cur_d   = low_ic->first;
-                  CellType cur_d_type = K.computeCellType( cur_d, itup, n );
+		  const Cell& cur_d      = low_ic->first;
+                  CellType cur_d_type    = K.computeCellType( cur_d, itup, n );
                   // trace.info() << "      + Type=" << cur_d_type << std::endl;
 		  if ( cur_d_type == CC::Free )
 		    { // found a free n-1-face ic
-		      if ( ( best_free_face_it == K.end( 0 ) )
+		      if ( ( ! best_free_face_found )
 			   || ( ! priority( low_ic, best_free_face_it ) ) )
-			best_free_face_it = low_ic;
+                        {
+                          best_free_face_it    = low_ic;
+                          best_free_face_found = true;
+                        }
 		    }
 		}
-	      if ( best_free_face_it != K.end( 0 ) )
+	      if ( best_free_face_found )
 		{
 		  // delete c and ic.
 		  found_pair = true;
