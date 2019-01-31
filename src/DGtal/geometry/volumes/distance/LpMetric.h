@@ -150,7 +150,7 @@ namespace DGtal
     RawValue rawDistance(const Point & aP, const Point &aQ) const
     {
       RawValue tmp=0.0;
-      for(auto i = 0; i < aP.size(); ++i)
+      for(typename Point::Dimension i = 0; i < aP.size(); ++i)
         tmp += static_cast<RawValue>(std::pow(NumberTraits<typename Point::Coordinate>::castToDouble(std::abs(aP[i] - aQ[i])),
                                               myExponent));
       return tmp;
