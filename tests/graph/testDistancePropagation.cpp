@@ -101,7 +101,7 @@ bool testDistancePropagation()
   typedef VertexEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
   typedef LpMetric<Space> Distance;
-  using DistanceToPoint = std::function<double(const Space::Point &)>;
+   using DistanceToPoint = std::function<double(const Space::RealPoint &)>;
   typedef DGtal::functors::Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
