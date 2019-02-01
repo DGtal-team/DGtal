@@ -2,6 +2,7 @@
 # DGtal 1.0
 
 ## New Features / Critical Changes
+
 - *Base package*
   - Adding FunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a valid DGtal functor.
@@ -37,6 +38,10 @@
   - Remove the internal object from VoxelComplex, improving performance
     (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
 
+- *Geometry*
+  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
+    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
+ 
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix

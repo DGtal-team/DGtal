@@ -114,7 +114,7 @@ squares of Point::Coordiante values.
 
 ### Models
 
-ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
+LpMetric, ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
 
 ### Notes
 
