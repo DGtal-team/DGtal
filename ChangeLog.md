@@ -76,6 +76,8 @@
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
   - Fix Color::Green definition (David Coeurjolly,
     [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
+  - Fix Visual Studio ContourHelper tests.
+    (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
