@@ -52,7 +52,6 @@
 #include "DGtal/base/ContainerTraits.h"
 #include "DGtal/base/CSTLAssociativeContainer.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
