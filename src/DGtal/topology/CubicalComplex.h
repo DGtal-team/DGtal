@@ -83,64 +83,62 @@ namespace DGtal
   template < typename TKSpace, typename TCellContainer >
   class CubicalComplex;
 
-  namespace functions {
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >&
-    operator|=( CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >&
-    operator&=( CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >&
-    operator^=( CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >&
-    operator-=( CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator| ( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator& ( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator^ ( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator- ( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >&
+  operator|=( CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >&
+  operator&=( CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >&
+  operator^=( CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >&
+  operator-=( CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator| ( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator& ( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator^ ( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator- ( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
 
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator~ ( const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    CubicalComplex< TKSpace, TCellContainer >
-    operator* ( const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator~ ( const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  CubicalComplex< TKSpace, TCellContainer >
+  operator* ( const CubicalComplex< TKSpace, TCellContainer >& );
 
-    template < typename TKSpace, typename TCellContainer >
-    bool
-    operator==( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    bool
-    operator!=( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    bool
-    operator<=( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-    template < typename TKSpace, typename TCellContainer >
-    bool
-    operator>=( const CubicalComplex< TKSpace, TCellContainer >&,
-                const CubicalComplex< TKSpace, TCellContainer >& );
-  } // namespace functions
+  template < typename TKSpace, typename TCellContainer >
+  bool
+  operator==( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  bool
+  operator!=( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  bool
+  operator<=( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
+  template < typename TKSpace, typename TCellContainer >
+  bool
+  operator>=( const CubicalComplex< TKSpace, TCellContainer >&,
+              const CubicalComplex< TKSpace, TCellContainer >& );
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -189,20 +187,20 @@ namespace DGtal
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
-    friend Self& DGtal::functions::operator|=<>( Self&, const Self& );
-    friend Self& DGtal::functions::operator&=<>( Self&, const Self& );
-    friend Self& DGtal::functions::operator^=<>( Self&, const Self& );
-    friend Self& DGtal::functions::operator-=<>( Self&, const Self& );
-    friend Self  DGtal::functions::operator| <>( const Self&, const Self& );
-    friend Self  DGtal::functions::operator& <>( const Self&, const Self& );
-    friend Self  DGtal::functions::operator^ <>( const Self&, const Self& );
-    friend Self  DGtal::functions::operator- <>( const Self&, const Self& );
-    friend Self  DGtal::functions::operator~ <>( const Self& );
-    friend Self  DGtal::functions::operator* <>( const Self& );
-    friend bool  DGtal::functions::operator==<>( const Self&, const Self& );
-    friend bool  DGtal::functions::operator!=<>( const Self&, const Self& );
-    friend bool  DGtal::functions::operator<=<>( const Self&, const Self& );
-    friend bool  DGtal::functions::operator>=<>( const Self&, const Self& );
+    friend Self& DGtal::operator|=<>( Self&, const Self& );
+    friend Self& DGtal::operator&=<>( Self&, const Self& );
+    friend Self& DGtal::operator^=<>( Self&, const Self& );
+    friend Self& DGtal::operator-=<>( Self&, const Self& );
+    friend Self  DGtal::operator| <>( const Self&, const Self& );
+    friend Self  DGtal::operator& <>( const Self&, const Self& );
+    friend Self  DGtal::operator^ <>( const Self&, const Self& );
+    friend Self  DGtal::operator- <>( const Self&, const Self& );
+    friend Self  DGtal::operator~ <>( const Self& );
+    friend Self  DGtal::operator* <>( const Self& );
+    friend bool  DGtal::operator==<>( const Self&, const Self& );
+    friend bool  DGtal::operator!=<>( const Self&, const Self& );
+    friend bool  DGtal::operator<=<>( const Self&, const Self& );
+    friend bool  DGtal::operator>=<>( const Self&, const Self& );
 
     typedef TKSpace                             KSpace;        ///< Type of the cellular grid space.
     typedef TCellContainer                      CellContainer; ///< Type for storing cells, an associative container Cell -> Data
@@ -1208,7 +1206,7 @@ namespace DGtal
   public:
 
     /**
-    * Close the whole complex (see also DGtal::functions::operator~).
+    * Close the whole complex (see also DGtal::operator~).
     */
     void close();
 
@@ -1219,7 +1217,7 @@ namespace DGtal
     void close( Dimension k );
 
     /**
-    * Open the whole complex  (see also DGtal::functions::operator*).
+    * Open the whole complex  (see also DGtal::operator*).
     */
     void open();
 
