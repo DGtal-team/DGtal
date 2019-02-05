@@ -134,6 +134,9 @@
     testParDirCollapse. (Jacques-Olivier Lachaud,
     [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
 
+  - Move operators outside of functions namespace in VoxelComplexFunctions.
+    (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
+
 - *Miscellaneous*
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
