@@ -127,6 +127,13 @@
     the exterior. (Jacques-Olivier Lachaud,
     [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
 
+  - This PR fixes two issues related to CubicalComplexFunctions:
+    issue [#1362](https://github.com/DGtal-team/DGtal/issues/1362) and
+    issue [#1381](https://github.com/DGtal-team/DGtal/issues/1381) for
+    programs testCubicalComplex, testVoxelComplex and
+    testParDirCollapse. (Jacques-Olivier Lachaud,
+    [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
+
 - *Miscellaneous*
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
