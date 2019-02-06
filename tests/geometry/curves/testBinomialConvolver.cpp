@@ -47,9 +47,6 @@ using namespace DGtal;
  */
 bool testBinomialConvolver()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing block ..." );
   typedef PointVector<2, double> RealPoint;
   std::vector< RealPoint > points;
@@ -105,13 +102,9 @@ bool testBinomialConvolver()
     << " " << curvEstimator.eval( it ) 
     << std::endl;
     }
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

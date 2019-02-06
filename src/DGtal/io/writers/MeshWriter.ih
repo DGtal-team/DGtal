@@ -153,10 +153,10 @@ DGtal::MeshWriter<TPoint>::export2OBJ_colors(std::ostream &out, std::ostream &ou
         // Getting face color index.
         std::vector<unsigned int>  aFace = aMesh.getFace(i);
         DGtal::Color c = aMesh.getFaceColor(i);
-        unsigned int materialIndex = 0;
+        size_t materialIndex = 0;
         if(mapMaterial.count(c)==0){
           materialIndex = mapMaterial.size();
-          std::pair<DGtal::Color, unsigned int> colF;
+          std::pair<DGtal::Color, std::size_t> colF;
           colF.first = c;
           colF.second = mapMaterial.size();
           // add new color in material

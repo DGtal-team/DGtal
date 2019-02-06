@@ -334,7 +334,8 @@ namespace DGtal
                                   TInputPoint& antipodalEdgeQ,
                                   TInputPoint& antipodalVertexR){
         struct WrapIt{
-          WrapIt(const ForwardIterator &b, const ForwardIterator &e): myB(b), myE(e), mySize(std::distance(b, e)){}
+          WrapIt(const ForwardIterator &b, const ForwardIterator &e): myB(b), myE(e),
+                      mySize(std::distance(b, e)){}
           TInputPoint operator[](unsigned int i){
             unsigned int j = i%(mySize);
             return *(myB+j);

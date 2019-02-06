@@ -81,16 +81,16 @@ bool testEigenDecomposition()
   trace.info() << "error_v0 = " << error_v0 << std::endl;
   trace.info() << "error_v1 = " << error_v1 << std::endl;
   double epsilon = 1e-10;
-  ++nb, nbok += error_V0 < epsilon ? 1 : 0;
+  ++nb; nbok += error_V0 < epsilon ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "error_V0 < epsilon, i.e. " <<  error_V0 << " < " << epsilon << std::endl;
-  ++nb, nbok += error_V1 < epsilon ? 1 : 0;
+  ++nb; nbok += error_V1 < epsilon ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "error_V1 < epsilon, i.e. " <<  error_V1 << " < " << epsilon << std::endl;
-  ++nb, nbok += error_v0 < epsilon ? 1 : 0;
+  ++nb; nbok += error_v0 < epsilon ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "error_v0 < epsilon, i.e. " <<  error_v0 << " < " << epsilon << std::endl;
-  ++nb, nbok += error_v1 < epsilon ? 1 : 0;
+  ++nb; nbok += error_v1 < epsilon ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "error_v1 < epsilon, i.e. " <<  error_v1 << " < " << epsilon << std::endl;
   trace.endBlock();

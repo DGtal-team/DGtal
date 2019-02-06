@@ -1,8 +1,14 @@
+#!/bin/bash
+$SCRIPT_BEGIN
+
 ## Get and test if DGtalTools compiles
-DGTALPATH=`pwd`
-echo "DGtal path = $DGTALPATH"
+
+cd "$SRC_DIR/.."
 git clone --depth 1 git://github.com/DGtal-team/DGtalTools.git
 cd DGtalTools
 mkdir build ; cd build
-cmake .. -DDGtal_DIR=$DGTALPATH/build $BUILD
-make -j 2
+cmake .. $BTYPE -G Ninja
+  #inplace
+ninja
+
+$SCRIPT_END

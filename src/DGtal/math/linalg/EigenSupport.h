@@ -98,9 +98,10 @@ struct EigenLinearAlgebraBackend
 {
     typedef Eigen::VectorXd DenseVector;
     typedef Eigen::MatrixXd DenseMatrix;
+    typedef Eigen::VectorXi IntegerVector;
 
     typedef Eigen::Triplet<double> Triplet;
-    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, long int> SparseMatrix;
+    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, DenseVector::Index> SparseMatrix;
 
     typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
     typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;

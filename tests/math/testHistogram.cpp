@@ -66,7 +66,7 @@ bool testHistogramUniform()
   hist.terminate();
   for ( unsigned int i = 0; i < hist.size(); ++i )
     std::cout << i << " " << hist.pdf( i ) << " " << hist.cdf( i ) << std::endl;
-  ++nb, nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
+  ++nb; nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
   return nbok == nb;
 }
 
@@ -85,7 +85,7 @@ bool testHistogramGaussian()
   hist.terminate();
   for ( unsigned int i = 0; i < hist.size(); ++i )
     std::cout << i << " " << hist.pdf( i ) << " " << hist.cdf( i ) << std::endl;
-  ++nb, nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
+  ++nb; nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
   return nbok == nb;
 }
 
@@ -105,7 +105,7 @@ bool testHistogramGaussian2()
   hist.terminate();
   for ( unsigned int i = 0; i < hist.size(); ++i )
     std::cout << i << " " << hist.pdf( i ) << " " << hist.cdf( i ) << std::endl;
-  ++nb, nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
+  ++nb; nbok += hist.cdf( hist.size()-1 ) > 0.9999 ? 1 : 0;
   return nbok == nb;
 }
 

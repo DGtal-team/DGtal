@@ -60,7 +60,7 @@ namespace DGtal
    * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   template <typename TSpace>
-  class NGon2D:  public StarShaped2D<TSpace>
+  class NGon2D final:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:

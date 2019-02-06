@@ -738,6 +738,7 @@ DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::LighterSternBrocot()
                            myOneOverZero );
   myOneOverZero->myChildren[ NumberTraits<Quotient>::ONE ] = myOneOverOne;
   nbFractions = 2;
+  singleton = 0;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>

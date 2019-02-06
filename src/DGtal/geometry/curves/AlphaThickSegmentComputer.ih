@@ -679,7 +679,7 @@ inline
 unsigned int 
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNumberSegmentPoints() const
 {
-  return myNbPointsAddedFromIterators+myPointContainer.size();
+  return static_cast<unsigned int>(myNbPointsAddedFromIterators+myPointContainer.size());
 }
 
 

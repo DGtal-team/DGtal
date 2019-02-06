@@ -269,12 +269,13 @@ bool test_range_constRange()
       if (to_vector[i]==i)
       {
         cout << "ok, ";
-        nbok += true ? 1 : 0; nb++;
+        nbok += 1 ;
+        nb++;
       }
       else
       {
         cout << "!ok, ";
-        nbok += false ? 1 : 0; nb++;
+        nb++;
       }
     }
     
@@ -309,9 +310,6 @@ bool testImageAdapter()
 
     typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity> MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImageAdapter > ));
-
-    nbok += true ? 1 : 0;
-    nb++;
 
     // 1) bell_tower
     //! [ImageAdapterWithSubdomain]

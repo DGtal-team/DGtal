@@ -48,308 +48,308 @@
 
 namespace DGtal
 {
+  /**
+   * Cubical Complex close operation.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex
+   * @return a new cubical complex that is the closing of S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator~( const CubicalComplex< TKSpace, TCellContainer >& S1 )
+  {
+    CubicalComplex< TKSpace, TCellContainer > S( S1 );
+    S.close();
+    return S;
+  }
+
+  /**
+   * Cubical Complex open operation.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex
+   * @return a new cubical complex that is the opening of S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator*( const CubicalComplex< TKSpace, TCellContainer >& S1 )
+  {
+    CubicalComplex< TKSpace, TCellContainer > S( S1 );
+    S.open();
+    return S;
+  }
+
+  /**
+   * Cubical Complex difference operation. Updates the cubical complex S1 as S1 - S2.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in,out] S1 an input cubical complex, \a S1 - \a S2 as output.
+   * @param[in] S2 another input cubical complex.
+   *
+   * @return a reference to the modified cubical complex S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >&
+  operator-=( CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
+    return S1;
+  }
+
+  /**
+   * Cubical Complex difference operation. Returns the difference of \a S1 - \a S2.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex
+   * @param[in] S2 another input cubical complex.
+   *
+   * @return the cubical complex \a S1 - \a S2.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator-( const CubicalComplex< TKSpace, TCellContainer >& S1,
+             const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    CC S( S1 );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
+    return S;
+  }
+
+  /**
+   * Cubical Complex union operation. Returns the cubical complex \f$ S1 \cup S2 \f$.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   * @return the cubical complex \f$ S1 \cup S2 \f$.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator|( const CubicalComplex< TKSpace, TCellContainer >& S1,
+             const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    CC S( S1 );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator|=( S.myCells[ i ],S2.myCells[ i ] );
+    return S;
+  }
+
+  /**
+   * Cubical Complex union operation. Updates the cubical complex \a S1 as \f$ S1 \cup S2 \f$.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in,out] S1 an input cubical complex, \f$ S1 \cup S2 \f$ as output.
+   * @param[in] S2 another input cubical complex.
+   * @return a reference to the modified cubical complex S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >&
+  operator|=( CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator|=( S1.myCells[ i ], S2.myCells[ i ] );
+    return S1;
+  }
+
+  /**
+   * Cubical Complex intersection operation. Returns the cubical complex \f$ S1 \cap S2 \f$.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   * @return the cubical complex \f$ S1 \cap S2 \f$.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator&( const CubicalComplex< TKSpace, TCellContainer >& S1,
+             const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    CC S( S1 );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator&=( S.myCells[ i ], S2.myCells[ i ] );
+    return S;
+  }
+
+  /**
+   * Cubical Complex intersection operation. Updates the cubical complex \a S1 as \f$ S1 \cap S2 \f$.
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in,out] S1 an input cubical complex, \f$ S1 \cap S2 \f$ as output.
+   * @param[in] S2 another input cubical complex.
+   * @return a reference to the modified cubical complex S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >&
+  operator&=( CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator&=( S1.myCells[ i ], S2.myCells[ i ] );
+    return S1;
+  }
+
+  /**
+   * Cubical Complex symmetric difference operation. Returns the cubical complex \f$ S1 \Delta S2 \f$.
+   *
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   * @return the cubical complex \f$ S1 \Delta S2 \f$.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >
+  operator^( const CubicalComplex< TKSpace, TCellContainer >& S1,
+             const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    CC S( S1 );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator^=( S.myCells[ i ], S2.myCells[ i ] );
+    return S;
+  }
+
+  /**
+   * Cubical Complex symmetric difference operation. Updates the
+   * cubical complex \a S1 as \f$ S1 \Delta S2 \f$.
+   *
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in,out] S1 an input cubical complex, \f$ S1 \Delta S2 \f$ as output.
+   * @param[in] S2 another input cubical complex.
+   * @return a reference to the modified cubical complex S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  inline CubicalComplex< TKSpace, TCellContainer >&
+  operator^=( CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      functions::setops::operator^=( S1.myCells[ i ], S2.myCells[ i ] );
+    return S1;
+  }
+
+  //////////////////////// EQUALITY /////////////////////////
+  /**
+   * Equality test.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   *
+   * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
+   * subcomplex of \a S2 and \a S2 is a subcomplex of \a S1).
+   */
+  template <typename TKSpace, typename TCellContainer>
+  bool
+  operator==( const CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    ASSERT( &(S1.space()) == &(S2.space()) );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      if ( ! functions::isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
+        return false;
+    return true;
+  }
+
+  //////////////////////// DIFFERENT /////////////////////////
+  /**
+   * Difference test.
+   *
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   *
+   * @return true iff \a S1 is not equal to \a S2 (i.e. either \a
+   * S1 is not a subcomplex of \a S2 or \a S2 is not a subcomplex
+   * of \a S1).
+   */
+  template <typename TKSpace, typename TCellContainer>
+  bool
+  operator!=( const CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    ASSERT( &(S1.space()) == &(S2.space()) );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      if ( ! functions::isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
+        return true;
+    return false;
+  }
+
+  //////////////////////// INCLUSION /////////////////////////
+  /**
+   * Inclusion test (subset of).
+   *
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   * @return true iff \a S1 is a subcomplex of \a S2.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  bool
+  operator<=( const CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    ASSERT( &(S1.space()) == &(S2.space()) );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      if ( ! functions::isSubset( S1.myCells[ i ], S2.myCells[ i ] ) )
+        return false;
+    return true;
+  }
+
+  /**
+   * Inclusion test (supset of).
+   *
+   * @tparam TKSpace the digital space in which lives the cubical complex.
+   * @tparam TCellContainer the associative container used to store cells within the cubical complex.
+   *
+   * @param[in] S1 an input cubical complex.
+   * @param[in] S2 another input cubical complex.
+   * @return true iff \a S2 is a subcomplex of \a S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
+  bool
+  operator>=( const CubicalComplex< TKSpace, TCellContainer >& S1,
+              const CubicalComplex< TKSpace, TCellContainer >& S2 )
+  {
+    typedef CubicalComplex< TKSpace, TCellContainer > CC;
+    ASSERT( &(S1.space()) == &(S2.space()) );
+    for ( Dimension i = 0; i <= CC::dimension; ++i )
+      if ( ! functions::isSubset( S2.myCells[ i ], S1.myCells[ i ] ) )
+        return false;
+    return true;
+  }
+
   namespace functions {
-
-    /** 
-     * Cubical Complex close operation. 
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex
-     * @return a new cubical complex that is the closing of S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator~( const CubicalComplex< TKSpace, TCellContainer >& S1 )
-    {
-      CubicalComplex< TKSpace, TCellContainer > S( S1 );
-      S.close();
-      return S;
-    }
-
-    /** 
-     * Cubical Complex open operation. 
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex
-     * @return a new cubical complex that is the opening of S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator*( const CubicalComplex< TKSpace, TCellContainer >& S1 )
-    {
-      CubicalComplex< TKSpace, TCellContainer > S( S1 );
-      S.open();
-      return S;
-    }
-
-    /** 
-     * Cubical Complex difference operation. Updates the cubical complex S1 as S1 - S2. 
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in,out] S1 an input cubical complex, \a S1 - \a S2 as output.
-     * @param[in] S2 another input cubical complex.
-     *
-     * @return a reference to the modified cubical complex S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer >& 
-    operator-=( CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
-      return S1;
-    }
-      
-    /** 
-     * Cubical Complex difference operation. Returns the difference of \a S1 - \a S2.
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex
-     * @param[in] S2 another input cubical complex.
-     *
-     * @return the cubical complex \a S1 - \a S2. 
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator-( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-               const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      CC S( S1 );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
-      return S;
-    }
-
-    /** 
-     * Cubical Complex union operation. Returns the cubical complex \f$ S1 \cup S2 \f$.
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     * @return the cubical complex \f$ S1 \cup S2 \f$.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator|( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-               const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      CC S( S1 );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator|=( S.myCells[ i ],S2.myCells[ i ] );
-      return S;
-    }
-
-    /** 
-     * Cubical Complex union operation. Updates the cubical complex \a S1 as \f$ S1 \cup S2 \f$.
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in,out] S1 an input cubical complex, \f$ S1 \cup S2 \f$ as output.
-     * @param[in] S2 another input cubical complex.
-     * @return a reference to the modified cubical complex S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer >& 
-    operator|=( CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator|=( S1.myCells[ i ], S2.myCells[ i ] );
-      return S1;
-    }
-
-    /** 
-     * Cubical Complex intersection operation. Returns the cubical complex \f$ S1 \cap S2 \f$.
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     * @return the cubical complex \f$ S1 \cap S2 \f$.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator&( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-               const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      CC S( S1 );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator&=( S.myCells[ i ], S2.myCells[ i ] );
-      return S;
-    }
-
-    /** 
-     * Cubical Complex intersection operation. Updates the cubical complex \a S1 as \f$ S1 \cap S2 \f$.
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in,out] S1 an input cubical complex, \f$ S1 \cap S2 \f$ as output.
-     * @param[in] S2 another input cubical complex.
-     * @return a reference to the modified cubical complex S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer >& 
-    operator&=( CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator&=( S1.myCells[ i ], S2.myCells[ i ] );
-      return S1;
-    }
-
-    /** 
-     * Cubical Complex symmetric difference operation. Returns the cubical complex \f$ S1 \Delta S2 \f$.
-     *
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     * @return the cubical complex \f$ S1 \Delta S2 \f$.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer > 
-    operator^( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-               const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      CC S( S1 );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator^=( S.myCells[ i ], S2.myCells[ i ] );
-      return S;
-    }
-
-    /** 
-     * Cubical Complex symmetric difference operation. Updates the
-     * cubical complex \a S1 as \f$ S1 \Delta S2 \f$.
-     *
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in,out] S1 an input cubical complex, \f$ S1 \Delta S2 \f$ as output.
-     * @param[in] S2 another input cubical complex.
-     * @return a reference to the modified cubical complex S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    inline CubicalComplex< TKSpace, TCellContainer >& 
-    operator^=( CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        setops::operator^=( S1.myCells[ i ], S2.myCells[ i ] );
-      return S1;
-    }
-
-    //////////////////////// EQUALITY /////////////////////////
-    /** 
-     * Equality test.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     *
-     * @return true iff \a S1 is equal to \a S2 (i.e. \a S1 is a
-     * subcomplex of \a S2 and \a S2 is a subcomplex of \a S1).
-     */
-    template <typename TKSpace, typename TCellContainer>
-    bool
-    operator==( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      ASSERT( &(S1.space()) == &(S2.space()) );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        if ( ! isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
-          return false;
-      return true;
-    }
-
-    //////////////////////// DIFFERENT /////////////////////////
-    /** 
-     * Difference test.
-     *
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     *
-     * @return true iff \a S1 is not equal to \a S2 (i.e. either \a
-     * S1 is not a subcomplex of \a S2 or \a S2 is not a subcomplex
-     * of \a S1).
-     */
-    template <typename TKSpace, typename TCellContainer>
-    bool
-    operator!=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      ASSERT( &(S1.space()) == &(S2.space()) );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        if ( ! isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
-          return true;
-      return false;
-    }
-
-    //////////////////////// INCLUSION /////////////////////////
-    /** 
-     * Inclusion test (subset of).
-     *
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     * @return true iff \a S1 is a subcomplex of \a S2.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    bool
-    operator<=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      ASSERT( &(S1.space()) == &(S2.space()) );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        if ( ! isSubset( S1.myCells[ i ], S2.myCells[ i ] ) )
-          return false;
-      return true;
-    }
-
-    /** 
-     * Inclusion test (supset of).
-     *
-     * @tparam TKSpace the digital space in which lives the cubical complex.
-     * @tparam TCellContainer the associative container used to store cells within the cubical complex.
-     *
-     * @param[in] S1 an input cubical complex.
-     * @param[in] S2 another input cubical complex.
-     * @return true iff \a S2 is a subcomplex of \a S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
-    bool
-    operator>=( const CubicalComplex< TKSpace, TCellContainer >& S1, 
-                const CubicalComplex< TKSpace, TCellContainer >& S2 )
-    {
-      typedef CubicalComplex< TKSpace, TCellContainer > CC;
-      ASSERT( &(S1.space()) == &(S2.space()) );
-      for ( Dimension i = 0; i <= CC::dimension; ++i )
-        if ( ! isSubset( S2.myCells[ i ], S1.myCells[ i ] ) )
-          return false;
-      return true;
-    }
-      
+    
     /**
      * Collapse a user-specified part of complex \a K, collapsing cells
      * following priority [priority], in a decreasing sequence until no
@@ -390,11 +390,11 @@ namespace DGtal
      * @see topology/cubical-complex-collapse.cpp
      */
     template <typename TKSpace, typename TCellContainer,
-              typename CellConstIterator, 
+              typename CellConstIterator,
               typename CellMapIteratorPriority >
-    uint64_t collapse( CubicalComplex< TKSpace, TCellContainer > & K, 
-                       CellConstIterator S_itB, CellConstIterator S_itE, 
-                       const CellMapIteratorPriority& priority, 
+    uint64_t collapse( CubicalComplex< TKSpace, TCellContainer > & K,
+                       CellConstIterator S_itB, CellConstIterator S_itE,
+                       const CellMapIteratorPriority& priority,
                        bool hintIsSClosed = false, bool hintIsKClosed = false,
                        bool verbose = false );
 
@@ -416,11 +416,11 @@ namespace DGtal
      *
      * @param[in] kUp any Khalimsky coordinate representing the
      * uppermost possible cell.
-     * 
+     *
      * @param[in,out] itBdry An output iterator on Cell that outputs all
      * the cells of \a K that lie on the boundary of the
      * parallelepiped specified by bounds \a kLow and \a kUp.
-     * 
+     *
      * @param[in,out] itInner An output iterator on Cell that outputs all
      * the cells of \a K that lie in the interior of the
      * parallelepiped specified by bounds \a kLow and \a kUp.
@@ -431,12 +431,32 @@ namespace DGtal
     template <typename TKSpace, typename TCellContainer,
               typename BdryCellOutputIterator,
               typename InnerCellOutputIterator>
-    void 
-    filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K, 
-                             const typename TKSpace::Point& kLow,  
+    void
+    filterCellsWithinBounds( const CubicalComplex< TKSpace, TCellContainer > & K,
+                             const typename TKSpace::Point& kLow,
                              const typename TKSpace::Point& kUp,
-                             BdryCellOutputIterator itBdry, 
+                             BdryCellOutputIterator itBdry,
                              InnerCellOutputIterator itInner );
+
+    /**
+     * Create object from the spels in the complex.
+     *
+     * User has to provide a 3D TObject type with its
+     * associated DigitalSet and DigitalTopology.
+     *
+     * Given a dimension n, spels are the n-cells,
+     * equivalently, spels are the grid-points in Z^n.
+     *
+     * @tparam TObject with its associdated DigitalSet and DigitalTopology
+     * @tparam TKSpace kspace type of the input CubicalComplex.
+     * @tparam TCellContainer cell container type of the input CubicalComplex
+     * @param C input CubicalComplex
+     *
+     * @return unique_ptr of created object with the pointset containing the spels of the complex.
+     */
+    template < typename TObject, typename TKSpace, typename TCellContainer>
+      std::unique_ptr<TObject>
+      objectFromSpels(const CubicalComplex< TKSpace, TCellContainer > & C);
 
   /**
    * Get the occupancy configuration of the neighborhood of a point in a cubical

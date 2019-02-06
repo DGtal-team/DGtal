@@ -47,9 +47,6 @@ using namespace DGtal;
  */
 bool testDigitalTopologyZ2()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   typedef SpaceND< 2 > Zi2;
   typedef MetricAdjacency< Zi2, 1 > Adj4;
   typedef MetricAdjacency< Zi2, 2 > Adj8;
@@ -59,23 +56,17 @@ bool testDigitalTopologyZ2()
   trace.beginBlock ( "Testing Digital topology (4,8) in Z2." );
   typedef DigitalTopology< Adj4, Adj8 > DT48;
   DT48 dt( adj4, adj8, JORDAN_DT );
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << dt << std::endl;
+  trace.info() << dt << std::endl;
   typedef DT48::ReverseTopology DT84;
   DT84 opp_dt = dt.reverseTopology();
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << opp_dt << std::endl;
+  trace.info() << opp_dt << std::endl;
   trace.endBlock();
 
   // should not compile
   // typedef DigitalTopology< Adj4, bool > DTimpossible;
   // DTimpossible dti( adj4, true );
 
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

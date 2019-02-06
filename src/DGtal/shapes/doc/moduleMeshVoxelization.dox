@@ -22,7 +22,7 @@ namespace DGtal {
 
 [TOC]
 
-@seeDGtalTools @ref meshVoxelizer
+@see DGtalTools MeshVoxelizer
 
 
 \section sectVoxelization1 Introduction

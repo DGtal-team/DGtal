@@ -108,10 +108,7 @@ int main( int argc, char** argv )
   viewer << MyViewer::updateDisplay;
 
 
-return application.exec();
-
-  trace.endBlock();
-  return 0;
+  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

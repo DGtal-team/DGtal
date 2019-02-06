@@ -277,48 +277,48 @@ int main()
   A1 a1( 10 ); // +1/ 0
   DByValue d1( a1 ); //  +2/+1
   trace.info() << "D: d1.value() = " << d1.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==3 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==3 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing (Clone)." );
   DByClone dd1( a1 ); // +1/0
-  ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==4 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-reference parameter passing (Alias)." );
   EByAlias e1( a1 ); // +0/0
-  ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==4 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-const reference parameter passing (Alias)." );
   EByConstAlias ee1( a1 ); // +0/0
-  ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==4 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into heap (Clone)." );
   FByCloneHeap fe1( a1 ); // +1/0
-  ++nb, nbok += A1::nbCreated==5 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==5 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into CowPtr (Clone)." );
   FByCloneCowPtr fe3( a1 ); // +1/0
-  ++nb, nbok += A1::nbCreated==6 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb; nbok += A1::nbCreated==6 ? 1 : 0;
+  ++nb; nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
@@ -328,7 +328,7 @@ int main()
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
   trace.info() << "Perimeter is " << t1 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -338,8 +338,8 @@ int main()
   trace.beginBlock ( "Total perimeter of triangles with by-const reference parameter passing." );
   double t2 = computeTriangles<TriangleByConstReference>( size );
   trace.info() << "Perimeter is " << t2 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
@@ -348,8 +348,8 @@ int main()
   trace.beginBlock ( "Total perimeter of triangles with by Clone parameter passing." );
   double t3 = computeTriangles<TriangleByClone>( size );
   trace.info() << "Perimeter is " << t3 << std::endl;
-  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 

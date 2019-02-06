@@ -58,71 +58,74 @@ namespace DGtal {
   const TFunctor & aFunctor )
   {
     typedef typename Image::Domain Domain;
-    typedef typename Domain::Point Point;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
     BOOST_CONCEPT_ASSERT( (concepts::CUnaryFunctor<TFunctor, ValueOut, Value>));
     const IOComponentType componentType = getITKComponentType( filename );
-    typedef unsigned char ElementType;
     switch ( componentType )
     {
 
     default:
     case itk::ImageIOBase::UNKNOWNCOMPONENTTYPE:
-      std::cerr << "Unknown and unsupported component type!" << std::endl;
+      trace.warning() << "[ITKReader] Unknown and unsupported component type! File will be loaded with UCHAR component type" << std::endl;
+      //fallthrough
     case itk::ImageIOBase::UCHAR:
     {
       typedef ImageContainerByITKImage<Domain, unsigned char> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::CHAR:
     {
       typedef ImageContainerByITKImage<Domain, char> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::USHORT:
     {
       typedef ImageContainerByITKImage<Domain, unsigned short> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::SHORT:
     {
       typedef ImageContainerByITKImage<Domain, short> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
+    case itk::ImageIOBase::UINT:
+    {
+      typedef ImageContainerByITKImage<Domain, unsigned int> DGtalITKImage;
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
+    case itk::ImageIOBase::INT:
+    {
+      typedef ImageContainerByITKImage<Domain, int> DGtalITKImage;
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::ULONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::LONG:
     {
       typedef ImageContainerByITKImage<Domain, long> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
+    case itk::ImageIOBase::ULONGLONG:
+    {
+      typedef ImageContainerByITKImage<Domain, unsigned long long> DGtalITKImage;
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+    }
+    case itk::ImageIOBase::LONGLONG:
+    {
+      typedef ImageContainerByITKImage<Domain, long long> DGtalITKImage;
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::FLOAT:
     {
       typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     case itk::ImageIOBase::DOUBLE:
     {
-      typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
-      Domain d;
-      DGtalITKImage im( d );
+      typedef ImageContainerByITKImage<Domain, double> DGtalITKImage;
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
     }
@@ -138,9 +141,12 @@ namespace DGtal {
     {
       itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(
       filename.c_str(), itk::ImageIOFactory::ReadMode );
-      imageIO->SetFileName( filename.c_str() );
-      imageIO->ReadImageInformation();
-      componentType = imageIO->GetComponentType();
+      if (imageIO)
+      {
+	imageIO->SetFileName( filename.c_str() );
+	imageIO->ReadImageInformation();
+	componentType = imageIO->GetComponentType();
+      }
     }
     catch ( itk::ExceptionObject & e )
     {
@@ -160,7 +166,7 @@ namespace DGtal {
     typedef typename TypeDGtalImage::ITKImagePointer ITKImagePointer;
     typedef typename Image::Domain Domain;
 
-    ITKImagePointer itk_image = TypeDGtalImage::ITKImage::New();
+    ITKImagePointer itk_image = nullptr;
 
     try
     {

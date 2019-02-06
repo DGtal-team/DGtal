@@ -48,7 +48,7 @@ vertices, edges (a curve bordered by two vertices), faces (a piece of
 surface bordered by a sequence of edges). They are often called
 0-cells, 1-cells and 2-cells respectively. The half-edge data
 structure describes which cells are connected to each other. Its
-principle is to associate two \i half-edges to each edge. Once this is
+principle is to associate two \em half-edges to each edge. Once this is
 done, it is easy to tie cells together by simply indicating for each
 half-edge:
 
@@ -251,6 +251,11 @@ triangulated surface:
   order as the sequence of incident arcs along the face. Here, it
   returns three vertices.
 
+- face to arcs: you can get the sequence of 3 arcs incident to a
+  given face with TriangulatedSurface::arcsAroundFace, in the same
+  order as the sequence of incident arcs along the face.
+
+
 Furthermore you can enumerate all the vertices, arcs and faces with
 TriangulatedSurface::allVertices, TriangulatedSurface::allArcs,
 TriangulatedSurface::allFaces.
@@ -336,9 +341,15 @@ property maps:
 
 \subsection HEM_sec2_7 Triangulated surface I/O and visualization
 
+You have methods to export a triangulated surface as an OBJ file:
+MeshHelpers::exportOBJ or the more complete
+MeshHelpers::exportOBJwithFaceNormalAndColor.
+
 In its present form, class TriangulatedSurface does not provide any
-I/O or visualization methods. However it is simple to convert a
-TriangulatedSurface to/from a Mesh for I/O or for visualization (see \ref HEM_sec2_4).
+visualization methods. However it is simpler to convert a
+TriangulatedSurface to/from a Mesh for I/O or for visualization (see
+\ref HEM_sec2_4).
+
 
 You may input or output a Mesh as an OFF/OFS/OBJ file, see \ref
 subsect2moduleMeshIO.  More precisely, class MeshWriter allows you to
@@ -472,6 +483,10 @@ polygonal surface:
   order as the sequence of incident arcs along the face. It is thus
   the sequence of vertices representing the polygonal face.
 
+- face to arcs: you can get the sequence of arcs incident to a
+  given face with PolygonalSurface::arcsAroundFace, in the same
+  order as the sequence of incident arcs along the face.
+
 Furthermore you can enumerate all the vertices, arcs and faces with
 PolygonalSurface::allVertices, PolygonalSurface::allArcs,
 PolygonalSurface::allFaces.
@@ -499,11 +514,19 @@ PolygonalSurface and conversely.
 - MeshHelpers::mesh2PolygonalSurface builds a polygonal surface (class PolygonalSurface)
   from an arbitrary mesh (class Mesh). 
 
-- MeshHelpers::polygonalSurface2Mesh Builds a mesh (class Mesh)
+- MeshHelpers::polygonalSurface2TriangulatedSurface builds a polygonal
+  surface from a triangulated surface (faces are triangulated
+  according to parameters).
+
+- MeshHelpers::polygonalSurface2Mesh builds a mesh (class Mesh)
   from a polygonal surface (class PolygonalSurface). Note that
   the mesh looses the topology of the polygonal surface, since it
   is essentially a soup of triangles. It is useful for display or for
   export to OBJ format for instance.
+
+- MeshHelpers::digitalSurface2PrimalPolygonalSurface builds a
+  polygonal surface (class PolygonalSurface) from the primal graph of
+  a 2-dimensional digital surface in K^3 (class DigitalSurface).
 
 - MeshHelpers::digitalSurface2DualPolygonalSurface builds a
   polygonal surface (class PolygonalSurface) from the dual graph
@@ -552,9 +575,14 @@ property maps:
 
 \subsection HEM_sec3_7 Polygonal surface I/O and visualization
 
+You have methods to export a polygonal surface as an OBJ file:
+MeshHelpers::exportOBJ or the more complete
+MeshHelpers::exportOBJwithFaceNormalAndColor.
+
 In its present form, class PolygonalSurface does not provide any
-I/O or visualization methods. However it is simple to convert a
-PolygonalSurface to/from a Mesh for I/O or for visualization (see \ref HEM_sec3_4).
+visualization methods. However it is simpler to convert a
+PolygonalSurface to/from a Mesh for I/O or for visualization (see \ref
+HEM_sec3_4).
 
 You may input or output a Mesh as an OFF/OFS/OBJ file, see \ref
 subsect2moduleMeshIO.  More precisely, class MeshWriter allows you to

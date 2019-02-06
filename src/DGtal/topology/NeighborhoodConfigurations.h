@@ -20,7 +20,7 @@
  * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
  * Massey University. Palmerston North, New Zealand
  *
- * @date 2016/03/25
+ * @date 2018/01/01
  *
  * Generation of Look Up Tables for predicates function in a voxel
  * neighborhood.
@@ -51,7 +51,7 @@ namespace DGtal {
   /**
    * Load existing look up table existing in file_name, precalculated
    * tables can be accessed including the header:
-   * "DGtal/topology/tables/ConfigTables.h"
+   * "DGtal/topology/tables/NeighborhoodTables.h"
    *
    * @param input_filename plain text containing the bool table.
    * @param known_size of the bitset, for 2D = 256 (2^8), 3D = 67108864 (2^26)
@@ -62,7 +62,7 @@ namespace DGtal {
    * @note The tables were calculated using the generateTableXXX examples.
    * Compressed files of the tables are distributed in the source code.
    * At build or install time, the header
-   * "DGtal/topology/tables/ConfigTables.h" is generated.
+   * "DGtal/topology/tables/NeighborhoodTables.h" is generated.
    * It has const strings variables with the file names of the tables.
    */
   inline
@@ -72,7 +72,7 @@ namespace DGtal {
   /**
    * Load existing look up table existing in file_name, precalculated
    * tables can be accessed including the header:
-   * "DGtal/topology/tables/ConfigTables.h"
+   * "DGtal/topology/tables/NeighborhoodTables.h"
    *
    * @tparam dimension of the space input_filename table refers. 2 or 3
    * @param input_filename plain text containing the bool table.

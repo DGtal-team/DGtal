@@ -43,25 +43,71 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
-#include <Magick++.h>
+
+#if defined(WITH_MAGICK)
+// Specific inclusion method to fix warning with GraphicsMagic 1.3.31 and Clang.
+// The warning comes from two "diagnostic pop" with missing corresponding push.
+// "MagickLibAddendum" is defined in ImageMagick since 9 years but not in GraphicsMagic.
+#  if !defined(MagickLibAddendum) && defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic push
+#    include <Magick++.h>
+#    if MagickLibVersion != 0x221900
+#      pragma clang diagnostic pop
+#      pragma clang diagnostic pop
+#    endif
+#  else
+#    include <Magick++.h>
+#  endif
+#else // defined WITH_MAGICK
+#  error "DGtal has not been built with imagemagick support. Consider adding -DWITH_MAGICK=true when building the project with cmake."
+#endif // defined WITH_MAGICK
+
+
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
+  namespace functors
+  {
+    template<typename TValue>
+    struct MagickCast
+    {
+      Cast<TValue> myCast;
+      TValue operator()(const Color &col) const
+      {
+        return myCast( col.red() + col.green() + col.blue() );
+      }
+    };
+    
+    template<>  
+    struct MagickCast<Color>
+    {
+      Color operator()(const Color &col) const
+      {
+        return col;
+      }
+    };
+  } 
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class MagickReader
   /**
    * Description of template class 'MagickReader' <p>
    * \brief Aim: implements methods to read a 2D image using the ImageMagick library.
    *
+   * The functor cast colors (DGtal::Color) to the image value type (@a TimageContainer::Value).
+   *
+   * Typical examples of functor are:
+   *   - Color to scalar values (e.g. unsigned char) for "grayscale" images
+   *   - Identity functor but the image needs to have DGtal::Color as value type.
    *
    * @tparam TImageContainer the image container to use. 
-   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import to cast color to image values (by default set to functors::MagickCast< TImageContainer::Value>) .
    */
-  template <typename TImageContainer, typename TFunctor=  functors::Cast< typename TImageContainer::Value > >
+  template <typename TImageContainer, typename TFunctor=  functors::MagickCast< typename TImageContainer::Value > >
   struct MagickReader
   {
     // ----------------------- Standard services ------------------------------

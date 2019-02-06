@@ -121,7 +121,7 @@ bool testGaussianCurvature3d( double h, double delta )
   trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
   double mean = 0.0;
-  unsigned int rsize = results.size();
+  unsigned int rsize = static_cast<unsigned int>(results.size());
 
   if( rsize == 0 )
   {
@@ -222,7 +222,7 @@ bool testPrincipalCurvatures3d( double h )
   trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
   unsigned int error_order = 0;
-  unsigned int rsize = results.size();
+  unsigned int rsize = static_cast<unsigned int>(results.size());
 
   if( rsize == 0 )
   {
