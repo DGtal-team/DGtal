@@ -50,9 +50,6 @@ using namespace DGtal;
  */
 bool testParametricShape()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing parametric shaper ..." );
   Z2i::Point a(0,0);
   Z2i::Point b(64,64);
@@ -75,14 +72,8 @@ bool testParametricShape()
 
   board << set;
   board.saveSVG("parametricball.svg");
-  
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
+
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

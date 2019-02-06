@@ -44,9 +44,6 @@ using namespace DGtal;
  */
 bool testOpenMP()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Testing basic OpenMP ..." );
 
 #ifdef WITH_OPENMP
@@ -57,13 +54,9 @@ bool testOpenMP()
   trace.info() << "no parallel helloworld"<<std::endl;
 #endif
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
   trace.endBlock();
   
-  return nbok == nb;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -199,6 +199,33 @@ namespace DGtal
 
   };
 
+
+  /**
+   * GenericWriter
+   * Template partial specialisation for images of dimension 2 with image value DGtal::Color 
+   **/
+  template <typename TContainer,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, DGtal::Color, TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
+
+    /**
+     * Export the 2D image file.
+     * @param filename the filename of the saved image (with a extension name).
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving.
+     *
+     **/
+
+    static bool exportFile(const std::string &filename,
+                           const TContainer &anImage,
+                           const TFunctor & aFunctor = TFunctor() );
+
+  };
+
+
+
+  
   /**
    * GenericWriter
    * Template partial specialisation for images of dimension 2 and Functor returning a Color object

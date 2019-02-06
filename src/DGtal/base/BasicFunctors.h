@@ -48,13 +48,14 @@
 #include <algorithm>
 #include <functional>
 #include <cmath>
+#include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicBoolFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-namespace functors
+  namespace functors
 {
 /////////////////////////////////////////////////////////////////////////////
 /// Duplicated STL functors
@@ -271,7 +272,6 @@ namespace functors
       return static_cast<TOutput>(aInput);
     }
   };
-
 
   /**
    * Description of template class 'Composer' <p>
@@ -511,7 +511,7 @@ struct Thresholder<T,true,true>
        @param other the object to copy
       */
     PredicateCombiner(  const PredicateCombiner& other )
-      : myPred1( other.pred1 ), myPred2( other.pred2 ), myBoolFunctor( other.boolFunctor )
+      : myPred1( other.myPred1 ), myPred2( other.myPred2 ), myBoolFunctor( other.myBoolFunctor )
     {
     }
 

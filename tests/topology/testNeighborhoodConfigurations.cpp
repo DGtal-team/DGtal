@@ -21,7 +21,7 @@
  * @author Pablo Hernandez-Cerdan. Institute of Fundamental Sciences.
  * Massey University. Palmerston North, New Zealand
  *
- * @date 2016/03/25
+ * @date 2018/01/01
  *
  * Testing classs of NeighborhoodConfigurations
  * @see NeighborhoodConfigurations.h
@@ -295,5 +295,23 @@ TEST_CASE_METHOD(Objects2D, "Simplicity tables match on-the-fly calculations for
       }
       CHECK(nsimples == nsimples_tables);
     }
+  }
+}
+
+SCENARIO( "Load isthmus tables", "[isthmus]" ){
+  SECTION("isthmus"){
+    const auto & filename = isthmusicity::tableIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
+  }
+  SECTION("oneIsthmus"){
+    const auto & filename = isthmusicity::tableOneIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
+  }
+  SECTION("twoIsthmus"){
+    const auto & filename = isthmusicity::tableTwoIsthmus;
+    auto ptable = loadTable(filename);
+    const auto & table = *ptable;
   }
 }

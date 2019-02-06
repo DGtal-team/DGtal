@@ -55,6 +55,7 @@
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/VectorField.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 #include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>
@@ -399,6 +400,17 @@ namespace DGtal
     template <Duality duality>
     LinearOperator<Self, 0, duality, 0, duality>
     laplace() const;
+
+    /**
+     * Convolutional Laplace operator from duality 0-forms to duality 0-forms. See \ref secHowToHeatLaplace.
+     * @param h the grid step
+     * @param t the time parameter for the convolution
+     * @param K the multiplier for the integration. Must be at least 2.
+     * @return Heat Laplace operator.
+     */
+    template <Duality duality>
+    LinearOperator<Self, 0, duality, 0, duality>
+    heatLaplace(const typename DenseVector::Scalar& h, const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& K) const;
 
     /**
      * Hodge operator from duality _order_-form to opposite duality _(dimEmbedded-order)_-forms.

@@ -75,6 +75,7 @@ namespace DGtal
 
       myITKImagePointer->SetRegions(region);
       myITKImagePointer->Allocate();
+      myITKImagePointer->FillBuffer(0);
     }
 
     template <typename TDomain, typename TValue>
@@ -149,6 +150,20 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValue>::operator()(const Iterator &it) const
     {
       return it.Get();
+    }
+
+    template <typename TDomain, typename TValue>
+    inline
+    DGtal::ImageContainerByITKImage<TDomain,TValue>&
+    DGtal::ImageContainerByITKImage<TDomain,TValue>
+    ::operator=(const ImageContainerByITKImage& other)
+    {
+      if (this != &other)
+        {
+          myITKImagePointer = other.myITKImagePointer;
+          updateDomain();
+        }
+      return *this;
     }
 
     template <typename Domain, typename T>

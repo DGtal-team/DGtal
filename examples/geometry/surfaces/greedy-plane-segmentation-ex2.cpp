@@ -105,8 +105,8 @@ struct SegmentedPlane {
 };
 struct VertexSize {
   Vertex v;
-  unsigned int size;
-  inline VertexSize( const Vertex & aV, unsigned int aSize )
+  std::size_t size;
+  inline VertexSize( const Vertex & aV, std::size_t aSize )
     : v( aV ), size( aSize )
   {}
 };

@@ -70,9 +70,9 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval
   {
     if ( DSS->isInDSS ( *it ) )
     {
-      unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
+      auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
       prev = partial;
-      unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) ) + 1;
+      auto pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), *it ) ) + 1;
       SegmentComputer comp ( *DSS );
       partial = myFunctor ( comp, pos, dssLen );
       if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
@@ -102,7 +102,7 @@ DGtal::LambdaMST3DEstimator< TSpace, TSegmentation, Functor >::eval ( const type
   
   for(; DSS != lastDSS; ++DSS)
   {
-    unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
+    auto dssLen = std::distance ( DSS.begin(), DSS.end() );
     SegmentComputer comp ( *DSS );
     for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
       outValues.insert ( std::make_pair ( *(DSS.begin() + indexOfPointInDSS), myFunctor ( comp, indexOfPointInDSS+1, dssLen+1 ) ) );

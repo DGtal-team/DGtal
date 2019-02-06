@@ -74,6 +74,7 @@ structure.
  - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
  - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
  - \ref moduleCubicalComplex (Jacques-Olivier Lachaud)
+ - \ref moduleVoxelComplex (Pablo Hernandez-Cerdan)
  - \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
 
@@ -85,7 +86,7 @@ structure.
  @b Related @b documentation @b pages
 
  @b Related @b examples
-  - 3dBorderExtraction.cpp, 3dBorderExtractionImg.cpp, homotopicThinning3D.cpp
+  - 3dBorderExtraction.cpp, 3dBorderExtractionImg.cpp, homotopicThinning3D.cpp, criticalKernelsThinning3D
   - ctopo-1.cpp, ctopo-1-3d.cpp, ctopo-1s-3d.cpp, khalimskySpaceScanner.cpp
   - ctopo-2.cpp, ctopo-2-3d.cpp, 3dKSSurfaceExtraction.cpp
   - volScanBoundary.cpp, volTrackBoundary.cpp, volBreadthFirstTraversal.cpp, frontierAndBoundary.cpp

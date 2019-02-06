@@ -43,7 +43,6 @@
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////

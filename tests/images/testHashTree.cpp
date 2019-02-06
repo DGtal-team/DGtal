@@ -46,7 +46,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,9 +57,6 @@ using namespace DGtal;
  */
 bool testHashTree()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
   trace.beginBlock ( "Testing simple init ..." );
 
 
@@ -87,13 +83,9 @@ bool testHashTree()
   trace.info() << myImage;
   trace.info() << myImage2;
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
 
-  return nbok == nb;
+  return true;
 }
 
 
@@ -186,9 +178,9 @@ bool testGetSetVal()
   trace.endBlock();
   
   if (result)
-    trace.info() << "Get/Set test passed"<<endl;
+    trace.info() << "Get/Set test passed"<<std::endl;
   else
-    trace.error() << "Get/Set test error"<<endl;
+    trace.error() << "Get/Set test error"<<std::endl;
   nbok += result ? 1 : 0;
   nb++;
   
@@ -232,9 +224,9 @@ bool testGetSetVal()
   trace.endBlock();
   
   if (result)
-    trace.info() << "Get/Set test passed"<<endl;
+    trace.info() << "Get/Set test passed"<<std::endl;
   else
-    trace.error() << "Get/Set test error"<<endl;
+    trace.error() << "Get/Set test error"<<std::endl;
   nbok += result ? 1 : 0;
   nb++;
   
@@ -290,10 +282,10 @@ int main( int argc, char** argv )
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  trace.info() << std::endl;
 
   bool res = testHashTree() && testHashTree2D() && testGetSetVal() && testBadKeySizes();  // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }

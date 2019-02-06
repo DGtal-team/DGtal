@@ -76,6 +76,9 @@ namespace DGtal
    * @tparam TPoint a type defining the position in space of vertices.
    *
    * @see HalfEdgeDataStructure
+   *
+   * @note You may access the underlying half-edge data structure
+   * through PolygonalSurface::heds method.
    */
   template <typename TPoint>
   class TriangulatedSurface
@@ -242,12 +245,12 @@ namespace DGtal
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
-    /// @return (getter) a reference to the topological structure of the
-    /// triangulated surface.
+    /// @return (setter) a reference to the underlying topological
+    /// structure (an half-edge data structure).
     HalfEdgeDataStructure& heds() { return myHEDS; }
     
-    /// @return (setter) a const reference to the topological structure of the
-    /// triangulated surface.
+    /// @return (setter) a const-reference to the underlying topological
+    /// structure (an half-edge data structure).
     const HalfEdgeDataStructure& heds() const { return myHEDS; }
     
     // ------------------------- standard services ------------------------------
@@ -486,6 +489,17 @@ namespace DGtal
        order follows the order of incident arcs (the range size should be 3).
     */
     VertexRange verticesAroundFace( const Face & f ) const;
+
+    /**
+       @param f any valid face on the surface. (open or closed ).
+
+       @note By construction, each @e anArc returned by the method on
+       a face @a f is such that `this->faceAroundArc(anArc) == f`.
+
+       @return the sequence of arcs that touches this face in their
+       natural order (the range size should be 3).
+    */
+    ArcRange arcsAroundFace( const Face & f ) const;
 
     /**
        @param v any vertex.

@@ -165,6 +165,8 @@ namespace DGtal
     /// The associated viewer.
     typedef Viewer3D<Space, KSpace> Viewer;
 
+    virtual ~Extension() = default;
+    
     /// This method may be overloaded to capture other key
     /// events. It will be called at the beginning of Viewer3D::keyPressEvent.
     ///
@@ -508,7 +510,7 @@ namespace DGtal
       /// the mode of representation of the image domain
       std::string myMode;
       /// the index of the line of the domain in the lineSetList of the viewer
-      unsigned int myLineSetIndex;
+      std::size_t myLineSetIndex;
 
       /**
        * Constructor

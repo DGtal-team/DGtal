@@ -36,7 +36,6 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/CubicalComplex.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +108,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directCoFaces( outIt, it->first );
-            int n = faces.size();
+            int n = static_cast<int>(faces.size());
             if ( n >= 3 ) n = 3; // should not happen
             nbCoFaces[ n ]++;
           }
@@ -129,7 +128,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directFaces( outIt, it->first, true );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 4 ) n = 3; // should not happen
             if ( n > 4 ) n = 5; // should not happen
             nbFaces[ n ]++;
@@ -140,7 +139,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directFaces( outIt, it->first );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 4 ) n = 3; // should not happen
             if ( n > 4 ) n = 5; // should not happen
             nbFaces2[ n ]++;
@@ -163,7 +162,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, true );
-            int n = faces.size();
+            size_t n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry[ n ]++;
@@ -172,7 +171,7 @@ SCENARIO( "CubicalComplex< K3,std::unordered_map<> > unit tests (incidence,...)"
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, false );
-            int n = faces.size();
+            size_t n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry2[ n ]++;
@@ -368,7 +367,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directCoFaces( outIt, it->first );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n >= 3 ) n = 3; // should not happen
             nbCoFaces[ n ]++;
           }
@@ -388,7 +387,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directFaces( outIt, it->first, true );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 4 ) n = 3; // should not happen
             if ( n > 4 ) n = 5; // should not happen
             nbFaces[ n ]++;
@@ -399,7 +398,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
             std::vector<Cell> faces;
             std::back_insert_iterator< std::vector<Cell> > outIt( faces );
             complex.directFaces( outIt, it->first );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 4 ) n = 3; // should not happen
             if ( n > 4 ) n = 5; // should not happen
             nbFaces2[ n ]++;
@@ -422,7 +421,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, true );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry[ n ]++;
@@ -431,7 +430,7 @@ SCENARIO( "CubicalComplex< K3,std::map<> > unit tests (incidence,...)", "[cubica
               it != itE; ++it )
           {
             CC::Cells faces = complex.cellBoundary( it->first, false );
-            int n = faces.size();
+            auto n = faces.size();
             if ( n < 8 ) n = 7; // should not happen
             if ( n > 8 ) n = 9; // should not happen
             nbBdry2[ n ]++;
@@ -583,8 +582,6 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   typedef KSpace::Cell                      Cell;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-
-  using namespace DGtal::functions;
 
   KSpace K;
   K.init( Point( 0,0 ), Point( 5,3 ), true );

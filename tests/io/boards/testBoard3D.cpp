@@ -48,11 +48,7 @@ using namespace Z3i;
  */
 bool testBoard3D()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  trace.beginBlock ( "Testing Board3D ..." );
-
-
+ trace.beginBlock ( "Testing Board3D ..." );
 
   Point p1( -3, -2, 0 );
   Point p2( 7, 3 , 6);
@@ -85,13 +81,8 @@ bool testBoard3D()
  
   board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-
-  return nbok == nb;
+  
+  return true;
 }
 
 bool testQuadNorm()

@@ -227,7 +227,7 @@ inline
 typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Size
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::nbSurfels() const
 {
-  return mySurfels.size();
+  return static_cast<Size>(mySurfels.size());
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>

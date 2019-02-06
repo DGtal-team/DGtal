@@ -115,7 +115,7 @@ void naiveConvexHull
   // purge faces.
   for ( unsigned int i = 0; i < indices.size(); ++i )
     {
-      unsigned int s = indices[ i ].size();
+      auto s = indices[ i ].size();
       for ( unsigned int j = i+1; j < indices.size(); )
         {
           if ( indices[ j ].size() == s )
@@ -135,14 +135,6 @@ void naiveConvexHull
           else ++j;
         }
     }
-  // std::cerr << "----------- " << std::endl;
-  // for ( unsigned int i = 0; i < indices.size(); ++i )
-  //   {
-  //     std::cerr << "( ";
-  //     for ( unsigned int j = 0; j < indices[ i ].size(); ++j )
-  //       std::cerr << indices[ i ][ j ] << " ";
-  //     std::cerr << ")" << std::endl;
-  //   }
 }
 
 double rescale( double x )

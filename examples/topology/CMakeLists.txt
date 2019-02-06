@@ -8,6 +8,7 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   trackImplicitPolynomialSurfaceToOFF
   generateSimplicityTables2D
   generateSimplicityTables3D
+  generateVoxelComplexTables
   digitalSetToCubicalComplexes2D
   cubical-complex-illustrations
   cubicalComplexThinning

@@ -48,17 +48,9 @@ using namespace DGtal;
  */
 bool testInteger()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
   trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( concepts::CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::int16_t> ));
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
 
   trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
          << std::endl;
@@ -89,33 +81,15 @@ bool testInteger()
 
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
   BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<unsigned int> ));
-  // These tests fail : int is not a model of CUnsignedInteger.
-  // BOOST_CONCEPT_ASSERT(( CUnsignedInteger<int> ));
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );
   trace.warning() << "If digits() returns 0, the type is not considered in specilizations"<<endl;
   trace.info() << "  - digits int = " << NumberTraits<int>::digits()<< std::endl;
-  //  nbok += (NumberTraits<int>::digits() == 0) ? 0 : 1; 
-  //  nb++;
   trace.info() << "  - digits unsigned int = " << NumberTraits<unsigned int>::digits()<< std::endl;
-  // nbok += (NumberTraits<unsigned int>::digits() == 0) ? 0 : 1; 
-  //nb++;
   trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;
-  //nbok += (NumberTraits<long int>::digits() == 0) ? 0 : 1; 
-  //nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-
-
-  
-  return nbok == nb;
+   trace.endBlock();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
