@@ -545,7 +545,6 @@ TEST_CASE_METHOD(Fixture_complex_fig4, "zeroSurface and oneSurface",
                  "[isSurface][function]") {
     auto &vc = complex_fixture;
     using namespace DGtal::functions;
-    using Point = FixtureComplex::Point;
     vc.clear();
     Point c(0, 0, 0);
     {
