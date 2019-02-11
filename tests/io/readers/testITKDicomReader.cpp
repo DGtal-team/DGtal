@@ -1,0 +1,153 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file testITKDicomReader.ih
+ * @ingroup Tests
+ * @author Boris Mansencal (\c boris.mansencal@labri.fr )
+ * LaBRI (CNRS, UMR 5800, University of Bordeaux, Bordeaux-INP, France
+ *
+ * @date 2019/02/05
+ *
+ * Functions for testing class ITKDicomReader.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include "DGtal/base/Common.h"
+#include "ConfigTest.h"
+#include "DGtalCatch.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageContainerByITKImage.h"
+#include "DGtal/io/readers/ITKDicomReader.h"
+// Required ITK files to read serie DICOM files
+// DGtal must be compiled with "-DWITH_ITK=true" option
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
+#include <itkGDCMSeriesFileNames.h>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+#endif
+#pragma GCC diagnostic pop
+
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+using namespace DGtal;
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class ITKReader.
+///////////////////////////////////////////////////////////////////////////////
+
+template <typename Image>
+void
+testImportDICOM()
+{
+  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
+  NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
+  nameGenerator->SetUseSeriesDetails( true );
+  nameGenerator->SetDirectory( testPath + "samples/dicomSample" );
+  
+  typedef itk::GDCMSeriesFileNames::SeriesUIDContainerType SeriesIdContainer;
+  const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
+  
+  REQUIRE( ! seriesUID.empty() );
+  
+  typedef itk::GDCMSeriesFileNames::FileNamesContainerType FilenamesContainer;
+  const FilenamesContainer &fileNames = nameGenerator->GetFileNames( *(seriesUID.begin()) );
+  
+  Image image = ITKDicomReader<Image>::importDICOM( fileNames );
+  
+  unsigned int nbVal=0, nbPos = 0;
+  typename Image::ConstRange r = image.constRange();
+  for ( typename Image::ConstRange::ConstIterator it=r.begin(), itend=r.end() ; it != itend ; ++it )
+    {
+      ++nbVal;
+      if ( (*it) > 0 ) ++nbPos;
+    }
+
+  REQUIRE( ( nbVal==2130048 && nbPos==296030 ) );
+}
+
+
+TEST_CASE( "Testing ITKReader" )
+{
+  // Default image selector = STLVector
+
+  SECTION(
+  "Testing ITKDicomReader with 8 bits ImageContainerBySTLVector images" )
+  {
+    typedef ImageContainerBySTLVector<Z3i::Domain, unsigned char> Image;
+    testImportDICOM<Image>();
+  }
+
+  SECTION(
+  "Testing ITKDicomReader with 8 bits ImageContainerByITKImage images" )
+  {
+    typedef ImageContainerByITKImage<Z3i::Domain, unsigned char> Image;
+    testImportDICOM<Image>();
+  }
+
+  SECTION(
+  "Testing ITKDicomReader with 16 bits ImageContainerBySTLVector images" )
+  {
+    typedef ImageContainerBySTLVector<Z3i::Domain, uint16_t> Image;
+    testImportDICOM<Image>();
+  }
+  
+  SECTION(
+  "Testing ITKDicomReader with 16 bits ImageContainerByITKImage images" )
+  {
+    typedef ImageContainerByITKImage<Z3i::Domain, uint16_t> Image;
+    testImportDICOM<Image>();
+  }
+
+
+
+  SECTION(
+  "Testing behavior of ITKDicomReader on empty filenames vector" )
+  {
+    typedef ImageContainerBySTLVector<Z3i::Domain, unsigned char> Image;
+    std::vector<std::string> filenames;
+    bool caughtException = false;
+    try
+    {
+      Image im = ITKDicomReader<Image>::importDICOM(filenames);
+    }
+    catch(exception &)
+    {
+      caughtException = true;
+      trace.info() <<"Exception was correctly caught" << std::endl;
+    }
+    REQUIRE( caughtException == true);
+  }
+
+
+}
+
+/** @ingroup Tests **/
