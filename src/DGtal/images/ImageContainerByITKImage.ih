@@ -152,6 +152,20 @@ namespace DGtal
       return it.Get();
     }
 
+    template <typename TDomain, typename TValue>
+    inline
+    DGtal::ImageContainerByITKImage<TDomain,TValue>&
+    DGtal::ImageContainerByITKImage<TDomain,TValue>
+    ::operator=(const ImageContainerByITKImage& other)
+    {
+      if (this != &other)
+        {
+          myITKImagePointer = other.myITKImagePointer;
+          updateDomain();
+        }
+      return *this;
+    }
+
     template <typename Domain, typename T>
     inline
     void

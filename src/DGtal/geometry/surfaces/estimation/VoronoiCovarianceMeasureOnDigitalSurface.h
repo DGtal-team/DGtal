@@ -153,7 +153,7 @@ namespace DGtal
      * used for finding the correct orientation inside/outside for the
      * VCM.
      *
-     * @param aMetric an instance of the metric.
+     * @param aMetric an instance of the metric (used for the Voronoi map construction).
      *
      * @param verbose if 'true' displays information on ongoing computation.
      */

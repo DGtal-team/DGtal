@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <queue>
 #include "DGtal/base/SetFunctions.h"
+#include "DGtal/topology/CubicalComplexFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1058,7 +1059,6 @@ typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 {
-  using namespace ::DGtal::functions;
   CubicalComplex cl_star_S = closure( star   ( S, hintOpen   ), hintClosed );
   CubicalComplex star_cl_S = star   ( closure( S, hintClosed ), hintOpen   );
 
@@ -1089,11 +1089,11 @@ computeCellType( const Cell& c, CellMapIterator& it_cell_up, Dimension n )
       uint32_t& data = (*it)->second.data;
       if ( ! ( data & COLLAPSIBLE ) ) return Any;
       if ( ! ( data & REMOVED ) )
-	{
-	  ++nb;
-	  if ( nb > 1 ) return Any;
-	  it_cell_up = *it;
-	}
+        {
+          ++nb;
+          if ( nb > 1 ) return Any;
+          it_cell_up = *it;
+        }
     }
   return ( nb != 0 ) ? Free : Maximal ;
 }
@@ -1148,7 +1148,7 @@ template <typename TKSpace, typename TCellContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		  const CubicalComplex<TKSpace, TCellContainer> & object )
+                  const CubicalComplex<TKSpace, TCellContainer> & object )
 {
   object.selfDisplay( out );
   return out;

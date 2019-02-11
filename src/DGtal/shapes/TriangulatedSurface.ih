@@ -314,6 +314,27 @@ DGtal::TriangulatedSurface<TPoint>::verticesAroundFace( const Face & f ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange 
+DGtal::TriangulatedSurface<TPoint>::arcsAroundFace( const Face & f ) const
+{
+  ArcRange result;
+  result.reserve( 3 );
+  const Index start_hei = myHEDS.halfEdgeIndexFromFaceIndex( f );
+  Index hei = start_hei;
+  do {
+    result.push_back( hei );
+    const HalfEdge& he = myHEDS.halfEdge( hei );
+    ASSERT( ( he.face == f )
+	    && "[TriangulatedSurface::arcsAroundFace] invalid face." );
+    hei = he.next;
+  } while ( hei != start_hei );
+  ASSERT( result.size() == 3 );
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
 bool
 DGtal::TriangulatedSurface<TPoint>::isVertexBoundary( const Vertex& v ) const
 {

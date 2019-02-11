@@ -93,13 +93,18 @@ build( const Size num_vertices,
                           << " arc20 " << ( it20 != de2fi.end() ? it20->second : HALF_EDGE_INVALID_INDEX )
                           << std::endl;
 	  ok = false;
-          continue;
+	  // JOL: if we continue here, we may create infinite loops
+	  // afterwards. Stopping now.
+	  break;
         }
       de2fi[ Arc( T.v[0], T.v[1] ) ] = fi;
       de2fi[ Arc( T.v[1], T.v[2] ) ] = fi;
       de2fi[ Arc( T.v[2], T.v[0] ) ] = fi;
       fi++;
     }
+  // JOL: if we continue here, we may create infinite loops
+  // afterwards. Stopping now.
+  if ( !ok ) return false;
   // Clearing and resizing data structure to start from scratch and
   // prepare everything.
   clear();
@@ -270,6 +275,9 @@ build( const Size                        num_vertices,
 	    const VertexIndex v1 = P[ (i+1) % P.size() ];
 	    de2fi[ Arc( v0, v1 ) ] = fi;
 	  }
+      // JOL: if we continue here, we may create infinite loops
+      // afterwards. Stopping now.
+      else  return false;
       fi++;
     }
   // Clearing and resizing data structure to start from scratch and

@@ -51,6 +51,17 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   myColorMap = new ColorMap(myMin,myMax);
 }
 
+template <typename Value, typename CMAP>
+inline
+DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
+( const ColorMap& other,
+  const Color & color )
+  : myMin( other.min() ), myMax( other.max() ), myTickColor( color )
+{
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  myColorMap = new ColorMap( other );
+}
+
 
 template <typename Value, typename CMAP>
 inline
