@@ -250,8 +250,11 @@ DGtal::MultiStatistics::terminate()
       myExp[ k ] /= mySamples[ k ];
       myExp2[ k ] /= mySamples[ k ];
       myVar[ k ] = myExp2[ k ] - myExp[ k ] * myExp[ k ];
-      myUnbiasedVar[ k ] = mySamples[ k ] * myVar[ k ] 
-	/ ( mySamples[ k ] - 1 );
+      if ( mySamples[ k ] > 1 )
+        myUnbiasedVar[ k ] = mySamples[ k ] * myVar[ k ] / ( mySamples[ k ] - 1 );
+      else
+        myUnbiasedVar[ k ] = 0;
+
     }
     myIsTerminate = true;
 }

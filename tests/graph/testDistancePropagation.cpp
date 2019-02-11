@@ -37,7 +37,7 @@
 #include "DGtal/graph/CGraphVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -100,8 +100,8 @@ bool testDistancePropagation()
   typedef CanonicEmbedder<Space> VertexEmbedder;
   typedef VertexEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
-  typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
-  using DistanceToPoint = std::function<double(const Space::Point &)>;
+  typedef LpMetric<Space> Distance;
+  using DistanceToPoint = std::function<double(const Space::RealPoint &)>;
   typedef DGtal::functors::Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
@@ -109,7 +109,7 @@ bool testDistancePropagation()
 
 
   VertexEmbedder embedder;
-  Distance distance;
+  Distance distance(2.0);
   DistanceToPoint distanceToPoint = std::bind(distance, embedder(c1), std::placeholders::_1);
 
   VertexFunctor vfunctor( embedder, distanceToPoint );

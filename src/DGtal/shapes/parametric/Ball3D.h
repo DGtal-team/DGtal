@@ -57,7 +57,7 @@ namespace DGtal
    *
    */
   template <typename TSpace>
-  class Ball3D: public StarShaped3D<TSpace>
+  class Ball3D final: public StarShaped3D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -134,7 +134,7 @@ namespace DGtal
     /**
      * @param p any point in the space.
      *
-     * @return the couple of angles parameters Teta && Phi wich are
+     * @return the couple of angles parameters Teta && Phi which are
      * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
      * this point for the shape.
      */

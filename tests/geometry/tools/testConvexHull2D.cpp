@@ -58,7 +58,7 @@ using namespace DGtal;
  * @param last1 end iterator of the first range
  * @param first2 begin iterator of the second range
  * @param last2 end iterator of the second range
- * @typename ForwardIterator a model of forward iterator
+ * @tparam ForwardIterator a model of forward iterator
  *
  * @return 'true' if the two ranges are equal, 'false' otherwise
  */

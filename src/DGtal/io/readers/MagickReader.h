@@ -43,7 +43,27 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
-#include <Magick++.h>
+
+#if defined(WITH_MAGICK)
+// Specific inclusion method to fix warning with GraphicsMagic 1.3.31 and Clang.
+// The warning comes from two "diagnostic pop" with missing corresponding push.
+// "MagickLibAddendum" is defined in ImageMagick since 9 years but not in GraphicsMagic.
+#  if !defined(MagickLibAddendum) && defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic push
+#    include <Magick++.h>
+#    if MagickLibVersion != 0x221900
+#      pragma clang diagnostic pop
+#      pragma clang diagnostic pop
+#    endif
+#  else
+#    include <Magick++.h>
+#  endif
+#else // defined WITH_MAGICK
+#  error "DGtal has not been built with imagemagick support. Consider adding -DWITH_MAGICK=true when building the project with cmake."
+#endif // defined WITH_MAGICK
+
+
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////

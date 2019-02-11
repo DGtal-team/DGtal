@@ -197,7 +197,7 @@ const DGtal::Color DGtal::Color::Black((unsigned char)0,(unsigned char)0,(unsign
 const DGtal::Color DGtal::Color::Gray((unsigned char)128,(unsigned char)128,(unsigned char)128);
 const DGtal::Color DGtal::Color::White((unsigned char)255,(unsigned char)255,(unsigned char)255);
 const DGtal::Color DGtal::Color::Red((unsigned char)255,(unsigned char)0,(unsigned char)0);
-const DGtal::Color DGtal::Color::Green((unsigned char)0,(unsigned char)128,(unsigned char)0);
+const DGtal::Color DGtal::Color::Green((unsigned char)0,(unsigned char)255,(unsigned char)0);
 const DGtal::Color DGtal::Color::Lime((unsigned char)0,(unsigned char)255,(unsigned char)0);
 const DGtal::Color DGtal::Color::Blue((unsigned char)0,(unsigned char)0,(unsigned char)255);
 const DGtal::Color DGtal::Color::Cyan((unsigned char)0,(unsigned char)255,(unsigned char)255);
