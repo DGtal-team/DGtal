@@ -3,8 +3,31 @@
 
 ## New Features / Critical Changes
 
+- *Base package*
+  - Adding FunctorHolder to transform any callable object (e.g. function,
+    functor, lambda function,...) into a valid DGtal functor.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+
+- *Documentation*
+  - Module page about functions, functors and lambdas in DGtal.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+
+- *Image package*
+  - Adding ConstImageFunctorHolder to transform any callable object
+    (e.g. function, functor, lambda function,...) into a CConstImage model.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+
+- *Kernel package*
+  - Adding PointFunctorHolder to transform any callable object (e.g. function,
+    functor, lambda function,...) into a CPointFunctor model.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+
 - *Helpers*
-  - Classes Shortcuts and ShortcutsGeometry to simplify coding with DGtal. Integrate a lot of volume, digital surfaces, mesh, surface, geometry, estimators functions, with many conversion and input/output tools. (Jacques-Olivier Lachaud, [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+  - Classes Shortcuts and ShortcutsGeometry to simplify coding with
+    DGtal. Integrate a lot of volume, digital surfaces, mesh,
+    surface, geometry, estimators functions, with many conversion
+    and input/output tools. (Jacques-Olivier Lachaud,
+    [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
 
 ## Changes
 
@@ -15,6 +38,10 @@
   - Remove the internal object from VoxelComplex, improving performance
     (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
 
+- *Geometry*
+  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
+    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
+ 
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
@@ -23,17 +50,17 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
-
-- Miscellaneous
-  - Fix Small bug in Integral Invariant Volume Estimator in 2D
-    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
-
-  - Change from private to public access of types Input and Output in SCellToPoint
-    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
+  - Fix compilation with Visual Studio (15.9.5) and some io tests
+    (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
+  - Fixing & updating Travis: documentation deployement and DGtalTools job
+    (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
 
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
+  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism (Jacques-Olivier Lachaud,
+    [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
+    [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
 - *Shapes*
   - Add two new star shapes: Astroid and Lemniscate
@@ -49,10 +76,14 @@
     out of range. (Kacper Pluta, [#1359](https://github.com/DGtal-team/DGtal/pull/1359))
 
 - *IO*
+  - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
+    [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix Color::Green definition (David Coeurjolly,
+    [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -64,6 +95,8 @@
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
   - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix computational costs of separable metric predicates in the documentation.
+    (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
   - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
     (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
 
@@ -86,6 +119,29 @@
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
     (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
+- *Topology*
+  - Specializes the method DigitalSurface::facesAroundVertex in the
+    3D case, such that faces (ie pointels) are ordered
+    counterclockwise with respect of the vertex (ie surfel) seen from
+    the exterior. (Jacques-Olivier Lachaud,
+    [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
+
+  - This PR fixes two issues related to CubicalComplexFunctions:
+    issue [#1362](https://github.com/DGtal-team/DGtal/issues/1362) and
+    issue [#1381](https://github.com/DGtal-team/DGtal/issues/1381) for
+    programs testCubicalComplex, testVoxelComplex and
+    testParDirCollapse. (Jacques-Olivier Lachaud,
+    [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
+
+  - Move operators outside of functions namespace in VoxelComplexFunctions.
+    (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
+
+- *Miscellaneous*
+  - Fix Small bug in Integral Invariant Volume Estimator in 2D
+    (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
+  - Change from private to public access of types Input and Output in SCellToPoint
+    (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
 
 
 # DGtal 0.9.4.1

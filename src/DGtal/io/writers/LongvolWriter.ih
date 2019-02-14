@@ -61,7 +61,7 @@ namespace DGtal {
     try
     {
       std::stringstream main;
-      out.open(filename.c_str());
+      out.open(filename.c_str(), std::ios::out | std::ios::binary);
       
       //Longvol format
       out << "Center-X: " << center[0] <<std::endl;

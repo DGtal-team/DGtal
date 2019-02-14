@@ -13,6 +13,7 @@ SET(DGTAL_TESTS_SRC
   testChamferDT
   testChamferVoro
   testDigitalMetricAdapter
+  testLpMetric
   )
 
 
@@ -21,7 +22,7 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
   target_link_libraries (${FILE} DGtal)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
- 
+
 SET(DGTAL_BENCH_SRC
   testMetrics-benchmark
   )
@@ -35,4 +36,3 @@ IF(BUILD_BENCHMARKS)
     ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
   ENDFOREACH(FILE)
 ENDIF(BUILD_BENCHMARKS)
-

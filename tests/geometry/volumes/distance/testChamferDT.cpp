@@ -39,7 +39,6 @@
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace DGtal;
 using namespace Z2i;
 
@@ -958,7 +957,7 @@ int main( int argc, char** argv )
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  trace.info() << std::endl;
 
   bool res = testChamferSimple()  && checkCMetricConcept() && testBasicMasks() && testIntersection()
       && testShrink()
@@ -967,7 +966,7 @@ int main( int argc, char** argv )
       && testHiddenBy()
       && testDoubleOnSegment()
       && testSpecialCase(); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }

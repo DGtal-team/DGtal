@@ -365,55 +365,55 @@ namespace DGtal
     template <typename TObject >
     std::vector< TObject >
     connectedComponents(const TObject & input_obj, bool verbose);
-
+  } // namespace functions
 
 //////////////////////////////////////////////////////////////////////////////
-//Operators between VoxelComplexes//
+  //Operators between VoxelComplexes//
 
-    /**
-     * Voxel Complex difference operation. Updates the voxel complex S1 as S1 - S2.
-     * @tparam TKSpace the digital space in which lives the voxel complex.
-     * @tparam TCellContainer the associative container used to store cells within the voxel complex.
-     *
-     * @param[in,out] S1 an input voxel complex, \a S1 - \a S2 as output.
-     * @param[in] S2 another input voxel complex.
-     *
-     * @return a reference to the modified voxel complex S1.
-     */
-    template <typename TKSpace, typename TCellContainer>
+  /**
+   * Voxel Complex difference operation. Updates the voxel complex S1 as S1 - S2.
+   * @tparam TKSpace the digital space in which lives the voxel complex.
+   * @tparam TCellContainer the associative container used to store cells within
+   * the voxel complex.
+   *
+   * @param[in,out] S1 an input voxel complex, \a S1 - \a S2 as output.
+   * @param[in] S2 another input voxel complex.
+   *
+   * @return a reference to the modified voxel complex S1.
+   */
+  template <typename TKSpace, typename TCellContainer>
     inline VoxelComplex< TKSpace, TCellContainer >&
     operator-=( VoxelComplex< TKSpace, TCellContainer >& S1,
-                const VoxelComplex< TKSpace, TCellContainer >& S2 )
+        const VoxelComplex< TKSpace, TCellContainer >& S2 )
     {
       typedef VoxelComplex< TKSpace, TCellContainer > VC;
       for ( Dimension i = 0; i <= VC::dimension; ++i )
-        setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
+        functions::setops::operator-=( S1.myCells[ i ],S2.myCells[ i ] );
       return S1;
     }
 
-    /**
-     * Voxel Complex difference operation. Returns the difference of \a S1 - \a S2.
-     * @tparam TKSpace the digital space in which lives the voxel complex.
-     * @tparam TCellContainer the associative container used to store cells within the voxel complex.
-     *
-     * @param[in] S1 an input voxel complex
-     * @param[in] S2 another input voxel complex.
-     *
-     * @return the voxel complex \a S1 - \a S2.
-     */
-    template <typename TKSpace, typename TCellContainer>
+  /**
+   * Voxel Complex difference operation. Returns the difference of \a S1 - \a S2.
+   * @tparam TKSpace the digital space in which lives the voxel complex.
+   * @tparam TCellContainer the associative container used to store cells within
+   * the voxel complex.
+   *
+   * @param[in] S1 an input voxel complex
+   * @param[in] S2 another input voxel complex.
+   *
+   * @return the voxel complex \a S1 - \a S2.
+   */
+  template <typename TKSpace, typename TCellContainer>
     inline VoxelComplex< TKSpace, TCellContainer >
     operator-( const VoxelComplex< TKSpace, TCellContainer >& S1,
-               const VoxelComplex< TKSpace, TCellContainer >& S2 )
+        const VoxelComplex< TKSpace, TCellContainer >& S2 )
     {
       typedef VoxelComplex< TKSpace, TCellContainer > VC;
       VC S(S1);
       for ( Dimension i = 0; i <= VC::dimension; ++i )
-        setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
+        functions::setops::operator-=( S.myCells[ i ],S2.myCells[ i ] );
       return S;
     }
-
-  } // namespace functions
 } // namespace DGtal
 
 
