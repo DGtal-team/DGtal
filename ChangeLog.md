@@ -78,6 +78,7 @@
 - *IO*
   - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
     [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
+    [#1394](https://github.com/DGtal-team/DGtal/pull/1394))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
