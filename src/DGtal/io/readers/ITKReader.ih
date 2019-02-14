@@ -108,6 +108,7 @@ namespace DGtal {
       typedef ImageContainerByITKImage<Domain, long> DGtalITKImage;
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
+#if (ITK_VERSION_MAJOR > 4) || (ITK_VERSION_MAJOR == 4 && ITK_VERSION_MINOR >= 13)
     case itk::ImageIOBase::ULONGLONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long long> DGtalITKImage;
@@ -118,6 +119,7 @@ namespace DGtal {
       typedef ImageContainerByITKImage<Domain, long long> DGtalITKImage;
       return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
     }
+#endif
     case itk::ImageIOBase::FLOAT:
     {
       typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
