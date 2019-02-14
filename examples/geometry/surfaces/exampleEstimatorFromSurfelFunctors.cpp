@@ -141,7 +141,7 @@ int main(  )
   ReporterNormalLeast reporterL;
 #endif
 
-  LpMetric<Z3i::Space> l2;
+  LpMetric<Z3i::Space> l2(2.0);
   FunctorNormalElem estimatorNormalElem(embedder,1.0);
   ///sigma = 2.0 for the gaussian smoothing
   DGtal::functors::GaussianKernel gaussian(2.0);

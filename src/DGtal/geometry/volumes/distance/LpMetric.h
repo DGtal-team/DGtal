@@ -23,7 +23,6 @@
  *
  * @date 2019/27/01
  *
- * Header file for module LpMetric.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -56,7 +55,7 @@ namespace DGtal
  * Description of template class 'LpMetric' <p>
  * \brief Aim: implements  l_p metrics.
  *
- * Given a parameter p, the class implement classical l_p
+ * Given a parameter p, the class implements classical l_p
  * metric as a model of CMetricSpace. Hence, given two points
  * @f$ x=(x_0...x_{n-1})@f$, @f$ y=(y_0...y_{n-1})@f$, we define a metric as:
  *
@@ -89,16 +88,9 @@ namespace DGtal
     typedef double RawValue;
     
     /**
-     * Default Constructor (p=2.0)
-     *
-     */
-    LpMetric(): myExponent(2.0) {}
-    
-
-      /**
      * Constructor.
      *
-     * @param anExponent the exponent (p) of the lp metric.
+     * @param anExponent the exponent (@a p) of the lp metric.
      */
     LpMetric( const double anExponent): myExponent(anExponent)
     {}
@@ -157,10 +149,10 @@ namespace DGtal
      */
     RawValue rawDistance(const Point & aP, const Point &aQ) const
     {
-      double tmp=0.0;
-      for(auto i = 0; i < aP.size(); ++i)
-        tmp += std::pow(NumberTraits<typename Point::Coordinate>::castToDouble(std::abs(aP[i] - aQ[i])),
-                        myExponent);
+      RawValue tmp=0.0;
+      for(typename Point::Dimension i = 0; i < aP.size(); ++i)
+        tmp += static_cast<RawValue>(std::pow(NumberTraits<typename Point::Coordinate>::castToDouble(std::abs(aP[i] - aQ[i])),
+                                              myExponent));
       return tmp;
     }
 
@@ -184,7 +176,7 @@ namespace DGtal
       if (dfirst < dsecond)
         return ClosestFIRST;
       else
-        if (dfirst>dsecond)
+        if (dfirst > dsecond)
           return ClosestSECOND;
       
       return ClosestBOTH;
@@ -224,7 +216,11 @@ namespace DGtal
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const LpMetric<T> & object );
+  operator<< ( std::ostream & out, const LpMetric<T> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
 
 } // namespace DGtal
 
