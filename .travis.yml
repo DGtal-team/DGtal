@@ -54,30 +54,26 @@ addons:
 ############
 # Main rules
 ############
-script:
-  - source .travis/before_global.sh
-  - source .travis/build_all.sh
-  - cd "$TRAVIS_BUILD_DIR/build/" ; echo "Checking, dir=$PWD"
-  - source ../.travis/check_tests.sh
+script: |
+  source .travis/before_global.sh &&
+  .travis/build_all.sh &&
+  .travis/check_tests.sh
 
 jobs:
  include:
    - stage: "DGtalTools"
      name: "Testing DGtalTools + DGtal with examples"
-     script:
-       - source .travis/before_global.sh
-       - source .travis/build_dgtal.sh
-       - cd "$TRAVIS_BUILD_DIR" ; echo "Checking, dir=$PWD"
-       # source .travis/getAndCheckDGtalTools.sh
+     script: |
+       source .travis/before_global.sh &&
+       .travis/build_dgtal.sh &&
+       .travis/getAndCheckDGtalTools.sh
    - stage: "Documentation"
      name: "Building and deploying the documentation"
-     script:  #need doxygen first
-       - source .travis/before_global.sh
-       - source .travis/install_doxygen.sh
-       - cd "$TRAVIS_BUILD_DIR/build"
-       - source ../.travis/build_dgtal_doc.sh
-       - cd "$TRAVIS_BUILD_DIR/build"
-       - source ../.travis/checkDoxygenDocumentation.sh
+     script: |
+       source .travis/before_global.sh &&
+       .travis/install_doxygen.sh &&
+       .travis/build_dgtal_doc.sh &&
+       .travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
        skip-cleanup: true
