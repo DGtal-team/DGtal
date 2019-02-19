@@ -54,6 +54,8 @@
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
+  - Fix compilation with Visual Studio and adding debug version for the generated file
+    (Raphael Lenain)
 
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,

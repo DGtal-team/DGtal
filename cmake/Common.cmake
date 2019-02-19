@@ -29,6 +29,11 @@ foreach(p LIB BIN INCLUDE DATA)
 endforeach()
 
 # -----------------------------------------------------------------------------
+# To distinguish between debug and release lib
+# -----------------------------------------------------------------------------
+set(CMAKE_DEBUG_POSTFIX "d")
+
+# -----------------------------------------------------------------------------
 # Doxygen targets
 # -----------------------------------------------------------------------------
 message(STATUS "-------------------------------------------------------------------------------")
@@ -36,7 +41,7 @@ message(STATUS "Checking if doxygen/dot is installed:")
 message(STATUS " ")
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/share/DGtal CACHE PATH "Installation directory for DGtal documentation files.")
 INCLUDE(doxygen)
-INCLUDE(TargetDoxygenDoc OPTIONAL)
+#INCLUDE(TargetDoxygenDoc OPTIONAL)
 INCLUDE(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
@@ -52,7 +57,11 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 # Parsing cmake options
 # -----------------------------------------------------------------------------
-OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+IF (MSVC)
+  OPTION(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+ELSE (MSVC)
+  OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+ENDIF (MSVC)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
