@@ -50,7 +50,7 @@ namespace DGtal {
 // Forward definitions.
 template <typename TKSpace, typename TCellContainer>
 class VoxelComplex;
-namespace functions {
+
 template <typename TKSpace, typename TCellContainer>
 VoxelComplex<TKSpace, TCellContainer> &
 operator-=(VoxelComplex<TKSpace, TCellContainer> &,
@@ -60,7 +60,6 @@ VoxelComplex<TKSpace, TCellContainer>
 operator-(const VoxelComplex<TKSpace, TCellContainer> &,
           const VoxelComplex<TKSpace, TCellContainer> &);
 
-} // namespace functions
   /////////////////////////////////////////////////////////////////////////////
   // template class VoxelComplex
   /**
@@ -94,8 +93,8 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     /** Type of this instance of VoxelComplex. */
     using Self = VoxelComplex<TKSpace, TCellContainer>;
 
-    friend Self &DGtal::functions::operator-=<>(Self &, const Self &);
-    friend Self DGtal::functions::operator-<>(const Self &, const Self &);
+    friend Self &DGtal::operator-=<>(Self &, const Self &);
+    friend Self DGtal::operator-<>(const Self &, const Self &);
     // ----------------------- associated types ------------------------------
     /** Type of the parent class CubicalComplex. */
     using Parent = CubicalComplex<TKSpace, TCellContainer>;

@@ -138,7 +138,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>,
                                                  Functor, DGtal::functors::GaussianKernel> ReporterGaussian;
 
-  LpMetric<Z3i::Space> l2;
+  LpMetric<Z3i::Space> l2(2.0);
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   Functor estimator(embedder, 1);
 
