@@ -65,8 +65,8 @@ IF (DOXYGEN_FOUND)
       SET (TMP "${CMAKE_CURRENT_BINARY_DIR}\\Doc\\html\\index.hhp")
       STRING(REGEX REPLACE "[/]" "\\\\" HHP_FILE ${TMP} )
       # MESSAGE(SEND_ERROR "DBG  HHP_FILE=${HHP_FILE}")
-      ADD_CUSTOM_TARGET(winhelp ${HTML_HELP_COMPILER} ${HHP_FILE})
-      ADD_DEPENDENCIES (winhelp dox)
+      ADD_CUSTOM_TARGET(winhelp-dox ${HTML_HELP_COMPILER} ${HHP_FILE})
+      ADD_DEPENDENCIES (winhelp-dox dox)
      
       IF (NOT TARGET_DOC_SKIP_INSTALL)
       # install windows help?

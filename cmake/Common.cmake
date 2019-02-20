@@ -41,12 +41,8 @@ message(STATUS "Checking if doxygen/dot is installed:")
 message(STATUS " ")
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/share/DGtal CACHE PATH "Installation directory for DGtal documentation files.")
 INCLUDE(doxygen)
-if (MSVC)
-  INCLUDE(TargetDoxygenDox OPTIONAL)
-else (MSVC)
-  INCLUDE(TargetDoxygenDoc OPTIONAL)
-endif (MSVC)
-
+INCLUDE(TargetDoxygenDoc OPTIONAL)
+INCLUDE(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
