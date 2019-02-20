@@ -41,7 +41,7 @@
 - *Geometry*
   - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
- 
+
 ## Bug Fixes
 - *Configuration/General*
   - Continuous integration AppVeyor fix
@@ -50,6 +50,8 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
+  - Fix compilation warnings with gcc 8.2.1
+    (Boris Mansencal, [#1384](https://github.com/DGtal-team/DGtal/pull/1384))
   - Fix compilation with Visual Studio (15.9.5) and some io tests
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
