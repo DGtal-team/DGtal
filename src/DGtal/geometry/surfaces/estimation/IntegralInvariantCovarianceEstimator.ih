@@ -197,7 +197,7 @@ init
   ASSERT( ( myConvolver != 0 )
           && "[DGtal::IntegralInvariantCovarianceEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
 
-  typedef typename RealPoint::Component Scalar;
+  typedef typename RealPoint::Component ScalarC;
   // Clear stuff
   for( unsigned int i = 0; i < myKernelsSet.size(); ++i )
     if ( myKernelsSet[ i ] != 0 ) delete myKernelsSet[ i ];
@@ -228,8 +228,8 @@ init
       /// Computation of shifting masks
       if( offset == middle ) continue; // no shift
       for ( Dimension k = 0; k < Space::dimension; ++k )
-        shiftPoint[ k ] = (Scalar) (*it_neigh)[ k ];
-      shiftPoint *= (Scalar) myH;
+        shiftPoint[ k ] = (ScalarC) (*it_neigh)[ k ];
+      shiftPoint *= (ScalarC) myH;
       KernelSupport* kernelShifted = new KernelSupport( shiftPoint, eRadius );
       EuclideanMinus* current = new EuclideanMinus( *myKernel );
       current->minus( *kernelShifted );
