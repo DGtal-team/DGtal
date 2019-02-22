@@ -75,9 +75,9 @@ DGtal::ContourHelper::pixels2pixels8C(const TIterator &itb, const TIterator &ite
 {
   TIterator it = itb;
   *out++ = *it;
-  long size = static_cast<long>(std::distance(itb, ite));
-  long i=0;
-  while(i+2<(int)size)
+  auto size = std::distance(itb, ite);
+  decltype(size) i = 0;
+  while(i+2<size)
     {
 
       short code = FreemanChain<int>::freemanCode4C((*(it+1))[0]-(*it)[0],(*(it+1))[1]-(*it)[1]);
