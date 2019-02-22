@@ -173,6 +173,8 @@ namespace DGtal
     }
   }; // end of class NumberTraits
 
+  template <typename T> const T NumberTraits<T>::ZERO;
+  template <typename T> const T NumberTraits<T>::ONE;
   
   /**
    * Specialization for DGtal::uint16_t.
