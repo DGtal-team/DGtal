@@ -73,7 +73,7 @@ struct ValueToTag<false>
 #define REQUIRE_SAME_VALUE(a, b)  REQUIRE( (std::is_same<a, typename ValueToTag<b>::type>::value) )
 #define REQUIRE_SAME_TYPE(a, b)   REQUIRE( (std::is_same<a, b>::value) )
 
-/// Check that we can make a reference to the static attributes ZERO and ONE
+/// Check that we can make a reference to the static attributes ZERO and ONE (ODR-use).
 template <typename T>
 void checkParamRef(T const&)
 {
