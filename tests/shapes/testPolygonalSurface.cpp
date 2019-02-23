@@ -111,8 +111,8 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
         BreadthFirstVisitor< PolygonMesh > visitor( polymesh, 0 );
-        std::vector<int> vertices;
-        std::vector<int> distances;
+        std::vector<unsigned long> vertices;
+        std::vector<unsigned long> distances;
         while ( ! visitor.finished() )
           {
             vertices.push_back( visitor.current().first );
