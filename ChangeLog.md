@@ -43,6 +43,7 @@
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
 
 ## Bug Fixes
+
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
@@ -56,7 +57,10 @@
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
-
+  - Various warnings fixed on Xcode (David Coeurjolly,
+    [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
+  
+	
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))

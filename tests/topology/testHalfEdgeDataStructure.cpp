@@ -94,7 +94,7 @@ HalfEdgeDataStructure makeRibbonWithHole()
   triangles[4].v = { 4, 5, 0 };
   triangles[5].v = { 0, 5, 1 };
   std::vector< Edge > edges;
-  const int kNumVertices
+  const auto kNumVertices
     = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
   HalfEdgeDataStructure mesh;
   mesh.build( kNumVertices, triangles, edges );
@@ -112,7 +112,7 @@ HalfEdgeDataStructure makeTriangulatedDisk()
   triangles[5].v = { 0, 5, 1 };
   triangles[6].v = { 4, 0, 2 };
   std::vector< Edge > edges;
-  const int kNumVertices
+  const auto kNumVertices
     = HalfEdgeDataStructure::getUnorderedEdgesFromTriangles( triangles, edges );
   HalfEdgeDataStructure mesh;
   mesh.build( kNumVertices, triangles, edges );

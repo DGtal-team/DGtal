@@ -60,9 +60,9 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     const Embedder embedder( K );
     
     const Embedder::RealPoint coords = embedder( sk );
-    const float x = coords[0];
-    const float y = coords[1];
-    const float retract = 0.1f;
+    const double x = coords[0];
+    const double y = coords[1];
+    const double retract = 0.1f;
     const bool xodd = ( KPS::sKCoord(sk, 0) & 1 );
     const bool yodd = ( KPS::sKCoord(sk, 1) & 1 );
     board.setLineWidth( .5 );

@@ -57,24 +57,26 @@ int main()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)-1) == 8 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)-1) == 16 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)-1) == 32 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)-1) == 64 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)-2) == 7 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)-2) == 15 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)-2) == 31 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)-2) == 63 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint8_t)-1) == 8 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint16_t)-1) == 16 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint32_t)-1) == 32 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint64_t)-1) == 64 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint8_t)1) == 1 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint16_t)1) == 1 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint32_t)1) == 1 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint64_t)1) == 1 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint8_t)-2) == 7 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint16_t)-2) == 15 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint32_t)-2) == 31 ? 1 : 0;
+  ++nb; nbok += Bits::nbSetBits( (DGtal::uint64_t)-2) == 63 ? 1 : 0;
 
   for ( unsigned int i = 0; i < 100; ++i )
     {
       DGtal::uint16_t n = (DGtal::uint16_t) ( rand() % 65536 ); 
       for ( unsigned int b = 0; b < 16; ++b )
-	++nb, nbok += Bits::indexInSetBits( n, b ) == index( n, b ) ? 1 : 0;
+      {
+        ++nb; nbok += Bits::indexInSetBits( n, b ) == index( n, b ) ? 1 : 0;
+      }
     }
 
   std::cerr << "(" << nbok << "/" << nb << ")" << " tests." << std::endl;
@@ -86,7 +88,7 @@ int main()
     {
       DGtal::uint32_t n = (DGtal::uint32_t) rand();
       for ( unsigned int b = 0; b < 32; ++b )
-	val += index( n, b );
+        val += index( n, b );
     }
   trace.info() << "- checksum = " << val << std::endl;
   trace.endBlock();
@@ -98,11 +100,11 @@ int main()
     {
       DGtal::uint32_t n = (DGtal::uint32_t) rand();
       for ( unsigned int b = 0; b < 32; ++b )
-	val2 += Bits::indexInSetBits( n, b );
+        val2 += Bits::indexInSetBits( n, b );
     }
   trace.info() << "- checksum = " << val2 << std::endl;
   trace.endBlock();
-  ++nb, nbok += val == val2 ? 1 : 0;
+  ++nb; nbok += val == val2 ? 1 : 0;
   return ( nb == nbok ) ? 0 : 1;
 }
 /** @ingroup Tests **/

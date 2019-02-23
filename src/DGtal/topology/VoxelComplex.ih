@@ -332,7 +332,7 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
     auto orientation_vector = B - A;
     ASSERT(orientation_vector.norm1() == 1);
     int direction{-1};
-    for (size_t i = 0; i != ks.DIM; ++i)
+    for (auto i = 0; i != ks.DIM; ++i)
         if (orientation_vector[i] == 1 || orientation_vector[i] == -1) {
             direction = i;
             break;

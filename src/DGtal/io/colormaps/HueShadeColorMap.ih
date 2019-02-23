@@ -159,9 +159,9 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
   const double hue = 360 * ( scale * cycles - floor(scale * cycles));
   double red, green, blue;
   HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
-  return Color( static_cast<int>( red * 255), 
-    static_cast<int>( green * 255),
-    static_cast<int>( blue * 255) );
+  return Color( static_cast<unsigned char>( red * 255),
+                static_cast<unsigned char>( green * 255),
+                static_cast<unsigned char>( blue * 255) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
