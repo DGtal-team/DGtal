@@ -55,6 +55,8 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
+  - Fix compilation warnings with gcc 8.2.1
+    (Boris Mansencal, [#1384](https://github.com/DGtal-team/DGtal/pull/1384))
   - Fix compilation with Visual Studio (15.9.5) and some io tests
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
@@ -83,12 +85,15 @@
 - *IO*
   - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
     [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
+    [#1394](https://github.com/DGtal-team/DGtal/pull/1394))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
   - Fix Color::Green definition (David Coeurjolly,
     [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
+  - Fix Visual Studio ContourHelper tests.
+    (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
