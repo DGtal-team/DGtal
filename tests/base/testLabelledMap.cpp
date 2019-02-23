@@ -150,7 +150,7 @@ int main()
   std::cout << "(" << nbok << "/" << nb << ") 1000 deletions l=" << l << std::endl; 
   trace.endBlock();
   trace.beginBlock ( "Testing LabelledMap" );
-  ++nb, nbok += checkInsert( v, l, 10 ) ? 1 : 0;
+  ++nb; nbok += checkInsert( v, l, 10 ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") 10 deletions l=" << l << std::endl; 
   std::pair< MyLabelledMap::Iterator,
              MyLabelledMap::Iterator > pair1 = l.equal_range( 7 );
