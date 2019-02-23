@@ -189,7 +189,6 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 
   /// types
   typedef typename KSpace::Cell Bel; 
-  typedef typename TImplicitFunction::Value Value; 
   typedef std::pair<const Bel, Value> BelValue; 
   typedef std::map<Bel, Value> Buffer;
   
