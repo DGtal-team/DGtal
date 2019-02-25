@@ -438,7 +438,8 @@ DGtal::Mesh<TPoint>::clearFaces(){
 template<typename TPoint>
 inline
 void 
-DGtal::Mesh<TPoint>::changeScale(const double aScale){
+DGtal::Mesh<TPoint>::changeScale(const typename TPoint::Coordinate aScale)
+{
   for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
     {
       (*it) *= aScale;
