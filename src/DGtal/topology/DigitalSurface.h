@@ -82,6 +82,24 @@ namespace DGtal
   manifold (i.e. a kind of surface), except when it has the
   property of being well-composed.
 
+  @note On \b interior / \b exterior side of a surface. A digital
+  surface is composed of oriented n-1-cells, and it is thus
+  oriented. By convention, the interior side of a digital surface
+  (globally) or of a surfel (locally) is in its direct incidence,
+  while the exterior side is in its indirect incidence. You can obtain
+  the normal vector to a surfel pointing outside as follows:
+ 
+  \code
+  // S is the current digital surface
+  // v is a vertex / surfel
+  auto& K = S.container().space(); 
+  auto  j = K.sOrthDir( v );
+  bool  d = K.sDirect( v, j );
+  // N is the normal vector pointing outside.
+  auto  N = K.sCoords( K.sIncident( v, j, ! d ) )   // outside voxel
+            - K.sCoords( K.sIncident( v, j, d ) );  // inside voxel
+  \endcode
+  
   For geometric analysis or visualization, it is often interesting
   to look at the "dual" of the digital surface. n-1-cells form now
   vertices, n-2-cells are edges, n-3-cells are faces, and so on.  A
@@ -115,7 +133,7 @@ namespace DGtal
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
 
-  ee \ref moduleDigitalSurfaces
+  \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -144,7 +162,8 @@ namespace DGtal
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::SurfelConstIterator ConstIterator;
     typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
-    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Point     Point;
+    typedef typename KSpace::Vector    Vector;
     typedef typename KSpace::SurfelSet SurfelSet;
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
@@ -467,11 +486,23 @@ namespace DGtal
 
     /**
        @param v any vertex (surfel) of the surface.
-       @return the faces containing this vertex [v]: 0 in 2D, 4 in 3D,
-       12 in 4D, 2(n-1)(n-2) in nD.
-    */
-    FaceRange facesAroundVertex( const Vertex & v ) const;
 
+       @param order_ccw_in_3d when 'true', orders faces
+       counterclockwise around vertex (solely in 3d). It corresponds
+       to ordering the pointels counterclockwise around the given
+       surfel \a v, seen from the exterior side of the surfel.
+
+       @return the faces containing this vertex [v]: 0 in 2D, 4 in 3D,
+       12 in 4D, 2(n-1)(n-2) in nD, in no specific order.
+
+       @note By convention, the interior side of a digital surface
+       (globally) or of a surfel (locally) is in its direct incidence,
+       while the exterior side is in its indirect incidence (see text
+       in \ref DigitalSurface description).
+    */
+    FaceRange facesAroundVertex( const Vertex & v,
+				 bool order_ccw_in_3d = false ) const;
+    
     /**
       @param a any arc (s,t)
       @return the vertex t

@@ -323,13 +323,13 @@ bool testObject3D()
   trace.beginBlock ( "Components of diamond.border()  ..." );
   vector<ObjectType> objects2;
   back_insert_iterator< vector< ObjectType > > inserter2( objects2 );
-  unsigned int nbc0 = objects[ 0 ].border().writeComponents( inserter2 );
+  auto nbc0 = objects[ 0 ].border().writeComponents( inserter2 );
   INBLOCK_TEST( nbc0 == 1 );
   INBLOCK_TEST( objects[ 0 ].computeConnectedness() == CONNECTED );
   trace.endBlock();
 
   trace.beginBlock ( "Components of diamond_clone.border()  ..." );
-  unsigned int nbc1 = objects[ 1 ].border().writeComponents( inserter2 );
+  auto nbc1 = objects[ 1 ].border().writeComponents( inserter2 );
   INBLOCK_TEST( nbc1 == 3 );
   trace.endBlock();
   for (  vector<ObjectType>::const_iterator it = objects2.begin();
