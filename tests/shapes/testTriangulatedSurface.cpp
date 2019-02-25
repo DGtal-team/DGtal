@@ -52,7 +52,7 @@ typedef PointVector<3,double>             RealPoint;
 typedef TriangulatedSurface< RealPoint >  TriMesh;
 typedef TriMesh::VertexRange              VertexRange;
 typedef TriMesh::ArcRange                 ArcRange;
-typedef TriMesh::Arc                      Arc;
+typedef TriMesh::Arc                      ArcT; //Arc already defined in wingdi.h
 typedef TriMesh::Face                     Face;
 typedef TriMesh::Vertex                   Vertex;
 typedef TriMesh::PositionsMap             PositionsMap;
@@ -91,8 +91,8 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
     THEN( "Breadth-first visiting the mesh from vertex 3, visit 3, then {1,2}, then 0." )
       {
         BreadthFirstVisitor< TriMesh > visitor( trimesh, 3 );
-        std::vector<int> vertices;
-        std::vector<int> distances;
+        std::vector<unsigned long> vertices;
+        std::vector<unsigned long> distances;
         while ( ! visitor.finished() )
           {
             vertices.push_back( visitor.current().first );
@@ -125,7 +125,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( ba.size() == 4 );
     }
     THEN( "The face along (1,2) is a triangle (0,1,2)" ) {
-      Arc  a12      = trimesh.arc( 1, 2 );
+      ArcT  a12      = trimesh.arc( 1, 2 );
       Face f        = trimesh.faceAroundArc( a12 );
       ArcRange    A = trimesh.arcsAroundFace( f );
       VertexRange T = trimesh.verticesAroundFace( f );
@@ -140,7 +140,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( T[ 2 ] == 2 );
     }
     THEN( "The face along (2,1) is a triangle (2,1,3)" ) {
-      Arc  a21      = trimesh.arc( 2, 1 );
+      ArcT  a21      = trimesh.arc( 2, 1 );
       Face f        = trimesh.faceAroundArc( a21 );
       VertexRange T = trimesh.verticesAroundFace( f );
       REQUIRE( T.size() == 3 );

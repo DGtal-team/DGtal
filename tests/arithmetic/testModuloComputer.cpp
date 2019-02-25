@@ -74,7 +74,7 @@ bool testModuloComputer()
   nb++;  
   trace.info() << "a= "<<a<<std::endl;
 
-  nbok += true ? 1 : 0; 
+  nbok += 1;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();

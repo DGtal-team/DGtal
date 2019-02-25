@@ -94,7 +94,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       } 
       bool ok = plane.extend( p ); // should be ok
-      ++nb, nbok += ok ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
@@ -120,7 +120,7 @@ checkPlanes( unsigned int nbplanes, unsigned int diameter, unsigned int nbpoints
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbpoints ) ? 1 : 0;
+          ++nb; nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbpoints ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] for plane " << a << " * x + " 

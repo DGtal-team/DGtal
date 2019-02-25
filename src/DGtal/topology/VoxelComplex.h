@@ -48,19 +48,18 @@
 namespace DGtal {
 
 // Forward definitions.
-template <typename TKSpace, typename TObject, typename TCellContainer>
+template <typename TKSpace, typename TCellContainer>
 class VoxelComplex;
-namespace functions {
-template <typename TKSpace, typename TObject, typename TCellContainer>
-VoxelComplex<TKSpace, TObject, TCellContainer> &
-operator-=(VoxelComplex<TKSpace, TObject, TCellContainer> &,
-           const VoxelComplex<TKSpace, TObject, TCellContainer> &);
-template <typename TKSpace, typename TObject, typename TCellContainer>
-VoxelComplex<TKSpace, TObject, TCellContainer>
-operator-(const VoxelComplex<TKSpace, TObject, TCellContainer> &,
-          const VoxelComplex<TKSpace, TObject, TCellContainer> &);
 
-} // namespace functions
+template <typename TKSpace, typename TCellContainer>
+VoxelComplex<TKSpace, TCellContainer> &
+operator-=(VoxelComplex<TKSpace, TCellContainer> &,
+           const VoxelComplex<TKSpace, TCellContainer> &);
+template <typename TKSpace, typename TCellContainer>
+VoxelComplex<TKSpace, TCellContainer>
+operator-(const VoxelComplex<TKSpace, TCellContainer> &,
+          const VoxelComplex<TKSpace, TCellContainer> &);
+
   /////////////////////////////////////////////////////////////////////////////
   // template class VoxelComplex
   /**
@@ -87,19 +86,15 @@ operator-(const VoxelComplex<TKSpace, TObject, TCellContainer> &,
    *
    */
 
-template <typename TKSpace, typename TObject,
+template <typename TKSpace,
           typename TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
 class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
   public:
-    // The TObject::DigitalSet::Container must be associative.
-    BOOST_CONCEPT_ASSERT((concepts::CSTLAssociativeContainer<
-                          typename TObject::DigitalSet::Container>));
-
     /** Type of this instance of VoxelComplex. */
-    using Self = VoxelComplex<TKSpace, TObject, TCellContainer>;
+    using Self = VoxelComplex<TKSpace, TCellContainer>;
 
-    friend Self &DGtal::functions::operator-=<>(Self &, const Self &);
-    friend Self DGtal::functions::operator-<>(const Self &, const Self &);
+    friend Self &DGtal::operator-=<>(Self &, const Self &);
+    friend Self DGtal::operator-<>(const Self &, const Self &);
     // ----------------------- associated types ------------------------------
     /** Type of the parent class CubicalComplex. */
     using Parent = CubicalComplex<TKSpace, TCellContainer>;
@@ -109,10 +104,6 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     using CellContainer = TCellContainer;
     /** Type of data associated to each cell. */
     using Data = typename CellContainer::mapped_type;
-    /** Type for input Object storing the digital set of spels with a topology*/
-    using Object = TObject;
-    /** Type of the associated DigitalTopology of Object. */
-    using DigitalTopology = typename TObject::DigitalTopology;
 
     /// The dimension of the embedding space.
     static const Dimension dimension = KSpace::dimension;
@@ -172,12 +163,13 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     Self &operator=(const Self &other);
 
     /**
-     * Construct the VoxelComplex with target \a obj
+     * Construct the VoxelComplex with target \a input_set
      *
-     * @param obj input object to copy to the complex.
+     * @param input_set input set to construct the complex.
      *
      */
-    void construct(const TObject &obj);
+    template < typename TDigitalSet >
+    void construct(const TDigitalSet &input_set);
 
     /**
      * Construct from digital set and precomputed look up table for simplicity.
@@ -193,7 +185,8 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      *
      * @see LookUpTableFunctions.h
      */
-    void construct(const typename Object::DigitalSet &input_set,
+    template < typename TDigitalSet >
+    void construct(const TDigitalSet &input_set,
                    const Alias<ConfigMap> input_table);
 
     /**
@@ -204,6 +197,14 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * @see LookUpTableFunctions.h
      */
     void setSimplicityTable(const Alias<ConfigMap> input_table);
+
+    /**
+     * Copy table variables from other Complex.
+     *
+     * @param other complex to copy table from
+     *
+     */
+    void copySimplicityTable(const Self & other);
 
     /**
      * Get const reference to table[conf]->bool for simplicity.
@@ -269,20 +270,21 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
                           const Data &data = Data());
 
     /**
+     * Dump the voxels (kcell with dimension 3) into a input container.
+     *
+     * @tparam TDigitalSet the type of the container
+     * @param in_out_set input and output digital set, voxels gets inserted in the set.
+     * Note that the input digital set is not cleared in this function before inserting.
+     */
+    template<typename TDigitalSet>
+    void dumpVoxels(TDigitalSet & in_out_set);
+
+    /**
      * Clears the voxel complex, which becomes empty.
      * This includes the khalmisky cells and also the object points.
      */
     void clear();
 
-    /**
-     * Get reference to a point in the DigitalSet of myObject
-     * corresponding to input voxel
-     *
-     * @param voxel input voxel
-     *
-     * @return A point in myObject
-     */
-    const typename Object::Point &objPointFromVoxel(const Cell &voxel) const;
     //------ Spels ------//
     /**
      * Get pointels that are Faces of input_cell.
@@ -309,6 +311,27 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     void spelsFromCell(std::set<Cell> &spels_out, const Cell &input_cell) const;
 
     /**
+     * Return the neighbor spels of input_cell
+     *
+     * @param input_cell center of the neighborhood
+     *
+     * @return neighborhood of input_cell
+     */
+    std::set<Cell> neighborhoodVoxels(const Cell &input_cell) const;
+
+    /**
+     * Return a set of of voxels forming the properNeighborhood of the inputCell.
+     *
+     * @param input_cell center of the neighborhood
+     *
+     * @sa neighborhoodVoxels
+     * @sa Kneighborhood
+     *
+     * @return properNeighborhood
+     */
+    std::set<Cell> properNeighborhoodVoxels(const Cell &input_cell) const;
+
+    /**
      * Get a clique holding the K-neighborhood of the input cell.
      * The K-neighborhood is calculated first, getting the pointels
      * from input_cell (@see pointelsFromCell) and then, getting all
@@ -321,13 +344,18 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     Clique Kneighborhood(const Cell &input_cell) const;
 
     /**
-     * Populate this complex object from the spels belonging to
-     * the Khalimsky space.
+     * Use thinning to check if cell is simple.
+     * First create a CubicalComplex from the neighbor voxels on input_cell.
+     * This does not include input_cell itself, close the new clique and apply
+     * a collapse operation.
+     * A input_spel is simple in the complex, if after the collapse on the proper
+     * neighborhood clique, there is only one pointel.
      *
-     * @return const reference to object().
+     * @param input_spel input spel for checking its simplicity.
+     *
+     * @return true if input_spell can be removed without altering the topology.
      */
-    const Object &populateObjectFromCells();
-
+    bool isSimpleByThinning(const Cell &input_spel) const;
     /**
      * Check if the input_spel from khalimsky space is simple using
      * object properties.
@@ -342,34 +370,6 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * @see Object::isSimple
      */
     bool isSimple(const Cell &input_spel) const;
-
-    /**
-     * @return true if object is connected, false if disconnected.
-     *
-     * @note connectedness::unkwown is not possible.
-     *
-     * @see Object::computeConnectedness.
-     */
-    bool isConnected() const;
-
-    /**
-     * @return Object representing the spels.
-     */
-    Object &object();
-    /**
-     * @return Object representing the spels, read only.
-     */
-    const Object &object() const;
-
-    /**
-     * @return digitalSet of Object representing the spels.
-     */
-    typename Object::DigitalSet &objectSet();
-
-    /**
-     * @return digitalSet of Object representing the spels, read only.
-     */
-    const typename Object::DigitalSet &objectSet() const;
 
     //------ Cliques ------//
     // Cliques, union of adjacent spels.
@@ -390,7 +390,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /**
      * Return all critical cliques for \b cubical.
-     * It calls criticalCliquesForD()
+     * It calls @ref criticalCliquesForD
      *
      * @param cubical target complex to get critical cliques.
      * @param verbose print messages
@@ -415,7 +415,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
         return criticals;
     }
     /**
-     * Helper. Call @ref criticalCliques() of this VoxelComplex.
+     * Helper. Call @ref criticalCliques of this VoxelComplex.
      *
      * @param verbose print messages
      *
@@ -428,7 +428,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /**
      * Main method to iterate over cells of selected dimension in a complex,
-     * returning critical cliques. Uses @ref criticalCliquePair().
+     * returning critical cliques. Uses @ref criticalCliquePair.
      *
      * @param d dimension of cell.
      * @param cubical target complex to get critical cliques.
@@ -466,8 +466,8 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      *
      * @return <is_critical, 2-clique>
      */
-    std::pair<bool, Clique> K_2(const typename Object::Point &A,
-                                const typename Object::Point &B,
+    std::pair<bool, Clique> K_2(const typename KSpace::Point &A,
+                                const typename KSpace::Point &B,
                                 bool verbose = false) const;
 
     /**
@@ -535,8 +535,6 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
 
     /*------------- Data --------------*/
   protected:
-    /** Object with a topology representing spels. */
-    Object myObject;
     /** Look Up Table to speed computations of @ref isSimple. */
     CountedPtrOrPtr<ConfigMap> myTablePtr;
     /** ConfigurationMask (LUT table). */
@@ -548,19 +546,11 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * pointToMask map, used internally in @ref VoxelComplex::isSimple for
      * @ref functions::getSpelNeighborhoodConfigurationOccupancy
      *
-     * @return reference to @ref PointToMaskMap member.
+     * @return reference to pointToMaskMap member.
      *
-     * @see pointToBitMaskMap()
+     * @see pointToMaskMap()
      */
     const PointToMaskMap &pointToMask() const;
-
-    /**
-     * Populate myObject member with an empty set with valid domain and
-     * topology. Used in @ref VoxelComplex::construct with digital sets.
-     *
-     * @param dig_set input digital set.
-     */
-    void instantiateEmptyObject(const typename Object::DigitalSet &dig_set);
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -591,10 +581,10 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
  * @param object the object of class 'VoxelComplex' to write.
  * @return the output stream after the writing.
  */
-template <typename TKSpace, typename TObject, typename TCellContainer>
+template <typename TKSpace, typename TCellContainer>
 std::ostream &
 operator<<(std::ostream &out,
-           const VoxelComplex<TKSpace, TObject, TCellContainer> &object);
+           const VoxelComplex<TKSpace, TCellContainer> &object);
 
 } // namespace DGtal
 

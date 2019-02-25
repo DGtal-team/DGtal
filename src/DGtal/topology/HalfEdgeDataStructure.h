@@ -338,7 +338,7 @@ namespace DGtal
     bool build( const std::vector<Triangle>& triangles )
     {
       std::vector<Edge> edges;
-      const int nbVtx = getUnorderedEdgesFromTriangles( triangles, edges );
+      const Size nbVtx = getUnorderedEdgesFromTriangles( triangles, edges );
       return build( nbVtx, triangles, edges );
     }
 
@@ -353,7 +353,7 @@ namespace DGtal
     bool build( const std::vector<PolygonalFace>& polygonal_faces )
     {
       std::vector<Edge> edges;
-      const int nbVtx = getUnorderedEdgesFromPolygonalFaces( polygonal_faces, edges );
+      const Size nbVtx = getUnorderedEdgesFromPolygonalFaces( polygonal_faces, edges );
       return build( nbVtx, polygonal_faces, edges );
     }
 
