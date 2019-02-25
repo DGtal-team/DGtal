@@ -53,7 +53,11 @@ namespace DGtal
 // class DecoratorParametricCurveTransformation
 /**
  * Description of class 'DecoratorParametricCurveTransformation' <p>
- * \brief Aim:
+ * \brief Aim: Implements a decorator for applying transformations to
+ * parametric curves.
+ * @tparam TCurve a model of C3DParametricCurve
+ * @tparam TTransfromation a functor taking an instance of TCurve::Space::RealPoint and returning an
+ * instance of TCurve::Space::RealPoint
  */
 template <typename TCurve, typename TTransfromation >
 class DecoratorParametricCurveTransformation
