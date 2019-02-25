@@ -52,7 +52,8 @@ namespace DGtal
 // class EllipticHelix
 /**
  * Description of class 'EllipticHelix' <p>
- * \brief Aim:
+ * \brief Aim: Implement a parametric curve – elliptic helix
+ * @tparam TSpace model of CSpace
  */
 template <typename TSpace>
 class EllipticHelix
