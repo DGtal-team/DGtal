@@ -131,13 +131,11 @@ int main(int argc, char ** argv)
         {
           //Construct the sphere with radius from distancemap(*it)
           Z3i::RealPoint center = *it;
-          Z3i::Point centerZ(center, functors::Round<>());
           unsigned int radius = (unsigned int)distancemap(*it);
           ImplicitBall<Z3i::Space> ball(center,radius);
-          Z3i::Point low = centerZ - Z3i::Point::diagonal( radius+1 );
-          Z3i::Point up  = centerZ + Z3i::Point::diagonal( radius+1 );
+          Z3i::Point low(ball.getLowerBound() - Z3i::RealPoint::diagonal(1.0), functors::Floor<>());
+          Z3i::Point up (ball.getUpperBound() + Z3i::RealPoint::diagonal(1.0), functors::Ceil<>());
           Z3i::Domain dom(low,up);
-
 
           for(Z3i::Domain::ConstIterator itball = dom.begin(), itendball= dom.end();
               itball != itendball; itball++)
