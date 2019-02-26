@@ -89,6 +89,8 @@ int main( int argc, char** argv )
                                                                         Z3i::Point(ptCenter+DGtal::Z3i::RealPoint(200.0*cos(alpha),100.0*sin(alpha)), functors::Round<>()),
                                                                         Z3i::Point(Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)), functors::Round<>()),
                                                                         IMAGE_PATCH_WIDTH);
+   
+    
     ImageAdapterExtractor extractedImage(imageVol, domainImage2D, embedder, idV);
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
 
