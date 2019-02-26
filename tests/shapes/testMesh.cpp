@@ -150,6 +150,7 @@ bool testMesh()
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
   trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
   trace.endBlock();
+  
   trace.beginBlock ( "Testing mesh subdivision  ..." );
   Mesh<RealPoint> aMeshR;
   RealPoint pr0 (0,0);
@@ -157,9 +158,10 @@ bool testMesh()
   RealPoint pr2 (1,1);
   aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
   aMeshR.addTriangularFace(0,1,2);
-  aMeshR.subDivideTriangularFaces(0.5); 
-
-  trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
+  trace.info() << "nb vertices before subdivision: " << aMeshR.nbVertex() << std::endl;
+  trace.info() << "nb faces before subdivision: " << aMeshR.nbFaces() << std::endl;
+  aMeshR.subDivideTriangularFaces(0.5);
+  trace.info() << "nb vertices after subdivision: " << aMeshR.nbVertex() << std::endl;
   trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
   trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << std::endl;    
   bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
