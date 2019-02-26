@@ -450,7 +450,8 @@ DGtal::Mesh<TPoint>::changeScale(const typename TPoint::Coordinate aScale)
 template<typename TPoint>
 inline
 double 
-DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
+DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea)
+{
   double maxArea = 0;
   std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
   for(unsigned int i =0; i< nbFaces(); i++)
@@ -468,7 +469,7 @@ DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
               maxArea = a;
             }
         
-          if(a>minArea)
+          if(a>=minArea)
             {
               addVertex(c);
               MeshFace f1, f2, f3;
