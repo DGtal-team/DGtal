@@ -104,7 +104,7 @@ bool testReducedMedialAxis( std::array<bool, 2> const& aPeriodicity = {{ false, 
       for(unsigned int j=0; j<11; j++)
         {
           Z2i::Point p(i,j);
-          DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+          auto dist = (i-power(p)[0])*(i-power(p)[0]) +
             ( j-power(p)[1])*(j-power(p)[1])  - image(power.projectPoint(power(p)));
           trace.info()<< dist;
         }
@@ -132,7 +132,7 @@ bool testReducedMedialAxis( std::array<bool, 2> const& aPeriodicity = {{ false, 
   trace.info()<<std::endl;
 
 
-  nbok += true ? 1 : 0;
+  ++nbok;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;

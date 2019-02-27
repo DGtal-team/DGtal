@@ -181,7 +181,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
         << " " << kappa << std::endl;
   }
     }    
-    catch ( InputException e )
+    catch ( InputException& e )
       {
   std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
       << " error in finding a bel." << std::endl;

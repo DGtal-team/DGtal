@@ -227,7 +227,7 @@ public:
   inline 
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
-    return _data[ offset( x, y ) ].erase( l );
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].erase( l ));
   }
 
   inline 
@@ -258,7 +258,7 @@ public:
   inline
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
-    return _data[ offset( x, y ) ].size();
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].size());
   }
   inline 
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
@@ -551,7 +551,7 @@ public:
   inline
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
-    return _data[ offset( x, y ) ].size();
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].size());
   }
   inline void display ( ostream & , unsigned int , unsigned int x, unsigned int y )
   {
