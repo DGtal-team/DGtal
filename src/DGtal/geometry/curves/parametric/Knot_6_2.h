@@ -52,7 +52,8 @@ namespace DGtal
 // class Knot_6_2
 /**
  * Description of class 'Knot_6_2' <p>
- * \brief Aim:
+ * \brief Aim: Implement a parametrized knot 6, 2.
+ * @tparam TSpace model of CSpace
  */
 template <typename TSpace>
 class Knot_6_2

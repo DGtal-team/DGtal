@@ -52,7 +52,8 @@ namespace DGtal
 // class Knot_7_4
 /**
  * Description of class 'Knot_7_4' <p>
- * \brief Aim:
+ * \brief Aim: Implement a parametrized knot 7, 4.
+ * @tparam TSpace model of CSpace
  */
 template <typename TSpace>
 class Knot_7_4
