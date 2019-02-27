@@ -29,9 +29,11 @@ foreach(p LIB BIN INCLUDE DATA)
 endforeach()
 
 # -----------------------------------------------------------------------------
-# To distinguish between debug and release lib
+# Visual Studio : to distinguish between debug and release lib
 # -----------------------------------------------------------------------------
-set(CMAKE_DEBUG_POSTFIX "d")
+IF (MSVC)
+  set(CMAKE_DEBUG_POSTFIX "d")
+ENDIF (MSVC)
 
 # -----------------------------------------------------------------------------
 # Doxygen targets
