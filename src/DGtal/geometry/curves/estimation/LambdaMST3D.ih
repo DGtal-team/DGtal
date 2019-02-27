@@ -192,8 +192,8 @@ namespace DGtal
         outValues.insert ( std::make_pair ( *(DSS.begin ( ) + indexOfPointInDSS),
                            myFunctor ( *DSS, indexOfPointInDSS + 1, dssLen + 1 ) ) );
         // if a point is covered then it is not an orphan
-        auto orphan = std::find ( orphans.cbegin ( ), orphans.cend ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
-        if ( orphan != orphans.cend ( ) )
+        auto orphan = std::find ( orphans.begin ( ), orphans.end ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
+        if ( orphan != orphans.end ( ) )
           orphans.erase ( orphan );
       }
     }
