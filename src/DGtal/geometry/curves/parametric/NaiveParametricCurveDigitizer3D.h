@@ -59,6 +59,8 @@ namespace DGtal
  * \brief Aim: Digitization of 3D parametric curves.
  * This method produces, for good parameters step and k_next, a 26-connected
  * digital curves obtained from a digitization process of 3D parametric curves.
+ *
+ * @tparam TParametricCurve a model of C3DParametricCurve
  */
 template <typename TParametricCurve>
 class NaiveParametricCurveDigitizer3D
@@ -97,12 +99,36 @@ public:
 
     // ----------------------- Interface --------------------------------------
 public:
-    void attach ( const TParametricCurve * t_curve );
+
+    /**
+     * @param t_curve - a paramtric curve realizing the model C3DParametricCurve
+     */
+    void attach ( ConstAlias<TParametricCurve> p_curve );
+
+    /**
+     * @param tmin - starting time (has to be lower than tmax)
+     * @param tmax - the time when the digitization should stop (has to be bigger than tmin)
+     * @param timeStep - the digitization step
+     */
     void init ( long double tmin, long double tmax, long double timeStep );
+
+    /**
+     * @param knext - the parameter used for scanning k points of the curve in order to fix possible connectivity issues. The default value is 5.
+     * @return previous value of K_NEXT
+     */
     unsigned int setKNext ( unsigned int knext );
 
-    void digitize ( std::back_insert_iterator < DigitalCurve > );
-    void digitize ( std::back_insert_iterator < DigitalCurve >, std::back_insert_iterator < MetaData > );
+
+    /**
+     * @param inserter writable iterator over a container which stores points of digitized curve
+     */
+    void digitize ( std::back_insert_iterator < DigitalCurve > inserter );
+
+    /**
+     * @param inserter writable iterator over a container which stores points of digitized curve
+     * @param meta_inserter writable iterator over a container which stores meta information (point hit values) used during digitization.
+     */
+    void digitize ( std::back_insert_iterator < DigitalCurve > inserter, std::back_insert_iterator < MetaData > meta_inserter );
 
     /**
      * Writes/Displays the object on an output stream.
