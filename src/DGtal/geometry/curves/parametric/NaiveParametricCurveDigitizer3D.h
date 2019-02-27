@@ -164,7 +164,7 @@ protected:
 protected:
 private:
 
-    // This is defined here due the the problems with MS co
+    // This is defined here due the the problems with MS compiler
     struct KConstIter { typename DigitalCurve::const_iterator jt; unsigned int k; };
     struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
 
@@ -183,9 +183,9 @@ private:
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CurveDigitizer'.
+ * Overloads 'operator<<' for displaying objects of class 'NaiveParametricCurveDigitizer3D'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CurveDigitizer' to write.
+ * @param object the object of class 'NaiveParametricCurveDigitizer3D' to write.
  * @return the output stream after the writing.
  */
 template <typename T>
