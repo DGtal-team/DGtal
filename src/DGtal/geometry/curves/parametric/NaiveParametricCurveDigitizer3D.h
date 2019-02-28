@@ -113,7 +113,7 @@ public:
 public:
 
     /**
-     * @param t_curve - a paramtric curve realizing the model C3DParametricCurve
+     * @param p_curve - a paramtric curve realizing the model C3DParametricCurve
      */
     void attach ( ConstAlias<TParametricCurve> p_curve );
 
