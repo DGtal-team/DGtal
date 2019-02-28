@@ -77,10 +77,10 @@ int main( int argc, char** argv )
  typedef EllipticHelix < Space > MyHelix;
  typedef ForwardRigidTransformation3D < Space, RealPoint, RealPoint, Identity > ForwardTrans;
  typedef DecoratorParametricCurveTransformation < MyHelix, ForwardTrans > MyRotatedCurve;
- typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
- typedef typename UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;
+ typedef NaiveParametricCurveDigitizer3D < MyRotatedCurve >  Digitizer;
+ typedef typename NaiveParametricCurveDigitizer3D < MyRotatedCurve >::DigitalCurve MyDigitalCurve;
  //! [DigiRotHelixConstr]
- typedef UglyNaiveParametricCurveDigitizer3D < MyRotatedCurve >::MetaData MyMetaData;
+ typedef NaiveParametricCurveDigitizer3D < MyRotatedCurve >::MetaData MyMetaData;
  trace.info() << "exampleParamCurve3dDigitizationTransformationDecorator" << endl;
 
  Viewer3D<> viewer;
