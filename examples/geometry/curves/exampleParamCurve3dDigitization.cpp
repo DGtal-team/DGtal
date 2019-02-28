@@ -74,9 +74,9 @@ int main( int argc, char** argv )
  QApplication application(argc,argv);
 //! [DigiHelixConstr]
  typedef EllipticHelix < Space > MyHelix;
- typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >  DigitizerHelix;
- typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::DigitalCurve MyDigitalCurve;
- typedef UglyNaiveParametricCurveDigitizer3D < MyHelix >::MetaData MyMetaData;
+ typedef NaiveParametricCurveDigitizer3D < MyHelix >  DigitizerHelix;
+ typedef NaiveParametricCurveDigitizer3D < MyHelix >::DigitalCurve MyDigitalCurve;
+ typedef NaiveParametricCurveDigitizer3D < MyHelix >::MetaData MyMetaData;
 //! [DigiHelixConstr]
  trace.info() << "exampleParamCurve3dDigitization" << endl;
 
