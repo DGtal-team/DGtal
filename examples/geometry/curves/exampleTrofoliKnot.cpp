@@ -71,9 +71,9 @@ int main( int argc, char** argv )
 {
  QApplication application(argc,argv);
  typedef Knot_3_1< Space > MyKnot;
- typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
- typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
- typedef UglyNaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
+ typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
+ typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
+ typedef NaiveParametricCurveDigitizer3D < MyKnot >::MetaData MyMetaData;
 
  trace.info() << "exampleParamCurve3dDigitization" << endl;
 
