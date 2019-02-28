@@ -59,6 +59,8 @@
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
   - Various warnings fixed on Xcode (David Coeurjolly,
     [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
+  - Fix compilation and adding debug version for the generated file with Visual Studio
+    (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
   
 	
 - *Base*
