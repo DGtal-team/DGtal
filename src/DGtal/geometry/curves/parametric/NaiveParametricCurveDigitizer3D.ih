@@ -118,7 +118,7 @@ namespace DGtal
 
   template <typename T>
   inline
-  void NaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights)
+  void NaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights )
   {
     if ( bbegin == bend )
       return;
@@ -165,8 +165,8 @@ namespace DGtal
 
   template <typename T>
   inline
-  void NaiveParametricCurveDigitizer3D<T>::updateMetaDate ( const Point & p, const RealPoint & pc,
-                                                                DataInfo & weights, long double t )
+  void NaiveParametricCurveDigitizer3D<T>::updateMetaData ( const Point & p, const RealPoint & pc,
+                                                            DataInfo & weights, long double t )
   {
     if ( metaData )
     {
@@ -249,7 +249,7 @@ namespace DGtal
       Point p ( std::round (  pc[0] ), std::round ( pc[1] ), std::round ( pc[2] ) );
       weights[p].second++;
 
-      updateMetaDate ( p, pc, weights, t );
+      updateMetaData ( p, pc, weights, t );
       if ( std::find ( buffer.begin (), buffer.end (), p ) == buffer.end ( ) )
         buffer.push_back ( p );
 

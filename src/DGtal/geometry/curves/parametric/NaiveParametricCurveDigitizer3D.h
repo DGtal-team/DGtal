@@ -68,11 +68,23 @@ class NaiveParametricCurveDigitizer3D
     BOOST_CONCEPT_ASSERT(( concepts::C3DParametricCurve < TParametricCurve > ));
     // ----------------------- Standard services ------------------------------
 public:
+    /// Integer point type
     typedef typename TParametricCurve::Space::Point Point;
+    /// Real point type
     typedef typename TParametricCurve::Space::RealPoint RealPoint;
+    /// Digital curve type
     typedef std::vector<Point> DigitalCurve;
+    /**
+     * MetaData type. The first field stores the time value at which the continuous curve is at the closest
+     * position to the corresponding integer point. This time value is evaluated with respect to the parameter
+     * timeStep (see documentation of the method NaiveParametricCurveDigitizer3D::init).
+     * The second information stores the number of times a given integer point was hit during the digitization.
+     */
     typedef std::vector< std::pair < long double, unsigned int > > MetaData;
 
+    /**
+     * Constructor
+     */
     NaiveParametricCurveDigitizer3D();
 
     /**
@@ -126,7 +138,8 @@ public:
 
     /**
      * @param inserter writable iterator over a container which stores points of digitized curve
-     * @param meta_inserter writable iterator over a container which stores meta information (point hit values) used during digitization.
+     * @param meta_inserter writable iterator over a container which stores meta information
+     * (t at which curve is closest to the integer point (wwith respect to timeStep), hit values) used during digitization.
      */
     void digitize ( std::back_insert_iterator < DigitalCurve > inserter, std::back_insert_iterator < MetaData > meta_inserter );
 
@@ -142,37 +155,105 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
+
+    /**
+     * Buffer type. A buffer is used during digitzation to store part of the output. The size of the bufffer is
+     * three times K_NEXT.
+     */
     typedef DigitalCurve Buffer;
-    typedef std::map < Point, std::pair < long double, unsigned int > > DataInfo;
+
+    /**
+     * A type representing a const iterator over Buffer.
+     */
     typedef typename Buffer::const_iterator ConstIterator;
 
-    unsigned int K_NEXT;
-    unsigned int BUFFER_SIZE;
-    // ------------------------- Protected Datas ------------------------------
-protected:
-    DigitalCurve digitalCurve;
-    MetaData metaDataContainter;
-    bool metaData;
-    const TParametricCurve * curve;
-    long double step;
-    long double timeMin;
-    long double timeMax;
-    bool initOK;
-    // ------------------------- Hidden services ------------------------------
-protected:
-private:
+    /**
+     * Type which defines storage of meta data related to an integer point.
+     * The final meta data required by the user are computed from the data stored in DataInfo.
+     */
+    typedef std::map < Point, std::pair < long double, unsigned int > > DataInfo;
 
-    // This is defined here due the the problems with MS compiler
+    /**
+     * This value is used during the local digitzation step. In general, we search for K_NEXT points and check if
+     * they are 26-connected. Also, the internal buffer size is defined as three times K_NEXT. The default value is 5.
+     */
+    unsigned int K_NEXT;
+
+    /**
+     * A variable which stores the buffer size. It is equl to 3 times K_NEXT.
+     */
+    unsigned int BUFFER_SIZE;
+
+    /// A structure used for making iterations over digital curve with respect to K_NEXT.
     struct KConstIter { typename DigitalCurve::const_iterator jt; unsigned int k; };
+    /// A structure used for making iterations over digital curve with respect to K_NEXT.
     struct KIter { typename DigitalCurve::iterator jt; unsigned int k; };
 
+    // ------------------------- Protected Data ------------------------------
+protected:
+    /// A storage of final integer points
+    DigitalCurve digitalCurve;
+   /// A storage of final meta data (if requested)
+    MetaData metaDataContainter;
+    /// A flag used to decided if meta data should be stored and returned to the user
+    bool metaData;
+    /// A pointer to the parameteric curve which is going to be digitized
+    const TParametricCurve * curve;
+    /// the time step value
+    long double step;
+    /// starting time (has to be lower than timeMax)
+    long double timeMin;
+    ///  the time when the digitization should stop (has to be bigger than timeMin)
+    long double timeMax;
+    /// A flag which is set to true if the initial paramters are correct.
+    bool initOK;
+
+    // ------------------------- Hidden services ------------------------------
+private:
+
+    /**
+     * Checks is two points are 26-connected
+     * @param x an integer point
+     * @param y an integer point
+     * @return true if x and y are 26-connected and false otherwise
+     */
     bool is26Connected ( const Point &x, const Point &y );
-    void syncData ( ConstIterator, ConstIterator, DataInfo & );
-    void flashBuffers ( Buffer &, DataInfo & );
-    void updateMetaDate ( const Point &, const RealPoint &, DataInfo &, long double);
+    /**
+     * A method used to synchronized the final data with the buffer
+     * @param bbegin an iterator pointing at the beginning of the buffer
+     * @param bend an iterator pointing at the end of the buffer
+     * @param weights a reference to the meta information used to construct the final curve.
+     */
+    void syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights );
+
+    /**
+     *
+     * @param buffer reference to the buffer to be flashed
+     * @param weights removes a part of the data corresponding to the buffer points but keeps
+     * part of the data that may still be needed.
+     */
+    void flashBuffers ( Buffer & buffer, DataInfo & weights );
+
+    /**
+     * Checks if a closer point of the continuous curve to the integer point has been found
+     * and if so then the meta information are being updated.
+     * @param p an integer point
+     * @param pc a real point
+     * @param weights meta data storage
+     * @param t given time
+     */
+    void updateMetaData ( const Point & p, const RealPoint & pc, DataInfo & weights, long double t );
+
+    /**
+     * Final clean up at the ends of the curve`
+     */
     void cleanCurve ( );
+
+    /**
+     * Final clean up of a closed curve at the possibly overlapping part.
+     */
     void cleanClosedPart ( );
 
 
