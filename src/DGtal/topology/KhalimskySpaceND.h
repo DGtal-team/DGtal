@@ -64,7 +64,7 @@ namespace DGtal
   class KhalimskySpaceND;
 
   /////////////////////////////////////////////////////////////////////////////
-  /** Internal class of KhalimskySpaceND that provides some optimizations
+  /** @brief Internal class of KhalimskySpaceND that provides some optimizations
    * depending on the space type.
    */
   template < class TKhalimskySpace >
@@ -82,7 +82,7 @@ namespace DGtal
   struct KhalimskyCell
   {
 
-    //Integer must be a model of the concept CInteger.
+    /// Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
 
@@ -101,19 +101,19 @@ namespace DGtal
     friend class KhalimskySpaceNDHelper< CellularGridSpace >;
 
   private:
-    // Underlying pre-cell
+    /// Underlying pre-cell
     PreCell myPreCell;
 
   private:
 
-    /**
-     * Explicit constructor from its Khalimsky coordinates.
+    /** @brief Explicit constructor from its Khalimsky coordinates.
+     *
      * @param aPoint Its Khalimsky coordinates as a point.
      */
     explicit KhalimskyCell( const Point & aPoint );
 
-    /**
-     * Explicit constructor from a KhalimskyPreCell.
+    /** @brief Explicit constructor from a KhalimskyPreCell.
+     *
      * @param aCell a pre-cell.
      */
     explicit KhalimskyCell( const PreCell & aCell );
@@ -130,44 +130,44 @@ namespace DGtal
     explicit operator PreCell & ();
 
   public:
-    /**
+    /** @brief
      * Default constructor.
      */
     explicit KhalimskyCell( Integer dummy = 0 );
 
-    /** Copy constructor.
+    /** @brief Copy constructor.
      * @param other any other cell.
      */
     KhalimskyCell( const KhalimskyCell & other ) = default;
 
-    /** Copy operator.
+    /** @brief Copy operator.
      * @param other any other cell.
      */
     KhalimskyCell & operator=( const KhalimskyCell & other ) = default;
 
-    /** Move constructor.
+    /** @brief Move constructor.
      * @param other any other cell.
      */
     KhalimskyCell( KhalimskyCell && other ) = default;
 
-    /** Move operator.
+    /** @brief Move operator.
      * @param other any other cell.
      */
     KhalimskyCell & operator=( KhalimskyCell && other ) = default;
 
-    /**
+    /** @brief
      * Equality operator.
      * @param other any other cell.
      */
     bool operator==( const KhalimskyCell & other ) const;
 
-    /**
+    /** @brief
      * Difference operator.
      * @param other any other cell.
     */
     bool operator!=( const KhalimskyCell & other ) const;
 
-    /**
+    /** @brief
      * Inferior operator. (lexicographic order).
      * @param other any other cell.
     */
@@ -182,7 +182,7 @@ namespace DGtal
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
-    /**
+    /** @brief Return the style name used for drawing this object.
      * @return the style name used for drawing this object.
      */
     std::string className() const;
@@ -207,7 +207,7 @@ namespace DGtal
              typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
-    //Integer must be a model of the concept CInteger.
+    /// Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
     // Aliases
@@ -225,73 +225,73 @@ namespace DGtal
     friend class KhalimskySpaceNDHelper< CellularGridSpace >;
 
   private:
-    // Underlying signed pre-cell
+    /// Underlying signed pre-cell
     SPreCell mySPreCell;
 
   private:
-    /**
-     * Explicit constructor from its Khalimsky coordinates.
+    /** @brief Explicit constructor from its Khalimsky coordinates.
+     *
      * @param aPoint any point.
      * @param positive if cell has positive sign.
      */
     explicit SignedKhalimskyCell( const Point & aPoint, bool positive );
 
-    /**²
-     * Explicit constructor from a SignedKhalimskyPreCell.
+    /** @brief Explicit constructor from a SignedKhalimskyPreCell.
+     *
      * @param aCell a pre-cell.
      */
     explicit SignedKhalimskyCell( const SPreCell & aCell );
 
   public:
-    /// Constant conversion to KhalimskySignedPreCell.
+    /// Constant conversion to SignedKhalimskyPreCell.
     operator SPreCell const& () const;
 
     /// Returns the underlying constant signed pre-cell.
     SPreCell const& preCell() const;
 
   private:
-    /// Mutable conversion to KhalimskySignedPreCell.
+    /// Mutable conversion to SignedKhalimskyPreCell.
     explicit operator SPreCell & ();
 
   public:
-    /**
+    /** @brief
      * Default constructor.
      */
     explicit SignedKhalimskyCell( Integer dummy = 0 );
 
-    /** Copy constructor.
+    /** @brief Copy constructor.
      * @param other any other cell.
      */
     SignedKhalimskyCell( const SignedKhalimskyCell & other ) = default;
 
-    /** Copy operator.
+    /** @brief Copy operator.
      * @param other any other cell.
      */
     SignedKhalimskyCell & operator=( const SignedKhalimskyCell & other ) = default;
 
-    /** Move constructor.
+    /** @brief Move constructor.
      * @param other any other cell.
      */
     SignedKhalimskyCell( SignedKhalimskyCell && other ) = default;
 
-    /** Move operator.
+    /** @brief Move operator.
      * @param other any other cell.
      */
     SignedKhalimskyCell & operator=( SignedKhalimskyCell && other ) = default;
 
-    /**
+    /** @brief
      * Equality operator.
      * @param other any other cell.
      */
     bool operator==( const SignedKhalimskyCell & other ) const;
 
-    /**
+    /** @brief
      * Difference operator.
      * @param other any other cell.
      */
     bool operator!=( const SignedKhalimskyCell & other ) const;
 
-    /**
+    /** @brief
      * Inferior operator. (lexicographic order).
      * @param other any other cell.
      */
@@ -306,7 +306,8 @@ namespace DGtal
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
-    /**
+    /** @brief Return the style name used for drawing this object.
+     *
      * @return the style name used for drawing this object.
      */
     std::string className() const;
@@ -395,14 +396,14 @@ namespace DGtal
     typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
     friend class KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >;
 
-    //Integer must be signed to characterize a ring.
+    /// Integer must be signed to characterize a ring.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
-    ///Arithmetic ring induced by (+,-,*) and Integer numbers.
+    /// Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;
 
-    ///Type used to represent sizes in the digital space.
+    /// Type used to represent sizes in the digital space.
     typedef typename NumberTraits<Integer>::UnsignedVersion Size;
 
     // Spaces
@@ -480,44 +481,39 @@ namespace DGtal
      */
   public:
 
-    /**
-     * Destructor.
-     */
+    /// Destructor.
     ~KhalimskySpaceND();
 
-    /**
-     * Default constructor.
-     */
+    /// Default constructor.
     KhalimskySpaceND();
 
-    /**
-     * Copy constructor.
+    /** @brief Copy constructor.
+     *
      * @param other the object to clone.
      */
     KhalimskySpaceND ( const KhalimskySpaceND & other ) = default;
 
-    /**
-     * Copy operator.
+    /** @brief Copy operator.
+     *
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     KhalimskySpaceND & operator= ( const KhalimskySpaceND & other ) = default;
 
-    /**
-     * Move constructor.
+    /** @brief Move constructor.
+     *
      * @param other the object to clone.
      */
     KhalimskySpaceND ( KhalimskySpaceND && other ) = default;
 
-    /**
-     * Move operator.
+    /** @brief Move operator.
+     *
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     KhalimskySpaceND & operator= ( KhalimskySpaceND && other ) = default;
 
-    /**
-     * Specifies the upper and lower bounds for the maximal cells in
+    /** @brief Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
      * @param lower the lowest point in this space (digital coords)
@@ -531,8 +527,7 @@ namespace DGtal
                const Point & upper,
                bool isClosed );
 
-    /**
-     * Specifies the upper and lower bounds for the maximal cells in
+    /** @brief Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
      * @param lower the lowest point in this space (digital coords)
@@ -547,8 +542,7 @@ namespace DGtal
                const Point & upper,
                Closure closure );
 
-    /**
-     * Specifies the upper and lower bounds for the maximal cells in
+    /** @brief Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
      * @param lower the lowest point in this space (digital coords)
@@ -571,52 +565,61 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the width of the space in the \a k-dimension.
+     *
      * @param k a dimension.
      * @return the width of the space in the \a k-dimension.
      * @note For periodic dimension, it returns the number of unique coordinates along that dimension.
      */
     Size size( Dimension k ) const;
 
-    /**
+    /** @brief Return the minimal digital coordinate in the \a k-dimension.
+     *
      * @param k a dimension.
      * @return the minimal digital coordinate in the \a k-dimension.
      * @note For periodic dimension, it returns the minimal unique digital coordinate along that dimension.
      */
     Integer min( Dimension k ) const;
 
-    /**
+    /** @brief Return the maximal digital coordinate in the \a k-dimension.
+     *
      * @param k a coordinate.
      * @return the maximal digital coordinate in the \a k-dimension.
      * @note For periodic dimension, it returns the maximal unique digital coordinate along that dimension.
      */
     Integer max( Dimension k ) const;
 
-    /**
+    /** @brief Return the lower bound for digital points in this space.
+     *
      * @return the lower bound for digital points in this space.
      * @note For periodic dimension, it returns the lower digital point with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Point & lowerBound() const;
 
-    /**
+    /** @brief Return the upper bound for digital points in this space.
+     *
      * @return the upper bound for digital points in this space.
      * @note For periodic dimension, it returns the upper digital point with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Point & upperBound() const;
 
-    /**
+    /** @brief Return the lower bound for cells in this space.
+     *
      * @return the lower bound for cells in this space.
      * @note For periodic dimension, it returns the upper cell with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Cell & lowerCell() const;
 
-    /**
+    /** @brief Return the upper bound for cells in this space.
+     *
      * @return the upper bound for cells in this space.
      * @note For periodic dimension, it returns the upper cell with unique coordinates. See also the \ref KhalimskySpaceNDBounds "class documentation".
      */
     const Cell & upperCell() const;
 
-    /**
+    /** @brief Returns \c true if the given unsigned cell has his k-th Khalimsky coordinate
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param c an unsigned cell.
      * @param k a dimension.
      * @returns \c true if the given unsigned cell has his k-th Khalimsky coordinate
@@ -628,7 +631,9 @@ namespace DGtal
      */
     bool uIsValid( const PreCell & c, Dimension k ) const;
 
-    /**
+    /** @brief Returns \c true if the given unsigned cell has Khalimsky coordinates
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param c a unsigned cell.
      * @returns \c true if the given unsigned cell has Khalimsky coordinates
      * between those of the cells returned by lowerCell and upperCell.
@@ -639,7 +644,9 @@ namespace DGtal
      */
     bool uIsValid( const PreCell & c ) const;
 
-    /**
+    /** @brief Returns \c true if the given signed cell his k-th Khalimsky coordinate
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param c a signed cell.
      * @param k a dimension.
      * @returns \c true if the given signed cell his k-th Khalimsky coordinate
@@ -651,7 +658,9 @@ namespace DGtal
      */
     bool sIsValid( const SPreCell & c, Dimension k ) const;
 
-    /**
+    /** @brief Returns \c true if the given signed cell has Khalimsky coordinates
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param c a signed cell.
      * @returns \c true if the given signed cell has Khalimsky coordinates
      * between those of the cells returned by lowerCell and upperCell.
@@ -662,7 +671,9 @@ namespace DGtal
      */
     bool sIsValid( const SPreCell & c ) const;
 
-    /**
+    /** @brief Returns \c true if the given cell has his k-th Khalimsky coordinate
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param p an integer point (Khalimsky coordinates of cell).
      * @param k a dimension.
      * @returns \c true if the given cell has his k-th Khalimsky coordinate
@@ -672,7 +683,9 @@ namespace DGtal
      */
     bool cIsValid( const Point & p, Dimension k ) const;
 
-    /**
+    /** @brief Returns \c true if the given cell has Khalimsky coordinates
+     *  between those of the cells returned by lowerCell and upperCell.
+     *
      * @param p an integer point (Khalimsky coordinates of cell).
      * @returns \c true if the given cell has Khalimsky coordinates
      * between those of the cells returned by lowerCell and upperCell.
@@ -689,34 +702,39 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return 'true' iff the space is closed or periodic along every dimension.
+     *
      * @return 'true' iff the space is closed or periodic along every dimension.
      */
     bool isSpaceClosed() const;
 
-    /**
+    /** @brief Return 'true' iff the space is closed or periodic along the specified dimension.
+     *
      * @param k the dimension.
      * @return 'true' iff the space is closed or periodic along the specified dimension.
      */
     bool isSpaceClosed( Dimension k ) const;
 
-    /**
+    /** @brief Return 'true' iff the space is periodic along every dimension.
+     *
      * @return 'true' iff the space is periodic along every dimension.
      */
     bool isSpacePeriodic() const;
 
-    /**
+    /** @brief Return 'true' iff the space is periodic along the specified dimension.
+     *
      * @param k the dimension.
      * @return 'true' iff the space is periodic along the specified dimension.
      */
     bool isSpacePeriodic( Dimension k ) const;
 
-    /**
+    /** @brief Return 'true' iff the space is periodic along at least one dimension.
+     *
      * @return 'true' iff the space is periodic along at least one dimension.
      */
     bool isAnyDimensionPeriodic() const;
 
-    /** Gets closure type.
+    /** @brief Gets closure type.
      * @param k the dimension.
      * @return closure type along the specified dimension.
      */
@@ -730,7 +748,7 @@ namespace DGtal
      */
   public:
 
-    /** From an unsigned cell, returns an unsigned cell lying into this Khalismky space.
+    /** @brief From an unsigned cell, returns an unsigned cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it replaces it by the nearest valid coordinate.
@@ -746,7 +764,7 @@ namespace DGtal
      */
     Cell uCell( const PreCell & c ) const;
 
-    /** From the Khalimsky coordinates of a cell,
+    /** @brief From the Khalimsky coordinates of a cell,
      * builds the corresponding unsigned cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
@@ -761,7 +779,7 @@ namespace DGtal
      */
     Cell uCell( const Point & kp ) const;
 
-    /** From the digital coordinates of a point in Zn and a cell type,
+    /** @brief From the digital coordinates of a point in Zn and a cell type,
      * builds the corresponding unsigned cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -778,7 +796,7 @@ namespace DGtal
      */
     Cell uCell( Point p, const PreCell & c ) const;
 
-    /** From a signed cell, returns a signed cell lying into this Khalismky space.
+    /** @brief From a signed cell, returns a signed cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
      * outside the space, it replaces it by the nearest valid coordinate.
@@ -794,7 +812,7 @@ namespace DGtal
      */
     SCell sCell( const SPreCell & c ) const;
 
-    /** From the Khalimsky coordinates of a cell and a sign,
+    /** @brief From the Khalimsky coordinates of a cell and a sign,
      * builds the corresponding signed cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given Khalimsky coordinate lies
@@ -810,7 +828,7 @@ namespace DGtal
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 
-    /** From the digital coordinates of a point in Zn and a signed cell type,
+    /** @brief From the digital coordinates of a point in Zn and a signed cell type,
      * builds the corresponding signed cell lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -827,7 +845,7 @@ namespace DGtal
      */
     SCell sCell( Point p, const SPreCell & c ) const;
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -842,7 +860,7 @@ namespace DGtal
      */
     Cell uSpel( Point p ) const;
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding spel (cell of maximal dimension) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -858,7 +876,7 @@ namespace DGtal
      */
     SCell sSpel( Point p, Sign sign = POS ) const;
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -873,7 +891,7 @@ namespace DGtal
      */
     Cell uPointel( Point p ) const;
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pointel (cell of dimension 0) lying into this Khalismky space.
      *
      * Along a non-periodic dimension, if the given digital coordinate lies
@@ -897,7 +915,8 @@ namespace DGtal
      * @{
      */
   public:
-    /**
+    /** @brief Return its Khalimsky coordinate along [k].
+     *
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
@@ -905,7 +924,8 @@ namespace DGtal
      */
     Integer uKCoord( const Cell & c, Dimension k ) const;
 
-    /**
+    /** @brief Return its digital coordinate along [k].
+     *
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
@@ -913,21 +933,24 @@ namespace DGtal
      */
     Integer uCoord( const Cell & c, Dimension k ) const;
 
-    /**
+    /** @brief Return its Khalimsky coordinates.
+     *
      * @param c any unsigned cell.
      * @return its Khalimsky coordinates.
      * @pre  `uIsValid(c)` is \a true.
      */
     const Point & uKCoords( const Cell & c ) const;
 
-    /**
+    /** @brief Return its digital coordinates
+     *
      * @param c any unsigned cell.
      * @return its digital coordinates
      * @pre  `uIsValid(c)` is \a true.
      */
     Point uCoords( const Cell & c ) const;
 
-    /**
+    /** @brief Return its Khalimsky coordinate along [k].
+     *
      * @param c any signed cell.
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
@@ -935,7 +958,8 @@ namespace DGtal
      */
     Integer sKCoord( const SCell & c, Dimension k ) const;
 
-    /**
+    /** @brief Return its digital coordinate along [k].
+     *
      * @param c any signed cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
@@ -943,21 +967,24 @@ namespace DGtal
      */
     Integer sCoord( const SCell & c, Dimension k ) const;
 
-    /**
+    /** @brief Return its Khalimsky coordinates.
+     *
      * @param c any signed cell.
      * @return its Khalimsky coordinates.
      * @pre  `uIsValid(c)` is \a true.
      */
     const Point & sKCoords( const SCell & c ) const;
 
-    /**
+    /** @brief Return its digital coordinates.
+     *
      * @param c any signed cell.
      * @return its digital coordinates.
      * @pre  `uIsValid(c)` is \a true.
      */
     Point sCoords( const SCell & c  ) const;
 
-    /**
+    /** @brief Return its sign.
+     *
      * @param c any signed cell.
      * @return its sign.
      * @pre  `uIsValid(c)` is \a true.
@@ -972,7 +999,7 @@ namespace DGtal
      */
   public:
 
-    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** @brief Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
@@ -982,7 +1009,7 @@ namespace DGtal
      */
     void uSetKCoord( Cell & c, Dimension k, Integer i ) const;
 
-    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** @brief Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any signed cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
@@ -992,7 +1019,7 @@ namespace DGtal
      */
     void sSetKCoord( SCell & c, Dimension k, Integer i ) const;
 
-    /** Sets the [k]-th digital coordinate of [c] to [i].
+    /** @brief Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any unsigned cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
@@ -1002,7 +1029,7 @@ namespace DGtal
      */
     void uSetCoord( Cell & c, Dimension k, Integer i ) const;
 
-    /** Sets the [k]-th digital coordinate of [c] to [i].
+    /** @brief Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any signed cell.
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
@@ -1012,7 +1039,7 @@ namespace DGtal
      */
     void sSetCoord( SCell & c, Dimension k, Integer i ) const;
 
-    /** Sets the Khalimsky coordinates of [c] to [kp].
+    /** @brief Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
      * @note The coordinates \a kp will be corrected for periodic dimensions.
@@ -1022,7 +1049,7 @@ namespace DGtal
      */
     void uSetKCoords( Cell & c, const Point & kp ) const;
 
-    /** Sets the Khalimsky coordinates of [c] to [kp].
+    /** @brief Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
      * @note The coordinates \a kp will be corrected for periodic dimensions.
@@ -1031,7 +1058,7 @@ namespace DGtal
      */
     void sSetKCoords( SCell & c, const Point & kp ) const;
 
-    /** Sets the digital coordinates of [c] to [kp].
+    /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned cell.
      * @param kp the new Khalimsky coordinates for [c].
      * @note The coordinates \a kp will be corrected for periodic dimensions.
@@ -1040,7 +1067,7 @@ namespace DGtal
      */
     void uSetCoords( Cell & c, const Point & kp ) const;
 
-    /** Sets the digital coordinates of [c] to [kp].
+    /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any signed cell.
      * @param kp the new Khalimsky coordinates for [c].
      * @note The coordinates \a kp will be corrected for periodic dimensions.
@@ -1049,7 +1076,7 @@ namespace DGtal
      */
     void sSetCoords( SCell & c, const Point & kp ) const;
 
-    /** Sets the sign of the cell.
+    /** @brief Sets the sign of the cell.
      * @param c (modified) any signed cell.
      * @param s any sign.
      */
@@ -1062,7 +1089,8 @@ namespace DGtal
      * @{
      */
   public:
-    /** Creates a signed cell from an unsigned one and a given sign.
+    /** @brief Creates a signed cell from an unsigned one and a given sign.
+     *
      * @param p any unsigned cell.
      * @param s a sign.
      * @return the signed version of the cell [p] with sign [s].
@@ -1071,7 +1099,8 @@ namespace DGtal
      */
     SCell signs( const Cell & p, Sign s ) const;
 
-    /** Creates an unsigned cell from a signed one.
+    /** @brief Creates an unsigned cell from a signed one.
+     *
      * @param p any signed cell.
      * @return the unsigned version of the cell [p].
      * @pre  `sIsValid(p)` is \a true.
@@ -1079,8 +1108,8 @@ namespace DGtal
      */
     Cell unsigns( const SCell & p ) const;
 
-    /**
-     * Creates the signed cell with the inverse sign of [p].
+    /** @brief Creates the signed cell with the inverse sign of [p].
+     *
      * @param p any signed cell.
      * @return the cell [p] with opposite sign.
      * @pre  `sIsValid(p)` is \a true.
@@ -1095,50 +1124,58 @@ namespace DGtal
      * @{
      */
   public:
-    /**
+    /** @brief Return the topology word of [p].
+     *
      * @param p any unsigned cell.
      * @return the topology word of [p].
      */
     Integer uTopology( const Cell & p ) const;
 
-    /**
+    /** @brief Return the topology word of [p].
+     *
      * @param p any signed cell.
      * @return the topology word of [p].
      */
     Integer sTopology( const SCell & p ) const;
 
-    /**
+    /** @brief Return the dimension of the cell [p].
+     *
      * @param p any unsigned cell.
      * @return the dimension of the cell [p].
      */
     Dimension uDim( const Cell & p ) const;
 
-    /**
+    /** @brief Return the dimension of the cell [p].
+     *
      * @param p any signed cell.
      * @return the dimension of the cell [p].
      */
     Dimension sDim( const SCell & p ) const;
 
-    /**
+    /** @brief Return 'true' if [b] is a surfel (spans all but one coordinate).
+     *
      * @param b any unsigned cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
     bool uIsSurfel( const Cell & b ) const;
 
-    /**
+    /** @brief Return 'true' if [b] is a surfel (spans all but one coordinate).
+     *
      * @param b any signed cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
     bool sIsSurfel( const SCell & b ) const;
 
-    /**
+    /** @brief Return 'true' if [p] is open along the direction [k].
+     *
      * @param p any cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
     bool uIsOpen( const Cell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return 'true' if [p] is open along the direction [k].
+     *
      * @param p any signed cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
@@ -1153,9 +1190,12 @@ namespace DGtal
      */
   public:
 
-    /** Given an unsigned cell [p], returns an iterator to iterate over
-     * each coordinate the cell spans. (A spel spans all coordinates; a
-     * surfel all but one, etc). Example:
+    /** @brief Given an unsigned cell [p], returns an iterator to iterate over
+     * each coordinate the cell spans.
+     *
+     * (A spel spans all coordinates; a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KSpace::Cell p;
@@ -1173,9 +1213,12 @@ namespace DGtal
      */
     DirIterator uDirs( const Cell & p ) const;
 
-    /** Given a signed cell [p], returns an iterator to iterate over
-     * each coordinate the cell spans. (A spel spans all coordinates; a
-     * surfel all but one, etc). Example:
+    /** @brief Given a signed cell [p], returns an iterator to iterate over
+     * each coordinate the cell spans.
+     *
+     * (A spel spans all coordinates; a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KSpace::SCell p;
@@ -1193,9 +1236,12 @@ namespace DGtal
      */
     DirIterator sDirs( const SCell & p ) const;
 
-    /** Given an unsigned cell [p], returns an iterator to iterate over each
-     * coordinate the cell does not span. (A spel spans all coordinates;
-     * a surfel all but one, etc). Example:
+    /** @brief Given an unsigned cell [p], returns an iterator to iterate over each
+     * coordinate the cell does not span.
+     *
+     * (A spel spans all coordinates; a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KSpace::Cell p;
@@ -1213,9 +1259,12 @@ namespace DGtal
      */
     DirIterator uOrthDirs( const Cell & p ) const;
 
-    /** Given a signed cell [p], returns an iterator to iterate over each
-     * coordinate the cell does not span. (A spel spans all coordinates;
-     * a surfel all but one, etc). Example:
+    /** @brief Given a signed cell [p], returns an iterator to iterate over each
+     * coordinate the cell does not span.
+     *
+     * (A spel spans all coordinates; a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KSpace::SCell p;
@@ -1233,7 +1282,7 @@ namespace DGtal
      */
     DirIterator sOrthDirs( const SCell & p ) const;
 
-    /** Given an unsigned surfel [s], returns its orthogonal direction (ie,
+    /** @brief Given an unsigned surfel [s], returns its orthogonal direction (ie,
      * the coordinate where the surfel is closed).
      *
      * @param s an unsigned surfel
@@ -1241,7 +1290,7 @@ namespace DGtal
      */
     Dimension uOrthDir( const Cell & s ) const;
 
-    /** Given a signed surfel [s], returns its orthogonal direction (ie,
+    /** @brief Given a signed surfel [s], returns its orthogonal direction (ie,
      * the coordinate where the surfel is closed).
      *
      * @param s a signed surfel
@@ -1257,35 +1306,41 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the k-th Khalimsky coordinate of the first cell of the space with the same type as [p].
+     *
      * @return the k-th Khalimsky coordinate of the first cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
      */
     Integer uFirst( const PreCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the first cell of the space with the same type as [p].
+     *
      * @return the first cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
      * @post `uIsValid(uFirst(p))` is \a true.
      */
     Cell uFirst( const PreCell & p ) const;
 
-    /**
+    /** @brief Return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
+     *
      * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
      */
     Integer uLast( const PreCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the last cell of the space with the same type as [p].
+     *
      * @return the last cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
      * @post `uIsValid(uLast(p))` is \a true.
      */
     Cell uLast( const PreCell & p ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for the incremented
+     *  coordinate [k].
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for the incremented
@@ -1295,7 +1350,7 @@ namespace DGtal
      */
     Cell uGetIncr( const Cell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @param k the tested coordinate.
@@ -1307,7 +1362,7 @@ namespace DGtal
     bool uIsMax( const Cell & p, Dimension k ) const;
 
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      *  @param p any cell.
      *  @param k the tested coordinate.
@@ -1317,7 +1372,7 @@ namespace DGtal
     bool uIsInside( const PreCell & p, Dimension k ) const;
 
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @return true if [p] has its coordinates within the allowed bounds.
@@ -1325,7 +1380,7 @@ namespace DGtal
      */
     bool uIsInside( const PreCell & p ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      *  @param p any integer point (Khalimsky coordinates).
      *  @param k the tested coordinate.
@@ -1335,7 +1390,7 @@ namespace DGtal
     bool cIsInside( const Point & p, Dimension k ) const;
 
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any integer point (Khalimsky coordinates).
      * @return true if [p] has its coordinates within the allowed bounds.
@@ -1343,7 +1398,7 @@ namespace DGtal
      */
     bool cIsInside( const Point & p ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @param k the concerned coordinate.
@@ -1354,7 +1409,9 @@ namespace DGtal
      */
     Cell uGetMax( Cell p, Dimension k ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for an decremented
+     *  coordinate [k].
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for an decremented
@@ -1364,7 +1421,8 @@ namespace DGtal
      */
     Cell uGetDecr( const Cell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the tested coordinate.
      * @return true if [p] cannot have its [k]-coordinate decreased
@@ -1374,7 +1432,7 @@ namespace DGtal
      */
     bool uIsMin( const Cell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @param k the concerned coordinate.
@@ -1386,7 +1444,9 @@ namespace DGtal
     Cell uGetMin( Cell p, Dimension k ) const;
 
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     *  incremented with x.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param x the increment.
@@ -1397,7 +1457,9 @@ namespace DGtal
      */
     Cell uGetAdd( const Cell & p, Dimension k, Integer x ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     *  decremented with x.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param x the decrement.
@@ -1408,7 +1470,7 @@ namespace DGtal
      */
     Cell uGetSub( const Cell & p, Dimension k, Integer x ) const;
 
-    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+    /** @brief Useful to check if you are going out of the space (for non-periodic dimensions).
      *
      * @param p any cell.
      * @param k the coordinate that is tested.
@@ -1417,7 +1479,7 @@ namespace DGtal
      */
     Integer uDistanceToMax( const Cell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+    /** @brief Useful to check if you are going out of the space (for non-periodic dimensions).
      *
      * @param p any cell.
      * @param k the coordinate that is tested.
@@ -1427,7 +1489,7 @@ namespace DGtal
      */
     Integer uDistanceToMin( const Cell & p, Dimension k ) const;
 
-    /** Add the vector [vec] to [p].
+    /** @brief Add the vector [vec] to [p].
      *
      * @param p any cell.
      * @param vec any pointel.
@@ -1437,8 +1499,10 @@ namespace DGtal
      */
     Cell uTranslation( const Cell & p, const Vector & vec ) const;
 
-    /** Return the projection of [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Return the projection of [p] along the [k]th direction toward
+     *  [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any cell.
      * @param bound the element acting as bound (same topology as p).
@@ -1449,8 +1513,10 @@ namespace DGtal
      */
     Cell uProjection( const Cell & p, const Cell & bound, Dimension k ) const;
 
-    /** Projects [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards
+    /** @brief Projects [p] along the [k]th direction toward
+     *  [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards
      *
      * @param [in,out] p any cell.
      * @param [in] bound the element acting as bound (same topology as p).
@@ -1460,8 +1526,10 @@ namespace DGtal
      */
     void uProject( Cell & p, const Cell & bound, Dimension k ) const;
 
-    /** Increment the cell [p] to its next position (as classically done in
-     *  a scanning). Example:
+    /** @brief Increment the cell [p] to its next position (as classically done in
+     *  a scanning).
+     *
+     * Example:
      *
      * \code
      * KSpace K;
@@ -1491,35 +1559,41 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the k-th coordinate of the first cell of the space with the same type as [p].
+     *
      * @return the k-th coordinate of the first cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the first unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
     Integer sFirst( const SPreCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the first cell of the space with the same type as [p].
+     *
      * @return the first cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the first unique coordinate of a cell of same type as \a p.
      * @post `sIsValid(sFirst(p))` is \a true.
      */
     SCell sFirst( const SPreCell & p ) const;
 
-    /**
+    /** @brief Return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
+     *
      * @return the k-th Khalimsky coordinate of the last cell of the space with the same type as [p].
      * @note For periodic dimension, it returns the last unique coordinate of a cell of same type as \a p.
      * @post The returned coordinate is between `lowerCell()[k]` and `upperCell()[k]`.
     */
     Integer sLast( const SPreCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the last cell of the space with the same type as [p].
+     *
      * @return the last cell of the space with the same type as [p].
      * @note Along periodic dimensions, it returns the last unique coordinate of a cell of same type as \a p.
      * @post `sIsValid(sLast(p))` is \a true.
      */
     SCell sLast( const SPreCell & p ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for the incremented
+     *  coordinate [k].
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for the incremented
@@ -1529,7 +1603,8 @@ namespace DGtal
      */
     SCell sGetIncr( const SCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the tested coordinate.
      * @return true if [p] cannot have its [k]-coordinate augmented
@@ -1539,15 +1614,16 @@ namespace DGtal
      */
     bool sIsMax( const SCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the tested coordinate.
      * @return true if [p] has its [k]-coordinate within the allowed bounds.
-     *  @note It returns always \a true for periodic dimension.
+     * @note It returns always \a true for periodic dimension.
      */
     bool sIsInside( const SPreCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @return true if [p] has its coordinates within the allowed bounds.
@@ -1555,7 +1631,7 @@ namespace DGtal
      */
     bool sIsInside( const SPreCell & p ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @param k the concerned coordinate.
@@ -1566,7 +1642,9 @@ namespace DGtal
      */
     SCell sGetMax( SCell p, Dimension k ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for an decremented
+     *  coordinate [k].
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for an decremented
@@ -1576,7 +1654,7 @@ namespace DGtal
      */
     SCell sGetDecr( const SCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
      *
      * @param p any cell.
      * @param k the tested coordinate.
@@ -1587,7 +1665,8 @@ namespace DGtal
      */
     bool sIsMin( const SCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space.
+    /** @brief Useful to check if you are going out of the space.
+     *
      * @param p any cell.
      * @param k the concerned coordinate.
      * @return the cell similar to [p] but with the minimum allowed
@@ -1597,7 +1676,9 @@ namespace DGtal
     */
     SCell sGetMin( SCell p, Dimension k ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     *  incremented with x.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param x the increment.
@@ -1608,7 +1689,9 @@ namespace DGtal
      */
     SCell sGetAdd( const SCell & p, Dimension k, Integer x ) const;
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     *  decremented with x.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param x the decrement.
@@ -1619,7 +1702,7 @@ namespace DGtal
      */
     SCell sGetSub( const SCell & p, Dimension k, Integer x ) const;
 
-    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+    /** @brief Useful to check if you are going out of the space (for non-periodic dimensions).
      *
      * @param p any cell.
      * @param k the coordinate that is tested.
@@ -1628,7 +1711,7 @@ namespace DGtal
      */
     Integer sDistanceToMax( const SCell & p, Dimension k ) const;
 
-    /** Useful to check if you are going out of the space (for non-periodic dimensions).
+    /** @brief Useful to check if you are going out of the space (for non-periodic dimensions).
      *
      * @param p any cell.
      * @param k the coordinate that is tested.
@@ -1638,7 +1721,7 @@ namespace DGtal
      */
     Integer sDistanceToMin( const SCell & p, Dimension k ) const;
 
-    /** Add the vector [vec] to [p].
+    /** @brief Add the vector [vec] to [p].
      *
      * @param p any cell.
      * @param vec any pointel.
@@ -1648,8 +1731,10 @@ namespace DGtal
      */
     SCell sTranslation( const SCell & p, const Vector & vec ) const;
 
-    /** Return the projection of [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Return the projection of [p] along the [k]th direction toward
+     *  [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any cell.
      * @param bound the element acting as bound (same topology as p).
@@ -1660,8 +1745,10 @@ namespace DGtal
      */
     SCell sProjection( const SCell & p, const SCell & bound, Dimension k ) const;
 
-    /** Projects [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Projects [p] along the [k]th direction toward
+     *  [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any cell.
      * @param bound the element acting as bound (same topology as p).
@@ -1671,9 +1758,11 @@ namespace DGtal
      */
     void sProject( SCell & p, const SCell & bound, Dimension k ) const;
 
-    /** Increment the cell [p] to its next position (as classically done in
-     *  a scanning). Example:
-
+    /** @brief Increment the cell [p] to its next position (as classically done in
+     *  a scanning).
+     *
+     * Example:
+     *
      * \code
      * KSpace K;
      * Cell first, last; // lower and upper bounds
@@ -1702,9 +1791,11 @@ namespace DGtal
      */
   public:
 
-    /** Computes the 1-neighborhood of the cell [c] and returns
-     *  it. It is the set of cells with same topology that are adjacent
-     *  to [c] and which are within the bounds of this space.
+    /** @brief Computes the 1-neighborhood of the cell [c] and returns
+     *  it.
+     *
+     * It is the set of cells with same topology that are adjacent
+     * to [c] and which are within the bounds of this space.
      *
      * @param cell the unsigned cell of interest.
      * @return the cells of the 1-neighborhood of [cell].
@@ -1713,9 +1804,11 @@ namespace DGtal
      */
     Cells uNeighborhood( const Cell & cell ) const;
 
-    /** Computes the 1-neighborhood of the cell [c] and returns
-     *  it. It is the set of cells with same topology that are adjacent
-     *  to [c] and which are within the bounds of this space.
+    /** @brief Computes the 1-neighborhood of the cell [c] and returns
+     *  it.
+     *
+     * It is the set of cells with same topology that are adjacent
+     * to [c] and which are within the bounds of this space.
      *
      * @param cell the signed cell of interest.
      * @return the cells of the 1-neighborhood of [cell].
@@ -1724,10 +1817,12 @@ namespace DGtal
      */
     SCells sNeighborhood( const SCell & cell ) const;
 
-    /** Computes the proper 1-neighborhood of the cell [c] and returns
-     *  it. It is the set of cells with same topology that are adjacent
-     *  to [c], different from [c] and which are within the bounds of
-     *  this space.
+    /** @brief Computes the proper 1-neighborhood of the cell [c] and returns
+     *  it.
+     *
+     * It is the set of cells with same topology that are adjacent
+     * to [c], different from [c] and which are within the bounds of
+     * this space.
      *
      * @param cell the unsigned cell of interest.
      * @return the cells of the proper 1-neighborhood of [cell].
@@ -1736,10 +1831,12 @@ namespace DGtal
      */
     Cells uProperNeighborhood( const Cell & cell ) const;
 
-    /** Computes the proper 1-neighborhood of the cell [c] and returns
-     *  it. It is the set of cells with same topology that are adjacent
-     *  to [c], different from [c] and which are within the bounds of
-     *  this space.
+    /** @brief Computes the proper 1-neighborhood of the cell [c] and returns
+     *  it.
+     *
+     * It is the set of cells with same topology that are adjacent
+     * to [c], different from [c] and which are within the bounds of
+     * this space.
      *
      * @param cell the signed cell of interest.
      * @return the cells of the proper 1-neighborhood of [cell].
@@ -1748,7 +1845,9 @@ namespace DGtal
      */
     SCells sProperNeighborhood( const SCell & cell ) const;
 
-    /**
+    /** @brief Return the adjacent element to [p] along axis [k] in the given
+     *  direction and orientation.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param up if 'true' the orientation is forward along axis
@@ -1761,7 +1860,9 @@ namespace DGtal
      */
     Cell uAdjacent( const Cell & p, Dimension k, bool up ) const;
 
-    /**
+    /** @brief Return the adjacent element to [p] along axis [k] in the given
+     *  direction and orientation.
+     *
      * @param p any cell.
      * @param k the coordinate that is changed.
      * @param up if 'true' the orientation is forward along axis
@@ -1782,7 +1883,9 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the forward or backward unsigned cell incident to [c]
+     *  along axis [k], depending on [up].
+     *
      * @param c any unsigned cell.
      * @param k any coordinate.
      * @param up if 'true' the orientation is forward along axis
@@ -1796,7 +1899,9 @@ namespace DGtal
      */
     Cell uIncident( const Cell & c, Dimension k, bool up ) const;
 
-    /**
+    /** @brief Return the forward or backward signed cell incident to [c]
+     *  along axis [k], depending on [up].
+     *
      * @param c any signed cell.
      * @param k any coordinate.
      * @param up if 'true' the orientation is forward along axis
@@ -1813,7 +1918,8 @@ namespace DGtal
      */
     SCell sIncident( const SCell & c, Dimension k, bool up ) const;
 
-    /**
+    /** @brief Return the cells directly low incident to c in this space.
+     *
      * @param c any unsigned cell.
      * @return the cells directly low incident to c in this space.
      * @pre  `uIsValid(c)` is \a true.
@@ -1821,7 +1927,8 @@ namespace DGtal
      */
     Cells uLowerIncident( const Cell & c ) const;
 
-    /**
+    /** @brief Return the cells directly up incident to c in this space.
+     *
      * @param c any unsigned cell.
      * @return the cells directly up incident to c in this space.
      * @pre  `uIsValid(c)` is \a true.
@@ -1829,16 +1936,18 @@ namespace DGtal
      */
     Cells uUpperIncident( const Cell & c ) const;
 
-    /**
-     *  @param c any signed cell.
-     *  @return the signed cells directly low incident to c in this space.
-     *  @note it is the lower boundary of c expressed as a list of signed cells.
+    /** @brief Return the signed cells directly low incident to c in this space.
+     *
+     * @param c any signed cell.
+     * @return the signed cells directly low incident to c in this space.
+     * @note it is the lower boundary of c expressed as a list of signed cells.
      * @pre  `sIsValid(c)` is \a true.
      * @post `sIsValid(b)` is \a true for every returned cell \a b.
      */
     SCells sLowerIncident( const SCell & c ) const;
 
-    /**
+    /** @brief Return the signed cells directly up incident to c in this space.
+     *
      * @param c any signed cell.
      * @return the signed cells directly up incident to c in this space.
      * @note it is the upper boundary of c expressed as a list of signed cells.
@@ -1847,7 +1956,8 @@ namespace DGtal
      */
     SCells sUpperIncident( const SCell & c ) const;
 
-    /**
+    /** @brief Return the proper faces of [c] (chain of lower incidence) that belong to the space.
+     *
      * @param c any unsigned cell.
      * @return the proper faces of [c] (chain of lower incidence) that belong to the space.
      * @pre  `uIsValid(c)` is \a true.
@@ -1855,7 +1965,8 @@ namespace DGtal
      */
     Cells uFaces( const Cell & c ) const;
 
-    /**
+    /** @brief Return the proper cofaces of [c] (chain of upper incidence) that belong to the space.
+     *
      * @param c any unsigned cell.
      * @return the proper cofaces of [c] (chain of upper incidence) that belong to the space.
      * @pre  `uIsValid(c)` is \a true.
@@ -1863,14 +1974,16 @@ namespace DGtal
      */
     Cells uCoFaces( const Cell & c ) const;
 
-    /** Return 'true' if the direct orientation of [p] along [k] is in
-     *  the positive coordinate direction. The direct orientation in a
-     *  direction allows to go from positive incident cells to positive
-     *  incident cells.  This means that
-     *  @code
-     *  K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
-     *  @endcode
-     *  is always true.
+    /** @brief Return 'true' if the direct orientation of [p] along [k] is in
+     *  the positive coordinate direction.
+     *
+     * The direct orientation in a
+     * direction allows to go from positive incident cells to positive
+     * incident cells.  This means that
+     * @code
+     * K.sSign( K.sIncident( p, k, K.sDirect( p, k ) ) ) == K.POS
+     * @endcode
+     * is always true.
      *
      * @param p any signed cell.
      * @param k any coordinate.
@@ -1879,7 +1992,9 @@ namespace DGtal
      */
     bool sDirect( const SCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the direct incident cell of [p] along [k] (the incident
+     *  cell along [k])
+     *
      * @param p any signed cell.
      * @param k any coordinate.
      * @return the direct incident cell of [p] along [k] (the incident
@@ -1890,7 +2005,9 @@ ose sign is positive).
      */
     SCell sDirectIncident( const SCell & p, Dimension k ) const;
 
-    /**
+    /** @brief Return the indirect incident cell of [p] along [k] (the incident
+     *  cell along [k] whose sign is negative).
+     *
      * @param p any signed cell.
      * @param k any coordinate.
      * @return the indirect incident cell of [p] along [k] (the incident
@@ -1898,7 +2015,7 @@ ose sign is positive).
      * @pre  `sIsValid(p)` and the cell should have an indirect incident cell in this direction.
      * @post `sIsValid(c)` is \a true for every returned cell \a c.
 ose sign is positive).
-    */
+     */
     SCell sIndirectIncident( const SCell & p, Dimension k ) const;
 
     /// @}
@@ -1909,14 +2026,14 @@ ose sign is positive).
      */
   public:
 
-    /**
-     * Writes/Displays the object on an output stream.
+    /** @brief Writes/Displays the object on an output stream.
+     *
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 
-    /**
-     * Checks the validity/consistency of the object.
+    /** @brief Checks the validity/consistency of the object.
+     *
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
@@ -1946,14 +2063,10 @@ ose sign is positive).
      * @{
      */
   private:
-    /**
-     * Used by uFaces for computing incident faces.
-     */
+    /// Used by uFaces for computing incident faces.
     void uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const;
 
-    /**
-     * Used by uCoFaces for computing incident cofaces.
-     */
+    /// Used by uCoFaces for computing incident cofaces.
     void uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const;
 
     /// @}
@@ -1961,8 +2074,8 @@ ose sign is positive).
   }; // end of class KhalimskySpaceND
 
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'KhalimskySpaceND'.
+  /** @brief Overloads 'operator<<' for displaying objects of class 'KhalimskySpaceND'.
+   *
    * @param out the output stream where the object is written.
    * @param object the object of class 'KhalimskySpaceND' to write.
    * @return the output stream after the writing.
