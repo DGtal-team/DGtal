@@ -41,6 +41,11 @@
 - *Geometry*
   - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
+ 
+- *Documentation*
+  - Improving KhalimskySpace related classes documentations by displaying
+    a short description in the member list.
+    (Roland Denis,  [#1398](https://github.com/DGtal-team/DGtal/pull/1398))
 
 ## Bug Fixes
 
