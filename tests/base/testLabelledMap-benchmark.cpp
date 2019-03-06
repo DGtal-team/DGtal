@@ -215,7 +215,7 @@ public:
   inline
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
-    return _data[ x ][ y ].size();
+    return (unsigned int)_data[ x ][ y ].size();
   }
   inline 
   void display ( ostream & , unsigned int, unsigned int , unsigned int  )

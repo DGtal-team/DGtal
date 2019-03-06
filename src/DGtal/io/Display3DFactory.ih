@@ -51,7 +51,6 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
-    typedef typename Calculus::KSpace KSpace;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
 

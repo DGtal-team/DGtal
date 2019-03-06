@@ -57,7 +57,7 @@ bool testSelfCheckConcept()
   typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
   BOOST_CONCEPT_ASSERT(( concepts::CImage< MyImage > ));
 
-  nbok += true ? 1 : 0;
+  nbok ++;
 
 
   nb++;

@@ -68,7 +68,7 @@ namespace DGtal {
         ++nbsurfels;
       }
     trace.info() << nbsurfels << " surfels found." << std::endl;
-    nb++, nbok += nbsurfels == 354382 ? 1 : 0;
+    nb++; nbok += nbsurfels == 354382 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") "
                    << "nbsurfels == 354382" << std::endl;
     trace.endBlock();
