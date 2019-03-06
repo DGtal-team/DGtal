@@ -157,7 +157,7 @@ bool testMesh()
   RealPoint pr2 (1,1);
   aMeshR.addVertex(pr0);   aMeshR.addVertex(pr1);   aMeshR.addVertex(pr2);
   aMeshR.addTriangularFace(0,1,2);
-  aMeshR.subDivideTriangularFaces(0.5); 
+  aMeshR.subDivideTriangularFaces(0.49); 
 
   trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << " (should be 4)"<<std::endl;
   trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << " (should be 3)" <<std::endl;  
