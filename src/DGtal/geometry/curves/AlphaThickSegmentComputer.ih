@@ -741,7 +741,7 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
   projectOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
  
   InputPoint peF = InputPoint(projExtremF, functors::Round<>());
-  InputPoint peL = InputPoint(projExtremF, functors::Round<>());
+  InputPoint peL = InputPoint(projExtremL, functors::Round<>());
 
   for(TConstIteratorG it = itBegin; it != itEnd; it++)
     {
