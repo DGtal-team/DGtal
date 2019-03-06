@@ -509,9 +509,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
   else
     {
       PointD projF, projL, projS ;
-      projectOnStraightLine(myState.edgePh, myState.edgeQh, aFirstPt, projF);
-      projectOnStraightLine(myState.edgePh, myState.edgeQh, aLastPt, projL);
-      projectOnStraightLine(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
+      projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, aFirstPt, projF);
+      projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, aLastPt, projL);
+      projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
     
       // Shift of the projection of PQ to define the other part of bounds.
       PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
@@ -685,13 +685,13 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNumberSegment
 
 
 template < typename TInputPoint, typename TConstIterator>
-template<typename TPointD>
+template<typename TPoint, typename TPointD>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projectOnStraightLine(const TPointD & ptA,
-                                                                                     const TPointD & ptB,
-                                                                                     const TPointD & ptC,
-                                                                                     PointD & ptProjected) const
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projectOnStraightLine(const TPoint & ptA,
+                                                                                      const TPoint & ptB,
+                                                                                      const TPoint & ptC,
+                                                                                      TPointD & ptProjected) const
 {
   if (ptA==ptC)
     {
@@ -740,26 +740,27 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
   projectOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
   projectOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
  
+  InputPoint peF = InputPoint(projExtremF, functors::Round<>());
+  InputPoint peL = InputPoint(projExtremF, functors::Round<>());
 
   for(TConstIteratorG it = itBegin; it != itEnd; it++)
     {
       InputPoint p = *it;
-      PointD pointEnvConv = PointD(p[0], p[1]);
       PointD projPointEnvConv;
-      bool isNewExtrema = !projectOnStraightLine(projExtremF, projExtremL, pointEnvConv, projPointEnvConv); 
+      bool isNewExtrema = !projectOnStraightLine(peF, peL, p, projPointEnvConv); 
       if(isNewExtrema)
         {
           double distFirst = (projPointEnvConv-projExtremF).norm(); 
           double distLast = (projPointEnvConv- projExtremL).norm(); 
           if(distFirst>= distLast)
             {
-              aLastExtrPt = pointEnvConv;
-              projExtremL = projPointEnvConv;	  
+              aLastExtrPt = p;
+              peL = InputPoint( projPointEnvConv, functors::Round<>());	  
             }
           else
             {
-              aFirstExtrPt = pointEnvConv;
-              projExtremF = projPointEnvConv;	 
+              aFirstExtrPt = p;
+              peF = InputPoint( projPointEnvConv, functors::Round<>());	  
             }
         }      
     }
