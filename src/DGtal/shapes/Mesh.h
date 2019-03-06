@@ -467,7 +467,7 @@ namespace DGtal
     void changeScale(const typename TPoint::Component aScale);
     
     /**
-     * SubDivide triangular mesh if triangle area is less than the given parameter.
+     * SubDivide triangular mesh if triangle area is larger than the given parameter.
      * @param[in] minArea the minimum area factor. 
      * @return the new max triangle area.
      **/
