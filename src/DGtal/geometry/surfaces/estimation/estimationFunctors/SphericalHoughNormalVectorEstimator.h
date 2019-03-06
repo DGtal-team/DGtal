@@ -152,7 +152,8 @@ namespace DGtal
       Quantity eval( )
       {
         std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0, myPoints.size() - 1 );
+        std::uniform_int_distribution<int> distribution(0,
+                                                        static_cast<int>(myPoints.size()) - 1 );
         double aspect;
         
         for(auto t = 0u; t < myNbTrials ; ++t)

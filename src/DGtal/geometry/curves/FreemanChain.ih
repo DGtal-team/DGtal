@@ -840,7 +840,7 @@ template <typename TInteger>
 inline
 short DGtal::FreemanChain<TInteger>::freemanCode4C(int dx, int dy)
 {
-  short number = ( dx != 0 ? (1 - dx) : (2 - dy) );
+  short number = static_cast<short>(( dx != 0 ? (1 - dx) : (2 - dy) ));
   if ( (number < 0) || (number > 3) )
         {
           return 8;

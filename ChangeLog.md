@@ -42,7 +42,13 @@
   - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
  
+- *Documentation*
+  - Improving KhalimskySpace related classes documentations by displaying
+    a short description in the member list.
+    (Roland Denis,  [#1398](https://github.com/DGtal-team/DGtal/pull/1398))
+
 ## Bug Fixes
+
 - *Configuration/General*
   - Continuous integration AppVeyor fix
     [#1326](https://github.com/DGtal-team/DGtal/pull/1326)
@@ -50,11 +56,18 @@
     (Roland Denis, [#1335](https://github.com/DGtal-team/DGtal/pull/1335))
   - Fixing warning of Clang when including GraphicsMagick v1.3.31
     (Roland Denis, [#1366](https://github.com/DGtal-team/DGtal/pull/1366))
+  - Fix compilation warnings with gcc 8.2.1
+    (Boris Mansencal, [#1384](https://github.com/DGtal-team/DGtal/pull/1384))
   - Fix compilation with Visual Studio (15.9.5) and some io tests
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
   - Fixing & updating Travis: documentation deployement and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
-
+  - Various warnings fixed on Xcode (David Coeurjolly,
+    [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
+  - Fix compilation and adding debug version for the generated file with Visual Studio
+    (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
+  
+	
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
@@ -78,12 +91,15 @@
 - *IO*
   - Improve ITKReader, testITKio and testITKReader (Boris Mansencal,
     [#1379](https://github.com/DGtal-team/DGtal/pull/1379))
+    [#1394](https://github.com/DGtal-team/DGtal/pull/1394))
   - Fix wrong typedef for double case in ITKReader (Adrien Krähenbühl,
     [#1259](https://github.com/DGtal-team/DGtal/pull/1322))
   - Fix safeguard when using ImageMagick without cmake activation (David Coeurjolly,
     [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
   - Fix Color::Green definition (David Coeurjolly,
     [#1385](https://github.com/DGtal-team/DGtal/pull/1385))
+  - Fix Visual Studio ContourHelper tests.
+    (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
@@ -133,6 +149,9 @@
     programs testCubicalComplex, testVoxelComplex and
     testParDirCollapse. (Jacques-Olivier Lachaud,
     [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
+
+  - Move operators outside of functions namespace in VoxelComplexFunctions.
+    (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
 
 - *Miscellaneous*
   - Fix Small bug in Integral Invariant Volume Estimator in 2D

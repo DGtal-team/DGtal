@@ -278,8 +278,8 @@ facesAroundVertex( const Vertex & v, bool order_ccw_in_3d ) const
       FaceRange faces;
       faces.push_back( facesAroundArc( arcs[ 0 ] )[ 0 ] );
       faces.push_back( facesAroundArc( arcs[ 2 ] )[ 0 ] );
-      faces.push_back( facesAroundArc( arcs[ 1 ] )[ 0 ] ); //< to change order.
-      faces.push_back( facesAroundArc( arcs[ 3 ] )[ 0 ] ); //< to change order.
+      faces.push_back( facesAroundArc( arcs[ 1 ] )[ 0 ] ); // < to change order.
+      faces.push_back( facesAroundArc( arcs[ 3 ] )[ 0 ] ); // < to change order.
       const KSpace& K = container().space();
       auto  orth_dir = K.sOrthDir( v );
       auto    direct = K.sDirect( v, orth_dir ); // true: ccw, false: ! ccw

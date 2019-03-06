@@ -141,12 +141,12 @@ bool testLatticePolytope2D()
   cip.pushBack( Point( 0, 3 ) );
   Integer area2 = cip.twiceArea();
   trace.info() << "- 2*area   = " << area2 << std::endl;
-  ++nb, nbok += ( area2 == 15 ) ? 1 : 0;
+  ++nb; nbok += ( area2 == 15 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "2*area == 15" << std::endl;
   Point3I c = cip.centroid( area2 );
   trace.info() << "- centroid = " << c << std::endl;
-  ++nb, nbok += ( c == Point3I( 75, 45, 45 ) ) ? 1 : 0;
+  ++nb; nbok += ( c == Point3I( 75, 45, 45 ) ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "centroid == [75,45,45]" << std::endl;
   Domain d = cip.boundingBoxDomain();
@@ -264,7 +264,7 @@ bool exhaustiveTestLatticePolytope2D()
           HalfSpace h( Vector( x, y ), cc );
           trace.info() << "[" << j << " size=" << cip2.size() << "]"
                        << " cut by (" << x << "," << y << ")," << c << std::endl;
-          ++nb, nbok += checkCut( cip2, h ) ? 1 : 0;
+          ++nb; nbok += checkCut( cip2, h ) ? 1 : 0;
           trace.info() << "(" << nbok << "/" << nb << ") cuts" << std::endl;
           //std::cerr << " " << cip2.size() << flush;
           if ( nb != nbok ) break;
@@ -304,7 +304,7 @@ bool specificTestLatticePolytope2D()
   cip.pushBack( Point( -3, 6 ) );
   HalfSpace hs1( Vector( -5, 11 ), 8 ); //12
   HalfSpace hs2( Vector( -3, -11 ), 8 ); //-37
-  ++nb, nbok += checkCut( cip, hs1 ) ? 1 : 0;
+  ++nb; nbok += checkCut( cip, hs1 ) ? 1 : 0;
 
   Domain d = cip.boundingBoxDomain();
   Board2D board;
@@ -325,7 +325,7 @@ bool specificTestLatticePolytope2D()
   board.saveEPS( "cip3.eps" );
   board.clear();
 
-  ++nb, nbok += checkCut( cip, hs2 ) ? 1 : 0;
+  ++nb; nbok += checkCut( cip, hs2 ) ? 1 : 0;
   return nbok == nb;
 }
 

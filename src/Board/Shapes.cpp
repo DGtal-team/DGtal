@@ -2076,8 +2076,7 @@ Rectangle::flushTikZ( std::ostream & stream,
 
     stream << "\\path[" << tikzProperties(transform) << "] ("
       << _path[0].x << ',' << _path[0].y << ')'
-      << " rectangle ("
-      << _path[1].x << ',' << _path[3].y << "); ";
+      << " rectangle (" << _path[1].x << ',' << _path[3].y << "); ";
 }
 
 /*

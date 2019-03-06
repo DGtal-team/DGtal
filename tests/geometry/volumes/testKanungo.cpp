@@ -84,7 +84,7 @@ bool testKanungo2D()
       board << *it;
   board.saveSVG("output-set-kanungo-0.1.svg");
   
-  nbok += true ? 1 : 0;
+  nbok ++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
