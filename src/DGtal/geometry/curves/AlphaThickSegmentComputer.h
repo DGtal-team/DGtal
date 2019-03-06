@@ -663,9 +663,9 @@ protected:
    * @param[out] ptProjected the projected point.
    * @return true if ptProjected is inside the segment [A,B].
    **/
-  template<typename TPointD>
-  bool projectOnStraightLine(const TPointD & ptA, const TPointD & ptB,
-                             const TPointD & ptC, PointD & ptProjected) const;
+  template<typename TPoint, typename TPointD>
+  bool projectOnStraightLine(const TPoint & ptA, const TPoint & ptB,
+                             const TPoint & ptC, TPointD & ptProjected) const;
 
 
   /**
