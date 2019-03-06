@@ -145,7 +145,7 @@ bool testMesh()
   trace.endBlock();
   
   trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
-  aMesh.changeScale(2.0);
+  aMesh.changeScale(2);
   std::pair<Point, Point> bb = aMesh.getBoundingBox();
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
   trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
@@ -159,11 +159,12 @@ bool testMesh()
   aMeshR.addTriangularFace(0,1,2);
   aMeshR.subDivideTriangularFaces(0.5); 
 
-  trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << std::endl;
-  trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << std::endl;  
-  trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << std::endl;    
+  trace.info() << "nb vertex after subdivision: " << aMeshR.nbVertex() << " (should be 4)"<<std::endl;
+  trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << " (should be 3)" <<std::endl;  
+  trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << "(should be: "<< RealPoint(2.0/3.0, 1.0/3.0) << ") "<<  std::endl;    
   bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
                       aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
+  trace.info() << (okSubDivide ? "[subdivise OK]":"[subdivise fail]" ) << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing mesh quad transform  ..." );
@@ -177,8 +178,9 @@ bool testMesh()
   aMeshQ.addQuadFace(0,1,2,3);
   aMeshQ.quadToTriangularFaces(); 
 
-  trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() << std::endl;  
+  trace.info() << "nb faces after quad to triangle transform: " << aMeshQ.nbFaces() ;    
   bool okQuadToTrans =  aMeshQ.nbFaces() == 2;
+  trace.info() << "(should be 2) "<< (okQuadToTrans? "[ok]": "[error]") << std::endl;    
   trace.endBlock();
 
 
@@ -188,6 +190,7 @@ bool testMesh()
   bool okMeshCopy = aMesh.nbFaces() == aMesh2.nbFaces() && aMesh.nbVertex() == aMesh2.nbVertex() &&
                     aMesh.nbFaces() == aMesh3.nbFaces() && aMesh.nbVertex() == aMesh3.nbVertex() &&
                     aMesh.getVertex(0) == aMesh2.getVertex(0) && aMesh.getVertex(0) == aMesh3.getVertex(0);
+  trace.info() << (okMeshCopy ? "[copy ok]":"[copy fail]" ) << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing face removing  ..." );
@@ -195,7 +198,7 @@ bool testMesh()
   std::vector<unsigned int> f = {1};
   aMesh4.removeFaces(f);
   bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
-  
+  trace.info() << (okRemoveFace ? "[face remove ok]":"[face remove fail]" ) << std::endl;
   
   ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
        okSubDivide && okQuadToTrans && okRemoveFace;

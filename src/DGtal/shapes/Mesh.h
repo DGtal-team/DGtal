@@ -464,7 +464,7 @@ namespace DGtal
      * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
      * @param[in] aScale the scale factor. 
      **/
-    void changeScale(const double aScale);
+    void changeScale(const typename TPoint::Component aScale);
     
     /**
      * SubDivide triangular mesh if triangle area is less than the given parameter.
