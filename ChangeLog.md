@@ -158,7 +158,8 @@
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
   - Change from private to public access of types Input and Output in SCellToPoint
     (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
-
+  - Correct small typo when compiling with DEBUG defined
+    (Boris Mansencal, [#1401](https://github.com/DGtal-team/DGtal/pull/1401))
 
 # DGtal 0.9.4.1
 
