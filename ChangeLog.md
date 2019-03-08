@@ -66,8 +66,9 @@
     [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
   - Fix compilation and adding debug version for the generated file with Visual Studio
     (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
-  
-	
+  - Correct pragma pop in ITK related files
+    (Boris Mansencal, [#1400](https://github.com/DGtal-team/DGtal/pull/1400))
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
