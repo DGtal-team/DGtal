@@ -42,8 +42,8 @@
 #pragma clang diagnostic pop
 #endif
 #if defined(__GNUG__)
-#endif
 #pragma GCC diagnostic pop
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
