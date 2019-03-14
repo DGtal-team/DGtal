@@ -19,7 +19,7 @@
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @author Alexandre Faure
- * @author Fabien Feschet 
+ * @author Fabien Feschet
  * @author Mohammad Said
  * @author Jacques-Olivier Lachaud
  *
@@ -54,20 +54,20 @@
 template < typename TInputPoint, typename TConstIterator>
 inline
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::~AlphaThickSegmentComputer()
-{ 
+{
 }
 
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer< TInputPoint, 
+DGtal::AlphaThickSegmentComputer< TInputPoint,
                                   TConstIterator>::AlphaThickSegmentComputer(const double maximalThickness,
                                                                              const ThicknessDef &thicknessDefinition,
-                                                                             const double thickCompPrecision): 
+                                                                             const double thickCompPrecision):
   myBegin(), myEnd()
-{ 
+{
   myThicknessCompPrecision = thickCompPrecision;
-  myMaximalThickness = maximalThickness; 
+  myMaximalThickness = maximalThickness;
   myThicknessDefinition = thicknessDefinition;
   myNbPointsAddedFromIterators = 0;
 }
@@ -84,16 +84,16 @@ AlphaThickSegmentComputer( const AlphaThickSegmentComputer & other ): myBegin(ot
                                                                       myThicknessCompPrecision(other.myThicknessCompPrecision),
                                                                       myThicknessDefinition(other.myThicknessDefinition),
                                                                       myState(other.myState),
-                                                                      myPreviousState(other.myPreviousState), 
+                                                                      myPreviousState(other.myPreviousState),
                                                                       myIsStoringPoints(other.myIsStoringPoints),
-                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators) 
-   
-{ 
+                                                                      myNbPointsAddedFromIterators(other.myNbPointsAddedFromIterators)
+
+{
 }
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> & 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator> &
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
 operator= ( const AlphaThickSegmentComputer & other )
 {
@@ -121,7 +121,7 @@ operator= ( const AlphaThickSegmentComputer & other )
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Self
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSelf() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSelf() const
 {
   return Self(myMaximalThickness, myThicknessDefinition,  myThicknessCompPrecision);
 }
@@ -132,7 +132,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSelf() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Reverse
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getReverse() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getReverse() const
 {
   return Reverse (myMaximalThickness, myThicknessDefinition,  myThicknessCompPrecision);
 }
@@ -140,17 +140,17 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getReverse() con
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-bool 
+bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::operator==( const AlphaThickSegmentComputer & other ) const{
-  return ( (myBegin == other.myBegin) 
-	   && (myEnd == other.myEnd) && myState.vertexSh == other.myState.vertexSh
-           && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh); 
+    return ( (myBegin == other.myBegin)
+            && (myEnd == other.myEnd) && myState.vertexSh == other.myState.vertexSh
+            && myState.edgePh == other.myState.edgePh && myState.edgeQh == other.myState.edgeQh);
 }
 
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-bool 
+bool
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::operator!=( const AlphaThickSegmentComputer & other ) const{
   return (!(*this == other));
 }
@@ -160,7 +160,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::operator!=( cons
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Size
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::size() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::size() const
 {
   return myPointContainer.size();
 }
@@ -170,8 +170,8 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::size() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::empty() const 
-{  
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::empty() const
+{
   return myPointContainer.empty();
 }
 
@@ -180,7 +180,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::empty() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::begin() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::begin() const
 {
   return myBegin;
 }
@@ -191,7 +191,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::begin() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::end() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::end() const
 {
   return myEnd;
 }
@@ -200,7 +200,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::end() const
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ContainerConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerBegin() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerBegin() const
 {
   return myPointContainer.begin();
 }
@@ -211,7 +211,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerBegin()
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ContainerConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerEnd() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerEnd() const
 {
   return myPointContainer.end();
 }
@@ -222,7 +222,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::containerEnd() c
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConvexhullConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullBegin() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullBegin() const
 {
   return myState.melkmanCH.begin();
 }
@@ -233,7 +233,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullBegin(
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::ConvexhullConstIterator
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullEnd() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullEnd() const
 {
   return myState.melkmanCH.end();
 }
@@ -245,7 +245,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::convexhullEnd() 
 template < typename TInputPoint, typename TConstIterator>
 inline
 typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::Size
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::max_size() const 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::max_size() const
 {
   return myPointContainer.max_size();
 }
@@ -257,7 +257,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::max_size() const
 //-----------------------------------------------------------------------------
 template < typename TInputPoint, typename TConstIterator>
 inline
-void 
+void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::
 init(const ConstIterator &it)
 {
@@ -274,15 +274,15 @@ init(const ConstIterator &it)
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront(const InputPoint &aPoint ) 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront(const InputPoint &aPoint )
 {
   myPreviousState = myState;
-  myPointContainer.push_back(aPoint);  
+  myPointContainer.push_back(aPoint);
   myState.melkmanCH.add(aPoint);
   bool aResult = melkmanIsConvexValid();
   myPointContainer.pop_back();
   myState = myPreviousState;
-  return aResult;      
+  return aResult;
 }
 
 
@@ -291,10 +291,10 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFron
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(const InputPoint &aPoint) 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(const InputPoint &aPoint)
 {
   myPreviousState = myState;
-  myPointContainer.push_back(aPoint);  
+  myPointContainer.push_back(aPoint);
   myState.melkmanCH.add(aPoint);
   if (melkmanIsConvexValid()){
     if (myPointContainer.size()==1){
@@ -303,7 +303,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
     myState.lastFront = aPoint;
     return true;
   }else{
-    myPointContainer.pop_back();    
+    myPointContainer.pop_back();
     myState = myPreviousState;
     return false;
   }
@@ -313,13 +313,13 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront(cons
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront() 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFront()
 {
   myPreviousState = myState;
   myState.melkmanCH.add(*myEnd);
   bool aResult = melkmanIsConvexValid();
   myState = myPreviousState;
-  return aResult;      
+  return aResult;
 }
 
 
@@ -328,11 +328,11 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isExtendableFron
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront() 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::extendFront()
 {
   myPreviousState = myState;
   myState.melkmanCH.add(*myEnd);
-   
+
   if (melkmanIsConvexValid()){
     if (myEnd==myBegin){
       myState.lastBack = *myEnd;
@@ -361,7 +361,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::primitive()  con
   PointD vectNormal;
   double mu, nu;
   computeParallelStripParams(mu, vectNormal, nu);
-  return Primitive(mu,vectNormal,nu);  
+  return Primitive(mu,vectNormal,nu);
 }
 
 
@@ -373,7 +373,7 @@ inline
 void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::selfDisplay(std::ostream & out)  const
 {
-  out << "[Alpha Thick Segment Computer]" << std::endl; 
+  out << "[Alpha Thick Segment Computer]" << std::endl;
   out << "Inside points: "<< std::endl;
   for ( ConstIterator it = myPointContainer.begin(); it != myPointContainer.end(); ++it)
     {
@@ -432,16 +432,16 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getExtremityPoin
 template < typename TInputPoint, typename TConstIterator>
 inline
 double
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeightAndAntiPodal()  
-{  
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeightAndAntiPodal()
+{
   double chThickness = DGtal::functions::Hull2D::computeHullThickness(myState.melkmanCH.begin(),
-                                                                      myState.melkmanCH.end(), 
-                                                                      myThicknessDefinition, 
+                                                                      myState.melkmanCH.end(),
+                                                                      myThicknessDefinition,
                                                                       myState.edgePh,
                                                                       myState.edgeQh, myState.vertexSh);
-  
+
   return floor(chThickness / myThicknessCompPrecision + 0.5) * myThicknessCompPrecision;
-  
+
 }
 
 
@@ -451,9 +451,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::updateMainHeight
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsConvexValid() 
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::melkmanIsConvexValid()
 {
-  myState.actualThickness = updateMainHeightAndAntiPodal(); 
+  myState.actualThickness = updateMainHeightAndAntiPodal();
   return myState.actualThickness <= myMaximalThickness;
 }
 
@@ -464,7 +464,7 @@ std::vector<TInputPoint>
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getConvexHull() const
 {
   std::vector<TInputPoint> aResult;
-  for (typename DGtal::MelkmanConvexHull<TInputPoint, Functor>::ConstIterator it = myState.melkmanCH.begin(); 
+  for (typename DGtal::MelkmanConvexHull<TInputPoint, Functor>::ConstIterator it = myState.melkmanCH.begin();
        it != myState.melkmanCH.end(); it++)
     {
       aResult.push_back(*it);
@@ -485,26 +485,26 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
                                                                                                PointD &pt4LongestSegment2,
                                                                                                double minVisibleWidthBounds) const
 {
-  
-  // Special case, blurred segment composed only of aligned points. 
+
+  // Special case, blurred segment composed only of aligned points.
   // In this cas the bounding box is restrained to a eplison width rectangle.
   if(myState.actualThickness==0.0)
     {
-      PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]); 
+      PointD vectPQ (aFirstPt[0]- aLastPt[0], aFirstPt[1]- aLastPt[1]);
       double normPQ = vectPQ.norm();
       PointD vectUnitPerpPQ (-vectPQ[1]/normPQ, vectPQ[0]/normPQ);
       pt1LongestSegment1[0]= aFirstPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
       pt1LongestSegment1[1]= aFirstPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
-    
+
       pt2LongestSegment1[0]= aLastPt[0]+vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
       pt2LongestSegment1[1]= aLastPt[1]+vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
-    
+
       pt3LongestSegment2[0]= aLastPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
       pt3LongestSegment2[1]= aLastPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
-    
+
       pt4LongestSegment2[0]=  aFirstPt[0]-vectUnitPerpPQ[0]*minVisibleWidthBounds/2.0;
       pt4LongestSegment2[1]=  aFirstPt[1]-vectUnitPerpPQ[1]*minVisibleWidthBounds/2.0;
-    
+
     }
   else
     {
@@ -512,23 +512,23 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
       projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, aFirstPt, projF);
       projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, aLastPt, projL);
       projectOnStraightLine<PointD>(myState.edgePh, myState.edgeQh, myState.vertexSh, projS);
-    
+
       // Shift of the projection of PQ to define the other part of bounds.
       PointD dep (myState.vertexSh[0]-projS[0], myState.vertexSh[1]-projS[1]);
       PointD projF2(projF[0]+dep[0], projF[1]+dep[1] );
       PointD projL2(projL[0]+dep[0], projL[1]+dep[1] );
-    
+
       pt1LongestSegment1[0]=projF[0];
       pt1LongestSegment1[1]=projF[1];
-    
+
       pt2LongestSegment1[0]=projL[0];
       pt2LongestSegment1[1]=projL[1];
-    
+
       pt3LongestSegment2[0]=projL2[0];
       pt3LongestSegment2[1]=projL2[1];
-    
+
       pt4LongestSegment2[0]=projF2[0];
-      pt4LongestSegment2[1]=projF2[1];      
+      pt4LongestSegment2[1]=projF2[1];
     }
   // check orientation of resulting sequence of vertex
   PointD v1 = pt1LongestSegment1 - pt2LongestSegment1;
@@ -539,9 +539,9 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
       std::swap(pt1LongestSegment1, pt4LongestSegment2);
       std::swap(pt2LongestSegment1, pt3LongestSegment2);
     }
-  
 
-  
+
+
 }
 
 
@@ -551,12 +551,12 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBoxFr
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-void 
+void
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(PointD &pt1LongestSegment1,
                                                                                PointD &pt2LongestSegment1,
                                                                                PointD &pt3LongestSegment2,
                                                                                PointD &pt4LongestSegment2 ) const
-{  
+{
   // handle special case with only one point
   if (getNumberSegmentPoints() == 1)
     {
@@ -573,27 +573,27 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getBoundingBox(P
     }
   InputPoint fp = myState.lastBack;
   InputPoint lp = myState.lastFront;
-  getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1, 
+  getBoundingBoxFromExtremPoints(fp, lp, pt1LongestSegment1, pt2LongestSegment1,
                                  pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
-  
+
   if(myState.actualThickness==0.0)
     {
       return;
     }
-  
+
   InputPoint extremF =  myState.lastFront;
   InputPoint extremL =  myState.lastBack;
 
   computeExtremaPoints(myState.melkmanCH.begin(), myState.melkmanCH.end() , extremL, extremF);
-  getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1, 
-                                 pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);  
+  getBoundingBoxFromExtremPoints(extremF, extremL, pt1LongestSegment1, pt2LongestSegment1,
+                                 pt3LongestSegment2, pt4LongestSegment2, myMaximalThickness);
 }
 
 
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-std::string 
+std::string
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() const
 {
   return "AlphaThickSegment";
@@ -603,7 +603,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::className() cons
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-double 
+double
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength() const
 {
   PointD pt1, pt2, pt3, pt4;
@@ -615,23 +615,23 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getSegmentLength
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-void 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParallelStripParams(double &mu, 
-                                                                                           PointD &N, 
+void
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::computeParallelStripParams(double &mu,
+                                                                                           PointD &N,
                                                                                            double &nu) const
 {
-  PointD dirSeg =  myState.edgeQh - myState.edgePh; 
+  PointD dirSeg =  myState.edgeQh - myState.edgePh;
   N[0] = -dirSeg[1];
   N[1] = dirSeg[0];
   mu = (N[0]*myState.edgePh[0]+N[1]*myState.edgePh[1]);
   nu = N[0]*myState.vertexSh[0]+N[1]*myState.vertexSh[1] - mu;
 }
 
- 
+
 template < typename TInputPoint, typename TConstIterator>
 inline
-double 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getThickness() const 
+double
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getThickness() const
 {
   return myState.actualThickness;
 }
@@ -639,17 +639,17 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getThickness() c
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::PointD 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() const 
+typename DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::PointD
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNormal() const
 {
   return primitive().normal();
 }
 
- 
+
 template < typename TInputPoint, typename TConstIterator>
 inline
-double 
-DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const 
+double
+DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const
 {
   return primitive().mu();
 }
@@ -657,13 +657,13 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getMu() const
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-double 
-  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNu() const 
+double
+  DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNu() const
 {
   return primitive().nu();
 }
 
-   
+
 template < typename TInputPoint, typename TConstIterator>
 inline
 bool
@@ -676,7 +676,7 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::isStoringSegment
 
 template < typename TInputPoint, typename TConstIterator>
 inline
-unsigned int 
+unsigned int
 DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::getNumberSegmentPoints() const
 {
   return static_cast<unsigned int>(myNbPointsAddedFromIterators+myPointContainer.size());
@@ -703,20 +703,20 @@ DGtal::AlphaThickSegmentComputer< TInputPoint, TConstIterator>::projectOnStraigh
       ptProjected=ptB;
       return true ;
     }
-  
+
   TPointD vAB (ptB[0]- ptA[0], ptB[1]- ptA[1]);
   PointD vABn ((double)vAB[0], (double)vAB[1]);
   vABn = vABn/vABn.norm();
   PointD vAC (ptC[0]-ptA[0], ptC[1]-ptA[1]);
   double distPtA_Proj = vAC.dot(vABn);
-  
+
   ptProjected[0]= ptA[0]+vABn[0]*(distPtA_Proj);
-  ptProjected[1] = ptA[1]+vABn[1]*(distPtA_Proj);  
-  
+  ptProjected[1] = ptA[1]+vABn[1]*(distPtA_Proj);
+
   return  distPtA_Proj>=0 && ((ptA[0]<ptB[0] && ptProjected[0]<=ptB[0] ) ||
                               (ptA[0]>ptB[0] && ptProjected[0]>=ptB[0] ) ||
                               (ptA[0]==ptB[0] && ptA[1]<ptB[1] && ptProjected[1]<=ptB[1]) ||
-                              (ptA[0]==ptB[0] && ptA[1]>=ptB[1] && ptProjected[1]>=ptB[1])); 
+                              (ptA[0]==ptB[0] && ptA[1]>=ptB[1] && ptProjected[1]>=ptB[1]));
 }
 
 
@@ -733,13 +733,13 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
   // To be changed with saved point added by push front/push back
   InputPoint extremF = myState.lastBack;
   InputPoint extremL = myState.lastFront;
- 
+
   PointD projExtremF;
   PointD projExtremL;
-  
+
   projectOnStraightLine(myState.edgePh, myState.edgeQh, extremF, projExtremF);
-  projectOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);  
- 
+  projectOnStraightLine(myState.edgePh, myState.edgeQh, extremL, projExtremL);
+
   InputPoint peF = InputPoint(projExtremF, functors::Round<>());
   InputPoint peL = InputPoint(projExtremL, functors::Round<>());
 
@@ -747,24 +747,24 @@ computeExtremaPoints(const TConstIteratorG & itBegin,
     {
       InputPoint p = *it;
       PointD projPointEnvConv;
-      bool isNewExtrema = !projectOnStraightLine(peF, peL, p, projPointEnvConv); 
+      bool isNewExtrema = !projectOnStraightLine(peF, peL, p, projPointEnvConv);
       if(isNewExtrema)
         {
-          double distFirst = (projPointEnvConv-projExtremF).norm(); 
-          double distLast = (projPointEnvConv- projExtremL).norm(); 
+          double distFirst = (projPointEnvConv-projExtremF).norm();
+          double distLast = (projPointEnvConv- projExtremL).norm();
           if(distFirst>= distLast)
             {
               aLastExtrPt = p;
-              peL = InputPoint( projPointEnvConv, functors::Round<>());	  
+              peL = InputPoint( projPointEnvConv, functors::Round<>());
             }
           else
             {
               aFirstExtrPt = p;
-              peF = InputPoint( projPointEnvConv, functors::Round<>());	  
+              peF = InputPoint( projPointEnvConv, functors::Round<>());
             }
-        }      
+        }
     }
-  
+
 }
 
 
