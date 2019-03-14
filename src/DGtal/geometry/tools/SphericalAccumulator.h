@@ -111,7 +111,7 @@ namespace DGtal
     typedef DGtal::int32_t Quantity;
 
     ///Type to represent bin indexes
-    typedef DGtal::uint32_t Size;
+    typedef size_t Size;
 
     ///Type to iterate on bin values.
     typedef std::vector<Quantity>::const_iterator  ConstIterator;

@@ -96,8 +96,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
-      ++nb, nbok += ok_ext ? 1 : 0;
-      ++nb, nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
@@ -141,8 +141,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       p[ axis ] += tmp;
       bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
       bool ok = ! plane.extend( p ); // should *not* be ok
-      ++nb, nbok += ok ? 1 : 0;
-      ++nb, nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
@@ -210,8 +210,8 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
         }
       bool ok_ext = plane.isExtendable( points.begin(), points.end() ); // should be ok
       bool ok = plane.extend( points.begin(), points.end() ); // should be ok
-      ++nb, nbok += ok_ext ? 1 : 0;
-      ++nb, nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << points[ 0 ] << " NOT IN plane=" << plane << std::endl;
@@ -255,8 +255,8 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
       p[ axis ] += tmp;
       bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
       bool ok = ! plane.extend( p ); // should *not* be ok
-      ++nb, nbok += ok ? 1 : 0;
-      ++nb, nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
@@ -318,8 +318,8 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
-      ++nb, nbok += ok_ext ? 1 : 0;
-      ++nb, nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
@@ -363,8 +363,8 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       p[ axis ] += tmp;
       bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
       bool ok = ! plane.extend( p ); // should *not* be ok
-      ++nb, nbok += ok ? 1 : 0;
-      ++nb, nbok += ok_ext ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
+      ++nb; nbok += ok_ext ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
@@ -399,14 +399,14 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb; nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (Simple extension) for plane " << a << " * x + "
                         << b << " * y + " << c << " * z = " << d << std::endl;
               break;
             }
-          ++nb, nbok += checkPlaneGroupExtension<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb; nbok += checkPlaneGroupExtension<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (Group extension) for plane " << a << " * x + "
@@ -479,10 +479,10 @@ checkWidth( Integer a, Integer b, Integer c, Integer d,
       if ( min < 0.0 ) min = wn/wd;
       else if ( wn/wd < min ) min = wn/wd;
     }
-  ++nb, nbok += (min < 1.0 ) ? 1 : 0;
+  ++nb; nbok += (min < 1.0 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") min width = " << min
                << " < 1.0" << std::endl;
-  ++nb, nbok += (0.9 < min ) ? 1 : 0;
+  ++nb; nbok += (0.9 < min ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") min width = " << min
                << " > 0.9" << std::endl;
   trace.endBlock();
@@ -505,7 +505,7 @@ checkWidths( unsigned int nbplanes, int diameter, unsigned int nbtries )
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkWidth<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb; nbok += checkWidth<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (checkWidth) for plane " << a << " * x + "
@@ -544,41 +544,41 @@ bool testChordNaivePlaneComputer()
   Point pt0( 0, 0, 0 );
   plane.init( 2, 1, 1 );
   bool pt0_inside = plane.extend( pt0 );
-  ++nb, nbok += pt0_inside == true ? 1 : 0;
+  ++nb; nbok += pt0_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;
   Point pt1( Point( 2, 0, 0 ) );
   bool pt1_inside = plane.extend( pt1 );
-  ++nb, nbok += pt1_inside == true ? 1 : 0;
+  ++nb; nbok += pt1_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt1
                << " Plane=" << plane << std::endl;
   Point pt2( Point( 0, 2, 2 ) );
   bool pt2_inside = plane.extend( pt2 );
-  ++nb, nbok += pt2_inside == true ? 1 : 0;
+  ++nb; nbok += pt2_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt2
                << " Plane=" << plane << std::endl;
 
   Point pt3( Point( 1, 1, 1 ) );
   bool pt3_inside = plane.extend( pt3 );
-  ++nb, nbok += pt3_inside == true ? 1 : 0;
+  ++nb; nbok += pt3_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt3
                << " Plane=" << plane << std::endl;
 
   Point pt4( Point( -10, -10, 10 ) );
   bool pt4_inside = plane.extend( pt4 );
-  ++nb, nbok += pt4_inside == false ? 1 : 0;
+  ++nb; nbok += pt4_inside == false ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") impossible add " << pt4
                << " Plane=" << plane << std::endl;
 
   Point pt5 = pt2 + Point( 1, 0, 1 );
   bool pt5_inside = plane.extend( pt5 );
-  ++nb, nbok += pt5_inside == true ? 1 : 0;
+  ++nb; nbok += pt5_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
 
   Point pt6 = pt5 + Point( 6, 0, 2 );
   bool pt6_inside = plane.extend( pt6 );
-  ++nb, nbok += pt6_inside == true ? 1 : 0;
+  ++nb; nbok += pt6_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt6
                << " Plane=" << plane << std::endl;
 
@@ -590,24 +590,24 @@ bool testChordNaivePlaneComputer()
   trace.info() << "(" << nbok << "/" << nb << ") "
                << " Plane2=" << plane2 << std::endl;
 
-  ++nb, nbok += checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  ++nb; nbok += checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                << ") checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
 
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
+  ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 )"
                << std::endl;
-  ++nb, nbok += checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  ++nb; nbok += checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                 << ") checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                 << std::endl;
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                << std::endl;
@@ -619,27 +619,27 @@ bool testChordNaivePlaneComputer()
     Point pppt0( 0, 0, 0 );
     ppplane.init( 2, 5, 2 );
     bool pppt0_inside = ppplane.extend( pppt0 );
-    ++nb, nbok += pppt0_inside == true ? 1 : 0;
+    ++nb; nbok += pppt0_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     Point pppt1( 3, 2, 2 );
     bool pppt1_inside = ppplane.extend( pppt1 );
-    ++nb, nbok += pppt1_inside == true ? 1 : 0;
+    ++nb; nbok += pppt1_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     Point pppt2( 0, 0, 1 );
     bool pppt2_inside = ppplane.extend( pppt2 );
-    ++nb, nbok += pppt2_inside == true ? 1 : 0;
+    ++nb; nbok += pppt2_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     Point pppt3 = pppt1 + Point( 0, 0, 1 );
     bool pppt3_inside = ppplane.extend( pppt3 );
-    ++nb, nbok += pppt3_inside == true ? 1 : 0;
+    ++nb; nbok += pppt3_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     Point pppt4 = pppt3 + Point( 0, 0, 1 );
     bool pppt4_inside = ppplane.extend( pt4 );
-    ++nb, nbok += pppt4_inside == true ? 1 : 0;
+    ++nb; nbok += pppt4_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     trace.endBlock();
@@ -651,17 +651,17 @@ bool testChordNaivePlaneComputer()
     pplane.init( 1, 1, 1 );
     Point ppt0( -6, -3, 5 );
     bool ppt0_inside = pplane.extend( ppt0 );
-    ++nb, nbok += ppt0_inside == true ? 1 : 0;
+    ++nb; nbok += ppt0_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << pplane
                  << std::endl;
     Point ppt1( 4, 4, -5 );
     bool ppt1_inside = pplane.extend( ppt1 );
-    ++nb, nbok += ppt1_inside == true ? 1 : 0;
+    ++nb; nbok += ppt1_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << pplane
                  << std::endl;
     Point ppt2( -5, -2, 4 );
     bool ppt2_inside = pplane.extend( ppt2 );
-    ++nb, nbok += ppt2_inside == true ? 1 : 0;
+    ++nb; nbok += ppt2_inside == true ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") Plane=" << pplane
                  << std::endl;
     trace.endBlock();
@@ -682,7 +682,7 @@ checkManyPlanes( unsigned int diameter,
   stringstream ss (stringstream::out);
   ss << "Testing block: Diameter is " << diameter << ". Check " << nbplanes << " planes with " << nbpoints << " points each.";
   trace.beginBlock ( ss.str() );
-  ++nb, nbok += checkPlanes<Scalar,NaivePlaneComputer>( nbplanes, diameter, nbpoints ) ? 1 : 0;
+  ++nb; nbok += checkPlanes<Scalar,NaivePlaneComputer>( nbplanes, diameter, nbpoints ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb
                << ") checkPlanes<Scalar,NaivePlaneComputer>()"
                << std::endl;
@@ -734,7 +734,7 @@ checkExtendWithManyPoints( unsigned int diameter,
           }
           pts.push_back( p );
         }
-      ++nb, nbok += plane.isExtendable( pts.begin(), pts.end() ); // should be ok
+      ++nb; nbok += plane.isExtendable( pts.begin(), pts.end() ); // should be ok
       trace.info() << "(" << nbok << "/" << nb
                    << ") plane.isExtendable( pts.begin(), pts.end() )"
                    << std::endl;
@@ -745,18 +745,18 @@ checkExtendWithManyPoints( unsigned int diameter,
       Point & any2 = pts[ getRandomInteger<int>( 0, pts.size() ) ];
       pts.push_back( any2 + Point(0,0,1) );
       bool check = ! plane.isExtendable( pts.begin(), pts.end() ); // should not be ok
-      ++nb, nbok += check ? 1 : 0;
+      ++nb; nbok += check ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb
                    << ") ! plane.isExtendable( pts.begin(), pts.end() )"
                    << std::endl;
       if ( ! check )
         trace.warning() << plane << " last=" << pts.back() << std::endl
                         << "a=" << a << " b=" << b << " c=" << c << " d=" << d << std::endl;
-      ++nb, nbok += plane.extend( pts.begin(), pts.end() - 3 ); // should be ok
+      ++nb; nbok += plane.extend( pts.begin(), pts.end() - 3 ); // should be ok
       trace.info() << "(" << nbok << "/" << nb
                    << ") plane.extend( pts.begin(), pts.end() - 3)"
                    << std::endl;
-      ++nb, nbok += ! plane.extend( pts.end() - 3, pts.end() ); // should not be ok
+      ++nb; nbok += ! plane.extend( pts.end() - 3, pts.end() ); // should not be ok
       trace.info() << "(" << nbok << "/" << nb
                    << ") ! plane.extend( pts.end() - 3, pts.end() )"
                    << std::endl;
