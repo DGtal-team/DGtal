@@ -21,6 +21,8 @@
   - Adding PointFunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a CPointFunctor model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+  - Adding square norm method to Point/Vector class. (David Coeurjolly,
+    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
 
 - *Helpers*
   - Classes Shortcuts and ShortcutsGeometry to simplify coding with
@@ -28,6 +30,15 @@
     surface, geometry, estimators functions, with many conversion
     and input/output tools. (Jacques-Olivier Lachaud,
     [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+
+- *Shapes package*
+  - Add two new star shapes: Astroid and Lemniscate
+   (Adrien Krähenbühl, Chouaib Fellah,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
+
+- *Geometry package*
+  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
+    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
 
 ## Changes
 
@@ -37,10 +48,6 @@
 - *Topology*
   - Remove the internal object from VoxelComplex, improving performance
     (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
-
-- *Geometry*
-  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
-    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
  
 - *Documentation*
   - Improving KhalimskySpace related classes documentations by displaying
@@ -77,9 +84,6 @@
     [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
 - *Shapes*
-  - Add two new star shapes: Astroid and Lemniscate
-   (Adrien Krähenbühl, Chouaib Fellah,
-   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
   - Fixing openmp flags (David Coeurjolly,
     [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
   - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
@@ -128,10 +132,6 @@
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
-
-- *Kernel*
-  - Adding square norm method to Point/Vector class. (David Coeurjolly,
-    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
 
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
