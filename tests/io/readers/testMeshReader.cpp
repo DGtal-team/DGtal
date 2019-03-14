@@ -44,8 +44,10 @@ using namespace DGtal;
 
 
 struct Point3D{  
+  using Component = double;
+
   static const unsigned int dimension = 3;
-  const double & operator[]( unsigned int i ) const{
+  const Component & operator[]( unsigned int i ) const{
     assert(i<3);
     switch (i){
     case 0: {return x;}
@@ -55,7 +57,7 @@ struct Point3D{
     return x;
   };
 
-   double & operator[]( unsigned int i ) {
+   Component & operator[]( unsigned int i ) {
     assert(i<3);
     switch (i){
     case 0: {return x;}
@@ -65,7 +67,7 @@ struct Point3D{
     return x;
   };
   
-  double  x, y,z;
+  Component  x, y,z;
 };
 
 
