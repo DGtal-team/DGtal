@@ -77,8 +77,9 @@
     [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
   - Fix compilation and adding debug version for the generated file with Visual Studio
     (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
-  
-	
+  - Correct pragma pop in ITK related files
+    (Boris Mansencal, [#1400](https://github.com/DGtal-team/DGtal/pull/1400))
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
@@ -116,7 +117,7 @@
   - Replacing html internal links by ref command in Digital Topology module
     documentation. Also ignoring doxygen warning when ref begins with a digit.
     (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
-  - Fix examples' filenames in Digital Topology module documentation (Isabelle
+  - Fix examples filenames in Digital Topology module documentation (Isabelle
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
@@ -142,6 +143,8 @@
 - *Kernel*
   - Adding square norm method to Point/Vector class. (David Coeurjolly,
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
+  - Fix NumberTraits for `long long int` types and refactor it.
+    (Roland Denis, [#1397](https://github.com/DGtal-team/DGtal/pull/1397))
   - Fixing issue #1341 about unwanted conversions between PointVector with
     different component types (like from double to int) by making explicit
     the default conversion constructor and checking type compatiblity when
@@ -181,7 +184,8 @@
     (Thomas Caissard, [#1316](https://github.com/DGtal-team/DGtal/pull/1316))
   - Change from private to public access of types Input and Output in SCellToPoint
     (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
-
+  - Correct small typo when compiling with DEBUG defined
+    (Boris Mansencal, [#1401](https://github.com/DGtal-team/DGtal/pull/1401))
 
 # DGtal 0.9.4.1
 
