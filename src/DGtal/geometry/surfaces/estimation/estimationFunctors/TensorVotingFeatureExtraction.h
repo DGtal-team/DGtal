@@ -161,7 +161,7 @@ namespace DGtal
   
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < 3; ++i_dim )
-            ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+            ASSERT ( std::abs(eigenvalues[i_dim - 1]) <= std::abs(eigenvalues[i_dim]) );
 #endif
       
         return ((eigenvalues[0] + eigenvalues[1])/(eigenvalues[2]));
