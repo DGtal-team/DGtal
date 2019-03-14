@@ -106,7 +106,7 @@
   - Replacing html internal links by ref command in Digital Topology module
     documentation. Also ignoring doxygen warning when ref begins with a digit.
     (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
-  - Fix examples' filenames in Digital Topology module documentation (Isabelle
+  - Fix examples filenames in Digital Topology module documentation (Isabelle
     Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
   - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
     [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
@@ -132,6 +132,8 @@
 - *Kernel*
   - Adding square norm method to Point/Vector class. (David Coeurjolly,
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
+  - Fix NumberTraits for `long long int` types and refactor it.
+    (Roland Denis, [#1397](https://github.com/DGtal-team/DGtal/pull/1397))
 
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
