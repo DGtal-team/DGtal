@@ -50,7 +50,7 @@
 namespace DGtal
 {
 
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class Mesh
   /**
@@ -67,70 +67,70 @@ namespace DGtal
    * (the method to access neigborhing facets or to a given facet are
    * not yet given)
    *
-   * This class was defined to import and display a mesh from different formats like OFF file format. 
+   * This class was defined to import and display a mesh from different formats like OFF file format.
    * Since it realized the concept of CDrawableWithDisplay3D we can display an Mesh with a Display3D object:
    *
    * First we have to include the following header files:
-   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude
    *
    * Prepare display using QGLviewer: Viewer3D
-   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay 
+   @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay
    *
    * Construct a Mesh with various faces:
    @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshCreation
-   
+
    * Displaying the result:
    @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
    *
-   * 
+   *
    *
    * @see  MeshReader MeshWriter  .
    *
    */
   template <typename TPoint >
   class Mesh
-  {   
+  {
 
-    
+
     // ----------------------- associated types ------------------------------
   public:
 
-    
+
     /**
      * Main type associated to the mesh vertices.
-     **/    
-    typedef TPoint Point;    
+     **/
+    typedef TPoint Point;
 
-    
-    
+
+
     /**
      * Type to represent real points which can be obtained from  various methods (like getFaceBarycenter).
-     **/    
+     **/
     typedef  typename DGtal::PointVector<TPoint::dimension, double> RealPoint;
 
-    
+
     /**
      * Structure for representing the faces from the vertex index.
      **/
 
     typedef std::vector<unsigned int> MeshFace;
-    
-    
+
+
     /**
-     * Define the type to store each mesh vertex. 
+     * Define the type to store each mesh vertex.
      **/
-    typedef  std::vector<TPoint> VertexStorage; 
-    
+    typedef  std::vector<TPoint> VertexStorage;
+
     /**
-     * Define the type to store the faces of the mesh. 
+     * Define the type to store the faces of the mesh.
      **/
-    typedef  std::vector<MeshFace> FaceStorage; 
+    typedef  std::vector<MeshFace> FaceStorage;
 
     /**
      * Define the type to store the color associated to each face
      **/
-    typedef  std::vector<DGtal::Color> ColorStorage; 
-     
+    typedef  std::vector<DGtal::Color> ColorStorage;
+
 
     /**
      * Define the type of the const iterator on vertex.
@@ -154,25 +154,25 @@ namespace DGtal
     /**
      * Constructor.
      * By default the constructed mesh does not store color information about the mesh.
-     * If you want to include color in the Mesh object you have to set the constructor parameter saveFaceColor to true. 
+     * If you want to include color in the Mesh object you have to set the constructor parameter saveFaceColor to true.
      *
-     * @param saveFaceColor used to memorize the color of a face (default= false) 
+     * @param saveFaceColor used to memorize the color of a face (default= false)
      */
-    Mesh(bool saveFaceColor=false);    
+    Mesh(bool saveFaceColor=false);
 
     /**
      * Constructor.
      * The constructed mesh will store an unique default color information about the mesh.
-     * 
-     * @param aColor used to memorize the color of a face (default= false) 
+     *
+     * @param aColor used to memorize the color of a face (default= false)
      */
-    Mesh(const DGtal::Color &aColor);    
-    
+    Mesh(const DGtal::Color &aColor);
+
     /**
      * Constructor by usung a vertex set as init.
      * The color are not stored in this case.
-     * @param vertexSet the set of vertex. 
-     */    
+     * @param vertexSet the set of vertex.
+     */
     Mesh(const std::vector<TPoint> &vertexSet);
 
     /**
@@ -196,8 +196,8 @@ namespace DGtal
 
 
     // --------------- CDrawableWithDisplay3D  realization -------------------
-  public:    
-    
+  public:
+
     /**
      * @return the style name used for drawing this object.
      */
@@ -205,19 +205,19 @@ namespace DGtal
 
 
 
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    
+
+
     /**
      * Adding new vertex.
      *
      **/
     void addVertex(const TPoint &vertex);
-      
-    
-  
+
+
+
     /**
      * Add a triangle face given from index position.
      *
@@ -225,13 +225,13 @@ namespace DGtal
      * @param indexVertex2 the index of the second vertex face.
      * @param indexVertex3 the index of the third vertex face.
      * @param aColor       the triangle face color.
-     * 
+     *
      * @note If you want to follow the OBJ format convention, you have
      * to order the vertices in CCW (to have the correct normal orientation).
      *
-     **/    
-    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
-			   const DGtal::Color &aColor=DGtal::Color::White);
+     **/
+    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3,
+                           const DGtal::Color &aColor=DGtal::Color::White);
 
 
     /**
@@ -246,49 +246,49 @@ namespace DGtal
      * @note If you want to follow the OBJ format convention, you have
      * to order the vertices in CCW (to have the correct normal orientation).
      *
-     **/    
-    void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
-		     unsigned int indexVertex3, unsigned int indexVertex4,
-		     const DGtal::Color & aColor=DGtal::Color::White);
-    
-    
+     **/
+    void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2,
+                     unsigned int indexVertex3, unsigned int indexVertex4,
+                     const DGtal::Color & aColor=DGtal::Color::White);
+
+
    /**
     * Add a quad face given from index position.
     *
     * @note If you want to follow the OBJ format convention, you have
     * to order the vertices of the face in CCW (to have the correct
     * normal orientation).
-    * 
-    **/    
+    *
+    **/
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
-    
+
 
     /**
      * Remove faces from the mesh. @note the vertexes which are no
      * more associated to any face are also removed.
-     * 
+     *
      * @param[in] facesIndex the index of the face to be removed.
      **/
     void removeFaces(const std::vector<unsigned int>  &facesIndex);
-   
- 
+
+
     /**
      * @param i the index of the vertex.
-     * @return a const reference to the vertex of index i. 
+     * @return a const reference to the vertex of index i.
      **/
     const TPoint & getVertex(unsigned int i) const;
 
     /**
      * @param i the index of the vertex.
-     * @return a reference to the vertex of index i. 
+     * @return a reference to the vertex of index i.
      **/
     TPoint & getVertex(unsigned int i);
-    
-    
-    
+
+
+
     /**
      * @param i the index of the face.
-     * @return a const reference to the face of index i. 
+     * @return a const reference to the face of index i.
      **/
     const MeshFace & getFace(unsigned int i) const;
 
@@ -297,22 +297,22 @@ namespace DGtal
      * @param i the index of the face.
      * @return barycenter (RealPoint) of the face of index i.
      **/
-    RealPoint getFaceBarycenter(unsigned int i) const;    
+    RealPoint getFaceBarycenter(unsigned int i) const;
 
 
-    
+
     /**
      * @param i the index of the face.
-     * @return a const reference to the face of index i. 
+     * @return a const reference to the face of index i.
      **/
     MeshFace & getFace(unsigned int i);
-    
+
 
 
     /**
      * Return a reference to a  face Color of index i.
      * @param i the index of the face.
-     * @return the color of the face of index i. 
+     * @return the color of the face of index i.
      **/
     const Color & getFaceColor(unsigned int i) const;
 
@@ -336,46 +336,46 @@ namespace DGtal
      *
      **/
 
-    void setFaceColor(unsigned int i, const DGtal::Color &aColor) ; 
-    
+    void setFaceColor(unsigned int i, const DGtal::Color &aColor) ;
+
 
     /**
-     * @return true if the Mesh is storing a color for each faces. 
-     * 
+     * @return true if the Mesh is storing a color for each faces.
+     *
      **/
     bool isStoringFaceColors() const;
 
 
     /**
-     * @return an const_iterator pointing to the first vertex of the mesh.  
-     * 
+     * @return an const_iterator pointing to the first vertex of the mesh.
+     *
      **/
-    ConstIterator 
+    ConstIterator
     vertexBegin() const {
       return myVertexList.begin();
     }
-    
-    
+
+
     /**
      * @return an const_iterator pointing after the end of the last vertex of the mesh.
      *
      **/
-    ConstIterator 
+    ConstIterator
     vertexEnd() const {
       return myVertexList.end();
     }
 
 
     /**
-     * @return an iterator pointing to the first vertex of the mesh.  
-     * 
+     * @return an iterator pointing to the first vertex of the mesh.
+     *
      **/
     Iterator
     vertexBegin()  {
       return myVertexList.begin();
     }
-    
-    
+
+
 
     /**
      * @return an iterator pointing after the end of the last vertex of the mesh.
@@ -386,54 +386,54 @@ namespace DGtal
       return myVertexList.end();
     }
 
-    
-    
+
+
     /**
-     * @return a const iterator pointing to the first face of the mesh.  
+     * @return a const iterator pointing to the first face of the mesh.
      *
      **/
-    
-    FaceStorage::const_iterator 
+
+    FaceStorage::const_iterator
     faceBegin() const {
       return myFaceList.begin();
     }
-    
+
 
 
     /**
      * @return a const iterator pointing after the end of the last face of the mesh.
      *
      **/
-    
-    FaceStorage::const_iterator 
+
+    FaceStorage::const_iterator
     faceEnd() const {
       return myFaceList.end();
-    }    
-    
+    }
+
 
     /**
-     * @return a const iterator pointing to the first face of the mesh.  
+     * @return a const iterator pointing to the first face of the mesh.
      *
      **/
-    
-    FaceStorage::iterator 
+
+    FaceStorage::iterator
     faceBegin()  {
       return myFaceList.begin();
     }
-    
+
 
 
     /**
      * @return a const iterator pointing after the end of the last face of the mesh.
      *
      **/
-    
-    FaceStorage::iterator 
+
+    FaceStorage::iterator
     faceEnd()  {
       return myFaceList.end();
-    }    
-    
-    
+    }
+
+
 
     /**
      * Return the number of faces contained on the mesh object.
@@ -446,39 +446,39 @@ namespace DGtal
      * @return the number of faces.
      **/
     Size  nbVertex() const;
-    
-    
-    
+
+
+
     /**
      * Invert the face order (useful when normal is deducted from vertex order).
      *
-     **/    
+     **/
     void invertVertexFaceOrder();
-    
+
     /**
      * Clear all faces of the mesh.
      **/
     void clearFaces();
-    
+
     /**
      * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
-     * @param[in] aScale the scale factor. 
+     * @param[in] aScale the scale factor.
      **/
-    void changeScale(const typename TPoint::Coordinate aScale);
-    
+    void changeScale(const typename TPoint::Component aScale);
+
     /**
-     * SubDivide triangular mesh if triangle area is less than the given parameter.
-     * @param[in] minArea the minimum area factor. 
+     * SubDivide triangular mesh if triangle area is larger than the given parameter.
+     * @param[in] minArea the minimum area factor.
      * @return the new max triangle area.
      **/
     double subDivideTriangularFaces(const double minArea);
-    
+
     /**
      * Transform quad faces of the mesh to triangular one.
      * @return the number of quads which were transformed.
      **/
     unsigned int quadToTriangularFaces();
-        
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -496,25 +496,25 @@ namespace DGtal
 
 
 
-    
+
 
 
     // ------------------------- Private Datas --------------------------------
   private:
     FaceStorage  myFaceList;
-    VertexStorage myVertexList;    
+    VertexStorage myVertexList;
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
     DGtal::Color myDefaultColor;
-    
 
-    
 
-  
+
+
+
     // ------------------------- Mesh generation ------------------------------
 
   public:
-    
+
     /**
      * Generates a tube mesh (of constant radius) from a set of points
      * representing the tube skeleton.  Each circular section is
@@ -525,13 +525,13 @@ namespace DGtal
      * @param[out] aMesh the mesh in which the new tube mesh will be created.
      * @param[in] aSkeleton the set of points which defines the tube skeleton.
      * @param[in] aRadius the tube radius.
-     * @param[in] angleStep the circular precision of the tube approximation. 
-     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     * @param[in] angleStep the circular precision of the tube approximation.
+     * @param[in] aMeshColor the color given to the generated tube mesh.
      *
      **/
     static
     void
-    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius, 
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const double aRadius,
                       const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
 
 
@@ -546,13 +546,13 @@ namespace DGtal
      * @param[out] aMesh the mesh in which the new tube mesh will be created.
      * @param[in] aSkeleton the set of points which defines the tube skeleton.
      * @param[in] aVectOfRadius the vector containing all circular sections (if it contains not enougth it value, the next values will be taken from the begining of the vector).
-     * @param[in] angleStep the circular precision of the tube approximation. 
-     * @param[in] aMeshColor the color given to the generated tube mesh. 
+     * @param[in] angleStep the circular precision of the tube approximation.
+     * @param[in] aMeshColor the color given to the generated tube mesh.
      *
      **/
     static
     void
-    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const std::vector<double> &aVectOfRadius, 
+    createTubularMesh(Mesh<TPoint> &aMesh,  const std::vector<TPoint> &aSkeleton, const std::vector<double> &aVectOfRadius,
                       const double angleStep = 0.2, const DGtal::Color &aMeshColor = DGtal::Color::White );
 
     /**
@@ -577,32 +577,32 @@ namespace DGtal
     template <typename TValue>
     static
     void
-    createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const std::vector<TValue> & anValueSequence, 
+    createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const std::vector<TValue> & anValueSequence,
                                  const unsigned int lengthSequence,
-                                 double stepX, double stepY, double stepZ, 
+                                 double stepX, double stepY, double stepZ,
                                  const DGtal::Color &aMeshColor = DGtal::Color::White );
-    
-    
-    
 
 
 
 
- 
+
+
+
+
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
     struct CompPoints
     {
       CompPoints(typename TPoint::Dimension d): myDim(d){};
       bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
       typename TPoint::Dimension myDim;
     };
- 
 
-    
-    
+
+
+
 
 
 
