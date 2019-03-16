@@ -15,10 +15,10 @@
  **/
 
 /**
- * @file testITKDicomReader.ih
+ * @file testITKDicomReader.cpp
  * @ingroup Tests
  * @author Boris Mansencal (\c boris.mansencal@labri.fr )
- * LaBRI (CNRS, UMR 5800, University of Bordeaux, Bordeaux-INP, France
+ * LaBRI (CNRS, UMR 5800, University of Bordeaux, Bordeaux-INP), France
  *
  * @date 2019/02/05
  *
@@ -64,23 +64,31 @@ using namespace DGtal;
 // Functions for testing class ITKReader.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename Image>
-void
-testImportDICOM()
+std::vector<std::string>
+getFirstDicomSerieFileNames(const std::string &path)
 {
   typedef itk::GDCMSeriesFileNames NamesGeneratorType;
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
   nameGenerator->SetUseSeriesDetails( true );
-  nameGenerator->SetDirectory( testPath + "samples/dicomSample" );
+  nameGenerator->SetDirectory( path );
   
   typedef itk::GDCMSeriesFileNames::SeriesUIDContainerType SeriesIdContainer;
   const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
   
-  REQUIRE( ! seriesUID.empty() );
-  
-  typedef itk::GDCMSeriesFileNames::FileNamesContainerType FilenamesContainer;
-  const FilenamesContainer &fileNames = nameGenerator->GetFileNames( *(seriesUID.begin()) );
-  
+  if (! seriesUID.empty() )
+  {
+    return nameGenerator->GetFileNames( *(seriesUID.begin()) );
+  }
+  return std::vector<std::string>();
+}
+
+
+template <typename Image>
+void
+testImportDICOM()
+{
+  std::vector<std::string> fileNames = getFirstDicomSerieFileNames( testPath + "samples/dicomSample" );
+      
   Image image = ITKDicomReader<Image>::importDICOM( fileNames );
   
   unsigned int nbVal=0, nbPos = 0;
@@ -93,6 +101,35 @@ testImportDICOM()
 
   REQUIRE( ( nbVal==2130048 && nbPos==296030 ) );
 }
+
+template <typename PixelType>
+void testSpatialInformation()
+{
+  std::vector<std::string> fileNames = getFirstDicomSerieFileNames( testPath + "samples/dicomSample" );
+      
+  typedef ImageContainerByITKImage<Z3i::Domain, PixelType> DGtalImage;
+  DGtalImage img = ITKDicomReader<DGtalImage>::importDICOM( fileNames );
+  typename DGtalImage::ITKImagePointer dgtal_itk = img.getITKImagePointer();
+
+  typedef itk::Image<PixelType, 3> ItkImage;
+  typedef itk::ImageSeriesReader<ItkImage> ItkReader;
+  typename ItkReader::Pointer reader = ItkReader::New();
+  reader->SetFileNames( fileNames );
+
+  reader->Update();
+  
+  typename ItkImage::Pointer itk = reader->GetOutput();
+
+  INFO( "Checking spacing" )
+  REQUIRE( dgtal_itk->GetSpacing() == itk->GetSpacing() );
+  INFO( "Checking origin" )
+  REQUIRE( dgtal_itk->GetOrigin() == itk->GetOrigin() );
+  INFO( "Checking direction" )
+  REQUIRE( dgtal_itk->GetDirection() == itk->GetDirection() );
+}
+
+  
+  
 
 
 TEST_CASE( "Testing ITKReader" )
@@ -147,6 +184,18 @@ TEST_CASE( "Testing ITKReader" )
     REQUIRE( caughtException == true);
   }
 
+  SECTION(
+  "Testing ITKDicomReader with 8 bits ImageContainerByITKImage images keeps spatial information" )
+  {
+    testSpatialInformation<unsigned char>();
+  }
+
+  SECTION(
+  "Testing ITKDicomReader with 16 bits ImageContainerByITKImage images keeps spatial information" )
+  {
+    testSpatialInformation<int16_t>();
+  }
+ 
 
 }
 
