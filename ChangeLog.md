@@ -32,6 +32,8 @@
     inf, isLower,...) available as external functions. The component type of
     the result follows the classical arithmetic conversion rules.
     (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+  - Adding square norm method to Point/Vector class. (David Coeurjolly,
+    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
 
 - *Helpers*
   - Classes Shortcuts and ShortcutsGeometry to simplify coding with
@@ -39,6 +41,15 @@
     surface, geometry, estimators functions, with many conversion
     and input/output tools. (Jacques-Olivier Lachaud,
     [#1357](https://github.com/DGtal-team/DGtal/pull/1357))
+
+- *Shapes package*
+  - Add two new star shapes: Astroid and Lemniscate
+   (Adrien Krähenbühl, Chouaib Fellah,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
+
+- *Geometry package*
+  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
+    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
 
 ## Changes
 
@@ -49,10 +60,6 @@
   - Remove the internal object from VoxelComplex, improving performance
     (Pablo Hernandez, [#1369](https://github.com/DGtal-team/DGtal/pull/1369))
 
-- *Geometry*
-  - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
-    (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
- 
 - *Documentation*
   - Improving KhalimskySpace related classes documentations by displaying
     a short description in the member list.
@@ -88,9 +95,6 @@
     [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
 - *Shapes*
-  - Add two new star shapes: Astroid and Lemniscate
-   (Adrien Krähenbühl, Chouaib Fellah,
-   [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
   - Fixing openmp flags (David Coeurjolly,
     [#1324](https://github.com/DGtal-team/DGtal/pull/1324))
   - Add assignment operator to ImageContainerByITKImage (Pablo Hernandez,
@@ -245,7 +249,7 @@
     instance.  (David Coeurjolly,
     [#1304](https://github.com/DGtal-team/DGtal/pull/1304))
   - SimpleDistanceColorMap new colormap to easily display distance maps.
-    (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))   
+    (David Coeurjolly, [#1302](https://github.com/DGtal-team/DGtal/pull/1302))
   - Fix in MagicReader allowing to load colored images. (David
     Coeurjolly, [#1305](https://github.com/DGtal-team/DGtal/pull/1305))
   - Include New ImageMagick writer in GenericWriter.  (Bertrand Kerautret,
@@ -821,8 +825,8 @@
   SphereFittingEstimator (David Coeurjolly,
   [#929](https://github.com/DGtal-team/DGtal/pull/929))
   - Algorithm to compute the union of two DSSs in logarithmic time
-	(Isabelle Sivignon,
-	[#949](https://github.com/DGtal-team/DGtal/pull/949))
+    (Isabelle Sivignon,
+    [#949](https://github.com/DGtal-team/DGtal/pull/949))
   - InexactPredicateLpSeparableMetric class is now templated by an
    EuclideanRing type. (David Coeurjolly,
    [#1017](https://github.com/DGtal-team/DGtal/pull/1017))
@@ -935,8 +939,8 @@
 
 - *Arithmetic Package*
   - Algorithm to compute the fraction of smallest denominator in
-	between two irreducible fractions (Isabelle Sivignon
-	[#949](https://github.com/DGtal-team/DGtal/pull/949))
+    between two irreducible fractions (Isabelle Sivignon
+    [#949](https://github.com/DGtal-team/DGtal/pull/949))
 
 ## Bug Fixes
 
@@ -979,10 +983,10 @@
    of positions as input arguments.
    (Tristan Roussillon, [#944](https://github.com/DGtal-team/DGtal/pull/944))
   - Fix too restrictive asserts of methods
-	ArithmeticalDSSConvexHull::smartCH and
-	ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative
-	positions as input arguments. (Isabelle Sivignon,
-	[#950](https://github.com/DGtal-team/DGtal/pull/950))
+    ArithmeticalDSSConvexHull::smartCH and
+    ArithmeticalDSSConvexHull::smartCHNextVertex to enable negative
+    positions as input arguments. (Isabelle Sivignon,
+    [#950](https://github.com/DGtal-team/DGtal/pull/950))
   - Fix Bezout Vector computation (Isabelle Sivignon,
  [#948](https://github.com/DGtal-team/DGtal/pull/948))
   - Fix issues with SphereFitting and TensorVoting local estimators on
@@ -1190,7 +1194,7 @@
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
    - New raw import/export for 32 bits images (Bertrand Kerautret,
-	[#877](https://github.com/DGtal-team/DGtal/pull/876))
+     [#877](https://github.com/DGtal-team/DGtal/pull/876))
 
 - *Kernel Package*
 
@@ -1293,9 +1297,9 @@
     slice image extraction from 3D volume file).
 
   - New basic functors:
-	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
-	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points
-	  (useful to extract 2D image from 3D volume).
+  - SliceRotator2D: to rotate 2D Slice images from 3D volume.
+  - Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points
+    (useful to extract 2D image from 3D volume).
 
   - Sets have been updated to own their domain with a copy-on-write pointer,
     in order to avoid some inconsistencies.
@@ -1344,7 +1348,7 @@
   - Minor improvements in the spherical accumulator.
 
   - Improvement of integral invariant estimators (better memory footprint,
-	...).
+    ...).
     They also allow to estimate principal curvatures using Covariance matrix.
     Covariance matrix is also "masks" based, so the computation is efficient.
 
@@ -1652,47 +1656,47 @@ like to focus on a couple of new cool features:
 === DGtal 0.4 ===
 Posted on September 26, 2011 by David Coeurjolly
 
-	* Global changes:
-	   - A better decomposition of DGtal algorithms and
-	data structures into packages.
-	   - By default, DGtal is built with minimal dependencies.
-	   - Concepts and concept checking mechanism have been
-	considerably improved.
+  * Global changes:
+     - A better decomposition of DGtal algorithms and
+       data structures into packages.
+     - By default, DGtal is built with minimal dependencies.
+     - Concepts and concept checking mechanism have been
+       considerably improved.
 
-	* Kernel Package: refactoring of Integer types considered in
-	DGtal.
+  * Kernel Package: refactoring of Integer types considered in
+    DGtal.
 
-	* Topology Package: Interpixel/cellular topological model,
-	boundary tracking tools, ...
+  * Topology Package: Interpixel/cellular topological model,
+    boundary tracking tools, ...
 
-	* Geometry Package:
-	  - many things have been added in the 1D contour analysis module:
-	multi-modal representation of 1D contours and curves (GridCurve facade),
-	decomposition/segmentation into primitives, many differential
-	estimators added, helpers for multigrid comparison of estimators
-	  - multigrid digital set generators from implicit and parametric
-	shapes in dimension 2.
+  * Geometry Package:
+    - many things have been added in the 1D contour analysis module:
+      multi-modal representation of 1D contours and curves (GridCurve facade),
+      decomposition/segmentation into primitives, many differential
+      estimators added, helpers for multigrid comparison of estimators
+    - multigrid digital set generators from implicit and parametric
+      shapes in dimension 2.
 
-	* I/O Package: refactoring/enhancements of DGtal boards and
-	viewers,  enhancement of 2D boards with libcairo and a new
-	Board3Dto2D board has been added.
+  * I/O Package: refactoring/enhancements of DGtal boards and
+    viewers,  enhancement of 2D boards with libcairo and a new
+    Board3Dto2D board has been added.
 
 
-	* Tools: multigrid shapeGenerator/contourGenerator added,
-	lengthEstimator/estimatorComparator  added for differential
-	estimator multigrid comparison, connected components extraction in
-	3D, ...
+  * Tools: multigrid shapeGenerator/contourGenerator added,
+    lengthEstimator/estimatorComparator  added for differential
+    estimator multigrid comparison, connected components extraction in
+    3D, ...
 
-	* Documentation: User guide has been improved thanks to a
-	decomposition of the library into packages.
+  * Documentation: User guide has been improved thanks to a
+    decomposition of the library into packages.
 
 === DGtal 0.3.1 ===
 Posted on April 4, 2011 by David Coeurjolly
 
-	* Quick release due to a build problem on linux. No more feature
-	added.
-	* Preliminary cellular grid documentation added.
-	* Documentation cleanup.
+  * Quick release due to a build problem on linux. No more feature
+    added.
+  * Preliminary cellular grid documentation added.
+  * Documentation cleanup.
 
 
 
@@ -1713,7 +1717,7 @@ New features:
          convexity/concavity decomposition.
   Geometry nD: reverse Euclidean distance transformation
   Visualisation: stream mechanism to visualize 3D DGtal objects with
-	       libQGLViewer (optional) Shape generator factory added in nD
+         libQGLViewer (optional) Shape generator factory added in nD
 
 BugFixes, enhancements:
 
@@ -1737,49 +1741,49 @@ Known problems:
 
 
 2011-04-01 dcoeurjo
-	* Release 0.3.0
-	* Kernel: global enhancement of different Integer types and
-	associated concepts.
-	* Topology: interpixel topology, cells, surface tracking
-	* Geometry2D: contour primitive decomposition, tangential cover,
-	convexity/concavity decomposition.
-	* GeometrynD: Reverse DT transformation (Euclidean)
-	* Infrastructure: 3D visualisation of DGtal objects with
-	libQGLViewer, shape factory
-	* IO: PointListReader added
-	* Documentation: first DGtal user-guide
+  * Release 0.3.0
+  * Kernel: global enhancement of different Integer types and
+    associated concepts.
+  * Topology: interpixel topology, cells, surface tracking
+  * Geometry2D: contour primitive decomposition, tangential cover,
+    convexity/concavity decomposition.
+  * GeometrynD: Reverse DT transformation (Euclidean)
+  * Infrastructure: 3D visualisation of DGtal objects with
+    libQGLViewer, shape factory
+  * IO: PointListReader added
+  * Documentation: first DGtal user-guide
 
 
 2010-01-12 dcoeurjo
-	* Release 0.2
-	* Kernel: DGtalBoard mechanism for 2D drawing of DGtal objects, ..
-	* Geometry package
-	   - Volumetric: distance transformation with separable	metric
-	(l2, l1 and linfinity) in arbitrary dimension
-	   - 2D: Arithmetical DSS, Greedy decomposition of a contour into
-	primitives, FreemanChain code iterators
-	* Topolopy package: Set, Adjacencies, Object, border extraction,
-	connected components computation, ...
-	* IO: 2D file formats with Magick++, Vol/Raw format in 3D, Raw
-	format in n-D (non-portable)
-	* Misc: Compiles on linux, MacOS and VisualStudio 2008
+  * Release 0.2
+  * Kernel: DGtalBoard mechanism for 2D drawing of DGtal objects, ..
+  * Geometry package
+    - Volumetric: distance transformation with separable	metric
+      (l2, l1 and linfinity) in arbitrary dimension
+    - 2D: Arithmetical DSS, Greedy decomposition of a contour into
+      primitives, FreemanChain code iterators
+  * Topolopy package: Set, Adjacencies, Object, border extraction,
+    connected components computation, ...
+  * IO: 2D file formats with Magick++, Vol/Raw format in 3D, Raw
+    format in n-D (non-portable)
+  * Misc: Compiles on linux, MacOS and VisualStudio 2008
 
 
 2010-21-05 dcoeurjo
-	* Iterators added to PointVector
+  * Iterators added to PointVector
   * Debug methods removed in Trace class
   * Many bug fixes for VS compatibility
 
 2010-05-15 dcoeurjo
   * Assert.h: added macro ASSERT() added based on the boost/assert.hpp (TODO:
-	    implement a nice callback)
+      implement a nice callback)
   * Point and Vector templated classes added
   * Space.*: skeleton of a DGtal::Space added
 
 2010-03-03 dcoeurjo
-	* math/MeasureOfStraightLines: new class to compute the measure of a set
-	of Straight lines defined as a polygon in the (a,b) parameter space.
-	* test_measure: added
+  * math/MeasureOfStraightLines: new class to compute the measure of a set
+    of Straight lines defined as a polygon in the (a,b) parameter space.
+  * test_measure: added
 
 2010-02-17 dcoeurjo
   * Trace: new class models for output streams in Trace class.
@@ -1791,20 +1795,20 @@ Known problems:
 
 2010-01-05 dcoeurjo
   * Trace can be initialized on diffrent output stream (e.g. std::cerr or a file
-	  stream)
+    stream)
   * test_trace: update to test the new API
 
 2010-01-04 dcoeurjo
   * Clock: no more static variables and methods (in order to have several
-	   running clocks)
+     running clocks)
   * Trace: new interface and the endBlock displays and returns the
-	   ellapsed time within the block
+     ellapsed time within the block
 
 2009-12-28 dcoeurjo
   * Trace: a new class to trace out messages to the standard output. Four type
-	   of messages are possible: info, debug, error and "emphased". On
-	   color linux terminal, messages appears with an appropriate color
-	   foreground.
+     of messages are possible: info, debug, error and "emphased". On
+     color linux terminal, messages appears with an appropriate color
+     foreground.
   * test_trace: an illustration of the Trace interface
 
 2009-12-14 dcoeurjo
@@ -1814,13 +1818,13 @@ Known problems:
   - OPTION(BUILD_TESTS "Build tests." ON)
 
 2009-12-11 dcoeurjo
-	* CMakeLists scripts and first backport from imagene (Clock class)
+  * CMakeLists scripts and first backport from imagene (Clock class)
 
 2009-12-11 dcoeurjo
-	* Repository cleanup:
-		  - Modeles and genereateClass.sh removed
+  * Repository cleanup:
+    - Modeles and genereateClass.sh removed
     - JOL scripts & templates added
 
 
 2009-12-03 dcoeurjo
-	* Modeles: class templates added with generateClass.sh script
+  * Modeles: class templates added with generateClass.sh script
