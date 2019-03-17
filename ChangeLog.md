@@ -21,6 +21,17 @@
   - Adding PointFunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a CPointFunctor model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+  - The conversion between PointVector of different component types now follows
+    the classical conversion rules (e.g. float to double is OK but double
+    to int fails if the conversion is not explicitly specified).
+    Component type after an arithmetic operation also follows the classical
+    arithmetic conversion rules (e.g int * double returns a double).
+    Adding some related conversion functors.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+  - Making binary operators of PointVector (+-\*/ but also dot, crossProduct,
+    inf, isLower,...) available as external functions. The component type of
+    the result follows the classical arithmetic conversion rules.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
   - Adding square norm method to Point/Vector class. (David Coeurjolly,
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
 
@@ -138,6 +149,18 @@
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
   - Fix NumberTraits for `long long int` types and refactor it.
     (Roland Denis, [#1397](https://github.com/DGtal-team/DGtal/pull/1397))
+  - Fixing issue #1341 about unwanted conversions between PointVector with
+    different component types (like from double to int) by making explicit
+    the default conversion constructor and checking type compatiblity when
+    using operators.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+  - Fixing issue #1387 about the wrong result of PointVector::crossProduct
+    in 2D. Also disabling this method for dimensions other than 2 and 3.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+  - Fixing many issues related to invalid conversion between PointVectors
+    of different component types.
+    (David Coeurjolly, Roland Denis, Monir Hadji, Bertrand Kerautret,
+    Tristan Roussillon, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
 
 - *Helpers*
   - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
