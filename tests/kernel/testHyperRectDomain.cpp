@@ -55,36 +55,61 @@ bool testSimpleHyperRectDomain()
 
   typedef SpaceND<4> Space4Type;
   typedef Space4Type::Point Point;
+  typedef Space4Type::RealPoint RealPoint;
 
   Space4Type::Integer t [] = { 1, 2, 3 , 4};
   Point a ( t );
   Space4Type::Integer t2[] = { 5, 5, 3 , 4};
   Point b ( t2 );
+  double td [] = { 1.1, 2.5, 3 , 4};
+  RealPoint c ( td );
+  double td2[] = { 4.9, 4.5, 3 , 4};
+  RealPoint d ( td2 );
 
   trace.beginBlock ( "HyperRectDomain init" );
+
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
 
   // Checking that HyperRectDomain is a model of CDomain.
   typedef HyperRectDomain<Space4Type> HRDomain4;
   BOOST_CONCEPT_ASSERT(( concepts::CDomain< HRDomain4 > ));
   BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<HRDomain4> ));
 
-  ///Empty domain using the default constructor
+  // Empty domain using the default constructor
   HyperRectDomain<Space4Type> myEmptyDomain;
-  trace.info() << "Empty Domain: " << myEmptyDomain << std::endl;
+  ++nb; nbok += myEmptyDomain.isEmpty() && myEmptyDomain.size() == 0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Empty domain: " << myEmptyDomain << std::endl;
 
-  ///Domain characterized by points a and b
+  // Domain characterized by points a and b
   HyperRectDomain<Space4Type> myHyperRectDomain ( a, b );
-  trace.info() << myHyperRectDomain << std::endl;
 
-  trace.info() << "Domain Size= " << myHyperRectDomain.size() << std::endl;
+  ++nb; nbok += myHyperRectDomain.lowerBound() == a && myHyperRectDomain.upperBound() == b ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain = " << myHyperRectDomain << std::endl;
 
+  ++nb; nbok += myHyperRectDomain.size() == 20 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain size = " << myHyperRectDomain.size() << std::endl;
+
+  // Domain initialized with RealPoint
+  HyperRectDomain<Space4Type> myHyperRectDomain_rr ( c, d );
+  ++nb; nbok += myHyperRectDomain_rr.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomain_rr.upperBound() == myHyperRectDomain.upperBound() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain(" << c << ", " << d << ") = " << myHyperRectDomain_rr << std::endl;
+
+  HyperRectDomain<Space4Type> myHyperRectDomain_ir ( a, d );
+  ++nb; nbok += myHyperRectDomain_ir.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomain_ir.upperBound() == myHyperRectDomain.upperBound() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain(" << a << ", " << d << ") = " << myHyperRectDomain_ir << std::endl;
+
+  HyperRectDomain<Space4Type> myHyperRectDomain_ri ( c, b );
+  ++nb; nbok += myHyperRectDomain_ri.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomain_ri.upperBound() == myHyperRectDomain.upperBound() ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain(" << c << ", " << b << ") = " << myHyperRectDomain_ri << std::endl;
 
   trace.endBlock();
 
 
   trace.beginBlock("Test Copy Constructor");
   HyperRectDomain<Space4Type> myHyperRectDomainBis( myHyperRectDomain );
-  trace.info() << "Domain Size= " << myHyperRectDomainBis.size() << std::endl;
+  ++nb; nbok += myHyperRectDomainBis.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomainBis.upperBound() == myHyperRectDomain.upperBound() && myHyperRectDomainBis.size() == 20 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain size= " << myHyperRectDomainBis.size() << std::endl;
   trace.endBlock();
 
   trace.beginBlock("Test Assignement");
@@ -92,10 +117,12 @@ bool testSimpleHyperRectDomain()
 
   myHyperRectDomainTer = myHyperRectDomain;
 
-  trace.info() << "Domain Size= " << myHyperRectDomainTer.size() << std::endl;
+  ++nb; nbok += myHyperRectDomainTer.lowerBound() == myHyperRectDomain.lowerBound() && myHyperRectDomainTer.upperBound() == myHyperRectDomain.upperBound() && myHyperRectDomainTer.size() == 20 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") Domain size= " << myHyperRectDomainTer.size() << std::endl;
+
   trace.endBlock();
 
-  return myHyperRectDomain.isValid();
+  return myHyperRectDomain.isValid() && nb == nbok;
 
 }
 

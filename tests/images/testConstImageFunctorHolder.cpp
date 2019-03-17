@@ -125,7 +125,7 @@ TEST_CASE( "2D Image from unary functor by rvalue", "[2D][functor][unary][rvalue
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({-10, -15}, {20, 25});
+  const Domain domain(Point{-10, -15}, Point{20, 25});
   const double cst = 3.5;
   auto image = functors::holdConstImageFunctor<double>( domain, UnaryFunctor(cst) ); // Specifying explicitly the returned value type.
   checkImage(image, [&cst] (Point pt, Domain d) { return unary_kernel(pt, d, cst); });
@@ -138,7 +138,7 @@ TEST_CASE( "2D Image from binary functor by rvalue", "[2D][functor][binary][rval
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({-10, -15}, {20, 25});
+  const Domain domain(Point{-10, -15}, Point{20, 25});
   const double cst = 3.5;
   auto image = functors::holdConstImageFunctor( domain, BinaryFunctor(cst) );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
@@ -151,7 +151,7 @@ TEST_CASE( "2D Image from binary functor by lvalue", "[2D][functor][binary][lval
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({-10, -15}, {20, 25});
+  const Domain domain(Point{-10, -15}, Point{20, 25});
   const double cst = 3.5;
   const auto fn = BinaryFunctor(cst);
   auto image = functors::holdConstImageFunctor( domain, fn );
@@ -165,7 +165,7 @@ TEST_CASE( "2D Image from binary lambda by rvalue", "[2D][lambda][binary][rvalue
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({-10, -15}, {20, 25});
+  const Domain domain(Point{-10, -15}, Point{20, 25});
   const double cst = 3.5;
   auto image = functors::holdConstImageFunctor( domain, [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); } );
   checkImage(image, [&cst] (Point pt, Domain d) { return binary_kernel(pt, d, cst); });
@@ -178,7 +178,7 @@ TEST_CASE( "2D Image from binary std::function by lvalue", "[2D][function][binar
   using Domain = HyperRectDomain<Space>;
   using Point = typename Domain::Point;
 
-  const Domain domain({-10, -15}, {20, 25});
+  const Domain domain(Point{-10, -15}, Point{20, 25});
   const double cst = 3.5;
   std::function<double(Point, Domain)> fn = [cst] (Point const& pt, Domain const& d) { return binary_kernel(pt, d, cst); };
   auto image = functors::holdConstImageFunctor( domain, fn );
