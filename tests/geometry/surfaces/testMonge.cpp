@@ -39,7 +39,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
@@ -118,11 +118,12 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
   typedef functors::ConstValue< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorPrincipalCurvatures, ConvFunctor> Reporterk1k2;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
+  typedef LpMetric<Space> L2Metric;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, L2Metric, FunctorPrincipalCurvatures, ConvFunctor> Reporterk1k2;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, L2Metric, FunctorMean, ConvFunctor> ReporterH;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
 
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   FunctorGaussian estimatorK(embedder,1);
@@ -150,11 +151,12 @@ bool testLocalEstimatorFromFunctorAdapter()
   reporterN.init(1, surface.begin(), surface.end());
   reporterL.init(1, surface.begin(), surface.end());
 
-  reporterK.setParams(l2Metric, estimatorK, convFunc, 5.0);
-  reporterk1k2.setParams(l2Metric, estimatork1k2, convFunc, 5.0);
-  reporterH.setParams(l2Metric, estimatorH, convFunc, 5.0);
-  reporterN.setParams(l2Metric, estimatorN, convFunc, 5.0);
-  reporterL.setParams(l2Metric, estimatorL, convFunc, 5.0);
+  L2Metric l2(2.0);
+  reporterK.setParams(l2, estimatorK, convFunc, 5.0);
+  reporterk1k2.setParams(l2, estimatork1k2, convFunc, 5.0);
+  reporterH.setParams(l2, estimatorH, convFunc, 5.0);
+  reporterN.setParams(l2, estimatorN, convFunc, 5.0);
+  reporterL.setParams(l2, estimatorL, convFunc, 5.0);
 
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorPrincipalCurvatures::Quantity valk1k2 = reporterk1k2.eval( surface.begin());

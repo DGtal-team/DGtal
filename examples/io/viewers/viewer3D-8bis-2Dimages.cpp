@@ -87,8 +87,8 @@ int main( int argc, char** argv )
     // Extracting images from 3D embeder
     DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(),
                                                                         ptCenter+DGtal::Z3i::Point(static_cast<int>(200.0*cos(alpha)),static_cast<int>(100.0*sin(alpha))),
-                                                              DGtal::Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)),
-                                                              IMAGE_PATCH_WIDTH);
+                                                                        DGtal::Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)),
+                                                                        IMAGE_PATCH_WIDTH);
     ImageAdapterExtractor extractedImage(imageVol, domainImage2D, embedder, idV);
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
 
