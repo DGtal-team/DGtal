@@ -40,7 +40,7 @@ $ ./examples/graph/volDistanceTraversal ../examples/samples/cat10.vol 0 255 100
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 
@@ -128,8 +128,8 @@ int main( int argc, char** argv )
   typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
   typedef SCellEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
-  typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
-  using DistanceToPoint = std::function<double(const Space::Point &)>;
+  typedef LpMetric<Space> Distance;
+  using DistanceToPoint = std::function<double(const Space::RealPoint &)>;
   typedef DGtal::functors::Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> >
     MyDistanceVisitor;
@@ -137,7 +137,7 @@ int main( int argc, char** argv )
   typedef MyDistanceVisitor::Scalar MySize;
 
   SCellEmbedder embedder( ks );
-  Distance distance;
+  Distance distance(2.0);
   DistanceToPoint distanceToPoint = std::bind( distance, embedder( bel ), std::placeholders::_1 );
   VertexFunctor vfunctor( embedder, distanceToPoint );
   MyDistanceVisitor visitor( digSurf, vfunctor, bel );

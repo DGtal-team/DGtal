@@ -466,8 +466,8 @@ DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
             {
               maxArea = a;
             }
-
-          if(a>minArea)
+        
+          if(a>=minArea)
             {
               addVertex(c);
               MeshFace f1, f2, f3;
