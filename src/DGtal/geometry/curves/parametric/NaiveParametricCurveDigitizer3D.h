@@ -62,10 +62,11 @@ namespace DGtal
  *
  * @tparam TParametricCurve a model of C3DParametricCurve
  * 
- * \todo The mothod cannot detect an optimal digitization time step, therefore, for
- * curves of high curvature the method can be very very slow due to the need of setting
- * a very small digitization step. Such a limitation is planned to be mitigated by
- * splitting a curve into regions of different digitization step.
+ * \todo The method cannot detect an optimal digitization time step, therefore, for curves of high
+ * curvature, the method can be very very slow due to the need of setting a tiny digitization step.
+ * Such a limitation is planned to be mitigated by splitting a curve into regions of different
+ * digitization step.
+ *
  */
 template <typename TParametricCurve>
 class NaiveParametricCurveDigitizer3D
