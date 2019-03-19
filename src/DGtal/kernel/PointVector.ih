@@ -183,7 +183,6 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector (const PointVector<dim,OtherComponent,OtherCont> & other )
 {
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    //this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
     this->myArray[ i ] = static_cast<TComponent>(other[ i ]);
 }
 //------------------------------------------------------------------------------
@@ -195,7 +194,6 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector (const PointVector<dim,OtherComponent,OtherCont> & other )
 {
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
-    //this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
     this->myArray[ i ] = static_cast<TComponent>(other[ i ]);
 }
 //------------------------------------------------------------------------------
@@ -616,8 +614,8 @@ DGtal::cosineSimilarity ( DGtal::PointVector<ptDim, LeftEuclideanRing, LeftConta
              DGtal::PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs )
   {
     double radians = 0.;
-    if ( this->norm() > 0. && v.norm() > 0. )
-      radians = this->dot ( v ) / ( this->norm() * v.norm() );
+    if ( lhs.norm() > 0. && rhs.norm() > 0. )
+      radians = rhs.dot ( lhs ) / ( lhs.norm() * rhs.norm() );
     else
       throw std::runtime_error ( "Operation involving a null vector is not defined!" );
     return std::acos ( std::min ( std::max ( radians, -1. ), 1. ) );
