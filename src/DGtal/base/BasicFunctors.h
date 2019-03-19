@@ -89,7 +89,7 @@ namespace DGtal
   /**
    * Abs functor.
    */
-  template <class T>
+  template <class T = void>
   struct Abs
   {
     inline
@@ -120,7 +120,7 @@ namespace DGtal
   };
 
   /**
-   * Unary minus functor.
+   * Multiplication by a scalar functor.
    */
   template <class T>
   struct MultiplicationByScalar
@@ -142,6 +142,138 @@ namespace DGtal
 
     T myValue;
   };
+
+  /** @brief Functor that rounds to the nearest integer.
+   *
+   * @tparam T  Type to be rounded. If not specified (void), the type is deduced at evaluation.
+   */
+  template < typename T = void >
+  struct Round
+    {
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::round(value))
+        {
+          return std::round( value );
+        }
+    };
+  
+  /** @brief Functor that rounds to the nearest integer.
+   *
+   * This specialization deduces the value type at evaluation.
+   *
+   * @see Round
+   */
+  template <>
+  struct Round<void>
+    {
+      template < typename T >
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::round(value))
+        {
+          return std::round( value );
+        }
+    };
+
+  /** @brief Functor that rounds down.
+   *
+   * @tparam T  Type to be rounded. If not specified (void), the type is deduced at evaluation.
+   */
+  template < typename T = void >
+  struct Floor
+    {
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::floor(value))
+        {
+          return std::floor( value );
+        }
+    };
+  
+  /** @brief Functor that rounds down.
+   *
+   * This specialization deduces the value type at evaluation.
+   *
+   * @see Floor
+   */
+  template <>
+  struct Floor<void>
+    {
+      template < typename T >
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::floor(value))
+        {
+          return std::floor( value );
+        }
+    };
+  
+  /** @brief Functor that rounds up.
+   *
+   * @tparam T  Type to be rounded. If not specified (void), the type is deduced at evaluation.
+   */
+  template < typename T = void >
+  struct Ceil
+    {
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::ceil(value))
+        {
+          return std::ceil( value );
+        }
+    };
+  
+  /** @brief Functor that rounds up.
+   *
+   * This specialization deduces the value type at evaluation.
+   *
+   * @see Ceil
+   */
+  template <>
+  struct Ceil<void>
+    {
+      template < typename T >
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::ceil(value))
+        {
+          return std::ceil( value );
+        }
+    };
+
+  /** @brief Functor that rounds towards zero.
+   *
+   * @tparam T  Type to be rounded. If not specified (void), the type is deduced at evaluation.
+   */
+  template < typename T = void >
+  struct Trunc
+    {
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::trunc(value))
+        {
+          return std::trunc( value );
+        }
+    };
+  
+  /** @brief Functor that rounds towards zero.
+   *
+   * This specialization deduces the value type at evaluation.
+   *
+   * @see Trunc
+   */
+  template <>
+  struct Trunc<void>
+    {
+      template < typename T >
+      inline
+      auto operator() ( const T & value ) const
+          -> decltype(std::trunc(value))
+        {
+          return std::trunc( value );
+        }
+    };
 
 ///////////////////////////////////////////////////////////////////////////////
 // Some basic unary functors that may be useful

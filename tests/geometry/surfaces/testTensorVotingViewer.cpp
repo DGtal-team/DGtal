@@ -44,6 +44,7 @@
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/TensorVotingFeatureExtraction.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 
 #include "DGtal/shapes/implicit/ImplicitHyperCube.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
@@ -109,15 +110,17 @@ bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
   typedef functors::TensorVotingFeatureExtraction<Surfel, CanonicSCellEmbedder<KSpace> > FunctorVoting;
 
   typedef functors::GaussianKernel ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorVoting, ConvFunctor> Reporter;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Space>, FunctorVoting, ConvFunctor> Reporter;
 
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   FunctorVoting estimator(embedder,1);
 
+  LpMetric<Space> l2(2.0); // L2 metric in R^3 for surface propagation.
+
   ConvFunctor convFunc(4.0);
   Reporter reporter;
   reporter.attach(surface);
-  reporter.setParams(l2Metric, estimator , convFunc, 5.0);
+  reporter.setParams(l2, estimator , convFunc, 5.0);
 
   reporter.init(1, surface.begin() , surface.end());
 
