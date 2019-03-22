@@ -15,25 +15,26 @@
  **/
 
 /**
- * @file geometry/curves/estimation/exampleLMST2D.cpp
+ * @file geometry/curves/estimation/exampleLMST3D.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
  *
  * @date 2015/09/27
  *
- * An example file named LambdaMST2D.
+ * An example file named LambdaMST3D.
  *
  * This file is part of the DGtal library.
  */
 
+
 /**
    This example shows the basic usage of the Lambda maximal segment tangent estimation
-   in 2D.
+   in 3D by the method using only 2D projections.
 
 @see \ref moduleArithDSSReco
 
-\example geometry/curves/estimation/exampleLMST2D.cpp
+\example geometry/curves/estimation/exampleLMST3DBy2D.cpp
 */
 
 
@@ -45,61 +46,53 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/helpers/StdDefs.h"
 
-//! [LambdaMST2DHeader]
-#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
-#include "DGtal/geometry/curves/SaturatedSegmentation.h"
-#include "DGtal/geometry/curves/estimation/LambdaMST2D.h"
-//! [LambdaMST2DHeader]
+//! [LambdaMST3DBy2DHeader]
+#include "DGtal/geometry/curves/estimation/LambdaMST3DBy2D.h"
+//! [LambdaMST3DBy2DHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
-  //! [LambdaMST2DStandardCtor]
+  //! [LambdaMST3DBy2DStandardCtor]
   typedef vector < Point > Container;
   typedef Container::const_iterator ConstIterator;
-  typedef ArithmeticalDSSComputer < ConstIterator, int, 8 > SegmentComputer;
-  typedef SaturatedSegmentation<SegmentComputer> Segmentation;
-  LambdaMST2D < Segmentation > lmst;
-  //! [LambdaMST2DStandardCtor]
+  LambdaMST3DBy2D < ConstIterator > lmst;
+  //! [LambdaMST3DBy2DStandardCtor]
   
   // Input points
   Container contour;
-  contour.push_back(Point(18,18));
-  contour.push_back(Point(17,19));
-  contour.push_back(Point(16,20));
-  contour.push_back(Point(15,21));
-  contour.push_back(Point(14,22));
-  contour.push_back(Point(13,23));
-  contour.push_back(Point(12,24));
-  contour.push_back(Point(11,25));
-  contour.push_back(Point(10,26));
-  contour.push_back(Point(9,27));
-  contour.push_back(Point(8,28));
-  
-  //! [LambdaMST2DTangential]
-  // Initialization of tangential cover
-  Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
-  lmst.attach ( segmenter );
-  //! [LambdaMST2DTangential]
-  
-  //! [LambdaMST2DPoint]
-  for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
-    lmst.eval ( *it );
-  //! [LambdaMST2DPoint]
-  
-  //! [LambdaMST2DFast]
-  lmst.init ( contour.begin(), contour.end() );
-  std::vector < RealVector > tangent;
-  lmst.eval < back_insert_iterator< vector < RealVector > > > ( contour.begin(), contour.end(),  back_inserter ( tangent ) );
-  //! [LambdaMST2DFast]
-  
+  contour.push_back ( Point ( 18, 25, 18 ) );
+  contour.push_back ( Point ( 17, 25, 19 ) );
+  contour.push_back ( Point ( 16, 25, 20 ) );
+  contour.push_back ( Point ( 15, 25, 21 ) );
+  contour.push_back ( Point ( 14, 25, 22 ) );
+  contour.push_back ( Point ( 13, 25, 23 ) );
+  contour.push_back ( Point ( 12, 25, 24 ) );
+  contour.push_back ( Point ( 11, 25, 25 ) );
+  contour.push_back ( Point ( 10, 25, 26 ) );
+  contour.push_back ( Point ( 9, 25, 27 ) );
+  contour.push_back ( Point ( 8, 25, 28 ) );
+
+  lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X ) ;
+  //! [LambdaMST3DBy2DPoint]
+  for ( const auto & p : contour )
+    trace.info ( ) << lmst.eval ( p ) << std::endl;
+  //! [LambdaMST3DBy2DPoint]
+
+  //! [LambdaMST3DBy2DRange]
+  lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X );
+  vector < RealVector > tangent;
+  lmst.eval ( contour.cbegin ( ), contour.cend ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
+  //! [LambdaMST3DBy2DRange]
+  for ( const auto & t : tangent )
+    trace.info ( ) << t << std::endl;
   return 0;
 }
 //                                                                           //

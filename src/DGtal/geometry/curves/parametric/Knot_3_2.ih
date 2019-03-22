@@ -1,0 +1,100 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Knot_3_2.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
+ *
+ * @date 2014/10/01
+ *
+ * Implementation of inline methods defined in Knot_3_2.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template <typename T>
+inline
+DGtal::Knot_3_2<T>::Knot_3_2 ( long double scale_1, long double scale_2, long double scale_3 ) : scale {scale_1, scale_2, scale_3}
+{}
+
+template < typename T>
+inline
+typename DGtal::Knot_3_2<T>::RealPoint DGtal::Knot_3_2<T>::x ( const long double t ) const
+{
+    return RealPoint ( scale[0] * ( std::cos ( 2 * t ) * ( 3. + std::cos ( 3. * t ) ) ),
+                       scale[1] * ( std::sin ( 2. * t ) * ( 3. + std::cos ( 3. * t ) ) ), scale[2] * std::sin ( 3. * t ) );
+}
+
+template < typename T>
+inline
+typename DGtal::Knot_3_2<T>::RealPoint DGtal::Knot_3_2<T>::xp ( const long double t ) const
+{
+    return RealPoint (
+           -2. * scale[0] * ( 3. + std::cos ( 3. * t ) ) * std::sin( 2. * t ) - 3. * scale[0] * std::cos ( 2. * t ) * std::sin ( 3. * t),
+           2. * scale[1] * std::cos (2. * t ) * ( 3.  + std::cos( 3. * t ) ) - 3. * scale[1] * std::sin ( 2. * t ) * std::sin ( 3. * t),
+           3. * scale[2] * std::cos ( 3. * t ) );
+}
+
+
+template < typename T>
+inline
+double DGtal::Knot_3_2<T>::getPeriod()
+{
+    return PERIOD;
+}
+
+template < typename T>
+inline
+void DGtal::Knot_3_2<T>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[Knot_3_2]";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Knot_3_2'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Knot_3_2' to write.
+ * @return the output stream after the writing.
+ */
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const Knot_3_2<T> & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
