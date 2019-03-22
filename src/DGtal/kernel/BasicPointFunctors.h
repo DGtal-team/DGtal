@@ -758,12 +758,19 @@ namespace functors
  };
 
 
-
-
-
-
-
-
+ template <typename TRealVector, typename TVector>
+ struct VectorRounding
+ {
+     BOOST_STATIC_ASSERT(( TRealVector::dimension ==  TVector::dimension ));
+     inline
+     TVector operator () ( const TRealVector & point ) const
+     {
+         TVector out;
+         for ( unsigned int i = 0; i < TVector::dimension; i++ )
+             out[i] = std::round ( point[i] );
+         return out;
+     }
+ };
 
   }//namespace functors
 } // namespace dgtal

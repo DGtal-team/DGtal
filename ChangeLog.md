@@ -117,6 +117,38 @@
   - Fix Visual Studio ContourHelper tests.
     (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
+- *Geometry*
+   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+   - Fix a possible issue with data structures orderings in L-MST3D accumulation step (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+   - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+
+## New Features / Critical Changes
+
+- *Base*
+  - VectorRounding - a functor that performs std::round on each component of a vector.
+
+- *Geometry*
+  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D) (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1, Knot_4_3, Knot_5_1, Knot_5_2,
+    Knot_6_2, Knot_7_4 (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - DecoratorParametricCurveTransformation - a decorator to apply isometries to parametric curves (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
+    maximal axis. This estimator has only a research value (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - DSSes filtration during L-MST3D computations (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - An option for filtering DSSes during LambdaMST3D calculations (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+
+- *Image*
+  - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding (Kacper Pluta, 
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 - *Documentation*
   - Replacing html internal links by ref command in Digital Topology module
     documentation. Also ignoring doxygen warning when ref begins with a digit.
