@@ -24,7 +24,7 @@
   - Adding PointFunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a CPointFunctor model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
-  - The conversion between PointVector of different component types now follows
+  - ⚠️ The conversion between PointVector of different component types now follows
     the classical conversion rules (e.g. float to double is OK but double
     to int fails if the conversion is not explicitly specified).
     Component type after an arithmetic operation also follows the classical
@@ -55,19 +55,19 @@
    [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
 
 - *Geometry package*
-  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D) (Kacper Pluta, 
+  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D)
+   (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1,
+    Knot_4_3, Knot_5_1, Knot_5_2, Knot_6_2, Knot_7_4 (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1, Knot_4_3, Knot_5_1, Knot_5_2,
-    Knot_6_2, Knot_7_4 (Kacper Pluta, 
+  - DecoratorParametricCurveTransformation - a decorator to apply isometries to
+    parametric curves (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator
+   that uses only 2D tangents along maximal axis. This estimator has only a
+   research value (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - DSSes filtration during L-MST3D computations (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - DecoratorParametricCurveTransformation - a decorator to apply isometries to parametric curves (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
-    maximal axis. This estimator has only a research value (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - DSSes filtration during L-MST3D computations (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - An option for filtering DSSes during LambdaMST3D calculations (Kacper Pluta, 
+  - An option for filtering DSSes during LambdaMST3D calculations (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
   - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
@@ -93,7 +93,8 @@
 ## Changes
 
 - *Configuration/General*
-  - Simplifying Travis CI scripts (David Coeurjolly, [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
+  - Simplifying Travis CI scripts (David Coeurjolly,
+    [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
 
 - *Kernel package*
   - Fix NumberTraits for `long long int` types and refactor it.
@@ -166,12 +167,12 @@
     of different component types.
     (David Coeurjolly, Roland Denis, Monir Hadji, Bertrand Kerautret,
     Tristan Roussillon, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
- 
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
-  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism (Jacques-Olivier Lachaud,
-    [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
+  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism
+    (Jacques-Olivier Lachaud, [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
     [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
 - *Shapes*
@@ -198,11 +199,11 @@
     (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
 - *Geometry*
-   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D (Kacper Pluta, 
+   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-   - Fix a possible issue with data structures orderings in L-MST3D accumulation step (Kacper Pluta, 
+   - Fix a possible issue with data structures orderings in L-MST3D accumulation step (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-   - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta, 
+   - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 
 - *Image*
@@ -361,9 +362,11 @@
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
   - New mandatory dependency for DGtal: zlib must be installed in the system.
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
-  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd  --generates error with c++17 flag.
-   (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
-  - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd
+    --generates error with c++17 flag. (Pablo Hernandez,
+    [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+  - Remove cpp11 deprecated usage of std::unary_function and
+    std::binary_function --generates error with c++17 flag.
    (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
