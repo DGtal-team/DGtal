@@ -18,7 +18,8 @@
     (e.g. function, functor, lambda function,...) into a CConstImage model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
   - RigidTransformation2D/3D depends on a vector functor that can be,
-    for example, VectorRounding (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+    for example, VectorRounding (Kacper Pluta,
+    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 
 - *Kernel package*
   - Adding PointFunctorHolder to transform any callable object (e.g. function,
@@ -89,7 +90,6 @@
   - Module page about functions, functors and lambdas in DGtal.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
-
 ## Changes
 
 - *Configuration/General*
@@ -120,14 +120,12 @@
     counterclockwise with respect of the vertex (ie surfel) seen from
     the exterior. (Jacques-Olivier Lachaud,
     [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
-
   - This PR fixes two issues related to CubicalComplexFunctions:
     issue [#1362](https://github.com/DGtal-team/DGtal/issues/1362) and
     issue [#1381](https://github.com/DGtal-team/DGtal/issues/1381) for
     programs testCubicalComplex, testVoxelComplex and
     testParDirCollapse. (Jacques-Olivier Lachaud,
     [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
-
   - Move operators outside of functions namespace in VoxelComplexFunctions.
     (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
 
