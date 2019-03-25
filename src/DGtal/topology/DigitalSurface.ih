@@ -268,23 +268,45 @@ template <typename TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
-facesAroundVertex( const Vertex & v ) const
+facesAroundVertex( const Vertex & v, bool order_ccw_in_3d ) const
 {
   typedef typename ArcRange::const_iterator ArcRangeConstIterator;
   // std::cerr << "  - facesAroundVertex(" << v << ")" << std::endl;
   ArcRange arcs = outArcs( v );
-  FaceRange faces;
-  std::back_insert_iterator<FaceRange> output_it = std::back_inserter( faces );
-  for ( ArcRangeConstIterator it = arcs.begin(), it_end = arcs.end();
-	it != it_end; ++it )
-    {
-      // std::cerr << "     + arc " << tail( *it )
-      //           << " -> " << head( *it ) << std::endl;
-      FaceRange faces_of_arc = facesAroundArc( *it );
-      output_it = 
-	std::copy( faces_of_arc.begin(), faces_of_arc.end(), output_it );
+  if ( order_ccw_in_3d && ( arcs.size() == 4 ) )
+    { // 3D method to order faces/pointels CCW around vertices/surfels
+      FaceRange faces;
+      faces.push_back( facesAroundArc( arcs[ 0 ] )[ 0 ] );
+      faces.push_back( facesAroundArc( arcs[ 2 ] )[ 0 ] );
+      faces.push_back( facesAroundArc( arcs[ 1 ] )[ 0 ] ); // < to change order.
+      faces.push_back( facesAroundArc( arcs[ 3 ] )[ 0 ] ); // < to change order.
+      const KSpace& K = container().space();
+      auto  orth_dir = K.sOrthDir( v );
+      auto    direct = K.sDirect( v, orth_dir ); // true: ccw, false: ! ccw
+      Point   vtcs[] = { K.sCoords( pivot( faces[ 0 ] ) ),
+			 K.sCoords( pivot( faces[ 1 ] ) ),
+			 K.sCoords( pivot( faces[ 2 ] ) ) };
+      Vector    s0s1 = vtcs[ 1 ] - vtcs[ 0 ];
+      Vector    s0s2 = vtcs[ 2 ] - vtcs[ 0 ];
+      Vector       t = s0s1.crossProduct( s0s2 );
+      if ( ( ( t[ orth_dir ] > 0 ) && direct )
+	   || ( ( t[ orth_dir ] < 0 ) && ! direct ) )
+	std::reverse( faces.begin(), faces.end() );
+      return faces;
     }
-  return faces;
+  else
+    { // nD method
+      FaceRange faces;
+      std::back_insert_iterator<FaceRange> output_it = std::back_inserter( faces );
+      for ( ArcRangeConstIterator it = arcs.begin(), it_end = arcs.end();
+	    it != it_end; ++it )
+	{
+	  FaceRange faces_of_arc = facesAroundArc( *it );
+	  output_it = 
+	    std::copy( faces_of_arc.begin(), faces_of_arc.end(), output_it );
+	}
+      return faces;
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>

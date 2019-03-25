@@ -57,7 +57,7 @@ namespace DGtal
    *
    */
   template <typename TSpace>
-  class Ball2D:  public StarShaped2D<TSpace>
+  class Ball2D final:  public StarShaped2D<TSpace>
   {
     // ----------------------- Standard services ------------------------------
   public:

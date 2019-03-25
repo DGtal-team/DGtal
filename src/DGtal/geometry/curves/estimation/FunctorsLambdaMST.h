@@ -39,7 +39,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <functional>
+#include <iterator>
+#include  <stdexcept>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -142,8 +145,16 @@ public:
     Value result;
     double norm = std::sqrt ( aDSS.a() * aDSS.a() + aDSS.b() * aDSS.b() );
     result.second = lambdaFunctor ( (double)indexOfPointInDSS / (double)dssLen );
-    result.first[0] = result.second * aDSS.b () / norm;
-    result.first[1] = result.second * aDSS.a () / norm;
+    if ( norm > 0. )
+    {
+      result.first[0] = result.second * aDSS.b() / norm;
+      result.first[1] = result.second * aDSS.a() / norm;
+    }
+    else
+    {
+      result.first[0] = 0.;
+      result.first[1] = 0.;
+    }
     return result;
   }
 private:
@@ -187,7 +198,7 @@ public:
    * @param indexOfPointInDSS index of given point in aDSS
    * @param dssLen length of aDSS
    */
-  Value operator() ( const TDSS& aDSS, const int & indexOfPointInDSS, const int & dssLen ) const
+  Value operator() ( const TDSS& aDSS, const unsigned int indexOfPointInDSS, const unsigned int dssLen ) const
   {
     Value result;
     typename DSS::Point3d directionZ3;
@@ -212,6 +223,112 @@ private:
   // ------------------------- Private Datas --------------------------------
   //! 
   LambdaFunction lambdaFunctor;
+};
+
+
+/**
+ * Description of class 'DSSMuteFilter' -- model of CLMSTDSSFilter.
+ * Aim: Provide a functor which does nothing i.e., always returns false.
+ * @tparam DSS digital straight segment recognition algorithm
+ */
+template<typename DSS >
+class DSSMuteFilter
+{
+public:
+// ----------------------- Types ------------------------------
+  typedef DSS DSSType;
+  typedef typename IteratorCirculatorTraits< typename DSSType::ConstIterator >::Value Point;
+
+  /// Always returns false
+  bool operator()( const DSSType & ) const
+  {
+     return false;
+  }
+
+  /// Always returns false
+  bool admissibility ( const DSSType &, const Point & ) const
+  {
+    return false;
+  }
+
+  /// When called always throws an exception
+  long int position ( const DSSType &, const Point & ) const
+  {
+    throw std::runtime_error ( "You are not suppose to see this error!" );
+  }
+};
+
+
+/**
+ * Description of class 'DSSLengthLessEqualFilter' -- model of CLMSTDSSFilter.
+ * Aim: Provide a functor which allow for filtering DSSes of length lower than
+ * a given threshold.
+ * @tparam DSS digital straight segment recognition algorithm
+ */
+template<typename DSS >
+class DSSLengthLessEqualFilter
+{
+public:
+// ----------------------- Types ------------------------------
+  typedef DSS DSSType;
+  typedef typename IteratorCirculatorTraits< typename DSSType::ConstIterator >::Value Point;
+
+  DSSLengthLessEqualFilter ( ) : lenThreshold (0), initThreshold ( false ) { }
+
+  /** Filter initialization method, which has to be used before using the filter
+   * @param threshold length threshold used by the filter
+   */
+  void init ( double threshold )
+  {
+    if ( threshold < 0. )
+      throw std::runtime_error ( "The threshold has to be positive!" );
+    lenThreshold = threshold;
+    initThreshold = true;
+  }
+
+  /**
+   * @param dss - the DSS to be checked by the filter
+   * @return true if the dss length is smaller than the threshold
+   */
+  bool operator()( const DSSType & dss ) const
+  {
+    if (! initThreshold )
+      throw std::runtime_error ( "The filter has to be initialized!" );
+
+    return std::distance ( dss.begin ( ), dss.end ( ) ) < lenThreshold;
+  }
+
+  /**
+   * Checks if the DSS can be used for points that are not covered by any DSS longer than the threshold.
+   * @param dss - the DSS to be checked if it is close enough to the point p
+   * @param p - the point that is not covered by a long enough DSS
+   * @return true if the DSS (see dss) is close enough to the point (see p)
+   */
+  bool admissibility ( const DSSType & dss, const Point & p ) const
+  {
+    return ( p - *dss.begin ( ) ).norm ( ) <= lenThreshold || ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenThreshold;
+  }
+
+  /**
+   * Returns position for an uncovered point i.e., point that is not covered by a DSS longer than the threshold,
+   * and a DSS that is long enough and it is in the vicinity of the point.
+   * @param dss - the DSS that does not cover the point but it is close enough to it
+   * @param p - uncovered point
+   * @return the position of p with respect to dss
+   */
+  long int position ( const DSSType & dss, const Point & p ) const
+  {
+    if ( ( p - *dss.begin ( ) ).norm ( ) <= lenThreshold )
+      return 1;
+    else if ( ( p - *( dss.end ( ) - 1 ) ).norm ( ) <= lenThreshold )
+      return std::distance ( dss.begin ( ), dss.end ( ) ) + 1;
+    else
+      throw std::runtime_error ( "The DSS and the point are not admissible!" );
+  }
+
+private:
+    double lenThreshold;
+    bool initThreshold;
 };
 
 } // namespace DGtal

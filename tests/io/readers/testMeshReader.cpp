@@ -43,9 +43,11 @@ using namespace DGtal;
 
 
 
-struct Point3D{  
+struct Point3D{
+  using Component = double;
+
   static const unsigned int dimension = 3;
-  const double & operator[]( unsigned int i ) const{
+  const Component & operator[]( unsigned int i ) const{
     assert(i<3);
     switch (i){
     case 0: {return x;}
@@ -55,7 +57,7 @@ struct Point3D{
     return x;
   };
 
-   double & operator[]( unsigned int i ) {
+   Component & operator[]( unsigned int i ) {
     assert(i<3);
     switch (i){
     case 0: {return x;}
@@ -64,8 +66,8 @@ struct Point3D{
     }
     return x;
   };
-  
-  double  x, y,z;
+
+  Component  x, y,z;
 };
 
 
@@ -74,7 +76,7 @@ typedef Point3D Point;
 
 
 
- 
+
 
 
 
@@ -89,30 +91,30 @@ bool testMeshReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing block ..." );  
+  trace.beginBlock ( "Testing block ..." );
   nb++;
-  std::string filenameOFF = testPath + "samples/box.off";  
+  std::string filenameOFF = testPath + "samples/box.off";
   Mesh<Point> a3DMesh;
   bool importOK = a3DMesh << filenameOFF;
-  nbok += importOK ? 1 : 0; 
-  
-  
+  nbok += importOK ? 1 : 0;
+
+
   nb++;
   Mesh<Point>::MeshFace aFace = a3DMesh.getFace(0);
   bool isWellImported = (a3DMesh.nbVertex()==8) &&  (a3DMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
-  nbok+=isWellImported? 1: 0; 
-  
+  nbok+=isWellImported? 1: 0;
+
 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+    << "true == true" << std::endl;
 
 
   nb++;
-  std::string filenameOFS = testPath + "samples/testMesh.ofs";  
+  std::string filenameOFS = testPath + "samples/testMesh.ofs";
   Mesh<Point> a3DMesh2;
   bool importOK2=  a3DMesh2 << filenameOFS;
-  nbok += importOK2 ? 1 : 0; 
-  
+  nbok += importOK2 ? 1 : 0;
+
   nb++;
   Mesh<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
   bool isWellImported2 = (a3DMesh2.nbVertex()==32) &&  (a3DMesh2.nbFaces()==60) && (aFace2.size()==3) && (aFace2.at(0)==0);
@@ -120,10 +122,10 @@ bool testMeshReader()
 
 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();  
-  
-  
+    << "true == true" << std::endl;
+  trace.endBlock();
+
+
   return nbok == nb;
 }
 

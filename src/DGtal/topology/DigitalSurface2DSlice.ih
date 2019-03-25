@@ -111,7 +111,7 @@ typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::Size
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 size() const
 {
-  return mySurfels.size();
+  return static_cast<Size>(mySurfels.size());
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>

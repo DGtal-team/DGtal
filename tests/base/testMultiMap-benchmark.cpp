@@ -227,7 +227,7 @@ public:
   inline 
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
-    return _data[ offset( x, y ) ].erase( l );
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].erase( l ));
   }
 
   inline 
@@ -258,7 +258,7 @@ public:
   inline
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
-    return _data[ offset( x, y ) ].size();
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].size());
   }
   inline 
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
@@ -551,7 +551,7 @@ public:
   inline
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
-    return _data[ offset( x, y ) ].size();
+    return static_cast<unsigned int>(_data[ offset( x, y ) ].size());
   }
   inline void display ( ostream & , unsigned int , unsigned int x, unsigned int y )
   {
@@ -850,8 +850,8 @@ int main( int /*argc*/, char** /*argv*/ )
   
   
 
-  unsigned int X =  500;
-  unsigned int Y =  500;
+  unsigned int X =  100;
+  unsigned int Y =  100;
   /// Probability that there is no data at this location.
   double PROB_NO_DATA =  0.5;
   /// If there is a possibility to have a data, this probability is

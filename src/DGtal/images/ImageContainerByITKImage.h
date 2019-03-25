@@ -51,6 +51,7 @@
 #if defined(__GNUG__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -64,8 +65,8 @@
 #pragma clang diagnostic pop
 #endif
 #if defined(__GNUG__)
-#endif
 #pragma GCC diagnostic pop
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

@@ -41,7 +41,7 @@
 #include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
@@ -132,25 +132,26 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.beginBlock("Creating  adapter");
   typedef DGtal::functors::DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
   typedef DGtal::functors::ConstValue< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>,
                                                  Functor, ConvFunctor> Reporter;
 
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>,
                                                  Functor, DGtal::functors::GaussianKernel> ReporterGaussian;
 
+  LpMetric<Z3i::Space> l2(2.0);
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   Functor estimator(embedder, 1);
 
   ConvFunctor convFunc(1.0);
-  Reporter reporter;//(surface,l2Metric,estimator,convFunc);
+  Reporter reporter;
   reporter.attach(surface);
-  reporter.setParams(l2Metric,estimator,convFunc, 5);
+  reporter.setParams(l2,estimator,convFunc, 5);
 
   //We just test the init for Gaussian
   DGtal::functors::GaussianKernel gaussKernelFunc(1.0);
   ReporterGaussian reporterGaussian;
   reporterGaussian.attach(surface);
-  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc, 5.0);
+  reporterGaussian.setParams(l2,estimator,gaussKernelFunc, 5.0);
   reporterGaussian.init(1, surface.begin(), surface.end());
 
   reporter.init(1.0, surface.begin(), surface.end());
@@ -159,7 +160,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   nbok += ((fabs((double)val - 124.0)) < 40) ? 1 : 0;
   nb++;
 
-  reporter.setParams(l2Metric,estimator,convFunc, 20.0);
+  reporter.setParams(l2,estimator,convFunc, 20.0);
   reporter.init(1, surface.begin(), surface.end());
   Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;

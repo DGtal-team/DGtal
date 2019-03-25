@@ -32,19 +32,19 @@ axis extraction.
 \section introVol Introduction
 
 For decades, distance transformation (DT) and geometrical skeleton
-extraction have been classic tools for shape analysis
+extraction have been standard tools for shape analysis
 @cite Rosenfeld1966
 @cite Rosenfeld1968 . The DT of a shape consists in
-labelling object grid points with the distance to the closest
+labeling object grid points with the distance to the closest
 background pixel. From the DT values, we thus have information on the
-shape geometry.  Beside its applications in shape description, DT has
+shape geometry.  Besides its applications in shape description, DT has
 been used in many situations such as shape analysis, shape matching,
 shape-based interpolation, motion planning, image registration, or
 differential measurement estimation.
 
 
 In the literature, many techniques have been proposed to compute the
-DT given a metric with a trade-off between algorithmic performances
+DT, given a metric with a trade-off between algorithmic performances
 and the @e accuracy of the metric compared to the Euclidean one.
 Hence, many papers have considered distances based on chamfer masks
 @cite Rosenfeld1966   @cite Rosenfeld1968  @cite Borgefors1986CVGIP , or sequences of chamfer
@@ -63,11 +63,11 @@ In @cite dcoeurjo_pami_RDMA, it has been demonstrated that a similar decompositi
 can be used to compute both the reverse distance transformation and a
 discrete medial axis of the binary shape.
 
-In fact, the separable decomposition and the associated algorithmic
+The separable decomposition and the associated algorithmic
 tools can be used on a wider class of metrics (see  @cite Hirata1996  or
 @cite Maurer2003PAMI). For instance, all weighted \f$l_p\f$ metrics defined in
-@f$R^n@f$ by
- \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^n w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
+@f$\mathbb{R}^d@f$ by
+ \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^d w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
 can be considered.
 
 In DGtal, we have chosen to implement such volumetric tools such
@@ -79,7 +79,7 @@ For a complete discussion of metric concepts in DGtal, please refer to @ref modu
 \section voronoiSect Digital Voronoi Diagram Computation
 
 The generic distance transformation is based on a prior Voronoi map
-consturction. Indeed, if we compute the Voronoi diagram of background
+construction. Indeed, if we compute the Voronoi diagram of background
 points, the distance transformation at an object point is exactly its
 distance to the site associated with the Voronoi cell it belongs to.
 
@@ -88,7 +88,7 @@ example, in dimension 2, partial digital Voronoi maps of dimension one are
 first computed in each row independently. Then such partial Voronoi
 maps are updated using independent processes along the columns,
 leading to a valid Voronoi map of dimension 2. In an algorithmic point
-of view, the 1D processes used for both columns and rows are exactly
+of view, the 1D processes used for both columns and rows are 
 the same. In higher dimensions, the other dimensions are processed
 similarly.
 

@@ -75,6 +75,7 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
       trace.error() << "PGMReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
+  str = str.substr(0, 2);
   if ( str != "P5" &&  str != "P2")
     {
       trace.error() << "PGMReader : No P5 or P2 format in " << aFilename << std::endl;

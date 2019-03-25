@@ -29,6 +29,13 @@ foreach(p LIB BIN INCLUDE DATA)
 endforeach()
 
 # -----------------------------------------------------------------------------
+# Visual Studio : to distinguish between debug and release lib
+# -----------------------------------------------------------------------------
+IF (MSVC)
+  set(CMAKE_DEBUG_POSTFIX "d")
+ENDIF (MSVC)
+
+# -----------------------------------------------------------------------------
 # Doxygen targets
 # -----------------------------------------------------------------------------
 message(STATUS "-------------------------------------------------------------------------------")
@@ -52,7 +59,11 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 # Parsing cmake options
 # -----------------------------------------------------------------------------
-OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+IF (MSVC)
+  OPTION(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+ELSE (MSVC)
+  OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+ENDIF (MSVC)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
