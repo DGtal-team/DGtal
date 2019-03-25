@@ -36,7 +36,6 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/CubicalComplex.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -583,8 +582,6 @@ SCENARIO( "CubicalComplex< K2,std::map<> > set operations and relations", "[cubi
   typedef KSpace::Cell                      Cell;
   typedef std::map<Cell, CubicalCellData>   Map;
   typedef CubicalComplex< KSpace, Map >     CC;
-
-  using namespace DGtal::functions;
 
   KSpace K;
   K.init( Point( 0,0 ), Point( 5,3 ), true );

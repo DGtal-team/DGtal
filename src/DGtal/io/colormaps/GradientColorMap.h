@@ -238,7 +238,7 @@ namespace DGtal
     static Color getColor( const std::vector<Color> & colors,
              const PValue & min,
              const PValue & max,
-             const PValue & value );
+             PValue value );
 
     // ------------------------- Protected Datas ------------------------------
   private:

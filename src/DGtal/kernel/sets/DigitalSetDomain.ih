@@ -116,7 +116,7 @@ typename DGtal::DigitalSetDomain<TDigitalSet>::Size
 DGtal::DigitalSetDomain<TDigitalSet>
 ::size() const
 {
-  return mySet->size();
+  return static_cast<Size>(mySet->size());
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>

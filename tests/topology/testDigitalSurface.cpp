@@ -585,6 +585,82 @@ bool testDigitalSurface()
   return nbok == nb;
 }
 
+bool testOrderingDigitalSurfaceFacesAroundVertex()
+{
+  typedef KhalimskySpaceND<3>     KSpace;
+  typedef typename KSpace::Space  Space;
+  typedef typename Space::Point   Point;
+  typedef HyperRectDomain<Space>  Domain;
+  typedef typename DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type
+                                  DigitalSet;
+  typedef DigitalSetBoundary<KSpace,DigitalSet> DSContainer;
+  typedef DigitalSurface<DSContainer>           MyDS;
+  typedef typename MyDS::Vertex                 Vertex;
+  typedef typename MyDS::SCell                  SCell;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Creating surface around one voxel" );
+  Point pt0;
+  Point pt1 = Point::diagonal( -1 );
+  Point pt2 = Point::diagonal( 1 );
+  Domain domain( pt1, pt2 );
+  DigitalSet dig_set( domain );
+  dig_set.insert( pt0 );
+  KSpace K;
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  DSContainer* ptrBdry = new DSContainer( K, dig_set );
+  MyDS digsurf( ptrBdry ); // acquired
+  ++nb; nbok += digsurf.size() == 6 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "digsurf.size() = " << digsurf.size() 
+               << " == " << 6 << std::endl;
+  trace.endBlock();
+  trace.beginBlock ( "Check ordering" );
+  std::map< std::pair< SCell, SCell >, unsigned int > nb_arcs;
+  for ( Vertex v : digsurf )
+    {
+      auto faces = digsurf.facesAroundVertex( v, true );
+      for ( unsigned int i = 0; i < faces.size(); ++i )
+	{
+	  auto p = std::make_pair( digsurf.pivot( faces[ i ] ),
+				   digsurf.pivot( faces[ (i+1)%4 ] ) );
+	  trace.info() << "Arc " << p.first << " --- " << p.second << std::endl;
+	  if ( nb_arcs.find( p ) == nb_arcs.end() )
+	    nb_arcs[ p ] = 1;
+	  else
+	    nb_arcs[ p ] += 1;
+	}
+    }
+  ++nb; nbok += nb_arcs.size() == 24 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "nb_arcs.size() = " << nb_arcs.size() 
+               << " == " << 24 << " (cube has 24 arcs)" << std::endl;
+  for ( auto arc : nb_arcs )
+    {
+      SCell p1 = arc.first.first;
+      SCell p2 = arc.first.second;
+      ++nb; nbok += (K.sCoords( p1 ) - K.sCoords( p2 )).norm1() == 1 ? 1 : 0;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "arcs have all norm 1." << std::endl;
+  for ( auto arc : nb_arcs )
+    {
+      SCell p1 = arc.first.first;
+      SCell p2 = arc.first.second;
+      auto  it = nb_arcs.find( std::make_pair( p2, p1 ) );
+      ++nb; nbok += arc.second == 1 ? 1 : 0;
+      ++nb; nbok += ( it != nb_arcs.end() ) && it->second == 1 ? 1 : 0;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "arcs are unique and their inverse are unique." << std::endl;
+  trace.endBlock();
+  return nb == nbok;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -603,7 +679,8 @@ int main( int argc, char** argv )
     && testLightExplicitDigitalSurface()
     && testDigitalSurface<KhalimskySpaceND<2> >()
     && testDigitalSurface<KhalimskySpaceND<3> >()
-    && testDigitalSurface<KhalimskySpaceND<4> >();
+    && testDigitalSurface<KhalimskySpaceND<4> >()
+    && testOrderingDigitalSurfaceFacesAroundVertex();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

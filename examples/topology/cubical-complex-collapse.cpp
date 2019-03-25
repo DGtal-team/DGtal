@@ -74,7 +74,6 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
-#include "DGtal/topology/CubicalComplexFunctions.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -281,7 +281,11 @@ namespace DGtal
     /// @return a const reference to the digital space containing the digital surface.
     const KSpace& space() const
     { return myContainer->space(); }
-    
+
+    /// @return a const reference to the half-edge data structure.
+    const HalfEdgeDataStructure& heds() const
+    { return myHEDS; }
+
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.

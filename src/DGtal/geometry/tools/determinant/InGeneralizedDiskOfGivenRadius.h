@@ -79,15 +79,16 @@ namespace DGtal
    * point @a myR with respect to this circle. Note that the distance between 
    * @a myP and @a myR is assumed to be greater than the distance between 
    * @a myP and @a myQ and between @a myQ and @a myR.  
+   *
    * - If the third point lies on the same side of the oriented line 
-   * passing by @a myP @a myQ than the circle center, the return value is: 
+   *   passing by @a myP @a myQ than the circle center, the return value is: 
    *   - zero if the third point belongs to the circle  
    *   - strictly positive if it does not lie in the interior or on the boundary 
-   *   of the circle 
+   *     of the circle 
    *   - strictly negative if it lies in the interior of the circle
    * - otherwise, the return value is strictly negative. This case is discarded
-   * because segment @a myP @a myR is assumed to be the longest side of the triangle
-   * @a myP ,  @a myQ , @a myR. 
+   *   because segment @a myP @a myR is assumed to be the longest side of the triangle
+   *   @a myP ,  @a myQ , @a myR. 
    *
    * The test is reduced to the computation of the determinant of a 2x2 matrix
    * of integral entries, the implementation of which is delegated to a determinant 

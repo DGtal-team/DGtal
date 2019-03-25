@@ -59,7 +59,6 @@ asymetricThinningScheme(
 
   using Cell = typename TComplex::Cell;
   using Data = typename TComplex::Data;
-  using Object = typename TComplex::Object;
 
   // Initialize K set, and VoxelComplex containers;
   struct FirstComparator
@@ -70,16 +69,15 @@ asymetricThinningScheme(
     }
   };
   std::set<std::pair<Cell, Data>, FirstComparator> selected_voxels_per_dim;
-  Object empty_obj(vc.object().topology(), vc.object().domain());
   TComplex already_selected_voxels(vc.space());
-  already_selected_voxels.construct(empty_obj);
   TComplex constraint_set(vc.space());
-  constraint_set.construct(empty_obj);
 
   auto & Z = selected_voxels_per_dim;
   auto & Y = already_selected_voxels;
   auto & K = constraint_set;
   auto X = vc;
+  Y.copySimplicityTable(vc);
+  K.copySimplicityTable(vc);
   typename TComplex::Parent x_y(vc.space());
   typename TComplex::Parent x_k(vc.space());
 
@@ -180,7 +178,6 @@ persistenceAsymetricThinningScheme(
 
   using Cell = typename TComplex::Cell;
   using Data = typename TComplex::Data;
-  using Object = typename TComplex::Object;
 
   // Initialize Z set, and VoxelComplex containers;
   struct FirstComparator
@@ -190,17 +187,16 @@ persistenceAsymetricThinningScheme(
         return lhs.first < rhs.first;
     }
   };
-  Object empty_obj(vc.object().topology(), vc.object().domain());
   TComplex already_selected_voxels(vc.space());
-  already_selected_voxels.construct(empty_obj);
   TComplex constraint_set(vc.space());
-  constraint_set.construct(empty_obj);
 
   auto & Y = already_selected_voxels;
   auto & K = constraint_set;
   TComplex X = vc;
   TComplex x_y(vc.space());
-  x_y.construct(empty_obj);
+  Y.copySimplicityTable(vc);
+  K.copySimplicityTable(vc);
+  x_y.copySimplicityTable(vc);
 
   bool stability{false};
   uint64_t generation{0};
@@ -366,8 +362,7 @@ bool
 DGtal::functions::skelEnd( const TComplex & vc,
                            const typename TComplex::Cell & cell)
 {
-  const auto &ks = vc.space();
-  const auto &pnsize = vc.object().properNeighborhoodSize(ks.uCoords(cell));
+  const auto pnsize = vc.properNeighborhoodVoxels(cell).size();
   return (pnsize == 1);
 }
 
@@ -376,8 +371,6 @@ bool
 DGtal::functions::skelSimple( const TComplex & vc,
                               const typename TComplex::Cell & cell)
 {
-  // const auto &ks = vc.space();
-  // return vc.object().isSimple(ks.uCoords(cell));
   return vc.isSimple(cell);
 }
 
@@ -402,26 +395,40 @@ DGtal::functions::oneIsthmus(const TComplex & vc,
 
   auto &ks = vc.space();
   auto point_cell = ks.uCoords(cell);
-  auto spN = vc.object().properNeighborhood(point_cell);
-  if (isZeroSurface(spN)) return true;
+  // Create an object from the set.
+  using DigitalTopology = DGtal::Z3i::DT26_6;
+  using DigitalSet = DGtal::DigitalSetByAssociativeContainer<
+    DGtal::Z3i::Domain,
+    std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
+  using Object = DGtal::Object<DigitalTopology, DigitalSet>;
+  DigitalTopology::ForegroundAdjacency adjF;
+  DigitalTopology::BackgroundAdjacency adjB;
+  auto domain = DGtal::Z3i::Domain(ks.lowerBound(), ks.upperBound());
+  DigitalTopology topo(
+      adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
+  Object object(topo, domain);
+  for(auto & properNeighborhoodVoxel : vc.properNeighborhoodVoxels(cell))
+  {
+    object.pointSet().insertNew(ks.uCoords(properNeighborhoodVoxel));
+  }
+
+  // auto spN = vc.object().properNeighborhood(point_cell);
+  if (isZeroSurface(object)) return true;
 
   // else thinning
-  // From TComplex::Object::SmallObject to TComplex::Object
-  typename TComplex::Object pN(
-      vc.object().topology(),
-      vc.object().domain());
-  for(auto it = spN.begin(), itE = spN.end() ; it != itE ; ++it)
-    pN.pointSet().insertNew(*it);
-
   TComplex pre_thin(ks);
-  pre_thin.construct(pN);
-
+  pre_thin.construct(object.pointSet());
 
   auto after_thin = asymetricThinningScheme<TComplex>( pre_thin,
       selectFirst<TComplex>,
       skelUltimate<TComplex>);
 
-  return isZeroSurface(after_thin.object());
+  object.pointSet().clear();
+  for (auto it = after_thin.begin(3), itE = after_thin.end(3) ; it != itE ; ++it ){
+    object.pointSet().insertNew(ks.uCoords(it->first));
+  }
+
+  return isZeroSurface(object);
 }
 
 template < typename TComplex >
@@ -431,26 +438,38 @@ DGtal::functions::twoIsthmus( const TComplex & vc,
 {
   auto &ks = vc.space();
   auto point_cell = ks.uCoords(cell);
-  auto spN = vc.object().properNeighborhood(point_cell);
-  if (isOneSurface(spN)) return true;
+  // Create an object from the set.
+  using DigitalTopology = DGtal::Z3i::DT26_6;
+  using DigitalSet = DGtal::DigitalSetByAssociativeContainer<
+    DGtal::Z3i::Domain,
+    std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
+  using Object = DGtal::Object<DigitalTopology, DigitalSet>;
+  DigitalTopology::ForegroundAdjacency adjF;
+  DigitalTopology::BackgroundAdjacency adjB;
+  auto domain = DGtal::Z3i::Domain(ks.lowerBound(), ks.upperBound());
+  DigitalTopology topo(
+      adjF, adjB, DGtal::DigitalTopologyProperties::JORDAN_DT);
+  Object object(topo, domain);
+  for(auto & properNeighborhoodVoxel : vc.properNeighborhoodVoxels(cell))
+  {
+    object.pointSet().insertNew(ks.uCoords(properNeighborhoodVoxel));
+  }
+  if (isOneSurface(object)) return true;
 
   // else thinning
-  // From TComplex::Object::SmallObject to TComplex::Object
-  typename TComplex::Object pN(
-      vc.object().topology(),
-      vc.object().domain());
-  for(auto it = spN.begin(), itE = spN.end() ; it != itE ; ++it)
-    pN.pointSet().insertNew(*it);
-
   TComplex pre_thin(ks);
-  pre_thin.construct(pN);
+  pre_thin.construct(object.pointSet());
 
-
-  auto after_thin = asymetricThinningScheme<TComplex>(pre_thin,
+  auto after_thin = asymetricThinningScheme<TComplex>( pre_thin,
       selectFirst<TComplex>,
       skelUltimate<TComplex>);
 
-  return isOneSurface(after_thin.object());
+  object.pointSet().clear();
+  for (auto it = after_thin.begin(3), itE = after_thin.end(3) ; it != itE ; ++it ){
+    object.pointSet().insertNew(ks.uCoords(it->first));
+  }
+
+  return isOneSurface(object);
 }
 
 template < typename TComplex >

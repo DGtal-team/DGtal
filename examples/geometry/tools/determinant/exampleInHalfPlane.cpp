@@ -119,6 +119,7 @@ advice()
   //! [FunctorDefinition30]
   Functor *a = new Functor();
   BOOST_VERIFY(a);
+  delete a;
   }
 
   {
@@ -131,6 +132,7 @@ advice()
   //! [FunctorDefinition52]
   Functor *a = new Functor();
   BOOST_VERIFY(a);
+  delete a;
   //NB. using double as coordinate type is slightly faster than using DGtal::int64_t
   //typedef PointVector<2, double> Point;  
   }
@@ -144,6 +146,7 @@ advice()
   //! [FunctorDefinition62]
   Functor *a= new Functor();
   BOOST_VERIFY( a);
+  delete a;
   }
 
   {
@@ -157,6 +160,7 @@ advice()
   Functor *a = new Functor();
   BOOST_VERIFY(a == a);
   //! [FunctorDefinition62bis]
+  delete a;
   }
 
 #ifdef WITH_BIGINTEGER
@@ -169,6 +173,7 @@ advice()
   Functor *a= new Functor();
   BOOST_VERIFY( a);
   //! [FunctorDefinition62plus]
+  delete a;
   }
 #endif
 

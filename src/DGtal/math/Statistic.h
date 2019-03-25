@@ -139,6 +139,11 @@ namespace DGtal
     unsigned int samples() const;
 
     /** 
+     * @return the number of samples.
+     */
+    unsigned int size() const;
+
+    /** 
      * @return the sample mean (given as double).
      */
     double mean() const;
@@ -172,9 +177,11 @@ namespace DGtal
      * 
      * @see terminate, Statistic 
      */
-    
-    Quantity median() ;
+    Quantity median();
 
+    /// @param[in] i a valid index
+    /// @return the corresponding value (if stored).
+    Quantity operator[]( unsigned int i ) const;
     
     /** 
      * Adds a new sample value [v].
