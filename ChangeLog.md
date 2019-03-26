@@ -7,7 +7,12 @@
   - Adding FunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a valid DGtal functor.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
-  - VectorRounding - a functor that performs std::round on each component of a vector.
+  - Adding better checks for floating point arithmetic in the test module (Kacper Pluta,
+    [#1352](https://github.com/DGtal-team/DGtal/pull/1352))
+
+- *Documentation*
+  - Module page about functions, functors and lambdas in DGtal.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 - *Image package*
   - Adding ConstImageFunctorHolder to transform any callable object
