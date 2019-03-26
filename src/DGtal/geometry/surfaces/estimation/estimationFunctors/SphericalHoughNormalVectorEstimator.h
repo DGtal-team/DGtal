@@ -43,7 +43,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
+#include <cmath>
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 #include <vector>
@@ -282,8 +282,12 @@ namespace DGtal
         const double a = u.norm() , b = v.norm();
         const double c = w.norm();
         const double s = (a+b+c)/2.0;
-        aspect = a*b*c/(8.0*(s-a)*(s-b)*(s-c));
-        
+        double denom = (8.0*(s-a)*(s-b)*(s-c));
+        if ( std::abs( denom ) <= std::abs( denom ) * 1e-6 )
+          aspect = 0.;
+        else
+          aspect = a*b*c / denom;
+
         return v.crossProduct(u);
       }
       

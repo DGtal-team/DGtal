@@ -7,6 +7,8 @@
   - Adding FunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a valid DGtal functor.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+  - Adding better checks for floating point arithmetic in the test module (Kacper Pluta,
+    [#1352](https://github.com/DGtal-team/DGtal/pull/1352))
 
 - *Documentation*
   - Module page about functions, functors and lambdas in DGtal.
