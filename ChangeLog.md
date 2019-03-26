@@ -9,10 +9,6 @@
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
   - VectorRounding - a functor that performs std::round on each component of a vector.
 
-- *DEC package*
-  - Adding missing headers in some files of DEC.
-    (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
-
 - *Image package*
   - Adding ConstImageFunctorHolder to transform any callable object
     (e.g. function, functor, lambda function,...) into a CConstImage model.
@@ -38,10 +34,6 @@
     (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
   - Adding square norm method to Point/Vector class. (David Coeurjolly,
     [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
-
-- *Math packages*
-  - Fix possible division by zero in the MultiStatistics class.
-    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
 
 - *Helpers*
   - Classes Shortcuts and ShortcutsGeometry to simplify coding with
@@ -204,6 +196,10 @@
    - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 
+- *DEC package*
+  - Adding missing headers in some files of DEC.
+    (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
+
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
@@ -215,6 +211,10 @@
     (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
   - Correct small typo when compiling with DEBUG defined
     (Boris Mansencal, [#1401](https://github.com/DGtal-team/DGtal/pull/1401))
+
+- *Math packages*
+  - Fix possible division by zero in the MultiStatistics class.
+    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
 
 
 # DGtal 0.9.4.1
