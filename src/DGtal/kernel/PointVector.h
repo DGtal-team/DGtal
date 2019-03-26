@@ -105,16 +105,36 @@ namespace DGtal
    * exact same behaviour.
    *
    *
-   * If TEuclideanRing is a Integer type (built-in integers,
-   * BigIntegers, ...), the "/" operator on Points corresponds to
-   * component by component Euclidean division.
+   * All operations involving @ref PointVector, and some of its methods,
+   * follows the classical arithmetic conversion rules.
+   * More precisely, if an operation involves two component types
+   * @a T and @a U, then the result will have the type of `T() + U()`
+   * as component type, that is the last of @a T and @a U in the following
+   * conversion chain:
    *
-   * If TEuclideanRing is a double, the "/" operator on Points
-   * correspond to the classical division on real numbers (x*1/x = 1).
+   * @code
+   * int8_t -> uint8_t -> int16_t -> uint16_t -> int32_t -> uint32_t -> int64_t -> uint64_t -> float -> double -> long double.
+   * @endcode
+   *
+   * A consequence is that if the result is stored in a @ref PointVector
+   * whose component type has lower rank than the result type in the
+   * conversion chain above, then it will result in a compilation error.
+   * This behavior is designed to avoid unwanted conversions that may lead to loss of precision.
+   *
+   * This constraint can be dodged by using one of the conversion constructor
+   * (explicitly or along with a conversion functor) or equivalent methods.
+   *
+   * @see ArithmeticConversionTraits
+   * @see https://en.cppreference.com/w/cpp/language/operator_arithmetic#Conversions
    *
    *
-   * The default less than operator is the one of the lexicographic
-   * ordering, starting from dimension 0 to N-1.
+   * For example, dividing a @ref PointVector with integer component by
+   * an integer will use the Euclidean division and returns a @ref PointVector
+   * with higher integer component type.
+   * On the other hand, dividing a @ref PointVector with integer component by
+   * a double will use classical division on real numbers and returns
+   * a @ref PointVector with double component type.
+   *
    *
    * PointVector also realizes the concept CLattice with an infimum
    * (meet, greatest lower bound) and a supremum (join, least upper
@@ -617,24 +637,25 @@ namespace DGtal
      *  Copy of the Container iterator types
      *
      **/
-    typedef typename Container::iterator Iterator;
-    typedef typename Container::const_iterator ConstIterator;
-    typedef typename Container::reverse_iterator ReverseIterator;
-    typedef typename Container::const_reverse_iterator ConstReverseIterator;
+    typedef typename Container::iterator Iterator; ///< Mutable iterator type.
+    typedef typename Container::const_iterator ConstIterator; ///< Constant iterator type.
+    typedef typename Container::reverse_iterator ReverseIterator; ///< Mutable reverse iterator type.
+    typedef typename Container::const_reverse_iterator ConstReverseIterator; ///< Constant reverse iterator type.
 
-    /**
+    /** @brief
      * Constructor.
      */
     PointVector();
 
-    /**
+    /** @brief
      * Constructor from array of values.
      *
      * @param ptrValues the array of values.
+     * @note this constructor is explicit to avoid unwanted conversion from pointers.
      */
     explicit PointVector( const Component* ptrValues );
 
-    /**
+    /** @brief
      * Constructor from two values (the Dimension of the vector should
      * be at least 2). Other components are set to 0.
      *
@@ -643,7 +664,7 @@ namespace DGtal
      */
     PointVector( const Component & x, const Component & y );
 
-    /**
+    /** @brief
      * Constructor from three values (the Dimension of the vector should
      * be at least 3). Other components are set to 0.
      *
@@ -653,7 +674,7 @@ namespace DGtal
      */
     PointVector( const Component & x, const Component & y, const Component & z );
 
-    /**
+    /** @brief
      * Constructor from four values (the Dimension of the vector should
      * be at least 4). Other components are set to 0.
      *
@@ -665,16 +686,16 @@ namespace DGtal
     PointVector( const Component & x, const Component & y,
                  const Component & z, const Component & t );
 
-    /**
-     * Constructor from initializer list.
+    /** @brief Constructor from initializer list.
+     *
      * @param init the initializer list.
      */
     PointVector( std::initializer_list<Component> init );
 
-    /** Constructor taking two points and a functor as parameters.
+    /** @brief Constructor taking two points and a functor as parameters.
+     *
      *  The new point is initialized by the result of functor f
      *  applied for each pair of coordinates of apoint1 and apoint2
-     *  FIXME: Doc
      */
     template <
       typename LeftComponent, typename LeftStorage,
@@ -684,10 +705,10 @@ namespace DGtal
                  const PointVector<dim, RightComponent, RightStorage> & apoint2,
                  const BinaryFunctor& f );
 
-    /** Constructor taking a point and a unary functor as parameters.
+    /** @brief Constructor taking a point and a unary functor as parameters.
+     *
      *  The new point is initialized by the result of functor f for
      *  each coordinate of apoint1
-     *  FIXME: Doc
      */
     template <
       typename OtherComponent, typename OtherStorage,
@@ -695,7 +716,7 @@ namespace DGtal
     PointVector( const PointVector<dim, OtherComponent, OtherStorage> & apoint1,
                  const UnaryFunctor & f );
 
-    /**
+    /** @brief
      * Destructor.
      */
     ~PointVector();
@@ -704,21 +725,34 @@ namespace DGtal
 
   public:
     /** @brief Copy constructor.
+     *
      * @param other the object to clone.
      */
     PointVector( const Self & other );
 
     /** @brief Copy constructor from another component PointVector.
-     * A static cast is used to cast the values during the copy.
+     *
      * @param other the object to clone.
-     *  FIXME: Doc
+     *
+     * @warning This constructor is implicitly available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
      */
     template <
       typename OtherComponent, typename OtherCont,
       typename std::enable_if< std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
     PointVector( const PointVector<dim,OtherComponent,OtherCont> & other );
 
-    //  FIXME: Doc
+    /** @brief Copy constructor from another component PointVector.
+     *
+     * @param other the object to clone.
+     *
+     * @warning This constructor must be explicitly specified if the
+     * conversion from @a OtherComponent to @a Component breaks the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     */
     template <
       typename OtherComponent, typename OtherCont,
       typename std::enable_if< ! std::is_same< Component, ArithmeticConversionType<Component, OtherComponent> >::value, int >::type = 0 >
@@ -735,12 +769,13 @@ namespace DGtal
     /** @brief Assignment operator from PointVector with different component
      * type.
      *
-     * A static cast is used to cast the values during the copy.
-     *
-     * @param v is the Point that gets divided to @a *this.
+     * @param v is the Point that gets copied to @a *this.
      * @return a reference on 'this'.
      *
-     *  FIXME: Doc
+     * @warning Available only if the conversion from @a OtherComponent
+     * to @a Component follows the classical arithmetic rules in arithmetic
+     * context (see the doc of @ref PointVector).
+     * Otherwise, consider converting the source point before assignment.
      */
     template <
       typename OtherComponent,
@@ -749,6 +784,7 @@ namespace DGtal
     Self & operator= ( const PointVector<dim, OtherComponent, OtherContainer> & v );
 
     /** @brief Partial copy of a given PointVector.
+     *
      * Only coordinates in @a dimensions are copied.
      *
      * @tparam OtherComponent Component type of the point to copy from.
@@ -758,6 +794,11 @@ namespace DGtal
      * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
+     *
+     * @warning Available only if the conversion from @a OtherComponent
+     * to @a Component follows the classical arithmetic rules in arithmetic
+     * context (see the doc of @ref PointVector).
+     * Otherwise, consider using the version that accepts a functor.
      */
     template <
       typename OtherComponent,
@@ -767,6 +808,7 @@ namespace DGtal
                         const std::vector<Dimension> &dimensions);
 
     /** @brief Partial copy of a given PointVector.
+     *
      * Only coordinates not in @a dimensions are copied.
      *
      * @tparam OtherComponent Component type of the point to copy from.
@@ -776,6 +818,11 @@ namespace DGtal
      * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
+     *
+     * @warning Available only if the conversion from @a OtherComponent
+     * to @a Component follows the classical arithmetic rules in arithmetic
+     * context (see the doc of @ref PointVector).
+     * Otherwise, consider using the version that accepts a functor.
      */
     template <
       typename OtherComponent,
@@ -785,6 +832,7 @@ namespace DGtal
                            const std::vector<Dimension> &dimensions);
 
     /** @brief Partial copy of a given PointVector using a functor.
+     *
      * Only coordinates in @a dimensions are copied.
      *
      * @tparam OtherComponent Component type of the point to copy from.
@@ -807,6 +855,7 @@ namespace DGtal
                         const UnaryFunctor & f);
 
     /** @brief Partial copy of a given PointVector using a functor.
+     *
      * Only coordinates not in @a dimensions are copied.
      *
      * @tparam OtherComponent Component type of the point to copy from.
@@ -829,6 +878,7 @@ namespace DGtal
                            const UnaryFunctor & f);
 
     /** @brief Partial equality.
+     *
      * Only coordinates in @a dimensions are compared.
      *
      * @tparam OtherComponent Component type of the point to compare with.
@@ -846,6 +896,7 @@ namespace DGtal
                         const std::vector<Dimension> &dimensions )  const;
 
     /** @brief Partial inverse equality.
+     *
      * Only coordinates not in @a dimensions are compared.
      *
      * @tparam OtherComponent Component type of the point to compare with.
@@ -1103,8 +1154,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent,
@@ -1116,8 +1170,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent, typename OtherStorage,
@@ -1129,8 +1186,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent,
@@ -1142,8 +1202,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent, typename OtherStorage,
@@ -1155,8 +1218,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent,
@@ -1168,8 +1234,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent, typename OtherStorage,
@@ -1181,8 +1250,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent,
@@ -1194,8 +1266,11 @@ namespace DGtal
      *
      * @return a reference on 'this'.
      *
-     * @note Enabled only if the conversion from @a OtherComponent to
-     *   @a Component is valid (see the doc of @ref PointVector).
+     * @warning This operator is available only if the
+     * conversion from @a OtherComponent to @a Component follows the
+     * classical arithmetic rules in arithmetic context
+     * (see the doc of @ref PointVector).
+     * Otherwise, consider converting the right-hand-side before.
      */
     template <
       typename OtherComponent, typename OtherStorage,
@@ -1203,8 +1278,8 @@ namespace DGtal
     inline
     PointVector & operator/= ( PointVector<dim, OtherComponent, OtherStorage> const& v );
 
-    /**
-     * Unary minus operator.
+    /** @brief Unary minus operator.
+     *
      * -Vector => Vector
      *
      * @return a new Vector that is the opposite of 'this', i.e. -'this'.
@@ -1268,8 +1343,9 @@ namespace DGtal
     crossProduct( PointVector<2, LeftEuclideanRing, LeftContainer> const& lhs,
                   PointVector<2, RightEuclideanRing, RightContainer> const& rhs );
 
-    /**
+    /** @brief
      * Positive angle between two vectors, deduced from their scalar product.
+     *
      * @param v any vector
      * @return the angle between *this and v in [0,pi].
      */
