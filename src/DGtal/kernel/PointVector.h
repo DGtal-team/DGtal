@@ -106,7 +106,7 @@ namespace DGtal
    *
    *
    * All operations involving @ref PointVector, and some of its methods,
-   * follows the classical arithmetic conversion rules.
+   * follow the classical arithmetic conversion rules.
    * More precisely, if an operation involves two component types
    * @a T and @a U, then the result will have the type of `T() + U()`
    * as component type, that is the last of @a T and @a U in the following
@@ -128,10 +128,10 @@ namespace DGtal
    * @see https://en.cppreference.com/w/cpp/language/operator_arithmetic#Conversions
    *
    *
-   * For example, dividing a @ref PointVector with integer component by
-   * an integer will use the Euclidean division and returns a @ref PointVector
+   * For example, dividing a @ref PointVector with integer components by
+   * an integer uses the Euclidean division and returns a @ref PointVector
    * with higher integer component type.
-   * On the other hand, dividing a @ref PointVector with integer component by
+   * On the other hand, dividing a @ref PointVector with integer components by
    * a double will use classical division on real numbers and returns
    * a @ref PointVector with double component type.
    *
