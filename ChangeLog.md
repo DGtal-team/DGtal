@@ -18,12 +18,15 @@
   - Adding ConstImageFunctorHolder to transform any callable object
     (e.g. function, functor, lambda function,...) into a CConstImage model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
+  - RigidTransformation2D/3D depends on a vector functor that can be,
+    for example, VectorRounding (Kacper Pluta,
+    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 
 - *Kernel package*
   - Adding PointFunctorHolder to transform any callable object (e.g. function,
     functor, lambda function,...) into a CPointFunctor model.
     (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
-  - The conversion between PointVector of different component types now follows
+  - ⚠️ The conversion between PointVector of different component types now follows
     the classical conversion rules (e.g. float to double is OK but double
     to int fails if the conversion is not explicitly specified).
     Component type after an arithmetic operation also follows the classical
@@ -50,13 +53,50 @@
    [#1325](https://github.com/DGtal-team/DGtal/pull/1325))
 
 - *Geometry package*
+  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D)
+   (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1,
+    Knot_4_3, Knot_5_1, Knot_5_2, Knot_6_2, Knot_7_4 (Kacper Pluta,
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - DecoratorParametricCurveTransformation - a decorator to apply isometries to
+    parametric curves (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator
+   that uses only 2D tangents along maximal axis. This estimator has only a
+   research value (Kacper Pluta, [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - DSSes filtration during L-MST3D computations (Kacper Pluta,
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
+  - An option for filtering DSSes during LambdaMST3D calculations (Kacper Pluta,
+   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
   - New LpMetric class (model of CMetricSpace) for distance computations in R^n.
     (David Coeurjolly,  [#1388](https://github.com/DGtal-team/DGtal/pull/1388))
+
+- *Documentation*
+  - Replacing html internal links by ref command in Digital Topology module
+    documentation. Also ignoring doxygen warning when ref begins with a digit.
+    (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
+  - Fix examples filenames in Digital Topology module documentation (Isabelle
+    Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
+  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
+    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
+  - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
+    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
+  - Fix computational costs of separable metric predicates in the documentation.
+    (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
+  - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
+    (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
+  - Module page about functions, functors and lambdas in DGtal.
+    (Roland Denis, [#1332](https://github.com/DGtal-team/DGtal/pull/1332))
 
 ## Changes
 
 - *Configuration/General*
-  - Simplifying Travis CI scripts (David Coeurjolly, [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
+  - Simplifying Travis CI scripts (David Coeurjolly,
+    [#1371](https://github.com/DGtal-team/DGtal/pull/1371))
+
+- *Kernel package*
+  - Fix NumberTraits for `long long int` types and refactor it.
+    (Roland Denis, [#1397](https://github.com/DGtal-team/DGtal/pull/1397))
+
 
 - *Topology*
   - Remove the internal object from VoxelComplex, improving performance
@@ -66,6 +106,26 @@
   - Improving KhalimskySpace related classes documentations by displaying
     a short description in the member list.
     (Roland Denis,  [#1398](https://github.com/DGtal-team/DGtal/pull/1398))
+
+- *Helpers*
+  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
+    (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
+
+- *Topology*
+  - Specializes the method DigitalSurface::facesAroundVertex in the
+    3D case, such that faces (ie pointels) are ordered
+    counterclockwise with respect of the vertex (ie surfel) seen from
+    the exterior. (Jacques-Olivier Lachaud,
+    [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
+  - This PR fixes two issues related to CubicalComplexFunctions:
+    issue [#1362](https://github.com/DGtal-team/DGtal/issues/1362) and
+    issue [#1381](https://github.com/DGtal-team/DGtal/issues/1381) for
+    programs testCubicalComplex, testVoxelComplex and
+    testParDirCollapse. (Jacques-Olivier Lachaud,
+    [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
+  - Move operators outside of functions namespace in VoxelComplexFunctions.
+    (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
+
 
 ## Bug Fixes
 
@@ -89,11 +149,25 @@
   - Correct pragma pop in ITK related files
     (Boris Mansencal, [#1400](https://github.com/DGtal-team/DGtal/pull/1400))
 
+- *Kernel*
+ - Fixing issue #1341 about unwanted conversions between PointVector with
+    different component types (like from double to int) by making explicit
+    the default conversion constructor and checking type compatiblity when
+    using operators.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+ - Fixing issue #1387 about the wrong result of PointVector::crossProduct
+    in 2D. Also disabling this method for dimensions other than 2 and 3.
+    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+  - Fixing many issues related to invalid conversion between PointVectors
+    of different component types.
+    (David Coeurjolly, Roland Denis, Monir Hadji, Bertrand Kerautret,
+    Tristan Roussillon, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
+
 - *Base*
   - Fixing wrong members in PredicateCombiner (David Coeurjolly,
     [#1321](https://github.com/DGtal-team/DGtal/pull/1321))
-  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism (Jacques-Olivier Lachaud,
-    [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
+  - Fix testClone2.cpp and efficiency issue in Clone/CountedPtr mechanism
+    (Jacques-Olivier Lachaud, [#1382](https://github.com/DGtal-team/DGtal/pull/1382)). Fix issue
     [#1203](https://github.com/DGtal-team/DGtal/issues/1203))
 
 - *Shapes*
@@ -120,102 +194,20 @@
     (Bertrand Kerautret, [#1386](https://github.com/DGtal-team/DGtal/pull/1386))
 
 - *Geometry*
-   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D (Kacper Pluta, 
+   - Fix a possible tangent vector flapping during L-MST3D and L-MST3DBy2D (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-   - Fix a possible issue with data structures orderings in L-MST3D accumulation step (Kacper Pluta, 
+   - Fix a possible issue with data structures orderings in L-MST3D accumulation step (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-   - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-
-## New Features / Critical Changes
-
-- *Base*
-  - VectorRounding - a functor that performs std::round on each component of a vector.
-
-- *Geometry*
-  - Parametric 3D curve digitization see (UglyNaiveParametricCurveDigitizer3D) (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - A set of 3D parametric curves: EllipticHelix, Knot_3_1, Knot_3_2, Knot_4_1, Knot_4_3, Knot_5_1, Knot_5_2,
-    Knot_6_2, Knot_7_4 (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - DecoratorParametricCurveTransformation - a decorator to apply isometries to parametric curves (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - LambdaMST3DBy2D - a variation of 3D Lambda Maximal Segment tangent estimator that uses only 2D tangents along
-    maximal axis. This estimator has only a research value (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - DSSes filtration during L-MST3D computations (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-  - An option for filtering DSSes during LambdaMST3D calculations (Kacper Pluta, 
+   - Add missing API to StandardDSS6Computer i.e., isInDSS (Kacper Pluta,
    [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
 
-- *Image*
-  - RigidTransformation2D/3D depends on a vector functor that can be, for example, VectorRounding (Kacper Pluta, 
-   [#1339](https://github.com/DGtal-team/DGtal/pull/1339))
-- *Documentation*
-  - Replacing html internal links by ref command in Digital Topology module
-    documentation. Also ignoring doxygen warning when ref begins with a digit.
-    (Roland Denis, [#1340](https://github.com/DGtal-team/DGtal/pull/1340))
-  - Fix examples filenames in Digital Topology module documentation (Isabelle
-    Sivignon, [#1331](https://github.com/DGtal-team/DGtal/pull/1331))
-  - Fix doc bug with Hull2D namespace, (Tristan Roussillon,
-    [#1330](https://github.com/DGtal-team/DGtal/pull/1330))
-  - Checking boost version when including boost/common_factor_rt (David Coeurjolly,
-    [#1344](https://github.com/DGtal-team/DGtal/pull/1344))
-  - Fix computational costs of separable metric predicates in the documentation.
-    (David Coeurjolly, [#1374](https://github.com/DGtal-team/DGtal/pull/1374))
-  - Fixing doxygen warnings (typo and doxygen upgrade to v1.8.14)
-    (Roland Denis, [#1376](https://github.com/DGtal-team/DGtal/pull/1376))
-
-- *DEC*
+- *DEC package*
   - Adding missing headers in some files of DEC.
     (Roland Denis, [#1349](https://github.com/DGtal-team/DGtal/pull/1349))
-
-- *Math*
-  - Fix possible division by zero in the MultiStatistics class.
-    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
 
 - *Image*
   - Fix bug in ImageLinearCellEmbedder.
     (Jacques-Olivier Lachaud, [#1356](https://github.com/DGtal-team/DGtal/pull/1356))
-
-- *Kernel*
-  - Adding square norm method to Point/Vector class. (David Coeurjolly,
-    [#1365](https://github.com/DGtal-team/DGtal/pull/1365))
-  - Fix NumberTraits for `long long int` types and refactor it.
-    (Roland Denis, [#1397](https://github.com/DGtal-team/DGtal/pull/1397))
-  - Fixing issue #1341 about unwanted conversions between PointVector with
-    different component types (like from double to int) by making explicit
-    the default conversion constructor and checking type compatiblity when
-    using operators.
-    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
-  - Fixing issue #1387 about the wrong result of PointVector::crossProduct
-    in 2D. Also disabling this method for dimensions other than 2 and 3.
-    (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
-  - Fixing many issues related to invalid conversion between PointVectors
-    of different component types.
-    (David Coeurjolly, Roland Denis, Monir Hadji, Bertrand Kerautret,
-    Tristan Roussillon, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
-
-- *Helpers*
-  - Small fixes in Shortcuts and ShortcutsGeometry, doc, and colormaps.
-    (Jacques-Olivier Lachaud, [#1364](https://github.com/DGtal-team/DGtal/pull/1364))
-
-- *Topology*
-  - Specializes the method DigitalSurface::facesAroundVertex in the
-    3D case, such that faces (ie pointels) are ordered
-    counterclockwise with respect of the vertex (ie surfel) seen from
-    the exterior. (Jacques-Olivier Lachaud,
-    [#1377](https://github.com/DGtal-team/DGtal/pull/1377))
-
-  - This PR fixes two issues related to CubicalComplexFunctions:
-    issue [#1362](https://github.com/DGtal-team/DGtal/issues/1362) and
-    issue [#1381](https://github.com/DGtal-team/DGtal/issues/1381) for
-    programs testCubicalComplex, testVoxelComplex and
-    testParDirCollapse. (Jacques-Olivier Lachaud,
-    [#1390](https://github.com/DGtal-team/DGtal/pull/1390))
-
-  - Move operators outside of functions namespace in VoxelComplexFunctions.
-    (Pablo Hernandez, [#1392](https://github.com/DGtal-team/DGtal/pull/1392))
 
 - *Miscellaneous*
   - Fix Small bug in Integral Invariant Volume Estimator in 2D
@@ -224,6 +216,11 @@
     (Daniel Antunes, [#1346](https://github.com/DGtal-team/DGtal/pull/1346))
   - Correct small typo when compiling with DEBUG defined
     (Boris Mansencal, [#1401](https://github.com/DGtal-team/DGtal/pull/1401))
+
+- *Math packages*
+  - Fix possible division by zero in the MultiStatistics class.
+    (Kacper Pluta, [#1358](https://github.com/DGtal-team/DGtal/pull/1358))
+
 
 # DGtal 0.9.4.1
 
@@ -368,9 +365,11 @@
    [#1226](https://github.com/DGtal-team/DGtal/pull/1226))
   - New mandatory dependency for DGtal: zlib must be installed in the system.
    (David Coeurjolly, [#1228](https://github.com/DGtal-team/DGtal/pull/1228))
-  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd  --generates error with c++17 flag.
-   (Pablo Hernandez, [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
-  - Remove cpp11 deprecated usage of std::unary_function and std::binary_function --generates error with c++17 flag.
+  - Remove cpp11 deprecated usage of std::binder1st and std::binder2nd
+    --generates error with c++17 flag. (Pablo Hernandez,
+    [#1287](https://github.com/DGtal-team/DGtal/pull/1287))
+  - Remove cpp11 deprecated usage of std::unary_function and
+    std::binary_function --generates error with c++17 flag.
    (Pablo Hernandez, [#1291](https://github.com/DGtal-team/DGtal/pull/1291))
 
 - *Topology Package*
