@@ -7,10 +7,16 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   freemanChainFromImage
   FMMErosion
   2DSliceImageFromVol
+  shortcuts
+  shortcuts-geometry
 )
 
 
 FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
+  if(MSVC)
+    set_source_files_properties( ${FILE} PROPERTIES COMPILE_FLAGS "/bigobj" )
+  endif(MSVC)
+
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} DGtal  )
 ENDFOREACH(FILE)

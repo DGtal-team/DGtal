@@ -39,6 +39,7 @@
 #include <algorithm>
 #include <iterator>
 #include <cmath>
+#include <vector>
 #include <map>
 #include <DGtal/base/Common.h>
 #include <DGtal/helpers/StdDefs.h>
@@ -47,23 +48,26 @@
 #include "DGtal/geometry/curves/estimation/FunctorsLambdaMST.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 #include "DGtal/geometry/curves/estimation/CLMSTTangentFromDSS.h"
+#include "DGtal/geometry/curves/estimation/CLMSTDSSFilter.h"
 
 namespace DGtal {
   /**
-   * Aim: Implement Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
+   * Aim: Implement 3D Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
+   * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
    */
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
   {
   public: 
     //Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace < TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS<Functor> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLMSTDSSFilter < DSSFilter > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer< typename TSegmentation::SegmentComputer > ));
     // ----------------------- Types ------------------------------
   public:
     /// Tangential cover algorithm
@@ -82,14 +86,14 @@ namespace DGtal {
     // ----------------------- Standard services ------------------------------
   public:
     //! Default constructor.
-    LambdaMST3DEstimator();
+    LambdaMST3DEstimator ( );
     
     /**
      * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
-    void init ( const ConstIterator& itb, const ConstIterator& ite );
+    void init ( ConstIterator itb, ConstIterator ite );
     
     /**
      * @param segmentComputer - DSS segmentation algorithm
@@ -100,27 +104,40 @@ namespace DGtal {
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid ( ) const;
     
     /**
-     * @param it ConstIterator defined over the underlying curve
+     * For ranges of points the second version of this method is faster
+     * than iterating over this version.
+     *
+     * NOTE THAT ONLY THIS VERSION ALLOWS FOR DSS FILTRATION!
+     *
+     * @param p a point of the underlying curve
      * @return tangent direction
      */
-    RealVector eval ( const ConstIterator & it );
+    RealVector eval ( const Point & p );
     
     /**
      * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
+     *
      * @param itb begin iterator
      * @param ite end iterator
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
-    OutputIterator eval ( const ConstIterator & itb, const ConstIterator & ite, 
-                        OutputIterator result );
+    OutputIterator eval ( ConstIterator itb, ConstIterator ite, OutputIterator result );
+
+    /**
+     *
+     * @return the internal dss filter
+     */
+    DSSFilter & getDSSFilter ( );
     
     // ------------------------- Internals ------------------------------------
   protected:
+
+      typedef typename std::vector<SegmentComputer >::const_iterator OrphanDSSIterator;
     
     /**
      * @brief Accumulate partial results obtained for each point.
@@ -136,8 +153,23 @@ namespace DGtal {
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
-    void accumulate ( std::multimap < Point, Value > & outValues, const ConstIterator& itb, const ConstIterator& ite, OutputIterator & result );
-    
+    void accumulate ( std::multimap < Point, Value > & outValues, ConstIterator itb, ConstIterator ite, OutputIterator & result );
+
+    /**
+     * @brief Use the DSS filter defined conditions to ensure estimation over not covered points - orphans.
+     *
+     * @param begin begin iterator
+     * @param end end iterator
+     * @param p a point of the underlying curve
+     * @return estimated tangent
+     */
+    Value treatOrphan(OrphanDSSIterator begin, OrphanDSSIterator end, const Point &p);
+    template < typename DSSesIterator, typename OrphanIterator >
+
+    void treatOrphans(DSSesIterator begin, DSSesIterator end, OrphanIterator obegin, OrphanIterator oend,
+                       std::multimap<Point, Value> &outValues);
+
+
     // ------------------------- Private Datas --------------------------------
   private:
     /**
@@ -158,7 +190,9 @@ namespace DGtal {
      * and returns DSS's direction and the eccentricity of the point in the DSS.
      */
     Functor myFunctor;
-    
+
+    DSSFilter myDSSFilter;
+
   }; // end of class LambdaTangentFromDSSEstimator
   
   //-------------------------------------------------------------------------------------------
@@ -168,15 +202,17 @@ namespace DGtal {
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
    * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
+   * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
    */
-  template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function>
+  template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function,
+             typename DSSFilter = DSSMuteFilter < typename DSSSegmentationComputer::SegmentComputer > >
   class LambdaMST3D:
   public LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> >
+    TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter >
     {
       typedef 
       LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
-      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> > Super;
+      TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter > Super;
       
     public: 
       /**

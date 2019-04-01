@@ -149,7 +149,7 @@ estimatorOnShapeDigitization( const string& name,
           std::cout << i << " " << estimations.at(i) << std::endl;
         }
     }
-  catch ( InputException e )
+  catch ( InputException& e )
     {
       std::cerr << "[estimatorOnShapeDigitization]"
         << " error in finding a bel." << std::endl;

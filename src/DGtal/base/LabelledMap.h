@@ -1151,7 +1151,7 @@ namespace DGtal
        Removes all the datas stored in the block structure. 
        @param size must be the current size of the block structure.
      */
-    void blockClear( unsigned int size );
+    void blockClear( size_t size );
 
     /**
        Random unprotected read-write access to data at position \a idx
@@ -1160,7 +1160,7 @@ namespace DGtal
        @pre idx < size()
        NB: O( b ), E = O( 1 + ceil( ( idx - N ) / M ) )
     */
-    Data & blockAt( unsigned int idx );
+    Data & blockAt( size_t idx );
 
     /**
        Random unprotected read access to data at position \a idx
@@ -1169,7 +1169,7 @@ namespace DGtal
        @pre idx < size()
        NB: O( b ), E = O( 1 + ceil( ( idx - N ) / M ) )
     */
-    const Data & blockAt( unsigned int idx ) const;
+    const Data & blockAt( size_t idx ) const;
 
     /**
        Insertion of a new data at given position. The former data at
@@ -1181,7 +1181,7 @@ namespace DGtal
        @param data the data to insert.
        NB: O( n ), E = O( n - idx )
     */
-    Data & blockInsert( unsigned int idx, unsigned int block_size, const Data & data );
+    Data & blockInsert( size_t idx, size_t block_size, const Data & data );
 
     /**
        Removal of a data at a given position. Following datas are shifted.
@@ -1190,7 +1190,7 @@ namespace DGtal
        @pre idx < size()
        NB: O( n ), E = O( n - idx )
     */
-    void blockErase( unsigned int idx );
+    void blockErase( size_t idx );
 
 
     /// @return an iterator pointing on the first element in the container.

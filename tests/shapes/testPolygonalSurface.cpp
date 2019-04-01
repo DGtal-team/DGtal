@@ -111,8 +111,8 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
         BreadthFirstVisitor< PolygonMesh > visitor( polymesh, 0 );
-        std::vector<int> vertices;
-        std::vector<int> distances;
+        std::vector<unsigned long> vertices;
+        std::vector<unsigned long> distances;
         while ( ! visitor.finished() )
           {
             vertices.push_back( visitor.current().first );
@@ -149,8 +149,14 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Arc  a13      = polymesh.arc( 1, 3 );
       Face f        = polymesh.faceAroundArc( a13 );
+      ArcRange    A = polymesh.arcsAroundFace( f );
       VertexRange T = polymesh.verticesAroundFace( f );
+      REQUIRE( A.size() == 4 );
       REQUIRE( T.size() == 4 );
+      REQUIRE( polymesh.head( A[ 0 ] ) == T[ 0 ] );
+      REQUIRE( polymesh.head( A[ 1 ] ) == T[ 1 ] );
+      REQUIRE( polymesh.head( A[ 2 ] ) == T[ 2 ] );
+      REQUIRE( polymesh.head( A[ 3 ] ) == T[ 3 ] );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 1 );
       REQUIRE( T[ 1 ] == 3 );

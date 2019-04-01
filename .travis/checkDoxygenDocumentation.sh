@@ -3,21 +3,45 @@ $SCRIPT_BEGIN
 
 return_code=0
 
-DOXYGENLOG=${BUILD_DIR}/doxygen.log
+DOXYGENLOG="$BUILD_DIR/doxygen.log"
 
 ## We first check that the doxygen.log is empty
 if [[ -f "$DOXYGENLOG" ]]
 then
-    if [[ -s "$DOXYGENLOG" ]]
+
+    # Filtering doxygen log (e.g. to ignore some bugs):
+    # 1) "warning: unexpected token TK_EOF as the argument of ref"
+    #    at src/DGtal/topology/doc/moduleDigitalTopology.dox:300-316
+    #    See https://github.com/doxygen/doxygen/issues/6352
+    # 2) "warning: argument 'surface' of command @param is not found in the argument list of DGtal::ShortcutsGeometry< TKSpace >::getKSpace(typename TDigitalSurfaceContainer)"
+    #    at src/DGtal/helpers/Shortcuts.h 386 & 397
+    #    Probably a bug (e.g. removing the template parameter solves the warning)
+    rm -f /tmp/doxygen.*.log
+    awk '\
+            /unexpected token TK_EOF as the argument of ref/ \
+        ||  /argument .surface. of command @param is not found in the argument list/ \
+                {print $0 > "/tmp/doxygen.ignored.log"; next} \
+                {print $0 > "/tmp/doxygen.kept.log"} \
+        ' "$DOXYGENLOG"
+
+    if [[ -s "/tmp/doxygen.kept.log" ]]
     then
         return_code=1
         echo "Doxygen log file not empty !"
         echo "====================================="
-        cat "$DOXYGENLOG"
+        cat "/tmp/doxygen.kept.log"
         echo "====================================="
     else
         echo "Doxygen log OK"
         return_code=0
+    fi
+
+    if [[ -s "/tmp/doxygen.ignored.log" ]]
+    then
+        echo "Ignored doxygen log messages:"
+        echo "====================================="
+        cat "/tmp/doxygen.ignored.log"
+        echo "====================================="
     fi
 else
   return_code=1
@@ -25,7 +49,7 @@ else
 fi
 
 
-## We check src code consitency
+## We check src code consistency
 cd "$SRC_DIR/src"
 "$SRC_DIR/.travis/check_src_file_tag.sh"
 if [[ $? == 0 ]]
@@ -39,7 +63,7 @@ cd ..
 ## We check examples consistency
 #
 # TODO
-# 
+#
 
 $SCRIPT_END
 

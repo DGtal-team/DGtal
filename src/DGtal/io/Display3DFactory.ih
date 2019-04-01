@@ -51,7 +51,6 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     typedef typename Calculus::ConstIterator ConstIterator;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::SCell SCell;
-    typedef typename Calculus::KSpace KSpace;
 
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
 
@@ -1504,7 +1503,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display & display,
 {
   DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
-  DGtal::Z3i::RealPoint rp = display.embed( p );
+  DGtal::Z3i::RealPoint rp = display.embed(  DGtal::Z3i::Point(p, functors::Round<>() )  );
   display.setFillColor(display.getLineColor());
   display.addBall(rp,1.0/static_cast<double>( POINT_AS_BALL_RADIUS), POINT_AS_BALL_RES);
   display.setFillColor(fillColorSave);
@@ -1518,7 +1517,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display & display,
 {
   ASSERT(dim == 3);
 
-  DGtal::Z3i::RealPoint rp = display.embed( p );
+  DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(p, functors::Round<>() ) );
   display.addCube(rp);
 }
 
@@ -1531,7 +1530,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display & display
   DGtal::Color lineColorSave = display.getLineColor();
   ASSERT(dim == 3);
 
-  DGtal::Z3i::RealPoint rp = display.embed( p );
+  DGtal::Z3i::RealPoint rp = display.embed(  DGtal::Z3i::Point(p, functors::Round<>() )  );
   display.addCube(rp);
   display.setLineColor(DGtal::Color(0,0,0));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5),

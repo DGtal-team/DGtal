@@ -102,9 +102,6 @@ inline
 double
 DGtal::StarShaped3D<TSpace>::meanCurvature( AngularCoordinates t) const
 {
-  typedef typename Space::RealPoint RealPoint;
-  
-
   RealPoint art = rt(t);
   RealPoint arp = rp(t);
   RealPoint artt = rtt(t);
@@ -143,9 +140,6 @@ inline
 double
 DGtal::StarShaped3D<TSpace>::gaussianCurvature( AngularCoordinates t ) const
 {
-  
-  typedef typename Space::RealPoint RealPoint;
-  
   RealPoint art = rt(t);
   RealPoint arp = rp(t);
   RealPoint artt = rtt(t);

@@ -153,7 +153,19 @@ namespace DGtal
      */
     Reverse getReverse() const;
 
-    
+    /**
+     * Checks whether a point belongs to the DSS or not
+     * @param aPoint the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS ( const Point3d& aPoint ) const;
+
+    /**
+     * Checks whether a point belongs to the DSS or not
+     * @param it an iterator on the point to be checked
+     * @return 'true' if yes, 'false' otherwise
+     */
+    bool isInDSS ( const ConstIterator & it ) const;
 
     /**
      * Equality operator.

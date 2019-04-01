@@ -93,7 +93,7 @@ namespace DGtal
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
    *  @tparam TDigitalSurfaceContainer any model of digital surface container concept (CDigitalSurfaceContainer)
-   *  @tparam TMetric any model of CMetricSpace to be used in the neighborhood construction.
+   *  @tparam TMetric any model of CMetricSpace to be used in the neighborhood construction (e.g. LpMetric)
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
