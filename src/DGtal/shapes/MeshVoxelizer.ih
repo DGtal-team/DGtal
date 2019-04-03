@@ -110,7 +110,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
                                                                 const PointR3& B,
                                                                 const PointR3& C,
                                                                 const VectorR3& n,
-                                                                const std::pair<PointR3, PointR3>& bbox)
+                                                                const std::pair<PointZ3, PointZ3>& bbox)
 {
   OrientationFunctor orientationFunctor;
 
@@ -176,7 +176,8 @@ DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
                                                        const MeshPoint &c,
                                                        const double scaleFactor)
 {
-  std::pair<PointR3, PointR3> bbox;
+  std::pair<PointR3, PointR3> bbox_r3;
+  std::pair<PointZ3, PointZ3> bbox_z3;
   VectorR3 n, e1, e2;
   PointR3 A, B, C;
 
@@ -190,23 +191,23 @@ DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
   n = e1.crossProduct(e2).getNormalized();
 
   //Boundingbox
-  bbox.first = A;
-  bbox.second = A;
-  bbox.first = bbox.first.inf( B );
-  bbox.first = bbox.first.inf( C );
-  bbox.second = bbox.second.sup( B );
-  bbox.second = bbox.second.sup( C );
+  bbox_r3.first = A;
+  bbox_r3.second = A;
+  bbox_r3.first = bbox_r3.first.inf( B );
+  bbox_r3.first = bbox_r3.first.inf( C );
+  bbox_r3.second = bbox_r3.second.sup( B );
+  bbox_r3.second = bbox_r3.second.sup( C );
 
-  ASSERT( bbox.first <= bbox.second);
+  ASSERT( bbox_r3.first <= bbox_r3.second);
 
-  //Rounding the bbox
-  std::transform( bbox.first.begin(), bbox.first.end(), bbox.first.begin(),
+  //Rounding the r3 bbox into the z3 bbox
+  std::transform( bbox_r3.first.begin(), bbox_r3.first.end(), bbox_z3.first.begin(),
                   [](typename PointR3::Component cc) { return std::floor(cc);});
-  std::transform( bbox.second.begin(), bbox.second.end(), bbox.second.begin(),
+  std::transform( bbox_r3.second.begin(), bbox_r3.second.end(), bbox_z3.second.begin(),
                   [](typename PointR3::Component cc) { return std::ceil(cc);});
 
   // voxelize current triangle to myDigitalSet
-  voxelizeTriangle( outputSet, A, B, C, n, bbox);
+  voxelizeTriangle( outputSet, A, B, C, n, bbox_z3);
 }
 
 // ---------------------------------------------------------

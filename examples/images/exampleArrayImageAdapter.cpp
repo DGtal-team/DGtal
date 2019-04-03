@@ -55,9 +55,10 @@ void ArrayImageAdapter_example()
 //! [ArrayImageAdapter_example]
   using Space = SpaceND<2>;
   using Domain = HyperRectDomain<Space>;
+  using Point = Domain::Point;
   using Value = double;
 
-  const Domain domain{ {0, 1}, {4, 3} };
+  const Domain domain( Point(0, 1), Point(4, 3) );
 
   Value* data = new Value[ domain.size() ];
 
@@ -73,7 +74,7 @@ void ArrayImageAdapter_example()
     }
 
   // Get a constant view on a sub-domain.
-  const Domain sub_domain{ {1, 1}, {3, 2} };
+  const Domain sub_domain( Point(1, 1), Point(3, 2) );
   ArrayImageAdapter< Value const*, Domain > cst_image( data, domain, sub_domain );
   // Alternative syntax using the helpers:
   // auto const cst_image = makeArrayImageAdapterFromImage( image, sub_domain );
