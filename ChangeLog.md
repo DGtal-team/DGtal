@@ -61,6 +61,8 @@
     [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
   - Fix compilation and adding debug version for the generated file with Visual Studio
     (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
+  - Fix compilation and execution with Visual Studio
+    (Raphael Lenain, [#1407](https://github.com/DGtal-team/DGtal/pull/1407))
   
 	
 - *Base*
