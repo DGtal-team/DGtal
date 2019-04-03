@@ -61,7 +61,7 @@ namespace DGtal
   class KhalimskyPreSpaceND;
 
   /////////////////////////////////////////////////////////////////////////////
-  /** Represents an unsigned cell in an unbounded cellular grid space by its
+  /** @brief Represents an unsigned cell in an unbounded cellular grid space by its
    * Khalimsky coordinates.
    *
    * @tparam dim the dimension of the digital space.
@@ -72,7 +72,7 @@ namespace DGtal
   struct KhalimskyPreCell
   {
 
-    // Integer must be a model of the concept CInteger.
+    /// Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
     // Aliases
@@ -99,44 +99,44 @@ namespace DGtal
     explicit KhalimskyPreCell( Integer dummy = 0 );
 
 
-    /** Implicit constructor from its Khalimsky coordinates.
+    /** @brief Implicit constructor from its Khalimsky coordinates.
      * @param aPoint Its Khalimsky coordinates as a point.
      */
     KhalimskyPreCell( Point const& aPoint );
 
-    /** Copy constructor.
+    /** @brief Copy constructor.
      * @param aCell any other pre-cell.
      */
     KhalimskyPreCell( KhalimskyPreCell const& aCell ) = default;
 
-    /** Copy operator
+    /** @brief Copy operator
      * @param aCell any other pre-cell.
      */
     KhalimskyPreCell & operator=( KhalimskyPreCell const& aCell ) = default;
 
-    /** Move constructor.
+    /** @brief Move constructor.
      * @param aCell any other pre-cell.
      */
     KhalimskyPreCell( KhalimskyPreCell && aCell ) = default;
 
-    /** Move operator
+    /** @brief Move operator
      * @param aCell any other pre-cell.
      */
     KhalimskyPreCell & operator=( KhalimskyPreCell && aCell ) = default;
 
-    /**
+    /** @brief
      * Equality operator.
      * @param other any other pre-cell.
      */
     bool operator==( const KhalimskyPreCell & other ) const;
 
-    /**
+    /** @brief
      * Difference operator.
      * @param other any other pre-cell.
     */
     bool operator!=( const KhalimskyPreCell & other ) const;
 
-    /**
+    /** @brief
      * Inferior operator. (lexicographic order).
      * @param other any other pre-cell.
     */
@@ -145,7 +145,8 @@ namespace DGtal
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
-    /**
+    /** @brief Return the style name used for drawing this object.
+     *
      * @return the style name used for drawing this object.
      */
     std::string className() const;
@@ -158,7 +159,7 @@ namespace DGtal
   operator<<( std::ostream & out,
               const KhalimskyPreCell< dim, TInteger > & object );
 
-  /** Represents a signed cell in an unbounded cellular grid space by its
+  /** @brief Represents a signed cell in an unbounded cellular grid space by its
    * Khalimsky coordinates and a boolean value.
    *
    * @tparam dim the dimension of the digital space.
@@ -196,46 +197,46 @@ namespace DGtal
     /// Default constructor.
     explicit SignedKhalimskyPreCell( Integer dummy = 0 );
 
-    /** Implicit constructor from its Khalimsky coordinates.
+    /** @brief Implicit constructor from its Khalimsky coordinates.
      *
      * @param aPoint Its Khalimsky coordinates as a point.
      * @param positive if cell has positive sign.
      */
     SignedKhalimskyPreCell( Point const& aPoint, bool positive );
 
-    /** Copy constructor.
+    /** @brief Copy constructor.
      * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell( SignedKhalimskyPreCell const& aCell ) = default;
 
-    /** Copy operator
+    /** @brief Copy operator
      * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell const& aCell ) = default;
 
-    /** Move constructor.
+    /** @brief Move constructor.
      * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell( SignedKhalimskyPreCell && aCell ) = default;
 
-    /** Move operator
+    /** @brief Move operator
      * @param aCell any other pre-cell.
      */
     SignedKhalimskyPreCell & operator=( SignedKhalimskyPreCell && aCell ) = default;
 
-    /**
+    /** @brief
      * Equality operator.
      * @param other any other pre-cell.
      */
     bool operator==( const SignedKhalimskyPreCell & other ) const;
 
-    /**
+    /** @brief
      * Difference operator.
      * @param other any other pre-cell.
      */
     bool operator!=( const SignedKhalimskyPreCell & other ) const;
 
-    /**
+    /** @brief
      * Inferior operator. (lexicographic order).
      * @param other any other pre-cell.
      */
@@ -244,7 +245,8 @@ namespace DGtal
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
-    /**
+    /** @brief Return the style name used for drawing this object.
+     *
      * @return the style name used for drawing this object.
      */
     std::string className() const;
@@ -259,8 +261,11 @@ namespace DGtal
 
   /**
      @brief This class is useful for looping on all "interesting" coordinates of a
-     pre-cell. For instance, surfels in Z3 have two interesting coordinates (the
+     pre-cell.
+
+     For instance, surfels in Z3 have two interesting coordinates (the
      ones spanned by the surfel).
+
      @code
      KPreSpace::Cell p;
      KPreSpace::DirIterator q;
@@ -282,66 +287,68 @@ namespace DGtal
     typedef SignedKhalimskyPreCell< dim, Integer > SCell;
 
   public:
-    /**
+    /** @brief
      * Constructor from a pre-cell.
      * @param cell any unsigned pre-cell
      * @param open 'true' if the cell if open.
      */
     explicit PreCellDirectionIterator( Cell cell, bool open = true );
 
-    /**
+    /** @brief
      * Constructor from a signed pre-cell.
      * @param scell any signed pre-cell
      * @param open 'true' if the cell if open.
      */
     explicit PreCellDirectionIterator( SCell scell, bool open = true );
 
-    /**
+    /** @brief Return the current direction.
+     *
      * @return the current direction.
      */
     Dimension operator*() const;
 
-    /**
-     * Pre-increment. Go to next direction.
-     */
+    /// Pre-increment. Go to next direction.
     PreCellDirectionIterator & operator++();
 
-    /**
-     * Fast comparison with unsigned integer (unused
-     * parameter). Comparison is 'false' at the end of the iteration.
+    /** @brief Fast comparison with unsigned integer (unused
+     * parameter).
+     *
+     * Comparison is 'false' at the end of the iteration.
      *
      * @return 'true' if the iterator is finished.
      */
     bool operator!=( const Integer ) const;
 
-    /**
+    /** @brief Return 'true' if the iteration is ended.
+     *
      * @return 'true' if the iteration is ended.
      */
     bool end() const;
 
-    /**
+    /** @brief
      * Slow comparison with other iterator. Useful to check for end of loop.
      * @param other any direction iterator.
      */
     bool operator!=( const PreCellDirectionIterator & other ) const;
 
-    /**
+    /** @brief
      * Slow comparison with other iterator.
      * @param other any direction iterator.
      */
     bool operator==( const PreCellDirectionIterator & other ) const;
 
   private:
-    /** the current direction. */
+    /// the current direction.
     Dimension myDir;
-    /** the cell. */
+    /// the cell.
     Cell myCell;
-    /** If 'true', returns open coordinates, otherwise returns closed
-        coordinates. */
+    /** @brief If 'true', returns open coordinates, otherwise returns closed
+     *  coordinates.
+     */
     bool myOpen;
 
   private:
-    /** Look for next valid coordinate. */
+    /// Look for next valid coordinate.
     void find();
   };
 
@@ -371,11 +378,11 @@ namespace DGtal
   >
   class KhalimskyPreSpaceND
   {
-    //Integer must be signed to characterize a ring.
+    /// Integer must be signed to characterize a ring.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
-    ///Arithmetic ring induced by (+,-,*) and Integer numbers.
+    /// Arithmetic ring induced by (+,-,*) and Integer numbers.
     using Integer = TInteger;
 
     // Cells
@@ -445,7 +452,7 @@ namespace DGtal
      */
   public:
 
-    /** From the Khalimsky coordinates of a cell,
+    /** @brief From the Khalimsky coordinates of a cell,
      * builds the corresponding unsigned pre-cell.
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
@@ -453,7 +460,7 @@ namespace DGtal
      */
     static Cell uCell( const Point & kp );
 
-    /** From the digital coordinates of a point in Zn and a cell type,
+    /** @brief From the digital coordinates of a point in Zn and a cell type,
      * builds the corresponding unsigned pre-cell.
      *
      * @param p an integer point (digital coordinates of cell).
@@ -463,7 +470,7 @@ namespace DGtal
      */
     static Cell uCell( Point p, const Cell & c );
 
-    /** From the Khalimsky coordinates of a cell and a sign,
+    /** @brief From the Khalimsky coordinates of a cell and a sign,
      * builds the corresponding signed pre-cell.
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
@@ -472,7 +479,7 @@ namespace DGtal
      */
     static SCell sCell( const Point & kp, Sign sign = POS );
 
-    /** From the digital coordinates of a point in Zn and a signed cell type,
+    /** @brief From the digital coordinates of a point in Zn and a signed cell type,
      * builds the corresponding signed pre-cell.
      *
      * @param p an integer point (digital coordinates of cell).
@@ -482,7 +489,7 @@ namespace DGtal
      */
     static SCell sCell( Point p, const SCell & c );
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pre-spel (pre-cell of maximal dimension).
      *
      * @param p an integer point (digital coordinates of cell).
@@ -490,7 +497,7 @@ namespace DGtal
      */
     static Cell uSpel( Point p );
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pre-spel (pre-cell of maximal dimension).
      *
      * @param p an integer point (digital coordinates of cell).
@@ -499,7 +506,7 @@ namespace DGtal
      */
     static SCell sSpel( Point p, Sign sign = POS );
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pre-pointel (pre-cell of dimension 0).
      *
      * @param p an integer point (digital coordinates of cell).
@@ -507,7 +514,7 @@ namespace DGtal
      */
     static Cell uPointel( Point p );
 
-    /** From the digital coordinates of a point in Zn,
+    /** @brief From the digital coordinates of a point in Zn,
      * builds the corresponding pre-pointel (pre-cell of dimension 0).
      *
      * @param p an integer point (digital coordinates of cell).
@@ -523,59 +530,68 @@ namespace DGtal
      * @{
      */
   public:
-    /**
+    /** @brief Return its Khalimsky coordinate along [k].
+
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
      */
     static Integer uKCoord( const Cell & c, Dimension k );
 
-    /**
+    /** @brief Return its digital coordinate along [k].
+
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
      */
     static Integer uCoord( const Cell & c, Dimension k );
 
-    /**
+    /** @brief Return its Khalimsky coordinates.
+
      * @param c any unsigned pre-cell.
      * @return its Khalimsky coordinates.
      */
     static const Point & uKCoords( const Cell & c );
 
-    /**
+    /** @brief Return its digital coordinates.
+
      * @param c any unsigned pre-cell.
      * @return its digital coordinates.
      */
     static Point uCoords( const Cell & c );
 
-    /**
+    /** @brief Return its Khalimsky coordinate along [k].
+
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @return its Khalimsky coordinate along [k].
      */
     static Integer sKCoord( const SCell & c, Dimension k );
 
-    /**
+    /** @brief Return its digital coordinate along [k].
+
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @return its digital coordinate along [k].
      */
     static Integer sCoord( const SCell & c, Dimension k );
 
-    /**
+    /** @brief Return its Khalimsky coordinates.
+
      * @param c any signed pre-cell.
      * @return its Khalimsky coordinates.
      */
     static const Point & sKCoords( const SCell & c );
 
-    /**
+    /** @brief Return its digital coordinates.
+
      * @param c any signed pre-cell.
      * @return its digital coordinates.
      */
     static Point sCoords( const SCell & c );
 
-    /**
+    /** @brief Return its sign.
+
      * @param c any signed pre-cell.
      * @return its sign.
      */
@@ -589,59 +605,59 @@ namespace DGtal
      */
   public:
 
-    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** @brief Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
     static void uSetKCoord( Cell & c, Dimension k, Integer i );
 
-    /** Sets the [k]-th Khalimsky coordinate of [c] to [i].
+    /** @brief Sets the [k]-th Khalimsky coordinate of [c] to [i].
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
     static void sSetKCoord( SCell & c, Dimension k, Integer i );
 
-    /** Sets the [k]-th digital coordinate of [c] to [i].
+    /** @brief Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any unsigned pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
     static void uSetCoord( Cell & c, Dimension k, Integer i );
 
-    /** Sets the [k]-th digital coordinate of [c] to [i].
+    /** @brief Sets the [k]-th digital coordinate of [c] to [i].
      * @param c any signed pre-cell.
      * @param k any valid dimension.
      * @param i an integer coordinate.
      */
     static void sSetCoord( SCell & c, Dimension k, Integer i );
 
-    /** Sets the Khalimsky coordinates of [c] to [kp].
+    /** @brief Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any unsigned pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
     static void uSetKCoords( Cell & c, const Point & kp );
 
-    /** Sets the Khalimsky coordinates of [c] to [kp].
+    /** @brief Sets the Khalimsky coordinates of [c] to [kp].
      * @param c any signed pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
     static void sSetKCoords( SCell & c, const Point & kp );
 
-    /** Sets the digital coordinates of [c] to [kp].
+    /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
     static void uSetCoords( Cell & c, const Point & kp );
 
-    /** Sets the digital coordinates of [c] to [kp].
+    /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any signed pre-cell.
      * @param kp the new Khalimsky coordinates for [c].
      */
     static void sSetCoords( SCell & c, const Point & kp );
 
-    /** Sets the sign of the pre-cell.
+    /** @brief Sets the sign of the pre-cell.
      * @param c (modified) any signed pre-cell.
      * @param s any sign.
      */
@@ -654,21 +670,20 @@ namespace DGtal
      * @{
      */
   public:
-    /** Creates a signed pre-cell from an unsigned one and a given sign.
+    /** @brief Creates a signed pre-cell from an unsigned one and a given sign.
      * @param p any unsigned pre-cell.
      * @param s a sign.
      * @return the signed version of the pre-cell [p] with sign [s].
      */
     static SCell signs( const Cell & p, Sign s );
 
-    /** Creates an unsigned pre-cell from a signed one.
+    /** @brief Creates an unsigned pre-cell from a signed one.
      * @param p any signed pre-cell.
      * @return the unsigned version of the pre-cell [p].
      */
     static Cell unsigns( const SCell & p );
 
-    /**
-     * Creates the signed pre-cell with the inverse sign of [p].
+    /** @brief Creates the signed pre-cell with the inverse sign of [p].
      * @param p any signed pre-cell.
      * @return the pre-cell [p] with opposite sign.
      */
@@ -681,50 +696,57 @@ namespace DGtal
      * @{
      */
   public:
-    /**
+    /** @brief Return the topology word of [p].
      * @param p any unsigned pre-cell.
      * @return the topology word of [p].
      */
     static Integer uTopology( const Cell & p );
 
-    /**
+    /** @brief Return the topology word of [p].
+
      * @param p any signed pre-cell.
      * @return the topology word of [p].
      */
     static Integer sTopology( const SCell & p );
 
-    /**
+    /** @brief Return the dimension of the pre-cell [p].
+
      * @param p any unsigned pre-cell.
      * @return the dimension of the pre-cell [p].
      */
     static Dimension uDim( const Cell & p );
 
-    /**
+    /** @brief Return the dimension of the pre-cell [p].
+
      * @param p any signed pre-cell.
      * @return the dimension of the pre-cell [p].
      */
     static Dimension sDim( const SCell & p );
 
-    /**
+    /** @brief Return 'true' if [b] is a surfel (spans all but one coordinate).
+
      * @param b any unsigned pre-cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
     static bool uIsSurfel( const Cell & b );
 
-    /**
+    /** @brief Return 'true' if [b] is a surfel (spans all but one coordinate).
+
      * @param b any signed pre-cell.
      * @return 'true' if [b] is a surfel (spans all but one coordinate).
      */
     static bool sIsSurfel( const SCell & b );
 
-    /**
+    /** @brief Return 'true' if [p] is open along the direction [k].
+
      * @param p any pre-cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
      */
     static bool uIsOpen( const Cell & p, Dimension k );
 
-    /**
+    /** @brief Return 'true' if [p] is open along the direction [k].
+
      * @param p any signed pre-cell.
      * @param k any direction.
      * @return 'true' if [p] is open along the direction [k].
@@ -739,9 +761,11 @@ namespace DGtal
      */
   public:
 
-    /** Given an unsigned pre-cell [p], returns an iterator to iterate over
+    /** @brief Given an unsigned pre-cell [p], returns an iterator to iterate over
      * each coordinate the cell spans. (A spel spans all coordinates; a
-     * surfel all but one, etc). Example:
+     * surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KPreSpace::Cell p;
@@ -759,9 +783,11 @@ namespace DGtal
      */
     static DirIterator uDirs( const Cell & p );
 
-    /** Given a signed pre-cell [p], returns an iterator to iterate over
+    /** @brief Given a signed pre-cell [p], returns an iterator to iterate over
      * each coordinate the cell spans. (A spel spans all coordinates; a
-     * surfel all but one, etc). Example:
+     * surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KPreSpace::SCell p;
@@ -779,9 +805,11 @@ namespace DGtal
      */
     static DirIterator sDirs( const SCell & p );
 
-    /** Given an unsigned pre-cell [p], returns an iterator to iterate over each
+    /** @brief Given an unsigned pre-cell [p], returns an iterator to iterate over each
      * coordinate the cell does not span. (A spel spans all coordinates;
-     * a surfel all but one, etc). Example:
+     * a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KPreSpace::Cell p;
@@ -799,9 +827,11 @@ namespace DGtal
      */
     static DirIterator uOrthDirs( const Cell & p );
 
-    /** Given a signed pre-cell [p], returns an iterator to iterate over each
+    /** @brief Given a signed pre-cell [p], returns an iterator to iterate over each
      * coordinate the cell does not span. (A spel spans all coordinates;
-     * a surfel all but one, etc). Example:
+     * a surfel all but one, etc).
+     *
+     * Example:
      *
      * @code
      * KPreSpace::SCell p;
@@ -819,7 +849,7 @@ namespace DGtal
      */
     static DirIterator sOrthDirs( const SCell & p );
 
-    /** Given an unsigned pre-surfel [s], returns its orthogonal direction (ie,
+    /** @brief Given an unsigned pre-surfel [s], returns its orthogonal direction (ie,
      * the coordinate where the surfel is closed).
      *
      * @param s an unsigned pre-surfel
@@ -827,7 +857,7 @@ namespace DGtal
      */
     static Dimension uOrthDir( const Cell & s );
 
-    /** Given a signed pre-surfel [s], returns its orthogonal direction (ie,
+    /** @brief Given a signed pre-surfel [s], returns its orthogonal direction (ie,
      * the coordinate where the surfel is closed).
      *
      * @param s a signed pre-surfel
@@ -843,7 +873,9 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the same element as [p] except for the incremented
+     * coordinate [k].
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for the incremented
@@ -851,7 +883,9 @@ namespace DGtal
      */
     static Cell uGetIncr( Cell p, Dimension k );
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      * @param p any pre-cell.
      * @param k the tested coordinate.
@@ -860,7 +894,9 @@ namespace DGtal
     static bool uIsMax( const Cell & p, Dimension k );
 
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      *  @param p any pre-cell.
      *  @param k the tested coordinate.
@@ -869,14 +905,18 @@ namespace DGtal
     static bool uIsInside( const Cell & p, Dimension k );
 
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      * @param p any pre-cell.
      * @return always true.
      */
     static bool uIsInside( const Cell & p );
 
-    /**
+    /** @brief Return the same element as [p] except for an decremented
+     * coordinate [k].
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for an decremented
@@ -884,14 +924,19 @@ namespace DGtal
      */
     static Cell uGetDecr( Cell p, Dimension k );
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
+     *
      * @param p any pre-cell.
      * @param k the tested coordinate.
      * @return always false.
      */
     static bool uIsMin( const Cell & p, Dimension k );
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     * incremented with x.
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param x the increment.
@@ -900,7 +945,9 @@ namespace DGtal
      */
     static Cell uGetAdd( Cell p, Dimension k, Integer x );
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     * decremented with x.
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param x the decrement.
@@ -909,7 +956,7 @@ namespace DGtal
      */
     static Cell uGetSub( Cell p, Dimension k, Integer x );
 
-    /** Add the vector [vec] to [p].
+    /** @brief Add the vector [vec] to [p].
      *
      * @param p any pre-cell.
      * @param vec any pointel.
@@ -917,8 +964,10 @@ namespace DGtal
      */
     static Cell uTranslation( Cell p, const Vector & vec );
 
-    /** Return the projection of [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Return the projection of [p] along the [k]th direction toward
+     *  [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any pre-cell.
      * @param bound the element acting as bound (same topology as p).
@@ -929,8 +978,9 @@ namespace DGtal
      */
     static Cell uProjection( Cell p, const Cell & bound, Dimension k );
 
-    /** Projects [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards
+    /** @brief Projects [p] along the [k]th direction toward [bound].
+     *
+     * Otherwise said, p[ k ] == bound[ k ] afterwards
      *
      * @param [in,out] p any pre-cell.
      * @param [in] bound the element acting as bound (same topology as p).
@@ -939,8 +989,10 @@ namespace DGtal
      */
     static void uProject( Cell & p, const Cell & bound, Dimension k );
 
-    /** Increment the pre-cell [p] to its next position (as classically done in
-     *  a scanning). Example:
+    /** @brief Increment the pre-cell [p] to its next position (as classically done in
+     *  a scanning).
+     *
+     * Example:
      *
      * \code
      * Cell first, last; // lower and upper bounds
@@ -968,7 +1020,9 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the same element as [p] except for the incremented
+     * coordinate [k].
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for the incremented
@@ -976,7 +1030,9 @@ namespace DGtal
      */
     static SCell sGetIncr( SCell p, Dimension k );
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      * @param p any pre-cell.
      * @param k the tested coordinate.
@@ -985,7 +1041,9 @@ namespace DGtal
     static bool sIsMax( const SCell & p, Dimension k );
 
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      *  @param p any pre-cell.
      *  @param k the tested coordinate.
@@ -994,14 +1052,18 @@ namespace DGtal
     static bool sIsInside( const SCell & p, Dimension k );
 
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
      *
      * @param p any pre-cell.
      * @return always true.
      */
     static bool sIsInside( const SCell & p );
 
-    /**
+    /** @brief Return the same element as [p] except for an decremented
+     * coordinate [k].
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @return the same element as [p] except for an decremented
@@ -1009,14 +1071,19 @@ namespace DGtal
      */
     static SCell sGetDecr( SCell p, Dimension k );
 
-    /** Useful to check if you are going out of the space. Only for compatibility reasons.
+    /** @brief Useful to check if you are going out of the space.
+     *
+     * Only for compatibility reasons.
+     *
      * @param p any pre-cell.
      * @param k the tested coordinate.
      * @return always false.
      */
     static bool sIsMin( const SCell & p, Dimension k );
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     * incremented with x.
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param x the increment.
@@ -1025,7 +1092,9 @@ namespace DGtal
      */
     static SCell sGetAdd( SCell p, Dimension k, Integer x );
 
-    /**
+    /** @brief Return the same element as [p] except for a coordinate [k]
+     * decremented with x.
+
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param x the decrement.
@@ -1034,7 +1103,7 @@ namespace DGtal
      */
     static SCell sGetSub( SCell p, Dimension k, Integer x );
 
-    /** Add the vector [vec] to [p].
+    /** @brief Add the vector [vec] to [p].
      *
      * @param p any pre-cell.
      * @param vec any pointel.
@@ -1042,8 +1111,10 @@ namespace DGtal
      */
     static SCell sTranslation( SCell p, const Vector & vec );
 
-    /** Return the projection of [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Return the projection of [p] along the [k]th direction toward
+     *  [bound].
+     *
+     *  Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any pre-cell.
      * @param bound the element acting as bound (same topology as p).
@@ -1054,8 +1125,9 @@ namespace DGtal
      */
     static SCell sProjection( SCell p, const SCell & bound, Dimension k );
 
-    /** Projects [p] along the [k]th direction toward
-     *  [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
+    /** @brief Projects [p] along the [k]th direction toward [bound].
+     *
+     *  Otherwise said, p[ k ] == bound[ k ] afterwards.
      *
      * @param p any pre-cell.
      * @param bound the element acting as bound (same topology as p).
@@ -1064,9 +1136,11 @@ namespace DGtal
      */
     static void sProject( SCell & p, const SCell & bound, Dimension k );
 
-    /** Increment the pre-cell [p] to its next position (as classically done in
-     *  a scanning). Example:
-
+    /** @brief Increment the pre-cell [p] to its next position (as classically done in
+     *  a scanning).
+     *
+     * Example:
+     *
      * \code
      * Cell first, last; // lower and upper bounds
      * Cell p = first;
@@ -1093,43 +1167,51 @@ namespace DGtal
      */
   public:
 
-    /** Computes the 1-neighborhood of the pre-cell [c] and returns
-     *  it. It is the set of cells with same topology that are adjacent
-     *  to [c].
+    /** @brief Computes the 1-neighborhood of the pre-cell [c] and returns it.
+     *
+     * It is the set of cells with same topology that are adjacent
+     * to [c].
      *
      * @param cell the unsigned pre-cell of interest.
      * @return the pre-cells of the 1-neighborhood of [cell].
      */
     static Cells uNeighborhood( const Cell & cell );
 
-    /** Computes the 1-neighborhood of the pre-cell [c] and returns
-     *  it. It is the set of pre-cells with same topology that are adjacent
-     *  to [c].
+    /** @brief Computes the 1-neighborhood of the pre-cell [c] and returns it.
+     *
+     * It is the set of pre-cells with same topology that are adjacent
+     * to [c].
      *
      * @param cell the signed pre-cell of interest.
      * @return the pre-cells of the 1-neighborhood of [cell].
      */
     static SCells sNeighborhood( const SCell & cell );
 
-    /** Computes the proper 1-neighborhood of the pre-cell [c] and returns
-     *  it. It is the set of pre-cells with same topology that are adjacent
-     *  to [c] and different from [c].
+    /** @brief Computes the proper 1-neighborhood of the pre-cell [c] and
+     *  returns it.
+     *
+     * It is the set of pre-cells with same topology that are adjacent
+     * to [c] and different from [c].
      *
      * @param cell the unsigned pre-cell of interest.
      * @return the pre-cells of the proper 1-neighborhood of [cell].
      */
     static Cells uProperNeighborhood( const Cell & cell );
 
-    /** Computes the proper 1-neighborhood of the pre-cell [c] and returns
-     *  it. It is the set of pre-cells with same topology that are adjacent
-     *  to [c] and different from [c].
+    /** @brief Computes the proper 1-neighborhood of the pre-cell [c] and
+     *  returns it.
+     *
+     * It is the set of pre-cells with same topology that are adjacent
+     * to [c] and different from [c].
      *
      * @param cell the signed pre-cell of interest.
      * @return the pre-cells of the proper 1-neighborhood of [cell].
      */
     static SCells sProperNeighborhood( const SCell & cell );
 
-    /**
+    /** @brief Return the adjacent element to [p] along axis [k] in the given
+     * direction and orientation.
+     *
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param up if 'true' the orientation is forward along axis
@@ -1140,7 +1222,9 @@ namespace DGtal
      */
     static Cell uAdjacent( const Cell & p, Dimension k, bool up );
 
-    /**
+    /** @brief Return the adjacent element to [p] along axis [k] in the given
+     * direction and orientation.
+     *
      * @param p any pre-cell.
      * @param k the coordinate that is changed.
      * @param up if 'true' the orientation is forward along axis
@@ -1159,7 +1243,8 @@ namespace DGtal
      */
   public:
 
-    /**
+    /** @brief Return the forward or backward unsigned pre-cell incident to [c]
+     * along axis [k], depending on [up].
      * @param c any unsigned pre-cell.
      * @param k any coordinate.
      * @param up if 'true' the orientation is forward along axis
@@ -1171,7 +1256,9 @@ namespace DGtal
      */
     static Cell uIncident( Cell c, Dimension k, bool up );
 
-    /**
+    /** @brief Return the forward or backward signed pre-cell incident to [c]
+     * along axis [k], depending on [up].
+     *
      * @param c any signed pre-cell.
      * @param k any coordinate.
      * @param up if 'true' the orientation is forward along axis
@@ -1186,46 +1273,54 @@ namespace DGtal
      */
     static SCell sIncident( SCell c, Dimension k, bool up );
 
-    /**
+    /** @brief Return the pre-cells directly low incident to c.
+     *
      * @param c any unsigned pre-cell.
      * @return the pre-cells directly low incident to c.
      */
     static Cells uLowerIncident( const Cell & c );
 
-    /**
+    /** @brief Return the pre-cells directly up incident to c.
+     *
      * @param c any unsigned pre-cell.
      * @return the pre-cells directly up incident to c.
      */
     static Cells uUpperIncident( const Cell & c );
 
-    /**
+    /** @brief Return the signed pre-cells directly low incident to c.
+     *
      *  @param c any signed pre-cell.
      *  @return the signed pre-cells directly low incident to c.
      *  @note it is the lower boundary of c expressed as a list of signed pre-cells.
      */
     static SCells sLowerIncident( const SCell & c );
 
-    /**
+    /** @brief Return the signed pre-cells directly up incident to c.
+     *
      * @param c any signed pre-cell.
      * @return the signed pre-cells directly up incident to c.
      * @note it is the upper boundary of c expressed as a list of signed pre-cells.
      */
     static SCells sUpperIncident( const SCell & c );
 
-    /**
+    /** @brief Return the proper faces of [c] (chain of lower incidence).
+     *
      * @param c any unsigned pre-cell.
      * @return the proper faces of [c] (chain of lower incidence).
      */
     static Cells uFaces( const Cell & c );
 
-    /**
+    /** @brief Return the proper cofaces of [c] (chain of upper incidence).
+     *
      * @param c any unsigned ipre-cell.
      * @return the proper cofaces of [c] (chain of upper incidence).
      */
     static Cells uCoFaces( const Cell & c );
 
-    /** Return 'true' if the direct orientation of [p] along [k] is in
-     *  the positive coordinate direction. The direct orientation in a
+    /** @brief Return 'true' if the direct orientation of [p] along [k] is in
+     *  the positive coordinate direction.
+     *
+     *  The direct orientation in a
      *  direction allows to go from positive incident pre-cells to positive
      *  incident pre-cells.  This means that
      *  @code
@@ -1240,7 +1335,9 @@ namespace DGtal
      */
     static bool sDirect( const SCell & p, Dimension k );
 
-    /**
+    /** @brief Return the direct incident pre-cell of [p] along [k] (the incident
+     * pre-cell along [k])
+     *
      * @param p any signed pre-cell.
      * @param k any coordinate.
      * @return the direct incident pre-cell of [p] along [k] (the incident
@@ -1248,7 +1345,9 @@ namespace DGtal
      */
     static SCell sDirectIncident( SCell p, Dimension k );
 
-    /**
+    /** @brief Return the indirect incident pre-cell of [p] along [k] (the incident
+     * cell along [k] whose sign is negative).
+     *
      * @param p any signed pre-cell.
      * @param k any coordinate.
      * @return the indirect incident pre-cell of [p] along [k] (the incident
@@ -1264,12 +1363,12 @@ namespace DGtal
      * @{
      */
   private:
-    /**
+    /** @brief
      * Used by uFaces for computing incident faces.
      */
     static void uAddFaces( Cells & faces, const Cell & c, Dimension axis );
 
-    /**
+    /** @brief
      * Used by uCoFaces for computing incident cofaces.
      */
     static void uAddCoFaces( Cells & cofaces, const Cell & c, Dimension axis );
@@ -1282,14 +1381,14 @@ namespace DGtal
      */
   public:
 
-    /**
-     * Writes/Displays the object on an output stream.
+    /** @brief Writes/Displays the object on an output stream.
+     *
      * @param out the output stream where the object is written.
      */
     static void selfDisplay ( std::ostream & out );
 
-    /**
-     * Checks the validity/consistency of the object.
+    /** @brief Checks the validity/consistency of the object.
+     *
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     static constexpr bool isValid();
@@ -1298,7 +1397,7 @@ namespace DGtal
 
   }; // end of class KhalimskyPreSpaceND
 
-  /**
+  /** @brief
    * Overloads 'operator<<' for displaying objects of class 'KhalimskyPreSpaceND'.
    * @param out the output stream where the object is written.
    * @param object the object of class 'KhalimskyPreSpaceND' to write.
