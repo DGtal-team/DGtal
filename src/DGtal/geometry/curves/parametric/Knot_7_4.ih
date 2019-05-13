@@ -1,0 +1,99 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Knot_7_4.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
+ *
+ * @date 2014/10/01
+ *
+ * Implementation of inline methods defined in Knot_7_4.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template <typename T>
+inline
+DGtal::Knot_7_4<T>::Knot_7_4 ( long double scale_1, long double scale_2, long double scale_3 ) : scale {scale_1, scale_2, scale_3}
+{}
+
+template < typename T>
+inline
+typename DGtal::Knot_7_4<T>::RealPoint DGtal::Knot_7_4<T>::x ( const long double t ) const
+{
+    return RealPoint (
+            scale[0] * 4. / 5. *  t * ( t * t - 6. ) * ( t * t- 12. ),
+            scale[1] * t * t * ( t * t - 7. ) * ( t * t - 9. ),
+            scale[2] * 1. / 200. * t * ( t * t - 0.2 ) * ( t * t - 1. ) * ( t * t - 5. ) *
+            ( t * t - 6.5 ) * ( t * t - 9. ) * ( t * t - 10. )
+           );
+}
+
+template < typename T>
+inline
+typename DGtal::Knot_7_4<T>::RealPoint DGtal::Knot_7_4<T>::xp ( const long double t ) const
+{
+    return RealPoint (
+            scale[0] * 4. / 5. * ( 72. - 54. * t * t + 5. * std::pow ( t, 4 ) ),
+            scale[1] * 2. * t * ( 63. - 32. * t * t + 3. * std::pow ( t, 4 ) ),
+            scale[2] * ( 2.925 - 57.6075 * t * t + 124.405 * std::pow ( t, 4) - 72.373 * std::pow ( t, 6 ) +
+            17.001 * std::pow ( t, 8 ) - 1.7435 * std::pow ( t, 10 ) + 0.065 *  std::pow ( t, 12 ) )
+           );
+}
+
+
+template < typename T>
+inline
+void DGtal::Knot_7_4<T>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[Knot_7_4]";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'Knot_7_4'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'Knot_7_4' to write.
+ * @return the output stream after the writing.
+ */
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const Knot_7_4<T> & object )
+{
+    object.selfDisplay ( out );
+    return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

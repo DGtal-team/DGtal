@@ -208,7 +208,7 @@ namespace DGtal
                           const PointR3& B,
                           const PointR3& C,
                           const VectorR3& n,
-                          const std::pair<PointR3, PointR3>& bbox);
+                          const std::pair<PointZ3, PointZ3>& bbox);
 
     // ----------------------- Members ------------------------------
 

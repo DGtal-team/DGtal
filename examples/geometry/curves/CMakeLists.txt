@@ -44,7 +44,9 @@ if (  WITH_VISU3D_QGLVIEWER )
       exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
-     
+     exampleParamCurve3dDigitization
+     exampleParamCurve3dDigitizationTransformationDecorator
+     exampleTrofoliKnot
      )
  
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC} ) 

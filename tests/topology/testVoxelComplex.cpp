@@ -316,7 +316,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test table wrappers",
     trace.beginBlock("loadTable");
     vc.setSimplicityTable(functions::loadTable(simplicity::tableSimple26_6));
     trace.endBlock();
-    size_t dim_voxel = 3;
+    auto dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
     for (auto &&n : std::vector<int>(10))
         ++cit;
@@ -540,7 +540,7 @@ TEST_CASE_METHOD(Fixture_complex_fig4, "Get All Critical Cliques of fig4",
     }
 }
 
-/* zeroSurance and oneSurface */
+/* zeroSurface and oneSurface */
 TEST_CASE_METHOD(Fixture_complex_fig4, "zeroSurface and oneSurface",
                  "[isSurface][function]") {
     auto &vc = complex_fixture;

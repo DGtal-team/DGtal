@@ -180,7 +180,7 @@ unsigned int
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
 {
   // by definition the first and last points of the deque are the same.
-  return myContainer.size()-1;
+  return ( myContainer.size()-1u );
 
 }
 // ----------------------------------------------------------------------------
