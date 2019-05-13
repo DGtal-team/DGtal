@@ -481,6 +481,7 @@ namespace DGtal
         getKSpace( Parameters params =
                    parametersKSpace() | parametersDigitizedImplicitShape3D() )
       {
+        trace.info() << "[Shortcuts::getKSpace] " << params << std::endl;
         Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
         Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
         Scalar h      = params[ "gridstep" ].as<Scalar>();
@@ -494,7 +495,9 @@ namespace DGtal
         KSpace K;
         if ( ! K.init( domain.lowerBound(), domain.upperBound(), closed ) )
           trace.error() << "[Shortcuts::getKSpace]"
-                        << " Error building Khalimsky space K=" << K << std::endl;
+                        << " Error building Khalimsky space K=" << K << std::endl
+                        << "Note: if you use decimal values, check your locale for decimal point '.' or ','."
+                        << std::endl;
         return K;
       }
 
