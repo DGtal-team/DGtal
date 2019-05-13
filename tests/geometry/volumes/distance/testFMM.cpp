@@ -158,7 +158,7 @@ ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSp
       Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
       gc.initFromVector(points); 
     }
-  catch ( InputException e )
+  catch ( InputException& e )
     {
       std::cerr << " error in finding a bel." << std::endl;
     }

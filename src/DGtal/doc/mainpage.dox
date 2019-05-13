@@ -43,7 +43,7 @@ the digital geometry community.
 DGtal is associated with the projects [DGtalTools](http://dgtal.org/dgtaltools/)
 and [DGtalTools-contrib](http://dgtal.org/dgtaltools/). Please have a look
 at the [DGtalTools online
-documentation](https://dgtal-team.github.io/doc-nightly/index.html) for additional 
+documentation](https://dgtal-team.github.io/doctools-nightly) for additional 
 information.
 
 
@@ -78,7 +78,7 @@ information.
 @section links_sec_dgtal Links
 
    <ul>
-    <li> Documentation of the associated [DGtalTools project](http://dgtal.org/doc/tools/nightly/)</li>
+    <li> Documentation of the associated [DGtalTools project](https://dgtal-team.github.io/doctools-nightly)</li>
     <li> Visit the [DGtal homepage](http://dgtal.org/)</li>
     <li> LibBoard section page   </li>
    </ul>

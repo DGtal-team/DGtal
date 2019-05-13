@@ -42,8 +42,8 @@
 #include <cmath>
 #include <climits>
 #include <utility>
-#include <functional>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/kernel/CSpace.h>
@@ -61,19 +61,24 @@ namespace functors
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 2 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
-     * @see exampleRigidtransformation2d.cpp
+     * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace>
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class ForwardRigidTransformation2D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -98,15 +103,15 @@ public:
        * @return the transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
-        p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
-               t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0] + 0.5 );
+        RealPoint p;
+        p[0] = ( ( t_cos * ( aInput[0] - origin[0] ) -
+               t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0];
 
-        p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
-               t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1] + 0.5 );
-        return p;
+        p[1] = ( ( t_sin * ( aInput[0] - origin[0] ) +
+               t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1];
+        return functor ( p );
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -115,6 +120,7 @@ protected:
     double t_sin;
     double t_cos;
     RealVector translation;
+    TFunctor functor;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -125,19 +131,24 @@ protected:
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 2 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
-     * @see exampleRigidtransformation2d.cpp
+     * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace>
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class BackwardRigidTransformation2D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -162,15 +173,15 @@ public:
        * @return transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
-        p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
-               t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0] + 0.5 );
+        RealPoint p;
+        p[0] = ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
+               t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0];
 
-        p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) +
-               t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1] + 0.5 );
-        return p;
+        p[1] = ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) +
+               t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1];
+        return functor ( p);
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -179,6 +190,7 @@ protected:
     double t_sin;
     double t_cos;
     RealVector translation;
+    TFunctor functor;
 };
 
 /////////////////////////////////////////////////////////////////////////////

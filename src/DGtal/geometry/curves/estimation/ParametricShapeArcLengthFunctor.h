@@ -55,7 +55,7 @@ namespace DGtal
   /**
    * Description of template class 'ParametricShapeArcLengthFunctor' <p>
    * \brief Aim: implements a functor that estimates the arc length of a
-   * paramtric curve. 
+   * paramtric curve.
    *
    *
    * @tparam TParametricShape a model of parametric shape.
@@ -63,7 +63,7 @@ namespace DGtal
   template <typename TParametricShape>
   class ParametricShapeArcLengthFunctor
   {
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -91,13 +91,13 @@ namespace DGtal
      * @param aShape the input shape.
      */
     ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
-    
-    
+
+
     /**
      * Destructor.
      */
     ~ParametricShapeArcLengthFunctor(){}
-    
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -114,10 +114,10 @@ namespace DGtal
       return *this;
     }
 
-   
-    /** 
+
+    /**
      * Compute the arc length between two points.
-     * 
+     *
      * @param aFirstPoint the first point
      * @param aSecondPoint the second point
      * @return the estimated arc length
@@ -128,20 +128,20 @@ namespace DGtal
       ASSERT(myShape);
 
       //determining nbSamples from the bounding box size of the shape
-      Vector v = myShape->getUpperBound() - myShape->getLowerBound();
-	  double n = (double) NumberTraits<Integer>::castToInt64_t( (const DGtal::int32_t)v.norm(Vector::L_infty) );
-      unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
+      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      double n = v.norm(RealPoint::L_infty);
+      unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
       //computes the angles
-      double t = myShape->parameter( aFirstPoint );  
-      double t2 = myShape->parameter( aSecondPoint );    
-      return myShape->arclength (t,t2,nbSamples); 
+      double t = myShape->parameter( aFirstPoint );
+      double t2 = myShape->parameter( aSecondPoint );
+      return myShape->arclength (t,t2,nbSamples);
 
     }
-    
-    /** 
+
+    /**
      * Compute the total length
-     * 
+     *
      * @return the estimated length
      */
     Quantity operator()()
@@ -150,24 +150,24 @@ namespace DGtal
       ASSERT(myShape);
 
       //determining nbSamples from the bounding box size of the shape
-      Vector v = myShape->getUpperBound() - myShape->getLowerBound();
-      double n = (double) NumberTraits<Integer>::castToInt64_t( (const DGtal::int32_t)v.norm(Vector::L_infty) );
-      unsigned int nbSamples = (unsigned int) ceil( n*100 ); 
+      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      double n = v.norm(RealPoint::L_infty);
+      unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
-      return myShape->arclength (0,2*M_PI,nbSamples); 
+      return myShape->arclength (0,2*M_PI,nbSamples);
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
-    
+
     ///Copy of the implicit shape.
     ParametricShape *myShape;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class ParametricShapeArcLengthFunctor
-  
+
 } // namespace DGtal
 
                                                                         //

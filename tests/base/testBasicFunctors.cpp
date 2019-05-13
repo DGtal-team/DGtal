@@ -88,6 +88,23 @@ bool testBasicFunctors()
     nb++;
   }
 
+  //rounding functors
+  {
+    const double v1 = -3.5;
+    const double v2 = 3.5;
+
+    { const DGtal::functors::Round<double> f; nbok += ( f(v1) == -4. && f(v2) == 4. ) ? 1 : 0; }
+    { const DGtal::functors::Round<> f;       nbok += ( f(v1) == -4. && f(v2) == 4. ) ? 1 : 0; }
+    { const DGtal::functors::Floor<double> f; nbok += ( f(v1) == -4. && f(v2) == 3. ) ? 1 : 0; }
+    { const DGtal::functors::Floor<> f;       nbok += ( f(v1) == -4. && f(v2) == 3. ) ? 1 : 0; }
+    { const DGtal::functors::Ceil<double> f;  nbok += ( f(v1) == -3. && f(v2) == 4. ) ? 1 : 0; }
+    { const DGtal::functors::Ceil<> f;        nbok += ( f(v1) == -3. && f(v2) == 4. ) ? 1 : 0; }
+    { const DGtal::functors::Trunc<double> f; nbok += ( f(v1) == -3. && f(v2) == 3. ) ? 1 : 0; }
+    { const DGtal::functors::Trunc<> f;       nbok += ( f(v1) == -3. && f(v2) == 3. ) ? 1 : 0; }
+
+    nb += 8;
+  }
+
   //composer quantizer
   {
     //need to explicitely specialized std::ptr_fun because there are several
