@@ -3,14 +3,20 @@
 ## Changes
 
 - *Helpers*
- - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
-   [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
 
 ## Bug Fixes
 
 - *Mathematics*
- - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
-   [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
+- *Helpers*
+  - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
+    convolved trivial normals in ShortcutsGeometryPut
+    SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
 
 
 # DGtal 1.0
