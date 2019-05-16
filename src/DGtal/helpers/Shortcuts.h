@@ -1762,8 +1762,9 @@ namespace DGtal
       /// positions as an OBJ file and a material MTL file. Optionnaly
       /// you can specify the diffuse colors.
       ///
-      /// @param[in] positions the bases to the normal vectors
-      /// @param[in] normals the normal vectors
+      /// @param[in] positions the bases of the vectors of the vector field.
+      /// @param[in] vf the vector field (an array of real vectors).
+      /// @param[in] thickness the thickness of the sticks representing the vector field.
       /// @param[in] diffuse_colors either empty or a vector of size `normals.size()` specifying the diffuse color for each face.
       /// @param[in] objfile the output filename.
       /// @param[in] ambient_color the ambient color of all vectors.
