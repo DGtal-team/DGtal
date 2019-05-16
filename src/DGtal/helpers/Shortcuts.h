@@ -1654,9 +1654,6 @@ namespace DGtal
           bool has_material = ( nbfaces == diffuse_colors.size() );
           Idx   idxMaterial = 0;
           std::map<Color, unsigned int > mapMaterial;
-          // MeshHelpers::exportMTLNewMaterial
-          // 	( output_mtl, idxMaterial, ambient_color, Color::Black, specular_color );
-          // mapMaterial[ Color::Black ] = idxMaterial++;
           if ( has_material )
             {
               for ( Idx f = 0; f < nbfaces; ++f )
@@ -1827,7 +1824,7 @@ namespace DGtal
 			   << std::endl;
 	      }
 	    }
-	  // Simplify materials
+	  // Simplify materials (very useful for blender).
           Idx j = 0;
           std::map<Color,Idx> map_colors;
           for ( auto && c : diffuse_colors )
@@ -1840,9 +1837,6 @@ namespace DGtal
 	    for ( auto&& pair : map_colors )
 	      MeshHelpers::exportMTLNewMaterial
 		( output_mtl, pair.second, ambient_color, pair.first, specular_color);
-	    // for ( Idx i = 0; i < n; ++i )
-	    //   MeshHelpers::exportMTLNewMaterial
-	    //     ( output_mtl, i, ambient_color, diffuse_colors[ i ], specular_color);
           else
 	    MeshHelpers::exportMTLNewMaterial
 	      ( output_mtl, 0, ambient_color, diffuse_color, specular_color );
