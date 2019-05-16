@@ -1502,8 +1502,8 @@ int main( int argc, char** argv )
   
   { // union of two DSSs
     res = res && unionTest();
-    res = res && unionComparisonTest<DGtal::int64_t,DGtal::int64_t,8>(43577,1276,2000);
-    res = res && unionComparisonTest<DGtal::int64_t, DGtal::int64_t, 4>(86731,6648,2000);
+    res = res && unionComparisonTest<DGtal::int64_t,DGtal::int64_t,8>(43577,1276,200);
+    res = res && unionComparisonTest<DGtal::int64_t, DGtal::int64_t, 4>(86731,6648,200);
       }
   
   

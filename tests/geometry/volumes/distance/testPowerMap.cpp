@@ -265,7 +265,7 @@ bool testPowerMap( std::array<bool, 2> const& aPeriodicity = {{ false, false }} 
       std::cerr<<std::endl;
     }
 
-  nbok += true ? 1 : 0;
+  nbok ++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
     << "true == true" << std::endl;
