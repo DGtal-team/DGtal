@@ -1,3 +1,17 @@
+# DGtal 1.0.1
+
+## Changes
+
+- *Helpers*
+ - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
+   [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
+## Bug Fixes
+
+- *Mathematics*
+ - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
+   [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
 
 # DGtal 1.0
 
