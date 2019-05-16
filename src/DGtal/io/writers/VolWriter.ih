@@ -66,7 +66,7 @@ namespace DGtal {
     {
       std::stringstream header;
       std::stringstream main;
-      out.open(filename.c_str());
+      out.open(filename.c_str(), std::ios::out | std::ios::binary);
       
       //Vol format
       header << "Center-X: " << center[0] <<std::endl;

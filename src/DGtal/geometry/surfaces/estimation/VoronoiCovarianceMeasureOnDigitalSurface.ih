@@ -33,6 +33,7 @@
 #include "DGtal/math/ScalarFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -99,16 +100,17 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
   typedef functors::HatFunction<Scalar> Functor;
   Functor fct( 1.0, myRadiusTrivial );
+  LpMetric<Space> l2(2.0); //L2 metric in R^3 for surface propagation.
   typedef functors::ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
     SurfelFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, Metric, SurfelFunctor, Functor>
+  typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, LpMetric<Space>, SurfelFunctor, Functor>
     NormalEstimator;
 
   CanonicSCellEmbedder<KSpace> canonic_embedder( ks );
   SurfelFunctor surfelFct( canonic_embedder, 1.0 );
   NormalEstimator estimator;
   estimator.attach( *mySurface);
-  estimator.setParams( aMetric, surfelFct, fct , myRadiusTrivial);
+  estimator.setParams( l2, surfelFct, fct , myRadiusTrivial);
   estimator.init( 1.0,  mySurface->begin(), mySurface->end());
   i = 0; 
   std::vector<Point> pts; 

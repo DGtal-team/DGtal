@@ -1,0 +1,857 @@
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+namespace functors {
+
+/*!
+
+@page moduleFunctors Using functions, functors and lambdas in DGtal
+
+@writers Roland Denis
+
+@since 1.0.0
+
+Part of the \ref packageBase.
+
+This part of the manual lists some of the available functors in DGtal
+and also describes how to use functions, functors, lambdas, or any callable
+objects as DGtal compatible functors.
+
+[TOC]
+
+@section functors_of_DGtal The functors in DGtal
+
+@see functors
+
+@section functorholder The FunctorHolder class
+
+@subsection functorholder_intro Introduction and preliminary example
+
+Starting with C++11, we can define functions directly in a code block,
+just before using it,
+using [<tt>lambdas</tt>](https://en.cppreference.com/w/cpp/language/lambda).
+For small and single-used functions, it may allow to write clearer code by
+keeping all important informations together and avoids defining the function
+out of context.
+
+However, lambdas cannot be directly used in DGtal since many functors must
+comply with concepts that depends on its usage.
+These concepts may require to define some typedef and always require that
+the model is assignable.
+Since lambdas don't meet any of these constraints, it forces the coder to
+define a specific class.
+
+Starting with DGtal 1.0, @ref FunctorHolder and its derivatives
+(see @ref functorholder_derivates)
+are available and allow to use lambdas (and other callable object) in an easier
+way.
+
+First, store your lambda in an holder that matches the targeted usage:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-hold
+The usage of the `auto` keyword is here mandatory and the reason why is explained in
+@ref auto_holdfunctor.
+
+Then, use the created functor with you favorite algorithm:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DT
+The `decltype` specifier is used to deduce the type of the functor,
+see @ref passing_functorholder.
+
+Finally, export the result:
+@snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DTvis
+@image html examplePointFunctorHolder.png  "Distance transformation of Mickey"
+@image latex examplePointFunctorHolder.png  "Distance transformation of Mickey"
+It has never been so easy to calculate the distance map to Mickey!
+
+@subsection functorholder_aim Aim
+
+Given any type of callable object (function, functor and lambda) passed
+by value, reference or pointer, @ref FunctorHolder stores it in the most
+appropriate way so that the returned object is a model of DGtal functor
+concept (@ref concepts::CUnaryFunctor so far), and especially the
+@ref boost::Assignable concept.
+
+More precisely, the storage mode depends on the lifetime of the given
+object, deduced from its passing mode:
+
+- if the given object is passed by left-value reference (long lifetime),
+  it will be stored as a reference (using [<tt>std::reference_wrapper</tt>](https://en.cppreference.com/w/cpp/utility/functional/reference_wrapper)).
+- otherwise (short lifetime, like right-value references),
+  it will be moved to a dynamically allocated memory place ([<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr))
+  so that the object lifetime matches the FunctorHolder lifetime.
+
+In both case, the returned object is copy/move constructible and
+copy/move assignable so that it can be used as a functor in all DGtal
+library.
+
+@warning This class is not meant to be directly constructed by the user.
+As explained below, you should use instead the @ref holdFunctor helper that
+will choose the more appropriate storage type depending on the given
+callable object.
+
+@remark It is important to not explicitly specify the given object type
+so that it's real lifetime can be deduced using a [universal reference](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references).
+However, you can transfer ownership of the object to FunctorHolder by moving
+it using [<tt>std::move</tt>](https://en.cppreference.com/w/cpp/utility/move).
+As a consequence, the type of the returned FunctorHolder cannot be guessed
+easily and the use of the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword is thus mandatory.
+
+@note
+Almost all snippets used in the following explanations come from
+the example file @ref exampleFunctorHolder.cpp
+
+@see FunctorHolder, holdFunctor
+
+
+@subsection functorholder_why Why this class ?
+
+The first motivation is to be able to use lambdas as functors in DGtal
+but the problem is that all functor's concepts inherits from
+@ref boost::Assignable and a lambda is unfortunately not assignable.
+
+A solution would be to rely on [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) but this solution has two main
+issues:
+- it refers to the callable object by using a generic pointer, like
+  `double (*) (int)` for a function returning a `double` from an `int`.
+  This implies that the compiler cannot inline the implementation
+  of the callable object (since a pointer like `double (*) (int)` can point
+  to any compatible function) and thus cannot apply some important
+  optimizations like vectorizing the computation.
+- it uses polymorphism to hide the actual callable object type stored
+  underneath.
+  This implies an extra indirection when calling the underlying
+  object.
+
+On the other hand, @ref FunctorHolder also relies on a pointer
+in order to make any callable object assignable, but the pointer type is
+directly related to the callable object type.
+Therefore, even if the compiler doesn't know the address during the compilation
+process, since he actually know the type of the callable object, he also
+know its implementation and can then inline it and optimize it.
+
+@note
+A pointer to a function has a generic type (like `double (*) (int)`) and
+thus prevents the compiler to inline it (even when using @ref FunctorHolder).
+To avoid this, you can wrap the function into a lambda before storing it into
+a @ref FunctorHolder, like explained in the section below about
+@ref holding_a_function .
+
+
+For example, on a modern processor and if your functor only adds values,
+you can have a performance ratio of about 26.7 between using a [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function)
+and @ref FunctorHolder.
+Even with more complex operations, there is still a significant performance
+penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) over @ref FunctorHolder.
+
+@subsection functorholder_derivates Which derivative class of FunctorHolder should I use ?
+Depending on the concept you want to fullfil, here are the available classes that rely on @ref FunctorHolder "":
+- for a @ref concepts::CUnaryFunctor model, use @ref FunctorHolder.
+- for a @ref concepts::CPointFunctor model, use @ref PointFunctorHolder.
+- for a @ref concepts::CConstImage model, use @ref ConstImageFunctorHolder.
+
+
+@section holding_an_object Holding a callable object
+
+As warned before, @ref FunctorHolder is not meant to be directly constructed
+but instead through the helper (factory) @ref holdFunctor.
+You can hold any type of callable object: a function, a functor, a lambda function,...
+
+@subsection holding_a_function Holding a function
+
+If you want to refer to an existing function, you can directly pass its name
+to @ref holdFunctor "":
+@snippet exampleFunctorHolder.cpp signed_dist_to_unit_circle
+@snippet exampleFunctorHolder.cpp Holding a function
+
+If the function is templated, you must specify the needed templates:
+@snippet exampleFunctorHolder.cpp Templated signed_dist_to_unit_circle
+@snippet exampleFunctorHolder.cpp Holding a templated function
+
+In both cases, the function will be passed by reference.
+You can also explicitly pass it by pointer using the `&` keyword.
+
+@warning
+However, please note that passing a function by reference or by pointer
+will prevent the compiler from inlining it (you may have a chance
+by reference).
+
+@warning
+To avoid this possible performance penalty, you should pass the function
+through a lambda:
+@snippet exampleFunctorHolder.cpp Holding a function through a lambda
+@snippet exampleFunctorHolder.cpp Holding a templated function through a lambda
+thus giving the compiler free hands to inline it.
+
+@warning
+Even better: if you have enable C++14 support, you can use generic lambdas
+so that you don't have to specify any type, even for templated functions
+(the type is resolved at the effective call):
+@snippet exampleFunctorHolder.cpp Holding a templated function through a C++14 lambda
+Enjoy the genericity !
+
+@subsection holding_a_functor Holding a functor
+
+If you want to refer to a functor, you can pass it by (left-value) reference:
+@snippet exampleFunctorHolder.cpp Functor
+@snippet exampleFunctorHolder.cpp Holding a functor by lvalue ref
+
+You wan also inline the construction of the functor directly in the
+@ref holdFunctor call:
+@snippet exampleFunctorHolder.cpp Holding a functor by rvalue ref
+or, to increase code readability, you can first construct the functor
+and then transfer its ownership to @ref holdFunctor by using the move
+semantic:
+@snippet exampleFunctorHolder.cpp Holding a functor by moving it
+
+@remark
+Moving the functor to @ref holdFunctor is also a way to increase its
+lifetime, for example when returning a @ref FunctorHolder that depends
+on a local functor.
+See also the section @ref held_object_lifetime.
+
+@subsection holding_a_lambda Holding a lambda
+Without surprise, holding a lambda works the same way:
+@snippet exampleFunctorHolder.cpp Holding a lambda
+
+@subsection holding_something_else Holding something else
+@ref FunctorHolder should be able to hold any callable object.
+However, as warned before, if you are concerned by performance,
+you should avoid holding a function by reference or pointer
+or, even worse, holding a [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function)
+that is more or less a pointer with an additional cost due to the polymorphism.
+
+@subsection held_object_lifetime Held object lifetime
+When passing a functor to @ref holdFunctor by lvalue reference
+(ie the functor has a name), the functor lifetime must exceed the
+@ref FunctorHolder lifetime.
+
+Otherwise, consider constructing the functor directly during the
+@ref holdFunctor call or transfer its ownership by using the move semantic.
+See the examples in section @ref holding_a_functor.
+
+@subsection auto_holdfunctor Why using the auto keyword ?
+Since the exact storage type used in @ref FunctorHolder is choosen by
+@ref holdFunctor depending on the passing mode of the callable object,
+it is not easily possible to known the template parameters of
+@ref FunctorHolder.
+
+Thus, it is recommended to use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto)
+keyword as the type placeholder for any instance of @ref FunctorHolder.
+
+See also the section about @ref storing_functorholder.
+
+
+@section calling_the_held_object Calling the held object
+
+Calling the held object is done naturally by using the `operator()`, like
+in the previous examples:
+@snippet exampleFunctorHolder.cpp Holding a functor by rvalue ref
+
+@subsection parameters_return_types What about the parameters and return value types ?
+
+You may have notice that we never have to specify the types of the
+parameters used when calling the held object, neither the type of the
+returned object.
+
+The trick behind this is the use of variadic templates and perfect forwarding
+so that the call of the held object is transparent for @ref FunctorHolder.
+The returned value type is also automatically deduced.
+
+@subsection functor_arity What about the callable object arity ?
+The use of variadic templates for the `operator()` allows holding
+a callable object of any arity:
+@snippet exampleFunctorHolder.cpp Holding a non-unary lambda
+
+
+@section copy_and_assignment Copying and assigning a FunctorHolder
+
+A @ref FunctorHolder instance is copyable, movable and assignable,
+thus making it a @ref boost::Assignable model and of any other concept
+that trivially inherit from it (e.g. @ref concepts::CUnaryFunctor).
+
+@warning
+When copying or assigning a @ref FunctorHolder, the two involved instances
+will afterward both refer to the same callable object (i.e. the held object
+is not copied).
+For example, modifying a functor attribute after the copy will modify the
+result of all original and copied instances of @ref FunctorHolder that hold
+it:
+@snippet exampleFunctorHolder.cpp Copying a functor by lvalue ref
+
+@warning
+It is also the case when passing the object by rvalue reference to
+@ref holdFunctor since it moves it to a dynamically allocated memory
+place, managed by [<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr).
+Copying or assigning the resulting @ref FunctorHolder is like copying
+or assigning the underlying [<tt>std::shared_ptr</tt>](https://en.cppreference.com/w/cpp/memory/shared_ptr):
+@snippet exampleFunctorHolder.cpp Copying a lambda by rvalue ref
+
+@note
+A counterpart of this design it that @ref FunctorHolder instances are
+lightweight.
+
+
+@section type_of_functorholder The type of a FunctorHolder instance
+
+@note
+Note that the next topics are not specific to @ref FunctorHolder.
+They may be useful in many cases where you can't or don't want to
+guess the result type of an expression.
+
+
+@subsection storing_functorholder Storing a FunctorHolder
+As explained before (see @ref auto_holdfunctor), you cannot easily guess
+the result type of a @ref holdFunctor call.
+Moreover, it becomes impossible when passing a lambda in an inline way.
+
+Thus, it is recommended to use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword as the type placeholder
+for any instance of @ref FunctorHolder "":
+@snippet exampleFunctorHolder.cpp Storing a FunctorHolder
+
+
+@subsection passing_functorholder Passing a FunctorHolder as a parameter
+
+However, when passing a @ref FunctorHolder, especially to a class constructor, you
+may still need to known the @ref FunctorHolder exact type (including
+the template parameters).
+
+In those cases, a solution is to first store the @ref FunctorHolder and then to
+deduce its type by using the [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) keyword:
+@snippet exampleFunctorHolder.cpp Passing a FunctorHolder
+
+To ease such usage, you may want to search if there exist an helper (or factory)
+for that class (see also @ref creating_a_helper).
+
+
+@subsection returning_functorholder Returning a FunctorHolder
+The most tricky part begins when you need a function to return a
+@ref FunctorHolder.
+
+The problem comes from the fact that up to C++11 standard, you need to
+somehow specify the function's return type.
+In C++11, you can slightly delay this type specification using the trailing
+return syntax but the type still needs to be known in the signature.
+Basically, you need to duplicate the line of code that generates the
+@ref FunctorHolder (optionaly using the function's parameters) into the
+function signature and deduce its type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype):
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder in caller
+
+If it is easier to get the return type using the actual parameters,
+you can use the trailing return syntax:
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return in caller
+
+@note
+Note that you don't have to put the exact same expression in the trailing
+return type deduction and in the actual return. Like in the previous
+snippet, you can simply use another expression you know the result type will
+be the same as the actual return expression.
+
+@note
+Going further, if writting such simplier expression is difficult, you can
+use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval) function that constructs a fake instance of any given type:
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return and declval
+
+
+Starting with C++14 standard, you can simply use the [<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto) keyword as
+a return type and the compiler should deduce the actual type from the
+`return` statements of the function:
+@snippet exampleFunctorHolder.cpp Returning a FunctorHolder using auto in C++14
+
+
+@subsection creating_a_helper Creating a helper
+
+Usage of @ref FunctorHolder (as other kind of objects whose type is
+difficult to guess) can be simplified by adding helpers (or factories)
+to classes whose template parameters depend on such objects.
+
+A helper is only a templated function that benefits from the auto-deduction
+of template parameters in order to deduce the appropriate class type:
+@snippet exampleFunctorHolder.cpp Factory of Binarizer
+@snippet exampleFunctorHolder.cpp Using the Binarizer factory
+
+@note
+Starting with C++17, these helpers can be replaced by deduction guides that
+are custom rules for deducing class template parameters from a direct call
+to the constructor (without specifying the deductible template parameters):
+@snippet exampleFunctorHolder.cpp Binarizer deduction guide in C++17
+
+
+For more complex classes, like @ref DGtal::functors::PointFunctorPredicate
+that use @ref DGtal::ConstAlias in the constructor parameters, you cannot
+simply use @ref DGtal::ConstAlias in the factory and hope that the compiler
+will deduce the aliases type:
+@snippet exampleFunctorHolder.cpp Wrong factory of PointFunctorPredicate
+
+The problem here is that implicit conversions (like the one needed from
+`PointFunctor` to `ConstAlias<PointFunctor>`) are ignored during the
+template deduction step.
+In this case, the first solution is to remove the @ref DGtal::ConstAlias
+from the helper signature:
+@snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate
+@snippet exampleFunctorHolder.cpp Using the PointFunctorPredicate factory
+
+Another problem arises here: the constructor of
+@ref DGtal::functors::PointFunctorPredicate will get as parameters only
+left-value references because the parameters have a name in the factory.
+Thus, you might miss some optimizations for right-value references.
+
+In order to make a factory that doesn't change the parameters type, you
+must use [forwarding references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
+(by using `&&` references together with template paremeter deduction, also
+ known as universal references) and perfect forwarding using [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward):
+@snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate using perfect forwarding
+Note the use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) because the template parameter will be deduced
+with an included reference specification that you don't want to be part of
+the returned class specification ([<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) removes reference and
+constness from a given type).
+
+
+@section marking_cunaryfunctor Making a C(Unary)Functor model based on FunctorHolder
+
+In the following sections, we will explain how to create new DGtal functor
+models using @ref FunctorHolder as an internal storage in order to accept
+any kind of callable objects (lambdas included).
+
+You may want to add such classes because some concepts derived from
+@ref DGtal::concepts::CUnaryFunctor may need additional data or typedef,
+like @ref DGtal::concepts::CPointFunctor.
+
+
+@subsection tutorial_pointfunctorholder A simple CUnaryFunctor model with additional typedef
+
+In this section, we will explain how to write a @ref concepts::CPointFunctor model
+that is basically a @ref concepts::CUnaryFunctor model with additional typedef
+(the point and value types).
+
+The resulting class is more or less the @ref PointFunctorHolder class which
+source code is visible in @ref PointFunctorHolder.h .
+
+
+@subsubsection pointfunctorholder_core_skeleton The core skeleton
+
+A basic implementation of such a class would be:
+@code
+template <
+  typename TPoint,
+  typename TValue,
+  typename TFunctor
+>
+class PointFunctorHolder
+{
+public:
+
+  // DGtal types
+  using Self    = PointFunctorHolder<TPoint, TValue, TFunctor>;
+  using Point   = TPoint;
+  using Value   = TValue;
+  using Functor = TFunctor;
+
+  // Storing the functor
+  explicit PointFunctorHolder(TFunctor const& fn)
+      : myFunctor(fn)
+  {}
+
+  // Evaluating the functor
+  inline Value operator() ( Point const& aPoint ) const
+    {
+      return myFunctor( aPoint );
+    }
+
+private:
+  Functor myFunctor;
+
+};
+@endcode
+
+There is nothing special to say about this first draft except that there is
+no references to @ref FunctorHolder because it is the helper (factory)
+that will actually choose @ref FunctorHolder as the @a TFunctor template
+parameter of this class.
+
+
+@subsubsection pointfunctorholder_helper The helper (factory)
+
+Before continuing, you should read the previous section about
+@ref creating_a_helper .
+
+The helper of the above draft should be:
+@code
+template <
+  typename TPoint,
+  typename TValue,
+  typename TFunctor
+>
+inline auto
+holdPointFunctor( TFunctor && aFunctor )
+    -> PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
+  {
+    return PointFunctorHolder<TPoint, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{
+        holdFunctor(std::forward<TFunctor>(aFunctor))
+    };
+  }
+@endcode
+
+Here we use the trailing return type ([<tt>auto</tt>](https://en.cppreference.com/w/cpp/language/auto)
+as returned type, followed by `->`)
+in order to choose the @a TFunctor template parameter type of our class
+depending on the result of @ref holdFunctor.
+
+As explained before, this type is not easily guessable and it is why we use
+the [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) keyword.
+
+Also note the perfect forwarding syntax (using [universal references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
+and [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward))
+to avoid modifying the actual type of the given callable object (particulary
+keeping lvalue and rvalue references).
+
+@remark
+There is many repetitions in this helper.
+Starting with C++14 standard, the trailing return type (after the `->`) could
+be removed.
+
+
+@subsubsection pointfunctorholder_usage First test
+
+That's it ! You can enjoy using this @ref concepts::CPointFunctor model,
+for example to hold a lambda returning the point norm:
+@code
+using Point = PointVector<2, int>;
+auto fn = holdPointFunctor<Point, double>(
+  [] (Point const& pt) { return pt.norm(); }
+);
+
+BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+@endcode
+
+
+@subsubsection pointfunctorholder_advanced_helper Auto-deducing the return type of the functor
+
+Since the functor's return type can be easily deduced by calling it with a point,
+we can then provide an additional helper that needs only one template parameter:
+@code
+template <
+  typename TPoint,
+  typename TFunctor
+>
+inline auto
+holdPointFunctor( TFunctor && aFunctor )
+    -> PointFunctorHolder<
+          TPoint,
+          typename std::decay<decltype(aFunctor(std::declval<TPoint>()))>::type,
+          decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+        >
+  {
+    return PointFunctorHolder<
+        TPoint,
+        typename std::decay<decltype(aFunctor(std::declval<TPoint>()))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ holdFunctor(std::forward<TFunctor>(aFunctor)) };
+  }
+@endcode
+
+It is a little bit more tricky: we use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval)
+in order to generate a fake point, we give it as a parameter to the functor and
+we deduce the result type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype).
+The use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) allows us to remove any reference and const specifier
+from the deduced type.
+
+The usage is very similar:
+@code
+using Point = PointVector<2, int>;
+auto fn = holdPointFunctor<Point>( // Value template parameter deduced to double
+  [] (Point const& pt) { return pt.norm(); }
+);
+
+BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+@endcode
+
+
+@subsubsection pointfunctorholder_advanced_constructor Perfect forwarding in the constructor
+
+You may have notice that the constructor accepts the functor by constant reference.
+Since this functor will be a @ref FunctorHolder, it shouldn't be a problem because
+copying a @ref FunctorHolder is costless.
+
+However, if you want more genericity in order to use another storage mode, you
+should consider using perfect forwarding in the constructor:
+@code
+template < typename Function >
+explicit PointFunctorHolder(Function && fn)
+    : myFunctor(std::forward<Function>(fn))
+{}
+@endcode
+so that the transfer from the given functor to its storage is unaffected.
+
+However, the problem is that the compiler may choose this constructor as a better
+overload for the copy constructor, even if you define it: for example, if
+you copy construct from a mutable PointFunctorHolder, the perfect forwarding
+constructor will be a better choice than the copy construction from a constant
+reference.
+
+One of the possible solutions to avoid this is to disable this constructor
+when the given type is related to the current class.
+To do this, we can rely on SFINAE.
+
+@note
+The idea behind [SFINAE (Substitution Failure Is Not An Error)](https://en.cppreference.com/w/cpp/language/sfinae)
+is that, during the phase when the compiler lists all possible overloads that
+may fit a given call, if substituting the template parameters of a considered
+function fails (i.e. the function signature becomes invalid), then this
+specialization is discarded without generating a compilation error.
+
+@note
+So, the idea is to modify the function signature so that it becomes invalid for
+some types. To do so, we can add some code in:
+- the template parameters declaration,
+- the arguments list,
+- the return type.
+
+@note
+This trick works before C++11 but this standard makes it easier with the
+[<tt>std::enable_if</tt>](https://en.cppreference.com/w/cpp/types/enable_if)
+structure and the trailing return type.
+
+@note
+Using the trailing return type, you can easily disable a function overload if
+a given expression is invalid:
+@code
+template <typename T>
+auto do_something_if_addable(T v) // Considered only if v is addable
+    -> decltype(v + v)
+{
+  ...
+}
+@endcode
+
+@note
+If the type deduced by [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) is not the actual return type, you can
+use the comma operator to specify an additional expression:
+@code
+template <typename T>
+auto do_something_if_addable(T v) // Considered only if v is addable
+    -> decltype(v + v, void())    // This function doesn't return
+{
+  ...
+}
+@endcode
+
+
+So here is a viable solution:
+@code
+template <
+  typename Function,
+  // SFINAE trick to disable this constructor in a copy/move construction context.
+  typename std::enable_if<!std::is_base_of<PointFunctorHolder, typename std::decay<Function>::type>::value, int>::type = 0
+>
+explicit PointFunctorHolder(Function && fn)
+    : myFunctor(std::forward<Function>(fn))
+{}
+@endcode
+that uses [<tt>std::is_base_of</tt>](https://en.cppreference.com/w/cpp/types/is_base_of)
+type traits to check if the given parameter is a or inherits from
+@ref PointFunctorHolder.
+
+
+@subsubsection pointfunctorholder_documentation Documenting
+
+When documenting such a class, it is important to warn the user about two
+things:
+1. the class is not meant to be used directly but only through the associated
+   helper or factory.
+2. a copied instance of this class will point to the exact same underlying
+   object as the original instance.
+
+In addition, for performance reason, you may remark that functions should be
+wrapped into a lambda before being stored into your class, as explained in the
+section about @ref holding_a_function .
+
+Finally, you should link to this module page for more informations.
+
+
+@subsection tutorial_functorconstimage A more complex example with variable functor arity
+
+In this section, we will explain how to write a class that may hold an unary or
+binary functor.
+It will be based on the @ref ConstImageFunctorHolder class that transforms a given
+callable object into a @ref concepts::CConstImage model.
+
+Basically, to define an image, a @ref concepts::CPointFunctor model (i.e
+a functor that returns a value from a given point) would be enough but we want
+to allow the user to pass a functor that also depends on the image's domain
+(e.g. when calculating distance to the bounds).
+
+To do so, using SFINAE, we can detect the arity of the given functor and even
+its parameter's types.
+
+
+@subsubsection functorconstimage_core_skeleton The core skeleton
+
+Here is the core skeleton of the @ref ConstImageFunctorHolder class, without the
+`operator()` that will be introduced later:
+@code
+template <
+  typename TDomain,
+  typename TValue,
+  typename TFunctor
+>
+class ConstImageFunctorHolder
+{
+public:
+
+  // DGtal types
+  using Self      = ConstImageFunctorHolder<TDomain, TValue, TFunctor>;
+  using Domain    = TDomain;
+  using Point     = typename Domain::Point;
+  using Vector    = typename Domain::Vector;
+  using Value     = TValue;
+  using Functor   = TFunctor;
+
+  // Ranges and iterators
+  using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
+  using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
+  class ConstRange; // To be defined...
+
+  // Constructor
+  template < class TGivenFunctor >
+  explicit ConstImageFunctorHolder( Domain const& aDomain, TGivenFunctor && aFunctor )
+    : myDomain( aDomain )
+    , myFunctor( std::forward<TGivenFunctor>(aFunctor) )
+  {}
+
+  // Return the associated domain.
+  inline Domain const& domain() const
+    {
+      return myDomain;
+    }
+
+private:
+  Domain  myDomain;
+  Functor myFunctor;
+};
+@endcode
+
+Note that using perfect forwarding in the constructor doesn't imply here to add
+SFINAE like in @ref pointfunctorholder_advanced_constructor because a binary
+constructor cannot be choosen as a valid overload during a copy construction.
+
+
+@subsubsection functorconstimage_helper The helper (factory)
+
+The helper is very similar to the one introduced in
+@ref pointfunctorholder_helper "":
+@code
+template <
+  typename TValue,
+  typename TDomain,
+  typename TFunctor
+>
+inline auto
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>
+  {
+    return ConstImageFunctorHolder<TDomain, TValue, decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))>{
+        aDomain, holdFunctor(std::forward<TFunctor>(aFunctor))
+    };
+  }
+@endcode
+
+
+@subsubsection functorconstimage_evaluation The evaluation operator
+
+Here, in order to take into account the fact that the held functor may by unary
+(accepting only a point) or binary (accepting a point and the image's domain),
+we must rely on the SFINAE trick explained in
+@ref pointfunctorholder_advanced_constructor so that the compiler chooses the
+right implementation:
+@code
+template <typename TPoint> // Needed template parameter to enable SFINAE trick
+inline
+auto operator() ( TPoint const& aPoint ) const
+    -> decltype( myFunctor( aPoint ) ) // Using SFINAE to enable this overload for unary functor
+  {
+    return myFunctor( aPoint );
+  }
+
+template <typename TPoint> // Needed template parameter to enable SFINAE trick
+inline
+auto operator() ( TPoint const& aPoint ) const
+    -> decltype( myFunctor( aPoint, myDomain ) ) // Using SFINAE to enable this overload for binary functor
+  {
+    return myFunctor( aPoint, myDomain );
+  }
+@endcode
+
+Here, the first overload is valid only if the `myFunctor(aPoint)` expression
+is valid, that is if the held functor is unary and accept a point as parameter.
+Likewise, the second overload is valid only if the functor is binary and accept
+a point as the first argument and a domain as the second argument.
+
+@note
+If the functor is unary and binary at the same time, this will lead to a
+compilation error. However, if it makes sense to handle such functors, it is
+possible to prioritize the two overloads.
+
+@warning
+SFINAE trick needs to know the @a myDomain member at the method declaration.
+Thus, it is important to declare @a myDomain before declaring the two overloads
+of `operator()`.
+
+
+@subsubsection functorconstimage_advanced_helper Auto-deducing the return type of the functor
+
+If you want to automatically deduce the @a TValue template parameter, the solution is
+quite similar to the one proposed in @ref pointfunctorholder_advanced_helper
+but in two versions, one for each possible arity of the given functor:
+@code
+// Helper for a unary functor
+template <
+  typename TDomain,
+  typename TFunctor
+>
+inline auto
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<
+          TDomain,
+          typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>()))>::type,
+          decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+        >
+  {
+    return ConstImageFunctorHolder<
+        TDomain,
+        typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>()))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+  }
+
+// Helper for a binary functor
+template <
+  typename TDomain,
+  typename TFunctor
+>
+inline auto
+holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
+    -> ConstImageFunctorHolder<
+          TDomain,
+          typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>(), aDomain))>::type,
+          decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+        >
+  {
+    return ConstImageFunctorHolder<
+        TDomain,
+        typename std::decay<decltype(aFunctor(std::declval<typename TDomain::Point>(), aDomain))>::type,
+        decltype(holdFunctor(std::forward<TFunctor>(aFunctor)))
+      >{ aDomain, holdFunctor(std::forward<TFunctor>(aFunctor)) };
+  }
+@endcode
+
+Finally, an image can be easily defined from a functor with a syntax like:
+@snippet exampleConstImageFunctorHolder.cpp example1
+resulting in:
+\image html ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda."
+\image latex ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda." width=5cm
+ */
+
+} // namespace functors
+} // namespace DGtal

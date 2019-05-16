@@ -389,7 +389,7 @@ TEST_CASE( "Checking RealFFT on a 3D image in double precision.", "[3D][double]"
   using Domain = HyperRectDomain<Space>;
   using Image = ImageContainerBySTLVector<Domain, real>;
 
-  const Domain domain( {0, 10, 13}, {31, 28, 45} );
+  const Domain domain( Point{0, 10, 13}, Point{31, 28, 45} );
   Image image( domain );
   auto const extent = image.extent();
 
@@ -429,7 +429,7 @@ TEST_CASE( "Checking RealFFT on a 4D image in double precision.", "[4D][double]"
   using Domain = HyperRectDomain<Space>;
   using Image = ImageContainerBySTLVector<Domain, real>;
 
-  const Domain domain( {0, 10, 13, 5}, {11, 28, 25, 17} );
+  const Domain domain( Point{0, 10, 13, 5}, Point{11, 28, 25, 17} );
   Image image( domain );
   auto const extent = image.extent();
 

@@ -545,9 +545,9 @@ namespace DGtal
               typedef functors::HatPointFunction<Point,Scalar>             KernelFunction;
               typedef VoronoiCovarianceMeasureOnDigitalSurface
                 < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalVFunctor;
               typedef VCMDigitalSurfaceLocalEstimator
-                < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+                < SurfaceContainer, Metric, KernelFunction, NormalVFunctor> VCMNormalEstimator;
               KernelFunction chi_r( 1.0, r );
               VCMNormalEstimator estimator;
               estimator.attach( *surface );
@@ -561,9 +561,9 @@ namespace DGtal
               typedef functors::BallConstantPointFunction<Point,Scalar>    KernelFunction;
               typedef VoronoiCovarianceMeasureOnDigitalSurface
                 < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalVFunctor;
               typedef VCMDigitalSurfaceLocalEstimator
-                < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+                < SurfaceContainer, Metric, KernelFunction, NormalVFunctor> VCMNormalEstimator;
               KernelFunction chi_r( 1.0, r );
               VCMNormalEstimator estimator;
               estimator.attach( *surface );

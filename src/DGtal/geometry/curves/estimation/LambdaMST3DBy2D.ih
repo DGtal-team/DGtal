@@ -1,0 +1,252 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LambdaMST3DBy2D.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2015/06/16
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include  <stdexcept>
+
+namespace DGtal
+{
+  inline
+  TangentFromDSS3DBy2DFunctor::Vector3D
+  TangentFromDSS3DBy2DFunctor::operator() ( MAIN_AXIS mainAxis, const Vector2D & v0, const Vector2D & v1 ) const
+  {
+    Vector3D tangent;
+    if ( mainAxis == X )
+    {
+      if ( v1[1] == 0 || ( v0[0] == 0 && v1[0] == 0 ) )
+      {
+        tangent[0] = v0[0];
+        tangent[1] = v0[1];
+        tangent[2] = v1[1];
+      }
+      else
+      {
+        if ( v0[1] == 0 )
+        {
+          tangent[0] = v1[0];
+          tangent[1] = 0;
+          tangent[2] = v1[1];
+        }
+        else
+        {
+          tangent[0] = v1[0] * v0[0];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[0] * v1[1];
+        }
+      }
+    }
+    else if ( mainAxis == Y )
+    {
+      if ( v0[0] == 0 || ( v1[0] == 0 && v0[1] == 0 ) )
+      {
+        tangent[0] = v0[0];
+        tangent[1] = v1[0];
+        tangent[2] = v1[1];
+      }
+      else
+      {
+        if ( v1[1] == 0 )
+        {
+          tangent[0] = v0[0];
+          tangent[1] = v0[1];
+          tangent[2] = 0;
+        }
+        else
+        {
+          tangent[0] = v1[0] * v0[0];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[1] * v1[1];
+        }
+      }
+    }
+    else
+    {
+      if ( v0[0] == 0 || ( v0[1] == 0 && v1[1] == 0 ) )
+      {
+        tangent[0] = v0[0];
+        tangent[1] = v1[0];
+        tangent[2] = v1[1];
+      }
+      else
+      {
+        if ( v1[0] == 0 )
+        {
+          tangent[0] = v0[0];
+          tangent[1] = 0;
+          tangent[2]= v0[1];
+        }
+        else
+        {
+          tangent[0] = v0[0] * v1[1];
+          tangent[1] = v1[0] * v0[1];
+          tangent[2] = v0[1] * v1[1];
+        }
+      }
+    }
+    return tangent;
+  }
+
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::LambdaMST3DBy2DEstimator() : myBegin(), myEnd()
+  {
+    //projections
+    std::vector < Dimension > v1, v2, v3;
+    v1.push_back ( 0 );
+    v1.push_back ( 1 );
+    v2.push_back ( 0 );
+    v2.push_back ( 2 );
+    v3.push_back ( 1 );
+    v3.push_back ( 2 );
+    myProjXY.init ( v1.begin ( ), v1.end ( ) );
+    myProjXZ.init ( v2.begin ( ), v2.end ( ) );
+    myProjYZ.init ( v3.begin ( ), v3.end ( ) );
+  }
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  void
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::init ( Iterator3D itB, Iterator3D itE,
+                                                                                        MAIN_AXIS axis )
+  {
+    myBegin = itB;
+    myEnd = itE;
+    myAxis = axis;
+    tXY.clear ( ); tYZ.clear ( ); tXZ.clear ( );
+    for ( auto it  = myBegin; it != myEnd; ++it )
+    {
+      if ( axis == MAIN_AXIS::X )
+      {
+        tXY.push_back ( myProjXY ( *it ) );
+        tXZ.push_back ( myProjXZ ( *it ) );
+      }
+      else if ( axis == MAIN_AXIS::Y )
+      {
+        tXY.push_back ( myProjXY ( *it ) );
+        tYZ.push_back ( myProjYZ ( *it ) );
+      }
+      else
+      {
+        tXZ.push_back ( myProjXZ ( *it ) );
+        tYZ.push_back ( myProjYZ ( *it ) );
+      }
+    }
+  }
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  bool
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::isValid ( ) const
+  {
+    return ( myBegin != myEnd );
+  }
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector3D
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval ( const Point3D & point )
+  {
+    assert ( isValid ( ) );
+    Iterator3D it = std::find ( myBegin, myEnd, point );
+    if ( it == myEnd )
+      throw std::runtime_error ( "L-MST3Dby2D::eval: The point does not belong to the curve!" );
+
+    if ( myAxis == MAIN_AXIS::X )
+      return myFunctor ( MAIN_AXIS::X, Estimate2DTangent ( tXY.cbegin ( ), tXY.cend ( ), myProjXY ( *it ) ),
+                         Estimate2DTangent ( tXZ.cbegin ( ), tXZ.cend ( ), myProjXZ ( *it ) ) );
+    else if ( myAxis == MAIN_AXIS::Y )
+      return myFunctor ( MAIN_AXIS::Y, Estimate2DTangent ( tXY.cbegin ( ), tXY.cend ( ), myProjXY ( *it ) ),
+                         Estimate2DTangent ( tYZ.cbegin ( ), tYZ.cend ( ), myProjYZ ( *it ) ) );
+    else
+      return myFunctor ( MAIN_AXIS::Z, Estimate2DTangent ( tXZ.cbegin ( ), tXZ.cend ( ), myProjXZ ( *it ) ),
+                         Estimate2DTangent ( tYZ.cbegin ( ), tYZ.cend ( ), myProjYZ ( *it ) ) );
+  }
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  template < typename OutputIterator >
+  inline
+  OutputIterator
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::eval ( Iterator3D itb, Iterator3D ite,
+                                                                                       OutputIterator result )
+  {
+    assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
+    std::vector < RealVector2D > tangent1;
+    std::vector < RealVector2D > tangent2;
+
+    auto offsetB = std::distance ( myBegin, itb );
+    auto offsetE = std::distance ( myEnd, ite );
+
+    if ( myAxis == MAIN_AXIS::X )
+    {
+      Estimate2DTangent ( tXY.cbegin ( ) + offsetB, tXY.cend ( ) + offsetE, back_inserter ( tangent1 ) );
+      Estimate2DTangent ( tXZ.cbegin ( ) + offsetB, tXZ.cend ( ) + offsetE, back_inserter ( tangent2 ) );
+    }
+    else if ( myAxis == MAIN_AXIS::Y )
+    {
+      Estimate2DTangent ( tXY.cbegin ( ) + offsetB, tXY.cend ( ) + offsetE, back_inserter ( tangent1 ) );
+      Estimate2DTangent ( tYZ.cbegin ( ) + offsetB, tYZ.cend ( ) + offsetE, back_inserter ( tangent2 ) );
+    }
+    else
+    {
+      Estimate2DTangent ( tXZ.cbegin ( ) + offsetB, tXZ.cend ( ) + offsetE, back_inserter ( tangent1 ) );
+      Estimate2DTangent ( tYZ.cbegin ( ) + offsetB, tYZ.cend ( ) + offsetE, back_inserter ( tangent2 ) );
+    }
+
+    for ( auto it = itb; it < ite; ++it )
+      result++ = myFunctor ( myAxis, tangent1[std::distance ( itb, it )], tangent2[std::distance ( itb, it )] );
+
+    return result;
+  }
+
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  inline
+  typename LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::RealVector2D
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent
+  ( const TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, const Point2D & point )
+  {
+    Segmentation2D segmenter ( itb, ite, SegmentComputer2D ( ) );
+    TEstimator lmst;
+    lmst.attach ( segmenter );
+    lmst.init ( itb, ite );
+    return lmst.eval ( point );
+  }
+
+
+  template < typename Iterator3D, typename Functor, typename LambdaFunctor, int CONNECTIVITY >
+  template < typename OutputIterator >
+  inline
+  OutputIterator
+  LambdaMST3DBy2DEstimator< Iterator3D, Functor, LambdaFunctor, CONNECTIVITY >::Estimate2DTangent
+          ( TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, OutputIterator result )
+  {
+    Segmentation2D segmenter ( itb, ite, SegmentComputer2D ( ) );
+    TEstimator lmst;
+    lmst.attach ( segmenter );
+    lmst.init ( itb, ite );
+    return lmst.eval ( itb, ite, result );
+  }
+}

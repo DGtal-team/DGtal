@@ -45,8 +45,10 @@
 #include <climits>
 #include <utility>
 #include <exception>
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/Common.h"
-#include <DGtal/kernel/domains/CDomain.h>
+#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,19 +65,24 @@ namespace functors
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 3 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace>
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class ForwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 3 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -106,23 +113,23 @@ public:
        * @return the transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
+        RealPoint p;
 
-        p[0] = std::floor ( ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - origin[0] ) )
+        p[0] = ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - origin[0] ) )
                 + ( ( axis[0] * axis[1] * ( 1. - t_cos ) - axis[2] * t_sin ) * ( aInput[1] - origin[1] ) )
-                + ( ( axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos )  ) * ( aInput[2] - origin[2] ) ) ) + trans[0] ) + origin[0] + 0.5 );
+                + ( ( axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos )  ) * ( aInput[2] - origin[2] ) ) ) + trans[0] ) + origin[0];
 
-        p[1] = std::floor ( ( ( ( ( axis[2] * t_sin + axis[0] * axis[1] * ( 1. - t_cos ) ) *  ( aInput[0] - origin[0] ) )
+        p[1] = ( ( ( ( axis[2] * t_sin + axis[0] * axis[1] * ( 1. - t_cos ) ) *  ( aInput[0] - origin[0] ) )
                 + ( ( t_cos + ( axis[1] * axis[1] ) * ( 1. - t_cos ) ) * ( aInput[1] - origin[1] ) )
-                + ( ( -axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - origin[2] ) ) ) + trans[1] ) + origin[1] + 0.5 );
+                + ( ( -axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - origin[2] ) ) ) + trans[1] ) + origin[1];
 
-        p[2] = std::floor ( ( ( ( ( -axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos ) ) * ( aInput[0] - origin[0] ) )
+        p[2] = ( ( ( ( -axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos ) ) * ( aInput[0] - origin[0] ) )
                 + ( ( axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[1] - origin[1] ) )
-                + ( ( t_cos + ( axis[2] * axis[2] ) * ( 1. - t_cos ) ) * ( aInput[2] - origin[2] ) ) ) + trans[2] ) + origin[2] + 0.5 );
+                + ( ( t_cos + ( axis[2] * axis[2] ) * ( 1. - t_cos ) ) * ( aInput[2] - origin[2] ) ) ) + trans[2] ) + origin[2];
 
-        return p;
+        return functor ( p );
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -132,7 +139,9 @@ protected:
     double t_sin;
     double t_cos;
     RealVector trans;
+    TFunctor functor;
 };
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Template class BackwardRigidTransformation3D
@@ -144,19 +153,24 @@ protected:
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 3 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+     * @tparam TFunctor a functor operating on the output e.g., a rounding function.
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template <typename TSpace>
+template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+           typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class BackwardRigidTransformation3D
 {
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TOutputValue::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TInputValue::dimension == 3 ));
 
     // ----------------------- Types ------------------------------
 public:
-    typedef typename TSpace::Point Point;
     typedef typename TSpace::RealPoint RealPoint;
     typedef typename TSpace::RealVector RealVector;
 
@@ -186,22 +200,22 @@ public:
        * @return the transformed point.
        */
     inline
-    Point operator()( const Point& aInput ) const
+    TOutputValue operator()( const TInputValue & aInput ) const
     {
-        Point p;
+        RealPoint p;
 
-        p[0] = std::floor ( ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - trans[0] - origin[0] ) )
+        p[0] = ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - trans[0] - origin[0] ) )
                 + ( ( axis[2] * t_sin + axis[0] * axis[1] * ( 1. - t_cos ) ) * ( aInput[1] - trans[1] - origin[1] ) )
-                + ( ( -axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[0] + 0.5 );
+                + ( ( -axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[0];
 
-        p[1] = std::floor ( ( ( ( ( axis[0] * axis[1] * ( 1. - t_cos ) - axis[2] * t_sin )  * ( aInput[0] - trans[0] - origin[0] ) )
+        p[1] = ( ( ( ( axis[0] * axis[1] * ( 1. - t_cos ) - axis[2] * t_sin )  * ( aInput[0] - trans[0] - origin[0] ) )
                 + ( ( t_cos + ( axis[1] * axis[1] ) * ( 1. - t_cos ) ) * ( aInput[1] - trans[1] - origin[1] ) )
-                + ( ( axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[1] + 0.5 );
+                + ( ( axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[1];
 
-        p[2] = std::floor ( ( ( ( ( axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos )  ) * ( aInput[0] - trans[0] - origin[0] ) )
+        p[2] = ( ( ( ( axis[1] * t_sin + axis[0] * axis[2] * ( 1. - t_cos )  ) * ( aInput[0] - trans[0] - origin[0] ) )
                 + ( ( -axis[0] * t_sin + axis[1] * axis[2] * ( 1. - t_cos ) ) * ( aInput[1] - trans[1] - origin[1] ) )
-                + ( ( t_cos + ( axis[2] * axis[2] ) * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[2] + 0.5 );
-        return p;
+                + ( ( t_cos + ( axis[2] * axis[2] ) * ( 1. - t_cos ) ) * ( aInput[2] - trans[2] - origin[2] ) ) ) ) + origin[2];
+        return functor ( p );
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -211,6 +225,7 @@ private:
     double t_sin;
     double t_cos;
     RealVector trans;
+    TFunctor functor;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -263,9 +278,7 @@ public:
         points[6] = transform ( Point ( aInput.lowerBound()[0], aInput.lowerBound()[1], aInput.upperBound()[2] ) );
         points[7] = transform ( Point ( aInput.upperBound()[0], aInput.upperBound()[1], aInput.lowerBound()[2] ) );
 
-        typename Point::Component cmax = std::numeric_limits<typename Point::Component>::max();
-        typename Point::Component cmin = std::numeric_limits<typename Point::Component>::min();
-        Point t_min ( cmax, cmax, cmax ), t_max ( cmin, cmin, cmin );
+        Point t_min ( INT_MAX, INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN, INT_MIN );
         for ( int i = 0; i < 8; i++ )
         {
             if ( points[i][0] < t_min[0] )
