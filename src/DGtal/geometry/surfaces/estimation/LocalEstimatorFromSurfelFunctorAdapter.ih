@@ -168,11 +168,6 @@ eval( const SurfelConstIterator& it ) const
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
   typedef typename Surface::KSpace KSpace;
   const MetricToPoint metricToPoint = std::bind( *myMetric, myEmbedder( *it ), std::placeholders::_1 );
-  // const RealPoint rbase( myEmbedder( *it ) );
-  // Point     base;
-  // for ( Dimension i; i < KSpace::dimension; ++i )
-  //   base[ i ] = NumberTraits<typename KSpace::Integer>::castToInt64_t( floor( rbase[ i ] ) );
-  // const MetricToPoint metricToPoint = std::bind( *myMetric, base, std::placeholders::_1 );
   const VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
   ASSERT( ! visitor.finished() );
