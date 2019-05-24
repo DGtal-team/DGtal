@@ -1758,7 +1758,7 @@ namespace DGtal
         }
 
 
-      /// Outputs a vector field \a vf anchored at \a
+      /// Outputs any vector field \a vf anchored at \a
       /// positions as an OBJ file and a material MTL file. Optionnaly
       /// you can specify the diffuse colors.
       ///
@@ -1771,6 +1771,8 @@ namespace DGtal
       /// @param[in] diffuse_color the diffuse color of all vectors (if diffuse_colors is empty).
       /// @param[in] specular_color the specular color of all vectors.
       /// @return 'true' if the output stream is good.
+      ///
+      /// @note It outputs only the vector field, not the surface onto which it is defined (if any).
       static bool
         saveOBJ
 	( const RealPoints&  positions,

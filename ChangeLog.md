@@ -14,8 +14,7 @@
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
-    convolved trivial normals in ShortcutsGeometryPut
-    SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
+    convolved trivial normals in ShortcutsGeometry (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
 
 
