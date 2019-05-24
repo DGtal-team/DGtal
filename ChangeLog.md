@@ -5,7 +5,7 @@
 - *Helpers*
 
   - Fixing double conversion bug in class Parameters, related to
-    english/french decimal point inconsistency between atof and
+    English/French decimal point inconsistency between `atof` and
     boost::program_options (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
 
