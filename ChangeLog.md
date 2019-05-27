@@ -11,7 +11,7 @@
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
-    Coeurjolly [#XXXX](https://github.com/DGtal-team/DGtal/pull/1411))
+    Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
 
 
 # DGtal 1.0
