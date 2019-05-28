@@ -464,10 +464,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   aCovarianceMatrix = A - C * B;
 }
 
-
+#ifndef _MSC_VER
+// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::nbMoments = 6;
+#endif //_MSC_VER
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Spel
@@ -967,10 +969,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   aCovarianceMatrix = A - C * B;
 }
 
-
+#ifndef _MSC_VER
+// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::nbMoments = 6;
+#endif //_MSC_VER
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Spel
@@ -2013,10 +2017,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   aCovarianceMatrix = A - C * B;
 }
 
-
+#ifndef _MSC_VER
+// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::nbMoments = 10;
+#endif //_MSC_VER
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Spel

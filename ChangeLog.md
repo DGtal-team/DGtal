@@ -159,6 +159,8 @@
     (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
   - Correct pragma pop in ITK related files
     (Boris Mansencal, [#1400](https://github.com/DGtal-team/DGtal/pull/1400))
+  - Fix compilation and execution with Visual Studio
+    (Raphael Lenain, [#1407](https://github.com/DGtal-team/DGtal/pull/1407))
 
 - *Kernel*
  - Fixing issue #1341 about unwanted conversions between PointVector with
