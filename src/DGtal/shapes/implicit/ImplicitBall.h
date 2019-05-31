@@ -59,7 +59,7 @@ namespace DGtal
    *
    * @tparam TSpace the Digital space definition.
    */
-  
+
   template <typename TSpace>
   class ImplicitBall
   {
@@ -71,33 +71,33 @@ namespace DGtal
     typedef typename Space::Integer Integer;
     typedef double Value;
 
-    /** 
+    /**
      * Constructor. Contructs a ball with center aCenter and radius
      * aRadius.
-     * 
-     * @param aCenter the ball center. 
+     *
+     * @param aCenter the ball center.
      * @param aRadius the ball radius.
      */
     ImplicitBall(const RealPoint &aCenter, const double &aRadius): myCenter(aCenter),
                 myRadius(aRadius)
     {};
-    
-    /** 
+
+    /**
      * Destructor.
-     * 
-     */    
+     *
+     */
     ~ImplicitBall();
 
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     inline
     Value operator()(const RealPoint &aPoint) const
     {
         return myRadius - (aPoint - myCenter ).norm();
     }
-    
+
     inline
     Orientation orientation(const RealPoint &aPoint) const
     {
@@ -115,18 +115,26 @@ namespace DGtal
     {
       return (myCenter - RealPoint::diagonal(myRadius));
     }
-    
+
     inline
     RealPoint getUpperBound() const
     {
-      return (myCenter + RealPoint::diagonal(myRadius)); 
+      return (myCenter + RealPoint::diagonal(myRadius));
     }
-    
 
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -143,13 +151,13 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-   
+
     ///Ball center
     RealPoint myCenter;
 
     ///Ball Radius
     double myRadius;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -168,8 +176,8 @@ namespace DGtal
      * Forbidden by default.
      */
     ImplicitBall & operator= ( const ImplicitBall & other );
-    
-    
+
+
   }; // end of class ImplicitBall
 
 
