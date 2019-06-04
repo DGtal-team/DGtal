@@ -412,18 +412,28 @@ double toc()
   return time_span.count();
 }
 
-constexpr std::size_t dim = 3;
-constexpr signed long long int size = 1000;
+// Context for each benchmark
+struct BenchDomain
+{
+  static constexpr std::size_t dim = 3;
+  static constexpr signed long long int size = 1000;
 
-using Space = DGtal::SpaceND<dim>;
-using Point = Space::Point;
-using Domain = DGtal::HyperRectDomain<Space>;
+  using Space = DGtal::SpaceND<dim>;
+  using Point = Space::Point;
+  using Domain = DGtal::HyperRectDomain<Space>;
 
-const auto a = Point::diagonal(0);
-const auto b = Point::diagonal(size);
-const auto domain = Domain(a, b);
+  BenchDomain()
+    : a(Point::diagonal(0))
+    , b(Point::diagonal(size))
+    , domain(Domain(a, b))
+    {
+    }
 
-TEST_CASE( "Benchmarking domain traversal", "[.bench]" )
+  Point a, b;
+  Domain domain;
+};
+
+TEST_CASE_METHOD( BenchDomain, "Benchmarking domain traversal", "[.bench]" )
 {
   std::size_t cnt = 0;
   Point::Component check = 0;
@@ -440,7 +450,7 @@ TEST_CASE( "Benchmarking domain traversal", "[.bench]" )
   trace.info() << "Domain traversal: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
 }
 
-TEST_CASE( "Benchmarking domain reverse traversal", "[.bench]" )
+TEST_CASE_METHOD( BenchDomain, "Benchmarking domain reverse traversal", "[.bench]" )
 {
   std::size_t cnt = 0;
   Point::Component check = 0;
@@ -457,7 +467,7 @@ TEST_CASE( "Benchmarking domain reverse traversal", "[.bench]" )
   trace.info() << "Domain reverse traversal: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
 }
 
-TEST_CASE( "Benchmarking domain traversal using subRange", "[.bench]" )
+TEST_CASE_METHOD( BenchDomain, "Benchmarking domain traversal using subRange", "[.bench]" )
 {
   std::vector<Point::Dimension> dimensions(Point::dimension);
   std::iota(dimensions.begin(), dimensions.end(), Dimension(0));
@@ -478,7 +488,7 @@ TEST_CASE( "Benchmarking domain traversal using subRange", "[.bench]" )
   trace.info() << "Domain traversal using subRange: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
 }
 
-TEST_CASE( "Benchmarking domain reverse traversal using subRange", "[.bench]" )
+TEST_CASE_METHOD( BenchDomain, "Benchmarking domain reverse traversal using subRange", "[.bench]" )
 {
   std::vector<Point::Dimension> dimensions(Point::dimension);
   std::iota(dimensions.begin(), dimensions.end(), Dimension(0));
