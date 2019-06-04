@@ -307,7 +307,7 @@ int main( int /* argc */, char** /* argv */ )
 		    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
     bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
 					 "goursat-primal-vcm.obj" );
-    bool ok2             = SH3::saveOBJ( positions, vcm_normals, 0.05, SH3::Colors(),
+    bool ok2             = SH3::saveVectorFieldOBJ( positions, vcm_normals, 0.05, SH3::Colors(),
 					 "goursat-primal-vcm-normals.obj",
 					 SH3::Color( 0, 0, 0 ), SH3::Color::Red );
     //! [dgtal_shortcuts_ssec2_2_11s]
