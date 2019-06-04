@@ -42,6 +42,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <iterator>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -114,7 +115,7 @@ namespace DGtal
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> Iterator;
-    typedef myreverse_iterator<Iterator> ReverseIterator;
+    typedef HyperRectDomain_ReverseIterator<Iterator> ReverseIterator;
     typedef Iterator ConstIterator;
     typedef ReverseIterator ConstReverseIterator;
 
@@ -242,7 +243,7 @@ namespace DGtal
     struct ConstSubRange
     {
       typedef HyperRectDomain_subIterator<Point> ConstIterator;
-      typedef myreverse_iterator<ConstIterator> ConstReverseIterator;
+      typedef HyperRectDomain_ReverseIterator<ConstIterator> ConstReverseIterator;
 
       /**
        * ConstSubRange constructor from a given domain.
