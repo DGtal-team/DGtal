@@ -422,7 +422,11 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 	    { //if distance below a given threshold
 
 	      //the point of min distance is removed from the set of candidates
-	      myCandidatePoints.erase(*it); 
+	      myCandidatePoints.erase(*it);
+#ifdef _MSC_VER
+	      // After erasing, the iterator "it" becomes invalid and the test with "itEnd" won't work
+	      it = itEnd;
+#endif //_MSC_VER
 	      //it can be inserted into the set of accepted points
 	      if ( insertAndSetValue( myImage, myAcceptedPoints,
 	      			      minPair.first, minPair.second ) )

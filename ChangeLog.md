@@ -1,5 +1,6 @@
 # DGtal 1.0.1
 
+
 ## Changes
 
 - *Helpers*
@@ -16,6 +17,10 @@
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
     convolved trivial normals in ShortcutsGeometry (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Fixing double conversion bug in class Parameters, related to
+    English/French decimal point inconsistency between `atof` and
+    `boost::program_options` (Jacques-Olivier Lachaud,
+    [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
 
 
 # DGtal 1.0
@@ -167,6 +172,8 @@
     (Raphael Lenain, [#1395](https://github.com/DGtal-team/DGtal/pull/1395))
   - Correct pragma pop in ITK related files
     (Boris Mansencal, [#1400](https://github.com/DGtal-team/DGtal/pull/1400))
+  - Fix compilation and execution with Visual Studio
+    (Raphael Lenain, [#1407](https://github.com/DGtal-team/DGtal/pull/1407))
 
 - *Kernel*
  - Fixing issue #1341 about unwanted conversions between PointVector with
