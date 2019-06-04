@@ -1774,7 +1774,7 @@ namespace DGtal
       ///
       /// @note It outputs only the vector field, not the surface onto which it is defined (if any).
       static bool
-        saveOBJ
+        saveVectorFieldOBJ
 	( const RealPoints&  positions,
 	  const RealVectors& vf,
 	  double             thickness,
