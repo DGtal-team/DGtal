@@ -44,6 +44,7 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <type_traits>
 
 #include <boost/iterator/iterator_facade.hpp>
 
@@ -65,8 +66,10 @@ namespace DGtal
   class HyperRectDomain_ReverseIterator
     : public boost::iterator_facade <
         HyperRectDomain_ReverseIterator<TIterator>,
-        const typename TIterator::Point,
-        std::random_access_iterator_tag
+        typename TIterator::Point const,
+        std::random_access_iterator_tag,
+        typename TIterator::Point const&,
+        typename std::iterator_traits<TIterator>::difference_type
       >
   {
   public:
@@ -74,6 +77,7 @@ namespace DGtal
     using Self  = HyperRectDomain_ReverseIterator<Iterator>;
     using Point = typename Iterator::Point;
     using Dimension = typename Point::Dimension;
+    using DifferenceType = typename std::iterator_traits<Self>::difference_type; ///< Type of the difference between two iterators (usually std::ptrdiff_t except for BigInteger).
 
   public:
     /// @brief Constructor from a HyperRectDomain iterator
@@ -111,14 +115,14 @@ namespace DGtal
       }
 
     /// @brief Advance iterator by given steps
-    void advance( std::ptrdiff_t n )
+    void advance( DifferenceType const& n )
       {
         current -= n;
         prev -= n;
       }
 
     /// @brief Distance between two iterators on the same domain
-    std::ptrdiff_t distance_to( const Self& other ) const
+    DifferenceType distance_to( const Self& other ) const
       {
         return std::distance(other.current, current);
       }
@@ -138,14 +142,21 @@ namespace DGtal
   class HyperRectDomain_Iterator
     : public boost::iterator_facade <
         HyperRectDomain_Iterator<TPoint>,
-        const TPoint,
-        std::random_access_iterator_tag
+        TPoint const,
+        std::random_access_iterator_tag,
+        TPoint const&,
+#ifdef WITH_BIGINTEGER
+        typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
+#else
+        std::ptrdiff_t
+#endif
       >
   {
   public:
     using Point = TPoint;
     using Self  = HyperRectDomain_Iterator<TPoint>;
     using Dimension = typename Point::Dimension;
+    using DifferenceType = typename std::iterator_traits<Self>::difference_type; ///< Type of the difference between two iterators (usually std::ptrdiff_t except for BigInteger).
 
 
     /** @brief HyperRectDomain iterator constructor
@@ -172,7 +183,7 @@ namespace DGtal
 
         // Calculating iterator position in the sequence
         pos = 0;
-        std::ptrdiff_t delta = 1;
+        DifferenceType delta = 1;
         for ( Dimension i = 0; i < Point::dimension; ++i )
           {
             pos += delta * (myPoint[i] - mylower[i]);
@@ -243,7 +254,7 @@ namespace DGtal
      * Advances the iterator in order to scan the domain points dimension by dimension
      * (lexicographic order).
      */
-    void advance( std::ptrdiff_t n )
+    void advance( DifferenceType const& n )
       {
         pos += n;
         if (n > 0)
@@ -251,8 +262,8 @@ namespace DGtal
             myPoint[0] += n;
             for ( Dimension i = 0; myPoint[i] > myupper[i] && i < Point::dimension - 1; ++i )
               {
-                auto const shift = myPoint[i] - mylower[i];
-                auto const length = myupper[i] - mylower[i] + 1;
+                typename Point::Component const shift = myPoint[i] - mylower[i];
+                typename Point::Component const length = myupper[i] - mylower[i] + 1;
                 myPoint[i+1] += shift / length;
                 myPoint[i] = mylower[i] + (shift % length);
               }
@@ -262,8 +273,8 @@ namespace DGtal
             myPoint[0] += n;
             for ( Dimension i = 0; myPoint[i] < mylower[i] && i < Point::dimension - 1; ++i )
               {
-                auto const shift = myupper[i] - myPoint[i];
-                auto const length = myupper[i] - mylower[i] + 1;
+                typename Point::Component const shift = myupper[i] - myPoint[i];
+                typename Point::Component const length = myupper[i] - mylower[i] + 1;
                 myPoint[i+1] -= shift / length;
                 myPoint[i] = myupper[i] - (shift % length);
               }
@@ -273,7 +284,7 @@ namespace DGtal
     /** @brief
      * Distance between two iterators on the same domain (lexicographic order).
      */
-    std::ptrdiff_t distance_to( const Self& other ) const
+    DifferenceType distance_to( const Self& other ) const
       {
         ASSERT_MSG( // we should only compare iterators on the same domain
             mylower == other.mylower && myupper == other.myupper,
@@ -291,7 +302,7 @@ namespace DGtal
     TPoint mylower, myupper;
 
     /// Iterator position in the current sequence
-    std::ptrdiff_t pos;
+    DifferenceType pos;
 
   }; // End of class HyperRectDomain_Iterator
 
@@ -306,13 +317,20 @@ namespace DGtal
     : public boost::iterator_facade <
         HyperRectDomain_subIterator<TPoint>,
         const TPoint,
-        std::random_access_iterator_tag
+        std::random_access_iterator_tag,
+        TPoint const&,
+#ifdef WITH_BIGINTEGER
+        typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
+#else
+        std::ptrdiff_t
+#endif
       >
   {
   public:
     using Point = TPoint;
     using Self  = HyperRectDomain_subIterator<TPoint>;
     using Dimension = typename Point::Dimension;
+    using DifferenceType = typename std::iterator_traits<Self>::difference_type; ///< Type of the difference between two iterators (usually std::ptrdiff_t except for BigInteger).
 
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
         const TPoint &upper,
@@ -347,7 +365,7 @@ namespace DGtal
 
         // Calculating iterator position in the sequence
         pos = 0;
-        std::ptrdiff_t delta = 1;
+        DifferenceType delta = 1;
         for ( Dimension i = 0; i < mySubDomain.size(); ++i )
           {
             auto const ii = mySubDomain[i];
@@ -420,7 +438,7 @@ namespace DGtal
      * Advances the iterator in order to scan the domain points dimension by dimension
      * (by using the subDomain order given by the user).
      */
-    void advance( std::ptrdiff_t n )
+    void advance( DifferenceType const& n )
       {
         pos += n;
         if (n > 0)
@@ -429,8 +447,8 @@ namespace DGtal
             for ( Dimension i = 0; myPoint[mySubDomain[i]] > myupper[mySubDomain[i]] && i < mySubDomain.size() - 1; ++i )
               {
                 auto const ii = mySubDomain[i];
-                auto const shift = myPoint[ii] - mylower[ii];
-                auto const length = myupper[ii] - mylower[ii] + 1;
+                typename Point::Component const shift = myPoint[ii] - mylower[ii];
+                typename Point::Component const length = myupper[ii] - mylower[ii] + 1;
                 myPoint[mySubDomain[i+1]] += shift / length;
                 myPoint[ii] = mylower[ii] + (shift % length);
               }
@@ -441,8 +459,8 @@ namespace DGtal
             for ( Dimension i = 0; myPoint[mySubDomain[i]] < mylower[mySubDomain[i]] && i < mySubDomain.size() - 1; ++i )
               {
                 auto const ii = mySubDomain[i];
-                auto const shift = myupper[ii] - myPoint[ii];
-                auto const length = myupper[ii] - mylower[ii] + 1;
+                typename Point::Component const shift = myupper[ii] - myPoint[ii];
+                typename Point::Component const length = myupper[ii] - mylower[ii] + 1;
                 myPoint[mySubDomain[i+1]] -= shift / length;
                 myPoint[ii] = myupper[ii] - (shift % length);
               }
@@ -453,7 +471,7 @@ namespace DGtal
      * Distance between two iterators on the same domain
      * (by using the subDomain order given by the user).
      */
-    std::ptrdiff_t distance_to( const Self& other ) const
+    DifferenceType distance_to( const Self& other ) const
       {
         ASSERT_MSG( // we should only compare iterators on the same domain and same dimensions
             mylower == other.mylower && myupper == other.myupper && mySubDomain == other.mySubDomain,
@@ -476,7 +494,7 @@ namespace DGtal
     std::vector<Dimension> mySubDomain;
 
     /// Iterator position in the current sequence
-    std::ptrdiff_t pos;
+    DifferenceType pos;
 
   }; // End of class HyperRectDomain_subIterator
 
