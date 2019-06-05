@@ -1,9 +1,22 @@
 # DGtal 1.0.1
 
-## Bug Fixes
+
+## Changes
 
 - *Helpers*
+  - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
 
+## Bug Fixes
+
+- *Mathematics*
+  - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
+- *Helpers*
+  - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
+    convolved trivial normals in ShortcutsGeometry (Jacques-Olivier Lachaud,
+    [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
   - Fixing double conversion bug in class Parameters, related to
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
