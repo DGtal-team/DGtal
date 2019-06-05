@@ -1,5 +1,12 @@
 # DGtal 1.0.1
 
+## New Features / Critical Changes
+
+- *Kernel package*
+
+  - Making `HyperRectDomain_(sub)Iterator` random-access iterators.
+    (Roland Denis, [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
+
 ## Bug Fixes
 
 - *Helpers*
