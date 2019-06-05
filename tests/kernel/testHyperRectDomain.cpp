@@ -54,7 +54,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Simple test of HyperRectDomain construction.
 
-TEST_CASE( "Simple HyperRectDomain" )
+TEST_CASE( "Simple HyperRectDomain", "[domain][4D]" )
 {
   typedef SpaceND<4> Space4Type;
   typedef Space4Type::Point Point;
@@ -162,7 +162,8 @@ template <
   typename Dimension
 >
 void testIteratorHelperImpl(
-    Iterator & it, Iterator const& it_begin, Iterator const& it_end, std::ptrdiff_t & cnt_begin,
+    Iterator & it, Iterator const& it_begin, Iterator const& it_end,
+    typename std::iterator_traits<Iterator>::difference_type & cnt_begin,
     Point & pt, Domain const& domain, std::vector<Dimension> const& dimensions, std::size_t id,
     bool forward)
 {
@@ -220,7 +221,7 @@ void testIteratorHelper(
     bool forward = true)
 {
   Iterator it = it_begin;
-  std::ptrdiff_t cnt_begin = 0;
+  typename std::iterator_traits<Iterator>::difference_type cnt_begin = 0;
 
   testIteratorHelperImpl(
     it, it_begin, it_end, cnt_begin,
@@ -251,10 +252,9 @@ template <
 void testIterator(Point const& a, Point const& b, Point const& c)
 {
   using Dimension = typename Point::Dimension;
-  using Space = SpaceND<Point::dimension>;
+  using Space = SpaceND<Point::dimension, typename Point::Component>;
   using Domain = HyperRectDomain<Space>;
 
-  trace.beginBlock ( "HyperRectDomain Iterator" );
   Domain domain(a, b);
   trace.info() << "Domain = " << domain << std::endl;
 
@@ -304,7 +304,7 @@ void testIterator(Point const& a, Point const& b, Point const& c)
   testIteratorHelper(range4.rbegin(c), range4.rend(), c, domain, one_dimension, false);
 }
 
-TEST_CASE( "Iterator 2D" )
+TEST_CASE( "Iterator 2D", "[iterator][2D]" )
 {
   using Space = SpaceND<2>;
   using Point = Space::Point;
@@ -313,10 +313,12 @@ TEST_CASE( "Iterator 2D" )
   Point b (4, 5);
   Point c (2, 2);
 
+  trace.beginBlock( "Iterator 2D" );
   testIterator(a, b, c);
+  trace.endBlock();
 }
 
-TEST_CASE( "Iterator 4D" )
+TEST_CASE( "Iterator 4D", "[iterator][4D]" )
 {
   using Space = SpaceND<4>;
   using Point = Space::Point;
@@ -325,10 +327,28 @@ TEST_CASE( "Iterator 4D" )
   Point b({2, 3, 4, 5});
   Point c({1, 2, 3, 2});
 
+  trace.beginBlock( "Iterator 4D" );
   testIterator(a, b, c);
+  trace.endBlock();
 }
 
-TEST_CASE( "STL compatiblity" )
+#ifdef WITH_BIGINTEGER
+TEST_CASE( "Iterator 4D GMP", "[iterator][4D][GMP]" )
+{
+  using Space = SpaceND<4, BigInteger>;
+  using Point = Space::Point;
+
+  Point a({1, 1, 1, 1});
+  Point b({2, 3, 4, 5});
+  Point c({1, 2, 3, 2});
+
+  trace.beginBlock( "Iterator 4D using GMP" );
+  testIterator(a, b, c);
+  trace.endBlock();
+}
+#endif
+
+TEST_CASE( "STL compatiblity", "[iterator][4D][STL]" )
 {
   typedef SpaceND<4> TSpace4D;
   typedef TSpace4D::Point Point4D;
@@ -350,7 +370,7 @@ TEST_CASE( "STL compatiblity" )
   trace.endBlock();
 }
 
-TEST_CASE( "Empty domain" )
+TEST_CASE( "Empty domain", "[domain][3D][empty]" )
 {
   typedef SpaceND<3> TSpace;
   typedef TSpace::Point TPoint;
