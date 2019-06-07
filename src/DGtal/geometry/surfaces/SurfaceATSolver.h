@@ -290,6 +290,7 @@ namespace DGtal
 
 
     /// Solves one step of the alternate minimization of AT.
+    ///
     /// @param normalize_U2 when 'true', forces u to be a unit vector at the end of the minimization step.
     /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
     void solveU2V0( bool normalize_U2 = false )
@@ -297,7 +298,8 @@ namespace DGtal
       if ( verbose >= 1 ) trace.beginBlock("Solving for u as a 2-form");
       PrimalForm1 v1_squared = M01*v0;
       v1_squared.myContainer.array() = v1_squared.myContainer.array().square();
-      const PrimalIdentity2 ope_u2 = alpha_Id2 + primal_AD2.transpose()*dec_helper::diagonal(v1_squared)*primal_AD2;
+      const PrimalIdentity2 ope_u2 = alpha_Id2
+        + primal_AD2.transpose() * dec_helper::diagonal(v1_squared) * primal_AD2;
 
       trace.info() << "Prefactoring matrix U" << std::endl;
       SolverU2 solver_u2;
@@ -310,8 +312,8 @@ namespace DGtal
                        << " " << solver_u2.myLinearAlgebraSolver.info() << std::endl;
         }
       if ( normalize_U2 ) normalizeU2();
-      trace.endBlock();
-      trace.beginBlock("Solving for v");
+      if ( verbose >= 1 ) trace.endBlock();
+      if ( verbose >= 1 ) trace.beginBlock("Solving for v");
       former_v0 = v0;
       PrimalForm1 squared_norm_d_u2 = PrimalForm1::zeros(calculus);
       for ( unsigned int d = 0; d < 3; ++d )
@@ -325,7 +327,7 @@ namespace DGtal
       v0 = solver_v0.solve( l_1_over_4e );
       trace.info() << "  => " << ( solver_v0.isValid() ? "OK" : "ERROR" )
                    << " " << solver_v0.myLinearAlgebraSolver.info() << std::endl;
-      trace.endBlock();
+      if ( verbose >= 1 ) trace.endBlock();
     }
 
     void

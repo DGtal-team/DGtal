@@ -71,10 +71,39 @@ namespace DGtal
       return ope;
     }
 
+    /// Builds the linear operator that brings a primal 0-form to a
+    /// primal 1-form by averaging (vertex to edge operator)
     ///
+    /// @param calculus any discrete calculus
+    template <typename Calculus>
+    DGtal::LinearOperator<Calculus, 0, DGtal::PRIMAL, 1, DGtal::PRIMAL>
+    averageOperator01(const Calculus& calculus)
+    {
+      auto M01        = calculus.derivative<0,PRIMAL>();
+      M01.myContainer = 0.5 * M01.myContainer.cwiseAbs();
+      return M01;
+    }
+
+    /// Builds the linear operator that brings a primal 1-form to a
+    /// primal 2-form by averaging (edge to face operator)
+    ///
+    /// @param calculus any discrete calculus
+    template <typename Calculus>
+    DGtal::LinearOperator<Calculus, 1, DGtal::PRIMAL, 2, DGtal::PRIMAL>
+    averageOperator01(const Calculus& calculus)
+    {
+      auto M12        = calculus.derivative<1,PRIMAL>();
+      M12.myContainer = 0.25 * M12.myContainer.cwiseAbs();
+      return M12;
+    }
+    
+    /// Builds the linear operator that brings a primal 2-form to a
+    /// primal 0-form by averaging (face to vertex operator)
+    ///
+    /// @param calculus a discrete calculus over a 2D digital surface in 3D.
     template <typename Calculus>
     DGtal::LinearOperator<Calculus, 2, DGtal::PRIMAL, 0, DGtal::PRIMAL>
-    generate_face_to_point(const Calculus& calculus)
+    averageOperator20(const Calculus& calculus)
     {
       BOOST_STATIC_ASSERT( Calculus::dimensionEmbedded == 2 );
       BOOST_STATIC_ASSERT( Calculus::dimensionAmbient == 3 );
@@ -90,37 +119,39 @@ namespace DGtal
       typedef typename Calculus::Point Point;
       typedef DGtal::LinearOperator<Calculus, 2, PRIMAL, 0, PRIMAL> Operator;
       
-    const KSpace& kspace = calculus.myKSpace;
+      const KSpace& kspace = calculus.myKSpace;
 
-    const std::vector<Point> deltas = {
+      const std::vector<Point> deltas = {
         Point(0,1,1), Point(0,-1,1), Point(0,-1,-1), Point(0,1,-1),
         Point(1,0,1), Point(-1,0,1), Point(-1,0,-1), Point(1,0,-1),
         Point(1,1,0), Point(-1,1,0), Point(-1,-1,0), Point(1,-1,0)
-    };
-
-    std::vector<Triplet> triplets;
-    for (Index index_point=0; index_point<calculus.kFormLength(0,PRIMAL); index_point++)
-    {
-        const Cell point = kspace.unsigns(calculus.getSCell(0, PRIMAL, index_point));
-        ASSERT( kspace.uDim(point) == 0 );
-
-        std::vector<Index> indexes_surfel;
-        for (const Point delta : deltas)
+      };
+      
+      std::vector<Triplet> triplets;
+      for (Index index_point=0; index_point<calculus.kFormLength(0,PRIMAL); index_point++)
         {
-            const Cell surfel = kspace.uCell((kspace.uKCoords(point)+delta));
-            ASSERT( kspace.uDim(surfel) == 2 );
-            if (calculus.containsCell(surfel)) indexes_surfel.push_back(calculus.getCellIndex(surfel));
+          const Cell point = kspace.unsigns(calculus.getSCell(0, PRIMAL, index_point));
+          ASSERT( kspace.uDim(point) == 0 );
+          
+          std::vector<Index> indexes_surfel;
+          for (const Point delta : deltas)
+            {
+              const Cell surfel = kspace.uCell((kspace.uKCoords(point)+delta));
+              ASSERT( kspace.uDim(surfel) == 2 );
+              if (calculus.containsCell(surfel))
+                indexes_surfel.push_back(calculus.getCellIndex(surfel));
+            }
+          ASSERT( indexes_surfel.size() > 2 );
+          
+          const double weight = 1/static_cast<Scalar>(indexes_surfel.size());
+          for (const Index index_surfel : indexes_surfel)
+            triplets.push_back(Triplet(index_point, index_surfel, weight));
         }
-        ASSERT( indexes_surfel.size() > 2 );
-
-        const double weight = 1/static_cast<Scalar>(indexes_surfel.size());
-        for (const Index index_surfel : indexes_surfel) triplets.push_back(Triplet(index_point, index_surfel, weight));
-    }
-    
-    SparseMatrix matrix(calculus.kFormLength(0, PRIMAL), calculus.kFormLength(2, PRIMAL));
-    matrix.setFromTriplets(triplets.begin(), triplets.end());
-
-    return Operator(calculus, matrix);
+      
+      SparseMatrix matrix(calculus.kFormLength(0, PRIMAL), calculus.kFormLength(2, PRIMAL));
+      matrix.setFromTriplets(triplets.begin(), triplets.end());
+      
+      return Operator(calculus, matrix);
     }
     
   } // namespace dec_helper
