@@ -41,7 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <tuple>
 #include "DGtal/base/Common.h"
+#include "DGtal/dec/DECHelpers.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -144,8 +146,13 @@ namespace DGtal
     double                epsilon;
     /// Tells the verbose level.
     int                   verbose;
+
+    // ----------------------- Standard services ------------------------------
+    /// @name Standard services
+    /// @{
     
     /// Prepare an AT-solver from a valid calculus.
+    ///
     /// @param aCalculus any valid calculus
     /// @param aVerbose tells how the solver displays computing information: 0 none, 1 more, 2 even more...
     /// @see CalculusFactory for creating calculus objects.
@@ -161,12 +168,56 @@ namespace DGtal
       initOperators();
     }
 
+    /**
+     * Default constructor.
+     */
+    SurfaceATSolver() = delete;
+
+    /**
+     * Destructor.
+     */
+    ~SurfaceATSolver() = default;
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    SurfaceATSolver ( const SurfaceATSolver & other ) = default;
+
+    /**
+     * Move constructor.
+     * @param other the object to move.
+     */
+    SurfaceATSolver ( SurfaceATSolver && other ) = default;
+
+    /**
+     * Copy assignment operator.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SurfaceATSolver & operator= ( const SurfaceATSolver & other ) = default;
+
+    /**
+     * Move assignment operator.
+     * @param other the object to move.
+     * @return a reference on 'this'.
+     */
+    SurfaceATSolver & operator= ( SurfaceATSolver && other ) = default;
+
     /// @param order the dimension of cells (0,1,2)
     /// @return the number of cells with dimension \a order
     Index size( const int order ) const
     {
       return calculus.kFormLength(order, PRIMAL);
     }
+    
+    /// @}
+
+
+    // ----------------------- Initialization services ------------------------------
+  public:
+    /// @name Initialization services
+    /// @{
 
     /// Given a map Surfel -> ScalarVector, initializes forms g, u and
     /// v of the AT solver. Note that there are as many 2-forms u/g as the
@@ -288,74 +339,86 @@ namespace DGtal
       l_1_over_4e_Id0 = lambda/4/epsilon*calculus.identity<0, PRIMAL>();
     }
 
+    /// @}
+    
+    // ----------------------- Optimization services ------------------------------
+  public:
+    /// @name Optimization services
+    /// @{
 
-    /// Solves one step of the alternate minimization of AT.
+    /// Solves one step of the alternate minimization of AT. Solves for u then for v.
     ///
     /// @param normalize_U2 when 'true', forces u to be a unit vector at the end of the minimization step.
+    /// @return true if everything went fine, false if there was a problem in the optimization.
+    ///
     /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
-    void solveU2V0( bool normalize_U2 = false )
+    bool solveUandV( bool normalize_U2 = false )
     {
+      bool solve_ok = true;
       if ( verbose >= 1 ) trace.beginBlock("Solving for u as a 2-form");
       PrimalForm1 v1_squared = M01*v0;
       v1_squared.myContainer.array() = v1_squared.myContainer.array().square();
       const PrimalIdentity2 ope_u2 = alpha_Id2
-        + primal_AD2.transpose() * dec_helper::diagonal(v1_squared) * primal_AD2;
+        + primal_AD2.transpose() * dec_helper::diagonal( v1_squared ) * primal_AD2;
 
-      trace.info() << "Prefactoring matrix U" << std::endl;
+      if ( verbose >= 2 ) trace.info() << "Prefactoring matrix U associated to u" << std::endl;
       SolverU2 solver_u2;
       solver_u2.compute( ope_u2 );
-      for ( unsigned int d = 0; d < 3; ++d )
+      for ( Dimension d = 0; d < u2.size(); ++d )
         {
-          trace.info() << "Solving U u[" << d << "] = a g[" << d << "]" << std::endl;
+          if ( verbose >= 2 ) trace.info() << "Solving U u[" << d << "] = a g[" << d << "]" << std::endl;
           u2[ d ] = solver_u2.solve( alpha_g2[ d ] );
-          trace.info() << "  => " << ( solver_u2.isValid() ? "OK" : "ERROR" )
-                       << " " << solver_u2.myLinearAlgebraSolver.info() << std::endl;
+          if ( verbose >= 2 ) trace.info() << "  => " << ( solver_u2.isValid() ? "OK" : "ERROR" )
+                                           << " " << solver_u2.myLinearAlgebraSolver.info() << std::endl;
+          solve_ok = solve_ok && solver_u2.isValid();
         }
       if ( normalize_U2 ) normalizeU2();
       if ( verbose >= 1 ) trace.endBlock();
       if ( verbose >= 1 ) trace.beginBlock("Solving for v");
       former_v0 = v0;
       PrimalForm1 squared_norm_d_u2 = PrimalForm1::zeros(calculus);
-      for ( unsigned int d = 0; d < 3; ++d )
-          squared_norm_d_u2.myContainer.array() += (primal_AD2*u2[d]).myContainer.array().square();
-      const PrimalIdentity0 ope_v0 = l_1_over_4e_Id0 + lambda*epsilon*primal_D0.transpose()*primal_D0 + M01.transpose()*dec_helper::diagonal(squared_norm_d_u2)*M01;
+      for ( Dimension d = 0; d < u2.size(); ++d )
+        squared_norm_d_u2.myContainer.array() += (primal_AD2 * u2[ d ] ).myContainer.array().square();
+      const PrimalIdentity0 ope_v0 = l_1_over_4e_Id0
+        + lambda * epsilon * primal_D0.transpose() * primal_D0
+        + M01.transpose() * dec_helper::diagonal( squared_norm_d_u2 ) * M01;
 
-      trace.info() << "Prefactoring matrix V" << std::endl;
+      if ( verbose >= 2 ) trace.info() << "Prefactoring matrix V associated to v" << std::endl;
       SolverV0 solver_v0;
       solver_v0.compute( ope_v0 );
-      trace.info() << "Solving V v = l/4e * 1" << std::endl;
+      if ( verbose >= 2 ) trace.info() << "Solving V v = l/4e * 1" << std::endl;
       v0 = solver_v0.solve( l_1_over_4e );
-      trace.info() << "  => " << ( solver_v0.isValid() ? "OK" : "ERROR" )
-                   << " " << solver_v0.myLinearAlgebraSolver.info() << std::endl;
+      if ( verbose >= 2 ) trace.info() << "  => " << ( solver_v0.isValid() ? "OK" : "ERROR" )
+                                       << " " << solver_v0.myLinearAlgebraSolver.info() << std::endl;
+      solve_ok = solve_ok && solver_v0.isValid();
       if ( verbose >= 1 ) trace.endBlock();
+      return solve_ok;
     }
 
-    void
-    normalizeU2()
+    /// Forces the normalization of the vector u, meaning for all
+    /// index i, \f$ \sum_{k=0}^{K-1} u[k][i]^2 = 1 \f$. Can be useful
+    /// in some applications where you are looking for unitary vector
+    /// field.
+    void normalizeU2()
     {
       for ( Index index = 0; index < nb(2); index++)
         {
           double n2 = 0.0;
-          for ( unsigned int d = 0; d < 3; ++d )
+          for ( unsigned int d = 0; d < u2.size(); ++d )
             n2 += u2[ d ].myContainer( index ) * u2[ d ].myContainer( index );
           double norm = sqrt( n2 );
-          if (norm == 0) continue;
-          for ( unsigned int d = 0; d < 3; ++d )
+          if (norm == 0.0) continue;
+          for ( unsigned int d = 0; d < u2.size(); ++d )
             u2[ d ].myContainer( index ) /= norm;
         }
     }
 
-    void
-    checkV0()
-    {
-      const double m1 = v0.myContainer.minCoeff();
-      const double m2 = v0.myContainer.maxCoeff();
-      const double ma = v0.myContainer.mean();
-      trace.info() << "0-form v: min=" << m1 << " avg=" << ma << " max=" << m2 << std::endl;
-    }
-
-    void
-    diffV0( double& n_infty, double& n_2, double& n_1 )
+    /// Computes the norms loo, l2, l1 of (v - former_v), i.e. the evolution of discontinuity function v.
+    ///
+    /// @param[out] n_infty the loo-norm of (v - former_v)
+    /// @param[out] n_2 the l2-norm of (v - former_v)
+    /// @param[out] n_1 the l1-norm of (v - former_v)
+    void diffV0( double& n_infty, double& n_2, double& n_1 )
     {
       PrimalForm0 delta = v0-former_v0;
       delta.myContainer = delta.myContainer.cwiseAbs();
@@ -365,20 +428,64 @@ namespace DGtal
       n_1 = delta.myContainer.mean();
     }
 
-    PrimalForm2
-    getV2() const
+    /// @}
+
+
+    // ----------------------- Access services ------------------------------
+  public:
+    /// @name Access services
+    /// @{
+
+    /// Debug method for checking if v is a scalar field between 0 and 1.
+    ///
+    /// @return the tuple (min(v), average(v), max(v))
+    std::tuple<double,double,double> checkV0() const
     {
-      return M12*M01*v0;
+      const double m1 = v0.myContainer.minCoeff();
+      const double m2 = v0.myContainer.maxCoeff();
+      const double ma = v0.myContainer.mean();
+      if ( verbose >= 1 )
+        trace.info() << "0-form v (should be in [0,1]): min=" << m1 << " avg=" << ma << " max=" << m2 << std::endl;
+      return std::make_tuple( m1, m2, ma );
     }
 
-    PrimalForm1
-    getV1() const
+    
+    /// @return the discontinuity function v as a primal 0-form.
+    PrimalForm0 getV0() const
+    {
+      return v0;
+    }
+    
+    /// @return the discontinuity function v as a primal 1-form.
+    PrimalForm1 getV1() const
     {
       return M01*v0;
     }
 
-    void
-    updateSmallestEpsilonMap(SmallestEpsilonMap& smallest_eps, const double threshold = .5) const
+    /// @return the discontinuity function u as a primal 2-form.
+    PrimalForm2 getV2() const
+    {
+      return M12*M01*v0;
+    }
+
+    /// @param k an integer such that `0 <= k < u2.size()`
+    /// @return the k-th piecewise smooth function u as a primal 2-form.
+    PrimalForm2 getU2( Dimension k ) const
+    {
+      return u2[ k ];
+    }
+
+    /// Computes the map that tells for each surfel the smallest
+    /// epsilon for which the surfel was a discontinuity (more
+    /// precisely, the surfel has at least two vertices that belongs
+    /// to the set of discontinuity).
+    ///
+    /// @param[inout] smallest_eps the map Cell -> double that is
+    /// updated (typically in a process where epsilon decreases).
+    ///
+    /// @param[in] threshold the threshold for discontinuity function
+    /// v (below u is discontinuous, above u is continuous)
+    void updateSmallestEpsilonMap(SmallestEpsilonMap& smallest_eps, const double threshold = .5) const
     {
         const KSpace& K = calculus.myKSpace;
         for ( const SCell face_signed : calculus.getIndexedSCells<2, PRIMAL>() )
@@ -411,59 +518,38 @@ namespace DGtal
         }
     }
 
+    /// @}
     
     
-    /**
-     * Default constructor.
-     */
-    SurfaceATSolver() = delete;
-
-    /**
-     * Destructor.
-     */
-    ~SurfaceATSolver() = delete;
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    SurfaceATSolver ( const SurfaceATSolver & other ) = delete;
-
-    /**
-     * Move constructor.
-     * @param other the object to move.
-     */
-    SurfaceATSolver ( SurfaceATSolver && other ) = delete;
-
-    /**
-     * Copy assignment operator.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-    SurfaceATSolver & operator= ( const SurfaceATSolver & other ) = delete;
-
-    /**
-     * Move assignment operator.
-     * @param other the object to move.
-     * @return a reference on 'this'.
-     */
-    SurfaceATSolver & operator= ( SurfaceATSolver && other ) = delete;
-
     // ----------------------- Interface --------------------------------------
   public:
+    /// @name Interface services
+    /// @{
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const
+    {
+      auto cv = checkV0();
+      out << "[SurfaceATSolver] v is between min/avg/max:"
+          << std::get<0>(cv) << "/"
+          << std::get<1>(cv) << "/"
+          << std::get<2>(cv) << std::endl;
+    }
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+      return true;
+    }
 
+    /// @}
+    
     // ------------------------- Protected Datas ------------------------------
   protected:
 
@@ -472,6 +558,9 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
+
+    /// @name Hidden services
+    /// @{
 
     /// Initializes the operators
     void initOperators()
@@ -491,6 +580,8 @@ namespace DGtal
       M12.myContainer = .25 * M12.myContainer.cwiseAbs();
       if ( verbose >= 1 ) trace.endBlock();
     }
+
+    /// @}
     
     // ------------------------- Internals ------------------------------------
   private:
