@@ -38,11 +38,6 @@
 #include "DGtal/io/viewers/windows/GL/glext.h"
 #endif
 
-//On macos, disabling GL deprecated
-#ifndef __linux__
-#define GL_SILENCE_DEPRECATION
-#endif
-
 #include "DGtal/io/viewers/Viewer3D.h"
 
 #include <algorithm> 
