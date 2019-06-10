@@ -88,7 +88,7 @@ namespace DGtal
     typedef typename KSpace::Surfel                              Surfel;
     typedef HyperRectDomain<Space>                               Domain;
     typedef DiscreteExteriorCalculus<2,dimension, LinearAlgebra> Calculus;
-    typedef std::map<SCell, double>                              SmallestEpsilonMap;
+    typedef typename KSpace::template SurfelMap<double>::Type    SmallestEpsilonMap;
     typedef typename Calculus::Index                             Index;
     typedef typename Calculus::PrimalForm0                       PrimalForm0;
     typedef typename Calculus::PrimalForm1                       PrimalForm1;
@@ -103,6 +103,7 @@ namespace DGtal
     typedef typename Calculus::PrimalHodge0                      PrimalHodge0;
     typedef typename Calculus::PrimalHodge1                      PrimalHodge1;
     typedef typename Calculus::PrimalHodge2                      PrimalHodge2;
+    typedef typename KSpace::template SurfelMap<Index>::Type     Surfel2IndexMap;
 
     // SparseLU is so much faster than SparseQR
     // SimplicialLLT is much faster than SparseLU
@@ -142,6 +143,8 @@ namespace DGtal
     PrimalForm0           former_v0;
     /// The primal 0-form lambda/(4epsilon) (stored for performance)
     PrimalForm0           l_1_over_4e;
+    // The map Surfel -> Index that gives the index of the surfel in 2-forms.
+    Surfel2IndexMap       surfel2idx;  
     /// The map Surfel -> double telling the smallest epsilon for which the surfel was a discontinuity.
     SmallestEpsilonMap    smallest_epsilon_map;
     /// The global coefficient alpha giving the smoothness of the reconstruction (the smaller, the smoother)
@@ -175,6 +178,11 @@ namespace DGtal
       if ( verbose >= 2 )
 	trace.info() << "[ATSolver::ATSolver] " << *ptrCalculus << std::endl;
       initOperators();
+      const auto size2 = ptrCalculus->kFormLength( 2, PRIMAL );
+      for ( Index index = 0; index < size2; ++index) {
+	const auto& calculus_cell = ptrCalculus->getSCell( 2, PRIMAL, index );
+	surfel2idx[ calculus_cell ] = index;
+      }
     }
 
     /**
@@ -264,7 +272,8 @@ namespace DGtal
             g2[ k ].myContainer( index ) = n[ k ];
         }
       // u = g at the beginning
-      if ( verbose >= 2 ) trace.info() << "Unknown u[:] = g[:] at beginning." << std::endl;
+      if ( verbose >= 2 )
+	trace.info() << "Unknown u[:] = g[:] at beginning." << std::endl;
       u2 = g2;
       // v = 1 at the beginning
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
@@ -582,7 +591,32 @@ namespace DGtal
     {
       return u2[ k ];
     }
-
+    
+    /// Given a range of surfels [itB,itE), returns in \a output the
+    /// regularized scalar/vector field u.
+    ///
+    /// @tparam VectorOutput the type of vector for output values
+    /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+    ///
+    /// @param[out] output the vector of output values (a scalar or
+    /// vector field depending on input).
+    ///
+    /// @param itB the start of the range of surfels.
+    /// @param itE past the end of the range of surfels.
+    template <typename VectorOutput, typename SurfelRangeConstIterator>
+    void
+    getOutputVectorU2( VectorOutput& output,
+		       SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    {
+      Index i = 0;
+      for ( auto it = itB; it != itE; ++it, ++i )
+	{
+	  Index idx = surfel2idx[ *it ];
+	  for ( Dimension k = 0; k < u2.size(); ++k )
+	    output[ i ][ k ] = u2[ k ].myContainer( idx );
+	}
+    }
+    
     /// Computes the map that tells for each surfel the smallest
     /// epsilon for which the surfel was a discontinuity (more
     /// precisely, the surfel has at least two vertices that belongs

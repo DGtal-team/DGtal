@@ -65,6 +65,7 @@ int main( int argc, char** argv )
   auto surface   = SH3::makeDigitalSurface( bimage, K, params );
   auto surfels   = SH3::getSurfelRange( surface, params );
   auto ii_normals= SHG3::getIINormalVectors( bimage, surfels, params );
+  auto embedder  = SH3::getSCellEmbedder( K );
   trace.endBlock();
 
   trace.beginBlock ( "Creating AT solver for digital surface" );
@@ -79,6 +80,19 @@ int main( int argc, char** argv )
     trace.warning() << "Not all the surfels have an input data." << endl;
   at_solver.setUp( alpha_at, lambda_at );
   at_solver.solveGammaConvergence( e1, e2, er );
+  trace.endBlock();
+
+  trace.beginBlock ( "Save AT normals as OBJ file" );
+  auto at_normals = ii_normals;
+  at_solver.getOutputVectorU2( at_normals, surfels.cbegin(), surfels.cend() );
+  SH3::RealPoints positions( surfels.size() );
+  std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
+		  [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+  bool ok  = SH3::saveOBJ( surface, at_normals, SH3::Colors(),
+				  "al-primal.obj" );
+  bool ok2 = SH3::saveVectorFieldOBJ( positions, at_normals, 0.05, SH3::Colors(),
+				      "al-primal-at-normals.obj",
+				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
   trace.endBlock();
   return 0;
 }
