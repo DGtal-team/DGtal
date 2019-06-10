@@ -41,8 +41,13 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <sstream>
 #include <tuple>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/math/linalg/EigenSupport.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DECHelpers.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -70,35 +75,34 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef TKSpace                                                    KSpace;
-    typedef TLinearAlgebra                                             LinearAlgebra;
-    typedef SurfaceATSolver< KSpace, N, LinearAlgebra >                Self;
-    BOOST_STATIC_ASSERT(( N >= 1 ));
-    
-    typedef typename KSpace::Space                                     Space;
-    typedef typename Space::RealVector                                 RealVector;
-    typedef typename RealVector::Component                             Scalar;
-    typedef typename KSpace::SCell                                     SCell;
-    typedef typename KSpace::Cell                                      Cell;
-    typedef typename KSpace::Surfel                                    Surfel;
-    typedef HyperRectDomain<Space>                                     Domain;
-    typedef DiscreteExteriorCalculus<2,3, LinearAlgebra>               Calculus;
-    typedef DiscreteExteriorCalculusFactory<LinearAlgebra>             CalculusFactory;
-    typedef std::map<Cell, double>                                     SmallestEpsilonMap;
-    typedef Calculus::Index                                            Index;
-    typedef Calculus::PrimalForm0                                      PrimalForm0;
-    typedef Calculus::PrimalForm1                                      PrimalForm1;
-    typedef Calculus::PrimalForm2                                      PrimalForm2;
-    typedef Calculus::PrimalIdentity0                                  PrimalIdentity0;
-    typedef Calculus::PrimalIdentity1                                  PrimalIdentity1;
-    typedef Calculus::PrimalIdentity2                                  PrimalIdentity2;
-    typedef Calculus::PrimalDerivative0                                PrimalDerivative0;
-    typedef Calculus::PrimalDerivative1                                PrimalDerivative1;
-    typedef Calculus::PrimalAntiderivative1                            PrimalAntiderivative1;
-    typedef Calculus::PrimalAntiderivative2                            PrimalAntiderivative2;
-    typedef Calculus::PrimalHodge0                                     PrimalHodge0;
-    typedef Calculus::PrimalHodge1                                     PrimalHodge1;
-    typedef Calculus::PrimalHodge2                                     PrimalHodge2;
+    typedef TKSpace                                              KSpace;
+    typedef TLinearAlgebra                                       LinearAlgebra;
+    typedef SurfaceATSolver< KSpace, LinearAlgebra >             Self;
+
+    static const Dimension dimension = KSpace::dimension;
+    typedef typename KSpace::Space                               Space;
+    typedef typename Space::RealVector                           RealVector;
+    typedef typename RealVector::Component                       Scalar;
+    typedef typename KSpace::SCell                               SCell;
+    typedef typename KSpace::Cell                                Cell;
+    typedef typename KSpace::Surfel                              Surfel;
+    typedef HyperRectDomain<Space>                               Domain;
+    typedef DiscreteExteriorCalculus<2,dimension, LinearAlgebra> Calculus;
+    typedef std::map<SCell, double>                              SmallestEpsilonMap;
+    typedef typename Calculus::Index                             Index;
+    typedef typename Calculus::PrimalForm0                       PrimalForm0;
+    typedef typename Calculus::PrimalForm1                       PrimalForm1;
+    typedef typename Calculus::PrimalForm2                       PrimalForm2;
+    typedef typename Calculus::PrimalIdentity0                   PrimalIdentity0;
+    typedef typename Calculus::PrimalIdentity1                   PrimalIdentity1;
+    typedef typename Calculus::PrimalIdentity2                   PrimalIdentity2;
+    typedef typename Calculus::PrimalDerivative0                 PrimalDerivative0;
+    typedef typename Calculus::PrimalDerivative1                 PrimalDerivative1;
+    typedef typename Calculus::PrimalAntiderivative1             PrimalAntiderivative1;
+    typedef typename Calculus::PrimalAntiderivative2             PrimalAntiderivative2;
+    typedef typename Calculus::PrimalHodge0                      PrimalHodge0;
+    typedef typename Calculus::PrimalHodge1                      PrimalHodge1;
+    typedef typename Calculus::PrimalHodge2                      PrimalHodge2;
 
     // SparseLU is so much faster than SparseQR
     // SimplicialLLT is much faster than SparseLU
@@ -138,12 +142,16 @@ namespace DGtal
     PrimalForm0           former_v0;
     /// The primal 0-form lambda/(4epsilon) (stored for performance)
     PrimalForm0           l_1_over_4e;
+    /// The map Surfel -> double telling the smallest epsilon for which the surfel was a discontinuity.
+    SmallestEpsilonMap    smallest_epsilon_map;
     /// The global coefficient alpha giving the smoothness of the reconstruction (the smaller, the smoother)
     double                alpha;
     /// The global coefficient lambda giving the length of discontinuities (the smaller, the more discontinuities)
     double                lambda;
     /// The global coefficient epsilon giving the width of the discontinuities (the smaller, the thinner)
     double                epsilon;
+    /// Indicates whether to normalize U (unit norm) at each iteration or not.
+    bool                  normalize_u2;
     /// Tells the verbose level.
     int                   verbose;
 
@@ -156,7 +164,7 @@ namespace DGtal
     /// @param aCalculus any valid calculus
     /// @param aVerbose tells how the solver displays computing information: 0 none, 1 more, 2 even more...
     /// @see CalculusFactory for creating calculus objects.
-    ATSolver( ConstAlias< Calculus > aCalculus, int aVerbose = 0 )
+    SurfaceATSolver( ConstAlias< Calculus > aCalculus, int aVerbose = 0 )
       : calculus( aCalculus ),
         primal_D0( calculus ), primal_D1( calculus ),
         M01( calculus ), M12( calculus ), primal_AD2( calculus ),
@@ -208,7 +216,7 @@ namespace DGtal
     /// @return the number of cells with dimension \a order
     Index size( const int order ) const
     {
-      return calculus.kFormLength(order, PRIMAL);
+      return calculus->kFormLength(order, PRIMAL);
     }
     
     /// @}
@@ -224,11 +232,17 @@ namespace DGtal
     /// number of dimensions of ScalarVector.
     ///
     /// @param input any map Surfel -> ScalarVector
+    ///
+    /// @param normalize when 'true', the input is supposed to be a
+    /// unit vector field and the solver will output a unit
+    /// regularized vector field at the end of each minimization step.
+    ///
     /// @return the number of cells that were initialized.
     /// @tparam ScalarVector any type representing a vector/array of scalars (float, double)
     template <typename ScalarVector>
     Index
-    initVectorInput( const std::map<Surfel,ScalarVector>& input )
+    initVectorInput( const std::map<Surfel,ScalarVector>& input,
+		     bool normalize = false )
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initVectorInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
@@ -243,7 +257,7 @@ namespace DGtal
         {
           const SCell& cell = g2[ 0 ].getSCell( index );
           const auto   it   = input.find( cell );  
-          const auto   n    = ( it != input.end() ) ? *it : zero;
+          const auto   n    = ( it != input.end() ) ? it->second : zero;
           nbok             += ( it != input.end() ) ? 1 : 0;
           for ( Dimension k = 0; k < N; ++k )
             g2[ k ].myContainer( index ) = n[ k ];
@@ -255,6 +269,7 @@ namespace DGtal
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
       v0 = PrimalForm0::ones(calculus);
       if ( verbose >= 1 ) trace.endBlock();
+      normalize_u2 = normalize;
       return nbok;
     }
 
@@ -302,7 +317,7 @@ namespace DGtal
     {
       alpha     = a;
       lambda    = l;
-      alpha_Id2 = alpha * calculus.identity<2, PRIMAL>();
+      alpha_Id2 = alpha * calculus->template identity<2, PRIMAL>();
       for ( Dimension k = 0; k < g2.size(); ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
     }
@@ -319,7 +334,7 @@ namespace DGtal
       trace.info() << "Using variable weights for fitting (alpha term)" << std::endl;
       for ( Dimension k = 0; k < g2.size(); ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
-      for ( Index index = 0; index < nb(2); index++)
+      for ( Index index = 0; index < size( 2 ); index++)
         {
           const SCell&           cell = g2[ 0 ].getSCell( index );
           const Scalar&             w = weights[ cell ];
@@ -336,7 +351,7 @@ namespace DGtal
     {
       epsilon     = e;
       l_1_over_4e = lambda/4/epsilon*PrimalForm0::ones(calculus);
-      l_1_over_4e_Id0 = lambda/4/epsilon*calculus.identity<0, PRIMAL>();
+      l_1_over_4e_Id0 = lambda/4/epsilon*calculus->template identity<0, PRIMAL>();
     }
 
     /// @}
@@ -346,13 +361,14 @@ namespace DGtal
     /// @name Optimization services
     /// @{
 
-    /// Solves one step of the alternate minimization of AT. Solves for u then for v.
+    /// Solves one step of the alternate minimization of AT. Solves
+    /// for u then for v.
     ///
-    /// @param normalize_U2 when 'true', forces u to be a unit vector at the end of the minimization step.
-    /// @return true if everything went fine, false if there was a problem in the optimization.
+    /// @return true if everything went fine, false if there was a
+    /// problem in the optimization.
     ///
     /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
-    bool solveUandV( bool normalize_U2 = false )
+    bool solveOneAlternateStep()
     {
       bool solve_ok = true;
       if ( verbose >= 1 ) trace.beginBlock("Solving for u as a 2-form");
@@ -372,7 +388,7 @@ namespace DGtal
                                            << " " << solver_u2.myLinearAlgebraSolver.info() << std::endl;
           solve_ok = solve_ok && solver_u2.isValid();
         }
-      if ( normalize_U2 ) normalizeU2();
+      if ( normalize_u2 ) normalizeU2();
       if ( verbose >= 1 ) trace.endBlock();
       if ( verbose >= 1 ) trace.beginBlock("Solving for v");
       former_v0 = v0;
@@ -395,13 +411,102 @@ namespace DGtal
       return solve_ok;
     }
 
+    /// Solves the alternate minimization of AT for a given \a eps. Solves
+    /// for u then for v till convergence.
+    ///
+    /// @param eps the epsilon parameter at which AT is solved.
+    ///
+    /// @param n_oo_max the alternate minimization will stop when the
+    /// loo-norm of \f$ v^{k+1} - v^k \f$ is below this bound.
+    ///
+    /// @param iter_max the alternate minimization will stop when the
+    /// number of minimization steps exceed \a iter_max.
+    ///
+    /// @return true if everything went fine, false if there was a
+    /// problem in the optimization.
+    ///
+    /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
+    bool solveForEpsilon( double eps,
+			  double n_oo_max = 1e-4,
+			  unsigned int iter_max = 10 )
+    {
+      bool ok = true;
+      if ( verbose >= 1 ) {
+	std::ostringstream sstr;
+	sstr << "******* Solving AT for epsilon = " << eps << " **********";
+	trace.beginBlock( sstr.str() ); 
+      }
+      setEpsilon( eps );
+      for ( unsigned int i = 0; i < iter_max; ++i )
+        {
+	  if ( verbose >= 1 )
+	    trace.info() << "---------- Iteration "
+			 << i << "/" << iter_max << " ---------------" << std::endl;
+	  bool ok = ok && solveOneAlternateStep( );
+	  auto norms_v = checkV0();
+	  auto diffs_v = diffV0();
+	  if ( verbose >= 1 ) {
+	    trace.info() << "Variation |v^k+1 - v^k|_oo = " << std::get<0>( diffs_v )
+			 << std::endl;
+	    if ( verbose >= 2 ) {
+	      trace.info() << "Variation |v^k+1 - v^k|_2  = " << std::get<1>( diffs_v )
+			   << std::endl;
+	      trace.info() << "Variation |v^k+1 - v^k|_1  = " << std::get<2>( diffs_v )
+			   << std::endl;
+	    }
+	  }
+	  if ( std::get<0>( diffs_v ) < 1e-4 ) break;
+        }
+      if ( verbose >= 1 ) trace.endBlock();
+      return ok;
+    }
+
+    /// Solves AT by progressively decreasing epsilon from \a eps1
+    /// to \a eps2. AT is solved with solveForEpsilon at each epsilon.
+    ///
+    /// @param eps1 the first epsilon parameter at which AT is solved.
+    /// @param eps2 the last epsilon parameter at which AT is solved.
+    /// @param epsr the ratio (>1) used to decrease progressively epsilon.
+    /// @param compute_smallest_epsilon_map when 'true' determines for each surfel the smallest epsilon for which it is a discontinuity.
+    ///
+    /// @param n_oo_max the alternate minimization will stop when the
+    /// loo-norm of \f$ v^{k+1} - v^k \f$ is below this bound.
+    ///
+    /// @param iter_max the alternate minimization will stop when the
+    /// number of minimization steps exceed \a iter_max.
+    ///
+    /// @return true if everything went fine, false if there was a
+    /// problem in the optimization.
+    bool solveGammaConvergence( double eps1 = 2.0,
+				double eps2 = 0.25,
+				double epsr = 2.0,
+				bool compute_smallest_epsilon_map = false,
+				double n_oo_max = 1e-4,
+				unsigned int iter_max = 10 )
+    {
+      bool ok = true;
+      if ( epsr <= 1.0 ) epsr = 2.0;
+      if ( verbose >= 1 )
+	trace.beginBlock( "#### Solve AT by Gamma-convergence ##########" );
+      if ( compute_smallest_epsilon_map ) smallest_epsilon_map.clear();
+      for ( double eps = eps1; eps >= eps2; eps /= epsr )
+	{
+	  solveForEpsilon( n_oo_max, iter_max );
+	  if ( compute_smallest_epsilon_map )
+	    updateSmallestEpsilonMap( 0.5 );
+	}
+      if ( verbose >= 1 )
+	trace.endBlock();
+      return ok;
+    }
+    
     /// Forces the normalization of the vector u, meaning for all
     /// index i, \f$ \sum_{k=0}^{K-1} u[k][i]^2 = 1 \f$. Can be useful
     /// in some applications where you are looking for unitary vector
     /// field.
     void normalizeU2()
     {
-      for ( Index index = 0; index < nb(2); index++)
+      for ( Index index = 0; index < size( 2 ); index++)
         {
           double n2 = 0.0;
           for ( unsigned int d = 0; d < u2.size(); ++d )
@@ -413,19 +518,18 @@ namespace DGtal
         }
     }
 
-    /// Computes the norms loo, l2, l1 of (v - former_v), i.e. the evolution of discontinuity function v.
+    /// Computes the norms loo, l2, l1 of (v - former_v), i.e. the
+    /// evolution of discontinuity function v.
     ///
-    /// @param[out] n_infty the loo-norm of (v - former_v)
-    /// @param[out] n_2 the l2-norm of (v - former_v)
-    /// @param[out] n_1 the l1-norm of (v - former_v)
-    void diffV0( double& n_infty, double& n_2, double& n_1 )
+    /// @return a tuple (n_infty,n_2,n_1) giving  the loo/l2/l1-norm of (v - former_v)
+    std::tuple<double,double,double> diffV0() const
     {
-      PrimalForm0 delta = v0-former_v0;
+      PrimalForm0 delta = v0 - former_v0;
       delta.myContainer = delta.myContainer.cwiseAbs();
-
-      n_infty = delta.myContainer.maxCoeff();
-      n_2 = std::sqrt(delta.myContainer.squaredNorm()/delta.myContainer.size());
-      n_1 = delta.myContainer.mean();
+      const double n_oo = delta.myContainer.maxCoeff();
+      const double n_2  = std::sqrt(delta.myContainer.squaredNorm()/delta.myContainer.size());
+      const double n_1  = delta.myContainer.mean();
+      return std::make_tuple( n_oo, n_2, n_1 );
     }
 
     /// @}
@@ -480,17 +584,14 @@ namespace DGtal
     /// precisely, the surfel has at least two vertices that belongs
     /// to the set of discontinuity).
     ///
-    /// @param[inout] smallest_eps the map Cell -> double that is
-    /// updated (typically in a process where epsilon decreases).
-    ///
     /// @param[in] threshold the threshold for discontinuity function
     /// v (below u is discontinuous, above u is continuous)
-    void updateSmallestEpsilonMap(SmallestEpsilonMap& smallest_eps, const double threshold = .5) const
+    void updateSmallestEpsilonMap( const double threshold = .5 )
     {
-        const KSpace& K = calculus.myKSpace;
-        for ( const SCell face_signed : calculus.getIndexedSCells<2, PRIMAL>() )
+        const KSpace& K = calculus->myKSpace;
+        for ( const SCell surfel : calculus->template getIndexedSCells<2, PRIMAL>() )
         {
-            const Cell face            = K.unsigns( face_signed );
+            const Cell face            = K.unsigns( surfel );
             const Dimension    k1      = * K.uDirs( face );
             const Cell   l0      = K.uIncident( face, k1, false );
             const Cell   l1      = K.uIncident( face, k1, true );
@@ -503,17 +604,18 @@ namespace DGtal
             const Cell   p11     = K.uIncident( l1, k2, true );
 
             std::vector<double>  features( 4 );
-            features[ 0 ] = v0.myContainer( calculus.getCellIndex( p00 ) );
-            features[ 1 ] = v0.myContainer( calculus.getCellIndex( p01 ) );
-            features[ 2 ] = v0.myContainer( calculus.getCellIndex( p10 ) );
-            features[ 3 ] = v0.myContainer( calculus.getCellIndex( p11 ) );
+            features[ 0 ] = v0.myContainer( calculus->getCellIndex( p00 ) );
+            features[ 1 ] = v0.myContainer( calculus->getCellIndex( p01 ) );
+            features[ 2 ] = v0.myContainer( calculus->getCellIndex( p10 ) );
+            features[ 3 ] = v0.myContainer( calculus->getCellIndex( p11 ) );
             std::sort( features.begin(), features.end() );
 
             if ( features[ 1 ] <= threshold )
             {
-                auto it = smallest_eps.find( face );
-                if ( it != smallest_eps.end() ) it->second = std::min( epsilon, it->second );
-                else smallest_eps[ face ] = epsilon;
+                auto it = smallest_epsilon_map.find( surfel );
+                if ( it != smallest_epsilon_map.end() )
+		  it->second = std::min( epsilon, it->second );
+                else smallest_epsilon_map[ surfel ] = epsilon;
             }
         }
     }
@@ -567,11 +669,11 @@ namespace DGtal
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initOperators] Solver initialization" );
       if ( verbose >= 2 ) trace.info() << "derivative of primal 0-forms: primal_D0" << std::endl;
-      primal_D0 = calculus.derivative<0,PRIMAL>();
+      primal_D0 = calculus->template derivative<0,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "derivative of primal 1-forms: primal_D1" << std::endl;
-      primal_D1 = calculus.derivative<1,PRIMAL>();
+      primal_D1 = calculus->template derivative<1,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "antiderivative of primal 2-forms: primal_AD2" << std::endl;
-      primal_AD2 = calculus.antiderivative<2,PRIMAL>();
+      primal_AD2 = calculus->template antiderivative<2,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "vertex to edge average operator: M01" << std::endl;
       M01       = primal_D0;
       M01.myContainer = .5 * M01.myContainer.cwiseAbs();
@@ -604,7 +706,6 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/SurfaceATSolver.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
