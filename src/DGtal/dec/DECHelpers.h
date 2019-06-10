@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/dec/Duality.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -79,7 +81,7 @@ namespace DGtal
     DGtal::LinearOperator<Calculus, 0, DGtal::PRIMAL, 1, DGtal::PRIMAL>
     averageOperator01(const Calculus& calculus)
     {
-      auto M01        = calculus.derivative<0,PRIMAL>();
+      auto M01        = calculus.template derivative<0,DGtal::PRIMAL>();
       M01.myContainer = 0.5 * M01.myContainer.cwiseAbs();
       return M01;
     }
@@ -92,7 +94,7 @@ namespace DGtal
     DGtal::LinearOperator<Calculus, 1, DGtal::PRIMAL, 2, DGtal::PRIMAL>
     averageOperator01(const Calculus& calculus)
     {
-      auto M12        = calculus.derivative<1,PRIMAL>();
+      auto M12        = calculus.template derivative<1,DGtal::PRIMAL>();
       M12.myContainer = 0.25 * M12.myContainer.cwiseAbs();
       return M12;
     }
@@ -117,7 +119,8 @@ namespace DGtal
       typedef typename Calculus::Cell Cell;
       typedef typename Calculus::Scalar Scalar;
       typedef typename Calculus::Point Point;
-      typedef DGtal::LinearOperator<Calculus, 2, PRIMAL, 0, PRIMAL> Operator;
+      typedef DGtal::LinearOperator<Calculus, 2, DGtal::PRIMAL, 0, DGtal::PRIMAL>
+	Operator;
       
       const KSpace& kspace = calculus.myKSpace;
 
@@ -148,7 +151,8 @@ namespace DGtal
             triplets.push_back(Triplet(index_point, index_surfel, weight));
         }
       
-      SparseMatrix matrix(calculus.kFormLength(0, PRIMAL), calculus.kFormLength(2, PRIMAL));
+      SparseMatrix matrix( calculus.kFormLength(0, DGtal::PRIMAL),
+			   calculus.kFormLength(2, DGtal::PRIMAL) );
       matrix.setFromTriplets(triplets.begin(), triplets.end());
       
       return Operator(calculus, matrix);
