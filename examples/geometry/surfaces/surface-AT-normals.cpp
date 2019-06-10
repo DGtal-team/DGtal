@@ -70,7 +70,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Creating AT solver for digital surface" );
   typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
   const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
-  SurfaceATSolver< KSpace > at_solver(calculus);
+  SurfaceATSolver< KSpace > at_solver(calculus, 2);
   std::map< Surfel, RealVector > input_data;
   for ( size_t i = 0; i < surfels.size(); i++ )
     input_data[ surfels[ i ] ] = ii_normals[ i ];
