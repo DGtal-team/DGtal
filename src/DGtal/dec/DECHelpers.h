@@ -63,12 +63,14 @@ namespace DGtal
       typedef typename Calculus::LinearAlgebraBackend::Triplet Triplet;
       typedef typename Calculus::Index Index;
       typedef std::vector<Triplet> Triplets;
-      
+
+      trace.info() << "In diagonal" << std::endl;
       Triplets triplets;
       for (Index index=0; index<kform.length(); index++)
         triplets.push_back(Triplet(index, index, kform.myContainer(index)));
       Operator ope(kform.myCalculus);
       ope.myContainer.setFromTriplets(triplets.begin(), triplets.end());
+      trace.info() << "Out diagonal" << std::endl;
       
       return ope;
     }

@@ -115,7 +115,7 @@ namespace DGtal
     typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> SolverV0;
 
     /// A smart (or not) pointer to a calculus object.
-    CountedConstPtrOrConstPtr< Calculus > calculus;
+    CountedConstPtrOrConstPtr< Calculus > ptrCalculus;
     /// the derivative operator for primal 0-forms
     PrimalDerivative0     primal_D0;
     /// the derivative operator for primal 1-forms
@@ -165,14 +165,15 @@ namespace DGtal
     /// @param aVerbose tells how the solver displays computing information: 0 none, 1 more, 2 even more...
     /// @see CalculusFactory for creating calculus objects.
     SurfaceATSolver( ConstAlias< Calculus > aCalculus, int aVerbose = 0 )
-      : calculus( aCalculus ),
-        primal_D0( calculus ), primal_D1( calculus ),
-        M01( calculus ), M12( calculus ), primal_AD2( calculus ),
-        alpha_Id2( calculus ), l_1_over_4e_Id0( calculus ),
-        g2(), alpha_g2(), u2(), v0( calculus ), former_v0( calculus ),
-        l_1_over_4e( calculus ), verbose( aVerbose )
+      : ptrCalculus( aCalculus ),
+        primal_D0( *ptrCalculus ), primal_D1( *ptrCalculus ),
+        M01( *ptrCalculus ), M12( *ptrCalculus ), primal_AD2( *ptrCalculus ),
+        alpha_Id2( *ptrCalculus ), l_1_over_4e_Id0( *ptrCalculus ),
+        g2(), alpha_g2(), u2(), v0( *ptrCalculus ), former_v0( *ptrCalculus ),
+        l_1_over_4e( *ptrCalculus ), verbose( aVerbose )
     {
-      if ( verbose >= 2 ) trace.info() << "[ATSolver::ATSolver] " << calculus << std::endl;
+      if ( verbose >= 2 )
+	trace.info() << "[ATSolver::ATSolver] " << *ptrCalculus << std::endl;
       initOperators();
     }
 
@@ -216,7 +217,7 @@ namespace DGtal
     /// @return the number of cells with dimension \a order
     Index size( const int order ) const
     {
-      return calculus->kFormLength(order, PRIMAL);
+      return ptrCalculus->kFormLength(order, PRIMAL);
     }
     
     /// @}
@@ -246,11 +247,11 @@ namespace DGtal
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initVectorInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
-      v0 = PrimalForm0::ones(calculus);
+      v0 = PrimalForm0::ones(*ptrCalculus);
       const Dimension N = ScalarVector().size();
       if ( verbose >= 2 ) trace.info() << "input g as " << N << " 2-forms." << std::endl;
-      g2       = std::vector<PrimalForm2>( N, PrimalForm2( *calculus ) );
-      alpha_g2 = std::vector<PrimalForm2>( N, PrimalForm2( *calculus ) );
+      g2       = std::vector<PrimalForm2>( N, PrimalForm2( *ptrCalculus ) );
+      alpha_g2 = std::vector<PrimalForm2>( N, PrimalForm2( *ptrCalculus ) );
       const ScalarVector zero;
       Index              nbok = 0;
       for ( Index index = 0; index < size(2); index++)
@@ -267,7 +268,7 @@ namespace DGtal
       u2 = g2;
       // v = 1 at the beginning
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
-      v0 = PrimalForm0::ones(calculus);
+      v0 = PrimalForm0::ones(*ptrCalculus);
       if ( verbose >= 1 ) trace.endBlock();
       normalize_u2 = normalize;
       return nbok;
@@ -285,10 +286,10 @@ namespace DGtal
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initScalarInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
-      v0 = PrimalForm0::ones(calculus);
+      v0 = PrimalForm0::ones(*ptrCalculus);
       if ( verbose >= 2 ) trace.info() << "input g as one 2-form." << std::endl;
-      g2       = std::vector<PrimalForm2>( 1, PrimalForm2( *calculus ) );
-      alpha_g2 = std::vector<PrimalForm2>( 1, PrimalForm2( *calculus ) );
+      g2       = std::vector<PrimalForm2>( 1, PrimalForm2( *ptrCalculus ) );
+      alpha_g2 = std::vector<PrimalForm2>( 1, PrimalForm2( *ptrCalculus ) );
       const Scalar zero;
       Index nbok = 0;
       for ( Index index = 0; index < size(2); index++)
@@ -304,8 +305,9 @@ namespace DGtal
       u2 = g2;
       // v = 1 at the beginning
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
-      v0 = PrimalForm0::ones(calculus);
+      v0 = PrimalForm0::ones(*ptrCalculus);
       if ( verbose >= 1 ) trace.endBlock();
+      normalize_u2 = false;
       return nbok;
     }
 
@@ -317,7 +319,7 @@ namespace DGtal
     {
       alpha     = a;
       lambda    = l;
-      alpha_Id2 = alpha * calculus->template identity<2, PRIMAL>();
+      alpha_Id2 = alpha * ptrCalculus->template identity<2, PRIMAL>();
       for ( Dimension k = 0; k < g2.size(); ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
     }
@@ -330,7 +332,7 @@ namespace DGtal
     {
       alpha  = a;
       lambda = l;
-      PrimalForm2 w_form( calculus );
+      PrimalForm2 w_form( *ptrCalculus );
       trace.info() << "Using variable weights for fitting (alpha term)" << std::endl;
       for ( Dimension k = 0; k < g2.size(); ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
@@ -350,8 +352,8 @@ namespace DGtal
     void setEpsilon( double e )
     {
       epsilon     = e;
-      l_1_over_4e = lambda/4/epsilon*PrimalForm0::ones(calculus);
-      l_1_over_4e_Id0 = lambda/4/epsilon*calculus->template identity<0, PRIMAL>();
+      l_1_over_4e = (lambda/4./epsilon)*PrimalForm0::ones(*ptrCalculus);
+      l_1_over_4e_Id0 = (lambda/4/epsilon)*ptrCalculus->template identity<0, PRIMAL>();
     }
 
     /// @}
@@ -392,12 +394,13 @@ namespace DGtal
       if ( verbose >= 1 ) trace.endBlock();
       if ( verbose >= 1 ) trace.beginBlock("Solving for v");
       former_v0 = v0;
-      PrimalForm1 squared_norm_d_u2 = PrimalForm1::zeros(calculus);
+      PrimalForm1 squared_norm_d_u2 = PrimalForm1::zeros(*ptrCalculus);
       for ( Dimension d = 0; d < u2.size(); ++d )
         squared_norm_d_u2.myContainer.array() += (primal_AD2 * u2[ d ] ).myContainer.array().square();
+      trace.info() << "build metric u2" << std::endl;
       const PrimalIdentity0 ope_v0 = l_1_over_4e_Id0
-        + lambda * epsilon * primal_D0.transpose() * primal_D0
-        + M01.transpose() * dec_helper::diagonal( squared_norm_d_u2 ) * M01;
+        + (lambda * epsilon) * primal_D0.transpose() * primal_D0
+	+ M01.transpose() * dec_helper::diagonal( squared_norm_d_u2 ) * M01;
 
       if ( verbose >= 2 ) trace.info() << "Prefactoring matrix V associated to v" << std::endl;
       SolverV0 solver_v0;
@@ -442,7 +445,8 @@ namespace DGtal
 	  if ( verbose >= 1 )
 	    trace.info() << "---------- Iteration "
 			 << i << "/" << iter_max << " ---------------" << std::endl;
-	  bool ok = ok && solveOneAlternateStep( );
+	  solveOneAlternateStep( );
+	  //bool ok = ok && 
 	  auto norms_v = checkV0();
 	  auto diffs_v = diffV0();
 	  if ( verbose >= 1 ) {
@@ -491,7 +495,7 @@ namespace DGtal
       if ( compute_smallest_epsilon_map ) smallest_epsilon_map.clear();
       for ( double eps = eps1; eps >= eps2; eps /= epsr )
 	{
-	  solveForEpsilon( n_oo_max, iter_max );
+	  solveForEpsilon( eps, n_oo_max, iter_max );
 	  if ( compute_smallest_epsilon_map )
 	    updateSmallestEpsilonMap( 0.5 );
 	}
@@ -588,8 +592,8 @@ namespace DGtal
     /// v (below u is discontinuous, above u is continuous)
     void updateSmallestEpsilonMap( const double threshold = .5 )
     {
-        const KSpace& K = calculus->myKSpace;
-        for ( const SCell surfel : calculus->template getIndexedSCells<2, PRIMAL>() )
+        const KSpace& K = ptrCalculus->myKSpace;
+        for ( const SCell surfel : ptrCalculus->template getIndexedSCells<2, PRIMAL>() )
         {
             const Cell face            = K.unsigns( surfel );
             const Dimension    k1      = * K.uDirs( face );
@@ -604,10 +608,10 @@ namespace DGtal
             const Cell   p11     = K.uIncident( l1, k2, true );
 
             std::vector<double>  features( 4 );
-            features[ 0 ] = v0.myContainer( calculus->getCellIndex( p00 ) );
-            features[ 1 ] = v0.myContainer( calculus->getCellIndex( p01 ) );
-            features[ 2 ] = v0.myContainer( calculus->getCellIndex( p10 ) );
-            features[ 3 ] = v0.myContainer( calculus->getCellIndex( p11 ) );
+            features[ 0 ] = v0.myContainer( ptrCalculus->getCellIndex( p00 ) );
+            features[ 1 ] = v0.myContainer( ptrCalculus->getCellIndex( p01 ) );
+            features[ 2 ] = v0.myContainer( ptrCalculus->getCellIndex( p10 ) );
+            features[ 3 ] = v0.myContainer( ptrCalculus->getCellIndex( p11 ) );
             std::sort( features.begin(), features.end() );
 
             if ( features[ 1 ] <= threshold )
@@ -669,11 +673,11 @@ namespace DGtal
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initOperators] Solver initialization" );
       if ( verbose >= 2 ) trace.info() << "derivative of primal 0-forms: primal_D0" << std::endl;
-      primal_D0 = calculus->template derivative<0,PRIMAL>();
+      primal_D0 = ptrCalculus->template derivative<0,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "derivative of primal 1-forms: primal_D1" << std::endl;
-      primal_D1 = calculus->template derivative<1,PRIMAL>();
+      primal_D1 = ptrCalculus->template derivative<1,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "antiderivative of primal 2-forms: primal_AD2" << std::endl;
-      primal_AD2 = calculus->template antiderivative<2,PRIMAL>();
+      primal_AD2 = ptrCalculus->template antiderivative<2,PRIMAL>();
       if ( verbose >= 2 ) trace.info() << "vertex to edge average operator: M01" << std::endl;
       M01       = primal_D0;
       M01.myContainer = .5 * M01.myContainer.cwiseAbs();
