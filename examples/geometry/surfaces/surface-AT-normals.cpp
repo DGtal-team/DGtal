@@ -52,15 +52,16 @@ int main( int argc, char** argv )
   typedef SHG3::RealVector                 RealVector;
 
   const double alpha_at  = 0.1;
-  const double lambda_at = 0.1;
+  const double lambda_at = 0.025;
   const double e1        = 2.0;
   const double e2        = 0.25;
   const double er        = 2.0;
-  
+
+  std::string volfile = argc > 1 ? argv[ 1 ] : examplesPath + "samples/Al.100.vol";
   auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
   params( "colormap", "Tics" );
   trace.beginBlock ( "Load vol file -> build digital surface -> estimate II normals." );
-  auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+  auto bimage    = SH3::makeBinaryImage( volfile, params );
   auto K         = SH3::getKSpace( bimage, params );
   auto surface   = SH3::makeDigitalSurface( bimage, K, params );
   auto surfels   = SH3::getSurfelRange( surface, params );
@@ -87,11 +88,19 @@ int main( int argc, char** argv )
   at_solver.getOutputVectorU2( at_normals, surfels.cbegin(), surfels.cend() );
   SH3::RealPoints positions( surfels.size() );
   std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
-		  [&] (const SH3::SCell& c) { return embedder( c ); } ); 
-  bool ok  = SH3::saveOBJ( surface, at_normals, SH3::Colors(),
-				  "al-primal.obj" );
+		  [&] (const SH3::SCell& c) { return embedder( c ); } );
+  SH3::Colors colors( surfels.size() );
+  for ( size_t i = 0; i < surfels.size(); i++ ) 
+    colors[ i ] = SH3::Color( (unsigned char) 255.0*fabs( at_normals[ i ][ 0 ] ),
+			      (unsigned char) 255.0*fabs( at_normals[ i ][ 1 ] ),
+			      (unsigned char) 255.0*fabs( at_normals[ i ][ 2 ] ) );
+  std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
+		  [&] (const SH3::SCell& c) { return embedder( c ); } );
+  
+  bool ok  = SH3::saveOBJ( surface, at_normals, colors,
+				  "output-surface.obj" );
   bool ok2 = SH3::saveVectorFieldOBJ( positions, at_normals, 0.05, SH3::Colors(),
-				      "al-primal-at-normals.obj",
+				      "output-at-normals.obj",
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
   trace.endBlock();
   return 0;
