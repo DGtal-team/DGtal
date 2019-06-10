@@ -22,6 +22,10 @@
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
 
+- *IO*
+  - Removing a `using namespace std;` in the Viewer3D hearder file. (David
+    Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+
 
 # DGtal 1.0
 
