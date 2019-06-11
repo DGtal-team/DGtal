@@ -26,6 +26,10 @@
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
 
+- *doc*
+  - Promoting the `Shortcuts` documentation page on the main page. (David
+    Coeurjolly,[#1416](https://github.com/DGtal-team/DGtal/pull/1416))
+
 
 # DGtal 1.0
 
