@@ -1,4 +1,4 @@
-# DGtal 1.0.1
+# DGtal 1.1
 
 
 ## Changes
