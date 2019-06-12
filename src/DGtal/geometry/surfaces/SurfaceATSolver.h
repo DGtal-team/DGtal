@@ -236,6 +236,85 @@ namespace DGtal
     /// @name Initialization services
     /// @{
 
+    /// Given a range of surfels [itB,itE) and an input vector field,
+    /// initializes the AT 2-forms u and g. The 0-form v is itself
+    /// initialized to 1 everywhere.
+    ///
+    /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
+    /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+    ///
+    /// @param[in] input the input vector field (a vector of vector values)
+    ///
+    /// @param itB the start of the range of surfels.
+    /// @param itE past the end of the range of surfels.
+    template <typename VectorFieldInput, typename SurfelRangeConstIterator>
+    void
+    initInputVectorFieldU2( const VectorFieldInput& input,
+                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    {
+      if ( verbose >= 1 )
+        trace.beginBlock( "[SurfaceATSolver::initInputVectorFieldU2] Initializing input data" );
+      ASSERT( ! input.empty() );
+      const Dimension N = input[ 0 ].size();
+      if ( verbose >= 2 ) trace.info() << "input g as " << N << " 2-forms." << std::endl;
+      g2       = std::vector<PrimalForm2>( N, PrimalForm2( *ptrCalculus ) );
+      alpha_g2 = std::vector<PrimalForm2>( N, PrimalForm2( *ptrCalculus ) );
+      Index i = 0;
+      for ( auto it = itB; it != itE; ++it, ++i )
+	{
+	  Index idx = surfel2idx[ *it ];
+	  for ( Dimension k = 0; k < N; ++k )
+	    g2[ k ].myContainer( idx ) = input[ i ][ k ]; 
+	}
+      // u = g at the beginning
+      if ( verbose >= 2 )
+	trace.info() << "Unknown u[:] = g[:] at beginning." << std::endl;
+       u2 = g2;
+      // v = 1 at the beginning
+      if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
+      v0 = PrimalForm0::ones(*ptrCalculus);
+      if ( verbose >= 1 ) trace.endBlock();
+    }
+
+    /// Given a range of surfels [itB,itE) and an input scalar field,
+    /// initializes the AT 2-forms u and g. The 0-form v is itself
+    /// initialized to 1 everywhere.
+    ///
+    /// @tparam ScalarFieldInput the type of scalar field for input values (RandomAccess container)
+    /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+    ///
+    /// @param[in] input the input scalar field (a vector of scalar values)
+    ///
+    /// @param itB the start of the range of surfels.
+    /// @param itE past the end of the range of surfels.
+    template <typename ScalarFieldInput, typename SurfelRangeConstIterator>
+    void
+    initInputScalarFieldU2( const ScalarFieldInput& input,
+                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    {
+      if ( verbose >= 1 )
+        trace.beginBlock( "[SurfaceATSolver::initInputVectorFieldU2] Initializing input data" );
+      ASSERT( ! input.empty() );
+      if ( verbose >= 2 ) trace.info() << "input g as one 2-form." << std::endl;
+      g2       = std::vector<PrimalForm2>( 1, PrimalForm2( *ptrCalculus ) );
+      alpha_g2 = std::vector<PrimalForm2>( 1, PrimalForm2( *ptrCalculus ) );
+      Index i = 0;
+      for ( auto it = itB; it != itE; ++it, ++i )
+	{
+	  Index idx = surfel2idx[ *it ];
+          g2[ 0 ].myContainer( idx ) = input[ i ]; 
+	}
+      // u = g at the beginning
+      if ( verbose >= 2 )
+	trace.info() << "Unknown u[:] = g[:] at beginning." << std::endl;
+       u2 = g2;
+      // v = 1 at the beginning
+      if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
+      v0 = PrimalForm0::ones(*ptrCalculus);
+      if ( verbose >= 1 ) trace.endBlock();
+    }
+
+    
     /// Given a map Surfel -> ScalarVector, initializes forms g, u and
     /// v of the AT solver. Note that there are as many 2-forms u/g as the
     /// number of dimensions of ScalarVector.
@@ -255,7 +334,6 @@ namespace DGtal
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initVectorInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
-      v0 = PrimalForm0::ones(*ptrCalculus);
       const Dimension N = ScalarVector().size();
       if ( verbose >= 2 ) trace.info() << "input g as " << N << " 2-forms." << std::endl;
       g2       = std::vector<PrimalForm2>( N, PrimalForm2( *ptrCalculus ) );
@@ -593,9 +671,9 @@ namespace DGtal
     }
     
     /// Given a range of surfels [itB,itE), returns in \a output the
-    /// regularized scalar/vector field u.
+    /// regularized vector field u.
     ///
-    /// @tparam VectorOutput the type of vector for output values
+    /// @tparam VectorFieldOutput the type of vector field for output values (RandomAccess container)
     /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
     ///
     /// @param[out] output the vector of output values (a scalar or
@@ -603,17 +681,46 @@ namespace DGtal
     ///
     /// @param itB the start of the range of surfels.
     /// @param itE past the end of the range of surfels.
-    template <typename VectorOutput, typename SurfelRangeConstIterator>
+    template <typename VectorFieldOutput, typename SurfelRangeConstIterator>
     void
-    getOutputVectorU2( VectorOutput& output,
-		       SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    getOutputVectorFieldU2( VectorFieldOutput& output,
+                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
     {
+      const Dimension N = u2.size();
       Index i = 0;
       for ( auto it = itB; it != itE; ++it, ++i )
 	{
 	  Index idx = surfel2idx[ *it ];
-	  for ( Dimension k = 0; k < u2.size(); ++k )
+          ASSERT( output[ i ].size() >= N );
+	  for ( Dimension k = 0; k < N; ++k )
 	    output[ i ][ k ] = u2[ k ].myContainer( idx );
+	}
+    }
+
+    /// Given a range of surfels [itB,itE), returns in \a output the
+    /// regularized scalar field u.
+    ///
+    /// @tparam ScalarFieldOutput the type of scalar field for output values (RandomAccess container)
+    /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+    ///
+    /// @param[out] output the vector of output values (a scalar or
+    /// vector field depending on input).
+    ///
+    /// @param itB the start of the range of surfels.
+    /// @param itE past the end of the range of surfels.
+    template <typename ScalarFieldOutput, typename SurfelRangeConstIterator>
+    void
+    getOutputScalarFieldU2( ScalarFieldOutput& output,
+                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    {
+      const Dimension N = u2.size();
+      ASSERT( N == 1 && "[SurfaceATSolver::getOutputScalarFieldU2] "
+              "You try to output a scalar field from a vector field." );
+      Index i = 0;
+      for ( auto it = itB; it != itE; ++it, ++i )
+	{
+	  Index idx = surfel2idx[ *it ];
+          output[ i ] = u2[ 0 ].myContainer( idx );
 	}
     }
     
