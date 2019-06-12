@@ -73,19 +73,20 @@ int main( int argc, char** argv )
   typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
   const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
   SurfaceATSolver< KSpace > at_solver(calculus, 1);
-  std::map< Surfel, RealVector > input_data;
-  for ( size_t i = 0; i < surfels.size(); i++ )
-    input_data[ surfels[ i ] ] = ii_normals[ i ];
-  auto nb = at_solver.initVectorInput( input_data, false );
-  if ( nb != surfels.size() )
-    trace.warning() << "Not all the surfels have an input data." << endl;
+  at_solver.initInputVectorFieldU2( ii_normals, surfels.cbegin(), surfels.cend() );
+  // std::map< Surfel, RealVector > input_data;
+  // for ( size_t i = 0; i < surfels.size(); i++ )
+  //   input_data[ surfels[ i ] ] = ii_normals[ i ];
+  // auto nb = at_solver.initVectorInput( input_data, false );
+  // if ( nb != surfels.size() )
+  //   trace.warning() << "Not all the surfels have an input data." << endl;
   at_solver.setUp( alpha_at, lambda_at );
   at_solver.solveGammaConvergence( e1, e2, er );
   trace.endBlock();
 
   trace.beginBlock ( "Save AT normals as OBJ file" );
   auto at_normals = ii_normals;
-  at_solver.getOutputVectorU2( at_normals, surfels.cbegin(), surfels.cend() );
+  at_solver.getOutputVectorFieldU2( at_normals, surfels.cbegin(), surfels.cend() );
   SH3::RealPoints positions( surfels.size() );
   std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
 		  [&] (const SH3::SCell& c) { return embedder( c ); } );
