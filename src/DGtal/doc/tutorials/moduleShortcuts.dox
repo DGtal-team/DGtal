@@ -428,6 +428,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image, from a digitized implicit shape or from an indexed digital surface.
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
+  - Shortcuts::getCellRange: returns the k-dimensional cells of a digital surface in a non specified traversal order.
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
   - Shortcuts::getPointelRange: returns the pointels of a digital surface in the default order and optionnaly the map Pointel -> Index giving the indices of each pointel, or simply the pointels around a surfel.
   - Shortcuts::saveOBJ: several overloaded functions that save geometric elements as an OBJ file. You may save a digital surface as an OBJ file, with optionally positions, normals and colors information
