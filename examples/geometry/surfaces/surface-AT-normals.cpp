@@ -58,7 +58,8 @@ int main( int argc, char** argv )
   const double e2        = 0.25;
   const double er        = 2.0;
 
-  std::string volfile = argc > 1 ? argv[ 1 ] : examplesPath + "samples/Al.100.vol";
+  const string   volfile = argc > 1 ? argv[ 1 ] : examplesPath + "samples/Al.100.vol";
+  const double threshold = argc > 2 ? atof( argv[ 2 ] ) : 0.5;
   auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
   params( "colormap", "Tics" );
   trace.beginBlock ( "Load vol file -> build digital surface -> estimate II normals." );
@@ -103,13 +104,13 @@ int main( int argc, char** argv )
 				      "output-vf-at-normals.obj",
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
   SH3::Scalars features( linels.size() );
-  at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend() );
+  at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(),
+                                    at_solver.Maximum );
   SH3::RealPoints  f0;
   SH3::RealVectors f1;
   for ( size_t i = 0; i < linels.size(); i++ )
     {
-      trace.info() << features[ i ] << " " << linels[ i ] << " " << (* K.uDirs( linels[ i ] )) << std::endl;
-      if ( features[ i ] < 0.5 )
+      if ( features[ i ] < threshold )
         {
           const Cell  linel = linels[ i ];
           const Dimension d = * K.uDirs( linel );
@@ -124,20 +125,6 @@ int main( int argc, char** argv )
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
 
   trace.endBlock();
-  // int nb = 0;
-  // int nbok = 0;
-  // for ( SH3::SCell s : surfels )
-  //   {
-  //     trace.info() << "s = " << s << std::endl;
-  //     auto f = K.uFaces( K.unsigns( s ) );
-  //     for ( SH3::Cell c : f ) 
-  //       trace.info() << c << std::endl;
-  //     std::set<Cell> faces( f.cbegin(), f.cend() );
-  //     if ( faces.size() != 8 ) trace.warning() << "Not enough faces" << std::endl;
-  //     nbok += ( faces.size() == 8 ) ? 1 : 0;
-  //     nb   += 1;
-  //   }
-  // trace.info() << nbok << "/" << nb << " success." << std::endl;
   return 0;
 }
 //                                                                           //
