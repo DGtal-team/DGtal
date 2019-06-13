@@ -1872,12 +1872,14 @@ namespace DGtal
 	    {
 	      RealPoint    p0 = positions[ i ];
 	      RealPoint    p1 = p0 + vf[ i ];
-	      unsigned int mc = std::max_element( vf.begin(), vf.end() ) - vf.begin();
+              RealVector    v = vf[ i ];
+              RealVector absv = RealVector( fabs( v[ 0 ] ), fabs( v[ 1 ] ), fabs( v[ 2 ] ) );
+	      unsigned int mc = std::max_element( absv.begin(), absv.end() ) - absv.begin();
 	      RealVector   b  =
 		mc == 2 ? RealVector( 1, 0, 0 ) :
 		mc == 1 ? RealVector( 0, 0, 1 ) : RealVector( 0, 1, 0 );
-	      RealVector   e0 = vf[ i ].crossProduct( b ).getNormalized();
-	      RealVector   e1 = vf[ i ].crossProduct( e0 ).getNormalized();
+	      RealVector   e0 = v.crossProduct( b ).getNormalized();
+	      RealVector   e1 = v.crossProduct( e0 ).getNormalized();
 	      RealPoint    t[4] = {  thickness * e0,  thickness * e1,
 				    -thickness * e0, -thickness * e1 };
 	      for ( unsigned int j = 0; j < 4; ++j ) {
