@@ -1387,14 +1387,14 @@ namespace DGtal
       ///
       /// @return a range of cells as a vector.
       template <typename TDigitalSurfaceContainer>
-      static PointelRange
+      static CellRange
       getCellRange
       ( Cell2Index& c2i,
         CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
         const Dimension k )
       {
-        PointelRange result;
-        result.reserve( surface->size() );
+        CellRange result;
+        result.reserve( 2 * surface->size() + 100 );
         const KSpace& K = refKSpace( surface );
         Idx n = 0;
         for ( auto&& surfel : *surface )

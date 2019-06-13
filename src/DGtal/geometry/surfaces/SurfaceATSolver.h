@@ -773,12 +773,18 @@ namespace DGtal
           for ( auto it = itB; it != itE; ++it, ++i )
             {
               const Cell  linel = *it;
-              const Dimension i = * K.uDirs( linel );
-              const Cell     p0 = K.uIncident( linel, i, false );
-              const Cell     p1 = K.uIncident( linel, i, true  );
+              const Dimension d = * K.uDirs( linel );
+              const Cell     p0 = K.uIncident( linel, d, false );
+              const Cell     p1 = K.uIncident( linel, d, true  );
               const Index  idx0 = ptrCalculus->getCellIndex( p0 );
               const Index  idx1 = ptrCalculus->getCellIndex( p1 );
+              // trace.info() << "linel=" << linel << " p0=" << p0 << " p1=" << p1 << std::endl;
+              // trace.info() << " i0=" << idx0 << " i1=" << idx1
+              //              << " v[i0]=" << v0.myContainer( idx0 ) 
+              //              << " v[i1]=" << v0.myContainer( idx1 ) 
+              //              << std::endl;
               output[ i ] = 0.5 * ( v0.myContainer( idx0 ) + v0.myContainer( idx1 ) );
+              // trace.info() << " output[" << i << "]=" << output[ i ] << std::endl;
             }
         }
       else if ( k == 2 )
@@ -786,9 +792,9 @@ namespace DGtal
           for ( auto it = itB; it != itE; ++it, ++i )
             {
               const Cell   face = *it;
-              const Dimension i = * K.uDirs( face );
-              const Cell     l0 = K.uIncident( face, i, false );
-              const Cell     l1 = K.uIncident( face, i, true  );
+              const Dimension d = * K.uDirs( face );
+              const Cell     l0 = K.uIncident( face, d, false );
+              const Cell     l1 = K.uIncident( face, d, true  );
               const Dimension j = * K.uDirs( l0 );
               const Cell    p00 = K.uIncident( l0, j, false );
               const Cell    p01 = K.uIncident( l0, j, true  );

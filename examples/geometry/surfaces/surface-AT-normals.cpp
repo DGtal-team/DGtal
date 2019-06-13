@@ -108,12 +108,13 @@ int main( int argc, char** argv )
   SH3::RealVectors f1;
   for ( size_t i = 0; i < linels.size(); i++ )
     {
-      if ( features[ i ] <= 0.5 )
+      trace.info() << features[ i ] << " " << linels[ i ] << " " << (* K.uDirs( linels[ i ] )) << std::endl;
+      if ( features[ i ] < 0.5 )
         {
           const Cell  linel = linels[ i ];
-          const Dimension i = * K.uDirs( linel );
-          const Cell     p0 = K.uIncident( linel, i, false );
-          const Cell     p1 = K.uIncident( linel, i, true  );
+          const Dimension d = * K.uDirs( linel );
+          const Cell     p0 = K.uIncident( linel, d, false );
+          const Cell     p1 = K.uIncident( linel, d, true  );
           f0.push_back( uembedder( p0 ) );
           f1.push_back( uembedder( p1 ) - uembedder( p0 ) );
         }
@@ -123,6 +124,20 @@ int main( int argc, char** argv )
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
 
   trace.endBlock();
+  // int nb = 0;
+  // int nbok = 0;
+  // for ( SH3::SCell s : surfels )
+  //   {
+  //     trace.info() << "s = " << s << std::endl;
+  //     auto f = K.uFaces( K.unsigns( s ) );
+  //     for ( SH3::Cell c : f ) 
+  //       trace.info() << c << std::endl;
+  //     std::set<Cell> faces( f.cbegin(), f.cend() );
+  //     if ( faces.size() != 8 ) trace.warning() << "Not enough faces" << std::endl;
+  //     nbok += ( faces.size() == 8 ) ? 1 : 0;
+  //     nb   += 1;
+  //   }
+  // trace.info() << nbok << "/" << nb << " success." << std::endl;
   return 0;
 }
 //                                                                           //
