@@ -47,7 +47,7 @@ using  DGtal::functions::setops::operator^;
 
 
 ////////////////////////////// unit tests /////////////////////////////////
-TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
+TEMPLATE_TEST_CASE( "SetFunctions module unit tests", "[set_functions]",
                       Container,
                       std::vector<int>,
                       std::list<int>, 
