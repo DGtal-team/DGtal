@@ -49,6 +49,7 @@ int main( int argc, char** argv )
   typedef Shortcuts< KSpace >              SH3;
   typedef ShortcutsGeometry< KSpace >      SHG3;
   typedef SH3::Surfel                      Surfel;
+  typedef SH3::Cell                        Cell;
   typedef SHG3::RealVector                 RealVector;
 
   const double alpha_at  = 0.1;
@@ -65,7 +66,9 @@ int main( int argc, char** argv )
   auto K         = SH3::getKSpace( bimage, params );
   auto surface   = SH3::makeDigitalSurface( bimage, K, params );
   auto surfels   = SH3::getSurfelRange( surface, params );
+  auto linels    = SH3::getCellRange( surface, 1 );
   auto ii_normals= SHG3::getIINormalVectors( bimage, surfels, params );
+  auto uembedder = SH3::getCellEmbedder( K );
   auto embedder  = SH3::getSCellEmbedder( K );
   trace.endBlock();
 
@@ -74,12 +77,6 @@ int main( int argc, char** argv )
   const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
   SurfaceATSolver< KSpace > at_solver(calculus, 1);
   at_solver.initInputVectorFieldU2( ii_normals, surfels.cbegin(), surfels.cend() );
-  // std::map< Surfel, RealVector > input_data;
-  // for ( size_t i = 0; i < surfels.size(); i++ )
-  //   input_data[ surfels[ i ] ] = ii_normals[ i ];
-  // auto nb = at_solver.initVectorInput( input_data, false );
-  // if ( nb != surfels.size() )
-  //   trace.warning() << "Not all the surfels have an input data." << endl;
   at_solver.setUp( alpha_at, lambda_at );
   at_solver.solveGammaConvergence( e1, e2, er );
   trace.endBlock();
@@ -98,11 +95,33 @@ int main( int argc, char** argv )
   std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
 		  [&] (const SH3::SCell& c) { return embedder( c ); } );
   
-  bool ok  = SH3::saveOBJ( surface, at_normals, colors,
+  bool ok1  = SH3::saveOBJ( surface, at_normals, SH3::Colors(),
 				  "output-surface.obj" );
-  bool ok2 = SH3::saveVectorFieldOBJ( positions, at_normals, 0.05, SH3::Colors(),
-				      "output-at-normals.obj",
+  bool ok2 = SH3::saveOBJ( surface, at_normals, colors,
+				  "output-surface-at-normals.obj" );
+  bool ok3 = SH3::saveVectorFieldOBJ( positions, at_normals, 0.05, SH3::Colors(),
+				      "output-vf-at-normals.obj",
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+  SH3::Scalars features( linels.size() );
+  at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend() );
+  SH3::RealPoints  f0;
+  SH3::RealVectors f1;
+  for ( size_t i = 0; i < linels.size(); i++ )
+    {
+      if ( features[ i ] <= 0.5 )
+        {
+          const Cell  linel = linels[ i ];
+          const Dimension i = * K.uDirs( linel );
+          const Cell     p0 = K.uIncident( linel, i, false );
+          const Cell     p1 = K.uIncident( linel, i, true  );
+          f0.push_back( uembedder( p0 ) );
+          f1.push_back( uembedder( p1 ) - uembedder( p0 ) );
+        }
+    }
+  bool ok4 = SH3::saveVectorFieldOBJ( f0, f1, 0.1, SH3::Colors(),
+				      "output-features.obj",
+				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+
   trace.endBlock();
   return 0;
 }

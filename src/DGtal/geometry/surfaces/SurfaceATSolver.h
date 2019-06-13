@@ -58,15 +58,30 @@ namespace DGtal
   // template class SurfaceATSolver
   /**
   * Description of template class 'SurfaceATSolver' <p> \brief Aim:
-  * This class solves Ambrosio-Tortorelli functional on a digital
-  * surface for \a u a (vector of) 2-form(s) and \a v a 0-form. \a u
-  * is a regularized approximation of an input vector data \a g, while
-  * \a v represents the set of discontinuities of \a u.
-  * The norm chosen for \a u is the l2-norm.
+  * This class solves Ambrosio-Tortorelli functional on a
+  * two-dimensional digital space (a 2D grid or 2D digital surface)
+  * for a piecewise smooth scalar/vector function \a u represented as
+  * one/several 2-form(s) and a discontinuity function \a v
+  * represented as a 0-form. The 2-form(s) \a u is a regularized
+  * approximation of an input vector data \a g, while \a v represents
+  * the set of discontinuities of \a u.  The norm chosen for \a u is
+  * the l2-norm.
   *
   * @tparam TKSpace any model of CCellularGridSpaceND, e.g KhalimskySpaceND
   * @tparam TLinearAlgebra any back-end for performing linear algebra, default is EigenLinearAlgebraBackend.
   *
+  * \code 
+  * // Typical use (with appropriate definitions for types and variables).
+  * typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+  * const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
+  * SurfaceATSolver< KSpace > at_solver(calculus, 1);
+  * at_solver.initInputVectorFieldU2( normals, surfels.cbegin(), surfels.cend() );
+  * at_solver.setUp( alpha_at, lambda_at );
+  * at_solver.solveGammaConvergence( 2.0, 0.5, 2.0 );
+  * at_solver.getOutputVectorFieldU2( normals, surfels.cbegin(), surfels.cend() );
+  * \encode
+  *
+  * @see surface-at-normals.cpp
   */
   template < typename TKSpace,
              typename TLinearAlgebra = EigenLinearAlgebraBackend >
@@ -329,8 +344,8 @@ namespace DGtal
     /// @tparam ScalarVector any type representing a vector/array of scalars (float, double)
     template <typename ScalarVector>
     Index
-    initVectorInput( const std::map<Surfel,ScalarVector>& input,
-		     bool normalize = false )
+    initVectorMapInputU2( const std::map<Surfel,ScalarVector>& input,
+                          bool normalize = false )
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initVectorInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
@@ -369,7 +384,7 @@ namespace DGtal
     /// @tparam Scalar any type representing a scalar (float, double)
     template <typename Scalar>
     Index
-    initScalarInput( const std::map<Surfel,Scalar>& input )
+    initScalarMapInputU2( const std::map<Surfel,Scalar>& input )
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initScalarInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
@@ -723,6 +738,71 @@ namespace DGtal
           output[ i ] = u2[ 0 ].myContainer( idx );
 	}
     }
+
+    /// Given a range of pointels, linels or 2-cells [itB,itE), returns in \a output the
+    /// feature vector \a v (the average of \a v for linels/surfels).
+    ///
+    /// @tparam ScalarFieldOutput the type of scalar field for output values (RandomAccess container)
+    /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
+    ///
+    /// @param[out] output the vector of output values (a scalar or
+    /// vector field depending on input).
+    ///
+    /// @param itB the start of the range of cells.
+    /// @param itE past the end of the range of cells.
+    template <typename ScalarFieldOutput, typename CellRangeConstIterator>
+    void
+    getOutputScalarFieldV0( ScalarFieldOutput& output,
+                            CellRangeConstIterator itB, CellRangeConstIterator itE )
+    {
+      const KSpace& K = ptrCalculus->myKSpace;
+      const Dimension k = K.uDim( *itB );
+      ASSERT( k <= 2 );
+      Index i = 0;
+      if ( k == 0 )
+        {
+          for ( auto it = itB; it != itE; ++it, ++i )
+            {
+              const Cell pointel = *it;
+              const Index    idx = ptrCalculus->getCellIndex( pointel );
+              output[ i ] = v0.myContainer( idx );
+            }
+        }
+      else if ( k == 1 )
+        {
+          for ( auto it = itB; it != itE; ++it, ++i )
+            {
+              const Cell  linel = *it;
+              const Dimension i = * K.uDirs( linel );
+              const Cell     p0 = K.uIncident( linel, i, false );
+              const Cell     p1 = K.uIncident( linel, i, true  );
+              const Index  idx0 = ptrCalculus->getCellIndex( p0 );
+              const Index  idx1 = ptrCalculus->getCellIndex( p1 );
+              output[ i ] = 0.5 * ( v0.myContainer( idx0 ) + v0.myContainer( idx1 ) );
+            }
+        }
+      else if ( k == 2 )
+        {
+          for ( auto it = itB; it != itE; ++it, ++i )
+            {
+              const Cell   face = *it;
+              const Dimension i = * K.uDirs( face );
+              const Cell     l0 = K.uIncident( face, i, false );
+              const Cell     l1 = K.uIncident( face, i, true  );
+              const Dimension j = * K.uDirs( l0 );
+              const Cell    p00 = K.uIncident( l0, j, false );
+              const Cell    p01 = K.uIncident( l0, j, true  );
+              const Cell    p10 = K.uIncident( l1, j, false );
+              const Cell    p11 = K.uIncident( l1, j, true  );
+              const Index idx00 = ptrCalculus->getCellIndex( p00 );
+              const Index idx01 = ptrCalculus->getCellIndex( p01 );
+              const Index idx10 = ptrCalculus->getCellIndex( p10 );
+              const Index idx11 = ptrCalculus->getCellIndex( p11 );
+              output[ i ] = 0.25 * ( v0.myContainer( idx00 ) + v0.myContainer( idx01 )
+                                     + v0.myContainer( idx10 ) + v0.myContainer( idx11 ) );
+            }
+        }
+    }
     
     /// Computes the map that tells for each surfel the smallest
     /// epsilon for which the surfel was a discontinuity (more
@@ -733,34 +813,34 @@ namespace DGtal
     /// v (below u is discontinuous, above u is continuous)
     void updateSmallestEpsilonMap( const double threshold = .5 )
     {
-        const KSpace& K = ptrCalculus->myKSpace;
-        for ( const SCell surfel : ptrCalculus->template getIndexedSCells<2, PRIMAL>() )
+      const KSpace& K = ptrCalculus->myKSpace;
+      for ( const SCell surfel : ptrCalculus->template getIndexedSCells<2, PRIMAL>() )
         {
-            const Cell face            = K.unsigns( surfel );
-            const Dimension    k1      = * K.uDirs( face );
-            const Cell   l0      = K.uIncident( face, k1, false );
-            const Cell   l1      = K.uIncident( face, k1, true );
-            const Dimension    k2      = * K.uDirs( l0 );
-            const Cell   ll0     = K.uIncident( face, k2, false );
-            const Cell   ll1     = K.uIncident( face, k2, true );
-            const Cell   p00     = K.uIncident( l0, k2, false );
-            const Cell   p01     = K.uIncident( l0, k2, true );
-            const Cell   p10     = K.uIncident( l1, k2, false );
-            const Cell   p11     = K.uIncident( l1, k2, true );
+          const Cell face            = K.unsigns( surfel );
+          const Dimension    k1      = * K.uDirs( face );
+          const Cell   l0      = K.uIncident( face, k1, false );
+          const Cell   l1      = K.uIncident( face, k1, true );
+          const Dimension    k2      = * K.uDirs( l0 );
+          const Cell   ll0     = K.uIncident( face, k2, false );
+          const Cell   ll1     = K.uIncident( face, k2, true );
+          const Cell   p00     = K.uIncident( l0, k2, false );
+          const Cell   p01     = K.uIncident( l0, k2, true );
+          const Cell   p10     = K.uIncident( l1, k2, false );
+          const Cell   p11     = K.uIncident( l1, k2, true );
 
-            std::vector<double>  features( 4 );
-            features[ 0 ] = v0.myContainer( ptrCalculus->getCellIndex( p00 ) );
-            features[ 1 ] = v0.myContainer( ptrCalculus->getCellIndex( p01 ) );
-            features[ 2 ] = v0.myContainer( ptrCalculus->getCellIndex( p10 ) );
-            features[ 3 ] = v0.myContainer( ptrCalculus->getCellIndex( p11 ) );
-            std::sort( features.begin(), features.end() );
+          std::vector<double>  features( 4 );
+          features[ 0 ] = v0.myContainer( ptrCalculus->getCellIndex( p00 ) );
+          features[ 1 ] = v0.myContainer( ptrCalculus->getCellIndex( p01 ) );
+          features[ 2 ] = v0.myContainer( ptrCalculus->getCellIndex( p10 ) );
+          features[ 3 ] = v0.myContainer( ptrCalculus->getCellIndex( p11 ) );
+          std::sort( features.begin(), features.end() );
 
-            if ( features[ 1 ] <= threshold )
+          if ( features[ 1 ] <= threshold )
             {
-                auto it = smallest_epsilon_map.find( surfel );
-                if ( it != smallest_epsilon_map.end() )
-		  it->second = std::min( epsilon, it->second );
-                else smallest_epsilon_map[ surfel ] = epsilon;
+              auto it = smallest_epsilon_map.find( surfel );
+              if ( it != smallest_epsilon_map.end() )
+                it->second = std::min( epsilon, it->second );
+              else smallest_epsilon_map[ surfel ] = epsilon;
             }
         }
     }
