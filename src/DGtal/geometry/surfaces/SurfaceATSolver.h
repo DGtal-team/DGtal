@@ -95,6 +95,13 @@ namespace DGtal
     typedef SurfaceATSolver< KSpace, LinearAlgebra >             Self;
 
     static const Dimension dimension = KSpace::dimension;
+
+    /// Specifies how to merge the different values of 0-form v at cell vertices when
+    /// outputing the 0-form v for a range of cells (either pointels, linels, surfels).
+    enum CellOutputPolicy { Average, ///< compute average values at cell vertices
+                            Minimum, ///< compute minimum value at cell vertices,
+                            Maximum, ///< compute maximum value at cell vertices
+    };
     typedef typename KSpace::Space                               Space;
     typedef typename Space::RealVector                           RealVector;
     typedef typename RealVector::Component                       Scalar;
@@ -748,12 +755,14 @@ namespace DGtal
     /// @param[out] output the vector of output values (a scalar or
     /// vector field depending on input).
     ///
-    /// @param itB the start of the range of cells.
-    /// @param itE past the end of the range of cells.
+    /// @param[in] itB the start of the range of cells.
+    /// @param[in] itE past the end of the range of cells.
+    /// @param[in] policy the chosen policy for outputing v values for a given cell.
     template <typename ScalarFieldOutput, typename CellRangeConstIterator>
     void
     getOutputScalarFieldV0( ScalarFieldOutput& output,
-                            CellRangeConstIterator itB, CellRangeConstIterator itE )
+                            CellRangeConstIterator itB, CellRangeConstIterator itE,
+                            CellOutputPolicy policy = CellOutputPolicy::Average )
     {
       const KSpace& K = ptrCalculus->myKSpace;
       const Dimension k = K.uDim( *itB );
@@ -778,13 +787,14 @@ namespace DGtal
               const Cell     p1 = K.uIncident( linel, d, true  );
               const Index  idx0 = ptrCalculus->getCellIndex( p0 );
               const Index  idx1 = ptrCalculus->getCellIndex( p1 );
-              // trace.info() << "linel=" << linel << " p0=" << p0 << " p1=" << p1 << std::endl;
-              // trace.info() << " i0=" << idx0 << " i1=" << idx1
-              //              << " v[i0]=" << v0.myContainer( idx0 ) 
-              //              << " v[i1]=" << v0.myContainer( idx1 ) 
-              //              << std::endl;
-              output[ i ] = 0.5 * ( v0.myContainer( idx0 ) + v0.myContainer( idx1 ) );
-              // trace.info() << " output[" << i << "]=" << output[ i ] << std::endl;
+              switch (policy) {
+              case CellOutputPolicy::Average: output[ i ] = 0.5 * ( v0.myContainer( idx0 ) + v0.myContainer( idx1 ) );
+                break;
+              case CellOutputPolicy::Minimum: output[ i ] = std::min( v0.myContainer( idx0 ), v0.myContainer( idx1 ) );
+                break;
+              case CellOutputPolicy::Maximum: output[ i ] = std::max( v0.myContainer( idx0 ), v0.myContainer( idx1 ) );
+                break;
+              }
             }
         }
       else if ( k == 2 )
@@ -804,8 +814,20 @@ namespace DGtal
               const Index idx01 = ptrCalculus->getCellIndex( p01 );
               const Index idx10 = ptrCalculus->getCellIndex( p10 );
               const Index idx11 = ptrCalculus->getCellIndex( p11 );
-              output[ i ] = 0.25 * ( v0.myContainer( idx00 ) + v0.myContainer( idx01 )
-                                     + v0.myContainer( idx10 ) + v0.myContainer( idx11 ) );
+              switch (policy) {
+              case CellOutputPolicy::Average:
+                output[ i ] = 0.25 * ( v0.myContainer( idx00 ) + v0.myContainer( idx01 )
+                                       + v0.myContainer( idx10 ) + v0.myContainer( idx11 ) );
+                break;
+              case CellOutputPolicy::Minimum:
+                output[ i ] = std::min( std::min( v0.myContainer( idx00 ), v0.myContainer( idx01 ) ),
+                                        std::min( v0.myContainer( idx10 ), v0.myContainer( idx11 ) ) );
+                break;
+              case CellOutputPolicy::Maximum:
+                output[ i ] = std::max( std::max( v0.myContainer( idx00 ), v0.myContainer( idx01 ) ),
+                                        std::max( v0.myContainer( idx10 ), v0.myContainer( idx11 ) ) );
+                break;
+              }
             }
         }
     }
