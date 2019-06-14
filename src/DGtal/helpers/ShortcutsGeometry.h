@@ -48,6 +48,8 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
+#include "DGtal/geometry/surfaces/SurfaceATSolver.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -987,30 +989,41 @@ namespace DGtal
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
+      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       static Parameters parametersATApproximation()
       {
         return Parameters
           ( "at-alpha",          0.1 )
           ( "at-lambda",         0.025 )
-          ( "at-epsilon",        0.5 )
+          ( "at-epsilon",        0.25 )
           ( "at-epsilon-start",  2.0 )
           ( "at-epsilon-ratio",  2.0 )
           ( "at-max-iter",      10 )
-          ( "at-diff-v-max",     0.0001 );
+          ( "at-diff-v-max",     0.0001 )
+          ( "at-v-policy",   "Maximum" );
       }
 
 
-      /// Given a range of surfels [itB,itE) and an input vector field,
-      /// initializes the AT 2-forms u and g. The 0-form v is itself
-      /// initialized to 1 everywhere.
+      /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
+      /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
       ///
+      /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
-      /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
       ///
+      /// @param[in] surface the digital surface
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      /// @param[in] params the parameters:
+      ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
+      ///   - at-lambda       [  0.025 ]: parameter lambda in AT (1/length of discontinuities)
+      ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
+      ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
+      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       /// @param[in] input the input vector field (a vector of vector values)
       ///
-      /// @param itB the start of the range of surfels.
-      /// @param itE past the end of the range of surfels.
+      /// @return the piecewise-smooth approximation of \a input.
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput>
       static
@@ -1021,20 +1034,86 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
-        int      verbose   = params[ "verbose"   ].as<int>();
-        Scalar   alpha_at  = params[ "at-alpha"  ].as<Scalar>();
-        Scalar   lambda_at = params[ "at-lambda" ].as<Scalar>();
+        int      verbose   = params[ "verbose"          ].as<int>();
+        Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
+        Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
         Scalar   epsilon1  = params[ "at-epsilon-start" ].as<Scalar>();
-        Scalar   epsilon2  = params[ "at-epsilon" ].as<Scalar>();
+        Scalar   epsilon2  = params[ "at-epsilon"       ].as<Scalar>();
         Scalar   epsilonr  = params[ "at-epsilon-ratio" ].as<Scalar>();
+        int      max_iter  = params[ "at-max-iter"      ].as<int>();
+        Scalar   diff_v_max= params[ "at-diff-v-max"    ].as<Scalar>();
         typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
         const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
         SurfaceATSolver< KSpace > at_solver( calculus, verbose );
         at_solver.initInputVectorFieldU2( input, surfels.cbegin(), surfels.cend() );
         at_solver.setUp( alpha_at, lambda_at );
-        at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr );
+        at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
         auto output = input;
         at_solver.getOutputVectorFieldU2( output, surfels.cbegin(), surfels.cend() );
+        return output;
+      }
+
+      /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
+      /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
+      /// Given a range of pointels, linels or 2-cells [itB,itE), it
+      /// also outputs the feature vector \a features, corresponding to
+      /// 0-form \a v in AT (the average of \a v for linels/surfels).
+      ///
+      /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
+      /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
+      /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
+      ///
+      /// @param[out] features the vector of scalar feature values (a scalar field where 1 means continuity and 0 discontinuity in the reconstruction), evaluated in the range[itB,itE).
+      /// @param[in] itB the start of the range of cells.
+      /// @param[in] itE past the end of the range of cells.
+      /// @param[in] surface the digital surface
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      /// @param[in] params the parameters:
+      ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
+      ///   - at-lambda       [  0.025 ]: parameter lambda in AT (1/length of discontinuities)
+      ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
+      ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
+      /// @param[in] input the input vector field (a vector of vector values)
+      ///
+      /// @return the piecewise-smooth approximation of \a input.
+      template <typename TAnyDigitalSurface,
+                typename VectorFieldInput,
+                typename CellRangeConstIterator>
+      static
+      VectorFieldInput
+      getATVectorFieldApproximation( Scalars&                       features,
+                                     CellRangeConstIterator         itB,
+                                     CellRangeConstIterator         itE,
+                                     CountedPtr<TAnyDigitalSurface> surface,
+                                     const SurfelRange&             surfels,
+                                     const VectorFieldInput&        input,
+                                     const Parameters&              params
+                                     = parametersATApproximation() | parametersGeometryEstimation() )
+      {
+        int      verbose   = params[ "verbose"          ].as<int>();
+        Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
+        Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
+        Scalar   epsilon1  = params[ "at-epsilon-start" ].as<Scalar>();
+        Scalar   epsilon2  = params[ "at-epsilon"       ].as<Scalar>();
+        Scalar   epsilonr  = params[ "at-epsilon-ratio" ].as<Scalar>();
+        int      max_iter  = params[ "at-max-iter"      ].as<int>();
+        Scalar   diff_v_max= params[ "at-diff-v-max"    ].as<Scalar>();
+        std::string policy = params[ "at-v-policy"      ].as<std::string>();
+        typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+        const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
+        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        at_solver.initInputVectorFieldU2( input, surfels.cbegin(), surfels.cend() );
+        at_solver.setUp( alpha_at, lambda_at );
+        at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
+        auto output = input;
+        at_solver.getOutputVectorFieldU2( output, surfels.cbegin(), surfels.cend() );
+        auto p = ( policy == "Average" ) ? at_solver.Average
+          :      ( policy == "Minimum" ) ? at_solver.Minimum
+          :                                at_solver.Maximum;
+        at_solver.getOutputScalarFieldV0( features, itB, itE, p );
         return output;
       }
       
