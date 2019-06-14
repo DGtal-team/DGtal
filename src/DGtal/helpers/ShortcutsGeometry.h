@@ -175,14 +175,17 @@ namespace DGtal
       // ----------------------- Static services --------------------------------------
     public:
 
-      // ----------------------- True geometry services ------------------------------
+      // ----------------------- Exact geometry services ------------------------------
+      /// @name Exact geometry services
+      /// @{
     public:
 
       /// @return the parameters used in ShortcutsGeometry.
       static Parameters defaultParameters()
       {
         return parametersShapeGeometry()
-          | parametersGeometryEstimation();
+          | parametersGeometryEstimation()
+          | parametersATApproximation();
       }
     
       /// @return the parameters and their default values which are used
@@ -386,9 +389,11 @@ namespace DGtal
         return n_true_estimations;
       }
     
-    
+      /// @}
     
       // --------------------------- geometry estimation ------------------------------
+      /// @name Geometry estimation services
+      /// @{
     public:
 
       /// @return the parameters and their default values which are used
@@ -965,11 +970,81 @@ namespace DGtal
                              std::back_inserter( mc_estimations ) );
           return mc_estimations;
         }
-    
 
-    
+      /// @}
+
+      // --------------------------- AT approximation ------------------------------
+      /// @name AT approximation services
+      /// @{
+    public:
+
+      /// @return the parameters and their default values which are used
+      /// to compute Ambrosio-Tortorelli piecewise-smooth approximation of a function.
+      ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
+      ///   - at-lambda       [  0.025 ]: parameter lambda in AT (1/length of discontinuities)
+      ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
+      ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
+      static Parameters parametersATApproximation()
+      {
+        return Parameters
+          ( "at-alpha",          0.1 )
+          ( "at-lambda",         0.025 )
+          ( "at-epsilon",        0.5 )
+          ( "at-epsilon-start",  2.0 )
+          ( "at-epsilon-ratio",  2.0 )
+          ( "at-max-iter",      10 )
+          ( "at-diff-v-max",     0.0001 );
+      }
+
+
+      /// Given a range of surfels [itB,itE) and an input vector field,
+      /// initializes the AT 2-forms u and g. The 0-form v is itself
+      /// initialized to 1 everywhere.
+      ///
+      /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
+      /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+      ///
+      /// @param[in] input the input vector field (a vector of vector values)
+      ///
+      /// @param itB the start of the range of surfels.
+      /// @param itE past the end of the range of surfels.
+      template <typename TAnyDigitalSurface,
+                typename VectorFieldInput>
+      static
+      VectorFieldInput
+      getATVectorFieldApproximation( CountedPtr<TAnyDigitalSurface> surface,
+                                     const SurfelRange&             surfels,
+                                     const VectorFieldInput&        input,
+                                     const Parameters&              params
+                                     = parametersATApproximation() | parametersGeometryEstimation() )
+      {
+        int      verbose   = params[ "verbose"   ].as<int>();
+        Scalar   alpha_at  = params[ "at-alpha"  ].as<Scalar>();
+        Scalar   lambda_at = params[ "at-lambda" ].as<Scalar>();
+        Scalar   epsilon1  = params[ "at-epsilon-start" ].as<Scalar>();
+        Scalar   epsilon2  = params[ "at-epsilon" ].as<Scalar>();
+        Scalar   epsilonr  = params[ "at-epsilon-ratio" ].as<Scalar>();
+        typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
+        const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
+        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        at_solver.initInputVectorFieldU2( input, surfels.cbegin(), surfels.cend() );
+        at_solver.setUp( alpha_at, lambda_at );
+        at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr );
+        auto output = input;
+        at_solver.getOutputVectorFieldU2( output, surfels.cbegin(), surfels.cend() );
+        return output;
+      }
+      
+      /// @}
+      
       // ------------------------- Error measures services -------------------------
-
+      /// @name Error measure services
+      /// @{
+    public:
+      
       /// Orient \a v so that it points in the same direction as \a
       /// ref_v (scalar product is then non-negative afterwards).
       ///
@@ -1090,7 +1165,11 @@ namespace DGtal
         return loo;
       }
 
+      /// @}
+
       // ----------------------- Standard services ------------------------------
+      /// @name Standard services
+      /// @{
     public:
 
       /**
@@ -1129,6 +1208,8 @@ namespace DGtal
        */
       ShortcutsGeometry & operator= ( ShortcutsGeometry && other ) = delete;
 
+      /// @}
+      
       // ----------------------- Interface --------------------------------------
     public:
 
