@@ -269,6 +269,37 @@ binary image and only traverse the surface.
 
 \image html goursat-imphi-H-ii-blender-small.png "Rendering of goursat-imp-H-ii.obj with a gridstep of 0.03125, more than 2e6 surfels."
 
+
+@subsubsection dgtal_shortcuts_ssec2_2_11 -> digitize -> save primal surface and VCM normal field as obj
+
+This example requires ShortcutsGeometry. You may estimate the normals
+to a surface by the VCM normal estimator.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_11s
+
+
+@subsubsection dgtal_shortcuts_ssec2_2_12 -> digitize -> II normals -> AT piecewise-smooth approximation
+
+This example requires ShortcutsGeometry. You may also use the
+Ambrosio-Tortorelli functional to get a piecewise smooth approximation
+of an arbitrary scalar or vector field over a surface. Here we use it
+to get a piecewise smooth approximation of the II normals.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_12s
+
+
+<table>
+<tr>
+<td>
+\image html al-150-at-normals.png "Piecewise-smooth normals displayed as colors on Al-150 dataset."
+</td>
+<td>
+\image html al-150-at-features.png "Discontinuities of the piecewise-smooth normal vector field on Al-150 dataset."
+</td>
+</tr>
+</table>
+
+
 @section dgtal_shortcuts_sec2b Few 2D examples
 
 We give below some minimalistic examples to show that shortcuts can
@@ -475,6 +506,11 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors
   - ShortcutsGeometry::getStatistic: return the statistic of the given range of values.
+
+-# ATApproximation services
+  - ShortcutsGeometry::parametersATApproximation: parameters related to piecewise-smooth AT approximation.
+  - ShortcutsGeometry::getATVectorFieldApproximation: returns the piecewise-smooth approximation of the given vector field, and optionnaly returns the locii of discontinuity
+
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
 

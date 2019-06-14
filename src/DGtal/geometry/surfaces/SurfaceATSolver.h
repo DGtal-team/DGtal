@@ -725,8 +725,7 @@ namespace DGtal
     /// @tparam ScalarFieldOutput the type of scalar field for output values (RandomAccess container)
     /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
     ///
-    /// @param[out] output the vector of output values (a scalar or
-    /// vector field depending on input).
+    /// @param[out] output the vector of output values (a scalar field), which should be of size `length(itB,itE)`
     ///
     /// @param itB the start of the range of surfels.
     /// @param itE past the end of the range of surfels.
@@ -752,8 +751,7 @@ namespace DGtal
     /// @tparam ScalarFieldOutput the type of scalar field for output values (RandomAccess container)
     /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
     ///
-    /// @param[out] output the vector of output values (a scalar or
-    /// vector field depending on input).
+    /// @param[out] output the vector of output scalar values (a scalar field), which should be of size `length(itB,itE)`
     ///
     /// @param[in] itB the start of the range of cells.
     /// @param[in] itE past the end of the range of cells.
