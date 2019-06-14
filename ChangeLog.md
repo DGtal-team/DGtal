@@ -7,6 +7,11 @@
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
 
+- *Tests*
+  - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
+    [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
+
+
 ## Bug Fixes
 
 - *Mathematics*
