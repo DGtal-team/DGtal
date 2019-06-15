@@ -357,12 +357,12 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( p1.dot(p2) == 30 );
       REQUIRE( dotProduct(p1, p2) == 30 );
 
-      REQUIRE( p1.cosineSimilarity(p1) == Approx(0.).margin(0.00001));
-      REQUIRE( p1.cosineSimilarity(-p1) == Approx(pi).margin(0.00001));
+      REQUIRE( p1.cosineSimilarity(p1) == Approx(0.).margin(0.000001));
+      REQUIRE( p1.cosineSimilarity(-p1) == Approx(pi).margin(0.000001));
       REQUIRE( p1.cosineSimilarity( Point(-2,1,-4,3) ) == Approx(pi/2).margin(0.000001) );
-      REQUIRE( cosineSimilarity(p1, p1) == Approx(0.).margin(0.00001) );
-      REQUIRE( cosineSimilarity(p1, -p1) == Approx(pi).margin(0.00001) );
-      REQUIRE( cosineSimilarity(p1, Point(-2,1,-4,3)) == Approx(pi/2).margin(0.00001) );
+      REQUIRE( cosineSimilarity(p1, p1) == Approx(0.).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, -p1) == Approx(pi).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, Point(-2,1,-4,3)) == Approx(pi/2).margin(0.000001) );
 
       REQUIRE( p1.isLower(p2) == false );
       REQUIRE( isLower(p1, p2) == false );
