@@ -101,10 +101,10 @@ TEST_CASE( "Point Vector Unit tests" )
 
 
 //! [exampleCatch-example2]
-TEMPLATE_TEST_CASE_3("STL Container test", "Description", T,
+TEMPLATE_TEST_CASE("STL Container test", "Description",
                      std::list<int>, std::vector<int>, std::set<int>)
 {
-  T defaultConstructed;
+  TestType defaultConstructed;
 
   SECTION("Size of the default constructed container")
     {
