@@ -1,5 +1,5 @@
 /**
-* @file doc-examples/DGtalCatch.h
+* @file
 * @author David COEURJOLLY <David Coeurjolly <david.coeurjolly@liris.cnrs.fr>>
 * @date   28 Aug. 2015
 * @brief  Header file to enable catch unit test framework in DGtal.
