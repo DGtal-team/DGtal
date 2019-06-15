@@ -234,6 +234,7 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sequences)", "[set_funct
   Size size_B        = B.size();
   Size size_AminusB  = AminusB.size();
   REQUIRE( size_AminusB <= size_A );
+  boost::ignore_unused_variable_warning(size_B);
 }
 
 TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sets)", "[set_functions]",
@@ -257,6 +258,7 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sets)", "[set_functions]
   Size size_B        = B.size();
   Size size_AminusB  = AminusB.size();
   REQUIRE( size_AminusB <= size_A );
+  boost::ignore_unused_variable_warning(size_B);
 }
 
 
