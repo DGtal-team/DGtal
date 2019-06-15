@@ -515,4 +515,37 @@ TEST_CASE( "4D Point Vector Unit tests" )
 }
 
 
+
+TEST_CASE("Benchmarking","[benchmark]")
+{
+  using Integer = DGtal::int32_t;
+  typedef PointVector<3, Integer> Point;
+  Point p1 = {1,2,3,4};
+  Point p2 = {3,4,5,6};
+ 
+  using Real = double;
+  typedef PointVector<3, Real> RPoint;
+  RPoint rp1 = {1,2,3,4};
+  RPoint rp2 = {3,4,5,6};
+
+  CHECK(p1.dot(p2) == Approx(26));
+  CHECK(rp1.dot(rp2) == Approx(26));
+
+  BENCHMARK("Dot product int")
+  {
+    p1.dot(p2);
+  };
+
+  BENCHMARK("Dot product double (with int->double cast)")
+  {
+    rp1.dot(p2);
+  };
+
+  BENCHMARK("Dot product double")
+  {
+    rp1.dot(rp2);
+  };
+
+}
+
 /** @ingroup Tests **/
