@@ -1020,7 +1020,6 @@ namespace DGtal
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
-      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       /// @param[in] input the input vector field (a vector of vector values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
@@ -1076,6 +1075,7 @@ namespace DGtal
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
+      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       /// @param[in] input the input vector field (a vector of vector values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
