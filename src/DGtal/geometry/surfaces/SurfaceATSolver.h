@@ -426,33 +426,80 @@ namespace DGtal
     /// @note all 2-cells have the same weight for the data term.
     void setUp( double a, double l )
     {
+      const Dimension N = g2.size();
       alpha     = a;
       lambda    = l;
       alpha_Id2 = alpha * ptrCalculus->template identity<2, PRIMAL>();
-      for ( Dimension k = 0; k < g2.size(); ++k )
+      for ( Dimension k = 0; k < N; ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
     }
 
-    /// Initializes the alpha and lambda parameters of AT, with weights on the 2-cells for the data terms.
+    /// Initializes the alpha and lambda parameters of AT, with
+    /// weights on the 2-cells for the data terms.
+    ///
     /// @param a the global alpha parameter
     /// @param l the global lambda parameter
     /// @param weights the map Surfel -> Scalar that gives the weight of each 2-cell in the data terms.
+    ///
+    /// @note Useful for inpainting applications or for adaptive
+    /// piecewise smooth reconstruction.
     void setUp( double a, double l, const std::map<Surfel,Scalar>& weights )
     {
+      const Dimension N = g2.size();
       alpha  = a;
       lambda = l;
       PrimalForm2 w_form( *ptrCalculus );
-      trace.info() << "Using variable weights for fitting (alpha term)" << std::endl;
-      for ( Dimension k = 0; k < g2.size(); ++k )
+      if ( verbose >= 2 )
+        trace.info() << "Using variable weights for fitting (alpha term)" << std::endl;
+      for ( Dimension k = 0; k < N; ++k )
         alpha_g2[ k ] = alpha * g2[ k ];
       for ( Index index = 0; index < size( 2 ); index++)
         {
           const SCell&           cell = g2[ 0 ].getSCell( index );
           const Scalar&             w = weights[ cell ];
           w_form.myContainer( index ) = w;
-          for ( Dimension k = 0; k < g2.size(); ++k )
+          for ( Dimension k = 0; k < N; ++k )
             alpha_g2[ k ].myContainer( index ) *= w;
         }
+      alpha_Id2 = alpha * diagonal( w_form );
+    }
+
+    /// Initializes the alpha and lambda parameters of AT, with
+    /// weights on the 2-cells for the data terms.
+    ///
+    /// @tparam AlphaWeights the type of RandomAccess container for alpha weight values
+    /// @tparam SurfelRangeConstIterator the type of iterator for traversing a range of surfels
+    ///
+    /// @param[in] a the global alpha parameter
+    /// @param[in] l the global lambda parameter
+    /// @param[in] weights the vector of alpha weights for each surfel of the range [itB,itE)
+    /// @param[in] itB the start of the range of surfels.
+    /// @param[in] itE past the end of the range of surfels.
+    ///
+    /// @note Useful for inpainting applications or for adaptive
+    /// piecewise smooth reconstruction.
+    template <typename AlphaWeights, typename SurfelRangeConstIterator>
+    void setUp( double a, double l,
+                const AlphaWeights& weights,
+                SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+    {
+      const Dimension N = g2.size();
+      alpha  = a;
+      lambda = l;
+      PrimalForm2 w_form( *ptrCalculus );
+      if ( verbose >= 2 )
+        trace.info() << "Using variable weights for fitting (alpha term)" << std::endl;
+      for ( Dimension k = 0; k < N; ++k )
+        alpha_g2[ k ] = alpha * g2[ k ];
+      Index i = 0;
+      for ( auto it = itB; it != itE; ++it, ++i )
+	{
+	  const Index idx = surfel2idx[ *it ];
+          const Scalar  w = weights[ i ];
+          w_form.myContainer( idx ) = w;
+	  for ( Dimension k = 0; k < N; ++k )
+	    alpha_g2[ k ].myContainer( idx ) *= w;
+	}
       alpha_Id2 = alpha * diagonal( w_form );
     }
 
@@ -462,7 +509,7 @@ namespace DGtal
     {
       epsilon     = e;
       l_1_over_4e = (lambda/4./epsilon)*PrimalForm0::ones(*ptrCalculus);
-      l_1_over_4e_Id0 = (lambda/4/epsilon)*ptrCalculus->template identity<0, PRIMAL>();
+      l_1_over_4e_Id0 = (lambda/4./epsilon)*ptrCalculus->template identity<0, PRIMAL>();
     }
 
     /// @}
