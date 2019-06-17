@@ -34,7 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
-#include "DGtal/geometry/surfaces/SurfaceATSolver.h"
+#include "DGtal/dec/ATSolver2D.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Creating AT solver for digital surface" );
   typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
   const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
-  SurfaceATSolver< KSpace > at_solver(calculus, 1);
+  ATSolver2D< KSpace > at_solver(calculus, 1);
   at_solver.initInputVectorFieldU2( ii_normals, surfels.cbegin(), surfels.cend() );
   at_solver.setUp( alpha_at, lambda_at );
   at_solver.solveGammaConvergence( e1, e2, er );
