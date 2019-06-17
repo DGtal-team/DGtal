@@ -49,7 +49,7 @@
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
-#include "DGtal/geometry/surfaces/SurfaceATSolver.h"
+#include "DGtal/dec/ATSolver2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -1043,7 +1043,7 @@ namespace DGtal
         Scalar   diff_v_max= params[ "at-diff-v-max"    ].as<Scalar>();
         typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
         const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
-        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        ATSolver2D< KSpace > at_solver( calculus, verbose );
         at_solver.initInputVectorFieldU2( input, surfels.cbegin(), surfels.cend() );
         at_solver.setUp( alpha_at, lambda_at );
         at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
@@ -1104,7 +1104,7 @@ namespace DGtal
         std::string policy = params[ "at-v-policy"      ].as<std::string>();
         typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
         const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
-        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        ATSolver2D< KSpace > at_solver( calculus, verbose );
         at_solver.initInputVectorFieldU2( input, surfels.cbegin(), surfels.cend() );
         at_solver.setUp( alpha_at, lambda_at );
         at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
@@ -1156,7 +1156,7 @@ namespace DGtal
         Scalar   diff_v_max= params[ "at-diff-v-max"    ].as<Scalar>();
         typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
         const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
-        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        ATSolver2D< KSpace > at_solver( calculus, verbose );
         at_solver.initInputScalarFieldU2( input, surfels.cbegin(), surfels.cend() );
         at_solver.setUp( alpha_at, lambda_at );
         at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
@@ -1220,7 +1220,7 @@ namespace DGtal
         std::string policy = params[ "at-v-policy"      ].as<std::string>();
         typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
         const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.cbegin(), surfels.cend() );
-        SurfaceATSolver< KSpace > at_solver( calculus, verbose );
+        ATSolver2D< KSpace > at_solver( calculus, verbose );
         at_solver.initInputScalarFieldU2( input, surfels.cbegin(), surfels.cend() );
         at_solver.setUp( alpha_at, lambda_at );
         at_solver.solveGammaConvergence( epsilon1, epsilon2, epsilonr, false, diff_v_max, max_iter );
