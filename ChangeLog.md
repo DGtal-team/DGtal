@@ -9,7 +9,8 @@
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
-    [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
+    (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
+    (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
 
 ## Bug Fixes
