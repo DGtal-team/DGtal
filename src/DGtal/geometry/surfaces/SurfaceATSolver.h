@@ -267,12 +267,17 @@ namespace DGtal
     ///
     /// @param[in] input the input vector field (a vector of vector values)
     ///
-    /// @param itB the start of the range of surfels.
-    /// @param itE past the end of the range of surfels.
+    /// @param[in] itB the start of the range of surfels.
+    /// @param[in] itE past the end of the range of surfels.
+    ///
+    /// @param[in] normalize when 'true', the input is supposed to be
+    /// a unit vector field and the solver will output a unit
+    /// regularized vector field at the end of each minimization step.
     template <typename VectorFieldInput, typename SurfelRangeConstIterator>
     void
     initInputVectorFieldU2( const VectorFieldInput& input,
-                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
+                            SurfelRangeConstIterator itB, SurfelRangeConstIterator itE,
+                            bool normalize = false )
     {
       if ( verbose >= 1 )
         trace.beginBlock( "[SurfaceATSolver::initInputVectorFieldU2] Initializing input data" );
@@ -296,6 +301,7 @@ namespace DGtal
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
       v0 = PrimalForm0::ones(*ptrCalculus);
       if ( verbose >= 1 ) trace.endBlock();
+      normalize_u2 = normalize;
     }
 
     /// Given a range of surfels [itB,itE) and an input scalar field,
@@ -334,6 +340,7 @@ namespace DGtal
       if ( verbose >= 2 ) trace.info() << "Unknown v = 1" << std::endl;
       v0 = PrimalForm0::ones(*ptrCalculus);
       if ( verbose >= 1 ) trace.endBlock();
+      normalize_u2 = false;
     }
 
     
@@ -351,8 +358,8 @@ namespace DGtal
     /// @tparam ScalarVector any type representing a vector/array of scalars (float, double)
     template <typename ScalarVector>
     Index
-    initVectorMapInputU2( const std::map<Surfel,ScalarVector>& input,
-                          bool normalize = false )
+    initInputVectorFieldU2( const std::map<Surfel,ScalarVector>& input,
+                            bool normalize = false )
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initVectorInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
@@ -391,7 +398,7 @@ namespace DGtal
     /// @tparam Scalar any type representing a scalar (float, double)
     template <typename Scalar>
     Index
-    initScalarMapInputU2( const std::map<Surfel,Scalar>& input )
+    initInputScalarFieldU2( const std::map<Surfel,Scalar>& input )
     {
       if ( verbose >= 1 ) trace.beginBlock( "[SurfaceATSolver::initScalarInput] Initializing input data" );
       if ( verbose >= 2 ) trace.info() << "discontinuity 0-form v = 1." << std::endl;
