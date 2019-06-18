@@ -152,8 +152,7 @@ The AT functional is useful when trying to fit piecewise-smooth
 function to some input data, possibly corrupted with noise. It is
 therefore used in image processing for denoising \cite Foare2016icpr
 or for inpainting \cite Foare2016rrpr . It can also work for
-approximating vector data, for instance a normal vector field \cite
-Coeurjolly2016pg .
+approximating vector data, for instance a normal vector field \cite Coeurjolly2016pg .
 
 @subsection AT_s3_1 Piecewise smooth approximation of normal vector field and feature detection
 
