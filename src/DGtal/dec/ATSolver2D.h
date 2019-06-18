@@ -81,9 +81,9 @@ namespace DGtal
   * at_solver.setUp( alpha_at, lambda_at );
   * at_solver.solveGammaConvergence( 2.0, 0.5, 2.0 );
   * at_solver.getOutputVectorFieldU2( normals, surfels.cbegin(), surfels.cend() );
-  * \encode
+  * \endcode
   *
-  * @see surface-at-normals.cpp
+  * @see exampleSurfaceATNormals.cpp
   */
   template < typename TKSpace,
              typename TLinearAlgebra = EigenLinearAlgebraBackend >
