@@ -521,8 +521,8 @@ namespace DGtal
     /// @param e the epsilon parameter in AT
     void setEpsilon( double e )
     {
-      epsilon     = e;
-      l_1_over_4e = (lambda/4./epsilon)*PrimalForm0::ones(*ptrCalculus);
+      epsilon         = e;
+      l_1_over_4e     = (lambda/4./epsilon)*PrimalForm0::ones(*ptrCalculus);
       l_1_over_4e_Id0 = (lambda/4./epsilon)*ptrCalculus->template identity<0, PRIMAL>();
     }
 
@@ -539,7 +539,7 @@ namespace DGtal
     /// @return true if everything went fine, false if there was a
     /// problem in the optimization.
     ///
-    /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
+    /// @note Use \ref diffV0 to check if you are close to a critical point of AT.
     bool solveOneAlternateStep()
     {
       bool solve_ok = true;
@@ -598,7 +598,7 @@ namespace DGtal
     /// @return true if everything went fine, false if there was a
     /// problem in the optimization.
     ///
-    /// @note Use \ref diff_v0 to check if you are close to a critical point of AT.
+    /// @note Use \ref diffV0 to check if you are close to a critical point of AT.
     bool solveForEpsilon( double eps,
 			  double n_oo_max = 1e-4,
 			  unsigned int iter_max = 10 )

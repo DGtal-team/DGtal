@@ -233,7 +233,7 @@ at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(), at_s
 
 See  \ref exampleSurfaceATNormals.cpp  for more details.
 
-@section References
+@section AT_s4 References
 
 [1] Luigi Ambrosio, and Vincenzo Maria Tortorelli. "Approximation of
 functional depending on jumps by elliptic functional via t‐convergence."
