@@ -12,6 +12,8 @@
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
@@ -33,6 +35,8 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
+  - Fix bug in Shortcuts::saveVectorFieldOBJ
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
