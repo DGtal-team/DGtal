@@ -3,7 +3,6 @@ SET(DGTAL_EXAMPLES_SRC
 	exampleIntegralInvariantCurvature2D
 	exampleEstimatorFromSurfelFunctors
         dvcm-2d-curvature
-	surface-AT-normals
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
