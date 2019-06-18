@@ -121,7 +121,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     {
       bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
     }    
-  catch ( InputException e )
+  catch ( InputException& e )
     {
       std::cerr << " "
                 << " error in finding a bel." << std::endl;
@@ -277,7 +277,7 @@ bool testDisplay(double radius, double h)
     board.saveSVG( "Ranges-Arrows.svg" );
 
   }    
-  catch ( InputException e )
+  catch ( InputException& e )
     {
       std::cerr << " "
                 << " error in finding a bel." << std::endl;

@@ -95,7 +95,7 @@ bool testReducedFraction()
   trace.info() << "  - f1 = ";
   SB::display( trace.info(), f1 );
   trace.info() << std::endl;
-  ++nb, nbok += ok ? 1 : 0;
+  ++nb; nbok += ok ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " 
                << " cfrac"
                << std::endl;
@@ -107,7 +107,7 @@ bool testReducedFraction()
       fr.getCFrac( cf1_red );
       cf1.resize( depth - k );
       ok = equalCFrac<Quotient>( cf1, cf1_red );
-      ++nb, nbok += ok ? 1 : 0;
+      ++nb; nbok += ok ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") " 
                    << "reduced(" << k << ")=";
       SB::display( trace.info(), fr );
@@ -176,31 +176,31 @@ bool testPattern()
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 17 );
   trace.info() << "sub(0,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          1, 17 );
   trace.info() << "sub(1,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          7, 17 );
   trace.info() << "sub(7,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          8, 17 );
   trace.info() << "sub(8,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          13, 17 );
   trace.info() << "sub(13,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          14, 17 );
   trace.info() << "sub(14,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          15, 17 );
   trace.info() << "sub(15,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering left Subpatterns." << endl;
 
@@ -208,27 +208,27 @@ bool testPattern()
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 16 );
   trace.info() << "sub(0,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 15 );
   trace.info() << "sub(0,15) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 14 );
   trace.info() << "sub(0,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 8 );
   trace.info() << "sub(0,8) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 7 );
   trace.info() << "sub(0,7) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          0, 1 );
   trace.info() << "sub(0,1) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering right Subpatterns." << endl;
 
@@ -236,35 +236,35 @@ bool testPattern()
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          1, 16 );
   trace.info() << "sub(1,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          2, 14 );
   trace.info() << "sub(2,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          7, 15 );
   trace.info() << "sub(7,15) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) && np == 1 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          7, 14 );
   trace.info() << "sub(7,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          3, 6 );
   trace.info() << "sub(3,6) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          6, 8 );
   trace.info() << "sub(6,8) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          8, 12 );
   trace.info() << "sub(8,12) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getSmallestCoveringSubpattern( sp, np, start,
                                          15, 16 );
   trace.info() << "sub(15,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) && np == 1 ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
@@ -278,73 +278,73 @@ bool testPattern()
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           0, 29 );
   trace.info() << "sub(0,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           0, 25 );
   trace.info() << "sub(0,25) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           0, 17 );
   trace.info() << "sub(0,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           0, 6 );
   trace.info() << "sub(0,6) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           0, 5 );
   trace.info() << "sub(0,5) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering left Subpatterns." << endl;
 
   // Right Subpatterns
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           4, 29 );
   trace.info() << "sub(4,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           5, 29 );
   trace.info() << "sub(5,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           16, 29 );
   trace.info() << "sub(16,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           17, 29 );
   trace.info() << "sub(17,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering right Subpatterns." << endl;
 
   // Middle Subpatterns
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           1, 27 );
   trace.info() << "sub(1,27) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           5, 24 );
   trace.info() << "sub(5,24) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           4, 17 );
   trace.info() << "sub(4,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 7, 10 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 7, 10 ) && np == 1 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           5, 17 );
   trace.info() << "sub(5,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           7, 12 );
   trace.info() << "sub(7,12) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           1, 4 );
   trace.info() << "sub(1,4) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 3 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 3 ) && np == 1 ? 1 : 0;
   pat_even.getSmallestCoveringSubpattern( sp, np, start,
                                           18, 25 );
   trace.info() << "sub(18,20) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
 
@@ -358,31 +358,31 @@ bool testPattern()
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 17 );
   trace.info() << "sub(0,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          1, 17 );
   trace.info() << "sub(1,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          7, 17 );
   trace.info() << "sub(7,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          8, 17 );
   trace.info() << "sub(8,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          13, 17 );
   trace.info() << "sub(13,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          14, 17 );
   trace.info() << "sub(14,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          15, 17 );
   trace.info() << "sub(15,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering left Subpatterns." << endl;
 
@@ -390,27 +390,27 @@ bool testPattern()
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 15 );
   trace.info() << "sub(0,15) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 14 );
   trace.info() << "sub(0,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 13 );
   trace.info() << "sub(0,13) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 7 );
   trace.info() << "sub(0,7) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 6 );
   trace.info() << "sub(0,6) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          0, 1 );
   trace.info() << "sub(0,1) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering right Subpatterns." << endl;
 
@@ -418,35 +418,35 @@ bool testPattern()
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          1, 16 );
   trace.info() << "sub(1,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          2, 14 );
   trace.info() << "sub(2,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          7, 15 );
   trace.info() << "sub(7,15) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          7, 14 );
   trace.info() << "sub(7,14) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          3, 6 );
   trace.info() << "sub(3,6) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          6, 8 );
   trace.info() << "sub(6,8) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          8, 12 );
   trace.info() << "sub(8,12) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_odd.getGreatestIncludedSubpattern( sp, np, start,
                                          15, 16 );
   trace.info() << "sub(15,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
 
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
@@ -459,85 +459,85 @@ bool testPattern()
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 29 );
   trace.info() << "sub(0,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 12, 17 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 25 );
   trace.info() << "sub(0,25) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 17 );
   trace.info() << "sub(0,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 7, 10 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 16 );
   trace.info() << "sub(0,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 6 );
   trace.info() << "sub(0,6) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 5 );
   trace.info() << "sub(0,5) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 2, 3 ) ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           0, 4 );
   trace.info() << "sub(0,4) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering left Subpatterns." << endl;
 
   // Right Subpatterns
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           4, 29 );
   trace.info() << "sub(4,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           5, 29 );
   trace.info() << "sub(5,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 2 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           16, 29 );
   trace.info() << "sub(16,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           17, 29 );
   trace.info() << "sub(17,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           18, 29 );
   trace.info() << "sub(18,29) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering right Subpatterns." << endl;
 
   // Middle Subpatterns
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           1, 27 );
   trace.info() << "sub(1,27) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           5, 24 );
   trace.info() << "sub(5,24) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           4, 17 );
   trace.info() << "sub(4,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           5, 17 );
   trace.info() << "sub(5,17) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
+  ++nb; nbok += sp.slope() == SB::fraction( 5, 7 ) && np == 1 ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           7, 16 );
   trace.info() << "sub(5,16) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           1, 4 );
   trace.info() << "sub(1,4) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   pat_even.getGreatestIncludedSubpattern( sp, np, start,
                                           18, 25 );
   trace.info() << "sub(18,20) = " << sp << " " << sp.rE() << "^" << np << endl;
-  ++nb, nbok += sp.slope() == Fraction() ? 1 : 0;
+  ++nb; nbok += sp.slope() == Fraction() ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
 
@@ -576,20 +576,20 @@ bool testStandardDSLQ0()
       Point L = D1.L();
       trace.info() << "- U=" << U << " r(U)=" << D1.r( U )
                    << ", L=" << L << " r(L)=" << D1.r( L ) << endl;
-      ++nb, nbok += D1.r( U ) == D1.mu() ? 1 : 0;
-      ++nb, nbok += D1.r( L ) == D1.mup() ? 1 : 0;
+      ++nb; nbok += D1.r( U ) == D1.mu() ? 1 : 0;
+      ++nb; nbok += D1.r( L ) == D1.mup() ? 1 : 0;
     }
 
   DSL D2( 12, 17, 5 );
   for ( Integer x = -5; x < 30; ++x )
     {
       Point P = D2.lowestY( x );
-      ++nb, nbok += D2( P ) && ( ! D2( P - Vector2I(0,1) ) ) ? 1 : 0;
+      ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P ) 
                    << endl;
       P = D2.uppermostY( x );
-      ++nb, nbok += D2( P ) && ( ! D2( P + Vector2I(0,1) ) ) ? 1 : 0;
+      ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P ) 
                    << endl;
@@ -597,12 +597,12 @@ bool testStandardDSLQ0()
   for ( Integer y = -5; y < 30; ++y )
     {
       Point P = D2.lowestX( y );
-      ++nb, nbok += D2( P ) && ( ! D2( P - Vector2I(1,0) ) ) ? 1 : 0;
+      ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P ) 
                    << endl;
       P = D2.uppermostX( y );
-      ++nb, nbok += D2( P ) && ( ! D2( P + Vector2I(1,0) ) ) ? 1 : 0;
+      ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
                    << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P ) 
                    << endl;
@@ -676,7 +676,7 @@ bool testSubStandardDSLQ0()
                   Integer x2 = x1 + 1 + ( rand() % 1000 );
                   Point A = D.lowestY( x1 );
                   Point B = D.lowestY( x2 );
-                  ++nb, nbok += checkSubStandardDSLQ0<DSL>( D, A, B ) ? 1 : 0;
+                  ++nb; nbok += checkSubStandardDSLQ0<DSL>( D, A, B ) ? 1 : 0;
                   if ( nb != nbok )
                     trace.info() << "(" << nbok << "/" << nb << ") correct reversedSmartDSS."
                                  << std::endl;
@@ -773,7 +773,7 @@ bool testContinuedFractions()
   trace.beginBlock ( "Testing block: continued fraction." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      ++nb; nbok += testContinuedFraction<SB>() ? 1 : 0; 
       trace.info() << "(" << nbok << "/" << nb << ")"
                    << " continued fractions." << std::endl;
     }
@@ -819,40 +819,40 @@ testSimplestFractionInBetween()
   trace.beginBlock("Testing block: simplest fraction between two fractions");
   // When the two fractions are not ancestors of one other
   f = Fraction(1,5); g = Fraction(3,4);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,2) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(1,2) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
   
   f = Fraction(4,7); g = Fraction(5,7);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(2,3) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(2,3) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   f = Fraction(3,8); g = Fraction(7,4);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(1,1) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(1,1) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   f = Fraction(11,7); g = Fraction(7,4);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,3) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,3) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
   
   f = Fraction(8,13); g = Fraction(7,11);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,8) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,8) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   // When f is an ancestor of g or conversely
   f = Fraction(2,5); g = Fraction(4,9);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,7) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(3,7) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
   
   f = Fraction(2,3); g = Fraction(8,11);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(5,7) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,7) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   f = Fraction(1,2); g = Fraction(5,9);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(6,11) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(6,11) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   f = Fraction(5,9); g = Fraction(2,3);
-  ++nb, nbok += f.simplestFractionInBetween(g) == Fraction(3,5) ? 1 : 0;
+  ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(3,5) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
   trace.endBlock();

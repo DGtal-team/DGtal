@@ -245,10 +245,10 @@ bool testDigitalSurfaceBoostGraphInterface()
     }
   trace.info() << "- d[ " << start << " ] = " << boost::get( propDistanceMap, start ) << std::endl;
   trace.info() << "- d[ " << furthest << " ] = " << maxD << std::endl;
-  ++nb, nbok += ( nbV == digSurf.size() ) ? 1 : 0; 
+  ++nb; nbok += ( nbV == digSurf.size() ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nb vertices is ok" << std::endl;
-  ++nb, nbok += ( maxD == 12 ) ? 1 : 0; 
+  ++nb; nbok += ( maxD == 12 ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "maxD == 12" << std::endl;
   trace.endBlock();
@@ -265,7 +265,7 @@ bool testDigitalSurfaceBoostGraphInterface()
       boost::color_map( propColorMap ) // this map is used internally when computing connected components.
       );
   trace.info() << "- nbComponents = " << nbComp << std::endl;
-  ++nb, nbok += ( nbComp == 1 ) ? 1 : 0; 
+  ++nb; nbok += ( nbComp == 1 ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nbComp == 1" << std::endl;
   trace.endBlock();
@@ -323,13 +323,13 @@ bool testDigitalSurfaceBoostGraphInterface()
        if ( parityMap[ v1 ] ) ++nb1;
        else ++nb0;
      }
-  ++nb, nbok += ( total_weight < 1.0 ) ? 1 : 0; 
+  ++nb; nbok += ( total_weight < 1.0 ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "total_weight < 1.0" 
                << ", nb0=" << nb0 << " nb1=" << nb1 << std::endl;
   trace.info() << "- parity[ " << start << " ] = " << parityMap[ start ] << std::endl;
   trace.info() << "- parity[ " << furthest << " ] = " << parityMap[ furthest ] << std::endl;
-  ++nb, nbok += ( parityMap[ start ] != parityMap[ furthest ] ) ? 1 : 0; 
+  ++nb; nbok += ( parityMap[ start ] != parityMap[ furthest ] ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "parityMap[ start ] != parityMap[ furthest ]" << std::endl;
   trace.endBlock();
@@ -385,7 +385,7 @@ bool testDigitalSurfaceBoostGraphInterface()
       propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap, 
       start, furthest );
   trace.info() << "- max flow = " << max_flow << std::endl;
-  ++nb, nbok += ( abs( max_flow - total_weight ) < 0.0000001 ) ? 1 : 0; 
+  ++nb; nbok += ( abs( max_flow - total_weight ) < 0.0000001 ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "max_flow == min_cut, Duality max-flow/min-cut." << std::endl;
   trace.endBlock();
@@ -409,7 +409,7 @@ bool testDigitalSurfaceBoostGraphInterface()
        surfel_position pos = boost::get( surfelPos, v1 );
        trace.info() << "- " << v1 << " was at " << pos.myP << std::endl;
      }
-  ++nb, nbok += boost::num_vertices( bG ) == boost::num_vertices( digSurf ) ? 1 : 0; 
+  ++nb; nbok += boost::num_vertices( bG ) == boost::num_vertices( digSurf ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "after copy: Boost graph has " << num_vertices( bG ) 
                << " vertices." << std::endl;

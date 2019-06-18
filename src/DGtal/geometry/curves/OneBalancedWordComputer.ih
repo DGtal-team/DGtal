@@ -906,7 +906,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoin
   uf = *it;
 
   Vector v = mainPatternVector();
-  ul = uf + v*myNbRepeat;
+  ul = uf + v*static_cast<Integer>(myNbRepeat);
 
   while ( ! previousIsLL ( it.getIndex() ) )
     ++it;

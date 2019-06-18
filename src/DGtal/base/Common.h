@@ -60,6 +60,13 @@
 #include <boost/concept_archetype.hpp>
 #include <boost/static_assert.hpp>
 
+#ifndef NDEBUG
+#ifdef __linux__
+#include <fenv.h>
+#endif
+#endif
+
+
 #ifdef _MSC_VER
 #define NOMINMAX
 #include <windows.h>

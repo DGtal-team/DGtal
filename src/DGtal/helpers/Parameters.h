@@ -66,21 +66,39 @@ namespace DGtal
     template <>
       struct ValueConverter< std::string, double >{
       static double cast( const std::string& value )
-      { return atof( value.c_str() ); }
+      {
+        // note (JOL): cannot use atof (C) since it uses a different locale as program_options (C++).
+        double val;
+        std::istringstream iss( value );
+        iss >> val;
+        return val;
+      }
     };
     
     /// Specialized definitions of a class for converting type X toward type Y.
     template <>
       struct ValueConverter< std::string, float >{
       static float cast( const std::string& value )
-      { return (float) atof( value.c_str() ); }
+      {
+        // note (JOL): cannot use atof (C) since it uses a different locale as program_options (C++).
+        float val;
+        std::istringstream iss( value );
+        iss >> val;
+        return val;
+      }
     };
 
     /// Specialized definitions of a class for converting type X toward type Y.
     template <>
       struct ValueConverter< std::string, int >{
       static int cast( const std::string& value )
-      { return atoi( value.c_str() ); }
+      {
+        // note (JOL): cannot use atoi (C) since it uses a different locale as program_options (C++).
+        int val;
+        std::istringstream iss( value );
+        iss >> val;
+        return val;
+      }
     };
     /// Specialized definitions of a class for converting type X toward type Y.
     template < typename X >

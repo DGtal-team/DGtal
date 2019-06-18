@@ -115,7 +115,7 @@ bool testUmbrellaComputer()
     ++nb_backward;
     bel = umbrella.surfel();
   } while ( bel != init_bel );
-  nb++, nbok += nb_forward == nb_backward ? 1 : 0;
+  nb++; nbok += nb_forward == nb_backward ? 1 : 0;
   
   trace.info() << "(" << nbok << "/" << nb << ") "
                << " nb_forward(" << nb_forward
