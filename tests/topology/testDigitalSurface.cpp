@@ -589,7 +589,6 @@ bool testOrderingDigitalSurfaceFacesAroundVertex()
 {
   typedef KhalimskySpaceND<3>     KSpace;
   typedef typename KSpace::Space  Space;
-  typedef typename KSpace::Size   Size;
   typedef typename Space::Point   Point;
   typedef HyperRectDomain<Space>  Domain;
   typedef typename DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type
@@ -602,12 +601,12 @@ bool testOrderingDigitalSurfaceFacesAroundVertex()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   trace.beginBlock ( "Creating surface around one voxel" );
-  Point p0;
-  Point p1 = Point::diagonal( -1 );
-  Point p2 = Point::diagonal( 1 );
-  Domain domain( p1, p2 );
+  Point pt0;
+  Point pt1 = Point::diagonal( -1 );
+  Point pt2 = Point::diagonal( 1 );
+  Domain domain( pt1, pt2 );
   DigitalSet dig_set( domain );
-  dig_set.insert( p0 );
+  dig_set.insert( pt0 );
   KSpace K;
   nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
   nb++;

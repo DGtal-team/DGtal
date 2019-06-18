@@ -1070,7 +1070,7 @@ namespace DGtal
           {
             try { // Search initial bel
               bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
-            } catch (DGtal::InputException e) {
+            } catch (DGtal::InputException& e) {
               trace.error() << "[Shortcuts::makeLightDigitalSurface]"
                             << " ERROR Unable to find bel." << std::endl;
               return ptrSurface;
@@ -1657,9 +1657,6 @@ namespace DGtal
           bool has_material = ( nbfaces == diffuse_colors.size() );
           Idx   idxMaterial = 0;
           std::map<Color, unsigned int > mapMaterial;
-          // MeshHelpers::exportMTLNewMaterial
-          // 	( output_mtl, idxMaterial, ambient_color, Color::Black, specular_color );
-          // mapMaterial[ Color::Black ] = idxMaterial++;
           if ( has_material )
             {
               for ( Idx f = 0; f < nbfaces; ++f )
@@ -1764,6 +1761,110 @@ namespace DGtal
         }
 
 
+      /// Outputs any vector field \a vf anchored at \a
+      /// positions as an OBJ file and a material MTL file. Optionnaly
+      /// you can specify the diffuse colors.
+      ///
+      /// @param[in] positions the bases of the vectors of the vector field.
+      /// @param[in] vf the vector field (an array of real vectors).
+      /// @param[in] thickness the thickness of the sticks representing the vector field.
+      /// @param[in] diffuse_colors either empty or a vector of size `normals.size()` specifying the diffuse color for each face.
+      /// @param[in] objfile the output filename.
+      /// @param[in] ambient_color the ambient color of all vectors.
+      /// @param[in] diffuse_color the diffuse color of all vectors (if diffuse_colors is empty).
+      /// @param[in] specular_color the specular color of all vectors.
+      /// @return 'true' if the output stream is good.
+      ///
+      /// @note It outputs only the vector field, not the surface onto which it is defined (if any).
+      static bool
+        saveVectorFieldOBJ
+	( const RealPoints&  positions,
+	  const RealVectors& vf,
+	  double             thickness,
+          const Colors&      diffuse_colors,
+          std::string        objfile,
+          const Color&       ambient_color  = Color( 32, 32, 32 ),
+          const Color&       diffuse_color  = Color( 200, 200, 255 ),
+          const Color&       specular_color = Color::White )
+        {
+          BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+          std::string mtlfile;
+          auto lastindex = objfile.find_last_of(".");
+          if ( lastindex == std::string::npos )
+            {
+              mtlfile  = objfile + ".mtl";
+              objfile  = objfile + ".obj";
+            }
+          else
+            {
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+            }
+          std::ofstream output_obj( objfile.c_str() );
+          output_obj << "#  OBJ format" << std::endl;
+          output_obj << "# DGtal::saveOBJ" << std::endl;
+          output_obj << "o vectors" << std::endl;
+          output_obj << "mtllib " << mtlfile << std::endl;
+          std::ofstream output_mtl( mtlfile.c_str() );
+          output_mtl << "#  MTL format"<< std::endl;
+          output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
+	  // Output vertices
+	  unsigned int n = std::min( positions.size(), vf.size() );
+	  for ( unsigned int i = 0; i < n; ++i )
+	    {
+	      RealPoint    p0 = positions[ i ];
+	      RealPoint    p1 = p0 + vf[ i ];
+	      unsigned int mc = std::max_element( vf.begin(), vf.end() ) - vf.begin();
+	      RealVector   b  =
+		mc == 2 ? RealVector( 1, 0, 0 ) :
+		mc == 1 ? RealVector( 0, 0, 1 ) : RealVector( 0, 1, 0 );
+	      RealVector   e0 = vf[ i ].crossProduct( b ).getNormalized();
+	      RealVector   e1 = vf[ i ].crossProduct( e0 ).getNormalized();
+	      RealPoint    t[4] = {  thickness * e0,  thickness * e1,
+				    -thickness * e0, -thickness * e1 };
+	      for ( unsigned int j = 0; j < 4; ++j ) {
+		RealPoint pt0 = p0 + t[ j ];
+		RealPoint pt1 = p1 + t[ j ];
+		output_obj << "v " << pt0[ 0 ] << " " << pt0[ 1 ] << " " << pt0[ 2 ]
+			   << std::endl;
+		output_obj << "v " << pt1[ 0 ] << " " << pt1[ 1 ] << " " << pt1[ 2 ]
+			   << std::endl;
+	      }
+	    }
+	  // Simplify materials (very useful for blender).
+          Idx j = 0;
+          std::map<Color,Idx> map_colors;
+          for ( auto && c : diffuse_colors )
+            if ( ! map_colors.count( c ) )
+              map_colors[ c ] = j++;
+
+	  // Output materials
+	  bool has_material = ! diffuse_colors.empty();
+          if ( has_material )
+	    for ( auto&& pair : map_colors )
+	      MeshHelpers::exportMTLNewMaterial
+		( output_mtl, pair.second, ambient_color, pair.first, specular_color);
+          else
+	    MeshHelpers::exportMTLNewMaterial
+	      ( output_mtl, 0, ambient_color, diffuse_color, specular_color );
+	  // Output faces
+	  for ( Idx i = 0; i < n; ++i )
+            {
+              output_obj << "usemtl material_" // << ( has_material ? i : 0 )
+                         << ( has_material ? map_colors[ diffuse_colors[ i ] ] : 0 )
+                         << std::endl;
+	      Idx b = 8*i+1;
+	      for ( Idx j = 0; j < 8; j += 2 )
+		output_obj << "f " << (b+j) << " " << (b+j+1)
+			   << " " << (b+(j+3)%8) << " " << (b+(j+2)%8) << std::endl;
+	      output_obj << "f " << b << " " << (b+2)
+			 << " " << (b+4) << " " << (b+6) << std::endl;
+	      output_obj << "f " << (b+1) << " " << (b+7)
+			 << " " << (b+5) << " " << (b+3) << std::endl;
+	    }
+          output_mtl.close();
+          return output_obj.good();
+	}
+      
       // ----------------------- Mesh services ------------------------------
     public:
 

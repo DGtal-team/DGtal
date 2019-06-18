@@ -92,7 +92,7 @@ DGtal::OrderedAlphabet::letter( unsigned int i ) const
   ASSERT( i < myNb );
   for ( unsigned int j = 0; j < myNb; ++j )
     if ( myOrder[ j ] == i )
-      return myFirst + j;
+      return static_cast<char>(myFirst + j);
   return myFirst;
 }
 
@@ -180,7 +180,7 @@ DGtal::OrderedAlphabet::orderedAlphabet() const
   tbl = (char *)malloc((myNb + 1)*sizeof(char));
   for ( unsigned int i = 0; i < myNb; ++i )
     {
-      tbl[ myOrder[ i ] ] = myFirst + i;
+      tbl[ myOrder[ i ] ] = static_cast<char>(myFirst + i);
     }
   tbl[ myNb ] = '\0';
   std::string s( tbl );

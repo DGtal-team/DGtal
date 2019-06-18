@@ -22,7 +22,8 @@ SET(DGTAL_EXAMPLES_SRC
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  )
+  # The dependancy libs are needed
+  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies} )
 ENDFOREACH(FILE)
 
 
@@ -33,7 +34,8 @@ IF(MAGICK++_FOUND)
     )
   FOREACH(FILE ${DGTALE_EXAMPLES_IO_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal )
+    # The dependancy libs are needed
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies} )
   ENDFOREACH(FILE)
 ENDIF(MAGICK++_FOUND)
 
@@ -44,12 +46,15 @@ if (  WITH_VISU3D_QGLVIEWER )
       exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
-     
+     exampleParamCurve3dDigitization
+     exampleParamCurve3dDigitizationTransformationDecorator
+     exampleTrofoliKnot
      )
  
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC} ) 
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal)   
+    # The dependancy libs are needed
+    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )
