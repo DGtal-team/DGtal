@@ -48,8 +48,11 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+
+#if defined(WITH_EIGEN)
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/dec/ATSolver2D.h"
+#endif // defined(WITH_EIGEN)
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
