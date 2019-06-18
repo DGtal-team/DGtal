@@ -1,4 +1,4 @@
-# DGtal 1.0.1
+# DGtal 1.1
 
 
 ## Changes
@@ -6,6 +6,12 @@
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
+- *Tests*
+  - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
+    (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
+    (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
+
 
 ## Bug Fixes
 
@@ -21,6 +27,14 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
+
+- *IO*
+  - Removing a `using namespace std;` in the Viewer3D hearder file. (David
+    Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+
+- *doc*
+  - Promoting the `Shortcuts` documentation page on the main page. (David
+    Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
 
 
 # DGtal 1.0
