@@ -983,10 +983,9 @@ namespace DGtal
       /// @{
     public:
 
-#if defined(WITH_EIGEN)
-      
       /// @return the parameters and their default values which are used
       /// to compute Ambrosio-Tortorelli piecewise-smooth approximation of a function.
+      ///   - at-enabled      [  1     ]: 1 if AT is enabled (WITH_EIGEN), 0 otherwise.
       ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
       ///   - at-lambda       [  0.025 ]: parameter lambda in AT (1/length of discontinuities)
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
@@ -999,7 +998,9 @@ namespace DGtal
       /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       static Parameters parametersATApproximation()
       {
+#if defined(WITH_EIGEN)
         return Parameters
+          ( "at-enabled",        1 )
           ( "at-alpha",          0.1 )
           ( "at-lambda",         0.025 )
           ( "at-epsilon",        0.25 )
@@ -1008,8 +1009,12 @@ namespace DGtal
           ( "at-max-iter",      10 )
           ( "at-diff-v-max",     0.0001 )
           ( "at-v-policy",   "Maximum" );
+#else // defined(WITH_EIGEN)
+        return Parameters( "at-enabled", 0 );
+#endif// defined(WITH_EIGEN)
       }
 
+#if defined(WITH_EIGEN)
 
       /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
       /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
