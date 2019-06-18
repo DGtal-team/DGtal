@@ -1072,7 +1072,7 @@ namespace DGtal
               bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
             } catch (DGtal::InputException& e) {
               trace.error() << "[Shortcuts::makeLightDigitalSurface]"
-                            << " ERROR Unable to find bel." << std::endl;
+                            << " ERROR Unable to find bel. " << e << std::endl;
               return ptrSurface;
             }
             // this pointer will be acquired by the surface.
