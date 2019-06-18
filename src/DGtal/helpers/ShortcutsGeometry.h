@@ -980,6 +980,8 @@ namespace DGtal
       /// @{
     public:
 
+#if defined(WITH_EIGEN)
+      
       /// @return the parameters and their default values which are used
       /// to compute Ambrosio-Tortorelli piecewise-smooth approximation of a function.
       ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
@@ -990,6 +992,8 @@ namespace DGtal
       ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
       ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
+      ///
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       static Parameters parametersATApproximation()
       {
         return Parameters
@@ -1023,6 +1027,8 @@ namespace DGtal
       /// @param[in] input the input vector field (a vector of vector values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
+      ///
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput>
       static
@@ -1079,6 +1085,8 @@ namespace DGtal
       /// @param[in] input the input vector field (a vector of vector values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
+      ///
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput,
                 typename CellRangeConstIterator>
@@ -1137,6 +1145,8 @@ namespace DGtal
       /// @param[in] input the input scalar field (a vector of scalar values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
+      ///
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       template <typename TAnyDigitalSurface>
       static
       Scalars
@@ -1196,6 +1206,8 @@ namespace DGtal
       /// @param[in] input the input scalar field (a vector of scalar values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
+      ///
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
       template <typename TAnyDigitalSurface,
                 typename CellRangeConstIterator>
       static
@@ -1232,6 +1244,8 @@ namespace DGtal
         at_solver.getOutputScalarFieldV0( features, itB, itE, p );
         return output;
       }
+
+#endif // defined(WITH_EIGEN)
       
       /// @}
       
