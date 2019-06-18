@@ -146,12 +146,14 @@ solve alternatively the two equations of each system.
 \end{array}
 \f$
 
-@section AT_s3 Applications
+@section AT_s3 Applications and code
 
 The AT functional is useful when trying to fit piecewise-smooth
 function to some input data, possibly corrupted with noise. It is
-therefore used in image processing for denoising or for inpainting. It
-can also work for approximating vector data.
+therefore used in image processing for denoising \cite Foare2016icpr
+or for inpainting \cite Foare2016rrpr . It can also work for
+approximating vector data, for instance a normal vector field \cite
+Coeurjolly2016pg .
 
 @subsection AT_s3_1 Piecewise smooth approximation of normal vector field and feature detection
 
@@ -209,7 +211,7 @@ const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), su
 After that, the AT solver can be build on this calculus. Then it is
 initialized with input data you wish to approximate (here the normal
 vector field \a ii_normals). Finally it suffices to call the method
-ATSolver::solveGammaConvergence to use the coarse-to-fine \f$ \Gamma
+ATSolver2D::solveGammaConvergence to use the coarse-to-fine \f$ \Gamma
 \f$-convergence optimization method.
 
 \code
@@ -225,8 +227,8 @@ at_solver.solveGammaConvergence( e1, e2, er );
 \endcode
 
 You recover the piecewise-smooth approximation of the input vector
-field with ATSolver::getOutputVectorFieldU2, and the function giving
-the locii of discontinuities with ATSolver::getOutputScalarFieldV0.
+field with ATSolver2D::getOutputVectorFieldU2, and the function giving
+the locii of discontinuities with ATSolver2D::getOutputScalarFieldV0.
 
 \code
 // Vector field, std::vector<RealVectors>
@@ -238,6 +240,20 @@ at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(), at_s
 \endcode
 
 See  \ref exampleSurfaceATNormals.cpp  for more details.
+
+@subsection AT_s3_2 Using shortcuts for the impatient
+
+You may also avoid using ATSolver2D directly and instead use method
+ShortcutsGeometry::getATVectorFieldApproximation or
+ShortcutsGeometry::getATScalarFieldApproximation which directly builds
+the calculus onto the given surface and outputs the results.
+
+\code
+SH3::Scalars features( linels.size() );
+auto at_normals = SHG3::getATVectorFieldApproximation( features, linels.cbegin(), linels.cend(),
+                                                       surface, surfels,
+                                                       ii_normals, params );
+\endcode
 
 */
 } // namespace DGtal
