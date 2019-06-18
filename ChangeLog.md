@@ -3,6 +3,12 @@
 
 ## Changes
 
+- *DEC*
+  - Add discrete calculus model of Ambrosio-Tortorelli functional in
+    order to make piecewise-smooth approximations of scalar or vector
+    fields onto 2D domains like 2D images or digital surfaces
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
