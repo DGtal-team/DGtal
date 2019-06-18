@@ -27,14 +27,14 @@ namespace DGtal {
 @section AT_s1 The Ambrosio-Tortorelli functional  
 
 The Ambrosio-Tortorelli functional (AT) is a classical relaxation of the
-Mumford-Shah functional. Its purpose is to construct a piecewise
+Mumford-Shah functional  \cite ambrosio1990approximation. Its purpose is to construct a piecewise
 smooth approximation of a function \f$ g \f$ defined in an open
 bounded domain \f$ \Omega \f$.
 
-In the Ambrosio-Tortorelli functional [1],
+In the Ambrosio-Tortorelli functional,
 one wants to find a function \f$ u \in SBV(\Omega) \f$ which is a
 smooth approximation of the input image \f$ g \f$.
-The Ambrosio-Tortorelli functional [1] is defined by
+The Ambrosio-Tortorelli functional is defined by
 \f[
   \displaystyle
   AT_{\varepsilon}(u,v)	= \int_\Omega \alpha |u-g|^2 + v^2 |\nabla u|^2
@@ -43,16 +43,17 @@ The Ambrosio-Tortorelli functional [1] is defined by
 for functions \f$ u,v \in W^{1,2}(\Omega)\f$ with \f$ 0 \leq v \leq 1 \f$.
 
 
-In AT functional, function \f$ v \f$ is a smooth approximation
-of the set of discontinuities, and takes value close to 0 in this set,
-while being close to 1 outside discontinuities. A remarkable property
-of this functional is that it \f$ \Gamma \f$-converges to (a
-relaxation of) Mumford-Shah functional as \f$ \varepsilon \f$ tends to 0 (see [1]).
-The intuition is that a large \f$ \varepsilon \f$ induces a solution
-with a fuzzy set of discontinuities, which is then progressively
-narrowed to the crisp 1-dimensional set of discontinuites as
-\f$ \varepsilon \f$ goes to 0.
+In AT functional, function \f$ v \f$ is a smooth approximation of the
+set of discontinuities, and takes value close to 0 in this set, while
+being close to 1 outside discontinuities. A remarkable property of
+this functional is that it \f$ \Gamma \f$-converges to (a relaxation
+of) Mumford-Shah functional as \f$ \varepsilon \f$ tends to 0 (see
+\cite ambrosio1990approximation).  The intuition is that a large \f$
+\varepsilon \f$ induces a solution with a fuzzy set of
+discontinuities, which is then progressively narrowed to the crisp
+1-dimensional set of discontinuites as \f$ \varepsilon \f$ goes to 0.
 
+The AT functional has been extended to vector data in \cite Focardi2001variational.
 
 
 @section AT_s2 A discrete calculus model of AT and its optimization
@@ -60,9 +61,13 @@ narrowed to the crisp 1-dimensional set of discontinuites as
 @subsection AT_s2_1 A discrete calculus model of AT
 
 We present a discrete calculus model of AT that works for any
-2-dimensional cell complex (see \ref moduleDECIntroduction). For an
-instance, it works for a grid domain representing a 2D image made of
-pixels or a digital surface in 3D.
+2-dimensional cell complex. For more information on discrete calculus,
+discrete exterior calculus or discrete differential calculus, see module \ref
+moduleDECIntroduction, report \cite desbrun2005discrete, 
+lecture \cite goes2013digital, or the book \cite Grady2010discrete . 
+
+Our model is suited to a grid domain representing a 2D image made
+of pixels or a digital surface in 3D.
 
 
 \f[
@@ -78,7 +83,8 @@ pixels or a digital surface in 3D.
 
 
 For more details about discrete formulations and numerical
-optimization of AT, we refer the reader to [2] and [3].
+optimization of AT, we refer the reader to \cite Coeurjolly2016pg,
+\cite Foare2016icpr and \cite Foare2016rrpr.
 
 @subsection AT_s2_2 Solutions to AT
 
@@ -86,7 +92,7 @@ Functional AT is a sum of quadratic terms, independently,
 but not simultaneously, convex in \f$ u \f$ and \f$ v \f$. It must have
 null derivative at optimum. We thus propose to alternatively solve for
 \f$ u \f$, then \f$ v \f$. The derivatives can be given explicitly as
-linear systems.
+linear systems. 
 To simplify notations, let \f$ \mathbf{A} := \mathbf{d_0} \f$,
 \f$  \mathbf{B} := \mathbf{d_1} \f$,
 \f$ \mathbf{A'} := \bar{\mathbf{\star}} \bar{\mathbf{d_1}} \mathbf{\star} \f$
@@ -95,7 +101,7 @@ and \f$ \mathbf{B'} := \bar{\mathbf{\star}} \bar{\mathbf{d_0}} \mathbf{\star} \f
 We define \f$ \mathbf{M} \f$ the matrix which transforms a 0-form into
 a 1-form by averaging the values on the two edge extremities, i.e.
 \f$ \mathbf{M} = \frac{1}{2} |\mathbf{d_0}| \f$. It is used in the
-wedge product between the 0-form v and 1-form \f$ \bar{\mathbf{\star}}
+wedge product between 0-form v and 1-forms \f$ \bar{\mathbf{\star}}
 \bar{\mathbf{d_0}} \mathbf{\star} u_i \f$.
 
 We get at optimum, if we assume trivial metrics:
@@ -232,31 +238,6 @@ at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(), at_s
 \endcode
 
 See  \ref exampleSurfaceATNormals.cpp  for more details.
-
-@section AT_s4 References
-
-[1] Luigi Ambrosio, and Vincenzo Maria Tortorelli. "Approximation of
-functional depending on jumps by elliptic functional via t‐convergence."
-Communications on Pure and Applied Mathematics 43.8 (1990): 999-1036.
-
-[2] Marion Foare, Jacques-Olivier Lachaud, and Hugues Talbot. "Image restoration
-and segmentation using the Ambrosio-Tortorelli functional and discrete calculus."
-In Proceedings of the IAPR International Conference on Pattern Recognition
-(ICPR2016), Cancun, Mexico, 2016.
-
-[3] Marion Foare, Jacques-Olivier Lachaud, and Hugues
-Talbot. "Numerical implementation of the Ambrosio-Tortorelli
-functional using discrete calculus and application to image
-restoration and inpainting."  In Proceedings of 1st Workshop on
-Reproducible Research In Pattern Recognition (RRPR 2016), Springer
-LNCS. To appear.
-
-[4] Matteo Focardi. "On the variational approximation of free-
-discontinuity problems in the vectorial case." Mathematical Models
-and Methods in Applied Sciences 11.04 (2001): 663-684.
-
-[5] Leo J. Grady and Jonathan Polimeni. Discrete calculus: Applied analysis on graphs
-for computational science . Springer, 2010.
 
 */
 } // namespace DGtal
