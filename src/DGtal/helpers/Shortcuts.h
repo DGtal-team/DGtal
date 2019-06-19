@@ -1622,11 +1622,14 @@ namespace DGtal
             {
               mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
             }
+
           std::ofstream output_obj( objfile.c_str() );
           output_obj << "#  OBJ format" << std::endl;
           output_obj << "# DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor" << std::endl;
           output_obj << "o anObject" << std::endl;
-          output_obj << "mtllib " << mtlfile << std::endl;
+		  //remove directory to write material
+          auto indexpath = objfile.find_last_of("/");
+          output_obj << "mtllib " << mtlfile.substr(indexpath+1) << std::endl;
           std::ofstream output_mtl( mtlfile.c_str() );
           output_mtl << "#  MTL format"<< std::endl;
           output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
