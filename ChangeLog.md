@@ -27,6 +27,7 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
+  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
