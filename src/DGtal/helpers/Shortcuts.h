@@ -1831,11 +1831,13 @@ namespace DGtal
 	      }
 	    }
 	  // Simplify materials (very useful for blender).
-          Idx j = 0;
           std::map<Color,Idx> map_colors;
-          for ( auto && c : diffuse_colors )
-            if ( ! map_colors.count( c ) )
-              map_colors[ c ] = j++;
+	  {
+	    Idx j = 0;
+	    for ( auto && c : diffuse_colors )
+	      if ( ! map_colors.count( c ) )
+		map_colors[ c ] = j++;
+	  }
 
 	  // Output materials
 	  bool has_material = ! diffuse_colors.empty();

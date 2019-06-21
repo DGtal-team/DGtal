@@ -1241,7 +1241,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
     {
       trace.info() << "Exporting mesh..." ;
       operator>><TSpace, TKSpace>( *this, "exportedMesh.off" );
-      trace.info() << "[done]"<< endl ;
+      trace.info() << "[done]"<< std::endl ;
     }
   if( e->key() == Qt::Key_M)
     {

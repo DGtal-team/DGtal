@@ -156,7 +156,7 @@ namespace DGtal {
     typedef itk::Image<PixelType, dimension> ItkImage;
     typedef itk::ImageSeriesReader<ItkImage> ItkReader;
 
-    typedef itk::GDCMImageIO ItkImageIO;
+    //typedef itk::GDCMImageIO ItkImageIO;
     
     typedef typename Image::ITKImagePointer ITKImagePointer;
     ITKImagePointer itk_image = nullptr;
