@@ -88,7 +88,7 @@ importDicomFiles_( const std::vector<std::string> & filenames )
   typename ItkReader::Pointer reader = ItkReader::New();
 
   // Definition of ITK Dicom reader
-  typedef itk::GDCMImageIO ItkImageIO;
+  //typedef itk::GDCMImageIO ItkImageIO;
   //ItkImageIO::Pointer dicomIO = ItkImageIO::New();
   //reader->SetImageIO( dicomIO );
 
