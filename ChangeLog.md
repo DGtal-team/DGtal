@@ -37,6 +37,7 @@
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
   - Fix bug in Shortcuts::saveVectorFieldOBJ
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
