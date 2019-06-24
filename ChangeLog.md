@@ -36,6 +36,8 @@
 - *doc*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
+  - Dxubg the `doxyfiles` to have the table of contents of module pages (David
+    Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
 
 
 # DGtal 1.0
