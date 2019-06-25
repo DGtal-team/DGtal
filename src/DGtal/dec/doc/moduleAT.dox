@@ -88,7 +88,7 @@ optimization of AT, we refer the reader to \cite Coeurjolly2016pg,
 
 @subsection AT_s2_2 Solutions to AT
 
-Functional AT is a sum of quadratic terms, independently,
+The AT functional  is a sum of quadratic terms, independently,
 but not simultaneously, convex in \f$ u \f$ and \f$ v \f$. It must have
 null derivative at optimum. We thus propose to alternatively solve for
 \f$ u \f$, then \f$ v \f$. The derivatives can be given explicitly as
