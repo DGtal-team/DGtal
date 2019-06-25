@@ -33,7 +33,7 @@ bounded domain \f$ \Omega \f$.
 
 In the Ambrosio-Tortorelli functional,
 one wants to find a function \f$ u \in SBV(\Omega) \f$ which is a
-smooth approximation of the input image \f$ g \f$.
+smooth approximation of the input data \f$ g \f$ (i.e. image in image processing applications).
 The Ambrosio-Tortorelli functional is defined by
 \f[
   \displaystyle
