@@ -57,20 +57,20 @@ namespace DGtal
        @brief Aim: This concept gathers classes that provide 
        a stack interface
 
-       ### Refinement of copy constructible and assignable
+       # Refinement of copy constructible and assignable
 
-       ### Inner types :
+       # Inner types
        - Value type of element stored in the stack
        - Size type that represents the number of elements
 
-       ### Notation
+       # Notation
        - \e X : A type that is a model of CStack
        - \e x : object of type X
        - \e v : object of type Value
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
     | Name  | Expression | Type requirements | Return type            | Precondition | Semantics                          | Post condition | Complexity |
     |-------+------------+-------------------+------------------------+--------------+------------------------------------+----------------+------------|
@@ -81,7 +81,7 @@ namespace DGtal
     | pop   | x.pop()    |                   | void                   |              | removes the top element            |                | O(1)       |
 
 
-       ### Models
+       # Models
 
        std::stack, BackInsertionSequenceToStackAdapter, FrontInsertionSequenceToStackAdapter are the usual models of CStack.
 

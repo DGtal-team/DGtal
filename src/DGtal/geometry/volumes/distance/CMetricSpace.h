@@ -82,26 +82,26 @@ squares of Point::Coordiante values.
    a. This method is required for performance purposes.
 
 
-### Refinement of
+# Refinement of
   - boost::CopyConstructible
   - boost::Assignable
 
 
 
-### Associated types :
+# Associated types
 
  - @e Space: type of space on which the metric is defined (model of CSpace).
  - @e Point: type of points associated with the underlying metric space.
  - @e Value: the value type of the metric (model of CQuantity).
  - @e RawValue: the value type for the rawDistance method  (model of CQuantity).
 
-### Notation
+# Notation
  - \e X : A type that is a model of CMetricSpace
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -110,13 +110,13 @@ squares of Point::Coordiante values.
 | closest point test | closest(aOrigin, aP, aQ) | @a aOrigin, @a aP,@a aQ of type @a aPoint |   a value of type Closest | | decide between @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 LpMetric, ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CMetricSpace.
  */

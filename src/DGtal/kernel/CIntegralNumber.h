@@ -64,19 +64,19 @@ Description of \b concept '\b CIntegralNumber' <p>
      concept should be listed in NumberTraits class and should have
      the isIntegral property.
      
- ### Refinement of 
+ # Refinement of 
    
     - CQuantity<T>
  
- ### Associated types 
+ # Associated types 
     
- ### Notation
+ # Notation
      - \a X : A type that is a model of CIntegralNumber
      - \a x, \a  y  : Object of type X
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and semantics
+ # Valid expressions and semantics
  
 
 Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
@@ -84,14 +84,14 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 \a X should be tagged \b true in \a NumberTraits for \a IsIntegral. | typename NumberTraits<X>::IsIntegral | TagTrue | | | | | |
     
     
- ### Invariants
+ # Invariants
 
     
- ### Models
+ # Models
 
 BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
 
- ### Notes
+ # Notes
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.

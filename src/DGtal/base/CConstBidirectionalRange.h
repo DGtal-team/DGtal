@@ -60,10 +60,10 @@ namespace DGtal
 
        \brief Aim: Defines the concept describing a bidirectional const range.
 
-       ###  Refinement of
+       #  Refinement of
        CConstSinglePassRange
 
-       ###  Provided types :
+       #  Provided types
 
        - ConstReverseIterator: the const reverse iterator type, a model of
        const iterator concept.
@@ -76,11 +76,11 @@ namespace DGtal
        | rend of range  | \e x.rend()|                      | \e ConstReverseIterator |             | returns a reverse forward iterator after the end of the range | | |
  
  
-       ###  Invariants
+       #  Invariants
 
-       ###  Models
+       #  Models
 
-       ###  Notes
+       #  Notes
 
        @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
 

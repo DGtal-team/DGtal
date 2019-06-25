@@ -57,31 +57,31 @@ Description of \b concept '\b CStaticMatrix' <p>
 @brief Aim:
 Represent any static sized matrix having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CMatrix
  - boost::DefaultConstructible
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c StaticMatrix : A type that is a model of CStaticMatrix
  - \e i, \e j : object of type \c StaticMatrix::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Static rows number      |  \a StaticVector::M          |                   | \c StaticVector::Index              |              |           |                |            |
 | Static cols number      |  \a StaticVector::N          |                   | \c StaticVector::Index              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - SimpleMatrix
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CStaticMatrix.
  */

@@ -58,18 +58,18 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
      models should provide an orientation method  for  real
      points. Returned value type corresponds to  DGtal::Orientation.
 
- ### Refinement of
+ # Refinement of
     
- ### Associated types :
+ # Associated types
     - RealPoint: type for real points.
 
- ### Notation
+ # Notation
      - \a X : A type that is a model of CEuclideanOrientedShape
      - \a x, \a y : object of type X
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and 
+ # Valid expressions and 
    
    
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
@@ -77,13 +77,13 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
 | Orientation method | \e x.orientation( \e aPoint )|  aPoint of type const RealPoint &              |  DGtal::Orientation    |        | return the orientation of a point @c aPoint according to the shape. Orientation values can be {DGtal::INSIDE, DGtal::ON or DGtal::OUTSIDE}.| | |
    
    
- ### Invariants###
+ # Invariants#
     
- ### Models###
+ # Models#
 
       Parametric and implicit shapes in the DGtal shape factory, 
 
- ### Notes###
+ # Notes#
 
 @tparam T the type that should be a model of CEuclideanOrientedShape.
    */

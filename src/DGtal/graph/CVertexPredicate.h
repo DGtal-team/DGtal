@@ -57,17 +57,17 @@ namespace DGtal {
 
   Associates a boolean to vertices.
 
-  ### Refinement of CPredicate< T, T::Vertex >.
+  # Refinement of CPredicate< T, T::Vertex >.
     
-  ### Associated types:
+  # Associated types:
   - Vertex : specifies the type for an element of the domain (inner
   type).
 
   @see CPredicate
 
-  ### Models###
+  # Models#
         
-  ### Notes###
+  # Notes#
   */
   template <typename T>
   struct CVertexPredicate : CPredicate< T, typename T::Vertex> 

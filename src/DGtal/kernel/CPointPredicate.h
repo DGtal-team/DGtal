@@ -60,21 +60,21 @@ namespace DGtal {
   
   Associates booleans to points.
   
-  ### Refinement of
+  # Refinement of
   CPredicate
   
   
-  ### Associated types :
+  # Associated types
   - Point : specifies the type for an element of the domain (inner
   type).
   
-  ### Models
+  # Models
   - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
   - complex predicate constructor: BinaryPointPredicate
   - others: DomainPredicate, SetPredicate, IntervalForegroundPredicate, SimpleThresholdForegroundPredicate
   - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
   
-  ### Notes
+  # Notes
   */
   template <typename T>
   struct CPointPredicate: CPredicate<T, typename T::Point>
