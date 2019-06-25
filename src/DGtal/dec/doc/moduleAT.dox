@@ -82,7 +82,7 @@ of pixels or a digital surface in 3D.
 \f]
 
 
-For more details about discrete formulations and numerical
+For more details about discrete formulations and the numerical
 optimization of AT, we refer the reader to \cite Coeurjolly2016pg,
 \cite Foare2016icpr and \cite Foare2016rrpr.
 
