@@ -63,17 +63,17 @@ namespace DGtal {
   objects that share common characteristics. Often, the primitives
   are geometric, e.g. digital planes.
   
-  ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+  # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
   
-  ### Associated types :
+  # Associated types
   - \a Space, the type that defines the digital space.
   - \a Primitive, the type that defines the primitive.
   
-  ### Notation
+  # Notation
   - \a X : A type that is a model of CPrimitiveComputer
   - \a x : object of type X
 
-  ### Valid expressions and semantics
+  # Valid expressions and semantics
 
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -81,13 +81,13 @@ namespace DGtal {
   |access to primitive | x.primitive() |             | \a Primitive|                  |returns a primitive that represents the current solution| | O(1)|
   
   
-  ### Invariants###
+  # Invariants#
   
-  ### Models###
+  # Models#
   
   - COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
   
-  ### Notes###
+  # Notes#
   
   @tparam T the type that should be a model of CPrimitiveComputer.
   */

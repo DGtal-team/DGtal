@@ -57,30 +57,30 @@ Description of \b concept '\b CImplicitFunction' <p>
 @brief Aim: Describes any function of the form f(x), where x is
      some real point in the given space, and f(x) is some value.
      
- ### Associated types :
+ # Associated types
      - RealPoint: the type for the domain
      - Value: the type for the range
 
- ### Notation
+ # Notation
      - \c X : A type that is a model of CImplicitFunction
      - \c f : objet of type X
      - \c a : objet of type RealPoint
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and semantics
+ # Valid expressions and semantics
      
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 |Function call  | \c f( \c a )|                    | Value       |                  | Evaluates the function \c f at point \c a | | |
 
 
- ### Invariants
+ # Invariants
     
- ### Models
+ # Models
      ImplicitBall, ImplicitPolynomial3Shape, ImplicitHyperCube, ImplicitRoundedHyperCube, ImplicitNorm1Ball
 
- ### Notes
+ # Notes
 
 
 @tparam T the type that should be a model of CImplicitFunction.

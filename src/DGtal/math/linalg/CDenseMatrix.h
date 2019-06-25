@@ -57,30 +57,30 @@ Description of \b concept '\b CDenseMatrix' <p>
 @brief Aim:
 Represent any dynamic or static sized matrix having dense representation.
 
-### Refinement of
+# Refinement of
  - CMatrix
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c DenseMatrix : A type that is a model of CDenseMatrix
  - \e i, \e j : object of type \c DenseMatrix::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constant ref random accessor      | \a x(i, j)           |                   | \c const Scalar&              |              |           |                |            |
 | Ref random accessor      | \a z(i, j)           |                   | \c Scalar&              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - SimpleMatrix
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CDenseMatrix.
  */
