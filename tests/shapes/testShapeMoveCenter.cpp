@@ -136,35 +136,9 @@ RoundedHyperCubeImplicit createShape( const RealPoint& center, const RealPoint& 
 std::uniform_real_distribution<double> unif(-1000000.,1000000.);
 std::default_random_engine re;
 
-TEMPLATE_TEST_CASE_7("Star shapes", "move() method", TestType,
-                     AccFlower, Astroid, Ball, Ellipse, Flower, Lemniscate, NGon)
-{
-
-  const double centerX = unif(re);
-  const double centerY = unif(re);
-  const double radiusX = unif(re);
-  const double radiusY = unif(re);
-
-  TestType shape = createShape<TestType>( RealPoint(centerX, centerY), RealPoint(radiusX, radiusY) );
-  
-  SECTION("Center coordinates")
-    {
-      REQUIRE( shape.center() == RealPoint(centerX, centerY) );
-    }
-
-  SECTION("Change center position")
-    {
-      const double newCenterX = unif(re);
-      const double newCenterY = unif(re);
-
-      shape.moveTo( RealPoint( newCenterX, newCenterY ) );
-
-      REQUIRE( shape.center() == RealPoint( newCenterX, newCenterY ) );
-    }
-}
-
-TEMPLATE_TEST_CASE_4("Implicit shapes", "move() method", TestType,
-                     BallImplicit, HyperCubeImplicit, Norm1BallImplicit, RoundedHyperCubeImplicit )
+TEMPLATE_TEST_CASE("Star shapes", "move() method",
+                    AccFlower, Astroid, Ball, Ellipse, Flower, Lemniscate, NGon,
+                    BallImplicit, HyperCubeImplicit, Norm1BallImplicit, RoundedHyperCubeImplicit)
 {
   const double centerX = unif(re);
   const double centerY = unif(re);
@@ -188,4 +162,3 @@ TEMPLATE_TEST_CASE_4("Implicit shapes", "move() method", TestType,
       REQUIRE( shape.center() == RealPoint( newCenterX, newCenterY ) );
     }
 }
-
