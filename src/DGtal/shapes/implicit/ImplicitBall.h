@@ -123,6 +123,14 @@ namespace DGtal
     }
 
     /**
+     * @return the center of the star-shaped object.
+     */
+    RealPoint center() const
+    {
+      return myCenter;
+    }
+
+    /**
      * Modify the shape center
      * @param newCenter the new center position
      */
