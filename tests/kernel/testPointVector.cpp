@@ -357,12 +357,12 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( p1.dot(p2) == 30 );
       REQUIRE( dotProduct(p1, p2) == 30 );
 
-      REQUIRE( p1.cosineSimilarity(p1) == Approx(0.) );
-      REQUIRE( p1.cosineSimilarity(-p1) == Approx(pi) );
-      REQUIRE( p1.cosineSimilarity( Point(-2,1,-4,3) ) == Approx(pi/2) );
-      REQUIRE( cosineSimilarity(p1, p1) == Approx(0.) );
-      REQUIRE( cosineSimilarity(p1, -p1) == Approx(pi) );
-      REQUIRE( cosineSimilarity(p1, Point(-2,1,-4,3)) == Approx(pi/2) );
+      REQUIRE( p1.cosineSimilarity(p1) == Approx(0.).margin(0.000001));
+      REQUIRE( p1.cosineSimilarity(-p1) == Approx(pi).margin(0.000001));
+      REQUIRE( p1.cosineSimilarity( Point(-2,1,-4,3) ) == Approx(pi/2).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, p1) == Approx(0.).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, -p1) == Approx(pi).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, Point(-2,1,-4,3)) == Approx(pi/2).margin(0.000001) );
 
       REQUIRE( p1.isLower(p2) == false );
       REQUIRE( isLower(p1, p2) == false );
@@ -414,12 +414,12 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( p3.dot(p4) == 12. );
       REQUIRE( dotProduct(p3, p4) == 12. );
 
-      REQUIRE( p3.cosineSimilarity(p3) == Approx(0.) );
-      REQUIRE( p3.cosineSimilarity(-p3) == Approx(pi) );
-      REQUIRE( p3.cosineSimilarity( RealPoint(1.0,1.0,2.0,2.0) ) == Approx(pi/2) );
-      REQUIRE( cosineSimilarity(p3, p3) == Approx(0.) );
-      REQUIRE( cosineSimilarity(p3, -p3) == Approx(pi) );
-      REQUIRE( cosineSimilarity(p3, RealPoint(1.0,1.0,2.0,2.0)) == Approx(pi/2) );
+      REQUIRE( p3.cosineSimilarity(p3) == Approx(0.).margin(0.000001) );
+      REQUIRE( p3.cosineSimilarity(-p3) == Approx(pi).margin(0.000001) );
+      REQUIRE( p3.cosineSimilarity( RealPoint(1.0,1.0,2.0,2.0) ) == Approx(pi/2).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, p3) == Approx(0.).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, -p3) == Approx(pi).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, RealPoint(1.0,1.0,2.0,2.0)) == Approx(pi/2).margin(0.000001) );
 
       REQUIRE( p3.isLower(p4) == false );
       REQUIRE( isLower(p3, p4) == false );
@@ -487,19 +487,19 @@ TEST_CASE( "4D Point Vector Unit tests" )
       REQUIRE( dotProduct(p4, p1) == 17.0 );
       REQUIRE( dotProduct(p1, p4) == 17.0 );
 
-      REQUIRE( p1.cosineSimilarity(RealPoint(p1)) == Approx(0.) );
-      REQUIRE( p1.cosineSimilarity(-RealPoint(p1)) == Approx(pi) );
-      REQUIRE( p1.cosineSimilarity( RealPoint(-2,1,-4,3) ) == Approx(pi/2) );
-      REQUIRE( cosineSimilarity(p1, RealPoint(p1)) == Approx(0.) );
-      REQUIRE( cosineSimilarity(p1, -RealPoint(p1)) == Approx(pi) );
-      REQUIRE( cosineSimilarity(p1, RealPoint(-2,1,-4,3)) == Approx(pi/2) );
+      REQUIRE( p1.cosineSimilarity(RealPoint(p1)) == Approx(0.).margin(0.000001) );
+      REQUIRE( p1.cosineSimilarity(-RealPoint(p1)) == Approx(pi).margin(0.000001) );
+      REQUIRE( p1.cosineSimilarity( RealPoint(-2,1,-4,3) ) == Approx(pi/2).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, RealPoint(p1)) == Approx(0.).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, -RealPoint(p1)) == Approx(pi).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p1, RealPoint(-2,1,-4,3)) == Approx(pi/2).margin(0.000001) );
 
-      REQUIRE( p3.cosineSimilarity(Point(1,-1,2,-2)) == Approx(0.) );
-      REQUIRE( p3.cosineSimilarity(-Point(1,-1,2,-2)) == Approx(pi) );
-      REQUIRE( p3.cosineSimilarity( Point(1,1,2,2) ) == Approx(pi/2) );
-      REQUIRE( cosineSimilarity(p3, Point(1,-1,2,-2)) == Approx(0.) );
-      REQUIRE( cosineSimilarity(p3, -Point(1,-1,2,-2)) == Approx(pi) );
-      REQUIRE( cosineSimilarity(p3, Point(1,1,2,2)) == Approx(pi/2) );
+      REQUIRE( p3.cosineSimilarity(Point(1,-1,2,-2)) == Approx(0.).margin(0.000001) );
+      REQUIRE( p3.cosineSimilarity(-Point(1,-1,2,-2)) == Approx(pi).margin(0.000001) );
+      REQUIRE( p3.cosineSimilarity( Point(1,1,2,2) ) == Approx(pi/2).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, Point(1,-1,2,-2)) == Approx(0.).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, -Point(1,-1,2,-2)) == Approx(pi).margin(0.000001) );
+      REQUIRE( cosineSimilarity(p3, Point(1,1,2,2)) == Approx(pi/2).margin(0.000001) );
 
       REQUIRE( p2.isLower(p4) == false );
       REQUIRE( isLower(p2, p4) == false );
@@ -514,5 +514,37 @@ TEST_CASE( "4D Point Vector Unit tests" )
 
 }
 
+
+TEST_CASE("Benchmarking","[.benchmark]")
+{
+  using Integer = DGtal::int32_t;
+  typedef PointVector<3, Integer> Point;
+  Point p1 = {1,2,3,4};
+  Point p2 = {3,4,5,6};
+ 
+  using Real = double;
+  typedef PointVector<3, Real> RPoint;
+  RPoint rp1 = {1,2,3,4};
+  RPoint rp2 = {3,4,5,6};
+
+  CHECK(p1.dot(p2) == 26);
+  CHECK(rp1.dot(rp2) == Approx(26));
+
+  BENCHMARK("Dot product int")
+  {
+    return p1.dot(p2);
+  };
+
+  BENCHMARK("Dot product double (with int->double cast)")
+  {
+    return rp1.dot(p2);
+  };
+
+  BENCHMARK("Dot product double")
+  {
+    return rp1.dot(rp2);
+  };
+
+}
 
 /** @ingroup Tests **/
