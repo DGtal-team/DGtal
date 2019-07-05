@@ -41,8 +41,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <DGtal/base/Common.h>
-#include <DGtal/shapes/parametric/StarShaped2D.h>
+#include "DGtal/base/Common.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
 #include <cmath>
 ///////////////////////////////////////////////////////////////////////////////
 
