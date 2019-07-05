@@ -303,15 +303,18 @@ SCENARIO( "Load isthmus tables", "[isthmus]" ){
     const auto & filename = isthmusicity::tableIsthmus;
     auto ptable = loadTable(filename);
     const auto & table = *ptable;
+    boost::ignore_unused_variable_warning(table);
   }
   SECTION("oneIsthmus"){
     const auto & filename = isthmusicity::tableOneIsthmus;
     auto ptable = loadTable(filename);
     const auto & table = *ptable;
+    boost::ignore_unused_variable_warning(table);
   }
   SECTION("twoIsthmus"){
     const auto & filename = isthmusicity::tableTwoIsthmus;
     auto ptable = loadTable(filename);
     const auto & table = *ptable;
+    boost::ignore_unused_variable_warning(table);
   }
 }
