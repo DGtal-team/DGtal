@@ -33,6 +33,11 @@
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
 
+- *Shapes package*
+  - Fix bug in Astroid parameter() method : orientation correction
+   (Adrien Krähenbühl,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+
 - *doc*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
