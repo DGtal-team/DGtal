@@ -15,12 +15,14 @@
  **/
 
 /**
- * @file testStarShapes.cpp
+ * @file testShapeMoveCenter.cpp
  * @ingroup Tests
+ * @author Adrien Krähenbühl (\c krahenbuhl@unistra.fr )
+ * Laboratoire ICube, UMR 7357, Université de Strasbourg, France
  *
- * @date 2019/07/05
+ * @date 2019/07/08
  *
- * Functions for testing star shapes
+ * Functions for testing the moveTo() method of star shapes.
  *
  * This file is part of the DGtal library.
  */

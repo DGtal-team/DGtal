@@ -5,7 +5,7 @@
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
    (Adrien Krähenbühl,
-   [#1325](https://github.com/DGtal-team/DGtal/pull/1414))
+   [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
 
 ## Changes
 
