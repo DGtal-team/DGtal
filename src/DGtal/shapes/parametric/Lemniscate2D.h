@@ -77,27 +77,24 @@ namespace DGtal
      * Constructor.
      * @param x0 the x-coordinate of the lemniscate center.
      * @param y0 the y-coordinate of the lemniscate center.
-     * @param a  coefficient along x-axis
-     * @param b  coefficient along y-axis
+     * @param a  semi-axis length along x-axis
      */
    Lemniscate2D( const double x0, const double y0,
-                 const double a, const double b);
+                 const double a );
 
      /**
       * Constructor.
       * @param aPoint the lemniscate center
-      * @param a      coefficient along x-axis
-      * @param b      coefficient along y-axis
+      * @param a      semi-axis length along x-axis
       */
-    Lemniscate2D( const RealPoint2D &aPoint, const double a, const double b );
+    Lemniscate2D( const RealPoint2D &aPoint, const double a );
 
      /**
       * Constructor.
       * @param aPoint the lemniscate center
-      * @param a      coefficient along x-axis
-      * @param b      coefficient along y-axis
+      * @param a      semi-axis length along x-axis
       */
-    Lemniscate2D( const Point2D &aPoint, const double a, const double b );
+    Lemniscate2D( const Point2D &aPoint, const double a );
 
 
    // ------------- Implementation of 'StarShaped' services ------------------
@@ -109,7 +106,7 @@ namespace DGtal
      */
     RealPoint2D getLowerBound() const
     {
-      return RealPoint2D(-myA - myCenter[0] , -myB - myCenter[1] );
+      return RealPoint2D(-myA - myCenter[0] , -myA*.5 - myCenter[1] );
     }
 
     /**
@@ -118,7 +115,7 @@ namespace DGtal
      */
     RealPoint2D getUpperBound() const
     {
-      return RealPoint2D(myA - myCenter[0] , myB - myCenter[1]);
+      return RealPoint2D( myA - myCenter[0] , myA*.5 - myCenter[1]);
     }
 
     /**
@@ -171,14 +168,9 @@ namespace DGtal
     RealPoint2D myCenter;
 
     /**
-     * Coefficient along x-axis
+     * semi-axis length along x-axis
      */
     double myA;
-
-    /**
-     * Coefficient along y-axis
-     */
-    double myB;
 
     // ----------------------- Interface --------------------------------------
   public:
