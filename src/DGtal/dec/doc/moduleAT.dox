@@ -33,7 +33,7 @@ bounded domain \f$ \Omega \f$.
 
 In the Ambrosio-Tortorelli functional,
 one wants to find a function \f$ u \in SBV(\Omega) \f$ which is a
-smooth approximation of the input image \f$ g \f$.
+smooth approximation of the input data \f$ g \f$ (i.e. image in image processing applications).
 The Ambrosio-Tortorelli functional is defined by
 \f[
   \displaystyle
@@ -82,13 +82,13 @@ of pixels or a digital surface in 3D.
 \f]
 
 
-For more details about discrete formulations and numerical
+For more details about discrete formulations and the numerical
 optimization of AT, we refer the reader to \cite Coeurjolly2016pg,
 \cite Foare2016icpr and \cite Foare2016rrpr.
 
 @subsection AT_s2_2 Solutions to AT
 
-Functional AT is a sum of quadratic terms, independently,
+The AT functional  is a sum of quadratic terms, independently,
 but not simultaneously, convex in \f$ u \f$ and \f$ v \f$. It must have
 null derivative at optimum. We thus propose to alternatively solve for
 \f$ u \f$, then \f$ v \f$. The derivatives can be given explicitly as
