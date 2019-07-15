@@ -51,30 +51,58 @@ FIND_PATH( MAGICK++_INCLUDE_DIR Magick++.h
   /opt/local/include/GraphicsMagick
   )
 
-FIND_LIBRARY( Magick GraphicsMagick
-  PATHS 
-  "$ENV{MAGICK_LOCATION}/magick/.libs"
-  "$ENV{MAGICK_LOCATION}/lib"
-  "$ENV{MAGICK_HOME}/lib"
-  /usr/lib
-  /usr/local/lib
-  /opt/local/lib
-  DOC   "GraphicsMagick magic library"
-)
+IF (MSVC)
+  # Under Windows, the name of the lib file is CORE_RL_magick
+  FIND_LIBRARY( MAGICK_LIBRARIES NAMES Magick GraphicsMagick CORE_RL_magick
+    PATHS 
+    "$ENV{MAGICK_LOCATION}/magick/.libs"
+    "$ENV{MAGICK_LOCATION}/lib"
+    "$ENV{MAGICK_HOME}/lib"
+    /usr/lib
+    /usr/local/lib
+    /opt/local/lib
+    DOC   "GraphicsMagick magic library"
+  )
+
+  # Under Windows, the name of the lib file is CORE_RL_Magick++
+  FIND_LIBRARY( MAGICK++_LIBRARIES NAMES Magick++ GraphicsMagick++ CORE_RL_Magick++
+    PATHS 
+    "$ENV{MAGICK++_LOCATION}/.libs"
+    "$ENV{MAGICK_LOCATION}/.libs"
+    "$ENV{MAGICK++_LOCATION}/lib"
+    "$ENV{MAGICK_LOCATION}/lib"
+    "$ENV{MAGICK_HOME}/lib"
+    /opt/local/lib
+    /usr/lib
+    /usr/local/lib
+     DOC   "GraphicsMagick Magick++ library"
+  )
+ELSE (MSVC)
+  FIND_LIBRARY( Magick GraphicsMagick
+    PATHS 
+    "$ENV{MAGICK_LOCATION}/magick/.libs"
+    "$ENV{MAGICK_LOCATION}/lib"
+    "$ENV{MAGICK_HOME}/lib"
+    /usr/lib
+    /usr/local/lib
+    /opt/local/lib
+    DOC   "GraphicsMagick magic library"
+  )
 
 
-FIND_LIBRARY( Magick++ GraphicsMagick++
-  PATHS 
-  "$ENV{MAGICK++_LOCATION}/.libs"
-  "$ENV{MAGICK_LOCATION}/.libs"
-  "$ENV{MAGICK++_LOCATION}/lib"
-  "$ENV{MAGICK_LOCATION}/lib"
-  "$ENV{MAGICK_HOME}/lib"
-  /opt/local/lib
-  /usr/lib
-  /usr/local/lib
-   DOC   "GraphicsMagick Magick++ library"
-)
+  FIND_LIBRARY( Magick++ GraphicsMagick++
+    PATHS 
+    "$ENV{MAGICK++_LOCATION}/.libs"
+    "$ENV{MAGICK_LOCATION}/.libs"
+    "$ENV{MAGICK++_LOCATION}/lib"
+    "$ENV{MAGICK_LOCATION}/lib"
+    "$ENV{MAGICK_HOME}/lib"
+    /opt/local/lib
+    /usr/lib
+    /usr/local/lib
+     DOC   "GraphicsMagick Magick++ library"
+  )
+ENDIF (MSVC)
 
 
 SET(MAGICK_LIBRARIES ${Magick} )
