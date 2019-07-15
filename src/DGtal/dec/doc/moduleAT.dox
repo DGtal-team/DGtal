@@ -180,32 +180,17 @@ To detail a little bit how to do that, you have first to build a
 digital surface. For instance, you can use Shortcuts to do so quickly
 (see \ref moduleShortcuts):
 
+\snippet exampleSurfaceATNormals.cpp AT-surface-includes
 \code
-#include "ConfigExamples.h"
-#include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/helpers/Shortcuts.h"
-#include "DGtal/helpers/ShortcutsGeometry.h"
-#include "DGtal/dec/ATSolver2D.h"
-#include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
-
 auto volfile   = examplesPath + "samples/Al.100.vol";
-auto bimage    = SH3::makeBinaryImage( volfile, params );
-auto K         = SH3::getKSpace( bimage, params );
-auto surface   = SH3::makeDigitalSurface( bimage, K, params );
-auto surfels   = SH3::getSurfelRange( surface, params );
-auto linels    = SH3::getCellRange( surface, 1 );
-auto ii_normals= SHG3::getIINormalVectors( bimage, surfels, params );
 \endcode
+\snippet exampleSurfaceATNormals.cpp AT-surface-init
 
 Then you just have to build a discrete calculus over the domain where
 you want to compute your piecewise smooth approximation. Here, we
 build the calculus over the whole surfel range \a surfels:
 
-\code
-typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
-const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
-\endcode
+\snippet exampleSurfaceATNormals.cpp AT-surface-calculus
 
 After that, the AT solver can be build on this calculus. Then it is
 initialized with input data you wish to approximate (here the normal
@@ -213,30 +198,16 @@ vector field \a ii_normals). Finally it suffices to call the method
 ATSolver2D::solveGammaConvergence to use the coarse-to-fine \f$ \Gamma
 \f$-convergence optimization method.
 
-\code
-const double alpha_at  = 0.1;   // data fit
-const double lambda_at = 0.025; // 1/length of discontinuities
-const double e1        = 2.0;   // coarse value for epsilon
-const double e2        = 0.25;  // fine value for epsilon
-const double er        = 2.0;   // ratio between two epsilon values
-ATSolver2D< KSpace > at_solver( calculus, 1 ); // 0 silent, 1: traces, 2: verbose.
-at_solver.initInputVectorFieldU2( ii_normals, surfels.cbegin(), surfels.cend() );
-at_solver.setUp( alpha_at, lambda_at );
-at_solver.solveGammaConvergence( e1, e2, er );
-\endcode
+\snippet exampleSurfaceATNormals.cpp AT-surface-solve
 
 You recover the piecewise-smooth approximation of the input vector
 field with ATSolver2D::getOutputVectorFieldU2, and the function giving
 the locii of discontinuities with ATSolver2D::getOutputScalarFieldV0.
 
-\code
-// Vector field, std::vector<RealVectors>
-auto at_normals = ii_normals;
-at_solver.getOutputVectorFieldU2( at_normals, surfels.cbegin(), surfels.cend() );
-// Scalar field, std::vector<double>
-SH3::Scalars features( linels.size() );
-at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(), at_solver.Maximum );
-\endcode
+\snippet exampleSurfaceATNormals.cpp AT-surface-getU2
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-getV0
+
 
 See  \ref exampleSurfaceATNormals.cpp  for more details.
 
