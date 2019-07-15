@@ -995,7 +995,7 @@ namespace DGtal
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
       ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       static Parameters parametersATApproximation()
       {
 #if defined(WITH_EIGEN)
@@ -1019,6 +1019,8 @@ namespace DGtal
       /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
       /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
       ///
+      /// @see moduleAT
+      ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
       ///
@@ -1036,7 +1038,7 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput>
       static
@@ -1072,6 +1074,8 @@ namespace DGtal
       /// also outputs the feature vector \a features, corresponding to
       /// 0-form \a v in AT (the average of \a v for linels/surfels).
       ///
+      /// @see moduleAT
+      ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
       /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
@@ -1094,7 +1098,7 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput,
                 typename CellRangeConstIterator>
@@ -1138,6 +1142,8 @@ namespace DGtal
       /// approximation of \a input using Ambrosio-Tortorelli
       /// functional.
       ///
+      /// @see moduleAT
+      ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       ///
       /// @param[in] surface the digital surface
@@ -1154,7 +1160,7 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface>
       static
       Scalars
@@ -1191,6 +1197,8 @@ namespace DGtal
       /// corresponding to 0-form \a v in AT (the average of \a v for
       /// linels/surfels).
       ///
+      /// @see moduleAT
+      ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
       ///
@@ -1215,7 +1223,7 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN ..`
+      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename CellRangeConstIterator>
       static

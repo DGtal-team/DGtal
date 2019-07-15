@@ -65,7 +65,7 @@ namespace DGtal
   * represented as a 0-form. The 2-form(s) \a u is a regularized
   * approximation of an input vector data \a g, while \a v represents
   * the set of discontinuities of \a u.  The norm chosen for \a u is
-  * the l2-norm.
+  * the \f$ l_2 \f$-norm.
   *
   * @tparam TKSpace any model of CCellularGridSpaceND, e.g KhalimskySpaceND
   *
@@ -139,6 +139,7 @@ namespace DGtal
     typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 2, PRIMAL, 2, PRIMAL> SolverU2;
     typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> SolverV0;
 
+  protected:
     /// A smart (or not) pointer to a calculus object.
     CountedConstPtrOrConstPtr< Calculus > ptrCalculus;
     /// the derivative operator for primal 0-forms
@@ -168,6 +169,8 @@ namespace DGtal
     PrimalForm0           former_v0;
     /// The primal 0-form lambda/(4epsilon) (stored for performance)
     PrimalForm0           l_1_over_4e;
+
+  public:
     // The map Surfel -> Index that gives the index of the surfel in 2-forms.
     Surfel2IndexMap       surfel2idx;  
     /// The map Surfel -> double telling the smallest epsilon for
@@ -593,7 +596,7 @@ namespace DGtal
     /// loo-norm of \f$ v^{k+1} - v^k \f$ is below this bound.
     ///
     /// @param iter_max the alternate minimization will stop when the
-    /// number of minimization steps exceed \a iter_max.
+    /// number of minimization steps exceeds \a iter_max.
     ///
     /// @return true if everything went fine, false if there was a
     /// problem in the optimization.
@@ -616,7 +619,6 @@ namespace DGtal
 	    trace.info() << "---------- Iteration "
 			 << i << "/" << iter_max << " ---------------" << std::endl;
 	  solveOneAlternateStep( );
-	  //bool ok = ok && 
 	  auto norms_v = checkV0();
 	  auto diffs_v = diffV0();
 	  if ( verbose >= 1 ) {
@@ -647,7 +649,7 @@ namespace DGtal
     /// loo-norm of \f$ v^{k+1} - v^k \f$ is below this bound.
     ///
     /// @param iter_max the alternate minimization will stop when the
-    /// number of minimization steps exceed \a iter_max.
+    /// number of minimization steps exceeds \a iter_max.
     ///
     /// @return true if everything went fine, false if there was a
     /// problem in the optimization.
@@ -795,8 +797,7 @@ namespace DGtal
     getOutputScalarFieldU2( ScalarFieldOutput& output,
                             SurfelRangeConstIterator itB, SurfelRangeConstIterator itE )
     {
-      const Dimension N = u2.size();
-      ASSERT( N == 1 && "[ATSolver2D::getOutputScalarFieldU2] "
+      ASSERT( u2.size() == 1 && "[ATSolver2D::getOutputScalarFieldU2] "
               "You try to output a scalar field from a vector field." );
       Index i = 0;
       for ( auto it = itB; it != itE; ++it, ++i )
@@ -891,10 +892,10 @@ namespace DGtal
         }
     }
     
-    /// Computes the map that tells for each surfel the smallest
-    /// epsilon for which the surfel was a discontinuity (more
-    /// precisely, the surfel has at least two vertices that belongs
-    /// to the set of discontinuity).
+    /// Computes the map that stores for each surfel the smallest
+    /// epsilon for which the surfel was in the discontinuity zone
+    /// (more precisely, the surfel has at least two vertices that
+    /// belongs to the set of discontinuity).
     ///
     /// @param[in] threshold the threshold for discontinuity function
     /// v (below u is discontinuous, above u is continuous)
@@ -964,12 +965,6 @@ namespace DGtal
 
     /// @}
     
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-
     // ------------------------- Hidden services ------------------------------
   protected:
 

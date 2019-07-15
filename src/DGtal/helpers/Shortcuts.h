@@ -1394,6 +1394,7 @@ namespace DGtal
         const Dimension k )
       {
         CellRange result;
+        // Approximate number of pointels given the number of 2-cells (valid for 2d surfaces in nD).
         result.reserve( 2 * surface->size() + 100 );
         const KSpace& K = refKSpace( surface );
         Idx n = 0;
