@@ -68,7 +68,7 @@ information.
 @section manuals_tutorials Helpers and Tutorials
 
   - \ref packageTutorials
-
+  - \ref moduleShortcuts
 
 @section manueldev Manual pages for DGtal developers
   - \ref moduleFAQGit

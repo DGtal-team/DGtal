@@ -460,7 +460,7 @@ DGtal::operator<< ( std::ostream & out,
 template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
 inline
 DGtal::SimpleMatrix<TComponent, TM, TN>
-operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponent, TM, TN>& matrix)
+DGtal::operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponent, TM, TN>& matrix)
 {
 		return matrix * scalar;
 }
