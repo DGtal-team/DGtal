@@ -83,7 +83,7 @@ namespace DGtal
   * at_solver.getOutputVectorFieldU2( normals, surfels.cbegin(), surfels.cend() );
   * \endcode
   *
-  * @see \ref exampleSurfaceATNormals.cpp
+  * @see exampleSurfaceATNormals.cpp
   */
   template < typename TKSpace,
              typename TLinearAlgebra = EigenLinearAlgebraBackend >
@@ -198,7 +198,7 @@ namespace DGtal
     ///
     /// @param aCalculus any valid calculus
     /// @param aVerbose tells how the solver displays computing information: 0 none, 1 more, 2 even more...
-    /// @see \ref CalculusFactory for creating calculus objects.
+    /// @see \ref DiscreteExteriorCalculusFactory for creating calculus objects.
     ATSolver2D( ConstAlias< Calculus > aCalculus, int aVerbose = 0 )
       : ptrCalculus( aCalculus ),
         primal_D0( *ptrCalculus ), primal_D1( *ptrCalculus ),
