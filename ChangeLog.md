@@ -12,6 +12,10 @@
     (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
+- *TestsGeometry*
+  - Add const directives to some curve estimator on shapes.
+    (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
+
 
 ## Bug Fixes
 
