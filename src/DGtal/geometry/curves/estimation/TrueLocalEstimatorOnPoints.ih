@@ -76,7 +76,7 @@ template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 void
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::attach(ParametricShape* aShapePtr) 
+::attach(const ParametricShape* aShapePtr) 
 {
   myFunctorPtr =  new ParametricShapeFunctor(aShapePtr);
 }

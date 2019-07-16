@@ -47,7 +47,7 @@ inline
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints(const double h, 
                       const ConstIteratorOnPoints& itb, 
                       const ConstIteratorOnPoints& ite,
-                      PShape* aShape,
+                      const PShape* aShape,
                       const bool& isClosed) 
 {
   init(h,itb,ite,aShape,isClosed);
@@ -62,7 +62,7 @@ void
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
                   const ConstIteratorOnPoints& itb, 
                   const ConstIteratorOnPoints& ite,
-                  PShape* aShape,
+                  const PShape* aShape,
                   const bool& isClosed) 
 {
   myH = h;
@@ -84,7 +84,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double 
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 {
   ASSERT(myH>0);
   if (myFlagIsClosed) {
@@ -111,7 +111,7 @@ template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIteratorOnPoints& itb,
-                   const ConstIteratorOnPoints& ite)
+                   const ConstIteratorOnPoints& ite) const
 {
   ASSERT(myH>0);
   if (myFlagIsClosed) {

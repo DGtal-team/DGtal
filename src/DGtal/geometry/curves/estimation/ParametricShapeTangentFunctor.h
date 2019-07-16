@@ -86,7 +86,7 @@ namespace DGtal
      *
      * @param aShape the input shape.
      */
-    ParametricShapeTangentFunctor(ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeTangentFunctor(const ParametricShape *aShape): myShape(aShape) {};
     
     
     /**
@@ -116,7 +116,7 @@ namespace DGtal
      * @param aPoint the point at which the tangent is computed. 
      * @return the tangent at [aPoint].
      */
-    Quantity operator()(const RealPoint &aPoint)
+    Quantity operator()(const RealPoint &aPoint) const
     {
       ASSERT(myShape);
 
@@ -129,7 +129,7 @@ namespace DGtal
   private:
     
     ///Copy of the implicit shape.
-    ParametricShape *myShape;
+    const ParametricShape *myShape;
     
     // ------------------------- Internals ------------------------------------
   private:
