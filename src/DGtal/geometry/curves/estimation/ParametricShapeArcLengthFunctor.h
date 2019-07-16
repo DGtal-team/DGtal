@@ -90,7 +90,7 @@ namespace DGtal
      * Constructor.
      * @param aShape the input shape.
      */
-    ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeArcLengthFunctor(const ParametricShape *aShape): myShape(aShape) {};
 
 
     /**
@@ -122,7 +122,7 @@ namespace DGtal
      * @param aSecondPoint the second point
      * @return the estimated arc length
      */
-    Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint)
+    Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint) const
     {
 
       ASSERT(myShape);
@@ -144,7 +144,7 @@ namespace DGtal
      *
      * @return the estimated length
      */
-    Quantity operator()()
+    Quantity operator()() const
     {
 
       ASSERT(myShape);
@@ -161,7 +161,7 @@ namespace DGtal
   private:
 
     ///Copy of the implicit shape.
-    ParametricShape *myShape;
+    const ParametricShape *myShape;
 
     // ------------------------- Internals ------------------------------------
   private:

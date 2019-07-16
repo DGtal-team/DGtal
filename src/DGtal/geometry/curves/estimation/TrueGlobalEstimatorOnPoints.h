@@ -103,7 +103,7 @@ namespace DGtal
     TrueGlobalEstimatorOnPoints(const double h, 
              const ConstIteratorOnPoints& itb, 
              const ConstIteratorOnPoints& ite,
-             ParametricShape* aShape,
+             const ParametricShape* aShape,
              const bool& isClosed);
     
     /**
@@ -125,20 +125,20 @@ namespace DGtal
     void init(const double h, 
         const ConstIteratorOnPoints& itb, 
         const ConstIteratorOnPoints& ite,
-        ParametricShape* aShape,
+        const ParametricShape* aShape,
         const bool& isClosed);
     
     /**
      * @return the estimated quantity 
      */
-    Quantity eval() ;
+    Quantity eval() const;
     
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     Quantity eval(const ConstIteratorOnPoints& itb, 
-      const ConstIteratorOnPoints& ite); 
+      const ConstIteratorOnPoints& ite) const;
 
 
     /**

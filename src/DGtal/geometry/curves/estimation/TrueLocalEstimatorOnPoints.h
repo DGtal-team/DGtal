@@ -111,7 +111,7 @@ namespace DGtal
      * Attach a shape
      * @param aShapePtr parametric shape
      */
-    void attach(ParametricShape* aShapePtr);
+    void attach(const ParametricShape* aShapePtr);
 
     /**
      * Estimation at *it

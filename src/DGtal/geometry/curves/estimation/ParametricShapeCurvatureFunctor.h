@@ -89,7 +89,7 @@ namespace DGtal
      *
      * @param aShape the input shape.
      */
-    ParametricShapeCurvatureFunctor(ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeCurvatureFunctor(const ParametricShape *aShape): myShape(aShape) {};
     
     
     /**
@@ -120,7 +120,7 @@ namespace DGtal
      * @param aPoint the point at which the curvature is computed. 
      * @return the curvature at [aPoint].
      */
-    Quantity operator()(const RealPoint &aPoint)
+    Quantity operator()(const RealPoint &aPoint) const
     {
       ASSERT(myShape);
 
@@ -133,7 +133,7 @@ namespace DGtal
   private:
     
     ///Copy of the implicit shape.
-    ParametricShape *myShape;
+    const ParametricShape *myShape;
     
     // ------------------------- Internals ------------------------------------
   private:
