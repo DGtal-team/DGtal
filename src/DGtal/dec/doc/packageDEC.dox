@@ -50,13 +50,13 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 @note To use this package, you have to build DGtal with the Eigen option (and with Cairo option to have the examples compiled). By using cmake you have to use these options:  -DWITH_EIGEN=true -DWITH_CAIRO=true.
 
 @b Modules
-- \ref moduleDECIntroduction
-- \ref moduleDECEmbedding
-- \ref moduleDECPoisson
-- \ref moduleDECHelmoltz
-- \ref moduleDECPropagation
-- \ref moduleHeatLaplaceOperator
-- \ref moduleAT
+- \ref moduleDECIntroduction (Pierre Gueth)
+- \ref moduleDECEmbedding (Pierre Gueth)
+- \ref moduleDECPoisson (Pierre Gueth)
+- \ref moduleDECHelmoltz (Pierre Gueth)
+- \ref moduleDECPropagation (Pierre Gueth)
+- \ref moduleHeatLaplaceOperator (Thomas Caissard)
+- \ref moduleAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
 
 @b Package @b Concepts @b Overview
 - \ref packageDECConcepts
