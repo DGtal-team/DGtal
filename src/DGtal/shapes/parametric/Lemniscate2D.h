@@ -106,7 +106,7 @@ namespace DGtal
      */
     RealPoint2D getLowerBound() const
     {
-      return RealPoint2D(-myA - myCenter[0] , -myA*.5 - myCenter[1] );
+      return RealPoint2D(-myA - myCenter[0] , -myA * .5 - myCenter[1] );
     }
 
     /**
@@ -115,7 +115,7 @@ namespace DGtal
      */
     RealPoint2D getUpperBound() const
     {
-      return RealPoint2D( myA - myCenter[0] , myA*.5 - myCenter[1]);
+      return RealPoint2D( myA - myCenter[0] , myA * .5 - myCenter[1]);
     }
 
     /**
@@ -168,7 +168,7 @@ namespace DGtal
     RealPoint2D myCenter;
 
     /**
-     * semi-axis length along x-axis
+     * Semi-axis length along x-axis
      */
     double myA;
 
