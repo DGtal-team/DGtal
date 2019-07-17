@@ -92,7 +92,7 @@ DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
   else if ( p[1] == 0. && p[0] > 0. )
     angle = M_PI_2;
   else if ( p[1] == 0. && p[0] < 0. )
-    angle = 3.*M_PI_2;
+    angle = 3. * M_PI_2;
   else
     angle = acos(p[1]/p[0]);
 
