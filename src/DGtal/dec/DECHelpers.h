@@ -66,7 +66,7 @@ namespace DGtal
 
       Triplets triplets;
       for (Index index=0; index<kform.length(); index++)
-        triplets.push_back(Triplet(index, index, kform.myContainer(index)));
+        triplets.emplace_back( index, index, kform.myContainer(index) );
       Operator ope(kform.myCalculus);
       ope.myContainer.setFromTriplets(triplets.begin(), triplets.end());
       
@@ -148,7 +148,7 @@ namespace DGtal
           
           const double weight = 1/static_cast<Scalar>(indexes_surfel.size());
           for (const Index index_surfel : indexes_surfel)
-            triplets.push_back(Triplet(index_point, index_surfel, weight));
+            triplets.emplace_back( index_point, index_surfel, weight );
         }
       
       SparseMatrix matrix( calculus.kFormLength(0, DGtal::PRIMAL),
