@@ -66,15 +66,15 @@ RealPoint notNullRealPoint(
 
 TEST_CASE("Astroid2D")
 {
-  std::uniform_real_distribution<double> unif(-DBL_MAX,DBL_MAX);
+  std::uniform_real_distribution<double> unif(-10000,10000);
   std::default_random_engine re;
 
   SECTION("center()")
     {
       const RealPoint center(unif(re),unif(re));
       Shape shape( center, unif(re), unif(re) );
-	  REQUIRE( shape.center() == center );
-	}
+	   REQUIRE( shape.center() == center );
+  	}
   
   SECTION("Lower and upper bounds")
     {
@@ -100,21 +100,23 @@ TEST_CASE("Astroid2D")
       REQUIRE_NOTHROW( shape.parameter(notNullRealPoint(unif,re)) );
     }
 
-  SECTION("parameter() with point parameter with null x -> pi/2 or 3*pi/2")
+  SECTION("parameter() where (x,y) parameter with x == center -> pi/2 or 3*pi/2")
     {
-  	  Shape shape( unif(re), unif(re), unif(re), unif(re) );
-	  const RealPoint point( 0., unif(re) );
+      const double centerX = unif(re);
+  	  Shape shape( centerX, unif(re), unif(re), unif(re) );
+	    const RealPoint point( centerX, unif(re) );
       REQUIRE_NOTHROW( shape.parameter(point) );
-	  double res = shape.parameter(point);
-	  REQUIRE_THAT( res, Catch::WithinULP(M_PI_2,DBL_EPSILON) || Catch::WithinULP(3*M_PI_2,DBL_EPSILON) );
+      double res = shape.parameter(point);
+      REQUIRE_THAT( res, Catch::WithinULP(M_PI_2,DBL_EPSILON) || Catch::WithinULP(3*M_PI_2,DBL_EPSILON) );
     }
 
   SECTION("parameter() with point parameter with null y -> 0. or pi")
     {
-  	  Shape shape( unif(re), unif(re), unif(re), unif(re) );
-	  const RealPoint point( unif(re), 0. );
+      const double centerY = unif(re);
+  	  Shape shape( unif(re), centerY, unif(re), unif(re) );
+	    const RealPoint point( unif(re), centerY );
       REQUIRE_NOTHROW( shape.parameter(point) );
-	  double res = shape.parameter(point);
-	  REQUIRE_THAT( res, Catch::WithinULP(0.,DBL_EPSILON) || Catch::WithinULP(M_PI,DBL_EPSILON) );
+      double res = shape.parameter(point);
+      REQUIRE_THAT( res, Catch::WithinULP(0.,DBL_EPSILON) || Catch::WithinULP(M_PI,DBL_EPSILON) );
     }
 }
