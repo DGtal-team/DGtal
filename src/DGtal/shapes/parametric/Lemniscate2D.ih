@@ -49,19 +49,19 @@ DGtal::Lemniscate2D<T>::~Lemniscate2D()
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const double x0, const double y0,
-  const double a ) : myCenter(x0,y0), myA(a)
+  const double a ) : myCenter(x0,y0), myA(fabs(a))
 {}
 
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint2D &aPoint,
-  const double a ) : myCenter(aPoint), myA(a)
+  const double a ) : myCenter(aPoint), myA(fabs(a))
 {}
 
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
-  const double a ) : myA(a)
+  const double a ) : myA(fabs(a))
 {
   myCenter = aPoint;
 }
