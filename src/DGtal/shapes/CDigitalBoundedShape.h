@@ -60,31 +60,31 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
 @brief Aim: designs the concept of bounded shapes in DGtal (shape for
     which upper and lower bounding bounds are available).
     
-### Refinement of 
+# Refinement of 
    
-### Associated types :
+# Associated types
     - Point: type for points (to characterize upper/lower bounds).
    
-### Notation
+# Notation
     - \a X : A type that is a model of CDigitalBoundedShape
     - \a x, \a y  : Object of type X
    
-### Definitions
+# Definitions
    
-### Valid expressions and semantics
+# Valid expressions and semantics
    
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 |Lower bound    | x.getLowerBound()| |             |Point        |                  |compute and return the lower bound of the shape bounding box | | |
 |Upper bound    | x.getUpperBound()| |             |Point        |                  |compute and return the upper bound of the shape bounding box | | |
    
-### Invariants
+# Invariants
    
-### Models
+# Models
       Implicit and Parametric shapes of the shape factory.
    
    
-### Notes
+# Notes
    */
   template <typename TShape>
   struct CDigitalBoundedShape

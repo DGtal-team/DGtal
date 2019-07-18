@@ -61,19 +61,19 @@ namespace DGtal
        (in the direction that is relative to the underlying iterator)
        so that an implicit predicate P remains true.  
      
-       ### Refinement of CSegmentFactory
+       # Refinement of CSegmentFactory
     
-       ### Associated types : 
+       # Associated types 
        the same as CSegmentFactory
   
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CIncrementalSegmentComputer
        - \a x, \a y : object of type X
        - \a i : object of type X::ConstIterator
   
-       ### Definitions
+       # Definitions
     
-       ### Valid expressions and 
+       # Valid expressions and 
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -82,7 +82,7 @@ namespace DGtal
        | Extension test| x.isExtendableFront()|         |bool         | x is valid and P is true | check whether x can be extended to x.end() or not | x is valid and P is true | |
        | Extension     | x.extendFront()|               |bool         | x is valid and P is true | check whether x can be extended to x.end() or not, extend only if true | x is valid and P is true | |
     
-       ### Invariants###
+       # Invariants#
 
        Models of CIncrementalSegmentComputer garantee that 
        for each iterator it from s.begin() to s.end(), the range [s.begin(), it) is 
@@ -102,9 +102,9 @@ namespace DGtal
        @endcode
 
     
-       ### Models###
+       # Models#
     
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CIncrementalSegmentComputer.
     */
