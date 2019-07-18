@@ -57,30 +57,30 @@ Description of \b concept '\b CDynamicVector' <p>
 @brief Aim:
 Represent any dynamic sized column vector having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CVector
 
-### Associated types :
+# Associated types
 
-### Notation
+# Notation
  - \c DynamicVector : A type that is a model of CDynamicVector
  - \e x : object of type \c DynamicMatrix
  - \e i : object of type \c DynamicVector::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constructor |  \a x(i)          |                   | \c DynamicVector              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - Eigen::VectorXd, Eigen::SparseVector, Eigen::DenseVector
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CDynamicVector.
  */

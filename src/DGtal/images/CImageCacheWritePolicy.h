@@ -55,35 +55,35 @@ Description of \b concept '\b CImageCacheWritePolicy' <p>
 @ingroup Concepts
 @brief Aim: Defines the concept describing a cache write policy
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
  - \e ImageContainer : type of the image in the cache, model of concept CImage
  - \e Point : type of the image point
  - \e Value : type of the image value
 
-### Notation
+# Notation
  - \e X : A type that is a model of CImageCacheWritePolicy
  - \e x : object of type X
  - \e i : object of type ImageContainer
  - \e p : object of type Point
  - \e v : object of type Value
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name                | Expression              | Type requirements                                          | Return type       | Precondition | Semantics                                                   | Post condition | Complexity |
 |---------------------|-------------------------|------------------------------------------------------------|-------------------|--------------|-------------------------------------------------------------|----------------|------------|
 | Write in page       | x.writeInPage(i,p,v)    | i of type ImageContainer, p of type Point, v of type Value |                   |              | set a value v on an image i at a given position p           |                |            |
 | Flush page          | x.flushPage(i)          | i of type ImageContainer                                   |                   |              | flush the image i on disk according to the cache policy     |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 ImageCacheWritePolicyWT, ImageCacheWritePolicyWB
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CImageCacheWritePolicy.
  */

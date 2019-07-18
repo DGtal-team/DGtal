@@ -65,32 +65,32 @@ namespace DGtal {
   to an object, then to its border, then to a subset of its border,
   etc.
     
-  ### Refinement of 
+  # Refinement of 
   CAdjacency
    
-  ### Associated types :
+  # Associated types
   - Domain: the domain of this adjacency.
   - Predicate: the type of the predicate "is in domain ?"
    
-  ###  Notation
+  #  Notation
   - \a X : A type that is a model of CDomainAdjacency
   - \a x, \a y  : Object of type X
    
-  ### Definitions
+  # Definitions
    
-  ###  Valid expressions and semantics
+  #  Valid expressions and semantics
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   | embedding domain | x.domain() | | const Domain & | | return a reference to the embedding domain.| |  O(1) |
   | "is in domain ?" predicate | x.predicate() | | const Predicate & | | return a reference to the predicate object that is characteristic of the embedding domain.| |  O(1) |
    
-  ### Invariants
+  # Invariants
    
-  ### Models
+  # Models
   DomainAdjacency
    
-  ### Notes
+  # Notes
   */
   template <typename T>
   struct CDomainAdjacency : CAdjacency<T>

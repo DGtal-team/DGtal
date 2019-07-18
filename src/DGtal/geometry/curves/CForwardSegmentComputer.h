@@ -62,17 +62,17 @@ namespace DGtal
        subrange of the whole segment at any time. This extra constraint is necessary
        to be able to incrementally check whether or not the segment is maximal.
 
-       ### Refinement of CIncrementalSegmentComputer
+       # Refinement of CIncrementalSegmentComputer
 
-       ### Associated types :
+       # Associated types
        - same as CIncrementalSegmentComputer
 
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CForwardSegmentComputer
        - \a x : object of type X
        - \a r : object of type X::Reverse
 
-       ### Invariants###
+       # Invariants#
 
        Contrary to models of CIncrementalSegmentComputer,
        models of CForwardSegmentComputer also garantee that
@@ -91,9 +91,9 @@ namespace DGtal
        }
        @endcode
 
-       ### Models###
+       # Models#
 
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CForwardSegmentComputer.
     */

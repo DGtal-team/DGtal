@@ -61,29 +61,29 @@ namespace DGtal {
   
   Associates values to cells.
   
-  ### Refinement of CUnaryFunctor
+  # Refinement of CUnaryFunctor
   
-  ### Associated types
+  # Associated types
   - Cell : specifies the type for a cells (inner type).
   - Quantity : specifies the type for a quantity (inner type).
   
-  ### Notation
+  # Notation
   - \a X : A type that is a model of CCellFunctor
   - \a x : Object of type \a X
   - \a c : Object of type Cell
   - \a q : Object of type Quantity
     
-  ### Definitions
+  # Definitions
   
-  ### Valid expressions and semantics
+  # Valid expressions and semantics
   
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
   |Apply function | \a x( \a c)|                     | \c q        |                  |the quantity of the function \a x at cell \a c | | |
   
-  ### Invariants
+  # Invariants
   
-  ### Notes###
+  # Notes#
   */
   template <typename T>
   struct CCellFunctor

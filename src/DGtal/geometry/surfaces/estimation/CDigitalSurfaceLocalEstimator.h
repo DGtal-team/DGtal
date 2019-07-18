@@ -64,36 +64,36 @@ namespace DGtal {
   *  It refines the concept CSurfelLocalEstimator by forcing the
   *  abstract surface to be some digital surface.
   *
-  *  ### Refinement of 
+  *  # Refinement of 
   *  - CSurfelLocalEstimator
   *
-  *  ### Associated types :
+  *  # Associated types
   *  - Surface : the type of digital surface, some DigitalSurface<T> where T is a model of CDigitalSurfaceContainer.
   *  - Surfel (from CSurfelLocalEstimator) and type Surface::Surfel must be the same
   *
-  *  ### Notation
+  *  # Notation
   *  - \e X : A type that is a model of CDigitalSurfaceLocalEstimator
   *  - \e x : object of type \e X
   *  - \e s : an instance of Surface
   *
-  *  ### Definitions
+  *  # Definitions
   *
-  *  ### Valid expressions and semantics
+  *  # Valid expressions and semantics
   *
   *  | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
   *  |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
   *  | Attach surface | \e x.attach( \e s )           |   | \c void                      |              | Indicates to the estimator the surface on which estimations are done. | | Model dependent |
   *
-  *  ### Invariants
+  *  # Invariants
   *
-  *  ### Models
+  *  # Models
   *
   *  - VCMDigitalSurfaceLocalEstimator.
   *  - LocalEstimatorFromSurfelFunctorAdapter.
   *  - IntegralInvariantVolumeEstimator.
   *  - IntegralInvariantCovarianceEstimator.
   *
-  *  ### Notes
+  *  # Notes
   *  - A surface must be attached to \e x before the call to \c init and \c eval.
   *
   *  @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.

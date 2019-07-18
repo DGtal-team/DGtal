@@ -63,31 +63,31 @@ Description of \b concept '\b CBoundedNumber' <p>
      concept should be listed in NumberTraits class and should have
      the isBounded property.
 
- ### Refinement of
+ # Refinement of
   - CQuantity<T>
 
- ### Associated types:
+ # Associated types:
 
- ### Notation
+ # Notation
      - \a X : A type that is a model of CBoundedNumber
 
- ### Definitions
+ # Definitions
 
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 
 Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsBounded | typename NumberTraits<X>::IsBounded | TagTrue | | | | | |
   
- ### Invariants
+ # Invariants
 
- ### Models
+ # Models
 
 short, int, unsigned int, long long, unsigned long long,
 uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
 
- ### Notes
+ # Notes
 
 @tparam T the type that is checked. T should be a model of
      CBoundedNumber.
