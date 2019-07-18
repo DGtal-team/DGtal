@@ -104,7 +104,7 @@ DGtal::Astroid2D<T>::parameter( const RealPoint2D & pp ) const
     else
       angle = M_PI;
   }
-  else if ( !(isAlmostEqual(myA,0.) && isAlmostEqual(myB,0.)) )
+  else if ( ! isAlmostEqual(myB,0.) )
   {
     if( p[1]/p[0] < 0. )
     {
