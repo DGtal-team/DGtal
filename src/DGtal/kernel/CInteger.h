@@ -62,25 +62,25 @@ Description of \b concept '\b CInteger' <p>
      @brief Aim: Concept checking for Integer Numbers. More precisely,
      this concept is a refinement of both CEuclideanRing and CIntegralNumber.
      
- ### Refinement of CEuclideanRing<T> and CIntegralNumber<T>
+ # Refinement of CEuclideanRing<T> and CIntegralNumber<T>
     
- ### Associated types 
+ # Associated types 
     
- ### Notation
+ # Notation
      - \a X : A type that is a model of CInteger
      - \a x, \a y  : Object of type X
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and semantics
+ # Valid expressions and semantics
  
- ### Invariants
+ # Invariants
 
     
- ### Models
+ # Models
 BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
 
- ### Notes###
+ # Notes
 
    */
   template <typename T>

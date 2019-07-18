@@ -59,32 +59,32 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
      f(x), where x is some real point in the given space, and f(x) is
      some value. 
 
- ### Refinement of CImplicitFunction
+ # Refinement of CImplicitFunction
       
- ### Associated types :    
+ # Associated types    
      - RealPoint: the type for the domain
      - RealVector: the type for a vector in the domain
      - Value: the type for the range
 
- ### Notation
+ # Notation
      - \c X : A type that is a model of CImplicitFunctionDiff1
      - \c f : objet of type X
      - \c a : objet of type RealPoint
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and
+ # Valid expressions and
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | gradient operator | \c gradient( \c a ) |        | RealVector  |                  |Evaluates the gradient of the function \c f at point \c a | | |  
       
- ### Invariants
+ # Invariants
     
- ### Models
+ # Models
       ImplicitPolynomial3Shape
 
- ### Notes
+ # Notes
 
 @tparam T the type that should be a model of CImplicitFunctionDiff1.
    */

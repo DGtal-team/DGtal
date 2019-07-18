@@ -75,11 +75,11 @@ end of this fraction to get a new fraction which shares all quotients
 except the last one. In this sense, a fraction is a sequence
 (container) that can only grow.
 
-### Refinement of
+# Refinement of
 - boost::CopyConstructible, boost::DefaultConstructible, boost::Assignable
 - CBackInsertable, CConstSinglePassRange
 
-### Associated types :
+# Associated types
 
 - \e Integer: the type for representing a numerator or a
   denominator. Must be a model of CInteger.
@@ -97,7 +97,7 @@ except the last one. In this sense, a fraction is a sequence
 - \e ConstIterator and \e const_iterator: the type for visiting the quotients of the
   fraction in sequence. The value of the iterator has type \e Value.
 
-### Notation
+# Notation
  - \e X : A type that is a model of CPositiveIrreducibleFraction
  - \e x : object of type \e X, which is below some fraction written \f$[u_0, \ldots, u_k]\f$ as a continued fraction
  - \e x1, \e x2, \e y : other objects of type \e X
@@ -106,9 +106,9 @@ except the last one. In this sense, a fraction is a sequence
  - \e quots : an object of type \c std::vector<Quotient>
  - \e pair : a object of \c std::pair<Quotient,Quotient>, here (m,k+1)  
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -147,14 +147,14 @@ except the last one. In this sense, a fraction is a sequence
 | Begin visiting quotients | \e x.begin()|         | \e ConstIterator |             | returns a forward iterator on the beginning of the sequence of quotients \f$[u_0,...,u_k]\f$ | | |
 | End visiting quotients | \e x.end()|             | \e ConstIterator |             | returns a forward iterator after the end of the sequence of quotients \f$[u_0,...,u_k]\f$ | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - SternBrocot::Fraction, LighterSternBrocot::Fraction
 - also LightSternBrocot::Fraction (but do not use).
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CPositiveIrreducibleFraction.
 */

@@ -61,17 +61,17 @@ Description of \b concept \b 'CColorMap' <p>
 @brief Aim: Defines the concept describing a color map. A color map converts
     a value within a given range into an RGB triple.
     
-### Refinement of
+# Refinement of
    
-### Associated types :
+# Associated types
    
-### Notation
+# Notation
     - \a X : A type that is a model of CColorMap
     - \a x, \a y  : Object of type X
    
-### Definitions
+# Definitions
    
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -79,15 +79,15 @@ Description of \b concept \b 'CColorMap' <p>
 |Construction | CMap<Value> cmap(min, max); | min and max are of the same Value | | | | | |
 |Obtain a color | color = cmap(value) | value is a Value | DGtal::Color | min  &le; value &le; max | Returns a color computed after the position of \em value \em within the range [min,max] | | |
 
-### Invariants
+# Invariants
    
-#### Models
+## Models
            GradientColorMap
            HueShadeColorMap
            ColorBrightnessColorMap 
            GrayScaleColorMap
            RandomColorMap
-### Notes
+# Notes
    */
   template <typename CMap>
   struct CColorMap

@@ -58,32 +58,32 @@ namespace DGtal
        @ingroup Concepts
        @brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
 
-       ### Refinement of CBidirectionalRangeWithWritableIterator
+       # Refinement of CBidirectionalRangeWithWritableIterator
 
-       ### Associated types :
+       # Associated types
 
-       ### Notation
+       # Notation
        - X : A type that is a model of CBidirectionalRangeWithWritableIteratorFromPoint
        - x,  y : object of type X
        - Point: A type of Point
 
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
 
        | Name                    | Expression                           | Type requirements    | Return type          | Precondition | Semantics                                                         | Post condition | Complexity |
        |-------------------------|--------------------------------------|----------------------|----------------------|--------------|-------------------------------------------------------------------|----------------|------------|
        | reverse output iterator | routputIterator(const Point &aPoint) | aPoint of type Point | ReveseOutputIterator |              | Returns a reverse output iterator on the range at point \a aPoint |                |            |
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
        ImageContainerBySTLVector::Range
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CBidirectionalRangeWithWritableIteratorFromPoint.
        @tparam Value the type of object t in (*it) = t.

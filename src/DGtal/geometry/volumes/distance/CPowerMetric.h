@@ -60,23 +60,23 @@ Description of \b concept '\b CPowerMetric' <p>
 power metrics. 
 
 
-### Refinement of 
+# Refinement of 
 
   boost::CopyConstructible<T>, boost::Assignable<T>
 
-### Associated types :
+# Associated types
  - @e Space: type of space on which the premetric is defined (model of CSpace)
  - @e Weight: type for weights associated to the power metric (model
  of CQuantity)
  - @e Value: type for power distance value (model of CQuantity)
 
-### Notation
+# Notation
  - \e X : A type that is a model of CPowerMetric
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -84,13 +84,13 @@ power metrics.
 | closest point test | closestPower(aOrigin, aP, aWp, aQ, aWq) | @a aOrigin, @a aP,@a aQ of type @a aPoint, @a aWp,@a aWq of type @a Weight |   a value of type Closest | | decide between weighted points  @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
   
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
  ExactPredicateLpPowerSeparableMetric
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CPowerMetric.
  */
