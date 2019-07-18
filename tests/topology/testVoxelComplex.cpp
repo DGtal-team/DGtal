@@ -252,7 +252,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
         {
             size_t dim_voxel = 3;
             auto it = vc.begin(dim_voxel);
-            for (auto &&n : std::vector<int>(10))
+            for (std::size_t n = 0; n < 10; ++n)
                 ++it;
             auto cell = it->first;
             auto point_from_kspace_1 = cell.preCell().coordinates;
@@ -289,7 +289,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test Simplicity", "[simplicity]") {
     auto &vc = complex_fixture;
     size_t dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
-    for (auto &&n : std::vector<int>(10))
+    for (std::size_t n = 0; n < 10; ++n)
         ++cit;
     auto cell = cit->first;
 
@@ -318,7 +318,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test table wrappers",
     trace.endBlock();
     auto dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
-    for (auto &&n : std::vector<int>(10))
+    for (std::size_t n = 0; n < 10; ++n)
         ++cit;
     auto cell = cit->first;
 
@@ -341,7 +341,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test table wrappers",
 TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_2", "[clique]") {
     auto &vc = complex_fixture;
     auto itc = vc.begin(3);
-    for (auto &&n : std::vector<int>(10))
+    for (std::size_t n = 0; n < 10; ++n)
         ++itc;
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
@@ -380,7 +380,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_2", "[clique]") {
 TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_1", "[clique]") {
     auto &vc = complex_fixture;
     auto itc = vc.begin(3);
-    for (auto &&n : std::vector<int>(10))
+    for (std::size_t n = 0; n < 10; ++n)
         ++itc;
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
@@ -402,7 +402,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_1", "[clique]") {
 TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_0", "[clique]") {
     auto &vc = complex_fixture;
     auto itc = vc.begin(3);
-    for (auto &&n : std::vector<int>(10))
+    for (std::size_t n = 0; n < 10; ++n)
         ++itc;
     auto cell = itc->first;
     Point p_cell = vc.space().uCoords(cell);
@@ -718,6 +718,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Thin disconnected complex",
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     Point x(-1, 4, 0);
     set_fixture.erase(x);
     // Delete one point and reconstruct complex.
@@ -778,6 +779,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]") {
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     SECTION("with skelUltimate") {
         auto vc_new = asymetricThinningScheme<FixtureComplex>(
             vc, selectFirst<FixtureComplex>, skelUltimate<FixtureComplex>);
@@ -810,6 +812,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     SECTION("with skelUltimate") {
         auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
             vc, selectRandom<FixtureComplex>, skelUltimate<FixtureComplex>, 0);
@@ -976,6 +979,7 @@ TEST_CASE_METHOD(Fixture_X, "X Thin",
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     bool verbose = true;
     SECTION(
         "persistence value of 1 is equivalent to the assymetric algorithm") {
@@ -1002,6 +1006,7 @@ TEST_CASE_METHOD(Fixture_X, "X Thin with Isthmus, and tables",
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     bool verbose = true;
 
     // Disabled to reduce test time
@@ -1055,6 +1060,7 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     auto &ks = vc.space();
+    boost::ignore_unused_variable_warning(ks);
     using Predicate = Z3i::DigitalSet;
     using L3Metric = ExactPredicateLpSeparableMetric<Z3i::Space, 3>;
     using DT = DistanceTransformation<Z3i::Space, Predicate, L3Metric>;

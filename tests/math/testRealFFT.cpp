@@ -168,8 +168,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       bool applyConj;
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
-      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.).scale(std::norm(*it_max)) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.).scale(std::norm(freq_val)) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
@@ -177,8 +177,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
           freq_val = std::conj( freq_val );
         }
 
-      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
-      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ).scale(freq_pt.norm()) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase, 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ).scale(pi) );
 
     }
 
@@ -192,8 +192,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       bool applyConj;
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
-      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.).scale(std::norm(*it_max)) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.).scale(std::norm(freq_val)) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
@@ -201,8 +201,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
           freq_val = std::conj( freq_val );
         }
 
-      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ) );
-      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase + pi/2, 2*pi) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, freq ) ).norm() == Approx( 0 ).scale(freq_pt.norm()) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase + pi/2, 2*pi) + 3*pi, 2*pi ) - pi ) == Approx( 0 ).scale(pi) );
     }
 
   INFO( "Checks maximal frequency on translated initial domain." );
@@ -218,8 +218,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
       bool applyConj;
       REQUIRE( fft.calcNativeFreqCoords( freq_pt, applyConj ) == it_max.getPoint() );
       REQUIRE( ! applyConj );
-      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.) );
-      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.) );
+      REQUIRE( std::norm( fft.calcNativeFreqValue( freq_pt, freq_val ) - *it_max ) == Approx(0.).scale(std::norm(*it_max)) );
+      REQUIRE( std::norm( fft.getScaledFreqValue( freq_pt ) - freq_val ) == Approx(0.).scale(std::norm(freq_val)) );
 
       if ( freq_pt[ TDomain::dimension-1 ] * freq < 0 )
         {
@@ -228,8 +228,8 @@ void testFFTScaling( ImageContainerBySTLVector<TDomain, TValue> const & anImage 
         }
 
       const auto scaled_factor = freq/anImage.extent()[ TDomain::dimension-1 ];
-      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, scaled_factor ) ).norm() == Approx( 0 ) );
-      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase + 2*pi*scaled_factor*shift[TDomain::dimension-1], 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ) );
+      REQUIRE( ( freq_pt - RealPoint::base( TDomain::dimension-1, scaled_factor ) ).norm() == Approx( 0 ).scale(freq_pt.norm()) );
+      REQUIRE( ( std::fmod( std::fmod( std::arg( freq_val ) - phase + 2*pi*scaled_factor*shift[TDomain::dimension-1], 2*pi ) + 3*pi, 2*pi ) - pi ) == Approx( 0 ).scale(pi) );
     }
 }
 

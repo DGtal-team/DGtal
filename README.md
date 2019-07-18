@@ -35,7 +35,7 @@ Quick Install
 
 
 Additional instructions are available in the
-[documentation](http://dgtal.org/doc/nightly/moduleBuildDGtal.html).
+[documentation](http://dgtal.org/doc/stable/moduleBuildDGtal.html).
 
 Quick Build Instructions
 ========================
@@ -49,7 +49,7 @@ cmake ..
 make install
 ```
 
-Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.46).
+Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.50).
 
 DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
 
@@ -58,7 +58,7 @@ More Information
 
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
-* Release 1.0: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2611275.svg)](https://doi.org/10.5281/zenodo.2611275)
+* Release 1.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2611275.svg)](https://doi.org/10.5281/zenodo.2611275)
 * Release 0.9.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1203577.svg)](https://doi.org/10.5281/zenodo.1203577)
 * Release 0.9.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.290419.svg)](https://doi.org/10.5281/zenodo.290419)
 * Release 0.9.2 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.56430.svg)](http://dx.doi.org/10.5281/zenodo.56430)
