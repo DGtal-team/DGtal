@@ -59,33 +59,33 @@ namespace DGtal
      * @brief Aim: Defines the concept describing a functor which calculates a direction
      *        of the 2D DSS and an eccentricity \cite LachaudIVC2007 of a given point in this DSS.
      * 
-     * ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+     * # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
      * 
-     * ### Associated types :
+     * # Associated types
      *    - TDSS a 3d digital straight segment recognition algorithm
      *    - LambdaFunction @see FunctorsLambdaMST.h
      *    - Value
      *    struct Value { RealVector first; double second; Value & operator += ( const Value &); }
      * 
-     * ### Notation
+     * # Notation
      * - \e T : A type that is a model of CLMSTTangentFromDSS
      * - \e x object of type X
      * 
-     * ### Definitions
+     * # Definitions
      * 
-     * ### Valid expressions and semantics
+     * # Valid expressions and semantics
      * 
      * | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
      * |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
      * | operator()|x()     |(const TDSS &, const int &, const int &)|T::Value|              | Calculates DSS direction and eccentricity of given points  in the DSS. | |model dependant|
      * 
-     * ### Invariants
+     * # Invariants
      * 
-     * ### Models
+     * # Models
      * 
      * - TangentFromDSS2DFunctor, TangentFromDSS3DFunctor
      * 
-     * ### Notes
+     * # Notes
      * 
      * @tparam T the type that should be a model of CLMSTTangentFromDSS.
      */

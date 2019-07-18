@@ -63,13 +63,13 @@ Problems are of the form:
 where \e a type is a model of CMatrix and \e x, \e y type is a model of CVector.
 Matrix and vector types should be a model of CLinearAlgebra.
 
-### Refinement of
+# Refinement of
  - boost::DefaultConstructible<S>
  - CLinearAlgebra<V, M>
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c Solver : A type that is a model of CLinearAlgebraSolver
  - \c Vector : A type that is a model of CVector
  - \c Matrix : A type that is a model of CMatrix
@@ -79,9 +79,9 @@ Matrix and vector types should be a model of CLinearAlgebra.
  - \e a : object of type \c Matrix
  - \e info :  object of type \c Info
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -89,11 +89,11 @@ Matrix and vector types should be a model of CLinearAlgebra.
 | Problem resolution / vector input      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
 | Status       | solver.status()           |                   |              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
-### Notes
+# Notes
 
 @tparam S the type that should be a model of CLinearAlgebraSolver.
 @tparam V the type that should be a model of CVector

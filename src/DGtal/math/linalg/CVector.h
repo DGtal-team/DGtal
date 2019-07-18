@@ -57,32 +57,32 @@ Description of \b concept '\b CVector' <p>
 @brief Aim:
 Represent any static or dynamic sized column vector having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CVectorSpace
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c Vector : A type that is a model of CVector
  - \e x : const object of type \c Vector
  - \e z : object of type \c Vector
  - \e i : object of type \c Vector::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
  EigenLinearAlgebraBackend::DenseVector, SimpleMatrix::Vector
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CVector.
  */

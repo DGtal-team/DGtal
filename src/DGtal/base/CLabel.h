@@ -60,30 +60,30 @@ namespace DGtal
        @brief Aim: Define the concept of DGtal labels.
        Models of CLabel can be default-constructible, assignable and equality comparable.
 
-       ### Refinement of 
+       # Refinement of 
        - boost::DefaultConstructible
        - boost::Assignable 
        - boost::EqualityComparable
 
-       ### Associated types :
+       # Associated types
 
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CLabel
        - \a x, \a y : object of type X
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        |               |            |                     |             |                  |           |                |            |     
-       ### Invariants###
+       # Invariants#
 
-       ### Models###
+       # Models#
 
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CLabel.
     */

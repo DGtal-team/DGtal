@@ -57,22 +57,22 @@ namespace DGtal
        @brief Aim:
        Base concept for vector space structure.
 
-       ### Refinement of
+       # Refinement of
        - boost::Assignable
 
-       ### Associated types
+       # Associated types
        - \c Scalar: Scalar type used for external multiplication and internal type representation.
        - \c Index: Random access index type.
 
-       ### Notation
+       # Notation
        - \c VectorSpace : A type that is a model of concepts::CVectorSpace
        - \e x, \e y : const object of type \c VectorSpace
        - \e z : object of type \c VectorSpace
        - \e a : object of type \c VectorSpace::Scalar
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
        |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -81,11 +81,11 @@ namespace DGtal
        | Substraction      | \a z = \a x - \a y           |                   | \c VectorSpace              |              |           |                |            |
        | External multiplication      | \a z = \a a * \a x           |                   |  \c VectorSpace               |              |           |                |            |
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CVectorSpace.
     */

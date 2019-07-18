@@ -78,9 +78,9 @@ namespace DGtal
      - strictly positive if  \f$ k+1 \f$ -th point belongs to the exterior of 
      the algebraic variety defined by the first \f$ k \f$ points.  
      
-     ### Refinement of CPointFunctor
+     # Refinement of CPointFunctor
 
-     ### Associated types
+     # Associated types
      As a refinement of CPointFunctor, it has the following nested types: 
      - Point type of input points
      - Value type of the result, at least a model of CSignedNumbe
@@ -89,14 +89,14 @@ namespace DGtal
      - PointArray a model of static array of k points
      - Size type used for representing the size of the array 
 
-     ### Notation
+     # Notation
      - \e X : A type that is a model of COrientationFunctor
      - \e x : object of type X
      - \e a : object of type PointArray
 
-     ### Definitions
+     # Definitions
 
-     ### Valid expressions and semantics
+     # Valid expressions and semantics
 
      | Name            | Expression | Type requirements       | Return type | Precondition | Semantics                           | Post condition | Complexity      |
      |-----------------|------------|-------------------------|-------------|--------------|-------------------------------------|----------------|-----------------|
@@ -104,7 +104,7 @@ namespace DGtal
      | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependent |
 
 
-     ### Models
+     # Models
      InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 
      @tparam T the type that should be a model of COrientationFunctor.
