@@ -75,6 +75,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * The absolute value of parameter `a` is used.
      * @param x0 the x-coordinate of the lemniscate center.
      * @param y0 the y-coordinate of the lemniscate center.
      * @param a  semi-axis length along x-axis
@@ -84,6 +85,8 @@ namespace DGtal
 
      /**
       * Constructor.
+     * The absolute value of parameter `a` is used.
+     * The absolute value of a parameters is used.
       * @param aPoint the lemniscate center
       * @param a      semi-axis length along x-axis
       */
@@ -91,6 +94,7 @@ namespace DGtal
 
      /**
       * Constructor.
+     * The absolute value of parameter `a` is used.
       * @param aPoint the lemniscate center
       * @param a      semi-axis length along x-axis
       */
