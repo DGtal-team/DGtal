@@ -66,15 +66,15 @@ RealPoint notNullRealPoint(
 
 TEST_CASE("Lemniscate2D")
 {
-  std::uniform_real_distribution<double> unif(-DBL_MAX,DBL_MAX);
+  std::uniform_real_distribution<double> unif(-10000,10000);
   std::default_random_engine re;
 
   SECTION("center()")
     {
       const RealPoint center(unif(re),unif(re));
       Shape shape( center, unif(re) );
-	  REQUIRE( shape.center() == center );
-	}
+      REQUIRE( shape.center() == center );
+    }
   
   SECTION("Lower and upper bounds")
     {
