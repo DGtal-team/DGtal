@@ -15,14 +15,16 @@
  **/
 
 /**
- * @file testShapeMoveCenter.cpp
+ * @file testAstroid2D.cpp
  * @ingroup Tests
  * @author Adrien Krähenbühl (\c krahenbuhl@unistra.fr )
  * Laboratoire ICube, UMR 7357, Université de Strasbourg, France
  *
  * @date 2019/07/18
  *
- * Functions for testing the moveTo() method of star shapes.
+ * Functions for testing the methods of the Astroid2D shape.
+ * In particular, test the parameter() method for cas leadind to
+ * a division by 0.
  *
  * This file is part of the DGtal library.
  */
