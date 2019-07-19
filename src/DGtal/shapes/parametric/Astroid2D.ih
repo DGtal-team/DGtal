@@ -38,7 +38,7 @@ template <typename T>
 inline
 bool isAlmostEqual( T x, T y )
 {
-  return std::abs(x - y) <= std::numeric_limits<T>::epsilon() * std::abs(x + y);
+  return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
