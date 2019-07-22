@@ -59,32 +59,32 @@ namespace DGtal
        @tparam T the type that should be a model of this predicate
        @tparam TElement the type of an element of the predicate domain.
 
-       ###  Refinement of 
+       #  Refinement of 
 
        - CUnaryFunctor
 
-       ###  Associated types :
+       #  Associated types
 
-       ###  Notation
+       #  Notation
        - \e X : A type that is a model of CPredicate
        - \e x : Object of type \e X
        - \e p : Object of type TElement
 
-       ###  Definitions
+       #  Definitions
 
-       ###  Valid expressions and semantics
+       #  Valid expressions and semantics
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        | Apply predicate| \e x.( \e p )|                  | \e bool     |                  | the value of the predicate \e x at element \e p | | |
 
-       ###  Invariants
+       #  Invariants
 
-       ###  Models
+       #  Models
 
        - specializations: concepts::CPointPredicate, concepts::CVertexPredicate
 
-       ###  Notes
+       #  Notes
 
        CPredicate allows to factor codes when writing concepts for new
        kinds of predicates.

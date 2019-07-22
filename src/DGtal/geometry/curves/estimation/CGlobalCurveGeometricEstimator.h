@@ -58,37 +58,37 @@ namespace DGtal
        @brief Aim: This concept describes an object that can process 
        a range so as to return one estimated quantity for the whole range. 
 
-       ### Refinement of 
+       # Refinement of 
        - boost::DefaultConstructible
 
-       ### Associated types :
+       # Associated types
        - ConstIterator 
        - Quantity
 
-       ### Notation
+       # Notation
        - \e X : A type that is a model of CGlobalGeometricEstimator
        - \e x : object of type X
        - \e h : double
        - \e itb, ite, it : objects of type ConstIterator
        - \e ito : an instance of a model of output iterator having Quantity as value type
  
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name           | Expression            |   | Return type | Precondition | Semantics                          |   | Complexity      |
        |----------------|-----------------------|---|-------------|--------------|------------------------------------|---|-----------------|
        | Initialization | x.init( h, itb, ite ) |   | void        | h > 0        | Grid step and range initialization |   | constant        |
        | Evaluation     | x.eval( )             |   | Quantity    |              | Estimation of the quantity         |   | model dependant |
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
        TrueGlobalEstimatorOnPoints L1LengthEstimator TwoStepLocalLengthEstimator
        DSSLengthEstimator FPLengthEstimator MLPLengthEstimator 
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CGlobalGeometricEstimator.
     */
