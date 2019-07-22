@@ -62,7 +62,7 @@ bool testDicomReader()
   for ( typename Image3D::ConstRange::ConstIterator it=r.begin(), itend=r.end() ; it != itend ; ++it )
   {
     nbVal++;
-	  if ( (*it) > 0 ) nbPos++;
+    if ( (*it) > 0 ) nbPos++;
   }
 
   trace.info() << "Number of points with (val>0) = " << nbVal << endl;
@@ -94,7 +94,7 @@ bool testDicomReaderFromDirectory()
 {
   const std::string path = testPath + "samples/dicomSample";
   const std::vector<std::string> fileNames = getFirstDicomSerieFileNames( path );
-  Image3D image = DicomReader< Image3D >::importDicomSerie( fileNames );
+  Image3D image = DicomReader< Image3D >::importDicomSeries( fileNames );
 
   trace.info() << image <<endl;
 
@@ -103,7 +103,7 @@ bool testDicomReaderFromDirectory()
   for ( typename Image3D::ConstRange::ConstIterator it=r.begin(), itend=r.end() ; it != itend ; ++it )
   {
     nbVal++;
-	  if ( (*it) > 0 ) nbPos++;
+    if ( (*it) > 0 ) nbPos++;
   }
 
   trace.info() << "Number of points with (val>0) = " << nbVal << endl;
@@ -120,7 +120,7 @@ bool testSpatialInformation()
   const std::vector<std::string> fileNames = getFirstDicomSerieFileNames( path );
 
   typedef ImageContainerByITKImage<Z3i::Domain,  PixelType> Image3D;
-  Image3D image = DicomReader< Image3D >::importDicomSerie( fileNames );
+  Image3D image = DicomReader< Image3D >::importDicomSeries( fileNames );
   typename Image3D::ITKImagePointer dgtal_itk = image.getITKImagePointer();
 
   typedef itk::Image<PixelType, 3> ItkImage;
@@ -146,10 +146,10 @@ bool testIOException()
 
   std::string filename = testPath + "samples/null.dcm";
   try {
-	  Image3D image = DicomReader< Image3D >::importDicom( filename );
+    Image3D image = DicomReader< Image3D >::importDicom( filename );
   }
   catch(exception& e) {
-	  trace.info() << "Exception catched. Message : " << e.what()<<endl;
+    trace.info() << "Exception catched. Message : " << e.what()<<endl;
     return true;
   }
 
@@ -166,7 +166,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Testing class DicomReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
-	trace.info() << " " << argv[ i ];
+    trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
   bool res = testDicomReader<ImageContainerBySTLVector<Z3i::Domain, unsigned char> >()

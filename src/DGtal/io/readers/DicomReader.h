@@ -127,8 +127,8 @@ namespace DGtal
      *
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importDicomSerie( const std::vector<std::string> & filenames,
-					    const Functor & aFunctor = Functor());
+    static ImageContainer importDicomSeries( const std::vector<std::string> & filenames,
+					     const Functor & aFunctor = Functor());
     
   private:
 
