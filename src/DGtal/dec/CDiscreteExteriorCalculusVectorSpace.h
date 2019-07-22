@@ -57,31 +57,31 @@ Description of \b concept '\b CDiscreteExteriorCalculusVectorSpace' <p>
 @brief Aim:
 Lift linear algebra container concept into the dec package.
 
-### Refinement of
+# Refinement of
 
-### Associated types
+# Associated types
   - \c Container: Associated container, a model of concept CLinearAlgebraContainer.
   - \c Calculus: Associated discrete exterior calculus.
 
-### Notation
+# Notation
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constructor from calculus      | t(calculus)           |                   |               |              |           |                |            |
 | Constructor from calculus and container      | t(calculus, container)           |                   |               |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - KForm
  - LinearOperator
  - VectorField
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CDiscreteExteriorCalculusVectorSpace.
 */

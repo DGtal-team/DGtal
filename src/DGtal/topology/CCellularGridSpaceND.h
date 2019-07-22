@@ -65,7 +65,7 @@ these spaces obtained by cartesian product, cells have a cubic shape
 that depends on the dimension: 0-cells are points, 1-cells are unit
 segments, 2-cells are squares, 3-cells are cubes, and so on.
 
-### Refinement of CPreCellularGridSpaceND
+# Refinement of CPreCellularGridSpaceND
 
 In addition of CPreCellularGridSpaceND, CCellularGridSpaceND add
 bounds and related methods.
@@ -81,11 +81,11 @@ space or an open cell space.
 We refer the reader to \ref moduleCellularTopology for further
 details.
 
-### Associated types :
+# Associated types
 
 - \e Size: the integral unsigned type for representing sizes in the space (model of CUnsignedNumber and CIntegralNumber).
 
-### Notation
+# Notation
 - \e X : A type that is a model of \e CCellularGridSpaceND
 - \e x : object of type \e X
 - \e k : object of type Dimension
@@ -97,7 +97,7 @@ details.
 - \e v : object of type \e Vector
 - \e sign: object of type \e Sign
 
-### Definitions
+# Definitions
 
 - a model of CCellularGridSpaceND is said \b closed if it includes the
   cells of lower dimension along its bounds. It is indeed closed in
@@ -119,7 +119,7 @@ details.
   their faces.
 
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
 |---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
@@ -148,13 +148,13 @@ details.
 | Distance to lower bound |\e x.sDistanceToMin(\e sc,\e k)| | \e Integer  |           | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - KhalimskySpaceND
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CCellularGridSpaceND.
  */

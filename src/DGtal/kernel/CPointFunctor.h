@@ -58,31 +58,31 @@ Description of \b concept '\b CPointFunctor' <p>
 
  Associates values to points.
 
- ### Refinement of CUnaryFunctor
+ # Refinement of CUnaryFunctor
 
- ### Associated types
+ # Associated types
  - Point : specifies the type for a point (inner type).
  - Value : specifies the type for a value (inner type).
 
- ### Notation
+ # Notation
      - \a X : A type that is a model of CPointFunctor
      - \a x : Object of type \a X
      - \a p : Object of type Point
      - \a v : Object of type Value
 
- ### Definitions
+ # Definitions
 
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|Apply function | \a x( \a p)|                     | \c v        |                  |the value of the function \a x at point \a p | | |
+|Apply function | \a x(\a p)|                     | \c v        |                  |the value of the function \a x at point \a p | | |
 
- ### Invariants
+ # Invariants
 
  - Shapes and images are models of (refinements of) this concept
 
- ### Notes###
+ # Notes
    */
   template <typename T>
   struct CPointFunctor : CUnaryFunctor<T, typename T::Point, typename T::Value>
