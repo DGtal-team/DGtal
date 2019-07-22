@@ -236,8 +236,8 @@ template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
 DicomReader<TImageContainer, TFunctor>::
-importDicomSerie( const std::vector<std::string> & filenames,
-		  const Functor & aFunctor )
+importDicomSeries( const std::vector<std::string> & filenames,
+		   const Functor & aFunctor )
 {
   return importDicomFiles<PixelType>( filenames, aFunctor );
 }
