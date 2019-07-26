@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <map>
 #include <string>
 #include <sstream>
 #include "DGtal/base/Common.h"
