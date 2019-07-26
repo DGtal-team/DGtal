@@ -1072,7 +1072,7 @@ namespace DGtal
               bel = Surfaces<KSpace>::findABel( K, *bimage, nb_tries_to_find_a_bel );
             } catch (DGtal::InputException& e) {
               trace.error() << "[Shortcuts::makeLightDigitalSurface]"
-                            << " ERROR Unable to find bel." << std::endl;
+                            << " ERROR Unable to find bel. " << e << std::endl;
               return ptrSurface;
             }
             // this pointer will be acquired by the surface.
@@ -1373,6 +1373,69 @@ namespace DGtal
       }    
 
     
+      /// Given any digital surface, returns the vector of its k-dimensional cells.
+      ///
+      /// @note The order of cells is given by the default traversal
+      /// of the surfels of the surface, where the cells of each
+      /// surfel are visited in no specific order.
+      ///
+      /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+      ///
+      /// @param[out] c2i the map Cell -> Cell index in the cell range.
+      /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+      /// @param[in] k the dimension of the output cells
+      ///
+      /// @return a range of cells as a vector.
+      template <typename TDigitalSurfaceContainer>
+      static CellRange
+      getCellRange
+      ( Cell2Index& c2i,
+        CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
+        const Dimension k )
+      {
+        CellRange result;
+        // Approximate number of pointels given the number of 2-cells (valid for 2d surfaces in nD).
+        result.reserve( 2 * surface->size() + 100 );
+        const KSpace& K = refKSpace( surface );
+        Idx n = 0;
+        for ( auto&& surfel : *surface )
+          {
+            CellRange primal_cells = getPrimalCells( K, surfel, k );
+            for ( auto&& primal_cell : primal_cells )
+              {
+                if ( ! c2i.count( primal_cell ) )
+                  {
+                    result.push_back( primal_cell );
+                    c2i[ primal_cell ] = n++;
+                  }
+              }
+          }
+        return result;
+      }
+
+      /// Given any digital surface, returns the vector of its k-dimensional cells.
+      ///
+      /// @note The order of cells is given by the default traversal
+      /// of the surfels of the surface, where the cells of each
+      /// surfel are visited in no specific order.
+      ///
+      /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
+      ///
+      /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
+      /// @param[in] k the dimension of the output cells
+      ///
+      /// @return a range of cells as a vector.
+      template <typename TDigitalSurfaceContainer>
+      static PointelRange
+      getCellRange
+      (
+        CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
+        const Dimension k )
+      {
+        Cell2Index c2i;
+        return getCellRange( c2i, surface, k );
+      }
+      
       /// Given any digital surface, returns the vector of its pointels.
       ///
       /// @note The order of pointels is given by the default traversal
@@ -1432,13 +1495,13 @@ namespace DGtal
       ///
       /// @return a range of pointels as a vector.
       template <typename TDigitalSurfaceContainer>
-        static PointelRange
-        getPointelRange
-        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface )
-        {
-          Cell2Index c2i;
-          return getPointelRange( c2i, surface );
-        }
+      static PointelRange
+      getPointelRange
+      ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface )
+      {
+        Cell2Index c2i;
+        return getPointelRange( c2i, surface );
+      }
 
       /// Given any surfel, returns its 4 pointels in ccw order.
       ///
@@ -1449,12 +1512,12 @@ namespace DGtal
       ///
       /// @return a range of pointels as a vector.
       static PointelRange
-        getPointelRange
-        ( const KSpace& K, const SCell& surfel )
+      getPointelRange
+      ( const KSpace& K, const SCell& surfel )
       {
         return getPrimalVertices( K, surfel, true );
       }
-    
+      
       /// Given any digital surface, returns a vector of surfels in
       /// some specified order.
       ///
@@ -1467,14 +1530,14 @@ namespace DGtal
       ///
       /// @return a range of surfels as a vector.
       template <typename TDigitalSurfaceContainer>
-        static SurfelRange
-        getSurfelRange
-        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
-          const Parameters&   params = parametersDigitalSurface() )
-        {
-          return getSurfelRange( surface, *( surface->begin() ), params );
-        }
-
+      static SurfelRange
+      getSurfelRange
+      ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
+        const Parameters&   params = parametersDigitalSurface() )
+      {
+        return getSurfelRange( surface, *( surface->begin() ), params );
+      }
+      
       /// Given a light digital surface, returns a vector of surfels in
       /// some specified order.
       ///
@@ -1490,38 +1553,38 @@ namespace DGtal
       ///
       /// @return a range of surfels as a vector.
       template <typename TDigitalSurfaceContainer>
-        static SurfelRange
-        getSurfelRange
-        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
-          const Surfel&       start_surfel,
-          const Parameters&   params = parametersDigitalSurface() )
-        {
-          typedef ::DGtal::DigitalSurface<TDigitalSurfaceContainer> AnyDigitalSurface;
-          SurfelRange result;
-          std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
-          if ( traversal == "DepthFirst" )
-            {
-              typedef DepthFirstVisitor< AnyDigitalSurface > Visitor;
-              typedef GraphVisitorRange< Visitor > VisitorRange;
-              VisitorRange range( new Visitor( *surface, start_surfel ) );
-              std::for_each( range.begin(), range.end(),
-                             [&result] ( Surfel s ) { result.push_back( s ); } );
-            }
-          else if ( traversal == "BreadthFirst" )
-            {
-              typedef BreadthFirstVisitor< AnyDigitalSurface > Visitor;
-              typedef GraphVisitorRange< Visitor > VisitorRange;
-              VisitorRange range( new Visitor( *surface, start_surfel ) );
-              std::for_each( range.begin(), range.end(),
-                             [&result] ( Surfel s ) { result.push_back( s ); } );
-            }
-          else
-            {
-              std::for_each( surface->begin(), surface->end(),
-                             [&result] ( Surfel s ) { result.push_back( s ); } );
-            }
-          return result;
-        }
+      static SurfelRange
+      getSurfelRange
+      ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > surface,
+        const Surfel&       start_surfel,
+        const Parameters&   params = parametersDigitalSurface() )
+      {
+        typedef ::DGtal::DigitalSurface<TDigitalSurfaceContainer> AnyDigitalSurface;
+        SurfelRange result;
+        std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
+        if ( traversal == "DepthFirst" )
+          {
+            typedef DepthFirstVisitor< AnyDigitalSurface > Visitor;
+            typedef GraphVisitorRange< Visitor > VisitorRange;
+            VisitorRange range( new Visitor( *surface, start_surfel ) );
+            std::for_each( range.begin(), range.end(),
+                           [&result] ( Surfel s ) { result.push_back( s ); } );
+          }
+        else if ( traversal == "BreadthFirst" )
+          {
+            typedef BreadthFirstVisitor< AnyDigitalSurface > Visitor;
+            typedef GraphVisitorRange< Visitor > VisitorRange;
+            VisitorRange range( new Visitor( *surface, start_surfel ) );
+            std::for_each( range.begin(), range.end(),
+                           [&result] ( Surfel s ) { result.push_back( s ); } );
+          }
+        else
+          {
+            std::for_each( surface->begin(), surface->end(),
+                           [&result] ( Surfel s ) { result.push_back( s ); } );
+          }
+        return result;
+      }
 
       /// Given an indexed digital surface, returns a vector of surfels in
       /// some specified order.
@@ -1533,9 +1596,9 @@ namespace DGtal
       ///
       /// @return a range of indexed surfels as a vector.
       static IdxSurfelRange
-        getIdxSurfelRange
-        ( CountedPtr<IdxDigitalSurface> surface,
-          const Parameters&   params = parametersDigitalSurface() )
+      getIdxSurfelRange
+      ( CountedPtr<IdxDigitalSurface> surface,
+        const Parameters&   params = parametersDigitalSurface() )
       {
         return getIdxSurfelRange( surface, (IdxSurfel) 0, params );
       }
@@ -1553,10 +1616,10 @@ namespace DGtal
       ///
       /// @return a range of indexed surfels as a vector.
       static IdxSurfelRange
-        getIdxSurfelRange
-        ( CountedPtr<IdxDigitalSurface> surface,
-          const IdxSurfel&    start_surfel,
-          const Parameters&   params = parametersDigitalSurface() )
+      getIdxSurfelRange
+      ( CountedPtr<IdxDigitalSurface> surface,
+        const IdxSurfel&    start_surfel,
+        const Parameters&   params = parametersDigitalSurface() )
       {
         IdxSurfelRange result;
         std::string traversal = params[ "surfaceTraversal" ].as<std::string>();
@@ -1813,12 +1876,14 @@ namespace DGtal
 	    {
 	      RealPoint    p0 = positions[ i ];
 	      RealPoint    p1 = p0 + vf[ i ];
-	      unsigned int mc = std::max_element( vf.begin(), vf.end() ) - vf.begin();
+              RealVector    v = vf[ i ];
+              RealVector absv = RealVector( fabs( v[ 0 ] ), fabs( v[ 1 ] ), fabs( v[ 2 ] ) );
+	      unsigned int mc = std::max_element( absv.begin(), absv.end() ) - absv.begin();
 	      RealVector   b  =
 		mc == 2 ? RealVector( 1, 0, 0 ) :
 		mc == 1 ? RealVector( 0, 0, 1 ) : RealVector( 0, 1, 0 );
-	      RealVector   e0 = vf[ i ].crossProduct( b ).getNormalized();
-	      RealVector   e1 = vf[ i ].crossProduct( e0 ).getNormalized();
+	      RealVector   e0 = v.crossProduct( b ).getNormalized();
+	      RealVector   e1 = v.crossProduct( e0 ).getNormalized();
 	      RealPoint    t[4] = {  thickness * e0,  thickness * e1,
 				    -thickness * e0, -thickness * e1 };
 	      for ( unsigned int j = 0; j < 4; ++j ) {
@@ -2895,17 +2960,28 @@ namespace DGtal
       /// Given a space \a K and an oriented cell \a s, returns its vertices.
       /// @param K any cellular grid space.
       /// @param s any signed cell.
-      /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+      /// @param k any dimension between 0 and `K.sdim(s)`.
+      /// @return the vector of the faces of dimension k of s, as unsigned cells.
       static
-        CellRange getPrimalVertices( const KSpace& K, const SCell& s )
+      CellRange getPrimalCells( const KSpace& K, const SCell& s, const Dimension k )
       {
         auto faces = K.uFaces( K.unsigns( s ) );
-        CellRange primal_vtcs;
+        CellRange primal_cells;
         for ( auto&& f : faces )
           {
-            if ( K.uDim( f ) == 0 ) primal_vtcs.push_back( f );
+            if ( K.uDim( f ) == k ) primal_cells.push_back( f );
           }
-        return primal_vtcs;
+        return primal_cells;
+      }
+
+      /// Given a space \a K and an oriented cell \a s, returns its vertices.
+      /// @param K any cellular grid space.
+      /// @param s any signed cell.
+      /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
+      static
+      CellRange getPrimalVertices( const KSpace& K, const SCell& s )
+      {
+        return getPrimalCells( K, s, 0 );
       }
     
       /// Given a space \a K and a surfel \a s, returns its vertices in ccw or cw order.
@@ -2915,7 +2991,7 @@ namespace DGtal
       /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
       /// @note useful when exporting faces to OBJ format. 
       static
-        CellRange getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw )
+      CellRange getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw )
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
         CellRange vtcs = getPrimalVertices( K, s );
