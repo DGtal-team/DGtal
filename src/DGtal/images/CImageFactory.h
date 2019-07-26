@@ -55,21 +55,21 @@ Description of \b concept '\b CImageFactory' <p>
 @ingroup Concepts
 @brief Aim: Defines the concept describing an image factory
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
  - \e OutputImage : type of the image created by the factory, model of concept CImage
  - \e Domain : type of the image domain, model of concept CDomain
 
-### Notation
+# Notation
  - \e X : A type that is a model of CImageFactory
  - \e x : object of type X
  - \e d : object of type Domain
  - \e o : object of type OutputImage
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name                | Expression              | Type requirements     | Return type    | Precondition | Semantics                                                      | Post condition | Complexity |
 |---------------------|-------------------------|-----------------------|----------------|--------------|----------------------------------------------------------------|----------------|------------|
@@ -77,12 +77,12 @@ Description of \b concept '\b CImageFactory' <p>
 | Flush image         | x.flushImage(o)         | o of type OutputImage |                |              | flush (i.e. write/synchronize) an OutputImage o                |                |            |
 | Detach image        | x.detachImage(o)        | o of type OutputImage |                |              | free (i.e. delete) an OutputImage o                            |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 ImageFactoryFromImage ImageFactoryFromHDF5
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CImageFactory.
  */

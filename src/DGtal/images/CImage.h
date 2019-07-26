@@ -60,26 +60,26 @@ namespace concepts
    @brief Aim: Defines the concept describing a read/write image,
    having an output iterator.
    
-### Refinement of
+# Refinement of
 
   CTrivialImage and CConstImage
 
-### Associated types:
+# Associated types:
 - the same as CTrivialImage
 - the same as CConstImage
 - \a Range : type of the Range
  
  
- ### Notation
+ # Notation
   - \a X : A type that is a model of CImage
   - \a x : Object of type X
   - \a aPoint : Object of type Point
   - \a aValue : Object of type Value
  
  
- ### Definitions
+ # Definitions
  
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
@@ -88,13 +88,13 @@ namespace concepts
 
 
  
-### Invariants
+# Invariants
 
-### Models
+# Models
   ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
  
 
-### Notes
+# Notes
  
  */
 

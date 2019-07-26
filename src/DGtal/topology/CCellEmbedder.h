@@ -59,36 +59,36 @@ Description of \b concept '\b CCellEmbedder' <p>
 A cell embedder is a mapping from unsigned cells to Euclidean points.
 It adds inner types to functor.
 
-### Refinement of
+# Refinement of
 - CUnaryFunctor<T, T::Cell, T::RealPoint>
 
-### Associated types :
+# Associated types
 - \e KSpace: the cellular grid space
 - \e Cell: same as KSpace::Cell
 - \e RealPoint: the type of Euclidean point
 - \e Argument: type of the argument, same as KSpace::Cell
 - \e Value: type of value, same as RealPoint
 
-### Notation
+# Notation
 - \e X : A type that is a model of CCellEmbedder
 - \e x : object of type X
 - \e p : object of type Cell
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 |Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \a x on argument \a p | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - CanonicCellEmbedder, ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CCellEmbedder.
 */

@@ -57,10 +57,10 @@ namespace DGtal {
   @ingroup Concepts
   @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
-  ### Refinement of 
+  # Refinement of 
   CUndirectedSimpleLocalGraph, CSinglePassConstRange
     
-  ### Associated types :
+  # Associated types
   - Edge: the type for the edges of the graph.
 
   The following types are defined in CSinglePassConstRange 
@@ -72,16 +72,16 @@ namespace DGtal {
   - VertexSet: the type for storing a set of vertices.
   - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
-  ### Notation
+  # Notation
   - \c X : A type that is a model of CUndirectedSimpleGraph
   - \c x : object of type X
   - \c v : object of type Vertex
   - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
   - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
     
-  ### Definitions
+  # Definitions
     
-  ### Valid expressions and 
+  # Valid expressions and 
 
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -89,12 +89,12 @@ namespace DGtal {
   |Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | | 
        
     
-  ### Invariants###
+  # Invariants#
     
-  ### Models###
+  # Models#
   DigitalSurface, Object, IndexedDigitalSurface
 
-  ### Notes###
+  # Notes#
 
   @tparam T the type that should be a model of CUndirectedSimpleGraph.
   */

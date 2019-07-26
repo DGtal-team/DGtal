@@ -58,17 +58,17 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
     ie. a model of CSegment that can extend and retract itself 
     (in the direction that is relative to the underlying iterator).  
      
- ### Refinement of CForwardSegmentComputer 
+ # Refinement of CForwardSegmentComputer 
     
- ### Associated types : the same as CForwardSegmentComputer
+ # Associated types the same as CForwardSegmentComputer
   
- ### Notation
+ # Notation
      - \a X : A type that is a model of CDynamicSegmentComputer
      - \a x : object of type X
   
- ### Definitions
+ # Definitions
     
- ### Valid expressions and 
+ # Valid expressions and 
 
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -76,11 +76,11 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
 | Retraction    |x.retractBack() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise ||| 
 
 
- ### Invariants###
+ # Invariants#
     
- ### Models###
+ # Models#
     
- ### Notes###
+ # Notes#
 
 @tparam T the type that should be a model of CDynamicSegmentComputer.
    */

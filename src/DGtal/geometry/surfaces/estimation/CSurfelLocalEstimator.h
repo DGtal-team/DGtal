@@ -67,23 +67,23 @@ namespace DGtal {
   * function, etc. This concept has refinements specifying some
   * cases.
   *
-  *  ### Refinement of 
+  *  # Refinement of 
   *  - boost::DefaultConstructible,  boost::CopyConstructible, boost::Assignable
   *
-  *  ### Associated types :
+  *  # Associated types
   *  - Surfel : the type of elements of the surface
   *  - Quantity : the type of the (geometric) quantity that is estimated, must be a model of CQuantity.
   *
-  *  ### Notation
+  *  # Notation
   *  - \e X : A type that is a model of CSurfelLocalEstimator
   *  - \e x : object of type \e X
   *  - \e h : double
   *  - \e itb, \e ite, \e it,\e itb2, \e ite2 : instances of a model of forward iterators having Surfel as value type.
   *  - \e ito : an instance of a model of output iterator having Quantity as value type
   *
-  *  ### Definitions
+  *  # Definitions
   *
-  *  ### Valid expressions and semantics
+  *  # Valid expressions and semantics
   *
   *  | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
   *  |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
@@ -92,13 +92,13 @@ namespace DGtal {
   *  | Evaluation     | \e ito = x.eval( \e itb2, \e ite2, \e ito ) |   | a model of output iterator |  | Estimation for each element of [\e itb2, \e ite2), which must be a subrange of or the whole range [\e itb,\e ite) |   | model dependent |
   *  | gridstep  accessor | x.h()                     |   | double                       |              | Accessor to the gridstep  value           |   | O(1)            |
   *
-  *  ### Invariants
+  *  # Invariants
   *
-  *  ### Models
+  *  # Models
   *
   *  - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceLocalEstimator, IntegralInvariantCovarianceEstimator, IntegralInvariantVolumeEstimator
   *
-  *  ### Notes
+  *  # Notes
   *
   *  @tparam T the type that should be a model of CSurfelLocalEstimator.
   */

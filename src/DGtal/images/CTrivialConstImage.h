@@ -56,19 +56,19 @@ Description of \b concept '\b CTrivialConstImage' <p>
 @brief Aim: Defines the concept describing a read-only image,
 which is a refinement of CPointFunctor.
      
-###  Refinement of 
+#  Refinement of 
      CPointFunctor
      
-###  Associated types :
+#  Associated types
      - \a Domain: type of the image domain, model of concept CDomain
      
-###  Notation
+#  Notation
     - \a X : A type that is a model of CTrivialConstImage
     - \a x, \a y  : Object of type X
     
-###  Definitions
+#  Definitions
    
-###  Valid expressions and semantics
+#  Valid expressions and semantics
 
    
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -77,9 +77,9 @@ which is a refinement of CPointFunctor.
 
 
 
-###  Invariants
+#  Invariants
 
-###  Models
+#  Models
 ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
 
    */

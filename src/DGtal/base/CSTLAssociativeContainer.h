@@ -64,11 +64,11 @@ namespace DGtal
        a consequence, boost::unordered_set does not satisfy the concept.
 
 
-       ### Refinement of 
+       # Refinement of 
        - boost::ForwardContainer
        - boost::DefaultConstructible
 
-       ### Provided types:
+       # Provided types:
 
        - value_type: the value type
        - key_type: the key type
@@ -77,7 +77,7 @@ namespace DGtal
        - size_type: a size type
  
 
-       ### Notation:
+       # Notation:
 
        - x an object of a model of CSTLAssociativeContainer.
        - val an object of type value_type
@@ -86,14 +86,14 @@ namespace DGtal
  
        For a complete desccription of this concept, please check https://www.sgi.com/tech/stl/AssociativeContainer.html.
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
       
        std::set, std::unordered_set (c++11), boost::unordered_set.
 
 
-       ### Notes
+       # Notes
 
        @tparam T the type that is checked. T should be a model of CSTLAssociativeContainer.
 
