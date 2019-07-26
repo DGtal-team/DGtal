@@ -159,7 +159,7 @@ namespace DGtal {
     //typedef itk::GDCMImageIO ItkImageIO;
     
     typedef typename ImageContainer::ITKImagePointer ITKImagePointer;
-    ITKImagePointer itk_image = nullptr;
+    ITKImagePointer itkImage = nullptr;
 
     try
     {
@@ -170,7 +170,7 @@ namespace DGtal {
       reader->SetFileNames( filenames );
       reader->Update();
 
-      itk_image = reader->GetOutput();
+      itkImage = reader->GetOutput();
     }
     catch ( itk::ExceptionObject & e )
     {
@@ -185,7 +185,7 @@ namespace DGtal {
     }
     
     const typename ItkImage::SizeType& inputSize =
-      itk_image->GetLargestPossibleRegion().GetSize();
+      itkImage->GetLargestPossibleRegion().GetSize();
     const unsigned int width = inputSize[0];
     const unsigned int height = inputSize[1];
     const unsigned int depth = inputSize[2];
@@ -196,7 +196,7 @@ namespace DGtal {
       throw IOException();
     }
     
-    const ImageContainer image( itk_image );
+    const ImageContainer image( itkImage );
 
     return image;
   }
@@ -211,16 +211,16 @@ namespace DGtal {
 			      const TFunctor & aFunctor )
   {
     typedef ImageContainerByITKImage<Domain, OrigValue> TypeDGtalImage;
-    TypeDGtalImage dgtal_itk_image =
+    TypeDGtalImage dgtalItkImage =
       importDicomFiles<Domain, OrigValue>( filenames );
       
-    const Domain& domain = dgtal_itk_image.domain();
+    const Domain& domain = dgtalItkImage.domain();
       
     typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity,
 			      Value, TFunctor>
       AdaptedImage;
     const functors::Identity identityFunctor{};
-    const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor,
+    const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor,
 			        aFunctor);
       
     Image image( domain );
@@ -245,16 +245,16 @@ namespace DGtal {
     typedef ImageContainerByITKImage<Domain, Value> Image;
       
     typedef ImageContainerByITKImage<Domain, OrigValue> TypeDGtalImage;
-    TypeDGtalImage dgtal_itk_image =
+    TypeDGtalImage dgtalItkImage =
       importDicomFiles<Domain, OrigValue>( filenames );
     
-    const Domain& domain = dgtal_itk_image.domain();
+    const Domain& domain = dgtalItkImage.domain();
       
     typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity,
 			      Value, TFunctor>
       AdaptedImage;
     const functors::Identity identityFunctor{};
-    const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor,
+    const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor,
 			        aFunctor);
       
     Image image( domain );
@@ -263,11 +263,11 @@ namespace DGtal {
       
     //copy ITKImage spatial parameters
     image.getITKImagePointer()->SetOrigin(
-      dgtal_itk_image.getITKImagePointer()->GetOrigin() );
+      dgtalItkImage.getITKImagePointer()->GetOrigin() );
     image.getITKImagePointer()->SetSpacing(
-      dgtal_itk_image.getITKImagePointer()->GetSpacing() );
+      dgtalItkImage.getITKImagePointer()->GetSpacing() );
     image.getITKImagePointer()->SetDirection(
-      dgtal_itk_image.getITKImagePointer()->GetDirection() );
+      dgtalItkImage.getITKImagePointer()->GetDirection() );
       
     return image;
   }
