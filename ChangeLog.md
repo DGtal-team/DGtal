@@ -3,9 +3,17 @@
 
 ## Changes
 
+- *DEC*
+  - Add discrete calculus model of Ambrosio-Tortorelli functional in
+    order to make piecewise-smooth approximations of scalar or vector
+    fields onto 2D domains like 2D images or digital surfaces
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
@@ -31,8 +39,9 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
-  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy
-    [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Fix bug in Shortcuts::saveVectorFieldOBJ
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
