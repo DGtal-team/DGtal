@@ -97,7 +97,7 @@ importDicomFiles_( const std::vector<std::string> & filenames )
 
   typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
   typedef typename TypeDGtalImage::ITKImagePointer ITKImagePointer;
-  ITKImagePointer itk_image = nullptr;
+  ITKImagePointer itkImage = nullptr;
   
   // Image reading
   try
@@ -111,10 +111,10 @@ importDicomFiles_( const std::vector<std::string> & filenames )
     throw IOException();
   }
 
-  itk_image = reader->GetOutput();
+  itkImage = reader->GetOutput();
   
   const typename ItkImage::SizeType& inputSize =
-    itk_image->GetLargestPossibleRegion().GetSize();
+    itkImage->GetLargestPossibleRegion().GetSize();
   const unsigned int width = inputSize[0];
   const unsigned int height = inputSize[1];
   const unsigned int depth = inputSize[2];
@@ -126,9 +126,9 @@ importDicomFiles_( const std::vector<std::string> & filenames )
     throw IOException();
   }
   
-  const TypeDGtalImage dgtal_itk_image( itk_image );
+  const TypeDGtalImage dgtalItkImage( itkImage );
 
-  return dgtal_itk_image;
+  return dgtalItkImage;
 }
 
 template <typename TImageContainer, typename TFunctor>
@@ -143,15 +143,15 @@ importDicomFiles( const std::vector<std::string> & filenames,
   typedef OutPixelType Value;
   
   typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
-  const TypeDGtalImage dgtal_itk_image =
+  const TypeDGtalImage dgtalItkImage =
     importDicomFiles_<Domain, PixelType>( filenames );
   
-  const Domain& domain = dgtal_itk_image.domain();
+  const Domain& domain = dgtalItkImage.domain();
   
   typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity,
 			    Value, TFunctor> AdaptedImage;
   const functors::Identity identityFunctor{};
-  const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor,
+  const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor,
 			      aFunctor );
   
   TImageContainer image( domain );
@@ -174,15 +174,15 @@ importDicomFiles( const std::vector<std::string> & filenames,
   typedef OutPixelType Value;
   
   typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
-  const TypeDGtalImage dgtal_itk_image =
+  const TypeDGtalImage dgtalItkImage =
     importDicomFiles_<Domain, PixelType>( filenames );
   
-  const Domain& domain = dgtal_itk_image.domain();
+  const Domain& domain = dgtalItkImage.domain();
   
   typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity, Value,
 			    TFunctor> AdaptedImage;
   const functors::Identity identityFunctor{};
-  const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor, aFunctor );
+  const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor, aFunctor );
   
   TImageContainer image( domain );
   std::copy( adapted.constRange().begin(), adapted.constRange().end(),
@@ -190,11 +190,11 @@ importDicomFiles( const std::vector<std::string> & filenames,
 
   //copy ITKImage parameters
   image.getITKImagePointer()->SetOrigin(
-    dgtal_itk_image.getITKImagePointer()->GetOrigin() );
+    dgtalItkImage.getITKImagePointer()->GetOrigin() );
   image.getITKImagePointer()->SetSpacing(
-    dgtal_itk_image.getITKImagePointer()->GetSpacing() );
+    dgtalItkImage.getITKImagePointer()->GetSpacing() );
   image.getITKImagePointer()->SetDirection(
-    dgtal_itk_image.getITKImagePointer()->GetDirection() );
+    dgtalItkImage.getITKImagePointer()->GetDirection() );
   
   return image;
 }
