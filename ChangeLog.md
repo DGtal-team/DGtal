@@ -12,6 +12,10 @@
     (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
+- *Shapes package*
+  - Fix Lemniscate definition following Bernoulli's definition
+   (Adrien Krähenbühl,
+   [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
 
 ## Bug Fixes
 
@@ -27,7 +31,8 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
-  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy
+    [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
@@ -41,6 +46,8 @@
 - *doc*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
+  - Fixing the `doxyfiles` to have the table of contents of module pages (David
+    Coeurjolly [#1424](https://github.com/DGtal-team/DGtal/pull/1424))
 
 
 # DGtal 1.0

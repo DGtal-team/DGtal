@@ -57,32 +57,32 @@ Description of \b concept '\b CStaticVector' <p>
 @brief Aim:
 Represent any static sized column vector having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CVector
  - boost::DefaultConstructible
 
-### Associated types :
+# Associated types
 
-### Notation
+# Notation
  - \c StaticVector : A type that is a model of CStaticVector
  - \e i : object of type \c StaticVector::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Static size member      |  \a StaticVector::dimension          |                   | \c StaticVector::Index              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
  - PointVector
  - SimpleMatrix::Vector
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CStaticVector.
  */

@@ -56,13 +56,13 @@ Description of \b concept '\b CUnaryFunctor' <p>
      \brief Aim: Defines a unary functor, which
      associates arguments to results
 
-### Refinement of 
+# Refinement of 
 
  - boost::Assignable
 
-### Associated types :
+# Associated types
 
-### Notation
+# Notation
      - \a X : a type that is a model of CUnaryFunctor
      - \a x : Object of type \a X
      - \a A : argument type
@@ -70,20 +70,20 @@ Description of \b concept '\b CUnaryFunctor' <p>
      - \a R : result type
      - \a r : Object of type \a R
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | Apply function | r = x(\a a) |                   | \c R        |                  | returns the value of the function \a x on argument \a a | | |         
 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
-### Notes
+# Notes
   */
   template <typename X, typename A, typename R>
   struct CUnaryFunctor : boost::Assignable<X>

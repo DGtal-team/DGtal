@@ -54,18 +54,18 @@ namespace DGtal
  * @brief Aim: Defines the concept describing an image without extra ranges, 
  * which is a refinement of CTrivialConstImage. 
  *
-###  Refinement of
+#  Refinement of
   - CTrivialConstImage
-###  Associated types 
+#  Associated types 
   
-###  Notation
+#  Notation
  - \e X : A type that is a model of CTrivialImage
  - \e x, \e y  : Object of type X
  - \e p, \e v : Objects of type Point and Value
    
-###  Definitions
+#  Definitions
    
-###  Valid expressions and semantics
+#  Valid expressions and semantics
    
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -73,9 +73,9 @@ namespace DGtal
 | Set value | x.setValue(p,v) | | | | set a given value v to a given point p | | |   
 
    
-###  Invariants
+#  Invariants
    
-###  Models
+#  Models
 ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
    
    */
