@@ -38,11 +38,6 @@
 #include "DGtal/io/readers/ITKDicomReader.h"
 // Required ITK files to read serie DICOM files
 // DGtal must be compiled with "-DWITH_ITK=true" option
-#if defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#pragma GCC diagnostic ignored "-Wpedantic"
-#endif
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
@@ -51,9 +46,7 @@
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-#if defined(__GNUG__)
-#endif
-#pragma GCC diagnostic pop
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
