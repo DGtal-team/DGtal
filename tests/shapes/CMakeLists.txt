@@ -32,6 +32,7 @@ SET(DGTAL_TESTS_SRC
   testTriangulatedSurface
   testPolygonalSurface
   testProjection
+  testAstroid2D
   testLemniscate2D
   )
 
