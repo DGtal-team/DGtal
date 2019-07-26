@@ -208,7 +208,6 @@ importDicomFiles( const std::vector<std::string> & filenames,
 		  const TFunctor & aFunctor )
 {
   typedef typename TImageContainer::Domain Domain;
-  typedef typename TImageContainer::Value Value;
   return Aux<TImageContainer, Domain, Value, PixelType>::
     importDicomFiles( filenames, aFunctor );
 }

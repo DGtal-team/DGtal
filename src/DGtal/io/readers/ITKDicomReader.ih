@@ -150,7 +150,7 @@ namespace DGtal {
   ITKDicomReader<I>::
   importDicomFiles(const std::vector<std::string> & filenames)
   {
-    typedef ImageContainerByITKImage<Domain, PixelType> Image;
+    typedef ImageContainerByITKImage<Domain, PixelType> ImageContainer;
     
     const unsigned int dimension = Domain::dimension;
     typedef itk::Image<PixelType, dimension> ItkImage;
@@ -158,7 +158,7 @@ namespace DGtal {
 
     //typedef itk::GDCMImageIO ItkImageIO;
     
-    typedef typename Image::ITKImagePointer ITKImagePointer;
+    typedef typename ImageContainer::ITKImagePointer ITKImagePointer;
     ITKImagePointer itk_image = nullptr;
 
     try
@@ -196,7 +196,7 @@ namespace DGtal {
       throw IOException();
     }
     
-    const Image image( itk_image );
+    const ImageContainer image( itk_image );
 
     return image;
   }
