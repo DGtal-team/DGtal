@@ -56,7 +56,6 @@
 #include "QGLViewer/manipulatedCameraFrame.h"
 //////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace qglviewer;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -657,7 +656,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
   glLightfv(GL_LIGHT0, GL_POSITION, myLightPosition);  
   
   unsigned int i = 0;
-  typename vector<
+  typename std::vector<
   typename Viewer3D<TSpace, TKSpace>::ClippingPlaneD3D>::const_iterator it =
   Viewer3D<TSpace, TKSpace>::myClippingPlaneList.begin();
 
@@ -715,7 +714,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
       if ( Viewer3D<TSpace, TKSpace>::myLineSetList.at( j ).size() != 0 )
       {
         glLineWidth(
-        max( myGLLineMinWidth,
+        std::max( myGLLineMinWidth,
              Viewer3D<TSpace, TKSpace>::myLineSetList.at( j ).at( 0 ).width ) );
         }
       glCallList(myLineSetListId+j);
@@ -732,7 +731,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
     {
       if ( Viewer3D<TSpace, TKSpace>::myBallSetList.at( j ).size() != 0 )
       {
-        glPointSize( max(
+        glPointSize( std::max(
         myGLPointMinWidth,
         ( Viewer3D<TSpace, TKSpace>::myBallSetList.at( j ).at( 0 ).radius ) ) );
       }
@@ -749,7 +748,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
   if(myViewWire)
     {
       glLineWidth(
-      max( myGLLineMinWidth,
+      std::max( myGLLineMinWidth,
            Viewer3D<TSpace, TKSpace>::myMeshDefaultLineWidth / distCam ) );
       glCallList(myQuadsMapWiredId);
     }
@@ -759,7 +758,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
   if(myViewWire)
     {
       glLineWidth(
-      max( myGLLineMinWidth,
+      std::max( myGLLineMinWidth,
            Viewer3D<TSpace, TKSpace>::myMeshDefaultLineWidth / distCam ) );
       glCallList(myTriangleSetListWiredId);
     }
@@ -769,7 +768,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
   if(myViewWire)
     {
       glLineWidth(
-      max( myGLLineMinWidth,
+      std::max( myGLLineMinWidth,
            Viewer3D<TSpace, TKSpace>::myMeshDefaultLineWidth / distCam ) );
       glCallList(myPolygonSetListWiredId);
     }
@@ -834,9 +833,9 @@ void DGtal::Viewer3D<TSpace, TKSpace>::init()
   setForegroundColor ( QColor ( 217, 22, 25, 255  ) );
 
   Viewer3D<TSpace, TKSpace>::createNewCubeList();
-  vector<typename Viewer3D<TSpace, TKSpace>::LineD3D> listeLine;
+  std::vector<typename Viewer3D<TSpace, TKSpace>::LineD3D> listeLine;
   Viewer3D<TSpace, TKSpace>::myLineSetList.push_back( listeLine );
-  vector<typename Viewer3D<TSpace, TKSpace>::BallD3D> listeBall;
+  std::vector<typename Viewer3D<TSpace, TKSpace>::BallD3D> listeBall;
   Viewer3D<TSpace, TKSpace>::myBallSetList.push_back( listeBall );
   Viewer3D<TSpace, TKSpace>::myCurrentFillColor = Color( 220, 220, 220 );
   Viewer3D<TSpace, TKSpace>::myCurrentLineColor = Color( 22, 22, 222, 50 );
@@ -974,7 +973,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::postSelection( const QPoint & point )
   mySelectedPoint = camera()->pointUnderPixel ( point, found );
   if ( found )
     {
-      DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << endl;
+      DGtal::trace.info() << "Element of liste= " << selectedName() << "selected" << std::endl;
       // JOL: 2014/10/15
       mySelectedElementId = selectedName();
       void* aData = 0;
@@ -1284,7 +1283,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
       myLightTheta = asin( myLightPosition[ 2 ] / myLightR );
       myLightPhi   = atan2( myLightPosition[ 1 ], myLightPosition[ 0 ] );
 
-      stringstream ss;
+      std::stringstream ss;
       if ( e->modifiers() == Qt::ShiftModifier )
       {
         myLightR += 5.0;
@@ -1999,7 +1998,7 @@ template <typename TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::updateRenderingCoefficients(
 const RenderingMode aRenderMode, bool displayState )
 {
-  stringstream ss; 
+  std::stringstream ss;
   ss << "Rendering mode ";
     
   GLfloat newCoefDiff, newCoefSpec = 1.0f;

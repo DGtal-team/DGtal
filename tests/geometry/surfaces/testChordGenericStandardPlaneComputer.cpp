@@ -102,7 +102,8 @@ bool checkChordGenericStandardPlaneComputer
       mu = getRandomInteger( -diameter, diameter );
       std::vector<Point> pts = pointsInStandardPlane( domain, a, b, c, mu );
       computer.init( 1, 1 );
-      ++nb, nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
+      ++nb;
+      nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
       trace.info() << "Primitive=" << computer.primitive() << std::endl;
       trace.info() << "(" << nbok << "/" << nb << ") extend "
                    << pts.size() << " points of plane "
@@ -110,7 +111,8 @@ bool checkChordGenericStandardPlaneComputer
                    << " < " << (mu+a+b+c) << std::endl;
       computer.init( 1, 1 );
       std::random_shuffle( pts.begin(), pts.end() );
-      ++nb, nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
+      ++nb;
+      nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
       trace.info() << "Primitive=" << computer.primitive() << std::endl;
       trace.info() << "(" << nbok << "/" << nb << ") extend "
                    << pts.size() << " shuffled points of plane "

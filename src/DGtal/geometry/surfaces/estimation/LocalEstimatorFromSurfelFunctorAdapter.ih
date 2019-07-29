@@ -166,7 +166,6 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
 eval( const SurfelConstIterator& it ) const
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
-
   const MetricToPoint metricToPoint = std::bind( *myMetric, myEmbedder( *it ), std::placeholders::_1 );
   const VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);

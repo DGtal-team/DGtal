@@ -118,8 +118,11 @@ namespace DGtal
     typedef TMetric Metric;
 
     ///Metric value type
-    typedef typename TMetric::Value Value;
+    typedef typename Metric::Value Value;
 
+    ///Metric point type
+    typedef typename Metric::Point Point;
+    
     ///Functor on surfels type
     typedef TFunctorOnSurfel FunctorOnSurfel;
 
@@ -137,13 +140,16 @@ namespace DGtal
 
     ///Surfel type
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
+
     
     
   private:
 
     ///Embedded and type definitions
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
-    typedef std::function< typename Metric::Value ( typename Metric::Point ) > MetricToPoint;
+    ///Real point type
+    typedef typename Embedder::RealPoint            RealPoint;
+    typedef std::function< Value ( Point ) > MetricToPoint;
     typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor< Surface, 
                                          VertexFunctor> Visitor;

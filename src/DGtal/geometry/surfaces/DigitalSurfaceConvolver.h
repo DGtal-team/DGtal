@@ -324,7 +324,12 @@ protected:
    */
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
+#ifdef _MSC_VER
+  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  static const int nbMoments = 6; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
+#else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
+#endif //_MSC_VER
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 6 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function
@@ -684,7 +689,12 @@ protected:
    */
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
+#ifdef _MSC_VER
+  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  static const int nbMoments = 6; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
+#else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
+#endif //_MSC_VER
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 6 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function
@@ -1050,7 +1060,12 @@ protected:
    */
   void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction ) const;
 
+#ifdef _MSC_VER
+  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  static const int nbMoments = 10; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
+#else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
+#endif //_MSC_VER
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 10 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function

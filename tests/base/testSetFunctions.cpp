@@ -47,41 +47,40 @@ using  DGtal::functions::setops::operator^;
 
 
 ////////////////////////////// unit tests /////////////////////////////////
-TEMPLATE_TEST_CASE_4( "SetFunctions module unit tests", "[set_functions]",
-                      Container,
-                      std::vector<int>,
-                      std::list<int>, 
-                      std::set<int>, 
-                      std::unordered_set<int> )
+TEMPLATE_TEST_CASE( "SetFunctions module unit tests", "[set_functions]",
+                    std::vector<int>,
+                    std::list<int>,
+                    std::set<int>,
+                    std::unordered_set<int> )
 
 {
   int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
   int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
-  Container C1( S1, S1 + 10 );
-  Container C2( S2, S2 + 6 );
-  Container C1_minus_C2 = C1 - C2;
+  TestType C1( S1, S1 + 10 );
+  TestType C2( S2, S2 + 6 );
+  TestType C1_minus_C2 = C1 - C2;
   REQUIRE( C1_minus_C2.size() == 7 );
-  Container C2_minus_C1 = C2 - C1;
+  TestType C2_minus_C1 = C2 - C1;
   REQUIRE( C2_minus_C1.size() == 3 );
   REQUIRE( ( C1_minus_C2 - C1 ).size() == 0 );
   REQUIRE( ( C2_minus_C1 - C2 ).size() == 0 );
   REQUIRE( ( C1_minus_C2 - C2 ).size() == C1_minus_C2.size() );
   REQUIRE( ( C2_minus_C1 - C1 ).size() == C2_minus_C1.size() );
-  Container C1_union_C2 = DGtal::functions::setops::operator|(C1 , C2);
-  Container C2_union_C1 = DGtal::functions::setops::operator|(C2 , C1);
+  TestType C1_union_C2 = DGtal::functions::setops::operator|(C1 , C2);
+  TestType C2_union_C1 = DGtal::functions::setops::operator|(C2 , C1);
   REQUIRE( C1_union_C2.size() == 13 );
   REQUIRE( C1_union_C2.size() == C2_union_C1.size() );
   REQUIRE( ( DGtal::functions::setops::operator|(C1_minus_C2 , C2) ).size() == (DGtal::functions::setops::operator|(C2_minus_C1 , C1) ).size() );
 
-  Container C1_intersection_C2 = C1 & C2;
-  Container C2_intersection_C1 = C2 & C1;
+  TestType C1_intersection_C2 = C1 & C2;
+  TestType C2_intersection_C1 = C2 & C1;
   REQUIRE( C1_intersection_C2.size() == 3 );
   REQUIRE( C1_intersection_C2.size() == C2_intersection_C1.size() );
 
   REQUIRE( ( DGtal::functions::setops::operator|(DGtal::functions::setops::operator|(C1_minus_C2 , C1_intersection_C2) , C2_minus_C1) ).size() == C1_union_C2.size() );
 
-  Container C1_symdiff_C2 = C1 ^ C2;
-  Container C2_symdiff_C1 = C2 ^ C1;
+  TestType C1_symdiff_C2 = C1 ^ C2;
+  TestType C2_symdiff_C1 = C2 ^ C1;
   REQUIRE( C1_symdiff_C2.size() == C2_symdiff_C1.size() );
   REQUIRE( C1_symdiff_C2.size() == ( C1_union_C2 - C1_intersection_C2 ).size() );
   REQUIRE( C1_symdiff_C2.size() == ( DGtal::functions::setops::operator|(C1_minus_C2 , C2_minus_C1) ).size() );
@@ -113,18 +112,17 @@ int randomNB( )
 }
 
 ////////////////////////////// operator | //////////////////////////////
-TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_functions]",
-                      Container, 
-                      std::vector<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sequences)", "[set_functions]",
+                    std::vector<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AorB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AorB;
 
   std::random_shuffle( A.begin(), A.end() );
   std::random_shuffle( B.begin(), B.end() );
@@ -139,19 +137,18 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator | (sequences)", "[set_fun
   REQUIRE( size_AorB    >= std::max( size_A, size_B ) );
 }
 
-TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator | (sets)", "[set_functions]",
-                      Container, 
-                      std::set<int>, 
-                      std::unordered_set<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sets)", "[set_functions]",
+                    std::set<int>,
+                    std::unordered_set<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AorB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AorB;
 
   SECTION( "  - benchmark set operators |" )
     {
@@ -164,18 +161,17 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator | (sets)", "[set_function
 }
 
 ////////////////////////////// operator & //////////////////////////////
-TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator & (sequences)", "[set_functions]",
-                      Container, 
-                      std::vector<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator & (sequences)", "[set_functions]",
+                    std::vector<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AandB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AandB;
 
   std::random_shuffle( A.begin(), A.end() );
   std::random_shuffle( B.begin(), B.end() );
@@ -190,19 +186,18 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator & (sequences)", "[set_fun
   REQUIRE( size_AandB   <= std::min( size_A, size_B ) );
 }
 
-TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator & (sets)", "[set_functions]",
-                      Container, 
-                      std::set<int>, 
-                      std::unordered_set<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator & (sets)", "[set_functions]",
+                    std::set<int>,
+                    std::unordered_set<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AandB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AandB;
 
   SECTION( "  - benchmark set operators &" )
     {
@@ -216,18 +211,17 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator & (sets)", "[set_function
 
 
 ////////////////////////////// operator - //////////////////////////////
-TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator - (sequences)", "[set_functions]",
-                      Container, 
-                      std::vector<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sequences)", "[set_functions]",
+                    std::vector<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AminusB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AminusB;
 
   std::random_shuffle( A.begin(), A.end() );
   std::random_shuffle( B.begin(), B.end() );
@@ -240,21 +234,21 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator - (sequences)", "[set_fun
   Size size_B        = B.size();
   Size size_AminusB  = AminusB.size();
   REQUIRE( size_AminusB <= size_A );
+  boost::ignore_unused_variable_warning(size_B);
 }
 
-TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator - (sets)", "[set_functions]",
-                      Container, 
-                      std::set<int>, 
-                      std::unordered_set<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sets)", "[set_functions]",
+                    std::set<int>,
+                    std::unordered_set<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AminusB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AminusB;
 
   SECTION( "  - benchmark set operators -" )
     {
@@ -264,22 +258,22 @@ TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator - (sets)", "[set_function
   Size size_B        = B.size();
   Size size_AminusB  = AminusB.size();
   REQUIRE( size_AminusB <= size_A );
+  boost::ignore_unused_variable_warning(size_B);
 }
 
 
 ////////////////////////////// operator ^ //////////////////////////////
-TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator ^ (sequences)", "[set_functions]",
-                      Container, 
-                      std::vector<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sequences)", "[set_functions]",
+                    std::vector<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AxorB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AxorB;
 
   std::random_shuffle( A.begin(), A.end() );
   std::random_shuffle( B.begin(), B.end() );
@@ -294,19 +288,18 @@ TEMPLATE_TEST_CASE_1( "SetFunctions benchmark operator ^ (sequences)", "[set_fun
   REQUIRE( size_AxorB   <= std::max( size_A, size_B ) );
 }
 
-TEMPLATE_TEST_CASE_2( "SetFunctions benchmark operator ^ (sets)", "[set_functions]",
-                      Container, 
-                      std::set<int>, 
-                      std::unordered_set<int> )
+TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sets)", "[set_functions]",
+                    std::set<int>,
+                    std::unordered_set<int> )
 {
-  typedef typename Container::size_type Size;
+  typedef typename TestType::size_type Size;
   std::set<int> S1; 
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   std::set<int> S2; 
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
-  Container A( S1.begin(), S1.end() );
-  Container B( S2.begin(), S2.end() );
-  Container AxorB;
+  TestType A( S1.begin(), S1.end() );
+  TestType B( S2.begin(), S2.end() );
+  TestType AxorB;
 
   SECTION( "  - benchmark set operators ^" )
     {

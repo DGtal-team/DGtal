@@ -91,7 +91,7 @@ int main()
   
   //! [LambdaMST2DPoint]
   for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
-    lmst.eval ( it );
+    lmst.eval ( *it );
   //! [LambdaMST2DPoint]
   
   //! [LambdaMST2DFast]
@@ -100,7 +100,7 @@ int main()
   lmst.eval < back_insert_iterator< vector < RealVector > > > ( contour.begin(), contour.end(),  back_inserter ( tangent ) );
   //! [LambdaMST2DFast]
   
-  return 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

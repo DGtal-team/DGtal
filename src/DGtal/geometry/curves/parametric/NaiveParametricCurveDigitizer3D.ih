@@ -1,0 +1,308 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file NaiveParametricCurveDigitizer3D.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, A3SI, France
+ *
+ * @date 2014/09/26
+ *
+ * Implementation of inline methods defined in NaiveParametricCurveDigitizer3D.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cassert>
+#include <cmath>
+#include <exception>
+#include <cfloat>
+#include <utility>
+#include "DGtal/kernel/BasicPointFunctors.h"
+//////////////////////////////////////////////////////////////////////////////
+
+
+template <typename T> int sgn(T val) {
+  return ( T ( 0 ) < val ) - ( val < T( 0 ) );
+}
+
+
+namespace DGtal
+{
+
+  template <typename T>
+  inline
+  bool NaiveParametricCurveDigitizer3D<T>::is26Connected ( const Point &x, const Point &y )
+  {
+    return std::abs ( x[0] - y[0] ) < 2 && std::abs ( x[1] - y[1] ) < 2 && std::abs ( x[2] - y[2] ) < 2 && x != y;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Implementation of inline methods                                          //
+  template <typename T>
+  inline
+  NaiveParametricCurveDigitizer3D<T>::NaiveParametricCurveDigitizer3D ()
+  {
+      curve = nullptr;
+      initOK = false;
+      metaData = false;
+      K_NEXT = 5;
+      BUFFER_SIZE = K_NEXT * 3;
+  }
+  
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::attach ( ConstAlias<T> p_curve )
+  {
+    curve = &p_curve;
+  }
+
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::init ( long double tmin, long double tmax, long double timeStep )
+  {
+    if ( tmin > tmax )
+      throw std::runtime_error ( "Starting time is bigger than the end time!" );
+
+    if ( timeStep > ( tmax - tmin ) )
+      throw std::runtime_error ( "The step is too big!" );
+
+    timeMin = tmin;
+    timeMax = tmax;
+    step = timeStep;
+    initOK = true;
+  }
+
+
+  template <typename T>
+  inline
+  unsigned int NaiveParametricCurveDigitizer3D<T>::setKNext ( unsigned int knext )
+  {
+      if ( knext > 0 )
+      {
+          unsigned int tmp = K_NEXT;
+          K_NEXT = knext;
+          BUFFER_SIZE = K_NEXT * 3;
+          return tmp;
+      }
+      throw std::runtime_error ( "The value of k-next cannot be 0!" );
+  }
+
+
+  template <typename T>
+  inline
+  bool NaiveParametricCurveDigitizer3D<T>::isValid ( ) const
+  {
+    return initOK && K_NEXT > 0 && curve != nullptr;
+  }
+
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights )
+  {
+    if ( bbegin == bend )
+      return;
+    auto it = bbegin;
+    if ( digitalCurve.size() == 0 )
+    {
+      digitalCurve.push_back ( *bbegin );
+      it++;
+      if ( metaData )
+        metaDataContainter.push_back ( weights[*bbegin] );
+    }
+
+    for (; it != bend; it++ )
+    {
+      // search for better candidates i.e. search for 26-connected points of higher scores in the k-neighborhood.
+      for ( KConstIter s = { it + 1, 0 };  s.jt != bend && s.k < K_NEXT; s.jt++ )
+      {
+        if ( is26Connected ( digitalCurve.back(), *s.jt ) && weights[*s.jt].second >= weights[*it].second )
+        {
+          it = s.jt;
+          s.k = 0;
+        }
+        else if ( ! is26Connected ( digitalCurve.back(), *s.jt ) )
+          s.k++;
+      }
+
+      digitalCurve.push_back ( *it );
+      if ( metaData )
+        metaDataContainter.push_back( weights[*it] );
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::flashBuffers ( Buffer & buffer, DataInfo & weights )
+  {
+    syncData ( buffer.begin(), buffer.end() - K_NEXT, weights );
+    // keep the last few points for re-evaluation or because they may not be well evaluated yet.
+    for ( auto it = buffer.begin(); it != buffer.end() - K_NEXT; it++ )
+      weights.erase ( *it );
+    buffer.erase ( buffer.begin(), buffer.end() - K_NEXT );
+  }
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::updateMetaData ( const Point & p, const RealPoint & pc,
+                                                            DataInfo & weights, long double t )
+  {
+    if ( metaData )
+    {
+      if ( weights[p].second == 1 )
+        weights[p].first = t;
+      else if ( (p - pc).norm() < (curve->x ( weights[p].first ) - p).norm() )
+        weights[p].first = t;
+    }
+  }
+
+   template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::cleanClosedPart ( )
+  {
+    bool isClosed = false;
+    auto it = digitalCurve.end () - K_NEXT;
+    auto jt = digitalCurve.begin () + K_NEXT;
+    for ( ; it != digitalCurve.end (); it++ )
+     for (; jt != digitalCurve.begin(); jt--)
+      if ( is26Connected ( *jt, *it ) )
+      {
+        isClosed = true;
+        break;
+      }
+    if ( isClosed && std::distance ( it, digitalCurve.end () ) > 1 )
+    {
+      if ( metaData )
+        metaDataContainter.erase ( metaDataContainter.end ( ) + std::distance ( it, digitalCurve.end ( ) ) + 1, metaDataContainter.end ( ) );
+      digitalCurve.erase ( it + 1,  digitalCurve.end ( ) );
+    }
+    if ( isClosed && jt != digitalCurve.begin() )
+    {
+      if ( metaData )
+        metaDataContainter.erase ( metaDataContainter.begin (), metaDataContainter.begin () + std::distance ( digitalCurve.begin (), jt )  );
+      digitalCurve.erase ( digitalCurve.begin ( ), jt );
+    }
+  }
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
+  {
+    cleanClosedPart ();
+    for ( auto it = digitalCurve.begin (); it != digitalCurve.end (); )
+    {
+      auto tmp = it + 1;
+      for ( KIter  s = { tmp, 0 };  s.jt != digitalCurve.end () && s.k < K_NEXT; s.jt++ )
+        if ( is26Connected ( *it, *s.jt ) )
+        {
+          tmp = s.jt;
+          s.k = 0;
+        }
+        else
+          s.k++;
+      if (tmp != it + 1)
+      {
+        if ( metaData )
+          metaDataContainter.erase ( metaDataContainter.begin () + std::distance ( digitalCurve.begin ( ), it ) + 1,
+                            metaDataContainter.begin () + std::distance ( digitalCurve.begin(), tmp ) );
+        it = digitalCurve.erase ( it + 1, tmp );
+      }
+      else
+        it++;
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter )
+  {
+    assert ( isValid() );
+
+    DataInfo weights;
+    Buffer buffer;
+
+    for ( double t = timeMin; t < timeMax + step; t += step )
+    {
+      RealPoint pc = curve->x ( t );
+      Point p ( std::round (  pc[0] ), std::round ( pc[1] ), std::round ( pc[2] ) );
+      weights[p].second++;
+
+      updateMetaData ( p, pc, weights, t );
+      if ( std::find ( buffer.begin (), buffer.end (), p ) == buffer.end ( ) )
+        buffer.push_back ( p );
+
+      if ( buffer.size() == BUFFER_SIZE )
+        flashBuffers(buffer, weights);
+    }
+    syncData ( buffer.begin (), buffer.end (), weights );
+    cleanCurve ( );
+
+    std::move ( digitalCurve.begin (), digitalCurve.end (), inserter );
+    digitalCurve.clear ();
+  }
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter,
+                                                          std::back_insert_iterator < MetaData > meta_inserter )
+  {
+    metaData = true;
+    digitize ( inserter );
+    std::move ( metaDataContainter.begin (), metaDataContainter.end (), meta_inserter );
+    metaDataContainter.clear ();
+    metaData = false;
+  }
+
+  template <typename T>
+  inline
+  void NaiveParametricCurveDigitizer3D<T>::selfDisplay ( std::ostream & out ) const
+  {
+    out << "[NaiveParametricCurveDigitizer3D]";
+  }
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'NaiveParametricCurveDigitizer3D'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'NaiveParametricCurveDigitizer3D' to write.
+ * @return the output stream after the writing.
+ */
+template <typename T>
+inline
+std::ostream&
+operator<< ( std::ostream & out, const DGtal::NaiveParametricCurveDigitizer3D<T> & object )
+{
+  object.selfDisplay ( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

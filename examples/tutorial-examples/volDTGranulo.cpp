@@ -133,10 +133,9 @@ int main(int argc, char ** argv)
           Z3i::RealPoint center = *it;
           unsigned int radius = (unsigned int)distancemap(*it);
           ImplicitBall<Z3i::Space> ball(center,radius);
-          Z3i::Point low = center - Z3i::Point::diagonal( radius+1 );
-          Z3i::Point up = center + Z3i::Point::diagonal( radius+1 );
+          Z3i::Point low(ball.getLowerBound() - Z3i::RealPoint::diagonal(1.0), functors::Floor<>());
+          Z3i::Point up (ball.getUpperBound() + Z3i::RealPoint::diagonal(1.0), functors::Ceil<>());
           Z3i::Domain dom(low,up);
-
 
           for(Z3i::Domain::ConstIterator itball = dom.begin(), itendball= dom.end();
               itball != itendball; itball++)

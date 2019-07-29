@@ -46,7 +46,7 @@
 
 
 namespace std {
-  /**
+  /** @brief
    * Extend std namespace to define a std::hash function on
    * DGtal::KhalimskyCell.
    *
@@ -62,7 +62,7 @@ namespace std {
     }
   };
 
-  /**
+  /** @brief
    * Extend std namespace to define a std::hash function on
    * DGtal::SignedKhalimskyCell.
    *
@@ -83,7 +83,7 @@ namespace std {
 }
 
 namespace boost{
-  /**
+  /** @brief
    * Extend boost namespace to define a boost::hash function on
    * DGtal::KhalimskyCell.
    *
@@ -99,7 +99,7 @@ namespace boost{
     }
   };
 
-  /**
+  /** @brief
    * Extend boost namespace to define a boost::hash function on
    * DGtal::SignedKhalimskyCell.
    *
