@@ -66,34 +66,34 @@ namespace DGtal {
   sense of Herman. In other words, and adjacency relation define a
   neighborhood graph on the points of a digital domain.
    
-  ### Refinement of 
+  # Refinement of 
   - CUndirectedSimpleLocalGraph
    
-  ### Associated types (must be defined in the model):
+  # Associated types (must be defined in the model):
   - \c Space: the space of the adjacency.
   - \c Point: the digital point type.
   - \c Adjacency: the type of the adjacency itself.
    
-  ###  Notations
+  #  Notations
   - \c Adj : A type that is a model of CAdjacency
   - \c adj  : Object of type Adj.
   - \c p1, \c p2 : an object of type \ref Point.
     
-  ### Definitions
+  # Definitions
    
-  ### Valid expressions and semantics
+  # Valid expressions and semantics
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   | adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
   | proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
     
-  ### Invariants
+  # Invariants
    
-  ### Models
+  # Models
   - MetricAdjacency, DomainAdjacency
    
-  ### Notes
+  # Notes
   */
   template <typename Adj>
   struct CAdjacency : CUndirectedSimpleLocalGraph<Adj>

@@ -60,24 +60,24 @@ namespace DGtal {
     @ingroup Concepts
     @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
 
-    ### Refinement of
+    # Refinement of
 
-    ### Associated types :
+    # Associated types
     - Size: an integral type to count the number of vertices.
     - Vertex: the type for the vertices of the graph (a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible).
     - VertexSet: the type for storing a set of vertices.
     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
-    ### Notation
+    # Notation
     - \c X : A type that is a model of CUndirectedSimpleLocalGraph
     - \c x : object of type X
     - \c v : object of type Vertex
     - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
     - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
     
-    ### Definitions
+    # Definitions
     
-    ### Valid expressions and semantics 
+    # Valid expressions and semantics 
      
     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -86,13 +86,13 @@ namespace DGtal {
     |Neighbourhood | x.writeNeighbors<OutputIterator>( out, v ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v. | | |
     | Neighborhood | x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p. | | |  
             
-    ### Invariants###
+    # Invariants#
     
-    ### Models###
+    # Models#
     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
     - Object, MetricAdjacency, DomainAdjacency
 
-    ### Notes###
+    # Notes#
 
     @tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
     */

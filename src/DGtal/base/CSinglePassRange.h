@@ -52,19 +52,19 @@ namespace DGtal
     /////////////////////////////////////////////////////////////////////////////
     // class CSinglePassRange
     /**
-       DescriptionDescription of \b concept '\b CSinglePassRange' ###
+       DescriptionDescription of \b concept '\b CSinglePassRange' #
        @ingroup Concepts
 
        \brief Aim: Defines the concept describing a range.
 
-       ### Refinement of CConstSinglePassRange
+       # Refinement of CConstSinglePassRange
 
-       ### Provided types:
+       # Provided types:
 
        - Iterator: the iterator type, a model of iterator concept
        (see boost concept SinglePassIteratorConcept).
 
-       ### Notation:
+       # Notation:
 
        - x an object of a model of CSinglePassConstRange.
 
@@ -74,11 +74,11 @@ namespace DGtal
        end  | x.end()    |                   | Iterator    |              |           |                |           |
 
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
-       ### Notes
+       # Notes
 
        @tparam T the type that is checked. T should be a model of CSinglePassRange.
 

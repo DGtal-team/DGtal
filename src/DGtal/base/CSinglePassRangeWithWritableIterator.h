@@ -57,28 +57,28 @@ namespace DGtal
        @ingroup Concepts
        @brief Aim: refined concept of const single pass range which require that an output iterator exists.
 
-       ###  Refinement of CSinglePassRange
+       #  Refinement of CSinglePassRange
 
-       ###  Associated types :
+       #  Associated types
        - OutputIterator: type of output iterator on the range.
 
-       ###  Notation
+       #  Notation
        - \a X : A type that is a model of CSinglePassRangeWithWritableIterator
        - \a x, \a y : object of type X
 
-       ###  Definitions
+       #  Definitions
 
        | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
        |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
        | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
      
 
-       ###  Invariants
+       #  Invariants
 
-       ###  Models
+       #  Models
        - ImageContainerBySTLVector::Range
 
-       ###  Notes
+       #  Notes
 
        @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
        @tparam Value the type of object t in (*it) = t.

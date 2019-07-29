@@ -58,28 +58,28 @@ namespace DGtal
        @ingroup Concepts
        @brief Aim: refined concept of const single pass range with a begin() method from a point.
 
-       ###  Refinement of CConstSinglePassRange
+       #  Refinement of CConstSinglePassRange
 
-       ###  Associated types :
+       #  Associated types
 
-       ###  Notation
+       #  Notation
        - X : A type that is a model of CConstSinglePassRangeFromPoint
        - x,  y : object of type X
        - Point: A type of Point
 
-       ###  Definitions
+       #  Definitions
 
-       ###  Valid expressions and semantics
+       #  Valid expressions and semantics
 
        | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
        |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
        | begin | begin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const iterator on the range first element |                |            |
-       ###  Invariants
+       #  Invariants
 
-       ###  Models
+       #  Models
        - ImageContainerBySTLVector::Range
 
-       ###  Notes
+       #  Notes
        @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
     */
     template <typename T>

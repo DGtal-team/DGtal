@@ -72,18 +72,18 @@ namespace DGtal
              << x;
        \endcode 
    
-       ### Refinement of
+       # Refinement of
    
-       ### Associated types :
+       # Associated types
    
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CDrawableWithBoard2D
        - \a x, \a y  : Object of type X
        - \a m  : a string of characters
    
-       ### Definitions
+       # Definitions
    
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
    
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -91,12 +91,12 @@ namespace DGtal
        |the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
        |the way the objet \a x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \a board stream | | |
    
-       ### Invariants
+       # Invariants
    
-       ### Models
+       # Models
        ArithmeticalDSSComputer, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    
-       ### Notes
+       # Notes
        @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
        @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
     */

@@ -57,30 +57,30 @@ Description of \b concept '\b CSparseMatrix' <p>
 @brief Aim:
 Represent any dynamic or static sized matrix having sparse representation.
 
-### Refinement of
+# Refinement of
  - CMatrix
 
-### Associated types
+# Associated types
  - Triplet triplet type
 
-### Notation
+# Notation
  - \c SparseMatrix : A type that is a model of CSparseMatrix
  - \e ti, \e te : Instances of type that is a model of boost::InputIterator<Triplet>
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Fill from triplets      | \a x.setFromTriplets(ti,te)           |                   |           |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - SimpleMatrix
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CSparseMatrix.
 @tparam TripletInterator the type that should be a model of boost::InputIterator<Triplet>

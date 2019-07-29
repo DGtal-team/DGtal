@@ -34,6 +34,13 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+template <typename T>
+inline
+bool isAlmostEqual( T x, T y )
+{
+  return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ----------------------------------
 
@@ -49,19 +56,19 @@ DGtal::Astroid2D<T>::~Astroid2D()
 template <typename T>
 inline
 DGtal::Astroid2D<T>::Astroid2D( const double x0, const double y0,
-  const double a, const double b ) : myCenter(x0,y0), myA(a), myB(b)
+  const double a, const double b ) : myCenter(x0,y0), myA(fabs(a)), myB(fabs(b))
 {}
 
 template <typename T>
 inline
 DGtal::Astroid2D<T>::Astroid2D( const RealPoint2D &aPoint,
-  const double a, const double b ) : myCenter(aPoint), myA(a), myB(b)
+  const double a, const double b ) : myCenter(aPoint), myA(fabs(a)), myB(fabs(b))
 {}
 
 template <typename T>
 inline
 DGtal::Astroid2D<T>::Astroid2D( const Point2D &aPoint,
-  const double a, const double b ) : myA(a), myB(b)
+  const double a, const double b ) : myA(fabs(a)), myB(fabs(b))
 {
   myCenter = aPoint;
 }
@@ -80,31 +87,35 @@ inline
 double
 DGtal::Astroid2D<T>::parameter( const RealPoint2D & pp ) const
 {
-  RealPoint2D p( pp );
-  p -= myCenter;
-  double angle;
+  RealPoint2D p( pp - myCenter );
+  double angle = 0.;
 
-  if ( p[0] == 0. && p[1] > 0. )
-    angle = M_PI/2.0;
-  else if ( p[0] == 0. && p[1] < 0. )
-    angle = 3.0*M_PI/2.0;
-  else if ( p[1] == 0. && p[0] >= 0. )
-    angle = 0.0;
-  else if ( p[1] == 0. && p[0] < 0. )
-    angle = M_PI;
-  else
+  if ( isAlmostEqual(p[0],0.) )
+  {
+    if  (p[1] > 0. )
+      angle = M_PI_2;
+    else
+      angle = 3. * M_PI_2;
+  }
+  else if ( isAlmostEqual(p[1],0.) )
+  {
+    if ( p[0] > 0. )
+      angle = 0.;
+    else
+      angle = M_PI;
+  }
+  else if ( ! isAlmostEqual(myB,0.) )
   {
     if( p[1]/p[0] < 0. )
+    {
       angle = atan(-pow(-(myA*p[1])/(myB*p[0]) , 1/3.));
+      if ( p[0] > 0. )
+        angle += 2*M_PI;
+      else
+        angle += M_PI;
+    }
     else
       angle = atan(pow(( myA*p[1])/(myB*p[0]) , 1/3.));
-
-    if ( p[1] < 0. && p[0] > 0. )
-      angle += M_PI;
-    else if ( p[0] < 0. && p[1] > 0. )
-      angle += 2*M_PI;
-    else if ( p[0] < 0. && p[1] < 0. )
-      angle += M_PI;
   }
 
   return angle;

@@ -69,7 +69,7 @@ namespace DGtal
    (like set std::set<Point>), except that there is a notion of
    maximal set of points (the whole domain).
      
- ### Refinement of 
+ # Refinement of 
    - boost::CopyConstructible
    - concepts::CPointPredicate
 
@@ -78,7 +78,7 @@ namespace DGtal
 
 @note It is also a refinement of boost::Assignable from concepts::CPointPredicate.
     
- ### Associated types :
+ # Associated types
 
    - \c Domain: the domain in which points are defined, a model of concept CDomain.
    - \c Size: the type for couting elements of the set.
@@ -92,15 +92,15 @@ namespace DGtal
      that types for Iterator and ConstIterator should be the same,
      similarly to STL simple associative containers.
     
- ### Notation
+ # Notation
      - \c X : A type that is a model of CDigitalSet
      - \a x, \a y : objects of type \c X
      - \a p, \a p1, \a p2 : objects of type \c Point
      - \a it : object of type \c Iterator
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -124,13 +124,13 @@ namespace DGtal
 | Search point  | \a x.find( p ) |                 | \c Iterator |                  | Returns an iterator pointing on point \a p if it was found in the set \a x, or \a x.end() otherwise. | | |         
 | Search point  | \a x.find( p ) |                 | \c ConstIterator |             | Returns a const iterator pointing on point \a p if it was found in the set \a x, or \a x.end() otherwise. | | |         
     
- ### Invariants
+ # Invariants
     
- ### Models
+ # Models
 
 - DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap, DigitalSetFromAssociativeContainer
     
- ### Notes
+ # Notes
 
 @tparam T the type that should be a model of CDigitalSet.
    */
