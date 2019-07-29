@@ -626,6 +626,8 @@ namespace DGtal
     ///
     /// @param hei any valid half-edge index.
     /// @return 'true' if the edge containing \a hei is topologically flippable.
+    ///
+    /// @note Time complexity is O(1).
     bool isFlippable( const Index hei ) const
     {
       ASSERT( hei != HALF_EDGE_INVALID_INDEX );
@@ -651,6 +653,9 @@ namespace DGtal
     ///
     /// @pre the edge must be flippable, `isFlippable( hei ) == true`
     /// @see isFlippable
+    ///
+    /// @note Time complexity is O(1) if \a update_arc2index is false,
+    /// otherwise it is O(log n) is n is the number of arcs.
     void flip( const Index hei, bool update_arc2index = true )
     {
       const Index       i1 = hei;
@@ -711,6 +716,9 @@ namespace DGtal
     /// @pre the edge must be flippable, `isFlippable( i ) == true`
     /// @see isFlippable
     /// @todo We could also split boundary triangles or more general faces.
+    ///
+    /// @note Time complexity is O(1) if \a update_arc2index is false,
+    /// otherwise it is O(log n) is n is the number of arcs.
     VertexIndex split( const Index i, bool update_arc2index = true )
     {
       Index        new_hei = myHalfEdges.size();
@@ -804,11 +812,13 @@ namespace DGtal
     }
 
     /// An edge is (topologically) mergeable iff: (1) it is bordered
-    /// by two triangles (for now), (2) there is no boundary vertex in
-    /// the two triangles bordering the edge (for now).
+    /// by two triangles, (2) there is no boundary vertex in
+    /// the two triangles bordering the edge.
     ///
     /// @param hei any valid half-edge index.
     /// @return 'true' if the edge containing \a hei is topologically mergeable.
+    ///
+    /// @note Time complexity is O(1).
     bool isMergeable( const Index hei ) const { 
       ASSERT( hei != HALF_EDGE_INVALID_INDEX );
       const HalfEdge&  he = halfEdge( hei );
@@ -843,6 +853,9 @@ namespace DGtal
     ///
     /// @pre the edge must be mergeable, `isMergeable( hei ) == true`
     /// @see isMergeable
+    ///
+    /// @note Time complexity is O(1) if \a update_arc2index is false,
+    /// otherwise it is O(log n) is n is the number of arcs.
     /// @todo We could also merge boundary triangles or more general faces.
     VertexIndex merge( const Index hei, bool update_arc2index = true ) {
       const Index       i1 = hei;             // arc (v1,v2)
@@ -920,7 +933,6 @@ namespace DGtal
       myEdgeHalfEdges[ ev14 ] = iext2n;
       // (4) myArc2Index only if asked
       if ( update_arc2index ) {
-	// std::cout << "Updating arc2index" << std::endl;
 	for ( int j = 0; j < outer_v.size(); ++j ) {
 	  myArc2Index.erase( Arc( v2, outer_v[ j ] ) );
 	  myArc2Index.erase( Arc( outer_v[ j ], v2 ) );
@@ -949,24 +961,20 @@ namespace DGtal
 			<< " new_nbV4=" << new_nbV4 << std::endl;
 
       // Renumbering of 1 vertex, 3 edges, 2 faces, 6 half-edges
-      // std::cout << "Renumbering vertex" << v2 << "/" << nbVertices() << std::endl;
       renumberVertex( v2, update_arc2index );
       std::array< EdgeIndex, 3 > E = { e1, e2, e3 };
       std::sort( E.begin(), E.end(), std::greater<EdgeIndex>() );
       for ( Index e : E ) {
-	// std::cout << "Renumbering edge" << e  << "/" << nbEdges() << std::endl;
 	renumberEdge( e );
       }
       std::array< FaceIndex, 2 > F = { f1, f2 };
       std::sort( F.begin(), F.end(), std::greater<FaceIndex>() );
       for ( Index f : F ) {
-	// std::cout << "Renumbering face" << f << "/" << nbFaces() << std::endl;
 	renumberFace( f );
       }
       std::array< Index, 6 > T = { i1, i1n, i1nn, i2, i2n, i2nn };
       std::sort( T.begin(), T.end(), std::greater<Index>() );
       for ( Index t : T ) {
-	// std::cout << "Renumbering half-edge" << t << "/" << nbHalfEdges() << std::endl;
 	renumberHalfEdge( t );
       }
       return v1;

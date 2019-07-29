@@ -267,7 +267,6 @@ typename DGtal::TriangulatedSurface<TPoint>::Arc
 DGtal::TriangulatedSurface<TPoint>::arc
 ( const Vertex & t, const Vertex & h ) const
 {
-  //return myHEDS.halfEdgeIndexFromArc( t, h );
   return myHEDS.findHalfEdgeIndexFromArc( t, h );
 }
 
@@ -354,7 +353,7 @@ DGtal::TriangulatedSurface<TPoint>::isArcBoundary( const Arc& v ) const
 template <typename TPoint>
 inline
 typename DGtal::TriangulatedSurface<TPoint>::VertexRange
-DGtal::TriangulatedSurface<TPoint>::verticesAroundArc( Arc a ) const
+DGtal::TriangulatedSurface<TPoint>::verticesOfFacesAroundArc( Arc a ) const
 {
   Arc a2 = opposite( a );
   if ( isArcBoundary( a ) )

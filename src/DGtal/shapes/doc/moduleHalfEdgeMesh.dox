@@ -187,6 +187,14 @@ date structures, i.e. a face is bordered by three half-edges.
 There is also a method HalfEdgeDataStructure::isValid that performs a
 lot of checks on the validity of the data structure.
 
+@note Methods HalfEdgeDataStructure::isFlippable and
+HalfEdgeDataStructure::isMergeable has \f$ O(1) \f$ time complexity. Methods
+HalfEdgeDataStructure::flip, HalfEdgeDataStructure::split and
+HalfEdgeDataStructure::merge have \f$ O(1) \f$ time complexity when
+optimization parameter `update_arc2index` is `false`, and \f$ O(\log
+n) \f$ time complexity otherwise, where \f$ n \f$ stands for the
+number of half-edges.
+
 
 \section HEM_sec2 A triangulated surface data structure
 
@@ -442,6 +450,10 @@ topologically valid. They do not check if the geometry of the
 resulting surface is valid, for instance that there is no
 self-intersections.
 
+@note Methods TriangulatedSurface::isFlippable,
+TriangulatedSurface::isMergeable, TriangulatedSurface::flip,
+TriangulatedSurface::split and TriangulatedSurface::merge have all \f$
+O(1) \f$ time complexity.
 
 
 \section HEM_sec3 A polygonal surface data structure
