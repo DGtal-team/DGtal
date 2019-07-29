@@ -60,14 +60,14 @@ namespace DGtal
 
        \brief Aim: Defines the concept describing a bidirectional range.
 
-       ### Refinement of CConstBidirectionalRange
+       # Refinement of CConstBidirectionalRange
 
-       ### Provided types :
+       # Provided types
 
        - ReverseIterator: the reverse iterator type, a model of
        iterator concept.
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -76,12 +76,12 @@ namespace DGtal
        |rbegin         |\e x.rbegin() const |                |ConstReverseIterator |               |           |                |            | 
        |rend         |\e x.rend() const |                |ConstReverseIterator |               |           |                |            |                 
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
        PointVector
 
-       ### Notes
+       # Notes
 
        @tparam T the type that is checked. T should be a model of CBidirectionalRange.
 

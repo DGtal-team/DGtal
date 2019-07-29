@@ -62,18 +62,18 @@ Description of \b concept '\b CSignedNumber' <p>
      concept should be listed in NumberTraits class and should have
      the isSigned property.
      
- ### Refinement of 
+ # Refinement of 
     - CQuantity
 
- ### Associated types 
+ # Associated types 
     
- ### Notation
+ # Notation
      - \a X : A type that is a model of CSignedNumber
      - \a x, \a y  : Object of type X
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and 
+ # Valid expressions and 
 
 
 
@@ -81,13 +81,13 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsSigned | typename NumberTraits<X>::IsSigned | TagTrue | | | | | |
     
- ### Invariants###
+ # Invariants#
 
     
- ### Models###
+ # Models#
      double, BigInteger,  short, int, long long, int16_t, int32_t, int64_t.
 
- ### Notes###
+ # Notes#
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.

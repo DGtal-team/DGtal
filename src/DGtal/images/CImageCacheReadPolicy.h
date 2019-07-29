@@ -55,22 +55,22 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 @ingroup Concepts
 @brief Aim: Defines the concept describing a cache read policy
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
  - \e ImageContainer : type of the image in the cache, model of concept CImage
  - \e Point : type of the image point
  - \e Domain : type of the image domain, model of concept CDomain
 
-### Notation
+# Notation
  - \e X : A type that is a model of CImageCacheReadPolicy
  - \e x : object of type X
  - \e p : object of type Point
  - \e d : object of type Domain
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name                | Expression              | Type requirements    | Return type       | Precondition                         | Semantics                                            | Post condition | Complexity |
 |---------------------|-------------------------|----------------------|-------------------|--------------------------------------|------------------------------------------------------|----------------|------------|
@@ -80,12 +80,12 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 | Update cache        | x.updateCache(d)        | d of type Domain     |                   |                                      | update the cache with a new Domain d                 |                |            |
 | Clear cache         | x.clearCache()          |                      |                   |                                      | clear the cache                                      |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 ImageCacheReadPolicyLAST, ImageCacheReadPolicyFIFO
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CImageCacheReadPolicy.
  */

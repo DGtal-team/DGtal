@@ -59,22 +59,22 @@ namespace DGtal
      useful for simple algebraic curves that can be uniquely defined 
      by only two points.  
      
-     ### Refinement of COrientationFunctor
+     # Refinement of COrientationFunctor
 
-     ### Associated types
+     # Associated types
 
-     ### Notation
+     # Notation
      - \e X : A type that is a model of COrientationFunctor2
      - \e x : object of type X
      - \e a , \e b : objects of type Point
 
-     ### Valid expressions and semantics
+     # Valid expressions and semantics
 
      | Name           | Expression  | Type requirements  | Return type | Precondition | Semantics   | Post condition | Complexity |
      |----------------|-------------|--------------------|-------------|--------------|-------------|----------------|------------|
      | initialization | x.init(a,b) | a and b are points |             |              |             |                | constant   |
 
-     ### Models
+     # Models
   
      InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 

@@ -60,7 +60,7 @@ namespace DGtal
    * 
    * <p> Refinement of CConstSinglePassRange
    *
-   * <p> Associated types :
+   * <p> Associated types
    * - Domain : the type itself of the CDomain model.
    * - Space : the embedding digital space.
    * - Point : the point type of the space
@@ -116,12 +116,12 @@ namespace DGtal
    * </tr>
    * </table>
    *
-   * <p> Invariants###
+   * <p> Invariants#
    *
-   * <p> Models###
+   * <p> Models#
    * HyperRectDomain, DigitalSetDomain 
    *
-   * <p> Notes###
+   * <p> Notes#
    *
    * @todo Complete domain checking.
    */

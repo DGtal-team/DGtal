@@ -66,27 +66,27 @@ namespace DGtal
      smaller than the one of \f$ Q \f$ or its euclidean norm is shorter if \f$ O, P, Q \f$ are
      aligned. Note that it returns 'false' if \f$ P = Q \f$.
 
-     ### Refinement of default constructible, copy constructible, assignable
+     # Refinement of default constructible, copy constructible, assignable
 
-     ### Associated types :
+     # Associated types
      - Point : type of points
 
-     ### Notation
+     # Notation
      - \e X : A type that is a model of CPolarPointComparator2D
      - \e x : object of type X
      - \e P : type of points
      - \e p, \e p1, \e p2 : objects type P
 
-     ### Definitions
+     # Definitions
 
-     ### Valid expressions and semantics
+     # Valid expressions and semantics
 
      | Name                | Expression   | Type requirements    | Return type | Precondition | Semantics                                             | Post condition | Complexity      |
      |---------------------+--------------+----------------------+-------------+--------------+-------------------------------------------------------+----------------+-----------------|
      | pole setter         | x.setPole(p) | p is of type P       |             |              | the pole is set to p                                  |                | O(1)            |
      | comparison function | x(p1, p2)    | p1, p2 are of type P | bool        |              | tells whether p1 is located strictly before p2 or not |                | model-dependant |
 
-     ### Models
+     # Models
 
      PolarPointComparator2DBy2x2DetComputer.
 

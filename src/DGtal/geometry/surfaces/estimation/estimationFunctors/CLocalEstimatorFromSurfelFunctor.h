@@ -59,22 +59,22 @@ Description of \b concept '\b CLocalEstimatorFromSurfelFunctor' <p>
 which can be used to define local estimator using the adapter
 LocalEstimatorFromSurfelFunctorAdapter.
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
 
  - @e Surfel: a type of Surfel
  - @e Embedder: a model of CSCellEmbedder
  - @e Quantity: a return type for the estimator (model of CQuantity)
 
-### Notation
+# Notation
  - \e X : A type that is a model of CLocalEstimatorFromSurfelFunctor
  - \e x, \e y : object of type X
  - \e aSurfel : object of type @e Surfel
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -83,9 +83,9 @@ LocalEstimatorFromSurfelFunctorAdapter.
 | evaluate the estimator      | v = x.eval()  | |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
 | reset       |  x.reset()  |  |  void  |              | reset the estimator  |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
   functors::DummyEstimatorFromSurfels,
   functors::MongeJetFittingGaussianCurvatureEstimator (if WITH_CGAL),
@@ -97,7 +97,7 @@ LocalEstimatorFromSurfelFunctorAdapter.
   functors::TensorVotingFeatureExtraction,
   functors::SphereFittingEstimator (if WITH_PATATE)
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CLocalEstimatorFromSurfelFunctor.
  */

@@ -59,30 +59,30 @@ Description of \b concept '\b CLinearAlgebra' <p>
 Check right multiplication between matrix and vector and internal matrix multiplication.
 Matrix and vector scalar types should be the same.
 
-### Refinement of
+# Refinement of
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c Vector : A type that is a model of CVector
  - \c Matrix : A type that is a model of CMatrix
  - \e x, \e y : object of type \c Vector
  - \e a, \e b, \e c : object of type \c Matrix
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Matrix vector right multiplication      | x = a * y           |                   | \c Vector              |              |           |                |            |
 | Matrix matrix multiplication      | c = a * b           |                   | \c Matrix              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
-### Notes
+# Notes
 @todo There should be two types of vector: input vector type and output vector type.
 @todo This works fine for dynamic vector spaces, but not so much for static sized vectors and matrices.
 

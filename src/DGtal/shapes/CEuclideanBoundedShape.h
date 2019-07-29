@@ -62,7 +62,7 @@ namespace DGtal
    * 
    * <p> Refinement of 
    *
-   * <p> Associated types :
+   * <p> Associated types
    *   - RealPoint: type for real points (to characterize upper/lower bounds).
    *
    * <p> Notation
@@ -83,14 +83,14 @@ namespace DGtal
    | Get Upper bound | \e getUpperBound()|  |  RealPoint     |            |   compute and return the upper bound of the shape bounding box   | | |
    
     *
-   * <p> Invariants###
+   * <p> Invariants#
    *
-   * <p> Models###
+   * <p> Models#
    * 
    *   Implicit and Parametric shapes of the shape factory.
    *
    *
-   * <p> Notes###
+   * <p> Notes#
    */
   template <typename TShape>
   struct CEuclideanBoundedShape
