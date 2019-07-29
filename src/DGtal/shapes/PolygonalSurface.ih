@@ -41,9 +41,9 @@
 template <typename TPoint>
 inline
 DGtal::PolygonalSurface<TPoint>::PolygonalSurface
-( Clone<HalfEdgeDataStructure> heds,
+( Clone<HalfEdgeDataStructure> aHeds,
   Clone<PositionsStorage>      pos )
-  : myHEDS( heds ), myPositions( pos )
+  : myHEDS( aHeds ), myPositions( pos )
 {
   isHEDSValid = ( myPositions.size() == myHEDS.nbVertices() );
 }

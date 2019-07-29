@@ -933,11 +933,11 @@ namespace DGtal
       myEdgeHalfEdges[ ev14 ] = iext2n;
       // (4) myArc2Index only if asked
       if ( update_arc2index ) {
-	for ( int j = 0; j < outer_v.size(); ++j ) {
+	for ( std::size_t j = 0; j < outer_v.size(); ++j ) {
 	  myArc2Index.erase( Arc( v2, outer_v[ j ] ) );
 	  myArc2Index.erase( Arc( outer_v[ j ], v2 ) );
 	}
-	for ( int j = 1; j < ( outer_v.size() - 2 ); ++j ) {
+	for ( std::size_t j = 1; j < ( outer_v.size() - 2 ); ++j ) {
 	  myArc2Index[ Arc( v1, outer_v[ j ] ) ] = inner_he[ j ];
 	  myArc2Index[ Arc( outer_v[ j ], v1 ) ] = outer_he[ j ];
 	} 
@@ -991,7 +991,6 @@ namespace DGtal
       const VertexIndex vj = nbVertices() - 1;
       if ( vi != vj ) {
 	const Index        j = myVertexHalfEdges[ vj ];
-	const HalfEdge&  hej = halfEdge( j );
 	Index              k = j;
 	// Turns around vertex vj to modify toVertex fields.
 	do {
