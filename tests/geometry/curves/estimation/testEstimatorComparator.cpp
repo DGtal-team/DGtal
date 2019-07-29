@@ -180,7 +180,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       ok += (nb == nbok); 
 
      }    
-    catch ( InputException e )
+    catch ( InputException& e )
       {
   std::cerr << "[testCompareEstimator]"
       << " error in finding a bel." << std::endl;

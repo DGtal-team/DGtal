@@ -47,6 +47,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 //! [include]
 #include "DGtal/images/RigidTransformation3D.h"
 //! [include]

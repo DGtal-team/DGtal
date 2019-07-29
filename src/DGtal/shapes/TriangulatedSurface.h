@@ -245,14 +245,14 @@ namespace DGtal
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
-    /// @return (setter) a reference to the underlying topological
-    /// structure (an half-edge data structure).
+    /// @return (setter) a reference to the topological structure of the
+    /// triangulated surface (an half-edge data structure).
     HalfEdgeDataStructure& heds() { return myHEDS; }
     
-    /// @return (setter) a const-reference to the underlying topological
-    /// structure (an half-edge data structure).
+    /// @return (getter) a const reference to the topological structure of the
+    /// triangulated surface (an half-edge data structure).
     const HalfEdgeDataStructure& heds() const { return myHEDS; }
-    
+
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.

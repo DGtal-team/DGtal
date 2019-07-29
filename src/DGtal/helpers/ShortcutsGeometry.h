@@ -40,6 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
@@ -461,7 +462,7 @@ namespace DGtal
           int    verbose = params[ "verbose"  ].as<int>();
           Scalar       t = params[ "t-ring"   ].as<double>();
           typedef typename TAnyDigitalSurface::DigitalSurfaceContainer  SurfaceContainer;
-          typedef ExactPredicateLpSeparableMetric<Space,2>              Metric;
+          typedef LpMetric<Space>                                       Metric;
           typedef functors::HatFunction<Scalar>                         Functor;
           typedef functors::ElementaryConvolutionNormalVectorEstimator
             < Surfel, CanonicSCellEmbedder<KSpace> >                    SurfelFunctor;
@@ -471,7 +472,7 @@ namespace DGtal
             trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
           const Functor fct( 1.0, t );
           const KSpace &  K = surface->container().space();
-          Metric    aMetric;
+          Metric    aMetric( 2.0 );
           CanonicSCellEmbedder<KSpace> canonic_embedder( K );
           std::vector< RealVector >    n_estimations;
           SurfelFunctor                surfelFct( canonic_embedder, 1.0 );
@@ -545,9 +546,9 @@ namespace DGtal
               typedef functors::HatPointFunction<Point,Scalar>             KernelFunction;
               typedef VoronoiCovarianceMeasureOnDigitalSurface
                 < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalVFunctor;
               typedef VCMDigitalSurfaceLocalEstimator
-                < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+                < SurfaceContainer, Metric, KernelFunction, NormalVFunctor> VCMNormalEstimator;
               KernelFunction chi_r( 1.0, r );
               VCMNormalEstimator estimator;
               estimator.attach( *surface );
@@ -561,9 +562,9 @@ namespace DGtal
               typedef functors::BallConstantPointFunction<Point,Scalar>    KernelFunction;
               typedef VoronoiCovarianceMeasureOnDigitalSurface
                 < SurfaceContainer, Metric, KernelFunction >               VCMOnSurface;
-              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalFunctor;
+              typedef functors::VCMNormalVectorFunctor<VCMOnSurface>       NormalVFunctor;
               typedef VCMDigitalSurfaceLocalEstimator
-                < SurfaceContainer, Metric, KernelFunction, NormalFunctor> VCMNormalEstimator;
+                < SurfaceContainer, Metric, KernelFunction, NormalVFunctor> VCMNormalEstimator;
               KernelFunction chi_r( 1.0, r );
               VCMNormalEstimator estimator;
               estimator.attach( *surface );
@@ -595,6 +596,10 @@ namespace DGtal
       ///
       /// @return the vector containing the estimated normals, in the
       /// same order as \a surfels.
+      ///
+      /// @note Be careful, normals are reoriented with respect to
+      /// Trivial normals. If you wish a more robust orientation, use
+      /// getCTrivialNormalVectors.
       ///
       /// @note It is better to have surfels in a specific order, as
       /// given for instance by a depth-first traversal (@see getSurfelRange)
@@ -632,6 +637,10 @@ namespace DGtal
       /// @return the vector containing the estimated normals, in the
       /// same order as \a surfels.
       ///
+      /// @note Be careful, normals are reoriented with respect to
+      /// Trivial normals. If you wish a more robust orientation, use
+      /// getCTrivialNormalVectors.
+      ///
       /// @note It is better to have surfels in a specific order, as
       /// given for instance by a depth-first traversal (@see getSurfelRange)
       static RealVectors
@@ -663,6 +672,10 @@ namespace DGtal
       ///
       /// @return the vector containing the estimated normals, in the
       /// same order as \a surfels.
+      ///
+      /// @note Be careful, normals are reoriented with respect to
+      /// Trivial normals. If you wish a more robust orientation, use
+      /// getCTrivialNormalVectors.
       ///
       /// @note It is better to have surfels in a specific order, as
       /// given for instance by a depth-first traversal (@see getSurfelRange)

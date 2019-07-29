@@ -176,8 +176,30 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getReverse() const
   return Reverse();
 }
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const
+{
+  char test = 0;
+  if ( myXYalgo.isInDSS ( myProjXY ( point ) ) ) test++;
+  if ( myXZalgo.isInDSS ( myProjXZ ( point ) ) ) test++;
+  if ( myYZalgo.isInDSS ( myProjYZ ( point ) ) ) test++;
+  return test >= 2;
+}
 
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const
+{
+  char test = 0;
+  if ( myXYalgo.isInDSS ( myProjXY ( *it ) ) ) test++;
+  if ( myXZalgo.isInDSS ( myProjXZ ( *it ) ) ) test++;
+  if ( myYZalgo.isInDSS ( myProjYZ ( *it ) ) ) test++;
+  return test >= 2;
+}
 
 
 /**
@@ -269,9 +291,7 @@ DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableFront
   //projection on yz-plane
   bool YZflag = myYZalgo.isExtendableFront();
 
-  if ( (XYflag)&&(XZflag)&&(YZflag) )
-    return true;
-  else return false;
+  return (XYflag && XZflag && YZflag);
 }
 
 
