@@ -125,7 +125,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( ba.size() == 4 );
     }
     THEN( "The face along (1,2) is a triangle (0,1,2)" ) {
-      ArcT  a12      = trimesh.arc( 1, 2 );
+      ArcT  a12     = trimesh.arc( 1, 2 );
       Face f        = trimesh.faceAroundArc( a12 );
       ArcRange    A = trimesh.arcsAroundFace( f );
       VertexRange T = trimesh.verticesAroundFace( f );
@@ -140,7 +140,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
       REQUIRE( T[ 2 ] == 2 );
     }
     THEN( "The face along (2,1) is a triangle (2,1,3)" ) {
-      ArcT  a21      = trimesh.arc( 2, 1 );
+      ArcT  a21     = trimesh.arc( 2, 1 );
       Face f        = trimesh.faceAroundArc( a21 );
       VertexRange T = trimesh.verticesAroundFace( f );
       REQUIRE( T.size() == 3 );
@@ -188,8 +188,8 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > flip tests", "[trisurf][flip]" )
     auto nbe = trimesh.nbEdges();
     auto nbf = trimesh.nbFaces();
     int nbfl = 0;
-    int  afl = 0;
-    for ( int a = 0; a < trimesh.nbArcs(); a++ )
+    ArcT  afl = 0;
+    for ( ArcT a = 0; a < trimesh.nbArcs(); a++ )
       if ( trimesh.isFlippable( a ) ) {
 	nbfl++;
 	afl = a;
@@ -204,7 +204,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > flip tests", "[trisurf][flip]" )
       REQUIRE( trimesh.nbFaces() == nbf ); 
     }
     THEN( "Edge (1,2) has 4 vertices around, in order (2,0,1,3)." ) {
-      VertexRange V = trimesh.verticesAroundArc( trimesh.arc( 1, 2 ) );
+      VertexRange V = trimesh.verticesOfFacesAroundArc( trimesh.arc( 1, 2 ) );
       int expected_V [] = { 2, 0, 1, 3};
       REQUIRE( V.size() == 4 );
       bool V_ok = std::equal( V.begin(), V.end(), expected_V );
