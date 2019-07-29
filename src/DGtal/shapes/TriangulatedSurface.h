@@ -62,7 +62,8 @@ namespace DGtal
    * surface, you may use property maps (see
    * `TriangulatedSurface::makeVertexMap`).
    *
-   * For now, the user must add vertices and triangles, and when
+   * Except for a few operations, this data structure is rather
+   * static. The user must add vertices and triangles, and when
    * finished, call 'build()'.
    *
    * Model of CUndirectedSimpleGraph: the vertices and edges of the
@@ -552,11 +553,17 @@ namespace DGtal
 
     /**
        @param a any arc.
-       @return either the four vertices of the two triangles bordering \a a, or the three vertices if this is an edge on the boundary.
+
+       @return either the four vertices of the two triangles bordering
+       \a a, or the three vertices if this is an edge on the boundary.
+
        @note O(1) operation
-       @note Order is, if arc a is (s,t), and a belongs to triangle (s,t,u) and opposite arc belongs to triangle (t,s,v): (t,u,s,v), (t,u,s), (t,s,v) 
+
+       @note Order is, if arc a is (s,t), and a belongs to triangle
+       (s,t,u) and opposite arc belongs to triangle (t,s,v):
+       (t,u,s,v), (t,u,s), (t,s,v)
     */
-    VertexRange verticesAroundArc( const Arc a ) const;
+    VertexRange verticesOfFacesAroundArc( const Arc a ) const;
       
     // ----------------------- Other services ---------------------------------
   public:
@@ -567,6 +574,8 @@ namespace DGtal
     ///
     /// @param a any arc.
     /// @return 'true' if the edge containing \a a is topologically flippable.
+    ///
+    /// @note Time complexity is O(1).
     bool isFlippable( const Arc a ) const;
 
     /// Flip the edge associated to arc \a a.
@@ -578,6 +587,8 @@ namespace DGtal
     ///
     /// @post After flip the arc \a a corresponding to the flipped
     /// edge (if you reflip it you get your former triangulation).
+    ///
+    /// @note Time complexity is O(1).
     void flip( const Arc a );
 
     /// Splits the edge specified by the arc \a a. The two faces
@@ -590,17 +601,21 @@ namespace DGtal
     ///
     /// @pre the edge must be flippable, `isFlippable( a ) == true`
     /// @see isFlippable
+    ///
+    /// @note Time complexity is O(1).
     Vertex split( const Arc a, const Point& data );
 
     /// An edge is (topologically) mergeable iff: (1) it is bordered
-    /// by two triangles (for now), (2) there is no boundary vertex in
-    /// the two triangles bordering the edge (for now).
+    /// by two triangles, (2) there is no boundary vertex in
+    /// the two triangles bordering the edge.
     ///
     /// @param a any arc.
     /// @return 'true' if the edge containing \a a is topologically mergeable.
+    ///
+    /// @note Time complexity is O(1).
     bool isMergeable( const Arc a ) const;
 
-    /// Merges the edge specified by the half-edge \a i.
+    /// Merges the edge specified by the arc \a a.
     ///
     /// @param a any valid arc.
     /// @param data the position for the merged vertex.
@@ -608,8 +623,10 @@ namespace DGtal
     /// @return the index of the merged vertex (which is the tail of
     /// the arc \a a)..
     ///
-    /// @pre the edge must be mergeable, `isMergeable( i ) == true`
+    /// @pre the edge must be mergeable, `isMergeable( a ) == true`
     /// @see isMergeable
+    ///
+    /// @note Time complexity is O(1).
     /// @todo We could also merge boundary triangles.
     ///
     /// @note All the underlying data-structure is renumbered so that
