@@ -83,7 +83,7 @@ DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
   RealPoint2D p( pp-myCenter );
   double angle;
 
-  if ( abs(p[0]) < abs(p[1]) )
+  if ( fabs(p[0]) < fabs(p[1]) )
     return 0.;
   if ( p[0] == 0. )
     angle = 0.;
