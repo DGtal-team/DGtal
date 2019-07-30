@@ -47,6 +47,9 @@ typedef HalfEdgeDataStructure::PolygonalFace    PolygonalFace;
 typedef HalfEdgeDataStructure::Edge             Edge;
 typedef HalfEdgeDataStructure::Arc              ArcT; //Arc already defined in wingdi.h
 typedef HalfEdgeDataStructure::VertexIndexRange VertexIndexRange;
+typedef HalfEdgeDataStructure::Size Size;
+
+
 
 HalfEdgeDataStructure makeTwoTriangles()
 {
@@ -470,7 +473,7 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     HalfEdgeDataStructure mesh = makeTwoTriangles();
     THEN( "Only one edge is flippable" ) {
       int nbflippable = 0;
-      for ( int e = 0; e < mesh.nbEdges(); e++ )
+      for ( Size e = 0; e < mesh.nbEdges(); e++ )
         {
           if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
             nbflippable++;
@@ -482,7 +485,7 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     HalfEdgeDataStructure mesh = makePyramid();
     THEN( "Only four edges are flippable" ) {
       int nbflippable = 0;
-      for ( int e = 0; e < mesh.nbEdges(); e++ )
+      for ( Size e = 0; e < mesh.nbEdges(); e++ )
         {
           if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
             nbflippable++;
@@ -494,7 +497,7 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     HalfEdgeDataStructure mesh = makeTetrahedron();
     THEN( "All edges are flippable" ) {
       int nbflippable = 0;
-      for ( int e = 0; e < mesh.nbEdges(); e++ )
+      for ( Size e = 0; e < mesh.nbEdges(); e++ )
         {
           if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
             nbflippable++;
@@ -584,7 +587,8 @@ SCENARIO( "HalfEdgeDataStructure splits", "[halfedge][splits]" ){
     HalfEdgeDataStructure mesh = makeTwoTriangles();
     auto he  = mesh.findHalfEdgeIndexFromArc( {1,2} );
     REQUIRE( mesh.isFlippable( he ) );
-    auto vtx = mesh.split( he );
+    //auto vtx =
+    mesh.split( he );
     THEN( "After split, mesh is valid" ) {
       REQUIRE( mesh.isValid() );
     }
