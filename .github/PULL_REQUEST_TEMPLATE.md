@@ -1,5 +1,3 @@
-*Thanks a lot for contributing to DGtal, before submitting your PR, please fill up the description and make sure that all checkboxes are checked. Please remove these lines in your PR.*
-
 # PR Description
 
 *your description here*
