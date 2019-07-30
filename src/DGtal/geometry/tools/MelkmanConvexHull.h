@@ -128,6 +128,13 @@ namespace DGtal
     MelkmanConvexHull( Alias<Functor> aFunctor); 
     MelkmanConvexHull(); 
     
+    /**
+     * Default copy constructor.
+     *
+     * @param mch the object to copy.
+     */
+    MelkmanConvexHull( const MelkmanConvexHull & mch ) = default;
+
     // ----------------------- Interface --------------------------------------
   public:
 

@@ -296,9 +296,15 @@ namespace DGtal
               return i - other.i;
             }
 
+          /**
+           * Default copy constructor.
+	   * @param other the object to copy.
+           */
+          ConstPointIterator( const ConstPointIterator & other) = default;
 
           /**
-           * Copy operator
+           * Assignment operator.
+	   * @param other the object to copy.
            */
           ConstPointIterator& operator=( const ConstPointIterator & other)
             {
