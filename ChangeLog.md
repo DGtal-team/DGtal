@@ -20,10 +20,16 @@
     (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
+- *Topology*
+  - Provides partial flip, split and merge operations for half-edge data structures
+    and triangulated surfaces (Jacques-Olivier Lachaud,
+    [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
+
 - *Shapes package*
   - Fix Lemniscate definition following Bernoulli's definition
    (Adrien Krähenbühl,
    [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
+
 
 ## Bug Fixes
 
