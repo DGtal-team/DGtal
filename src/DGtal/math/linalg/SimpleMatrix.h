@@ -120,6 +120,13 @@ namespace DGtal
      */
     SimpleMatrix ( const Self & other );
 
+    /**
+     * Default assignment operator.
+     *
+     * @param other the object to copy.
+     */
+    SimpleMatrix &operator=( const Self & other ) = default;
+
     // ----------------------- Standard services ------------------------------
 
     /**
