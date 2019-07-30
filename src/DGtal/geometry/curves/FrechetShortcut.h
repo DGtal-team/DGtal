@@ -316,7 +316,7 @@ namespace DGtal
        Test if the cone is empty
        @return true if empty, false otherwise
     */
-    bool isEmpty();
+    bool isEmpty() const;
 
     /**
        Intersect two cones: modifies 'this'
