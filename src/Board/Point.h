@@ -47,7 +47,7 @@ struct Point {
    *
    * @param other point to copy.
    */
-  Point &operator=( const Point & ) = default;
+  Point &operator=( const Point & other ) = default;
 
   /** 
    * Point constructor.
