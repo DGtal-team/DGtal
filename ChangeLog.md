@@ -33,6 +33,10 @@
 
 ## Bug Fixes
 
+- *Configuration/General*
+  - Fix compilation error/warnings with gcc 9.1.1 and clang 9.0
+  (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
+
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
