@@ -61,18 +61,18 @@ Description of \b concept '\b CCommutativeRing' <p>
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring.
 
- ### Refinement of 
+ # Refinement of 
   - CSignedNumber<T>
 
- ### Associated types :
+ # Associated types
 
- ### Notation
+ # Notation
      - \e X : A type that is a model of CCommutativeRing
      - \e x, \e y  : Object of type @e X
 
- ### Definitions
+ # Definitions
 
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 
 Name                                 | Expression |  Type requirements | Return type| Precondition | Semantics                             | Postcondition | Complexity|
@@ -87,12 +87,12 @@ Addition                             | @e x + @e y|                    | @a X   
 Opposite operator                    | - @e x     |                    | @a X       |              | opposite of a number                 |               |           |
 
 
- ### Invariants###
+ # Invariants#
 
- ### Models###
+ # Models#
        DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
 
- ### Notes###
+ # Notes#
 
 @tparam T the type that should be a model of commutative ring.
    */

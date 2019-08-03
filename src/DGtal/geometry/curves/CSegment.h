@@ -58,17 +58,17 @@ namespace DGtal
        @brief Aim: Defines the concept describing a segment,
        ie. a valid and not empty range.
 
-       ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
+       # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
 
-       ### Associated types :
+       # Associated types
        - ConstIterator, the type used to iterate over the
        elements of the segment, a model of bidirectional iterator
 
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CSegment
        - \a x, \a y : object of type X
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -77,13 +77,13 @@ namespace DGtal
        |end method     | x.end()    |                     | ConstIterator|                 |past-the-end value | | O(1) |
      
 
-       ### Invariants###
+       # Invariants#
        The range [x.begin(),x.end()) is valid (x.end() is reachable from x.begin())
        and not empty (x.begin() != x.end()).
 
-       ### Models###
+       # Models#
 
-       ### Notes###
+       # Notes#
 
        A class of segments @f$ \Sigma_P @f$ is a set of segments 
        such that for each segment of the set, 
