@@ -56,16 +56,16 @@ Description of \b concept '\b CEuclideanRing' <p>
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring with a division operator. 
      
- ### Refinement of CCommutativeRing
- ### Associated types :
+ # Refinement of CCommutativeRing
+ # Associated types
     
- ### Notation
+ # Notation
      - \a X : A type that is a model of CEuclideanRing
      - \a x, \a y  : Object of type Integer
     
- ### Definitions
+ # Definitions
     
- ### Valid expressions and semantics
+ # Valid expressions and semantics
 
 
 
@@ -74,12 +74,12 @@ Description of \b concept '\b CEuclideanRing' <p>
 | Division|   \a x / \a y   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
 
 
- ### Invariants###
+ # Invariants#
     
- ### Models###
+ # Models#
 DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
- ### Notes###
+ # Notes#
    
 @tparam T the type that should be a model of commutative ring.
    */

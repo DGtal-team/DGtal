@@ -64,32 +64,32 @@ value.
 It is used for instance when computing an histogram over samples of a
 continuous random variable.
 
-### Refinement of boost::CopyConstructible
+# Refinement of boost::CopyConstructible
 
-### Associated types :
+# Associated types
 - \c Quantity: the type of domain values (i.e. continuous values), a model of CEuclideanRing.
 - \c Bin: should be some unsigned integral type and satisfy boost::is_integral and boost::is_unsigned.
 
-### Notation
+# Notation
  - \c X : A type that is a model of CBinner
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | construction | \c X( \e m, \e M, \e n ) | \e m and \e M are \c Quantity, \e n is a \c Bin | | | | Constructs a binner with \e n bins and range from \e m to \e M | | | 
 | apply | \e x( \e q ) | \e q is a \c Quantity | \c Bin  |              | returns the bin in which fall \e q | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - RegularBinner
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CBinner.
  */

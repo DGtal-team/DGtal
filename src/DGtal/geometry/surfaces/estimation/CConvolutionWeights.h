@@ -61,32 +61,32 @@ namespace DGtal
 
          @warning deprecated since 0.7
 
-         ### Refinement of CopyConstructible, Assignable
+         # Refinement of CopyConstructible, Assignable
 
-         ### Associated types :
+         # Associated types
 
          - Distance: type to represent topological distances.
 
-         ### Notation
+         # Notation
          - \a X : A type that is a model of CConvolutionWeights
          - \a x, \a y : object of type X
 
-         ### Definitions
+         # Definitions
 
-         ### Valid expressions and
+         # Valid expressions 
 
 
          | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
          |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
          | Apply function|x(v)        |v of type const Vector&| double    |                  |the value of the kernel at @e v | | O(1) |
 
-         ### Invariants###
+         # Invariants
 
-         ### Models###
+         # Models
 
          ConstantConvolutionWeights, GaussianConvolutionWeights
 
-         ### Notes###
+         # Notes
 
          @tparam T the type that should be a model of CConvolutionWeights.
       */

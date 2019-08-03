@@ -58,19 +58,19 @@ namespace DGtal {
      
   Associates a boolean to surfels.
 
-  ### Refinement of 
+  # Refinement of 
   CPredicate< T, T::Surfel >.
     
-  ### Associated types:
+  # Associated types:
   - Surfel: specifies the type for an element of the domain (inner
   type).
 
   @see CPredicate
 
-  ### Models###
+  # Models#
   BoundaryPredicate, FrontierPredicate, SurfelSetPredicate
 
-  ### Notes###
+  # Notes#
   */
   template <typename T>
   struct CSurfelPredicate : CPredicate< T, typename T::Surfel> 

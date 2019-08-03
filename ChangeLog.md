@@ -9,14 +9,32 @@
 
 ## Changes
 
+- *DEC*
+  - Add discrete calculus model of Ambrosio-Tortorelli functional in
+    order to make piecewise-smooth approximations of scalar or vector
+    fields onto 2D domains like 2D images or digital surfaces
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+  - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
     (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
+
+- *Topology*
+  - Provides partial flip, split and merge operations for half-edge data structures
+    and triangulated surfaces (Jacques-Olivier Lachaud,
+    [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
+
+- *Shapes package*
+  - Fix Lemniscate definition following Bernoulli's definition
+   (Adrien Krähenbühl,
+   [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
 
 
 ## Bug Fixes
@@ -33,15 +51,24 @@
     English/French decimal point inconsistency between `atof` and
     `boost::program_options` (Jacques-Olivier Lachaud,
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
+  - Fix bug in Shortcuts::saveVectorFieldOBJ
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
   - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
 
+- *Shapes package*
+  - Fix bug in Astroid parameter() method : orientation correction
+   (Adrien Krähenbühl,
+   [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+
 - *doc*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
+  - Fixing the `doxyfiles` to have the table of contents of module pages (David
+    Coeurjolly [#1424](https://github.com/DGtal-team/DGtal/pull/1424))
 
 
 # DGtal 1.0

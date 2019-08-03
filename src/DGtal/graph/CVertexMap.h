@@ -62,20 +62,20 @@ namespace DGtal {
   This concept is associated with concepts related to graph  in
   DGtal (CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph). Associates a value to each vertex of a graph.
   
-  ### Associated types :
+  # Associated types
   - Vertex : specifies the type for an element of the domain (inner type).
   - Value : specifies the type for a value (inner type).
    
-  ###  Notation
+  #  Notation
   - \a X : A type that is a model of CVertexMap
   - \a x : Object of type X
   - \a v : Object of type Vertex
   - \a val : Object of type Value
    
-  ### Definitions
+  # Definitions
    
    
-  ###  Valid expressions and
+  #  Valid expressions and
    
   | Name      | Expression              | Type requirements                           | Return type | Precondition | Semantics                                 | Post condition | Complexity |
   |-----------|-------------------------|---------------------------------------------|-------------|--------------|-------------------------------------------|----------------|------------|
@@ -83,14 +83,14 @@ namespace DGtal {
   | Accessor  | x(vertex)               | vertex of type Vertex                       | Value       |              | Access to the value at vertex             |                |            |
    
    
-  ###  Invariants
+  #  Invariants
      
-  ###  Models
+  #  Models
   - ImageContainerBySTLVector, ImageContainerBySTLMap,
   ImageContainerByITKImage, ImageContainerByHashTree
   - Any adapted type from STLMapToVertexMapAdapter  
    
-  ### Notes###
+  # Notes#
   */
   template <typename T>
   struct CVertexMap:

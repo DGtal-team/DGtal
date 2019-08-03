@@ -60,9 +60,9 @@ namespace DGtal
        segment computer,  ie. a model of concepts::CSegment that can extend and retract itself
        in either direction.
 
-       ### Refinement of concepts::CBidirectionalSegmentComputer and concepts::CDynamicSegmentComputer
+       # Refinement of concepts::CBidirectionalSegmentComputer and concepts::CDynamicSegmentComputer
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -70,11 +70,11 @@ namespace DGtal
        | Backward retraction | x.retractFront() |      |bool         |                  | returns 'true' if --x.end() != x.begin() (and decrements the end iterator), 'false' otherwise | | |
 
 
-       ### Models###
+       # Models#
 
        ArithmeticalDSSComputer, OneBalancedWordComputer
 
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
     */

@@ -59,21 +59,21 @@ namespace DGtal
        @ingroup Concepts
        @brief Aim: refined concept of  single pass range with a begin() method from a point.
 
-       ### Refinement of CBidirectionalRange
+       # Refinement of CBidirectionalRange
 
-       ### Associated types :
+       # Associated types
 
        - ReverseIterator
 
-       ### Notation
+       # Notation
        - X : A type that is a model of CBidirectionalRangeFromPoint
        - x,  y : object of type X
        - Point: A type of Point
 
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and
+       # Valid expressions and
 
 
 
@@ -81,13 +81,13 @@ namespace DGtal
        |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
        | reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ReverseIterator |              | Returns a reverse iterator on the range at point \a aPoint |                |            |
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
        ImageContainerBySTLVector::Range
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CBidirectionalRangeFromPoint.
     */
