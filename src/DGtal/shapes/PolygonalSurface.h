@@ -230,13 +230,13 @@ namespace DGtal
     /**
      * Constructor from half-edge data structure and vector of positions.
      *
-     * @param heds any valid half-edge data structure (cloned).
+     * @param aHeds any valid half-edge data structure (cloned).
      *
      * @param pos any vector of point giving the positions of all
      * vertices (its size should match the number of vertices in \a
      * heds).
      */
-    PolygonalSurface( Clone<HalfEdgeDataStructure> heds,
+    PolygonalSurface( Clone<HalfEdgeDataStructure> aHeds,
 		      Clone<PositionsStorage>      pos );
 
     /// Clears everything.
@@ -267,9 +267,13 @@ namespace DGtal
     /// @return the corresponding index of the polygonal face.
     FaceIndex addPolygonalFace( const PolygonalFace& f );
 
-    /// @return a const reference to the half-edge data structure.
-    const HalfEdgeDataStructure& heds() const
-    { return myHEDS; }
+    /// @return (setter) a reference to the topological structure of the
+    /// polygonal surface (an half-edge data structure).
+    HalfEdgeDataStructure& heds() { return myHEDS; }
+    
+    /// @return (getter) a const reference to the topological structure of the
+    /// polygonal surface (an half-edge data structure).
+    const HalfEdgeDataStructure& heds() const { return myHEDS; }
     
     // ------------------------- standard services ------------------------------
   public:

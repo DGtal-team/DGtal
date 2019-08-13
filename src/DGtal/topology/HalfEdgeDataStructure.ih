@@ -122,10 +122,10 @@ build( const Size num_vertices,
       // Add the halfedge_t structures to the end of the list.
       const Index he0index = myHalfEdges.size();
       myHalfEdges.push_back( HalfEdge() );
-      HalfEdge& he0 = myHalfEdges.back();
       const Index he1index = myHalfEdges.size();
       myHalfEdges.push_back( HalfEdge() );
-      HalfEdge& he1 = myHalfEdges.back();
+      HalfEdge& he0 = myHalfEdges[ he0index ];
+      HalfEdge& he1 = myHalfEdges[ he1index ];
 
       // The face will be HALF_EDGE_INVALID_INDEX if it is a boundary half-edge.
       he0.face = arc2FaceIndex( de2fi, edge.v[0], edge.v[1] );
@@ -297,10 +297,10 @@ build( const Size                        num_vertices,
       // Add the halfedge_t structures to the end of the list.
       const Index he0index = myHalfEdges.size();
       myHalfEdges.push_back( HalfEdge() );
-      HalfEdge& he0 = myHalfEdges.back();
       const Index he1index = myHalfEdges.size();
       myHalfEdges.push_back( HalfEdge() );
-      HalfEdge& he1 = myHalfEdges.back();
+      HalfEdge& he0 = myHalfEdges[ he0index ];
+      HalfEdge& he1 = myHalfEdges[ he1index ];
 
       // The face will be HALF_EDGE_INVALID_INDEX if it is a boundary half-edge.
       he0.face = arc2FaceIndex( de2fi, edge.v[0], edge.v[1] );
@@ -447,17 +447,6 @@ DGtal::HalfEdgeDataStructure::selfDisplay ( std::ostream & out ) const
       << " #E=" << myEdgeHalfEdges.size()
       << " #F=" << myFaceHalfEdges.size()
       << "]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-inline
-bool
-DGtal::HalfEdgeDataStructure::isValid() const
-{
-  return true;
 }
 
 
