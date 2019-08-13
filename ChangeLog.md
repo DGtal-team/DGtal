@@ -63,6 +63,8 @@
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
   - Fixing the `doxyfiles` to have the table of contents of module pages (David
     Coeurjolly [#1424](https://github.com/DGtal-team/DGtal/pull/1424))
+  - Using SourceForge to download doxygen sources during Travis CI jobs.
+    (Roland Denis [#1424](https://github.com/DGtal-team/DGtal/pull/1434))
 
 
 # DGtal 1.0
