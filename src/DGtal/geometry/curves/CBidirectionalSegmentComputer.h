@@ -57,17 +57,17 @@ namespace DGtal
        @brief Aim: Defines the concept describing a bidirectional segment computer,  
        ie. a model of concepts::CSegment that can extend itself in the two possible directions. 
      
-       ### Refinement of CForwardSegmentComputer 
+       # Refinement of CForwardSegmentComputer 
     
-       ### Associated types : the same as concepts::CForwardSegmentComputer
+       # Associated types the same as concepts::CForwardSegmentComputer
   
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CBidirectionalSegmentComputer
        - \a x : object of type X
   
-       ### Definitions
+       # Definitions
     
-       ### Valid expressions and 
+       # Valid expressions and 
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -76,13 +76,13 @@ namespace DGtal
        | Extension      | x.extendBack()       |      |bool         |                  | check whether x can be extended to - -x.begin() or not, extend if true | | |
      
     
-       ### Invariants###
+       # Invariants#
     
-       ### Models###
+       # Models#
 
        StandardDSS6Computer, StabbingLineComputer, StabbingCircleComputer    
 
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CBidirectionalSegmentComputer.
     */

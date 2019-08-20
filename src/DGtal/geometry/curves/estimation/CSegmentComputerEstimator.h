@@ -60,36 +60,36 @@ namespace DGtal
        devoted to the estimation of a geometric quantiy along a segment 
        detected by a segment computer. 
 
-       ### Refinement of 
+       # Refinement of 
        - CCurveLocalGeometricEstimator
        - boost::CopyConstructible
        - boost::Assignable
 
-       ### Associated types :
+       # Associated types
        - SegmentComputer
 
-       ### Notation
+       # Notation
        - \e X : A type that is a model of CSegmentComputerEstimator
        - \e x : object of type X
        - \e x : object of type SegmentComputer
   
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name     | Expression          | Type requirements | Return type | Precondition | Semantics                       | Post condition | Complexity      |
        |----------|---------------------|-------------------|-------------|--------------|---------------------------------|----------------|-----------------|
        | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |                              
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
        TangentFromDSSEstimator, TangentAngleFromDSSEstimator, CurvatureFromDSSEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
 
        @see SegmentComputerEstimators
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CSegmentComputerEstimator.
     */

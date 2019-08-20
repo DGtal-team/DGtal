@@ -61,33 +61,33 @@ namespace DGtal
        refinements of CBackInsertable. They require more services than
        CBackInsertable, for instance read services or erase services.
 
-       ### Refinement of
+       # Refinement of
 
-       ### Associated types :
+       # Associated types
        - \e value_type: the type of object that can be inserted at the back.
 
-       ### Notation
+       # Notation
        - \e X : A type that is a model of CBackInsertable
        - \e x : object of type X
        - \e e : object of type value_type
 
-       ### Definitions
+       # Definitions
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
        |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
        | Add to back | \e x.push_back( \e e )|  |               |              | adds the element \e e at the end of object \e x | | |
 
-       ### Invariants
+       # Invariants
 
-       ### Models
+       # Models
 
        - Most standard linear containers: std::vector, std::list, std::deque
        - CPositiveIrreducibleFraction is a refinement of CBackInsertable
        - hence fractions: SternBrocot::Fraction, LighterSternBrocot::Fraction, LightSternBrocot::Fraction
 
-       ### Notes
+       # Notes
 
        @tparam T the type that should be a model of CBackInsertable.
     */

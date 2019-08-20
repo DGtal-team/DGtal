@@ -86,23 +86,23 @@ data representing the digital surface in common way.
 
 See @ref dgtal_digsurf_sec3_2
 
-### Refinement of boost::CopyConstructible
+# Refinement of boost::CopyConstructible
     
-### Associated types :
+# Associated types
 - KSpace: the type of cellular grid space in which lies the digital surface.
 - Surfel: the type of an oriented n-1-cell in this space.
 - SurfelConstIterator: the type for iterating over the of surfels of the digital surface, must be a model of boost_concepts::SinglePassIteratorConcept, boost_concepts::ReadableIteratorConcept
 - DigitalSurfaceTracker: the type for tracking surfels over the digital surface
 - Size: the integral type for counting elements.
 
-### Notation
+# Notation
 - \c X : A type that is a model of CDigitalSurfaceContainer
 - \c x : object of type X
 - \c s : object of type Surfel
     
-### Definitions
+# Definitions
     
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
@@ -115,12 +115,12 @@ See @ref dgtal_digsurf_sec3_2
 | number of surfels | \e x.nbSurfels()|            | \e Size     |                  | returns the number of surfels of this surface. | | |
 | empty container test | \e x.empty()|             | \e bool     |                  | returns \c true iff the digital surface contains no surfel. | | |
     
-### Invariants
+# Invariants
     
-### Models
+# Models
 - DigitalSetBoundary, SetOfSurfels, ImplicitDigitalSurface, LightImplicitDigitalSurface, ExplicitDigitalSurface, LightExplicitDigitalSurface
 
-### Notes
+# Notes
 @tparam T the type that should be a model of CDigitalSurfaceContainer.
    */
   template <typename T> 

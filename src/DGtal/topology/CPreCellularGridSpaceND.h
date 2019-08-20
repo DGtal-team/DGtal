@@ -86,12 +86,12 @@ The space size only depends on the given integer precision.
 We refer the reader to \ref moduleCellularTopology for further
 details.
 
-### Refinement of
+# Refinement of
 
 - boost::DefaultConstructible
 - boost::CopyConstructible
 
-### Associated types :
+# Associated types
 
 - \e Integer: the integral type for representing coordinates in the space (model of CInteger).
 - \e Space: the corresponding digital space (same dimension and same \e Integer type as this).
@@ -124,7 +124,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   }
 @endcode
 
-### Notation
+# Notation
 - \e X : A type that is a model of \e CPreCellularGridSpaceND
 - \e x : object of type \e X
 - \e k : object of type Dimension
@@ -136,7 +136,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 - \e v : object of type \e Vector
 - \e sign: object of type \e Sign
 
-### Definitions
+# Definitions
 
 - \b digital coordinates are the natural coordinates of the cells of
   maximal dimension in the cellular space. For instance, it represents
@@ -167,7 +167,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   of \e c or such that \e c is one of their faces.
 
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
 |---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
@@ -269,13 +269,13 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 | Indirect incident cell|\e x.sIndirectIncident(\e sc,\e k)| |\e SCell |              | return the signed cell that is the indirect incident cell to \e sc along axis \e k | | |
 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - KhalimskyPreSpaceND
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CPreCellularGridSpaceND.
  */

@@ -115,7 +115,7 @@ namespace DGtal
       /**
        * Constructor from a number N.  Will generate a partial mask with
        * @a aN directions (from Farey fractions). Weights are set to
-       * sattisfy the norm condition using the 3-4-mask wieghts. Hence,
+       * satisfy the norm condition using the 3-4-mask weights. Hence,
        * increasing @a aN does not improve the metric. This constructor
        * is just used to compute efficiency statistics when @a aN increases.
        *

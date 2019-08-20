@@ -162,6 +162,40 @@ It is worthy to note the following elements in this representation:
 - given an arc (i.e. a couple of vertices), you can get the
   corresponding half-edge in logarithmic time (stored as a map).
 
+
+\subsection HEM_sec1_4 Modifying operations: flip, split, merge
+
+Since 1.1, there is a limited support for classical flip, split and
+merge operations. For now, it is limited to triangulated half-edge
+date structures, i.e. a face is bordered by three half-edges. 
+
+- HalfEdgeDataStructure::isFlippable tells if some edge is flippable,
+  i.e. it is bordered by two valid triangles;
+- HalfEdgeDataStructure::flip flips the given edge if the edge is
+  flippable, so that the edge now connects the two other vertices of
+  the bordering two triangles;
+- HalfEdgeDataStructure::split splits the given edge if the edge is
+  flippable, i.e. creates a new vertex on this edge and two new
+  triangles;
+- HalfEdgeDataStructure::isMergeable tells if some edge is mergeable,
+  i.e. (1) it is bordered by two triangles, (2) there is no boundary
+  vertex in the two triangles bordering the edge;
+- HalfEdgeDataStructure::merge merges the given edge and the two
+  bordering triangles, leaving only one vertex and two edges, only if
+  the edge is mergeable.
+
+There is also a method HalfEdgeDataStructure::isValid that performs a
+lot of checks on the validity of the data structure.
+
+@note Methods HalfEdgeDataStructure::isFlippable and
+HalfEdgeDataStructure::isMergeable has \f$ O(1) \f$ time complexity. Methods
+HalfEdgeDataStructure::flip, HalfEdgeDataStructure::split and
+HalfEdgeDataStructure::merge have \f$ O(1) \f$ time complexity when
+optimization parameter `update_arc2index` is `false`, and \f$ O(\log
+n) \f$ time complexity otherwise, where \f$ n \f$ stands for the
+number of half-edges.
+
+
 \section HEM_sec2 A triangulated surface data structure
 
 A \b triangulated \b surface is a two-dimensional simplicial complex,
@@ -388,6 +422,38 @@ For visualization, you may also directly stream a Mesh into a Viewer3D.
   viewer << Viewer3D<>::updateDisplay;
   application.exec();
 \endcode
+
+
+\subsection HEM_sec2_8 Modifying operations: flip, split, merge
+
+Since 1.1, there is a limited support for classical flip, split and
+merge operations for triangulated surfaces. 
+
+- TriangulatedSurface::isFlippable tells if some edge is flippable,
+  i.e. it is bordered by two valid triangles;
+- TriangulatedSurface::flip flips the given edge if the edge is
+  flippable, so that the edge now connects the two other vertices of
+  the bordering two triangles;
+- TriangulatedSurface::split splits the given edge if the edge is
+  flippable, i.e. creates a new vertex on this edge and two new
+  triangles;
+- TriangulatedSurface::isMergeable tells if some edge is mergeable,
+  i.e. (1) it is bordered by two triangles, (2) there is no boundary
+  vertex in the two triangles bordering the edge;
+- TriangulatedSurface::merge merges the given edge and the two
+  bordering triangles, leaving only one vertex and two edges, only if
+  the edge is mergeable.
+
+
+@note These methods only checks that these operations are
+topologically valid. They do not check if the geometry of the
+resulting surface is valid, for instance that there is no
+self-intersections.
+
+@note Methods TriangulatedSurface::isFlippable,
+TriangulatedSurface::isMergeable, TriangulatedSurface::flip,
+TriangulatedSurface::split and TriangulatedSurface::merge have all \f$
+O(1) \f$ time complexity.
 
 
 \section HEM_sec3 A polygonal surface data structure
