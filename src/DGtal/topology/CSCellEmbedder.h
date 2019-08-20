@@ -59,37 +59,37 @@ Description of \b concept '\b CSCellEmbedder' <p>
 A cell embedder is a mapping from signed cells to Euclidean points.
 It adds inner types to functor.
 
-### Refinement of
+# Refinement of
 - CUnaryFunctor<T, T::SCell, T::RealPoint>
 
-### Associated types :
+# Associated types
 - \e KSpace: the cellular grid space
 - \e SCell: same as KSpace::SCell
 - \e RealPoint: the type of Euclidean point
 - \e Argument: type of the argument, same as KSpace::SCell
 - \e Value: type of value, same as RealPoint
 
-### Notation
+# Notation
  - \e X : A type that is a model of CSCellEmbedder
  - \e x : object of type X
  - \e p : object of type SCell
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 |Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \a x on argument \a p | | |
 |Khalimsky space |\e x.space())|              | const \e KSpace &     |              | return a reference to the the Kalimsky space | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - CanonicSCellEmbedder, CanonicDigitalSurfaceEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CSCellEmbedder.
 */

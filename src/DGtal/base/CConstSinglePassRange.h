@@ -60,32 +60,32 @@ namespace DGtal
      
        \tparam T the type that should be a model of CConstSinglePassRange.
 
-       ### Refinement of
+       # Refinement of
     
-       ### Associated types :
+       # Associated types
 
        - \e ConstIterator: the const iterator type, a model of const iterator
        concept (see boost_concepts::SinglePassIteratorConcept).
 
-       ### Notation
+       # Notation
        - \e T : A type that is a model of CConstSinglePassRange
        - \e x : object of type \e T
 
-       ### Valid expressions and semantics
+       # Valid expressions and semantics
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        | begin of range| \e x.begin()|                    | \e ConstIterator |             | returns a forward iterator on the beginning of the range | | |
        | end of range  | \e x.end()|                      | \e ConstIterator |             | returns a forward iterator after the end of the range | | |
     
-       ### Invariants
+       # Invariants
     
        - Valid range. For any Range x, [\e x.begin(), \e x.end()) is a
        valid range, that is, \e x.end() is reachable from \e x.begin()
        in a finite number of increments.
        - Completeness. An algorithm that iterates through the range [\e x.begin(), \e x.end()) will pass through every element of \e x.
 
-       ### Models
+       # Models
 
     */
     template <typename T>

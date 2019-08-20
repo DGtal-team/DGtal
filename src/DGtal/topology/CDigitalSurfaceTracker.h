@@ -55,29 +55,29 @@ namespace DGtal {
   @brief Aim:
   @todo Complete documentation
      
-  ### Refinement of 
+  # Refinement of 
   boost::CopyConstructible
     
-  ### Associated types :
+  # Associated types
     
-  ### Notation
+  # Notation
   - \a X : A type that is a model of CDigitalSurfaceTracker
   - \a x, \a y : object of type X
     
-  ### Definitions
+  # Definitions
     
-  ### Valid expressions and semantics
+  # Valid expressions and semantics
     
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   | | | | | | | | | 
      
-  ### Invariants
+  # Invariants
     
-  ### Models
+  # Models
   A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
 
-  ### Notes
+  # Notes
 
   @tparam T the type that should be a model of CDigitalSurfaceTracker.
   */

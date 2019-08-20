@@ -58,19 +58,19 @@ namespace DGtal
        @ingroup Concepts
        @brief Aim: refined concept of const bidirectional range with a begin() method from a point.
 
-       ###  Refinement of CConstBidirectionalRange
+       #  Refinement of CConstBidirectionalRange
 
-       ###  Associated types :
+       #  Associated types
 
-       ###  Notation
+       #  Notation
        - X : A type that is a model of CConstBidirectionalRangeFromPoint
        - x,  y : object of type X
        - Point: A type of Point
 
 
-       ###  Definitions
+       #  Definitions
 
-       ###  Valid expressions and semantics
+       #  Valid expressions and semantics
 
 
 
@@ -79,13 +79,13 @@ namespace DGtal
        | reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ConstIterator |    | Returns a const reverse iterator on the range first element | |  |
 
 
-       ###  Invariants
+       #  Invariants
 
-       ###  Models
+       #  Models
 
        ImageContainerBySTLVector::Range
 
-       ###  Notes
+       #  Notes
 
        @tparam T the type that should be a model of CConstBidirectionalRangeFromPoint.
     */
