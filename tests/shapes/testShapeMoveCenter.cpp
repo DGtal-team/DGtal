@@ -102,7 +102,7 @@ Flower createShape( const RealPoint& center, const RealPoint& radii )
 template<>
 Lemniscate createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Lemniscate( center, radii[0], radii[1] );
+  return Lemniscate( center, radii[0] );
 }
 
 template<>
