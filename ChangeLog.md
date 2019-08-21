@@ -21,7 +21,7 @@
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
 - *Geometry*
-  - Add const directives to some curve estimator on shapes.
+  - Add const directives to some curve estimators on shapes.
     (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
     
 - *Topology*
