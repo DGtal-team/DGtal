@@ -87,10 +87,7 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    TrueGlobalEstimatorOnPoints() 
-    {
-      myFlagIsInit = false;
-    }
+    TrueGlobalEstimatorOnPoints() = delete;
    
     /**
      * Constructor.
@@ -103,7 +100,7 @@ namespace DGtal
     TrueGlobalEstimatorOnPoints(const double h, 
              const ConstIteratorOnPoints& itb, 
              const ConstIteratorOnPoints& ite,
-             const ParametricShape* aShape,
+             const ParametricShape& aShape,
              const bool& isClosed);
     
     /**
@@ -113,20 +110,6 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-
-    /**
-     * Initialisation.
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     * @param aShape a shape
-     * @param isClosed true if the input range is viewed as closed.
-     */
-    void init(const double h, 
-        const ConstIteratorOnPoints& itb, 
-        const ConstIteratorOnPoints& ite,
-        const ParametricShape* aShape,
-        const bool& isClosed);
     
     /**
      * @return the estimated quantity 
@@ -158,9 +141,6 @@ namespace DGtal
     
     ///Bool if the curve is closed
     bool myFlagIsClosed;
-    
-    ///True if the init() has been called.
-    bool myFlagIsInit;
     
     ///Parametric quantity functor
     ParametricShapeFunctor myFunctor;
