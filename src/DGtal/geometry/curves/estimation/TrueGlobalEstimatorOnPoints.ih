@@ -47,35 +47,10 @@ inline
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints(const double h, 
                       const ConstIteratorOnPoints& itb, 
                       const ConstIteratorOnPoints& ite,
-                      const PShape* aShape,
-                      const bool& isClosed) 
-{
-  init(h,itb,ite,aShape,isClosed);
-}
+                      const PShape& aShape,
+                      const bool& isClosed) :
+myH(h), myBegin(itb), myEnd(ite), myFlagIsClosed(isClosed), myFunctor(aShape) {}
 
-/**
- * Init.
- */
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-void
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
-                  const ConstIteratorOnPoints& itb, 
-                  const ConstIteratorOnPoints& ite,
-                  const PShape* aShape,
-                  const bool& isClosed) 
-{
-  myH = h;
-
-  myBegin = itb;
-  myEnd = ite;
-  
-  myFlagIsClosed = isClosed;
-  myFlagIsInit = true;
-  
-  myFunctor =  ParametricShapeFunctor(aShape);
-  
-}
 
 /**
  * @return the estimated quantity at *it
@@ -140,7 +115,7 @@ inline
 bool
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
 {
-    return myFlagIsInit;
+    return true;
 }
 
 

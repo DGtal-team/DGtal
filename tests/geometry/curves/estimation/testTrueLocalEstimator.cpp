@@ -99,7 +99,6 @@ bool testTrueLocalEstimator(const std::string &filename)
   BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< TrueTangentEstimator > ));
   TrueCurvatureEstimator curvatureEstimator;
   TrueTangentEstimator tangentEstimator;
-  TrueLengthEstimator lengthEstimator;
 
   curvatureEstimator.init( 1, r.begin(), r.end() );
   curvatureEstimator.attach( &ball );
@@ -109,7 +108,7 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   ConstIteratorOnPoints it = r.begin();
   ConstIteratorOnPoints it2 = it+15;
-  lengthEstimator.init( 1, it, it2, &ball, true);
+  TrueLengthEstimator lengthEstimator( 1, it, it2, ball, true);
   
   
   trace.info() << "Current point = "<<*it<<std::endl;

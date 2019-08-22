@@ -83,14 +83,14 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    ParametricShapeArcLengthFunctor(){}
+    ParametricShapeArcLengthFunctor() = default;
 
 
     /**
      * Constructor.
      * @param aShape the input shape.
      */
-    ParametricShapeArcLengthFunctor(const ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeArcLengthFunctor(const ParametricShape &aShape): myShape(aShape) {};
 
 
     /**
@@ -128,14 +128,14 @@ namespace DGtal
       ASSERT(myShape);
 
       //determining nbSamples from the bounding box size of the shape
-      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
       unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
       //computes the angles
-      double t = myShape->parameter( aFirstPoint );
-      double t2 = myShape->parameter( aSecondPoint );
-      return myShape->arclength (t,t2,nbSamples);
+      double t = myShape.parameter( aFirstPoint );
+      double t2 = myShape.parameter( aSecondPoint );
+      return myShape.arclength (t,t2,nbSamples);
 
     }
 
@@ -150,18 +150,18 @@ namespace DGtal
       ASSERT(myShape);
 
       //determining nbSamples from the bounding box size of the shape
-      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
       unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
-      return myShape->arclength (0,2*M_PI,nbSamples);
+      return myShape.arclength (0,2*M_PI,nbSamples);
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
 
     ///Copy of the implicit shape.
-    const ParametricShape *myShape;
+    const ParametricShape &myShape;
 
     // ------------------------- Internals ------------------------------------
   private:
