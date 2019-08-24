@@ -1,5 +1,11 @@
 # DGtal 1.1
 
+## New Features / Critical Changes
+
+- *Shapes package*
+  - Add a moveTo(const RealPoint& point) method to implicit and star shapes
+   (Adrien Krähenbühl,
+   [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
 
 ## Changes
 
