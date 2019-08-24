@@ -436,7 +436,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double x, double y, doubl
 
 template <typename TIterator, typename TInteger>
 inline
-bool DGtal::FrechetShortcut<TIterator,TInteger>::Cone::isEmpty()
+bool DGtal::FrechetShortcut<TIterator,TInteger>::Cone::isEmpty() const
 {
   if(myInf)
     return false;
