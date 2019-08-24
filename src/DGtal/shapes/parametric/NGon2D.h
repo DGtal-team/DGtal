@@ -69,14 +69,14 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
-   
+
     /**
      * Destructor.
      */
     ~NGon2D();
-    
+
     /**
-     * Constructor. 
+     * Constructor.
      * @param x0 the x-coordinate of the circle center.
      * @param y0 the y-coordinate of the circle center.
      * @param r the radius of the circle.
@@ -87,7 +87,7 @@ namespace DGtal
       const unsigned int k, const double phi );
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param r the radius of the circle.
      * @param k the number of faces of the k-gon.
@@ -97,7 +97,7 @@ namespace DGtal
      const   unsigned int k, const double phi);
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param r the radius of the circle.
      * @param k the number of faces of the k-gon.
@@ -106,7 +106,7 @@ namespace DGtal
     NGon2D(const Point &aPoint, const double r,
      const  unsigned int k, const double phi);
 
-    
+
   // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -135,7 +135,17 @@ namespace DGtal
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint2D& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the plane.
      *
@@ -167,7 +177,7 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)).
      */
     RealVector2D xpp( const double t ) const;
-    
+
 
     // ------------------------- data ----------------------------
   private:
@@ -176,7 +186,7 @@ namespace DGtal
      * Center of the circle.
      */
     RealPoint2D myCenter;
-    
+
     /**
      * Radius of the circle.
      */

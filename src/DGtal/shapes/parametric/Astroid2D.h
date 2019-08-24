@@ -133,6 +133,16 @@ namespace DGtal
     }
 
     /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint2D& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
+    /**
      * @param p any point in the plane.
      *
      * @return the angle parameter between 0 and 2*Pi corresponding to

@@ -65,33 +65,33 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef double Value;
 
-    /** 
+    /**
      * Constructor. Contructs a ball with center aCenter and width
      * aWidth.
-     * 
-     * @param aCenter the cube center. 
+     *
+     * @param aCenter the cube center.
      * @param aHalfWidth the cube half-width.
      */
-    ImplicitHyperCube(const RealPoint &aCenter, const double &aHalfWidth): 
+    ImplicitHyperCube(const RealPoint &aCenter, const double &aHalfWidth):
       myCenter(aCenter),
       myHalfWidth(aHalfWidth)
     {};
-    
-    /** 
+
+    /**
      * Destructor.
-     * 
-     */    
+     *
+     */
     ~ImplicitHyperCube();
 
 
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Operator() of the implicit function. Given a point, it returns
      * the function value at p. In Shapes, positive values are used to
      * construct a set.
-     * 
+     *
      * @param aPoint the point to evalute the function at.
      * @return the distance of aPoint to the ball center.
      */
@@ -102,9 +102,9 @@ namespace DGtal
     }
 
 
-    /** 
+    /**
      * Return true if the given point belongs to the shape.
-     * 
+     *
      * @param aPoint the point to evalute the function at.
      * @return the distance of aPoint to the ball center.
      */
@@ -127,10 +127,10 @@ namespace DGtal
           return ON;
     }
 
-    /** 
+    /**
      * Returns the lower bound of the Shape bounding box.
-     * 
-     * 
+     *
+     *
      * @return the lower bound point.
      */
     inline
@@ -138,23 +138,40 @@ namespace DGtal
     {
       return (myCenter - RealPoint::diagonal(myHalfWidth));
     }
-    
-    /** 
+
+    /**
      * Returns the upper bound of the Shape bounding box.
-     * 
-     * 
+     *
+     *
      * @return the upper bound point.
      */
     inline
     RealPoint getUpperBound() const
     {
-      return (myCenter + RealPoint::diagonal(myHalfWidth)); 
+      return (myCenter + RealPoint::diagonal(myHalfWidth));
     }
-    
+
+    /**
+     * @return the center of the star-shaped object.
+     */
+    RealPoint center() const
+    {
+      return myCenter;
+    }
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -171,13 +188,13 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-   
+
     ///Ball center
     RealPoint myCenter;
 
     ///Ball HalfWidth
     double myHalfWidth;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -196,8 +213,8 @@ namespace DGtal
      * Forbidden by default.
      */
     ImplicitHyperCube & operator= ( const ImplicitHyperCube & other );
-    
-    
+
+
   }; // end of class ImplicitHyperCube
 
 
