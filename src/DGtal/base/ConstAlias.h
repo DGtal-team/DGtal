@@ -198,6 +198,12 @@ namespace DGtal
   public:
 
     /**
+       Default copy constructor.
+       @param other object to copy.
+     */
+    ConstAlias( const ConstAlias & other ) = default;
+
+    /**
        Destructor. Does nothing.
      */
     inline ~ConstAlias() {}

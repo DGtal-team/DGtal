@@ -152,6 +152,12 @@ public:
     }
 
     /**
+    * Default copy constructor.
+    * @param other the object to copy.
+    */
+    ImageAdapter( const ImageAdapter & other ) = default;
+
+    /**
     * Assignment.
     * @param other the object to copy.
     * @return a reference on 'this'.
