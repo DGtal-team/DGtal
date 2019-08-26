@@ -88,13 +88,23 @@ namespace DGtal
      * Default constructor.
      */
     TrueGlobalEstimatorOnPoints() = delete;
+        
+    /**
+     * Copy constructor.
+     */
+    TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & ) = delete;
+
+    /**
+     * Assignment operator.
+     */
+    TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & ) = delete;
    
     /**
      * Constructor.
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
-     * @param aShape a shape 
+     * @param aShape a shape
      * @param isClosed true if the input range is closed.
      */
     TrueGlobalEstimatorOnPoints(const double h, 
@@ -118,7 +128,7 @@ namespace DGtal
     
     /**
      * @return the estimated quantity
-     * from itb till ite (exculded)
+     * from itb till ite (excluded)
      */
     Quantity eval(const ConstIteratorOnPoints& itb, 
       const ConstIteratorOnPoints& ite) const;
@@ -129,9 +139,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  protected:
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -150,25 +157,6 @@ namespace DGtal
     
     ///Copy of the end iterator
     ConstIteratorOnPoints myEnd;
-
-    // ------------------------- Hidden services ------------------------------
-  private:
-    
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & other );
-
 
   }; // end of class TrueGlobalEstimatorOnPoints
 
