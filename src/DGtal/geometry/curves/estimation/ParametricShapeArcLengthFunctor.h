@@ -103,19 +103,6 @@ namespace DGtal
   public:
 
     /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    ParametricShapeArcLengthFunctor & operator= ( const ParametricShapeArcLengthFunctor & other )
-    {
-      myShape = other.myShape;
-      return *this;
-    }
-
-
-    /**
      * Compute the arc length between two points.
      *
      * @param aFirstPoint the first point
@@ -124,9 +111,6 @@ namespace DGtal
      */
     Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint) const
     {
-
-      ASSERT(myShape);
-
       //determining nbSamples from the bounding box size of the shape
       RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
@@ -146,9 +130,6 @@ namespace DGtal
      */
     Quantity operator()() const
     {
-
-      ASSERT(myShape);
-
       //determining nbSamples from the bounding box size of the shape
       RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
