@@ -49,7 +49,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimato
                       const ConstIteratorOnPoints& ite,
                       const PShape& aShape,
                       const bool& isClosed) :
-myH(h), myBegin(itb), myEnd(ite), myFlagIsClosed(isClosed), myFunctor(aShape) {}
+myH(h), myFlagIsClosed(isClosed), myFunctor(aShape), myBegin(itb), myEnd(ite) {}
 
 
 /**
@@ -61,21 +61,7 @@ inline
 typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 {
-  ASSERT(myH>0);
-  if (myFlagIsClosed) {
-    return myFunctor();
-  } else {
-    //get the first and last points
-    ConstIteratorOnPoints i = myBegin;
-    ConstIteratorOnPoints j(i); ++j; 
-    for ( ; j != myEnd ; ++i, ++j) {}
-    //myH is the coordinates unit
-    RealPoint p( *myBegin );
-    p *= myH;
-    RealPoint p2( *i );
-    p2 *= myH;
-    return myFunctor(p,p2);
-  }
+  return eval(myBegin,myEnd);
 }
 
   
