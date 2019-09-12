@@ -62,7 +62,8 @@ namespace DGtal
    * surface, you may use property maps (see
    * `TriangulatedSurface::makeVertexMap`).
    *
-   * For now, the user must add vertices and triangles, and when
+   * Except for a few operations, this data structure is rather
+   * static. The user must add vertices and triangles, and when
    * finished, call 'build()'.
    *
    * Model of CUndirectedSimpleGraph: the vertices and edges of the
@@ -245,9 +246,13 @@ namespace DGtal
     /// @return the corresponding index of the triangle.
     FaceIndex addTriangle( VertexIndex v0, VertexIndex v1, VertexIndex v2 );
 
-    /// @return a const reference to the half-edge data structure.
-    const HalfEdgeDataStructure& heds() const
-    { return myHEDS; }
+    /// @return (setter) a reference to the topological structure of the
+    /// triangulated surface (an half-edge data structure).
+    HalfEdgeDataStructure& heds() { return myHEDS; }
+    
+    /// @return (getter) a const reference to the topological structure of the
+    /// triangulated surface (an half-edge data structure).
+    const HalfEdgeDataStructure& heds() const { return myHEDS; }
 
     // ------------------------- standard services ------------------------------
   public:
@@ -545,6 +550,93 @@ namespace DGtal
        surface (in no particular order).
     */
     VertexRange allBoundaryVertices() const;
+
+    /**
+       @param a any arc.
+
+       @return either the four vertices of the two triangles bordering
+       \a a, or the three vertices if this is an edge on the boundary.
+
+       @note O(1) operation
+
+       @note Order is, if arc a is (s,t), and a belongs to triangle
+       (s,t,u) and opposite arc belongs to triangle (t,s,v):
+       (t,u,s,v), (t,u,s), (t,s,v)
+    */
+    VertexRange verticesOfFacesAroundArc( const Arc a ) const;
+      
+    // ----------------------- Other services ---------------------------------
+  public:
+
+    /// An edge is (topologically) flippable iff: (1) it does not lie
+    /// on the boundary, (2) it is bordered by two triangles. (2) is
+    /// always true for a triangulated surface.
+    ///
+    /// @param a any arc.
+    /// @return 'true' if the edge containing \a a is topologically flippable.
+    ///
+    /// @note Time complexity is O(1).
+    bool isFlippable( const Arc a ) const;
+
+    /// Flip the edge associated to arc \a a.
+    ///
+    /// @param a any valid arc.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( a ) == true`
+    /// @see isFlippable
+    ///
+    /// @post After flip the arc \a a corresponding to the flipped
+    /// edge (if you reflip it you get your former triangulation).
+    ///
+    /// @note Time complexity is O(1).
+    void flip( const Arc a );
+
+    /// Splits the edge specified by the arc \a a. The two faces
+    /// incident to \a a are split into four faces.
+    ///
+    /// @param a any valid arc.
+    /// @param data the position for the newly created vertex.
+    ///
+    /// @return the index of the created vertex.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( a ) == true`
+    /// @see isFlippable
+    ///
+    /// @note Time complexity is O(1).
+    Vertex split( const Arc a, const Point& data );
+
+    /// An edge is (topologically) mergeable iff: (1) it is bordered
+    /// by two triangles, (2) there is no boundary vertex in
+    /// the two triangles bordering the edge.
+    ///
+    /// @param a any arc.
+    /// @return 'true' if the edge containing \a a is topologically mergeable.
+    ///
+    /// @note Time complexity is O(1).
+    bool isMergeable( const Arc a ) const;
+
+    /// Merges the edge specified by the arc \a a.
+    ///
+    /// @param a any valid arc.
+    /// @param data the position for the merged vertex.
+    ///
+    /// @return the index of the merged vertex (which is the tail of
+    /// the arc \a a)..
+    ///
+    /// @pre the edge must be mergeable, `isMergeable( a ) == true`
+    /// @see isMergeable
+    ///
+    /// @note Time complexity is O(1).
+    /// @todo We could also merge boundary triangles.
+    ///
+    /// @note All the underlying data-structure is renumbered so that
+    /// vertex, edge, face and half-edge indices are consecutive. In
+    /// other words, since 1 vertex, 3 edges, 2 faces and 6 half-edges
+    /// have been deleted, then the last vertices, edges, faces,
+    /// half-edges have been renumbered into the freed indices. For
+    /// instance, the vertex `head(a)` does not exist anymore (but has
+    /// been replaced by a renumbered vertex).
+    Vertex merge( const Arc a, const Point& data );
 
     // ----------------------- Interface --------------------------------------
   public:

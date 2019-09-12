@@ -70,25 +70,25 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
-      
+
     /**
      * Destructor.
      */
     ~Ellipse2D();
-    
+
     /**
-     * Constructor. 
+     * Constructor.
      * @param x0 the x-coordinate of the circle center.
      * @param y0 the y-coordinate of the circle center.
      * @param a0 the half big axis of the ellipse.
      * @param a1 the half small axis of the ellipse.
      * @param theta the orientation of the ellipse.
      */
-    Ellipse2D( const double x0, const double y0, 
+    Ellipse2D( const double x0, const double y0,
          const double a0, const double a1, const double theta);
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param a0 the half big axis of the ellipse.
      * @param a1 the half small axis of the ellipse.
@@ -98,7 +98,7 @@ namespace DGtal
         const double a0, const double a1, const double theta);
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param a0 the half big axis of the ellipse.
      * @param a1 the half small axis of the ellipse.
@@ -107,7 +107,7 @@ namespace DGtal
     Ellipse2D(const Point &aPoint,
         const double a0, const double a1, const double theta);
 
-    
+
   // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -136,7 +136,17 @@ namespace DGtal
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint2D& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the plane.
      *
@@ -168,7 +178,7 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)).
      */
     RealVector2D xpp( const double t ) const;
-    
+
 
     // ------------------------- data ----------------------------
   private:
@@ -177,7 +187,7 @@ namespace DGtal
      * Center of the circle.
      */
     RealPoint2D myCenter;
-    
+
     /**
      * First axis.
      */
@@ -188,7 +198,7 @@ namespace DGtal
      * Second axis.
      */
     double myAxis2;
-    
+
     /**
      * Orientation (radian).
      */

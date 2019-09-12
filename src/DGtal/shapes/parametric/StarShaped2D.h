@@ -122,6 +122,12 @@ namespace DGtal
     virtual RealPoint center() const = 0;
 
     /**
+     * Move the center of the star-shaped object to a new position
+     * @param newCenter the new center position
+     */
+    virtual void moveTo( const RealPoint& newCenter ) = 0;
+
+    /**
      * @param p any point in the plane.
      *
      * @return the angle parameter between 0 and 2*Pi corresponding to

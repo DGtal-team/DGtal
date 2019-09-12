@@ -298,13 +298,13 @@ namespace DGtal
      @param y1 y1
     */
     Cone(double x, double y, double x0, double y0, double x1, double y1);
-    
-    /**
-       Test if the cone is empty
-       @return true if empty, false otherwise
-    */
-    bool isEmpty();
 
+    /**
+       Default copy constructor.
+       @param c other cone to copy.
+    */
+    Cone(const Cone& c) = default;
+    
     /**
        Assignement
        @param c another cone
@@ -312,6 +312,12 @@ namespace DGtal
      */
     Cone& operator=(const Cone& c);
     
+    /**
+       Test if the cone is empty
+       @return true if empty, false otherwise
+    */
+    bool isEmpty() const;
+
     /**
        Intersect two cones: modifies 'this'
        @param c a cone to intersect with 'this'
