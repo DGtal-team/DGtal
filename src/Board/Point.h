@@ -42,6 +42,13 @@ struct Point {
    */
   Point( const Point & other ):x(other.x),y(other.y) { } 
 
+  /**
+   * Default assignment operator.
+   *
+   * @param other point to copy.
+   */
+  Point &operator=( const Point & other ) = default;
+
   /** 
    * Point constructor.
    * 

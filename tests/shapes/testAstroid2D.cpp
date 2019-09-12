@@ -109,7 +109,7 @@ TEST_CASE("Astroid2D")
 	    const RealPoint point( centerX, unif(re) );
       REQUIRE_NOTHROW( shape.parameter(point) );
       double res = shape.parameter(point);
-      REQUIRE_THAT( res, Catch::WithinULP(M_PI_2,DBL_EPSILON) || Catch::WithinULP(3*M_PI_2,DBL_EPSILON) );
+      REQUIRE_THAT( res, Catch::WithinAbs(M_PI_2,DBL_EPSILON) || Catch::WithinAbs(3*M_PI_2,DBL_EPSILON) );
     }
 
   SECTION("parameter() with point parameter with null y -> 0. or pi")
@@ -119,6 +119,6 @@ TEST_CASE("Astroid2D")
 	    const RealPoint point( unif(re), centerY );
       REQUIRE_NOTHROW( shape.parameter(point) );
       double res = shape.parameter(point);
-      REQUIRE_THAT( res, Catch::WithinULP(0.,DBL_EPSILON) || Catch::WithinULP(M_PI,DBL_EPSILON) );
+      REQUIRE_THAT( res, Catch::WithinAbs(0.,DBL_EPSILON) || Catch::WithinAbs(M_PI,DBL_EPSILON) );
     }
 }
