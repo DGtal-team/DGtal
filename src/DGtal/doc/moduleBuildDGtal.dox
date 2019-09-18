@@ -154,7 +154,7 @@ needed for any optional dependency such as GMP, CGAL, Cairo...).
 
 
 @advanced When working on DGtal within github, we have set up a Windows
-container (using [appeveyor](http://www.appeveyor.com) for continuous
+container (using [appeveyor](http://www.appeveyor.com)) for continuous
 integration. In the "appeveyor.yml" script, you would find information about
 how we compile the DGtal library on this windows environnement.
 
