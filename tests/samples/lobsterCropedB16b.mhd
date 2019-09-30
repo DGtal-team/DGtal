@@ -1,0 +1,14 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+CompressedData = False
+TransformMatrix = 0 0 1 0 1 0 1 0 0
+Offset = 11.300000000000001 11.300000000000001 11.300000000000001
+CenterOfRotation = 0 0 0
+AnatomicalOrientation = IAR
+ElementSpacing = 0.5 0.45000000000000001 0.55000000000000004
+ITK_InputFilterName = MetaImageIO
+DimSize = 51 91 31
+ElementType = MET_USHORT
+ElementDataFile = lobsterCroped16b.raw

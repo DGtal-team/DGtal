@@ -17,35 +17,30 @@
 #pragma once
 
 /**
- * @file ITKReader.h
- * @author Pierre Gueth (\c pierre.gueth@gmail.com )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS,
- * UMR 5205), CNRS, France
+ * @file ITKDicomReader.h
+ * @author Boris Mansencal (\c boris.mansencal@labri.fr )
+ * LaBRI (CNRS, UMR 5800, University of Bordeaux, Bordeaux-INP), France
  *
- * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Lorraine, France
+ * @date 2019/02/05
  *
- * @date 2013/10/28
- *
- * Header file for module ITKReader.cpp
+ * Header file for module ITKDicomReader.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ITKReader_RECURSES)
-#error Recursive header files inclusion detected in ITKReader.h
-#else // defined(ITKReader_RECURSES)
+#if defined(ITKDicomReader_RECURSES)
+#error Recursive header files inclusion detected in ITKDicomReader.h
+#else // defined(ITKDicomReader_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ITKReader_RECURSES
+#define ITKDicomReader_RECURSES
 
-#if !defined ITKReader_h
+#if !defined ITKDicomReader_h
 /** Prevents repeated inclusion of headers. */
-#define ITKReader_h
+#define ITKDicomReader_h
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/CImage.h"
-#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/io/ITKIOTrait.h"
 #include "DGtal/images/ImageContainerByITKImage.h"
 #if defined(__GNUG__)
@@ -68,15 +63,22 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'ITKReader'
-   * \brief Aim: Import a 2D/3D Image using the ITK formats.
+   * Description of template class 'ITKDicomReader'
+   * \brief Aim: Import a 2D/3D DICOM Image from file series.
+   *
+   *  This class requires ITK installation 
+   *  (http://www.itk.org/ITK/resources/software.html)
+   *  and to compile DGtal with -DWITH_ITK option.
+   *
+   *  Simple example: (extract from test/io/readers/testITKDicomReader.cpp)
+   *
    *
    * @tparam TImage the Image type.
    * @see ITKWriter
    * @see ITKIOTrait
    */
   template <typename TImage>
-  struct ITKReader
+  struct ITKDicomReader
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
@@ -87,14 +89,15 @@ namespace DGtal
 			  || (TImage::Domain::dimension == 2) ));
 
     /**
-     * Import an Image with a format supported by ITK.
+     * Import an Image from files belonging to the same DICOM serie.
      *
      * First an ImageContainerByITKImage is constructed by using the
      * source type of the input ITK image, and in a second step the
      * resulting image type is adapted to the TImage type with the use
      * of the given Functor.
      *
-     * @param filename name of the input file.
+     * @param filenames fullnames of file of a DICOM serie. They may be 
+     * gathered with an itk::GDCMSeriesFileNames instance.
      * @param aFunctor functor used to cast image values.
      * @tparam TFunctor the type of functor used in the export.
      *
@@ -102,25 +105,17 @@ namespace DGtal
      */
     template <typename TFunctor =
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
-    static Image importITK(
-    const std::string & filename,
-    const TFunctor & aFunctor = TFunctor() );
+    static Image importDICOM( const std::vector<std::string> & filenames,
+			      const TFunctor & aFunctor = TFunctor() );
 
-    /**
-     * Get the type of the ITK image.
-     *
-     * @param filename  name of the input file.
-     * @return the ITK image component type.
-     *
-     **/
-    static itk::ImageIOBase::IOComponentType
-    getITKComponentType( const std::string & filename );
 
     private:
 
     template <typename Domain, typename PixelType>
-    static inline ImageContainerByITKImage<Domain, PixelType>
-    readDGtalITKImage(const std::string & filename);
+    static inline
+    ImageContainerByITKImage<Domain, PixelType>
+    importDicomFiles( const std::vector<std::string> & filenames );
+    
 
     
     template <typename Image, typename Domain, typename OrigValue,
@@ -128,7 +123,7 @@ namespace DGtal
     struct Aux
     {
       static inline Image
-      readDGtalImageFromITKtypes( const std::string & filename,
+      readDGtalImageFromITKtypes( const std::vector<std::string> & filenames,
 				  const TFunctor & aFunctor );
     };
 
@@ -139,36 +134,37 @@ namespace DGtal
                TFunctor, Value>
     {
       static inline ImageContainerByITKImage<Domain, Value>
-      readDGtalImageFromITKtypes( const std::string & filename,
+      readDGtalImageFromITKtypes( const std::vector<std::string> & filenames,
 				  const TFunctor & aFunctor );
     };
     
     
     /**
-     * Read an DGtal image of type TypeDGtalImage with a format supported by
-     * ITK. (used by importITK)
+     * Read an DGtal image of type TypeDGtalImage from files belonging 
+     * to the same DICOM serie.
      *
-     * @param filename name of the input file
+     * @param filenames fullnames of file of a DICOM serie. They may be 
+     * gathered with an itk::GDCMSeriesFileNames instance.
      * @param aFunctor functor used to cast image values
      * @tparam TFunctor the type of functor used in the export.
      *
      * @return read image
      */
     template <typename TypeDGtalImage, typename TFunctor>
-    static Image readDGtalImageFromITKtypes(
-    const std::string & filename,
-    const TFunctor & aFunctor );
+    static Image
+    readDGtalImageFromITKtypes( const std::vector<std::string> & filenames,
+				const TFunctor & aFunctor );
   };
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/readers/ITKReader.ih"
+#include "DGtal/io/readers/ITKDicomReader.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ITKReader_h
+#endif // !defined ITKDicomReader_h
 
-#undef ITKReader_RECURSES
-#endif // else defined(ITKReader_RECURSES)
+#undef ITKDicomReader_RECURSES
+#endif // else defined(ITKDicomReader_RECURSES)

@@ -50,6 +50,7 @@ IF(ITK_FOUND)
   SET(DGTAL_TESTS_SRC_IO_READERS_DICOM
     testDicomReader
     testITKReader
+    testITKDicomReader
   )
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_DICOM})
