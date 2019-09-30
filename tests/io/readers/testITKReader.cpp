@@ -44,6 +44,40 @@ using namespace DGtal;
 // Functions for testing class ITKReader.
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+   Check that an image loaded via DGtal ITKReader keeps the same spatial 
+   information than an image loaded via itk::ImageFileReader.
+
+ */
+template <typename PixelType>
+void testSpatialInformation(const std::string &filename)
+{
+  typedef DGtal::ImageContainerByITKImage < DGtal::Z3i::Domain, PixelType > DGtalImage;
+
+  DGtalImage img = DGtal::ITKReader<DGtalImage>::importITK(filename);
+
+  typename DGtalImage::ITKImagePointer dgtal_itk = img.getITKImagePointer();
+
+  
+  typedef itk::Image<PixelType, 3> ItkImage;
+  typedef itk::ImageFileReader<ItkImage> ReaderType;
+  typename ReaderType::Pointer reader = ReaderType::New();
+  reader->SetFileName(filename);
+
+  reader->Update();
+
+  typename ItkImage::Pointer itk = reader->GetOutput();
+
+  INFO( "Checking spacing" )
+  REQUIRE( dgtal_itk->GetSpacing() == itk->GetSpacing() );
+  INFO( "Checking origin" )
+  REQUIRE( dgtal_itk->GetOrigin() == itk->GetOrigin() );
+  INFO( "Checking direction" )
+  REQUIRE( dgtal_itk->GetDirection() == itk->GetDirection() );
+}
+
+
+
 TEST_CASE( "Testing ITKReader" )
 {
   // Default image selector = STLVector
@@ -51,7 +85,7 @@ TEST_CASE( "Testing ITKReader" )
   typedef ImageContainerBySTLVector<Z3i::Domain, uint16_t> Image3D16b;
 
   SECTION(
-  "Testing feature io/readers of ITKReader with  16 bits (unit16) images" )
+  "Testing feature io/readers of ITKReader with  16 bits (uint16) images" )
   {
     Image3D16b im = ITKReader<Image3D16b>::importITK(
     testPath + "samples/lobsterCroped16b.mhd" );
@@ -59,7 +93,7 @@ TEST_CASE( "Testing ITKReader" )
   }
 
   SECTION(
-  "Testing feature io/readers of ITKReader with rescaled 16 bits (unit16) "
+  "Testing feature io/readers of ITKReader with rescaled 16 bits (uint16) "
   "images" )
   {
     typedef DGtal::functors::Rescaling<uint16_t, unsigned char> RescalFCT;
@@ -83,6 +117,13 @@ TEST_CASE( "Testing ITKReader" )
       trace.info() <<"Exception was correctly caught" << std::endl;
     }
     REQUIRE( caughtException == true);
+  }
+
+  SECTION(
+  "Checking spatial information when loading through DGtal" )
+  {
+    testSpatialInformation<int16_t>(testPath + "samples/lobsterCroped16b.mhd" );
+    testSpatialInformation<int16_t>(testPath + "samples/lobsterCropedB16b.mhd" );
   }
 
 
