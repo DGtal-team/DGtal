@@ -57,22 +57,22 @@ Description of \b concept '\b CNormalVectorEstimator' <p>
 @ingroup Concepts
 @brief Aim: Represents the concept of estimator of normal vector along digital surfaces.
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
 - Surface : the type of digital surface (must be some DigitalSurface<X>)
 - ConstIterator : an iterator on the signed cells of the digital surface (same as Surface::ConstIterator).
 - SCell : the type of signed cell (for surfels along the digital surface) (same as Surface::SCell).
 - Quantity: the type representing normal vectors.
 
-### Notation
+# Notation
 - \e X : A type that is a model of CNormalVectorEstimator
 - \e x : object of type X
 - \e sc : object of type SCell
 - \e out_it : an \e OutputIterator on \e Quantity
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name                      | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |---------------------------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -80,13 +80,13 @@ Description of \b concept '\b CNormalVectorEstimator' <p>
 | Local normal vector estimation  |\e x.eval(\e sc)|         | \e Quantity    |              | returns the estimation of the normal vector at the signed cell \e sc | | |
 | Global normal vector estimation |\c template \<OutputIterator\>\e x.evalAll(\e out_it)|  | \e OutputIterator | | outputs the estimation of the normal vector field of the whole surface | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - LocalConvolutionNormalVectorEstimator
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CNormalVectorEstimator.
  */

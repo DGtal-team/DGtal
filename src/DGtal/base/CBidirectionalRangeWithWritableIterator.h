@@ -58,17 +58,17 @@ namespace DGtal
        @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
 
 
-       ### Refinement of CSinglePassRangeWithWritableIterator
+       # Refinement of CSinglePassRangeWithWritableIterator
 
-       ### Associated types :
+       # Associated types
        - OutputIterator: type of output iterator on the range.
 
-       ### Notation
+       # Notation
        - \a X : A type that is a model of CBidirectionalRangeWithWritableIterator
        - \a x, \a y : object of type X
 
 
-       ### Definitions
+       # Definitions
 
 
        | Name| Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
@@ -77,13 +77,13 @@ namespace DGtal
        |          |                  |                   |                |              |                                                    |                |            |
 
 
-       ### Invariants###
+       # Invariants#
 
-       ### Models###
+       # Models#
 
        ImageContainerBySTLVector::Range
 
-       ### Notes###
+       # Notes#
 
        @tparam T the type that should be a model of CBidirectionalRangeWithWritableIterator.
        @tparam Value the type of object t in (*it) = t.

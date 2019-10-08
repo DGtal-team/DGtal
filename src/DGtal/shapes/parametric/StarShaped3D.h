@@ -70,12 +70,12 @@ namespace DGtal
   template <typename TSpace>
   class StarShaped3D
   {
-   
+
   public:
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
     typedef std::pair<double,double> AngularCoordinates;
-     
+
     /**
      * Constructor.
      */
@@ -86,7 +86,7 @@ namespace DGtal
      * Destructor.
      */
     ~StarShaped3D();
-    
+
     // ------------------------- Implemented services -------------------------
   public:
     /**
@@ -105,7 +105,7 @@ namespace DGtal
      *
      */
     virtual RealPoint getLowerBound() const = 0;
-    
+
     /**
      * @return the upper bound of the shape bounding box.
      *
@@ -116,7 +116,13 @@ namespace DGtal
      * @return the center of the star-shaped object.
      */
     virtual RealPoint center() const = 0;
-    
+
+    /**
+     * Move the center of the star-shaped object to a new position
+     * @param newCenter the new center position
+     */
+    virtual void moveTo( const RealPoint& newCenter ) = 0;
+
     /**
      * @param p any point in the sapce.
      *
@@ -204,8 +210,8 @@ namespace DGtal
      * @return the orientation of the point (<0 means inside, ...)
      */
     virtual Orientation orientation( const RealPoint &p) const;
-    
-    
+
+
     /*
      * @param t is a couple of Teta && Phi wich are 2 angles
      respectivly between [0,2PI] and [0,Pi].
@@ -216,8 +222,8 @@ namespace DGtal
     /*
       virtual RealPoint tangent( AngularCoordinates t ) const;
     */
-   
-   
+
+
 
 
     /**

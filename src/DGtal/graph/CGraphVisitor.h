@@ -63,11 +63,11 @@ object that traverses vertices of the graph according to some
 order. The user can either use the visitor as is, or even constrain
 the traversal with a given predicate.
 
-### Refinement of
+# Refinement of
 
 - boost::CopyConstructible
 
-### Associated types :
+# Associated types
 
 - \c Graph: the type of the graph that the visitor visits, must be a model of CUndirectedSimpleLocalGraph.
 - \c Vertex: the type for of each vertex, must be Graph::Vertex.
@@ -76,13 +76,13 @@ the traversal with a given predicate.
 - \c Data: the type is associated to the current node and may be used for several purposes (like measuring the distance between the current element and the starting point/set), a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible.
 - \c Node: either the pair<Vertex,Data> or a type convertible to the pair<Vertex,Data>, where Vertex is the current node, Data is the attached data.
  
-### Notation
+# Notation
  - \e X : A type that is a model of CGraphVisitor
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name              | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------------------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -96,13 +96,13 @@ the traversal with a given predicate.
 | Get set of marked vertices | \a x.markedVertices() | | \c MarkSet  |              | Returns a const reference to the current set of marked vertices. It includes the visited vertices and the vertices neighbors to the current layer of vertices. | | O(1) |
 | Get set of visited vertices | \a x.visitedVertices() | | \c MarkSet  |            | Returns the current set of visited vertices (equal to markedVertices() whenever \a x.finished() ). | | linear time in the number of marked vertices. | 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - BreadthFirstVisitor, DepthFirstVisitor, DistanceVisitor
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CGraphVisitor.
  */

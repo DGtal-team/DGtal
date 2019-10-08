@@ -64,7 +64,7 @@ int main( int /* argc */, char** /* argv */ )
     auto colors    = SH3::Colors( surfels.size() );
     std::transform( curv.cbegin(), curv.cend(), colors.begin(), cmap );
     bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
-				   "al-H-II.obj" );
+        			   "al-H-II.obj" );
     //! [dgtal_shortcuts_ssec2_1_6s]
     ++nb; nbok += ok ? 1 : 0;
   }
@@ -83,7 +83,7 @@ int main( int /* argc */, char** /* argv */ )
     auto colors    = SH3::Colors( surfels.size() );
     std::transform( curv.cbegin(), curv.cend(), colors.begin(), cmap );
     bool ok        = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
-				   "al-G-II.obj" );
+        			   "al-G-II.obj" );
     ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
@@ -107,11 +107,11 @@ int main( int /* argc */, char** /* argv */ )
     auto stat_mean       = SHG3::getStatistic( mean_curvs );
     auto stat_gauss      = SHG3::getStatistic( gauss_curvs );
     trace.info() << " min(H)=" << stat_mean.min()
-		 << " avg(H)=" << stat_mean.mean()
-		 << " max(H)=" << stat_mean.max() << std::endl;
+        	 << " avg(H)=" << stat_mean.mean()
+        	 << " max(H)=" << stat_mean.max() << std::endl;
     trace.info() << " min(G)=" << stat_gauss.min()
-		 << " avg(G)=" << stat_gauss.mean()
-		 << " max(G)=" << stat_gauss.max() << std::endl;
+        	 << " avg(G)=" << stat_gauss.mean()
+        	 << " max(G)=" << stat_gauss.max() << std::endl;
     ++nb; nbok += positions.size() == surfels.size() ? 1 : 0;
     ++nb; nbok += normals.size() == surfels.size() ? 1 : 0;
     ++nb; nbok += mean_curvs.size() == surfels.size() ? 1 : 0;
@@ -137,12 +137,12 @@ int main( int /* argc */, char** /* argv */ )
     auto pointels        = SH3::getPointelRange( c2i, surface );
     SH3::RealPoints pos( pointels.size() );
     std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
-		    [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+        	    [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
     auto ppos     = SHG3::getPositions( implicit_shape, pos, params );
     bool ok       = SH3::saveOBJ( surface,
-				  [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
-				  SH3::RealVectors(), SH3::Colors(),
-				  "goursat-quad-proj.obj" );
+        			  [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
+        			  SH3::RealVectors(), SH3::Colors(),
+        			  "goursat-quad-proj.obj" );
     //! [dgtal_shortcuts_ssec2_2_6s]
     ++nb; nbok += ok ? 1 : 0;
   }
@@ -164,7 +164,7 @@ int main( int /* argc */, char** /* argv */ )
     auto colors          = SH3::Colors( surfels.size() );
     std::transform( mean_curv.cbegin(), mean_curv.cend(), colors.begin(), cmap );
     bool ok              = SH3::saveOBJ( surface, SH3::RealVectors(), colors,
-					 "goursat-H.obj" );
+        				 "goursat-H.obj" );
     //! [dgtal_shortcuts_ssec2_2_7s]
     ++nb; nbok += ok ? 1 : 0;
   }
@@ -196,9 +196,9 @@ int main( int /* argc */, char** /* argv */ )
     std::transform( errors.cbegin(), errors.cend(), colors.begin(), cmap_errors );
     bool ok_err = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-H-ii-err.obj" );
     trace.info() << "Error Loo=" << SHG3::getScalarsNormLoo( t_curv, ii_curv )
-		 << " L1="       << SHG3::getScalarsNormL1 ( t_curv, ii_curv )
-		 << " L2="       << SHG3::getScalarsNormL2 ( t_curv, ii_curv )
-		 << std::endl;
+        	 << " L1="       << SHG3::getScalarsNormL1 ( t_curv, ii_curv )
+        	 << " L2="       << SHG3::getScalarsNormL2 ( t_curv, ii_curv )
+        	 << std::endl;
     //! [dgtal_shortcuts_ssec2_2_8s]
     ++nb; nbok += ( ok_t && ok_ii && ok_err ) ? 1 : 0;
   }
@@ -209,7 +209,7 @@ int main( int /* argc */, char** /* argv */ )
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_9s]
     params( "polynomial", "goursat" )( "gridstep", 0.25 )
-      ( "Traversal", "Default" );
+      ( "surfaceTraversal", "Default" );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto K               = SH3::getKSpace( params );
@@ -218,7 +218,7 @@ int main( int /* argc */, char** /* argv */ )
     auto surfels         = SH3::getSurfelRange( surface, params );
     auto vcm_normals     = SHG3::getVCMNormalVectors( surface, surfels, params );
     bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
-					 "goursat-primal-vcm.obj" );
+        				 "goursat-primal-vcm.obj" );
     //! [dgtal_shortcuts_ssec2_2_9s]
     ++nb; nbok += ok ? 1 : 0;
   }
@@ -270,18 +270,18 @@ int main( int /* argc */, char** /* argv */ )
       auto pointels        = SH3::getPointelRange( c2i, surface );
       SH3::RealPoints pos( pointels.size() );
       std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
-		      [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+        	      [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
       auto ppos       = SHG3::getPositions( implicit_shape, pos, params );
       auto fname      = std::string( "goursat-quad-" ) + std::to_string( h ) + std::string( ".obj" );
       bool ok         = SH3::saveOBJ( surface,
-				      [&] (const SH3::Cell& c){ return pos[ c2i[ c ] ];},
-				      SH3::RealVectors(), SH3::Colors(),
-				      fname );
+        			      [&] (const SH3::Cell& c){ return pos[ c2i[ c ] ];},
+        			      SH3::RealVectors(), SH3::Colors(),
+        			      fname );
       auto proj_fname = std::string( "goursat-quad-proj-" ) + std::to_string( h ) + std::string( ".obj" );
       bool proj_ok    = SH3::saveOBJ( surface,
-				      [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
-				      SH3::RealVectors(), SH3::Colors(),
-				      proj_fname );
+        			      [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
+        			      SH3::RealVectors(), SH3::Colors(),
+        			      proj_fname );
       ++nb; nbok += ok      ? 1 : 0;
       ++nb; nbok += proj_ok ? 1 : 0;
     }
@@ -293,7 +293,7 @@ int main( int /* argc */, char** /* argv */ )
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_11s]
     params( "polynomial", "goursat" )( "gridstep", 0.5 )
-      ( "Traversal", "Default" );
+      ( "surfaceTraversal", "Default" );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto K               = SH3::getKSpace( params );
@@ -304,17 +304,69 @@ int main( int /* argc */, char** /* argv */ )
     auto embedder        = SH3::getSCellEmbedder( K );
     SH3::RealPoints positions( surfels.size() );
     std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
-		    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+        	    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
     bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
-					 "goursat-primal-vcm.obj" );
+        				 "goursat-primal-vcm.obj" );
     bool ok2             = SH3::saveVectorFieldOBJ( positions, vcm_normals, 0.05, SH3::Colors(),
-					 "goursat-primal-vcm-normals.obj",
-					 SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+        				 "goursat-primal-vcm-normals.obj",
+        				 SH3::Color( 0, 0, 0 ), SH3::Color::Red );
     //! [dgtal_shortcuts_ssec2_2_11s]
     ++nb, nbok += ok ? 1 : 0;
     ++nb, nbok += ok2 ? 1 : 0;
   }
   trace.endBlock();
+
+#if defined(WITH_EIGEN)
+  
+  trace.beginBlock ( "Load vol file -> build main digital surface -> II normals -> AT regularization -> save OBJ with colored normals." );
+  {
+    auto params     = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_12s]
+    auto al_capone  = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    auto K          = SH3::getKSpace( al_capone );
+    auto surface    = SH3::makeLightDigitalSurface( al_capone, K, params );
+    auto surfels    = SH3::getSurfelRange( surface, params );
+    auto ii_normals = SHG3::getIINormalVectors( al_capone, surfels, params );
+    auto linels     = SH3::getCellRange( surface, 1 );
+    auto uembedder  = SH3::getCellEmbedder( K );
+    SH3::Scalars features( linels.size() );
+    auto at_normals = SHG3::getATVectorFieldApproximation( features, linels.cbegin(), linels.cend(),
+                                                           surface, surfels,
+                                                           ii_normals, params );
+    // Output normals as colors depending on directions
+    SH3::Colors colors( surfels.size() );
+    for ( size_t i = 0; i < surfels.size(); i++ ) 
+      colors[ i ] = SH3::Color( (unsigned char) 255.0*fabs( at_normals[ i ][ 0 ] ),
+                                (unsigned char) 255.0*fabs( at_normals[ i ][ 1 ] ),
+                                (unsigned char) 255.0*fabs( at_normals[ i ][ 2 ] ) );
+    bool ok1 = SH3::saveOBJ( surface, SH3::RealVectors(), SH3::Colors(), "al-surface.obj" );
+    bool ok2 = SH3::saveOBJ( surface, at_normals, colors, "al-colored-at-normals.obj" );
+    // Output discontinuities as sticks on linels.
+    SH3::RealPoints  f0;
+    SH3::RealVectors f1;
+    for ( size_t i = 0; i < linels.size(); i++ )
+      {
+        if ( features[ i ] < 0.5 )
+          {
+            const SH3::Cell linel = linels[ i ];
+            const Dimension     d = * K.uDirs( linel );
+            const SH3::Cell    p0 = K.uIncident( linel, d, false );
+            const SH3::Cell    p1 = K.uIncident( linel, d, true  );
+            f0.push_back( uembedder( p0 ) );
+            f1.push_back( uembedder( p1 ) - uembedder( p0 ) );
+          }
+      }
+    bool ok3 = SH3::saveVectorFieldOBJ( f0, f1, 0.1, SH3::Colors(),
+                                        "al-features.obj",
+                                        SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+    //! [dgtal_shortcuts_ssec2_2_12s]
+    ++nb; nbok += ok1 ? 1 : 0;
+    ++nb; nbok += ok2 ? 1 : 0;
+    ++nb; nbok += ok3 ? 1 : 0;
+  }
+  trace.endBlock();
+  
+#endif // defined(WITH_EIGEN)
   
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;

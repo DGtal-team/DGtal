@@ -57,20 +57,20 @@ Description of \b concept '\b CMatrix' <p>
 @brief Aim:
 Represent any static or dynamic sized matrix having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CVectorSpace
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c Matrix : A type that is a model of CMatrix
  - \e x : const object of type \c Matrix
  - \e z : object of type \c Matrix
  - \e i, \e j : object of type \c Matrix::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
@@ -78,11 +78,11 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 | Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
 | Number of columns      |  \a x.cols()           |                   | \c Index              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CMatrix.
  */

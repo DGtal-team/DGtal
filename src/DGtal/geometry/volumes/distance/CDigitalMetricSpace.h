@@ -63,34 +63,34 @@ value type of the distance function is an Integer type (model of
 CInteger).
 
 
-### Refinement of
+# Refinement of
   - CMetricSpace
 
 
-### Associated types :
+# Associated types
 
  - @e Space: type of space on which the metric is defined (model of CSpace)
  - @e Point: type of points associated with the underlying metric space.
  - @e Value: the value type of the metric (model of CInteger)
  - @e RawValue: the value type for the rawDistance method (model of CInteger)
 
-### Notation
+# Notation
  - \e X : A type that is a model of CDigitalMetricSpace
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 |       |            |                   |               |              |           |                |            | 
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CDigitalMetricSpace.
  */

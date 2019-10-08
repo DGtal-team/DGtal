@@ -57,30 +57,30 @@ Description of \b concept '\b CDynamicMatrix' <p>
 @brief Aim:
 Represent any dynamic sized matrix having sparse or dense representation.
 
-### Refinement of
+# Refinement of
  - CMatrix
 
-### Associated types
+# Associated types
 
-### Notation
+# Notation
  - \c DynamicMatrix : A type that is a model of CDynamicMatrix
  - \e x : object of type \c DynamicMatrix
  - \e i, \e j : object of type \c DynamicMatrix::Index
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constructor |  \a x(i, j)          |                   | \c DynamicVector              |              |           |                |            |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
  - Eigen::MatrixXd, Eigen::SparseMatrix, Eigen::DenseMatrix
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CDynamicMatrix.
  */

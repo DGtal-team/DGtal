@@ -65,12 +65,12 @@ namespace DGtal
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
     typedef std::pair<double,double> AngularCoordinates;
-   
+
     /**
      * Destructor.
      */
     ~Ball3D();
-    
+
     /**
      * Constructor.
      * @param x0 the x-coordinate of the sphere center.
@@ -87,7 +87,7 @@ namespace DGtal
      */
     Ball3D(const RealPoint &aPoint, const double r);
 
-    
+
     /*
      * Constructor.
      * @param aPoint the sphere center.
@@ -96,7 +96,7 @@ namespace DGtal
     /*
       Ball3D(const Point &aPoint, const double r);
     */
-    
+
     // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -130,7 +130,17 @@ namespace DGtal
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the space.
      *
@@ -141,7 +151,7 @@ namespace DGtal
     AngularCoordinates parameter( const RealPoint & p ) const;
 
 
-    
+
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
@@ -160,8 +170,8 @@ namespace DGtal
      */
     virtual RealPoint gradient( const AngularCoordinates t) const ;
 
-    
-    
+
+
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
@@ -194,7 +204,7 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi (twice).
      */
     virtual RealPoint rpp( const AngularCoordinates t) const ;
-    
+
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
@@ -202,10 +212,10 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial derivative with respect to Teta then Phi.
      */
     virtual RealPoint rtp( const AngularCoordinates t) const ;
-    
-    
-    
-    
+
+
+
+
     // ------------------------- data ----------------------------
   private:
 
@@ -218,8 +228,8 @@ namespace DGtal
      * Center of the sphere.
      */
     RealPoint myCenter;
-    
-   
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
