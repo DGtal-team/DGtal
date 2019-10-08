@@ -59,27 +59,27 @@ namespace DGtal
      able to compute the (sign of the) determinant of a 2x2
      matrix with integral entries. 
 
-     ### Invariant
+     # Invariant
 
      The returned value, which is a model of CSignedNumber, is guaranteed to be: 
      - strictly positive if the determinant is strictly positive
      - striclty negative if the determinant is strictly negative
      - zero if the determinant is null
 
-     ### Refinement of 
+     # Refinement of 
      boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
 
-     ### Associated types :
+     # Associated types
      - ArgumentInteger : integral type of the four entries, at least a model of CEuclideanRing
      - ResultInteger : integral type of the result, at least a model of CSignedNumber
 
-     ### Notation
+     # Notation
      - \e X : A type that is a model of C2x2DetComputer
      - \e x : object of type X
      - \e a, b, c, d : integral entries of type ArgumentInteger
      - \e r : result to type ResultInteger
 
-     ### Valid expressions and semantics
+     # Valid expressions and semantics
 
      | Name               | Expression        | Type requirements | Return type   | Precondition | Semantics         | Post condition | Complexity      |
      |--------------------|-------------------|-------------------|---------------|--------------|-------------------|----------------|-----------------|
@@ -87,7 +87,7 @@ namespace DGtal
      | initialization     | x.init(a,b)       |                   | void          |              | memorizes a and b |                | constant        |
      | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependent |
 
-     ### Notes
+     # Notes
 
      In addition to the full operator(), this concept allows another way to compute the quantity ad - bc in two steps: 
      - first, we set the first column vector, ie a and b. 
@@ -96,7 +96,7 @@ namespace DGtal
      whose first column vector, ie a and b, is constant and whose second column vector, ie c and d, 
      slightly varies from one computation to the next one. See for instance, SimpleIncremental2x2DetComputer. 
 
-     ### Models
+     # Models
 
      Simple2x2DetComputer, SimpleIncremental2x2DetComputer, AvnaimEtAl2x2DetSignComputer, Filtered2x2DetComputer
 

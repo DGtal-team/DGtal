@@ -59,35 +59,35 @@ Description of \b concept '\b CPointEmbedder' <p>
 A point embedder is a mapping from digital points to Euclidean points.
 It adds inner types to functor.
 
-### Refinement of
+# Refinement of
 - CUnaryFunctor<T, T::Point, T::RealPoint>
 
-### Associated types :
+# Associated types
 - \e Space: the digital space
 - \e Point: same as Space::Point
 - \e Argument: type of the argument, same as Space::Point
 - \e Value: type of value, same as Space::RealPoint
 
-### Notation
+# Notation
  - \e X : A type that is a model of CPointEmbedder
  - \e x : object of type X
  - \e p : object of type Point
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 |Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \a x on argument \a p | | |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 - CanonicEmbedder, RegularPointEmbedder
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CPointEmbedder.
 */

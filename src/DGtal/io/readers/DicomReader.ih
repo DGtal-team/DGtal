@@ -37,6 +37,7 @@
 #include <sstream>
 
 #include "DGtal/io/Color.h"
+#include "DGtal/images/ConstImageAdapter.h"
 
 // Required ITK files to read serie DICOM files
 // DGtal must be compiled with "-DWITH_ITK=true" option
@@ -44,6 +45,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wpedantic"
+#if __GNUC__ >= 9
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#endif
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -70,90 +74,177 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
+
+namespace DGtal {
+
 template <typename TImageContainer, typename TFunctor>
+template <typename Domain, typename PixelType>
 inline
-TImageContainer
-DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & aFilename,
-							   const TFunctor &aFunctor)
+ImageContainerByITKImage<Domain, PixelType>
+DicomReader<TImageContainer, TFunctor>::
+importDicomFiles_( const std::vector<std::string> & filenames )
 {
-  DGtal::IOException dgtalio;
-
-  std::string directory = aFilename.substr(0,aFilename.find_last_of("/"));
-
-  // Définition of image type
-  const unsigned int Dimension = ImageContainer::Domain::dimension;
-  typedef itk::Image<PixelType,Dimension> ItkImage;
+  // Definition of image type
+  const unsigned int dimension = Domain::dimension;
+  typedef itk::Image<PixelType, dimension> ItkImage;
   typedef itk::ImageSeriesReader<ItkImage> ItkReader;
   typename ItkReader::Pointer reader = ItkReader::New();
 
-  // Définition of ITK Dicom reader
-  typedef itk::GDCMImageIO ItkImageIO;
-  ItkImageIO::Pointer dicomIO = ItkImageIO::New();
-  reader->SetImageIO(dicomIO);
+  // Definition of ITK Dicom reader
+  //typedef itk::GDCMImageIO ItkImageIO;
+  //ItkImageIO::Pointer dicomIO = ItkImageIO::New();
+  //reader->SetImageIO( dicomIO );
 
   // Series reader
-  typedef itk::GDCMSeriesFileNames ItkNamesGenerator;
-  ItkNamesGenerator::Pointer nameGenerator = ItkNamesGenerator::New();
-  nameGenerator->SetDirectory(directory);
-  reader->SetFileNames(nameGenerator->GetInputFileNames());
+  reader->SetFileNames( filenames );
 
+  typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
+  typedef typename TypeDGtalImage::ITKImagePointer ITKImagePointer;
+  ITKImagePointer itkImage = nullptr;
+  
   // Image reading
   try
   {
-	  reader->Update();
+    reader->Update();
   }
   catch( ... )
   {
-	  trace.error() << "DicomReader: can't read " << aFilename << std::endl;
-	  trace.error() << "(from directory: " << directory << ")" << std::endl;
-	  throw dgtalio;
+    trace.error() << "DicomReader: can't read " << filenames.size()
+		  << " files"<<std::endl;
+    throw IOException();
   }
 
-  const typename ItkImage::SizeType& inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+  itkImage = reader->GetOutput();
+  
+  const typename ItkImage::SizeType& inputSize =
+    itkImage->GetLargestPossibleRegion().GetSize();
   const unsigned int width = inputSize[0];
   const unsigned int height = inputSize[1];
   const unsigned int depth = inputSize[2];
   if ( !height || !width || !depth )
   {
-	  trace.error() << "DicomReader: one dimension is null (w=" << width << ", h=" << height << ", d=" << depth << ")" << std::endl;
-	  throw dgtalio;
+    trace.error() << "DicomReader: one dimension is null (w=" << width
+		  << ", h=" << height << ", d=" << depth << ")"
+		  << std::endl;
+    throw IOException();
   }
+  
+  const TypeDGtalImage dgtalItkImage( itkImage );
 
-  // Itk Image pointer
-  const typename ItkImage::Pointer &itkImage = reader->GetOutput();
-  itk::ImageRegionConstIterator< ItkImage > in( itkImage,itkImage->GetBufferedRegion() );
-
-  // DGtal image
-  typename ImageContainer::Point firstPoint( 0, 0, 0 );
-  typename ImageContainer::Point lastPoint( width-1, height-1, depth-1 );
-
-  typename ImageContainer::Domain domain(firstPoint,lastPoint);
-  typename ImageContainer::Domain::ConstIterator itDomain = domain.begin();
-  typename ImageContainer::Domain::ConstIterator endDomain = domain.end();
-
-  ImageContainer image(domain);
-
-  // DGtal image filling
-  long int total = width * height * depth;
-  long count = 0;
-  while ( itDomain != endDomain )
-  {
-	  const PixelType &value = in.Value();
-	  image.setValue( *itDomain , aFunctor(value) );
-	  ++in;
-	  ++itDomain;
-	  ++count;
-  }
-
-  if ( count != total )
-  {
-    trace.error() << "DicomReader: can't read file (raw data) !\n";
-    throw dgtalio;
-  }
-
-  return  image;
+  return dgtalItkImage;
 }
 
+template <typename TImageContainer, typename TFunctor>
+template <typename Image, typename Domain, typename OutPixelType,
+	  typename PixelType>
+Image
+DicomReader<TImageContainer, TFunctor>::Aux<Image, Domain, OutPixelType,
+					    PixelType>::
+importDicomFiles( const std::vector<std::string> & filenames,
+		  const TFunctor & aFunctor )
+{
+  typedef OutPixelType Value;
+  
+  typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
+  const TypeDGtalImage dgtalItkImage =
+    importDicomFiles_<Domain, PixelType>( filenames );
+  
+  const Domain& domain = dgtalItkImage.domain();
+  
+  typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity,
+			    Value, TFunctor> AdaptedImage;
+  const functors::Identity identityFunctor{};
+  const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor,
+			      aFunctor );
+  
+  TImageContainer image( domain );
+  std::copy( adapted.constRange().begin(), adapted.constRange().end(),
+	     image.range().outputIterator() );
+  return image;
+}
+
+
+//specialization
+template <typename TImageContainer, typename TFunctor>
+template <typename Domain, typename OutPixelType, typename PixelType>
+ImageContainerByITKImage<Domain, OutPixelType>
+DicomReader<TImageContainer, TFunctor>::
+Aux<ImageContainerByITKImage<Domain, OutPixelType>, Domain, OutPixelType,
+    PixelType>::
+importDicomFiles( const std::vector<std::string> & filenames,
+		  const TFunctor & aFunctor )
+{
+  typedef OutPixelType Value;
+  
+  typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
+  const TypeDGtalImage dgtalItkImage =
+    importDicomFiles_<Domain, PixelType>( filenames );
+  
+  const Domain& domain = dgtalItkImage.domain();
+  
+  typedef ConstImageAdapter<TypeDGtalImage, Domain, functors::Identity, Value,
+			    TFunctor> AdaptedImage;
+  const functors::Identity identityFunctor{};
+  const AdaptedImage adapted( dgtalItkImage, domain, identityFunctor, aFunctor );
+  
+  TImageContainer image( domain );
+  std::copy( adapted.constRange().begin(), adapted.constRange().end(),
+	     image.range().outputIterator() );
+
+  //copy ITKImage parameters
+  image.getITKImagePointer()->SetOrigin(
+    dgtalItkImage.getITKImagePointer()->GetOrigin() );
+  image.getITKImagePointer()->SetSpacing(
+    dgtalItkImage.getITKImagePointer()->GetSpacing() );
+  image.getITKImagePointer()->SetDirection(
+    dgtalItkImage.getITKImagePointer()->GetDirection() );
+  
+  return image;
+}
+
+  
+template <typename TImageContainer, typename TFunctor>
+template <typename PixelType>
+inline TImageContainer
+DicomReader<TImageContainer, TFunctor>::
+importDicomFiles( const std::vector<std::string> & filenames,
+		  const TFunctor & aFunctor )
+{
+  typedef typename TImageContainer::Domain Domain;
+  return Aux<TImageContainer, Domain, Value, PixelType>::
+    importDicomFiles( filenames, aFunctor );
+}
+  
+
+template <typename TImageContainer, typename TFunctor>
+inline
+TImageContainer
+DicomReader<TImageContainer, TFunctor>::
+importDicom( const std::string & aFilename,
+	     const TFunctor & aFunctor )
+{
+  std::string directory = aFilename.substr( 0, aFilename.find_last_of("/") );
+
+  typedef itk::GDCMSeriesFileNames ItkNamesGenerator;
+  ItkNamesGenerator::Pointer nameGenerator = ItkNamesGenerator::New();
+  nameGenerator->SetDirectory( directory );
+  const std::vector<std::string> &filenames =
+    nameGenerator->GetInputFileNames();
+
+  return importDicomFiles<PixelType>( filenames, aFunctor );
+}
+
+template <typename TImageContainer, typename TFunctor>
+inline
+TImageContainer
+DicomReader<TImageContainer, TFunctor>::
+importDicomSeries( const std::vector<std::string> & filenames,
+		   const Functor & aFunctor )
+{
+  return importDicomFiles<PixelType>( filenames, aFunctor );
+}
+
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

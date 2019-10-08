@@ -41,8 +41,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <DGtal/base/Common.h>
-#include <DGtal/shapes/parametric/StarShaped2D.h>
+#include "DGtal/base/Common.h"
+#include "DGtal/shapes/parametric/StarShaped2D.h"
 #include <cmath>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -75,6 +75,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * The absolute value of radii parameters is used.
      * @param x0 the x-coordinate of the astroid center.
      * @param y0 the y-coordinate of the astroid center.
      * @param a  coefficient along x-axis
@@ -85,6 +86,7 @@ namespace DGtal
 
     /**
      * Constructor.
+     * The absolute value of radii parameters is used.
      * @param aPoint the astroid center
      * @param a      coefficient along x-axis
      * @param b      coefficient along y-axis
@@ -93,6 +95,7 @@ namespace DGtal
 
      /**
       * Constructor.
+     * The absolute value of radii parameters is used.
       * @param aPoint the astroid center
       * @param a      coefficient along x-axis
       * @param b      coefficient along y-axis
@@ -127,6 +130,16 @@ namespace DGtal
     RealPoint2D center() const
     {
       return myCenter;
+    }
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint2D& newCenter )
+    {
+      myCenter = newCenter;
     }
 
     /**

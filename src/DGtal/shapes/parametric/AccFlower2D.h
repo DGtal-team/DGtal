@@ -70,14 +70,14 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
-    
+
     /**
      * Destructor.
      */
     ~AccFlower2D();
-    
+
     /**
-     * Constructor. 
+     * Constructor.
      * @param x0 the x-coordinate of the flower center.
      * @param y0 the y-coordinate of the flower center.
      * @param r the radius of the flower.
@@ -85,41 +85,41 @@ namespace DGtal
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    AccFlower2D( const double x0, const double y0, 
+    AccFlower2D( const double x0, const double y0,
         const double r,
         const double smallr,
         const unsigned int k,
         const double phi);
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the flower center.
      * @param r the radius of the flower.
      * @param smallr the variable small radius of the flower.
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    AccFlower2D(const RealPoint2D &aPoint, 
+    AccFlower2D(const RealPoint2D &aPoint,
        const double r,
        const double smallr,
        const unsigned int k,
        const double phi);
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the flower center.
      * @param r the radius of the flower.
      * @param smallr the variable small radius of the flower.
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    AccFlower2D(const Point &aPoint, 
+    AccFlower2D(const Point &aPoint,
        const double r,
        const double smallr,
        const unsigned int k,
        const double phi);
 
-    
+
     // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -129,7 +129,7 @@ namespace DGtal
      */
     RealPoint2D getLowerBound() const
     {
-      return RealPoint2D(myCenter[0] - myRadius - myVarRadius, 
+      return RealPoint2D(myCenter[0] - myRadius - myVarRadius,
                          myCenter[1] - myRadius - myVarRadius);
     }
 
@@ -150,7 +150,17 @@ namespace DGtal
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint2D& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the plane.
      *
@@ -182,7 +192,7 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)).
      */
     RealVector2D xpp( const double t ) const;
-    
+
 
     // ------------------------- data ----------------------------
   private:
@@ -191,27 +201,27 @@ namespace DGtal
      * Center of the flower.
      */
     RealPoint2D myCenter;
-    
+
     /**
      * Radius of the flower.
      */
     double myRadius;
-    
+
     /**
      * the variable small radius of the flower.
      */
     double myVarRadius;
-    
+
     /**
      * the number of flower extremeties.
      */
     unsigned int myK;
-    
+
     /**
      * The value 2*myK*Pi/(Pi^3)
      */
     double myKp;
-    
+
     /**
      * the phase of the flower (in radian).
      */

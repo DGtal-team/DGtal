@@ -49,19 +49,19 @@ DGtal::Lemniscate2D<T>::~Lemniscate2D()
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const double x0, const double y0,
-  const double a, const double b ) : myCenter(x0,y0), myA(a), myB(b)
+  const double a ) : myCenter(x0,y0), myA(fabs(a))
 {}
 
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint2D &aPoint,
-  const double a, const double b ) : myCenter(aPoint), myA(a), myB(b)
+  const double a ) : myCenter(aPoint), myA(fabs(a))
 {}
 
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
-  const double a, const double b ) : myA(a), myB(b)
+  const double a ) : myA(fabs(a))
 {
   myCenter = aPoint;
 }
@@ -80,20 +80,19 @@ inline
 double
 DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
 {
-  RealPoint2D p( pp );
-  p -= myCenter;
+  RealPoint2D p( pp-myCenter );
   double angle;
 
-  if ( abs(p[1]) > abs(p[0]) )
+  if ( fabs(p[0]) < fabs(p[1]) )
     return 0.;
   if ( p[0] == 0. )
-    angle=0.0;
+    angle = 0.;
   else if ( p[0] == 0. && p[1] < 0. )
-    angle=M_PI;
+    angle = M_PI;
   else if ( p[1] == 0. && p[0] > 0. )
-    angle=M_PI/2.0;
+    angle = M_PI_2;
   else if ( p[1] == 0. && p[0] < 0. )
-    angle=3.0*M_PI/2.0;
+    angle = 3. * M_PI_2;
   else
     angle = acos(p[1]/p[0]);
 
@@ -111,8 +110,11 @@ inline
 typename DGtal::Lemniscate2D<T>::RealPoint2D
 DGtal::Lemniscate2D<T>::x( double t ) const
 {
-  RealPoint2D c( myA * sin(t)/(1+pow(cos(t),2)),
-                 myB * (sin(t)*cos(t)) / (1+pow(cos(t),2)) );
+  const double cost = cos(t);
+  const double sint = sin(t);
+  const double cos2t = pow(cost,2);
+  RealPoint2D c( myA * sint / (1. + cos2t),
+                 myA * sint * cost / (1. + cos2t) );
   c += myCenter;
   return c;
 }
@@ -129,11 +131,14 @@ inline
 typename DGtal::Lemniscate2D<T>::RealVector2D
 DGtal::Lemniscate2D<T>::xp( const double t ) const
 {
+  const double cost = cos(t);
+  const double cos2t = pow(cost,2);
+  const double sin2t = pow(sin(t),2);
 
   RealVector2D c(
-    myA * (cos(t)+2*pow(sin(t),2)*cos(t)+pow(cos(t),3))/pow(1+pow(cos(t),2),2),
-    myB * (pow(cos(t),4)+pow(cos(t),2)-pow(sin(t),2)+
-                        pow(sin(t),2)*pow(cos(t),2)) / pow(1+pow(cos(t),2),2));
+    myA * (cost + 2*sin2t*cost+pow(cost,3)) / pow(1+cos2t,2),
+    myA * (pow(cost,4) + cos2t - sin2t +
+                         sin2t * cos2t)  / pow(1+cos2t,2) );
   return c;
 }
 
@@ -142,19 +147,30 @@ inline
 typename DGtal::Lemniscate2D<T>::RealVector2D
 DGtal::Lemniscate2D<T>::xpp( const double t ) const
 {
+  const double cost = cos(t);
+  const double cos2t = pow(cost,2);
+  const double sint = sin(t);
+  const double sin3t = pow(sint,3);
 
-  RealVector2D c( myA * ( 4*pow(sin(t),3)*pow(cos(t),2) +
-                          6*pow(sin(t),3)*pow(cos(t),4) +
-                          3*sin(t)*pow(cos(t),2) - sin(t) +
-                          9*sin(t)*pow(cos(t),4) +
-                          5*pow(cos(t),6) * sin(t) -
-                          2*pow(sin(t),3) ) / pow(1+pow(cos(t),2),4),
-                  myB * ( -4*pow(sin(t),3)*pow(cos(t),3) -
-                          6*pow(sin(t),3)*cos(t) +
-                          2*pow(sin(t),3)*pow(cos(t),5) -
-                          4*sin(t)*cos(t) - 6*sin(t)*pow(cos(t),3) +
-                          2*sin(t)*pow(cos(t),7) ) / pow(1+pow(cos(t),2),4) );
-   return c;
+  RealVector2D c(
+    myA * ( 4 * sin3t * cos2t +
+            6 * sin3t * pow(cost,4) +
+            3 * sint * cos2t -
+            sint +
+            9 * sint * pow(cost,4) +
+            5 * pow(cost,6) * sint -
+            2 * sin3t )
+        / pow(1+cos2t,4),
+
+    myA * ( -4* sin3t * pow(cost,3) -
+            6 * sin3t * cost +
+            2 * sin3t * pow(cost,5) -
+            4 * sint * cost -
+            6 * sint * pow(cost,3) +
+            2 * sint * pow(cost,7) )
+        / pow(1+cos2t,4)
+  );
+  return c;
 }
 
 
@@ -170,7 +186,7 @@ inline
 void
 DGtal::Lemniscate2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Lemniscate2D] center= "<<myCenter<<" a="<<myA<<" b="<<myB;
+  out << "[Lemniscate2D] center= " << myCenter << " a=" << myA;
 }
 
 /**

@@ -68,32 +68,32 @@ and
 
  
 
-### Refinement of 
+# Refinement of 
   - concepts::CMetricSpace.
 
-### Associated types :
+# Associated types
 
-### Notation
+# Notation
  - \e X : A type that is a model of CSeparableMetric
  - \e x, \e y : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | hiddenBy predicate |  hiddenBy(u,v,w,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
 
 
 ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of concepts::CSeparableMetric.
  */

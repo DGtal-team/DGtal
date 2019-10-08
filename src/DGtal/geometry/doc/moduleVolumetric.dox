@@ -70,10 +70,16 @@ tools can be used on a wider class of metrics (see  @cite Hirata1996  or
  \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^d w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
 can be considered.
 
-In DGtal, we have chosen to implement such volumetric tools such
-that the underlying metric could be specified independently.
+In DGtal, we have chosen to implement such volumetric tools such that
+the underlying metric could be specified independently. As an
+example, we illustrate the distance maps from a single source point
+for various metrics in 2D using the generic DistanceTransformation method:
 
-For a complete discussion of metric concepts in DGtal, please refer to @ref moduleMetrics.
+@image html DTmetrics-small.png "Distance maps for metrics  L_1, L_2, L_4, L_80 and Chamfer masks M_{3−4} and M_{5−7−11}."
+@image latex  DTmetrics-small.png  "Distance maps for metrics  L_1, L_2, L_4, L_80 and Chamfer masks M_{3−4} and M_{5−7−11}."
+
+For a complete discussion of metric concepts in DGtal, please refer to
+@ref moduleMetrics.
 
 
 \section voronoiSect Digital Voronoi Diagram Computation

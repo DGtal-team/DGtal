@@ -65,18 +65,18 @@ namespace DGtal {
   characteristics. Often, the primitives are geometric,
   e.g. digital planes.
   
-  ### Refinement of CPrimitiveComputer
+  # Refinement of CPrimitiveComputer
   
-  ### Associated types :
+  # Associated types
   - \a Primitive, the type that defines the primitive.
   - \a Point: the type of the input points.
   
-  ### Notation
+  # Notation
   - \a X : A type that is a model of CIncrementalPrimitiveComputer
   - \a x : object of type \a X
   - \a p : object of type \a Point
   
-  ### Valid expressions and semantics
+  # Valid expressions and semantics
   
   
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -85,13 +85,13 @@ namespace DGtal {
   |check new point| x.isExtendable(\a p)|            | \a bool     |                  | tries to find a primitive that matches the new point \a p and all formerly given input points, return \a true only if it possible, the state is always unchanged| | |
   
   
-  ### Invariants###
+  # Invariants#
   
-  ### Models###
+  # Models#
   
   - COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
   
-  ### Notes###
+  # Notes#
   
   @tparam T the type that should be a model of CIncrementalPrimitiveComputer.
   */

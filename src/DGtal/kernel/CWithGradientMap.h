@@ -58,32 +58,32 @@ Description of \b concept '\b CWithGradientMap' <p>
 @brief Aim:
 Such object provides a gradient map that associates to each argument some real vector.
 
-### Refinement of
+# Refinement of
 
-### Associated types :
+# Associated types
    - \e Argument : the type of each element of the domain
    - \e RealVector : the type for representing the gradient values.
    - \e GradientMap : functor \e Argument -> \e RealVector, a model of CUnaryFunctor<T, Argument, RealVector > and boost::CopyConstructible.
    - \e gradientMap() const: returns a \e GradientMap.
 
-### Notation
+# Notation
  - \e X : A type that is a model of CWithGradientMap
  - \e x : object of type X
 
-### Definitions
+# Definitions
 
-### Valid expressions and semantics
+# Valid expressions and semantics
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Gets the gradient map |\e x.gradientMap()| |\e GradientMap |          | returns the gradient functor | | |      |
 
-### Invariants
+# Invariants
 
-### Models
+# Models
     ImplicitFunctionDiff1LinearCellEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
 
-### Notes
+# Notes
 
 @tparam T the type that should be a model of CWithGradientMap.
  */

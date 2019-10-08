@@ -32,6 +32,10 @@ SET(DGTAL_TESTS_SRC
   testTriangulatedSurface
   testPolygonalSurface
   testProjection
+  testShapeMoveCenter
+  testAstroid2D
+  testLemniscate2D
+
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

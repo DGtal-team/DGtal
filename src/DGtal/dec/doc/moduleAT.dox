@@ -1,0 +1,229 @@
+/**
+ * @file moduleAT.dox
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2019/06/17
+ *
+ * Documentation file for Ambrosio-Tortorelli functional
+ *
+ * This file is part of the DGtal library.
+ */
+
+namespace DGtal {
+/*!
+@page moduleAT Piecewise-smooth approximation using a discrete calculus model of Ambrosio-Tortorelli functional
+
+@writers Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth
+
+@since 1.1
+
+  Part of package \ref packageDEC.
+  [TOC]
+
+- related classes: \ref ATSolver2D
+- related examples: \ref exampleSurfaceATNormals.cpp
+
+@section AT_s1 The Ambrosio-Tortorelli functional  
+
+The Ambrosio-Tortorelli functional (AT) is a classical relaxation of the
+Mumford-Shah functional  \cite ambrosio1990approximation. Its purpose is to construct a piecewise
+smooth approximation of a function \f$ g \f$ defined in an open
+bounded domain \f$ \Omega \f$.
+
+In the Ambrosio-Tortorelli functional,
+one wants to find a function \f$ u \in SBV(\Omega) \f$ which is a
+smooth approximation of the input data \f$ g \f$ (i.e. image in image processing applications).
+The Ambrosio-Tortorelli functional is defined by
+\f[
+  \displaystyle
+  AT_{\varepsilon}(u,v)	= \int_\Omega \alpha |u-g|^2 + v^2 |\nabla u|^2
+  + \lambda \varepsilon |\nabla v|^2 + \frac{\lambda}{4 \varepsilon} |1-v|^2 dx,
+\f]
+for functions \f$ u,v \in W^{1,2}(\Omega)\f$ with \f$ 0 \leq v \leq 1 \f$.
+
+
+In AT functional, function \f$ v \f$ is a smooth approximation of the
+set of discontinuities, and takes value close to 0 in this set, while
+being close to 1 outside discontinuities. A remarkable property of
+this functional is that it \f$ \Gamma \f$-converges to (a relaxation
+of) Mumford-Shah functional as \f$ \varepsilon \f$ tends to 0 (see
+\cite ambrosio1990approximation).  The intuition is that a large \f$
+\varepsilon \f$ induces a solution with a fuzzy set of
+discontinuities, which is then progressively narrowed to the crisp
+1-dimensional set of discontinuites as \f$ \varepsilon \f$ goes to 0.
+
+The AT functional has been extended to vector data in \cite Focardi2001variational.
+
+
+@section AT_s2 A discrete calculus model of AT and its optimization
+
+@subsection AT_s2_1 A discrete calculus model of AT
+
+We present a discrete calculus model of AT that works for any
+2-dimensional cell complex. For more information on discrete calculus,
+discrete exterior calculus or discrete differential calculus, see module \ref
+moduleDECIntroduction, report \cite desbrun2005discrete, 
+lecture \cite goes2013digital, or the book \cite Grady2010discrete . 
+
+Our model is suited to a grid domain representing a 2D image made
+of pixels or a digital surface in 3D.
+
+
+\f[
+  \displaystyle
+  AT(u,v) = \alpha \Sigma_{i=1}^n
+      \langle u_i - g_i , u_i - g_i \rangle_2
+    + \langle v \wedge \bar{\mathbf{\star}} \bar{\mathbf{d_0}}
+      \mathbf{\star} u_i, v \wedge \bar{\mathbf{\star}} \bar{\mathbf{d_0}}
+      \mathbf{\star} u_i \rangle_1 \\
+    + \lambda \varepsilon \langle \mathbf{d_0} v , \mathbf{d_0} v \rangle_1
+    + \frac{\lambda}{4\varepsilon} \langle 1 - v , 1 - v \rangle_0.
+\f]
+
+
+For more details about discrete formulations and the numerical
+optimization of AT, we refer the reader to \cite Coeurjolly2016pg,
+\cite Foare2016icpr and \cite Foare2016rrpr.
+
+@subsection AT_s2_2 Solutions to AT
+
+The AT functional  is a sum of quadratic terms, independently,
+but not simultaneously, convex in \f$ u \f$ and \f$ v \f$. It must have
+null derivative at optimum. We thus propose to alternatively solve for
+\f$ u \f$, then \f$ v \f$. The derivatives can be given explicitly as
+linear systems. 
+To simplify notations, let \f$ \mathbf{A} := \mathbf{d_0} \f$,
+\f$  \mathbf{B} := \mathbf{d_1} \f$,
+\f$ \mathbf{A'} := \bar{\mathbf{\star}} \bar{\mathbf{d_1}} \mathbf{\star} \f$
+and \f$ \mathbf{B'} := \bar{\mathbf{\star}} \bar{\mathbf{d_0}} \mathbf{\star} \f$.
+
+We define \f$ \mathbf{M} \f$ the matrix which transforms a 0-form into
+a 1-form by averaging the values on the two edge extremities, i.e.
+\f$ \mathbf{M} = \frac{1}{2} |\mathbf{d_0}| \f$. It is used in the
+wedge product between 0-form v and 1-forms \f$ \bar{\mathbf{\star}}
+\bar{\mathbf{d_0}} \mathbf{\star} u_i \f$.
+
+We get at optimum, if we assume trivial metrics:
+\f[
+  \displaystyle
+  \left\{ \begin{array}{r @{=} l c}
+    \left[\alpha \mathbf{Id} - {\mathbf{B'}}^T diag(\mathbf{M} v)^2 \mathbf{B'} \right] u
+    & = \quad \alpha g & (1.1) \\
+    \left[ \frac{\lambda}{4\varepsilon} \mathbf{Id}
+          + \lambda \varepsilon \mathbf{A}^T \mathbf{A}
+          + \mathbf{M}^T diag(\mathbf{B'} u)^2 \mathbf{M} \right] v
+    & = \quad \frac{\lambda}{4 \varepsilon} \mathbf{1}
+    & (1.2)
+  \end{array}\right.
+\f]
+
+for the derivative of AT. Since all matrices are
+symmetric, definite and positive, we use a Cholesky factorization to
+solve alternatively the two equations of each system.
+
+
+@subsection AT_s2_3 Gamma-convergence optimization algorithm
+
+
+\f$
+\begin{array}{l l l l}
+\rlap{OPTIMIZE-AT01( (g_1, ..., g_N ): 0-forms,
+(\alpha, \lambda, \varepsilon_1, \varepsilon_2, \varepsilon_r): reals );} \\
+  \rlap{\mathbf{Var~} (u_1, ..., u_N): 0-forms, (v, v'): 1-forms, \varepsilon: real ; } \\
+  \rlap{\mathbf{begin}} &  \\
+  & \rlap{\mathbf{foreach~} i \in \{1, 2, 3\} \mathbf{~do~} u_i \leftarrow g_i;} \\
+  & \rlap{v \leftarrow 1, \varepsilon \leftarrow \varepsilon_1;} \\
+  & \rlap{\mathbf{while~} \varepsilon \geq \varepsilon_2 \mathbf{~do~}} \\
+  & & \rlap{\mathbf{repeat}} \\
+  & & & v' \leftarrow v; \\
+  & & & \hbox{Solve Eq.(1.1) for all } u_i ; \\
+  & & & \hbox{Solve Eq.(1.2) for } v ; \\
+  & & \rlap{\mathbf{until~} ||v - v'|| \hbox{~is small;}} \\
+  & & \rlap{\varepsilon \leftarrow \varepsilon / \varepsilon_r;} \\
+  & \rlap{\mathbf{end}} \\
+  \rlap{\mathbf{end}}
+\end{array}
+\f$
+
+@section AT_s3 Applications and code
+
+The AT functional is useful when trying to fit piecewise-smooth
+function to some input data, possibly corrupted with noise. It is
+therefore used in image processing for denoising \cite Foare2016icpr
+or for inpainting \cite Foare2016rrpr . It can also work for
+approximating vector data, for instance a normal vector field \cite Coeurjolly2016pg .
+
+@subsection AT_s3_1 Piecewise smooth approximation of normal vector field and feature detection
+
+We show here that the AT functional can enhance a coarse approximation
+of the normal vector field onto a digital surface. Here, we compute
+such a normal vector field using Integral Invariant methods (see \ref
+moduleIntegralInvariant). It has the drawback to smooth normals around
+sharp features. Therefore, in example \ref
+exampleSurfaceATNormals.cpp, we use the AT functional to compute a
+piecewise smooth approximation of this normal vector. Normals are
+smoothed everywhere except around sharp features where they have sharp
+transitions. Furthermore, the set of discontinuities of AT functional
+(places where primal 0-form v is close to 0) indicates where are
+located sharp features onto the digital surface.
+
+<table>
+<tr>
+<td> \image html at-fandisk-128-features.png "Features (in red) extracted by AT model" </td>
+<td> \image html at-fandisk-128-normals.png "Piecewise smooth normal vectors (colored) extracted by AT model" </td>
+<td> \image html at-fandisk-128-vf-normals-features.png "Piecewise smooth normal vectors (sticks) extracted by AT model" </td>
+</tr>
+</table>
+
+To detail a little bit how to do that, you have first to build a
+digital surface. For instance, you can use Shortcuts to do so quickly
+(see \ref moduleShortcuts):
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-includes
+\code
+auto volfile   = examplesPath + "samples/Al.100.vol";
+\endcode
+\snippet exampleSurfaceATNormals.cpp AT-surface-init
+
+Then you just have to build a discrete calculus over the domain where
+you want to compute your piecewise smooth approximation. Here, we
+build the calculus over the whole surfel range \a surfels:
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-calculus
+
+After that, the AT solver can be build on this calculus. Then it is
+initialized with input data you wish to approximate (here the normal
+vector field \a ii_normals). Finally it suffices to call the method
+ATSolver2D::solveGammaConvergence to use the coarse-to-fine \f$ \Gamma
+\f$-convergence optimization method.
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-solve
+
+You recover the piecewise-smooth approximation of the input vector
+field with ATSolver2D::getOutputVectorFieldU2, and the function giving
+the locii of discontinuities with ATSolver2D::getOutputScalarFieldV0.
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-getU2
+
+\snippet exampleSurfaceATNormals.cpp AT-surface-getV0
+
+
+See  \ref exampleSurfaceATNormals.cpp  for more details.
+
+@subsection AT_s3_2 Using shortcuts for the impatient
+
+You may also avoid using ATSolver2D directly and instead use method
+ShortcutsGeometry::getATVectorFieldApproximation or
+ShortcutsGeometry::getATScalarFieldApproximation which directly builds
+the calculus onto the given surface and outputs the results.
+
+\code
+SH3::Scalars features( linels.size() );
+auto at_normals = SHG3::getATVectorFieldApproximation( features, linels.cbegin(), linels.cend(),
+                                                       surface, surfels,
+                                                       ii_normals, params );
+\endcode
+
+*/
+} // namespace DGtal
