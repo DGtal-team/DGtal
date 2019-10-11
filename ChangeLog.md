@@ -42,6 +42,8 @@
 - *Configuration/General*
   - Fix compilation error/warnings with gcc 9.1.1 and clang 9.0
   (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
+  - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
+  Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
 
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
