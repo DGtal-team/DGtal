@@ -79,7 +79,8 @@
     Coeurjolly [#1432](https://github.com/DGtal-team/DGtal/pull/1432))
   - Using SourceForge to download doxygen sources during Travis CI jobs.
     (Roland Denis [#1424](https://github.com/DGtal-team/DGtal/pull/1434))
-
+  - CSS edit to enhance the readability of code snippets (David
+    Coeurjolly [#1438](https://github.com/DGtal-team/DGtal/pull/1438))
 
 # DGtal 1.0
 
