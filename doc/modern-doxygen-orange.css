@@ -11,6 +11,10 @@ body {
     min-height: 100%;
 }
 
+div.fragment{
+    padding: 10px;
+}
+
 .tabs,.tabs2,.tabs3,.tablist li,.tablist li.current a,.tablist a,.tablist a:hover,.ui-resizable-e,div.header,#nav-tree .selected,#nav-tree,.memproto,dl.reflist dt,.memdoc,dl.reflist dd, div.ah {
     background-image: none;
 }

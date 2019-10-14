@@ -7,6 +7,12 @@ html {
     height: 100%;
 }
 
+
+div.fragment{
+    padding: 10px;
+}
+
+
 body {
     min-height: 100%;
 }
