@@ -57,7 +57,7 @@ namespace DGtal
    *
    * @tparam TIterator  Iterator type on HyperRectDomain
    *
-   * @note we need this specific implementation of a reverse iterator instead
+   * @note We need this specific implementation of a reverse iterator instead
    *  of a std::reverse_iterator because the latter works only on non-stashing
    *  iterators (i.e. iterators that don't own its pointed data).
    *  Otherwise, it will lead to dangling reference!
