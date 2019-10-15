@@ -37,7 +37,6 @@
 #include <algorithm>
 #include <numeric>
 #include <iterator>
-#include <chrono>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -407,126 +406,6 @@ TEST_CASE( "Empty domain", "[domain][3D][empty]" )
   range = domain.subRange( 1, domain.lowerBound()  );
   REQUIRE( range.begin() == range.end() );
   REQUIRE( range.rbegin() == range.rend() );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Benchmarks
-//
-// Note: using multiple TEST_CASE instead of SECTION because it seems to alter
-// the way the compiler optimizes the code and it reduces performances.
-
-/// Timer user in tic and toc
-auto tic_timer = std::chrono::high_resolution_clock::now();
-
-/// Starts timer
-void tic()
-{
-  tic_timer = std::chrono::high_resolution_clock::now();
-}
-
-/// Ends timer and return elapsed time
-double toc()
-{
-  const auto toc_timer = std::chrono::high_resolution_clock::now();
-  const std::chrono::duration<double> time_span = toc_timer - tic_timer;
-  return time_span.count();
-}
-
-// Context for each benchmark
-struct BenchDomain
-{
-  static constexpr std::size_t dim = 3;
-  static constexpr signed long long int size = 1000;
-
-  using Space = DGtal::SpaceND<dim>;
-  using Point = Space::Point;
-  using Domain = DGtal::HyperRectDomain<Space>;
-
-  BenchDomain()
-    : a(Point::diagonal(0))
-    , b(Point::diagonal(size))
-    , domain(Domain(a, b))
-    {
-    }
-
-  Point a, b;
-  Domain domain;
-};
-
-TEST_CASE_METHOD( BenchDomain, "Benchmarking domain traversal", "[.bench]" )
-{
-  std::size_t cnt = 0;
-  Point::Component check = 0;
-
-  tic();
-  for (auto const& pt : domain)
-    {
-      ++cnt;
-      check += pt[dim-1];
-    }
-  const auto duration = toc();
-
-  REQUIRE( cnt == domain.size() );
-  trace.info() << "Domain traversal: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
-}
-
-TEST_CASE_METHOD( BenchDomain, "Benchmarking domain reverse traversal", "[.bench]" )
-{
-  std::size_t cnt = 0;
-  Point::Component check = 0;
-
-  tic();
-  for (auto it = domain.rbegin(), it_end = domain.rend(); it != it_end; ++it)
-    {
-      ++cnt;
-      check += (*it)[dim-1];
-    }
-  const auto duration = toc();
-
-  REQUIRE( cnt == domain.size() );
-  trace.info() << "Domain reverse traversal: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
-}
-
-TEST_CASE_METHOD( BenchDomain, "Benchmarking domain traversal using subRange", "[.bench]" )
-{
-  std::vector<Point::Dimension> dimensions(Point::dimension);
-  std::iota(dimensions.begin(), dimensions.end(), Dimension(0));
-  const auto range = domain.subRange(dimensions);
-
-  std::size_t cnt = 0;
-  Point::Component check = 0;
-
-  tic();
-  for (auto const& pt : range)
-    {
-      ++cnt;
-      check += pt[dim-1];
-    }
-  const auto duration = toc();
-
-  REQUIRE( cnt == domain.size() );
-  trace.info() << "Domain traversal using subRange: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
-}
-
-TEST_CASE_METHOD( BenchDomain, "Benchmarking domain reverse traversal using subRange", "[.bench]" )
-{
-  std::vector<Point::Dimension> dimensions(Point::dimension);
-  std::iota(dimensions.begin(), dimensions.end(), Dimension(0));
-  const auto range = domain.subRange(dimensions);
-
-  std::size_t cnt = 0;
-  Point::Component check = 0;
-
-  tic();
-  for (auto it = range.rbegin(), it_end = range.rend(); it != it_end; ++it)
-    {
-      ++cnt;
-      check += (*it)[dim-1];
-    }
-  const auto duration = toc();
-
-  REQUIRE( cnt == domain.size() );
-  trace.info() << "Domain reverse traversal using subRange: " << (domain.size()/duration*1e-9) << " Gpts/s (check = " << check << ")" << std::endl;
 }
 
 /** @ingroup Tests **/
