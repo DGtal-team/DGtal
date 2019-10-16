@@ -51,7 +51,8 @@ number types considered in DGtal, fundamental structures such as the
 digital space, the digital domain, as well as basic linear algebra
 tools.
 
-@b Modules      
+@b Modules
+
 - \ref moduleNumber (David Coeurjolly, Jacques-Olivier Lachaud)
 - \ref moduleSpacePointVectorDomain (David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand)
 - \ref moduleDigitalSets  (Jacques-Olivier Lachaud, Sebastien Fourey)
@@ -59,10 +60,8 @@ tools.
 
 
 @b Package @b Concepts @b Overview
+
 - \ref packageKernelConcepts
-
-
-@b Related @b documentation @b pages
 
 
 
