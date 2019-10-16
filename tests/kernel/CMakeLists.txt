@@ -1,6 +1,5 @@
 SET(DGTAL_TESTS_SRC_KERNEL
    testDigitalSet
-   testDomainSpanIterator
    testHyperRectDomain
    testInteger
    testPointVector
