@@ -85,9 +85,15 @@ namespace DGtal
    *             std::ostream_iterator<Point4D> ( std::cout, " " ) );
    *  \endcode
    *
+   * More informations can be found in the module page about
+   * \ref moduleSpacePointVectorDomain .
+   *
+   * @note Since DGtal 1.1, @ref HyperRectDomain provides random-access iterators.
+   *   It can be use to easily split the domain, for example for parallelization purpose.
+   *   See the dedicated section @ref sectDomParScan and the example file (and benchmark)
+   *   @ref exampleHyperRectDomainParallelScan.cpp .
    *
    * \see testHyperRectDomain.cpp
-   * \see testHyperRectDomain-snippet.cpp
    */
   template<typename TSpace>
   class HyperRectDomain
