@@ -3,8 +3,9 @@
 ## New Features / Critical Changes
 
 - *Kernel package*
-  - Making `HyperRectDomain_(sub)Iterator` random-access iterators.
-    (Roland Denis, [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
+  - Making `HyperRectDomain_(sub)Iterator` random-access iterators
+    (allowing parallel scans of the domain, Roland Denis,
+    [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
@@ -63,7 +64,9 @@
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
   - Fix bug in Shortcuts::saveVectorFieldOBJ
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
-  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+
+  - Fixing OBJ export: .mtl file written with relative path (Johanna
+  Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
