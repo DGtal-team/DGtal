@@ -2,6 +2,10 @@
 
 ## New Features / Critical Changes
 
+- *Kernel package*
+  - Making `HyperRectDomain_(sub)Iterator` random-access iterators.
+    (Roland Denis, [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
+
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
    (Adrien Krähenbühl,

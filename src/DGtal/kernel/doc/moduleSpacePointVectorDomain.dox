@@ -289,6 +289,23 @@ Lastly, if your compiler supports `C++11` initializer list, there is a custom `s
     trace.info() << "Processing point"<< (*it) << endl;
 @endcode    
 
+\subsection sectDomParScan Scanning an HyperRectDomain in parallel
+Iterators of @ref HyperRectDomain are random-access iterators thus allowing to easily split the scan of a domain in multiple parts, e.g. for parallelization purpose.
+
+You first need to define how to split a range (begin and end iterators) given a total number of launched threads and the id of the current thread:
+\snippet kernel/exampleHyperRectDomainParallelScan.cpp split_range
+
+Now, if you want for example to sum the result of a function applied on each point of a domain, you can first initiate a bunch of threads using an OpenMP parallel region and then iterate over the appropriate part of the point range depending on the current thread id:
+\snippet kernel/exampleHyperRectDomainParallelScan.cpp domain_scan
+
+Going further, if you want to use such strategy to initialize or modify an image, you can do:
+\snippet kernel/exampleHyperRectDomainParallelScan.cpp image_init_getset
+
+Additionally, if your image also provides random-access iterators (like @ref ImageContainerBySTLVector), you can save the getter/setter overhead by using iterators (if the function is not too much CPU intensive):
+\snippet kernel/exampleHyperRectDomainParallelScan.cpp image_init_iter
+
+You can find the complete example and a benchmark in @ref exampleHyperRectDomainParallelScan.cpp
+
 \subsection sectDomEmpty Empty domains
 
 Since version 0.9 of DGtal, HyperRectDomain can model an empty domain and it is what the default constructor returns now.
