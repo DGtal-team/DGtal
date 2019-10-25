@@ -34,6 +34,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/surfaces/DigitalSurfaceRegularization.h"
+#include "DGtal/topology/LightImplicitDigitalSurface.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,10 +46,11 @@ using namespace DGtal;
 
 TEST_CASE( "Testing DigitalSurfaceRegularization" )
 {
+  typedef LightImplicitDigitalSurface<> DigitalSurface
   
   SECTION("Basic Construction")
   {
-    DigitalSurfaceRegularization<double> regul;
+    DigitalSurfaceRegularization<DigitalSurface> regul;
     CAPTURE( regul );
     REQUIRE( regul.isValid() );
   }

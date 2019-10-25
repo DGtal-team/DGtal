@@ -31,7 +31,6 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
@@ -61,14 +60,31 @@ DGtal::DigitalSurfaceRegularization<T>::isValid() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
+///////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 inline
-double regularize(const unsigned int nbIters,
-                  const double epsilon)
+void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
+                                                  const double beta,
+                                                  const double gamma)
+{
+  myAlpha = alpha;
+  myBeta  = beta;
+  myGamma = gamma;
+  myInit = true;
+  
+}
+///////////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+inline
+double
+DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
+                                                   const double epsilon)
 {
   
 }
+
 
 
 
