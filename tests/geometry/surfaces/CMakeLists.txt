@@ -13,7 +13,7 @@ SET(TESTS_SURFACES_SRC
   testIntegralInvariantVolumeEstimator
   testIntegralInvariantCovarianceEstimator
   testLocalEstimatorFromFunctorAdapter
-  ##testVoronoiCovarianceMeasureOnSurface
+  testVoronoiCovarianceMeasureOnSurface
   testTensorVoting
   testEstimatorCache
   testSphericalHoughNormalVectorEstimator
