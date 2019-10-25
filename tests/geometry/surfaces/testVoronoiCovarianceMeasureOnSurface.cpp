@@ -163,7 +163,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
       if ( n_ii.dot( n_triv ) < 0 ) n_ii = -n_ii;
       error_ii_true.addValue( n_ii.dot( n_true ) );
     }
-  error_true.terminate();
+  error_true.terminate(); 
   error_triv_true.terminate();
   error_ii_true.terminate();
   trace.info() << "VCM/true  cos angle avg = " << error_true.mean() << std::endl;

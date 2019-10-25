@@ -42,11 +42,16 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
+
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/helpers/ShortcutsGeometry.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
-{
-
+  {
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSurfaceRegularization
   /**
@@ -58,58 +63,78 @@ namespace DGtal
    *  surface such that each quad of the output surface is as perpendicular as possible to the given
    *  input normal vector field.
    *
+   *  MapSurfel -> Normal
    *
-   *
-   * @tparam TDigitalSurface
+   * @tparam TDigitalSurface a model of concepts::CDigitalSurfaceContainer.
    */
-  template <typename T>
+  template <typename TDigitalSurface>
   class DigitalSurfaceRegularization
   {
     // ----------------------- Standard services ------------------------------
   public:
+    
+    ///DigitalSurface type
+    typedef TDigitalSurface DigitalSurface;
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurface > ));
+    
+    ///We rely on the Shortcuts 3D types
+    typedef Shortcuts<Z3i::KSpace> SH3;
+    
+    ///We rely on the ShortcutsGeometry 3D types
+    typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
+    
+    ///Pointels position container
+    typedef std::vector<Z3i::RealPoint> Positions;
+    
+    ///Normal vector per surfel container
+    typedef std::vector<Z3i::RealPoint> Normals;
+    
+    
     
     /**
      * Default constructor.
      */
     DigitalSurfaceRegularization()
     {
-      init();
+      myInit=false;
     }
-
+    
     /**
      * Destructor.
      */
     ~DigitalSurfaceRegularization() = default;
-
+    
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     DigitalSurfaceRegularization ( const DigitalSurfaceRegularization & other ) = delete;
-
+    
     /**
      * Move constructor.
      * @param other the object to move.
      */
     DigitalSurfaceRegularization ( DigitalSurfaceRegularization && other ) = delete;
-
+    
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     DigitalSurfaceRegularization & operator= ( const DigitalSurfaceRegularization & other ) = delete;
-
+    
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
     DigitalSurfaceRegularization & operator= ( DigitalSurfaceRegularization && other ) = delete;
-
+    
     // ----------------------- Interface --------------------------------------
   public:
-
+    
+    void attachNormalVectorField();
+    
     
     /**
      * @brief Initialize the parameters of the energy function.
@@ -119,13 +144,8 @@ namespace DGtal
      * @param [in] gamma the fairness term coeef. (default=0.05)
      */
     void init(const double alpha = 0.001,
-              const double beta = 1.0,
-              const double gamma = 0.05)
-    {
-      myAlpha = alpha;
-      myBeta = beta;
-      myGamma = gamma;
-    }
+              const double beta  = 1.0,
+              const double gamma = 0.05);
     
     /**
      * @brief Main regularization loop.
@@ -156,13 +176,13 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
+    
     // ------------------------- Protected Datas ------------------------------
   protected:
-
+    
     // ------------------------- Private Datas --------------------------------
   private:
-
+    
     ///Data attachment term coefficient
     double myAlpha;
     ///Alignment term coefficient
@@ -170,9 +190,13 @@ namespace DGtal
     ///Fairness term coefficient
     double myGamma;
     
+    ///Flag if the object has been set up properly
+    bool myInit;
+    
+    
   }; // end of class DigitalSurfaceRegularization
-
-
+  
+  
   /**
    * Overloads 'operator<<' for displaying objects of class 'DigitalSurfaceRegularization'.
    * @param out the output stream where the object is written.
@@ -182,8 +206,8 @@ namespace DGtal
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, const DigitalSurfaceRegularization<T> & object );
-
-} // namespace surfaces
+  
+  } // namespace surfaces
 
 
 ///////////////////////////////////////////////////////////////////////////////
