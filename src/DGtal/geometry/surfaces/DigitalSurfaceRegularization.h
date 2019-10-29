@@ -139,9 +139,9 @@ namespace DGtal
      * a normal vector to each surfel.
      *
      * @param normalFunc a function (or a lambda, or a functor) that maps
-     * surfels (SH3::Cell) to normal vectors (SH3::RealVector).
+     * surfels (SH3::SCell) to normal vectors (SH3::RealVector).
      */
-    void attachNormalVectors(const std::function<SHG3::RealVector(SH3::Cell)> &normalFunc);
+    void attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc);
     
     /**
      * Attach trivial normal vectors to the digital surface
@@ -196,14 +196,13 @@ namespace DGtal
                       const double dt = 1.0,
                       const double epsilon = 0.0001);
     
-    
-    
     /**
      * @return the regulariezed vertices positions
      * (see getCellIndex for the Cell->Index map).
      */
     const Positions & getRegularizedPositions() const
     {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
       return myRegularizedPositions;
     }
     /**
@@ -212,15 +211,8 @@ namespace DGtal
      */
     const Positions & getOriginalPositions() const
     {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
       return myOriginalPositions;
-    }
-    /**
-     * @return the input normal vectors
-     * (see getCellIndex for the Cell->Index map).
-     */
-    const Normals & getNormalVectors() const
-    {
-      return myNormals;
     }
     /**
      * @return the CellIndex (Cell->Index map) for
@@ -228,7 +220,27 @@ namespace DGtal
      */
     const SH3::Cell2Index & getCellIndex() const
     {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
       return myCellIndex;
+    }
+    /**
+     * @return the input normal vectors
+     * (see getSurfelIndex for the Cell->Index map).
+     */
+    const Normals & getNormalVectors() const
+    {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
+      return myNormals;
+    }
+    
+    /**
+     * @return the CellIndex (Cell->Index map) for
+     the positions and normal vectors containers.
+     */
+    const SH3::Surfel2Index & getSurfelIndex() const
+    {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
+      return mySurfelIndex;
     }
     // ----------------------- Services --------------------------------------
     
@@ -301,6 +313,9 @@ namespace DGtal
     
     ///Indexed surface elements
     SH3::SurfelRange mySurfels;
+    
+    ///Surfel Index
+    SH3::Surfel2Index mySurfelIndex;
     
     ///Indices for pointels
     SH3::Cell2Index myCellIndex;

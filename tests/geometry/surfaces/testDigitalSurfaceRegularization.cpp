@@ -56,8 +56,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
-  auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
-  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+  auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
   auto surfels         = SH3::getSurfelRange( surface, params );
   
   SECTION("Basic Construction using Trivial Normals")
@@ -65,11 +64,9 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
     regul.attachTrivialNormalVectors();
-    regul.enableVerbose();
     double energy = regul.computeGradient();
-    CAPTURE( energy );
-    REQUIRE( energy == Approx(6239.7));
     CAPTURE( regul );
+    REQUIRE( energy == Approx(6239.7));
     regul.regularize();
     REQUIRE( regul.isValid() );
 
@@ -83,10 +80,25 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
                        normals, SH3::Colors(), "regularizedSurf.obj");
   }
   
-  SECTION("Testing another feature of DigitalSurfaceRegularization")
+  SECTION("Basic Construction with II Normal Vectors")
   {
+    auto ii_normals = SHG3::getIINormalVectors(digitized_shape, surfels, params);
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+    regul.init();
+    auto cellIndex = regul.getCellIndex();
+    auto surfelIndex = regul.getSurfelIndex();
+    regul.attachNormalVectors([&](SH3::SCell &c){ return ii_normals[ surfelIndex[c] ];} );
+    double energy = regul.computeGradient();
+    CAPTURE( regul );
+    REQUIRE( energy == Approx(5848.5));
+    regul.regularize();
+    REQUIRE( regul.isValid() );
+    
+    auto regularizedPosition = regul.getRegularizedPositions();
+    auto normals = regul.getNormalVectors();
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                 normals, SH3::Colors(), "regularizedSurf-II.obj");
   }
-  
 }
 
 /** @ingroup Tests **/

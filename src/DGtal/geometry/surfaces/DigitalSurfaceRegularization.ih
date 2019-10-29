@@ -66,6 +66,7 @@ template <typename T>
 inline
 void DGtal::DigitalSurfaceRegularization<T>::attachTrivialNormalVectors(const Parameters someParams)
 {
+  ASSERT_MSG(myInit, "The init() method must be called before setting the normals");
   myNormals.clear();
   myNormals = SHG3::getCTrivialNormalVectors( myDigitalSurface, mySurfels, someParams);
  }
@@ -74,11 +75,13 @@ void DGtal::DigitalSurfaceRegularization<T>::attachTrivialNormalVectors(const Pa
 template <typename T>
 inline
 void
-DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealVector(SH3::Cell)> &normalFunc)
+DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc)
 {
+  ASSERT_MSG(myInit, "The init() method must be called before setting the normals");
   myNormals.clear();
+  myNormals.resize( mySurfels.size());
   for(auto i=0; i< mySurfels.size();++i)
-    myNormals[i] = normalFunc(mySurfels[i]);
+    myNormals[i] = normalFunc( mySurfels[i] );
 }
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -115,8 +118,8 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
   
   /////
   ///Cacheing some topology information
-  SH3::Surfel2Index surfelIndex;
-  auto polySurf        = SH3::makeDualPolygonalSurface(surfelIndex,myDigitalSurface);
+ 
+  auto polySurf        = SH3::makeDualPolygonalSurface(mySurfelIndex,myDigitalSurface);
   myFaces = polySurf->allFaces() ;  //All faces of the dual digital surface
   auto dsurf_faces = myDigitalSurface->allClosedFaces(); // Faces of digital surface (umbrellas)
   // dsurf_pointels list the pointels in the same order as the faces of polySurf.
