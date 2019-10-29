@@ -33,8 +33,9 @@
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/helpers/ShortcutsGeometry.h"
 #include "DGtal/geometry/surfaces/DigitalSurfaceRegularization.h"
-#include "DGtal/topology/LightImplicitDigitalSurface.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -46,13 +47,40 @@ using namespace DGtal;
 
 TEST_CASE( "Testing DigitalSurfaceRegularization" )
 {
-  typedef LightImplicitDigitalSurface<> DigitalSurface
+  typedef Shortcuts<Z3i::KSpace> SH3;
+  typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
+  auto params = SH3::defaultParameters()
+              | SHG3::defaultParameters();
   
-  SECTION("Basic Construction")
+  params( "polynomial", "goursat" )( "gridstep", 0.5 );
+  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+  auto K               = SH3::getKSpace( params );
+  auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
+  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+  auto surfels         = SH3::getSurfelRange( surface, params );
+  
+  SECTION("Basic Construction using Trivial Normals")
   {
-    DigitalSurfaceRegularization<DigitalSurface> regul;
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+    regul.init();
+    regul.attachTrivialNormalVectors();
+    regul.enableVerbose();
+    double energy = regul.computeGradient();
+    CAPTURE( energy );
+    REQUIRE( energy == Approx(6239.7));
     CAPTURE( regul );
+    regul.regularize();
     REQUIRE( regul.isValid() );
+
+    auto regularizedPosition = regul.getRegularizedPositions();
+    auto original = regul.getOriginalPositions();
+    auto normals = regul.getNormalVectors();
+    auto cellIndex = regul.getCellIndex();
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return original[ cellIndex[c]];},
+                       normals, SH3::Colors(), "originalSurf.obj");
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                       normals, SH3::Colors(), "regularizedSurf.obj");
   }
   
   SECTION("Testing another feature of DigitalSurfaceRegularization")
