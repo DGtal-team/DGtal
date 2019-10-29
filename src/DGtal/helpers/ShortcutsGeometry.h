@@ -479,7 +479,7 @@ namespace DGtal
           typedef LocalEstimatorFromSurfelFunctorAdapter
             < SurfaceContainer, Metric, SurfelFunctor, Functor>         NormalEstimator;
           if ( verbose > 0 )
-            trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
+            trace.info() << "- CTrivial normal t=" << t << " (discrete)" << std::endl;
           const Functor fct( 1.0, t );
           const KSpace &  K = surface->container().space();
           Metric    aMetric( 2.0 );
