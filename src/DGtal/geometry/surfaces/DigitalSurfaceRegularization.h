@@ -63,7 +63,17 @@ namespace DGtal
    *  surface such that each quad of the output surface is as perpendicular as possible to the given
    *  input normal vector field.
    *
-   *  MapSurfel -> Normal
+   * If @f$P@f$ denotes the vertices of the input digital surface, @f$F@f$ the set of
+   * (quadrilateral) faces and @f$n_f@f$ an estimated normal vector on the
+   * face @f$f@f$, we want the quad surface vertex positions @f$P^*@f$ that
+   * minimizes the following energy function:
+   * $$\mathcal{E}(P) := \alpha \sum_{i=1}^{n} \|p_i - \hat{p}_i\|^2  +
+   *      \beta \sum_{f\in F} \sum_{{e_j} \in \partial{f} } ( e_j \cdot n_{f} )^2 + \gamma \sum_{i=1}^{n} \|\hat{p}_i - \hat{b}_i\|^2\,.$$
+   * where @f$"\cdot"@f$ is the standard @f$\mathbb{R}^3@f$ scalar product, @f$e_j\in
+   * \partial{f}@f$ is an edge of the face @f$f@f$ (and is equal to some @f$p_k -
+   * p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
+   * @f$\hat{p}_i@f$.
+   *
    *
    * @tparam TDigitalSurface a Digital Surface type (see DigitalSurface).
    */
@@ -75,6 +85,7 @@ namespace DGtal
     
     ///DigitalSurface type
     typedef TDigitalSurface DigSurface;
+    ///Digital Surface Container type
     typedef typename TDigitalSurface::DigitalSurfaceContainer DigitalSurfaceContainer;
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
     
@@ -133,7 +144,6 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     
-    
     /**
      * Attach normal vectors from a generic function that associates
      * a normal vector to each surfel.
@@ -165,9 +175,8 @@ namespace DGtal
               const double beta  = 1.0,
               const double gamma = 0.05);
     
-    
     /**
-     * Compute the enegery gradient vector and return the energy value.
+     * Compute the energy gradient vector and return the energy value.
      *
      * @note init() method must have been called and normal vectors must be attached
      * to the surfels.
@@ -181,9 +190,9 @@ namespace DGtal
      * @brief Main regularization loop.
      *
      * This method performs the main minimization loop of the energy
-     * using a gradient descent scheme. The iterative process stops either when
-     * the number of steps reaches @a nbIters, or when the @f$l_\infy@f$ norm of
-     * the energy gradient is below @a epsilon.
+     * using a gradient descent scheme (with automatic update of the learning step).
+     * The iterative process stops either when the number of steps reaches @a nbIters,
+     * or when the @f$l_\infy@f$ norm of the energy gradient is below @a epsilon.
      *
      * The energy at the final step is returned.
      *
@@ -199,6 +208,7 @@ namespace DGtal
     /**
      * @return the regulariezed vertices positions
      * (see getCellIndex for the Cell->Index map).
+     * @note the init() method must have been called;
      */
     const Positions & getRegularizedPositions() const
     {
@@ -208,6 +218,7 @@ namespace DGtal
     /**
      * @return the input vertices positions
      * (see getCellIndex for the Cell->Index map).
+     * @note the init() method must have been called;
      */
     const Positions & getOriginalPositions() const
     {
@@ -217,6 +228,7 @@ namespace DGtal
     /**
      * @return the CellIndex (Cell->Index map) for
      the positions and normal vectors containers.
+     * @note the init() method must have been called;
      */
     const SH3::Cell2Index & getCellIndex() const
     {
@@ -226,6 +238,7 @@ namespace DGtal
     /**
      * @return the input normal vectors
      * (see getSurfelIndex for the Cell->Index map).
+     * @note the init() method must have been called;
      */
     const Normals & getNormalVectors() const
     {
@@ -236,6 +249,7 @@ namespace DGtal
     /**
      * @return the CellIndex (Cell->Index map) for
      the positions and normal vectors containers.
+     * @note the init() method must have been called;
      */
     const SH3::Surfel2Index & getSurfelIndex() const
     {
