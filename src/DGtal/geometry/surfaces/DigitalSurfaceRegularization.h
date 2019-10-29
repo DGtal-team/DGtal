@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/topology/CDigitalSurfaceContainer.h"
+#include "DGtal/topology/DigitalSurface.h"
 
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
@@ -65,7 +65,7 @@ namespace DGtal
    *
    *  MapSurfel -> Normal
    *
-   * @tparam TDigitalSurface a model of concepts::CDigitalSurfaceContainer.
+   * @tparam TDigitalSurface a Digital Surface type (see DigitalSurface).
    */
   template <typename TDigitalSurface>
   class DigitalSurfaceRegularization
@@ -74,8 +74,9 @@ namespace DGtal
   public:
     
     ///DigitalSurface type
-    typedef TDigitalSurface DigitalSurface;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurface > ));
+    typedef TDigitalSurface DigSurface;
+    typedef typename TDigitalSurface::DigitalSurfaceContainer DigitalSurfaceContainer;
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
     
     ///We rely on the Shortcuts 3D types
     typedef Shortcuts<Z3i::KSpace> SH3;
@@ -86,17 +87,13 @@ namespace DGtal
     ///Pointels position container
     typedef std::vector<Z3i::RealPoint> Positions;
     
-    ///Normal vector per surfel container
-    typedef std::vector<Z3i::RealPoint> Normals;
-    
-    
-    
     /**
      * Default constructor.
      */
-    DigitalSurfaceRegularization()
+    DigitalSurfaceRegularization(CountedPtr<DigSurface> aDigSurf)
+    :  myInit(false), myVerbose(false), myDigitalSurface(aDigSurf)
     {
-      myInit=false;
+      myK = SH3::getKSpace( myDigitalSurface );
     }
     
     /**
@@ -133,8 +130,19 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     
-    void attachNormalVectorField();
     
+    void attachNormalVectors(const std::function<SHG3::RealPoint(SH3::SCell)> &normalFunc);
+    
+    /**
+    * Attach trivial normal vectors to the digital surface
+    * (@see getCTrivialNormalVectors).
+    *
+    * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
+    *
+    */
+    void attachTrivialNormalVectors(const Parameters someParams
+                                    = SH3::defaultParameters() | SHG3::defaultParameters() );
+       
     
     /**
      * @brief Initialize the parameters of the energy function.
@@ -147,6 +155,18 @@ namespace DGtal
               const double beta  = 1.0,
               const double gamma = 0.05);
     
+    
+    /**
+     * Compute the enegery gradient vector and return the energy value.
+     *
+     * @note init() method must have been called and normal vectors must be attached
+     * to the surfels.
+     *
+     * @return the energy value.
+     **/
+    double computeGradient();
+    
+    
     /**
      * @brief Main regularization loop.
      *
@@ -158,12 +178,35 @@ namespace DGtal
      * The energy at the final step is returned.
      *
      * @param [in] nbIters maxium number of steps (default=500)
-     * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
+     * @param [in] dt initial learning rate (default = 1.0)
+      * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
      * @return the energy at the final step.
      */
-    double regularize(const unsigned int nbIters = 500,
+    double regularize(const unsigned int nbIters = 200,
+                      const double dt = 1.0,
                       const double epsilon = 0.0001);
     
+    
+    
+    const Positions & getRegularizedPositions() const
+    {
+      return myRegularizedPositions;
+    }
+    const Positions & getOriginalPositions() const
+    {
+      return myOriginalPositions;
+    }
+    const Positions & getNormalVectors() const
+    {
+      return myNormals;
+    }
+    
+    const SH3::Cell2Index & getCellIndex() const
+    {
+      return myCellIndex;
+    }
+    // ----------------------- Services --------------------------------------
+
     
     /**
      * Writes/Displays the object on an output stream.
@@ -177,8 +220,21 @@ namespace DGtal
      */
     bool isValid() const;
     
+    /**
+     * Enable verbose messages.
+     */
+    void enableVerbose() {myVerbose=true;}
+    
+    /**
+     * Disable verbose messages.
+     */
+    void disasbleVerbose() {myVerbose=false;}
+    
+    
     // ------------------------- Protected Datas ------------------------------
   protected:
+    
+     
     
     // ------------------------- Private Datas --------------------------------
   private:
@@ -193,6 +249,48 @@ namespace DGtal
     ///Flag if the object has been set up properly
     bool myInit;
     
+    ///Flag for verbose messages
+    bool myVerbose;
+    
+    ///Input DigitalSurface to regularize
+    CountedPtr<DigSurface> myDigitalSurface;
+    
+    ///Copy of the input pointels positions.
+    Positions myOriginalPositions;
+   
+    ///Regularized vertices
+    Positions myRegularizedPositions;
+    
+    ///Normals
+    Positions myNormals;
+    
+    ///Gradient of the energy w.r.t. vertex positons
+    Positions myGradient;
+    ///Gradient of the energy w.r.t. vertex positons
+    ///TODO: remove this structure?
+    Positions myGradientAlign;
+      
+    
+    ///Instance of the KSpace
+    SH3::KSpace myK;
+    
+    ///Indexed surface elements
+    SH3::SurfelRange mySurfels;
+    
+    ///Indices for pointels
+    SH3::Cell2Index myCellIndex;
+    
+    ///Indices of adjacent pointels for the Alignement energy term
+    std::vector< SH3::Idx > myAlignPointelsIdx;
+    ///Adjacent pointels for the Alignement energy term
+    std::vector< SH3::Cell > myAlignPointels;
+    ///Number of adjacent edges to pointels
+    std::vector<unsigned char> myNumberAdjEdgesToPointel;
+    ///Indices of cells foor the Fairness term
+    std::vector< SH3::Idx > myFairnessPointelsIdx;
+    std::vector< unsigned char > myNbAdjacent;
+    ///All faces of the dual digital surfacce
+    SH3::PolygonalSurface::FaceRange myFaces;
     
   }; // end of class DigitalSurfaceRegularization
   
