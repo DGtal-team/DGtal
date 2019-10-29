@@ -87,6 +87,9 @@ namespace DGtal
     ///Pointels position container
     typedef std::vector<Z3i::RealPoint> Positions;
     
+    ///Pointels position container
+    typedef std::vector<Z3i::RealVector> Normals;
+    
     /**
      * Default constructor.
      */
@@ -131,18 +134,25 @@ namespace DGtal
   public:
     
     
-    void attachNormalVectors(const std::function<SHG3::RealPoint(SH3::SCell)> &normalFunc);
+    /**
+     * Attach normal vectors from a generic function that associates
+     * a normal vector to each surfel.
+     *
+     * @param normalFunc a function (or a lambda, or a functor) that maps
+     * surfels (SH3::Cell) to normal vectors (SH3::RealVector).
+     */
+    void attachNormalVectors(const std::function<SHG3::RealVector(SH3::Cell)> &normalFunc);
     
     /**
-    * Attach trivial normal vectors to the digital surface
-    * (@see getCTrivialNormalVectors).
-    *
-    * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
-    *
-    */
+     * Attach trivial normal vectors to the digital surface
+     * (@see getCTrivialNormalVectors).
+     *
+     * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
+     *
+     */
     void attachTrivialNormalVectors(const Parameters someParams
                                     = SH3::defaultParameters() | SHG3::defaultParameters() );
-       
+    
     
     /**
      * @brief Initialize the parameters of the energy function.
@@ -179,7 +189,7 @@ namespace DGtal
      *
      * @param [in] nbIters maxium number of steps (default=500)
      * @param [in] dt initial learning rate (default = 1.0)
-      * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
+     * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
      * @return the energy at the final step.
      */
     double regularize(const unsigned int nbIters = 200,
@@ -188,25 +198,40 @@ namespace DGtal
     
     
     
+    /**
+     * @return the regulariezed vertices positions
+     * (see getCellIndex for the Cell->Index map).
+     */
     const Positions & getRegularizedPositions() const
     {
       return myRegularizedPositions;
     }
+    /**
+     * @return the input vertices positions
+     * (see getCellIndex for the Cell->Index map).
+     */
     const Positions & getOriginalPositions() const
     {
       return myOriginalPositions;
     }
-    const Positions & getNormalVectors() const
+    /**
+     * @return the input normal vectors
+     * (see getCellIndex for the Cell->Index map).
+     */
+    const Normals & getNormalVectors() const
     {
       return myNormals;
     }
-    
+    /**
+     * @return the CellIndex (Cell->Index map) for
+     the positions and normal vectors containers.
+     */
     const SH3::Cell2Index & getCellIndex() const
     {
       return myCellIndex;
     }
     // ----------------------- Services --------------------------------------
-
+    
     
     /**
      * Writes/Displays the object on an output stream.
@@ -234,7 +259,7 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   protected:
     
-     
+    
     
     // ------------------------- Private Datas --------------------------------
   private:
@@ -257,19 +282,19 @@ namespace DGtal
     
     ///Copy of the input pointels positions.
     Positions myOriginalPositions;
-   
+    
     ///Regularized vertices
     Positions myRegularizedPositions;
     
     ///Normals
-    Positions myNormals;
+    Normals myNormals;
     
     ///Gradient of the energy w.r.t. vertex positons
     Positions myGradient;
     ///Gradient of the energy w.r.t. vertex positons
     ///TODO: remove this structure?
     Positions myGradientAlign;
-      
+    
     
     ///Instance of the KSpace
     SH3::KSpace myK;
