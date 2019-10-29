@@ -69,6 +69,17 @@ void DGtal::DigitalSurfaceRegularization<T>::attachTrivialNormalVectors(const Pa
   myNormals.clear();
   myNormals = SHG3::getCTrivialNormalVectors( myDigitalSurface, mySurfels, someParams);
  }
+
+///////////////////////////////////////////////////////////////////////////////
+template <typename T>
+inline
+void
+DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealVector(SH3::Cell)> &normalFunc)
+{
+  myNormals.clear();
+  for(auto i=0; i< mySurfels.size();++i)
+    myNormals[i] = normalFunc(mySurfels[i]);
+}
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename T>
@@ -229,17 +240,6 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   return energy;
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-template <typename T>
-inline
-void
-DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealPoint(SH3::SCell)> &normalFunc)
-{
-  myNormals.clear();
-  for(auto i=0; i< mySurfels.size();++i)
-    myNormals[i] = normalFunc(mySurfels[i]);
-}
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
 inline
