@@ -76,12 +76,12 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef Surface::ConstIterator ConstIterator;
   typedef SurfaceContainer::Surfel Surfel;
   typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
-  // typedef functors::HatPointFunction<Point,double> KernelFunction;
-  typedef functors::BallConstantPointFunction<Point,double> KernelFunction;
+  typedef functors::HatPointFunction<Point,double> KernelFunction;
+  //typedef functors::BallConstantPointFunction<Point,double> KernelFunction;
   typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric,KernelFunction> VCMOnSurface;
   trace.beginBlock("Creating Surface");
   // std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
-  std::string poly_str = "-81.0+x^2+y^2+z^2";
+  std::string poly_str = "-81.0*4.0+x^2+y^2+z^2";
   // NB (JOL): II is sensitive to orientation !!
   // std::string poly_str = "81.0-x^2-y^2-z^2"; 
   Polynomial3 poly;
@@ -96,8 +96,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
     }
   CountedPtr<ImplicitShape> shape( new ImplicitShape( poly ) );
 
-  Point p1( -10, -10, -10 );
-  Point p2( 10, 10, 10 );
+  Point p1( -20, -20, -20 );
+  Point p2( 20, 20, 20 );
   KSpace K;
   nbok += K.init( p1, p2, true ) ? 1 : 0;
   nb++;
@@ -115,9 +115,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing VCM on surface." );
-  KernelFunction chi( 1.0, 7.0 );
+  KernelFunction chi( 1.0, 5.0 );
   CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
-                                                          5.0, 7.0, chi, 7.0, Metric(), true ) );
+                                                          10.0, 5.0, chi, 1.5, Metric(), true ) );
   trace.endBlock();
 
   trace.beginBlock("Wrapping normal estimator." );
@@ -138,7 +138,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Evaluating normals wrt true normal." );
-  typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
+  typedef functors::ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
   BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< IINormalEstimator > ));
@@ -180,10 +180,10 @@ bool testVoronoiCovarianceMeasureOnSurface()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "VCM/true cos angle dev < 0.05" << std::endl;
-  // nbok += error_true.mean() > error_triv_true.mean() ? 1 : 0;
-  // nb++;
-  // trace.info() << "(" << nbok << "/" << nb << ") "
-  //              << "VCM/true is closer to 1.0 than triv/true." << std::endl;
+  nbok += error_true.mean() > error_triv_true.mean() ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "VCM/true is closer to 1.0 than triv/true." << std::endl;
 
   nbok += error_ii_true.mean() > 0.95 ? 1 : 0;
   nb++;
@@ -218,7 +218,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing ground truth mean curvatures." );
-  typedef ShapeGeometricFunctors::ShapeMeanCurvatureFunctor<ImplicitShape> CurvatureFunctor;
+  typedef functors::ShapeGeometricFunctors::ShapeMeanCurvatureFunctor<ImplicitShape> CurvatureFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, CurvatureFunctor> TrueCurvatureEstimator;
   
   TrueCurvatureEstimator true_curv_estimator;
@@ -254,16 +254,16 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.info() << "- TRUE curv: E[X]=" << stat_true_curv.mean()
                << " min=" << stat_true_curv.min()
                << " max=" << stat_true_curv.max() << std::endl;
-  nbok += ( std::abs( stat_ii_curv.mean() - 0.11 ) < 0.05 ) ? 1 : 0;
+  nbok += ( std::abs( stat_ii_curv.mean() - 0.055555 ) < 0.05 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "mean of II curv is around 0.11: " 
-               << std::abs( stat_ii_curv.mean() - 0.11 ) << std::endl;
-  nbok += ( std::abs( stat_vcm_curv.mean() - 0.11 ) < 0.05 ) ? 1 : 0;
+               << "mean of II curv is around 0.055555: " 
+               << std::abs( stat_ii_curv.mean() - 0.055555 ) << std::endl;
+  nbok += ( std::abs( stat_vcm_curv.mean() - 0.055555 ) < 0.05 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "mean of VCM curv is around 0.11: "
-               << std::abs( stat_vcm_curv.mean() - 0.11 ) << std::endl;
+               << "mean of VCM curv is around 0.055555: "
+               << std::abs( stat_vcm_curv.mean() - 0.055555 ) << std::endl;
 
   trace.endBlock();
   return nbok == nb;
