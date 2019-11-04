@@ -216,7 +216,7 @@ namespace DGtal
                       const double dt = 1.0,
                       const double epsilon = 0.0001,
                       const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&) > &advectionFunc =
-                              [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p = p+v; });
+                              [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
     
     /**
      * Static method to be used in @e regularize() that
