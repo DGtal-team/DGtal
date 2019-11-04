@@ -63,7 +63,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   {
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    regul.attachTrivialNormalVectors();
+    regul.attachTrivialNormalVectors(params);
     double energy = regul.computeGradient();
     CAPTURE( regul );
     REQUIRE( energy == Approx(6239.7));
@@ -80,11 +80,13 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                        normals, SH3::Colors(), "regularizedSurf.obj");
   
-    //Testing Clamped version
+    //Testing reset() at few points
     regul.reset();
     regularizedPosition = regul.getRegularizedPositions();
+    REQUIRE( original[0] == regularizedPosition[0] );
     REQUIRE( original[123] == regularizedPosition[123] );
     
+    //Testing Clamped version
     auto finalenergyClamped = regul.regularize(200,1.0,0.001, DigitalSurfaceRegularization<SH3::DigitalSurface>::clampedAdvection);
     regularizedPosition = regul.getRegularizedPositions();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
