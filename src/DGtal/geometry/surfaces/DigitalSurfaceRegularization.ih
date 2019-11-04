@@ -44,7 +44,9 @@ inline
 void
 DGtal::DigitalSurfaceRegularization<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[DigitalSurfaceRegularization] alpha= "<<myAlpha<<" beta= "<<myBeta<<" gamma= "<<myGamma<< " number of surfels= "<<mySurfels.size();
+  out << "[DigitalSurfaceRegularization] alpha= "<<myAlpha
+      <<" beta= "<<myBeta <<" gamma= "<<myGamma
+      << " number of surfels= "<<mySurfels.size();
 }
 
 /**
@@ -249,7 +251,8 @@ inline
 double
 DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
                                                    const double dt,
-                                                   const double epsilon)
+                                                   const double epsilon,
+                                                   const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&)> &advectionFunc)
 {
   double energy = 0.0;
   double last_energy = 0.0;
@@ -278,8 +281,14 @@ DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
     first_iter  = false;
     
     //One step advection
+    SHG3::RealVector v;
     for(int i=0; i < myRegularizedPositions.size(); ++i)
-      myRegularizedPositions[i] -= mydt * myGradient[i];
+    {
+      v = - mydt * myGradient[i] ;
+      //myRegularizedPositions[i] = advectionFunc( myRegularizedPositions[i], myOriginalPositions[i], v );
+      advectionFunc( myRegularizedPositions[i], myOriginalPositions[i], v );
+    }
+    
   }
   return energy;
 }

@@ -74,6 +74,10 @@ namespace DGtal
    * p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
    * @f$\hat{p}_i@f$.
    *
+   * To minimize this energy, instead of solving the associated sparse linear system as described in @cite coeurjolly17regDGCI,
+   * we perform a gradient descent strategy which allows us a finer control of the vertices (see advection methods).
+   *
+   * @see testDigitalSurfaceRegularization
    *
    * @tparam TDigitalSurface a Digital Surface type (see DigitalSurface).
    */
@@ -155,7 +159,7 @@ namespace DGtal
     
     /**
      * Attach trivial normal vectors to the digital surface
-     * (@see getCTrivialNormalVectors).
+     * (cf ShortCutsGeometry::getCTrivialNormalVectors).
      *
      * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
      *
@@ -192,18 +196,48 @@ namespace DGtal
      * This method performs the main minimization loop of the energy
      * using a gradient descent scheme (with automatic update of the learning step).
      * The iterative process stops either when the number of steps reaches @a nbIters,
-     * or when the @f$l_\infy@f$ norm of the energy gradient is below @a epsilon.
+     * or when the @f$l_\infty@f$ norm of the energy gradient is below @a epsilon.
+     *
+     * The last parameter is a function that describes how regularized points are advected
+     * during the gradient descent. By default, points are shifted by a fraction of the energy
+     * gradient vector (and the default function is thus @f$ p \leftarrow p + v@f$ with
+     * @f$ v = -dt  \nabla E_p@f$). See @see clampedAdvection for another advection strategy.
      *
      * The energy at the final step is returned.
      *
      * @param [in] nbIters maxium number of steps (default=500)
      * @param [in] dt initial learning rate (default = 1.0)
      * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
+     * @param [in] advectionFunc advection function/functor/lambda to move a regularized point &a p associated with
+     * the original point @a o w.r.t to a displacement vector @a v (default = p+v)
      * @return the energy at the final step.
      */
     double regularize(const unsigned int nbIters = 200,
                       const double dt = 1.0,
-                      const double epsilon = 0.0001);
+                      const double epsilon = 0.0001,
+                      const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&) > &advectionFunc =
+                              [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p = p+v; });
+    
+    /**
+     * Static method to be used in @e regularize() that
+     * clamps to regularized point @a p when shifted by @a v
+     * in the unit cube centered at @a orig.
+     *
+     * @param [in/out] p the point to advect.
+     * @param [in] orig the associated point in the original surface.
+     * @param [in] v the advection vector.
+     */
+    static void clampedAdvection(SHG3::RealPoint &p,
+                                const SHG3::RealPoint &orig,
+                                const SHG3::RealVector &v)
+    {
+      p += v;
+      for(auto i=0; i < 3; ++i)
+        if ((p[i]-orig[i])> 0.5) p[i]=orig[i]+0.5;
+        else
+          if ((p[i]-orig[i])< -0.5) p[i]=orig[i]-0.5;
+    }
+    
     
     /**
      * @return the regulariezed vertices positions
@@ -256,6 +290,18 @@ namespace DGtal
       ASSERT_MSG(myInit, "The init() method must be called first.");
       return mySurfelIndex;
     }
+    
+    /**
+     * Reset the regularized vertices positions to the original one.
+     * @note the init() method must have been called;
+     */
+    void reset()
+    {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
+      std::copy(myOriginalPositions.begin(), myOriginalPositions.end(), myRegularizedPositions.begin());
+    }
+    
+    
     // ----------------------- Services --------------------------------------
     
     
@@ -317,11 +363,14 @@ namespace DGtal
     
     ///Gradient of the energy w.r.t. vertex positons
     Positions myGradient;
+    
+    // ---------------------------------------------------------------
+    ///Internal members to store precomputed topological informations
+
     ///Gradient of the energy w.r.t. vertex positons
     ///TODO: remove this structure?
     Positions myGradientAlign;
-    
-    
+
     ///Instance of the KSpace
     SH3::KSpace myK;
     
