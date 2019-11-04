@@ -62,10 +62,9 @@ int main( int argc, char** argv )
 
   const string   volfile = argc > 1 ? argv[ 1 ] : examplesPath + "samples/Al.100.vol";
   const double threshold = argc > 2 ? atof( argv[ 2 ] ) : 0.5;
-  auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
-  params( "colormap", "Tics" );
   trace.beginBlock ( "Load vol file -> build digital surface -> estimate II normals." );
   //! [AT-surface-init]
+  auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
   auto bimage    = SH3::makeBinaryImage( volfile, params );
   auto K         = SH3::getKSpace( bimage, params );
   auto surface   = SH3::makeDigitalSurface( bimage, K, params );
