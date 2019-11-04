@@ -89,7 +89,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     regularizedPosition = regul.getRegularizedPositions();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                           normals, SH3::Colors(), "regularizedSurfClamped.obj");
-    REQUIRE( finalenergyClamped == Approx(24.5) );
+    REQUIRE( finalenergyClamped == Approx(24.4902) );
     REQUIRE( finalenergy < finalenergyClamped );
   }
   
