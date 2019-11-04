@@ -77,7 +77,7 @@ namespace DGtal
    * To minimize this energy, instead of solving the associated sparse linear system as described in @cite coeurjolly17regDGCI,
    * we perform a gradient descent strategy which allows us a finer control of the vertices (see advection methods).
    *
-   * @see testDigitalSurfaceRegularization
+   * @see testDigitalSurfaceRegularization.cpp
    *
    * @tparam TDigitalSurface a Digital Surface type (see DigitalSurface).
    */
