@@ -52,14 +52,14 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   auto params = SH3::defaultParameters()
               | SHG3::defaultParameters();
   
-  params( "polynomial", "goursat" )( "gridstep", 0.5 );
+  params( "polynomial", "goursat" )( "gridstep", 0.5 )("verbose", 0);
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
   auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
   auto surfels         = SH3::getSurfelRange( surface, params );
   
-  SECTION("Basic Construction using Trivial Normals")
+  SECTION("Basic Construction using Trivial Normals and regular/clamped advection")
   {
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
@@ -67,7 +67,8 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     double energy = regul.computeGradient();
     CAPTURE( regul );
     REQUIRE( energy == Approx(6239.7));
-    regul.regularize();
+    auto finalenergy = regul.regularize();
+    REQUIRE( finalenergy == Approx( 16.27463) );
     REQUIRE( regul.isValid() );
 
     auto regularizedPosition = regul.getRegularizedPositions();
@@ -78,6 +79,18 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
                        normals, SH3::Colors(), "originalSurf.obj");
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                        normals, SH3::Colors(), "regularizedSurf.obj");
+  
+    //Testing Clamped version
+    regul.reset();
+    regularizedPosition = regul.getRegularizedPositions();
+    REQUIRE( original[123] == regularizedPosition[123] );
+    
+    auto finalenergyClamped = regul.regularize(200,1.0,0.001, DigitalSurfaceRegularization<SH3::DigitalSurface>::clampedAdvection);
+    regularizedPosition = regul.getRegularizedPositions();
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                          normals, SH3::Colors(), "regularizedSurfClamped.obj");
+    REQUIRE( finalenergyClamped == Approx(24.5) );
+    REQUIRE( finalenergy < finalenergyClamped );
   }
   
   SECTION("Basic Construction with II Normal Vectors")
