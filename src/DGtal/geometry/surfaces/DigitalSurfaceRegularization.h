@@ -223,7 +223,7 @@ namespace DGtal
      * clamps to regularized point @a p when shifted by @a v
      * in the unit cube centered at @a orig.
      *
-     * @param [in/out] p the point to advect.
+     * @param [in,out] p the point to advect.
      * @param [in] orig the associated point in the original surface.
      * @param [in] v the advection vector.
      */
