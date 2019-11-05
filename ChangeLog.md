@@ -82,6 +82,12 @@
    (Adrien Krähenbühl,
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
 
+- *DEC*
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441))
+  related to bad link in DEC/moduleAT documentation and missing
+  associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
+  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
+
 - *doc*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))

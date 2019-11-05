@@ -18,6 +18,7 @@ endif(WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
 if (WITH_EIGEN)
 	set(DGTAL_EXAMPLES_SRC2_DEC
         examplePropagation
+	exampleSurfaceATNormals
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC2_DEC})
