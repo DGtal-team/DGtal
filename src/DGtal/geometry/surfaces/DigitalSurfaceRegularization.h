@@ -249,7 +249,7 @@ namespace DGtal
     SHG3::RealPoint getRegularizedPosition(const SH3::Cell& aPointel)
     {
       ASSERT_MSG(myInit, "The init() method must be called first.");
-      ASSERT_MSG(aPointel.dimension() == 0, "The cell must be a pointel (0-cell)");
+      ASSERT_MSG(myK.uDim(aPointel) == 0, "The cell must be a pointel (0-cell)");
       return myRegularizedPositions[ myPointelIndex[ aPointel] ];
     }
     
