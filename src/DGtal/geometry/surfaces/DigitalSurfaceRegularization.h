@@ -341,12 +341,6 @@ namespace DGtal
      */
     void disasbleVerbose() {myVerbose=false;}
     
-    
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-    
-    
-    
     // ------------------------- Private Datas --------------------------------
   private:
     
