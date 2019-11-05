@@ -56,7 +56,7 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - \ref moduleDECHelmoltz (Pierre Gueth)
 - \ref moduleDECPropagation (Pierre Gueth)
 - \ref moduleHeatLaplaceOperator (Thomas Caissard)
-- \ref moduleAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
+- \ref moduleGenericAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
 
 @b Package @b Concepts @b Overview
 - \ref packageDECConcepts

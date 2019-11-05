@@ -12,7 +12,7 @@
 
 namespace DGtal {
 /*!
-@page moduleAT Piecewise-smooth approximation using a discrete calculus model of Ambrosio-Tortorelli functional
+@page moduleGenericAT Piecewise-smooth approximation using a discrete calculus model of Ambrosio-Tortorelli functional
 
 @writers Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth
 
