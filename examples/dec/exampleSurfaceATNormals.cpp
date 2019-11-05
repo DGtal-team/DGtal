@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file surface-AT-normals
+ * @file exampleSurfaceATNormals.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2019/06/09
  *
- * An example file named surface-AT-normals.
+ * An example file named exampleSurfaceATNormals.
  *
  * This file is part of the DGtal library.
  */
@@ -55,7 +55,7 @@ int main( int argc, char** argv )
   typedef SHG3::RealVector                 RealVector;
 
   const double alpha_at  = 0.1;
-  const double lambda_at = 0.025;
+  const double lambda_at = 0.01;
   const double e1        = 2.0;
   const double e2        = 0.25;
   const double er        = 2.0;
