@@ -241,6 +241,7 @@ namespace DGtal
     
     /**
      * @returns the regularized position of a given pointel @a aPointel.
+     * @param[in] aPointel the digital surface pointel.
      *
      * @note the init() method must have been called. For relevant results, the regularize()
      * methods should have been also called before accessing the new positions.
@@ -248,7 +249,7 @@ namespace DGtal
     SHG3::RealPoint getRegularizedPosition(const SH3::Cell& aPointel)
     {
       ASSERT_MSG(myInit, "The init() method must be called first.");
-      ASSERT_MSG(aPoint.dimension() == 0, "The cell must be a pointel (0-cell)");
+      ASSERT_MSG(aPointel.dimension() == 0, "The cell must be a pointel (0-cell)");
       return myRegularizedPositions[ myPointelIndex[ aPointel] ];
     }
     
