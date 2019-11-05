@@ -12,6 +12,10 @@
    (Adrien Krähenbühl,
    [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
 
+- *Geometry Package*
+  - New piecewise smooth digital surface regularization class (David Coeurjolly,
+  [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+
 ## Changes
 
 - *DEC*
