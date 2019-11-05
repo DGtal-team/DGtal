@@ -56,11 +56,11 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
-  auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
-  auto surfels         = SH3::getSurfelRange( surface, params );
   
   SECTION("Basic Construction using Trivial Normals and regular/clamped advection")
   {
+    auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
     regul.attachTrivialNormalVectors(params);
@@ -72,8 +72,8 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     REQUIRE( regul.isValid() );
 
     auto regularizedPosition = regul.getRegularizedPositions();
-    auto original = regul.getOriginalPositions();
-    auto normals = regul.getNormalVectors();
+    auto original  = regul.getOriginalPositions();
+    auto normals   = regul.getNormalVectors();
     auto cellIndex = regul.getCellIndex();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return original[ cellIndex[c]];},
                        normals, SH3::Colors(), "originalSurf.obj");
@@ -93,17 +93,23 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
                           normals, SH3::Colors(), "regularizedSurfClamped.obj");
     REQUIRE( finalenergyClamped == Approx(24.4902) );
     REQUIRE( finalenergy < finalenergyClamped );
+    
+    //Testing accessor
+    auto aPointelIndex = cellIndex.begin();
+    REQUIRE( regularizedPosition[ aPointelIndex->second ] == regul.getRegularizedPosition( aPointelIndex->first) );
   }
   
   SECTION("Basic Construction with II Normal Vectors")
   {
+    auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
     auto ii_normals = SHG3::getIINormalVectors(digitized_shape, surfels, params);
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    auto cellIndex = regul.getCellIndex();
+    auto cellIndex   = regul.getCellIndex();
     auto surfelIndex = regul.getSurfelIndex();
     regul.attachNormalVectors([&](SH3::SCell &c){ return ii_normals[ surfelIndex[c] ];} );
-    double energy = regul.computeGradient();
+    double energy    = regul.computeGradient();
     CAPTURE( regul );
     REQUIRE( energy == Approx(5848.5));
     regul.regularize();
@@ -113,6 +119,25 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     auto normals = regul.getNormalVectors();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                  normals, SH3::Colors(), "regularizedSurf-II.obj");
+  }
+  
+  SECTION("Warm restart")
+  {
+    auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+    regul.init();
+    regul.attachTrivialNormalVectors(params);
+    CAPTURE( regul );
+    auto energy       = regul.regularize(10,1.0,0.1);
+    auto secondenergy = regul.regularize(10,1.0,0.1);
+    auto thirdenergy  = regul.regularize(10,1.0,0.1);
+    CAPTURE(energy);
+    CAPTURE(secondenergy);
+    CAPTURE(thirdenergy);
+    
+    REQUIRE( energy > secondenergy );
+    REQUIRE( secondenergy > thirdenergy );
   }
 }
 

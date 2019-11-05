@@ -216,7 +216,7 @@ namespace DGtal
                       const double dt = 1.0,
                       const double epsilon = 0.0001,
                       const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&) > &advectionFunc =
-                              [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
+                      [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
     
     /**
      * Static method to be used in @e regularize() that
@@ -228,8 +228,8 @@ namespace DGtal
      * @param [in] v the advection vector.
      */
     static void clampedAdvection(SHG3::RealPoint &p,
-                                const SHG3::RealPoint &orig,
-                                const SHG3::RealVector &v)
+                                 const SHG3::RealPoint &orig,
+                                 const SHG3::RealVector &v)
     {
       p += v;
       for(auto i=0; i < 3; ++i)
@@ -240,9 +240,22 @@ namespace DGtal
     
     
     /**
+     * @returns the regularized position of a given pointel @a aPointel.
+     *
+     * @note the init() method must have been called. For relevant results, the regularize()
+     * methods should have been also called before accessing the new positions.
+     */
+    SHG3::RealPoint getRegularizedPosition(const SH3::Cell& aPointel)
+    {
+      ASSERT_MSG(myInit, "The init() method must be called first.");
+      ASSERT_MSG(aPoint.dimension() == 0, "The cell must be a pointel (0-cell)");
+      return myRegularizedPositions[ myPointelIndex[ aPointel] ];
+    }
+    
+    /**
      * @return the regulariezed vertices positions
      * (see getCellIndex for the Cell->Index map).
-     * @note the init() method must have been called;
+     * @note the init() method must have been called.
      */
     const Positions & getRegularizedPositions() const
     {
@@ -252,7 +265,7 @@ namespace DGtal
     /**
      * @return the input vertices positions
      * (see getCellIndex for the Cell->Index map).
-     * @note the init() method must have been called;
+     * @note the init() method must have been called.
      */
     const Positions & getOriginalPositions() const
     {
@@ -261,18 +274,18 @@ namespace DGtal
     }
     /**
      * @return the CellIndex (Cell->Index map) for
-     the positions and normal vectors containers.
-     * @note the init() method must have been called;
+     * the positions and normal vectors containers.
+     * @note the init() method must have been called.
      */
     const SH3::Cell2Index & getCellIndex() const
     {
       ASSERT_MSG(myInit, "The init() method must be called first.");
-      return myCellIndex;
+      return myPointelIndex;
     }
     /**
      * @return the input normal vectors
      * (see getSurfelIndex for the Cell->Index map).
-     * @note the init() method must have been called;
+     * @note the init() method must have been called.
      */
     const Normals & getNormalVectors() const
     {
@@ -283,7 +296,7 @@ namespace DGtal
     /**
      * @return the CellIndex (Cell->Index map) for
      the positions and normal vectors containers.
-     * @note the init() method must have been called;
+     * @note the init() method must have been called.
      */
     const SH3::Surfel2Index & getSurfelIndex() const
     {
@@ -293,7 +306,7 @@ namespace DGtal
     
     /**
      * Reset the regularized vertices positions to the original one.
-     * @note the init() method must have been called;
+     * @note the init() method must have been called.
      */
     void reset()
     {
@@ -366,11 +379,11 @@ namespace DGtal
     
     // ---------------------------------------------------------------
     ///Internal members to store precomputed topological informations
-
+    
     ///Gradient of the energy w.r.t. vertex positons
     ///TODO: remove this structure?
     Positions myGradientAlign;
-
+    
     ///Instance of the KSpace
     SH3::KSpace myK;
     
@@ -381,7 +394,7 @@ namespace DGtal
     SH3::Surfel2Index mySurfelIndex;
     
     ///Indices for pointels
-    SH3::Cell2Index myCellIndex;
+    SH3::Cell2Index myPointelIndex;
     
     ///Indices of adjacent pointels for the Alignement energy term
     std::vector< SH3::Idx > myAlignPointelsIdx;

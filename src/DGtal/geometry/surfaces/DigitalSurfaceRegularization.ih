@@ -104,7 +104,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
   
   
   //Collecting the input points
-  auto pointels        = SH3::getPointelRange(myCellIndex,myDigitalSurface);
+  auto pointels        = SH3::getPointelRange(myPointelIndex,myDigitalSurface);
   auto embedder        = SH3::getCellEmbedder(myK);  // /!\ no grid step here
   myOriginalPositions.clear();
   std::transform(pointels.begin(), pointels.end(), std::back_inserter(myOriginalPositions),
@@ -144,7 +144,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
     for(auto j = 0; j < 4; ++j)
     {
       auto p      = myK.unsigns(myDigitalSurface->pivot(pointelsAround[ j ]));
-      auto cell_p = myCellIndex[ p ];
+      auto cell_p = myPointelIndex[ p ];
       myAlignPointelsIdx[ 4*i + j ] = cell_p;
       myAlignPointels[4*i + j] = p;
       myNumberAdjEdgesToPointel[ cell_p ] ++;
@@ -155,7 +155,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
   myNbAdjacent.resize( myFaces.size() );
   for(auto faceId=0 ; faceId < myFaces.size(); ++faceId)
   {
-    auto           idx = myCellIndex[ dsurf_pointels[ faceId ] ];
+    auto           idx = myPointelIndex[ dsurf_pointels[ faceId ] ];
     myFairnessPointelsIdx.push_back( idx );
     unsigned char nbAdj = 0;
     auto          arcs = polySurf->arcsAroundFace(faceId);
@@ -165,7 +165,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
       auto      op = polySurf->opposite(anArc);
       auto adjFace = polySurf->faceAroundArc(op);
       ASSERT(adjFace != faceId);
-      myFairnessPointelsIdx.push_back( myCellIndex[ dsurf_pointels[ adjFace] ] );
+      myFairnessPointelsIdx.push_back( myPointelIndex[ dsurf_pointels[ adjFace] ] );
       nbAdj++;
     }
     ASSERT(nbAdj>0);
