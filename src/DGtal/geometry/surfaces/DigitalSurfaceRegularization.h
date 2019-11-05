@@ -67,8 +67,8 @@ namespace DGtal
    * (quadrilateral) faces and @f$n_f@f$ an estimated normal vector on the
    * face @f$f@f$, we want the quad surface vertex positions @f$P^*@f$ that
    * minimizes the following energy function:
-   * $$\mathcal{E}(P) := \alpha \sum_{i=1}^{n} \|p_i - \hat{p}_i\|^2  +
-   *      \beta \sum_{f\in F} \sum_{{e_j} \in \partial{f} } ( e_j \cdot n_{f} )^2 + \gamma \sum_{i=1}^{n} \|\hat{p}_i - \hat{b}_i\|^2\,.$$
+   * @f[\mathcal{E}(P) := \alpha \sum_{i=1}^{n} \|p_i - \hat{p}_i\|^2  +
+   *      \beta \sum_{f\in F} \sum_{{e_j} \in \partial{f} } ( e_j \cdot n_{f} )^2 + \gamma \sum_{i=1}^{n} \|\hat{p}_i - \hat{b}_i\|^2\,.@f]
    * where @f$"\cdot"@f$ is the standard @f$\mathbb{R}^3@f$ scalar product, @f$e_j\in
    * \partial{f}@f$ is an edge of the face @f$f@f$ (and is equal to some @f$p_k -
    * p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
