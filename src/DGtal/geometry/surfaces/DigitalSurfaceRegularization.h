@@ -205,18 +205,45 @@ namespace DGtal
      *
      * The energy at the final step is returned.
      *
-     * @param [in] nbIters maxium number of steps (default=500)
-     * @param [in] dt initial learning rate (default = 1.0)
-     * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
+     * @param [in] nbIters maxium number of steps
+     * @param [in] dt initial learning rate
+     * @param [in] epsilon minimum l_infity norm of the gradient vector
      * @param [in] advectionFunc advection function/functor/lambda to move a regularized point &a p associated with
      * the original point @a o w.r.t to a displacement vector @a v (default = p+v)
+     * @tparam AdvectionFunction type of advection function, functor or lambda (RealPoint, RealPoint, RealVector)->RealPoint.
+     * @return the energy at the final step.
+     */
+    template <typename AdvectionFunction>
+    double regularize(const unsigned int nbIters,
+                      const double dt,
+                      const double epsilon,
+                      const AdvectionFunction & advectionFunc);
+    
+    
+    /**
+     * @brief Main regularization loop.
+     *
+     * This method performs the main minimization loop of the energy
+     * using a gradient descent scheme (with automatic update of the learning step).
+     * The iterative process stops either when the number of steps reaches @a nbIters,
+     * or when the @f$l_\infty@f$ norm of the energy gradient is below @a epsilon.
+     *
+     * This methods uses the default advection function @f$ p = p + v@f$.
+     *
+     * The energy at the final step is returned.
+     *
+     * @param [in] nbIters maxium number of steps (default=200)
+     * @param [in] dt initial learning rate (default = 1.0)
+     * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
      * @return the energy at the final step.
      */
     double regularize(const unsigned int nbIters = 200,
                       const double dt = 1.0,
-                      const double epsilon = 0.0001,
-                      const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&) > &advectionFunc =
-                      [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
+                      const double epsilon = 0.0001)
+    {
+      return regularize(nbIters,dt,epsilon,
+                        [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
+    }
     
     /**
      * Static method to be used in @e regularize() that
