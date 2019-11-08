@@ -247,12 +247,13 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+template <typename AdvectionFunction>
 inline
 double
 DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
                                                    const double dt,
                                                    const double epsilon,
-                                                   const std::function<void(SHG3::RealPoint&,SHG3::RealPoint&,SHG3::RealVector&)> &advectionFunc)
+                                                   const AdvectionFunction &advectionFunc)
 {
   double energy = 0.0;
   double last_energy = 0.0;

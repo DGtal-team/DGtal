@@ -52,7 +52,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   auto params = SH3::defaultParameters()
               | SHG3::defaultParameters();
   
-  params( "polynomial", "goursat" )( "gridstep", 0.5 )("verbose", 0);
+  params( "polynomial", "goursat" )( "gridstep", 1.0 )("verbose", 0);
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
@@ -66,9 +66,9 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     regul.attachTrivialNormalVectors(params);
     double energy = regul.computeGradient();
     CAPTURE( regul );
-    REQUIRE( energy == Approx(6239.7));
+    REQUIRE( energy == Approx(1684.340));
     auto finalenergy = regul.regularize();
-    REQUIRE( finalenergy == Approx( 16.27463) );
+    REQUIRE( finalenergy == Approx( 4.7763 ) );
     REQUIRE( regul.isValid() );
 
     auto regularizedPosition = regul.getRegularizedPositions();
@@ -91,7 +91,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     regularizedPosition = regul.getRegularizedPositions();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                           normals, SH3::Colors(), "regularizedSurfClamped.obj");
-    REQUIRE( finalenergyClamped == Approx(24.4902) );
+    REQUIRE( finalenergyClamped == Approx(12.1914) );
     REQUIRE( finalenergy < finalenergyClamped );
     
     //Testing accessor
@@ -111,7 +111,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     regul.attachNormalVectors([&](SH3::SCell &c){ return ii_normals[ surfelIndex[c] ];} );
     double energy    = regul.computeGradient();
     CAPTURE( regul );
-    REQUIRE( energy == Approx(5848.5));
+    REQUIRE( energy == Approx(1588.649));
     regul.regularize();
     REQUIRE( regul.isValid() );
     
