@@ -174,7 +174,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
      for(auto i = 0 ; i < original.size(); ++i)
        if (original[i][0]<0.0)
        {
-         alphas[i] = 6.0;
+         alphas[i] = 4.0;
          betas[i]  = 0.0000001;
          gammas[i] = 0.0;
        }
