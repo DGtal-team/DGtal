@@ -139,6 +139,52 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     REQUIRE( energy > secondenergy );
     REQUIRE( secondenergy > thirdenergy );
   }
+  
+  SECTION("Local weights")
+   {
+     auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+     auto surfels         = SH3::getSurfelRange( surface, params );
+     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+     regul.init();
+     regul.attachTrivialNormalVectors(params);
+     CAPTURE( regul );
+     auto energy       = regul.regularize(10,1.0,0.1);
+     
+     auto original = regul.getOriginalPositions();
+     std::vector<double> alphas(original.size(),0.001);
+     std::vector<double> betas(original.size(),1.0);
+     std::vector<double> gammas(original.size(), 0.05);
+     
+     //Init again with variable (but constant) weights
+     DigitalSurfaceRegularization<SH3::DigitalSurface> regul2(surface);
+     regul2.init(alphas,betas,gammas);
+     regul2.attachTrivialNormalVectors(params);
+     auto energybis  = regul2.regularize(10,1.0,0.1);
+     REQUIRE( energy == energybis );
+     
+     energybis = regul2.regularize();
+     auto regularizedPosition = regul.getRegularizedPositions();
+     auto normals   = regul.getNormalVectors();
+     auto cellIndex = regul.getCellIndex();
+     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                  normals, SH3::Colors(), "regularizedSurf-local.obj");
+     
+     //Same with higher data attachment for x < 0.0
+     DigitalSurfaceRegularization<SH3::DigitalSurface> regul3(surface);
+     for(auto i = 0 ; i < original.size(); ++i)
+       if (original[i][0]<0.0)
+       {
+         alphas[i] = 6.0;
+         betas[i]  = 0.0000001;
+         gammas[i] = 0.0;
+       }
+     regul3.init(alphas,betas,gammas);
+     regul3.attachTrivialNormalVectors(params);
+     energybis = regul3.regularize();
+     regularizedPosition = regul3.getRegularizedPositions();
+     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                  normals, SH3::Colors(), "regularizedSurf-localsplit.obj");
+    }
 }
 
 /** @ingroup Tests **/

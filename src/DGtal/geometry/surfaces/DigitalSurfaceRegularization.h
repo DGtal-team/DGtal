@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/topology/DigitalSurface.h"
 
 #include "DGtal/helpers/StdDefs.h"
@@ -171,6 +172,8 @@ namespace DGtal
     /**
      * @brief Initialize the parameters of the energy function.
      *
+     * This init() method attaches the same weights to all vertices.
+     *
      * @param [in] alpha the data attachment term coeff. (default=0.001)
      * @param [in] beta  the alignemnt term coeff. (default=1.0)
      * @param [in] gamma the fairness term coeef. (default=0.05)
@@ -179,15 +182,44 @@ namespace DGtal
               const double beta  = 1.0,
               const double gamma = 0.05);
     
+    
+    /**
+     * @brief Initialize the parameters of the energy function.
+     *
+     * This init() method considers local weights per vertex (all verctors
+     * must have the same size: the number of pointels of the original surface).
+     * 
+     * @param [in] alphas the data attachment term coeff.
+     * @param [in] betas  the alignemnt term coeff.
+     * @param [in] gammas the fairness term coeef.
+     */
+    void init(ConstAlias< std::vector<double> > alphas,
+              ConstAlias< std::vector<double> > betas,
+              ConstAlias< std::vector<double> > gammas);
+    
+    
     /**
      * Compute the energy gradient vector and return the energy value.
      *
-     * @note init() method must have been called and normal vectors must be attached
-     * to the surfels.
+     * @note init() method must have been called and normal vectors
+     * must be have been attached to the surfels.
      *
      * @return the energy value.
      **/
     double computeGradient();
+    
+    
+    /**
+     * Compute the energy gradient vector and return the energy value.
+     *
+     * This method assumes that you have local alpha, beta and gamma weights.
+     *
+     * @note init(alphas,betas,gammas) method must have been called and normal vectors
+     * must have been attached to the surfels.
+     *
+     * @return the energy value.
+     **/
+    double computeGradientLocalWeights();
     
     
     /**
@@ -218,33 +250,33 @@ namespace DGtal
                       const double dt,
                       const double epsilon,
                       const AdvectionFunction & advectionFunc);
-    
-    
     /**
-     * @brief Main regularization loop.
-     *
-     * This method performs the main minimization loop of the energy
-     * using a gradient descent scheme (with automatic update of the learning step).
-     * The iterative process stops either when the number of steps reaches @a nbIters,
-     * or when the @f$l_\infty@f$ norm of the energy gradient is below @a epsilon.
-     *
-     * This methods uses the default advection function @f$ p = p + v@f$.
-     *
-     * The energy at the final step is returned.
-     *
-     * @param [in] nbIters maxium number of steps (default=200)
-     * @param [in] dt initial learning rate (default = 1.0)
-     * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
-     * @return the energy at the final step.
-     */
-    double regularize(const unsigned int nbIters = 200,
-                      const double dt = 1.0,
-                      const double epsilon = 0.0001)
-    {
-      return regularize(nbIters,dt,epsilon,
-                        [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
-    }
+        * @brief Main regularization loop.
+        *
+        * This method performs the main minimization loop of the energy
+        * using a gradient descent scheme (with automatic update of the learning step).
+        * The iterative process stops either when the number of steps reaches @a nbIters,
+        * or when the @f$l_\infty@f$ norm of the energy gradient is below @a epsilon.
+        *
+        * This methods uses the default advection function @f$ p = p + v@f$.
+        *
+        * The energy at the final step is returned.
+        *
+        * @param [in] nbIters maxium number of steps (default=200)
+        * @param [in] dt initial learning rate (default = 1.0)
+        * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
+        * @return the energy at the final step.
+        */
+       double regularize(const unsigned int nbIters = 200,
+                         const double dt = 1.0,
+                         const double epsilon = 0.0001)
+       {
+         return regularize(nbIters,dt,epsilon,
+                           [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
+       }
+      
     
+   
     /**
      * Static method to be used in @e regularize() that
      * clamps to regularized point @a p when shifted by @a v
@@ -368,6 +400,15 @@ namespace DGtal
      */
     void disasbleVerbose() {myVerbose=false;}
     
+    // ------------------------- Private methods --------------------------------
+  private:
+    
+    /**
+     * Internal init method to set up topological caches.
+     */
+    void cacheInit();
+    
+    
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -377,6 +418,16 @@ namespace DGtal
     double myBeta;
     ///Fairness term coefficient
     double myGamma;
+    
+    ///Data attachment term local coefficients
+    const std::vector<double> *myAlphas;
+    ///Alignment attachment term local coefficients
+    const std::vector<double> *myBetas;
+    ///Fairness attachment term local coefficients
+    const std::vector<double> *myGammas;
+    
+    ///Flag if the gradient has constant weights for the init method and gradient.
+    bool myConstantCoeffs;
     
     ///Flag if the object has been set up properly
     bool myInit;
@@ -399,6 +450,8 @@ namespace DGtal
     ///Gradient of the energy w.r.t. vertex positons
     Positions myGradient;
     
+    
+  
     // ---------------------------------------------------------------
     ///Internal members to store precomputed topological informations
     
