@@ -50,14 +50,14 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
   typedef Shortcuts<Z3i::KSpace> SH3;
   typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
   auto params = SH3::defaultParameters()
-              | SHG3::defaultParameters();
+  | SHG3::defaultParameters();
   
-  params( "polynomial", "goursat" )( "gridstep", .3)("verbose", 0);
+  params( "polynomial", "goursat" )( "gridstep", 1.0)("verbose", 0);
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
   //! [DigitalRegInit]
-
+  
   SECTION("Basic Construction using Trivial Normals and regular/clamped advection")
   {
     //! [DigitalRegUsage]
@@ -65,61 +65,69 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     auto surfels         = SH3::getSurfelRange( surface, params );
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    //! [DigitalRegUsage]
     regul.attachTrivialNormalVectors(params);
+    //! [DigitalRegUsage]
     double energy = regul.computeGradient();
     CAPTURE( regul );
-//    REQUIRE( energy == Approx(1684.340));
+    REQUIRE( energy == Approx(1684.340));
+    //! [DigitalRegCompute]
     auto finalenergy = regul.regularize();
-//    REQUIRE( finalenergy == Approx( 4.7763 ) );
-//    REQUIRE( regul.isValid() );
-
+    //! [DigitalRegCompute]
+    REQUIRE( finalenergy == Approx( 4.7763 ) );
+    REQUIRE( regul.isValid() );
+    
+    //! [DigitalRegOutput]
     auto regularizedPosition = regul.getRegularizedPositions();
     auto original  = regul.getOriginalPositions();
+    //! [DigitalRegOutput]
     auto normals   = regul.getNormalVectors();
+    
     auto cellIndex = regul.getCellIndex();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return original[ cellIndex[c]];},
-                       normals, SH3::Colors(), "originalSurf.obj");
+                 normals, SH3::Colors(), "originalSurf.obj");
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
-                       normals, SH3::Colors(), "regularizedSurf.obj");
-  
+                 normals, SH3::Colors(), "regularizedSurf.obj");
+    
     //Testing reset() at few points
     regul.reset();
     regularizedPosition = regul.getRegularizedPositions();
-//    REQUIRE( original[0] == regularizedPosition[0] );
-//    REQUIRE( original[123] == regularizedPosition[123] );
-//
+    REQUIRE( original[0] == regularizedPosition[0] );
+    REQUIRE( original[123] == regularizedPosition[123] );
+    
     //Testing Clamped version
     auto finalenergyClamped = regul.regularize(200,1.0,0.001, DigitalSurfaceRegularization<SH3::DigitalSurface>::clampedAdvection);
     regularizedPosition = regul.getRegularizedPositions();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
-                          normals, SH3::Colors(), "regularizedSurfClamped.obj");
-  //  REQUIRE( finalenergyClamped == Approx(12.1914) );
-    //REQUIRE( finalenergy < finalenergyClamped );
+                 normals, SH3::Colors(), "regularizedSurfClamped.obj");
+    REQUIRE( finalenergyClamped == Approx(12.1914) );
+    REQUIRE( finalenergy < finalenergyClamped );
     
     //Testing accessor
     auto aPointelIndex = cellIndex.begin();
-//    REQUIRE( regularizedPosition[ aPointelIndex->second ] == regul.getRegularizedPosition( aPointelIndex->first) );
+    REQUIRE( regularizedPosition[ aPointelIndex->second ] == regul.getRegularizedPosition( aPointelIndex->first) );
   }
   
   SECTION("Basic Construction with II Normal Vectors")
   {
     auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
     auto surfels         = SH3::getSurfelRange( surface, params );
+    //! [DigitalRegII]
     auto ii_normals = SHG3::getIINormalVectors(digitized_shape, surfels, params);
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    auto cellIndex   = regul.getCellIndex();
     auto surfelIndex = regul.getSurfelIndex();
     regul.attachNormalVectors([&](SH3::SCell &c){ return ii_normals[ surfelIndex[c] ];} );
+    //! [DigitalRegII]
+    
     double energy    = regul.computeGradient();
     CAPTURE( regul );
-   // REQUIRE( energy == Approx(1588.649));
+    REQUIRE( energy == Approx(1588.649));
     regul.regularize();
-//    REQUIRE( regul.isValid() );
+    REQUIRE( regul.isValid() );
     
     auto regularizedPosition = regul.getRegularizedPositions();
     auto normals = regul.getNormalVectors();
+    auto cellIndex   = regul.getCellIndex();
     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
                  normals, SH3::Colors(), "regularizedSurf-II.obj");
   }
@@ -139,55 +147,58 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     CAPTURE(secondenergy);
     CAPTURE(thirdenergy);
     
-//    REQUIRE( energy > secondenergy );
-//    REQUIRE( secondenergy > thirdenergy );
+    REQUIRE( energy > secondenergy );
+    REQUIRE( secondenergy > thirdenergy );
   }
   
   SECTION("Local weights")
-   {
-     auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
-     auto surfels         = SH3::getSurfelRange( surface, params );
-     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
-     regul.init();
-     regul.attachTrivialNormalVectors(params);
-     CAPTURE( regul );
-     auto energy       = regul.regularize(10,1.0,0.1);
-
-     auto original = regul.getOriginalPositions();
-     std::vector<double> alphas(original.size(),0.001);
-     std::vector<double> betas(original.size(),1.0);
-     std::vector<double> gammas(original.size(), 0.05);
-     
-     //Init again with variable (but constant) weights
-     DigitalSurfaceRegularization<SH3::DigitalSurface> regul2(surface);
-     regul2.init(alphas,betas,gammas);
-     regul2.attachTrivialNormalVectors(params);
-     auto energybis  = regul2.regularize(10,1.0,0.1);
-     //REQUIRE( energy == energybis );
-     
-     energybis = regul2.regularize();
-     auto regularizedPosition = regul.getRegularizedPositions();
-     auto normals   = regul.getNormalVectors();
-     auto cellIndex = regul.getCellIndex();
-     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
-                  normals, SH3::Colors(), "regularizedSurf-local.obj");
-     
-     //Same with higher data attachment for x < 0.0
-     DigitalSurfaceRegularization<SH3::DigitalSurface> regul3(surface);
-     for(auto i = 0 ; i < original.size(); ++i)
-       if (original[i][0]<0.0)
-       {
-         alphas[i] = 4.0;
-         betas[i]  = 0.0000001;
-         gammas[i] = 0.0;
-       }
-     regul3.init(alphas,betas,gammas);
-     regul3.attachTrivialNormalVectors(params);
-     energybis = regul3.regularize();
-     regularizedPosition = regul3.getRegularizedPositions();
-     SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
-                  normals, SH3::Colors(), "regularizedSurf-localsplit.obj");
-    }
+  {
+    auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+    regul.init();
+    regul.attachTrivialNormalVectors(params);
+    CAPTURE( regul );
+    auto energy       = regul.regularize(10,1.0,0.1);
+    
+    auto original = regul.getOriginalPositions();
+    std::vector<double> alphas(original.size(),0.001);
+    std::vector<double> betas(original.size(),1.0);
+    std::vector<double> gammas(original.size(), 0.05);
+    
+    //Init again with variable (but constant) weights
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul2(surface);
+    regul2.init(alphas,betas,gammas);
+    regul2.attachTrivialNormalVectors(params);
+    auto energybis  = regul2.regularize(10,1.0,0.1);
+    REQUIRE( energy == energybis );
+    
+    energybis = regul2.regularize();
+    auto regularizedPosition = regul.getRegularizedPositions();
+    auto normals   = regul.getNormalVectors();
+    auto cellIndex = regul.getCellIndex();
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                 normals, SH3::Colors(), "regularizedSurf-local.obj");
+    
+    //Same with higher data attachment for x < 0.0
+    //! [DigitalRegLocal]
+    DigitalSurfaceRegularization<SH3::DigitalSurface> regul3(surface);
+    for(auto i = 0 ; i < original.size(); ++i)
+      if (original[i][0]<0.0)
+      {
+        alphas[i] = 4.0;
+        betas[i]  = 0.0000001;
+        gammas[i] = 0.0;
+      }
+    regul3.init(alphas,betas,gammas);
+    regul3.attachTrivialNormalVectors(params);
+    energybis = regul3.regularize();
+    //! [DigitalRegLocal]
+    
+    regularizedPosition = regul3.getRegularizedPositions();
+    SH3::saveOBJ(surface, [&] (const SH3::Cell &c){ return regularizedPosition[ cellIndex[c]];},
+                 normals, SH3::Colors(), "regularizedSurf-localsplit.obj");
+  }
 }
 
 /** @ingroup Tests **/
