@@ -1,0 +1,75 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+
+@page moduleRegularization Digital Surface Regularization
+
+@writers David Coeurjolly
+
+Part of the \ref packageGeometry.
+
+
+
+
+This part of the manual describes classes and functions related to the
+regularization of digital surfaces: Given an input normal vector field
+attached to digital surface surfels, the regularization outputs a
+piecewise smooth quadrangulated surface such that each quad is as
+perpendicular as possible to the input normal vector field. For more
+details, please refer to \cite coeurjolly17regDGCI and
+\cite coeurjolly18siggraphtalk.
+
+
+[TOC]
+
+
+\section moduleReg_sec1 Introduction
+
+If @f$P@f$ denotes the vertices of the input digital surface, @f$F@f$ the set of
+(quadrilateral) faces and @f$n_f@f$ an estimated normal vector on the
+face @f$f@f$, we want the quad surface vertex positions @f$P^*@f$ that
+minimizes the following energy function:
+
+@f[\mathcal{E}(P) := \alpha \sum_{i=1}^{n} \|p_i - \hat{p}_i\|^2  +
+\beta \sum_{f\in F} \sum_{{e_j} \in \partial{f} } ( e_j \cdot n_{f} )^2 + \gamma \sum_{i=1}^{n} \|\hat{p}_i - \hat{b}_i\|^2\,.@f]
+
+where @f$"\cdot"@f$ is the standard @f$\mathbb{R}^3@f$ scalar product, @f$e_j\in
+\partial{f}@f$ is an edge of the face @f$f@f$ (and is equal to some @f$p_k -
+p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
+@f$\hat{p}_i@f$.
+
+The energy function is convex and can be minimized by solving a linear
+system as described in @cite coeurjolly17regDGCI. This minimization
+scheme is available in the DGtalTools \ref volSurfaceRegularization.
+In this implementation, we consider an iterative scheme (gradient
+descent strategy) which allows us a finer control of the process.
+
+\section moduleReg_sec2 Main usages
+
+Starting from an implicit digital surface:
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegInit
+
+
+the regularization class can be set up using the following syntax:
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegUsage
+
+The init() method sets some default values for the @f$\alpha@f$,
+@f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be set
+either as global values (e.g. @e init(alpha,beta,gamma)@e), or as
+local weights. In the latter case, the user must specify a vector of @f$\alpha[i]@f$,
+@f$\beta[i]@f$ and @f$\gamma[i]@f values, one per digital surface pointels.
+
+               
+
+
+*/
+
+
+
+}
