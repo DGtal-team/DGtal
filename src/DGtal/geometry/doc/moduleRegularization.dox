@@ -53,7 +53,7 @@ Starting from an implicit digital surface:
 
 @snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegInit
 
-with the following geometry:
+with the following geometry (with a gridstep set to 0.3):
 
 @image html regOrig.png "Input digital surface."
 
@@ -96,7 +96,7 @@ functor, a function or a lambda. For example, using  @ref moduleShortcuts
 to obtain
 @image html regRegul-II.png "Regularized digital surface (II normal vectors)."
 
-For piecewise smooth reconstruction, one can consider preprocessing of the normal vector field using @ref moduleGenericAT. 
+For piecewise smooth reconstruction, one can consider preprocessing of the normal vector field using @ref moduleGenericAT 
 
 
 \section moduleReg_seclocal Local control
