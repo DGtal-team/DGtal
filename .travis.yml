@@ -1,6 +1,5 @@
 language: cpp
 dist: trusty
-sudo: false
 
 # Reducing the depth when cloning using git
 # https://docs.travis-ci.com/user/customizing-the-build/#git-clone-depth
@@ -22,8 +21,6 @@ matrix:
       compiler: gcc
 
 cache: apt
-
-secure: "Ra00iyQ+5wm7G3XfaaI40aKgfcGTigfmEd+3/TY1hYcjYnJvNOG0dekolcMDSelE8SfqLcWYnK6+vtOCmyZuUWheUhA+83Tgq/bIH6dMzSvLkJdyq2D9me4sX6zx3ct90swP7Adj8EBHmv61pH5OBeEcmNWJNIZmNQs3+1awca4="
 
 ##Deps for linux builds
 addons:
