@@ -43,7 +43,7 @@ p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
 
 The energy function is convex and can be minimized by solving a linear
 system as described in @cite coeurjolly17regDGCI. This minimization
-scheme is available in the DGtalTools \ref volSurfaceRegularization.
+scheme is available in the DGtalTools (see volSurfaceRegularization).
 In this implementation, we consider an iterative scheme (gradient
 descent strategy) which allows us a finer control of the process.
 
@@ -63,7 +63,7 @@ The regularization class instance can be set up using the following syntax:
 
 The DigitalSurfaceRegularization::init() method sets some default values for the @f$\alpha@f$,
 @f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be 
-either as global values (e.g. @e init(alpha,beta,gamma)@e), or as
+either as global values (e.g. @e init(alpha,beta,gamma)), or as
 local weights. In the latter case, the user must specify a vector of @f$\alpha[i]@f$,
 @f$\beta[i]@f$ and @f$\gamma[i]@f$ values, one per digital surface pointels (see \ref moduleReg_seclocal).
 In this example, the normal vector field attached to the surfels is a
@@ -83,7 +83,6 @@ the following reconstruction.
 
 @note The regularized position can be retrieved using the getREgularizedPosition() method. E.g.
 @snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegOutput
-.
 
 
 A key ingredient of the approach is to be able to change the input
