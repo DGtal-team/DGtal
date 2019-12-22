@@ -14,6 +14,11 @@
 
 ## Changes
 
+- *General*
+  - DGtal can be compiled and used as a project (git) submodule (David
+  Coeurjolly [#xx](https://github.com/DGtal-team/DGtal/pull/xxx))
+  
+
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
     order to make piecewise-smooth approximations of scalar or vector
