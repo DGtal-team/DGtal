@@ -1518,7 +1518,9 @@ namespace DGtal
       getPointelRange
       ( const KSpace& K, const SCell& surfel )
       {
-        return getPrimalVertices( K, surfel, true );
+        return KSpace::dimension == 3
+	  ? getPrimalVertices( K, surfel, true )
+	  : getPrimalVertices( K, surfel );
       }
       
       /// Given any digital surface, returns a vector of surfels in
@@ -2549,7 +2551,7 @@ namespace DGtal
           Size n = 1;  // OBJ vertex numbering start at 1 
           for ( auto&& s : surfels )
             {
-              auto primal_vtcs = getPointelRange( K, s );
+              auto primal_vtcs = getPointelRange( K, s, true );
               for ( auto&& primal_vtx : primal_vtcs )
                 {
                   if ( ! vtx_numbering.count( primal_vtx ) )
