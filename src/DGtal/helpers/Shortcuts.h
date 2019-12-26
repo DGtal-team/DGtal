@@ -481,7 +481,6 @@ namespace DGtal
         getKSpace( Parameters params =
                    parametersKSpace() | parametersDigitizedImplicitShape3D() )
       {
-        trace.info() << "[Shortcuts::getKSpace] " << params << std::endl;
         Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
         Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
         Scalar h      = params[ "gridstep" ].as<Scalar>();
@@ -1444,6 +1443,9 @@ namespace DGtal
       /// @note The order of pointels is given by the default traversal
       /// of the surfels of the surface, where the 4 pointels of each
       /// surfel are visited in order.
+      ///
+      /// @since 1.1 The pointel ordering is now the same as the one
+      /// given by makePrimalPolygonalSurface (for 3D only of course).
       ///
       /// @note If you wish to consider the primal digital surface, and
       /// visits pointels as vertices of this graph in
