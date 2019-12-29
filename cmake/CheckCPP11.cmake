@@ -3,8 +3,8 @@
 # -----------------------------------------------------------------------------
 
 try_compile( CPP11_COMPATIBLE_FLAG_SET_BY_USER
-  ${CMAKE_BINARY_DIR}/CMakeTmp
-  ${CMAKE_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeTmp
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp
   CMAKE_FLAGS "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}"
   OUTPUT_VARIABLE OUTPUT
   )
@@ -15,8 +15,8 @@ ENDIF()
 
 IF (NOT CPP11_COMPATIBLE_FLAG_SET_BY_USER)
   try_compile( CPP11_COMPATIBLE_FLAG_SET_BY_DGTAL
-    ${CMAKE_BINARY_DIR}/CMakeTmp
-    ${CMAKE_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/CMakeTmp
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/src/cpp11/cpp11_check.cpp
     COMPILE_DEFINITIONS "-std=c++11"
     OUTPUT_VARIABLE OUTPUT
     )
