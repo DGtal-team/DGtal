@@ -1,0 +1,567 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file BoundedLatticePolytope.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/01/02
+ *
+ * Implementation of inline methods defined in BoundedLatticePolytope.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/math/linalg/SimpleMatrix.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>::
+BoundedLatticePolytope( std::initializer_list<Point> l )
+{
+  init( l.begin(), l.end() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointIterator>
+DGtal::BoundedLatticePolytope<TSpace>::
+BoundedLatticePolytope( PointIterator itB, PointIterator itE )
+{
+  init( itB, itE );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename HalfSpaceIterator>
+DGtal::BoundedLatticePolytope<TSpace>::
+BoundedLatticePolytope( const Domain& domain,
+			HalfSpaceIterator itB, HalfSpaceIterator itE )
+{
+  init( domain, itB, itE );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename HalfSpaceIterator>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+init( const Domain& domain,
+      HalfSpaceIterator itB, HalfSpaceIterator itE )
+{
+  const Dimension d = dimension;
+  A.clear();
+  B.clear();
+  const Point lo = domain.lowerBound();
+  const Point hi = domain.upperBound();
+  D = Domain( lo, hi );
+  // Add constraints related to sup/inf in x.
+  for ( Dimension s = 0; s < d; ++s )
+    {
+      Vector z = Vector::zero;
+      z[ s ]   = NumberTraits<Integer>::ONE;
+      A.push_back( z );
+      B.push_back( hi[ s ] );
+      z[ s ]   = -NumberTraits<Integer>::ONE;
+      A.push_back( z );
+      B.push_back( -lo[ s ] );
+    }
+  // Add other halfplanes
+  Integer nb_hp = 0;
+  for ( auto it = itB; itB != itE; ++it, ++nb_hp ) {
+    // Checks that is not inside.
+    auto a = it->N;
+    auto b = it->c;
+    auto itF = std::find( A.begin(), A.begin()+2*d, a );
+    if ( itF == A.end() )
+      {
+	A.push_back( a );
+	B.push_back( b );
+      }
+    else
+      {
+	auto k = itF - A.begin();
+	B[ k ] = std::min( B[ k ], b );
+      }
+  }
+  I = std::vector<bool>( 2 * d + nb_hp, true ); // inequalities are large
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointIterator>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+init( PointIterator itB, PointIterator itE )
+{
+  typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
+  const Dimension d = dimension;
+  I = std::vector<bool>( 3*d+1, true ); // inequalities are large
+  A.clear();
+  B.clear();
+  std::vector<Point> pts;
+  for ( ; itB != itE; ++itB ) pts.push_back( *itB );
+  if ( pts.size() != d+1 )
+    trace.error() << "[BoundedLatticePolytope::init] Needs exactly dimension+1 points for a simplex." << std::endl;
+  Point lo = pts[ 0 ];
+  Point hi = pts[ 0 ];
+  for ( Dimension s = 1; s <= d; ++s )
+    {
+      lo = lo.inf( pts[ s ] );
+      hi = hi.sup( pts[ s ] );
+    }
+  D = Domain( lo, hi );
+  // Add constraints related to sup/inf in x.
+  for ( Dimension s = 0; s < d; ++s )
+    {
+      Vector z = Vector::zero;
+      z[ s ]   = NumberTraits<Integer>::ONE;
+      A.push_back( z );
+      B.push_back( hi[ s ] );
+      z[ s ]   = -NumberTraits<Integer>::ONE;
+      A.push_back( z );
+      B.push_back( -lo[ s ] );
+    }
+  // Build Matrix A and Vector b through cofactors
+  Vector a;
+  Integer b;
+  for ( Dimension s = 0; s <= d; ++s )
+    {
+      // Build matrix v composed of p_i and vectors p_k - p_i for i and k != p
+      Matrix V;
+      Dimension p = (s+1) % (d+1);
+      for ( Dimension j = 0; j < d; ++j )
+        V.setComponent( 0, j, pts[ p ][ j ] - pts[ s ][ j ] );
+      for ( Dimension k = 1; k < d; ++k )
+        {
+          Dimension l = (p+k) % (d+1);
+          for ( Dimension j = 0; j < d; ++j )
+            V.setComponent( k, j, pts[ l ][ j ] - pts[ p ][ j ] );
+        }
+      // trace.info() << "Face " << s << " = " << V << std::endl;
+      b = V.determinant();
+      if ( b == 0 ) 
+        {
+          trace.error() << "[BoundedLatticePolytope::init] The given simplex is degenerated: " << V << std::endl;
+          A.clear();
+          B.clear();
+          D = Domain();
+          return;
+        }
+      // Form vector [b, 0, ..., 0]
+      Vector z = Vector::zero;
+      z[ 0 ]   = 1;
+      a        = V.cofactor().transpose() * z;
+      b       += a.dot( pts[ s ] );
+      // Check sign
+      if ( a.dot( pts[ s ] ) > b ) { a *= (Integer) -1; b *= (Integer) -1; }
+      A.push_back( a );
+      B.push_back( b );
+    }
+  if ( dimension >= 3 )
+    { // One should add edges
+      for ( unsigned int i = 0; i < pts.size(); ++i )
+	for ( unsigned int j = i+1; j < pts.size(); ++j ) {
+	  detail::BoundedLatticePolytopeHelper< dimension, Integer >::addEdgeConstraint
+	    ( *this, i, j, pts );
+	}
+    }
+  // // Check equations.
+  // for ( Dimension s = 0; s <= d; ++s )
+  //   {
+  //     if ( ! isDomainPointInside( pts[ s ] ) )
+  //       trace.error() << "Error building face equation." << std::endl;
+  //   }
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+unsigned int 
+DGtal::BoundedLatticePolytope<TSpace>::
+cut( const Vector& a, Integer b, bool large )
+{
+  // Checks that is not inside.
+  auto it = std::find( A.begin(), A.end(), a );
+  if ( it == A.end() )
+    {
+      A.push_back( a );
+      B.push_back( b );
+      I.push_back( true );
+      return A.size() - 1;
+    }
+  else
+    {
+      auto k = it - A.begin();
+      B[ k ] = std::min( B[ k ], b );
+      return k;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void 
+DGtal::BoundedLatticePolytope<TSpace>::
+swap( BoundedLatticePolytope & other )
+{
+  A.swap( other.A );
+  B.swap( other.B );
+  I.swap( other.I );
+  std::swap( D, other.D );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+isInside( const Point& p ) const
+{
+  ASSERT( isValid() );
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      bool in_half_space = A[ i ].dot( p ) <= B[ i ];
+      if ( ! in_half_space ) return false;
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+isDomainPointInside( const Point& p ) const
+{
+  ASSERT( isValid() );
+  for ( Dimension i = 2*dimension; i < A.size(); ++i )
+    {
+      bool in_half_space =
+	I[ i ]
+	? A[ i ].dot( p ) <= B[ i ]
+	: A[ i ].dot( p ) <  B[ i ];
+      if ( ! in_half_space ) return false;
+    }
+  //std::cout << "(" << p[0] << "," << p[1] << ")" << std::endl;
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator*=( Integer t )
+{
+  for ( Integer& b : B ) b *= t;
+  D = Domain( D.lowerBound() * t, D.upperBound() * t );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( UnitSegment s )
+{
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      if ( A[ i ][ s.k ] > NumberTraits<Integer>::ZERO )
+        B[ i ] += A[ i ][ s.k ];
+    }
+  Vector z = Vector::zero;
+  z[ s.k ] = NumberTraits<Integer>::ONE;
+  D = Domain( D.lowerBound(), D.upperBound() + z );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( LeftStrictUnitSegment s )
+{
+  I[ 2*s.k + 1 ] = false;
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      if ( A[ i ][ s.k ] > NumberTraits<Integer>::ZERO )
+        B[ i ] += A[ i ][ s.k ];
+      if ( A[ i ][ s.k ] < NumberTraits<Integer>::ZERO )
+	I[ i ] = false;
+    }
+  Vector z = Vector::zero;
+  z[ s.k ] = NumberTraits<Integer>::ONE;
+  D = Domain( D.lowerBound() + z, D.upperBound() + z );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( RightStrictUnitSegment s )
+{
+  I[ 2*s.k ] = false;
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      if ( A[ i ][ s.k ] > NumberTraits<Integer>::ZERO ) {
+        // B[ i ] += A[ i ][ s.k ] - NumberTraits<Integer>::ONE;
+        B[ i ] += A[ i ][ s.k ];
+	I[ i ]  = false;
+      }
+    }
+  Vector z = Vector::zero;
+  z[ s.k ] = NumberTraits<Integer>::ONE;
+  // D = Domain( D.lowerBound(), D.upperBound() + z );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( UnitCell c )
+{
+  for ( Dimension i = 0; i < c.dims.size(); ++i )
+    *this += UnitSegment( c.dims[ i ] );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( RightStrictUnitCell c )
+{
+  for ( Dimension i = 0; i < c.dims.size(); ++i )
+    *this += RightStrictUnitSegment( c.dims[ i ] );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( LeftStrictUnitCell c )
+{
+  for ( Dimension i = 0; i < c.dims.size(); ++i )
+    *this += LeftStrictUnitSegment( c.dims[ i ] );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+count() const
+{
+  Integer nb = 0;
+  for ( Point p : D )
+    nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countIn( Point lo, Point hi ) const
+{
+  Integer nb = 0;
+  Domain D1( lo, hi );
+  for ( Point p : D1 )
+    nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countUpTo( Integer max) const
+{
+  Integer nb = 0;
+  for ( Point p : D ) {
+    nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
+    if ( nb >= max ) return max;
+  }
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getPoints( std::vector<Point>& pts ) const
+{
+  pts.clear();
+  for ( Point p : D )
+    if ( isDomainPointInside( p ) ) pts.push_back( p );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointSet>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+insertPoints( PointSet& pts_set ) const
+{
+  for ( Point p : D )
+    if ( isDomainPointInside( p ) ) pts_set.insert( p );
+}
+
+// @return the domain of the current polytope.
+template <typename TSpace>
+const typename DGtal::BoundedLatticePolytope<TSpace>::Domain&
+DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
+{
+  return D;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace>
+inline
+void
+DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[BoundedLatticePolytope<" << Space::dimension << "> A.rows=" << A.size() << "]" << std::endl;
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      out << "  [";
+      for ( Dimension j = 0; j < dimension; ++j )
+        out << " " << A[ i ][ j ];
+      out << " ] . x <= " << B[ i ] << std::endl;
+    }
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace>
+inline
+bool
+DGtal::BoundedLatticePolytope<TSpace>::isValid() const
+{
+  return ! D.isEmpty();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+std::string
+DGtal::BoundedLatticePolytope<TSpace>::className
+() const
+{
+  return "BoundedLatticePolytope";
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                    const BoundedLatticePolytope<TSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator* ( typename TSpace::Integer t, 
+                   const BoundedLatticePolytope<TSpace> & P )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q *= t;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::UnitSegment s )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += s;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::UnitCell c )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += c;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::RightStrictUnitSegment s )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += s;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::RightStrictUnitCell c )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += c;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::LeftStrictUnitSegment s )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += s;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::LeftStrictUnitCell c )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += c;
+  return Q;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
