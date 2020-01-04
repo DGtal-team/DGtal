@@ -4,6 +4,7 @@ add_subdirectory(distance)
 
 SET(DGTAL_TESTS_VOLUMES_SRC
   testKanungo
+  testBoundedLatticePolytope
   )
 
 FOREACH(FILE ${DGTAL_TESTS_VOLUMES_SRC})
