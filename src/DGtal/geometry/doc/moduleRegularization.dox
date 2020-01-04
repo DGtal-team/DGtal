@@ -63,7 +63,7 @@ The regularization class instance can be set up using the following syntax:
 
 The DigitalSurfaceRegularization::init() method sets some default values for the @f$\alpha@f$,
 @f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be 
-either as global values (e.g. @e init(alpha,beta,gamma)), or as
+either chosen as global values (e.g. @e init(alpha,beta,gamma)), or as
 local weights. In the latter case, the user must specify a vector of @f$\alpha[i]@f$,
 @f$\beta[i]@f$ and @f$\gamma[i]@f$ values, one per digital surface pointels (see \ref moduleReg_seclocal).
 In this example, the normal vector field attached to the surfels is a
