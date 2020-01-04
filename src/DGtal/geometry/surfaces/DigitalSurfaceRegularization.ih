@@ -230,18 +230,18 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   auto it = myAlignPointelsIdx.cbegin();
   for(int i = 0; i < mySurfels.size(); ++i)
   {
-    auto cell_p0 = *it++;
-    auto cell_p1 = *it++;
-    auto cell_p2 = *it++;
-    auto cell_p3 = *it++;
-    auto e0 = myRegularizedPositions[ cell_p0 ] - myRegularizedPositions[ cell_p1 ];
-    auto e1 = myRegularizedPositions[ cell_p1 ] - myRegularizedPositions[ cell_p2 ];
-    auto e2 = myRegularizedPositions[ cell_p2 ] - myRegularizedPositions[ cell_p3 ];
-    auto e3 = myRegularizedPositions[ cell_p3 ] - myRegularizedPositions[ cell_p0 ];
-    auto cos_a0 = e0.dot( myNormals[i] );
-    auto cos_a1 = e1.dot( myNormals[i] );
-    auto cos_a2 = e2.dot( myNormals[i] );
-    auto cos_a3 = e3.dot( myNormals[i] );
+    const auto cell_p0 = *it++;
+    const auto cell_p1 = *it++;
+    const auto cell_p2 = *it++;
+    const auto cell_p3 = *it++;
+    const auto e0 = myRegularizedPositions[ cell_p0 ] - myRegularizedPositions[ cell_p1 ];
+    const auto e1 = myRegularizedPositions[ cell_p1 ] - myRegularizedPositions[ cell_p2 ];
+    const auto e2 = myRegularizedPositions[ cell_p2 ] - myRegularizedPositions[ cell_p3 ];
+    const auto e3 = myRegularizedPositions[ cell_p3 ] - myRegularizedPositions[ cell_p0 ];
+    const auto cos_a0 = e0.dot( myNormals[i] );
+    const auto cos_a1 = e1.dot( myNormals[i] );
+    const auto cos_a2 = e2.dot( myNormals[i] );
+    const auto cos_a3 = e3.dot( myNormals[i] );
     energy += myBeta * ( cos_a0 * cos_a0 + cos_a1 * cos_a1
                         + cos_a2 * cos_a2 + cos_a3 * cos_a3 );
     myGradientAlign[ cell_p0 ] += cos_a0 * myNormals[i];
@@ -291,7 +291,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   //data attachment term
   for(int i = 0; i < myOriginalPositions.size(); ++i)
   {
-    auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
+    const auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
     energy          += (*myAlphas)[i] * delta_d.squaredNorm() ;
     myGradient[i]      = 2.0*(*myAlphas)[i] * delta_d;
     //reset for align
@@ -302,18 +302,18 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   auto it = myAlignPointelsIdx.cbegin();
   for(int i = 0; i < mySurfels.size(); ++i)
   {
-    auto cell_p0 = *it++;
-    auto cell_p1 = *it++;
-    auto cell_p2 = *it++;
-    auto cell_p3 = *it++;
-    auto e0 = myRegularizedPositions[ cell_p0 ] - myRegularizedPositions[ cell_p1 ];
-    auto e1 = myRegularizedPositions[ cell_p1 ] - myRegularizedPositions[ cell_p2 ];
-    auto e2 = myRegularizedPositions[ cell_p2 ] - myRegularizedPositions[ cell_p3 ];
-    auto e3 = myRegularizedPositions[ cell_p3 ] - myRegularizedPositions[ cell_p0 ];
-    auto cos_a0 = e0.dot( myNormals[i] );
-    auto cos_a1 = e1.dot( myNormals[i] );
-    auto cos_a2 = e2.dot( myNormals[i] );
-    auto cos_a3 = e3.dot( myNormals[i] );
+    const auto cell_p0 = *it++;
+    const auto cell_p1 = *it++;
+    const auto cell_p2 = *it++;
+    const auto cell_p3 = *it++;
+    const auto e0 = myRegularizedPositions[ cell_p0 ] - myRegularizedPositions[ cell_p1 ];
+    const auto e1 = myRegularizedPositions[ cell_p1 ] - myRegularizedPositions[ cell_p2 ];
+    const auto e2 = myRegularizedPositions[ cell_p2 ] - myRegularizedPositions[ cell_p3 ];
+    const auto e3 = myRegularizedPositions[ cell_p3 ] - myRegularizedPositions[ cell_p0 ];
+    const auto cos_a0 = e0.dot( myNormals[i] );
+    const auto cos_a1 = e1.dot( myNormals[i] );
+    const auto cos_a2 = e2.dot( myNormals[i] );
+    const auto cos_a3 = e3.dot( myNormals[i] );
     energy += (*myBetas)[ cell_p0 ] *  cos_a0 * cos_a0
               + (*myBetas)[ cell_p1 ] * cos_a1 * cos_a1
               + (*myBetas)[ cell_p2 ] * cos_a2 * cos_a2
@@ -335,8 +335,8 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   SH3::RealPoint barycenter, phat ;
   for(int faceId=0 ; faceId < myFaces.size(); ++faceId)
   {
-    auto           idx = *itP++;
-    unsigned int nbAdj = *itNb++;
+    const auto           idx = *itP++;
+    const unsigned int nbAdj = *itNb++;
     barycenter = zero;
     phat = myRegularizedPositions[ idx ];
     for ( unsigned int i = 0; i < nbAdj; ++i )

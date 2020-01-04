@@ -455,8 +455,7 @@ namespace DGtal
     // ---------------------------------------------------------------
     ///Internal members to store precomputed topological informations
     
-    ///Gradient of the energy w.r.t. vertex positons
-    ///TODO: remove this structure?
+    ///Gradient of the quad alignement w.r.t. vertex positons
     Positions myGradientAlign;
     
     ///Instance of the KSpace
