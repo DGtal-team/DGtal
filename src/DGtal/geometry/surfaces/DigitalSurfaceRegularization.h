@@ -76,7 +76,7 @@ namespace DGtal
    * @f$\hat{p}_i@f$.
    *
    * To minimize this energy, instead of solving the associated sparse linear system as described in @cite coeurjolly17regDGCI,
-   * we perform a gradient descent strategy which allows us a finer control of the vertices (see advection methods).
+   * we perform a gradient descent strategy which allows us a finer control over the vertices displacement (see advection methods).
    *
    * @see testDigitalSurfaceRegularization.cpp
    *
