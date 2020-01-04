@@ -426,12 +426,71 @@ insertPoints( PointSet& pts_set ) const
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
 }
 
-// @return the domain of the current polytope.
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::Domain&
 DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 {
   return D;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+unsigned int
+DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
+{
+  return A.size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+const typename DGtal::BoundedLatticePolytope<TSpace>::Vector&
+DGtal::BoundedLatticePolytope<TSpace>::getA( unsigned int i ) const
+{
+  ASSERT( i < nbHalfSpaces() );
+  return A[ i ];
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::getB( unsigned int i ) const
+{
+  ASSERT( i < nbHalfSpaces() );
+  return B[ i ];
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
+{
+  ASSERT( i < nbHalfSpaces() );
+  return I[ i ];
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityMatrix&
+DGtal::BoundedLatticePolytope<TSpace>::getA() const
+{
+  return A;
+}
+    
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityVector&
+DGtal::BoundedLatticePolytope<TSpace>::getB() const
+{
+  return B;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+const std::vector<bool>&
+DGtal::BoundedLatticePolytope<TSpace>::getI() const
+{
+  return I;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

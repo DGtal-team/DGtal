@@ -282,8 +282,42 @@ namespace DGtal
     /// @name Accessor services
     /// @{
     
-    // @return the domain of the current polytope.
+    /// @return the domain of the current polytope.
     const Domain& getDomain() const;
+
+    /// @return the number of half-space constraints.
+    unsigned int nbHalfSpaces() const;
+
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    ///
+    /// @return the normal vector of the \a i-th half space
+    /// constraint (i.e. `A` in constraint `Ax <= b`).
+    const Vector& getA( unsigned int i ) const;
+
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    ///
+    /// @return the offset of the \a i-th half space
+    /// constraint (i.e. `b` in constraint `Ax <= b`).
+    Integer getB( unsigned int i ) const;
+
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    ///
+    /// @return 'true' if the \a i-th half space constraint is of the
+    /// form `Ax <= b`, 'false' if it is of the form `Ax < b`.
+    bool isLarge( unsigned int i ) const;
+
+    /// @return the matrix A in the polytope representation \f$ Ax \le B \f$.
+    const InequalityMatrix& getA() const;
+    
+    /// @return the vector B in the polytope representation \f$ Ax \le B \f$.
+    const InequalityVector& getB() const;
+    /// @return the vector I telling if inequalities are large in the
+    /// polytope representation \f$ Ax \prec B \f$, with \f$ \prec \in
+    /// \{ <, \le \} \f$.
+    const std::vector<bool>& getI() const;
     
     /// @}
     
