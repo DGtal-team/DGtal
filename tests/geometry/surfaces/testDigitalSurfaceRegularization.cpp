@@ -65,7 +65,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     auto surfels         = SH3::getSurfelRange( surface, params );
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    regul.attachTrivialNormalVectors(params);
+    regul.attachConvolvedTrivialNormalVectors(params);
     //! [DigitalRegUsage]
     double energy = regul.computeGradient();
     CAPTURE( regul );
@@ -138,7 +138,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     auto surfels         = SH3::getSurfelRange( surface, params );
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    regul.attachTrivialNormalVectors(params);
+    regul.attachConvolvedTrivialNormalVectors(params);
     CAPTURE( regul );
     auto energy       = regul.regularize(10,1.0,0.1);
     auto secondenergy = regul.regularize(10,1.0,0.1);
@@ -157,7 +157,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     auto surfels         = SH3::getSurfelRange( surface, params );
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
     regul.init();
-    regul.attachTrivialNormalVectors(params);
+    regul.attachConvolvedTrivialNormalVectors(params);
     CAPTURE( regul );
     auto energy       = regul.regularize(10,1.0,0.1);
     
@@ -169,7 +169,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     //Init again with variable (but constant) weights
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul2(surface);
     regul2.init(alphas,betas,gammas);
-    regul2.attachTrivialNormalVectors(params);
+    regul2.attachConvolvedTrivialNormalVectors(params);
     auto energybis  = regul2.regularize(10,1.0,0.1);
     REQUIRE( energy == energybis );
     
@@ -191,7 +191,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
         gammas[i] = 0.0;
       }
     regul3.init(alphas,betas,gammas);
-    regul3.attachTrivialNormalVectors(params);
+    regul3.attachConvolvedTrivialNormalVectors(params);
     energybis = regul3.regularize();
     //! [DigitalRegLocal]
     
