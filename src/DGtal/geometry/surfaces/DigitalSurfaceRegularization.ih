@@ -66,10 +66,9 @@ DGtal::DigitalSurfaceRegularization<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
 inline
-void DGtal::DigitalSurfaceRegularization<T>::attachTrivialNormalVectors(const Parameters someParams)
+void DGtal::DigitalSurfaceRegularization<T>::attachConvolvedTrivialNormalVectors(const Parameters someParams)
 {
   ASSERT_MSG(myInit, "The init() method must be called before setting the normals");
-  myNormals.clear();
   myNormals = SHG3::getCTrivialNormalVectors( myDigitalSurface, mySurfels, someParams);
 }
 
@@ -80,7 +79,6 @@ void
 DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc)
 {
   ASSERT_MSG(myInit, "The init() method must be called before setting the normals");
-  myNormals.clear();
   myNormals.resize( mySurfels.size());
   for(auto i=0; i< mySurfels.size();++i)
     myNormals[i] = normalFunc( mySurfels[i] );
@@ -221,7 +219,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   //data attachment term
   for(int i = 0; i < myOriginalPositions.size(); ++i)
   {
-    auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
+    const auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
     energy          += myAlpha * delta_d.squaredNorm() ;
     myGradient[i]      = 2.0*myAlpha * delta_d;
     //reset for align
@@ -418,5 +416,4 @@ DGtal::operator<< ( std::ostream & out,
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 
