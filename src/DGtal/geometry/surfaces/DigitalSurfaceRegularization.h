@@ -159,13 +159,13 @@ namespace DGtal
     void attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc);
     
     /**
-     * Attach trivial normal vectors to the digital surface
+     * Attach convolved trivial normal vectors to the digital surface
      * (cf ShortCutsGeometry::getCTrivialNormalVectors).
      *
      * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
      *
      */
-    void attachTrivialNormalVectors(const Parameters someParams
+    void attachConvolvedTrivialNormalVectors(const Parameters someParams
                                     = SH3::defaultParameters() | SHG3::defaultParameters() );
     
     
@@ -313,7 +313,7 @@ namespace DGtal
     }
     
     /**
-     * @return the regulariezed vertices positions
+     * @return the regularized vertices positions
      * (see getCellIndex for the Cell->Index map).
      * @note the init() method must have been called.
      */
@@ -479,6 +479,7 @@ namespace DGtal
     std::vector<unsigned char> myNumberAdjEdgesToPointel;
     ///Indices of cells foor the Fairness term
     std::vector< SH3::Idx > myFairnessPointelsIdx;
+    ///Number of adjacent faces to given vertex
     std::vector< unsigned char > myNbAdjacent;
     ///All faces of the dual digital surfacce
     SH3::PolygonalSurface::FaceRange myFaces;
