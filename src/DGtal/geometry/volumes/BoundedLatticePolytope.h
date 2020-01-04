@@ -350,20 +350,33 @@ namespace DGtal
     /// @{
 
     /**
-     * Cut the polytope by the given closed half space a.x <= b
-     *
-     * @note For now complexity is O(n) where n=A.rows() because it
-     * checks if a parallel closed half-space defines already a face
-     * of the polytope.
-     *
-     * @param a any integer vector
-     * @param b any integer number
-     * @param large tells if the inequality is large (true) or strict (false).
-     *
-     * @return the index of the constraint in the polytope.
-     */
+       Cut the polytope by the given closed half space `a.x <= b` or `a.x < b`.
+              
+       @param a any integer vector
+       @param b any integer number
+       @param large tells if the inequality is large (true) or strict (false).
+       
+       @return the index of the constraint in the polytope.
+
+       @note For now complexity is O(n) where n=A.rows() because it
+       checks if a parallel closed half-space defines already a face
+       of the polytope.
+    */
     unsigned int cut( const Vector& a, Integer b, bool large = true );
 
+    /**
+       Cuts the lattice polytope with the given half-space constraint.
+       
+       @param hs any half-space constraint.
+       @param large tells if the inequality is large (true) or strict (false).
+       @return the index of the constraint in the polytope.
+
+       @note For now complexity is O(n) where n=A.rows() because it
+       checks if a parallel closed half-space defines already a face
+       of the polytope.
+     */
+    unsigned int cut( const HalfSpace & hs, bool large = true );
+    
     /**
        Swaps the content of this object with other. O(1) complexity.
        @param other any other BoundedLatticePolytope.
@@ -598,7 +611,7 @@ namespace DGtal
        @tparam TInteger any model of integer.
     */
     template <typename TInteger>
-    struct BoundedLatticePolytopeHelper<3, TInteger> {
+    struct BoundedLatticePolytopeSpecializer<3, TInteger> {
       typedef TInteger                        Integer;
       typedef SpaceND< 3, Integer>            Space;
       typedef typename Space::Point           Point;

@@ -187,7 +187,7 @@ init( PointIterator itB, PointIterator itE )
     { // One should add edges
       for ( unsigned int i = 0; i < pts.size(); ++i )
 	for ( unsigned int j = i+1; j < pts.size(); ++j ) {
-	  detail::BoundedLatticePolytopeHelper< dimension, Integer >::addEdgeConstraint
+	  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::addEdgeConstraint
 	    ( *this, i, j, pts );
 	}
     }
@@ -210,13 +210,39 @@ cut( const Vector& a, Integer b, bool large )
     {
       A.push_back( a );
       B.push_back( b );
-      I.push_back( true );
+      I.push_back( large );
       return A.size() - 1;
     }
   else
     {
       auto k = it - A.begin();
       B[ k ] = std::min( B[ k ], b );
+      I[ k ] = large;
+      return k;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+unsigned int 
+DGtal::BoundedLatticePolytope<TSpace>::
+cut( const HalfSpace& hs, bool large )
+{
+  auto a = hs.N;
+  auto b = hs.c;
+  // Checks that is not inside.
+  auto it = std::find( A.begin(), A.end(), a );
+  if ( it == A.end() )
+    {
+      A.push_back( a );
+      B.push_back( b );
+      I.push_back( large );
+      return A.size() - 1;
+    }
+  else
+    {
+      auto k = it - A.begin();
+      B[ k ] = std::min( B[ k ], b );
+      I[ k ] = large;
       return k;
     }
 }
