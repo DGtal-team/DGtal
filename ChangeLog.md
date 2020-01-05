@@ -107,7 +107,7 @@
 
 - *Build*
   - Removing the homemade CPP11 checks, using cmake macro instead
-  (David Coeurjolly, [#14XX](https://github.com/DGtal-team/DGtal/pull/14XX))
+  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   
 
 # DGtal 1.0
