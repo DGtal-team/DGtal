@@ -34,6 +34,7 @@ endforeach()
 # CPP11 
 # -----------------------------------------------------------------------------
 set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib
