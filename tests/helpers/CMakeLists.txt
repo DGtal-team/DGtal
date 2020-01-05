@@ -2,6 +2,7 @@ SET(DGTAL_TESTS_SRC_HELPERS
   testParametricShape
   testImplicitShape
   testParameters
+  testShortcuts
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_HELPERS})
