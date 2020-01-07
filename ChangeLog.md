@@ -110,6 +110,11 @@
   - CSS edit to enhance the readability of code snippets (David
     Coeurjolly [#1438](https://github.com/DGtal-team/DGtal/pull/1438))
 
+- *Build*
+  - Removing the homemade CPP11 checks, using cmake macro instead
+  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+  
+
 # DGtal 1.0
 
 ## New Features / Critical Changes
