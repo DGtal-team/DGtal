@@ -481,7 +481,6 @@ namespace DGtal
         getKSpace( Parameters params =
                    parametersKSpace() | parametersDigitizedImplicitShape3D() )
       {
-        trace.info() << "[Shortcuts::getKSpace] " << params << std::endl;
         Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
         Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
         Scalar h      = params[ "gridstep" ].as<Scalar>();
@@ -1445,6 +1444,9 @@ namespace DGtal
       /// of the surfels of the surface, where the 4 pointels of each
       /// surfel are visited in order.
       ///
+      /// @since 1.1 The pointel ordering is now the same as the one
+      /// given by makePrimalPolygonalSurface (for 3D only of course).
+      ///
       /// @note If you wish to consider the primal digital surface, and
       /// visits pointels as vertices of this graph in
       /// breadth-first/depth-first order, the best is to build first a
@@ -1518,7 +1520,9 @@ namespace DGtal
       getPointelRange
       ( const KSpace& K, const SCell& surfel )
       {
-        return getPrimalVertices( K, surfel, true );
+        return KSpace::dimension == 3
+	  ? getPrimalVertices( K, surfel, true )
+	  : getPrimalVertices( K, surfel );
       }
       
       /// Given any digital surface, returns a vector of surfels in
@@ -2549,7 +2553,7 @@ namespace DGtal
           Size n = 1;  // OBJ vertex numbering start at 1 
           for ( auto&& s : surfels )
             {
-              auto primal_vtcs = getPointelRange( K, s );
+              auto primal_vtcs = getPointelRange( K, s, true );
               for ( auto&& primal_vtx : primal_vtcs )
                 {
                   if ( ! vtx_numbering.count( primal_vtx ) )

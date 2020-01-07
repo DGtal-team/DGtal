@@ -74,9 +74,14 @@
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
   - Fix bug in Shortcuts::saveVectorFieldOBJ
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
-
   - Fixing OBJ export: .mtl file written with relative path (Johanna
-  Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+    Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Unify pointel ordering in Shortcuts and MeshHelper so that
+    Shortcuts::getPointelRange, Shortcuts::saveOBJ and
+    Shortcuts::makePrimalPolygonalSurface, as well as
+    MeshHelpers::digitalSurface2PrimalPolygonalSurface, all use the
+    CCW ordering by default (in 3D).
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
