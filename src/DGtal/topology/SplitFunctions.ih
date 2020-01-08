@@ -1,0 +1,159 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SplitFunctions.ih
+ * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
+ *
+ * @date 2019/01/08
+ *
+ * Implementation of inline methods defined in SplitFunctions.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+template <typename TPoint>
+size_t DGtal::functions::computeSplits(
+    const size_t requested_number_of_splits,
+    const TPoint & lowerBound,
+    const TPoint & upperBound,
+    unsigned int splits[]
+    )
+{
+  const auto dim = lowerBound.dimension;
+  auto region_size = upperBound - lowerBound;
+  for ( size_t i = 0; i < dim; ++i )
+  {
+    if ( region_size[ i ] < 0 )
+      throw std::runtime_error(
+      "upperBound is smaller than lowerBound, region_size is negative" );
+  }
+
+  // Implementation taken from ITK:
+  // itkImageRegionSplitterMultidimensional.cxx ComputeSplitInternal
+  // size of each splited region
+  std::vector<double> splitRegionSize(dim); // Note: stack allocation preferred
+  unsigned int        numberOfPieces = 1;
+
+  // initialize arrays
+  for (unsigned int i = 0; i < dim; ++i)
+  {
+    splits[i] = 1;
+    splitRegionSize[i] = region_size[i];
+  }
+
+  while (true)
+  {
+    // find the dimension with the largest size
+    unsigned int maxSplitDim = 0;
+    for (unsigned int i = 1; i < dim; ++i)
+    {
+      if (splitRegionSize[maxSplitDim] < splitRegionSize[i])
+      {
+        maxSplitDim = i;
+      }
+    }
+
+    // calculate the number of additional pieces this split would add
+    unsigned int additionalNumPieces = 1;
+    for (unsigned int i = 0; i < dim; ++i)
+    {
+      if (i != maxSplitDim)
+      {
+        additionalNumPieces *= splits[i];
+      }
+    }
+
+    // check if this would give us too many pieces or
+    // if this would require the subpixel splits
+    if ( numberOfPieces + additionalNumPieces > requested_number_of_splits ||
+         splits[ maxSplitDim ] == region_size[ maxSplitDim ] )
+    {
+      return numberOfPieces;
+    }
+
+    // update the variable with the new split
+    numberOfPieces += additionalNumPieces;
+    ++splits[maxSplitDim];
+    splitRegionSize[maxSplitDim] = region_size[maxSplitDim] / double(splits[maxSplitDim]);
+  }
+
+}
+template <typename TPoint>
+std::array<TPoint, 2> DGtal::functions::getSplit(
+    const size_t splitIndex,
+    const size_t requested_number_of_splits,
+    const TPoint & lowerBound,
+    const TPoint & upperBound
+    )
+{
+  std::array<TPoint, 2> output_lower_upper_bounds = {lowerBound, upperBound};
+  auto & outputLowerBound = output_lower_upper_bounds[0];
+  auto & outputUpperBound = output_lower_upper_bounds[1];
+
+  const auto dim = lowerBound.dimension;
+  auto region_size = upperBound - lowerBound;
+  auto output_region_size = region_size;
+  // Implementation taken from ITK:
+  // itkImageRegionSplitterMultidimensional.cxx GetSplitInternal
+  // number of splits in each dimension
+  std::vector<unsigned int> splits(dim); // Note: stack allocation preferred
+
+  // index into splitted regions
+  std::vector<unsigned int> splittedRegionIndex(dim); // Note: stack allocation preferred
+
+  const auto numberOfPieces = DGtal::functions::computeSplits(requested_number_of_splits,
+      lowerBound, upperBound, &splits[0]);
+
+  // determine which splitted region we are in
+  unsigned int offset = splitIndex;
+  for (unsigned i = dim - 1; i > 0; --i)
+  {
+    unsigned int dimensionOffset = 1;
+    for (unsigned int j = 0; j < i; ++j)
+    {
+      dimensionOffset *= splits[j];
+    }
+
+    splittedRegionIndex[i] = offset / dimensionOffset;
+    offset -= (splittedRegionIndex[i] * dimensionOffset);
+  }
+  splittedRegionIndex[0] = offset;
+
+
+  // Assign the output split region to the input region in-place
+  for (unsigned int i = 0; i < dim; i++)
+  {
+    const auto inputRegionSize = region_size[i];
+    const auto indexOffset =
+      std::floor((splittedRegionIndex[i]) * (inputRegionSize / double(splits[i])));
+
+    outputLowerBound[i] += indexOffset;
+    if (splittedRegionIndex[i] < splits[i] - 1)
+    {
+      output_region_size[i] =
+        std::floor((splittedRegionIndex[i] + 1) * (inputRegionSize / double(splits[i]))) - indexOffset;
+    }
+    else
+    {
+      // this dimension is falling off the edge of the image
+      output_region_size[i] = output_region_size[i] - indexOffset;
+    }
+  }
+  outputUpperBound = outputLowerBound + output_region_size;
+
+  return output_lower_upper_bounds;
+}
