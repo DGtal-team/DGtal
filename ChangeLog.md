@@ -113,6 +113,8 @@
 - *Build*
   - Removing the homemade CPP11 checks, using cmake macro instead
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+  - Removes the check for CPP11 when building WITH_ITK
+  (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
   
 
 # DGtal 1.0
