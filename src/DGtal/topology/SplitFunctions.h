@@ -83,6 +83,26 @@ namespace DGtal
           const size_t requested_number_of_splits,
           const TPoint & lowerBound,
           const TPoint & upperBound);
+
+    /**
+     * Split a CubicalComplex (or VoxelComplex) into sub_complexes
+     *
+     * @tparam TComplex
+     * @param vc
+     * @param requested_number_of_splits (the actual splits might be less)
+     *
+     * @return vector with sub_complexes
+     *
+     * @sa computeSplits
+     * @sa getSplit
+     */
+    template < typename TComplex >
+    std::vector<TComplex>
+    splitComplex(
+       const TComplex & vc ,
+       const size_t requested_number_of_splits
+       );
+
   } // namespace functions
 } // namespace DGtal
 
