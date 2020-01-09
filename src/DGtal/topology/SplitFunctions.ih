@@ -80,7 +80,7 @@ size_t DGtal::functions::computeSplits(
     // check if this would give us too many pieces or
     // if this would require the subpixel splits
     if ( numberOfPieces + additionalNumPieces > requested_number_of_splits ||
-         splits[ maxSplitDim ] == region_size[ maxSplitDim ] )
+         splits[ maxSplitDim ] == static_cast<unsigned int>(region_size[ maxSplitDim ]) )
     {
       return numberOfPieces;
     }
@@ -115,7 +115,7 @@ std::array<TPoint, 2> DGtal::functions::getSplit(
   // index into splitted regions
   std::vector<unsigned int> splittedRegionIndex(dim); // Note: stack allocation preferred
 
-  const auto numberOfPieces = DGtal::functions::computeSplits(requested_number_of_splits,
+  DGtal::functions::computeSplits(requested_number_of_splits,
       lowerBound, upperBound, &splits[0]);
 
   // determine which splitted region we are in
@@ -157,3 +157,76 @@ std::array<TPoint, 2> DGtal::functions::getSplit(
 
   return output_lower_upper_bounds;
 }
+
+template < typename TComplex >
+  std::vector<TComplex>
+DGtal::functions::splitComplex(
+    const TComplex & vc ,
+    const size_t requested_number_of_splits
+    ) {
+  const auto & kspace = vc.space();
+  const auto & lowerBound = kspace.lowerBound();
+  const auto & upperBound = kspace.upperBound();
+  std::vector<unsigned int> splits(kspace.dimension);
+  const auto number_of_splits =
+    DGtal::functions::computeSplits(requested_number_of_splits,
+        lowerBound, upperBound, splits.data());
+  std::vector<typename TComplex::KSpace> sub_kspaces(number_of_splits);
+  // Note that when dividing a k-space special care hast to be taken in the
+  // opennes or clossedness of the low dim cells (1-cell and 2-cell in 3D).
+  // To avoid sharing those pointels and linels in the frontier between subspaces,
+  // only one of the colindant sub_kspaces should include them, and the rest omit them.
+  // In case of Cubical and Voxel Complexes, those cells are not that signficant,
+  // at least for thinning, so we make all the sub_kspaces closed.
+  const bool kspace_isClosed = true;
+  for(size_t split = 0; split < number_of_splits; ++split) {
+    const auto sub_lower_upper_bounds = DGtal::functions::getSplit(
+        split, requested_number_of_splits, lowerBound, upperBound);
+    const auto & sub_lowerBound = sub_lower_upper_bounds[0];
+    const auto & sub_upperBound = sub_lower_upper_bounds[1];
+    sub_kspaces[split].init(sub_lowerBound, sub_upperBound, kspace_isClosed);
+  }
+  std::vector<TComplex> sub_complexes;
+  for(size_t split = 0; split < number_of_splits; ++split) {
+    sub_complexes.emplace_back(TComplex(sub_kspaces[split]));
+    // Copy cells and cell data from input vc to sub_complexes
+    // First, iterate over the kspace of the sub-domain
+    // Then find cell in original complex, if exists, insert it (copy) into the sub_complex
+    const auto sub_lowerCell = sub_kspaces[split].lowerCell();
+    const auto sub_upperCell = sub_kspaces[split].upperCell();
+    const auto & sub_lowerCell_coords = kspace.uKCoords(sub_lowerCell);
+    const auto & sub_upperCell_coords = kspace.uKCoords(sub_upperCell);
+    auto kcell = sub_lowerCell;
+    static_assert(TComplex::KSpace::dimension == 3,
+        "The KSpace::dimension of TComplex isn't 3");
+    for(auto k_x = sub_lowerCell_coords[0]; k_x < sub_upperCell_coords[0]; k_x++) {
+      for(auto k_y = sub_lowerCell_coords[1]; k_y < sub_upperCell_coords[1]; k_y++) {
+        for(auto k_z = sub_lowerCell_coords[2]; k_z < sub_upperCell_coords[2]; k_z++) {
+          kspace.uSetKCoord(kcell, 0, k_x);
+          kspace.uSetKCoord(kcell, 1, k_y);
+          kspace.uSetKCoord(kcell, 2, k_z);
+          const auto dim_cell = kspace.uDim(kcell);
+          const auto iter_cell_map = vc.findCell(dim_cell, kcell);
+          if(iter_cell_map != vc.end(dim_cell)) {
+            // iter_cell_map->first is equal to kcell...
+            sub_complexes[split].insertCell(dim_cell,
+                kcell, iter_cell_map->second);
+          }
+        }
+      }
+    }
+    // auto kcell = sub_lowerCell;
+    // do {
+    //   const auto dim_cell = kspace.uDim(kcell);
+    //   const auto iter_cell_map = vc.findCell(dim_cell, kcell);
+    //   if(iter_cell_map != vc.end(dim_cell)) {
+    //     // iter_cell_map->first is equal to kcell...
+    //     sub_complexes[split].insertCell(dim_cell,
+    //         kcell, iter_cell_map->second);
+    //   }
+    // }
+    // while( sub_kspaces[split].uNext(kcell, sub_lowerCell, sub_upperCell));
+  }
+  return sub_complexes;
+}
+

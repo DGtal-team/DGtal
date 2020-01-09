@@ -48,10 +48,17 @@ namespace DGtal
    * Compute the number of splits given a region defined by lowerBound and upperBound
    *
    * @tparam TPoint point type for lower and upper bound
-   * @param requested_number_of_splits
-   * @param lowerBound
-   * @param upperBound
-   * @param splits[] the splits for each dimension
+   * @param[in] requested_number_of_splits number of splits (the actual splits might be less)
+   * @param[in] lowerBound the lower bound point of the domain
+   * @param[in] upperBound the upper bound point of the domain
+   * @param[in,out] splits the splits for each dimension
+   * For example, initialize splits with a std::vector, and use data to get the raw array
+   * needed for this function.
+   * @code
+   * std::vector<unsigned int> splits(dimension);
+   * auto number_of_splits = computeSplits(requested_number_of_splits,
+   *                           lowerBound, upperBound, splits.data());
+   * @endcode
    *
    * @return number of splits, lesser or equal than requested_number_of_splits
    */
@@ -64,16 +71,16 @@ namespace DGtal
 
     /**
      * Get the ith split, where i has to be less than the number of splits
-     * computed by @computeSplits.
+     * computed by @sa computeSplits.
      *
      * Returns two points corresponding to the output_lowerBound and output_upperRegion
      * of the ith split.
      *
      * @tparam TPoint point type for lower and upper bound
-     * @param splitIndex the ith split to be computed
-     * @param requested_number_of_splits
-     * @param lowerBound
-     * @param upperBound
+     * @param[in] splitIndex the ith split to be computed
+     * @param[in] requested_number_of_splits number of splits (the actual splits might be less)
+     * @param[in] lowerBound the lower bound point of the domain
+     * @param[in] upperBound the upper bound point of the domain
      *
      * @return array containing output_lowerBound and output_upperBound
      */
@@ -83,6 +90,26 @@ namespace DGtal
           const size_t requested_number_of_splits,
           const TPoint & lowerBound,
           const TPoint & upperBound);
+
+    /**
+     * Split a CubicalComplex (or VoxelComplex) into sub_complexes
+     *
+     * @tparam TComplex
+     * @param[in] vc input complex
+     * @param[in] requested_number_of_splits (the actual splits might be less)
+     *
+     * @return vector with sub_complexes
+     *
+     * @sa computeSplits
+     * @sa getSplit
+     */
+    template < typename TComplex >
+    std::vector<TComplex>
+    splitComplex(
+       const TComplex & vc ,
+       const size_t requested_number_of_splits
+       );
+
   } // namespace functions
 } // namespace DGtal
 
