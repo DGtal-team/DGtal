@@ -880,7 +880,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// Fixture for a thick X
+// Fixture for an X
 struct Fixture_X {
     ///////////////////////////////////////////////////////////
     // type aliases
@@ -894,7 +894,7 @@ struct Fixture_X {
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
     using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
-    using FixtureComplex = DGtal::VoxelComplex<KSpace>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureMap>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
@@ -916,8 +916,8 @@ struct Fixture_X {
     FixtureDigitalSet create_set() {
         using namespace DGtal;
 
-        Point p1(-30, -30, -30);
-        Point p2(30, 30, 30);
+        Point p1(-16, -16, -16);
+        Point p2(16, 16, 16);
         Domain domain(p1, p2);
 
         FixtureDigitalSet a_set(domain);
@@ -945,7 +945,7 @@ struct Fixture_X {
         center_set.push_back(c20y);
 
         Point z_pos(0, 0, 1);
-        int branch_length(10);
+        int branch_length(4);
         std::vector<Point> diagonals;
         diagonals.reserve(6);
         for (const auto &p : center_set) {
@@ -955,7 +955,7 @@ struct Fixture_X {
                 diagonals.push_back({l, -l, 0});
                 diagonals.push_back({-l, l, 0});
                 diagonals.push_back({-l, -l, 0});
-                for (int z = -2; z <= 2; ++z)
+                for (int z = -1; z <= 1; ++z)
                     for (const auto &d : diagonals)
                         a_set.insert(p + d + (z * z_pos));
             }
