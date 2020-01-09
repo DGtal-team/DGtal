@@ -40,6 +40,8 @@
   - Provides partial flip, split and merge operations for half-edge data structures
     and triangulated surfaces (Jacques-Olivier Lachaud,
     [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
+  - Makes testVoxelComplex faster, reducing the size of the test fixture
+    (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
 
 - *Shapes package*
   - Fix Lemniscate definition following Bernoulli's definition
