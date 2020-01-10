@@ -158,11 +158,14 @@ std::array<TPoint, 2> DGtal::functions::getSplit(
   return output_lower_upper_bounds;
 }
 
+
+
 template < typename TComplex >
-  std::vector<TComplex>
+DGtal::functions::SplittedComplexes<TComplex>
 DGtal::functions::splitComplex(
     const TComplex & vc ,
-    const size_t requested_number_of_splits
+    const size_t requested_number_of_splits,
+    const size_t wide_of_ghost_layer
     ) {
   const auto & kspace = vc.space();
   const auto & lowerBound = kspace.lowerBound();
@@ -172,6 +175,11 @@ DGtal::functions::splitComplex(
     DGtal::functions::computeSplits(requested_number_of_splits,
         lowerBound, upperBound, splits.data());
   std::vector<typename TComplex::KSpace> sub_kspaces(number_of_splits);
+  // Initiate output struct
+  SplittedComplexes<TComplex> out;
+  out.number_of_splits = number_of_splits;
+  out.wide_of_ghost_layer = wide_of_ghost_layer;
+  auto & sub_complexes = out.sub_complexes;
   // Note that when dividing a k-space special care hast to be taken in the
   // opennes or clossedness of the low dim cells (1-cell and 2-cell in 3D).
   // To avoid sharing those pointels and linels in the frontier between subspaces,
@@ -180,13 +188,34 @@ DGtal::functions::splitComplex(
   // at least for thinning, so we make all the sub_kspaces closed.
   const bool kspace_isClosed = true;
   for(size_t split = 0; split < number_of_splits; ++split) {
-    const auto sub_lower_upper_bounds = DGtal::functions::getSplit(
+    const auto sub_lower_upper_bounds_original = DGtal::functions::getSplit(
         split, requested_number_of_splits, lowerBound, upperBound);
-    const auto & sub_lowerBound = sub_lower_upper_bounds[0];
-    const auto & sub_upperBound = sub_lower_upper_bounds[1];
+    // Save the domain of the original splits in the output
+    // If wide_of_ghost_layer == 0, this is the final domain of the sub_complexes
+    out.splits.push_back(sub_lower_upper_bounds_original);
+    auto sub_lower_upper_bounds = sub_lower_upper_bounds_original;
+    auto & sub_lowerBound = sub_lower_upper_bounds[0];
+    auto & sub_upperBound = sub_lower_upper_bounds[1];
+    if(wide_of_ghost_layer) {
+      // Add ghost layer only if it is not in a boundary of the original kspace
+      // Note: cast needed for PointVector operation.
+      const auto wide =
+        static_cast<typename TComplex::Point::Component>(wide_of_ghost_layer);
+      const auto limit_lowerBound = lowerBound + wide;
+      const auto limit_upperBound = upperBound - wide;
+      for(size_t dim = 0; dim < kspace.dimension; ++dim) {
+        if(sub_lowerBound[dim] > limit_lowerBound[dim] )
+          sub_lowerBound[dim] -= wide_of_ghost_layer;
+        if(sub_upperBound[dim] < limit_upperBound[dim])
+          sub_upperBound[dim] += wide_of_ghost_layer;
+      }
+      // Save the domain of the splits with the added ghost layer in the output
+      // If wide_of_ghost_layer != 0, this is the final domain of the sub_complexes
+      out.splits_with_ghost_layers.push_back(sub_lower_upper_bounds);
+    }
     sub_kspaces[split].init(sub_lowerBound, sub_upperBound, kspace_isClosed);
   }
-  std::vector<TComplex> sub_complexes;
+
   for(size_t split = 0; split < number_of_splits; ++split) {
     sub_complexes.emplace_back(TComplex(sub_kspaces[split]));
     // Copy cells and cell data from input vc to sub_complexes
@@ -215,18 +244,7 @@ DGtal::functions::splitComplex(
         }
       }
     }
-    // auto kcell = sub_lowerCell;
-    // do {
-    //   const auto dim_cell = kspace.uDim(kcell);
-    //   const auto iter_cell_map = vc.findCell(dim_cell, kcell);
-    //   if(iter_cell_map != vc.end(dim_cell)) {
-    //     // iter_cell_map->first is equal to kcell...
-    //     sub_complexes[split].insertCell(dim_cell,
-    //         kcell, iter_cell_map->second);
-    //   }
-    // }
-    // while( sub_kspaces[split].uNext(kcell, sub_lowerCell, sub_upperCell));
   }
-  return sub_complexes;
+  return out;
 }
 

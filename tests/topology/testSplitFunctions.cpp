@@ -196,7 +196,11 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
         trace.beginBlock("SplitComplex");
         trace.info() << "lowerBound" <<  vc.space().lowerBound() << std::endl;
         trace.info() << "upperBound" <<  vc.space().upperBound() << std::endl;
-        auto sub_complexes = splitComplex(vc, requested_number_of_splits);
+        auto out = splitComplex(vc, requested_number_of_splits);
+        auto & sub_complexes = out.sub_complexes;
+        CHECK(out.number_of_splits == requested_number_of_splits);
+        CHECK(out.splits_with_ghost_layers.empty() == true);
+
         CHECK(sub_complexes.size() == requested_number_of_splits);
         {
             size_t sub_index = 0;
@@ -207,6 +211,10 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             CHECK(sc.nbCells(3) != 0);
             trace.info() << "lowerBound S0" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
+            CHECK(sc.space().lowerBound() == typename KSpace::Point(-16,-16,-16));
+            CHECK(sc.space().upperBound() == typename KSpace::Point(0,16,16));
+            CHECK(sc.space().lowerBound() == out.splits[sub_index][0]);
+            CHECK(sc.space().upperBound() == out.splits[sub_index][1]);
         }
         {
             size_t sub_index = 1;
@@ -217,11 +225,50 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             CHECK(sc.nbCells(3) != 0);
             trace.info() << "lowerBound S1" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
+            CHECK(sc.space().lowerBound() == typename KSpace::Point(0,-16,-16));
+            CHECK(sc.space().upperBound() == typename KSpace::Point(16,16,16));
+            CHECK(sc.space().lowerBound() == out.splits[sub_index][0]);
+            CHECK(sc.space().upperBound() == out.splits[sub_index][1]);
             // Check cell exist in sub_complex
             auto sc_it_cell = sc.findCell(it_cell->first);
             CHECK(sc_it_cell != sc.end(modified_cell_dim));
             // Check data is copied into sub_complexes
             CHECK(sc[modified_cell].data == magic_number);
+        }
+        trace.endBlock();
+    }
+    SECTION("SplitComplex with Ghost Layers")  {
+        trace.beginBlock("SplitComplex with Ghost Layers");
+        size_t wide_of_ghost_layer = 1;
+        auto out = splitComplex(vc, requested_number_of_splits, wide_of_ghost_layer);
+        auto & sub_complexes = out.sub_complexes;
+        {
+            size_t sub_index = 0;
+            auto & sc = sub_complexes[sub_index];
+            trace.info() << "lowerBound S0" <<  sc.space().lowerBound() << std::endl;
+            trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
+            const auto sc_expected_lowerBound = typename KSpace::Point(-16,-16,-16);
+            const auto sc_expected_upperBound = typename KSpace::Point(1,16,16);
+            CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
+            CHECK(sc.space().upperBound() == sc_expected_upperBound);
+            CHECK(out.splits_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
+            CHECK(out.splits_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
+            CHECK(out.splits[sub_index][0] == typename KSpace::Point(-16,-16,-16));
+            CHECK(out.splits[sub_index][1] == typename KSpace::Point(0,16,16));
+        }
+        {
+            size_t sub_index = 1;
+            auto & sc = sub_complexes[sub_index];
+            trace.info() << "lowerBound S1" <<  sc.space().lowerBound() << std::endl;
+            trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
+            const auto sc_expected_lowerBound = typename KSpace::Point(-1,-16,-16);
+            const auto sc_expected_upperBound = typename KSpace::Point(16, 16, 16);
+            CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
+            CHECK(sc.space().upperBound() == sc_expected_upperBound);
+            CHECK(out.splits_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
+            CHECK(out.splits_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
+            CHECK(out.splits[sub_index][0] == typename KSpace::Point(0,-16,-16));
+            CHECK(out.splits[sub_index][1] == typename KSpace::Point(16,16,16));
         }
         // SECTION( "visualize the split" ){
         //     int argc(1);
