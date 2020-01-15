@@ -609,6 +609,25 @@ belongs( Dimension d, const Cell& aCell ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( const PreCell& aCell ) const
+{
+  return belongs( TKSpace::PreCellularGridSpace::uDim( aCell ), aCell );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( Dimension d, const PreCell& aCell ) const
+{
+  if (!myKSpace->uIsValid(aCell)) return false;
+  return belongs(d, myKSpace->uCell(aCell) );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
 template <typename CellOutputIterator>
 inline
 void
