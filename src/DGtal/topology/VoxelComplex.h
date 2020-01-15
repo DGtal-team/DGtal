@@ -112,6 +112,8 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     using Integer = typename KSpace::Integer;
     /** Type for a cell in the space. */
     using Cell = typename KSpace::Cell;
+    /** Type for a PreCell in the space. */
+    using PreCell = typename Cell::PreCell;
     /** Type for a sequence of cells in the space. */
     using Cells = typename KSpace::Cells;
     /** Type of the digital space. */
@@ -284,6 +286,32 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * This includes the khalmisky cells and also the object points.
      */
     void clear();
+
+    /**
+    * Clears all cells of dimension \a d of the voxel complex.
+    * @param d the dimension of cell \a aCell.
+    */
+    void clear( Dimension d );
+
+    /**
+     * Erase element pointed by iterator \a it.
+     * @param position any iterator on a valid cell.
+     */
+    void erase( typename Parent::Iterator position );
+
+    /**
+     * Erases cell \a aCell from the complex (STL version, see eraseCell).
+     * @param aCell any cell valid in the Khalimsky space associated to the complex.
+     * @return the number of cells effectively removed from the cubical complex.
+     */
+    Size erase( const Cell& aCell );
+
+    /**
+     * Erases range of cells [\a first, \a last ).
+     * @param first an iterator on the beginning of a range of cells within this complex.
+     * @param last an iterator on the end of a range of cells within this complex.
+     */
+    void erase( typename Parent::Iterator first, typename Parent::Iterator last );
 
     //------ Spels ------//
     /**

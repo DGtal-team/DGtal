@@ -62,9 +62,10 @@ inline DGtal::VoxelComplex<TKSpace, TCellContainer>::VoxelComplex(
 template <typename TKSpace, typename TCellContainer>
 inline DGtal::VoxelComplex<TKSpace, TCellContainer> &
 DGtal::VoxelComplex<TKSpace, TCellContainer>::
-operator=(const Self &other) {
+operator=(const Self &other)
+{
     if (this != &other) {
-        this->myKSpace = other.myKSpace;
+        this->myKSpace = Clone<TKSpace>(other.myKSpace);
         this->myCells = other.myCells;
         myTablePtr = other.myTablePtr;
         myPointToMaskPtr = other.myPointToMaskPtr;
@@ -87,7 +88,7 @@ operator=(const Self &other) {
 //     const Cell &voxel) const {
 //     ASSERT(isSpel(voxel) == true);
 //     ASSERT(this->belongs(voxel));
-//     auto &ks = this->space();
+//     const auto &ks = this->space();
 //     return *(myObject.pointSet().find(ks.uCoords(voxel)));
 // }
 
@@ -97,7 +98,8 @@ operator=(const Self &other) {
 template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::construct(
-    const TDigitalSet &input_set) {
+    const TDigitalSet &input_set)
+{
     Parent::construct(input_set);
 }
 
@@ -105,14 +107,16 @@ template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::construct(
     const TDigitalSet &input_set,
-    const Alias<ConfigMap> input_table) {
+    const Alias<ConfigMap> input_table)
+{
     Parent::construct(input_set);
     setSimplicityTable(input_table);
 }
 
 template <typename TKSpace, typename TCellContainer>
 void DGtal::VoxelComplex<TKSpace, TCellContainer>::setSimplicityTable(
-    const Alias<ConfigMap> input_table) {
+    const Alias<ConfigMap> input_table)
+{
     this->myTablePtr = input_table;
     this->myPointToMaskPtr =
         functions::mapZeroPointNeighborhoodToConfigurationMask<Point>();
@@ -121,7 +125,8 @@ void DGtal::VoxelComplex<TKSpace, TCellContainer>::setSimplicityTable(
 
 template <typename TKSpace, typename TCellContainer>
 void DGtal::VoxelComplex<TKSpace, TCellContainer>::copySimplicityTable(
-    const Self & other) {
+    const Self & other)
+{
     myTablePtr = other.myTablePtr;
     myPointToMaskPtr = other.myPointToMaskPtr;
     myIsTableLoaded = other.myIsTableLoaded;
@@ -130,27 +135,31 @@ void DGtal::VoxelComplex<TKSpace, TCellContainer>::copySimplicityTable(
 template <typename TKSpace, typename TCellContainer>
 const typename DGtal::VoxelComplex<TKSpace,
                                    TCellContainer>::ConfigMap &
-DGtal::VoxelComplex<TKSpace, TCellContainer>::table() const {
+DGtal::VoxelComplex<TKSpace, TCellContainer>::table() const
+{
     return *myTablePtr;
 }
 
 template <typename TKSpace, typename TCellContainer>
 const bool &
-DGtal::VoxelComplex<TKSpace, TCellContainer>::isTableLoaded() const {
+DGtal::VoxelComplex<TKSpace, TCellContainer>::isTableLoaded() const
+{
     return myIsTableLoaded;
 }
 
 template <typename TKSpace, typename TCellContainer>
 const typename DGtal::VoxelComplex<TKSpace,
                                    TCellContainer>::PointToMaskMap &
-DGtal::VoxelComplex<TKSpace, TCellContainer>::pointToMask() const {
+DGtal::VoxelComplex<TKSpace, TCellContainer>::pointToMask() const
+{
     return *myPointToMaskPtr;
 }
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::voxelClose(
-    const Cell &kcell) {
-    auto &ks = this->space();
+    const Cell &kcell)
+{
+    const auto &ks = this->space();
     ASSERT(ks.uDim(kcell) == 3);
     Dimension l = 2;
     auto direct_faces = ks.uLowerIncident(kcell);
@@ -164,12 +173,13 @@ inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::voxelClose(
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::cellsClose(
-    Dimension k, const Cells &cells) {
+    Dimension k, const Cells &cells)
+{
     if (k <= 0)
         return;
     if (cells.size() == 0)
         return;
-    auto &ks = this->space();
+    const auto &ks = this->space();
     Dimension l = k - 1;
     for (auto const &kcell : cells) {
         auto direct_faces = ks.uLowerIncident(kcell);
@@ -185,8 +195,9 @@ inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::cellsClose(
 template <typename TKSpace, typename TCellContainer>
 inline void
 DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelCell(
-    const Cell &kcell, const bool &close_it, const Data &data) {
-    auto &ks = this->space();
+    const Cell &kcell, const bool &close_it, const Data &data)
+{
+    const auto &ks = this->space();
     ASSERT(ks.uDim(kcell) == 3);
     this->insertCell(3, kcell, data);
     if (close_it)
@@ -197,8 +208,9 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelCell(
 template <typename TKSpace, typename TCellContainer>
 inline void
 DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelPoint(
-    const Point &dig_point, const bool &close_it, const Data &data) {
-    auto &ks = this->space();
+    const Point &dig_point, const bool &close_it, const Data &data)
+{
+    const auto &ks = this->space();
     insertVoxelCell(ks.uSpel(dig_point), close_it, data);
 }
 
@@ -206,25 +218,66 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelPoint(
 template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline void
-DGtal::VoxelComplex<TKSpace, TCellContainer>::dumpVoxels(TDigitalSet & in_out_set) {
-    auto &ks = this->space();
+DGtal::VoxelComplex<TKSpace, TCellContainer>::dumpVoxels(TDigitalSet & in_out_set)
+{
+    const auto &ks = this->space();
     for (auto it = this->begin(3), itE = this->end(3) ; it != itE ; ++it ){
         in_out_set.insertNew(ks.uCoords(it->first));
     }
 }
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
-inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::clear() {
-    for (Dimension d = 0; d <= dimension; ++d)
-        this->Parent::clear(d);
+inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::clear()
+{
+    this->Parent::clear();
 }
 
 //---------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::VoxelComplex<TKSpace, TCellContainer>::
+clear( Dimension d )
+{
+  this->Parent::clear(d);
+}
+
+//---------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::VoxelComplex<TKSpace, TCellContainer>::
+erase( typename Parent::Iterator it )
+{
+  this->Parent::erase( it );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Size
+DGtal::VoxelComplex<TKSpace, TCellContainer>::
+erase( const Cell& aCell )
+{
+    return this->Parent::erase(aCell);
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+void
+DGtal::VoxelComplex<TKSpace, TCellContainer>::
+erase( typename Parent::Iterator first, typename Parent::Iterator last )
+{
+    this->Parent::erase(first, last);
+}
+//-----------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
 void DGtal::VoxelComplex<TKSpace, TCellContainer>::pointelsFromCell(
-    std::set<Cell> &pointels_out, const Cell &input_cell) const {
-    auto input_dim = this->space().uDim(input_cell);
+    std::set<Cell> &pointels_out, const Cell &input_cell) const
+{
+    const auto input_dim = this->space().uDim(input_cell);
     if (input_dim == 0) {
         pointels_out.emplace(input_cell);
         return;
@@ -238,8 +291,9 @@ void DGtal::VoxelComplex<TKSpace, TCellContainer>::pointelsFromCell(
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 void DGtal::VoxelComplex<TKSpace, TCellContainer>::spelsFromCell(
-    std::set<Cell> &spels_out, const Cell &input_cell) const {
-    auto input_dim = this->space().uDim(input_cell);
+    std::set<Cell> &spels_out, const Cell &input_cell) const
+{
+    const auto input_dim = this->space().uDim(input_cell);
     if (input_dim == this->dimension) {
         if (this->belongs(input_cell))
             spels_out.emplace(input_cell);
@@ -257,11 +311,11 @@ void DGtal::VoxelComplex<TKSpace, TCellContainer>::spelsFromCell(
 template <typename TKSpace, typename TCellContainer>
 typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique
 DGtal::VoxelComplex<TKSpace, TCellContainer>::Kneighborhood(
-    const Cell &input_cell) const {
-
+    const Cell &input_cell) const
+{
     auto spels_out = neighborhoodVoxels(input_cell);
 
-    auto &ks = this->space();
+    const auto &ks = this->space();
     Clique clique(ks);
     for (const auto &v : spels_out)
         clique.insertCell(v);
@@ -272,8 +326,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::Kneighborhood(
 template <typename TKSpace, typename TCellContainer>
 std::set<typename TKSpace::Cell>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::neighborhoodVoxels(
-    const Cell &input_spel) const {
-
+    const Cell &input_spel) const
+{
     std::set<Cell> pointels_out;
     std::set<Cell> spels_out;
     pointelsFromCell(pointels_out, input_spel);
@@ -285,7 +339,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::neighborhoodVoxels(
 template <typename TKSpace, typename TCellContainer>
 std::set<typename TKSpace::Cell>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::properNeighborhoodVoxels(
-    const Cell &input_spel) const {
+    const Cell &input_spel) const
+{
 
     auto spels_out = neighborhoodVoxels(input_spel);
     auto search = spels_out.find(input_spel);
@@ -298,7 +353,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::properNeighborhoodVoxels(
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSpel(
-    const Cell &b) const {
+    const Cell &b) const
+{
     return (this->space().uDim(b) == this->space().DIM);
 }
 
@@ -306,12 +362,12 @@ bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSpel(
 template <typename TKSpace, typename TCellContainer>
 typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Cell
 DGtal::VoxelComplex<TKSpace,
-                    TCellContainer>::surfelBetweenAdjacentSpels(const Cell &A,
-                                                                const Cell &B)
-    const {
+    TCellContainer>::surfelBetweenAdjacentSpels(const Cell &A, const Cell &B)
+    const
+{
     ASSERT(isSpel(A) == true);
     ASSERT(isSpel(B) == true);
-    auto &ks = this->space();
+    const auto &ks = this->space();
     // Digital coordinates
     auto &&orientation_BA = ks.uCoords(B) - ks.uCoords(A);
     ASSERT(orientation_BA.norm1() == 1);
@@ -323,12 +379,14 @@ DGtal::VoxelComplex<TKSpace,
 // Cliques
 template <typename TKSpace, typename TCellContainer>
 std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+    TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
-    const typename KSpace::Point &A,
-    const typename KSpace::Point &B,
-    bool verbose) const {
-    auto &ks = this->space();
+        const typename KSpace::Point &A,
+        const typename KSpace::Point &B,
+        bool verbose) const
+{
+    const auto &ks = this->space();
+    using KPreSpace = typename TKSpace::PreCellularGridSpace;
     auto orientation_vector = B - A;
     ASSERT(orientation_vector.norm1() == 1);
     int direction{-1};
@@ -350,78 +408,78 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
         up = {1, 0, 0};
     }
 
-    Cell x0 = ks.uSpel(A + right);
-    Cell x4 = ks.uSpel(A - right);
-    Cell x2 = ks.uSpel(A + up);
-    Cell x6 = ks.uSpel(A - up);
+    const PreCell x0 = KPreSpace::uSpel(A + right);
+    const PreCell x4 = KPreSpace::uSpel(A - right);
+    const PreCell x2 = KPreSpace::uSpel(A + up);
+    const PreCell x6 = KPreSpace::uSpel(A - up);
 
-    Cell x1 = ks.uSpel(A + up + right);
-    Cell x3 = ks.uSpel(A + up - right);
-    Cell x7 = ks.uSpel(A - up + right);
-    Cell x5 = ks.uSpel(A - up - right);
+    const PreCell x1 = KPreSpace::uSpel(A + up + right);
+    const PreCell x3 = KPreSpace::uSpel(A + up - right);
+    const PreCell x7 = KPreSpace::uSpel(A - up + right);
+    const PreCell x5 = KPreSpace::uSpel(A - up - right);
 
-    Cell y0 = ks.uSpel(B + right);
-    Cell y4 = ks.uSpel(B - right);
-    Cell y2 = ks.uSpel(B + up);
-    Cell y6 = ks.uSpel(B - up);
+    const PreCell y0 = KPreSpace::uSpel(B + right);
+    const PreCell y4 = KPreSpace::uSpel(B - right);
+    const PreCell y2 = KPreSpace::uSpel(B + up);
+    const PreCell y6 = KPreSpace::uSpel(B - up);
 
-    Cell y1 = ks.uSpel(B + up + right);
-    Cell y3 = ks.uSpel(B + up - right);
-    Cell y7 = ks.uSpel(B - up + right);
-    Cell y5 = ks.uSpel(B - up - right);
+    const PreCell y1 = KPreSpace::uSpel(B + up + right);
+    const PreCell y3 = KPreSpace::uSpel(B + up - right);
+    const PreCell y7 = KPreSpace::uSpel(B - up + right);
+    const PreCell y5 = KPreSpace::uSpel(B - up - right);
 
-    auto bx0 = this->belongs(KSpace::DIM, x0);
-    auto bx1 = this->belongs(KSpace::DIM, x1);
-    auto bx2 = this->belongs(KSpace::DIM, x2);
-    auto bx3 = this->belongs(KSpace::DIM, x3);
-    auto bx4 = this->belongs(KSpace::DIM, x4);
-    auto bx5 = this->belongs(KSpace::DIM, x5);
-    auto bx6 = this->belongs(KSpace::DIM, x6);
-    auto bx7 = this->belongs(KSpace::DIM, x7);
+    const auto bx0 = this->belongs(KSpace::DIM, x0);
+    const auto bx1 = this->belongs(KSpace::DIM, x1);
+    const auto bx2 = this->belongs(KSpace::DIM, x2);
+    const auto bx3 = this->belongs(KSpace::DIM, x3);
+    const auto bx4 = this->belongs(KSpace::DIM, x4);
+    const auto bx5 = this->belongs(KSpace::DIM, x5);
+    const auto bx6 = this->belongs(KSpace::DIM, x6);
+    const auto bx7 = this->belongs(KSpace::DIM, x7);
 
-    auto by0 = this->belongs(KSpace::DIM, y0);
-    auto by1 = this->belongs(KSpace::DIM, y1);
-    auto by2 = this->belongs(KSpace::DIM, y2);
-    auto by3 = this->belongs(KSpace::DIM, y3);
-    auto by4 = this->belongs(KSpace::DIM, y4);
-    auto by5 = this->belongs(KSpace::DIM, y5);
-    auto by6 = this->belongs(KSpace::DIM, y6);
-    auto by7 = this->belongs(KSpace::DIM, y7);
+    const auto by0 = this->belongs(KSpace::DIM, y0);
+    const auto by1 = this->belongs(KSpace::DIM, y1);
+    const auto by2 = this->belongs(KSpace::DIM, y2);
+    const auto by3 = this->belongs(KSpace::DIM, y3);
+    const auto by4 = this->belongs(KSpace::DIM, y4);
+    const auto by5 = this->belongs(KSpace::DIM, y5);
+    const auto by6 = this->belongs(KSpace::DIM, y6);
+    const auto by7 = this->belongs(KSpace::DIM, y7);
 
     Clique k2_crit(ks);
     if (bx0)
-        k2_crit.insertCell(x0);
+        k2_crit.insertCell(ks.uCell(x0));
     if (bx1)
-        k2_crit.insertCell(x1);
+        k2_crit.insertCell(ks.uCell(x1));
     if (bx2)
-        k2_crit.insertCell(x2);
+        k2_crit.insertCell(ks.uCell(x2));
     if (bx3)
-        k2_crit.insertCell(x3);
+        k2_crit.insertCell(ks.uCell(x3));
     if (bx4)
-        k2_crit.insertCell(x4);
+        k2_crit.insertCell(ks.uCell(x4));
     if (bx5)
-        k2_crit.insertCell(x5);
+        k2_crit.insertCell(ks.uCell(x5));
     if (bx6)
-        k2_crit.insertCell(x6);
+        k2_crit.insertCell(ks.uCell(x6));
     if (bx7)
-        k2_crit.insertCell(x7);
+        k2_crit.insertCell(ks.uCell(x7));
 
     if (by0)
-        k2_crit.insertCell(y0);
+        k2_crit.insertCell(ks.uCell(y0));
     if (by1)
-        k2_crit.insertCell(y1);
+        k2_crit.insertCell(ks.uCell(y1));
     if (by2)
-        k2_crit.insertCell(y2);
+        k2_crit.insertCell(ks.uCell(y2));
     if (by3)
-        k2_crit.insertCell(y3);
+        k2_crit.insertCell(ks.uCell(y3));
     if (by4)
-        k2_crit.insertCell(y4);
+        k2_crit.insertCell(ks.uCell(y4));
     if (by5)
-        k2_crit.insertCell(y5);
+        k2_crit.insertCell(ks.uCell(y5));
     if (by6)
-        k2_crit.insertCell(y6);
+        k2_crit.insertCell(ks.uCell(y6));
     if (by7)
-        k2_crit.insertCell(y7);
+        k2_crit.insertCell(ks.uCell(y7));
     // Note that input spels A,B are ommited.
 
     /////////////////////////////////
@@ -482,16 +540,16 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
 
 //---------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(const Cell &A,
-                                                           const Cell &B,
-                                                           bool verbose) const {
+        const Cell &B,
+        bool verbose) const
+{
     // Precondition:
     // A and B are contiguous spels.
     ASSERT(isSpel(A) == true);
     ASSERT(isSpel(B) == true);
-    auto &ks = this->space();
+    const auto &ks = this->space();
     auto B_coord = ks.uCoords(B);
     auto A_coord = ks.uCoords(A);
     return this->K_2(A_coord, B_coord, verbose);
@@ -499,35 +557,38 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(const Cell &A,
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(const Cell &face2,
-                                                           bool verbose) const {
-    auto &ks = this->space();
+        bool verbose) const
+{
+    const auto &ks = this->space();
     ASSERT(ks.uIsSurfel(face2));
-    auto co_faces = ks.uCoFaces(face2);
-    ASSERT(co_faces.size() == 2);
-    auto &cf0 = co_faces[0];
-    auto &cf1 = co_faces[1];
+    using KPreSpace = typename TKSpace::PreCellularGridSpace;
+    const auto co_faces = KPreSpace::uCoFaces(face2);
+    const auto nco_faces = co_faces.size();
+    ASSERT(nco_faces == 2);
+    const auto &cf0 = co_faces[0];
+    const auto &cf1 = co_faces[1];
     // spels must belong to complex.
     if (this->belongs(cf0) && this->belongs(cf1))
-        return this->K_2(cf0, cf1, verbose);
+        return this->K_2(ks.uCell(cf0), ks.uCell(cf1), verbose);
     else
         return std::make_pair(false, Clique(ks));
 }
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_1(const Cell &face1,
-                                                           bool verbose) const {
-    auto &ks = this->space();
+        bool verbose) const
+{
+    const auto &ks = this->space();
     ASSERT(ks.uDim(face1) == 1);
+    using KPreSpace = typename TKSpace::PreCellularGridSpace;
     // Get 2 orth dirs in orient_orth
     std::vector<Point> dirs_orth;
-    for (auto q = ks.uOrthDirs(face1); q != 0; ++q) {
-        Dimension dir = *q;
+    for (auto q = KPreSpace::uOrthDirs(face1); q != 0; ++q) {
+        const Dimension dir = *q;
         Point positive_orth{0, 0, 0};
         for (Dimension i = 0; i != ks.DIM; ++i)
             if (i == dir)
@@ -537,21 +598,21 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_1(const Cell &face1,
     }
 
     auto &kface = face1.preCell().coordinates;
-    Point a{kface + dirs_orth[0] + dirs_orth[1]};
-    Point b{kface + dirs_orth[0] - dirs_orth[1]};
-    Point c{kface - dirs_orth[0] + dirs_orth[1]};
-    Point d{kface - dirs_orth[0] - dirs_orth[1]};
+    const Point a{kface + dirs_orth[0] + dirs_orth[1]};
+    const Point b{kface + dirs_orth[0] - dirs_orth[1]};
+    const Point c{kface - dirs_orth[0] + dirs_orth[1]};
+    const Point d{kface - dirs_orth[0] - dirs_orth[1]};
 
-    Cell A = ks.uCell(a);
-    Cell B = ks.uCell(b);
-    Cell C = ks.uCell(c);
-    Cell D = ks.uCell(d);
+    const PreCell A = KPreSpace::uCell(a);
+    const PreCell B = KPreSpace::uCell(b);
+    const PreCell C = KPreSpace::uCell(c);
+    const PreCell D = KPreSpace::uCell(d);
 
     // Now we need the other spels forming the mask
     // Get the direction (positive) linel spans.
     Point dir_parallel{0, 0, 0};
-    for (auto q = ks.uDirs(face1); q != 0; ++q) {
-        Dimension dir = *q;
+    for (auto q = KPreSpace::uDirs(face1); q != 0; ++q) {
+        const Dimension dir = *q;
         for (Dimension i = 0; i != ks.DIM; ++i)
             if (i == dir)
                 dir_parallel[i] = 1;
@@ -559,26 +620,26 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_1(const Cell &face1,
     // Note that C, B are interchangeable. Same in A,D. Same between X and Y
     // sets Changed notation from paper: XA=X0, XB=X1, XC=X2, XD=X3
     // X
-    Point xa{a + 2 * dir_parallel};
-    Point xb{b + 2 * dir_parallel};
-    Point xc{c + 2 * dir_parallel};
-    Point xd{d + 2 * dir_parallel};
+    const Point xa{a + 2 * dir_parallel};
+    const Point xb{b + 2 * dir_parallel};
+    const Point xc{c + 2 * dir_parallel};
+    const Point xd{d + 2 * dir_parallel};
     // Y
-    Point ya{a - 2 * dir_parallel};
-    Point yb{b - 2 * dir_parallel};
-    Point yc{c - 2 * dir_parallel};
-    Point yd{d - 2 * dir_parallel};
+    const Point ya{a - 2 * dir_parallel};
+    const Point yb{b - 2 * dir_parallel};
+    const Point yc{c - 2 * dir_parallel};
+    const Point yd{d - 2 * dir_parallel};
 
     // Cell of the mask from KCoords
-    Cell XA = ks.uCell(xa);
-    Cell XB = ks.uCell(xb);
-    Cell XC = ks.uCell(xc);
-    Cell XD = ks.uCell(xd);
+    const PreCell XA = KPreSpace::uCell(xa);
+    const PreCell XB = KPreSpace::uCell(xb);
+    const PreCell XC = KPreSpace::uCell(xc);
+    const PreCell XD = KPreSpace::uCell(xd);
 
-    Cell YA = ks.uCell(ya);
-    Cell YB = ks.uCell(yb);
-    Cell YC = ks.uCell(yc);
-    Cell YD = ks.uCell(yd);
+    const PreCell YA = KPreSpace::uCell(ya);
+    const PreCell YB = KPreSpace::uCell(yb);
+    const PreCell YC = KPreSpace::uCell(yc);
+    const PreCell YD = KPreSpace::uCell(yd);
 
     /////////////////////////////////
     // Critical Clique Conditions:
@@ -628,48 +689,49 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_1(const Cell &face1,
     // out clique is the intersection between mask and object
     Clique k1(ks);
     if (this->belongs(KSpace::DIM, A))
-        k1.insert(A);
+        k1.insert(ks.uCell(A));
     if (this->belongs(KSpace::DIM, B))
-        k1.insert(B);
+        k1.insert(ks.uCell(B));
     if (this->belongs(KSpace::DIM, C))
-        k1.insert(C);
+        k1.insert(ks.uCell(C));
     if (this->belongs(KSpace::DIM, D))
-        k1.insert(D);
+        k1.insert(ks.uCell(D));
     return std::make_pair(is_critical, k1);
 }
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_0(const Cell &face0,
-                                                           bool verbose) const {
-    auto &ks = this->space();
+        bool verbose) const
+{
+    const auto &ks = this->space();
     ASSERT(ks.uDim(face0) == 0);
+    using KPreSpace = typename TKSpace::PreCellularGridSpace;
     auto &kface = face0.preCell().coordinates;
-    Point z{0, 0, 1};
-    Point y{0, 1, 0};
-    Point x{1, 0, 0};
+    const Point z{0, 0, 1};
+    const Point y{0, 1, 0};
+    const Point x{1, 0, 0};
 
-    Point a{kface + x - y - z};
-    Point b{kface - x - y - z};
-    Point c{kface + x - y + z};
-    Point d{kface - x - y + z};
+    const Point a{kface + x - y - z};
+    const Point b{kface - x - y - z};
+    const Point c{kface + x - y + z};
+    const Point d{kface - x - y + z};
 
-    Point e{kface + x + y - z};
-    Point f{kface - x + y - z};
-    Point g{kface + x + y + z};
-    Point h{kface - x + y + z};
+    const Point e{kface + x + y - z};
+    const Point f{kface - x + y - z};
+    const Point g{kface + x + y + z};
+    const Point h{kface - x + y + z};
 
-    Cell A{ks.uCell(a)};
-    Cell B{ks.uCell(b)};
-    Cell C{ks.uCell(c)};
-    Cell D{ks.uCell(d)};
+    const PreCell A{KPreSpace::uCell(a)};
+    const PreCell B{KPreSpace::uCell(b)};
+    const PreCell C{KPreSpace::uCell(c)};
+    const PreCell D{KPreSpace::uCell(d)};
 
-    Cell E{ks.uCell(e)};
-    Cell F{ks.uCell(f)};
-    Cell G{ks.uCell(g)};
-    Cell H{ks.uCell(h)};
+    const PreCell E{KPreSpace::uCell(e)};
+    const PreCell F{KPreSpace::uCell(f)};
+    const PreCell G{KPreSpace::uCell(g)};
+    const PreCell H{KPreSpace::uCell(h)};
 
     /////////////////////////////////
     // Critical Clique Conditions:
@@ -708,33 +770,32 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_0(const Cell &face0,
     // out clique is the intersection between mask and object
     Clique k0_out(ks);
     if (bA)
-        k0_out.insert(A);
+        k0_out.insert(ks.uCell(A));
     if (bB)
-        k0_out.insert(B);
+        k0_out.insert(ks.uCell(B));
     if (bC)
-        k0_out.insert(C);
+        k0_out.insert(ks.uCell(C));
     if (bD)
-        k0_out.insert(D);
+        k0_out.insert(ks.uCell(D));
     if (bE)
-        k0_out.insert(E);
+        k0_out.insert(ks.uCell(E));
     if (bF)
-        k0_out.insert(F);
+        k0_out.insert(ks.uCell(F));
     if (bG)
-        k0_out.insert(G);
+        k0_out.insert(ks.uCell(G));
     if (bH)
-        k0_out.insert(H);
-    using namespace DGtal::functions;
+        k0_out.insert(ks.uCell(H));
 
     return std::make_pair(is_critical, k0_out);
 }
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::K_3(const Cell &voxel,
-                                                           bool verbose) const {
-    auto &ks = this->space();
+        bool verbose) const
+{
+    const auto &ks = this->space();
     ASSERT(ks.uDim(voxel) == 3);
     const bool is_critical = !isSimple(voxel);
 
@@ -777,12 +838,12 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliques(
 //---------------------------------------------------------------------------
 
 template <typename TKSpace, typename TCellContainer>
-std::pair<bool, typename DGtal::VoxelComplex<TKSpace,
-                                             TCellContainer>::Clique>
+std::pair<bool, typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Clique>
 DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquePair(
-    const Dimension d, const CellMapConstIterator &cellMapIterator) const {
-    auto &it = cellMapIterator;
-    auto &cell = it->first;
+        const Dimension d, const CellMapConstIterator &cellMapIterator) const
+{
+    const auto &it = cellMapIterator;
+    const auto &cell = it->first;
     // auto &cell_data = it->second;
     auto clique_p = std::make_pair(false, Clique(this->space()));
     if (d == 0)
@@ -803,13 +864,14 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquePair(
 template <typename TKSpace, typename TCellContainer>
 typename DGtal::VoxelComplex<TKSpace, TCellContainer>::CliqueContainer
 DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
-    const Dimension d, const Parent &cubical, bool verbose) const {
+    const Dimension d, const Parent &cubical, bool verbose) const
+{
 #ifdef WITH_OPENMP
 
     ASSERT(dimension >= 0 && dimension <= 3);
     CliqueContainer critical;
 
-    auto nthreads = omp_get_num_procs();
+    const auto nthreads = omp_get_num_procs();
     omp_set_num_threads(nthreads);
     std::vector<CliqueContainer> p_critical;
     p_critical.resize(nthreads);
@@ -819,8 +881,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
         {for (auto it = cubical.begin(d), itE = cubical.end(d); it != itE; ++it)
 #pragma omp task firstprivate(it)
              {auto clique_p = criticalCliquePair(d, it);
-    auto &is_critical = clique_p.first;
-    auto &clique = clique_p.second;
+    const auto &is_critical = clique_p.first;
+    const auto &clique = clique_p.second;
     // Push
     auto th = omp_get_thread_num();
     if (is_critical)
@@ -847,7 +909,7 @@ return critical;
     ASSERT(dimension >= 0 && dimension <= 3);
     CliqueContainer critical;
     for (auto it = cubical.begin(d), itE = cubical.end(d); it != itE; ++it) {
-        auto clique_p = criticalCliquePair(d, it);
+        const auto clique_p = criticalCliquePair(d, it);
         auto &is_critical = clique_p.first;
         auto &clique = clique_p.second;
         if (is_critical)
@@ -863,13 +925,14 @@ return critical;
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TKSpace, typename TCellContainer>
 bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSimpleByThinning(
-    const Cell &input_spel) const {
+        const Cell &input_spel) const
+{
     // x = input_spel ; X = VoxelComplex ~ occupancy of khalimsky space
     // a) Get the neighborhood (voxels) of input_spel intersected
     // with the voxel complex. -- N^{*}(x) intersection X --
     ASSERT(this->space().uDim(input_spel) == 3);
-    auto spels_out = this->properNeighborhoodVoxels(input_spel);
-    auto &ks = this->space();
+    const auto spels_out = this->properNeighborhoodVoxels(input_spel);
+    const auto &ks = this->space();
     Clique clique(ks);
     for (const auto &v : spels_out)
         clique.insertCell(v);
@@ -885,7 +948,8 @@ bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSimpleByThinning(
 // Object wrappers :
 template <typename TKSpace, typename TCellContainer>
 bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSimple(
-    const Cell &input_cell) const {
+    const Cell &input_cell) const
+{
     ASSERT(isSpel(input_cell) == true);
 
     if (myIsTableLoaded) {
@@ -905,7 +969,8 @@ bool DGtal::VoxelComplex<TKSpace, TCellContainer>::isSimple(
  */
 template <typename TKSpace, typename TCellContainer>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::selfDisplay(
-    std::ostream &out) const {
+    std::ostream &out) const
+{
     out << "[VoxelComplex dim=" << this->dim() << " chi=" << this->euler();
     out << " isTableLoaded? " << ((isTableLoaded()) ? "True" : "False");
 }
@@ -917,14 +982,16 @@ inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::selfDisplay(
  */
 template <typename TKSpace, typename TCellContainer>
 inline bool
-DGtal::VoxelComplex<TKSpace, TCellContainer>::isValid() const {
+DGtal::VoxelComplex<TKSpace, TCellContainer>::isValid() const
+{
     return true;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
 inline std::string
-DGtal::VoxelComplex<TKSpace, TCellContainer>::className() const {
+DGtal::VoxelComplex<TKSpace, TCellContainer>::className() const
+{
     return "VoxelComplex";
 }
 
@@ -934,7 +1001,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::className() const {
 template <typename TKSpace, typename TCellContainer>
 inline std::ostream &DGtal::
 operator<<(std::ostream &out,
-           const VoxelComplex<TKSpace, TCellContainer> &object) {
+           const VoxelComplex<TKSpace, TCellContainer> &object)
+{
     object.selfDisplay(out);
     return out;
 }

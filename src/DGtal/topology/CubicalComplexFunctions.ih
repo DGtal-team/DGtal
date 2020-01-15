@@ -305,10 +305,14 @@ objectFromSpels(
                 const CubicalComplex< TKSpace, TCellContainer > & C)
 {
 
-  auto & cs = C.space();
+  const auto & cs = C.space();
+  const typename TKSpace::Point rightlowerBound = cs.lowerBound();
+  const typename TKSpace::Point rightupperBound = cs.upperBound();
+  const typename TKSpace::Point a_lowerBound(-9990, -9991, -9992);
+  const typename TKSpace::Point a_upperBound(9990, 9991, 9992);
   // Get domain of C KSpace.
-  typename TObject::Domain domain(cs.lowerBound(), cs.upperBound());
-  typename TObject::DigitalSet dset(domain);
+  CountedPtr<typename TObject::Domain> a_domain(new typename TObject::Domain(a_lowerBound, a_upperBound));
+  typename TObject::DigitalSet dset(a_domain);
   for(auto it = C.begin(TKSpace::DIM);
       it!= C.end(TKSpace::DIM) ; ++it)
     dset.insertNew(cs.uCoords(it->first));
@@ -337,15 +341,12 @@ getSpelNeighborhoodConfigurationOccupancy
   Point p2 = Point::diagonal(  1 );
   Point c = Point::diagonal( 0 );
   Domain domain( p1, p2 );
-  const auto & not_found( input_complex.end() );
-  // const auto & not_found( input_complex.end(3) );
+  const auto & kspace = input_complex.space();
+  const auto & not_found( input_complex.end(3) );
   NeighborhoodConfiguration cfg{0};
   for ( auto it = domain.begin(); it != domain.end(); ++it ) {
-    if( *it != c  &&
-        input_complex.find(
-                           input_complex.space().uSpel(center + *it) ) != not_found )
-      // input_complex.findCell( 3,
-      //     input_complex.space().uSpel(center + *it) ) != not_found )
+    if( *it != c && kspace.uIsInside(*it) &&
+        input_complex.findCell(3, kspace.uSpel(center + *it)) != not_found )
       cfg |= mapPointToMask.at(*it) ;
   }
   return cfg;

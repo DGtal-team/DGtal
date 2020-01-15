@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <DGtal/topology/DigitalTopology.h>
 #include <random>
+#include <DGtal/topology/SplitFunctions.h>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +72,6 @@ asymetricThinningScheme(
   std::set<std::pair<Cell, Data>, FirstComparator> selected_voxels_per_dim;
   TComplex already_selected_voxels(vc.space());
   TComplex constraint_set(vc.space());
-
   auto & Z = selected_voxels_per_dim;
   auto & Y = already_selected_voxels;
   auto & K = constraint_set;
@@ -80,6 +80,14 @@ asymetricThinningScheme(
   K.copySimplicityTable(vc);
   typename TComplex::Parent x_y(vc.space());
   typename TComplex::Parent x_k(vc.space());
+
+  // Initialize the constraint set
+  for (auto it = vc.begin(3), itE = vc.end(3) ; it != itE ; ++it ){
+    const auto &constraint_voxel = it->first ;
+    if( Skel(vc, constraint_voxel) == true || it->second.data == TComplex::FIXED){
+      K.insertVoxelCell(constraint_voxel);
+    }
+  }
 
   bool stability{false};
   uint64_t generation{0};
@@ -128,7 +136,7 @@ asymetricThinningScheme(
     x_k = X  - K;
     for (auto it = x_k.begin(3), itE = x_k.end(3) ; it != itE ; ++it ){
       auto new_voxel = it->first ;
-      if( Skel(X, new_voxel) == true){
+      if( Skel(X, new_voxel) == true || it->second.data == TComplex::FIXED){
         K.insertVoxelCell(new_voxel);
         // K.insertCell(3, new_voxel);
         // K.objectSet().insert(K.space().uCoords(new_voxel));
@@ -156,6 +164,150 @@ asymetricThinningScheme(
   return X;
 }
 
+template < typename TComplex>
+DGtal::ThinningWithSplits<TComplex>
+DGtal::functions::
+asymetricThinningSchemeWithSplits(
+    TComplex & vc ,
+    std::function<
+    std::pair<typename TComplex::Cell, typename TComplex::Data>(
+      const typename TComplex::Clique &)
+    > Select ,
+    std::function<
+    bool(
+      const TComplex & ,
+      const typename TComplex::Cell & )
+    > Skel,
+    size_t requested_number_of_splits,
+    size_t wide_of_block_sub_complex,
+    size_t number_of_threads,
+    bool closeVoxels,
+    bool saveMemory,
+    bool verbose )
+{
+  ThinningWithSplits<TComplex> out;
+  auto & splitted_complexes = out.splitted_complexes;
+  auto & thin_complexes = out.thin_complexes;
+  auto & merged_complex = out.merged_complex;
+  const auto & kspace = vc.space();
+  merged_complex = TComplex(kspace);
+  // first split the domain
+  splitted_complexes = splitComplex(vc, requested_number_of_splits);
+  const auto number_of_splits = splitted_complexes.number_of_splits;
+  const auto & lowerBound = kspace.lowerBound();
+  const auto & upperBound = kspace.upperBound();
+  // For getBorderVoxels
+  const int wide_int = static_cast<int>(wide_of_block_sub_complex);
+  const typename TComplex::Point wide_point{wide_int, wide_int, wide_int};
+  // Set borders as FIXED
+  const auto fixed_data = TComplex::FIXED;
+  for(size_t split = 0; split < number_of_splits; ++split) {
+    auto & sc = splitted_complexes.sub_complexes[split];
+    const auto & sub_lowerBound = sc.space().lowerBound();
+    const auto & sub_upperBound = sc.space().upperBound();
+    const auto border_iterators =
+      getBorderVoxels(sc, sub_lowerBound, sub_upperBound,
+          &wide_point, &lowerBound, &upperBound);
+    setBorderData(sc, border_iterators, fixed_data);
+    // perform thinning in each subcomplex
+    // TODO use threads here to do it in parallel
+    thin_complexes.emplace_back(asymetricThinningScheme(sc, Select, Skel, verbose));
+    if(saveMemory) sc.clear();
+  }
+  // thin_complexes[0] = asymetricThinningScheme(vc, Select, Skel, verbose);
+  // Thin on complexes around blocks
+  auto region_size = upperBound - lowerBound;
+  const auto & splits = splitted_complexes.splits;
+  typename TComplex::Point min_regions = {
+    static_cast<int>(region_size[0] / double(splits[0])),
+    static_cast<int>(region_size[1] / double(splits[1])),
+    static_cast<int>(region_size[2] / double(splits[2]))
+  };
+  // Blocks per dimension
+  auto & block_complexes = out.block_complexes;
+  auto & thin_block_complexes = out.thin_block_complexes;
+  const auto wide_block = wide_of_block_sub_complex + 1;
+  for(size_t dim = 0; dim < kspace.dimension; ++dim) {
+    for(size_t split = 1; split < splits[dim]; ++split) {
+      auto sub_lowerBound = lowerBound;
+      sub_lowerBound[dim] += min_regions[dim] * split;
+      auto sub_upperBound = upperBound;
+      sub_upperBound[dim] = sub_lowerBound[dim];
+      if(wide_of_block_sub_complex) {
+        sub_lowerBound[dim] -= wide_block;
+        sub_upperBound[dim] += wide_block;
+      }
+      if(sub_lowerBound[dim] < lowerBound[dim]) sub_lowerBound[dim] = lowerBound[dim];
+      if(sub_upperBound[dim] > upperBound[dim]) sub_upperBound[dim] = upperBound[dim];
+
+      // mark voxels already skeletonized as fixed (in the border)
+      block_complexes.emplace_back(extractSubComplex(vc, sub_lowerBound, sub_upperBound));
+      auto & bc = block_complexes.back();
+      const auto border_iterators =
+        getBorderVoxels(bc, sub_lowerBound, sub_upperBound,
+            nullptr, &lowerBound, &upperBound);
+      setBorderData(bc, border_iterators, fixed_data);
+      thin_block_complexes.emplace_back(asymetricThinningScheme(bc, Select, Skel, verbose));
+    if(saveMemory) bc.clear();
+    }
+  }
+  //----------------------- Merge ----------------------//
+  // We are only interested in spels, so we clear the cells in
+  // the rest of dimensions first to speed up merge.
+  for (auto & tc : thin_complexes) {
+    for(Dimension dim = 0; dim < 3; ++dim) {
+     tc.clear(dim);
+    }
+  }
+  for (auto & tbc : thin_block_complexes) {
+    for(Dimension dim = 0; dim < 3; ++dim) {
+      tbc.clear(dim);
+    }
+  }
+  // Remove fixed spels from thin_complexes
+  for (auto & tc : thin_complexes) {
+    const auto & sub_lowerBound = tc.space().lowerBound();
+    const auto & sub_upperBound = tc.space().upperBound();
+    const auto border_iterators =
+      getBorderVoxels(tc, sub_lowerBound, sub_upperBound,
+          &wide_point, &lowerBound, &upperBound);
+    for(auto border_it = border_iterators.begin();
+        border_it != border_iterators.end(); ++border_it) {
+      tc.erase((*border_it)->first);
+    }
+  }
+  for (auto & tbc : thin_block_complexes) {
+    const auto & sub_lowerBound = tbc.space().lowerBound();
+    const auto & sub_upperBound = tbc.space().upperBound();
+    const auto border_iterators =
+      getBorderVoxels(tbc, sub_lowerBound, sub_upperBound,
+          nullptr, &lowerBound, &upperBound);
+    for(auto border_it = border_iterators.begin();
+        border_it != border_iterators.end(); ++border_it) {
+      tbc.erase((*border_it)->first);
+    }
+  }
+  // Do the final merge with all thin_complexes and thin_block_complexes
+  mergeSubComplexes(merged_complex, thin_complexes);
+  mergeSubComplexes(merged_complex, thin_block_complexes);
+
+  if(saveMemory) {
+    for (auto & tc : thin_complexes) {
+      tc.clear();
+    }
+    for (auto & tbc : thin_block_complexes) {
+      tbc.clear();
+    }
+  }
+  // optionally, voxelClose to fill cells of lower dimensions
+  if(closeVoxels) {
+    for( auto it = merged_complex.begin(3); it != merged_complex.end(3); ++it) {
+      merged_complex.voxelClose(it->first);
+    }
+  }
+
+  return out;
+}
 
 template < typename TComplex >
 TComplex
@@ -325,6 +477,7 @@ DGtal::functions::selectMaxValue(
   typename TDistanceTransform::Value value{0};
   using ComplexConstIterator = typename TComplex::CellMapConstIterator;
   ComplexConstIterator selected_pair;
+  // std::vector<ComplexConstIterator> max_value_pairs;
 
   for(ComplexConstIterator it = clique.begin(3), itE = clique.end(3);
       it != itE ; ++it){
@@ -333,15 +486,18 @@ DGtal::functions::selectMaxValue(
     if(value > max_value){
       max_value = value;
       selected_pair = it;
+      // max_value_pairs.clear();
+      // max_value_pairs.push_back(it);
       continue;
     }
     if(value == max_value){
-      // max_value = value;
-      // selected_pair = it;
-      continue; // TODO choose one wisely when they have same DM value.
+      continue; // 
+      // max_value_pairs.push_back(it);
     }
   }
 
+  // Get the median of the max value
+  // selected_pair = max_value_pairs[max_value_pairs.size()/2];
   return *selected_pair;
 }
 //////////////////////////////////////////////////////////////////////////////

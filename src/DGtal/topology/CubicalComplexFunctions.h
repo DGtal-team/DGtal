@@ -267,7 +267,8 @@ namespace DGtal
               const CubicalComplex< TKSpace, TCellContainer >& S2 )
   {
     typedef CubicalComplex< TKSpace, TCellContainer > CC;
-    ASSERT( &(S1.space()) == &(S2.space()) );
+    ASSERT( S1.space().lowerBound() == S2.space().lowerBound() &&
+        S1.space().upperBound() == S2.space().upperBound());
     for ( Dimension i = 0; i <= CC::dimension; ++i )
       if ( ! functions::isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
         return false;
@@ -294,7 +295,8 @@ namespace DGtal
               const CubicalComplex< TKSpace, TCellContainer >& S2 )
   {
     typedef CubicalComplex< TKSpace, TCellContainer > CC;
-    ASSERT( &(S1.space()) == &(S2.space()) );
+    ASSERT( S1.space().lowerBound() == S2.space().lowerBound() &&
+        S1.space().upperBound() == S2.space().upperBound());
     for ( Dimension i = 0; i <= CC::dimension; ++i )
       if ( ! functions::isEqual( S1.myCells[ i ], S2.myCells[ i ] ) )
         return true;
@@ -318,7 +320,8 @@ namespace DGtal
               const CubicalComplex< TKSpace, TCellContainer >& S2 )
   {
     typedef CubicalComplex< TKSpace, TCellContainer > CC;
-    ASSERT( &(S1.space()) == &(S2.space()) );
+    ASSERT( S1.space().lowerBound() == S2.space().lowerBound() &&
+        S1.space().upperBound() == S2.space().upperBound());
     for ( Dimension i = 0; i <= CC::dimension; ++i )
       if ( ! functions::isSubset( S1.myCells[ i ], S2.myCells[ i ] ) )
         return false;
@@ -341,7 +344,8 @@ namespace DGtal
               const CubicalComplex< TKSpace, TCellContainer >& S2 )
   {
     typedef CubicalComplex< TKSpace, TCellContainer > CC;
-    ASSERT( &(S1.space()) == &(S2.space()) );
+    ASSERT( S1.space().lowerBound() == S2.space().lowerBound() &&
+        S1.space().upperBound() == S2.space().upperBound());
     for ( Dimension i = 0; i <= CC::dimension; ++i )
       if ( ! functions::isSubset( S2.myCells[ i ], S1.myCells[ i ] ) )
         return false;

@@ -62,7 +62,7 @@ CubicalComplex()
 template <typename TKSpace, typename TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
-CubicalComplex( ConstAlias<KSpace> aK )
+CubicalComplex( Clone<KSpace> aK )
   : myKSpace( &aK ), myCells( dimension+1 )
 {
 }
@@ -603,9 +603,27 @@ bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 belongs( Dimension d, const Cell& aCell ) const
 {
-  ASSERT( d <= dimension );
   CellMapConstIterator it = myCells[ d ].find( aCell );
   return it != myCells[ d ].end();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( const PreCell& aCell ) const
+{
+  return belongs( TKSpace::PreCellularGridSpace::uDim( aCell ), aCell );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TCellContainer>
+inline
+bool
+DGtal::CubicalComplex<TKSpace, TCellContainer>::
+belongs( Dimension d, const PreCell& aCell ) const
+{
+  if (!myKSpace->uIsValid(aCell)) return false;
+  return belongs(d, myKSpace->uCell(aCell) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
