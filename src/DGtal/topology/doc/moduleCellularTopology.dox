@@ -16,8 +16,7 @@ namespace DGtal {
 This part of the manual describes how to define cellular grid space
 or cartesian cubic spaces, as well as the main objects living in
 these spaces. A lot of the ideas, concepts, algorithms,
-documentation and code is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+documentation and code is a backport from \e ImaGene.
 
 
 
@@ -114,8 +113,7 @@ and methods to manipulate cells of arbitrary dimension. Models of
 
 1. the KhalimskySpaceND template class, that allows per-dimension closure specification (open, closed or periodic).
 2. the --- yet to come --- CodedKhalimskySpaceND class, a backport
-from class KnSpace of <a
-href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+from class KnSpace of \e ImaGene.
 
 The inner types are:
 - \ref KhalimskySpaceND::Integer "Integer": the type for representing a coordinate or component in this space.
