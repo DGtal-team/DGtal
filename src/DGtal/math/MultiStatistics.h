@@ -61,8 +61,7 @@ namespace DGtal
  * 
  *
  * The proposed implementation is mainly a backport from
- * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
- * various refactoring.
+ * ImaGene with some various refactoring.
  */
 class MultiStatistics
 {

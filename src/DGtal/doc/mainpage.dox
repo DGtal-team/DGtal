@@ -89,6 +89,6 @@ information.
    @defgroup Examples DGtal Examples
 
 
-[imagene]: https://gforge.liris.cnrs.fr/projects/imagene "ImaGene"
+[imagene]: "ImaGene"
 
  */

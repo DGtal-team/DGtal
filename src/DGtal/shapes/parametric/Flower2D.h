@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any flower with k-petals in the plane.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    */
   template <typename TSpace>
   class Flower2D final:  public StarShaped2D<TSpace>
