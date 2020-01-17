@@ -98,7 +98,7 @@
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
   Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
 
-- *doc*
+- *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
   - Fixing the `doxyfiles` to have the table of contents of module pages (David
@@ -109,6 +109,9 @@
     (Roland Denis [#1424](https://github.com/DGtal-team/DGtal/pull/1434))
   - CSS edit to enhance the readability of code snippets (David
     Coeurjolly [#1438](https://github.com/DGtal-team/DGtal/pull/1438))
+  - Fixing various links in moduleCellularTopology. Fixing #1454.
+    Removing dead links to ImaGene project.
+    (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
   - Removing the homemade CPP11 checks, using cmake macro instead
