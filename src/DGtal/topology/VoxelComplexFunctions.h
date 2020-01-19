@@ -75,14 +75,41 @@ namespace DGtal
        bool verbose = false
     );
 
+    /**
+     * Performs a thinning dividing the input complex into subcomplexes.
+     * The borders of the subcomplexes associcated to splits
+     * (not the border of the original complex) are set to fixed, then
+     * thinned, and then border blocks are thinned.
+     *
+     * The final result is all the subcomplex + block_complexes merged.
+     *
+     * @tparam TComplex Complex type: VoxelComplex
+     * @param vc input complex to thin
+     * @param Select Select function, because the assymetry, a rule has to be in place to decide what voxel to keep. Use a distance map to keep it centered.
+     * @param Skel skel function, for example skelEnd to keep the end points.
+     * @param requested_number_of_splits requested number of splits
+     * into subdomains, the final splits might be less.
+     * @param wide_of_block_sub_complex The wide of the border blocks.
+     * This should be the max value of the distance map of the whole complex/image to ensure correctness.
+     * @param persistence if 0 uses @sa asymetricThinningScheme, if >0 uses
+     * @sa persistenceAsymetricThinningScheme with the persistence value
+     * @param number_of_threads number of threads, if 0, it uses all the
+     * threads avalilabe if WITH_OPENMP is enabled.
+     * @param closeVoxels the merged_complex has cells of all dimensions
+     * (not only spels)
+     * @param save_memory if false, deletes all the subcomplexes when not needed
+     * @param verbose extra verbosity
+     *
+     * @return ThinningWithSplits, member merged_complex has the final thin.
+     */
     template < typename TComplex>
       ThinningWithSplits<TComplex>
-      asymetricThinningSchemeWithSplits(
+      thinningSchemeWithSplits(
           TComplex & vc ,
           std::function<
           std::pair<typename TComplex::Cell, typename TComplex::Data>(
             const typename TComplex::Clique &)
-          > Select ,
+          > Select,
           std::function<
           bool(
             const TComplex & ,
@@ -90,7 +117,8 @@ namespace DGtal
           > Skel,
           size_t requested_number_of_splits,
           size_t wide_of_block_sub_complex,
-          size_t number_of_threads,
+          uint32_t persistence = 0, // use asymetricThinningScheme
+          size_t number_of_threads = 0, // 0 uses all threads (if OMP enabled)
           bool closeVoxels = true,
           bool save_memory = false,
           bool verbose = false

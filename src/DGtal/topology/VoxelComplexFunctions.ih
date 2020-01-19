@@ -167,7 +167,7 @@ asymetricThinningScheme(
 template < typename TComplex>
 DGtal::ThinningWithSplits<TComplex>
 DGtal::functions::
-asymetricThinningSchemeWithSplits(
+thinningSchemeWithSplits(
     TComplex & vc ,
     std::function<
     std::pair<typename TComplex::Cell, typename TComplex::Data>(
@@ -180,6 +180,7 @@ asymetricThinningSchemeWithSplits(
     > Skel,
     size_t requested_number_of_splits,
     size_t wide_of_block_sub_complex,
+    uint32_t persistence,
     size_t number_of_threads,
     bool closeVoxels,
     bool saveMemory,
@@ -193,7 +194,8 @@ asymetricThinningSchemeWithSplits(
   merged_complex = TComplex(kspace);
   // first split the domain
   splitted_complexes = splitComplex(vc, requested_number_of_splits);
-  const auto number_of_splits = splitted_complexes.number_of_splits;
+  const auto & number_of_splits = splitted_complexes.number_of_splits;
+  thin_complexes.resize(number_of_splits,TComplex(kspace));
   const auto & lowerBound = kspace.lowerBound();
   const auto & upperBound = kspace.upperBound();
   // For getBorderVoxels
@@ -201,6 +203,16 @@ asymetricThinningSchemeWithSplits(
   const typename TComplex::Point wide_point{wide_int, wide_int, wide_int};
   // Set borders as FIXED
   const auto fixed_data = TComplex::FIXED;
+  //----------------- Thinning splitted_complexes ------------------//
+
+  auto nthreads = number_of_threads;
+#ifdef WITH_OPENMP
+  if(number_of_threads == 0) nthreads = omp_get_num_procs();
+  omp_set_num_threads(nthreads);
+#endif
+#ifdef WITH_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
   for(size_t split = 0; split < number_of_splits; ++split) {
     auto & sc = splitted_complexes.sub_complexes[split];
     const auto & sub_lowerBound = sc.space().lowerBound();
@@ -211,10 +223,14 @@ asymetricThinningSchemeWithSplits(
     setBorderData(sc, border_iterators, fixed_data);
     // perform thinning in each subcomplex
     // TODO use threads here to do it in parallel
-    thin_complexes.emplace_back(asymetricThinningScheme(sc, Select, Skel, verbose));
+    if(!persistence) {
+      thin_complexes[split] = asymetricThinningScheme(sc, Select, Skel, verbose);
+    } else {
+      thin_complexes[split] = persistenceAsymetricThinningScheme(sc, Select, Skel, persistence, verbose);
+    }
     if(saveMemory) sc.clear();
   }
-  // thin_complexes[0] = asymetricThinningScheme(vc, Select, Skel, verbose);
+  //----------------------- Border complexes ----------------------//
   // Thin on complexes around blocks
   auto region_size = upperBound - lowerBound;
   const auto & splits = splitted_complexes.splits;
@@ -225,7 +241,18 @@ asymetricThinningSchemeWithSplits(
   };
   // Blocks per dimension
   auto & block_complexes = out.block_complexes;
-  auto & thin_block_complexes = out.thin_block_complexes;
+
+  // Get the number of blocks (for multi-threading allocation)
+  size_t number_of_block_complexes = 0;
+  for(size_t dim = 0; dim < kspace.dimension; ++dim) {
+    for(size_t split = 1; split < splits[dim]; ++split) {
+      number_of_block_complexes++;
+    }
+  }
+  using PointPair = std::array<typename TComplex::Point, 2>;
+  std::vector<PointPair> block_lower_upper_bounds;
+  block_lower_upper_bounds.reserve(number_of_block_complexes);
+
   const auto wide_block = wide_of_block_sub_complex + 1;
   for(size_t dim = 0; dim < kspace.dimension; ++dim) {
     for(size_t split = 1; split < splits[dim]; ++split) {
@@ -240,16 +267,34 @@ asymetricThinningSchemeWithSplits(
       if(sub_lowerBound[dim] < lowerBound[dim]) sub_lowerBound[dim] = lowerBound[dim];
       if(sub_upperBound[dim] > upperBound[dim]) sub_upperBound[dim] = upperBound[dim];
 
-      // mark voxels already skeletonized as fixed (in the border)
-      block_complexes.emplace_back(extractSubComplex(vc, sub_lowerBound, sub_upperBound));
-      auto & bc = block_complexes.back();
-      const auto border_iterators =
-        getBorderVoxels(bc, sub_lowerBound, sub_upperBound,
-            nullptr, &lowerBound, &upperBound);
-      setBorderData(bc, border_iterators, fixed_data);
-      thin_block_complexes.emplace_back(asymetricThinningScheme(bc, Select, Skel, verbose));
-    if(saveMemory) bc.clear();
+      block_lower_upper_bounds.emplace_back(PointPair({sub_lowerBound, sub_upperBound}));
     }
+  }
+
+  block_complexes.resize(number_of_block_complexes, TComplex(kspace));
+  auto & thin_block_complexes = out.thin_block_complexes;
+  thin_block_complexes.resize(number_of_splits, TComplex(kspace));
+
+  ASSERT(block_lower_upper_bounds.size() == number_of_block_complexes);
+#ifdef WITH_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
+  for(size_t block_i = 0; block_i < number_of_block_complexes; block_i++) {
+    const auto & sub_lowerBound = block_lower_upper_bounds[block_i][0];
+    const auto & sub_upperBound = block_lower_upper_bounds[block_i][1];
+    block_complexes[block_i] = extractSubComplex(vc, sub_lowerBound, sub_upperBound);
+    auto & bc = block_complexes[block_i];
+    // mark voxels already skeletonized as fixed (in the border)
+    const auto border_iterators =
+      getBorderVoxels(bc, sub_lowerBound, sub_upperBound,
+          nullptr, &lowerBound, &upperBound);
+    setBorderData(bc, border_iterators, fixed_data);
+    if(!persistence) {
+      thin_block_complexes[block_i] = asymetricThinningScheme(bc, Select, Skel, verbose);
+    } else {
+      thin_block_complexes[block_i] = persistenceAsymetricThinningScheme(bc, Select, Skel, persistence, verbose);
+    }
+    if(saveMemory) bc.clear();
   }
   //----------------------- Merge ----------------------//
   // We are only interested in spels, so we clear the cells in

@@ -208,7 +208,6 @@ DGtal::functions::getBorderVoxels(
     const typename TComplex::Point * lowerBound_to_ignore,
     const typename TComplex::Point * upperBound_to_ignore) {
   const auto & kspace = vc.space();
-  const auto dimension = kspace.dimension;
   // wide_point has to be positive
   if(wide_point)
     ASSERT(wide_point->min() > 0);

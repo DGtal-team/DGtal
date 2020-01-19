@@ -306,13 +306,8 @@ objectFromSpels(
 {
 
   const auto & cs = C.space();
-  const typename TKSpace::Point rightlowerBound = cs.lowerBound();
-  const typename TKSpace::Point rightupperBound = cs.upperBound();
-  const typename TKSpace::Point a_lowerBound(-9990, -9991, -9992);
-  const typename TKSpace::Point a_upperBound(9990, 9991, 9992);
-  // Get domain of C KSpace.
-  CountedPtr<typename TObject::Domain> a_domain(new typename TObject::Domain(a_lowerBound, a_upperBound));
-  typename TObject::DigitalSet dset(a_domain);
+  typename TObject::Domain domain(cs.lowerBound(), cs.upperBound());
+  typename TObject::DigitalSet dset(domain);
   for(auto it = C.begin(TKSpace::DIM);
       it!= C.end(TKSpace::DIM) ; ++it)
     dset.insertNew(cs.uCoords(it->first));
@@ -336,7 +331,7 @@ getSpelNeighborhoodConfigurationOccupancy
   using Point  = typename TComplex::Point;
   using Space  = typename TComplex::Space;
   using Domain = HyperRectDomain< Space >;
-  
+
   Point p1 = Point::diagonal( -1 );
   Point p2 = Point::diagonal(  1 );
   Point c = Point::diagonal( 0 );

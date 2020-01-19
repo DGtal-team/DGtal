@@ -46,7 +46,7 @@
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/topology/NeighborhoodConfigurations.h"
 #include "DGtal/topology/tables/NeighborhoodTables.h"
-#include <DGtal/io/viewers/Viewer3D.h>
+// #include <DGtal/io/viewers/Viewer3D.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -1076,25 +1076,25 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
         SECTION("asymetricThinning"){
             auto vc_new = asymetricThinningScheme<FixtureComplex>(
                     vc, selectDistMax, skelEnd<FixtureComplex>, verbose);
-            SECTION( "visualize the thining" ){
-                int argc(1);
-                char** argv(nullptr);
-                QApplication app(argc, argv);
-                Viewer3D<> viewer(ks_fixture);
-                viewer.show();
-
-                viewer.setFillColor(Color(200, 200, 200, 100));
-                for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
-                    viewer << it->first;
-
-                // All kspace voxels
-                viewer.setFillColor(Color(40, 40, 40, 10));
-                for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-                    viewer << it->first;
-
-                viewer << Viewer3D<>::updateDisplay;
-                app.exec();
-            }
+            // SECTION( "visualize the thining" ){
+            //     int argc(1);
+            //     char** argv(nullptr);
+            //     QApplication app(argc, argv);
+            //     Viewer3D<> viewer(ks_fixture);
+            //     viewer.show();
+            //
+            //     viewer.setFillColor(Color(200, 200, 200, 100));
+            //     for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     // All kspace voxels
+            //     viewer.setFillColor(Color(40, 40, 40, 10));
+            //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     viewer << Viewer3D<>::updateDisplay;
+            //     app.exec();
+            // }
         }
         SECTION("persistenceThinning"){
             auto table = *functions::loadTable(isthmusicity::tableOneIsthmus);
@@ -1151,7 +1151,7 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap With Splits", "[x][distance][thin][sp
         auto selectDistMax = [&dt](const FixtureComplex::Clique &clique) {
             return selectMaxValue<DT, FixtureComplex>(dt, clique);
         };
-        SECTION("asymetricThinningSchemeWithSplits"){
+        SECTION("thinningSchemeWithSplits"){
             const size_t requested_number_of_splits = 4;
             typename DT::Value maxv = 0.0;
             for(auto it = dt.constRange().begin(),
@@ -1162,18 +1162,21 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap With Splits", "[x][distance][thin][sp
             const size_t wide_of_block_sub_complex = std::floor<size_t>(maxv);
             trace.info() << "Max DistanceMap value: " << maxv << std::endl;
             trace.info() << "wide_of_block_sub_complex: " << wide_of_block_sub_complex << std::endl;
-            const size_t number_of_threads = 1; // TODO UNUSED for now
-            auto out = asymetricThinningSchemeWithSplits<FixtureComplex>(
+            const size_t number_of_threads = 0; // 0 is equivalent to max threads
+            const DGtal::uint32_t persistence = 0;
+            const bool closeVoxels = true;
+            const bool saveMemory = false;
+
+            auto out = thinningSchemeWithSplits<FixtureComplex>(
                     vc, selectDistMax, skelEnd<FixtureComplex>,
                     requested_number_of_splits,
                     wide_of_block_sub_complex,
+                    persistence,
                     number_of_threads,
+                    closeVoxels,
+                    saveMemory,
                     verbose);
-            auto & sc = out.splitted_complexes.sub_complexes;
-            auto & tc = out.thin_complexes;
-            auto & bc = out.block_complexes;
-            auto & tbc = out.thin_block_complexes;
-            auto & merged_complex = out.merged_complex;
+            // auto & vc_new = out.merged_complex;
             // SECTION( "visualize the thining" ){
             //     int argc(1);
             //     char** argv(nullptr);
@@ -1181,21 +1184,8 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap With Splits", "[x][distance][thin][sp
             //     Viewer3D<> viewer(ks_fixture);
             //     viewer.show();
             //
-            //     viewer.setFillColor(Color(0, 200, 0, 100));
-            //     for ( auto it = tc[0].begin(3); it!= tc[0].end(3); ++it )
-            //         viewer << it->first;
-            //     // Draw the original sub_complex
-            //     viewer.setFillColor(Color(0, 100, 0, 20));
-            //     for ( auto it = sc[0].begin(3); it!= sc[0].end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     // Draw the second sub_complex
-            //     viewer.setFillColor(Color(0, 0, 200, 100));
-            //     for ( auto it = tc[1].begin(3); it!= tc[1].end(3); ++it )
-            //         viewer << it->first;
-            //     // Draw the original sub_complex
-            //     viewer.setFillColor(Color(0, 0, 100, 20));
-            //     for ( auto it = sc[1].begin(3); it!= sc[1].end(3); ++it )
+            //     viewer.setFillColor(Color(200, 200, 200, 100));
+            //     for ( auto it = vc_new.begin(3); it!= vc_new.end(3); ++it )
             //         viewer << it->first;
             //
             //     // All kspace voxels
@@ -1206,57 +1196,6 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap With Splits", "[x][distance][thin][sp
             //     viewer << Viewer3D<>::updateDisplay;
             //     app.exec();
             // }
-            // SECTION( "visualize the blocks" ){
-            //     int argc(1);
-            //     char** argv(nullptr);
-            //     QApplication app(argc, argv);
-            //     Viewer3D<> viewer(ks_fixture);
-            //     viewer.show();
-            //
-            //     viewer.setFillColor(Color(0, 200, 0, 100));
-            //     for ( auto it = tbc[0].begin(3); it!= tbc[0].end(3); ++it )
-            //         viewer << it->first;
-            //     // Draw the original sub_complex
-            //     viewer.setFillColor(Color(0, 100, 0, 20));
-            //     for ( auto it = bc[0].begin(3); it!= bc[0].end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     // Draw the second sub_complex
-            //     viewer.setFillColor(Color(0, 0, 200, 100));
-            //     for ( auto it = tbc[1].begin(3); it!= tbc[1].end(3); ++it )
-            //         viewer << it->first;
-            //     // Draw the original sub_complex
-            //     viewer.setFillColor(Color(0, 0, 100, 20));
-            //     for ( auto it = bc[1].begin(3); it!= bc[1].end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     // All kspace voxels
-            //     viewer.setFillColor(Color(40, 40, 40, 10));
-            //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     viewer << Viewer3D<>::updateDisplay;
-            //     app.exec();
-            // }
-            SECTION( "visualize the merged_block" ){
-                int argc(1);
-                char** argv(nullptr);
-                QApplication app(argc, argv);
-                Viewer3D<> viewer(ks_fixture);
-                viewer.show();
-
-                viewer.setFillColor(Color(0, 200, 0, 100));
-                for ( auto it = merged_complex.begin(3); it!= merged_complex.end(3); ++it )
-                    viewer << it->first;
-
-                // All kspace voxels
-                viewer.setFillColor(Color(40, 40, 40, 10));
-                for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-                    viewer << it->first;
-
-                viewer << Viewer3D<>::updateDisplay;
-                app.exec();
-            }
         }
         trace.endBlock();
     }
