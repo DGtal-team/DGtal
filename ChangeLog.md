@@ -18,6 +18,9 @@
   - DGtal can be compiled and used as a project (git) submodule (David
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   
+- *Kernel package*
+  - Add .data() function to PointVector to expose internal array data.
+    (Pablo Hernandez-Cerdan,[#1452](https://github.com/DGtal-team/DGtal/pull/1452))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
