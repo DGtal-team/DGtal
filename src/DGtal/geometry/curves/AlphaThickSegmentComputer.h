@@ -117,8 +117,7 @@ namespace DGtal
  * @note You can also construct the segment by using an input point iterator in initialisation (see @ref moduleAlphaThickSegmentReco for more details)
  *
  * The proposed implementation is mainly a backport from
- * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
- * various refactoring.
+ * ImaGene with some various refactoring.
  */
 
 

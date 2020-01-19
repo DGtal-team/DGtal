@@ -65,7 +65,7 @@ namespace DGtal
    * StarShaped2D and its derived classes are models of
    * CEuclideanBoundedShape and CEuclideanOrientedShape.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    *
    *
    * @tparam TSpace space in which the shape is defined.

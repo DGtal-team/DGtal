@@ -368,7 +368,7 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * @note Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note Essentially a backport from ImaGene.
    * @see KhalimskySpaceND
    *
    */

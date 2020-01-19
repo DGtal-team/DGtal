@@ -16,8 +16,7 @@ namespace DGtal {
 This part of the manual describes how to define cellular grid space
 or cartesian cubic spaces, as well as the main objects living in
 these spaces. A lot of the ideas, concepts, algorithms,
-documentation and code is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+documentation and code is a backport from \e ImaGene.
 
 
 
@@ -108,34 +107,33 @@ cellular grid space \f$\mathbf{F}^2\f$.
 Instead of chosing a specific implementation of a cellular grid
 space, we keep the genericity and efficiency objective of DGtal by
 defining a cellular grid space as the concept
-concepts::CCellularGridSpaceND. It provides a set of types (Cell, SCell, etc)
+\ref concepts::CCellularGridSpaceND "CCellularGridSpaceND". It provides a set of types (Cell, SCell, etc)
 and methods to manipulate cells of arbitrary dimension. Models of
-CCellularGridSpaceND are:
+\ref concepts::CCellularGridSpaceND "CCellularGridSpaceND" are:
 
 1. the KhalimskySpaceND template class, that allows per-dimension closure specification (open, closed or periodic).
 2. the --- yet to come --- CodedKhalimskySpaceND class, a backport
-from class KnSpace of <a
-href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+from class KnSpace of \e ImaGene.
 
 The inner types are:
-- Integer: the type for representing a coordinate or component in this space.
-- Size: the type for representing a size (unsigned)
-- Cell: the type of unsigned cells
-- SCell: the type of signed cells
-- Sign: the sign type for cells
-- DirIterator: the type for iterating over directions of a cell
-- Point: the type for representing a digital point in this space
-- Vector: the type for representing a digital vector in this space
-- Space: the associated digital space type
-- KhalimskySpace: this cellular grid space
-- Cells: a sequence of unsigned cells
-- SCells: a sequence of signed cells
-- \e CellSet: a set container that stores unsigned cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
-- \e SCellSet: a set container that stores signed cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
-- \e SurfelSet: a set container that stores surfels, i.e. signed n-1-cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
-- \e CellMap<Value>: an associative container Cell->Value rebinder type (efficient for key queries). Use as \c typename X::template CellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
-- \e SCellMap<Value>: an associative container SCell->Value rebinder type (efficient for key queries). Use as \c typename X::template SCellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
-- \e SurfelMap<Value>: an associative container Surfel->Value rebinder type (efficient for key queries). Use as \c typename X::template SurfelMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
+- \ref KhalimskySpaceND::Integer "Integer": the type for representing a coordinate or component in this space.
+- \ref KhalimskySpaceND::Size "Size": the type for representing a size (unsigned)
+- \ref KhalimskySpaceND::Cell "Cell": the type of unsigned cells
+- \ref KhalimskySpaceND::SCell "SCell": the type of signed cells
+- \ref KhalimskySpaceND::Sign "Sign": the sign type for cells
+- \ref KhalimskySpaceND::DirIterator "DirIterator": the type for iterating over directions of a cell
+- \ref KhalimskySpaceND::Point "Point": the type for representing a digital point in this space
+- \ref KhalimskySpaceND::Vector "Vector": the type for representing a digital vector in this space
+- \ref KhalimskySpaceND::Space "Space": the associated digital space type
+- \ref KhalimskySpaceND::CellularGridSpace "CellularGridSpace": this cellular grid space
+- \ref KhalimskySpaceND::Cells "Cells": a sequence of unsigned cells
+- \ref KhalimskySpaceND::SCells "SCells": a sequence of signed cells
+- \ref KhalimskySpaceND::CellSet "CellSet": a set container that stores unsigned cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \ref KhalimskySpaceND::SCellSet "SCellSet": a set container that stores signed cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \ref KhalimskySpaceND::SurfelSet "SurfetSet": a set container that stores surfels, i.e. signed n-1-cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \ref KhalimskySpaceND::CellMap "CellMap<Value>": an associative container Cell->Value rebinder type (efficient for key queries). Use as \c typename X::template CellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
+- \ref KhalimskySpaceND::SCellMap "SCellMap<Value>": an associative container SCell->Value rebinder type (efficient for key queries). Use as \c typename X::template SCellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
+- \ref KhalimskySpaceND::SurfelMap "SurfelMap<Value>": an associative container Surfel->Value rebinder type (efficient for key queries). Use as \c typename X::template SurfelMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
 
 Methods include:
 - Cell creation services
@@ -150,7 +148,7 @@ Methods include:
 - Incidence services
 - Interface
 
-An comprehensive description is given in concepts::CCellularGridSpaceND.
+An comprehensive description is given in \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND".
 
 @subsection dgtal_ctopo_sec4  Creating a cellular grid space
 
@@ -203,7 +201,7 @@ Domain domain( K.lowerBound(), K.upperBound() );
 @endcode
 
 Last but not least, for standard users it is generally enough to
-use the default types provided in "DGtal/helpers/StdDefs.h".
+use the default types provided in DGtal/helpers/StdDefs.h.
 @code
 #include "DGtal/helpers/StdDefs.h"
 ...
@@ -279,13 +277,13 @@ The file ctopo-1-3d.cpp shows another example in 3D:
 @section dgtal_ctopo_sec6  Cells may be unsigned or signed
 
 Up to now, we have only consider unsigned cells (type
-Cell). However it is often convenient to assign a sign (POS or NEG)
+Cell). However it is often convenient to assign a sign (\ref KhalimskySpaceND::POS "POS" or \ref KhalimskySpaceND::NEG "NEG")
 to a cell, a kind of orientation. The sign is especially useful to
 define boundary operators and digital surfaces. It is also used in
 algebraic topological models of cubical complexes, for instance to
 define chains (formal sums of cells).
 
-Signed cells have type SCell. They are created using methods
+Signed cells have type \ref KhalimskySpaceND::SCell "SCell". They are created using methods
 KhalimskySpaceND::sCell for arbitrary cells,
 KhalimskySpaceND::sSpel for n-dimensional cells,
 KhalimskySpaceND::sPointel for 0-dimensional cells. The user gives
@@ -319,8 +317,8 @@ methods concerning signed cells are prefixed by \c s.
 @section dgtal_ctopo_sec7  Accessing and modifying cell coordinates.
 
 Since one does not necessarily know which model of
-CCellularGridSpaceND you may be using, you cannot access the cell
-coordinates directly. Therefore a model of CCellularGridSpaceND
+\ref concepts::CCellularGridSpaceND "CCellularGridSpaceND" you may be using, you cannot access the cell
+coordinates directly. Therefore a model of \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND"
 provides a set of methods to access and modify cell coordinates and
 topology. Here a few of them (with the model example KhalimskySpaceND)
 
@@ -399,8 +397,8 @@ cells:
 KSpace::Cell q;
 
 ...
-for (q = K.uGetMaxT(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
-  for ( q = K.uGetMinT(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
+for (q = K.uGetMax(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
+  for ( q = K.uGetMin(q, 1); K.uIsInside(q,1); q = K.uGetIncr(q, 1))
     {
       // ... whatever [q] is the current cell
     }
@@ -446,10 +444,10 @@ cell topology.
   @code
   KSpace::Cell p;
   ...
-  for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
+  for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q )
   {
-  KSpace::Dimension dir = *q;
-	...
+    Dimension dir = *q;
+    ...
   }
   @endcode
 
@@ -536,7 +534,7 @@ boundary.
 
 @section dgtal_ctopo_periodicKSpace       Periodic Khalimsky space and per-dimension closure specification.
 
-In addition to the concepts::CCellularGridSpaceND requirements,
+In addition to the \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND" requirements,
 KhalimskySpaceND allows the use of different closures for each dimension
 and the use of periodic dimension.
 
@@ -576,9 +574,9 @@ If you need to arbitrarily manipulate the cells coordinates without bounds
 checking, or if you simply doesn't need a bounded space, you may consider
 KhalimskyPreSpaceND.
 
-It is a model of concepts::CPreCellularGridSpaceND, that is a base concept
-of concepts::CCellularGridSpaceND. The main difference is that
-concepts::CPreCellularGridSpaceND doesn't require to initialize the space
+It is a model of \ref concepts::CPreCellularGridSpaceND "CPreCellularGridSpaceND", that is a base concept
+of \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND". The main difference is that
+\ref concepts::CPreCellularGridSpaceND "CPreCellularGridSpaceND" doesn't require to initialize the space
 with bounds and some bounds related methods (like KhalimskySpaceND::uGetMin)
 are not available.
 
@@ -610,7 +608,7 @@ The main features are:
   and SignedKhalimskyCell::preCell methods,
   or using the implicit conversion:
   @code
-  using KSpace = DGtal::KhalimksySpaceND<2, int>;
+  using KSpace = DGtal::KhalimskySpaceND<2, int>;
   KSpace K;
   K.init( {-3, -3}, {3, 2}, true );
   KSpace::Cell cell = K.uSpel( {1, 1} );
@@ -629,8 +627,8 @@ The main features are:
 
 - most KhalimskySpaceND methods exist in KhalimskyPreSpaceND
   (take a look to the KhalimskyPreSpaceND documentation or just to
-   the difference between concepts::CCellularGridSpaceND and
-   concepts::CPreCellularGridSpaceND).
+   the difference between \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND" and
+   \ref concepts::CPreCellularGridSpaceND "CPreCellularGridSpaceND").
 
 - Conversion from a pre-cell to a cell needs the associate Khalimsky space
   in order to ensure that the coordinates are valid:
@@ -639,7 +637,7 @@ The main features are:
   KPreSpace::Cell  preA = KPreSpace::uSpel( {1, 1} );
   KPreSpace::SCell preB = KPreSpace::sPointel( {12, 5}, true );
 
-  using KSpace = DGtal::KhalimksySpaceND<2, int>;
+  using KSpace = DGtal::KhalimskySpaceND<2, int>;
   KSpace K;
   K.init( {-3, -3}, {3, 2}, true );
 

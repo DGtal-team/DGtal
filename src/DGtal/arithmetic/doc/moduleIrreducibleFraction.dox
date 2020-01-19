@@ -18,8 +18,7 @@ fractions are provided. They are based on the Stern-Brocot tree
 structure. With these fractions, amortized constant time operations
 are provided for computing reduced fractions.
 
-Part of the code is a backport from <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite ImaGene
+Part of the code is a backport from \e ImaGene. \cite ImaGene
 [TOC]
 
 \section dgtal_irrfrac_sec1 Introduction to positive irreducible fraction.
