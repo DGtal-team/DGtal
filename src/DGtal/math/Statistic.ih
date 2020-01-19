@@ -23,7 +23,7 @@
  *
  * Implementation of inline methods defined in Statistics.h
  * 
- * BAckport from ImaGene
+ * Backport from ImaGene
  *
  * This file is part of the DGtal library.
  */

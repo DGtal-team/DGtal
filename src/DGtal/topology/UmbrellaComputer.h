@@ -78,8 +78,7 @@ namespace DGtal
     
      Uses delegation with DigitalSurfaceTracker.
 
-     Essentially a backport from
-     [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+     Essentially a backport from ImaGene.
 
      @tparam TDigitalSurfaceTracker the type of the domain in which shapes are created.
    */

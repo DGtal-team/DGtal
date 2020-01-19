@@ -99,7 +99,7 @@ namespace DGtal
    * BigInteger/GMP integers. For huge diameters, the slow-down is
    * polylogarithmic with the diameter.
    *
-   * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * Essentially a backport from ImaGene.
    *
    @code
    typedef SpaceND<3,int> Z3;

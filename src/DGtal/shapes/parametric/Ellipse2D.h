@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any ellipse in the plane.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    */
   template <typename TSpace>
   class Ellipse2D final:  public StarShaped2D<TSpace>

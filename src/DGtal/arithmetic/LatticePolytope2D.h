@@ -72,8 +72,7 @@ namespace DGtal
      It contains no more data than the sequence of points, except mutable
      data for intermediate computations.
 
-     It is a backport of <a
-     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+     It is a backport of \e ImaGene.
 
      @tparam TSpace an arbitrary 2-dimensional model of CSpace.
      @tparam TSequence a model of boost::Sequence whose elements are points (TSpace::Point). Default is list of points.

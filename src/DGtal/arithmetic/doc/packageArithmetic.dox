@@ -57,8 +57,7 @@ subsegments. Furthermore, since 0.6, it provides classes for
 representing 2D lattice polytopes (convex integer polygons) as well as
 methods to perform linear integer programming in the plane.
 
-Parts of this package are backports from
-[ImaGene](https://gforge.liris.cnrs.fr/projects/imagene): class
+Parts of this package are backports from ImaGene: class
 IntegerComputer, class SternBrocot (written with Xavier Provençal),
 algorithms StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS
 (written with Mouhammad Said), class ConvexIntegerPolygon (written

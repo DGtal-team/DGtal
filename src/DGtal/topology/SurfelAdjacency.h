@@ -59,7 +59,7 @@ namespace DGtal
      
      @tparam dim the number of dimension of the space.
 
-     NB: backported from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+     NB: backported from ImaGene.
   */
   template <Dimension dim>
   class SurfelAdjacency

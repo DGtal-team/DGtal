@@ -129,8 +129,7 @@ namespace DGtal
 
        @see LightSternBrocot::fraction
 
-       Essentially a backport from <a
-       href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+       Essentially a backport from \e ImaGene.
     */
     struct Node {
 
