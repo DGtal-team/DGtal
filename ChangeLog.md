@@ -17,6 +17,8 @@
 - *General*
   - DGtal can be compiled and used as a project (git) submodule (David
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
+  - Add .gitattributes file for github to recognize ih files as c++
+    (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
   
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
