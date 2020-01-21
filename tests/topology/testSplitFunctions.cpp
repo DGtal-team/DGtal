@@ -34,7 +34,7 @@
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/VoxelComplex.h"
 #include "DGtal/topology/VoxelComplexFunctions.h"
-#include <DGtal/io/viewers/Viewer3D.h>
+// #include <DGtal/io/viewers/Viewer3D.h>
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace DGtal;
@@ -295,8 +295,9 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             const auto sub_upperBound = sc.space().upperBound();
             trace.info() << "lowerBound S0" <<  sub_lowerBound << std::endl;
             trace.info() << "upperBound S0" <<  sub_upperBound << std::endl;
+            const auto nullptr_point = static_cast<Point *>(nullptr);
             auto border_iterators =
-                getBorderVoxels(sc, sub_lowerBound, sub_upperBound, nullptr,
+                getBorderVoxels(sc, sub_lowerBound, sub_upperBound, nullptr_point,
                         &lowerBound, &upperBound);
             CHECK(border_iterators.size() == 15);
             const auto sc_expected_fixed = typename KSpace::Point(0,0,0);
@@ -313,30 +314,30 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             std::cout << coFaces.size() << std::endl;
             }
 
-            SECTION( "visualize the split" ){
-                int argc(1);
-                char** argv(nullptr);
-                QApplication app(argc, argv);
-                Viewer3D<> viewer(vc.space());
-                viewer.show();
-
-                viewer.setFillColor(Color(200, 0, 0, 100));
-                auto & sc0 = sub_complexes[0];
-                for ( auto it = sc0.begin(3); it!= sc0.end(3); ++it )
-                    viewer << it->first;
-                viewer.setFillColor(Color(0, 0, 100, 100));
-                auto & sc1 = sub_complexes[1];
-                for ( auto it = sc1.begin(3); it!= sc1.end(3); ++it )
-                    viewer << it->first;
-
-                // All kspace voxels
-                viewer.setFillColor(Color(40, 40, 40, 10));
-                for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-                    viewer << it->first;
-
-                viewer << Viewer3D<>::updateDisplay;
-                app.exec();
-            }
+            // SECTION( "visualize the split" ){
+            //     int argc(1);
+            //     char** argv(nullptr);
+            //     QApplication app(argc, argv);
+            //     Viewer3D<> viewer(vc.space());
+            //     viewer.show();
+            //
+            //     viewer.setFillColor(Color(200, 0, 0, 100));
+            //     auto & sc0 = sub_complexes[0];
+            //     for ( auto it = sc0.begin(3); it!= sc0.end(3); ++it )
+            //         viewer << it->first;
+            //     viewer.setFillColor(Color(0, 0, 100, 100));
+            //     auto & sc1 = sub_complexes[1];
+            //     for ( auto it = sc1.begin(3); it!= sc1.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     // All kspace voxels
+            //     viewer.setFillColor(Color(40, 40, 40, 10));
+            //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+            //         viewer << it->first;
+            //
+            //     viewer << Viewer3D<>::updateDisplay;
+            //     app.exec();
+            // }
         }
         trace.endBlock();
     }

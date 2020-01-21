@@ -33,6 +33,7 @@
 #include <DGtal/topology/DigitalTopology.h>
 #include <random>
 #include <DGtal/topology/SplitFunctions.h>
+#include <boost/core/ignore_unused.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -206,6 +207,7 @@ thinningSchemeWithSplits(
   //----------------- Thinning splitted_complexes ------------------//
 
   auto nthreads = number_of_threads;
+  boost::ignore_unused(nthreads);
 #ifdef WITH_OPENMP
   if(number_of_threads == 0) nthreads = omp_get_num_procs();
   omp_set_num_threads(nthreads);
@@ -274,6 +276,7 @@ thinningSchemeWithSplits(
   block_complexes.resize(number_of_block_complexes, TComplex(kspace));
   auto & thin_block_complexes = out.thin_block_complexes;
   thin_block_complexes.resize(number_of_splits, TComplex(kspace));
+  const auto nullptr_point = static_cast<typename TComplex::Point *>(nullptr);
 
   ASSERT(block_lower_upper_bounds.size() == number_of_block_complexes);
 #ifdef WITH_OPENMP
@@ -287,7 +290,7 @@ thinningSchemeWithSplits(
     // mark voxels already skeletonized as fixed (in the border)
     const auto border_iterators =
       getBorderVoxels(bc, sub_lowerBound, sub_upperBound,
-          nullptr, &lowerBound, &upperBound);
+          nullptr_point, &lowerBound, &upperBound);
     setBorderData(bc, border_iterators, fixed_data);
     if(!persistence) {
       thin_block_complexes[block_i] = asymetricThinningScheme(bc, Select, Skel, verbose);
@@ -326,7 +329,7 @@ thinningSchemeWithSplits(
     const auto & sub_upperBound = tbc.space().upperBound();
     const auto border_iterators =
       getBorderVoxels(tbc, sub_lowerBound, sub_upperBound,
-          nullptr, &lowerBound, &upperBound);
+          nullptr_point, &lowerBound, &upperBound);
     for(auto border_it = border_iterators.begin();
         border_it != border_iterators.end(); ++border_it) {
       tbc.erase((*border_it)->first);
