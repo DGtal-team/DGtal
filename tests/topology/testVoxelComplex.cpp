@@ -909,11 +909,12 @@ struct Fixture_X {
     Fixture_X() : complex_fixture(ks_fixture), set_fixture(create_set()) {
         create_complex_from_set(set_fixture);
     }
+    virtual ~Fixture_X(){};
 
     ///////////////////////////////////////////////////////////
     // Function members
     ///////////////////////////////////////////////////////////
-    FixtureDigitalSet create_set() {
+    virtual FixtureDigitalSet create_set() {
         using namespace DGtal;
 
         Point p1(-16, -16, -16);
@@ -964,7 +965,7 @@ struct Fixture_X {
 		return a_set;
     }
 
-    FixtureComplex &create_complex_from_set(FixtureDigitalSet &input_set) {
+    virtual FixtureComplex &create_complex_from_set(FixtureDigitalSet &input_set) {
 
         ks_fixture.init(input_set.domain().lowerBound(),
                         input_set.domain().upperBound(), true);
@@ -1132,8 +1133,26 @@ TEST_CASE_METHOD(Fixture_X, "X DistanceMap", "[x][distance][thin]") {
         trace.endBlock();
     }
 }
+struct Fixture_X_with_tight_domain : public Fixture_X {
+    using Parent = Fixture_X;
+    Fixture_X_with_tight_domain() : Parent() {
+        create_complex_from_set(set_fixture);
+    };
 
-TEST_CASE_METHOD(Fixture_X, "X DistanceMap With Splits", "[x][distance][thin][splits]") {
+    virtual FixtureComplex &create_complex_from_set(FixtureDigitalSet &input_set) {
+
+        // tight domain
+        Point p1(-6, -6, -1);
+        Point p2(6, 6, 1);
+
+        ks_fixture.init(p1, p2, true);
+        complex_fixture = FixtureComplex(ks_fixture);
+        complex_fixture.construct(input_set);
+        return complex_fixture;
+    }
+};
+
+TEST_CASE_METHOD(Fixture_X_with_tight_domain, "X DistanceMap With Splits", "[x][distance][thin][splits]") {
     using namespace DGtal::functions;
     auto &vc = complex_fixture;
     vc.setSimplicityTable(functions::loadTable(simplicity::tableSimple26_6));

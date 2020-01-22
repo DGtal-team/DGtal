@@ -33,7 +33,6 @@
 #include <DGtal/topology/DigitalTopology.h>
 #include <random>
 #include <DGtal/topology/SplitFunctions.h>
-#include <boost/core/ignore_unused.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -207,7 +206,9 @@ thinningSchemeWithSplits(
   //----------------- Thinning splitted_complexes ------------------//
 
   auto nthreads = number_of_threads;
-  boost::ignore_unused(nthreads);
+  boost::ignore_unused_variable_warning(nthreads);
+  if(verbose) trace.beginBlock("thinningSchemeWithSplits: thinning sub_complexes");
+  if(verbose) trace.info() << "wide_int: " << wide_int << std::endl;
 #ifdef WITH_OPENMP
   if(number_of_threads == 0) nthreads = omp_get_num_procs();
   omp_set_num_threads(nthreads);
@@ -222,16 +223,19 @@ thinningSchemeWithSplits(
     const auto border_iterators =
       getBorderVoxels(sc, sub_lowerBound, sub_upperBound,
           &wide_point, &lowerBound, &upperBound);
+    if(verbose) trace.info() << "#split: " << split << std::endl;
+    if(verbose) trace.info() << "wide_point " << wide_point << std::endl;
+    if(verbose) trace.info() << "#fixed border_iterators: " << border_iterators.size() << std::endl;
     setBorderData(sc, border_iterators, fixed_data);
     // perform thinning in each subcomplex
-    // TODO use threads here to do it in parallel
-    if(!persistence) {
+    if(persistence == 0) {
       thin_complexes[split] = asymetricThinningScheme(sc, Select, Skel, verbose);
     } else {
       thin_complexes[split] = persistenceAsymetricThinningScheme(sc, Select, Skel, persistence, verbose);
     }
     if(saveMemory) sc.clear();
   }
+  if(verbose) trace.endBlock();
   //----------------------- Border complexes ----------------------//
   // Thin on complexes around blocks
   auto region_size = upperBound - lowerBound;
@@ -279,6 +283,7 @@ thinningSchemeWithSplits(
   const auto nullptr_point = static_cast<typename TComplex::Point *>(nullptr);
 
   ASSERT(block_lower_upper_bounds.size() == number_of_block_complexes);
+  if(verbose) trace.beginBlock("thinningSchemeWithSplits: thinning border blocks");
 #ifdef WITH_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
@@ -292,7 +297,7 @@ thinningSchemeWithSplits(
       getBorderVoxels(bc, sub_lowerBound, sub_upperBound,
           nullptr_point, &lowerBound, &upperBound);
     setBorderData(bc, border_iterators, fixed_data);
-    if(!persistence) {
+    if(persistence == 0) {
       thin_block_complexes[block_i] = asymetricThinningScheme(bc, Select, Skel, verbose);
     } else {
       thin_block_complexes[block_i] = persistenceAsymetricThinningScheme(bc, Select, Skel, persistence, verbose);
@@ -353,6 +358,7 @@ thinningSchemeWithSplits(
       merged_complex.voxelClose(it->first);
     }
   }
+  if(verbose) trace.endBlock();
 
   return out;
 }

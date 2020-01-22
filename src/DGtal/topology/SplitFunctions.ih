@@ -208,10 +208,39 @@ DGtal::functions::getBorderVoxels(
     const typename TComplex::Point * lowerBound_to_ignore,
     const typename TComplex::Point * upperBound_to_ignore) {
   const auto & kspace = vc.space();
-  // wide_point has to be positive
-  if(wide_point)
-    ASSERT(wide_point->min() > 0);
-  typename TComplex::Point wide = wide_point ? *wide_point : typename TComplex::Point(1,1,1);
+  if(wide_point) {
+    const typename TComplex::Point wide = *wide_point;
+    // wide_point has to be positive
+    ASSERT(wide.min() > 0);
+    // wide point cannot be greater than the domain in any dimension
+    std::array<bool, 3> is_close_to_lower_upper_border_to_ignore =
+    {false, false, false};
+    if(lowerBound_to_ignore && upperBound_to_ignore) {
+      const auto dist_lowerToUpper_to_ignore =
+        *upperBound_to_ignore - *lowerBound_to_ignore;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(wide[dim] <= dist_lowerToUpper_to_ignore[dim]) {
+          is_close_to_lower_upper_border_to_ignore[dim] = true;
+        }
+      }
+    }
+    const auto dist_lowerToUpper = upperBound - lowerBound;
+    for(size_t dim = 0; dim < 3; ++dim) {
+      if(wide[dim] >= dist_lowerToUpper[dim]
+         && !is_close_to_lower_upper_border_to_ignore[dim]) {
+        std::cerr <<
+          "wide_point in getBorderVoxels is equal or greater than the domain itself\n" <<
+          "wide_point: " << wide << "\n" <<
+          "dist_lowerToUpper: " << dist_lowerToUpper <<
+          std::endl;
+        if(lowerBound_to_ignore && upperBound_to_ignore) {
+          std::cerr << "dist_lowerToUpper_to_ignore: " <<
+            (*upperBound_to_ignore - *lowerBound_to_ignore) << std::endl;
+        }
+      }
+    }
+  }
+  const typename TComplex::Point wide = wide_point ? *wide_point : typename TComplex::Point(1,1,1);
   // using KPreSpace = typename TComplex::KSpace::PreCellularGridSpace;
 
   using CellIterators = std::vector<typename TComplex::CellMapIterator>;
@@ -219,7 +248,6 @@ DGtal::functions::getBorderVoxels(
 
   for(auto it = vc.begin(3); it != vc.end(3); ++it) {
     const auto & cell = it->first;
-    bool isInside = true;
     const auto cell_coords = kspace.uCoords(cell);
     // dist to lower and upper
     const auto distToLower = cell_coords - lowerBound;
@@ -235,38 +263,63 @@ DGtal::functions::getBorderVoxels(
       || distToUpper[2] < wide[2];
 
     if(lowerBound_to_ignore && upperBound_to_ignore) {
-      const auto distToLower_to_ignore = cell_coords - lowerBound;
-      bool is_close_to_lower_border_to_ignore =
-        distToLower_to_ignore[0] < wide[0]
-        || distToLower_to_ignore[1] < wide[1]
-        || distToLower_to_ignore[2] < wide[2];
+      if(is_close_to_lower_border) {
+        const auto distToLower_to_ignore = cell_coords - *lowerBound_to_ignore;
+        bool is_close_to_lower_border_to_ignore =
+          distToLower_to_ignore[0] < wide[0]
+          || distToLower_to_ignore[1] < wide[1]
+          || distToLower_to_ignore[2] < wide[2];
 
-      if(is_close_to_lower_border_to_ignore) {
-        // Don't ignore it if closer to lowerBound than lowerBound_to_ignore (corners)
-        if(distToLower.min() >= distToLower_to_ignore.min()) {
-          is_close_to_lower_border_to_ignore = false;
+        if(is_close_to_lower_border_to_ignore) {
+          // Don't ignore if it is closer to lowerBound than
+          // lowerBound_to_ignore (corners) for any dimension
+          // Compute the border plane normal that results in non-zero
+          // for the dimensions that need checking.
+          const auto lowerBound_border_plane_normal =
+            lowerBound - *lowerBound_to_ignore;
+          for(size_t dim = 0; dim < 3; dim++) {
+            if(lowerBound_border_plane_normal[dim]) {
+              if(distToLower[dim] < wide[dim]
+                 && distToLower[dim] <= distToLower_to_ignore[dim]) {
+                is_close_to_lower_border_to_ignore = false;
+              }
+            }
+          }
         }
+        is_close_to_lower_border &= !is_close_to_lower_border_to_ignore;
       }
-      is_close_to_lower_border &= !is_close_to_lower_border_to_ignore;
 
-      const auto distToUpper_to_ignore = upperBound - cell_coords;;
-      bool is_close_to_upper_border_to_ignore =
-        distToUpper_to_ignore[0] < wide[0]
-        || distToUpper_to_ignore[1] < wide[1]
-        || distToUpper_to_ignore[2] < wide[2];
-      if(is_close_to_upper_border_to_ignore) {
-        // Don't ignore it if closer to upperBound than upperBound_to_ignore (corners)
-        if(distToUpper.min() >= distToUpper_to_ignore.min()) {
-          is_close_to_upper_border_to_ignore = false;
+      if(is_close_to_upper_border) {
+        const auto distToUpper_to_ignore = *upperBound_to_ignore - cell_coords;;
+        bool is_close_to_upper_border_to_ignore =
+          distToUpper_to_ignore[0] < wide[0]
+          || distToUpper_to_ignore[1] < wide[1]
+          || distToUpper_to_ignore[2] < wide[2];
+
+        if(is_close_to_upper_border_to_ignore) {
+          // Don't ignore if it is closer to upperBound than
+          // upperBound_to_ignore (corners) for any dimension
+          // Compute the border plane normal that results in non-zero
+          // for the dimensions that need checking.
+          const auto upperBound_border_plane_normal =
+            *upperBound_to_ignore - upperBound;
+          for(size_t dim = 0; dim < 3; dim++) {
+            if(upperBound_border_plane_normal[dim]) {
+              if(distToUpper[dim] < wide[dim]
+                 && distToUpper[dim] <= distToUpper_to_ignore[dim]) {
+                is_close_to_upper_border_to_ignore = false;
+              }
+            }
+          }
         }
+        is_close_to_upper_border &= !is_close_to_upper_border_to_ignore;
       }
-      is_close_to_upper_border &= !is_close_to_upper_border_to_ignore;
     }
 
-    isInside &= !is_close_to_lower_border
-      && !is_close_to_upper_border;
+    const bool isInBorder_not_to_ignore = is_close_to_lower_border
+      || is_close_to_upper_border;
 
-    if(!isInside) {
+    if(isInBorder_not_to_ignore) {
       iterators.push_back(it);
     }
   }

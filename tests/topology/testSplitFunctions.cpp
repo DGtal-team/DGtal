@@ -83,7 +83,7 @@ TEST_CASE("computeSplitsEasy", "[computeSplits, getSplit]") {
 }
 ////////////////////// splitComplex ///////////////////////////
 // Fixture for a X
-struct Fixture_X {
+struct Fixture_X_with_tight_bounds {
     ///////////////////////////////////////////////////////////
     // type aliases
     ///////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ struct Fixture_X {
     ///////////////////////////////////////////////////////////
     // Constructor
     ///////////////////////////////////////////////////////////
-    Fixture_X() : complex_fixture(ks_fixture), set_fixture(create_set()) {
+    Fixture_X_with_tight_bounds() : complex_fixture(ks_fixture), set_fixture(create_set()) {
         create_complex_from_set(set_fixture);
     }
 
@@ -118,8 +118,9 @@ struct Fixture_X {
     FixtureDigitalSet create_set() {
         using namespace DGtal;
 
-        Point p1(-16, -16, -16);
-        Point p2(16, 16, 16);
+        // with_tight_bounds
+        Point p1(-6, -6, -1);
+        Point p2(6, 6, 1);
         Domain domain(p1, p2);
 
         FixtureDigitalSet a_set(domain);
@@ -176,7 +177,7 @@ struct Fixture_X {
     }
 };
 
-TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
+TEST_CASE_METHOD(Fixture_X_with_tight_bounds, "splitComplex", "[parallel]") {
     using namespace DGtal::functions;
     auto & vc = complex_fixture;
     // CHECK(vc.nbCells(0) == 528);
@@ -211,8 +212,8 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             CHECK(sc.nbCells(3) != 0);
             trace.info() << "lowerBound S0" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
-            CHECK(sc.space().lowerBound() == typename KSpace::Point(-16,-16,-16));
-            CHECK(sc.space().upperBound() == typename KSpace::Point(-1,16,16));
+            CHECK(sc.space().lowerBound() == typename KSpace::Point(-6,-6,-1));
+            CHECK(sc.space().upperBound() == typename KSpace::Point(-1,6,1));
             CHECK(sc.space().lowerBound() == out.splits_domain[sub_index][0]);
             CHECK(sc.space().upperBound() == out.splits_domain[sub_index][1]);
         }
@@ -225,8 +226,8 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             CHECK(sc.nbCells(3) != 0);
             trace.info() << "lowerBound S1" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
-            CHECK(sc.space().lowerBound() == typename KSpace::Point(0,-16,-16));
-            CHECK(sc.space().upperBound() == typename KSpace::Point(16,16,16));
+            CHECK(sc.space().lowerBound() == typename KSpace::Point(0,-6,-1));
+            CHECK(sc.space().upperBound() == typename KSpace::Point(6,6,1));
             CHECK(sc.space().lowerBound() == out.splits_domain[sub_index][0]);
             CHECK(sc.space().upperBound() == out.splits_domain[sub_index][1]);
             // Check cell exist in sub_complex
@@ -256,28 +257,28 @@ TEST_CASE_METHOD(Fixture_X, "splitComplex", "[parallel]") {
             auto & sc = sub_complexes[sub_index];
             trace.info() << "lowerBound S0" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
-            const auto sc_expected_lowerBound = typename KSpace::Point(-16,-16,-16);
-            const auto sc_expected_upperBound = typename KSpace::Point(0,16,16);
+            const auto sc_expected_lowerBound = typename KSpace::Point(-6,-6,-1);
+            const auto sc_expected_upperBound = typename KSpace::Point(0,6,1);
             CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
             CHECK(sc.space().upperBound() == sc_expected_upperBound);
             CHECK(out.splits_domain_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
             CHECK(out.splits_domain_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
-            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(-16,-16,-16));
-            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(-1,16,16));
+            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(-6,-6,-1));
+            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(-1,6,1));
         }
         {
             size_t sub_index = 1;
             auto & sc = sub_complexes[sub_index];
             trace.info() << "lowerBound S1" <<  sc.space().lowerBound() << std::endl;
             trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
-            const auto sc_expected_lowerBound = typename KSpace::Point(-1,-16,-16);
-            const auto sc_expected_upperBound = typename KSpace::Point(16, 16, 16);
+            const auto sc_expected_lowerBound = typename KSpace::Point(-1,-6,-1);
+            const auto sc_expected_upperBound = typename KSpace::Point(6, 6, 1);
             CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
             CHECK(sc.space().upperBound() == sc_expected_upperBound);
             CHECK(out.splits_domain_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
             CHECK(out.splits_domain_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
-            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(0,-16,-16));
-            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(16,16,16));
+            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(0,-6,-1));
+            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(6,6,1));
         }
         trace.endBlock();
     }
