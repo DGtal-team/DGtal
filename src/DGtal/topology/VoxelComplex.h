@@ -60,6 +60,21 @@ VoxelComplex<TKSpace, TCellContainer>
 operator-(const VoxelComplex<TKSpace, TCellContainer> &,
           const VoxelComplex<TKSpace, TCellContainer> &);
 
+ /**
+  * Derived class from CubicalCellData needed for the
+  * persistenceAsymetricThinningScheme algorithm
+  * to keep track of the birth_date
+  *
+  * @sa CubicalCellData
+  */
+  struct CubicalCellDataWithBirthDate: public CubicalCellData {
+    using Parent = CubicalCellData;
+    inline CubicalCellDataWithBirthDate() : CubicalCellData(), birth_date(0) {}
+    CubicalCellDataWithBirthDate( uint32_t d ) : CubicalCellData(d), birth_date(0) {}
+    CubicalCellDataWithBirthDate( uint32_t d, uint32_t p ) : CubicalCellData(d), birth_date(p) {}
+    uint32_t birth_date;
+  };
+
   /////////////////////////////////////////////////////////////////////////////
   // template class VoxelComplex
   /**

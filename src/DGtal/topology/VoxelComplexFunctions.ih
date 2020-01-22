@@ -381,6 +381,10 @@ persistenceAsymetricThinningScheme(
     bool verbose )
 {
   if(verbose) trace.beginBlock("Persistence asymetricThinningScheme");
+  static_assert( boost::is_base_of< CubicalCellDataWithBirthDate, // base
+        typename TComplex::Data >::value, // derived
+        "Cell data needs a persistence value,"
+        " use CubicalCellDataWithBirthDate instead of default value.");
 
   using Cell = typename TComplex::Cell;
   using Data = typename TComplex::Data;
@@ -404,6 +408,14 @@ persistenceAsymetricThinningScheme(
   K.copySimplicityTable(vc);
   x_y.copySimplicityTable(vc);
 
+  // Initialize the constraint set
+  for (auto it = vc.begin(3), itE = vc.end(3) ; it != itE ; ++it ){
+    const auto &constraint_voxel = it->first ;
+    if( Skel(vc, constraint_voxel) == true || it->second.data == TComplex::FIXED){
+      K.insertVoxelCell(constraint_voxel);
+    }
+  }
+
   bool stability{false};
   uint64_t generation{0};
   auto xsize =  X.nbCells(3);
@@ -415,7 +427,8 @@ persistenceAsymetricThinningScheme(
       trace.info() << "Initial Voxels at generation: " << generation <<
         " ; X.nbCells(3): " << xsize << std::endl;
   }
-    // cubical cell data (aka, the birth_date) is initialized to zero already.
+    // member persistence of CubicalCellDataWithBirthDate
+    // (aka, the birth_date) is initialized to zero already.
   do {
     ++generation;
     // Update birth_date for our Skel function. (isIsthmus for example)
@@ -424,9 +437,10 @@ persistenceAsymetricThinningScheme(
       if (K.findCell(3, it->first) != K.end(3))
         continue;
       auto & voxel = it->first ;
-      auto & ccdata = it->second.data ;
-      if( Skel(X, voxel) == true && ccdata == 0)
-        ccdata = generation;
+      // auto & ccdata = it->second.data ;
+      auto & cbirth_date = it->second.birth_date;
+      if( Skel(X, voxel) == true && cbirth_date == 0)
+        cbirth_date = generation;
     }
     Y = K ;
     x_y = X; //optimization instead of x_y = X-Y, use x_y -= Y;
@@ -459,10 +473,11 @@ persistenceAsymetricThinningScheme(
     for (auto it = Y.begin(3), itE = Y.end(3) ; it != itE ; ++it ){
         auto & voxel = it->first;
         auto & ccdata = it->second.data;
+        auto & cbirth_date = it->second.birth_date;
         bool is_skel = Skel(X, voxel);
-        bool is_persistent_enough = (generation + 1 - ccdata) >= persistence;
-        if (is_skel && is_persistent_enough)
-          K.insertVoxelCell(voxel, close_it, ccdata);
+        bool is_persistent_enough = (generation + 1 - cbirth_date) >= persistence;
+        if ((is_skel || ccdata == TComplex::FIXED) && is_persistent_enough)
+          K.insertVoxelCell(voxel, close_it, typename TComplex::Data(ccdata, cbirth_date));
     }
 
     if(verbose){

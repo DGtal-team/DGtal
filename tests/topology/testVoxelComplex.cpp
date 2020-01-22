@@ -622,7 +622,7 @@ struct Fixture_isthmus {
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
+    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellDataWithBirthDate>;
     using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureMap>;
 
     ///////////////////////////////////////////////////////////
@@ -803,7 +803,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Thin complex", "[isthmus][thin][function]") {
     SECTION("with skelIsthmus") {
         auto vc_new = asymetricThinningScheme<FixtureComplex>(
             vc, selectRandom<FixtureComplex>, skelIsthmus<FixtureComplex>);
-        CHECK(vc_new.nbCells(3) == 3);
+        CHECK(vc_new.nbCells(3) == 4);
     }
 }
 //
@@ -893,8 +893,8 @@ struct Fixture_X {
     using FixtureDigitalSet = DGtal::DigitalSetByAssociativeContainer<
         DGtal::Z3i::Domain,
         std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
-    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellData>;
-    using FixtureComplex = DGtal::VoxelComplex<KSpace>;
+    using FixtureMap = std::unordered_map<KSpace::Cell, CubicalCellDataWithBirthDate>;
+    using FixtureComplex = DGtal::VoxelComplex<KSpace, FixtureMap>;
 
     ///////////////////////////////////////////////////////////
     // fixture data
