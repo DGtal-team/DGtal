@@ -69,6 +69,16 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
     THEN( "It contains more points than its area" ) {
       REQUIRE( P.count() > (5*7/2) );
     }
+    THEN( "It satisfies Pick's formula, ie 2*Area(P) = 2*#int(P) + #Bd(P) - 2" ) {
+      Polytope IntP = P.interiorPolytope();
+      auto   nb_int = IntP.count();
+      auto    nb_bd = P.count() - IntP.count();
+      auto    area2 = 5*7;
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      CAPTURE( area2 );
+      REQUIRE( area2 == 2*nb_int + nb_bd - 2 );
+    }
     WHEN( "Cut by some half-space" ) {
       Polytope Q = P;
       Q.cut( Vector( -1, 1 ), 3 );
