@@ -63,6 +63,14 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
       REQUIRE( P.isDomainPointInside( b ) );
       REQUIRE( P.isDomainPointInside( c ) );
     }
+    THEN( "Its vertices lie on its boundary" ) {
+      REQUIRE( P.isBoundary( a ) );
+      REQUIRE( P.isBoundary( b ) );
+      REQUIRE( P.isBoundary( c ) );
+      REQUIRE( ! P.isInterior( a ) );
+      REQUIRE( ! P.isInterior( b ) );
+      REQUIRE( ! P.isInterior( c ) );
+    }
     THEN( "It contains more than 3 integer points" ) {
       REQUIRE( P.count() > 3 );
     }
@@ -106,6 +114,16 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
       REQUIRE( P.isDomainPointInside( b ) );
       REQUIRE( P.isDomainPointInside( c ) );
       REQUIRE( P.isDomainPointInside( d ) );
+    }
+    THEN( "Its vertices lie on its boundary" ) {
+      REQUIRE( P.isBoundary( a ) );
+      REQUIRE( P.isBoundary( b ) );
+      REQUIRE( P.isBoundary( c ) );
+      REQUIRE( P.isBoundary( d ) );
+      REQUIRE( ! P.isInterior( a ) );
+      REQUIRE( ! P.isInterior( b ) );
+      REQUIRE( ! P.isInterior( c ) );
+      REQUIRE( ! P.isInterior( d ) );
     }
     THEN( "It contains only 4 integer points" ) {
       REQUIRE( P.count() == 4 );

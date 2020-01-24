@@ -364,6 +364,18 @@ namespace DGtal
      */
     bool isDomainPointInside( const Point& p ) const;
 
+    /**
+     * @param p any point of the space.
+     * @return 'true' if and only if \a p is strictly inside this polytope.
+     */
+    bool isInterior( const Point& p ) const;
+
+    /**
+     * @param p any point of the space.
+     * @return 'true' if and only if \a p lies on the boundary of this polytope.
+     */
+    bool isBoundary( const Point& p ) const;
+
     /// @}
     
     // ----------------------- Modification services ------------------------------

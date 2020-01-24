@@ -275,7 +275,10 @@ isInside( const Point& p ) const
   ASSERT( isValid() );
   for ( Dimension i = 0; i < A.size(); ++i )
     {
-      bool in_half_space = A[ i ].dot( p ) <= B[ i ];
+      bool in_half_space =
+	I[ i ]
+	? A[ i ].dot( p ) <= B[ i ]
+	: A[ i ].dot( p ) <  B[ i ];
       if ( ! in_half_space ) return false;
     }
   return true;
@@ -297,6 +300,38 @@ isDomainPointInside( const Point& p ) const
       if ( ! in_half_space ) return false;
     }
   return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+isInterior( const Point& p ) const
+{
+  ASSERT( isValid() );
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      bool in_half_space = A[ i ].dot( p ) <  B[ i ];
+      if ( ! in_half_space ) return false;
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+isBoundary( const Point& p ) const
+{
+  ASSERT( isValid() );
+  bool is_boundary = false;
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      auto Ai_dot_p = A[ i ].dot( p );
+      if ( Ai_dot_p == B[ i ] ) is_boundary = true;
+      if ( Ai_dot_p > B[ i ] ) return false;
+    }
+  return is_boundary;
 }
 
 //-----------------------------------------------------------------------------
