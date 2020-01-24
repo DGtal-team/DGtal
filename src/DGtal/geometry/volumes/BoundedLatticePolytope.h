@@ -226,35 +226,52 @@ namespace DGtal
     BoundedLatticePolytope( std::initializer_list<Point> l );
     
     /**
-     * Constructs the polytope from a simplex given as a range [itB,itE) of lattice points.
-     * Note that the range contains at most Space::dimension+1 points.
+     * Constructs the polytope from a simplex given as a range
+     * [itB,itE) of lattice points.  Note that the range must contain
+     * Space::dimension+1 points in general position.
+     *
+     * @tparam PointIterator any model of forward iterator on Point.
+     * @param itB the start of the range of n+1 points defining the simplex.
+     * @param itE past the end the range of n+1 points defining the simplex.
      */
     template <typename PointIterator>
     BoundedLatticePolytope( PointIterator itB, PointIterator itE );
 
     /**
-     * Constructs a polytope from a domain and a collection of half-planes.
+     * Constructs a polytope from a domain and a collection of half-spaces.
      *
      * @tparam HalfSpaceIterator any model of forward iterator on HalfSpace.
      * @param domain a bounded lattice domain.
      * @param itB the start of the range of half-spaces.
      * @param itE past the end of the range of half-spaces.
+     *
+     * @param valid_edge_constraints when 'true', tells that there are
+     * half-spaces that represents th constraints on edges (n-2 cells)
+     * lying between two faces (n-1 cells) pointing to different
+     * orthants.
      */
     template <typename HalfSpaceIterator>
     BoundedLatticePolytope( const Domain& domain,
-			    HalfSpaceIterator itB, HalfSpaceIterator itE );
+			    HalfSpaceIterator itB, HalfSpaceIterator itE,
+                            bool valid_edge_constraints = false );
 
     /**
-     * Initializes a polytope from a domain and a vector of half-planes.
+     * Initializes a polytope from a domain and a vector of half-spaces.
      *
      * @tparam HalfSpaceIterator any model of forward iterator on HalfSpace.
      * @param domain a bounded lattice domain.
      * @param itB the start of the range of half-spaces.
      * @param itE past the end of the range of half-spaces.
+     *
+     * @param valid_edge_constraints when 'true', tells that there are
+     * half-spaces that represents th constraints on edges (n-2 cells)
+     * lying between two faces (n-1 cells) pointing to different
+     * orthants.
      */
     template <typename HalfSpaceIterator>
     void init( const Domain& domain,
-	       HalfSpaceIterator itB, HalfSpaceIterator itE );
+	       HalfSpaceIterator itB, HalfSpaceIterator itE,
+               bool valid_edge_constraints = false );
 
     
     /**
@@ -318,6 +335,12 @@ namespace DGtal
     /// polytope representation \f$ Ax \prec B \f$, with \f$ \prec \in
     /// \{ <, \le \} \f$.
     const std::vector<bool>& getI() const;
+
+    /// @return 'true' if we can perform exact Minkowksi sums on this
+    /// polytope. This is related to the presence of valid edge
+    /// constraints (n-k cells for k >= 2) in-between face constraints
+    /// (n-1 cells) that change orthants.
+    bool canBeSummed() const;
     
     /// @}
     
@@ -346,9 +369,13 @@ namespace DGtal
     // ----------------------- Modification services ------------------------------
   public:
 
-    /// @name Modification services (cut, swap, Minkovski sum)
+    /// @name Global modification services (cut, swap, Minkowski sum)
     /// @{
 
+    /// @return the interior (in the topological sense) of this
+    /// polytope, by making all constraints strict.
+    BoundedLatticePolytope interiorPolytope() const;
+      
     /**
        Cut the polytope by the given closed half space `a.x <= b` or `a.x < b`.
               
@@ -392,7 +419,7 @@ namespace DGtal
     Self& operator*=( Integer t );
 
     /**
-     * Minkovski sum of this polytope with a unit segment aligned with some axis.
+     * Minkowski sum of this polytope with a unit segment aligned with some axis.
      *
      * @param s any unit segment.
      * @return a reference to 'this'.
@@ -400,7 +427,7 @@ namespace DGtal
     Self& operator+=( UnitSegment s );
 
     /**
-     * Minkovski sum of this polytope with an axis-aligned unit cell.
+     * Minkowski sum of this polytope with an axis-aligned unit cell.
      *
      * @param c any unit cell.
      * @return a reference to 'this'.
@@ -408,7 +435,7 @@ namespace DGtal
     Self& operator+=( UnitCell c );
 
     /**
-     * Minkovski sum of this polytope with a strict unit segment aligned with some axis.
+     * Minkowski sum of this polytope with a strict unit segment aligned with some axis.
      *
      * @param s any strict unit segment.
      * @return a reference to 'this'.
@@ -416,7 +443,7 @@ namespace DGtal
     Self& operator+=( RightStrictUnitSegment s );
 
     /**
-     * Minkovski sum of this polytope with an axis-aligned strict unit cell.
+     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
      *
      * @param c any strict unit cell.
      * @return a reference to 'this'.
@@ -424,7 +451,7 @@ namespace DGtal
     Self& operator+=( RightStrictUnitCell c );
 
     /**
-     * Minkovski sum of this polytope with a strict unit segment aligned with some axis.
+     * Minkowski sum of this polytope with a strict unit segment aligned with some axis.
      *
      * @param s any strict unit segment.
      * @return a reference to 'this'.
@@ -432,7 +459,7 @@ namespace DGtal
     Self& operator+=( LeftStrictUnitSegment s );
 
     /**
-     * Minkovski sum of this polytope with an axis-aligned strict unit cell.
+     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
      *
      * @param c any strict unit cell.
      * @return a reference to 'this'.
@@ -547,17 +574,12 @@ namespace DGtal
     Domain            D;
     // Are inequalities large ?
     std::vector<bool> I;
+    // Indicates if Minkowski sums with segments will be valid
+    bool myValidEdgeConstraints;
+
     // ------------------------- Private Datas --------------------------------
   private:
 
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-    /// Specialized 3D method 
-    void 
-    addEdgeConstraint( unsigned int i, unsigned int j,
-		       const std::vector<Point>& pts );
-    
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -587,7 +609,7 @@ namespace DGtal
       /// This method add extremal constraints for simplex edges, faces, etc. Each
       /// constraint is a half-space bounded by the edge, face, etc, and one
       /// axis. Such constraints are useful when computing the
-      /// Minkovski sum.
+      /// Minkowski sum.
       ///
       /// @note This method is useful starting from 3D, where it is
       /// implemented in the specialization of this class.
@@ -622,7 +644,7 @@ namespace DGtal
       /// This method add extremal constraints for simplex edges. Each
       /// constraint is a half-space bounded by the edge and one
       /// axis. Such constraints are useful when computing the
-      /// Minkovski sum.
+      /// Minkowski sum.
       ///
       /// @param[in,out] P any polytope.
       /// @param[in] i any index in the vector of points \a pts.
@@ -651,7 +673,7 @@ namespace DGtal
     };
   }
 
-  /// @name Functions related to BoundedLatticePolytope (output, dilation, Minkovski sum)
+  /// @name Functions related to BoundedLatticePolytope (output, dilation, Minkowski sum)
   /// @{
   
   /**
@@ -678,7 +700,7 @@ namespace DGtal
     
 
   /**
-   * Minkovski sum of polytope \a P with unit segment \a s aligned with some axis.
+   * Minkowski sum of polytope \a P with unit segment \a s aligned with some axis.
    *
    * @param P any polytope.
    * @param s any unit segment.
@@ -690,7 +712,7 @@ namespace DGtal
               typename BoundedLatticePolytope<TSpace>::UnitSegment s );
 
   /**
-   * Minkovski sum of polytope \a P with an axis-aligned unit cell \a c.
+   * Minkowski sum of polytope \a P with an axis-aligned unit cell \a c.
    *
    * @param P any polytope.
    * @param c any unit cell.
@@ -702,7 +724,7 @@ namespace DGtal
               typename BoundedLatticePolytope<TSpace>::UnitCell c );
 
   /**
-   * Minkovski sum of polytope \a P with strict unit segment \a s aligned with some axis.
+   * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.
    *
    * @param P any polytope.
    * @param s any strict unit segment.
@@ -714,7 +736,7 @@ namespace DGtal
               typename BoundedLatticePolytope<TSpace>::RightStrictUnitSegment s );
 
   /**
-   * Minkovski sum of polytope \a P with an axis-aligned strict unit cell \a c.
+   * Minkowski sum of polytope \a P with an axis-aligned strict unit cell \a c.
    *
    * @param P any polytope.
    * @param c any strict unit cell.
@@ -726,7 +748,7 @@ namespace DGtal
               typename BoundedLatticePolytope<TSpace>::RightStrictUnitCell c );
 
   /**
-   * Minkovski sum of polytope \a P with strict unit segment \a s aligned with some axis.
+   * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.
    *
    * @param P any polytope.
    * @param s any strict unit segment.
@@ -738,7 +760,7 @@ namespace DGtal
               typename BoundedLatticePolytope<TSpace>::LeftStrictUnitSegment s );
 
   /**
-   * Minkovski sum of polytope \a P with an axis-aligned strict unit cell \a c.
+   * Minkowski sum of polytope \a P with an axis-aligned strict unit cell \a c.
    *
    * @param P any polytope.
    * @param c any strict unit cell.
