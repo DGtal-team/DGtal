@@ -445,14 +445,37 @@ count() const
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
+
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
-countIn( Point lo, Point hi ) const
+countInterior() const
 {
   Integer nb = 0;
-  Domain D1( lo, hi );
+  for ( Point p : D )
+    nb += isInterior( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countBoundary() const
+{
+  Integer nb = 0;
+  for ( Point p : D )
+    nb += isBoundary( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countWithin( Point lo, Point hi ) const
+{
+  Integer nb = 0;
+  Domain D1( lo.sup( D.lowerBound() ), hi.inf( D.upperBound() ) );
   for ( Point p : D1 )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
