@@ -221,6 +221,21 @@ interiorPolytope() const
 template <typename TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
+cut( Dimension k, bool pos, Integer b, bool large )
+{
+  ASSERT( k < dimension );
+  auto i = 2*k + (pos ? 0 : 1);
+  B[ i ] = std::min( B[ i ], b );
+  I[ i ] = large;
+  if ( pos ) D.myUpperBound[ k ] =  B[ i ];
+  else       D.myLowerBound[ k ] = -B[ i ];
+  return k;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+unsigned int 
+DGtal::BoundedLatticePolytope<TSpace>::
 cut( const Vector& a, Integer b, bool large )
 {
   // Checks that is not inside.
@@ -512,6 +527,26 @@ insertPoints( PointSet& pts_set ) const
 {
   for ( Point p : D )
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getInteriorPoints( std::vector<Point>& pts ) const
+{
+  pts.clear();
+  for ( Point p : D )
+    if ( isInterior( p ) ) pts.push_back( p );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getBoundaryPoints( std::vector<Point>& pts ) const
+{
+  pts.clear();
+  for ( Point p : D )
+    if ( isBoundary( p ) ) pts.push_back( p );
 }
 
 //-----------------------------------------------------------------------------

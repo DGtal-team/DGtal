@@ -389,7 +389,21 @@ namespace DGtal
     BoundedLatticePolytope interiorPolytope() const;
       
     /**
-       Cut the polytope by the given closed half space `a.x <= b` or `a.x < b`.
+       Cut the polytope by the given half space `a.x <= b` or `a.x <
+       b` where `a` is some axis vector.
+              
+       @param k the dimension of the axis vector \f$ +/- e_k \f$
+       @param pos 'true' is positive, 'false' is negative for the axis vector \f$ +/- e_k \f$
+       @param b any integer number
+       @param large tells if the inequality is large (true) or strict (false).
+       
+       @return the index of the constraint in the polytope.
+
+    */
+    unsigned int cut( Dimension k, bool pos, Integer b, bool large = true );
+
+    /**
+       Cut the polytope by the given half space `a.x <= b` or `a.x < b`.
               
        @param a any integer vector
        @param b any integer number
@@ -486,13 +500,37 @@ namespace DGtal
     /// @{
     
     /**
-     * Computes the number of integer points within the polytope.
+     * Computes the number of integer points lying within the polytope.
      *
-     * @return the number of integer points within the polytope.
+     * @return the number of integer points lying within the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
      */
     Integer count() const;
+
+    /**
+     * Computes the number of integer points lying within the interior of the polytope.
+     *
+     * @return the number of integer points lying within the interior of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countInterior() const;
+
+    /**
+     * Computes the number of integer points lying on the boundary of the polytope.
+     *
+     * @return the number of integer points lying on the boundary of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countBoundary() const;
 
     /**
      * Computes the number of integer points within the polytope and
@@ -533,6 +571,26 @@ namespace DGtal
      * @note At output, pts.size() == this->count()
      */
     void getPoints( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points interior to the polytope.
+     *
+     * @param[out] the integer points interior to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countInterior()
+     */
+    void getInteriorPoints( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points boundary to the polytope.
+     *
+     * @param[out] the integer points boundary to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countBoundary()
+     */
+    void getBoundaryPoints( std::vector<Point>& pts ) const;
 
     /**
      * Computes the integer points within the polytope.
