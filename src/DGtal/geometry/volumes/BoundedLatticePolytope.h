@@ -504,7 +504,7 @@ namespace DGtal
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
      */
-    Integer countIn( Point low, Point hi ) const;
+    Integer countWithin( Point low, Point hi ) const;
 
     /**
      * Computes the number of integer points within the polytope up to
