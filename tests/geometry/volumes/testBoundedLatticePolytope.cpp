@@ -29,8 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <map>
-#include <unordered_map>
+#include <vector>
+#include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
@@ -77,7 +77,7 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
     THEN( "It contains more points than its area" ) {
       REQUIRE( P.count() > (5*7/2) );
     }
-    THEN( "It satisfies Pick's formula, ie 2*Area(P) = 2*#int(P) + #Bd(P) - 2" ) {
+    THEN( "It satisfies Pick's formula, ie 2*Area(P) = 2*#Int(P) + #Bd(P) - 2" ) {
       Polytope IntP = P.interiorPolytope();
       auto   nb_int = IntP.count();
       auto    nb_bd = P.count() - IntP.count();
@@ -87,12 +87,36 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
       CAPTURE( area2 );
       REQUIRE( area2 == 2*nb_int + nb_bd - 2 );
     }
+    THEN( "It satisfies #In(P) <= #Int(P) + #Bd(P)" ) {
+      auto     nb = P.count();
+      auto nb_int = P.countInterior();
+      auto  nb_bd = P.countBoundary();
+      CAPTURE( nb );
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      REQUIRE( nb <= nb_int + nb_bd );
+    }
     WHEN( "Cut by some half-space" ) {
       Polytope Q = P;
       Q.cut( Vector( -1, 1 ), 3 );
       THEN( "It contains less points" ) {
 	REQUIRE( Q.count() < P.count() );
       }
+    }
+    THEN( "Its boundary points and interior points are its inside points (closed polytope)" ) {
+      std::vector<Point> inside;
+      std::vector<Point> interior;
+      std::vector<Point> boundary;
+      std::vector<Point> all;
+      P.getPoints( inside );
+      P.getInteriorPoints( interior );
+      P.getBoundaryPoints( boundary );
+      std::sort( inside.begin(), inside.end() );
+      std::sort( interior.begin(), interior.end() );
+      std::sort( boundary.begin(), boundary.end() );
+      std::set_union( interior.cbegin(), interior.cend(), boundary.cbegin(), boundary.cend(),
+                      std::back_inserter( all ) );
+      REQUIRE( std::equal( inside.cbegin(), inside.cend(), all.cbegin() ) );
     }
   }
 }
@@ -125,10 +149,63 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
       REQUIRE( ! P.isInterior( c ) );
       REQUIRE( ! P.isInterior( d ) );
     }
+    THEN( "It satisfies #In(P) <= #Int(P) + #Bd(P)" ) {
+      auto     nb = P.count();
+      auto nb_int = P.countInterior();
+      auto  nb_bd = P.countBoundary();
+      CAPTURE( nb );
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      REQUIRE( nb <= nb_int + nb_bd );
+    }
     THEN( "It contains only 4 integer points" ) {
       REQUIRE( P.count() == 4 );
     }
+
+  }
+
+  GIVEN( "A closed arbitrary simplex P at (0,0,0), (6,3,0), (0,5,10), (6,4,8)" ) {
+    Point a( 0, 0, 0 );
+    Point b( 6, 3, 0 );
+    Point c( 0, 5, 10 );
+    Point d( 6, 4, 8 );
+    Polytope P { a, b, c, d };
+    
+    THEN( "It satisfies #In(P) == #Int(P) + #Bd(P)" ) {
+      auto     nb = P.count();
+      auto nb_int = P.countInterior();
+      auto  nb_bd = P.countBoundary();
+      CAPTURE( nb );
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      REQUIRE( nb == nb_int + nb_bd );
+    }
+    THEN( "Its boundary points and interior points are its inside points (closed polytope)" ) {
+      std::vector<Point> inside;
+      std::vector<Point> interior;
+      std::vector<Point> boundary;
+      std::vector<Point> all;
+      P.getPoints( inside );
+      P.getInteriorPoints( interior );
+      P.getBoundaryPoints( boundary );
+      std::sort( inside.begin(), inside.end() );
+      std::sort( interior.begin(), interior.end() );
+      std::sort( boundary.begin(), boundary.end() );
+      std::set_union( interior.cbegin(), interior.cend(), boundary.cbegin(), boundary.cend(),
+                      std::back_inserter( all ) );
+      REQUIRE( std::equal( inside.cbegin(), inside.cend(), all.cbegin() ) );
+    }
+    WHEN( "Cut by some axis aligned half-space (1,0,0).x <= 3" ) {
+      Polytope Q = P;
+      Q.cut( 0, true, 3 );
+      THEN( "It contains less points" ) {
+        CAPTURE( P );
+        CAPTURE( Q );
+	REQUIRE( Q.count() < P.count() );
+      }
+    }
   }
 }
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
