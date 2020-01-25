@@ -200,7 +200,24 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
       Q.cut( 0, true, 3 );
       THEN( "It contains less points" ) {
         CAPTURE( P );
+        CAPTURE( P.getDomain() );
         CAPTURE( Q );
+        CAPTURE( Q.getDomain() );
+	auto     Pnb = P.count();
+	auto Pnb_int = P.countInterior();
+	auto  Pnb_bd = P.countBoundary();
+	CAPTURE( Pnb );
+	CAPTURE( Pnb_int );
+	CAPTURE( Pnb_bd );
+	auto     Qnb = Q.count();
+	auto Qnb_int = Q.countInterior();
+	auto  Qnb_bd = Q.countBoundary();
+	CAPTURE( Qnb );
+	CAPTURE( Qnb_int );
+	CAPTURE( Qnb_bd );
+	std::vector<Point> Qpts;
+	Q.getPoints( Qpts );
+	CAPTURE( Qpts );
 	REQUIRE( Q.count() < P.count() );
       }
     }
