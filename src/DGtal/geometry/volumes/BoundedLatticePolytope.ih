@@ -227,8 +227,11 @@ cut( Dimension k, bool pos, Integer b, bool large )
   auto i = 2*k + (pos ? 0 : 1);
   B[ i ] = std::min( B[ i ], b );
   I[ i ] = large;
-  if ( pos ) D.myUpperBound[ k ] =  B[ i ];
-  else       D.myLowerBound[ k ] = -B[ i ];
+  Point L = D.lowerBound();
+  Point U = D.upperBound();
+  if ( pos ) U[ k ] =  B[ i ];
+  else       L[ k ] = -B[ i ];
+  D = Domain( L, U );
   return k;
 }
 
