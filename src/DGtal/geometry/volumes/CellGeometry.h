@@ -44,9 +44,12 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/KhalimskyCellHashFunctions.h"
+#include "DGtal/topology/CubicalComplex.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -67,7 +70,7 @@ namespace DGtal
   template < typename TKSpace >
   class CellGeometry 
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
 
   public:
     typedef CellGeometry<TKSpace>           Self;
@@ -80,7 +83,9 @@ namespace DGtal
 #else
     typedef DGtal::int64_t                  BigInteger;
 #endif
-    static const Dimension dimension = Space::dimension;
+    typedef DGtal::CubicalComplex< KSpace > CubicalComplex;
+    
+    static const Dimension dimension = KSpace::dimension;
 
 
     /// @name Standard services (construction, initialization, assignment)
@@ -139,6 +144,10 @@ namespace DGtal
   public:
     /// @name Accessor services
     /// @{
+
+    /// @return a reference to the cubical complex storing cell information.
+    const CubicalComplex& cubicalComplex() const;
+    
     /// @}
     
     // ----------------------- Static helper services ------------------------------
@@ -205,17 +214,19 @@ namespace DGtal
    * @param object the object of class 'CellGeometry' to write.
    * @return the output stream after the writing.
    */
-  template <typename TSpace>
+  template <typename TKSpace>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const CellGeometry<TSpace> & object );
+               const CellGeometry<TKSpace> & object );
 
   /// @}
 
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace, int i, int N = TKSpace::dimension>
+  template <typename TKSpace, int i, int N>
   struct CellGeometryFunctions
   {
+    typedef TKSpace KSpace;
+    
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -223,39 +234,51 @@ namespace DGtal
     /// @return the incident i-cells to the given range of pointels [itB, itE).
     /// @note General method. Note as efficient as specializations.
     template <typename PointelIterator>
+    static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
 				PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
-      for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  auto faces   = K.uFaces( pointel );
-	  for ( auto&& f : faces )
-	    if ( K.uDim( f ) == i ) cells.insert( f );
-	}
+      if ( i == 0 ) 
+	for ( auto it = itB; it != itE; ++it )
+	  cells.insert( *it );
+      else
+	for ( auto it = itB; it != itE; ++it )
+	  {
+	    auto pointel = *it;
+	    auto cofaces = K.uCoFaces( pointel );
+	    for ( auto&& f : cofaces )
+	      if ( K.uDim( f ) == i ) cells.insert( f );
+	  }
+      return cells;
     }
-
+    
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
     /// @param itE past the end of a range of points.
     /// @return the incident i-cells to the given range of points [itB, itE).
     /// @note General method. Note as efficient as specializations.
-    template <typename PointelIterator>
+    template <typename PointIterator>
+    static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointelIterator itB, PointelIterator itE )
+			      PointIterator itB, PointIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
-      for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  auto faces   = K.uFaces( pointel );
-	  for ( auto&& f : faces )
-	    if ( K.uDim( f ) == i ) cells.insert( f );
-	}
+      if ( i == 0 ) 
+	for ( auto it = itB; it != itE; ++it )
+	  cells.insert( K.uPointel( *it ) );
+      else
+	for ( auto it = itB; it != itE; ++it )
+	  {
+	    auto pointel = K.uPointel( *it );
+	    auto cofaces = K.uCoFaces( pointel );
+	    for ( auto&& f : cofaces )
+	      if ( K.uDim( f ) == i ) cells.insert( f );
+	  }
+      return cells;
     }
   }; // end struct CellGeometryFunctions
 
