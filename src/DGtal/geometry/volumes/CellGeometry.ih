@@ -1,0 +1,195 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file CellGeometry.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/01/02
+ *
+ * Implementation of inline methods defined in CellGeometry.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::CellGeometry<TKSpace>::
+CellGeometry()
+  : myK(), myCC( myK )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::CellGeometry<TKSpace>::
+CellGeometry( const KSpace & K, Dimension max_cell_dim, bool verbose )
+  : myK( K ), myCC( myK ), myMaxCellDim( max_cell_dim ), myVerbose( verbose );
+{
+  ASSERT( myMaxCellDim <= myK.dimension );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+init( const KSpace & K, Dimension max_cell_dim, bool verbose )
+{
+  ASSERT( myMaxCellDim <= myK.dimension );
+  myK = K;
+  myCC.clear(); // myCC already references myK
+  myMaxCellDim = max_cell_dim;
+  myVerbose = verbose;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointIterator>
+void
+DGtal::CellGeometry<TKSpace>::
+setPoints( PointIterator itB, PointIterator itE )
+{
+  BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
+  ASSERT( myMaxCellDim <= KSpace::dimension );
+  if ( myMaxCellDim <= 0 ) {
+    auto cells = CellGeometryFunctions< KSpace, 0 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 1 ) {
+    auto cells = CellGeometryFunctions< KSpace, 1 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 2 ) {
+    auto cells = CellGeometryFunctions< KSpace, 2 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 3 ) {
+    auto cells = CellGeometryFunctions< KSpace, 3 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 4 ) {
+    auto cells = CellGeometryFunctions< KSpace, 4 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 5 ) {
+    auto cells = CellGeometryFunctions< KSpace, 5 >::getIncidentCellsToPoints( itB, itE );
+    myCC.insert( cells.begin(), cells.end() );
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointelIterator>
+void
+DGtal::CellGeometry<TKSpace>::
+setPointels( PointelIterator itB, PointelIterator itE )
+{
+  BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
+  ASSERT( myMaxCellDim <= KSpace::dimension );
+  if ( myMaxCellDim <= 0 ) {
+    auto cells = CellGeometryFunctions< KSpace,0 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 1 ) {
+    auto cells = CellGeometryFunctions< KSpace,1 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 2 ) {
+    auto cells = CellGeometryFunctions< KSpace,2 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 3 ) {
+    auto cells = CellGeometryFunctions< KSpace,3 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 4 ) {
+    auto cells = CellGeometryFunctions< KSpace,4 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+  if ( myMaxCellDim <= 5 ) {
+    auto cells = CellGeometryFunctions< KSpace,5 >::getIncidentCellsToPointels(itB, itE);
+    myCC.insert( cells.begin(), cells.end() );
+  }
+}
+
+//-----------------------------------------------------------------------------
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace>
+inline
+void
+DGtal::CellGeometry<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[CellGeometry]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace>
+inline
+bool
+DGtal::CellGeometry<TSpace>::isValid() const
+{
+  return ! D.isEmpty();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+std::string
+DGtal::CellGeometry<TSpace>::className
+() const
+{
+  return "CellGeometry";
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                    const CellGeometry<TSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
