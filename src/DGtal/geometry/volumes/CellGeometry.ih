@@ -49,7 +49,7 @@ CellGeometry()
 template <typename TKSpace>
 DGtal::CellGeometry<TKSpace>::
 CellGeometry( const KSpace & K, Dimension max_cell_dim, bool verbose )
-  : myK( K ), myCC( myK ), myMaxCellDim( max_cell_dim ), myVerbose( verbose );
+  : myK( K ), myCC( myK ), myMaxCellDim( max_cell_dim ), myVerbose( verbose )
 {
   ASSERT( myMaxCellDim <= myK.dimension );
 }
@@ -75,28 +75,34 @@ setPoints( PointIterator itB, PointIterator itE )
 {
   BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
   ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( myMaxCellDim <= 0 ) {
-    auto cells = CellGeometryFunctions< KSpace, 0 >::getIncidentCellsToPoints( itB, itE );
+  if ( 0 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,0,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 1 ) {
-    auto cells = CellGeometryFunctions< KSpace, 1 >::getIncidentCellsToPoints( itB, itE );
+  if ( 1 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,1,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 2 ) {
-    auto cells = CellGeometryFunctions< KSpace, 2 >::getIncidentCellsToPoints( itB, itE );
+  if ( 2 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,2,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 3 ) {
-    auto cells = CellGeometryFunctions< KSpace, 3 >::getIncidentCellsToPoints( itB, itE );
+  if ( 3 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,3,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 4 ) {
-    auto cells = CellGeometryFunctions< KSpace, 4 >::getIncidentCellsToPoints( itB, itE );
+  if ( 4 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,4,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 5 ) {
-    auto cells = CellGeometryFunctions< KSpace, 5 >::getIncidentCellsToPoints( itB, itE );
+  if ( 5 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,5,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
 }
@@ -110,34 +116,47 @@ setPointels( PointelIterator itB, PointelIterator itE )
 {
   BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
   ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( myMaxCellDim <= 0 ) {
-    auto cells = CellGeometryFunctions< KSpace,0 >::getIncidentCellsToPointels(itB, itE);
+  if ( 0 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,0,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 1 ) {
-    auto cells = CellGeometryFunctions< KSpace,1 >::getIncidentCellsToPointels(itB, itE);
+  if ( 1 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,1,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 2 ) {
-    auto cells = CellGeometryFunctions< KSpace,2 >::getIncidentCellsToPointels(itB, itE);
+  if ( 2 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,2,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 3 ) {
-    auto cells = CellGeometryFunctions< KSpace,3 >::getIncidentCellsToPointels(itB, itE);
+  if ( 3 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,3,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 4 ) {
-    auto cells = CellGeometryFunctions< KSpace,4 >::getIncidentCellsToPointels(itB, itE);
+  if ( 4 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,4,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
-  if ( myMaxCellDim <= 5 ) {
-    auto cells = CellGeometryFunctions< KSpace,5 >::getIncidentCellsToPointels(itB, itE);
+  if ( 5 <= myMaxCellDim ) {
+    auto cells =
+      CellGeometryFunctions< KSpace,5,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
     myCC.insert( cells.begin(), cells.end() );
   }
 }
 
 //-----------------------------------------------------------------------------
-
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+const typename DGtal::CellGeometry<TKSpace>::CubicalComplex&
+DGtal::CellGeometry<TKSpace>::
+cubicalComplex() const
+{
+  return myCC;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -163,7 +182,7 @@ inline
 bool
 DGtal::CellGeometry<TSpace>::isValid() const
 {
-  return ! D.isEmpty();
+  return true;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
