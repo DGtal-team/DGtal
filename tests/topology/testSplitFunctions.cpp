@@ -34,7 +34,7 @@
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/VoxelComplex.h"
 #include "DGtal/topology/VoxelComplexFunctions.h"
-// #include <DGtal/io/viewers/Viewer3D.h>
+#include <DGtal/io/viewers/Viewer3D.h>
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace DGtal;
@@ -192,16 +192,14 @@ TEST_CASE_METHOD(Fixture_X_with_tight_bounds, "splitComplex", "[parallel]") {
     CHECK(it_cell != vc.end(modified_cell_dim));
     DGtal::uint32_t magic_number = 15;
     it_cell->second.data = magic_number;
-    size_t requested_number_of_splits = 2;
     SECTION("SplitComplex")  {
+        size_t requested_number_of_splits = 2;
         trace.beginBlock("SplitComplex");
         trace.info() << "lowerBound" <<  vc.space().lowerBound() << std::endl;
         trace.info() << "upperBound" <<  vc.space().upperBound() << std::endl;
         auto out = splitComplex(vc, requested_number_of_splits);
         auto & sub_complexes = out.sub_complexes;
         CHECK(out.number_of_splits == requested_number_of_splits);
-        CHECK(out.splits_domain_with_ghost_layers.empty() == true);
-
         CHECK(sub_complexes.size() == requested_number_of_splits);
         {
             size_t sub_index = 0;
@@ -245,100 +243,86 @@ TEST_CASE_METHOD(Fixture_X_with_tight_bounds, "splitComplex", "[parallel]") {
                 vc.nbCells(2) + row_voxels_sc0 * 3);
         CHECK(sub_complexes[0].nbCells(3) + sub_complexes[1].nbCells(3) ==
                 vc.nbCells(3));
+        // SECTION( "visualize the split" ){
+        //     int argc(1);
+        //     char** argv(nullptr);
+        //     QApplication app(argc, argv);
+        //     Viewer3D<> viewer(vc.space());
+        //     viewer.show();
+        //
+        //     viewer.setFillColor(Color(200, 0, 0, 100));
+        //     auto & sc0 = sub_complexes[0];
+        //     for ( auto it = sc0.begin(3); it!= sc0.end(3); ++it )
+        //         viewer << it->first;
+        //     viewer.setFillColor(Color(0, 0, 100, 100));
+        //     auto & sc1 = sub_complexes[1];
+        //     for ( auto it = sc1.begin(3); it!= sc1.end(3); ++it )
+        //         viewer << it->first;
+        //
+        //     // All kspace voxels
+        //     viewer.setFillColor(Color(40, 40, 40, 10));
+        //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+        //         viewer << it->first;
+        //
+        //     viewer << Viewer3D<>::updateDisplay;
+        //     app.exec();
+        // }
         trace.endBlock();
     }
-    SECTION("SplitComplex with Ghost Layers")  {
-        trace.beginBlock("SplitComplex with Ghost Layers");
-        size_t wide_of_ghost_layer = 1;
-        auto out = splitComplex(vc, requested_number_of_splits, wide_of_ghost_layer);
+    SECTION("getBorderVoxels")  {
+        trace.beginBlock("getBorderVoxels");
+        size_t requested_number_of_splits = 4;
+        auto out = splitComplex(vc, requested_number_of_splits);
         auto & sub_complexes = out.sub_complexes;
+        const auto lowerBound_to_ignore = vc.space().lowerBound();
+        const auto upperBound_to_ignore = vc.space().upperBound();
+        typename FixtureComplex::Point wide_point = {2,2,2};
+        std::vector<std::vector<typename FixtureComplex::CellMapIterator>> borders;
         {
             size_t sub_index = 0;
             auto & sc = sub_complexes[sub_index];
-            trace.info() << "lowerBound S0" <<  sc.space().lowerBound() << std::endl;
-            trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
-            const auto sc_expected_lowerBound = typename KSpace::Point(-6,-6,-1);
-            const auto sc_expected_upperBound = typename KSpace::Point(0,6,1);
-            CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
-            CHECK(sc.space().upperBound() == sc_expected_upperBound);
-            CHECK(out.splits_domain_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
-            CHECK(out.splits_domain_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
-            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(-6,-6,-1));
-            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(-1,6,1));
-        }
-        {
-            size_t sub_index = 1;
-            auto & sc = sub_complexes[sub_index];
-            trace.info() << "lowerBound S1" <<  sc.space().lowerBound() << std::endl;
-            trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
-            const auto sc_expected_lowerBound = typename KSpace::Point(-1,-6,-1);
-            const auto sc_expected_upperBound = typename KSpace::Point(6, 6, 1);
-            CHECK(sc.space().lowerBound() == sc_expected_lowerBound);
-            CHECK(sc.space().upperBound() == sc_expected_upperBound);
-            CHECK(out.splits_domain_with_ghost_layers[sub_index][0] == sc_expected_lowerBound);
-            CHECK(out.splits_domain_with_ghost_layers[sub_index][1] == sc_expected_upperBound);
-            CHECK(out.splits_domain[sub_index][0] == typename KSpace::Point(0,-6,-1));
-            CHECK(out.splits_domain[sub_index][1] == typename KSpace::Point(6,6,1));
-        }
-        trace.endBlock();
-    }
-    SECTION("setBorderVoxelsAsFixed")  {
-        trace.beginBlock("setBorderVoxelsAsFixed");
-        auto out = splitComplex(vc, requested_number_of_splits);
-        auto & sub_complexes = out.sub_complexes;
-        const auto lowerBound = vc.space().lowerBound();
-        const auto upperBound = vc.space().upperBound();
-        const auto fixed_data = FixtureComplex::Parent::FIXED;
-        {
-            size_t sub_index = 1;
-            auto & sc = sub_complexes[sub_index];
-            const auto sub_lowerBound = sc.space().lowerBound();
-            const auto sub_upperBound = sc.space().upperBound();
-            trace.info() << "lowerBound S0" <<  sub_lowerBound << std::endl;
-            trace.info() << "upperBound S0" <<  sub_upperBound << std::endl;
-            const auto nullptr_point = static_cast<Point *>(nullptr);
+            const auto lowerBound = sc.space().lowerBound();
+            const auto upperBound = sc.space().upperBound();
             auto border_iterators =
-                getBorderVoxels(sc, sub_lowerBound, sub_upperBound, nullptr_point,
-                        &lowerBound, &upperBound);
-            CHECK(border_iterators.size() == 15);
-            const auto sc_expected_fixed = typename KSpace::Point(0,0,0);
-            auto it_expected = sc.findCell(3, sc.space().uSpel(sc_expected_fixed));
-            REQUIRE(it_expected != sc.end(3));
-            CHECK(it_expected->second.data == 0);
-            setBorderData(sc, border_iterators, fixed_data);
-            CHECK(it_expected->second.data == fixed_data);
-            {
-            auto inside_voxel = vc.space().uSpel(typename KSpace::Point(0,0,0));
-            auto faces = vc.cellBoundary(inside_voxel);
-            auto coFaces = vc.cellCoBoundary(inside_voxel);
-            std::cout << faces.size() << std::endl;
-            std::cout << coFaces.size() << std::endl;
-            }
+                getBorderVoxels(sc, lowerBound, upperBound, &wide_point,
+                        &lowerBound_to_ignore, &upperBound_to_ignore);
+            CHECK(border_iterators.size() == 30);
+            borders.push_back(border_iterators);
+        }
+        {
+            size_t sub_index = 1;
+            auto & sc = sub_complexes[sub_index];
+            const auto lowerBound = sc.space().lowerBound();
+            const auto upperBound = sc.space().upperBound();
+            auto border_iterators =
+                getBorderVoxels(sc, lowerBound, upperBound, &wide_point,
+                        &lowerBound_to_ignore, &upperBound_to_ignore);
+            CHECK(border_iterators.size() == 30);
+            borders.push_back(border_iterators);
+        }
+        SECTION( "visualize the borders" ){
+            int argc(1);
+            char** argv(nullptr);
+            QApplication app(argc, argv);
+            Viewer3D<> viewer(vc.space());
+            viewer.show();
 
-            // SECTION( "visualize the split" ){
-            //     int argc(1);
-            //     char** argv(nullptr);
-            //     QApplication app(argc, argv);
-            //     Viewer3D<> viewer(vc.space());
-            //     viewer.show();
-            //
-            //     viewer.setFillColor(Color(200, 0, 0, 100));
-            //     auto & sc0 = sub_complexes[0];
-            //     for ( auto it = sc0.begin(3); it!= sc0.end(3); ++it )
-            //         viewer << it->first;
-            //     viewer.setFillColor(Color(0, 0, 100, 100));
-            //     auto & sc1 = sub_complexes[1];
-            //     for ( auto it = sc1.begin(3); it!= sc1.end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     // All kspace voxels
-            //     viewer.setFillColor(Color(40, 40, 40, 10));
-            //     for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
-            //         viewer << it->first;
-            //
-            //     viewer << Viewer3D<>::updateDisplay;
-            //     app.exec();
-            // }
+            viewer.setFillColor(Color(200, 0, 0, 100));
+            size_t sub_index = 0;
+            for ( auto it = borders[sub_index].begin(); it!= borders[sub_index].end(); ++it )
+                viewer << (*it)->first;
+            viewer.setFillColor(Color(0, 0, 100, 100));
+            sub_index = 1;
+            for ( auto it = borders[sub_index].begin(); it!= borders[sub_index].end(); ++it )
+                viewer << (*it)->first;
+
+            // All kspace voxels
+            viewer.setFillColor(Color(40, 40, 40, 10));
+            for ( auto it = vc.begin(3); it!= vc.end(3); ++it )
+                viewer << it->first;
+
+            viewer << Viewer3D<>::updateDisplay;
+            app.exec();
         }
         trace.endBlock();
     }

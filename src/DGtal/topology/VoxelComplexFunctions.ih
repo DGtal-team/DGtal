@@ -223,16 +223,35 @@ thinningSchemeWithSplits(
     const auto border_iterators =
       getBorderVoxels(sc, sub_lowerBound, sub_upperBound,
           &wide_point, &lowerBound, &upperBound);
-    if(verbose) trace.info() << "#split: " << split << std::endl;
-    if(verbose) trace.info() << "wide_point " << wide_point << std::endl;
-    if(verbose) trace.info() << "#fixed border_iterators: " << border_iterators.size() << std::endl;
+    if(verbose) {
+      trace.info() << "#split: " << split << std::endl;
+      trace.info() << "wide_point " << wide_point << std::endl;
+      trace.info() << "#fixed border_iterators: " << border_iterators.size() << std::endl;
+      const auto compare_its = [](
+          const typename TComplex::CellMapIterator &a,
+          const typename TComplex::CellMapIterator &b)
+      {
+        return a->first < b->first;
+      };
+      const auto max_fixed_point =
+        *std::max_element( border_iterators.begin(), border_iterators.end(), compare_its);
+      const auto min_fixed_point =
+        *std::min_element( border_iterators.begin(), border_iterators.end(), compare_its);
+      trace.info() << "sub_lowerBound: " << sub_lowerBound;
+      trace.info() << " sub_upperBound: " << sub_upperBound;
+      trace.info() << " min_point of fixed_border: " << min_fixed_point->first;
+      trace.info() << " max_point of fixed_border: " << max_fixed_point->first << std::endl;
+    }
     setBorderData(sc, border_iterators, fixed_data);
     // perform thinning in each subcomplex
+    // TODO remove
+    verbose = false;
     if(persistence == 0) {
       thin_complexes[split] = asymetricThinningScheme(sc, Select, Skel, verbose);
     } else {
       thin_complexes[split] = persistenceAsymetricThinningScheme(sc, Select, Skel, persistence, verbose);
     }
+    verbose = true;
     if(saveMemory) sc.clear();
   }
   if(verbose) trace.endBlock();
@@ -259,7 +278,6 @@ thinningSchemeWithSplits(
   std::vector<PointPair> block_lower_upper_bounds;
   block_lower_upper_bounds.reserve(number_of_block_complexes);
 
-  const auto wide_block = wide_of_block_sub_complex + 1;
   for(size_t dim = 0; dim < kspace.dimension; ++dim) {
     for(size_t split = 1; split < splits[dim]; ++split) {
       auto sub_lowerBound = lowerBound;
@@ -267,14 +285,28 @@ thinningSchemeWithSplits(
       auto sub_upperBound = upperBound;
       sub_upperBound[dim] = sub_lowerBound[dim];
       if(wide_of_block_sub_complex) {
-        sub_lowerBound[dim] -= wide_block;
-        sub_upperBound[dim] += wide_block;
+        sub_lowerBound[dim] -= wide_of_block_sub_complex + 1;
+        sub_upperBound[dim] += wide_of_block_sub_complex;
       }
       if(sub_lowerBound[dim] < lowerBound[dim]) sub_lowerBound[dim] = lowerBound[dim];
       if(sub_upperBound[dim] > upperBound[dim]) sub_upperBound[dim] = upperBound[dim];
 
       block_lower_upper_bounds.emplace_back(PointPair({sub_lowerBound, sub_upperBound}));
     }
+  }
+  if(verbose) {
+    trace.beginBlock("thin_complexes bounds");
+    for(const auto & tc : thin_complexes) {
+      trace.info() << " subcomplex lowerBound: " << tc.space().lowerBound();
+      trace.info() << " upperBound: " << tc.space().upperBound() << std::endl;
+    }
+    trace.endBlock();
+    trace.beginBlock("block_lower_upper_bounds");
+    for(const auto & block_lower_upper_bound : block_lower_upper_bounds) {
+      trace.info() << " block lowerBound: " << block_lower_upper_bound[0];
+      trace.info() << " upperBound: " << block_lower_upper_bound[1] << std::endl;
+    }
+    trace.endBlock();
   }
 
   block_complexes.resize(number_of_block_complexes, TComplex(kspace));

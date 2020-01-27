@@ -200,13 +200,99 @@ DGtal::functions::extractSubComplex(
 
 template < typename TComplex >
 std::vector<typename TComplex::CellMapIterator>
+DGtal::functions::isInBorder(
+    const typename TComplex::KSpace &cell
+    const typename TComplex::Point & lowerBound,
+    const typename TComplex::Point & upperBound,
+    const typename TComplex::Point * wide_point,
+    const typename TComplex::Point * lowerBound_to_ignore,
+    const typename TComplex::Point * upperBound_to_ignore) {
+
+  const typename TComplex::Point wide =
+    wide_point ? *wide_point : typename TComplex::Point(1,1,1);
+
+  const auto cell_coords = kspace.uCoords(cell);
+  // dist to lower and upper
+  const auto distToLower = cell_coords - lowerBound;
+  const auto distToUpper = upperBound - cell_coords;;
+  bool is_close_to_lower_border =
+    distToLower[0] < wide[0]
+    || distToLower[1] < wide[1]
+    || distToLower[2] < wide[2];
+  bool is_close_to_upper_border =
+    distToUpper[0] < wide[0]
+    || distToUpper[1] < wide[1]
+    || distToUpper[2] < wide[2];
+
+  if(lowerBound_to_ignore && upperBound_to_ignore) {
+    if(is_close_to_lower_border) {
+      const auto distToLower_to_ignore = cell_coords - *lowerBound_to_ignore;
+      bool is_close_to_lower_border_to_ignore =
+        distToLower_to_ignore[0] < wide[0]
+        || distToLower_to_ignore[1] < wide[1]
+        || distToLower_to_ignore[2] < wide[2];
+
+      if(is_close_to_lower_border_to_ignore) {
+        // Don't ignore if it is closer to lowerBound than
+        // lowerBound_to_ignore (corners) for any dimension
+        // Compute the border plane normal that results in non-zero
+        // for the dimensions that need checking.
+        const auto lowerBound_border_plane_normal =
+          lowerBound - *lowerBound_to_ignore;
+        for(size_t dim = 0; dim < 3; dim++) {
+          if(lowerBound_border_plane_normal[dim]) {
+            if(distToLower[dim] < wide[dim]
+                && distToLower[dim] <= distToLower_to_ignore[dim]) {
+              is_close_to_lower_border_to_ignore = false;
+            }
+          }
+        }
+      }
+      is_close_to_lower_border &= !is_close_to_lower_border_to_ignore;
+    }
+
+    if(is_close_to_upper_border) {
+      const auto distToUpper_to_ignore = *upperBound_to_ignore - cell_coords;;
+      bool is_close_to_upper_border_to_ignore =
+        distToUpper_to_ignore[0] < wide[0]
+        || distToUpper_to_ignore[1] < wide[1]
+        || distToUpper_to_ignore[2] < wide[2];
+
+      if(is_close_to_upper_border_to_ignore) {
+        // Don't ignore if it is closer to upperBound than
+        // upperBound_to_ignore (corners) for any dimension
+        // Compute the border plane normal that results in non-zero
+        // for the dimensions that need checking.
+        const auto upperBound_border_plane_normal =
+          *upperBound_to_ignore - upperBound;
+        for(size_t dim = 0; dim < 3; dim++) {
+          if(upperBound_border_plane_normal[dim]) {
+            if(distToUpper[dim] < wide[dim]
+                && distToUpper[dim] <= distToUpper_to_ignore[dim]) {
+              is_close_to_upper_border_to_ignore = false;
+            }
+          }
+        }
+      }
+      is_close_to_upper_border &= !is_close_to_upper_border_to_ignore;
+    }
+  }
+
+  const bool isInBorder_not_to_ignore = is_close_to_lower_border
+    || is_close_to_upper_border;
+  return isInBorder_not_to_ignore;
+}
+
+template < typename TComplex >
+std::vector<typename TComplex::CellMapIterator>
 DGtal::functions::getBorderVoxels(
     TComplex & vc,
     const typename TComplex::Point & lowerBound,
     const typename TComplex::Point & upperBound,
     const typename TComplex::Point * wide_point,
     const typename TComplex::Point * lowerBound_to_ignore,
-    const typename TComplex::Point * upperBound_to_ignore) {
+    const typename TComplex::Point * upperBound_to_ignore)
+{
   const auto & kspace = vc.space();
   if(wide_point) {
     const typename TComplex::Point wide = *wide_point;
@@ -240,84 +326,16 @@ DGtal::functions::getBorderVoxels(
       }
     }
   }
-  const typename TComplex::Point wide = wide_point ? *wide_point : typename TComplex::Point(1,1,1);
-  // using KPreSpace = typename TComplex::KSpace::PreCellularGridSpace;
 
   using CellIterators = std::vector<typename TComplex::CellMapIterator>;
   CellIterators iterators;
 
   for(auto it = vc.begin(3); it != vc.end(3); ++it) {
     const auto & cell = it->first;
-    const auto cell_coords = kspace.uCoords(cell);
-    // dist to lower and upper
-    const auto distToLower = cell_coords - lowerBound;
-    const auto distToUpper = upperBound - cell_coords;;
-    // upperBound - cell_coords
-    bool is_close_to_lower_border =
-      distToLower[0] < wide[0]
-      || distToLower[1] < wide[1]
-      || distToLower[2] < wide[2];
-    bool is_close_to_upper_border =
-      distToUpper[0] < wide[0]
-      || distToUpper[1] < wide[1]
-      || distToUpper[2] < wide[2];
 
-    if(lowerBound_to_ignore && upperBound_to_ignore) {
-      if(is_close_to_lower_border) {
-        const auto distToLower_to_ignore = cell_coords - *lowerBound_to_ignore;
-        bool is_close_to_lower_border_to_ignore =
-          distToLower_to_ignore[0] < wide[0]
-          || distToLower_to_ignore[1] < wide[1]
-          || distToLower_to_ignore[2] < wide[2];
-
-        if(is_close_to_lower_border_to_ignore) {
-          // Don't ignore if it is closer to lowerBound than
-          // lowerBound_to_ignore (corners) for any dimension
-          // Compute the border plane normal that results in non-zero
-          // for the dimensions that need checking.
-          const auto lowerBound_border_plane_normal =
-            lowerBound - *lowerBound_to_ignore;
-          for(size_t dim = 0; dim < 3; dim++) {
-            if(lowerBound_border_plane_normal[dim]) {
-              if(distToLower[dim] < wide[dim]
-                 && distToLower[dim] <= distToLower_to_ignore[dim]) {
-                is_close_to_lower_border_to_ignore = false;
-              }
-            }
-          }
-        }
-        is_close_to_lower_border &= !is_close_to_lower_border_to_ignore;
-      }
-
-      if(is_close_to_upper_border) {
-        const auto distToUpper_to_ignore = *upperBound_to_ignore - cell_coords;;
-        bool is_close_to_upper_border_to_ignore =
-          distToUpper_to_ignore[0] < wide[0]
-          || distToUpper_to_ignore[1] < wide[1]
-          || distToUpper_to_ignore[2] < wide[2];
-
-        if(is_close_to_upper_border_to_ignore) {
-          // Don't ignore if it is closer to upperBound than
-          // upperBound_to_ignore (corners) for any dimension
-          // Compute the border plane normal that results in non-zero
-          // for the dimensions that need checking.
-          const auto upperBound_border_plane_normal =
-            *upperBound_to_ignore - upperBound;
-          for(size_t dim = 0; dim < 3; dim++) {
-            if(upperBound_border_plane_normal[dim]) {
-              if(distToUpper[dim] < wide[dim]
-                 && distToUpper[dim] <= distToUpper_to_ignore[dim]) {
-                is_close_to_upper_border_to_ignore = false;
-              }
-            }
-          }
-        }
-        is_close_to_upper_border &= !is_close_to_upper_border_to_ignore;
-      }
-    }
-
-    const bool isInBorder_not_to_ignore = is_close_to_lower_border
-      || is_close_to_upper_border;
+    const bool isInBorder_not_to_ignore = isInBorder( cell,
+        lowerBound, upperBound,
+        wide_point, lowerBound_to_ignore, upperBound_to_ignore);
 
     if(isInBorder_not_to_ignore) {
       iterators.push_back(it);
@@ -325,6 +343,86 @@ DGtal::functions::getBorderVoxels(
   }
   return iterators;
 }
+
+template < typename TComplex, typename TDistanceTransform >
+std::vector<typename TComplex::CellMapIterator>
+DGtal::functions::getBorderVoxelsWithDistanceMap(
+    TComplex & vc,
+    const typename TComplex::Point & lowerBound,
+    const typename TComplex::Point & upperBound,
+    const typename TComplex::Point * wide_point,
+    const typename TComplex::Point * lowerBound_to_ignore,
+    const typename TComplex::Point * upperBound_to_ignore,
+    const TDistanceTransform * dist_map)
+{
+  const auto & kspace = vc.space();
+  if(wide_point) {
+    const typename TComplex::Point wide = *wide_point;
+    // wide_point has to be positive
+    ASSERT(wide.min() > 0);
+    // wide point cannot be greater than the domain in any dimension
+    std::array<bool, 3> is_close_to_lower_upper_border_to_ignore =
+    {false, false, false};
+    if(lowerBound_to_ignore && upperBound_to_ignore) {
+      const auto dist_lowerToUpper_to_ignore =
+        *upperBound_to_ignore - *lowerBound_to_ignore;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(wide[dim] <= dist_lowerToUpper_to_ignore[dim]) {
+          is_close_to_lower_upper_border_to_ignore[dim] = true;
+        }
+      }
+    }
+    const auto dist_lowerToUpper = upperBound - lowerBound;
+    for(size_t dim = 0; dim < 3; ++dim) {
+      if(wide[dim] >= dist_lowerToUpper[dim]
+         && !is_close_to_lower_upper_border_to_ignore[dim]) {
+        std::cerr <<
+          "wide_point in getBorderVoxels is equal or greater than the domain itself\n" <<
+          "wide_point: " << wide << "\n" <<
+          "dist_lowerToUpper: " << dist_lowerToUpper <<
+          std::endl;
+        if(lowerBound_to_ignore && upperBound_to_ignore) {
+          std::cerr << "dist_lowerToUpper_to_ignore: " <<
+            (*upperBound_to_ignore - *lowerBound_to_ignore) << std::endl;
+        }
+      }
+    }
+  }
+
+  using CellIterators = std::vector<typename TComplex::CellMapIterator>;
+  CellIterators iterators;
+
+  for(auto it = vc.begin(3); it != vc.end(3); ++it) {
+    const auto & cell = it->first;
+
+    const bool isInBorder_not_to_ignore = isInBorder( cell,
+        lowerBound, upperBound,
+        wide_point, lowerBound_to_ignore, upperBound_to_ignore);
+
+    if(isInBorder_not_to_ignore && dist_map) {
+      const auto cell_coords = kspace.uCoords(cell);
+      const auto distToLower = cell_coords - lowerBound;
+      const auto distToUpper = upperBound - cell_coords;;
+      const auto & dist_map_value = dist_map(cell);
+      bool closer_to_block_border_than_object_border = false;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(   dist_map_value <= distToLower[dim]
+           || dist_map_value <= distToUpper[dim]) {
+          closer_to_block_border_than_object_border = true;
+        }
+      }
+      if(closer_to_block_border_than_object_border) {
+        iterators.push_back(it);
+      }
+    }
+    // With no dmap is exactly the same as getBorderVoxels
+    else if(isInBorder_not_to_ignore) {
+      iterators.push_back(it);
+    }
+  }
+  return iterators;
+}
+
 
 template < typename TComplex >
 void
@@ -348,8 +446,7 @@ template < typename TComplex >
 DGtal::SplittedComplexes<TComplex>
 DGtal::functions::splitComplex(
     const TComplex & vc ,
-    const size_t requested_number_of_splits,
-    const size_t wide_of_ghost_layer
+    const size_t requested_number_of_splits
     ) {
   const auto & kspace = vc.space();
   const auto & lowerBound = kspace.lowerBound();
@@ -363,7 +460,6 @@ DGtal::functions::splitComplex(
   SplittedComplexes<TComplex> out;
   out.number_of_splits = number_of_splits;
   out.splits = splits;
-  out.wide_of_ghost_layer = wide_of_ghost_layer;
   auto & sub_complexes = out.sub_complexes;
   // Note that when dividing a k-space special care hast to be taken in the
   // opennes or clossedness of the low dim cells (1-cell and 2-cell in 3D).
@@ -376,28 +472,10 @@ DGtal::functions::splitComplex(
     const auto sub_lower_upper_bounds_original = DGtal::functions::getSplit(
         split, requested_number_of_splits, lowerBound, upperBound);
     // Save the domain of the original splits in the output
-    // If wide_of_ghost_layer == 0, this is the final domain of the sub_complexes
     out.splits_domain.push_back(sub_lower_upper_bounds_original);
     auto sub_lower_upper_bounds = sub_lower_upper_bounds_original;
     auto & sub_lowerBound = sub_lower_upper_bounds[0];
     auto & sub_upperBound = sub_lower_upper_bounds[1];
-    if(wide_of_ghost_layer) {
-      // Add ghost layer only if it is not in a boundary of the original kspace
-      // Note: cast needed for PointVector operation.
-      const auto wide =
-        static_cast<typename TComplex::Point::Component>(wide_of_ghost_layer);
-      const auto limit_lowerBound = lowerBound + wide;
-      const auto limit_upperBound = upperBound - wide;
-      for(size_t dim = 0; dim < kspace.dimension; ++dim) {
-        if(sub_lowerBound[dim] > limit_lowerBound[dim] )
-          sub_lowerBound[dim] -= wide_of_ghost_layer;
-        if(sub_upperBound[dim] < limit_upperBound[dim])
-          sub_upperBound[dim] += wide_of_ghost_layer;
-      }
-      // Save the domain of the splits with the added ghost layer in the output
-      // If wide_of_ghost_layer != 0, this is the final domain of the sub_complexes
-      out.splits_domain_with_ghost_layers.push_back(sub_lower_upper_bounds);
-    }
     sub_kspaces[split].init(sub_lowerBound, sub_upperBound, kspace_isClosed);
   }
 

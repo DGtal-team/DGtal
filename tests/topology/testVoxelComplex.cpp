@@ -875,7 +875,7 @@ TEST_CASE_METHOD(Fixture_isthmus, "Persistence thin",
         };
         auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
             vc, selectRandom<FixtureComplex>, isthmusTable, 0);
-        CHECK(vc_new.nbCells(3) == 3);
+        CHECK(vc_new.nbCells(3) == 4);
     }
 }
 
