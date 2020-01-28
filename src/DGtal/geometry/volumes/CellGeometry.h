@@ -50,6 +50,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,12 +79,15 @@ namespace DGtal
     typedef typename KSpace::Integer        Integer;
     typedef typename KSpace::Point          Point;
     typedef typename KSpace::Vector         Vector;
+    typedef typename KSpace::Cell           Cell;
+    typedef typename KSpace::Space          Space;
 #ifdef WITH_BIGINTEGER
     typedef DGtal::BigInteger               BigInteger;
 #else
     typedef DGtal::int64_t                  BigInteger;
 #endif
     typedef DGtal::CubicalComplex< KSpace > CubicalComplex;
+    typedef DGtal::BoundedLatticePolytope< Space > Polytope;
     
     static const Dimension dimension = KSpace::dimension;
 
@@ -130,13 +134,23 @@ namespace DGtal
     /// @param verbose tells if verbose mode.
     void init( const KSpace & K, Dimension max_cell_dim, bool verbose = false );
 
-    /// Initializes the cell cover from a range of digital points [itB, itE).
+    /// Updates the cell cover with the cells touching a range of
+    /// digital points [itB, itE).
     template <typename PointIterator>
-    void setPoints( PointIterator itB, PointIterator itE );
+    void addCellsTouchingPoints( PointIterator itB, PointIterator itE );
     
-    /// Initializes the cell cover from a range of digital pointels [itB, itE).
+    /// Updates the cell cover with the cells touching a range of
+    /// digital pointels [itB, itE).
     template <typename PointelIterator>
-    void setPointels( PointelIterator itB, PointelIterator itE );
+    void addCellsTouchingPointels( PointelIterator itB, PointelIterator itE );
+
+    /// Updates the cell cover with the cells touching the points of a polytope.
+    void addCellsTouchingPolytopePoints( const Polytope& polytope );
+
+    /// Updates the cell cover with all the cells touching the
+    /// polytope (all cells whose closure have a non empty
+    /// intersection with the polytope).
+    void addCellsTouchingPolytope( const Polytope& polytope );
     
     /// @}
 
@@ -149,12 +163,30 @@ namespace DGtal
     const CubicalComplex& cubicalComplex() const;
     
     /// @}
-    
-    // ----------------------- Static helper services ------------------------------
+
+    // ----------------------- Simplex services ------------------------------
   public:
-    /// @name Static helper services
+    /// @name Simplex services
     /// @{
+
     
+    
+    /// @}
+    
+    // ----------------------- helper services ------------------------------
+  public:
+    /// @name Helper services
+    /// @{
+
+    /// Given a \a polytope, such that `polytope.canBeSummed()==true`,
+    /// return the \a i-cells that intersect it.
+    ///
+    /// @param polytope any polytope such that `polytope.canBeSummed() == true`
+    /// @param i any integer between 0 and KSpace::dimension
+    /// @return the \a i-cells that intersect this polytope.
+    std::vector< Cell >
+    getIntersectedCells( const Polytope& polytope, const Dimension i ) const;
+
     /// @}
     
     
@@ -235,6 +267,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
+    typedef typename KSpace::Point Point;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -290,6 +323,7 @@ namespace DGtal
       return cells;
     }
 
+
   }; // end struct CellGeometryFunctions
 
   /// Specialization for 1-cells in 2D.
@@ -302,6 +336,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
+    typedef DGtal::BoundedLatticePolytope< Space > Polytope;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -349,7 +384,7 @@ namespace DGtal
 	}
       return cells;
     }
-    
+
   }; // end struct CellGeometryFunctions
 
   /// Specialization for 1-cells in 3D.

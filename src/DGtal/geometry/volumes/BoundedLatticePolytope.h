@@ -408,6 +408,10 @@ namespace DGtal
        @param a any integer vector
        @param b any integer number
        @param large tells if the inequality is large (true) or strict (false).
+       @param valid_edge_constraint when 'true', tells that there are
+       half-spaces that represents th constraints on edges (n-2 cells)
+       lying between two faces (n-1 cells) pointing to different
+       orthants.
        
        @return the index of the constraint in the polytope.
 
@@ -415,20 +419,26 @@ namespace DGtal
        checks if a parallel closed half-space defines already a face
        of the polytope.
     */
-    unsigned int cut( const Vector& a, Integer b, bool large = true );
+    unsigned int cut( const Vector& a, Integer b, bool large = true,
+		      bool valid_edge_constraint = false );
 
     /**
        Cuts the lattice polytope with the given half-space constraint.
        
        @param hs any half-space constraint.
        @param large tells if the inequality is large (true) or strict (false).
+       @param valid_edge_constraint when 'true', tells that there are
+       half-spaces that represents th constraints on edges (n-2 cells)
+       lying between two faces (n-1 cells) pointing to different
+       orthants.
        @return the index of the constraint in the polytope.
 
        @note For now complexity is O(n) where n=A.rows() because it
        checks if a parallel closed half-space defines already a face
        of the polytope.
      */
-    unsigned int cut( const HalfSpace & hs, bool large = true );
+    unsigned int cut( const HalfSpace & hs, bool large = true,
+		      bool valid_edge_constraint = false );
     
     /**
        Swaps the content of this object with other. O(1) complexity.
@@ -736,7 +746,7 @@ namespace DGtal
 		if ( v < b )  nb_in++;
 	      }
 	      if ( nb_in == dimension - 1 ) {
-		P.cut( n, b, true );
+		P.cut( n, b, true, true );
 	      }
 	    }
       }
