@@ -199,8 +199,10 @@ init( PointIterator itB, PointIterator itE )
 	  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::addEdgeConstraint
 	    ( *this, i, j, pts );
 	}
-      if ( dimension >= 4 ) 
-        myValidEdgeConstraints = false;
+      if ( dimension >= 4 )
+	{ // Not implemented yet
+	  myValidEdgeConstraints = false;
+	}
     }
 }
 
@@ -239,7 +241,7 @@ cut( Dimension k, bool pos, Integer b, bool large )
 template <typename TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
-cut( const Vector& a, Integer b, bool large )
+cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
 {
   // Checks that is not inside.
   auto it = std::find( A.begin(), A.end(), a );
@@ -248,7 +250,7 @@ cut( const Vector& a, Integer b, bool large )
       A.push_back( a );
       B.push_back( b );
       I.push_back( large );
-      myValidEdgeConstraints = false; // a cut might invalidate an edge constraint
+      myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
       return A.size() - 1;
     }
   else
@@ -256,7 +258,7 @@ cut( const Vector& a, Integer b, bool large )
       auto k = it - A.begin();
       B[ k ] = std::min( B[ k ], b );
       I[ k ] = large;
-      myValidEdgeConstraints = B[ k ] != b; // a cut might invalidate an edge constraint
+      myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
       return k;
     }
 }
@@ -264,11 +266,11 @@ cut( const Vector& a, Integer b, bool large )
 template <typename TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
-cut( const HalfSpace& hs, bool large )
+cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
 {
   auto a = hs.N;
   auto b = hs.c;
-  return cut( a, b, large );
+  return cut( a, b, large, valid_edge_constraint );
 }
 
 //-----------------------------------------------------------------------------
