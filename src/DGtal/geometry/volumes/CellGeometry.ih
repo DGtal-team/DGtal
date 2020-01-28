@@ -75,36 +75,27 @@ setPoints( PointIterator itB, PointIterator itE )
 {
   BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
   ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( 0 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,0,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 1 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,1,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 2 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,2,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 3 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,3,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 4 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,4,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 5 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,5,KSpace::dimension >::getIncidentCellsToPoints(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
+  if ( myMaxCellDim == KSpace::dimension ) {
+    for ( auto it = itB; it != itE; ++it )
+      {
+	auto pointel = myK.uPointel( *it );
+	auto cofaces = myK.uCoFaces( pointel );
+	myCC.insertCell( 0, pointel );
+	myCC.insertCells( cofaces.begin(), cofaces.end() );
+      }
+  } else {
+    for ( auto it = itB; it != itE; ++it )
+      {
+	auto pointel = myK.uPointel( *it );
+	auto cofaces = myK.uCoFaces( pointel );
+	myCC.insertCell( 0, pointel );
+	for ( auto&& f : cofaces ) {
+	  Dimension d = myK.uDim( f );
+	  if ( d <= myMaxCellDim )
+	    myCC.insertCell( d, f );
+	}
+      }
+  }    
 }
 
 //-----------------------------------------------------------------------------
@@ -116,36 +107,27 @@ setPointels( PointelIterator itB, PointelIterator itE )
 {
   BOOST_STATIC_ASSERT( KSpace::dimension <= 5 );
   ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( 0 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,0,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 1 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,1,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 2 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,2,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 3 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,3,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 4 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,4,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
-  if ( 5 <= myMaxCellDim ) {
-    auto cells =
-      CellGeometryFunctions< KSpace,5,KSpace::dimension >::getIncidentCellsToPointels(myK, itB, itE);
-    myCC.insert( cells.begin(), cells.end() );
-  }
+  if ( myMaxCellDim == KSpace::dimension ) {
+    for ( auto it = itB; it != itE; ++it )
+      {
+	auto pointel = *it;
+	auto cofaces = myK.uCoFaces( pointel );
+	myCC.insertCell( 0, pointel );
+	myCC.insertCells( cofaces.begin(), cofaces.end() );
+      }
+  } else {
+    for ( auto it = itB; it != itE; ++it )
+      {
+	auto pointel = *it;
+	auto cofaces = myK.uCoFaces( pointel );
+	myCC.insertCell( 0, pointel );
+	for ( auto&& f : cofaces ) {
+	  Dimension d = myK.uDim( f );
+	  if ( d <= myMaxCellDim )
+	    myCC.insertCell( d, f );
+	}
+      }
+  }    
 }
 
 //-----------------------------------------------------------------------------
