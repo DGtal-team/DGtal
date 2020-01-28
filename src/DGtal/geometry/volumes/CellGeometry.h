@@ -221,11 +221,20 @@ namespace DGtal
 
   /// @}
 
+  /// Utility class gathering some useful functions related to cell
+  /// geometry and digital or cell convexity. It is meant to be
+  /// specialized for low dimensions.
+  ///
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  /// @tparam i the integer specifying the dimension of cells.
+  /// @tparam N the integer specifying the dimension of the digital space.
   template <typename TKSpace, int i, int N>
   struct CellGeometryFunctions
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -288,7 +297,11 @@ namespace DGtal
   template <typename TKSpace>
   struct CellGeometryFunctions< TKSpace, 1, 2 >
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -344,7 +357,11 @@ namespace DGtal
   template <typename TKSpace>
   struct CellGeometryFunctions< TKSpace, 1, 3 >
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( TKSpace::dimension == 3 );
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -405,7 +422,11 @@ namespace DGtal
   template <typename TKSpace>
   struct CellGeometryFunctions< TKSpace, 2, 2 >
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -466,7 +487,11 @@ namespace DGtal
   template <typename TKSpace>
   struct CellGeometryFunctions< TKSpace, 2, 3 >
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
@@ -547,7 +572,11 @@ namespace DGtal
   template <typename TKSpace>
   struct CellGeometryFunctions< TKSpace, 3, 3 >
   {
-    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT( TKSpace::dimension == 3 );
+    typedef TKSpace                KSpace;
+    typedef typename KSpace::Space Space;
+    typedef typename KSpace::Cell  Cell;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
