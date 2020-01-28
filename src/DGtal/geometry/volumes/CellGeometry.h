@@ -280,27 +280,344 @@ namespace DGtal
 	  }
       return cells;
     }
+
   }; // end struct CellGeometryFunctions
 
-  
-//     TouchedCells1( const KSpace& K, PointelIterator itB, PointelIterator itE )
-// {
-//   //typename KSpace::CellSet cells1;
-//   std::unordered_set<typename KSpace::Cell> cells1;
-//   for ( auto it = itB; it != itE; ++it )
-//     {
-//       auto pointel = *it;
-//       cells1.insert( K.uIncident( pointel, 0, true ) );
-//       cells1.insert( K.uIncident( pointel, 0, false ) );
-//       cells1.insert( K.uIncident( pointel, 1, true ) );
-//       cells1.insert( K.uIncident( pointel, 1, false ) );
-//       cells1.insert( K.uIncident( pointel, 2, true ) );
-//       cells1.insert( K.uIncident( pointel, 2, false ) );
-//     }
-//   return cells1;
-// }
+  /// Specialization for 1-cells in 2D.
+  /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  template <typename TKSpace>
+  struct CellGeometryFunctions< TKSpace, 1, 2 >
+  {
+    typedef TKSpace KSpace;
     
-//   };
+    /// @tparam PointelIterator any model of forward iterator on pointels.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of pointels.
+    /// @param itE past the end of a range of pointels.
+    /// @return the incident 1-cells to the given range of pointels [itB, itE).
+    template <typename PointelIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPointels( const KSpace& K,
+				PointelIterator itB, PointelIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = *it;
+	  cells.insert( K.uIncident( pointel, 0, true ) );
+	  cells.insert( K.uIncident( pointel, 0, false ) );
+	  cells.insert( K.uIncident( pointel, 1, true ) );
+	  cells.insert( K.uIncident( pointel, 1, false ) );
+	}
+      return cells;
+    }
+    
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 1-cells to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPoints( const KSpace& K,
+			      PointIterator itB, PointIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = K.uPointel( *it );
+	  cells.insert( K.uIncident( pointel, 0, true ) );
+	  cells.insert( K.uIncident( pointel, 0, false ) );
+	  cells.insert( K.uIncident( pointel, 1, true ) );
+	  cells.insert( K.uIncident( pointel, 1, false ) );
+	}
+      return cells;
+    }
+    
+  }; // end struct CellGeometryFunctions
+
+  /// Specialization for 1-cells in 3D.
+  /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  template <typename TKSpace>
+  struct CellGeometryFunctions< TKSpace, 1, 3 >
+  {
+    typedef TKSpace KSpace;
+    
+    /// @tparam PointelIterator any model of forward iterator on pointels.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of pointels.
+    /// @param itE past the end of a range of pointels.
+    /// @return the incident 1-cells to the given range of pointels [itB, itE).
+    template <typename PointelIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPointels( const KSpace& K,
+				PointelIterator itB, PointelIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = *it;
+	  cells.insert( K.uIncident( pointel, 0, true ) );
+	  cells.insert( K.uIncident( pointel, 0, false ) );
+	  cells.insert( K.uIncident( pointel, 1, true ) );
+	  cells.insert( K.uIncident( pointel, 1, false ) );
+	  cells.insert( K.uIncident( pointel, 2, true ) );
+	  cells.insert( K.uIncident( pointel, 2, false ) );
+	}
+      return cells;
+    }
+    
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 1-cells to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPoints( const KSpace& K,
+			      PointIterator itB, PointIterator itE )
+    {
+      std::cout << "<1,3> specialization" << std::endl;
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = K.uPointel( *it );
+	  cells.insert( K.uIncident( pointel, 0, true ) );
+	  cells.insert( K.uIncident( pointel, 0, false ) );
+	  cells.insert( K.uIncident( pointel, 1, true ) );
+	  cells.insert( K.uIncident( pointel, 1, false ) );
+	  cells.insert( K.uIncident( pointel, 2, true ) );
+	  cells.insert( K.uIncident( pointel, 2, false ) );
+	}
+      return cells;
+    }
+    
+  }; // end struct CellGeometryFunctions
+
+  /// Specialization for 2-cells in 2D.
+  /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  template <typename TKSpace>
+  struct CellGeometryFunctions< TKSpace, 2, 2 >
+  {
+    typedef TKSpace KSpace;
+    
+    /// @tparam PointelIterator any model of forward iterator on pointels.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of pointels.
+    /// @param itE past the end of a range of pointels.
+    /// @return the incident 2-cells to the given range of pointels [itB, itE).
+    template <typename PointelIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPointels( const KSpace& K,
+				PointelIterator itB, PointelIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = *it;
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  cells.insert( K.uIncident( linelxp, 1, true ) );
+	  cells.insert( K.uIncident( linelxp, 1, false ) );
+	  cells.insert( K.uIncident( linelxm, 1, true ) );
+	  cells.insert( K.uIncident( linelxm, 1, false ) );
+	}
+      return cells;
+    }
+    
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 2-cells to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPoints( const KSpace& K,
+			      PointIterator itB, PointIterator itE )
+    {
+      std::cout << "<2,2> specialization" << std::endl;
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = K.uPointel( *it );
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  cells.insert( K.uIncident( linelxp, 1, true ) );
+	  cells.insert( K.uIncident( linelxp, 1, false ) );
+	  cells.insert( K.uIncident( linelxm, 1, true ) );
+	  cells.insert( K.uIncident( linelxm, 1, false ) );
+	}
+      return cells;
+    }
+    
+  }; // end struct CellGeometryFunctions
+
+  /// Specialization for 2-cells in 3D.
+  /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  template <typename TKSpace>
+  struct CellGeometryFunctions< TKSpace, 2, 3 >
+  {
+    typedef TKSpace KSpace;
+    
+    /// @tparam PointelIterator any model of forward iterator on pointels.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of pointels.
+    /// @param itE past the end of a range of pointels.
+    /// @return the incident 2-cells to the given range of pointels [itB, itE).
+    template <typename PointelIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPointels( const KSpace& K,
+				PointelIterator itB, PointelIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = *it;
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  auto linelyp = K.uIncident( pointel, 1, true );
+	  auto linelym = K.uIncident( pointel, 1, false );
+	  cells.insert( K.uIncident( linelxp, 1, true ) );
+	  cells.insert( K.uIncident( linelxp, 1, false ) );
+	  cells.insert( K.uIncident( linelxp, 2, true ) );
+	  cells.insert( K.uIncident( linelxp, 2, false ) );
+	  cells.insert( K.uIncident( linelxm, 1, true ) );
+	  cells.insert( K.uIncident( linelxm, 1, false ) );
+	  cells.insert( K.uIncident( linelxm, 2, true ) );
+	  cells.insert( K.uIncident( linelxm, 2, false ) );
+	  cells.insert( K.uIncident( linelyp, 2, true ) );
+	  cells.insert( K.uIncident( linelyp, 2, false ) );
+	  cells.insert( K.uIncident( linelym, 2, true ) );
+	  cells.insert( K.uIncident( linelym, 2, false ) );
+	}
+      return cells;
+    }
+    
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 2-cells to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPoints( const KSpace& K,
+			      PointIterator itB, PointIterator itE )
+    {
+      std::cout << "<2,3> specialization" << std::endl;
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = K.uPointel( *it );
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  auto linelyp = K.uIncident( pointel, 1, true );
+	  auto linelym = K.uIncident( pointel, 1, false );
+	  cells.insert( K.uIncident( linelxp, 1, true ) );
+	  cells.insert( K.uIncident( linelxp, 1, false ) );
+	  cells.insert( K.uIncident( linelxp, 2, true ) );
+	  cells.insert( K.uIncident( linelxp, 2, false ) );
+	  cells.insert( K.uIncident( linelxm, 1, true ) );
+	  cells.insert( K.uIncident( linelxm, 1, false ) );
+	  cells.insert( K.uIncident( linelxm, 2, true ) );
+	  cells.insert( K.uIncident( linelxm, 2, false ) );
+	  cells.insert( K.uIncident( linelyp, 2, true ) );
+	  cells.insert( K.uIncident( linelyp, 2, false ) );
+	  cells.insert( K.uIncident( linelym, 2, true ) );
+	  cells.insert( K.uIncident( linelym, 2, false ) );
+	}
+      return cells;
+    }
+    
+  }; // end struct CellGeometryFunctions
+
+  /// Specialization for 3-cells in 3D.
+  /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
+  template <typename TKSpace>
+  struct CellGeometryFunctions< TKSpace, 3, 3 >
+  {
+    typedef TKSpace KSpace;
+    
+    /// @tparam PointelIterator any model of forward iterator on pointels.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of pointels.
+    /// @param itE past the end of a range of pointels.
+    /// @return the incident 3-cells to the given range of pointels [itB, itE).
+    template <typename PointelIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPointels( const KSpace& K,
+				PointelIterator itB, PointelIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = *it;
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  auto surfxpyp = K.uIncident( linelxp, 1, true );
+	  auto surfxpym = K.uIncident( linelxp, 1, false );
+	  auto surfxmyp = K.uIncident( linelxm, 1, true );
+	  auto surfxmym = K.uIncident( linelxm, 1, false );
+	  cells.insert( K.uIncident( surfxpyp, 2, true ) );
+	  cells.insert( K.uIncident( surfxpyp, 2, false ) );
+	  cells.insert( K.uIncident( surfxpym, 2, true ) );
+	  cells.insert( K.uIncident( surfxpym, 2, false ) );
+	  cells.insert( K.uIncident( surfxmyp, 2, true ) );
+	  cells.insert( K.uIncident( surfxmyp, 2, false ) );
+	  cells.insert( K.uIncident( surfxmym, 2, true ) );
+	  cells.insert( K.uIncident( surfxmym, 2, false ) );
+	}
+      return cells;
+    }
+    
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 3-cells to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    std::unordered_set<typename KSpace::Cell>
+    getIncidentCellsToPoints( const KSpace& K,
+			      PointIterator itB, PointIterator itE )
+    {
+      std::unordered_set<typename KSpace::Cell> cells;
+      for ( auto it = itB; it != itE; ++it )
+	{
+	  auto pointel = K.uPointel( *it );
+	  auto linelxp = K.uIncident( pointel, 0, true );
+	  auto linelxm = K.uIncident( pointel, 0, false );
+	  auto surfxpyp = K.uIncident( linelxp, 1, true );
+	  auto surfxpym = K.uIncident( linelxp, 1, false );
+	  auto surfxmyp = K.uIncident( linelxm, 1, true );
+	  auto surfxmym = K.uIncident( linelxm, 1, false );
+	  cells.insert( K.uIncident( surfxpyp, 2, true ) );
+	  cells.insert( K.uIncident( surfxpyp, 2, false ) );
+	  cells.insert( K.uIncident( surfxpym, 2, true ) );
+	  cells.insert( K.uIncident( surfxpym, 2, false ) );
+	  cells.insert( K.uIncident( surfxmyp, 2, true ) );
+	  cells.insert( K.uIncident( surfxmyp, 2, false ) );
+	  cells.insert( K.uIncident( surfxmym, 2, true ) );
+	  cells.insert( K.uIncident( surfxmym, 2, false ) );
+	}
+      return cells;
+    }
+    
+  }; // end struct CellGeometryFunctions
+
   
 } // namespace DGtal
 
