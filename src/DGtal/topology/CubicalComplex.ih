@@ -198,7 +198,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 fillData( Data data )
 {
   for ( Dimension d = 0; d <= dimension; ++d )
-    clearData( d, data );
+    fillData( d, data );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TCellContainer>
