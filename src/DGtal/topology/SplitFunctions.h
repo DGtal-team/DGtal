@@ -43,6 +43,19 @@
 //////////////////////////////////////////////////////////////////////////////
 namespace DGtal
 {
+  /**
+   * Output struct of @sa getSplit
+   *
+   * @tparam TPoint
+   */
+  template<typename TPoint>
+    struct SplitBounds {
+      size_t splitIndex;
+      TPoint lowerBound;
+      TPoint upperBound;
+      std::vector<unsigned int> splittedRegionIndex;
+    };
+
   namespace functions {
   /**
    * Compute the number of splits given a region defined by lowerBound and upperBound
@@ -85,7 +98,7 @@ namespace DGtal
      * @return array containing output_lowerBound and output_upperBound
      */
     template <typename TPoint>
-      std::array<TPoint, 2> getSplit(
+      SplitBounds<TPoint> getSplit(
           const size_t splitIndex,
           const size_t requested_number_of_splits,
           const TPoint & lowerBound,
@@ -111,7 +124,7 @@ namespace DGtal
       /** Two points defining the domain of the splits */
       using PointsPair = std::array<typename TComplex::Point, 2>;
       /** Vector with the domains of the original splits. */
-      std::vector<PointsPair> splits_domain;
+      std::vector<SplitBounds<typename TComplex::Point>> splits_bounds;
     };
 
   namespace functions {
@@ -136,6 +149,42 @@ namespace DGtal
        );
 
     /**
+     * Get the number of blocks based on the splits
+     *
+     * @param splits vector with  the number of splits per dimension,
+     * i.e [2,2,1] means 1 division in x, and 1 divisions in y, and 0 in z, so 2 blocks.
+     *
+     * @return  number of blocks
+     */
+    inline size_t
+    getNumberOfBorderBlocksFromSplits(const std::vector<unsigned int> & splits);
+    /**
+     * Get a vector of pair of points (block_lowerBound, block_upperBound)
+     * from a domain represented by lowerBound and upperBound
+     * and the number of splits per dimension.
+     *
+     * @tparam TPoint
+     * @param lowerBound
+     * @param upperBound
+     * @param splits_bounds from SplittedComplexes @sa splitComplex
+     * @param wide_of_block_sub_complex wide of the border, defaults to just
+     * a plane in 3D, or a line in 2D.
+     * If wide is greater than zero, the blocks are hypercubes around the original border.
+     *
+     * @return vector with border blocks defined by its lower and upper bounds
+     * There is one border block per split in each dimension.
+     */
+    template <typename TPoint>
+    std::vector<std::array<TPoint, 2>>
+    getBorderBlocksFromSplits(
+        const TPoint & lowerBound,
+        const TPoint & upperBound,
+        const std::vector<SplitBounds<TPoint>> & splits_bounds,
+        const size_t wide_of_block_sub_complex = 0
+        );
+
+
+    /**
      * Perform an union between out and each complex in complexes.
      * out |= complex;
      *
@@ -155,6 +204,34 @@ namespace DGtal
        const typename TComplex::Point & sub_lowerBound,
        const typename TComplex::Point & sub_upperBound
        );
+
+    /**
+     * Given a cell and some boundaries, returns if the cell is in the border
+     * or close to the border (if wide_point is used).
+     *
+     * Used internally in:
+     * @sa getBorderVoxels, @sa getBorderVoxelsWithDistanceMap
+     *
+     * @tparam TComplex complex type
+     * @param lowerBound the lowerBound of the hypercube defining a border (usually vc.lowerBound().
+     * @param upperBound the upperBound of the hypercube defining a border (usually vc.upperBound().
+     * @param wide_point the wide of the border (3D), defaults to nullptr, which is equivalent to {1,1,1}
+     * it has to be greater than zero.
+     * @param lowerBound_to_ignore lowerBound defining an hypercube of borders to ignore
+     * @param upperBound_to_ignore upperBound defining an hypercube of borders to ignore
+     *
+     * @return  true if cell is in the border, given the input parameters
+     */
+    template < typename TComplex >
+      bool
+      isInBorder(
+          const typename TComplex::KSpace::Cell & cell,
+          const typename TComplex::Point & lowerBound,
+          const typename TComplex::Point & upperBound,
+          const typename TComplex::Point * wide_point = nullptr,
+          const typename TComplex::Point * lowerBound_to_ignore = nullptr,
+          const typename TComplex::Point * upperBound_to_ignore= nullptr
+          );
 
     /**
      * Get the voxels from the border of the input vc.
@@ -185,6 +262,17 @@ namespace DGtal
           const typename TComplex::Point * wide_point = nullptr,
           const typename TComplex::Point * lowerBound_to_ignore = nullptr,
           const typename TComplex::Point * upperBound_to_ignore = nullptr
+          );
+    template < typename TComplex, typename TDistanceTransform >
+      std::vector<typename TComplex::CellMapIterator>
+      getBorderVoxelsWithDistanceMap(
+          TComplex & vc,
+          const typename TComplex::Point & lowerBound,
+          const typename TComplex::Point & upperBound,
+          const typename TComplex::Point * wide_point = nullptr,
+          const typename TComplex::Point * lowerBound_to_ignore = nullptr,
+          const typename TComplex::Point * upperBound_to_ignore = nullptr,
+          const TDistanceTransform * dist_map = nullptr
           );
 
     /**

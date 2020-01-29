@@ -38,9 +38,69 @@
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace DGtal;
+using Point = DGtal::Z3i::Point;
+using DigitalSet = DGtal::DigitalSetByAssociativeContainer<
+DGtal::Z3i::Domain, std::unordered_set<typename DGtal::Z3i::Domain::Point>>;
+DigitalSet fillSet(const Point & lowerBound, const Point & upperBound) {
+    using Value = typename Point::Component;
+    using Domain = DGtal::Z3i::Domain;
+    Domain domain(lowerBound, upperBound);
+    DigitalSet a_set(domain);
+    for(Value x = lowerBound[0]; x <= upperBound[0]; x++)
+        for(Value y = lowerBound[1]; y <= upperBound[1]; y++)
+            for(Value z = lowerBound[2]; z <= upperBound[2]; z++) {
+                a_set.insert(Point(x,y,z));
+            }
+    return a_set;
+}
+
+TEST_CASE("getBlocksFromSplits", "[blocks]"){
+    using namespace DGtal::functions;
+    using KSpace = DGtal::Z3i::KSpace;
+    Point lowerBound = {0,0,0};
+    Point upperBound = {13,13,13};
+    using Complex = DGtal::VoxelComplex<KSpace>;
+    KSpace kspace;
+    kspace.init(lowerBound, upperBound, true);
+    Complex vc(kspace);
+    vc.construct(fillSet(lowerBound, upperBound));
+    const size_t requested_number_of_splits = 4;
+    auto splitted_complexes = splitComplex(vc, requested_number_of_splits);
+    auto & splits_bounds = splitted_complexes.splits_bounds;
+    auto & splits = splitted_complexes.splits;
+    SECTION("No wide_of_block_sub_complex") {
+        auto block_lower_upper_bounds =
+            getBorderBlocksFromSplits(lowerBound, upperBound, splits_bounds);
+        auto number_of_blocks = getNumberOfBorderBlocksFromSplits(splits);
+        const auto expected_number_of_blocks = 2;
+        CHECK(number_of_blocks == expected_number_of_blocks);
+        REQUIRE(block_lower_upper_bounds.size() == expected_number_of_blocks);
+
+        Point expected_lowerBound_x0 = Point(6, 0, 0);
+        Point expected_upperBound_x0 = Point(6, 13, 13);
+        Point expected_lowerBound_y0 = Point(0, 6, 0);
+        Point expected_upperBound_y0 = Point(13, 6, 13);
+        CHECK(block_lower_upper_bounds[0][0] == expected_lowerBound_x0);
+        CHECK(block_lower_upper_bounds[0][1] == expected_upperBound_x0);
+        CHECK(block_lower_upper_bounds[1][0] == expected_lowerBound_y0);
+        CHECK(block_lower_upper_bounds[1][1] == expected_upperBound_y0);
+    }
+    SECTION("wide_of_block_sub_complex = 2") {
+        size_t wide_of_block_sub_complex = 2;
+        auto block_lower_upper_bounds =
+            getBorderBlocksFromSplits(lowerBound, upperBound, splits_bounds, wide_of_block_sub_complex);
+        Point expected_lowerBound_x0 = Point(4, 0, 0);
+        Point expected_upperBound_x0 = Point(7, 13, 13);
+        Point expected_lowerBound_y0 = Point(0, 4, 0);
+        Point expected_upperBound_y0 = Point(13, 7, 13);
+        CHECK(block_lower_upper_bounds[0][0] == expected_lowerBound_x0);
+        CHECK(block_lower_upper_bounds[0][1] == expected_upperBound_x0);
+        CHECK(block_lower_upper_bounds[1][0] == expected_lowerBound_y0);
+        CHECK(block_lower_upper_bounds[1][1] == expected_upperBound_y0);
+    }
+}
 
 TEST_CASE("computeSplitsEasy", "[computeSplits, getSplit]") {
-    using Point = DGtal::Z3i::Point;
     Point lowerBound = {0,0,0};
     Point upperBound = {4,6,8};
     size_t requested_number_of_splits = 2;
@@ -62,21 +122,21 @@ TEST_CASE("computeSplitsEasy", "[computeSplits, getSplit]") {
     trace.endBlock();
     trace.beginBlock("getSplit Easy");
     for (size_t split_index = 0; split_index < number_of_splits; split_index++) {
-        auto outputBounds =
+        auto split_bounds =
             DGtal::functions::getSplit(split_index, requested_number_of_splits,
                     lowerBound, upperBound);
-        const auto & outputLowerBound = outputBounds[0];
-        const auto & outputUpperBound = outputBounds[1];
+        const auto & outputLowerBound = split_bounds.lowerBound;
+        const auto & outputUpperBound = split_bounds.upperBound;
         trace.info() << "split_index: " << split_index << std::endl;
         trace.info() << "outputLowerBound: " << outputLowerBound << std::endl;
         trace.info() << "outputUpperBound: " << outputUpperBound << std::endl;
     }
     size_t split_index = 1;
-    auto outputBounds =
+    auto split_bounds =
         DGtal::functions::getSplit(split_index, requested_number_of_splits,
                 lowerBound, upperBound);
-    const auto & outputLowerBound = outputBounds[0];
-    const auto & outputUpperBound = outputBounds[1];
+    const auto & outputLowerBound = split_bounds.lowerBound;
+    const auto & outputUpperBound = split_bounds.upperBound;
     CHECK( outputLowerBound[2] == 4 );
     CHECK( outputUpperBound[2] == 8 );
     trace.endBlock();
@@ -212,8 +272,8 @@ TEST_CASE_METHOD(Fixture_X_with_tight_bounds, "splitComplex", "[parallel]") {
             trace.info() << "upperBound S0" <<  sc.space().upperBound() << std::endl;
             CHECK(sc.space().lowerBound() == typename KSpace::Point(-6,-6,-1));
             CHECK(sc.space().upperBound() == typename KSpace::Point(-1,6,1));
-            CHECK(sc.space().lowerBound() == out.splits_domain[sub_index][0]);
-            CHECK(sc.space().upperBound() == out.splits_domain[sub_index][1]);
+            CHECK(sc.space().lowerBound() == out.splits_bounds[sub_index].lowerBound);
+            CHECK(sc.space().upperBound() == out.splits_bounds[sub_index].upperBound);
         }
         {
             size_t sub_index = 1;
@@ -226,8 +286,8 @@ TEST_CASE_METHOD(Fixture_X_with_tight_bounds, "splitComplex", "[parallel]") {
             trace.info() << "upperBound S1" <<  sc.space().upperBound() << std::endl;
             CHECK(sc.space().lowerBound() == typename KSpace::Point(0,-6,-1));
             CHECK(sc.space().upperBound() == typename KSpace::Point(6,6,1));
-            CHECK(sc.space().lowerBound() == out.splits_domain[sub_index][0]);
-            CHECK(sc.space().upperBound() == out.splits_domain[sub_index][1]);
+            CHECK(sc.space().lowerBound() == out.splits_bounds[sub_index].lowerBound);
+            CHECK(sc.space().upperBound() == out.splits_bounds[sub_index].upperBound);
             // Check cell exist in sub_complex
             auto sc_it_cell = sc.findCell(it_cell->first);
             CHECK(sc_it_cell != sc.end(modified_cell_dim));
