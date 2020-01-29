@@ -129,6 +129,8 @@
     (Pablo Hernandez-Cerdan, [#1488](https://github.com/DGtal-team/DGtal/pull/1488))
   - Fix loadTable not able to read compressed tables in Windows
     (Pablo Hernandez-Cerdan, [#1505](https://github.com/DGtal-team/DGtal/pull/1505))
+  - Fix fillData in CubicalComplex
+    (Pablo Hernandez-Cerdan, [#1519](https://github.com/DGtal-team/DGtal/pull/1519))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
