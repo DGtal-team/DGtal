@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include "DGtal/base/SetFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -163,6 +164,30 @@ cubicalComplex() const
   return myCC;
 }
 
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool 
+DGtal::CellGeometry<TKSpace>::
+subset( const CellGeometry& other ) const
+{
+  for ( Dimension k = 0; k <= myMaxCellDim; ++k )
+    if ( ! subset( other, k ) ) return false;
+  return true;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool 
+DGtal::CellGeometry<TKSpace>::
+subset( const CellGeometry& other, const Dimension k ) const
+{
+  if ( myMaxCellDim < k ) return true;
+  if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
+  return functions::isSubset( cubicalComplex().getCells( k ),
+			      other.cubicalComplex().getCells( k ) );
+}
+
+
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
@@ -223,6 +248,35 @@ getIntersectedCells( const Polytope& polytope,
   return result;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
+DGtal::CellGeometry<TKSpace>::
+getTouchedCells( const std::vector< Point >& points, const Dimension i ) const
+{
+  std::unordered_set< Cell > cells;
+  if ( i == 0 )
+    cells = CellGeometryFunctions< KSpace, 0, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 1 )
+    cells = CellGeometryFunctions< KSpace, 1, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 2 )
+    cells = CellGeometryFunctions< KSpace, 2, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 3 )
+    cells = CellGeometryFunctions< KSpace, 3, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 4 )
+    cells = CellGeometryFunctions< KSpace, 4, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 5 )
+    cells = CellGeometryFunctions< KSpace, 5, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else trace.error() << "[DGtal::CellGeometry<TKSpace>::getTouchedCells]"
+		     << " Computation are limited to n-D, n <= 5" << std::endl;
+  return std::vector< Cell >( cells.begin(), cells.end() );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

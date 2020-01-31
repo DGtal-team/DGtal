@@ -164,12 +164,32 @@ namespace DGtal
     
     /// @}
 
-    // ----------------------- Simplex services ------------------------------
+    // ----------------------- Cell services ------------------------------
   public:
-    /// @name Simplex services
+    /// @name Cell services
     /// @{
 
-    
+    /// Tells if the cells of 'this' are subset of the cells of \a
+    /// other, for all valid dimensions of 'this' (i.e. till myMaxCellDim).
+    ///
+    /// @param other any cell geometry object
+    /// @return 'true' iff the cells of 'this' are subset of the cells of \a other.
+    ///
+    /// @note if `other.myMaxCellDim < myMaxCellDim` then it is
+    /// understood that \a other contains no cell of dimension higher
+    /// than `other.myMaxCellDim`.
+    bool subset( const CellGeometry& other ) const;
+
+    /// Tells if the k-cells of 'this' are subset of the k-cells of \a
+    /// other.
+    ///
+    /// @param other any cell geometry object
+    /// @return 'true' iff the k-cells of 'this' are subset of the k-cells of \a other.
+    ///
+    /// @note if `other.myMaxCellDim < k` then it is
+    /// understood that \a other contains no cell of dimension higher
+    /// than `other.myMaxCellDim`.
+    bool subset( const CellGeometry& other, const Dimension k ) const;
     
     /// @}
     
@@ -187,6 +207,14 @@ namespace DGtal
     std::vector< Cell >
     getIntersectedCells( const Polytope& polytope, const Dimension i ) const;
 
+    /// Given a vector of points, return the \a i-cells that touch it.
+    ///
+    /// @param points any vector of points
+    /// @param i any integer between 0 and KSpace::dimension (and limited to 5-D at most).
+    /// @return the \a i-cells that intersect this polytope.
+    std::vector< Cell >
+    getTouchedCells( const std::vector< Point >& points, const Dimension i ) const;
+    
     /// @}
     
     
