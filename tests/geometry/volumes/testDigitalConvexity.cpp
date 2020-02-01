@@ -111,3 +111,41 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
     }
   }
 }
+
+SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2d]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( 0, 0 ), Point( 4, 4 ) );
+  DConvexity dconv( Point( -1, -1 ), Point( 5, 5 ) );
+  
+  WHEN( "Computing all triangles in domain (0,0)-(4,4)." ) {
+    unsigned int nb_notsimplex = 0;
+    unsigned int nb_invalid    = 0;
+    unsigned int nb_degenerated= 0;
+    unsigned int nb_common     = 0;
+    unsigned int nb_unitary    = 0;
+    for ( auto a : domain ) 
+      for ( auto b : domain ) 
+	for ( auto c : domain )
+	  {
+	    nb_notsimplex   += ! dconv.isSimplex( { a, b, c } ) ? 1 : 0;
+	    auto tri_type    = dconv.simplexType( { a, b, c } );
+	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
+	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
+	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
+	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
+	  }
+    REQUIRE( nb_invalid == 0 );
+    REQUIRE( nb_notsimplex == nb_degenerated );
+    REQUIRE( nb_unitary + nb_common == 12888 );
+    REQUIRE( nb_degenerated == 2737  );
+    REQUIRE( nb_unitary + nb_common + nb_degenerated == 5*5*5*5*5*5 );
+  }
+}
