@@ -182,6 +182,19 @@ makeCellCover( const Polytope& P,
   return cgeom;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isKConvex( const Polytope& P, const Dimension k ) const
+{
+  if ( k == 0 ) return true;
+  auto S = insidePoints( P );
+  auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
+  auto intersected_cells = makeCellCover( P, k, k );
+  return intersected_cells.nbCells( k ) == touched_cells.nbCells( k )
+    && intersected_cells.subset( touched_cells );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

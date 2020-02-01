@@ -159,4 +159,38 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
       REQUIRE( nb_unitary + nb_common + nb_degenerated == 5*5*5*5*5*5 );
     }
   }
+  WHEN( "Computing all triangles in domain (0,0)-(4,4)." ) {
+    unsigned int nbsimplex= 0;
+    unsigned int nb0      = 0;
+    unsigned int nb1      = 0;
+    unsigned int nb2      = 0;
+    unsigned int nb1_not2 = 0;
+    for ( auto a : domain ) 
+      for ( auto b : domain ) 
+	for ( auto c : domain )
+	  {
+	    if ( ! ( ( a < b ) && ( b < c ) ) ) continue;
+	    if ( ! dconv.isSimplex( { a, b, c } ) ) continue;
+	    auto triangle = dconv.makeSimplex( { a, b, c } );
+	    bool cvx0     = dconv.isKConvex( triangle, 0 );
+	    bool cvx1     = dconv.isKConvex( triangle, 1 );
+	    bool cvx2     = dconv.isKConvex( triangle, 2 );
+	    nbsimplex+= 1;
+	    nb0      += cvx0 ? 1 : 0;
+	    nb1      += cvx1 ? 1 : 0;
+	    nb2      += cvx2 ? 1 : 0;
+	    nb1_not2 += ( cvx1 && ! cvx2 ) ? 1 : 0;
+	  }
+    THEN( "All valid triangles are 0-convex." ) {
+      REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "There are less 1-convex and 2-convex than 0-convex." ) {
+      REQUIRE( nb1 < nb0 );
+      REQUIRE( nb2 < nb0 );
+    }
+    THEN( "When the triangle is 0-convex and 1-convex, then it is 2-convex." ) {
+      REQUIRE( nb1 <= nb2 );
+      REQUIRE( nb1_not2 == 0 );
+    }
+  }
 }

@@ -162,6 +162,13 @@ addCellsTouchingPolytope( const Polytope& polytope )
 }
 
 //-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>::Size
+DGtal::CellGeometry<TKSpace>::
+nbCells( Dimension k ) const
+{
+  return myCC.nbCells( k );
+}
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 const typename DGtal::CellGeometry<TKSpace>::CubicalComplex&
