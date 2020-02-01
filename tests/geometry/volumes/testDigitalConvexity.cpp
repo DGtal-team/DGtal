@@ -145,6 +145,7 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
     REQUIRE( nb_invalid == 0 );
     REQUIRE( nb_notsimplex == nb_degenerated );
     REQUIRE( nb_unitary + nb_common == 12888 );
+    REQUIRE( nb_unitary < nb_common );
     REQUIRE( nb_degenerated == 2737  );
     REQUIRE( nb_unitary + nb_common + nb_degenerated == 5*5*5*5*5*5 );
   }
