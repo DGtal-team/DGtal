@@ -81,13 +81,9 @@ namespace DGtal
     typedef typename KSpace::Vector         Vector;
     typedef typename KSpace::Cell           Cell;
     typedef typename KSpace::Space          Space;
-#ifdef WITH_BIGINTEGER
-    typedef DGtal::BigInteger               BigInteger;
-#else
-    typedef DGtal::int64_t                  BigInteger;
-#endif
     typedef DGtal::BoundedLatticePolytope< Space > Polytope;
-    typedef DGtal::CellGeometry KSpace >    CellGeometry;
+    typedef DGtal::CellGeometry< KSpace >   CellGeometry;
+    typedef std::vector<Point>              PointRange;
     
     static const Dimension dimension = KSpace::dimension;
 
@@ -147,8 +143,8 @@ namespace DGtal
      * @param itB the start of the range of n+1 points defining the simplex.
      * @param itE past the end the range of n+1 points defining the simplex.
      */
-    static
     template <typename PointIterator>
+    static
     Polytope makeSimplex( PointIterator itB, PointIterator itE );
 
     /**
@@ -160,7 +156,17 @@ namespace DGtal
      */
     static
     Polytope makeSimplex( std::initializer_list<Point> l );
-    
+
+    /// @param polytope any polytope.
+    /// @return the range of digital points that belongs to the polytope.
+    static
+    PointRange insidePoints( const Polytope& polytope );
+
+    /// @param polytope any polytope.
+    /// @return the range of digital points that belongs to the interior of the polytope.
+    static
+    PointRange interiorPoints( const Polytope& polytope );
+
     /// @}
 
 
@@ -176,9 +182,19 @@ namespace DGtal
     /// @param itB start of a range of arbitrary points.
     /// @param itE past the end of a range of arbitrary points.
     /// @param i the first dimension for which the cell cover is computed.
-    /// @param i the last dimension for which the cell cover is computed.
+    /// @param k the last dimension for which the cell cover is computed.
     template <typename PointIterator>
     CellGeometry makeCellCover( PointIterator itB, PointIterator itE,
+				Dimension i = 0, Dimension k = KSpace::dimension  );
+
+    /// Builds the cell geometry containing all the j-cells touching
+    /// the polytope P, for i <= j <= k. It conbains thus all the
+    /// j-cells intersecting the convex enveloppe of P.
+    ///
+    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param i the first dimension for which the cell cover is computed.
+    /// @param k the last dimension for which the cell cover is computed.
+    CellGeometry makeCellCover( const Polytope& P,
 				Dimension i = 0, Dimension k = KSpace::dimension  );
     
     

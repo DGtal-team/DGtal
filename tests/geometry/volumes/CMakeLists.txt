@@ -6,6 +6,7 @@ SET(DGTAL_TESTS_VOLUMES_SRC
   testKanungo
   testBoundedLatticePolytope
   testCellGeometry
+  testDigitalConvexity
   )
 
 FOREACH(FILE ${DGTAL_TESTS_VOLUMES_SRC})

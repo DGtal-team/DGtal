@@ -67,6 +67,27 @@ makeSimplex( std::initializer_list<Point> l )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+insidePoints( const Polytope& polytope )
+{
+  PointRange pts;
+  polytope.getPoints( pts );
+  return pts;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+interiorPoints( const Polytope& polytope )
+{
+  PointRange pts;
+  polytope.getInteriorPoints( pts );
+  return pts;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
@@ -80,6 +101,22 @@ makeCellCover( PointIterator itB, PointIterator itE,
   cgeom.addCellsTouchingPoints( itB, itE );
   return cgeom;
 }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
+DGtal::DigitalConvexity<TKSpace>::
+makeCellCover( const Polytope& P,
+	       Dimension i, Dimension k )
+{
+  ASSERT( 0 <= i );
+  ASSERT( i <= k );
+  ASSERT( k <= KSpace::dimension );
+  CellGeometry cgeom( myK, i, k, false );
+  cgeom.addCellsTouchingPolytope( P );
+  return cgeom;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -107,16 +144,6 @@ DGtal::DigitalConvexity<TKSpace>::isValid() const
 {
   return true;
 }
-//-----------------------------------------------------------------------------
-template <typename TKSpace>
-inline
-std::string
-DGtal::DigitalConvexity<TKSpace>::className
-() const
-{
-  return "DigitalConvexity";
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////

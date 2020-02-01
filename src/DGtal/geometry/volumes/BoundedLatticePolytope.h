@@ -221,7 +221,6 @@ namespace DGtal
     
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
-     * Note that the list contains at most Space::dimension+1 points.
      *
      * @param l any list of d+1 points in general positions.
      * @pre Note that the list must contain Space::dimension+1 points
