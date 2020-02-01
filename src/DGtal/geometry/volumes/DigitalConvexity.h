@@ -129,9 +129,9 @@ namespace DGtal
 
     /// @}
 
-    // ----------------------- Polytope services --------------------------------------
+    // ----------------------- Simplex services --------------------------------------
   public:
-    /// @name Polytope services
+    /// @name Simplex services
     /// @{
 
     /**
@@ -157,6 +157,36 @@ namespace DGtal
     static
     Polytope makeSimplex( std::initializer_list<Point> l );
 
+    /**
+     * Checks if the given range [itB,itE) of lattice points form a
+     * full dimensional simplex, i.e. it must contain
+     * Space::dimension+1 points in general position.
+     *
+     * @tparam PointIterator any model of forward iterator on Point.
+     * @param itB the start of the range of n+1 points defining the simplex.
+     * @param itE past the end the range of n+1 points defining the simplex.
+     */
+    template <typename PointIterator>
+    static
+    bool isSimplex( PointIterator itB, PointIterator itE );
+
+    /**
+     * Checks if the given list of lattice points \a l form a
+     * full dimensional simplex, i.e. it must contain
+     * Space::dimension+1 points in general position.
+     *
+     * @param l any list of d+1 points in general positions.
+     */
+    static
+    bool isSimplex( std::initializer_list<Point> l );
+
+    /// @}
+
+    // ----------------------- Polytope services --------------------------------------
+  public:
+    /// @name Polytope services
+    /// @{
+    
     /// @param polytope any polytope.
     /// @return the range of digital points that belongs to the polytope.
     static

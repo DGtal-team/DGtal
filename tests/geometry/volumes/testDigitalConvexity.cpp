@@ -64,6 +64,9 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
     auto inside_pts    = dconv.insidePoints ( fat_simplex );
     auto simplex_cover = dconv.makeCellCover( fat_simplex );
     auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
+    THEN( "The fat simplex is not degenerated." ) {
+      REQUIRE( dconv.isSimplex( V.begin(), V.end() ) );
+    }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 1 ) == 12 );
@@ -86,6 +89,9 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
     auto inside_pts    = dconv.insidePoints ( thin_simplex );
     auto simplex_cover = dconv.makeCellCover( thin_simplex );
     auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
+    THEN( "The thin simplex is not degenerated." ) {
+      REQUIRE( dconv.isSimplex( V.begin(), V.end() ) );
+    }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 1 ) == 12 );

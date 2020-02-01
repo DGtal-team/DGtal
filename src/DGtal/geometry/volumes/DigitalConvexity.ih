@@ -67,6 +67,37 @@ makeSimplex( std::initializer_list<Point> l )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+template <typename PointIterator>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isSimplex( PointIterator itB, PointIterator itE )
+{
+  typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
+  const Dimension d = KSpace::dimension;
+  std::vector<Point> pts( d );
+  Dimension k = 0;
+  for ( ; itB != itE && k <= d; ++itB, ++k ) pts[ k ] = *itB;
+  // A simplex has exactly d+1 vertices.
+  if ( k != d+1 ) return false;
+  Matrix M;
+  for ( Dimension i = 0; i < d; ++i )
+    for ( Dimension k = 0; k < d; ++k )
+      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+  // A simplex has its vectors linearly independent.
+  return M.determinant() != 0;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isSimplex( std::initializer_list<Point> l )
+{
+  return isSimplex( l.begin(), l.end() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 insidePoints( const Polytope& polytope )
