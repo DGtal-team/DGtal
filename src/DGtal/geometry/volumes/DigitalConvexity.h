@@ -180,6 +180,38 @@ namespace DGtal
     static
     bool isSimplex( std::initializer_list<Point> l );
 
+    /// The possible types for simplices.
+    enum class SimplexType{
+      INVALID,     ///< When there are not the right number of vertices
+      DEGENERATED, ///< When the points of the simplex are not in general position
+      UNITARY,     ///< When its edges form a unit parallelotope (det = +/- 1)
+      COMMON       ///< Common simplex
+    };
+    
+    /**
+     * Returns the type of simplex formed by the given range [itB,itE)
+     * of lattice points.
+     *
+     * @tparam PointIterator any model of forward iterator on Point.
+     * @param itB the start of the range of n+1 points defining the simplex.
+     * @param itE past the end the range of n+1 points defining the simplex.
+     * @return the type of simplex formed by the given range [itB,itE)
+     * of lattice points.
+     */
+    template <typename PointIterator>
+    static
+    SimplexType simplexType( PointIterator itB, PointIterator itE );
+
+    /**
+     * Returns the type of simplex formed by the given list \a l
+     * of lattice points.
+     *
+     * @param l any list of lattice points.
+     * @return the type of simplex formed by the given list of lattice points.
+     */
+    static
+    SimplexType simplexType( std::initializer_list<Point> l );
+    
     /// @}
 
     // ----------------------- Polytope services --------------------------------------
