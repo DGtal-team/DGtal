@@ -81,6 +81,7 @@ namespace DGtal
     typedef typename KSpace::Vector         Vector;
     typedef typename KSpace::Cell           Cell;
     typedef typename KSpace::Space          Space;
+    typedef typename KSpace::Size           Size;
 #ifdef WITH_BIGINTEGER
     typedef DGtal::BigInteger               BigInteger;
 #else
@@ -169,6 +170,9 @@ namespace DGtal
 
     /// @return a reference to the cubical complex storing cell information.
     const CubicalComplex& cubicalComplex() const;
+    /// @param k the dimension of cells.
+    /// @return the number of cells of dimension \a k in this cell geometry.
+    Size nbCells( Dimension d ) const;
     
     /// @}
 
