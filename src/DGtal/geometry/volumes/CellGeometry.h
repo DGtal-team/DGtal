@@ -114,10 +114,14 @@ namespace DGtal
     /**
      * Constructor from cellular space.
      * @param K any cellular grid space.
-     * @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity)
+     * @param min_cell_dim the minimum cell dimension that is used for processing.
+     * @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity).
      * @param verbose tells if verbose mode.
      */
-    CellGeometry ( const KSpace & K, Dimension max_cell_dim, bool verbose = false );
+    CellGeometry ( const KSpace & K,
+		   Dimension min_cell_dim = 0,
+		   Dimension max_cell_dim = KSpace::dimension,
+		   bool verbose = false );
     
     /**
      * Assignment.
@@ -130,9 +134,13 @@ namespace DGtal
     /// in this object, they are removed.
     ///
     /// @param K any cellular grid space.
+    /// @param min_cell_dim the minimum cell dimension that is used for processing.
     /// @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity)
     /// @param verbose tells if verbose mode.
-    void init( const KSpace & K, Dimension max_cell_dim, bool verbose = false );
+    void init( const KSpace & K,
+	       Dimension min_cell_dim = 0,
+	       Dimension max_cell_dim = KSpace::dimension,
+	       bool verbose = false );
 
     /// Updates the cell cover with the cells touching a range of
     /// digital points [itB, itE).
@@ -170,7 +178,8 @@ namespace DGtal
     /// @{
 
     /// Tells if the cells of 'this' are subset of the cells of \a
-    /// other, for all valid dimensions of 'this' (i.e. till myMaxCellDim).
+    /// other, for all valid dimensions of 'this' (i.e. from
+    /// myMinCellDim till myMaxCellDim).
     ///
     /// @param other any cell geometry object
     /// @return 'true' iff the cells of 'this' are subset of the cells of \a other.
@@ -251,6 +260,8 @@ namespace DGtal
     KSpace myK;
     /// The cubical complex that stores cells.
     CubicalComplex myCC;
+    /// The minimum cell dimension
+    Dimension myMinCellDim;
     /// The maximal cell dimension
     Dimension myMaxCellDim;
     /// Tells if verbose mode.

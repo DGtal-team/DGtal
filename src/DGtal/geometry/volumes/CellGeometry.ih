@@ -45,26 +45,35 @@
 template <typename TKSpace>
 DGtal::CellGeometry<TKSpace>::
 CellGeometry()
-  : myK(), myCC( myK )
+  : myK(), myCC( myK ), myMinCellDim( 0 ), myMaxCellDim( KSpace::dimension )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::CellGeometry<TKSpace>::
-CellGeometry( const KSpace & K, Dimension max_cell_dim, bool verbose )
-  : myK( K ), myCC( myK ), myMaxCellDim( max_cell_dim ), myVerbose( verbose )
+CellGeometry( const KSpace & K,
+	      Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
+  : myK( K ), myCC( myK ),
+    myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
+    myVerbose( verbose )
 {
+  ASSERT( 0 <= myMinCellDim );
+  ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
-init( const KSpace & K, Dimension max_cell_dim, bool verbose )
+init( const KSpace & K,
+      Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
 {
+  ASSERT( 0 <= myMinCellDim );
+  ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
   myK = K;
   myCC.clear(); // myCC already references myK
+  myMinCellDim = min_cell_dim;
   myMaxCellDim = max_cell_dim;
   myVerbose = verbose;
 }
@@ -76,8 +85,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPoints( PointIterator itB, PointIterator itE )
 {
-  ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( myMaxCellDim == KSpace::dimension ) {
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
     for ( auto it = itB; it != itE; ++it )
       {
 	auto pointel = myK.uPointel( *it );
@@ -93,7 +101,7 @@ addCellsTouchingPoints( PointIterator itB, PointIterator itE )
 	myCC.insertCell( 0, pointel );
 	for ( auto&& f : cofaces ) {
 	  Dimension d = myK.uDim( f );
-	  if ( d <= myMaxCellDim )
+	  if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
 	    myCC.insertCell( d, f );
 	}
       }
@@ -107,8 +115,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
 {
-  ASSERT( myMaxCellDim <= KSpace::dimension );
-  if ( myMaxCellDim == KSpace::dimension ) {
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
     for ( auto it = itB; it != itE; ++it )
       {
 	auto pointel = *it;
@@ -124,7 +131,7 @@ addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
 	myCC.insertCell( 0, pointel );
 	for ( auto&& f : cofaces ) {
 	  Dimension d = myK.uDim( f );
-	  if ( d <= myMaxCellDim )
+	  if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
 	    myCC.insertCell( d, f );
 	}
       }
@@ -147,7 +154,7 @@ DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytope( const Polytope& polytope )
 {
   std::vector< Point > points;
-  for ( Dimension i = 0; i <= myMaxCellDim; ++i )
+  for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
     {
       auto cells = getIntersectedCells( polytope, i );
       myCC.insertCells( i, cells.begin(), cells.end() );
@@ -171,7 +178,7 @@ bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other ) const
 {
-  for ( Dimension k = 0; k <= myMaxCellDim; ++k )
+  for ( Dimension k = myMinCellDim; k <= myMaxCellDim; ++k )
     if ( ! subset( other, k ) ) return false;
   return true;
 }
@@ -183,6 +190,7 @@ subset( const CellGeometry& other, const Dimension k ) const
 {
   if ( myMaxCellDim < k ) return true;
   if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
+  if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
   return functions::isSubset( cubicalComplex().getCells( k ),
 			      other.cubicalComplex().getCells( k ) );
 }
@@ -285,10 +293,10 @@ getTouchedCells( const std::vector< Point >& points, const Dimension i ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <typename TKSpace>
 inline
 void
-DGtal::CellGeometry<TSpace>::selfDisplay ( std::ostream & out ) const
+DGtal::CellGeometry<TKSpace>::selfDisplay ( std::ostream & out ) const
 {
   out << "[CellGeometry]";
 }
@@ -297,18 +305,18 @@ DGtal::CellGeometry<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <typename TKSpace>
 inline
 bool
-DGtal::CellGeometry<TSpace>::isValid() const
+DGtal::CellGeometry<TKSpace>::isValid() const
 {
   return true;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
 std::string
-DGtal::CellGeometry<TSpace>::className
+DGtal::CellGeometry<TKSpace>::className
 () const
 {
   return "CellGeometry";
@@ -320,11 +328,11 @@ DGtal::CellGeometry<TSpace>::className
 // Implementation of inline functions                                        //
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const CellGeometry<TSpace> & object )
+                    const CellGeometry<TKSpace> & object )
 {
   object.selfDisplay( out );
   return out;
