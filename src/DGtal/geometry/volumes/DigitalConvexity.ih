@@ -157,7 +157,7 @@ template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( PointIterator itB, PointIterator itE,
-	       Dimension i, Dimension k )
+	       Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
   ASSERT( i <= k );
@@ -172,7 +172,7 @@ template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const Polytope& P,
-	       Dimension i, Dimension k )
+	       Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
   ASSERT( i <= k );

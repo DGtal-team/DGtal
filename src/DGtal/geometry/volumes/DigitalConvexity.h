@@ -247,7 +247,7 @@ namespace DGtal
     /// @param k the last dimension for which the cell cover is computed.
     template <typename PointIterator>
     CellGeometry makeCellCover( PointIterator itB, PointIterator itE,
-				Dimension i = 0, Dimension k = KSpace::dimension  );
+				Dimension i = 0, Dimension k = KSpace::dimension ) const;
 
     /// Builds the cell geometry containing all the j-cells touching
     /// the polytope P, for i <= j <= k. It conbains thus all the
@@ -257,11 +257,31 @@ namespace DGtal
     /// @param i the first dimension for which the cell cover is computed.
     /// @param k the last dimension for which the cell cover is computed.
     CellGeometry makeCellCover( const Polytope& P,
-				Dimension i = 0, Dimension k = KSpace::dimension  );
-    
-    
+				Dimension i = 0, Dimension k = KSpace::dimension ) const;
     /// @}
+
+
+    // ----------------------- Convexity services -----------------------------------
+  public:
+    /// @name Convexity services
+    /// @{
+
+    /// Tells if a given polytope is digitally k-convex. The digital
+    /// 0-convexity is the usual property \f$ Conv( P \cap Z^d ) = P
+    /// \cap Z^d) \f$. Otherwise the property asks that the points
+    /// inside P touch as many k-cells that the convex hull of P.
     
+    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    /// @return 'true' iff the polytope \a P is digitally \a k-convex.
+    ///
+    /// @note A polytope is always digitally 0-convex. Furthermore, if
+    /// it is not digitally d-1-convex then it is digitally d-convex
+    /// (d := KSpace::dimension).
+    bool isKConvex( const Polytope& P, const Dimension k ) const;
+      
+    /// @}
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services

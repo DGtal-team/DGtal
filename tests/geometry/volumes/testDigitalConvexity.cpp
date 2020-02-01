@@ -142,11 +142,21 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
 	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
 	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
 	  }
-    REQUIRE( nb_invalid == 0 );
-    REQUIRE( nb_notsimplex == nb_degenerated );
-    REQUIRE( nb_unitary + nb_common == 12888 );
-    REQUIRE( nb_unitary < nb_common );
-    REQUIRE( nb_degenerated == 2737  );
-    REQUIRE( nb_unitary + nb_common + nb_degenerated == 5*5*5*5*5*5 );
+    THEN( "All 2737 invalid triangles are degenerated " ) {
+      REQUIRE( nb_invalid == 0 );
+      REQUIRE( nb_notsimplex == nb_degenerated );
+      REQUIRE( nb_degenerated == 2737  );
+    }
+    THEN( "There are 12888 valid triangles" ) {
+      REQUIRE( nb_unitary + nb_common == 12888 );
+    }
+    THEN( "There are fewer (1920) unitary triangles than common triangles (10968)" ) {
+      REQUIRE( nb_unitary ==  1920 );
+      REQUIRE( nb_common  == 10968 );
+      REQUIRE( nb_unitary <  nb_common );
+    }
+    THEN( "The total number of triangles (unitary, common, degenerated) is (domain size)^3, i.e. 5^6" ) {
+      REQUIRE( nb_unitary + nb_common + nb_degenerated == 5*5*5*5*5*5 );
+    }
   }
 }
