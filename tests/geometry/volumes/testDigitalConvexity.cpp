@@ -251,6 +251,8 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nb2      = 0;
     unsigned int nb3      = 0;
     unsigned int nb012_not3 = 0;
+    unsigned int nbf      = 0;
+    unsigned int nb0123   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
 	Point a( rand() % 5, rand() % 5, rand() % 5 );
@@ -263,12 +265,15 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 	bool cvx1     = dconv.isKConvex( tetra, 1 );
 	bool cvx2     = dconv.isKConvex( tetra, 2 );
 	bool cvx3     = dconv.isKConvex( tetra, 3 );
+	bool cvxf     = dconv.isFullyConvex( tetra );
 	nbsimplex += 1;
 	nb0       += cvx0 ? 1 : 0;
 	nb1       += cvx1 ? 1 : 0;
 	nb2       += cvx2 ? 1 : 0;
 	nb3       += cvx3 ? 1 : 0;
-	nb012_not3 += ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
+	nbf       += cvxf ? 1 : 0;
+	nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
+	nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
@@ -282,6 +287,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
       REQUIRE( nb1 <= nb3 );
       REQUIRE( nb2 <= nb3 );
       REQUIRE( nb012_not3 == 0 );
+      REQUIRE( nbf == nb0123 );
     }
   }
 }

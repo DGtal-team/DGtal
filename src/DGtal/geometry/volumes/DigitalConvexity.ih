@@ -196,6 +196,24 @@ isKConvex( const Polytope& P, const Dimension k ) const
     && intersected_cells.subset( touched_cells );
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyConvex( const Polytope& P ) const
+{
+  auto S = insidePoints( P );
+  auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
+  for ( Dimension k = 1; k < KSpace::dimension; ++ k )
+    {
+      auto intersected_cells = makeCellCover( P, k, k );
+      if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
+	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+	return false;
+    }
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
