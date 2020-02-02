@@ -148,7 +148,13 @@ namespace DGtal
 	       Dimension min_cell_dim = 0,
 	       Dimension max_cell_dim = KSpace::dimension,
 	       bool verbose = false );
+    /// @}
 
+    // ----------------------- Cells services ------------------------------
+  public:
+    /// @name Cells services
+    /// @{
+    
     /// Updates the cell cover with the cells touching a range of
     /// digital points [itB, itE).
     template <typename PointIterator>
@@ -166,6 +172,20 @@ namespace DGtal
     /// polytope (all cells whose closure have a non empty
     /// intersection with the polytope).
     void addCellsTouchingPolytope( const Polytope& polytope );
+
+    /// Adds the cells of dimension k of object \a other, for
+    /// `minCellDim() <= k <= maxCellDim()`, to this cell geometry.
+    ///
+    /// @param other any cell geometry.
+    /// @return a reference to this object.
+    CellGeometry& operator+=( const CellGeometry& other );
+
+    /// Adds the cells of dimension k of cubical complex \a CC, for
+    /// `minCellDim() <= k <= maxCellDim()`, to this cell geometry.
+    ///
+    /// @param CC any cubical complex.
+    /// @return a reference to this object.
+    CellGeometry& operator+=( const CubicalComplex& other );
     
     /// @}
 
