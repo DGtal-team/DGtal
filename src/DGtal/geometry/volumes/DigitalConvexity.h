@@ -266,7 +266,7 @@ namespace DGtal
     /// @name Convexity services
     /// @{
 
-    /// Tells if a given polytope is digitally k-convex. The digital
+    /// Tells if a given polytope \a P is digitally k-convex. The digital
     /// 0-convexity is the usual property \f$ Conv( P \cap Z^d ) = P
     /// \cap Z^d) \f$. Otherwise the property asks that the points
     /// inside P touch as many k-cells that the convex hull of P.
@@ -280,7 +280,7 @@ namespace DGtal
     /// (d := KSpace::dimension).
     bool isKConvex( const Polytope& P, const Dimension k ) const;
 
-    /// Tells if a given polytope is fully digitally convex. The
+    /// Tells if a given polytope \a P is fully digitally convex. The
     /// digital 0-convexity is the usual property \f$ Conv( P \cap Z^d
     /// ) = P \cap Z^d) \f$. Otherwise the property asks that the
     /// points inside P touch as many k-cells that the convex hull of
@@ -294,7 +294,33 @@ namespace DGtal
     /// (d := KSpace::dimension). Hence, we only check k-convexity for
     /// 1 <= k <= d-1.
     bool isFullyConvex( const Polytope& P ) const;
-      
+
+    /// Tells if a given polytope \a P is digitally k-subconvex of some
+    /// cell cover \a C. The digital 0-subconvexity is the usual
+    /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
+    /// \f$. Otherwise the property asks that the k-cells intersected
+    /// by the convex hull of P is a subset of the k-cells of C.
+    
+    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    /// @return 'true' iff the polytope \a P is a digitally \a k-subconvex of C.
+    bool isKSubconvex( const Polytope& P, const CellGeometry& C, const Dimension k ) const;
+
+    /// Tells if a given polytope \a P is digitally fully subconvex to some
+    /// cell cover \a C. The digital 0-subconvexity is the usual
+    /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
+    /// \f$. Otherwise the property asks that the k-cells intersected
+    /// by the convex hull of P is a subset of the k-cells of C.
+    
+    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @return 'true' iff the polytope \a P is digitally fully subconvex to C.
+    ///
+    /// @note This method only checks the k-subconvexity for valid
+    /// dimensions stored in \a C.
+    bool isFullySubconvex( const Polytope& P, const CellGeometry& C ) const;
+    
     /// @}
 
     // ----------------------- Interface --------------------------------------

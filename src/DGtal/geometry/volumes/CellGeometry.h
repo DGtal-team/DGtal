@@ -113,6 +113,12 @@ namespace DGtal
     CellGeometry ( const Self & other ) = default;
 
     /**
+     * Move constructor.
+     * @param other the object to move.
+     */
+    CellGeometry ( Self && other ) = default;
+
+    /**
      * Constructor from cellular space.
      * @param K any cellular grid space.
      * @param min_cell_dim the minimum cell dimension that is used for processing.
@@ -173,6 +179,10 @@ namespace DGtal
     /// @param k the dimension of cells.
     /// @return the number of cells of dimension \a k in this cell geometry.
     Size nbCells( Dimension d ) const;
+    /// @return the smallest dimension for which cells are stored in this object.
+    Dimension minCellDim() const;
+    /// @return the highest dimension for which cells are stored in this object.
+    Dimension maxCellDim() const;
     
     /// @}
 

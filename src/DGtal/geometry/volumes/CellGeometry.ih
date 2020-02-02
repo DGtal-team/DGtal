@@ -177,6 +177,22 @@ cubicalComplex() const
 {
   return myCC;
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::Dimension
+DGtal::CellGeometry<TKSpace>::
+minCellDim() const
+{
+  return myMinCellDim;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::Dimension
+DGtal::CellGeometry<TKSpace>::
+maxCellDim() const
+{
+  return myMaxCellDim;
+}
 
 
 //-----------------------------------------------------------------------------
