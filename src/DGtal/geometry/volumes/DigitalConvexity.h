@@ -279,6 +279,21 @@ namespace DGtal
     /// it is not digitally d-1-convex then it is digitally d-convex
     /// (d := KSpace::dimension).
     bool isKConvex( const Polytope& P, const Dimension k ) const;
+
+    /// Tells if a given polytope is fully digitally convex. The
+    /// digital 0-convexity is the usual property \f$ Conv( P \cap Z^d
+    /// ) = P \cap Z^d) \f$. Otherwise the property asks that the
+    /// points inside P touch as many k-cells that the convex hull of
+    /// P, for any valid dimension k.
+    
+    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @return 'true' iff the polytope \a P is fully digitally convex.
+    ///
+    /// @note A polytope is always digitally 0-convex. Furthermore, if
+    /// it is not digitally d-1-convex then it is digitally d-convex
+    /// (d := KSpace::dimension). Hence, we only check k-convexity for
+    /// 1 <= k <= d-1.
+    bool isFullyConvex( const Polytope& P ) const;
       
     /// @}
 
