@@ -160,6 +160,35 @@ addCellsTouchingPolytope( const Polytope& polytope )
       myCC.insertCells( i, cells.begin(), cells.end() );
     }
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>&
+DGtal::CellGeometry<TKSpace>::
+operator+=( const CellGeometry& other )
+{
+  if ( this != &other )
+    {
+      for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+	for ( auto it = other.cubicalComplex().begin( i ),
+		itE = other.cubicalComplex().end( i ); it != itE; ++it )
+	  myCC.insertCell( i, it->first, it->second );
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>&
+DGtal::CellGeometry<TKSpace>::
+operator+=( const CubicalComplex& CC )
+{
+  if ( this->cubicalComplex() != &CC )
+    {
+      for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+	for ( auto it = CC.begin( i ), itE = CC.end( i ); it != itE; ++it )
+	  myCC.insertCell( i, it->first, it->second );
+    }
+  return *this;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -214,8 +243,13 @@ subset( const CellGeometry& other, const Dimension k ) const
   if ( myMaxCellDim < k ) return true;
   if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
   if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
-  return functions::isSubset( cubicalComplex().getCells( k ),
-			      other.cubicalComplex().getCells( k ) );
+  const auto& oCC   = other.cubicalComplex();
+  const auto& cells = cubicalComplex().getCells( k );
+  for ( auto&& cv : cells )
+    if ( oCC.findCell( k, cv.first ) == oCC.end( k ) ) return false;
+  return true;
+  //  return functions::isSubset( cubicalComplex().getCells( k ),
+  //	      other.cubicalComplex().getCells( k ) );
 }
 
 
