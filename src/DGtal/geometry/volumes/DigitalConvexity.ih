@@ -214,6 +214,29 @@ isFullyConvex( const Polytope& P ) const
   return true;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isKSubconvex( const Polytope& P, const CellGeometry& C, const Dimension k ) const
+{
+  auto intersected_cells = makeCellCover( P, k, k );
+  return intersected_cells.subset( C );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const Polytope& P, const CellGeometry& C ) const
+{
+  for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
+    {
+      auto intersected_cells = makeCellCover( P, k, k );
+      if ( ! intersected_cells.subset( C ) ) return false;
+    }
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
