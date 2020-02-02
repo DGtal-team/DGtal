@@ -121,7 +121,7 @@ init( const Domain& domain,
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 template <typename PointIterator>
-void
+bool
 DGtal::BoundedLatticePolytope<TSpace>::
 init( PointIterator itB, PointIterator itE )
 {
@@ -132,10 +132,11 @@ init( PointIterator itB, PointIterator itE )
   B.clear();
   std::vector<Point> pts;
   for ( ; itB != itE; ++itB ) pts.push_back( *itB );
-  ASSERT( ( pts.size() == d+1 )
-          && "[BoundedLatticePolytope::init] Needs exactly dimension+1 points for a simplex." );
   if ( pts.size() != d+1 )
-    trace.error() << "[BoundedLatticePolytope::init] Needs exactly dimension+1 points for a simplex." << std::endl;
+    {
+      I.clear();
+      return false;
+    }
   Point lo = pts[ 0 ];
   Point hi = pts[ 0 ];
   for ( Dimension s = 1; s <= d; ++s )
@@ -171,15 +172,14 @@ init( PointIterator itB, PointIterator itE )
           for ( Dimension j = 0; j < d; ++j )
             V.setComponent( k, j, pts[ l ][ j ] - pts[ p ][ j ] );
         }
-      // trace.info() << "Face " << s << " = " << V << std::endl;
       b = V.determinant();
       if ( b == 0 ) 
         {
-          trace.error() << "[BoundedLatticePolytope::init] The given simplex is degenerated: " << V << std::endl;
           A.clear();
           B.clear();
+	  I.clear();
           D = Domain();
-          return;
+          return false;
         }
       // Form vector [b, 0, ..., 0]
       Vector z = Vector::zero;
@@ -204,6 +204,7 @@ init( PointIterator itB, PointIterator itE )
 	  myValidEdgeConstraints = false;
 	}
     }
+  return false;
 }
 
 

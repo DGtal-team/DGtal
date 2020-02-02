@@ -233,7 +233,7 @@ namespace DGtal
      * [itB,itE) of lattice points.  
      *
      * @pre Note that the range must contain Space::dimension+1 points
-     * in general position.
+     * in general position. Otherwise the build polytope is empty.
      *
      * @tparam PointIterator any model of forward iterator on Point.
      * @param itB the start of the range of n+1 points defining the simplex.
@@ -281,14 +281,18 @@ namespace DGtal
     
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
-     * Note that the range contains at most Space::dimension+1 points.
      *
-     * @note Use DGtal SimpleMatrix::determinant and
-     * SimpleMatrix::inverse which are not efficient when the
+     * @param itB the start of the range of n+1 points defining the simplex.
+     * @param itE past the end the range of n+1 points defining the simplex.
+     *
+     * @return 'true' if [itB,itE) was a valid simplex, otherwise
+     * return 'false' and the polytope is empty.
+     *
+     * @note Use DGtal SimpleMatrix::determinant which is not efficient when the
      * dimension is high. Does not use Eigen to avoid dependency.
      */
     template <typename PointIterator>
-    void init( PointIterator itB, PointIterator itE );
+    bool init( PointIterator itB, PointIterator itE );
     
     /**
      * Assignment.

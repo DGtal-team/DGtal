@@ -45,6 +45,7 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -87,7 +88,8 @@ namespace DGtal
 #else
     typedef DGtal::int64_t                  BigInteger;
 #endif
-    typedef DGtal::CubicalComplex< KSpace > CubicalComplex;
+    typedef DGtal::CubicalComplex
+    < KSpace, std::unordered_map< Cell, CubicalCellData> > CubicalComplex;
     typedef DGtal::BoundedLatticePolytope< Space > Polytope;
     
     static const Dimension dimension = KSpace::dimension;
