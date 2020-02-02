@@ -112,7 +112,7 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
   }
 }
 
-SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2d]" )
+SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
@@ -164,7 +164,7 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
     unsigned int nb2      = 0;
-    unsigned int nb1_not2 = 0;
+    unsigned int nb01_not2 = 0;
     for ( auto a : domain ) 
       for ( auto b : domain ) 
 	for ( auto c : domain )
@@ -175,11 +175,11 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
 	    bool cvx0     = dconv.isKConvex( triangle, 0 );
 	    bool cvx1     = dconv.isKConvex( triangle, 1 );
 	    bool cvx2     = dconv.isKConvex( triangle, 2 );
-	    nbsimplex+= 1;
-	    nb0      += cvx0 ? 1 : 0;
-	    nb1      += cvx1 ? 1 : 0;
-	    nb2      += cvx2 ? 1 : 0;
-	    nb1_not2 += ( cvx1 && ! cvx2 ) ? 1 : 0;
+	    nbsimplex += 1;
+	    nb0       += cvx0 ? 1 : 0;
+	    nb1       += cvx1 ? 1 : 0;
+	    nb2       += cvx2 ? 1 : 0;
+	    nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
 	  }
     THEN( "All valid triangles are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
@@ -190,7 +190,98 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_triangles][2
     }
     THEN( "When the triangle is 0-convex and 1-convex, then it is 2-convex." ) {
       REQUIRE( nb1 <= nb2 );
-      REQUIRE( nb1_not2 == 0 );
+      REQUIRE( nb01_not2 == 0 );
+    }
+  }
+}
+SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( 0, 0, 0 ), Point( 4, 4, 4 ) );
+  DConvexity dconv( Point( -1, -1, -1 ), Point( 5, 5, 5 ) );
+  
+  WHEN( "Computing all lexicographically ordered tetrahedra anchord at (0,0,0) in domain (0,0,0)-(4,4,4)." ) {
+    unsigned int nb_notsimplex = 0;
+    unsigned int nb_invalid    = 0;
+    unsigned int nb_degenerated= 0;
+    unsigned int nb_common     = 0;
+    unsigned int nb_unitary    = 0;
+    Point a(0,0,0);
+    for ( auto b : domain ) 
+      for ( auto c : domain )
+	for ( auto d : domain )
+	  {
+	    if ( ! ( ( a < b ) && ( b < c ) && ( c < d ) ) ) continue;
+	    nb_notsimplex   += ! dconv.isSimplex( { a, b, c, d } ) ? 1 : 0;
+	    auto tri_type    = dconv.simplexType( { a, b, c, d } );
+	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
+	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
+	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
+	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
+	  }
+    THEN( "All 22726 invalid tetrahedra are degenerated " ) {
+      REQUIRE( nb_invalid == 0 );
+      REQUIRE( nb_notsimplex == nb_degenerated );
+      REQUIRE( nb_degenerated == 22726  );
+    }
+    THEN( "There are 287398 valid tetrahedra" ) {
+      REQUIRE( nb_unitary + nb_common == 287398 );
+    }
+    THEN( "There are fewer (8860) unitary triangles than common triangles (278538)" ) {
+      REQUIRE( nb_unitary ==  8860 );
+      REQUIRE( nb_common  == 278538 );
+      REQUIRE( nb_unitary <  nb_common );
+    }
+    THEN( "The total number of triangles (unitary, common, degenerated) is (domain size)^3, i.e. 5^6" ) {
+      REQUIRE( nb_unitary + nb_common + nb_degenerated == 310124 );
+    }
+  }
+  WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
+    const unsigned int nb = 1000; 
+    unsigned int nbsimplex= 0;
+    unsigned int nb0      = 0;
+    unsigned int nb1      = 0;
+    unsigned int nb2      = 0;
+    unsigned int nb3      = 0;
+    unsigned int nb012_not3 = 0;
+    for ( unsigned int i = 0; i < nb; ++i )
+      {
+	Point a( rand() % 5, rand() % 5, rand() % 5 );
+	Point b( rand() % 5, rand() % 5, rand() % 5 );
+	Point c( rand() % 5, rand() % 5, rand() % 5 );
+	Point d( rand() % 5, rand() % 5, rand() % 5 );
+	if ( ! dconv.isSimplex( { a, b, c, d } ) ) continue;
+	auto tetra = dconv.makeSimplex( { a, b, c, d } );
+	bool cvx0     = dconv.isKConvex( tetra, 0 );
+	bool cvx1     = dconv.isKConvex( tetra, 1 );
+	bool cvx2     = dconv.isKConvex( tetra, 2 );
+	bool cvx3     = dconv.isKConvex( tetra, 3 );
+	nbsimplex += 1;
+	nb0       += cvx0 ? 1 : 0;
+	nb1       += cvx1 ? 1 : 0;
+	nb2       += cvx2 ? 1 : 0;
+	nb3       += cvx3 ? 1 : 0;
+	nb012_not3 += ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
+      }
+    THEN( "All valid tetrahedra are 0-convex." ) {
+      REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "There are less 1-convex, 2-convex and 3-convex than 0-convex." ) {
+      REQUIRE( nb1 < nb0 );
+      REQUIRE( nb2 < nb0 );
+      REQUIRE( nb3 < nb0 );
+    }
+    THEN( "When the tetrahedron is 0-convex, 1-convex and 2-convex, then it is 3-convex." ) {
+      REQUIRE( nb1 <= nb3 );
+      REQUIRE( nb2 <= nb3 );
+      REQUIRE( nb012_not3 == 0 );
     }
   }
 }
