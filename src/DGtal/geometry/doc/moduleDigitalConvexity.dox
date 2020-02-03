@@ -1,0 +1,62 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleDigitalConvexity Digital convexity
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.1
+
+Part of the \ref packageGeometry.
+  
+This part of the manual describes how to define and check digital convexity, in such a way that digital convex set are digitally connected.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+exampleDigitalConvexity.cpp, testBoundedLatticePolytope.cpp,
+testCellGeometry.cpp, testDigitalConvexity.cpp
+
+@section dgtal_dconvexity_sec1  Introduction to digital convexity
+
+The usual definition for \b digital \b convexity is as follows. For some
+digital set \f$ S \subset \mathbb{Z}^d \f$, \f$ S \f$ is said to be \e
+digitally \e convex whenever \f$ \mathrm{Conv}(S) \cap \mathbb{Z}^d =
+S \f$. Otherwise said, the convex hull of all the digital points
+contains exactly these digital points and no other.
+
+Although handy and easily tested, this definition lacks many
+properties related to (continuous) convexity in the Euclidean plane.
+
+We extend this definition as follows. Let \f$ C^d \f$ be the usual
+regular cubical complex induced by the lattice \f$ \mathbb{Z}^d \f$,
+and let \f$ C^d_k \f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We
+have that the 0-cells of \f$ C^d_0 \f$ are exactly the lattice points,
+the 1-cells of \f$ C^d_1 \f$ are the open unit segment joining 2
+neighboring lattice points, etc.
+
+Finally, for an arbitrary subset \f$ Y \subset \mathbb{R^d} \f$, we
+denote by \f$ C^d_k \lbrack Y \rbrack \f$ the set of k-cells of \f$
+C^d \f$ whose closure have a non-empty intersection with \f$ Y \f$,
+i.e. \f$ C^d_k \lbrack Y \rbrack := \{ c \in C^d_k, s.t. \bar{c} \cap
+Y \neq \emptyset \} \f$.
+
+A digital set \f$ S \subset \mathbb{Z}^d \f$ is said to be \b
+digitally \a k- \b convex whenever \f$ C^d_k \lbrack \mathrm{Conv}(S)
+\rbrack = C^d_k \lbrack S \rbrack \f$. \f$ S \f$ is said to be \b
+fully (digitally) \b convex whenever it is digitally \a k- convex
+for \f$ 0 \le k \le d \f$.
+
+A fully convex set is always \f$ 3^d-1 \f$-connected (i.e. 8-connected
+in 2D, 26-connected in 3D). Furthermore its axis-aligned slices are
+connected.
+
+
+*/
+}
