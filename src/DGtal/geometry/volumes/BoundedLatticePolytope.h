@@ -584,7 +584,7 @@ namespace DGtal
     /**
      * Computes the integer points within the polytope.
      *
-     * @param[out] the integer points within the polytope.
+     * @param[out] pts the integer points within the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
      * @note At output, pts.size() == this->count()
@@ -594,7 +594,7 @@ namespace DGtal
     /**
      * Computes the integer points interior to the polytope.
      *
-     * @param[out] the integer points interior to the polytope.
+     * @param[out] pts the integer points interior to the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
      * @note At output, pts.size() == this->countInterior()
@@ -604,7 +604,7 @@ namespace DGtal
     /**
      * Computes the integer points boundary to the polytope.
      *
-     * @param[out] the integer points boundary to the polytope.
+     * @param[out] pts the integer points boundary to the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
      * @note At output, pts.size() == this->countBoundary()
