@@ -74,7 +74,7 @@ isSimplex( PointIterator itB, PointIterator itE )
 {
   typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
   const Dimension d = KSpace::dimension;
-  std::vector<Point> pts( d );
+  std::vector<Point> pts( d+1 );
   Dimension k = 0;
   for ( ; itB != itE && k <= d; ++itB, ++k ) pts[ k ] = *itB;
   // A simplex has exactly d+1 vertices.
@@ -105,7 +105,7 @@ simplexType( PointIterator itB, PointIterator itE )
 {
   typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
   const Dimension d = KSpace::dimension;
-  std::vector<Point> pts( d );
+  std::vector<Point> pts( d+1 );
   Dimension k = 0;
   for ( ; itB != itE && k <= d; ++itB, ++k ) pts[ k ] = *itB;
   // A simplex has exactly d+1 vertices.
