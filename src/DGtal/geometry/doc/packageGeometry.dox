@@ -74,6 +74,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref moduleMetrics (David Coeurjolly)
   - \ref moduleVolumetric (David Coeurjolly, Roland Denis)
   - \ref moduleFMM (Tristan Roussillon) 
+  - \ref moduleDigitalConvexity (Jacques-Olivier Lachaud)
 
 - Tools 
   - \ref moduleGeometricPredicates (Tristan Roussillon)
