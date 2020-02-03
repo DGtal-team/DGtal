@@ -187,7 +187,7 @@ namespace DGtal
     ///
     /// @param CC any cubical complex.
     /// @return a reference to this object.
-    CellGeometry& operator+=( const CubicalComplex& other );
+    CellGeometry& operator+=( const CubicalComplex& CC );
     
     /// @}
 
@@ -200,7 +200,7 @@ namespace DGtal
     const CubicalComplex& cubicalComplex() const;
     /// @param k the dimension of cells.
     /// @return the number of cells of dimension \a k in this cell geometry.
-    Size nbCells( Dimension d ) const;
+    Size nbCells( Dimension k ) const;
     /// @return the smallest dimension for which cells are stored in this object.
     Dimension minCellDim() const;
     /// @return the highest dimension for which cells are stored in this object.
@@ -220,20 +220,19 @@ namespace DGtal
     /// @param other any cell geometry object
     /// @return 'true' iff the cells of 'this' are subset of the cells of \a other.
     ///
-    /// @note if `other.myMaxCellDim < myMaxCellDim` then it is
-    /// understood that \a other contains no cell of dimension higher
-    /// than `other.myMaxCellDim`.
+    /// @note if `other.maxCellDim() < k` or `k < other.minCellDim()`
+    /// then it means that \a other contains no cell of dimension k.
     bool subset( const CellGeometry& other ) const;
 
     /// Tells if the k-cells of 'this' are subset of the k-cells of \a
     /// other.
     ///
     /// @param other any cell geometry object
+    /// @param k any valid dimension for cells (`0 <= k <= KSpace::dimension`)
     /// @return 'true' iff the k-cells of 'this' are subset of the k-cells of \a other.
     ///
-    /// @note if `other.myMaxCellDim < k` then it is
-    /// understood that \a other contains no cell of dimension higher
-    /// than `other.myMaxCellDim`.
+    /// @note if `other.maxCellDim() < k` or `k < other.minCellDim()`
+    /// then it means that \a other contains no cell of dimension k.
     bool subset( const CellGeometry& other, const Dimension k ) const;
     
     /// @}
