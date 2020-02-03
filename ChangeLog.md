@@ -12,6 +12,10 @@
    (Adrien Krähenbühl,
    [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
 
+- *Geometry*
+  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
+    [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+
 ## Changes
 
 - *General*
