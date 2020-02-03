@@ -204,10 +204,10 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
-  Domain     domain( Point( 0, 0, 0 ), Point( 4, 4, 4 ) );
-  DConvexity dconv( Point( -1, -1, -1 ), Point( 5, 5, 5 ) );
+  Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
+  DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
   
-  WHEN( "Computing all lexicographically ordered tetrahedra anchord at (0,0,0) in domain (0,0,0)-(4,4,4)." ) {
+  WHEN( "Computing all lexicographically ordered tetrahedra anchored at (0,0,0) in domain (0,0,0)-(3,3,3)." ) {
     unsigned int nb_notsimplex = 0;
     unsigned int nb_invalid    = 0;
     unsigned int nb_degenerated= 0;
@@ -226,21 +226,21 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
 	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
 	  }
-    THEN( "All 22726 invalid tetrahedra are degenerated " ) {
+    THEN( "All 4228 invalid tetrahedra are degenerated " ) {
       REQUIRE( nb_invalid == 0 );
       REQUIRE( nb_notsimplex == nb_degenerated );
-      REQUIRE( nb_degenerated == 22726  );
+      REQUIRE( nb_degenerated == 4228  );
     }
-    THEN( "There are 287398 valid tetrahedra" ) {
-      REQUIRE( nb_unitary + nb_common == 287398 );
+    THEN( "There are 35483 valid tetrahedra" ) {
+      REQUIRE( nb_unitary + nb_common == 35483 );
     }
-    THEN( "There are fewer (8860) unitary triangles than common triangles (278538)" ) {
-      REQUIRE( nb_unitary ==  8860 );
-      REQUIRE( nb_common  == 278538 );
+    THEN( "There are fewer (2515) unitary triangles than common triangles (32968)" ) {
+      REQUIRE( nb_unitary ==  2515 );
+      REQUIRE( nb_common  == 32968 );
       REQUIRE( nb_unitary <  nb_common );
     }
-    THEN( "The total number of triangles (unitary, common, degenerated) is (domain size)^3, i.e. 5^6" ) {
-      REQUIRE( nb_unitary + nb_common + nb_degenerated == 310124 );
+    THEN( "The total number of triangles (unitary, common, degenerated) is 39711" ) {
+      REQUIRE( nb_unitary + nb_common + nb_degenerated == 39711 );
     }
   }
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
