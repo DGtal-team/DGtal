@@ -31,7 +31,6 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
-#include "DGtal/base/SetFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,7 +44,9 @@
 template <typename TKSpace>
 DGtal::CellGeometry<TKSpace>::
 CellGeometry()
-  : myK(), myCC( myK ), myMinCellDim( 0 ), myMaxCellDim( KSpace::dimension )
+  : myK(), myCC( myK ), myMinCellDim( 0 ), myMaxCellDim( KSpace::dimension ),
+    myVerbose( false ), myPrecomputeSubset( false )
+    
 {
 }
 //-----------------------------------------------------------------------------
@@ -55,7 +56,7 @@ CellGeometry( const KSpace & K,
 	      Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
   : myK( K ), myCC( myK ),
     myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
-    myVerbose( verbose )
+    myVerbose( verbose ), myPrecomputeSubset( false )
 {
   ASSERT( 0 <= myMinCellDim );
   ASSERT( myMinCellDim <= myMaxCellDim );
@@ -73,9 +74,10 @@ init( const KSpace & K,
   ASSERT( myMaxCellDim <= myK.dimension );
   myK = K;
   myCC.clear(); // myCC already references myK
-  myMinCellDim = min_cell_dim;
-  myMaxCellDim = max_cell_dim;
-  myVerbose = verbose;
+  myMinCellDim       = min_cell_dim;
+  myMaxCellDim       = max_cell_dim;
+  myVerbose          = verbose;
+  myPrecomputeSubset = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -85,6 +87,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPoints( PointIterator itB, PointIterator itE )
 {
+  myPrecomputeSubset = false;
   if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
     for ( auto it = itB; it != itE; ++it )
       {
@@ -115,6 +118,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
 {
+  myPrecomputeSubset = false;
   if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
     for ( auto it = itB; it != itE; ++it )
       {
@@ -143,6 +147,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytopePoints( const Polytope& polytope )
 {
+  myPrecomputeSubset = false;
   std::vector< Point > points;
   polytope.getPoints( points );
   addCellsTouchingPoints( points.begin(), points.end() );
@@ -153,6 +158,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytope( const Polytope& polytope )
 {
+  myPrecomputeSubset = false;
   std::vector< Point > points;
   for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
     {
@@ -168,6 +174,7 @@ operator+=( const CellGeometry& other )
 {
   if ( this != &other )
     {
+      myPrecomputeSubset = false;
       for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
 	for ( auto it = other.cubicalComplex().begin( i ),
 		itE = other.cubicalComplex().end( i ); it != itE; ++it )
@@ -183,6 +190,7 @@ operator+=( const CubicalComplex& CC )
 {
   if ( this->cubicalComplex() != &CC )
     {
+      myPrecomputeSubset = false;
       for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
 	for ( auto it = CC.begin( i ), itE = CC.end( i ); it != itE; ++it )
 	  myCC.insertCell( i, it->first, it->second );
@@ -226,6 +234,27 @@ maxCellDim() const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+prepareSubsetOperations()
+{
+  // Checks if this precomputation has already been done.
+  if ( myPrecomputeSubset ) return;
+  myCells.resize( myMaxCellDim - myMaxCellDim + 1 );
+  for ( Dimension k = myMinCellDim; k <= myMaxCellDim; ++k )
+    {
+      const Dimension j = k - myMinCellDim;
+      myCells[ j ].resize( nbCells( k ) );
+      std::size_t i = 0; 
+      for ( auto it = cubicalComplex().begin( k ), itE = cubicalComplex().end( k );
+	    it != itE; ++it, ++i )
+	myCells[ j ][ i ] = it->first;
+      std::sort( myCells[ j ].begin(), myCells[ j ].end() );
+    }
+  myPrecomputeSubset = true;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 bool 
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other ) const
@@ -243,15 +272,72 @@ subset( const CellGeometry& other, const Dimension k ) const
   if ( myMaxCellDim < k ) return true;
   if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
   if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
-  const auto& oCC   = other.cubicalComplex();
-  const auto& cells = cubicalComplex().getCells( k );
-  for ( auto&& cv : cells )
-    if ( oCC.findCell( k, cv.first ) == oCC.end( k ) ) return false;
-  return true;
-  //  return functions::isSubset( cubicalComplex().getCells( k ),
-  //	      other.cubicalComplex().getCells( k ) );
+  if ( ! other.myPrecomputeSubset && ! myPrecomputeSubset )
+    {
+      const auto& oCC   = other.cubicalComplex();
+      const auto& cells = cubicalComplex().getCells( k );
+      for ( auto&& cv : cells )
+	if ( oCC.findCell( k, cv.first ) == oCC.end( k ) ) return false;
+      return true;
+    }
+  else
+    {
+      const Dimension j  = k - myMinCellDim;
+      const Dimension oj = k - other.myMinCellDim;
+      return Self::includes( other.myCells[ oj ].begin(), other.myCells[ oj ].end(),
+			     myCells[ j ].begin(), myCells[ j ].end() );
+    }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename RandomIterator>
+bool
+DGtal::CellGeometry<TKSpace>::
+includes( RandomIterator it1, RandomIterator itE1,
+	  RandomIterator it2, RandomIterator itE2 )
+{
+  std::size_t k;
+  for ( ; it2 != itE2; ++it1)
+    {
+      if (it1 == itE1 || *it2 < *it1) return false;
+      // exponential march
+      for ( k = 1; ( it1 < itE1 ) && ( *it1 < *it2 ); k *= 2 ) it1 += k;
+      if ( it1 < itE1 ) {
+	if ( *it2 == *it1 ) ++it2; //equality
+	else { 
+	  it1 = lower_bound( it1 - k/2, it1, *it2 );
+	  if ( *it2 != *it1 ) return false;
+	  ++it2;
+	}
+      } else {
+	it1 = lower_bound( it1 - k/2, itE1, *it2 );
+	if ( it1 == itE1 || *it2 != *it1 ) return false;
+	++it2;
+      }
+    }
+  return true;
+}
+  // const auto size1 = itE1 - it1;
+  // if ( size1 <= 0 )    return true;
+  // const auto size2 = itE2 - it2;
+  // if ( size2 < size1 ) return false;
+  // //std::cout << " [" << size1 << " <= " << size2 << "]";
+  // const auto ratio = size2 / size1;
+  // if ( ratio <= 2 ) return std::includes( it2, itE2, it1, itE1 );
+  // else if ( ratio >= 10 && size1 > 1 )
+  //   {
+  //     const auto lo2 = std::lower_bound( it2, itE2, *it1 );
+  //     if ( lo2 == itE2 || *it1 < *lo2 ) return false;
+  //     const auto hi2 = std::lower_bound( lo2+1, itE2, *(--itE1) );
+  //     if ( hi2 == itE2 || *itE1 < *hi2 ) return false;
+  //     return Self::includes( lo2+1, itE2-1, it1+1, itE1 );
+  //   }
+  // const auto mid1 = it1 + size1/2;
+  // const auto res2 = std::lower_bound( it2, itE2, *mid1 );
+  // if ( res2 == itE2 || *mid1 < *res2 ) return false;
+  // return Self::includes( it2, res2, it1, mid1 )
+  //   &&  Self::includes( res2+1, itE2, mid1+1, itE1 );
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

@@ -213,6 +213,11 @@ namespace DGtal
     /// @name Cell services
     /// @{
 
+    /// This methods performs some precomputation in order to speed-up
+    /// multiple future calls to \ref subset. This should be called
+    /// when this cell geometry is no more updated.
+    void prepareSubsetOperations();
+    
     /// Tells if the cells of 'this' are subset of the cells of \a
     /// other, for all valid dimensions of 'this' (i.e. from
     /// myMinCellDim till myMaxCellDim).
@@ -234,6 +239,11 @@ namespace DGtal
     /// @note if `other.maxCellDim() < k` or `k < other.minCellDim()`
     /// then it means that \a other contains no cell of dimension k.
     bool subset( const CellGeometry& other, const Dimension k ) const;
+
+    template <typename RandomIterator>
+    static
+    bool includes( RandomIterator it2, RandomIterator itE2,
+		   RandomIterator it1, RandomIterator itE1 );
     
     /// @}
     
@@ -301,7 +311,12 @@ namespace DGtal
     Dimension myMaxCellDim;
     /// Tells if verbose mode.
     bool myVerbose;
-      
+    /// Tells if the user has forced a precomputation of cell vectors
+    /// to speed-up subset computations
+    bool myPrecomputeSubset;
+    /// The data structures for subset precomputation.
+    std::vector< std::vector< Cell > > myCells;
+    
     // ------------------------- Private Datas --------------------------------
   private:
 
