@@ -79,8 +79,12 @@ int main( int argc, char** argv )
   aBoard.setUnit(Board2D::UCentimeter);
   DigitalConvexity<KSpace> dconv( lowerBound, upperBound );
   auto c_cover = dconv.makeCellCover( T.begin(), T.end(), 1, 1 );
+  trace.beginBlock( "Prepare subset operations" );
+  c_cover.prepareSubsetOperations();
+  trace.endBlock();
   float sx = -0.5;
   float sy = -0.5;
+  trace.beginBlock( "Compute fully subconvex sets" );
   for ( unsigned int i = 0; i < T.size(); ++i )
     for ( unsigned int j = i+2; j < T.size(); ++j )
       {
@@ -100,6 +104,7 @@ int main( int argc, char** argv )
 	else
 	  j = T.size();
       }
+  trace.endBlock();
   aBoard.setPenColor( Color::Black );
   aBoard << c;
   aBoard.saveEPS( "myGridCurve.eps", Board2D::BoundingBox );//, 5000 );

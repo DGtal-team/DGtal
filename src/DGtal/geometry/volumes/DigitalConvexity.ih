@@ -232,6 +232,7 @@ isFullySubconvex( const Polytope& P, const CellGeometry& C ) const
   for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
     {
       auto intersected_cells = makeCellCover( P, k, k );
+      intersected_cells.prepareSubsetOperations();
       if ( ! intersected_cells.subset( C ) ) return false;
     }
   return true;
