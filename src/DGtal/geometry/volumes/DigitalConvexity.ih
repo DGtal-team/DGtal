@@ -122,6 +122,45 @@ simplexType( PointIterator itB, PointIterator itE )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+void
+DGtal::DigitalConvexity<TKSpace>::
+displaySimplex( std::ostream& out, std::initializer_list<Point> l )
+{
+  displaySimplex( out, l.begin(), l.end() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointIterator>
+void
+DGtal::DigitalConvexity<TKSpace>::
+displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE )
+{
+  typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
+  const Dimension d = KSpace::dimension;
+  std::vector<Point> pts( d+1 );
+  Dimension k = 0;
+  for ( ; itB != itE && k <= d; ++itB, ++k ) pts[ k ] = *itB;
+  // A simplex has exactly d+1 vertices.
+  if ( k != d+1 ) { out << "[SPLX INVALID]"; return; }
+  Matrix M;
+  for ( Dimension i = 0; i < d; ++i )
+    for ( Dimension k = 0; k < d; ++k )
+      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+  // A simplex has its vectors linearly independent.
+  auto V = M.determinant();
+  out << "[SPLX V=" << V;
+  for ( Dimension i = 0; i < d; ++i ) {
+    out << " (";
+    for ( Dimension j = 0; j < d; ++j )
+      out << " " << M( i, j );
+    out << " )";
+  }
+  out << " ]";
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::SimplexType
 DGtal::DigitalConvexity<TKSpace>::
 simplexType( std::initializer_list<Point> l )
@@ -229,10 +268,11 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const Polytope& P, const CellGeometry& C ) const
 {
+  bool C_prepared = C.isPreparedForSubsetOperations();
   for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
     {
       auto intersected_cells = makeCellCover( P, k, k );
-      intersected_cells.prepareSubsetOperations();
+      if ( C_prepared ) intersected_cells.prepareSubsetOperations();
       if ( ! intersected_cells.subset( C ) ) return false;
     }
   return true;

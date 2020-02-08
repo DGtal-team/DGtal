@@ -41,10 +41,10 @@ have that the 0-cells of \f$ C^d_0 \f$ are exactly the lattice points,
 the 1-cells of \f$ C^d_1 \f$ are the open unit segment joining 2
 neighboring lattice points, etc.
 
-Finally, for an arbitrary subset \f$ Y \subset \mathbb{R^d} \f$, we
+Finally, for an arbitrary subset \f$ Y \subset \mathbb{R}^d \f$, we
 denote by \f$ C^d_k \lbrack Y \rbrack \f$ the set of k-cells of \f$
 C^d \f$ whose closure have a non-empty intersection with \f$ Y \f$,
-i.e. \f$ C^d_k \lbrack Y \rbrack := \{ c \in C^d_k, s.t. \bar{c} \cap
+i.e. \f$ C^d_k \lbrack Y \rbrack := \{ c \in C^d_k,~\text{s.t.}~ \bar{c} \cap
 Y \neq \emptyset \} \f$.
 
 A digital set \f$ S \subset \mathbb{Z}^d \f$ is said to be \b
@@ -55,8 +55,23 @@ for \f$ 0 \le k \le d \f$.
 
 A fully convex set is always \f$ 3^d-1 \f$-connected (i.e. 8-connected
 in 2D, 26-connected in 3D). Furthermore its axis-aligned slices are
-connected.
+connected (with the same kind of connectedness).
 
+@image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
+
+@image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
+
+A last useful notion is the \e subconvexity. Let \f$ X \subset
+\mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
+S \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
+subconvex to \f$ X \f$ whenever \f$ C^d_k \lbrack \mathrm{Conv}(S)
+\rbrack \subset C^d_k \lbrack X \rbrack \f$. And \f$ S \f$ is said to
+be \b fully (digitally) \b subconvex to \f$ X \f$ whenever it is
+digitally \a k- subconvex to \f$ X \f$ for \f$ 0 \le k \le d \f$.
+
+Subconvexity is a useful for notion for digital contour and surface
+analysis. It tells which subsets of these digital sets are \e tangent
+to them.
 
 */
 }
