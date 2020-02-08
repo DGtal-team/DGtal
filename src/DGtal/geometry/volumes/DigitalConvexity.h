@@ -212,10 +212,26 @@ namespace DGtal
     static
     SimplexType simplexType( std::initializer_list<Point> l );
 
+    /**
+     * Displays information about the simplex formed by the given range [itB,itE)
+     * of lattice points.
+     *
+     * @tparam PointIterator any model of forward iterator on Point.
+     * @param[inout] out the output stream where information is outputed.
+     * @param itB the start of the range of n+1 points defining the simplex.
+     * @param itE past the end the range of n+1 points defining the simplex.
+     */
     template <typename PointIterator>
     static
     void displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE );
 
+    /**
+     * Displays information about simplex formed by the given list \a l
+     * of lattice points.
+     *
+     * @param[inout] out the output stream where information is outputed.
+     * @param l any list of lattice points.
+     */
     static
     void displaySimplex( std::ostream& out, std::initializer_list<Point> l );
     
