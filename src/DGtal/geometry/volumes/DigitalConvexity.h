@@ -211,6 +211,13 @@ namespace DGtal
      */
     static
     SimplexType simplexType( std::initializer_list<Point> l );
+
+    template <typename PointIterator>
+    static
+    void displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE );
+
+    static
+    void displaySimplex( std::ostream& out, std::initializer_list<Point> l );
     
     /// @}
 

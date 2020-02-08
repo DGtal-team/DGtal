@@ -231,6 +231,14 @@ maxCellDim() const
   return myMaxCellDim;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::CellGeometry<TKSpace>::
+isPreparedForSubsetOperations() const
+{
+  return myPrecomputeSubset;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -240,7 +248,7 @@ prepareSubsetOperations()
 {
   // Checks if this precomputation has already been done.
   if ( myPrecomputeSubset ) return;
-  myCells.resize( myMaxCellDim - myMaxCellDim + 1 );
+  myCells.resize( myMaxCellDim - myMinCellDim + 1 );
   for ( Dimension k = myMinCellDim; k <= myMaxCellDim; ++k )
     {
       const Dimension j = k - myMinCellDim;
@@ -272,7 +280,7 @@ subset( const CellGeometry& other, const Dimension k ) const
   if ( myMaxCellDim < k ) return true;
   if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
   if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
-  if ( ! other.myPrecomputeSubset && ! myPrecomputeSubset )
+  if ( ! other.myPrecomputeSubset || ! myPrecomputeSubset )
     {
       const auto& oCC   = other.cubicalComplex();
       const auto& cells = cubicalComplex().getCells( k );
@@ -318,26 +326,6 @@ includes( RandomIterator it1, RandomIterator itE1,
     }
   return true;
 }
-  // const auto size1 = itE1 - it1;
-  // if ( size1 <= 0 )    return true;
-  // const auto size2 = itE2 - it2;
-  // if ( size2 < size1 ) return false;
-  // //std::cout << " [" << size1 << " <= " << size2 << "]";
-  // const auto ratio = size2 / size1;
-  // if ( ratio <= 2 ) return std::includes( it2, itE2, it1, itE1 );
-  // else if ( ratio >= 10 && size1 > 1 )
-  //   {
-  //     const auto lo2 = std::lower_bound( it2, itE2, *it1 );
-  //     if ( lo2 == itE2 || *it1 < *lo2 ) return false;
-  //     const auto hi2 = std::lower_bound( lo2+1, itE2, *(--itE1) );
-  //     if ( hi2 == itE2 || *itE1 < *hi2 ) return false;
-  //     return Self::includes( lo2+1, itE2-1, it1+1, itE1 );
-  //   }
-  // const auto mid1 = it1 + size1/2;
-  // const auto res2 = std::lower_bound( it2, itE2, *mid1 );
-  // if ( res2 == itE2 || *mid1 < *res2 ) return false;
-  // return Self::includes( it2, res2, it1, mid1 )
-  //   &&  Self::includes( res2+1, itE2, mid1+1, itE1 );
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

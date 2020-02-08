@@ -217,6 +217,11 @@ namespace DGtal
     /// multiple future calls to \ref subset. This should be called
     /// when this cell geometry is no more updated.
     void prepareSubsetOperations();
+
+    /// This methods tells if \ref prepareSubsetOperations has been
+    /// called on this object before and the cell geometry has not
+    /// been updated in-between.
+    bool isPreparedForSubsetOperations() const;
     
     /// Tells if the cells of 'this' are subset of the cells of \a
     /// other, for all valid dimensions of 'this' (i.e. from
@@ -239,11 +244,6 @@ namespace DGtal
     /// @note if `other.maxCellDim() < k` or `k < other.minCellDim()`
     /// then it means that \a other contains no cell of dimension k.
     bool subset( const CellGeometry& other, const Dimension k ) const;
-
-    template <typename RandomIterator>
-    static
-    bool includes( RandomIterator it2, RandomIterator itE2,
-		   RandomIterator it1, RandomIterator itE1 );
     
     /// @}
     
@@ -323,6 +323,14 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    // Internal method for cheking if sorted range [it1,itE1] is a
+    // subset of sorted range [it2, itE2].  Different from
+    // std::includes since it performs exponential march and dichotomy
+    // to walk faster along range [it1,itE1].
+    template <typename RandomIterator>
+    static
+    bool includes( RandomIterator it2, RandomIterator itE2,
+		   RandomIterator it1, RandomIterator itE1 );
 
   }; // end of class CellGeometry
 
