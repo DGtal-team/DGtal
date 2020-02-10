@@ -18,7 +18,7 @@ retrieve# DGtal 1.1
   - DGtal can be compiled and used as a project (git) submodule (David
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
-    (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+    (Pablo Hernandez-Cerdan [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
