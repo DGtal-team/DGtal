@@ -1,4 +1,4 @@
-# DGtal 1.1
+retrieve# DGtal 1.1
 
 ## New Features / Critical Changes
 
@@ -19,10 +19,14 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
-  
+
+- *Geometry*
+  - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
+    directions and values). (David Coeurjolly, [#14XX](https://github.com/DGtal-team/DGtal/pull/14xx))
+
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
-    (Pablo Hernandez-Cerdan,[#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+    (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
@@ -125,7 +129,7 @@
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
-  
+
 
 # DGtal 1.0
 
