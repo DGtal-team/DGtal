@@ -81,9 +81,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
      */
-    ParametricShapeArcLengthFunctor() = default;
+    ParametricShapeArcLengthFunctor() = delete;
 
 
     /**
@@ -96,11 +95,18 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ParametricShapeArcLengthFunctor(){}
+    ~ParametricShapeArcLengthFunctor() = default;
 
 
     // ----------------------- Interface --------------------------------------
   public:
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    ParametricShapeArcLengthFunctor & operator= ( const ParametricShapeArcLengthFunctor & other ) = delete;
 
     /**
      * Compute the arc length between two points.
@@ -141,7 +147,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Copy of the implicit shape.
+    ///Reference of the implicit shape.
     const ParametricShape &myShape;
 
     // ------------------------- Internals ------------------------------------
