@@ -129,8 +129,7 @@ int main()
   TrueGlobalEstimatorOnPoints< 
     Range::ConstIterator, 
     Flower, 
-    Length  >  trueLengthEstimator;
-  trueLengthEstimator.init( h, r.begin(), r.end(), &flower, c.isClosed());
+    Length  >  trueLengthEstimator( h, r.begin(), r.end(), flower, c.isClosed());
   double trueLength = trueLengthEstimator.eval(); 
   trace.info() << "ground truth: " << trueLength << std::endl; 
   //! [shapeGridCurveEstimator-trueLengthEstimation]

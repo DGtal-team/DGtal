@@ -86,9 +86,18 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    TrueLocalEstimatorOnPoints();  
-   
-    
+    TrueLocalEstimatorOnPoints();
+
+    /**
+     * Copy constructor.
+     */
+    TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & ) = delete;
+
+    /**
+     * Assignment operator.
+     */
+    TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & ) = delete;
+
     /**
      * Destructor.
      */
@@ -106,19 +115,19 @@ namespace DGtal
     void init(const double h, 
 	      const ConstIterator& itb, 
 	      const ConstIterator& ite);
-    
+
     /**
      * Attach a shape
      * @param aShapePtr parametric shape
      */
-    void attach(const ParametricShape* aShapePtr);
+    void attach(const ParametricShape& aShape);
 
     /**
      * Estimation at *it
      * @return the estimated quantity at *it
      */
     Quantity eval(const ConstIterator& it) const;
-    
+
     /**
      * Estimation at each element of [@e itb , @e ite )
      * @param itb begin iterator
@@ -129,8 +138,8 @@ namespace DGtal
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, 
-			const ConstIterator& ite, 
-                        OutputIterator result) const; 
+			  const ConstIterator& ite, 
+        OutputIterator result) const; 
 
 
     /**
@@ -146,35 +155,16 @@ namespace DGtal
   private:
 
     ///Grid size
-    double myH; 
-    
+    double myH;
+
     ///Copy of the begin iterator
     ConstIterator myBegin;
-    
+
     ///Copy of the end iterator
     ConstIterator myEnd;
 
     ///Owning pointer on a parametric shape functor
-    ParametricShapeFunctor* myFunctorPtr;
-
-    // ------------------------- Hidden services ------------------------------
-  private:
-    
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & other );
-
+    const ParametricShapeFunctor* myFunctorPtr;
 
   }; // end of class TrueLocalEstimatorOnPoints
 

@@ -79,9 +79,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
      */
-    ParametricShapeCurvatureFunctor(){}
+    ParametricShapeCurvatureFunctor() = delete;
 
 
     /**
@@ -89,30 +88,24 @@ namespace DGtal
      *
      * @param aShape the input shape.
      */
-    ParametricShapeCurvatureFunctor(const ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeCurvatureFunctor(const ParametricShape &aShape): myShape(aShape) {}
     
     
     /**
      * Destructor.
      */
-    ~ParametricShapeCurvatureFunctor(){}
+    ~ParametricShapeCurvatureFunctor() = default;
     
 
     // ----------------------- Interface --------------------------------------
   public:
-
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ParametricShapeCurvatureFunctor & operator= ( const ParametricShapeCurvatureFunctor & other )
-    {
-      myShape = other.myShape;
-      return *this;
-    }
-
+    ParametricShapeCurvatureFunctor & operator= ( const ParametricShapeCurvatureFunctor & other ) = delete;
    
     /** 
      * Computes the curvature at [aPoint]
@@ -122,18 +115,16 @@ namespace DGtal
      */
     Quantity operator()(const RealPoint &aPoint) const
     {
-      ASSERT(myShape);
-
-      double t = myShape->parameter( aPoint );     
-      return myShape->curvature( t );
+      double t = myShape.parameter( aPoint );
+      return myShape.curvature( t );
     }
     
 
     // ------------------------- Private Datas --------------------------------
   private:
     
-    ///Copy of the implicit shape.
-    const ParametricShape *myShape;
+    ///Reference of the implicit shape.
+    const ParametricShape &myShape;
     
     // ------------------------- Internals ------------------------------------
   private:

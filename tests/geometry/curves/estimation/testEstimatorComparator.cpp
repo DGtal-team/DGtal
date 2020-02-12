@@ -66,7 +66,7 @@ using namespace DGtal;
 
 
 template <typename Shape>
-bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
+bool testCompareEstimator(const std::string &name, const Shape & aShape, double h)
 {
   using namespace Z2i;
 
@@ -116,9 +116,9 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       TrueCurvature curvatureEstimator;
       TrueCurvature curvatureEstimatorBis;
       curvatureEstimator.init( h, r.begin(), r.end() );
-      curvatureEstimator.attach( &aShape ); 
+      curvatureEstimator.attach( aShape ); 
       curvatureEstimatorBis.init( h, r.begin(), r.end() );
-      curvatureEstimatorBis.attach( &aShape ); 
+      curvatureEstimatorBis.attach( aShape ); 
 
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
 
@@ -157,7 +157,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       MSTangentEstimator tang2(sc, f); 
     
       tang1.init( h, r.begin(), r.end() );
-      tang1.attach( &aShape ); 
+      tang1.attach( aShape ); 
       tang2.init( h, r.begin(), r.end() );
       
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;

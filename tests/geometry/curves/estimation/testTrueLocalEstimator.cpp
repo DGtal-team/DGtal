@@ -101,9 +101,9 @@ bool testTrueLocalEstimator(const std::string &filename)
   TrueTangentEstimator tangentEstimator;
 
   curvatureEstimator.init( 1, r.begin(), r.end() );
-  curvatureEstimator.attach( &ball );
+  curvatureEstimator.attach( ball );
   tangentEstimator.init( 1, r.begin(), r.end() );
-  tangentEstimator.attach( &ball );
+  tangentEstimator.attach( ball );
  
 
   ConstIteratorOnPoints it = r.begin();
@@ -168,7 +168,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
       curvatureEstimator.init( h, r.begin(), r.end() );
-      curvatureEstimator.attach( &aShape ); 
+      curvatureEstimator.attach( aShape ); 
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
