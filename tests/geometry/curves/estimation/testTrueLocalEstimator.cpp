@@ -108,8 +108,9 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   ConstIteratorOnPoints it = r.begin();
   ConstIteratorOnPoints it2 = it+15;
-  TrueLengthEstimator lengthEstimator( 1, it, it2, ball, true);
-  
+  TrueLengthEstimator lengthEstimator;
+  lengthEstimator.init( 1, it, it2 );
+  lengthEstimator.attach (ball );
   
   trace.info() << "Current point = "<<*it<<std::endl;
   trace.info() << "Current point+15 = "<<*it2<<std::endl;

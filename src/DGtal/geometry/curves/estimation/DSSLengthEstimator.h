@@ -100,6 +100,23 @@ namespace DGtal
     ~DSSLengthEstimator();
 
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    DSSLengthEstimator ( const DSSLengthEstimator & other ) = delete;
+
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    DSSLengthEstimator & operator= ( const DSSLengthEstimator & other ) = delete;
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -146,23 +163,6 @@ namespace DGtal
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DSSLengthEstimator ( const DSSLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DSSLengthEstimator & operator= ( const DSSLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:

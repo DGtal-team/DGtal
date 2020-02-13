@@ -85,7 +85,20 @@ namespace DGtal
               M_PI*(sqrt(2.0f)+2.0)/16.0)
     {}
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    RosenProffittLocalLengthEstimator ( const RosenProffittLocalLengthEstimator & other ) = delete;
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    RosenProffittLocalLengthEstimator & operator= ( const RosenProffittLocalLengthEstimator & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -102,24 +115,6 @@ namespace DGtal
       else
   out<< " not initialized";
   }
-
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    RosenProffittLocalLengthEstimator ( const RosenProffittLocalLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    RosenProffittLocalLengthEstimator & operator= ( const RosenProffittLocalLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
