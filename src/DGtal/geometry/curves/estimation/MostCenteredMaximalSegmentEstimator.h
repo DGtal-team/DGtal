@@ -101,7 +101,7 @@ namespace DGtal
   public:
 
     /**
-     * Default constructor. Not valid.
+     * Default constructor. Not valid but required by CCurveLocalGeometricEstimator.
      */
     MostCenteredMaximalSegmentEstimator();
 

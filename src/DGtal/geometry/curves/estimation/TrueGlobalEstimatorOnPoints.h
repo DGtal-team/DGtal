@@ -65,14 +65,16 @@ namespace DGtal
    * @tparam TParametricShapeFunctor type of Functor used to evaluate
    * the quantity.
    */
-  template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
+  template <typename TConstIteratorOnPoints,
+      typename TParametricShape,
+      typename TParametricShapeFunctor>
   class TrueGlobalEstimatorOnPoints
   {
 
     // ----------------------- Types ------------------------------
   public:
 
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TConstIteratorOnPoints ConstIterator;
 
     typedef TParametricShape ParametricShape;
     typedef typename ParametricShape::RealPoint RealPoint; 
@@ -87,8 +89,8 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    TrueGlobalEstimatorOnPoints() = delete;
-        
+    TrueGlobalEstimatorOnPoints();
+
     /**
      * Copy constructor.
      */
@@ -100,38 +102,44 @@ namespace DGtal
     TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & ) = delete;
    
     /**
-     * Constructor.
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     * @param aShape a shape
-     * @param isClosed true if the input range is closed.
-     */
-    TrueGlobalEstimatorOnPoints(const double h, 
-             const ConstIteratorOnPoints& itb, 
-             const ConstIteratorOnPoints& ite,
-             const ParametricShape& aShape,
-             const bool& isClosed);
-    
-    /**
      * Destructor.
      */
-    ~TrueGlobalEstimatorOnPoints() {};
+    ~TrueGlobalEstimatorOnPoints();
 
     // ----------------------- Interface --------------------------------------
   public:
     
+    /**
+     * Initialisation.
+     * @param h grid size (must be >0).
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param isClosed true if the input range is viewed as closed.
+     */
+    void init(const double h, 
+        const ConstIterator& itb, 
+        const ConstIterator& ite,
+        const bool isClosed = true);
+
+    /**
+     * Attach a shape
+     * @param aShape parametric shape
+     */
+    void attach(const ParametricShape& aShape);
+
     /**
      * @return the estimated quantity 
      */
     Quantity eval() const;
     
     /**
+     * @param isClosed true if the input range is viewed as closed.
      * @return the estimated quantity
      * from itb till ite (excluded)
      */
-    Quantity eval(const ConstIteratorOnPoints& itb, 
-      const ConstIteratorOnPoints& ite) const;
+    Quantity eval(const ConstIterator& itb, 
+      const ConstIterator& ite,
+      const bool isClosed = false) const;
 
 
     /**
@@ -144,19 +152,19 @@ namespace DGtal
   private:
 
     ///Grid size
-    double myH; 
+    double myH;
     
     ///Bool if the curve is closed
     bool myFlagIsClosed;
     
-    ///Parametric quantity functor
-    ParametricShapeFunctor myFunctor;
-    
     ///Copy of the begin iterator
-    ConstIteratorOnPoints myBegin;
+    ConstIterator myBegin;
     
     ///Copy of the end iterator
-    ConstIteratorOnPoints myEnd;
+    ConstIterator myEnd;
+
+    ///Parametric quantity functor
+    const ParametricShapeFunctor* myFunctorPtr;
 
   }; // end of class TrueGlobalEstimatorOnPoints
 

@@ -84,7 +84,20 @@ namespace DGtal
       TwoStepLocalLengthEstimator<TConstIterator>(0.948,1.343)
     {}
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    BLUELocalLengthEstimator ( const BLUELocalLengthEstimator & other ) = delete;
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    BLUELocalLengthEstimator & operator= ( const BLUELocalLengthEstimator & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -101,24 +114,6 @@ namespace DGtal
       else
   out<< " not initialized";
   }
-
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    BLUELocalLengthEstimator ( const BLUELocalLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    BLUELocalLengthEstimator & operator= ( const BLUELocalLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:

@@ -92,6 +92,20 @@ namespace DGtal
      */
     ~FPLengthEstimator();
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    FPLengthEstimator ( const FPLengthEstimator & other ) = delete;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    FPLengthEstimator & operator= ( const FPLengthEstimator & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -140,23 +154,6 @@ namespace DGtal
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    FPLengthEstimator ( const FPLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    FPLengthEstimator & operator= ( const FPLengthEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:
