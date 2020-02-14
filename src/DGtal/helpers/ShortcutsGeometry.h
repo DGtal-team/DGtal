@@ -976,6 +976,132 @@ namespace DGtal
           return mc_estimations;
         }
 
+      
+        /// Given a digital shape \a bimage, a sequence of \a surfels,
+        /// and some parameters \a vm, returns the principal curvatures and
+        /// directions using an Integral
+        /// Invariant (II) estimation at the specified surfels, in the
+        /// same order.
+        ///
+        /// @param[in] bimage the characteristic function of the shape as a binary image (inside is true, outside is false).
+        /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
+        /// @param[in] params the parameters:
+        ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+        ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+        ///
+        /// @return the vector containing the estimated Gaussian curvatures, in the
+        /// same order as \a surfels.
+        ///
+        /// @note The function is faster when surfels are in a specific order, as
+        /// given for instance by a depth-first traversal (@see getSurfelRange)
+        static CurvatureTensorQuantities
+          getIIPrincipalCurvaturesAndDirections( CountedPtr<BinaryImage> bimage,
+                                                const SurfelRange&      surfels,
+                                                const Parameters&       params
+                                                = parametersGeometryEstimation()
+                                                | parametersKSpace() )
+        {
+          auto K =  getKSpace( bimage, params );
+          return getIIPrincipalCurvaturesAndDirections( *bimage, K, surfels, params );
+        }
+
+      /// Given a digital shape \a bimage, a sequence of \a surfels,
+      /// and some parameters \a vm, returns the principal curvatures and
+      /// directions using an Integral
+      /// Invariant (II) estimation at the specified surfels, in the
+      /// same order.
+      ///
+        /// @param[in] dshape the digitized implicit shape, which is an
+        /// implicitly defined characteristic function.
+        ///
+        /// @param[in] surfels the sequence of surfels at which we compute the normals
+        /// @param[in] params the parameters:
+        ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+        ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+        ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
+        ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
+        ///   - offset          [   5.0]: the digital dilation of the digital space,
+        ///                       useful when you process shapes and that you add noise.
+        ///   - closed          [     1]: specifies if the Khalimsky space is closed (!=0) or not (==0)
+        ///
+        /// @return the vector containing the estimated Gaussian curvatures, in the
+        /// same order as \a surfels.
+        ///
+        /// @note It is better to have surfels in a specific order, as
+        /// given for instance by a depth-first traversal (@see getSurfelRange)
+        static CurvatureTensorQuantities
+          getIIPrincipalCurvaturesAndDirections( CountedPtr< DigitizedImplicitShape3D > dshape,
+                                   const SurfelRange&      surfels,
+                                   const Parameters&       params
+                                   = parametersGeometryEstimation()
+                                   | parametersKSpace()
+                                   | parametersDigitizedImplicitShape3D() )
+        {
+          auto K =  getKSpace( params );
+          return getIIPrincipalCurvaturesAndDirections( *dshape, K, surfels, params );
+        }
+
+      
+        /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
+        /// space \a K, a sequence of \a surfels, and some parameters \a
+        /// params, returns the principal curvatures and directions using Integral
+        /// Invariant (II) estimation at the specified surfels, in the
+        /// same order.
+        ///
+        /// @tparam TPointPredicate any type of map Point -> boolean.
+        /// @param[in] shape a function Point -> boolean telling if you are inside the shape.
+        /// @param[in] K the Khalimsky space where the shape and surfels live.
+        /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
+        /// @param[in] params the parameters:
+        ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+        ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+        ///
+        /// @return the vector containing the estimated principal curvatures and directions,
+        ///  in the same order as \a surfels.
+        ///
+        /// @note The function is faster when surfels are in a specific order, as
+        /// given for instance by a depth-first traversal (@see getSurfelRange)
+        template <typename TPointPredicate>
+          static CurvatureTensorQuantities
+      getIIPrincipalCurvaturesAndDirections( const TPointPredicate&  shape,
+                                            const KSpace&           K,
+                                            const SurfelRange&      surfels,
+                                            const Parameters&       params
+                                            = parametersGeometryEstimation()
+                                            | parametersKSpace() )
+          {
+            typedef functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space> IICurvFunctor;
+            typedef IntegralInvariantCovarianceEstimator<KSpace, TPointPredicate, IICurvFunctor>    IICurvEstimator;
+
+            Scalars  mc_estimations;
+            int      verbose = params[ "verbose"   ].as<int>();
+            Scalar   h       = params[ "gridstep"  ].as<Scalar>();
+            Scalar   r       = params[ "r-radius"  ].as<Scalar>();
+            Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
+            if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+            if ( verbose > 0 )
+              {
+                trace.info() << "- II principal curvatures and directions alpha=" << alpha << std::endl;
+                trace.info() << "- II principal curvatures and directions r=" << (r*h)  << " (continuous) "
+                             << r << " (discrete)" << std::endl;
+              }
+            IICurvFunctor   functor;
+            functor.init( h, r*h );
+            IICurvEstimator ii_estimator( functor );
+            ii_estimator.attach( K, shape );
+            ii_estimator.setParams( r );
+            ii_estimator.init( h, surfels.begin(), surfels.end() );
+            ii_estimator.eval( surfels.begin(), surfels.end(),
+                               std::back_inserter( mc_estimations ) );
+            return mc_estimations;
+          }
+
       /// @}
 
       // --------------------------- AT approximation ------------------------------
