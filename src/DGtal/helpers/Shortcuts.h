@@ -44,6 +44,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <tuple>
 #include <iterator>
 #include <string>
 #include "DGtal/base/Common.h"
@@ -189,6 +190,9 @@ namespace DGtal
       typedef GradientColorMap<Scalar>                            ColorMap;
       typedef TickedColorMap<Scalar,ColorMap>                     ZeroTickedColorMap;
     
+      typedef std::tuple< double,double, RealVector,RealVector>   CurvatureTensorQuantity;
+      typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
+
       // ----------------------- Static services --------------------------------------
     public:
 
