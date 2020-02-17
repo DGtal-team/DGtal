@@ -510,8 +510,7 @@ namespace DGtal {
           d8_5r = 8.0 / ( 5.0 * r );
           double h2 = h * h;
           dh5 = h2 * h2 * h;
-          std::cout<<d6_PIr6<<" "<<r<<" "<<h<<std::endl;
-        }
+         }
         
       private:
         double dh5;
