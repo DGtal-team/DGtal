@@ -474,37 +474,24 @@ namespace DGtal {
         BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
         BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
-        /// Default constructor.
-        IIPrincipalCurvaturesAndDirectionsFunctor() {}
-        /// Copy constructor. Nothing to do.
-        IIPrincipalCurvaturesAndDirectionsFunctor( const Self& /* other */ ) {}
-        /// Assignment. Nothing to do.
-        /// @return itself
-        Self& operator=( const Self& /* other */ ) { return *this; }
-        /**
+         /**
         * Apply operator.
         * @param arg any symmetric positive matrix (covariance matrix
         *
-        * @return the first and the second principal curvature direction in
-        * a std::pair for the II covariance matrix, which is the eigenvector
-        * associated with the highest eigenvalues.
+        * @return the first and the second principal curvature values and directions in
+        * a std::tuple.
         */
         Value operator()( const Argument& arg ) const
         {
+          Argument cp_arg = arg;
+          cp_arg *= dh5;
           EigenDecomposition<Space::dimension, Component, Matrix>
-            ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+            ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
           ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-  #ifdef DEBUG
-          for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
-          {
-            ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
-          }
-  #endif
-          
           ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
-                    && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
-          
+                  && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+
           return { d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
                    d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r,
                    eigenVectors.column( Space::dimension - 1 ),
@@ -523,6 +510,7 @@ namespace DGtal {
           d8_5r = 8.0 / ( 5.0 * r );
           double h2 = h * h;
           dh5 = h2 * h2 * h;
+          std::cout<<d6_PIr6<<" "<<r<<" "<<h<<std::endl;
         }
         
       private:
