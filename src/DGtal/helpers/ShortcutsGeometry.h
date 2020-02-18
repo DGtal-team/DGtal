@@ -162,6 +162,11 @@ namespace DGtal
       typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
       typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
       typedef sgf::ShapeGaussianCurvatureFunctor<ImplicitShape3D> GaussianCurvatureFunctor;
+ 
+      typedef typename functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space>::Quantity   CurvatureTensorQuantity;
+      typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
+      
+      
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
       typedef TrueDigitalSurfaceLocalEstimator
@@ -479,7 +484,7 @@ namespace DGtal
           typedef LocalEstimatorFromSurfelFunctorAdapter
             < SurfaceContainer, Metric, SurfelFunctor, Functor>         NormalEstimator;
           if ( verbose > 0 )
-            trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
+            trace.info() << "- CTrivial normal t-ring=" << t << " (discrete)" << std::endl;
           const Functor fct( 1.0, t );
           const KSpace &  K = surface->container().space();
           Metric    aMetric( 2.0 );
@@ -1069,17 +1074,17 @@ namespace DGtal
         /// given for instance by a depth-first traversal (@see getSurfelRange)
         template <typename TPointPredicate>
           static CurvatureTensorQuantities
-      getIIPrincipalCurvaturesAndDirections( const TPointPredicate&  shape,
-                                            const KSpace&           K,
-                                            const SurfelRange&      surfels,
-                                            const Parameters&       params
-                                            = parametersGeometryEstimation()
-                                            | parametersKSpace() )
+         getIIPrincipalCurvaturesAndDirections( const TPointPredicate&  shape,
+                                               const KSpace&           K,
+                                               const SurfelRange&      surfels,
+                                               const Parameters&       params
+                                               = parametersGeometryEstimation()
+                                               | parametersKSpace() )
           {
             typedef functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space> IICurvFunctor;
             typedef IntegralInvariantCovarianceEstimator<KSpace, TPointPredicate, IICurvFunctor>    IICurvEstimator;
 
-            Scalars  mc_estimations;
+            CurvatureTensorQuantities  mc_estimations;
             int      verbose = params[ "verbose"   ].as<int>();
             Scalar   h       = params[ "gridstep"  ].as<Scalar>();
             Scalar   r       = params[ "r-radius"  ].as<Scalar>();
