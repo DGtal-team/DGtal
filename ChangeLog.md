@@ -1,4 +1,4 @@
-retrieve# DGtal 1.1
+# DGtal 1.1
 
 ## New Features / Critical Changes
 
