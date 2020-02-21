@@ -42,8 +42,8 @@
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints() :
-myH(0), myFlagIsClosed(true), myFunctorPtr(nullptr) {}
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints()
+  : myFunctorPtr(nullptr) {}
 
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
@@ -52,22 +52,6 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::~TrueGlobalEstimat
 {
   if ( myFunctorPtr != nullptr )
     delete myFunctorPtr;
-}
-
-// ------------------------------------------------------------------------
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-void DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::init(const double h, 
-    const ConstIterator& itb,
-    const ConstIterator& ite,
-    const bool isClosed)
-{
-  myH = h;
-  ASSERT(myH > 0); 
-  myBegin = itb;
-  myEnd = ite;
-  myFlagIsClosed = isClosed;
 }
 
 // ------------------------------------------------------------------------
@@ -85,10 +69,11 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 {
-  return eval(myBegin,myEnd,myFlagIsClosed);
+  ASSERT(isValid());
+  return myFunctorPtr->operator()();
 }
 
 // ------------------------------------------------------------------------
@@ -97,23 +82,17 @@ inline
 typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIterator& itb,
     const ConstIterator& ite,
-    const bool isClosed) const
+    const double h) const
 {
-  ASSERT(isValid());
-  if (isClosed) {
-    return myFunctorPtr->operator()();
-  } else {
-    //get the first and last points
-    ConstIterator i = itb;
-    ConstIterator j(i); ++j; 
-    for ( ; j != ite; ++i, ++j) {};
-    //myH is the coordinates unit
-    RealPoint p( *itb );
-    p *= myH;
-    RealPoint p2( *i );
-    p2 *= myH;
-    return myFunctorPtr->operator()(p,p2);
-  }
+  ASSERT(isValid() && h>0.);
+
+  ConstIterator lastPoint(ite);
+  --lastPoint;
+
+  RealPoint p( *itb );
+  RealPoint p2( *lastPoint );
+
+  return myFunctorPtr->operator()(p*h,p2*h);
 }
 
 // ------------------------------------------------------------------------
@@ -122,7 +101,7 @@ inline
 bool
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
 {
-    return myH > 0. && myFunctorPtr != nullptr;
+    return myFunctorPtr != nullptr;
 }
 
 

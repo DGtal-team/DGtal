@@ -112,9 +112,6 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
       {
-        //init method
-        myX.init( myH, myItb, myIte ); 
-
         concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
         concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
       }

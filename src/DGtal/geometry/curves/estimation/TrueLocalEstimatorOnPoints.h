@@ -89,6 +89,11 @@ namespace DGtal
     TrueLocalEstimatorOnPoints();
 
     /**
+     * Destructor.
+     */
+    ~TrueLocalEstimatorOnPoints();
+
+    /**
      * Copy constructor.
      */
     TrueLocalEstimatorOnPoints ( const TrueLocalEstimatorOnPoints & ) = delete;
@@ -98,23 +103,8 @@ namespace DGtal
      */
     TrueLocalEstimatorOnPoints & operator= ( const TrueLocalEstimatorOnPoints & ) = delete;
 
-    /**
-     * Destructor.
-     */
-    ~TrueLocalEstimatorOnPoints();
-
     // ----------------------- Interface --------------------------------------
   public:
-
-    /**
-     * Initialisation.
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     */
-    void init(const double h, 
-	      const ConstIterator& itb, 
-	      const ConstIterator& ite);
 
     /**
      * Attach a shape
@@ -124,23 +114,24 @@ namespace DGtal
 
     /**
      * Estimation at *it
+     * @param h grid size (must be > 0).
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it) const;
+    Quantity eval(const ConstIterator& it, const double h = 1.) const;
 
     /**
      * Estimation at each element of [@e itb , @e ite )
      * @param itb begin iterator
      * @param ite end iterator
+     * @param h grid size (must be > 0).
      * @param result  the output iterator to the results.
-     * @return the estimated quantity
-     * from itb till ite (excluded)
+     * @return the estimated quantity from itb till ite (excluded)
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, 
-			  const ConstIterator& ite, 
-        OutputIterator result) const; 
-
+			  const ConstIterator& ite,
+        OutputIterator result,
+        const double h = 1.) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -148,20 +139,8 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
     // ------------------------- Private Datas --------------------------------
   private:
-
-    ///Grid size
-    double myH;
-
-    ///Copy of the begin iterator
-    ConstIterator myBegin;
-
-    ///Copy of the end iterator
-    ConstIterator myEnd;
 
     ///Owning pointer on a parametric shape functor
     const ParametricShapeFunctor* myFunctorPtr;
