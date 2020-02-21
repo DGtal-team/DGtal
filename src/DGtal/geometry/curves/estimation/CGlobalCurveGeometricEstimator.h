@@ -110,9 +110,6 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CGlobalGeometricEstimator )
       {
-        //init method
-        myX.init( myH, myItb, myIte ); 
-
         ConceptUtils::sameType( myQ, myX.eval( ) );
       }
 

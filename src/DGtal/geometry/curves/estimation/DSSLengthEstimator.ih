@@ -39,63 +39,48 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Standard services ------------------------------
-
-/**
- * Constructor.
- */
-template <typename T>
-inline
-DGtal::DSSLengthEstimator<T>::DSSLengthEstimator()
-{
-  myIsInitBefore = false;
-}
-
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::DSSLengthEstimator<T>::~DSSLengthEstimator()
-{
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-
-
 template <typename T>
 inline
-void
-DGtal::DSSLengthEstimator<T>::init(const double h, 
-				   const ConstIterator& itb, const ConstIterator& ite)
+typename DGtal::DSSLengthEstimator<T>::Quantity
+DGtal::DSSLengthEstimator<T>::eval( const ConstIterator& itb,
+    const ConstIterator& ite, const double h ) const
 {
-  myH = h;
-  myIsInitBefore = true;
-  myRep.clear();
+  ASSERT(h > 0.);
 
   //segments into DSSs
   DSSComputer computer; 
-  GreedySegmentation<DSSComputer> decomposition ( itb, ite, computer ); 
+  GreedySegmentation<DSSComputer> decomposition( itb, ite, computer ); 
 
   //computes the resulting polygonal representation
-  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator segIt = decomposition.begin();  
-  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator segItEnd = decomposition.end(); 
-  for ( ; segIt != segItEnd; ++segIt ) 
-    {
-      myRep.push_back( segIt->back() );
-   } 
-  //last point
-  myRep.push_back(lastPoint(ite)); 
+  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator i = decomposition.begin();
+  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator j = i;
+  ++j;
+  const typename GreedySegmentation<DSSComputer>::SegmentComputerIterator end = decomposition.end();
+
+  Quantity val = 0.;
+  if ( i == end )
+    return val;
+
+  for ( ; j != end; ++i, ++j )
+  {
+    Vector v( j->back() - i->back() );
+    val += v.norm(Vector::L_2);
+  }
+  Vector v( lastPoint(ite) - i->back() );
+  val += v.norm(Vector::L_2);
+  
+  return val*h;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - private :
 
 template <typename T>
 inline
 typename DGtal::DSSLengthEstimator<T>::Point
-DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite)
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite) const
 {
   return lastPoint(ite, typename DGtal::IteratorCirculatorTraits<ConstIterator>::Type()); 
 }
@@ -103,7 +88,7 @@ DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite)
 template <typename T>
 inline
 typename DGtal::DSSLengthEstimator<T>::Point
-DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType)
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType) const
 {
   ConstIterator itcopy = ite;
   return *--itcopy;
@@ -112,66 +97,35 @@ DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType)
 template <typename T>
 inline
 typename DGtal::DSSLengthEstimator<T>::Point
-DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& c, CirculatorType)
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& c, CirculatorType) const
 {
   return *c; 
 }
 
-template <typename T>
-inline
-typename DGtal::DSSLengthEstimator<T>::Quantity
-DGtal::DSSLengthEstimator<T>::eval() const
-{
-  ASSERT(myH > 0);
-  ASSERT(myIsInitBefore);
-
-  Quantity val = 0;
-  
-  if (myRep.size() > 1) {
-
-    typename std::vector<Point>::const_iterator i = myRep.begin();
-    typename std::vector<Point>::const_iterator j = i;
-    ++j; 
-    for ( ; j != myRep.end(); ++i, ++j) {
-      Vector v( *j - *i ); 
-      val += v.norm(Vector::L_2);
-    }
-
-  }
-  
-  return val*myH;
-}
 
 
 
 
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
+// ------------------------------------------------------------------------
 template <typename T>
 inline
 void
 DGtal::DSSLengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[DSSLengthEstimator]";
-  if (myIsInitBefore) 
-    out <<" myH="<<myH;
+  if (isValid())
+    out <<" initialized";
   else
     out<< " not initialized";
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
+// ------------------------------------------------------------------------
 template <typename T>
 inline
 bool
 DGtal::DSSLengthEstimator<T>::isValid() const
 {
-    return myIsInitBefore;
+    return true;
 }
 
 

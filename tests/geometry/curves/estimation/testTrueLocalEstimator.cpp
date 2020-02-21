@@ -99,24 +99,23 @@ bool testTrueLocalEstimator(const std::string &filename)
   BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< TrueTangentEstimator > ));
   TrueCurvatureEstimator curvatureEstimator;
   TrueTangentEstimator tangentEstimator;
+  TrueLengthEstimator lengthEstimator;
 
-  curvatureEstimator.init( 1, r.begin(), r.end() );
   curvatureEstimator.attach( ball );
-  tangentEstimator.init( 1, r.begin(), r.end() );
   tangentEstimator.attach( ball );
- 
+  lengthEstimator.attach ( ball );
 
   ConstIteratorOnPoints it = r.begin();
   ConstIteratorOnPoints it2 = it+15;
-  TrueLengthEstimator lengthEstimator;
-  lengthEstimator.init( 1, it, it2 );
-  lengthEstimator.attach (ball );
   
   trace.info() << "Current point = "<<*it<<std::endl;
   trace.info() << "Current point+15 = "<<*it2<<std::endl;
-  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval(it,it2)<<std::endl;
+  // TODO: All these estimations consider projections of points from grid curve c on ball.
+  //       These are not estimations on the grid curve c. Not sure that make sense.
+  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2,1.)<<std::endl;
+  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2,1.)<<std::endl;
+  trace.info() << "Eval length (h=1) = "<< lengthEstimator.eval(it,it2,1.)<<std::endl;
+  trace.info() << "Eval ball length (h=1) = "<< lengthEstimator.eval()<<std::endl;
   
   return true;
 
@@ -148,11 +147,11 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
-    {
-      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-    << " error in creating KSpace." << std::endl;
-    }
-  else
+  {
+    std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+              << " error in creating KSpace." << std::endl;
+  }
+  else {
     try {
       // Extracts shape boundary
       SurfelAdjacency<KSpace::dimension> SAdj( true );
@@ -163,30 +162,33 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       // Create GridCurve
       GridCurve<KSpace> gridcurve;
       gridcurve.initFromVector( points );
+
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;
       typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
-      TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
+
+      TrueLocalEstimatorOnPoints<ConstIteratorOnPoints, Shape, Curvature>  curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
-      curvatureEstimator.init( h, r.begin(), r.end() );
       curvatureEstimator.attach( aShape ); 
+
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
-      it != ite; ++it, ++i )
-  {
-    RealPoint x = *it;
-    double kappa = curvatureEstimator.eval( it );
-    std::cout << i << " " << x[ 0 ] << " " << x[1] 
-        << " " << kappa << std::endl;
-  }
+            it != ite; ++it, ++i )
+      {
+        const RealPoint& x = *it; 
+        const double kappa = curvatureEstimator.eval( it, h );
+        std::cout << i << " " << x[0] << " " << x[1] 
+                  << " " << kappa << std::endl;
+      }
     }    
     catch ( InputException& e )
-      {
-  std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-      << " error in finding a bel." << std::endl;
-  ok = false;
-      }
+    {
+      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+          << " error in finding a bel." << std::endl;
+      ok = false;
+    }
+  }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;

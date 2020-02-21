@@ -120,7 +120,7 @@ namespace DGtal
        */
       bool isValid() const
       {
-	return (mySCPtr != 0); 
+	      return (mySCPtr != 0); 
       };
 
       // ----------------------- Interface --------------------------------------
@@ -149,7 +149,7 @@ namespace DGtal
        */
       void attach(const SegmentComputer& aSC) 
       {
-	mySCPtr = &aSC; 
+	      mySCPtr = &aSC; 
       };
 
       /**
@@ -158,7 +158,7 @@ namespace DGtal
        */
       Quantity eval(const ConstIterator& /*it*/) const
       {
-	ASSERT( mySCPtr ); 
+	      ASSERT( mySCPtr ); 
         return myFunctor( *mySCPtr ); 
       }
 
@@ -175,18 +175,18 @@ namespace DGtal
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
 			  OutputIterator result) const
       {
-	ASSERT( mySCPtr ); 
+      	ASSERT( mySCPtr ); 
 
-	// do-while loop to deal with the case of a whole circular range
-	if (isNotEmpty(itb, ite))
-	  {
-	    ConstIterator it = itb; 
-	    do
-	      {
-		*result++ = myFunctor( *mySCPtr ); 
-		++it; 
-	      } while (it != ite);
-	  }
+        // do-while loop to deal with the case of a whole circular range
+        if (isNotEmpty(itb, ite))
+        {
+          ConstIterator it = itb; 
+          do
+          {
+            *result++ = myFunctor( *mySCPtr ); 
+            ++it; 
+          } while (it != ite);
+	      }
 
         return result; 
       }
@@ -255,7 +255,7 @@ namespace DGtal
        * NB: not valid.
        */
       PosIndepScaleDepSCEstimator()
-	: myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
+      : myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
       {
       }
       /**
@@ -263,8 +263,8 @@ namespace DGtal
        * @param other the object to copy.
        */
       PosIndepScaleDepSCEstimator( const PosIndepScaleDepSCEstimator& other )
-	: myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
-	  mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
+      : myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
+        mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
       {
       }
       /**
@@ -273,15 +273,15 @@ namespace DGtal
        */
       PosIndepScaleDepSCEstimator& operator=( const PosIndepScaleDepSCEstimator& other )
       {
-	if (this != &other)
-	  {
-	    myH = other.myH; 
-	    myBegin = other.myBegin; 
-	    myEnd = other.myEnd; 
-	    mySCPtr = other.mySCPtr; 
-	    myFunctor = other.myFunctor; 
-	  }
-	return *this; 
+        if (this != &other)
+        {
+          myH = other.myH; 
+          myBegin = other.myBegin; 
+          myEnd = other.myEnd; 
+          mySCPtr = other.mySCPtr; 
+          myFunctor = other.myFunctor; 
+        }
+        return *this; 
       }
       /**
        * Destructor
@@ -294,7 +294,7 @@ namespace DGtal
        */
       bool isValid() const 
       {
-	return (myH > 0)&&(mySCPtr != 0); 
+        return (myH > 0)&&(mySCPtr != 0); 
       };
 
 
@@ -313,7 +313,7 @@ namespace DGtal
         myH = h; 
         myBegin = itb;
         myEnd = ite;
-	ASSERT( myH > 0 );  
+	      ASSERT( myH > 0 );  
       }
 
       /**
@@ -322,8 +322,8 @@ namespace DGtal
        */
       void attach(const SegmentComputer& aSC) 
       {
-	mySCPtr = &aSC; 
-	ASSERT( mySCPtr ); 
+        mySCPtr = &aSC; 
+        ASSERT( mySCPtr ); 
       };
 
       /**
@@ -332,7 +332,7 @@ namespace DGtal
        */
       Quantity eval(const ConstIterator& /*it*/) const
       {
-	ASSERT( isValid() ); 
+	      ASSERT( isValid() ); 
         return myFunctor( *mySCPtr, myH ); 
       }
 
@@ -349,19 +349,18 @@ namespace DGtal
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
 			  OutputIterator result) const
       {
-	ASSERT( isValid() ); 
+      	ASSERT( isValid() ); 
 
-	// do-while loop to deal with the case of a whole circular range
-	if (isNotEmpty(itb, ite))
-	  {
-	    ConstIterator it = itb; 
-	    do
-	      {
-		*result++ = myFunctor( *mySCPtr, myH ); 
-		++it; 
-	      } while (it != ite);
-	  }
-
+        // do-while loop to deal with the case of a whole circular range
+        if (isNotEmpty(itb, ite))
+        {
+          ConstIterator it = itb; 
+          do
+          {
+            *result++ = myFunctor( *mySCPtr, myH ); 
+            ++it; 
+          } while (it != ite);
+        }
         return result; 
       }
 
@@ -425,7 +424,7 @@ namespace DGtal
        */
       bool isValid() const 
       {
-	return (mySCPtr != 0); 
+	      return (mySCPtr != 0); 
       };
 
       // ----------------------- Interface --------------------------------------
@@ -453,7 +452,7 @@ namespace DGtal
        */
       void attach(const SegmentComputer& aSC) 
       {
-	mySCPtr = &aSC; 
+	      mySCPtr = &aSC; 
       };
 
       /**
@@ -463,7 +462,7 @@ namespace DGtal
        */
       Quantity eval(const ConstIterator& it) const
       {
-	ASSERT( mySCPtr ); 
+        ASSERT( mySCPtr ); 
         return myFunctor( it, *mySCPtr ); 
       }
 
@@ -480,18 +479,18 @@ namespace DGtal
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
 			  OutputIterator result) const
       {
-	ASSERT( mySCPtr ); 
+	      ASSERT( mySCPtr ); 
 
-	// do-while loop to deal with the case of a whole circular range
-	if (isNotEmpty(itb, ite))
-	  {
-	    ConstIterator it = itb; 
-	    do
-	      {
-		*result++ = myFunctor( it, *mySCPtr ); 
-		++it; 
-	      } while (it != ite);
-	  }
+	      // do-while loop to deal with the case of a whole circular range
+        if (isNotEmpty(itb, ite))
+        {
+          ConstIterator it = itb; 
+          do
+          {
+            *result++ = myFunctor( it, *mySCPtr ); 
+            ++it; 
+          } while (it != ite);
+        }
 
         return result; 
       }
@@ -559,7 +558,7 @@ namespace DGtal
        * NB: not valid.
        */
       PosDepScaleDepSCEstimator()
-	: myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
+	    : myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
       {
       }
       /**
@@ -567,8 +566,8 @@ namespace DGtal
        * @param other the object to copy.
        */
       PosDepScaleDepSCEstimator( const PosDepScaleDepSCEstimator& other )
-	: myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
-	  mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
+      : myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
+        mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
       {
       }
       /**
@@ -577,15 +576,15 @@ namespace DGtal
        */
       PosDepScaleDepSCEstimator& operator=( const PosDepScaleDepSCEstimator& other )
       {
-	if (this != &other)
-	  {
-	    myH = other.myH; 
-	    myBegin = other.myBegin; 
-	    myEnd = other.myEnd; 
-	    mySCPtr = other.mySCPtr; 
-	    myFunctor = other.myFunctor; 
-	  }
-	return *this; 
+        if (this != &other)
+          {
+            myH = other.myH; 
+            myBegin = other.myBegin; 
+            myEnd = other.myEnd; 
+            mySCPtr = other.mySCPtr; 
+            myFunctor = other.myFunctor; 
+          }
+        return *this; 
       }
       /**
        * Destructor
@@ -598,7 +597,7 @@ namespace DGtal
        */
       bool isValid() const 
       {
-	return (myH > 0)&&(mySCPtr != 0); 
+	      return (myH > 0)&&(mySCPtr != 0); 
       };
 
 
@@ -617,7 +616,7 @@ namespace DGtal
         myH = h; 
         myBegin = itb;
         myEnd = ite;
-	ASSERT( myH > 0 );  
+	      ASSERT( myH > 0 );  
       }
 
       /**
@@ -626,8 +625,8 @@ namespace DGtal
        */
       void attach(const SegmentComputer& aSC) 
       {
-	mySCPtr = &aSC; 
-	ASSERT( mySCPtr ); 
+        mySCPtr = &aSC; 
+        ASSERT( mySCPtr ); 
       };
 
       /**
@@ -637,7 +636,7 @@ namespace DGtal
        */
       Quantity eval(const ConstIterator& it) const
       {
-	ASSERT( isValid() ); 
+      	ASSERT( isValid() ); 
         return myFunctor( it, *mySCPtr, myH ); 
       }
 
@@ -654,18 +653,18 @@ namespace DGtal
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
 			  OutputIterator result) const 
       {
-	ASSERT( isValid() ); 
+        ASSERT( isValid() ); 
 
-	// do-while loop to deal with the case of a whole circular range
-	if (isNotEmpty(itb, ite))
-	  {
-	    ConstIterator it = itb; 
-	    do
-	      {
-		*result++ = myFunctor( it, *mySCPtr, myH ); 
-		++it; 
-	      } while (it != ite);
-	  }
+        // do-while loop to deal with the case of a whole circular range
+        if (isNotEmpty(itb, ite))
+        {
+          ConstIterator it = itb; 
+          do
+          {
+            *result++ = myFunctor( it, *mySCPtr, myH ); 
+            ++it; 
+          } while (it != ite);
+        }
 
         return result; 
       }
@@ -701,12 +700,12 @@ namespace DGtal
       template<typename DSS>
       Value operator() (const DSS& aDSS) const 
       {
-	Value a = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToDouble(aDSS.a());      
-	Value b = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToDouble(aDSS.b());      
+        Value a = (Value) NumberTraits<typename DSS::Integer>
+          ::castToDouble(aDSS.a());      
+        Value b = (Value) NumberTraits<typename DSS::Integer>
+          ::castToDouble(aDSS.b());      
 
-	return std::atan2(a,b);
+	      return std::atan2(a,b);
       }
     }; 
     /**
@@ -734,14 +733,14 @@ namespace DGtal
       template<typename DSS>
       Value operator() (const DSS& aDSS) const 
       {
-	double x = NumberTraits<typename DSS::Integer>
-	  ::castToDouble( aDSS.b() ); 
-	double y = NumberTraits<typename DSS::Integer>
-	  ::castToDouble( aDSS.a() );
-	RealVector v(x,y); 
-	double norm = v.norm(RealVector::L_2);
-	v /= norm; 
-	return v;
+        double x = NumberTraits<typename DSS::Integer>
+          ::castToDouble( aDSS.b() ); 
+        double y = NumberTraits<typename DSS::Integer>
+          ::castToDouble( aDSS.a() );
+        RealVector v(x,y); 
+        double norm = v.norm(RealVector::L_2);
+        v /= norm; 
+        return v;
       }
     }; 
     /**
@@ -765,7 +764,7 @@ namespace DGtal
        */
       Value operator() (const DSS& aDSS) const 
       {
-	return Value(aDSS.b(), aDSS.a());
+	      return Value(aDSS.b(), aDSS.a());
       }
     }; 
     /**
@@ -802,10 +801,10 @@ namespace DGtal
       template<typename DCA>
       Value operator() (const DCA& aDCA, const double& aH = 1.0) const 
       {
-  	if ( aDCA.isStraight() )
-  	  return 0.0; 
-	else
-	  return ( aDCA.getSeparatingCircle().getCurvature() / aH );
+        if ( aDCA.isStraight() )
+          return 0.0; 
+        else
+          return ( aDCA.getSeparatingCircle().getCurvature() / aH );
       }
     }; 
     template<>
@@ -817,10 +816,10 @@ namespace DGtal
       template<typename DCA>
       Value operator() (const DCA& aDCA, const Value& aH = 1.0) const 
       {
-  	if ( aDCA.isStraight() )
-  	  return 0.0; 
-	else
-	  return - ( aDCA.getSeparatingCircle().getCurvature() / aH );
+        if ( aDCA.isStraight() )
+          return 0.0; 
+        else
+          return - ( aDCA.getSeparatingCircle().getCurvature() / aH );
       }
     }; 
     /**
@@ -850,37 +849,37 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA) const 
       {
-	typedef typename DCA::Pair Pair; 
-	typedef typename DCA::Point Point;
-	typedef typename Point::Coordinate Coordinate; 
+        typedef typename DCA::Pair Pair; 
+        typedef typename DCA::Point Point;
+        typedef typename Point::Coordinate Coordinate; 
 	
-  	if ( !aDCA.isStraight() )
-  	  {
-  	    //separating circle center
-  	    double c0, c1, r; 
-  	    aDCA.getSeparatingCircle().getParameters(c0, c1, r);
-  	    //point
-	    Pair pair = *it; 
-	    Point i = pair.first; 
-	    Point o = pair.second;
-	    double m0 = NumberTraits<Coordinate>::castToDouble(i[0]+o[0]) / 2.0; 
-	    double m1 = NumberTraits<Coordinate>::castToDouble(i[1]+o[1]) / 2.0;
-	    //normal vector 
-	    double v0 = m0 - c0; 
-	    double v1 = m1 - c1; 
-	    //norm
-	    double n = std::sqrt(v0*v0 + v1*v1); 
-	    return Value( v0/n, v1/n );
-  	  }
-  	else
-  	  {
-	    //separating straight line and normal vector
-	    double a, b, c; 
-	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
-	    //norm
-	    double n = std::sqrt(a*a + b*b); 
-  	    return Value( a/n, b/n ); 
-  	  }
+        if ( !aDCA.isStraight() )
+        {
+          //separating circle center
+          double c0, c1, r; 
+          aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+          //point
+          Pair pair = *it; 
+          Point i = pair.first; 
+          Point o = pair.second;
+          double m0 = NumberTraits<Coordinate>::castToDouble(i[0]+o[0]) / 2.0; 
+          double m1 = NumberTraits<Coordinate>::castToDouble(i[1]+o[1]) / 2.0;
+          //normal vector 
+          double v0 = m0 - c0; 
+          double v1 = m1 - c1; 
+          //norm
+          double n = std::sqrt(v0*v0 + v1*v1); 
+          return Value( v0/n, v1/n );
+        }
+  	    else
+        {
+          //separating straight line and normal vector
+          double a, b, c; 
+          aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
+          //norm
+          double n = std::sqrt(a*a + b*b); 
+          return Value( a/n, b/n ); 
+        }
       }
     }; 
 
@@ -912,9 +911,9 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA) const 
       {
-	NormalVectorFromDCA f; 
-	Value normal = f(it, aDCA); 
-	return Value( normal[1], normal[0] ); 
+        NormalVectorFromDCA f; 
+        Value normal = f(it, aDCA); 
+        return Value( normal[1], normal[0] ); 
       }
     }; 
 
@@ -948,48 +947,48 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA, const double& aH) const 
       {
-	typedef typename DCA::Pair Pair; 
-	typedef typename DCA::Point Point;
-	typedef typename Point::Coordinate Coordinate; 
+        typedef typename DCA::Pair Pair; 
+        typedef typename DCA::Point Point;
+        typedef typename Point::Coordinate Coordinate; 
 	
-  	if ( !aDCA.isStraight() )
-  	  {
-  	    //separating circle center
-  	    double c0, c1, r; 
-  	    aDCA.getSeparatingCircle().getParameters(c0, c1, r);
-  	    //points
-	    Pair pair = *it; 
-	    Point i = pair.first; 
-	    Point o = pair.second;
-	    //distances
-	    double distI0 = NumberTraits<Coordinate>::castToDouble(i[0]) - c0; 
-	    double distI1 = NumberTraits<Coordinate>::castToDouble(i[1]) - c1;
-	    double distI = std::sqrt( distI0*distI0 + distI1*distI1 ) - r; 
-	    double distO0 = NumberTraits<Coordinate>::castToDouble(o[0]) - c0; 
-	    double distO1 = NumberTraits<Coordinate>::castToDouble(o[1]) - c1;
-	    double distO = std::sqrt( distO0*distO0 + distO1*distO1 ) - r; 
-	    return Value( distI*aH, distO*aH );
-  	  }
-  	else
-  	  {
-	    //separating straight line
-	    double a, b, c; 
-	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c); 
-	    //norm
-	    double n = std::sqrt(a*a + b*b); 
-  	    //points
-	    Pair pair = *it; 
-	    Point i = pair.first; 
-	    Point o = pair.second;
-	    //distances
-	    double rI = NumberTraits<Coordinate>::castToDouble(i[0])*a + 
-	      NumberTraits<Coordinate>::castToDouble(i[1])*b + c;
-	    double distI = rI / n; 
-	    double rO = NumberTraits<Coordinate>::castToDouble(o[0])*a + 
-	      NumberTraits<Coordinate>::castToDouble(o[1])*b + c;
-	    double distO = rO / n; 
-  	    return Value( distI*aH, distO*aH ); 
-  	  }
+  	    if ( !aDCA.isStraight() )
+        {
+          //separating circle center
+          double c0, c1, r; 
+          aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+          //points
+          Pair pair = *it; 
+          Point i = pair.first; 
+          Point o = pair.second;
+          //distances
+          double distI0 = NumberTraits<Coordinate>::castToDouble(i[0]) - c0; 
+          double distI1 = NumberTraits<Coordinate>::castToDouble(i[1]) - c1;
+          double distI = std::sqrt( distI0*distI0 + distI1*distI1 ) - r; 
+          double distO0 = NumberTraits<Coordinate>::castToDouble(o[0]) - c0; 
+          double distO1 = NumberTraits<Coordinate>::castToDouble(o[1]) - c1;
+          double distO = std::sqrt( distO0*distO0 + distO1*distO1 ) - r; 
+          return Value( distI*aH, distO*aH );
+  	    }
+  	    else
+  	    {
+          //separating straight line
+          double a, b, c; 
+          aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c); 
+          //norm
+          double n = std::sqrt(a*a + b*b); 
+            //points
+          Pair pair = *it; 
+          Point i = pair.first; 
+          Point o = pair.second;
+          //distances
+          double rI = NumberTraits<Coordinate>::castToDouble(i[0])*a + 
+            NumberTraits<Coordinate>::castToDouble(i[1])*b + c;
+          double distI = rI / n; 
+          double rO = NumberTraits<Coordinate>::castToDouble(o[0])*a + 
+            NumberTraits<Coordinate>::castToDouble(o[1])*b + c;
+          double distO = rO / n; 
+            return Value( distI*aH, distO*aH ); 
+        }
       }
     }; 
 
@@ -1239,12 +1238,12 @@ namespace DGtal
       template<typename DSS>
       Value operator() (const DSS& aDSS) const 
       {
-	typedef typename DSS::Vector Vector; 
-	//length
-	Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
-	Value l = v.norm(Vector::L_2);
-	//result
-	return 1/( (l*l)/8 + 0.5 );  
+        typedef typename DSS::Vector Vector; 
+        //length
+        Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
+        Value l = v.norm(Vector::L_2);
+        //result
+        return 1/( (l*l)/8 + 0.5 );  
       }
     }; 
 
@@ -1267,15 +1266,15 @@ namespace DGtal
       template<typename DSS>
       Value operator() (const DSS& aDSS) const 
       {
-	typedef typename DSS::Vector Vector; 
-	//length
-	Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
-	Value l = v.norm(Vector::L_2);
-	//width
-	Vector t( aDSS.b(), aDSS.a() );
-	Value w = 1.0 / v.norm(Vector::L_2); 
-	//result
-	return 1.0/( (l*l)/(8*w) + w/2 ); 
+        typedef typename DSS::Vector Vector; 
+        //length
+        Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
+        Value l = v.norm(Vector::L_2);
+        //width
+        Vector t( aDSS.b(), aDSS.a() );
+        Value w = 1.0 / v.norm(Vector::L_2); 
+        //result
+        return 1.0/( (l*l)/(8*w) + w/2 ); 
       }
     }; 
 
@@ -1341,7 +1340,7 @@ namespace DGtal
        * NB: not valid.
        */
       CurvatureFromDSSBaseEstimator()
-	: myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
+      : myH( 0.0 ), myBegin(), myEnd(), mySCPtr(0), myFunctor()
       {
       }
       /**
@@ -1349,8 +1348,8 @@ namespace DGtal
        * @param other the object to copy.
        */
       CurvatureFromDSSBaseEstimator( const CurvatureFromDSSBaseEstimator& other )
-	: myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
-	  mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
+      : myH( other.myH ), myBegin( other.myBegin ), myEnd( other.myEnd ), 
+        mySCPtr( other.mySCPtr ), myFunctor( other.myFunctor )
       {
       }
       /**
@@ -1359,15 +1358,15 @@ namespace DGtal
        */
       CurvatureFromDSSBaseEstimator& operator=( const CurvatureFromDSSBaseEstimator& other )
       {
-	if (this != &other)
-	  {
-	    myH = other.myH; 
-	    myBegin = other.myBegin; 
-	    myEnd = other.myEnd; 
-	    mySCPtr = other.mySCPtr; 
-	    myFunctor = other.myFunctor; 
-	  }
-	return *this; 
+        if (this != &other)
+        {
+          myH = other.myH; 
+          myBegin = other.myBegin; 
+          myEnd = other.myEnd; 
+          mySCPtr = other.mySCPtr; 
+          myFunctor = other.myFunctor; 
+        }
+	      return *this; 
       }
       /**
        * Destructor
@@ -1380,7 +1379,7 @@ namespace DGtal
        */
       bool isValid() const
       {
-	return (myH > 0)&&(mySCPtr != 0); 
+	      return (myH > 0)&&(mySCPtr != 0); 
       };
 
       // ----------------------- Interface --------------------------------------
@@ -1397,7 +1396,7 @@ namespace DGtal
         myH = h; 
         myBegin = itb;
         myEnd = ite;
-	ASSERT( myH > 0 );  
+      	ASSERT( myH > 0 );  
       }
 
       /**
@@ -1406,78 +1405,75 @@ namespace DGtal
        */
       Quantity eval(const ConstIterator& /*it*/)
       {
-	ASSERT( isValid() ); 
+        ASSERT( isValid() ); 
 
-	//types
-	typedef typename DSSComputer::Integer Integer; 
-	typedef typename DSSComputer::Vector Vector; 
+        //types
+        typedef typename DSSComputer::Integer Integer; 
+        typedef typename DSSComputer::Vector Vector; 
 
-	//curvature value
-	Quantity k = 0;  
+        //curvature value
+        Quantity k = 0;  
 
-
-	//begin and end iterators
-	//(back point on the first point)
-	//(front point on the last point)
-	ConstIterator back = mySCPtr->begin();  
-	ConstIterator front = mySCPtr->end();
-	bool isConnectedAtBack = isNotEmpty(myBegin, back)
-	  &&((*boost::prior(back)-*back).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
-	bool isConnectedAtFront = isNotEmpty(front, myEnd)
-	  &&((*boost::prior(front)-*front).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
+        //begin and end iterators
+        //(back point on the first point)
+        //(front point on the last point)
+        ConstIterator back = mySCPtr->begin();  
+        ConstIterator front = mySCPtr->end();
+        bool isConnectedAtBack = isNotEmpty(myBegin, back)
+          &&((*boost::prior(back)-*back).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
+        bool isConnectedAtFront = isNotEmpty(front, myEnd)
+          &&((*boost::prior(front)-*front).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
   
-
-	if (isConnectedAtBack) {
-	  if (isConnectedAtFront) {
-
-	    --back;
-
-	    //parameters
-	    Integer mu = mySCPtr->mu();
-	    Integer omega = mySCPtr->omega();
-
-	    //cases
-	    if ( (mySCPtr->remainder(*back)<=mu-1)&&
-		 (mySCPtr->remainder(*front)<=mu-1) ) {                //convex
-	      k = myFunctor(*mySCPtr) / myH; 
-	    } else if ( (mySCPtr->remainder(*back)>=mu+omega)&&
-			(mySCPtr->remainder(*front)>=mu+omega) ) {           //concave
-	      k = -myFunctor(*mySCPtr) / myH; 
-	    } //else                                                  //inflection
-
-	  } else {
-
-	    --back;
-
-	    //parameters
-	    Integer mu = mySCPtr->mu();
-	    Integer omega = mySCPtr->omega();
-
-	    //cases
-	    if ( (mySCPtr->remainder(*back)<=mu-1) ) {                //convex
-	      k = myFunctor(*mySCPtr) / myH; 
-	    } else if ( (mySCPtr->remainder(*back)>=mu+omega) ) {     //concave
-	      k = -myFunctor(*mySCPtr) / myH; 
-	    } //else                                                 //inflection
-
-	  }
-	} else if (isConnectedAtFront) {
-
+        Integer mu = mySCPtr->mu();
+        Integer omega = mySCPtr->omega();
+        if (isConnectedAtBack)
+        {
+          --back;
           //parameters
-          Integer mu = mySCPtr->mu();
-          Integer omega = mySCPtr->omega();
-
-          //cases
-          if ( (mySCPtr->remainder(*front)<=mu-1) ) {                //convex
+	        if (isConnectedAtFront)
+          {
+            if ((mySCPtr->remainder(*back)<=mu-1)&&
+                (mySCPtr->remainder(*front)<=mu-1) )
+            {
+              //convex
+              k = myFunctor(*mySCPtr) / myH;
+            }
+            else if ( (mySCPtr->remainder(*back)>=mu+omega)&&
+                      (mySCPtr->remainder(*front)>=mu+omega) )
+            {
+              //concave
+              k = -myFunctor(*mySCPtr) / myH;
+            } //else inflection
+  	      }
+          else
+          {
+            if ( (mySCPtr->remainder(*back)<=mu-1) )
+            {
+              //convex
+              k = myFunctor(*mySCPtr) / myH; 
+            }
+            else if ( (mySCPtr->remainder(*back)>=mu+omega) )
+            {
+              //concave
+              k = -myFunctor(*mySCPtr) / myH; 
+            } //else inflection
+	        }
+	      }
+        else if (isConnectedAtFront)
+        {
+          if ( (mySCPtr->remainder(*front)<=mu-1) )
+          {
+            //convex
             k = myFunctor(*mySCPtr) / myH; 
-          } else if ( (mySCPtr->remainder(*front)>=mu+omega) ) {     //concave
+          }
+          else if ( (mySCPtr->remainder(*front)>=mu+omega) )
+          {
+            //concave
             k = -myFunctor(*mySCPtr) / myH; 
-          } //else                                                  //inflection
+          } //else inflection
+	      } //else cannot be extended: k is set to 0
 
-	} //else cannot be extended: k is set to 0
-
-	return k;
-
+	      return k;
       }
 
       /**
@@ -1493,18 +1489,18 @@ namespace DGtal
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
 			  OutputIterator result)
       {
-	ASSERT( isValid() ); 
+	      ASSERT( isValid() ); 
 
-	// do-while loop to deal with the case of a whole circular range
-	if (isNotEmpty(itb, ite))
-	  {
-	    ConstIterator it = itb; 
-	    do
-	      {
-		*result++ = eval( it ); 
-		++it; 
-	      } while (it != ite);
-	  }
+        // do-while loop to deal with the case of a whole circular range
+        if (isNotEmpty(itb, ite))
+        {
+	        ConstIterator it = itb; 
+	        do
+	        {
+            *result++ = eval( it ); 
+            ++it; 
+	        } while (it != ite);
+	      }
 
         return result; 
       }
@@ -1515,8 +1511,8 @@ namespace DGtal
        */
       void attach(const SegmentComputer& aSC) 
       {
-	mySCPtr = &aSC; 
-	ASSERT( mySCPtr ); 
+        mySCPtr = &aSC; 
+        ASSERT( mySCPtr ); 
       };
 
 

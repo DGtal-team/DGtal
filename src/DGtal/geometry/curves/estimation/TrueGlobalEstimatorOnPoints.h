@@ -56,8 +56,8 @@ namespace DGtal
   // template class TrueGlobalEstimatorOnPoints
   /**
    * Description of template class 'TrueGlobalEstimatorOnPoints' <p>
-   * \brief Aim: Computes the true quantity to each element of a range associated to 
-   * a parametric shape.
+   * \brief Aim: Computes the true quantity associated to a parametric shape or
+   * to a subrange associated to a parametric shape.
    *
    * @tparam TConstIteratorOnPoints type of iterator on points used as
    * query points.
@@ -92,6 +92,11 @@ namespace DGtal
     TrueGlobalEstimatorOnPoints();
 
     /**
+     * Destructor.
+     */
+    ~TrueGlobalEstimatorOnPoints();
+
+    /**
      * Copy constructor.
      */
     TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & ) = delete;
@@ -100,26 +105,9 @@ namespace DGtal
      * Assignment operator.
      */
     TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & ) = delete;
-   
-    /**
-     * Destructor.
-     */
-    ~TrueGlobalEstimatorOnPoints();
 
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /**
-     * Initialisation.
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     * @param isClosed true if the input range is viewed as closed.
-     */
-    void init(const double h, 
-        const ConstIterator& itb, 
-        const ConstIterator& ite,
-        const bool isClosed = true);
 
     /**
      * Attach a shape
@@ -128,19 +116,21 @@ namespace DGtal
     void attach(const ParametricShape& aShape);
 
     /**
-     * @return the estimated quantity 
+     * Estimation computed on the total closed attached shape
+     * @return the estimated quantity on the shape
      */
     Quantity eval() const;
-    
+
     /**
-     * @param isClosed true if the input range is viewed as closed.
-     * @return the estimated quantity
-     * from itb till ite (excluded)
+     * Estimation on subrange [@e itb , @e ite)
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param h grid size (must be > 0).
+     * @return the estimated quantity from itb till ite (excluded)
      */
     Quantity eval(const ConstIterator& itb, 
-      const ConstIterator& ite,
-      const bool isClosed = false) const;
-
+        const ConstIterator& ite,
+        const double h = 1.) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -150,18 +140,6 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-
-    ///Grid size
-    double myH;
-    
-    ///Bool if the curve is closed
-    bool myFlagIsClosed;
-    
-    ///Copy of the begin iterator
-    ConstIterator myBegin;
-    
-    ///Copy of the end iterator
-    ConstIterator myEnd;
 
     ///Parametric quantity functor
     const ParametricShapeFunctor* myFunctorPtr;

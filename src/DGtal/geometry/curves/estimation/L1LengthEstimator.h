@@ -79,13 +79,13 @@ namespace DGtal
     /**
      * Default Constructor.
      */
-    L1LengthEstimator();
+    L1LengthEstimator() = default;
 
 
     /**
      * Destructor.
      */
-    ~L1LengthEstimator();
+    ~L1LengthEstimator() = default;
 
     /**
      * Copy constructor.
@@ -107,24 +107,17 @@ namespace DGtal
   public:
 
     /**
-     * Initialize the measure computation.
-     *
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
-
-
-    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
-     * @pre init() method must be called before.
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param h grid size (must be > 0).
      *
      * @return the curve length.
      */
-    Quantity eval( ) const;
-
+    Quantity eval( const ConstIterator& itb,
+        const ConstIterator& ite,
+        const double h ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -137,22 +130,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-      // ------------------------- Private Datas --------------------------------
-  private:
-
-    ///Grid size.
-    double myH;
-
-    ///Copy of the range.
-    ConstIterator myBeginIt;
-    ConstIterator myEndIt;
-
-    ///Boolean to make sure that init() has been called before eval().
-    bool myIsInitBefore;
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class L1LengthEstimator
 

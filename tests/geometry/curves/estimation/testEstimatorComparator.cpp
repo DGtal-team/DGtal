@@ -115,21 +115,18 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
       TrueCurvature curvatureEstimator;
       TrueCurvature curvatureEstimatorBis;
-      curvatureEstimator.init( h, r.begin(), r.end() );
-      curvatureEstimator.attach( aShape ); 
-      curvatureEstimatorBis.init( h, r.begin(), r.end() );
-      curvatureEstimatorBis.attach( aShape ); 
+      curvatureEstimator.attach( aShape );
+      curvatureEstimatorBis.attach( aShape );
 
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
 
       trace.info()<< "True curvature comparison at "<< *r.begin() << " = "
-		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
+		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin(), h)
 		  << std::endl;
       
-      typename Comparator::OutputStatistic error
-	=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
-			     r.begin(),
-			     r.end());
+      typename Comparator::OutputStatistic error =
+	      Comparator::compare(curvatureEstimator, curvatureEstimatorBis,
+                            r.begin(), r.end(), h);
       
       trace.info() << "Nb samples= "<< error.samples()<<std::endl;
       trace.info() << "Error mean= "<< error.mean()<<std::endl;
@@ -155,21 +152,18 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
       
       TrueTangent tang1;
       MSTangentEstimator tang2(sc, f); 
-    
-      tang1.init( h, r.begin(), r.end() );
+
       tang1.attach( aShape ); 
-      tang2.init( h, r.begin(), r.end() );
+      tang2.init( r.begin(), r.end() );
       
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
 
       trace.info()<< "Tangent comparison at "<< *r.begin() << " = " 
-		  << ComparatorTan::compareVectors( tang1, tang2, r.begin())
+		  << ComparatorTan::compareVectors( tang1, tang2, r.begin(), h)
 		  << std::endl; 
       
       typename ComparatorTan::OutputVectorStatistic error2
-	=ComparatorTan::compareVectors(tang1, tang2, 
-				       r.begin(),
-				       r.end());
+	      = ComparatorTan::compareVectors(tang1, tang2, r.begin(), r.end(), h);
       
       trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error2.mean()<<std::endl;

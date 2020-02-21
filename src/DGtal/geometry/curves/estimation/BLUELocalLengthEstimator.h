@@ -109,14 +109,11 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const
     {
       out << "[BLUELocalLengthEstimator]";
-      if (this->myIsInitBefore)
-  out <<" myH="<< this->myH;
+      if (this->isValid())
+        out <<" initialized";
       else
-  out<< " not initialized";
-  }
-
-    // ------------------------- Internals ------------------------------------
-  private:
+        out<< " not initialized";
+    }
 
   }; // end of class BLUELocalLengthEstimator
 

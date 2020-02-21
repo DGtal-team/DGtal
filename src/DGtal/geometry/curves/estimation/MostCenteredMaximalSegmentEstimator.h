@@ -123,21 +123,21 @@ namespace DGtal
 
     /**
      * Initialisation.
-     * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
      */
-    void init(const double h, const ConstIterator& itb, const ConstIterator& ite);
+    void init( const ConstIterator& itb, const ConstIterator& ite );
 
     /**
      * Unique estimation 
      * @param it any valid iterator
+     * @param h grid size (must be > 0).
      * @return the estimated quantity at *it
      *
      * NB: the whole range [@e myBegin , @e myEnd)| 
      * is scanned in the worst case
      */
-    Quantity eval(const ConstIterator& it);
+    Quantity eval(const ConstIterator& it, const double h = 1.);
 
     /**
      * Estimation for a subrange [@e itb , @e ite )
@@ -145,6 +145,7 @@ namespace DGtal
      * @param itb subrange begin iterator
      * @param ite subrange end iterator     
      * @param result output iterator on the estimated quantity
+     * @param h grid size (must be > 0).
      *
      * @return the estimated quantity
      * from itb till ite (excluded)
@@ -154,7 +155,7 @@ namespace DGtal
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-                        OutputIterator result); 
+                        OutputIterator result, const double h = 1.); 
 
 
     /**
@@ -168,9 +169,6 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-
-    /** grid step */
-    double myH; 
 
     /** begin and end iterators */ 
     ConstIterator myBegin,myEnd;
