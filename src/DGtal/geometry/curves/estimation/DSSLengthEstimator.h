@@ -75,6 +75,9 @@ namespace DGtal
   template <typename TConstIterator>
   class DSSLengthEstimator
   {
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< TConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< TConstIterator > ));
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -144,13 +147,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-    Point lastPoint (const ConstIterator& ite) const;
-    Point lastPoint (const ConstIterator& c, CirculatorType) const;
-    Point lastPoint (const ConstIterator& ite, IteratorType) const;
 
   }; // end of class DSSLengthEstimator
 

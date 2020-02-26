@@ -42,13 +42,6 @@
 template <typename SegmentComputer, typename SCEstimator>
 inline
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
-::MostCenteredMaximalSegmentEstimator() {}
-
-
-// ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
-inline
-DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 ::MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
                                       const SCEstimator& aSCEstimator)
   : mySC(aSegmentComputer), mySCEstimator(aSCEstimator)

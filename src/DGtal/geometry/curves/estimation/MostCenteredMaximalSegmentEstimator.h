@@ -87,6 +87,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
     BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
 			  typename SCEstimator::SegmentComputer >::value ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< SCEstimator > ));
 
     // ----------------------- Types ------------------------------
   public:
@@ -101,9 +102,9 @@ namespace DGtal
   public:
 
     /**
-     * Default constructor. Not valid but required by CCurveLocalGeometricEstimator.
+     * Default constructor. Not valid.
      */
-    MostCenteredMaximalSegmentEstimator();
+    MostCenteredMaximalSegmentEstimator() = delete;
 
     /**
      * Constructor.

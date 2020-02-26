@@ -50,13 +50,12 @@ DGtal::FPLengthEstimator<T>::eval(const ConstIterator& itb,
   ASSERT(h > 0.);
 
   Quantity val = 0.;
-  if ( DGtal::isEmpty(itb,ite) )
+  if ( isEmpty(itb,ite) )
     return val;
 
   FaithfulPolygon fp( itb, ite ); 
   std::vector<Point> points(fp.size());
   fp.copyFP( points.begin() );
-  points.push_back(lastPoint(ite));
 
   typename std::vector<Point>::const_iterator i = points.begin();
   typename std::vector<Point>::const_iterator j = i;
@@ -68,39 +67,15 @@ DGtal::FPLengthEstimator<T>::eval(const ConstIterator& itb,
     Vector v( *j - *i ); 
     val += v.norm(Vector::L_2);
   }
+  if ( IsCirculator<ConstIterator>::value )
+  {
+    Vector v( points.front() - *i ); 
+    val += v.norm(Vector::L_2);
+  }
   
   return val*h;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Interface - private :
-
-template <typename T>
-inline
-typename DGtal::FPLengthEstimator<T>::Point
-DGtal::FPLengthEstimator<T>::lastPoint(const ConstIterator& ite) const
-{
-  return lastPoint(ite, typename DGtal::IteratorCirculatorTraits<ConstIterator>::Type()); 
-}
-
-// ------------------------------------------------------------------------
-template <typename T>
-inline
-typename DGtal::FPLengthEstimator<T>::Point
-DGtal::FPLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType) const
-{
-  ConstIterator itcopy = ite;
-  return *--itcopy;
-}
-
-// ------------------------------------------------------------------------
-template <typename T>
-inline
-typename DGtal::FPLengthEstimator<T>::Point
-DGtal::FPLengthEstimator<T>::lastPoint(const ConstIterator& c, CirculatorType) const
-{
-  return *c; 
-}
 
 
 

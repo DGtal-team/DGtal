@@ -76,6 +76,13 @@ namespace DGtal
     /**
      * Default Constructor.
      */
+    TwoStepLocalLengthEstimator() = delete;
+
+    /**
+     * Constructor with direct and diagonal weights.
+     * @param wdirect direct weight
+     * @param wdiag diagonal weight
+     */
     TwoStepLocalLengthEstimator(const double wdirect, const double wdiag);
 
     /**
@@ -103,6 +110,8 @@ namespace DGtal
 
     /**
      * Computation of the l1 length of the curve.
+     * Iterated structure must contain pairs. The direct or diagonal case
+     * is resolved using the dot function on the second element of pairs.
      * Complexity: O(|Range|)
      * @param itb begin iterator
      * @param ite end iterator
