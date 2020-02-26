@@ -93,8 +93,7 @@ namespace DGtal
        @tparam T the type that should be a model of CGlobalGeometricEstimator.
     */
     template <typename T>
-    struct CGlobalGeometricEstimator: 
-      boost::DefaultConstructible<T>
+    struct CGlobalGeometricEstimator
     {
 
       // ----------------------- Concept checks ------------------------------

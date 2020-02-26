@@ -136,13 +136,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Internals ------------------------------------
-  private:
-
-    Point lastPoint (const ConstIterator& ite) const;
-    Point lastPoint (const ConstIterator& c, CirculatorType) const;
-    Point lastPoint (const ConstIterator& ite, IteratorType) const;
-
   }; // end of class MLPLengthEstimator
 
 

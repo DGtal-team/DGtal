@@ -95,8 +95,7 @@ namespace DGtal
        @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
     */
     template <typename T>
-    struct CCurveLocalGeometricEstimator: 
-      boost::DefaultConstructible<T>
+    struct CCurveLocalGeometricEstimator
     {
 
       // ----------------------- Concept checks ------------------------------
