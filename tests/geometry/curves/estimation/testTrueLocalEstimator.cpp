@@ -80,7 +80,6 @@ bool testTrueLocalEstimator(const std::string &filename)
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
-  
   typedef Ball2D<Z2i::Space> Shape;
   typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
   typedef Range::ConstIterator ConstIteratorOnPoints;
@@ -107,18 +106,17 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   ConstIteratorOnPoints it = r.begin();
   ConstIteratorOnPoints it2 = it+15;
-  
-  trace.info() << "Current point = "<<*it<<std::endl;
-  trace.info() << "Current point+15 = "<<*it2<<std::endl;
+
+  trace.info() << "Current point = " << *it << std::endl;
+  trace.info() << "Current point+15 = " << *it2 << std::endl;
   // TODO: All these estimations consider projections of points from grid curve c on ball.
   //       These are not estimations on the grid curve c. Not sure that make sense.
-  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2,1.)<<std::endl;
-  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2,1.)<<std::endl;
-  trace.info() << "Eval length (h=1) = "<< lengthEstimator.eval(it,it2,1.)<<std::endl;
-  trace.info() << "Eval ball length (h=1) = "<< lengthEstimator.eval()<<std::endl;
-  
-  return true;
+  trace.info() << "Eval curvature (begin, h=1) = " << curvatureEstimator.eval(it2, 1.) << std::endl;
+  trace.info() << "Eval tangent (begin, h=1) = " << tangentEstimator.eval(it2, 1.) << std::endl;
+  trace.info() << "Eval length (h=1) = " << lengthEstimator.eval(it, it2, 1.) << std::endl;
+  trace.info() << "Eval ball length (h=1) = " << lengthEstimator.eval() << std::endl;
 
+  return true;
 }
 
 template <typename Shape>
@@ -135,10 +133,10 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   typedef Space::RealPoint RealPoint;
   RealPoint xLow( -10.0, -10.0 );
   RealPoint xUp( 10.0, 10.0 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
   dig.init( xLow, xUp, h ); 
-  
+
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
@@ -151,8 +149,10 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
     std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
               << " error in creating KSpace." << std::endl;
   }
-  else {
-    try {
+  else
+  {
+    try
+    {
       // Extracts shape boundary
       SurfelAdjacency<KSpace::dimension> SAdj( true );
       SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
@@ -167,7 +167,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       typedef Range::ConstIterator ConstIteratorOnPoints;
       typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
 
-      TrueLocalEstimatorOnPoints<ConstIteratorOnPoints, Shape, Curvature>  curvatureEstimator;
+      TrueLocalEstimatorOnPoints<ConstIteratorOnPoints, Shape, Curvature> curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
       curvatureEstimator.attach( aShape ); 
 
@@ -181,7 +181,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
         std::cout << i << " " << x[0] << " " << x[1] 
                   << " " << kappa << std::endl;
       }
-    }    
+    }
     catch ( InputException& e )
     {
       std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
@@ -206,14 +206,12 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-
-
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
 
   bool res = testTrueLocalEstimator(sinus2D4); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+
   typedef Ellipse2D< Z2i::Space > MyEllipse;
   MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
   res = res && 
@@ -233,7 +231,6 @@ int main( int argc, char** argv )
     ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
 
   return res ? 0 : 1;
-
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

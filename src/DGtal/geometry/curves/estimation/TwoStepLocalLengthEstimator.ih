@@ -87,7 +87,7 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval(const ConstIterator& itb,
   if ( i != ite )
     nbDirect++;
   
-  return (nbDiag*myWeightDiagonal + nbDirect*myWeightDirect)*h;
+  return (nbDiag*myWeightDiagonal + nbDirect*myWeightDirect) * h;
 }
 
 
