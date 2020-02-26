@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Functor to compare two local geometric estimators. 
    * 
    *
-   * @tparam TFirstEsimator  type of the first estimator.
+   * @tparam TFirstEsimator type of the first estimator.
    * @tparam TSecondEstimator type of the second estimator.
    * 
    */
@@ -104,13 +104,13 @@ namespace DGtal
          const ConstIterator &it,
          const double h = 1.)
     {
-      ASSERT( aFirstEstimator.isValid());
-      ASSERT( aSecondEstimator.isValid());
-      
-      return aFirstEstimator.eval(it,h) - aSecondEstimator.eval(it,h);
+      ASSERT( aFirstEstimator.isValid() );
+      ASSERT( aSecondEstimator.isValid( ));
+
+      return aFirstEstimator.eval(it, h) - aSecondEstimator.eval(it, h);
     }
-    
-    
+
+
    /**
      * Return a statistic on the error (difference) between the two
      * estimators for points ranging from itb to ite.
@@ -137,15 +137,15 @@ namespace DGtal
       const bool storeSamples = false)
     {
       OutputStatistic stats(storeSamples);
-      
+
       for(ConstIterator it = itb; it!= ite; ++it)
-        stats.addValue( compare(aFirstEstimator,aSecondEstimator,it,h));
-      
+        stats.addValue(compare(aFirstEstimator, aSecondEstimator, it, h));
+
       stats.terminate();
       return stats;
     }
-    
-    
+
+
     /**
      * Return the angular error between the two estimations (if
      * Quantity values are vectors) at a
@@ -170,8 +170,8 @@ namespace DGtal
     {
       ASSERT( aFirstEstimator.isValid());
       ASSERT( aSecondEstimator.isValid());
-      Quantity v1 = aFirstEstimator.eval(it,h), v2 = aSecondEstimator.eval(it,h);
-      
+      Quantity v1 = aFirstEstimator.eval(it, h), v2 = aSecondEstimator.eval(it, h);
+
       ASSERT( v1.norm() != 0.0 );
       ASSERT( v2.norm() != 0.0 );
       double ndot = (double) v1.dot(v2)
@@ -179,8 +179,8 @@ namespace DGtal
       return ( ndot > 1.0 ) ? 0.0
               : ( ndot < -1.0 ) ? M_PI : acos( ndot );
     }
-    
-    
+
+
    /**
      * Return a statistic on the error (angular error) between the two
      * estimators for points ranging from itb to ite.
@@ -207,17 +207,17 @@ namespace DGtal
        const bool storeSamples = false)
     {
       OutputVectorStatistic stats(storeSamples);
-      
+
       for(ConstIterator it = itb; it!= ite; ++it)
-        stats.addValue(compareVectors(aFirstEstimator,aSecondEstimator,it,h));
-      
+        stats.addValue(compareVectors(aFirstEstimator, aSecondEstimator, it, h));
+
       stats.terminate();
       return stats;
     }
-    
+
     // ------------------------- Hidden services ------------------------------
   private:
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
