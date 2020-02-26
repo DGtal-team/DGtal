@@ -1243,7 +1243,7 @@ namespace DGtal
         Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
         Value l = v.norm(Vector::L_2);
         //result
-        return 1/( (l*l)/8 + 0.5 );  
+        return 1./( (l*l)/8. + 0.5 );  
       }
     }; 
 
@@ -1274,7 +1274,7 @@ namespace DGtal
         Vector t( aDSS.b(), aDSS.a() );
         Value w = 1.0 / v.norm(Vector::L_2); 
         //result
-        return 1.0/( (l*l)/(8*w) + w/2 ); 
+        return 1.0/( (l*l)/(8.*w) + w/2 ); 
       }
     }; 
 
