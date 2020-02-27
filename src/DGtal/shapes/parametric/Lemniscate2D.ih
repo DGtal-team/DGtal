@@ -37,15 +37,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ----------------------------------
 
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Lemniscate2D<T>::~Lemniscate2D()
-{
-}
-
 template <typename T>
 inline
 DGtal::Lemniscate2D<T>::Lemniscate2D( const double x0, const double y0,
@@ -54,17 +45,15 @@ DGtal::Lemniscate2D<T>::Lemniscate2D( const double x0, const double y0,
 
 template <typename T>
 inline
-DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint2D &aPoint,
+DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint &aPoint,
   const double a ) : myCenter(aPoint), myA(fabs(a))
 {}
 
 template <typename T>
 inline
-DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
-  const double a ) : myA(fabs(a))
-{
-  myCenter = aPoint;
-}
+DGtal::Lemniscate2D<T>::Lemniscate2D(const Lemniscate2D& other ) :
+  myCenter(other.myCenter), myA(other.myA)
+{}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ----------------------
@@ -78,9 +67,9 @@ DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
 template <typename T>
 inline
 double
-DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
+DGtal::Lemniscate2D<T>::parameter( const RealPoint & pp ) const
 {
-  RealPoint2D p( pp-myCenter );
+  RealPoint p( pp-myCenter );
   double angle;
 
   if ( fabs(p[0]) < fabs(p[1]) )
@@ -107,13 +96,13 @@ DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
  */
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealPoint2D
+typename DGtal::Lemniscate2D<T>::RealPoint
 DGtal::Lemniscate2D<T>::x( double t ) const
 {
   const double cost = cos(t);
   const double sint = sin(t);
   const double cos2t = pow(cost,2);
-  RealPoint2D c( myA * sint / (1. + cos2t),
+  RealPoint c( myA * sint / (1. + cos2t),
                  myA * sint * cost / (1. + cos2t) );
   c += myCenter;
   return c;
@@ -128,14 +117,14 @@ DGtal::Lemniscate2D<T>::x( double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealVector2D
+typename DGtal::Lemniscate2D<T>::RealVector
 DGtal::Lemniscate2D<T>::xp( const double t ) const
 {
   const double cost = cos(t);
   const double cos2t = pow(cost,2);
   const double sin2t = pow(sin(t),2);
 
-  RealVector2D c(
+  RealVector c(
     myA * (cost + 2*sin2t*cost+pow(cost,3)) / pow(1+cos2t,2),
     myA * (pow(cost,4) + cos2t - sin2t +
                          sin2t * cos2t)  / pow(1+cos2t,2) );
@@ -144,7 +133,7 @@ DGtal::Lemniscate2D<T>::xp( const double t ) const
 
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealVector2D
+typename DGtal::Lemniscate2D<T>::RealVector
 DGtal::Lemniscate2D<T>::xpp( const double t ) const
 {
   const double cost = cos(t);
@@ -152,7 +141,7 @@ DGtal::Lemniscate2D<T>::xpp( const double t ) const
   const double sint = sin(t);
   const double sin3t = pow(sint,3);
 
-  RealVector2D c(
+  RealVector c(
     myA * ( 4 * sin3t * cos2t +
             6 * sin3t * pow(cost,4) +
             3 * sint * cos2t -

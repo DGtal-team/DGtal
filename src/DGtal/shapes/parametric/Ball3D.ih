@@ -42,15 +42,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-typedef std::pair<double,double> AngularCoordinates;
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Ball3D<T>::~Ball3D()
-{
-}
 
 template <typename T>
 inline
@@ -65,6 +56,11 @@ DGtal::Ball3D<T>::Ball3D(const RealPoint &aPoint, const double radius):
   myRadius(radius), myCenter(aPoint)
 {}
 
+template <typename T>
+inline
+DGtal::Ball3D<T>::Ball3D(const Ball3D& other):
+  myCenter(other.myCenter), myRadius(other.myRadius)
+{}
 
 /////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ------------------

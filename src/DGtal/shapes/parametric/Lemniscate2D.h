@@ -64,14 +64,14 @@ namespace DGtal
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point2D;
-    typedef typename Space::RealPoint RealPoint2D;
-    typedef typename Space::RealVector RealVector2D;
+    typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealVector RealVector;
 
     /**
-     * Destructor.
+     * Constructor.
+     * Forbidden by default.
      */
-    ~Lemniscate2D();
+    Lemniscate2D() = delete;
 
     /**
      * Constructor.
@@ -90,15 +90,27 @@ namespace DGtal
       * @param aPoint the lemniscate center
       * @param a      semi-axis length along x-axis
       */
-    Lemniscate2D( const RealPoint2D &aPoint, const double a );
+    Lemniscate2D( const RealPoint& aPoint, const double a );
 
-     /**
-      * Constructor.
-     * The absolute value of parameter `a` is used.
-      * @param aPoint the lemniscate center
-      * @param a      semi-axis length along x-axis
-      */
-    Lemniscate2D( const Point2D &aPoint, const double a );
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+     Lemniscate2D( const Lemniscate2D& other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    Lemniscate2D& operator=( const Lemniscate2D& other ) = delete;
+
+    /**
+     * Destructor.
+     */
+    ~Lemniscate2D() = default;
+
 
 
    // ------------- Implementation of 'StarShaped' services ------------------
@@ -108,24 +120,24 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    RealPoint2D getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return RealPoint2D(-myA - myCenter[0] , -myA * .5 - myCenter[1] );
+      return RealPoint(-myA - myCenter[0] , -myA * .5 - myCenter[1] );
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    RealPoint2D getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return RealPoint2D( myA - myCenter[0] , myA * .5 - myCenter[1]);
+      return RealPoint( myA - myCenter[0] , myA * .5 - myCenter[1]);
     }
 
     /**
      * @return the center of the star-shaped object.
      */
-    RealPoint2D center() const
+    RealPoint center() const
     {
       return myCenter;
     }
@@ -135,7 +147,7 @@ namespace DGtal
      * @param newCenter the new center position
      */
     inline
-    void moveTo( const RealPoint2D& newCenter )
+    void moveTo( const RealPoint& newCenter )
     {
       myCenter = newCenter;
     }
@@ -146,7 +158,7 @@ namespace DGtal
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    double parameter( const RealPoint2D & p ) const;
+    double parameter( const RealPoint & p ) const;
 
 
     /**
@@ -155,7 +167,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    RealPoint2D x( const double t ) const;
+    RealPoint x( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -163,14 +175,14 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    RealVector2D xp( const double t ) const;
+    RealVector xp( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    RealVector2D xpp( const double t ) const;
+    RealVector xpp( const double t ) const;
 
 
     // ------------------------- data -----------------------------------------
@@ -179,7 +191,7 @@ namespace DGtal
     /**
      * Center of the circle.
      */
-    RealPoint2D myCenter;
+    RealPoint myCenter;
 
     /**
      * Semi-axis length along x-axis
@@ -201,36 +213,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Lemniscate2D();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //  Lemniscate2D ( const Lemniscate2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Lemniscate2D & operator= ( const Lemniscate2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class Lemniscate2D
 
