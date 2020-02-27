@@ -59,10 +59,11 @@ bool testDigitalShapesDecorator()
 
   trace.beginBlock ( "Testing Unary operation on digital shapes ..." );
 
-  typedef Ball2D< Z2i::Space > ShapeA;
-  typedef GaussDigitizer< Z2i::Space, ShapeA > MyGaussDigitizerA;
+  typedef Z2i::Space Space;
+  typedef Ball2D< Space > ShapeA;
+  typedef GaussDigitizer< Space, ShapeA > MyGaussDigitizerA;
 
-  typedef ShapeA::Point Point;
+  typedef Space::Point Point;
 
   double h = 0.5;
 

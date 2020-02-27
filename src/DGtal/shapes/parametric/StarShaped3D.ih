@@ -241,17 +241,6 @@ DGtal::StarShaped3D<TSpace>::surfacelength( AngularCoordinates t1, AngularCoordi
   return l;
 }
 
-
-
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::StarShaped3D<T>::~StarShaped3D()
-{
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

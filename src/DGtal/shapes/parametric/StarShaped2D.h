@@ -76,19 +76,32 @@ namespace DGtal
 
   public:
     typedef TSpace Space;
-    typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
 
    /**
      * Constructor.
      */
-    StarShaped2D()
-    {}
+    StarShaped2D() = default;
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    StarShaped2D ( const StarShaped2D & other ) = delete;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    StarShaped2D & operator= ( const StarShaped2D & other ) = delete;
 
     /**
      * Destructor.
      */
-    ~StarShaped2D();
+    virtual ~StarShaped2D() = default;
 
     // ------------------------- Implemented services -------------------------
   public:
@@ -242,40 +255,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    //StarShaped2D();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //StarShaped2D ( const StarShaped2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    StarShaped2D & operator= ( const StarShaped2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class StarShaped2D
 

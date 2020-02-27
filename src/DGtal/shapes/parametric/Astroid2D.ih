@@ -44,15 +44,6 @@ bool isAlmostEqual( T x, T y )
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ----------------------------------
 
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Astroid2D<T>::~Astroid2D()
-{
-}
-
 template <typename T>
 inline
 DGtal::Astroid2D<T>::Astroid2D( const double x0, const double y0,
@@ -61,17 +52,15 @@ DGtal::Astroid2D<T>::Astroid2D( const double x0, const double y0,
 
 template <typename T>
 inline
-DGtal::Astroid2D<T>::Astroid2D( const RealPoint2D &aPoint,
+DGtal::Astroid2D<T>::Astroid2D( const RealPoint &aPoint,
   const double a, const double b ) : myCenter(aPoint), myA(fabs(a)), myB(fabs(b))
 {}
 
 template <typename T>
 inline
-DGtal::Astroid2D<T>::Astroid2D( const Point2D &aPoint,
-  const double a, const double b ) : myA(fabs(a)), myB(fabs(b))
-{
-  myCenter = aPoint;
-}
+DGtal::Astroid2D<T>::Astroid2D( const Astroid2D& other ) :
+  myCenter(other.myCenter), myA(other.myA), myB(other.myB)
+{}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ----------------------
@@ -85,9 +74,9 @@ DGtal::Astroid2D<T>::Astroid2D( const Point2D &aPoint,
 template <typename T>
 inline
 double
-DGtal::Astroid2D<T>::parameter( const RealPoint2D & pp ) const
+DGtal::Astroid2D<T>::parameter( const RealPoint & pp ) const
 {
-  RealPoint2D p( pp - myCenter );
+  RealPoint p( pp - myCenter );
   double angle = 0.;
 
   if ( isAlmostEqual(p[0],0.) )
@@ -129,10 +118,10 @@ DGtal::Astroid2D<T>::parameter( const RealPoint2D & pp ) const
  */
 template <typename T>
 inline
-typename DGtal::Astroid2D<T>::RealPoint2D
+typename DGtal::Astroid2D<T>::RealPoint
 DGtal::Astroid2D<T>::x( double t ) const
 {
-  RealPoint2D c( myA*pow(cos(t),3), myB*pow(sin(t),3) );
+  RealPoint c( myA*pow(cos(t),3), myB*pow(sin(t),3) );
   c += myCenter;
   return c;
 }
@@ -146,21 +135,21 @@ DGtal::Astroid2D<T>::x( double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Astroid2D<T>::RealVector2D
+typename DGtal::Astroid2D<T>::RealVector
 DGtal::Astroid2D<T>::xp( const double t ) const
 {
 
-  RealVector2D c( myA * 3*(-sin(t))*pow(cos(t),2),
+  RealVector c( myA * 3*(-sin(t))*pow(cos(t),2),
                   myB * 3*cos(t)*pow(sin(t),2) );
   return c;
 }
 
 template <typename T>
 inline
-typename DGtal::Astroid2D<T>::RealVector2D
+typename DGtal::Astroid2D<T>::RealVector
 DGtal::Astroid2D<T>::xpp( const double t ) const
 {
-  RealVector2D c( -myA * 3*pow(cos(t),3)+6*pow(sin(t),2)*cos(t),
+  RealVector c( -myA * 3*pow(cos(t),3)+6*pow(sin(t),2)*cos(t),
                    myB * (6*pow(cos(t),2)*sin(t) - 3*pow(sin(t),3)) );
   return c;
 }

@@ -79,13 +79,20 @@ namespace DGtal
     /**
      * Constructor.
      */
-    StarShaped3D()
-    {}
+    StarShaped3D() = default;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    StarShaped3D & operator= ( const StarShaped3D & other ) = delete;
 
     /**
      * Destructor.
      */
-    ~StarShaped3D();
+    virtual ~StarShaped3D() = default;
 
     // ------------------------- Implemented services -------------------------
   public:
@@ -146,7 +153,7 @@ namespace DGtal
      *
      * @return the vector (gradf(M).
      */
-    virtual RealPoint gradient( const AngularCoordinates t) const = 0;
+    virtual RealPoint gradient( const AngularCoordinates t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -154,9 +161,7 @@ namespace DGtal
      *
      * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
      */
-    virtual RealPoint rt( const AngularCoordinates t) const = 0;
-
-
+    virtual RealPoint rt( const AngularCoordinates t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -164,8 +169,7 @@ namespace DGtal
      *
      * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
      */
-    virtual RealPoint rp( const AngularCoordinates t) const = 0;
-
+    virtual RealPoint rp( const AngularCoordinates t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -174,9 +178,7 @@ namespace DGtal
      * @return the vector (rtt(M)) wich is second the partial
      * derivative with respect to Teta(twice).
      */
-    virtual RealPoint rtt( const AngularCoordinates t) const = 0;
-
-
+    virtual RealPoint rtt( const AngularCoordinates t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -185,7 +187,7 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Phi.
      */
-    virtual RealPoint rpp( const AngularCoordinates t) const = 0;
+    virtual RealPoint rpp( const AngularCoordinates t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -194,10 +196,7 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Teta then Phi.
      */
-    virtual RealPoint rtp( const AngularCoordinates t) const = 0;
-
-
-
+    virtual RealPoint rtp( const AngularCoordinates t ) const = 0;
 
     // ------------------------- star-shaped services -------------------------
   public:
@@ -209,8 +208,7 @@ namespace DGtal
      *
      * @return the orientation of the point (<0 means inside, ...)
      */
-    virtual Orientation orientation( const RealPoint &p) const;
-
+    virtual Orientation orientation( const RealPoint &p ) const;
 
     /*
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -222,9 +220,6 @@ namespace DGtal
     /*
       virtual RealPoint tangent( AngularCoordinates t ) const;
     */
-
-
-
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -243,7 +238,7 @@ namespace DGtal
      * is convex, negative is concave when shape is to the left and
      * the shape boundary is followed counterclockwise.
      */
-    virtual double gaussianCurvature( AngularCoordinates t) const;
+    virtual double gaussianCurvature( AngularCoordinates t ) const;
 
 
     /**
@@ -254,7 +249,7 @@ namespace DGtal
      * is convex, negative is concave when shape is to the left and
      * the shape boundary is followed counterclockwise.
      */
-    virtual double meanCurvature( AngularCoordinates t) const;
+    virtual double meanCurvature( AngularCoordinates t ) const;
 
 
     /**
@@ -295,40 +290,13 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    //StarShaped3D();
-
-  private:
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    StarShaped3D & operator= ( const StarShaped3D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class StarShaped3D
 
