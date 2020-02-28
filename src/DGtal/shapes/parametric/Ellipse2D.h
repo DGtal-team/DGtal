@@ -63,7 +63,7 @@ namespace DGtal
   template <typename TSpace>
   class Ellipse2D final:  public StarShaped2D<TSpace>
   {
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
   public:
 
     typedef TSpace Space;
@@ -125,7 +125,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return RealPoint(myCenter[0] - myAxis1, myCenter[1] - myAxis1);
+      return myCenter - myAxis1;
     }
 
     /**
@@ -134,7 +134,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint(myCenter[0] + myAxis1, myCenter[1] + myAxis1);
+      return myCenter + myAxis1;
     }
 
     /**
@@ -188,7 +188,7 @@ namespace DGtal
     RealVector xpp( const double t ) const;
 
 
-    // ------------------------- data ----------------------------
+  // ------------------------- data ----------------------------
   private:
 
     /**
@@ -212,7 +212,7 @@ namespace DGtal
      */
     double myTheta;
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
   public:
 
     /**
@@ -226,6 +226,19 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+  // ------------------------- Hidden services ------------------------------
+  private:
+
+    /**
+     * Equality test using relative tolerance.
+     */
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class Ellipse2D
 

@@ -30,16 +30,12 @@
 #include <cstdlib>
 ///////////////////////////////////////////////////////////////////////////////
 
+#define ASTROID_3_PI_2 (3. * M_PI_2)
+#define ASTROID_2_PI   (2. * M_PI)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
-template <typename T>
-inline
-bool isAlmostEqual( T x, T y )
-{
-  return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ----------------------------------
@@ -76,33 +72,18 @@ inline
 double
 DGtal::Astroid2D<T>::parameter( const RealPoint & pp ) const
 {
-  RealPoint p( pp - myCenter );
+  const RealPoint p( pp - myCenter );
   double angle = 0.;
 
   if ( isAlmostEqual(p[0],0.) )
-  {
-    if  (p[1] > 0. )
-      angle = M_PI_2;
-    else
-      angle = 3. * M_PI_2;
-  }
+      angle = p[1] > 0. ? M_PI_2 : ASTROID_3_PI_2;
   else if ( isAlmostEqual(p[1],0.) )
-  {
-    if ( p[0] > 0. )
-      angle = 0.;
-    else
-      angle = M_PI;
-  }
+      angle = p[0] > 0. ? 0. : M_PI;
   else if ( ! isAlmostEqual(myB,0.) )
   {
     if( p[1]/p[0] < 0. )
-    {
-      angle = atan(-pow(-(myA*p[1])/(myB*p[0]) , 1/3.));
-      if ( p[0] > 0. )
-        angle += 2*M_PI;
-      else
-        angle += M_PI;
-    }
+      angle = atan(-pow(-(myA*p[1])/(myB*p[0]) , 1/3.))
+            + (p[0] > 0. ? ASTROID_2_PI : M_PI);
     else
       angle = atan(pow(( myA*p[1])/(myB*p[0]) , 1/3.));
   }
@@ -119,11 +100,9 @@ DGtal::Astroid2D<T>::parameter( const RealPoint & pp ) const
 template <typename T>
 inline
 typename DGtal::Astroid2D<T>::RealPoint
-DGtal::Astroid2D<T>::x( double t ) const
+DGtal::Astroid2D<T>::x( const double t ) const
 {
-  RealPoint c( myA*pow(cos(t),3), myB*pow(sin(t),3) );
-  c += myCenter;
-  return c;
+  return RealPoint( myA*pow(cos(t),3), myB*pow(sin(t),3) ) + myCenter;
 }
 
 
@@ -139,9 +118,8 @@ typename DGtal::Astroid2D<T>::RealVector
 DGtal::Astroid2D<T>::xp( const double t ) const
 {
 
-  RealVector c( myA * 3*(-sin(t))*pow(cos(t),2),
-                  myB * 3*cos(t)*pow(sin(t),2) );
-  return c;
+  return RealVector( myA * 3*(-sin(t))*pow(cos(t),2),
+                     myB * 3*cos(t)*pow(sin(t),2) );
 }
 
 template <typename T>
@@ -149,9 +127,8 @@ inline
 typename DGtal::Astroid2D<T>::RealVector
 DGtal::Astroid2D<T>::xpp( const double t ) const
 {
-  RealVector c( -myA * 3*pow(cos(t),3)+6*pow(sin(t),2)*cos(t),
-                   myB * (6*pow(cos(t),2)*sin(t) - 3*pow(sin(t),3)) );
-  return c;
+  return RealVector( -myA * 3*pow(cos(t),3) + 6*pow(sin(t),2)*cos(t),
+                      myB * (6*pow(cos(t),2)*sin(t) - 3*pow(sin(t),3)) );
 }
 
 
@@ -167,7 +144,9 @@ inline
 void
 DGtal::Astroid2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Astroid2D] center= "<<myCenter<<" a="<<myA<<" b="<<myB;
+  out << "[Astroid2D] center= " << myCenter
+      << " a=" << myA
+      << " b=" << myB;
 }
 
 /**

@@ -60,7 +60,7 @@ namespace DGtal
   template <typename TSpace>
   class Lemniscate2D : public DGtal::StarShaped2D<TSpace>
   {
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
   public:
 
     typedef TSpace Space;
@@ -80,7 +80,7 @@ namespace DGtal
      * @param y0 the y-coordinate of the lemniscate center.
      * @param a  semi-axis length along x-axis
      */
-   Lemniscate2D( const double x0, const double y0,
+    Lemniscate2D( const double x0, const double y0,
                  const double a );
 
      /**
@@ -111,10 +111,8 @@ namespace DGtal
      */
     ~Lemniscate2D() = default;
 
-
-
-   // ------------- Implementation of 'StarShaped' services ------------------
-    public:
+  // ------------- Implementation of 'StarShaped' services ------------------
+  public:
 
     /**
      * @return the lower bound of the shape bounding box.
@@ -122,7 +120,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return RealPoint(-myA - myCenter[0] , -myA * .5 - myCenter[1] );
+      return RealPoint( myCenter[0] - myA, myCenter[1] - myA * 0.5 );
     }
 
     /**
@@ -131,7 +129,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint( myA - myCenter[0] , myA * .5 - myCenter[1]);
+      return RealPoint( myCenter[0] + myA, myCenter[1] + myA * 0.5 );
     }
 
     /**
@@ -159,7 +157,6 @@ namespace DGtal
      * this point for the shape.
      */
     double parameter( const RealPoint & p ) const;
-
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -198,7 +195,7 @@ namespace DGtal
      */
     double myA;
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
   public:
 
     /**
@@ -213,6 +210,19 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+  
+  // ------------------------- Hidden services ------------------------------
+  private:
+
+    /**
+     * Equality test using relative tolerance.
+     */
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class Lemniscate2D
 
