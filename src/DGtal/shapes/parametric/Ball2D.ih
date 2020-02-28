@@ -31,6 +31,8 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+#define BALL2D_2_PI (2. * M_PI)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,15 +71,10 @@ DGtal::Ball2D<T>::Ball2D(const Ball2D &other):
 template <typename T>
 inline
 double
-DGtal::Ball2D<T>::parameter( const RealPoint & pp ) const
+DGtal::Ball2D<T>::parameter( const RealPoint & p ) const
 {
-  RealPoint p( pp );
-  p -= myCenter;
-
-  double angle = atan2( p[1], p[0] );
-  angle = ( angle < 0.0 ) ? angle + 2*M_PI : angle;
-
-  return angle;
+  const double angle = atan2(p[1]-myCenter[1], p[0]-myCenter[0]);
+  return angle < 0. ? angle + BALL2D_2_PI : angle;
 }
 
 /**
@@ -89,11 +86,9 @@ DGtal::Ball2D<T>::parameter( const RealPoint & pp ) const
 template <typename T>
 inline
 typename DGtal::Ball2D<T>::RealPoint 
-DGtal::Ball2D<T>::x( double t ) const
+DGtal::Ball2D<T>::x( const double t ) const
 {
-  RealPoint c( myRadius*cos(t), myRadius*sin(t) );
-  c += myCenter;
-  return c;
+  return RealPoint( myRadius*cos(t)+myCenter[0], myRadius*sin(t)+myCenter[1] );
 }
 
 
@@ -108,8 +103,7 @@ inline
 typename DGtal::Ball2D<T>::RealVector 
 DGtal::Ball2D<T>::xp( const double t ) const
 {
-  RealVector c( -myRadius*sin(t), myRadius*cos(t) );
-  return c;
+  return RealVector( -myRadius*sin(t), myRadius*cos(t) );
 }
 
 /**
@@ -122,8 +116,7 @@ inline
 typename DGtal::Ball2D<T>::RealVector
 DGtal::Ball2D<T>::xpp( const double t ) const
 {
-  RealVector c( -myRadius*cos(t), -myRadius*sin(t) );
-  return c;
+  return RealVector( -myRadius*cos(t), -myRadius*sin(t) );
 }
 
 
@@ -139,7 +132,8 @@ inline
 void
 DGtal::Ball2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Ball2D] center= "<<myCenter<<" radius="<<myRadius;
+  out << "[Ball2D] center= " << myCenter
+      << " radius=" << myRadius;
 }
 
 /**

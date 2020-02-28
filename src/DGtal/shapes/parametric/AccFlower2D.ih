@@ -33,6 +33,9 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+#define FLOWER_PI_SQUARE (M_PI * M_PI)
+#define FLOWER_2_PI      (2. * M_PI)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,7 +51,7 @@ DGtal::AccFlower2D<T>::AccFlower2D(const double x0, const double y0,
   :  myCenter(x0,y0), myRadius(radius), myVarRadius(smallRadius), 
      myK(k), myPhi(phi)
 {
-  myKp = 2 * myK/ ( M_PI * M_PI );
+  myKp = 2 * myK / FLOWER_PI_SQUARE;
 }
 
 
@@ -60,7 +63,7 @@ DGtal::AccFlower2D<T>::AccFlower2D(const RealPoint &aPoint, const double radius,
   : myCenter(aPoint), myRadius(radius), myVarRadius(smallRadius), 
     myK(k), myPhi(phi)
 {
-  myKp = 2 * myK/ ( M_PI * M_PI );
+  myKp = 2 * myK/ FLOWER_PI_SQUARE;
 }
 
 template <typename T>
@@ -82,15 +85,13 @@ DGtal::AccFlower2D<T>::AccFlower2D(const AccFlower2D& other)
 template <typename T>
 inline
 double
-DGtal::AccFlower2D<T>::parameter( const RealPoint & pp ) const
+DGtal::AccFlower2D<T>::parameter( const RealPoint& pp ) const
 {
-  RealPoint p( pp );
-  p -= myCenter;
+  RealPoint p = pp - myCenter;
 
-  double angle = atan2( p[1], p[0] );
-  angle = ( angle < 0.0 ) ? angle + 2 * M_PI : angle;
+  const double angle = atan2( p[1], p[0] );
 
-  return angle;
+  return ( angle < 0. ) ? angle + FLOWER_2_PI : angle;
 }
 
 /**
@@ -102,17 +103,14 @@ DGtal::AccFlower2D<T>::parameter( const RealPoint & pp ) const
 template <typename T>
 inline
 typename DGtal::AccFlower2D<T>::RealPoint 
-DGtal::AccFlower2D<T>::x(const double t ) const
+DGtal::AccFlower2D<T>::x( const double tt ) const
 {
-  double tt =t;
-  while ( tt >= M_PI ) tt -= 2 * M_PI; 
-  while ( tt < -M_PI ) tt += 2 * M_PI;
-  
-  double ktn = myKp * tt * tt * tt;
-  double r = myRadius + myVarRadius * cos( ktn );
-  RealPoint c( r * cos( tt ), r * sin( tt ) );
-  c += myCenter;
-  return c;
+  double t = tt;
+  while ( t >= M_PI ) t -= FLOWER_2_PI; 
+  while ( t < -M_PI ) t += FLOWER_2_PI;
+
+  const double r = myRadius + myVarRadius * cos( myKp * t * t * t );
+  return RealPoint( r * cos( t ), r * sin( t ) ) + myCenter;
 }
 
 
@@ -127,18 +125,19 @@ inline
 typename DGtal::AccFlower2D<T>::RealVector 
 DGtal::AccFlower2D<T>::xp( const double tt ) const
 {
-  double t= tt;
-  while ( t >= M_PI ) t -= 2 * M_PI; 
-  while ( t < -M_PI ) t += 2 * M_PI;
+  double t = tt;
+  while ( t >= M_PI ) t -= FLOWER_2_PI;
+  while ( t < -M_PI ) t += FLOWER_2_PI;
   
-  double ktn = myKp * t * t * t;
-  double ktnp = 3 * myKp * t * t ;
+  const double ktn = myKp * t * t * t;
+  const double ktnp = 3 * myKp * t * t ;
 
-  double r = myRadius + myVarRadius * cos( ktn );
-  double rp = - myVarRadius * sin( ktn ) * ktnp;
-  RealPoint c( rp * cos( t ) - r * sin( t ),
-     rp * sin( t ) + r * cos( t ) );
-  return c;
+  const double r = myRadius + myVarRadius * cos( ktn );
+  const double rp = - myVarRadius * sin( ktn ) * ktnp;
+  return RealPoint(
+    rp * cos( t ) - r * sin( t ),
+    rp * sin( t ) + r * cos( t )
+  );
 }
 
 /**
@@ -151,22 +150,23 @@ inline
 typename DGtal::AccFlower2D<T>::RealVector
 DGtal::AccFlower2D<T>::xpp( const double tt ) const
 {
-  double t=tt;
-  while ( t >= M_PI ) t -= 2 * M_PI; 
-  while ( t < -M_PI ) t += 2 * M_PI;
+  double t = tt;
+  while ( t >= M_PI ) t -= FLOWER_2_PI;
+  while ( t < -M_PI ) t += FLOWER_2_PI;
   
-  double ktn = myKp * t * t * t;
-  double ktnp = 3 * myKp * t * t;
-  double ktnpp = 6 * myKp * t;
+  const double ktn = myKp * t * t * t;
+  const double ktnp = 3 * myKp * t * t;
+  const double ktnpp = 6 * myKp * t;
   
-  double r = myRadius + myVarRadius * cos( ktn );
-  double rp = - myVarRadius * sin( ktn ) * ktnp;
-  double rpp = - myVarRadius * cos( ktn ) * ktnp * ktnp - 
+  const double r = myRadius + myVarRadius * cos( ktn );
+  const double rp = - myVarRadius * sin( ktn ) * ktnp;
+  const double rpp = - myVarRadius * cos( ktn ) * ktnp * ktnp - 
     myVarRadius * sin( ktn ) * ktnpp;
   
-  RealPoint c( rpp * cos( t ) - 2 * rp * sin( t ) - r * cos( t ),
-     rpp * sin( t ) + 2 * rp * cos( t ) - r * sin( t ) );
-  return c;
+  return RealPoint(
+    rpp * cos( t ) - 2 * rp * sin( t ) - r * cos( t ),
+    rpp * sin( t ) + 2 * rp * cos( t ) - r * sin( t )
+  );
 }
 
 
@@ -182,8 +182,11 @@ inline
 void
 DGtal::AccFlower2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[AccFlower2D] center= "<<myCenter<<" radius="<<myRadius<<" smallradius="<<myVarRadius
-      <<" myK="<<myK<<" phase-shift="<<myPhi;
+  out << "[AccFlower2D] center= " << myCenter
+      << " radius=" << myRadius
+      << " smallradius=" << myVarRadius
+      <<" myK=" << myK
+      << " phase-shift=" << myPhi;
 }
 
 /**

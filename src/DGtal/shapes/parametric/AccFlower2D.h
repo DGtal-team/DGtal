@@ -133,8 +133,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return RealPoint(myCenter[0] - myRadius - myVarRadius,
-                         myCenter[1] - myRadius - myVarRadius);
+      return myCenter - (myRadius + myVarRadius);
     }
 
     /**
@@ -143,8 +142,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint(myCenter[0] + myRadius + myVarRadius,
-                         myCenter[1] + myRadius + myVarRadius);
+      return myCenter + (myRadius + myVarRadius);
     }
 
     /**

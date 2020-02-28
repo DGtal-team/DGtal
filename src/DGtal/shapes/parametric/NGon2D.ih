@@ -33,6 +33,8 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+#define NGON2D_2_PI (2. * M_PI)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,15 +78,10 @@ DGtal::NGon2D<T>::NGon2D(const NGon2D& other):
 template <typename T>
 inline
 double
-DGtal::NGon2D<T>::parameter( const RealPoint & pp ) const
+DGtal::NGon2D<T>::parameter( const RealPoint & p ) const
 {
-  RealPoint p( pp );
-  p -= myCenter;
-
-  double angle = atan2( p[1], p[0] );
-  angle = ( angle < 0.0 ) ? angle + 2 * M_PI : angle;
-
-  return angle;
+  const double angle = atan2( p[1]-myCenter[1], p[0]-myCenter[0] );
+  return angle < 0. ? angle + NGON2D_2_PI : angle;
 }
 
 /**
@@ -96,34 +93,27 @@ DGtal::NGon2D<T>::parameter( const RealPoint & pp ) const
 template <typename T>
 inline
 typename DGtal::NGon2D<T>::RealPoint 
-DGtal::NGon2D<T>::x( double t ) const
+DGtal::NGon2D<T>::x( const double t ) const
 {
-  double angle = t - myPhi;
-  angle = (angle < 0.0) ? angle + 2 * M_PI : angle;
+  const double angle = t - myPhi + (angle < 0.0 ? NGON2D_2_PI : 0.);
 
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
 
-  unsigned int intervale_lower = static_cast<unsigned int>( floor( ( angle ) * myK / (2.0 * M_PI ) ) );
-  unsigned int intervale_upper = intervale_lower == ( myK - 1 ) ? 0 : intervale_lower + 1;
-  double dist = myRadius * cos( M_PI / myK );
-  RealPoint s1 ( myRadius * cos( myPhi + intervale_lower * 2.0 * M_PI / myK ),
-                   myRadius * sin( myPhi + intervale_lower * 2.0 * M_PI / myK ));
-  RealPoint s2 ( myRadius * cos( myPhi + intervale_upper * 2.0 * M_PI / myK ),
-                   myRadius * sin( myPhi + intervale_upper * 2.0 * M_PI / myK ));
-  RealPoint s3 ( s2[0] - s1[0],
-                   s2[1] - s1[1]);
+  const unsigned int intervale_lower = static_cast<unsigned int>( floor( angle * myK / NGON2D_2_PI ) );
+  const unsigned int intervale_upper = intervale_lower == ( myK - 1 ) ? 0 : intervale_lower + 1;
+  const RealPoint s1 ( myRadius * cos( myPhi + intervale_lower * NGON2D_2_PI / myK ),
+                       myRadius * sin( myPhi + intervale_lower * NGON2D_2_PI / myK ));
+  const RealPoint s2 ( myRadius * cos( myPhi + intervale_upper * NGON2D_2_PI / myK ),
+                       myRadius * sin( myPhi + intervale_upper * NGON2D_2_PI / myK ));
 
-  //double line_angle = atan2f( (float)s3[ 1 ], (float)s3[ 0 ]);
-  double line_angle = atan2( s3[1], s3[0] );
+  const double line_angle = atan2( s2[1]-s1[1], s2[0]-s1[0] );
   //line_angle = (line_angle < 0.0) ? angle + 2 * M_PI : line_angle;
+  const double rho = myRadius * cos(M_PI / myK) / cos(t - line_angle - M_PI_2);
 
-  double rho = dist / ( cos(t - line_angle - 0.5 * M_PI) );
-
-  RealPoint c( - rho*cos(t), - rho*sin(t) );
-
-  c += myCenter;
-
-  return c;
+  return RealPoint(
+    -rho * cos(t) + myCenter[0],
+    -rho * sin(t) + myCenter[1]
+  );
 }
 
 
@@ -142,23 +132,20 @@ DGtal::NGon2D<T>::xp( const double t ) const
   // TODO check if angle equals that of a vertex ?
   double angle = t - myPhi; 
   while ( angle < 0.0 )
-    angle += 2.0*M_PI;
+    angle += NGON2D_2_PI;
   
-  unsigned int intervalle_lower = static_cast<unsigned int>( floor( angle * myK / (2.0 * M_PI ) ) );
+  unsigned int intervalle_lower = static_cast<unsigned int>( floor( angle * myK / (NGON2D_2_PI ) ) );
   unsigned int intervalle_upper = intervalle_lower == ( myK -1 ) ? 0 : intervalle_lower+1;
-  //float dist = myRadius*sin ( M_PI / myK );
-  RealPoint s1 ( myRadius*cos(myPhi + intervalle_lower*2.0*M_PI/myK),
-       myRadius*sin(myPhi + intervalle_lower*2.0*M_PI/myK) );
-  RealPoint s2 ( myRadius*cos(myPhi + intervalle_upper*2.0*M_PI/myK),
-       myRadius*sin(myPhi + intervalle_upper*2.0*M_PI/myK) );
-  s2 -= s1;
+
+  const RealPoint s(
+        myRadius*cos(myPhi + intervalle_upper*NGON2D_2_PI/myK)
+      - myRadius*cos(myPhi + intervalle_lower*NGON2D_2_PI/myK),
+        myRadius*sin(myPhi + intervalle_upper*NGON2D_2_PI/myK)
+      - myRadius*sin(myPhi + intervalle_lower*NGON2D_2_PI/myK)
+  );
   
   //normalize
-  double norm = s2.norm();
-  s2[0] /= norm;
-  s2[1] /= norm;
- 
-  return s2;
+  return s / s.norm();
 }
 
 /**
@@ -171,8 +158,7 @@ inline
 typename DGtal::NGon2D<T>::RealVector
 DGtal::NGon2D<T>::xpp( const double /*t*/ ) const
 {
-  RealVector c(0,0);
-  return c;
+  return RealVector(0.,0.);
 }
 
 
@@ -188,8 +174,10 @@ inline
 void
 DGtal::NGon2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[NGon2D] center= "<<myCenter<<" radius="<<myRadius<<" number of sides="<<myK
-      << " phase-shift="<<myPhi;
+  out << "[NGon2D] center= " << myCenter
+      << " radius=" << myRadius
+      << " number of sides=" << myK
+      << " phase-shift=" << myPhi;
 }
 
 /**

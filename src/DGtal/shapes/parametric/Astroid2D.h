@@ -121,7 +121,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return RealPoint(-myA - myCenter[0] , -myB - myCenter[1] );
+      return RealPoint( myCenter[0] - myA, myCenter[1] - myB );
     }
 
     /**
@@ -130,7 +130,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint(myA - myCenter[0] , myB - myCenter[1]);
+      return RealPoint( myCenter[0] + myA, myCenter[1] + myB );
     }
 
     /**
@@ -217,6 +217,19 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+  // ------------------------- Hidden services ------------------------------
+  private:
+
+    /**
+     * Equality test using relative tolerance.
+     */
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class Astroid2D
 

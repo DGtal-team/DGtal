@@ -103,7 +103,7 @@ namespace DGtal
      */
     virtual ~StarShaped2D() = default;
 
-    // ------------------------- Implemented services -------------------------
+  // ------------------------- Implemented services -------------------------
   public:
     /**
      * @return a point p such that 'isInside(p)' returns 'true'.
@@ -113,7 +113,7 @@ namespace DGtal
       return center();
     }
 
-    // ------------------------- Abstract services ----------------------------
+  // ------------------------- Abstract services ----------------------------
   public:
 
     /**
@@ -172,7 +172,7 @@ namespace DGtal
     virtual RealPoint xpp( const double t ) const = 0;
 
 
-    // ------------------------- star-shaped services -------------------------
+  // ------------------------- star-shaped services -------------------------
   public:
 
     /**
@@ -190,7 +190,7 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) made unitary which is the unit
      * tangent to the shape boundary.
      */
-    RealPoint tangent( double t ) const;
+    RealPoint tangent( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -198,7 +198,7 @@ namespace DGtal
      * @return the vector (x''(t),y''(t)) made unitary which is the unit
      * normal to the shape boundary looking inside the shape.
      */
-    RealPoint normal( double t ) const;
+    RealPoint normal( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -207,7 +207,7 @@ namespace DGtal
      * is convex, negative is concave when shape is to the left and
      * the shape boundary is followed counterclockwise.
      */
-    double curvature( double t ) const;
+    double curvature( const double t ) const;
 
     /**
      * @param t1 any angle between 0 and 2*Pi.
@@ -216,7 +216,7 @@ namespace DGtal
      *
      * @return the estimated arclength.
      */
-    double arclength( double t1, double t2, unsigned int nb ) const;
+    double arclength( const double t1, double t2, const unsigned int nb ) const;
 
     /**
      * Return a point on the segment [inner;outer] that is at most \f$\epsilon\f$ from the shape in \f$L_2\f$ norm.
@@ -241,7 +241,7 @@ namespace DGtal
      * */
     RealPoint closestPointWithWitnesses( const RealPoint& p, const RealPoint& left, const RealPoint& right, const int step) const;
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
   public:
 
     /**
@@ -255,6 +255,19 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+  // ------------------------- Hidden services ------------------------------
+  private:
+
+    /**
+     * Equality test using relative tolerance.
+     */
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class StarShaped2D
 
