@@ -1029,10 +1029,10 @@ namespace DGtal
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
       ///   - offset          [   5.0]: the digital dilation of the digital space,
-      ///                       useful when you process shapes and that you add noise.
+      ///                       useful when you process shapes adding some noise.
       ///   - closed          [     1]: specifies if the Khalimsky space is closed (!=0) or not (==0)
       ///
-      /// @return the vector containing the estimated Gaussian curvatures, in the
+      /// @return the vector containing the estimated principal curvatures and directions, in the
       /// same order as \a surfels.
       ///
       /// @note It is better to have surfels in a specific order, as
