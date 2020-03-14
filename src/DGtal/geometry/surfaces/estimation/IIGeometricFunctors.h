@@ -492,10 +492,10 @@ namespace DGtal {
           ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
                   && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
-          Quantity res =  std::make_tuple (d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
-                                           d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r,
-                                           eigenVectors.column( Space::dimension - 1 ),
-                                           eigenVectors.column( Space::dimension - 2 ));
+          Quantity res(d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
+                       d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r,
+                       eigenVectors.column( Space::dimension - 1 ),
+                       eigenVectors.column( Space::dimension - 2 ));
           return res;
         }
 
