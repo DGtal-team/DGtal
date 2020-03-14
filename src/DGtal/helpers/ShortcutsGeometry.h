@@ -981,7 +981,6 @@ namespace DGtal
           return mc_estimations;
         }
 
-      
       /// Given a digital shape \a bimage, a sequence of \a surfels,
       /// and some parameters \a vm, returns the principal curvatures and
       /// directions using an Integral
@@ -1000,7 +999,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note The function is faster when surfels are in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static CurvatureTensorQuantities
       getIIPrincipalCurvaturesAndDirections( CountedPtr<BinaryImage> bimage,
                                           const SurfelRange&      surfels,
