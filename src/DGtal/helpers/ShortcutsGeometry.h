@@ -1071,7 +1071,7 @@ namespace DGtal
         ///  in the same order as \a surfels.
         ///
         /// @note The function is faster when surfels are in a specific order, as
-        /// given for instance by a depth-first traversal (@see getSurfelRange)
+        /// given for instance by a depth-first traversal (see @ref getSurfelRange)
         template <typename TPointPredicate>
           static CurvatureTensorQuantities
          getIIPrincipalCurvaturesAndDirections( const TPointPredicate&  shape,
