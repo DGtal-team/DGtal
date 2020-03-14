@@ -445,7 +445,7 @@ namespace DGtal {
       * 'IIPrincipalCurvaturesAndDirectionsFunctor' <p> \brief Aim: A functor
       * Matrix -> std::pair<RealVector,RealVector> that returns the first and
       * the second principal curvature directions by diagonalizing the given
-      * covariance matrix. This functor is valid starting from 3D space.
+      * covariance matrix. This functor is valid only for 3D space.
       * Note that by second we mean the direction with second greatest curvature
       * in absolute value.
       *
