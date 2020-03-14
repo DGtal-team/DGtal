@@ -501,7 +501,7 @@ namespace DGtal {
 
         /**
         * Initializes the functor with the gridstep and the ball
-        * Euclidean radius. Not used for this estimator.
+        * Euclidean radius.
          */
         void init( Component h , Component  r )
         {
