@@ -1011,7 +1011,7 @@ namespace DGtal
         return getIIPrincipalCurvaturesAndDirections( *bimage, K, surfels, params );
       }
 
-      /// Given a digital shape \a bimage, a sequence of \a surfels,
+      /// Given a digital shape \a dshape, a sequence of \a surfels,
       /// and some parameters \a vm, returns the principal curvatures and
       /// directions using an Integral
       /// Invariant (II) estimation at the specified surfels, in the
