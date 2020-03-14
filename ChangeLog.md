@@ -22,7 +22,7 @@
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
-    directions and values). (David Coeurjolly, [#14XX](https://github.com/DGtal-team/DGtal/pull/14xx))
+    directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
