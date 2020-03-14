@@ -190,9 +190,6 @@ namespace DGtal
       typedef GradientColorMap<Scalar>                            ColorMap;
       typedef TickedColorMap<Scalar,ColorMap>                     ZeroTickedColorMap;
     
-      typedef std::tuple< double,double, RealVector,RealVector>   CurvatureTensorQuantity;
-      typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
-
       // ----------------------- Static services --------------------------------------
     public:
 
