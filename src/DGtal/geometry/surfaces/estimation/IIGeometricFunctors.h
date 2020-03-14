@@ -467,7 +467,7 @@ namespace DGtal {
         typedef typename RealVector::Component Component;
         typedef TMatrix Matrix;
         typedef Matrix Argument;
-        typedef std::tuple< double,double, RealVector,RealVector> Quantity;
+        typedef std::tuple<double, double, RealVector, RealVector> Quantity;
         typedef Quantity Value;
 
         BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
