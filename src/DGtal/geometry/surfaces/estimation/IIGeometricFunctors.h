@@ -472,7 +472,7 @@ namespace DGtal {
 
         BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
         BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-        BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
+        BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
          /**
         * Apply operator.
