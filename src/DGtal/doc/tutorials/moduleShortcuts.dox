@@ -502,7 +502,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
-  - ShortcutsGeometry::getIIPrincipalCurvaturesAndDiretions: returns the Integral Invariant (II) principal curvatures values and directions for the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections: returns the Integral Invariant (II) principal curvatures values and directions for the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors
