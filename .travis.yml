@@ -14,12 +14,6 @@ os:
   - linux
   - osx
 
-matrix:
-  fast_finish: true
-  exclude:
-    - os: osx
-      compiler: gcc
-
 cache: apt
 
 ##Deps for linux builds
@@ -57,6 +51,10 @@ script: |
   .travis/check_tests.sh
 
 jobs:
+ fast_finish: true
+ exclude:
+   - os: osx
+     compiler: gcc
  include:
    - stage: "DGtalTools"
      name: "Testing DGtalTools + DGtal with examples"
