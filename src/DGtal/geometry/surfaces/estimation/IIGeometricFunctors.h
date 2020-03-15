@@ -437,91 +437,91 @@ namespace DGtal {
       mutable RealVector eigenValues;
     }; // end of class IIPrincipalDirectionsFunctor
 
-  
-      /////////////////////////////////////////////////////////////////////////////
-      // template class IIPrincipalCurvaturesAndDirectionsFunctor
-      /**
-      * Description of template class
-      * 'IIPrincipalCurvaturesAndDirectionsFunctor' <p> \brief Aim: A functor
-      * Matrix -> std::pair<RealVector,RealVector> that returns the first and
-      * the second principal curvature directions by diagonalizing the given
-      * covariance matrix. This functor is valid only for 3D space.
-      * Note that by second we mean the direction with second greatest curvature
-      * in absolute value.
+
+    /////////////////////////////////////////////////////////////////////////////
+    // template class IIPrincipalCurvaturesAndDirectionsFunctor
+    /**
+    * Description of template class
+    * 'IIPrincipalCurvaturesAndDirectionsFunctor' <p> \brief Aim: A functor
+    * Matrix -> std::pair<RealVector,RealVector> that returns the first and
+    * the second principal curvature directions by diagonalizing the given
+    * covariance matrix. This functor is valid only for 3D space.
+    * Note that by second we mean the direction with second greatest curvature
+    * in absolute value.
+    *
+    * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
+    *
+    * @see IntegralInvariantCovarianceEstimator
+    */
+    template  <typename TSpace,
+               typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension,
+               TSpace::dimension> >
+    class IIPrincipalCurvaturesAndDirectionsFunctor
+    {
+      // ----------------------- Standard services ------------------------------
+    public:
+      typedef IIPrincipalCurvaturesAndDirectionsFunctor<TSpace> Self;
+      typedef TSpace Space;
+      typedef typename Space::RealVector RealVector;
+      typedef typename RealVector::Component Component;
+      typedef TMatrix Matrix;
+      typedef Matrix Argument;
+      typedef std::tuple<double, double, RealVector, RealVector> Quantity;
+      typedef Quantity Value;
+
+      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
+      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
+      BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
+
+       /**
+      * Apply operator.
+      * @param arg any symmetric positive matrix (covariance matrix
       *
-      * @tparam TSpace a model of CSpace, for instance SpaceND.
-      * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
-      *
-      * @see IntegralInvariantCovarianceEstimator
+      * @return the principal curvature values and directions in
+      * a std::tuple.
       */
-      template  <typename TSpace,
-                 typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension,
-                 TSpace::dimension> >
-      class IIPrincipalCurvaturesAndDirectionsFunctor
+      Value operator()( const Argument& arg ) const
       {
-        // ----------------------- Standard services ------------------------------
-      public:
-        typedef IIPrincipalCurvaturesAndDirectionsFunctor<TSpace> Self;
-        typedef TSpace Space;
-        typedef typename Space::RealVector RealVector;
-        typedef typename RealVector::Component Component;
-        typedef TMatrix Matrix;
-        typedef Matrix Argument;
-        typedef std::tuple<double, double, RealVector, RealVector> Quantity;
-        typedef Quantity Value;
+        Argument cp_arg = arg;
+        cp_arg *= dh5;
+        EigenDecomposition<Space::dimension, Component, Matrix>
+          ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
-        BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-        BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
+                && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
-         /**
-        * Apply operator.
-        * @param arg any symmetric positive matrix (covariance matrix
-        *
-        * @return the principal curvature values and directions in
-        * a std::tuple.
-        */
-        Value operator()( const Argument& arg ) const
-        {
-          Argument cp_arg = arg;
-          cp_arg *= dh5;
-          EigenDecomposition<Space::dimension, Component, Matrix>
-            ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
+        Quantity res(d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
+                     d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r,
+                     eigenVectors.column( Space::dimension - 1 ),
+                     eigenVectors.column( Space::dimension - 2 ));
+        return res;
+      }
 
-          ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
-          ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1]))
-                  && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+      /**
+      * Initializes the functor with the gridstep and the ball
+      * Euclidean radius.
+       */
+      void init( Component h , Component  r )
+      {
+        double r3 = r * r * r;
+        double r6 = r3 * r3;
+        d6_PIr6 = 6.0 / ( M_PI * r6 );
+        d8_5r = 8.0 / ( 5.0 * r );
+        double h2 = h * h;
+        dh5 = h2 * h2 * h;
+       }
 
-          Quantity res(d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
-                       d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r,
-                       eigenVectors.column( Space::dimension - 1 ),
-                       eigenVectors.column( Space::dimension - 2 ));
-          return res;
-        }
-
-        /**
-        * Initializes the functor with the gridstep and the ball
-        * Euclidean radius.
-         */
-        void init( Component h , Component  r )
-        {
-          double r3 = r * r * r;
-          double r6 = r3 * r3;
-          d6_PIr6 = 6.0 / ( M_PI * r6 );
-          d8_5r = 8.0 / ( 5.0 * r );
-          double h2 = h * h;
-          dh5 = h2 * h2 * h;
-         }
-        
-      private:
-        double dh5;
-        double d6_PIr6;
-        double d8_5r;
-        /// A data member only used for temporary calculations.
-        mutable Matrix eigenVectors;
-        /// A data member only used for temporary calculations.
-        mutable RealVector eigenValues;
-      }; // end of class IIPrincipalCurvaturesAndDirectionsFunctor
+    private:
+      double dh5;
+      double d6_PIr6;
+      double d8_5r;
+      /// A data member only used for temporary calculations.
+      mutable Matrix eigenVectors;
+      /// A data member only used for temporary calculations.
+      mutable RealVector eigenValues;
+    }; // end of class IIPrincipalCurvaturesAndDirectionsFunctor
 
     /////////////////////////////////////////////////////////////////////////////
     // template class IICurvatureFunctor
