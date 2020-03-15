@@ -14,12 +14,6 @@ os:
   - linux
   - osx
 
-matrix:
-  fast_finish: true
-  exclude:
-    - os: osx
-      compiler: gcc
-
 cache: apt
 
 ##Deps for linux builds
@@ -57,6 +51,10 @@ script: |
   .travis/check_tests.sh
 
 jobs:
+ fast_finish: true
+ exclude:
+   - os: osx
+     compiler: gcc
  include:
    - stage: "DGtalTools"
      name: "Testing DGtalTools + DGtal with examples"
@@ -73,10 +71,10 @@ jobs:
        .travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
-       skip-cleanup: true
-       github-token: $GITHUB_TOKEN
-       keep-history: true
+       token: $GITHUB_TOKEN
+       keep_history: true
        repo: DGtal-team/doc-nightly
-       target-branch: master
+       target_branch: master
        verbose: true
-       local-dir: "$TRAVIS_BUILD_DIR/build/html"
+       local_dir: "$TRAVIS_BUILD_DIR/build/html"
+       strategy: git
