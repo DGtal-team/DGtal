@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <vector>
+
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
@@ -64,11 +66,11 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
 
   //Computing some differential quantities
   params("r-radius", 3.0);
-  
+
   //We compute the curvature tensor, the mean and the Gaussian curvature
   auto Tcurv     = SHG3::getIIPrincipalCurvaturesAndDirections(binary_image, surfels, params);
   auto Kcurv     = SHG3::getIIGaussianCurvatures( binary_image, surfels, params);
-  
+
   std::vector<double> k1,k2,G;
   for(auto &result: Tcurv)
   {
@@ -76,10 +78,10 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
     k2.push_back( std::get<1>(result) );
     G.push_back( ( std::get<0>(result) * std::get<1>(result)) );
   }
-  
+
   SECTION("Testing that mean/Gaussian/tensor curvature shortucut values match")
   {
-    for(auto i=0; i < G.size(); ++i)
+    for(std::size_t i = 0; i < G.size(); ++i)
      REQUIRE( Kcurv[i] == Approx( G[i] ) );
   }
 }
