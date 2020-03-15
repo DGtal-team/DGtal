@@ -30,6 +30,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <tuple>
+
 #include "DGtal/base/Common.h"
 
  /// Shape
@@ -172,6 +174,10 @@ bool testPrincipalCurvatures3d( double h )
   typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
   typedef MyIICurvatureFunctor::Value Value;
 
+  typedef functors::IIPrincipalCurvaturesAndDirectionsFunctor<Z3i::Space> MyIICurvatureFunctorTensor;
+  typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctorTensor > MyIICurvatureEstimatorTensor;
+  typedef MyIICurvatureFunctorTensor::Value ValueTensor;
+
   double re = 5.0;
   double radius = 5.0;
 
@@ -203,12 +209,18 @@ bool testPrincipalCurvatures3d( double h )
 
   MyIICurvatureFunctor curvatureFunctor;
   curvatureFunctor.init( h, re );
-
   MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
   curvatureEstimator.attach( K, dshape );
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
 
+  MyIICurvatureFunctorTensor curvatureFunctorTensor;
+  curvatureFunctorTensor.init( h, re );
+  MyIICurvatureEstimatorTensor curvatureEstimatorTensor( curvatureFunctorTensor );
+  curvatureEstimatorTensor.attach( K, dshape );
+  curvatureEstimatorTensor.setParams( re/h );
+  curvatureEstimatorTensor.init( h, ibegin, iend );
+  
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator evaluation ...");
@@ -216,9 +228,21 @@ bool testPrincipalCurvatures3d( double h )
   std::vector< Value > results;
   std::back_insert_iterator< std::vector< Value > > resultsIt( results );
   curvatureEstimator.eval( ibegin, iend, resultsIt );
-
   trace.endBlock();
 
+  
+  
+  trace.beginBlock( "Checking CurvaturesAndDirections functor");
+  Value val = curvatureEstimator.eval( surf.begin() );
+  ValueTensor valTensor = curvatureEstimatorTensor.eval( surf.begin() );
+  bool ok = (val.first ==  std::get<0>(valTensor));
+  ok &= (val.second ==  std::get<1>(valTensor));
+  if (!ok)
+    trace.error()<< "Error comparing principal curvatures between two different functors."<<std::endl;
+  
+  trace.endBlock();
+
+  
   trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
   unsigned int error_order = 0;
