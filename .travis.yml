@@ -71,7 +71,7 @@ jobs:
        .travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
-       github_token: $GITHUB_TOKEN
+       token: $GITHUB_TOKEN
        keep_history: true
        repo: DGtal-team/doc-nightly
        target_branch: master
