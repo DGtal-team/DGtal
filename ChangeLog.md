@@ -65,6 +65,8 @@
   (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
   - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+  - Fixing Travis configuration due to syntax changes in v2
+    (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
 
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
