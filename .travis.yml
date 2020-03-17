@@ -77,4 +77,4 @@ jobs:
        target_branch: master
        verbose: true
        local_dir: "$TRAVIS_BUILD_DIR/build/html"
-       strategy: git
+       strategy: api
