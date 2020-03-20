@@ -9,6 +9,7 @@ FOREACH(FILE ${TESTS_SRC})
 ENDFOREACH(FILE)
 
 SET(TESTS_SURFACES_SRC
+  testIntegralInvariantShortcuts
   testNormalVectorEstimatorEmbedder
   testIntegralInvariantVolumeEstimator
   testIntegralInvariantCovarianceEstimator
