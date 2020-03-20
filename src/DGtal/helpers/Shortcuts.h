@@ -44,6 +44,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <tuple>
 #include <iterator>
 #include <string>
 #include "DGtal/base/Common.h"
@@ -387,45 +388,45 @@ namespace DGtal
       /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
       /// @return the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static KSpace
-        getKSpace
-        ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
+      static KSpace
+      getKSpace
+      ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
 
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on any indexed digital surface.
       /// @return the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static KSpace
-        getKSpace
-        ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
-
+      static KSpace
+      getKSpace
+      ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
+      
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
       /// @return a const reference to the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static const KSpace&
-        refKSpace
-        ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
-
+      static const KSpace&
+      refKSpace
+      ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
+      
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on any indexed digital surface.
       /// @return a const reference to the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static const KSpace&
-        refKSpace
-        ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
+      static const KSpace&
+      refKSpace
+      ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
 
       /// @param[in] K any Khalimsky space.
       /// @return the canonic cell embedder associated to the given Khalimsky space.

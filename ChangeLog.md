@@ -19,10 +19,14 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
-  
+
+- *Geometry*
+  - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
+    directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
-    (Pablo Hernandez-Cerdan,[#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+    (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
@@ -61,6 +65,8 @@
   (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
   - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+  - Fixing Travis configuration due to syntax changes in v2
+    (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
 
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
@@ -125,7 +131,7 @@
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
-  
+
 
 # DGtal 1.0
 
