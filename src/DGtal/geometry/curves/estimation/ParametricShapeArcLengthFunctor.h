@@ -72,9 +72,6 @@ namespace DGtal
 
     ///Type of const iterator on points.
     typedef typename TParametricShape::RealPoint RealPoint;
-    typedef typename TParametricShape::Point Point;
-    typedef typename TParametricShape::Point Vector;
-    typedef typename Point::Coordinate Integer;
 
     ///Type of the functor output.
     typedef double Quantity;

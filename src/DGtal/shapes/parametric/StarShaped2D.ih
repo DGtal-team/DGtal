@@ -51,23 +51,14 @@
 template<typename TSpace>
 inline
 DGtal::Orientation
-DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
+DGtal::StarShaped2D<TSpace>::orientation( const RealPoint& p ) const
 {
-    RealPoint x_rel = x( parameter( p ));
-    x_rel -= center();
-    RealPoint p_rel( p );
-    p_rel -= center();
+  RealPoint x_rel( x(parameter(p)) - center() );
+  RealPoint p_rel( p - center() );
 
-    double d_x = x_rel.norm();
-    double d_p = p_rel.norm();
-    double diff = d_p - d_x;
+  const double diff = p_rel.norm() - x_rel.norm();
 
-    if ( diff > 0.0 )
-        return OUTSIDE;
-    else if ( diff < 0.0 )
-        return INSIDE;
-    else
-        return ON;
+  return isAlmostEqual(diff,0.) ? ON : (diff > 0. ? OUTSIDE : INSIDE);
 }
 
 
@@ -80,12 +71,10 @@ DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
 template<typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::tangent( double t ) const
+DGtal::StarShaped2D<TSpace>::tangent( const double t ) const
 {
-  RealPoint tgt( xp( t ) );
-  double norm = tgt.norm();
-  tgt /= norm;
-  return tgt;
+  const RealPoint tgt( xp(t) );
+  return tgt / tgt.norm();
 }
 
 
@@ -98,10 +87,10 @@ b */
 template<typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::normal( double t ) const
+DGtal::StarShaped2D<TSpace>::normal( const double t ) const
 {
-  RealPoint tgt( tangent( t ) );
-  return RealPoint( -tgt[1], tgt[0]);
+  RealPoint tgt( tangent(t) );
+  return RealPoint( -tgt[1], tgt[0] );
 }
 
 
@@ -115,13 +104,12 @@ DGtal::StarShaped2D<TSpace>::normal( double t ) const
 template<typename TSpace>
 inline
 double 
-DGtal::StarShaped2D<TSpace>::curvature( double t ) const
+DGtal::StarShaped2D<TSpace>::curvature( const double t ) const
 {
-  RealPoint tgt( xp( t ) );
-  RealPoint dt( xpp( t ) );
-  double norm = tgt.norm();
-  double curv = ( dt[0] * tgt[1] - dt[1] * tgt[0] ) / ( norm * norm * norm );
-  return - curv;
+  RealPoint tgt( xp(t) );
+  RealPoint dt( xpp(t) );
+  const double norm = tgt.norm();
+  return - ( dt[0] * tgt[1] - dt[1] * tgt[0] ) / ( norm * norm * norm );
 }
   
 
@@ -134,21 +122,23 @@ DGtal::StarShaped2D<TSpace>::curvature( double t ) const
 template<typename TSpace>
 inline
 double
-DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) const
+DGtal::StarShaped2D<TSpace>::arclength( const double t1, double t2, const unsigned int nb ) const
 {
   while ( t2 < t1 ) t2 += 2.0*M_PI;
 
-  RealPoint x0( x( t1 ) );
-  double l = 0.0;
+  RealPoint x0( x(t1) );
+  double l = 0.;
   // JOL 2008/08/28
   for ( unsigned int i = 1; i <= nb; ++i )
-    {
-      double t = ( ( t2 - t1 ) * i ) / nb;
-      RealPoint x1( x( t1 + t ) );
-      l += sqrt( ( x1[0] - x0[0] )*( x1[0] - x0[0] )
-         + ( x1[1] - x0[1] )*( x1[1] - x0[1] ) );
-      x0 = x1;
-    }
+  {
+    const double t = ((t2 - t1) * i) / nb;
+    const RealPoint x1( x(t1 + t) );
+    l += sqrt(
+        (x1[0] - x0[0]) * (x1[0] - x0[0])
+      + (x1[1] - x0[1]) * (x1[1] - x0[1])
+    );
+    x0 = x1;
+  }
   return l;
 }
 
@@ -164,16 +154,24 @@ DGtal::StarShaped2D<TSpace>::arclength( double t1, double t2, unsigned int nb ) 
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::findIntersection( const typename DGtal::StarShaped2D<TSpace>::RealPoint& inner, 
-                                               const typename DGtal::StarShaped2D<TSpace>::RealPoint& outer, 
-                                               double epsilon ) const
+DGtal::StarShaped2D<TSpace>::findIntersection( const RealPoint& inner, 
+                                               const RealPoint& outer, 
+                                               const double epsilon ) const
 {
-  typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
+  const typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
 
-  if((inner - outer).norm() < epsilon) return mid; // We found a point that is at distance epsilon from the shape
-  else if(orientation(mid) == Orientation::INSIDE)  return findIntersection( mid, outer, epsilon ); // The point lies inside the shape
-  else if(orientation(mid) == Orientation::ON)      return mid; // The point is right onto the shape
-  else if(orientation(mid) == Orientation::OUTSIDE) return findIntersection( inner, mid, epsilon ); // The point lies outside the shape
+  // We found a point that is at distance epsilon from the shape
+  if((inner - outer).norm() < epsilon)
+    return mid;
+  // The point lies inside the shape
+  else if(orientation(mid) == Orientation::INSIDE)
+    return findIntersection( mid, outer, epsilon );
+  // The point is right onto the shape
+  else if(orientation(mid) == Orientation::ON)
+    return mid;
+  // The point lies outside the shape
+  else if(orientation(mid) == Orientation::OUTSIDE)
+    return findIntersection( inner, mid, epsilon );
 
   ASSERT( false ); //this should not be reached
   return RealPoint(0., 0.);
@@ -192,31 +190,32 @@ DGtal::StarShaped2D<TSpace>::findIntersection( const typename DGtal::StarShaped2
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::closestPointWithWitnesses( const typename DGtal::StarShaped2D<TSpace>::RealPoint& p, const typename DGtal::StarShaped2D<TSpace>::RealPoint& left, 
-    const typename DGtal::StarShaped2D<TSpace>::RealPoint& right, const int step) const
+DGtal::StarShaped2D<TSpace>::closestPointWithWitnesses( const RealPoint& p,
+    const RealPoint& left, const RealPoint& right, const int step ) const
 {
-  double left_angl = parameter(left);
-  double right_angl = parameter(right);
+  if ( step == 0 )
+    return RealPoint(0., 0.);
 
-  std::vector<typename DGtal::StarShaped2D<TSpace>::RealPoint> points;
+  const double left_angl = parameter(left);
+  const double right_angl = parameter(right);
 
-  for(int i = 0; i < step; i++)
+  std::vector<RealPoint> points;
+
+  for( int i = 0; i < step; i++ )
   {
     double arc = fabs(right_angl - left_angl);
     if(arc > M_PI) arc = 2 * M_PI - arc;
     const double current_angl = fmod(left_angl + arc / step * i, 2 * M_PI);
-
-    RealPoint temp = x(current_angl);
-    points.push_back(temp);
+    points.push_back(x(current_angl));
   }
 
-  double p_norm = 1e15;
-  RealPoint p_return = Point(0., 0.);
+  RealPoint p_return(points[0]);
+  double p_norm = (p_return - p).norm();
 
-  for(unsigned int i = 0; i < points.size(); i++)
+  for( unsigned int i = 1; i < points.size(); i++ )
   {
     const double p_norm_current = (points[i] - p).norm();
-    if(p_norm_current < p_norm)
+    if ( p_norm_current < p_norm )
     {
       p_return = points[i];
       p_norm = p_norm_current;
@@ -224,15 +223,6 @@ DGtal::StarShaped2D<TSpace>::closestPointWithWitnesses( const typename DGtal::St
   }
 
   return p_return;
-}
-
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::StarShaped2D<T>::~StarShaped2D()
-{
 }
 
 ///////////////////////////////////////////////////////////////////////////////

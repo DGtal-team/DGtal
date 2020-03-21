@@ -56,6 +56,9 @@
   - Fix Lemniscate definition following Bernoulli's definition
    (Adrien Krähenbühl,
    [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
+  - Homogenizes typedefs of all parametric shapes and fixes some bounding box
+    computations (Adrien Krähenbühl,
+   [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
 
 
 ## Bug Fixes
