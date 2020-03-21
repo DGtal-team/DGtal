@@ -55,7 +55,8 @@ for \f$ 0 \le k \le d \f$.
 
 A fully convex set is always \f$ 3^d-1 \f$-connected (i.e. 8-connected
 in 2D, 26-connected in 3D). Furthermore its axis-aligned slices are
-connected (with the same kind of connectedness).
+connected (with the same kind of connectedness). It is also clear that
+digitally 0-convexity is the usual digital convexity.
 
 @image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
 
@@ -72,6 +73,93 @@ digitally \a k- subconvex to \f$ X \f$ for \f$ 0 \le k \le d \f$.
 Subconvexity is a useful for notion for digital contour and surface
 analysis. It tells which subsets of these digital sets are \e tangent
 to them.
+
+@section dgtal_dconvexity_sec2  Checking digital convexity
+
+Three classes help to check digital convexity.
+
+- BoundedLatticePolytope is the class that is used to build polytopes,
+  i.e. intersections of half-spaces, which are a way to represent
+  convex polyhedra.
+
+- CellGeometry is used to store sets of cells and provides methods to
+  build the set of cells that intersect a polytope or the set of cells
+  that touches a set of digital points.
+
+- DigitalConvexity provides many helper methods to build
+  BoundedLatticePolytope s and CellGeometry s and to check digital
+  convexity and subconvexity.
+
+
+@subsection dgtal_dconvexity_sec21 Building a polytope
+
+For now, the class is quite limited. You may build a polytope from a
+range of \f$ d + 1 \f$ points in general position. The polytope is
+then a simplex. Otherwise you may provide a range of half-spaces. 
+
+You may also cut a polytope by a new halfspace
+(BoundedLatticePolytope::cut), count the number of lattice points
+inside, interior or on the boundary (BoundedLatticePolytope::count,
+BoundedLatticePolytope::countInterior,
+BoundedLatticePolytope::countBoundary) or enumerate them.
+
+\code
+using namespace DGtal::Z3i;
+typedef BoundedLatticePolytope< Space > Simplex;
+Simplex S( { Point(0,0,0), Point(3,0,0), Point(1,5,0), Point(-3,2,4) } );
+std::cout << S.count() << std::endl;
+simplex += Simplex::UnitSegment( 0 ); // Extend it along x
+std::cout << S.count() << std::endl;
+\endcode 
+
+Last you may compute Minkowski sums of a polytope with axis-aligned
+segments, squares or (hyper)-cubes (BoundedLatticePolytope::operator+=). 
+
+@Note You can check if the result of a Minkowski sum will be valid by
+calling BoundedLatticePolytope::canBeSummed before. The support is for
+now limited to polytopes built as simplices in 2D and 3D.
+
+@see DigitalConvexity::makeSimplex
+
+@subsection dgtal_dconvexity_sec22 Building a set of cells from digital points
+
+The class CellGeometry can compute and store set of cells of different
+dimensions. You specify at construction a Khalimsky space (any model
+of concepts::CCellularGridSpaceND) as well as the dimensions of the
+cells you are interested in.
+
+\code
+using namespace DGtal::Z3i;
+KSpace K;
+K.init( Point(-5,-5,-5), Point(15,15,15) );
+CellGeometry< KSpace > cell_geometry( K, 1, 2 ); // only 1-cells and 2-cells
+\endcode
+
+Then you may add cells that touch a range of points, or cells
+intersected by a polytope, or cells belonging to another CellGeometry
+object, or cells belonging to a CubicalComplex.
+
+- CellGeometry::addCellsTouchingPoints: Updates the cell cover with
+  the cells touching a range of digital points [itB, itE).
+- CellGeometry::addCellsTouchingPointels: Updates the cell cover with
+  the cells touching a range of digital pointels [itB, itE).
+- CellGeometry::addCellsTouchingPolytopePoints: Updates the cell cover
+  with the cells touching the points of a polytope.
+- CellGeometry::addCellsTouchingPolytope: Updates the cell cover with
+  all the cells touching the polytope (all cells whose closure have a
+  non empty intersection with the polytope).
+- CellGeometry::operator+=( const CellGeometry& other ): Adds the
+  cells of dimension k of object \a other, for `minCellDim() <= k <=
+  maxCellDim()`, to this cell geometry.
+- CellGeometry::operator+=( const CubicalComplex& CC ): Adds the cells
+  of dimension k of cubical complex \a CC, for `minCellDim() <= k <=
+  maxCellDim()`, to this cell geometry.
+
+
+
+
+
+
 
 */
 }
