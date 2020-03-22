@@ -166,7 +166,7 @@ namespace DGtal
      *
      * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
      *
-     * @param someParams the parameters (@a t-ring, default=3.0 used for the local convolution).
+     * @param someParams the parameters (@a t-ring, default=3.0 used in the local convolution).
      */
     void attachConvolvedTrivialNormalVectors(const Parameters someParams
                                     = SH3::defaultParameters() | SHG3::defaultParameters() );
