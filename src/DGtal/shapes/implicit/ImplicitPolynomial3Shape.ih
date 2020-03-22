@@ -252,6 +252,80 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalCurvatures
     k1 = H - tmp;
 }
 
+template< typename TSpace >
+inline
+void
+DGtal::ImplicitPolynomial3Shape<TSpace>::principalDirections
+( const RealPoint & aPoint,
+  RealVector & d1,
+  RealVector & d2 ) const
+{
+  const RealVector grad_F = gradient( aPoint );
+  const auto           Fn = grad_F.norm();
+  if ( Fn < 1e-8 )
+    {
+      d1 = d2 = RealVector();
+      return;
+    }
+  RealVector u, v;
+  const RealVector n = grad_F / Fn;
+  u  = RealVector( 1.0, 0.0, 0.0 ).crossProduct( n );
+  auto u_norm = u.norm();
+  if ( u_norm < 1e-8 )
+    {
+      u  = RealVector( 0.0, 1.0, 0.0 ).crossProduct( n );
+      u_norm = u.norm();
+    }
+  u /= u_norm;
+  v = n.crossProduct( u );
+  double k_min, k_max;
+  principalCurvatures( aPoint, k_min, k_max );
+  const double   x = aPoint[ 0 ];
+  const double   y = aPoint[ 1 ];
+  const double   z = aPoint[ 2 ];
+  // Computing Hessian matrix
+  const double Fxx = myFxx( x )( y )( z );
+  const double Fxy = myFxy( x )( y )( z );
+  const double Fxz = myFxz( x )( y )( z );
+  const double Fyy = myFyy( x )( y )( z );
+  const double Fyz = myFyz( x )( y )( z );
+  const double Fzz = myFzz( x )( y )( z );
+  const RealVector HessF_u = { Fxx * u[ 0 ] + Fxy * u[ 1 ] + Fxz * u[ 2 ],
+			       Fxy * u[ 0 ] + Fyy * u[ 1 ] + Fyz * u[ 2 ],
+			       Fxz * u[ 0 ] + Fyz * u[ 1 ] + Fzz * u[ 2 ] };
+  const RealVector HessF_v = { Fxx * v[ 0 ] + Fxy * v[ 1 ] + Fxz * v[ 2 ],
+			       Fxy * v[ 0 ] + Fyy * v[ 1 ] + Fyz * v[ 2 ],
+			       Fxz * v[ 0 ] + Fyz * v[ 1 ] + Fzz * v[ 2 ] };
+  const double Fuu = u.dot( HessF_u );
+  const double Fuv = u.dot( HessF_v );
+  const double Fvv = v.dot( HessF_v );
+  if ( fabs( k_min * Fn - Fuu ) >= fabs( k_min * Fn - Fvv ) )
+    {
+      // Choose k1 = k_min and k2 = k_max,
+      // to avoid null k1*Fn - Fuu = -(k2*Fn - Fvv) = 0
+      double k1 = k_min;
+      double k2 = k_max;
+      d1 = RealVector( ( k1 * Fn - Fuu ) * v[ 0 ] + Fuv * u[ 0 ],
+		       ( k1 * Fn - Fuu ) * v[ 1 ] + Fuv * u[ 1 ],
+		       ( k1 * Fn - Fuu ) * v[ 2 ] + Fuv * u[ 2 ] );
+      d2 = -1.0 * RealVector( ( k2 * Fn - Fvv ) * u[ 0 ] + Fuv * v[ 0 ],
+			      ( k2 * Fn - Fvv ) * u[ 1 ] + Fuv * v[ 1 ],
+			      ( k2 * Fn - Fvv ) * u[ 2 ] + Fuv * v[ 2 ] );
+    }
+  else
+    {
+      // Choose k2 = k_min and k1 = k_max,
+      // then | k_max*Fn - Fuu | >= | k_max*Fn - Fvv | >= 0
+      double k1 = k_max;
+      double k2 = k_min;
+      d2 = RealVector( ( k1 * Fn - Fuu ) * v[ 0 ] + Fuv * u[ 0 ],
+		       ( k1 * Fn - Fuu ) * v[ 1 ] + Fuv * u[ 1 ],
+		       ( k1 * Fn - Fuu ) * v[ 2 ] + Fuv * u[ 2 ] );
+      d1 = -1.0 * RealVector( ( k2 * Fn - Fvv ) * u[ 0 ] + Fuv * v[ 0 ],
+			      ( k2 * Fn - Fvv ) * u[ 1 ] + Fuv * v[ 1 ],
+			      ( k2 * Fn - Fvv ) * u[ 2 ] + Fuv * v[ 2 ] );
+    }
+}
 
 /**
  *@param aPoint any point in the Euclidean space.

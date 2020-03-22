@@ -178,7 +178,29 @@ namespace DGtal
        @param[out] k2 second principal curvature
     */
     inline
-    void principalCurvatures( const RealPoint &aPoint, double & k1, double & k2 ) const;
+    void principalCurvatures( const RealPoint &aPoint,
+			      double & k1, double & k2 ) const;
+
+    /**
+       Principal directions of curvature estimation at @a aPoint
+       @pre @a aPoint must be close to the surface.
+
+       @param[in] aPoint any point in the Euclidean space.
+       @param[out] d1 first principal direction
+       @param[out] d2 second principal direction
+
+       @note Principal directions are not reliable around umbilic
+       points, i.e. where principal curvatures are the same.
+       
+       @note Follows Albin, E., Knikker, R., Xin, S., Paschereit,
+       C. O., & d’Angelo, Y. (2016, June). Computational assessment of
+       curvatures and principal directions of implicit surfaces from
+       3D scalar data. In International Conference on Mathematical
+       Methods for Curves and Surfaces (pp. 1-22). Springer, Cham.
+    */
+    inline
+    void principalDirections( const RealPoint &aPoint,
+			      RealVector& d1, RealVector& d2 ) const;
 
     /**
        Perform a gradient descent in order to move a point @a aPoint
