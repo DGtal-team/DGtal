@@ -7,10 +7,11 @@
     (allowing parallel scans of the domain, Roland Denis,
     [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
 
-- *Shapes package*
-  - Add a moveTo(const RealPoint& point) method to implicit and star shapes
-   (Adrien Krähenbühl,
-   [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
+- *DEC*
+  - Add discrete calculus model of Ambrosio-Tortorelli functional in
+    order to make piecewise-smooth approximations of scalar or vector
+    fields onto 2D domains like 2D images or digital surfaces
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 ## Changes
 
@@ -27,12 +28,6 @@
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
-
-- *DEC*
-  - Add discrete calculus model of Ambrosio-Tortorelli functional in
-    order to make piecewise-smooth approximations of scalar or vector
-    fields onto 2D domains like 2D images or digital surfaces
-    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
@@ -53,6 +48,9 @@
     (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
 
 - *Shapes package*
+  - Add a moveTo(const RealPoint& point) method to implicit and star shapes
+   (Adrien Krähenbühl,
+   [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
   - Fix Lemniscate definition following Bernoulli's definition
    (Adrien Krähenbühl,
    [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
@@ -77,8 +75,7 @@
 
 - *Geometry*
   - Bugfix in the `testVoronoiCovarianceMeasureOnSurface` (David
-    Coeurjolly, [#14xx](https://github.com/DGtal-team/DGtal/pull/14XX))
-
+    Coeurjolly, [#1439](https://github.com/DGtal-team/DGtal/pull/1439))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
