@@ -299,6 +299,24 @@ to get a piecewise smooth approximation of the II normals.
 </tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
+
+This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
+
+
+<table>
+<tr>
+<td>
+\image html torus-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on a torus."
+</td>
+<td>
+\image html goursat-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on goursat shape."
+</td>
+</tr>
+</table>
+
 
 @section dgtal_shortcuts_sec2b Few 2D examples
 

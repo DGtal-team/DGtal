@@ -325,6 +325,8 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalDirections
 			      ( k2 * Fn - Fvv ) * u[ 1 ] + Fuv * v[ 1 ],
 			      ( k2 * Fn - Fvv ) * u[ 2 ] + Fuv * v[ 2 ] );
     }
+  d1 /= d1.norm();
+  d2 /= d2.norm();
 }
 
 /**
