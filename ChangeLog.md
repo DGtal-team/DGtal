@@ -113,6 +113,8 @@
   related to bad link in DEC/moduleAT documentation and missing
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
   Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
+  - Adding missing LGPL headers in the DEC examples (David Coeurjolly
+  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
 - *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
