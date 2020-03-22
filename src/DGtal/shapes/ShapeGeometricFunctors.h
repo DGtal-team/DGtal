@@ -195,9 +195,9 @@ namespace DGtal
       }
 
       /**
-         Map operator RealPoint -> RealVector giving the normal vector.
+         Map operator RealPoint -> Scalar giving the mean curvature.
          @param p any point on the shape.
-         @return the normal at point p (as the normalized gradient).
+         @return the mean curvature at point p.
       */
       Quantity operator()( const RealPoint & p ) const
       {
@@ -247,9 +247,9 @@ namespace DGtal
       }
 
       /**
-         Map operator RealPoint -> RealVector giving the normal vector.
+         Map operator RealPoint -> Quantity giving the Gaussian curvature.
          @param p any point on the shape.
-         @return the normal at point p (as the normalized gradient).
+         @return the Gaussian curvature at point p.
       */
       Quantity operator()( const RealPoint & p ) const
       {
@@ -260,6 +260,293 @@ namespace DGtal
       /// The shape of interest.
       CountedConstPtrOrConstPtr<Shape> myShape;
     };
+
+    /**
+     * Description of template class 'ShapeFirstPrincipalCurvatureFunctor' <p>
+     * \brief Aim: A functor RealPoint -> Quantity that returns the
+     * first principal curvature at given point (i.e. smallest principal curvature).
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a principalCurvatures.
+     */
+    template <typename TShape>
+    struct ShapeFirstPrincipalCurvatureFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef Scalar Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeFirstPrincipalCurvatureFunctor( ConstAlias<Shape> aShape = 0 )
+	: myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> Scalar giving the first principal curvature.
+         @param p any point on the shape.
+         @return the first principal curvature at point p (smallest curvature).
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+	Quantity k1, k2;
+	myShape->principalCurvatures( p, k1, k2 );
+        return k1;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    }; // struct ShapeFirstPrincipalCurvatureFunctor
+    
+    /**
+     * Description of template class 'ShapeSecondPrincipalCurvatureFunctor' <p>
+     * \brief Aim: A functor RealPoint -> Quantity that returns the
+     * second principal curvature at given point (i.e. greatest principal curvature).
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a principalCurvatures.
+     */
+    template <typename TShape>
+    struct ShapeSecondPrincipalCurvatureFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef Scalar Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeSecondPrincipalCurvatureFunctor( ConstAlias<Shape> aShape = 0 )
+	: myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> Scalar giving the second principal curvature.
+         @param p any point on the shape.
+         @return the second principal curvature at point p (greatest curvature).
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+	Quantity k1, k2;
+	myShape->principalCurvatures( p, k1, k2 );
+        return k2;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    }; // struct ShapeSecondPrincipalCurvatureFunctor
+
+    /**
+     * Description of template class
+     * 'ShapeFirstPrincipalDirectionFunctor' <p> \brief Aim: A functor
+     * RealPoint -> RealVector that returns the first principal
+     * direction at given point (i.e. direction of smallest principal
+     * curvature).
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a principalDirections.
+     */
+    template <typename TShape>
+    struct ShapeFirstPrincipalDirectionFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef RealVector Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeFirstPrincipalDirectionFunctor( ConstAlias<Shape> aShape = 0 )
+	: myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> Scalar giving the first principal direction (i.e. direction of first/smallest principal curvature).
+         @param p any point on the shape.
+         @return the first principal direction at point p.
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+	Quantity d1, d2;
+	myShape->principalDirections( p, d1, d2 );
+        return d1;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    }; // struct ShapeFirstPrincipalDirectionFunctor
+
+    /**
+     * Description of template class
+     * 'ShapeSecondPrincipalDirectionFunctor' <p> \brief Aim: A functor
+     * RealPoint -> RealVector that returns the second principal
+     * direction at given point (i.e. direction of second/greatest principal
+     * curvature).
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a principalDirections.
+     */
+    template <typename TShape>
+    struct ShapeSecondPrincipalDirectionFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef RealVector Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeSecondPrincipalDirectionFunctor( ConstAlias<Shape> aShape = 0 )
+	: myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> Scalar giving the second principal direction (i.e. direction of second/greatest principal curvature).
+         @param p any point on the shape.
+         @return the second principal direction at point p.
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+	Quantity d1, d2;
+	myShape->principalDirections( p, d1, d2 );
+        return d2;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    }; // struct ShapeSecondPrincipalDirectionFunctor
+
+    /**
+     * Description of template class
+     * 'ShapePrincipalCurvaturesAndDirectionsFunctor' <p> \brief Aim:
+     * A functor RealPoint -> (Scalar,Scalar,RealVector,RealVector
+     * that returns the principal curvatures and the principal
+     * directions as a tuple at given point (k1,k2,d1,d2).
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a principalDirections.
+     */
+    template <typename TShape>
+    struct ShapePrincipalCurvaturesAndDirectionsFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef std::tuple<Scalar,Scalar,RealVector,RealVector> Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapePrincipalCurvaturesAndDirectionsFunctor( ConstAlias<Shape> aShape = 0 )
+	: myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint ->
+         (Scalar,Scalar,RealVector,RealVector) giving the principal
+         curvatures and directions (k1,k2,d1,d2).
+         @param p any point on the shape.
+         @return the principal curvatures and directions (k1,k2,d1,d2)
+         at point p.
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+	Scalar k1, k2;
+	RealVector d1, d2;
+	myShape->principalCurvatures( p, k1, k2 );
+	myShape->principalDirections( p, d1, d2 );
+        return std::make_tuple( k1, k2, d1, d2 );
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    }; // struct ShapePrincipalCurvaturesAndDirectionsFunctor
+
     
   } // namespace ShapeGeometricFunctors
   } // namespace functors
