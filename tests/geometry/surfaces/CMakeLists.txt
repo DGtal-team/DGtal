@@ -18,6 +18,7 @@ SET(TESTS_SURFACES_SRC
   testTensorVoting
   testEstimatorCache
   testSphericalHoughNormalVectorEstimator
+  testDigitalSurfaceRegularization
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
