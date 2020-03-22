@@ -518,7 +518,7 @@ namespace DGtal
       ///
       /// @return the vector containing the first principal directions, in the same
       /// order as \a surfels.
-      static Scalars
+      static RealVectors
       getFirstPrincipalDirections
         ( CountedPtr<ImplicitShape3D> shape,
           const KSpace&               K,
@@ -560,7 +560,7 @@ namespace DGtal
       ///
       /// @return the vector containing the second principal directions, in the same
       /// order as \a surfels.
-      static Scalars
+      static RealVectors
       getSecondPrincipalDirections
         ( CountedPtr<ImplicitShape3D> shape,
           const KSpace&               K,
@@ -603,7 +603,7 @@ namespace DGtal
       /// @return the vector containing the principal curvatures and
       /// principal directions as a tuple (k1, k2, d1, d2), in the
       /// same order as \a surfels.
-      static Scalars
+      static CurvatureTensorQuantities
       getPrincipalCurvaturesAndDirections
         ( CountedPtr<ImplicitShape3D> shape,
           const KSpace&               K,
