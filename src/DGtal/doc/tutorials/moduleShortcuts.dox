@@ -493,6 +493,11 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalCurvatures: returns the first (smallest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalCurvatures: returns the second (greatest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalDirections: returns the first principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalDirections: returns the second principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getPrincipalCurvaturesAndDirections: returns the first and second principal curvatures and directions along the 3D implicit shape close to the specified surfels.
 
 -# GeometryEstimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
