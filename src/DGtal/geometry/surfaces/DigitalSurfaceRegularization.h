@@ -64,6 +64,8 @@ namespace DGtal
    *  surface such that each quad of the output surface is as perpendicular as possible to the given
    *  input normal vector field.
    *
+   * @note The digital surface must be a closed.
+   *
    * If @f$P@f$ denotes the vertices of the input digital surface, @f$F@f$ the set of
    * (quadrilateral) faces and @f$n_f@f$ an estimated normal vector on the
    * face @f$f@f$, we want the quad surface vertex positions @f$P^*@f$ that
@@ -164,6 +166,7 @@ namespace DGtal
      *
      * An important parameter is the radius used to estimate the normal vectors (@a t-ring, default=3.0).
      *
+     * @param someParams the parameters (@a t-ring, default=3.0 used for the local convolution).
      */
     void attachConvolvedTrivialNormalVectors(const Parameters someParams
                                     = SH3::defaultParameters() | SHG3::defaultParameters() );
