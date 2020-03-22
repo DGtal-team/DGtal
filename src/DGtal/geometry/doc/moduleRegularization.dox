@@ -84,6 +84,7 @@ the following reconstruction.
 @note The regularized position can be retrieved using the getREgularizedPosition() method. E.g.
 @snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegOutput
 
+@warning At this point, the digital surface must be closed.
 
 A key ingredient of the approach is to be able to change the input
 normal bundle. One can consider normal vectors from @ref moduleIntegralInvariant.
