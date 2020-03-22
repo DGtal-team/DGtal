@@ -162,6 +162,11 @@ namespace DGtal
       typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
       typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
       typedef sgf::ShapeGaussianCurvatureFunctor<ImplicitShape3D> GaussianCurvatureFunctor;
+      typedef sgf::ShapeFirstPrincipalCurvatureFunctor<ImplicitShape3D> FirstPrincipalCurvatureFunctor;
+      typedef sgf::ShapeSecondPrincipalCurvatureFunctor<ImplicitShape3D> SecondPrincipalCurvatureFunctor;
+      typedef sgf::ShapeFirstPrincipalDirectionFunctor<ImplicitShape3D> FirstPrincipalDirectionFunctor;
+      typedef sgf::ShapeSecondPrincipalDirectionFunctor<ImplicitShape3D> SecondPrincipalDirectionFunctor;
+      typedef sgf::ShapePrincipalCurvaturesAndDirectionsFunctor<ImplicitShape3D> PrincipalCurvaturesAndDirectionsFunctor;
 
       typedef typename functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space>::Quantity   CurvatureTensorQuantity;
       typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
@@ -175,6 +180,16 @@ namespace DGtal
         < KSpace, ImplicitShape3D, MeanCurvatureFunctor >           TrueMeanCurvatureEstimator;
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, GaussianCurvatureFunctor >       TrueGaussianCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, FirstPrincipalCurvatureFunctor > TrueFirstPrincipalCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, SecondPrincipalCurvatureFunctor > TrueSecondPrincipalCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, FirstPrincipalDirectionFunctor > TrueFirstPrincipalDirectionEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, SecondPrincipalDirectionFunctor > TrueSecondPrincipalDirectionEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, PrincipalCurvaturesAndDirectionsFunctor > TruePrincipalCurvaturesAndDirectionsEstimator;
 
       typedef ::DGtal::Mesh<RealPoint>                            Mesh;
       typedef ::DGtal::TriangulatedSurface<RealPoint>             TriangulatedSurface;
@@ -393,6 +408,217 @@ namespace DGtal
         Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
         true_estimator.attach( *shape );
         true_estimator.setParams( K, GaussianCurvatureFunctor(), maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the first (smallest)
+      /// principal curvatures at the specified surfels, in the same
+      /// order.
+      ///
+      /// @note that the first principal curvature is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the first principal curvatures, in the same
+      /// order as \a surfels.
+      static Scalars
+      getFirstPrincipalCurvatures
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        Scalars n_true_estimations;
+        TrueFirstPrincipalCurvatureEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, FirstPrincipalCurvatureFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the second (greatest)
+      /// principal curvatures at the specified surfels, in the same
+      /// order.
+      ///
+      /// @note that the second principal curvature is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the second principal curvatures, in the same
+      /// order as \a surfels.
+      static Scalars
+      getSecondPrincipalCurvatures
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        Scalars n_true_estimations;
+        TrueSecondPrincipalCurvatureEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, SecondPrincipalCurvatureFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the first principal
+      /// directions (corresponding to the smallest principal
+      /// curvature) at the specified surfels, in the same order.
+      ///
+      /// @note that the first principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the first principal directions, in the same
+      /// order as \a surfels.
+      static Scalars
+      getFirstPrincipalDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        RealVectors n_true_estimations;
+        TrueFirstPrincipalDirectionEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, FirstPrincipalDirectionFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the second principal
+      /// directions (corresponding to the greatest principal
+      /// curvature) at the specified surfels, in the same order.
+      ///
+      /// @note that the second principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the second principal directions, in the same
+      /// order as \a surfels.
+      static Scalars
+      getSecondPrincipalDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        RealVectors n_true_estimations;
+        TrueSecondPrincipalDirectionEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, SecondPrincipalDirectionFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the principal
+      /// curvatures and principal directions as a tuple (k1, k2, d1, d2) at the
+      /// specified surfels, in the same order.
+      ///
+      /// @note that the second principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the principal curvatures and
+      /// principal directions as a tuple (k1, k2, d1, d2), in the
+      /// same order as \a surfels.
+      static Scalars
+      getPrincipalCurvaturesAndDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        CurvatureTensorQuantities n_true_estimations;
+        TruePrincipalCurvaturesAndDirectionsEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, PrincipalCurvaturesAndDirectionsFunctor(),
+				  maxIter, accuracy, gamma );
         true_estimator.init( gridstep, surfels.begin(), surfels.end() );
         true_estimator.eval( surfels.begin(), surfels.end(),
                              std::back_inserter( n_true_estimations ) );
