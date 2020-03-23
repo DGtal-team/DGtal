@@ -14,7 +14,8 @@ namespace DGtal {
 
 Part of the \ref packageGeometry.
   
-This part of the manual describes how to define and check digital convexity, in such a way that digital convex set are digitally connected.
+This part of the manual describes how to define and check digital convexity, 
+in such a way that digital convex set are digitally connected.
 
 [TOC]
 
@@ -31,7 +32,7 @@ digitally \e convex whenever \f$ \mathrm{Conv}(S) \cap \mathbb{Z}^d =
 S \f$. Otherwise said, the convex hull of all the digital points
 contains exactly these digital points and no other.
 
-Although handy and easily tested, this definition lacks many
+Although handy and easy to check, this definition lacks many
 properties related to (continuous) convexity in the Euclidean plane.
 
 We extend this definition as follows. Let \f$ C^d \f$ be the usual
@@ -84,7 +85,7 @@ Three classes help to check digital convexity.
 
 - CellGeometry is used to store sets of cells and provides methods to
   build the set of cells that intersect a polytope or the set of cells
-  that touches a set of digital points.
+  that touch a set of digital points.
 
 - DigitalConvexity provides many helper methods to build
   BoundedLatticePolytope s and CellGeometry s and to check digital
@@ -112,7 +113,7 @@ simplex += Simplex::UnitSegment( 0 ); // Extend it along x
 std::cout << S.count() << std::endl;
 \endcode 
 
-Last you may compute Minkowski sums of a polytope with axis-aligned
+Last, you may compute Minkowski sums of a polytope with axis-aligned
 segments, squares or (hyper)-cubes (BoundedLatticePolytope::operator+=). 
 
 @Note You can check if the result of a Minkowski sum will be valid by
