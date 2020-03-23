@@ -1,0 +1,122 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+
+@page moduleRegularization Digital Surface Regularization
+
+@writers David Coeurjolly
+
+Part of the \ref packageGeometry.
+
+
+This part of the manual describes classes and functions related to the
+regularization of digital surfaces: Given an input normal vector field
+attached to digital surface surfels, the regularization outputs a
+piecewise smooth quadrangulated surface such that each quad is as
+perpendicular as possible to the input normal vector field. For more
+details, please refer to \cite coeurjolly17regDGCI and
+\cite coeurjolly18siggraphtalk.
+
+Related example:  geometry/surfaces/testDigitalSurfaceRegularization.cpp
+
+[TOC]
+
+
+\section moduleReg_sec1 Introduction
+
+If @f$P@f$ denotes the vertices of the input digital surface, @f$F@f$ the set of
+(quadrilateral) faces and @f$n_f@f$ an estimated normal vector on the
+face @f$f@f$, we want the quad surface vertex positions @f$P^*@f$ that
+minimizes the following energy function:
+
+@f[\mathcal{E}(P) := \alpha \sum_{i=1}^{n} \|p_i - \hat{p}_i\|^2  +
+\beta \sum_{f\in F} \sum_{{e_j} \in \partial{f} } ( e_j \cdot n_{f} )^2 + \gamma \sum_{i=1}^{n} \|\hat{p}_i - \hat{b}_i\|^2\,.@f]
+
+where @f$"\cdot"@f$ is the standard @f$\mathbb{R}^3@f$ scalar product, @f$e_j\in
+\partial{f}@f$ is an edge of the face @f$f@f$ (and is equal to some @f$p_k -
+p_l@f$) and @f$ \hat{b}_i@f$ is the barycenter of the vertices adjacent to
+@f$\hat{p}_i@f$.
+
+The energy function is convex and can be minimized by solving a linear
+system as described in @cite coeurjolly17regDGCI. This minimization
+scheme is available in the DGtalTools (see volSurfaceRegularization).
+In this implementation, we consider an iterative scheme (gradient
+descent strategy) which allows us a finer control of the process.
+
+\section moduleReg_sec2 Main usages
+
+Starting from an implicit digital surface:
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegInit
+
+with the following geometry (with a gridstep set to 0.3):
+
+@image html regOrig.png "Input digital surface."
+
+The regularization class instance can be set up using the following syntax:
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegUsage
+
+The DigitalSurfaceRegularization::init() method sets some default values for the @f$\alpha@f$,
+@f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be 
+either chosen as global values (e.g. @e init(alpha,beta,gamma)), or as
+local weights. In the latter case, the user must specify a vector of @f$\alpha[i]@f$,
+@f$\beta[i]@f$ and @f$\gamma[i]@f$ values, one per digital surface pointels (see \ref moduleReg_seclocal).
+In this example, the normal vector field attached to the surfels is a
+trivial normal estimator whose normals are given by local convolution
+of input quad normals.
+We can now minimize the energy as follows:
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegCompute
+
+Note that the user can specify the number of steps of the gradient
+descent as well as the initial learning rate. Note that if the
+ DigitalSurfaceRegularization::regularize() method is called another time, the descent starts from
+the previous results (aka warm restart).
+Using the default settings (and the trivial normal vectors), we obtain
+the following reconstruction.
+
+@image html regRegul.png "Regularized digital surface (trivial normal vectors)."
+
+@note The regularized position can be retrieved using the getREgularizedPosition() method. E.g.
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegOutput
+
+@warning At this point, the digital surface must be closed.
+
+A key ingredient of the approach is to be able to change the input
+normal bundle. One can consider normal vectors from @ref moduleIntegralInvariant.
+Normal vectors can be attached using either a
+functor, a function or a lambda. For example, using  @ref moduleShortcuts 
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegII
+
+to obtain
+@image html regRegul-II.png "Regularized digital surface (II normal vectors)."
+
+For piecewise smooth reconstruction, one can consider preprocessing of the normal vector field using @ref moduleGenericAT 
+
+
+\section moduleReg_seclocal Local control
+
+As discussed above, the user can control the weights @f$\alpha@f$,
+@f$\beta@f$ and @f$\gamma@f$ per digital surface vertex. For instance using the following weights:
+
+
+@snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegLocal
+
+we obtain a regularization with a locally adapted data attachment term.
+
+@image html regRegul-local.png "Regularization with local data attachment weight."
+
+
+
+
+
+*/
+
+
+
+}
