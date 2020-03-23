@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any flower with k-petals in the plane.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    */
   template <typename TSpace>
   class Flower2D final:  public StarShaped2D<TSpace>
@@ -67,13 +67,14 @@ namespace DGtal
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint2D;
-    typedef typename Space::RealVector RealVector2D;
+    typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealVector RealVector;
+
     /**
-     * Destructor.
+     * Constructor.
+     * Forbidden by default.
      */
-    ~Flower2D();
+    Flower2D() = delete;
 
     /**
      * Constructor.
@@ -88,7 +89,7 @@ namespace DGtal
         const double r,
         const double smallr,
         const unsigned int k,
-        const double phi);
+        const double phi );
 
     /**
      * Constructor.
@@ -98,25 +99,30 @@ namespace DGtal
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */
-    Flower2D(const RealPoint2D &aPoint,
+    Flower2D( const RealPoint& aPoint,
        const double r,
        const double smallr,
        const unsigned int k,
-       const double phi);
+       const double phi );
 
     /**
-     * Constructor.
-     * @param aPoint the flower center.
-     * @param r the radius of the flower.
-     * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
-     * @param phi the phase of the flower (in radian).
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    Flower2D(const Point &aPoint,
-       const double r,
-       const double smallr,
-       const unsigned int k,
-       const double phi);
+    Flower2D( const Flower2D& other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    Flower2D& operator=( const Flower2D& other ) = delete;
+
+    /**
+     * Destructor.
+     */
+    ~Flower2D() = default;
 
 
     // ------------- Implementation of 'StarShaped' services ------------------
@@ -126,24 +132,24 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    RealPoint2D getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return RealPoint2D(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
+      return myCenter - (myRadius + myVarRadius);
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    RealPoint2D getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return RealPoint2D(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
+      return myCenter + (myRadius + myVarRadius);
     }
 
     /**
      * @return the center of the star-shaped object.
      */
-    RealPoint2D center() const
+    RealPoint center() const
     {
       return myCenter;
     }
@@ -153,7 +159,7 @@ namespace DGtal
      * @param newCenter the new center position
      */
     inline
-    void moveTo( const RealPoint2D& newCenter )
+    void moveTo( const RealPoint& newCenter )
     {
       myCenter = newCenter;
     }
@@ -164,7 +170,7 @@ namespace DGtal
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    double parameter( const RealPoint2D & p ) const;
+    double parameter( const RealPoint & p ) const;
 
 
     /**
@@ -173,7 +179,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    RealPoint2D x( const double t ) const;
+    RealPoint x( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -181,14 +187,14 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    RealVector2D xp( const double t ) const;
+    RealVector xp( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    RealVector2D xpp( const double t ) const;
+    RealVector xpp( const double t ) const;
 
 
     // ------------------------- data ----------------------------
@@ -197,7 +203,7 @@ namespace DGtal
     /**
      * Center of the flower.
      */
-    RealPoint2D myCenter;
+    RealPoint myCenter;
 
     /**
      * Radius of the flower.
@@ -233,36 +239,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Flower2D();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //  Flower2D ( const Flower2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Flower2D & operator= ( const Flower2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class Flower2D
 

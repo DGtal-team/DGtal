@@ -44,6 +44,7 @@
 #include <set>
 #include <map>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Clone.h"
 #include "DGtal/base/OwningOrAliasingPtr.h"
 #include "DGtal/base/IntegerSequenceIterator.h"
 #include "DGtal/topology/HalfEdgeDataStructure.h"

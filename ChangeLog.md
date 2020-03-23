@@ -12,16 +12,27 @@
    (Adrien Krähenbühl,
    [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
 
-- *Geometry*
+- *Geometry Package*
+  - New piecewise smooth digital surface regularization class (David Coeurjolly,
+  [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
   - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
-    [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
 
 ## Changes
 
 - *General*
   - DGtal can be compiled and used as a project (git) submodule (David
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
-  
+  - Add .gitattributes file for github to recognize ih files as c++
+    (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+
+- *Geometry*
+  - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
+    directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+
+- *Kernel package*
+  - Add .data() function to PointVector to expose internal array data.
+    (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
@@ -44,11 +55,16 @@
   - Provides partial flip, split and merge operations for half-edge data structures
     and triangulated surfaces (Jacques-Olivier Lachaud,
     [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
+  - Makes testVoxelComplex faster, reducing the size of the test fixture
+    (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
 
 - *Shapes package*
   - Fix Lemniscate definition following Bernoulli's definition
    (Adrien Krähenbühl,
    [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
+  - Homogenizes typedefs of all parametric shapes and fixes some bounding box
+    computations (Adrien Krähenbühl,
+   [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
 
 
 ## Bug Fixes
@@ -58,6 +74,8 @@
   (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
   - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+  - Fixing Travis configuration due to syntax changes in v2
+    (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
 
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
@@ -78,9 +96,14 @@
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
   - Fix bug in Shortcuts::saveVectorFieldOBJ
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
-
   - Fixing OBJ export: .mtl file written with relative path (Johanna
-  Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+    Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Unify pointel ordering in Shortcuts and MeshHelper so that
+    Shortcuts::getPointelRange, Shortcuts::saveOBJ and
+    Shortcuts::makePrimalPolygonalSurface, as well as
+    MeshHelpers::digitalSurface2PrimalPolygonalSurface, all use the
+    CCW ordering by default (in 3D).
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
@@ -97,7 +120,7 @@
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
   Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
 
-- *doc*
+- *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
   - Fixing the `doxyfiles` to have the table of contents of module pages (David
@@ -108,6 +131,16 @@
     (Roland Denis [#1424](https://github.com/DGtal-team/DGtal/pull/1434))
   - CSS edit to enhance the readability of code snippets (David
     Coeurjolly [#1438](https://github.com/DGtal-team/DGtal/pull/1438))
+  - Fixing various links in moduleCellularTopology. Fixing #1454.
+    Removing dead links to ImaGene project.
+    (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
+
+- *Build*
+  - Removing the homemade CPP11 checks, using cmake macro instead
+  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+  - Removes the check for CPP11 when building WITH_ITK
+  (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
+
 
 # DGtal 1.0
 

@@ -60,7 +60,7 @@ namespace DGtal
    * with interval trust from the left to the right (resp. from the
    * right to the left) of the data.
    *
-   * @note  backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note  backport from ImaGene.
    */
   class OrderedLinearRegression
   {

@@ -9,6 +9,7 @@ FOREACH(FILE ${TESTS_SRC})
 ENDFOREACH(FILE)
 
 SET(TESTS_SURFACES_SRC
+  testIntegralInvariantShortcuts
   testNormalVectorEstimatorEmbedder
   testIntegralInvariantVolumeEstimator
   testIntegralInvariantCovarianceEstimator
@@ -17,6 +18,7 @@ SET(TESTS_SURFACES_SRC
   testTensorVoting
   testEstimatorCache
   testSphericalHoughNormalVectorEstimator
+  testDigitalSurfaceRegularization
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})

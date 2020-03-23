@@ -68,7 +68,7 @@ namespace DGtal
    * also performs some tests to check if the data corresponds to a
    * linear model.
    *
-   * @note  backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note  backport from ImaGene.
    */
   class SimpleLinearRegression
   {

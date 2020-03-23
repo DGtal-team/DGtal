@@ -271,6 +271,22 @@ DGtal::PointVector<dim, TComponent, TContainer>::size()
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+const typename DGtal::PointVector<dim, TComponent, TContainer>::Component *
+DGtal::PointVector<dim, TComponent, TContainer>::data() const noexcept
+{
+  return myArray.data();
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
+typename DGtal::PointVector<dim, TComponent, TContainer>::Component *
+DGtal::PointVector<dim, TComponent, TContainer>::data() noexcept
+{
+  return myArray.data();
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 const typename DGtal::PointVector<dim, TComponent, TContainer>::Component &
 DGtal::PointVector<dim, TComponent, TContainer>::operator[]( Dimension i ) const
 {
