@@ -29,7 +29,7 @@
 
 
 /**
-   This snippet shows how to digital fully subconvex sets of a grid
+   This snippet shows how to identify and display digital fully subconvex sets of a grid
    curve form its tangent bundle.
 
    @see \ref moduleDigitalConvexity
@@ -65,8 +65,8 @@ int main( int argc, char** argv )
   string S = examplesPath + "samples/contourS.fc";
   
   // domain
-  Point lowerBound( -200, -200 );
-  Point upperBound( 200, 200 );
+  const Point lowerBound( -200, -200 );
+  const Point upperBound( 200, 200 );
 
   fstream inputStream( S.c_str(), ios::in );
   FreemanChain<int> fc(inputStream);
@@ -82,8 +82,8 @@ int main( int argc, char** argv )
   trace.beginBlock( "Prepare subset operations" );
   c_cover.prepareSubsetOperations();
   trace.endBlock();
-  float sx = -0.5;
-  float sy = -0.5;
+  const float sx = -0.5;
+  const float sy = -0.5;
   trace.beginBlock( "Compute fully subconvex sets" );
   for ( unsigned int i = 0; i < T.size(); ++i )
     for ( unsigned int j = i+2; j < T.size(); ++j )
