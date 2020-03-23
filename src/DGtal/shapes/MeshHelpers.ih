@@ -272,7 +272,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   // Numbers all vertices and add them to the triangulated surface.
   const KSpace & K = dsurf.container().space();
   for ( auto&& s : dsurf ) {
-    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s );
+    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
     for ( auto&& primal_vtx : primal_vertices ) {
       if ( ! cellmap.count( primal_vtx ) ) {
 	auto p = cembedder( primal_vtx );

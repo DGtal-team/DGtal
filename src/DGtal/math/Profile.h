@@ -129,8 +129,7 @@ namespace DGtal
    * @tparam TValue the type value stored in the profile.  
    * 
    * The proposed implementation is mainly a backport from
-   * [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
-   * various refactoring.
+   * ImaGene with some various refactoring.
    */
 
   template<typename TValueFunctor = functors::Identity, typename TValue = double >

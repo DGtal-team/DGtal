@@ -72,7 +72,7 @@ namespace DGtal
      function. This is to be more generic than a simple
      DigitalSet. With this approach, shapes can be defined implicitly.
 
-     Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+     Essentially a backport from ImaGene.
    */
   template <typename TKSpace>
   class Surfaces

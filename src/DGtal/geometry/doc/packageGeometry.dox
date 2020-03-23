@@ -76,6 +76,9 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref moduleFMM (Tristan Roussillon) 
   - \ref moduleDigitalConvexity (Jacques-Olivier Lachaud)
 
+- Geometry Processing
+  - \ref moduleRegularization (David Coeurjolly, Jacques-Olivier Lachaud, Pierre Gueth)
+
 - Tools 
   - \ref moduleGeometricPredicates (Tristan Roussillon)
   - \ref moduleHull2D (Tristan Roussillon, Bertrand Kerautret)

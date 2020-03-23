@@ -72,8 +72,7 @@ It is a model of boost::CopyConstructible,
 boost::DefaultConstructible, boost::Assignable. All its member data are
 \b mutable.
 
-It is a backport of <a
-href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+It is a backport of \e ImaGene.
 
 @tparam TInteger any model of integer (CInteger), like \c int, \c long int,
 \c int64_t, \c BigInteger (when GMP is installed).
