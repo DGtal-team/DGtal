@@ -193,7 +193,8 @@ namespace DGtal
     }
     
     
-    TextureImage loadImage(const std::string &filename, const bool silent=true)
+    static
+    TextureImage loadTexture(const std::string &filename, const bool silent=true)
     {
       int width,height, nbChannels;
       unsigned char *source = stbi_load(filename.c_str(), &width, &height, &nbChannels, 0);
@@ -211,6 +212,17 @@ namespace DGtal
       return result;
     }
     
+    
+    static
+    Color
+    textureFetch(const TextureImage &tex,
+                 const UV &uvcoord )
+    {
+      auto extent = tex.domain().upperBound() -  tex.domain().lowerBound();
+      Z2i::Point p = { static_cast<Z2i::Point::Coordinate>(std::round(uvcoord[0]*extent[0])),
+                       static_cast<Z2i::Point::Coordinate>(std::round(uvcoord[1]*extent[1]))};
+      return tex(p);
+    }
     
     /// Retreive the barycentric coordinate of a point in a triangular face.
     /// The point is first projected onto the triangle plane.

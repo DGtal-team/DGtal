@@ -110,6 +110,16 @@ TEST_CASE( "Testing MeshTextureHelpers" )
       
     }
   }
+  
+  SECTION("Test Texture features")
+  {
+    auto image = MeshTextureHelpers<RealPoint>::loadTexture(testPath + "samples/color64.png");
+    INFO(image);
+    REQUIRE(image.isValid());
+    MeshTextureHelpers<RealPoint>::UV center(0.5,0.5);
+    INFO(MeshTextureHelpers<RealPoint>::textureFetch(image, center));
+    REQUIRE( MeshTextureHelpers<RealPoint>::textureFetch(image, center) == Color(0,177,99,255));
+  }
 
 }
 
