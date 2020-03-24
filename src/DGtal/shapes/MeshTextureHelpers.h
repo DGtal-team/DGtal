@@ -53,6 +53,11 @@
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/PolygonalSurface.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/io/Color.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "DGtal/io/readers/misc/stb_image.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,6 +95,9 @@ namespace DGtal
     ///UVMap for a mesh
     using UVMesh = typename TriangulatedSurf::template IndexedPropertyMap<UVTriangle>;
 
+    using TextureImage = ImageContainerBySTLVector<Z2i::Domain, Color>;
+    
+    
     
     static
     std::tuple<TriangulatedSurf,  UVMesh, UVMap>
@@ -184,6 +192,24 @@ namespace DGtal
       return std::make_tuple(mesh,textMesh,textureMap);
     }
     
+    
+    TextureImage loadImage(const std::string &filename, const bool silent=true)
+    {
+      int width,height, nbChannels;
+      unsigned char *source = stbi_load(filename.c_str(), &width, &height, &nbChannels, 0);
+      if (!silent)
+        trace.info()<< "Source image: "<<width<<"x"<<height<<"   ("<<nbChannels<<")"<< std::endl;
+      
+      Z2i::Domain dom(Z2i::Point(0,0), Z2i::Point(width-1, height-1));
+      ASSERT_MSG(nbChannels==3, "RGB input image only");
+      TextureImage result(dom);
+      for(auto i=0; i<width*height; ++i)
+      {
+        Z2i::Point p( i % width , i / width);
+        result.setValue(p, Color(source[3*i],source[3*i+1],source[3*i+2]));
+      }
+      return result;
+    }
     
     
     /// Retreive the barycentric coordinate of a point in a triangular face.
