@@ -95,6 +95,16 @@ TEST_CASE( "Testing MeshTextureHelpers" )
     std::tie( cube , uvMesh, texture) = MeshTextureHelpers<RealPoint>::loadOBJWithTextureCoord(testPath + "samples/cubetext.obj");
     REQUIRE(cube.nbVertices() == 8);
     REQUIRE(cube.nbFaces() == 12);
+    
+    for(auto f=0; f < cube.nbFaces(); ++f)
+    {
+      auto vert = cube.verticesAroundFace(f);
+      auto uvtriangle = uvMesh[f];
+      trace.info()<< "Face "<<f<<": "<< vert[0]+1<<"/"<<uvtriangle[0]+1<<" "
+                                   << vert[1]+1<<"/"<< uvtriangle[1]+1<< " "
+                                   << vert[2]+1<<"/"<< uvtriangle[2]+1<<std::endl;
+      
+    }
   }
 
 }
