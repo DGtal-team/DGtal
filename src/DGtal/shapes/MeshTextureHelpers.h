@@ -44,6 +44,7 @@
 #include <iterator>
 #include <algorithm>
 #include <array>
+#include <tuple>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/CCellEmbedder.h"
@@ -80,11 +81,77 @@ namespace DGtal
     ///UV coordinate (point in R^2)
     using UV = PointVector<2, double> ;
     
-    ///UV information for face : triple per face
-    using UVTriangle = std::array<UV,3>;
+    ///UV map, vector of UV coordinates
+    using UVMap = std::vector<UV>;
+    
+    ///UV information for face : triple per UV index
+    using UVTriangle = std::array<std::size_t,3>;
     
     ///UVMap for a mesh
-    using UVMap = typename TriangulatedSurf::template IndexedPropertyMap<UVTriangle>;
+    using UVMesh = typename TriangulatedSurf::template IndexedPropertyMap<UVTriangle>;
+
+    
+    static
+    std::tuple<TriangulatedSurf,  UVMesh, UVMap>
+    loadOBJWithTextureCoord(const std::string &filename)
+    {
+      UVMap textureMap;
+      UVMesh textMesh;
+      
+      std::vector<std::array<int,3>> textureFace;
+      TriangulatedSurf mesh;
+      
+      std::ifstream in(filename, std::ios::in);
+      if (!in)
+      {
+        std::cerr << "Cannot open " << filename << std::endl;
+        exit(1);
+      }
+      std::string line;
+      double U,V;
+      double x,y,z;
+
+      while (std::getline(in, line))
+      {
+        //check v for vertices
+        if (line.substr(0,2)=="v ")
+        {
+          std::istringstream v(line.substr(2));
+          v>>x;v>>y;v>>z;
+          mesh.addVertex({x,y,z});
+        }
+        //check for texture co-ordinate
+        else if(line.substr(0,2)=="vt")
+        {
+          std::istringstream v(line.substr(3));
+          UV tex;
+          v>>U;v>>V;
+          textureMap.push_back({U,V});
+        }
+        //check for faces
+        else if(line.substr(0,2)=="f ")
+        {
+          int a,b,c; //to store mesh index
+          int A,B,C; //to store texture index
+          const char* chh=line.c_str();
+          sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
+          //v>>a;v>>b;v>>c;
+          a--;b--;c--;
+          A--;B--;C--;
+          //std::cout<<a<<b<<c<<A<<B<<C;
+          mesh.addTriangle(a,b,c);
+          
+          textureFace.push_back({A,B,C});
+        }
+      }
+      
+      mesh.build();
+      textMesh = mesh.template makeFaceMap<UVTriangle>();
+      for(auto f = 0; f < mesh.nbFaces(); ++f)
+        textMesh[f] = {(std::size_t)textureFace[f][0],(std::size_t)textureFace[f][1],(std::size_t)textureFace[f][2]};
+      
+      return std::make_tuple(mesh,textMesh,textureMap);
+    }
     
     
     

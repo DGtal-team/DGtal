@@ -87,7 +87,15 @@ TEST_CASE( "Testing MeshTextureHelpers" )
     REQUIRE(p3[2] == Approx(reconstruction[2]));
   }
   
-  
+  SECTION("Test OBJ loader")
+  {
+    TriMesh cube;
+    MeshTextureHelpers<RealPoint>::UVMap texture;
+    MeshTextureHelpers<RealPoint>::UVMesh uvMesh;
+    std::tie( cube , uvMesh, texture) = MeshTextureHelpers<RealPoint>::loadOBJWithTextureCoord(testPath + "samples/cubetext.obj");
+    REQUIRE(cube.nbVertices() == 8);
+    REQUIRE(cube.nbFaces() == 12);
+  }
 
 }
 
