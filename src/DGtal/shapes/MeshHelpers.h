@@ -297,6 +297,7 @@ namespace DGtal
         const Color& diffuse_color,
         const Color& specular_color );
 
+    
   }; // end of class MeshHelpers
 
 } // namespace DGtal

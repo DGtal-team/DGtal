@@ -35,7 +35,7 @@ SET(DGTAL_TESTS_SRC
   testShapeMoveCenter
   testAstroid2D
   testLemniscate2D
-
+  testMeshTextureHelpers
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
