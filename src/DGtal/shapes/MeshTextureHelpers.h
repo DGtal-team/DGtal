@@ -97,8 +97,9 @@ namespace DGtal
     {
       UVMap textureMap;
       UVMesh textMesh;
-      
-      std::vector<UVTriangle> textureFace;
+    
+      std::vector<UVTriangle> originalVertIndices;
+      std::vector<UVTriangle> originalUVIndices;
       TriangulatedSurf mesh;
       
       std::ifstream in(filename, std::ios::in);
@@ -138,51 +139,48 @@ namespace DGtal
           a--;b--;c--;
           A--;B--;C--;
           mesh.addTriangle(a,b,c);
+          
+          UVTriangle vv={(size_t)a,(size_t)b,(size_t)c};
+          UVTriangle vvv={(size_t)A,(size_t)B,(size_t)C};
+          originalVertIndices.push_back(vv);
+          originalUVIndices.push_back(vvv);
         }
       }
       
+      //Building the mesh
       mesh.build();
-      textMesh = mesh.template makeFaceMap<UVTriangle>();
-      {
-        std::ifstream in(filename, std::ios::in);
-        std::string line;
-        std::size_t f=0;
-        while (std::getline(in, line))
-        {
-          if(line.substr(0,2)=="f ")
-          {
-            int a,b,c; //to store mesh index
-            int A,B,C; //to store texture index
-            const char* chh=line.c_str();
-            sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
-            //v>>a;v>>b;v>>c;
-            a--;b--;c--;
-            A--;B--;C--;
-        
-            auto verts= mesh.verticesAroundFace(f);
-            UVTriangle vv;
-            if (verts[0]==a) vv[0]=A;
-            else
-              if (verts[0]==b) vv[0]=B;
-              else
-                vv[0]=C;
-            if (verts[1]==a) vv[1]=A;
-            else
-              if (verts[1]==b) vv[1]=B;
-              else
-                vv[1]=C;
-            if (verts[2]==a) vv[2]=A;
-            else
-              if (verts[2]==b) vv[2]=B;
-              else
-                vv[2]=C;
-            
-            textMesh[f] = vv;
-            ++f;
-          }
-        }
-      }
       
+      //Reordering the UV indices per face
+      textMesh = mesh.template makeFaceMap<UVTriangle>();
+      for(auto f=0; f < mesh.nbFaces(); ++f)
+      {
+        auto a=originalVertIndices[f][0], b=originalVertIndices[f][1];
+        auto A=originalUVIndices[f][0],   B=originalUVIndices[f][1],   C=originalUVIndices[f][2];
+        auto verts= mesh.verticesAroundFace(f);
+        UVTriangle vv;
+        if (verts[0]==a)
+          vv[0]=A;
+        else
+          if (verts[0]==b)
+            vv[0]=B;
+          else
+            vv[0]=C;
+        if (verts[1]==a)
+          vv[1]=A;
+        else
+          if (verts[1]==b)
+            vv[1]=B;
+          else
+            vv[1]=C;
+        if (verts[2]==a)
+          vv[2]=A;
+        else
+          if (verts[2]==b)
+            vv[2]=B;
+          else
+            vv[2]=C;
+        textMesh[f] = vv;
+      }
       return std::make_tuple(mesh,textMesh,textureMap);
     }
     
