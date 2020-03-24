@@ -96,6 +96,10 @@ TEST_CASE( "Testing MeshTextureHelpers" )
     REQUIRE(cube.nbVertices() == 8);
     REQUIRE(cube.nbFaces() == 12);
     
+    for(auto &v: texture)
+      trace.info()<<"vt "<<v[0]<<" "<<v[1]<<std::endl;
+    trace.info()<<std::endl;
+    
     for(auto f=0; f < cube.nbFaces(); ++f)
     {
       auto vert = cube.verticesAroundFace(f);

@@ -98,7 +98,7 @@ namespace DGtal
       UVMap textureMap;
       UVMesh textMesh;
       
-      std::vector<std::array<int,3>> textureFace;
+      std::vector<UVTriangle> textureFace;
       TriangulatedSurf mesh;
       
       std::ifstream in(filename, std::ios::in);
@@ -135,20 +135,53 @@ namespace DGtal
           int A,B,C; //to store texture index
           const char* chh=line.c_str();
           sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
-          //v>>a;v>>b;v>>c;
           a--;b--;c--;
           A--;B--;C--;
-          //std::cout<<a<<b<<c<<A<<B<<C;
           mesh.addTriangle(a,b,c);
-          
-          textureFace.push_back({A,B,C});
         }
       }
       
       mesh.build();
       textMesh = mesh.template makeFaceMap<UVTriangle>();
-      for(auto f = 0; f < mesh.nbFaces(); ++f)
-        textMesh[f] = {(std::size_t)textureFace[f][0],(std::size_t)textureFace[f][1],(std::size_t)textureFace[f][2]};
+      {
+        std::ifstream in(filename, std::ios::in);
+        std::string line;
+        std::size_t f=0;
+        while (std::getline(in, line))
+        {
+          if(line.substr(0,2)=="f ")
+          {
+            int a,b,c; //to store mesh index
+            int A,B,C; //to store texture index
+            const char* chh=line.c_str();
+            sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
+            //v>>a;v>>b;v>>c;
+            a--;b--;c--;
+            A--;B--;C--;
+        
+            auto verts= mesh.verticesAroundFace(f);
+            UVTriangle vv;
+            if (verts[0]==a) vv[0]=A;
+            else
+              if (verts[0]==b) vv[0]=B;
+              else
+                vv[0]=C;
+            if (verts[1]==a) vv[1]=A;
+            else
+              if (verts[1]==b) vv[1]=B;
+              else
+                vv[1]=C;
+            if (verts[2]==a) vv[2]=A;
+            else
+              if (verts[2]==b) vv[2]=B;
+              else
+                vv[2]=C;
+            
+            textMesh[f] = vv;
+            ++f;
+          }
+        }
+      }
       
       return std::make_tuple(mesh,textMesh,textureMap);
     }
