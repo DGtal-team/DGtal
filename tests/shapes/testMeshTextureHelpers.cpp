@@ -29,12 +29,17 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <fstream>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/MeshTextureHelpers.h"
+
+#ifdef WITH_VISU3D_QGLVIEWER
+#include "DGtal/io/viewers/Viewer3D.h"
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -92,35 +97,49 @@ TEST_CASE( "Testing MeshTextureHelpers" )
     TriMesh cube;
     MeshTextureHelpers<RealPoint>::UVMap texture;
     MeshTextureHelpers<RealPoint>::UVMesh uvMesh;
-    std::tie( cube , uvMesh, texture) = MeshTextureHelpers<RealPoint>::loadOBJWithTextureCoord(testPath + "samples/cubetext.obj");
+    MeshTextureHelpers<RealPoint>::NormalMesh normalMesh;
+    MeshTextureHelpers<RealPoint>::NormalMap normalMap;
+    std::tie( cube , uvMesh, normalMesh, texture, normalMap) = MeshTextureHelpers<RealPoint>::loadOBJWithTextureCoord(testPath + "samples/cubetext.obj");
     REQUIRE(cube.nbVertices() == 8);
     REQUIRE(cube.nbFaces() == 12);
     
+    //Dumping OBJ
+    std::ofstream out;
+    out.open ("dump.obj");
+    for(auto v=0; v < cube.nbVertices(); ++v)
+    {
+      auto p=cube.position(v);
+      out<<"v "<<p[0]<<" "<<p[1]<<" "<<p[2]<<std::endl;
+    }
+    out<<std::endl;
     for(auto &v: texture)
-      trace.info()<<"vt "<<v[0]<<" "<<v[1]<<std::endl;
-    trace.info()<<std::endl;
+      out<<"vt "<<v[0]<<" "<<v[1]<<std::endl;
+    out<<std::endl;
+    for(auto &v: normalMap)
+      out<<"vn "<<v[0]<<" "<<v[1]<<" "<<v[2]<<std::endl;
+    out<<std::endl;
     
     for(auto f=0; f < cube.nbFaces(); ++f)
     {
       auto vert = cube.verticesAroundFace(f);
       auto uvtriangle = uvMesh[f];
-      trace.info()<< "Face "<<f<<": "<< vert[0]+1<<"/"<<uvtriangle[0]+1<<" "
-                                   << vert[1]+1<<"/"<< uvtriangle[1]+1<< " "
-                                   << vert[2]+1<<"/"<< uvtriangle[2]+1<<std::endl;
-      
+      auto ntriangle = normalMesh[f];
+      out<< "f "<< vert[0]+1<<"/"<<uvtriangle[0]+1<<"/"<<ntriangle[0]+1<<" "
+                                   << vert[1]+1<<"/"<< uvtriangle[1]+1<<"/"<<ntriangle[0]+1<< " "
+                                   << vert[2]+1<<"/"<< uvtriangle[2]+1<<"/"<<ntriangle[0]+1<<std::endl;
     }
+    out.close();
   }
   
   SECTION("Test Texture features")
   {
-    auto image = MeshTextureHelpers<RealPoint>::loadTexture(testPath + "samples/color64.png");
+    auto image = MeshTextureHelpers<RealPoint>::loadTexture(testPath + "samples/UVchecker.png");
     INFO(image);
     REQUIRE(image.isValid());
     MeshTextureHelpers<RealPoint>::UV center(0.5,0.5);
     INFO(MeshTextureHelpers<RealPoint>::textureFetch(image, center));
-    REQUIRE( MeshTextureHelpers<RealPoint>::textureFetch(image, center) == Color(0,177,99,255));
+    REQUIRE( MeshTextureHelpers<RealPoint>::textureFetch(image, center) == Color(24,19,0,255));
   }
-
 }
 
 /** @ingroup Tests **/

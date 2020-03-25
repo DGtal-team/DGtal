@@ -86,30 +86,43 @@ namespace DGtal
     ///UV coordinate (point in R^2)
     using UV = PointVector<2, double> ;
     
-    ///UV map, vector of UV coordinates
+    ///UV coordinates buffer
     using UVMap = std::vector<UV>;
+    
+    ///Normal vectors buffer
+    using NormalMap = std::vector<Point>;
     
     ///UV information for face : triple per UV index
     using UVTriangle = std::array<std::size_t,3>;
     
-    ///UVMap for a mesh
+    ///UVMap for a mesh (3 indices per face)
     using UVMesh = typename TriangulatedSurf::template IndexedPropertyMap<UVTriangle>;
 
+    
+    ///NormalMap for a mesh (3 indices per face)
+    using NormalMesh = typename TriangulatedSurf::template IndexedPropertyMap<UVTriangle>;
+
+    
+    ///Texture image
     using TextureImage = ImageContainerBySTLVector<Z2i::Domain, Color>;
     
     
     
     static
-    std::tuple<TriangulatedSurf,  UVMesh, UVMap>
+    std::tuple<TriangulatedSurf,  UVMesh, NormalMesh, UVMap, NormalMap>
     loadOBJWithTextureCoord(const std::string &filename)
     {
+      TriangulatedSurf mesh;
+
       UVMap textureMap;
+      NormalMap normalMap;
       UVMesh textMesh;
-    
+      NormalMesh normalMesh;
+
       std::vector<UVTriangle> originalVertIndices;
       std::vector<UVTriangle> originalUVIndices;
-      TriangulatedSurf mesh;
-      
+      std::vector<UVTriangle> originalNormalIndices;
+
       std::ifstream in(filename, std::ios::in);
       if (!in)
       {
@@ -119,7 +132,10 @@ namespace DGtal
       std::string line;
       double U,V;
       double x,y,z;
-
+      int a,b,c; //to store mesh index
+      int A,B,C; //to store texture index
+      int nA,nB,nC; //to store thhe normal index
+      
       while (std::getline(in, line))
       {
         //check v for vertices
@@ -138,20 +154,27 @@ namespace DGtal
           textureMap.push_back({U,V});
         }
         //check for faces
+        else if(line.substr(0,2)=="vn")
+        {
+          std::istringstream v(line.substr(3));
+          v>>x;v>>y;v>>z;
+          normalMap.push_back({x,y,z});
+        }
         else if(line.substr(0,2)=="f ")
         {
-          int a,b,c; //to store mesh index
-          int A,B,C; //to store texture index
           const char* chh=line.c_str();
-          sscanf (chh, "f %i/%i %i/%i %i/%i",&a,&A,&b,&B,&c,&C); //here it read the line start with f and store the corresponding values in the variables
+          sscanf (chh, "f %i/%i/%i %i/%i/%i %i/%i/%i",&a,&A,&nA,&b,&B,&nB,&c,&C,&nC); //here it read the line start with f and store the corresponding values in the variables
           a--;b--;c--;
           A--;B--;C--;
+          nA--;nB--;nC--;
           mesh.addTriangle(a,b,c);
           
           UVTriangle vv={(size_t)a,(size_t)b,(size_t)c};
           UVTriangle vvv={(size_t)A,(size_t)B,(size_t)C};
+          UVTriangle vvvv={(size_t)nA,(size_t)nB,(size_t)nC};
           originalVertIndices.push_back(vv);
           originalUVIndices.push_back(vvv);
+          originalNormalIndices.push_back(vvvv);
         }
       }
       
@@ -160,36 +183,67 @@ namespace DGtal
       
       //Reordering the UV indices per face
       textMesh = mesh.template makeFaceMap<UVTriangle>();
+      normalMesh = mesh.template makeFaceMap<UVTriangle>();
       for(auto f=0; f < mesh.nbFaces(); ++f)
       {
         auto a=originalVertIndices[f][0], b=originalVertIndices[f][1];
         auto A=originalUVIndices[f][0],   B=originalUVIndices[f][1],   C=originalUVIndices[f][2];
+        auto nA=originalNormalIndices[f][0],   nB=originalNormalIndices[f][1],   nC=originalNormalIndices[f][2];
         auto verts= mesh.verticesAroundFace(f);
         UVTriangle vv;
+        UVTriangle nvv;
         if (verts[0]==a)
+        {
           vv[0]=A;
+          nvv[0]=nA;
+        }
         else
           if (verts[0]==b)
+          {
             vv[0]=B;
+            nvv[0]=nB;
+          }
           else
+          {
             vv[0]=C;
+            nvv[0]=nC;
+          }
         if (verts[1]==a)
+        {
           vv[1]=A;
+          nvv[1]=nA;
+        }
         else
           if (verts[1]==b)
+          {
             vv[1]=B;
+            nvv[1]=nB;
+          }
           else
+          {
             vv[1]=C;
+            nvv[0]=nA;
+          }
         if (verts[2]==a)
+        {
           vv[2]=A;
+          nvv[2]=nA;
+        }
         else
           if (verts[2]==b)
+          {
             vv[2]=B;
+            nvv[2]=nB;
+          }
           else
+          {
             vv[2]=C;
+            nvv[2]=nC;
+          }
         textMesh[f] = vv;
+        normalMesh[f] = nvv;
       }
-      return std::make_tuple(mesh,textMesh,textureMap);
+      return std::make_tuple(mesh,textMesh,normalMesh,textureMap,normalMap);
     }
     
     
