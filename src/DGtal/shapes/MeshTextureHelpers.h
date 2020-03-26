@@ -122,7 +122,6 @@ namespace DGtal
                                             const NormalMap &normalMap)
     {
       auto vertexNorm = mesh.template makeVertexMap<RealPoint>({0.,0.,0.});
-      
       for(auto f=0; f < mesh.nbFaces(); ++f)
       {
         auto verts = mesh.verticesAroundFace(f);
@@ -133,7 +132,11 @@ namespace DGtal
       }
       
       for(auto v=0; v < mesh.nbVertices(); ++v)
-        vertexNorm[v] /= 3.0;
+        if (mesh.isVertexBoundary(v))
+          vertexNorm[v] /= (mesh.degree(v) -1);
+        else
+          vertexNorm[v] /= (mesh.degree(v));
+
       return vertexNorm;
     }
     
@@ -220,6 +223,7 @@ namespace DGtal
         auto A=originalUVIndices[f][0],   B=originalUVIndices[f][1],   C=originalUVIndices[f][2];
         auto nA=originalNormalIndices[f][0],   nB=originalNormalIndices[f][1],   nC=originalNormalIndices[f][2];
         auto verts= mesh.verticesAroundFace(f);
+
         UVTriangle vv;
         UVTriangle nvv;
         if (verts[0]==a)
@@ -252,7 +256,7 @@ namespace DGtal
           else
           {
             vv[1]=C;
-            nvv[0]=nA;
+            nvv[1]=nC;
           }
         if (verts[2]==a)
         {
@@ -408,8 +412,7 @@ namespace DGtal
             Vector4D *tangent)*/
     
     
-    template <typename Point>
-    static
+     static
     VertexNormalMesh computeTangent( const TriangulatedSurf  & mesh,
                                     const UVMesh &uvMesh,
                                     const UVMap &uvMap,
