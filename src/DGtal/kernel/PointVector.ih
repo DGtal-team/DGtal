@@ -34,6 +34,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
+#include <boost/algorithm/minmax_element.hpp>
 #include <DGtal/base/BasicFunctors.h>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -928,7 +929,7 @@ inline
 typename DGtal::PointVector<dim, TComponent, TContainer>::Component
 DGtal::PointVector<dim, TComponent, TContainer>::max(  ) const
 {
-  return  *std::max_element(this->begin(), this->end());
+  return  *boost::first_max_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -936,7 +937,7 @@ inline
 typename DGtal::PointVector<dim, TComponent, TContainer>::Component
 DGtal::PointVector<dim, TComponent, TContainer>::min( ) const
 {
-  return  *std::min_element(this->begin(), this->end());
+  return  *boost::first_min_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -944,7 +945,7 @@ inline
 typename DGtal::PointVector<dim, TComponent, TContainer>::Iterator
 DGtal::PointVector<dim, TComponent, TContainer>::maxElement(  )
 {
-  return  std::max_element(this->begin(), this->end());
+  return  boost::first_max_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -952,7 +953,7 @@ inline
 typename DGtal::PointVector<dim, TComponent, TContainer>::Iterator
 DGtal::PointVector<dim, TComponent, TContainer>::minElement( )
 {
-  return  std::min_element(this->begin(), this->end());
+  return  boost::first_min_element(this->begin(), this->end());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>

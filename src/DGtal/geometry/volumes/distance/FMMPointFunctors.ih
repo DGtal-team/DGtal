@@ -181,7 +181,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
     {
       //function computation
       typename Values::iterator itMax = 
-	std::max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
+	boost::first_max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
       if ( gradientNorm( *itMax, aValueList ) > 1 )
 	{
 	  aValueList.erase( itMax ); 
@@ -580,7 +580,7 @@ DGtal::LInfLocalDistance<TImage, TSet>::compute
   else 
     { //max element
       typename Values::iterator it = 
-	std::max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
+	boost::first_max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
       return *it; 
     }
 }
