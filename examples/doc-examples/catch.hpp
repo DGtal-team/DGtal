@@ -410,8 +410,6 @@ namespace Catch {
 #include <string>
 #include <cstdint>
 
-#include <boost/algorithm/minmax_element.hpp>
-
 // We need a dummy global operator<< so we can bring it into Catch namespace later
 struct Catch_global_namespace_dummy {};
 std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
@@ -7375,7 +7373,7 @@ namespace Catch {
                 auto xj = first[j];
                 if (g == 0) return xj;
 
-                auto xj1 = *boost::first_min_element(first + (j + 1), last);
+                auto xj1 = *std::min_element(first + (j + 1), last);
                 return xj + g * (xj1 - xj);
             }
 
