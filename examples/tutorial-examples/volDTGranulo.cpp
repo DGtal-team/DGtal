@@ -50,6 +50,8 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
+#include <boost/algorithm/minmax_element.hpp>
+
 using namespace DGtal;
 
 int main(int argc, char ** argv)

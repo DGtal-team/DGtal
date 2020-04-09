@@ -60,6 +60,8 @@ Computation of the convex hull of a planar point set by different algorithms:
 #include "DGtal/graph/DepthFirstVisitor.h"
 
 #include "DGtal/io/boards/Board2D.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

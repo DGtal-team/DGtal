@@ -52,6 +52,8 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 

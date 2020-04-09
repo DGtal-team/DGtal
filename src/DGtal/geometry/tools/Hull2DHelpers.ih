@@ -233,7 +233,7 @@ namespace DGtal
             //so that the sort step (by a polar comparator)
             //returns a weakly externally visible polygon
             typename std::vector<Point>::iterator itMax
-              = boost::first_max_element( container.begin(), container.end() );
+              = std::max_element( container.begin(), container.end() );
           
             //sort around this point
             aPolarComparator.setPole( *itMax );

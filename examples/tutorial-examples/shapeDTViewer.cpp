@@ -47,7 +47,11 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 //!  [shapeDTViewer-basicIncludes]
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace DGtal;
