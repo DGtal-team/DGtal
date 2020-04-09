@@ -60,8 +60,6 @@ Computation of the convex hull of a planar point set by different algorithms:
 #include "DGtal/graph/DepthFirstVisitor.h"
 
 #include "DGtal/io/boards/Board2D.h"
-
-#include <boost/algorithm/minmax_element.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -327,7 +325,7 @@ void convexHull()
     //so that the sort step (by a polar comparator) 
     //returns a weakly externally visible polygon
     std::vector<Z2i::Point>::iterator itMax 
-      = boost::first_max_element( res.begin(), res.end() ); 
+      = std::max_element( res.begin(), res.end() ); 
 
     //sort around this point with a polar comparator
     functors::PolarPointComparatorBy2x2DetComputer<Z2i::Point> comparator;  
