@@ -137,7 +137,10 @@
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
-
+  - Fix apple clang  compilation issue with a workaround to the
+    ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
+    using boost::first_max_element instead std::max_element. 
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
 
 # DGtal 1.0
 

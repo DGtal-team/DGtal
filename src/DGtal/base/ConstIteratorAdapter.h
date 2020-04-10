@@ -65,6 +65,12 @@ namespace DGtal
    * instead of calling directly operator* of the underlying 
    * iterator it.
    *
+   * @note This ConstIteratorAdapter does not satisfy the
+   * __is_forward_iterator concept of the STL. It can be a problem if
+   * it used through the std::max_element() function that requires a
+   * ForwardIterator. In this case you could use the
+   * boost::first_max_element function.
+   *
    * @tparam TLightFunctor the type of functor that transforms
    * the pointed element into another one (required to be light
    * because the functor is passed by value)

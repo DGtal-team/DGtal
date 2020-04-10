@@ -52,6 +52,8 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -116,10 +118,10 @@ int main()
   //! [DTComputePartialToric]
 
   //We compute the maximum DT value on the L2 map
-  const DTL2::Value       maxv2       = * (std::max_element(dtL2.constRange().begin(), dtL2.constRange().end()));
-  const DTL2Toric::Value  maxvtoric   = * (std::max_element(dtL2Toric.constRange().begin(), dtL2Toric.constRange().end()));
-  const DTL2ToricX::Value maxvtoricX  = * (std::max_element(dtL2ToricX.constRange().begin(), dtL2ToricX.constRange().end()));
-  const DTL2ToricY::Value maxvtoricY  = * (std::max_element(dtL2ToricY.constRange().begin(), dtL2ToricY.constRange().end()));
+  const DTL2::Value       maxv2       = * (boost::first_max_element(dtL2.constRange().begin(), dtL2.constRange().end()));
+  const DTL2Toric::Value  maxvtoric   = * (boost::first_max_element(dtL2Toric.constRange().begin(), dtL2Toric.constRange().end()));
+  const DTL2ToricX::Value maxvtoricX  = * (boost::first_max_element(dtL2ToricX.constRange().begin(), dtL2ToricX.constRange().end()));
+  const DTL2ToricY::Value maxvtoricY  = * (boost::first_max_element(dtL2ToricY.constRange().begin(), dtL2ToricY.constRange().end()));
 
   // Color map based on the maximal value for all maps (in order to compare results with similar colors).
   const auto maxvall = std::max( { maxv2, maxvtoric, maxvtoricX, maxvtoricY } );

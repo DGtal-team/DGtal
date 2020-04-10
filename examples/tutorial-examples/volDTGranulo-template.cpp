@@ -110,7 +110,7 @@ int main(int argc, char ** argv)
   //! [volGranulo-cmap]
   //Create the colormap from the maximal distance value
   //and a GradientColorMap
-  DT::Value maxDT = (*std::max_element(distancemap.constRange().begin(), 
+  DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(), 
                                        distancemap.constRange().end()));
   GradientColorMap<DT::Value> gradient( 0, maxDT);
   gradient.addColor(DGtal::Color::Blue);
