@@ -195,7 +195,7 @@ namespace DGtal
       }
 
       /**
-         Map operator RealPoint -> Scalar giving the mean curvature.
+         Map operator RealPoint -> Quantity giving the mean curvature.
          @param p any point on the shape.
          @return the mean curvature at point p.
       */
@@ -300,7 +300,7 @@ namespace DGtal
       }
 
       /**
-         Map operator RealPoint -> Scalar giving the first principal curvature.
+         Map operator RealPoint -> Quantity giving the first principal curvature.
          @param p any point on the shape.
          @return the first principal curvature at point p (smallest curvature).
       */

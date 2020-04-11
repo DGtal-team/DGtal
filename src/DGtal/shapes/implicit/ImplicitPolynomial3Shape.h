@@ -192,11 +192,7 @@ namespace DGtal
        @note Principal directions are not reliable around umbilic
        points, i.e. where principal curvatures are the same.
        
-       @note Follows Albin, E., Knikker, R., Xin, S., Paschereit,
-       C. O., & d’Angelo, Y. (2016, June). Computational assessment of
-       curvatures and principal directions of implicit surfaces from
-       3D scalar data. In International Conference on Mathematical
-       Methods for Curves and Surfaces (pp. 1-22). Springer, Cham.
+       @cite albin2016computational
     */
     inline
     void principalDirections( const RealPoint &aPoint,
