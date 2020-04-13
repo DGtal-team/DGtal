@@ -1650,6 +1650,69 @@ namespace DGtal
         else return surface->allVertices();
         return result;
       }
+      /// Outputs a digital surface as an OFF file (with its
+      /// topology).  Optionnaly you can specify the face colors (see
+      /// saveOBJ for a more advanced export).
+      ///
+      /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+      /// @tparam TCellEmbedder any type for maping Cell -> RealPoint.
+      ///
+      /// @param[in] digsurf the digital surface to output as an OBJ file
+      /// @param[in] embedder any map Cell->RealPoint
+      /// @param[in] face_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+      /// @param[in] offfile the output filename.
+      /// @return 'true' if the output stream is good.
+      template <typename TDigitalSurfaceContainer,
+        typename TCellEmbedder>
+        static bool
+        saveOFF
+        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+          const TCellEmbedder&           embedder,
+          std::string                    offfile,
+          const Color&                   face_color=DGtal::Color::None)
+
+        {
+          BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+
+          std::ofstream output_off( offfile.c_str() );
+          output_off << "#  OFF format" << std::endl;
+          output_off << "# Generated from  DGtal::Shortcuts from the DGTal library" << std::endl;
+          Cell2Index      c2i;
+          auto       pointels = getPointelRange( c2i, digsurf );
+          output_off <<  pointels.size()  << " " << digsurf->size() << " " << 0 << " " << std::endl;
+          
+          
+          // Number and output vertices.
+          const KSpace&     K = refKSpace( digsurf );
+          for ( auto&& pointel : pointels )
+            {
+              RealPoint p = embedder( pointel );
+              output_off << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+            }	
+
+          
+          // Taking care of faces
+          for ( auto&& surfel : *digsurf )
+            {              
+              auto primal_vtcs = getPointelRange( K, surfel );
+              output_off << primal_vtcs.size();
+              // The +1 in lines below is because indexing starts at 1 in OBJ file format.
+                {
+                  for ( auto&& primal_vtx : primal_vtcs )
+                    output_off << " " << (c2i[ primal_vtx ]+0);
+                }
+                if(face_color != DGtal::Color::None)
+                {
+                  output_off << " ";
+                  output_off  << ((double) face_color.red())/255.0 << " "
+                              << ((double) face_color.green())/255.0 << " " << ((double) face_color.blue())/255.0 
+                              << " " << ((double) face_color.alpha())/255.0 ;
+                }
+                output_off << std::endl;
+            }
+          return output_off.good();
+        }
+    
 
       /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a material MTL file. Optionnaly you can specify the
@@ -1805,7 +1868,30 @@ namespace DGtal
                           ambient_color, diffuse_color, specular_color );
         }
 
-      /// Outputs a digital surface as an OBJ file (with its topology)
+      /// Outputs a digital surface as an OFF file (with its
+      /// topology).  Here surfels are canonically embedded
+      /// into the space. Optionnaly you can specify the face colors (see
+      /// saveOBJ for a more advanced export).
+      ///
+      /// Outputs a digital surface as an OFF. 
+      ///
+      /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+      ///
+      /// @param[in] digsurf the digital surface to output as an OBJ file
+      /// @param[in] offfile the output filename.
+      /// @param[in] face_color the color of all faces.
+      /// @return 'true' if the output stream is good.
+      template <typename TDigitalSurfaceContainer>
+        static bool
+        saveOFF
+        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+          std::string                                   offfile,
+          const Color&                   face_color  = Color( 32, 32, 32 ))
+          {
+          auto embedder = getCellEmbedder( digsurf );
+          return saveOFF( digsurf, embedder, offfile, face_color );
+        }
+  /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a simple MTL file. Here surfels are canonically embedded
       /// into the space.
       ///
