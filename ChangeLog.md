@@ -36,10 +36,10 @@
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
-  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
-    [#1474](https://github.com/DGtal-team/DGtal/pull/1474))
   - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
+    [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
