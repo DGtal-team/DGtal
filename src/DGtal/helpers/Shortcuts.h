@@ -1675,7 +1675,7 @@ namespace DGtal
           BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
 
           std::ofstream output_off( offfile.c_str() );
-          output_off << "#  OFF format" << std::endl;
+          output_off << "OFF" << std::endl;
           output_off << "# Generated from  DGtal::Shortcuts from the DGTal library" << std::endl;
           Cell2Index      c2i;
           auto       pointels = getPointelRange( c2i, digsurf );
@@ -1689,17 +1689,15 @@ namespace DGtal
               RealPoint p = embedder( pointel );
               output_off << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
             }	
-
           
           // Taking care of faces
           for ( auto&& surfel : *digsurf )
             {              
               auto primal_vtcs = getPointelRange( K, surfel );
               output_off << primal_vtcs.size();
-              // The +1 in lines below is because indexing starts at 1 in OBJ file format.
                 {
                   for ( auto&& primal_vtx : primal_vtcs )
-                    output_off << " " << (c2i[ primal_vtx ]+0);
+                    output_off << " " << (c2i[ primal_vtx ]);
                 }
                 if(face_color != DGtal::Color::None)
                 {
