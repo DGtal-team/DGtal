@@ -71,12 +71,14 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
+#include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/TickedColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
@@ -1668,13 +1670,13 @@ namespace DGtal
         saveOFF
         ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
           const TCellEmbedder&           embedder,
-          std::string                    offfile,
+          std::string                    off_file,
           const Color&                   face_color=DGtal::Color::None)
 
         {
           BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
 
-          std::ofstream output_off( offfile.c_str() );
+          std::ofstream output_off( off_file.c_str() );
           output_off << "OFF" << std::endl;
           output_off << "# Generated from  DGtal::Shortcuts from the DGTal library" << std::endl;
           Cell2Index      c2i;
@@ -1876,20 +1878,20 @@ namespace DGtal
       /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
       ///
       /// @param[in] digsurf the digital surface to output as an OBJ file
-      /// @param[in] offfile the output filename.
+      /// @param[in] off_file the output filename.
       /// @param[in] face_color the color of all faces.
       /// @return 'true' if the output stream is good.
       template <typename TDigitalSurfaceContainer>
         static bool
         saveOFF
         ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
-          std::string                                   offfile,
+          std::string                                   off_file,
           const Color&                   face_color  = Color( 32, 32, 32 ))
           {
           auto embedder = getCellEmbedder( digsurf );
-          return saveOFF( digsurf, embedder, offfile, face_color );
+          return saveOFF( digsurf, embedder, off_file, face_color );
         }
-  /// Outputs a digital surface as an OBJ file (with its topology)
+      /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a simple MTL file. Here surfels are canonically embedded
       /// into the space.
       ///
@@ -2375,6 +2377,33 @@ namespace DGtal
           return ok;
         }
 
+       /// Outputs a triangulated surface as an OFF file.
+      /// 
+      ///
+      /// @tparam TPoint any model of point
+      /// @param[in] polysurf the polygonal surface to output as an OBJ file
+      /// @param[in] off_file the output filename.
+      /// @param[in] face_color the comming face color.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint>
+      static bool
+      saveOFF ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
+                  std::string                                   off_file,
+                  const Color&                   face_color  = DGtal::Color::None)
+          
+        {
+          DGtal::Mesh< TPoint > m;
+          MeshHelpers::polygonalSurface2Mesh(*polysurf,m);
+          std::ofstream output( off_file.c_str() );
+          for (unsigned int i=0; i< m.nbFaces(); i++)
+          {
+            m.setFaceColor(i, face_color);
+          }
+          bool ok = MeshWriter< TPoint >::export2OFF( output, m, true );
+          output.close();
+          return ok;
+        }
+
       /// Outputs a triangulated surface as an OBJ file (with its topology).
       ///
       /// @tparam TPoint any model of point
@@ -2477,6 +2506,32 @@ namespace DGtal
           return ok;
         }
 
+      /// Outputs a triangulated surface as an OFF file.
+      /// 
+      ///
+      /// @tparam TPoint any model of point
+      /// @param[in] trisurf the triangulated surface to output as an OBJ file
+      /// @param[in] off_file the output filename.
+      /// @param[in] face_color the comming face color.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint>
+      static bool
+      saveOFF ( CountedPtr< ::DGtal::TriangulatedSurface<TPoint> > trisurf,
+                  std::string                                   off_file,
+                  const Color&                   face_color  = DGtal::Color::None)
+          
+        {
+          DGtal::Mesh< TPoint > m;
+          MeshHelpers::triangulatedSurface2Mesh(*trisurf,m);
+          std::ofstream output( off_file.c_str() );
+          for (unsigned int i=0; i< m.nbFaces(); i++)
+          {
+            m.setFaceColor(i, face_color);
+          }
+          bool ok = MeshWriter< TPoint >::export2OFF( output, m, true );
+          output.close();
+          return ok;
+        }
 
     
       // ------------------------------ utilities ------------------------------
