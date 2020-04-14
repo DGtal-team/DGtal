@@ -299,6 +299,24 @@ to get a piecewise smooth approximation of the II normals.
 </tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
+
+This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
+
+
+<table>
+<tr>
+<td>
+\image html torus-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on a torus."
+</td>
+<td>
+\image html goursat-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on goursat shape."
+</td>
+</tr>
+</table>
+
 
 @section dgtal_shortcuts_sec2b Few 2D examples
 
@@ -493,6 +511,11 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalCurvatures: returns the first (smallest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalCurvatures: returns the second (greatest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalDirections: returns the first principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalDirections: returns the second principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getPrincipalCurvaturesAndDirections: returns the first and second principal curvatures and directions along the 3D implicit shape close to the specified surfels.
 
 -# GeometryEstimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
