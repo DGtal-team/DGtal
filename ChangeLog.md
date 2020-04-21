@@ -114,10 +114,10 @@
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
 
 - *DEC*
-  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441))
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
   related to bad link in DEC/moduleAT documentation and missing
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
-  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
+  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
   - Adding missing LGPL headers in the DEC examples (David Coeurjolly
   [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
@@ -137,6 +137,11 @@
     (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
+
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441),
+    that is a Visual Studio 2019 build error related to befriend
+    template specializations
+   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
   - Removing the homemade CPP11 checks, using cmake macro instead
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
