@@ -1661,7 +1661,7 @@ namespace DGtal
       ///
       /// @param[in] digsurf the digital surface to output as an OBJ file
       /// @param[in] embedder any map Cell->RealPoint
-      /// @param[in] face_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+      /// @param[in] face_color the color of every face.
       /// @param[in] offfile the output filename.
       /// @return 'true' if the output stream is good.
       template <typename TDigitalSurfaceContainer,
@@ -1879,7 +1879,7 @@ namespace DGtal
       ///
       /// @param[in] digsurf the digital surface to output as an OBJ file
       /// @param[in] off_file the output filename.
-      /// @param[in] face_color the color of all faces.
+      /// @param[in] face_color the color of every face.
       /// @return 'true' if the output stream is good.
       template <typename TDigitalSurfaceContainer>
         static bool
@@ -2383,7 +2383,7 @@ namespace DGtal
       /// @tparam TPoint any model of point
       /// @param[in] polysurf the polygonal surface to output as an OBJ file
       /// @param[in] off_file the output filename.
-      /// @param[in] face_color the comming face color.
+      /// @param[in] face_color the color of every face.
       /// @return 'true' if the output stream is good.
       template <typename TPoint>
       static bool
@@ -2512,7 +2512,7 @@ namespace DGtal
       /// @tparam TPoint any model of point
       /// @param[in] trisurf the triangulated surface to output as an OBJ file
       /// @param[in] off_file the output filename.
-      /// @param[in] face_color the comming face color.
+      /// @param[in] face_color the color of all faces.
       /// @return 'true' if the output stream is good.
       template <typename TPoint>
       static bool
