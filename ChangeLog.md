@@ -28,6 +28,8 @@
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
     directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+  - Add principal directions of curvature functions for implicit polynomial 3D shapes.
+    (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
@@ -40,6 +42,8 @@
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
   - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
     [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
+  - Add shortcuts to principal curvatures and directions of curvature for implicit polynomial
+    3D shapes. (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
