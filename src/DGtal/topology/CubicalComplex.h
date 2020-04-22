@@ -187,20 +187,48 @@ namespace DGtal
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
-    friend Self& DGtal::operator|=<>( Self&, const Self& );
-    friend Self& DGtal::operator&=<>( Self&, const Self& );
-    friend Self& DGtal::operator^=<>( Self&, const Self& );
-    friend Self& DGtal::operator-=<>( Self&, const Self& );
-    friend Self  DGtal::operator| <>( const Self&, const Self& );
-    friend Self  DGtal::operator& <>( const Self&, const Self& );
-    friend Self  DGtal::operator^ <>( const Self&, const Self& );
-    friend Self  DGtal::operator- <>( const Self&, const Self& );
-    friend Self  DGtal::operator~ <>( const Self& );
-    friend Self  DGtal::operator* <>( const Self& );
-    friend bool  DGtal::operator==<>( const Self&, const Self& );
-    friend bool  DGtal::operator!=<>( const Self&, const Self& );
-    friend bool  DGtal::operator<=<>( const Self&, const Self& );
-    friend bool  DGtal::operator>=<>( const Self&, const Self& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator|=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator&=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator^=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator-=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator| ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator& ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator^ ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator- ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator~ ( const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator* ( const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator==( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator!=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator<=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator>=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
 
     typedef TKSpace                             KSpace;        ///< Type of the cellular grid space.
     typedef TCellContainer                      CellContainer; ///< Type for storing cells, an associative container Cell -> Data
