@@ -1704,9 +1704,8 @@ namespace DGtal
                 if(face_color != DGtal::Color::None)
                 {
                   output_off << " ";
-                  output_off  << ((double) face_color.red())/255.0 << " "
-                              << ((double) face_color.green())/255.0 << " " << ((double) face_color.blue())/255.0 
-                              << " " << ((double) face_color.alpha())/255.0 ;
+                  output_off  << face_color.r() << " " << face_color.g()
+                              << " " << face_color.b() << " " << face_color.a();
                 }
                 output_off << std::endl;
             }
@@ -1889,7 +1888,7 @@ namespace DGtal
           const Color&                   face_color  = Color( 32, 32, 32 ))
           {
           auto embedder = getCellEmbedder( digsurf );
-          return saveOFF( digsurf, embedder, off_file, face_color );
+          return saveOFF( digsurf, embedder, off_file, face_color);
         }
       /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a simple MTL file. Here surfels are canonically embedded
@@ -2389,7 +2388,7 @@ namespace DGtal
       static bool
       saveOFF ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
                   std::string                                   off_file,
-                  const Color&                   face_color  = DGtal::Color::None)
+                  const Color&                                 face_color  = DGtal::Color::None)
           
         {
           DGtal::Mesh< TPoint > m;
