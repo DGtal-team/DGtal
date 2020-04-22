@@ -1663,7 +1663,7 @@ namespace DGtal
       /// @param[in] digsurf the digital surface to output as an OBJ file
       /// @param[in] embedder any map Cell->RealPoint
       /// @param[in] face_color the color of every face.
-      /// @param[in] offfile the output filename.
+      /// @param[in] off_file the output filename.
       /// @return 'true' if the output stream is good.
       template <typename TDigitalSurfaceContainer,
         typename TCellEmbedder>
