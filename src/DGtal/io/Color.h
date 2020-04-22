@@ -170,6 +170,15 @@ namespace DGtal
     unsigned char alpha() const ;
 
 
+    double r() const ;
+
+    double g() const ;
+    
+    double b() const ;
+
+    double a() const ;
+
+
     /**
      * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B canal on 8 bits starting from least significant bit.
