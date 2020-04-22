@@ -40,6 +40,8 @@
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
   - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
+    [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
   - Add shortcuts to principal curvatures and directions of curvature for implicit polynomial
     3D shapes. (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
