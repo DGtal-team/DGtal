@@ -47,7 +47,11 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 //!  [shapeDTViewer-basicIncludes]
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace DGtal;
@@ -77,7 +81,7 @@ int main(int argc, char **argv)
   DTL2 dt(&domain,&mySet,&Z3i::l2Metric );
   //! [ImageSetDT-DT]
 
-  DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(),
+  DTL2::Value maxDT = (*boost::first_max_element(dt.constRange().begin(),
                                          dt.constRange().end()));
 
 

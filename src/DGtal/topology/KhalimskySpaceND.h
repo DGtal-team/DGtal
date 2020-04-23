@@ -379,7 +379,7 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * @note Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @note Essentially a backport from ImaGene.
    *
    * @warning Periodic Khalimsky space and per-dimension closure specification are new features.
    * Therefore, there is no guarantee that it is compatible with the whole DGtal library.

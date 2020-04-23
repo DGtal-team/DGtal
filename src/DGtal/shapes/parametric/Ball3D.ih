@@ -36,21 +36,14 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
+#define BALL3D_2_PI (2. * M_PI)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-typedef std::pair<double,double> AngularCoordinates;
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Ball3D<T>::~Ball3D()
-{
-}
 
 template <typename T>
 inline
@@ -65,6 +58,11 @@ DGtal::Ball3D<T>::Ball3D(const RealPoint &aPoint, const double radius):
   myRadius(radius), myCenter(aPoint)
 {}
 
+template <typename T>
+inline
+DGtal::Ball3D<T>::Ball3D(const Ball3D& other):
+  myCenter(other.myCenter), myRadius(other.myRadius)
+{}
 
 /////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ------------------
@@ -80,17 +78,16 @@ inline
 AngularCoordinates
 DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
 {
-  RealPoint p( pp );
-  p -= myCenter;
+  const RealPoint p( pp - myCenter );
   AngularCoordinates angle;
   
   angle.first = atan2( p[1], p[0] );
-  double tmp = std::min ( std::abs( p[2] ), 1.0 );
-  double pn = p.norm();
-  angle.second = pn > 0.0 ? acos( tmp / pn ) : 0.0;
+  const double tmp = std::min( std::abs(p[2]), 1. );
+  const double pn = p.norm();
+  angle.second = pn > 0. ? acos(tmp/pn) : 0.;
 
-  angle.first = ( angle.first < 0.0 ) ? angle.first + 2*M_PI : angle.first;
-  angle.second = ( angle.second < 0.0 ) ? angle.second + M_PI : angle.second;
+  angle.first = ( angle.first < 0. ) ? angle.first + BALL3D_2_PI : angle.first;
+  angle.second = ( angle.second < 0. ) ? angle.second + M_PI : angle.second;
   
   return angle;
 }
@@ -104,11 +101,13 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::x( AngularCoordinates t ) const
+DGtal::Ball3D<T>::x( const AngularCoordinates& t ) const
 {
-  RealPoint c( myRadius*cos(t.first)*sin(t.second), myRadius*sin(t.first)*sin(t.second) , myRadius*cos(t.second));
-  c += myCenter;
-  return c;
+  return RealPoint(
+    myRadius * cos(t.first) * sin(t.second) + myCenter[0],
+    myRadius * sin(t.first) * sin(t.second) + myCenter[1],
+    myRadius * cos(t.second) + myCenter[2]
+  );
 }
 
 
@@ -121,13 +120,9 @@ DGtal::Ball3D<T>::x( AngularCoordinates t ) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::gradient( const AngularCoordinates t) const
+DGtal::Ball3D<T>::gradient( const AngularCoordinates& t ) const
 {
-  RealPoint p= x(t);
-  double xx=2*(p[0]-myCenter[0]);
-  double yy =2*(p[1]-myCenter[1]);
-  double zz=2*(p[2]-myCenter[2]);
-  return RealPoint(xx,yy,zz);
+  return 2 * (x(t) - myCenter);
 }
 
 /**
@@ -138,9 +133,13 @@ DGtal::Ball3D<T>::gradient( const AngularCoordinates t) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::rt( const AngularCoordinates t) const
+DGtal::Ball3D<T>::rt( const AngularCoordinates& t ) const
 {
-  return RealPoint(-myRadius*sin(t.first)*sin(t.second),myRadius*cos(t.first)*sin(t.second),0);
+  return RealPoint(
+    -myRadius * sin(t.first) * sin(t.second),
+     myRadius * cos(t.first) * sin(t.second),
+     0
+  );
 }
 
 
@@ -153,9 +152,13 @@ DGtal::Ball3D<T>::rt( const AngularCoordinates t) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::rp( const AngularCoordinates t) const
+DGtal::Ball3D<T>::rp( const AngularCoordinates& t ) const
 {
-  return RealPoint(myRadius*cos(t.first)*cos(t.second),myRadius*sin(t.first)*cos(t.second),-myRadius*sin(t.second));
+  return RealPoint(
+     myRadius * cos(t.first) * cos(t.second),
+     myRadius * sin(t.first) * cos(t.second),
+    -myRadius * sin(t.second)
+  );
 }
 
 
@@ -167,9 +170,13 @@ DGtal::Ball3D<T>::rp( const AngularCoordinates t) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::rtt( const AngularCoordinates t) const
+DGtal::Ball3D<T>::rtt( const AngularCoordinates& t ) const
 {
-  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),0);
+  return RealPoint(
+    -myRadius * cos(t.first) * sin(t.second),
+    -myRadius * sin(t.first) * sin(t.second),
+     0.
+  );
 }
 
 
@@ -182,11 +189,15 @@ DGtal::Ball3D<T>::rtt( const AngularCoordinates t) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::rpp( const AngularCoordinates t) const
+DGtal::Ball3D<T>::rpp( const AngularCoordinates& t ) const
 {
-  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),-myRadius*cos(t.second));
+  return RealPoint(
+    -myRadius * cos(t.first) * sin(t.second),
+    -myRadius * sin(t.first) * sin(t.second),
+    -myRadius * cos(t.second)
+  );
 }
-    
+
 /**
  * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi]
  *
@@ -195,14 +206,18 @@ DGtal::Ball3D<T>::rpp( const AngularCoordinates t) const
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
-DGtal::Ball3D<T>::rtp( const AngularCoordinates t) const
+DGtal::Ball3D<T>::rtp( const AngularCoordinates& t ) const
 {
-  return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
+  return RealPoint(
+    -myRadius * sin(t.first) * cos(t.second),
+     myRadius * cos(t.first) * cos(t.second),
+     0.
+  );
 }
-    
 
-    
-    
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
@@ -215,7 +230,8 @@ inline
 void
 DGtal::Ball3D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Ball3D] center= "<<myCenter<<" radius="<<myRadius;
+  out << "[Ball3D] center= " << myCenter
+      << " radius=" << myRadius;
 }
 
 /**

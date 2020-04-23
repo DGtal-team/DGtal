@@ -80,7 +80,7 @@ We give below some minimalistic examples to show that shortcuts can
 save a lot of lines of code. All examples need at least the following lines:
 
 \code
-#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 ...
 // Using standard 3D digital space.
@@ -91,7 +91,7 @@ auto params = SH3::defaultParameters();
 Examples requiring geometric functions (ground-truth or estimation) need the following lines (i.e. functions in `SHG3`):
 
 \code
-#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
 ...
@@ -299,6 +299,24 @@ to get a piecewise smooth approximation of the II normals.
 </tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
+
+This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
+
+
+<table>
+<tr>
+<td>
+\image html torus-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on a torus."
+</td>
+<td>
+\image html goursat-primal-d1-d2.png "Principal directions of curvatures colored according to their value (blue negative, red positive) on goursat shape."
+</td>
+</tr>
+</table>
+
 
 @section dgtal_shortcuts_sec2b Few 2D examples
 
@@ -306,7 +324,7 @@ We give below some minimalistic examples to show that shortcuts can
 save a lot of lines of code. All examples need at least the following lines:
 
 \code
-#include "DGtal/helpers/Stddefs.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 
 ...
@@ -493,6 +511,11 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getGaussianCurvatures: returns the Gaussian curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalCurvatures: returns the first (smallest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalCurvatures: returns the second (greatest) principal curvatures along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getFirstPrincipalDirections: returns the first principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getSecondPrincipalDirections: returns the second principal directions along the 3D implicit shape close to the specified surfels.
+  - ShortcutsGeometry::getPrincipalCurvaturesAndDirections: returns the first and second principal curvatures and directions along the 3D implicit shape close to the specified surfels.
 
 -# GeometryEstimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
@@ -502,6 +525,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections: returns the Integral Invariant (II) principal curvatures values and directions for the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors

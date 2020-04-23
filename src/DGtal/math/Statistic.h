@@ -59,7 +59,7 @@ namespace DGtal
     efficiency. For multiple variables, sample storage and others,
     see Statistics class.
 
-    Backported from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene). \cite Lachaud03b
+    Backported from ImaGene. \cite Lachaud03b
     
     @see testStatistics.cpp
 

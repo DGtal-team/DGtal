@@ -33,8 +33,7 @@ be detected from points which are not necessarily connected nor
 necessarily digital points (RealPoint for instance).
 
 @note The proposed implementation is mainly a backport from
- [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene) with some
- various refactoring.
+ ImaGene with some various refactoring.
 
 
 [TOC]
