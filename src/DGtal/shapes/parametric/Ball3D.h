@@ -67,9 +67,10 @@ namespace DGtal
     typedef std::pair<double,double> AngularCoordinates;
 
     /**
-     * Destructor.
+     * Constructor.
+     * Forbidden by default.
      */
-    ~Ball3D();
+    Ball3D() = delete;
 
     /**
      * Constructor.
@@ -85,17 +86,26 @@ namespace DGtal
      * @param aPoint the sphere center.
      * @param r the radius of the sphere.
      */
-    Ball3D(const RealPoint &aPoint, const double r);
+    Ball3D( const RealPoint& aPoint, const double r );
 
-
-    /*
-     * Constructor.
-     * @param aPoint the sphere center.
-     * @param r the radius of the sphere.
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    /*
-      Ball3D(const Point &aPoint, const double r);
-    */
+    Ball3D( const Ball3D& other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    Ball3D& operator=( const Ball3D& other ) = delete;
+
+    /**
+     * Destructor.
+     */
+    ~Ball3D() = default;
 
     // ------------- Implementation of 'StarShaped' services ------------------
   public:
@@ -107,9 +117,7 @@ namespace DGtal
     RealPoint getLowerBound() const
     {
 
-      return RealPoint(myCenter[0] - myRadius,
-                       myCenter[1] - myRadius ,
-                       myCenter[2] - myRadius );
+      return myCenter - myRadius;
     }
 
     /**
@@ -118,9 +126,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint(myCenter[0] + myRadius ,
-                       myCenter[1] + myRadius,
-                       myCenter[2] + myRadius);
+      return myCenter + myRadius;
     }
 
     /**
@@ -150,70 +156,55 @@ namespace DGtal
      */
     AngularCoordinates parameter( const RealPoint & p ) const;
 
-
-
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
      */
-    RealPoint x( const AngularCoordinates t ) const;
-
-
-
+    RealPoint x( const AngularCoordinates& t ) const;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (gradf(M)).
      */
-    virtual RealPoint gradient( const AngularCoordinates t) const ;
-
-
+    virtual RealPoint gradient( const AngularCoordinates& t) const ;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
      */
-    virtual RealPoint rt( const AngularCoordinates t) const ;
-
-
+    virtual RealPoint rt( const AngularCoordinates& t) const ;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rp(M)) wich is the partial derivative with respect to Phi.
      */
-    virtual RealPoint rp( const AngularCoordinates t) const ;
-
+    virtual RealPoint rp( const AngularCoordinates& t) const ;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rtt(M)) wich is second the partial derivative with respect to Teta (twice).
      */
-    virtual RealPoint rtt( const AngularCoordinates t) const ;
-
-
+    virtual RealPoint rtt( const AngularCoordinates& t) const ;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi (twice).
      */
-    virtual RealPoint rpp( const AngularCoordinates t) const ;
-
+    virtual RealPoint rpp( const AngularCoordinates& t) const ;
 
     /**
      * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rpp(M)) wich is second the partial derivative with respect to Teta then Phi.
      */
-    virtual RealPoint rtp( const AngularCoordinates t) const ;
-
-
+    virtual RealPoint rtp( const AngularCoordinates& t) const ;
 
 
     // ------------------------- data ----------------------------
@@ -229,7 +220,6 @@ namespace DGtal
      */
     RealPoint myCenter;
 
-
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -244,36 +234,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Ball3D();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    // Ball3D ( const Ball3D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Ball3D & operator= ( const Ball3D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class Ball3D
 

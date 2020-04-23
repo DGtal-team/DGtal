@@ -44,6 +44,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <tuple>
 #include <iterator>
 #include <string>
 #include "DGtal/base/Common.h"
@@ -70,12 +71,14 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
+#include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/TickedColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+#include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
@@ -239,6 +242,7 @@ namespace DGtal
                    { "torus",   "(x^2+y^2+z^2+6*6-2*2)^2-4*6*6*(x^2+y^2)" },
                    { "rcube",   "x^4+y^4+z^4-6561" },
                    { "goursat", "-1*(8-0.03*x^4-0.03*y^4-0.03*z^4+2*x^2+2*y^2+2*z^2)" },
+                   { "goursat-hole", "x^4+y^4+z^4-2*4*(x^2+y^2+z^2)+2*4*4-2" },
                    { "distel",  "10000-(x^2+y^2+z^2+1000*(x^2+y^2)*(x^2+z^2)*(y^2+z^2))"},
                    { "leopold", "(x^2*y^2*z^2+4*x^2+4*y^2+3*z^2)-100" },
                    { "diabolo", "x^2-(y^2+z^2)^2" },
@@ -387,45 +391,45 @@ namespace DGtal
       /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
       /// @return the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static KSpace
-        getKSpace
-        ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
+      static KSpace
+      getKSpace
+      ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
 
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on any indexed digital surface.
       /// @return the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static KSpace
-        getKSpace
-        ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
-
+      static KSpace
+      getKSpace
+      ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
+      
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
       /// @return a const reference to the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static const KSpace&
-        refKSpace
-        ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
-
+      static const KSpace&
+      refKSpace
+      ( CountedPtr< ::DGtal::DigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
+      
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on any indexed digital surface.
       /// @return a const reference to the Khalimsky space associated to the given surface.
       template <typename TDigitalSurfaceContainer>
-        static const KSpace&
-        refKSpace
-        ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
-        {
-          return surface->container().space();
-        }
+      static const KSpace&
+      refKSpace
+      ( CountedPtr< ::DGtal::IndexedDigitalSurface< TDigitalSurfaceContainer> > surface )
+      {
+        return surface->container().space();
+      }
 
       /// @param[in] K any Khalimsky space.
       /// @return the canonic cell embedder associated to the given Khalimsky space.
@@ -481,7 +485,6 @@ namespace DGtal
         getKSpace( Parameters params =
                    parametersKSpace() | parametersDigitizedImplicitShape3D() )
       {
-        trace.info() << "[Shortcuts::getKSpace] " << params << std::endl;
         Scalar min_x  = params[ "minAABB"  ].as<Scalar>();
         Scalar max_x  = params[ "maxAABB"  ].as<Scalar>();
         Scalar h      = params[ "gridstep" ].as<Scalar>();
@@ -1445,6 +1448,9 @@ namespace DGtal
       /// of the surfels of the surface, where the 4 pointels of each
       /// surfel are visited in order.
       ///
+      /// @since 1.1 The pointel ordering is now the same as the one
+      /// given by makePrimalPolygonalSurface (for 3D only of course).
+      ///
       /// @note If you wish to consider the primal digital surface, and
       /// visits pointels as vertices of this graph in
       /// breadth-first/depth-first order, the best is to build first a
@@ -1518,7 +1524,9 @@ namespace DGtal
       getPointelRange
       ( const KSpace& K, const SCell& surfel )
       {
-        return getPrimalVertices( K, surfel, true );
+        return KSpace::dimension == 3
+	  ? getPrimalVertices( K, surfel, true )
+	  : getPrimalVertices( K, surfel );
       }
       
       /// Given any digital surface, returns a vector of surfels in
@@ -1645,6 +1653,66 @@ namespace DGtal
         else return surface->allVertices();
         return result;
       }
+      /// Outputs a digital surface as an OFF file (with its
+      /// topology).  Optionnaly you can specify the face colors (see
+      /// saveOBJ for a more advanced export).
+      ///
+      /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+      /// @tparam TCellEmbedder any type for maping Cell -> RealPoint.
+      ///
+      /// @param[in] digsurf the digital surface to output as an OBJ file
+      /// @param[in] embedder any map Cell->RealPoint
+      /// @param[in] face_color the color of every face.
+      /// @param[in] off_file the output filename.
+      /// @return 'true' if the output stream is good.
+      template <typename TDigitalSurfaceContainer,
+        typename TCellEmbedder>
+        static bool
+        saveOFF
+        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+          const TCellEmbedder&           embedder,
+          std::string                    off_file,
+          const Color&                   face_color=DGtal::Color::None)
+
+        {
+          BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+
+          std::ofstream output_off( off_file.c_str() );
+          output_off << "OFF" << std::endl;
+          output_off << "# Generated from  DGtal::Shortcuts from the DGTal library" << std::endl;
+          Cell2Index      c2i;
+          auto       pointels = getPointelRange( c2i, digsurf );
+          output_off <<  pointels.size()  << " " << digsurf->size() << " " << 0 << " " << std::endl;
+          
+          
+          // Number and output vertices.
+          const KSpace&     K = refKSpace( digsurf );
+          for ( auto&& pointel : pointels )
+            {
+              RealPoint p = embedder( pointel );
+              output_off << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+            }	
+          
+          // Taking care of faces
+          for ( auto&& surfel : *digsurf )
+            {              
+              auto primal_vtcs = getPointelRange( K, surfel );
+              output_off << primal_vtcs.size();
+                {
+                  for ( auto&& primal_vtx : primal_vtcs )
+                    output_off << " " << (c2i[ primal_vtx ]);
+                }
+                if(face_color != DGtal::Color::None)
+                {
+                  output_off << " ";
+                  output_off  << face_color.r() << " " << face_color.g()
+                              << " " << face_color.b() << " " << face_color.a();
+                }
+                output_off << std::endl;
+            }
+          return output_off.good();
+        }
+    
 
       /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a material MTL file. Optionnaly you can specify the
@@ -1800,6 +1868,29 @@ namespace DGtal
                           ambient_color, diffuse_color, specular_color );
         }
 
+      /// Outputs a digital surface as an OFF file (with its
+      /// topology).  Here surfels are canonically embedded
+      /// into the space. Optionnaly you can specify the face colors (see
+      /// saveOBJ for a more advanced export).
+      ///
+      /// Outputs a digital surface as an OFF. 
+      ///
+      /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
+      ///
+      /// @param[in] digsurf the digital surface to output as an OBJ file
+      /// @param[in] off_file the output filename.
+      /// @param[in] face_color the color of every face.
+      /// @return 'true' if the output stream is good.
+      template <typename TDigitalSurfaceContainer>
+        static bool
+        saveOFF
+        ( CountedPtr< ::DGtal::DigitalSurface<TDigitalSurfaceContainer> > digsurf,
+          std::string                                   off_file,
+          const Color&                   face_color  = Color( 32, 32, 32 ))
+          {
+          auto embedder = getCellEmbedder( digsurf );
+          return saveOFF( digsurf, embedder, off_file, face_color);
+        }
       /// Outputs a digital surface as an OBJ file (with its topology)
       /// and a simple MTL file. Here surfels are canonically embedded
       /// into the space.
@@ -2286,6 +2377,33 @@ namespace DGtal
           return ok;
         }
 
+       /// Outputs a triangulated surface as an OFF file.
+      /// 
+      ///
+      /// @tparam TPoint any model of point
+      /// @param[in] polysurf the polygonal surface to output as an OBJ file
+      /// @param[in] off_file the output filename.
+      /// @param[in] face_color the color of every face.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint>
+      static bool
+      saveOFF ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
+                  std::string                                   off_file,
+                  const Color&                                 face_color  = DGtal::Color::None)
+          
+        {
+          DGtal::Mesh< TPoint > m;
+          MeshHelpers::polygonalSurface2Mesh(*polysurf,m);
+          std::ofstream output( off_file.c_str() );
+          for (unsigned int i=0; i< m.nbFaces(); i++)
+          {
+            m.setFaceColor(i, face_color);
+          }
+          bool ok = MeshWriter< TPoint >::export2OFF( output, m, true );
+          output.close();
+          return ok;
+        }
+
       /// Outputs a triangulated surface as an OBJ file (with its topology).
       ///
       /// @tparam TPoint any model of point
@@ -2388,6 +2506,32 @@ namespace DGtal
           return ok;
         }
 
+      /// Outputs a triangulated surface as an OFF file.
+      /// 
+      ///
+      /// @tparam TPoint any model of point
+      /// @param[in] trisurf the triangulated surface to output as an OBJ file
+      /// @param[in] off_file the output filename.
+      /// @param[in] face_color the color of all faces.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint>
+      static bool
+      saveOFF ( CountedPtr< ::DGtal::TriangulatedSurface<TPoint> > trisurf,
+                  std::string                                   off_file,
+                  const Color&                   face_color  = DGtal::Color::None)
+          
+        {
+          DGtal::Mesh< TPoint > m;
+          MeshHelpers::triangulatedSurface2Mesh(*trisurf,m);
+          std::ofstream output( off_file.c_str() );
+          for (unsigned int i=0; i< m.nbFaces(); i++)
+          {
+            m.setFaceColor(i, face_color);
+          }
+          bool ok = MeshWriter< TPoint >::export2OFF( output, m, true );
+          output.close();
+          return ok;
+        }
 
     
       // ------------------------------ utilities ------------------------------
@@ -2549,7 +2693,7 @@ namespace DGtal
           Size n = 1;  // OBJ vertex numbering start at 1 
           for ( auto&& s : surfels )
             {
-              auto primal_vtcs = getPointelRange( K, s );
+              auto primal_vtcs = getPointelRange( K, s, true );
               for ( auto&& primal_vtx : primal_vtcs )
                 {
                   if ( ! vtx_numbering.count( primal_vtx ) )

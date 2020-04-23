@@ -42,6 +42,8 @@
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
+
+#include <boost/algorithm/minmax_element.hpp>
 //! [examplePointFunctorHolder-includes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +73,7 @@ int main()
 
 
   //! [examplePointFunctorHolder-DTvis]
-  DTL2::Value maxDT = *std::max_element( dt.constRange().begin(), dt.constRange().end() );
+  DTL2::Value maxDT = *boost::first_max_element( dt.constRange().begin(), dt.constRange().end() );
   using HueTwice = HueShadeColorMap<DTL2::Value, 1>;
 
   Board2D aBoard;

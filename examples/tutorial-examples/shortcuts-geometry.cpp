@@ -316,6 +316,43 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
 
+  trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth curvatures -> display in OBJ." );
+  {
+    auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_2_13s]
+    params( "polynomial", "goursat" )( "gridstep", 0.25 )( "colormap", "Tics" );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto bimage          = SH3::makeBinaryImage      ( digitized_shape, params );
+    auto K               = SH3::getKSpace( params );
+    auto surface         = SH3::makeLightDigitalSurface( bimage, K, params );
+    auto surfels         = SH3::getSurfelRange( surface, params );
+    auto k1              = SHG3::getFirstPrincipalCurvatures( implicit_shape, K, surfels, params );
+    auto k2              = SHG3::getSecondPrincipalCurvatures( implicit_shape, K, surfels, params );
+    auto d1              = SHG3::getFirstPrincipalDirections( implicit_shape, K, surfels, params );
+    auto d2              = SHG3::getSecondPrincipalDirections( implicit_shape, K, surfels, params );
+    auto embedder        = SH3::getSCellEmbedder( K );
+    SH3::RealPoints positions( surfels.size() );
+    std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
+        	    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+    bool ok    = SH3::saveOBJ( surface, SH3::RealVectors(), SH3::Colors(),
+			       "goursat-primal.obj" );
+    // output principal curvatures and directions
+    auto cmap  = SH3::getColorMap( -0.5, 0.5, params );
+    auto colors= SH3::Colors( surfels.size() );
+    std::transform( k1.cbegin(), k1.cend(), colors.begin(), cmap );
+    bool ok_k1 = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-primal-k1.obj" );
+    bool ok_d1 = SH3::saveVectorFieldOBJ( positions, d1, 0.05, colors,
+					  "goursat-primal-d1.obj", SH3::Color::Black );
+    std::transform( k2.cbegin(), k2.cend(), colors.begin(), cmap );
+    bool ok_k2 = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-primal-k2.obj" );
+    bool ok_d2 = SH3::saveVectorFieldOBJ( positions, d2, 0.05, colors,
+					  "goursat-primal-d2.obj", SH3::Color::Black );
+    //! [dgtal_shortcuts_ssec2_2_13s]
+  }
+  trace.endBlock();
+  
+  
 #if defined(WITH_EIGEN)
   
   trace.beginBlock ( "Load vol file -> build main digital surface -> II normals -> AT regularization -> save OBJ with colored normals." );
