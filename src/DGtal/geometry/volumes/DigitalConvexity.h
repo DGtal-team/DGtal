@@ -299,7 +299,7 @@ namespace DGtal
     /// @return 'true' iff the polytope \a P is digitally \a k-convex.
     ///
     /// @note A polytope is always digitally 0-convex. Furthermore, if
-    /// it is not digitally d-1-convex then it is digitally d-convex
+    /// it is not digitally d-1-convex then it is digitally not d-convex
     /// (d := KSpace::dimension).
     bool isKConvex( const Polytope& P, const Dimension k ) const;
 
