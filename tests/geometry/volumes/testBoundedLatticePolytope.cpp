@@ -222,6 +222,51 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
       }
     }
   }
+  GIVEN( "A closed triangle P at (0,0,0), (6,3,0), (2,5,10)" ) {
+    Point a( 0, 0, 0 );
+    Point b( 6, 3, 0 );
+    Point c( 2, 5, 10 );
+    Polytope P { a, b, c };
+    THEN( "Its interior is empty #Int(P) == 0" ) {
+      auto nb_int = P.countInterior();
+      REQUIRE( nb_int == 0 );
+    }
+    THEN( "It satisfies #In(P) == #Int(P) + #Bd(P)" ) {
+      auto     nb = P.count();
+      auto nb_int = P.countInterior();
+      auto  nb_bd = P.countBoundary();
+      CAPTURE( nb );
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      std::vector<Point> Ppts;
+      P.getPoints( Ppts );
+      CAPTURE( Ppts );
+      REQUIRE( nb == nb_int + nb_bd );
+    }
+  }
+  GIVEN( "A closed triangle P with relatively prime coordinates (3,0,0), (0,4,0), (0,0,5)" ) {
+    Point a( 3, 0, 0 );
+    Point b( 0, 4, 0 );
+    Point c( 0, 0, 5 );
+    Polytope P { a, b, c };
+    THEN( "Its interior is empty #Int(P) == 0" ) {
+      auto nb_int = P.countInterior();
+      REQUIRE( nb_int == 0 );
+    }
+    THEN( "It satisfies #In(P) == #Int(P) + #Bd(P) == #Bd(P) == 3" ) {
+      auto     nb = P.count();
+      auto nb_int = P.countInterior();
+      auto  nb_bd = P.countBoundary();
+      CAPTURE( nb );
+      CAPTURE( nb_int );
+      CAPTURE( nb_bd );
+      std::vector<Point> Ppts;
+      P.getPoints( Ppts );
+      CAPTURE( Ppts );
+      REQUIRE( nb_bd == 3 );
+      REQUIRE( nb == nb_int + nb_bd );
+    }
+  }
 }
 
 //                                                                           //

@@ -41,6 +41,19 @@
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+clear()
+{
+  A.clear();
+  B.clear();
+  I.clear();
+  myValidEdgeConstraints = false;
+  D = Domain( Point::zero, Point::zero );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 DGtal::BoundedLatticePolytope<TSpace>::
 BoundedLatticePolytope( std::initializer_list<Point> l )
 {
@@ -120,6 +133,38 @@ init( const Domain& domain,
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+internalInitFromTriangle3D( Point a, Point b, Point c )
+{
+  Vector ab = b - a;
+  Vector bc = c - b;
+  Vector ca = a - c;
+  Vector  n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ab, bc );
+  if ( n == Vector::zero ) { clear(); return false; }
+  A.push_back( n );
+  B.push_back( a.dot( A.back() ) );
+  Vector mn = -1 * n;
+  A.push_back( mn );
+  B.push_back( a.dot( A.back() ) );
+  Vector abn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ab, n );
+  A.push_back( abn );
+  B.push_back( a.dot( abn ) );
+  Vector bcn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( bc, n );
+  A.push_back( bcn );
+  B.push_back( b.dot( bcn ) );
+  Vector can = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ca, n );
+  A.push_back( can );
+  B.push_back( c.dot( can ) );
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 template <typename PointIterator>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -132,19 +177,13 @@ init( PointIterator itB, PointIterator itE )
   B.clear();
   std::vector<Point> pts;
   for ( ; itB != itE; ++itB ) pts.push_back( *itB );
-  if ( pts.size() != d+1 )
-    {
-      I.clear();
-      return false;
-    }
   Point lo = pts[ 0 ];
   Point hi = pts[ 0 ];
-  for ( Dimension s = 1; s <= d; ++s )
+  for ( Dimension s = 1; s < pts.size(); ++s )
     {
       lo = lo.inf( pts[ s ] );
       hi = hi.sup( pts[ s ] );
     }
-  D = Domain( lo, hi );
   // Add constraints related to sup/inf in x.
   for ( Dimension s = 0; s < d; ++s )
     {
@@ -155,6 +194,16 @@ init( PointIterator itB, PointIterator itE )
       z[ s ]   = -NumberTraits<Integer>::ONE;
       A.push_back( z );
       B.push_back( -lo[ s ] );
+    }
+  D = Domain( lo, hi );
+  if ( pts.size() != d+1 )
+    {
+      if ( pts.size() == 3 && d == 3 )
+	return internalInitFromTriangle3D( pts[ 0 ], pts[ 1 ], pts[ 2 ] );
+      clear();
+      clear();
+      clear();
+      return false;
     }
   // Build Matrix A and Vector b through cofactors
   Vector a;

@@ -301,6 +301,9 @@ namespace DGtal
      */
     Self & operator= ( const Self & other ) = default;
 
+    /// Clears the polytope.
+    void clear();
+    
     /// @}
 
     // ----------------------- Accessor services ------------------------------
@@ -672,6 +675,13 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    /// In 3D, builds a valid lattice polytope with empty interior
+    /// from 3 non-colinear points.
+    /// @param a any point such that a, b, and c are not colinear.
+    /// @param b any point such that a, b, and c are not colinear.
+    /// @param c any point such that a, b, and c are not colinear.
+    /// @return 'true' if they were not colinear, false otherwise.
+    bool internalInitFromTriangle3D( Point a, Point b, Point c );
 
   }; // end of class BoundedLatticePolytope
 
@@ -711,6 +721,18 @@ namespace DGtal
       {
 	trace.error() << "[BoundedLatticePolytopeHelper::addEdgeConstraint]"
 		      << " this method is only implemented in 3D." << std::endl;
+      }
+
+      /// Generic method for cross product, only implemented in 3D.
+      /// @param v1 any vector
+      /// @param v2 any vector
+      /// @return their cross product.
+      static
+      Vector crossProduct( const Vector& v1, const Vector& v2 )
+      {
+	trace.error() << "[BoundedLatticePolytopeHelper::crossProduct]"
+		      << " this method is only implemented in 3D." << std::endl;
+	return Vector::zero;
       }
     };
     
@@ -758,6 +780,15 @@ namespace DGtal
 		P.cut( n, b, true, true );
 	      }
 	    }
+      }
+      /// Generic method for cross product, only implemented in 3D.
+      /// @param v1 any vector
+      /// @param v2 any vector
+      /// @return their cross product.
+      static
+      Vector crossProduct( const Vector& v1, const Vector& v2 )
+      {
+	return v1.crossProduct( v2 );
       }
     };
   }
