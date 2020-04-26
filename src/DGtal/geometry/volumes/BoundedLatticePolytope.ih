@@ -165,6 +165,52 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+internalInitFromSegment3D( Point a, Point b )
+{
+  Vector ab = b - a;
+  if ( ab == Vector::zero ) return true; // domain and constraints already computed
+  Vector  t( 1, 0, 0 );
+  Vector  n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ab, t );
+  if ( n == Vector::zero )
+    {
+      t = Vector( 0, 1, 0 );
+      n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ab, t );
+    }
+  A.push_back( n );
+  B.push_back( a.dot( n ) );
+  A.push_back( -1 * n );
+  B.push_back( a.dot( A.back() ) );
+  Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    crossProduct( ab, n );
+  A.push_back( w );
+  B.push_back( a.dot( w ) );
+  A.push_back( -1 * w );
+  B.push_back( a.dot( A.back() ) );
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+bool
+DGtal::BoundedLatticePolytope<TSpace>::
+internalInitFromSegment2D( Point a, Point b )
+{
+  Vector ab = b - a;
+  if ( ab == Vector::zero ) return true; // domain and constraints already computed
+  Vector  n( -ab[ 1 ], ab[ 0 ] );
+  A.push_back( n );
+  B.push_back( a.dot( n ) );
+  A.push_back( -1 * n );
+  B.push_back( a.dot( A.back() ) );
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 template <typename PointIterator>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -197,11 +243,17 @@ init( PointIterator itB, PointIterator itE )
     }
   D = Domain( lo, hi );
   if ( pts.size() != d+1 )
-    {
-      if ( pts.size() == 3 && d == 3 )
-	return internalInitFromTriangle3D( pts[ 0 ], pts[ 1 ], pts[ 2 ] );
-      clear();
-      clear();
+    { // Some degenerated cases are taken into account.
+      if ( d == 3 ) {
+	if ( pts.size() == 3 )
+	  return internalInitFromTriangle3D( pts[ 0 ], pts[ 1 ], pts[ 2 ] );
+	else if ( pts.size() == 2 )
+	  return internalInitFromSegment3D( pts[ 0 ], pts[ 1 ] );
+      } else if ( d == 2 ) {
+	if ( pts.size() == 2 )
+	  return internalInitFromSegment2D( pts[ 0 ], pts[ 1 ] );
+      }
+      if ( pts.size() == 1 ) return true;
       clear();
       return false;
     }

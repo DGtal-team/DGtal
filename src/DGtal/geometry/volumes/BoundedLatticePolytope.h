@@ -683,6 +683,20 @@ namespace DGtal
     /// @return 'true' if they were not colinear, false otherwise.
     bool internalInitFromTriangle3D( Point a, Point b, Point c );
 
+    /// In 3D, builds a valid lattice polytope with empty interior
+    /// from 2 points.
+    /// @param a any point
+    /// @param b any point
+    /// @return 'true' 
+    bool internalInitFromSegment3D( Point a, Point b );
+
+    /// In 2D, builds a valid lattice polytope with empty interior
+    /// from 2 points.
+    /// @param a any point
+    /// @param b any point
+    /// @return 'true' 
+    bool internalInitFromSegment2D( Point a, Point b );
+
   }; // end of class BoundedLatticePolytope
 
   namespace detail {
