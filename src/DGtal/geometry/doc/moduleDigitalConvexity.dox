@@ -88,7 +88,7 @@ Three classes help to check digital convexity.
   that touch a set of digital points.
 
 - DigitalConvexity provides many helper methods to build
-  BoundedLatticePolytope s and CellGeometry s and to check digital
+  BoundedLatticePolytope and CellGeometry objects and to check digital
   convexity and subconvexity.
 
 
@@ -107,6 +107,11 @@ You may also cut a polytope by a new halfspace
 inside, interior or on the boundary (BoundedLatticePolytope::count,
 BoundedLatticePolytope::countInterior,
 BoundedLatticePolytope::countBoundary) or enumerate them.
+
+\note Lattice point counting is done here in a naive way, by domain
+enumeration and constraint check. If \a m is the number of constraints
+and \a n the number of lattice points in the polytope domain, then
+complexity is in \f$ O(mn) \f$.
 
 \code
 using namespace DGtal::Z3i;
