@@ -739,11 +739,9 @@ namespace DGtal
       }
 
       /// Generic method for cross product, only implemented in 3D.
-      /// @param v1 any vector
-      /// @param v2 any vector
       /// @return their cross product.
       static
-      Vector crossProduct( const Vector& v1, const Vector& v2 )
+      Vector crossProduct( const Vector& , const Vector& )
       {
 	trace.error() << "[BoundedLatticePolytopeHelper::crossProduct]"
 		      << " this method is only implemented in 3D." << std::endl;
