@@ -119,7 +119,7 @@ namespace DGtal
     };
 
     /**
-     * Represents the unit cell obtained by successive minkovski sum
+     * Represents the unit cell obtained by successive Minkowski sum
      * of UnitSegment whose dimensions are stored in \a dims. When \a
      * dims is empty, it is only the point (0,...,0).
      */
@@ -146,7 +146,7 @@ namespace DGtal
     };
     
     /**
-     * Represents the unit cell obtained by successive minkovski sum
+     * Represents the unit cell obtained by successive Minkowski sum
      * of RightStrictUnitSegment whose dimensions are stored in \a dims. When \a
      * dims is empty, it is only the point (0,...,0).
      */
@@ -173,7 +173,7 @@ namespace DGtal
     };
 
     /**
-     * Represents the unit cell obtained by successive minkovski sum
+     * Represents the unit cell obtained by successive Minkowski sum
      * of RightStrictUnitSegment whose dimensions are stored in \a dims. When \a
      * dims is empty, it is only the point (0,...,0).
      */
