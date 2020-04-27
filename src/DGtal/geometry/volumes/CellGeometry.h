@@ -131,6 +131,17 @@ namespace DGtal
 		   Dimension min_cell_dim = 0,
 		   Dimension max_cell_dim = KSpace::dimension,
 		   bool verbose = false );
+    /**
+     * Constructor from cubical complex.
+     * @param CC any cubical complex
+     * @param min_cell_dim the minimum cell dimension that is used for processing.
+     * @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity).
+     * @param verbose tells if verbose mode.
+     */
+    CellGeometry ( const CubicalComplex& CC,
+		   Dimension min_cell_dim = 0,
+		   Dimension max_cell_dim = KSpace::dimension,
+		   bool verbose = false );
     
     /**
      * Assignment.
