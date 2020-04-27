@@ -64,6 +64,19 @@ CellGeometry( const KSpace & K,
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+DGtal::CellGeometry<TKSpace>::
+CellGeometry( const CubicalComplex& CC,
+	      Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
+  : myK( CC.space() ), myCC( CC ),
+    myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
+    myVerbose( verbose ), myPrecomputeSubset( false )
+{
+  ASSERT( 0 <= myMinCellDim );
+  ASSERT( myMinCellDim <= myMaxCellDim );
+  ASSERT( myMaxCellDim <= myK.dimension );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 init( const KSpace & K,
