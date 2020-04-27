@@ -92,7 +92,7 @@ int main( int argc, char** argv )
       {
 	aBoard.setPenColorRGBi( rand() % 255, rand() % 255, rand() % 255 );
 	unsigned int k = (i+j)/2;
-	if ( ! dconv.isSimplex( { T[i], T[j], T[k] } ) ) continue;
+	if ( ! dconv.isSimplexFullDimensional( { T[i], T[j], T[k] } ) ) continue;
 	auto triangle = dconv.makeSimplex( { T[i], T[j], T[k] } );
 	if ( dconv.isFullySubconvex( triangle, c_cover ) )
 	  {

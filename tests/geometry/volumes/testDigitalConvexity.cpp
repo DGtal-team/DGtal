@@ -65,7 +65,7 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
     auto simplex_cover = dconv.makeCellCover( fat_simplex );
     auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
     THEN( "The fat simplex is not degenerated." ) {
-      REQUIRE( dconv.isSimplex( V.begin(), V.end() ) );
+      REQUIRE( dconv.isSimplexFullDimensional( V.begin(), V.end() ) );
     }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
@@ -90,7 +90,7 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
     auto simplex_cover = dconv.makeCellCover( thin_simplex );
     auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
     THEN( "The thin simplex is not degenerated." ) {
-      REQUIRE( dconv.isSimplex( V.begin(), V.end() ) );
+      REQUIRE( dconv.isSimplexFullDimensional( V.begin(), V.end() ) );
     }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
       REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
@@ -135,7 +135,7 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2
       for ( auto b : domain ) 
 	for ( auto c : domain )
 	  {
-	    nb_notsimplex   += ! dconv.isSimplex( { a, b, c } ) ? 1 : 0;
+	    nb_notsimplex   += ! dconv.isSimplexFullDimensional( { a, b, c } ) ? 1 : 0;
 	    auto tri_type    = dconv.simplexType( { a, b, c } );
 	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
 	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
@@ -170,7 +170,7 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2
 	for ( auto c : domain )
 	  {
 	    if ( ! ( ( a < b ) && ( b < c ) ) ) continue;
-	    if ( ! dconv.isSimplex( { a, b, c } ) ) continue;
+	    if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
 	    auto triangle = dconv.makeSimplex( { a, b, c } );
 	    bool cvx0     = dconv.isKConvex( triangle, 0 );
 	    bool cvx1     = dconv.isKConvex( triangle, 1 );
@@ -219,7 +219,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 	for ( auto d : domain )
 	  {
 	    if ( ! ( ( a < b ) && ( b < c ) && ( c < d ) ) ) continue;
-	    nb_notsimplex   += ! dconv.isSimplex( { a, b, c, d } ) ? 1 : 0;
+	    nb_notsimplex   += ! dconv.isSimplexFullDimensional( {a,b,c,d} ) ? 1 : 0;
 	    auto tri_type    = dconv.simplexType( { a, b, c, d } );
 	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
 	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
@@ -259,7 +259,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 	Point b( rand() % 5, rand() % 5, rand() % 5 );
 	Point c( rand() % 5, rand() % 5, rand() % 5 );
 	Point d( rand() % 5, rand() % 5, rand() % 5 );
-	if ( ! dconv.isSimplex( { a, b, c, d } ) ) continue;
+	if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
 	auto tetra = dconv.makeSimplex( { a, b, c, d } );
 	bool cvx0     = dconv.isKConvex( tetra, 0 );
 	bool cvx1     = dconv.isKConvex( tetra, 1 );
