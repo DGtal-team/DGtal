@@ -162,7 +162,7 @@ Lattice point retrieval services:
 
 The class CellGeometry can compute and store set of lattice cells of
 different dimensions. You specify at construction a Khalimsky space
-(any model of concepts::CCellularGridSpaceND) as well as the
+(any model of concepts::CCellularGridSpaceND) or a CubicalComplex, as well as the
 dimensions of the cells you are interested in. Internally it uses a
 CubicalComplex to store the lattice cells.
 

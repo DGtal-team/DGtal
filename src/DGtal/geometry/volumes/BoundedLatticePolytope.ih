@@ -563,7 +563,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 count() const
 {
   Integer nb = 0;
-  for ( Point p : D )
+  for ( const Point & p : D )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -575,7 +575,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 countInterior() const
 {
   Integer nb = 0;
-  for ( Point p : D )
+  for ( const Point & p : D )
     nb += isInterior( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -586,7 +586,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 countBoundary() const
 {
   Integer nb = 0;
-  for ( Point p : D )
+  for ( const Point & p : D )
     nb += isBoundary( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -598,7 +598,7 @@ countWithin( Point lo, Point hi ) const
 {
   Integer nb = 0;
   Domain D1( lo.sup( D.lowerBound() ), hi.inf( D.upperBound() ) );
-  for ( Point p : D1 )
+  for ( const Point & p : D1 )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -609,7 +609,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 countUpTo( Integer max) const
 {
   Integer nb = 0;
-  for ( Point p : D ) {
+  for ( const Point & p : D ) {
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
     if ( nb >= max ) return max;
   }
@@ -622,7 +622,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 getPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( Point p : D )
+  for ( const Point & p : D )
     if ( isDomainPointInside( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
@@ -632,7 +632,7 @@ void
 DGtal::BoundedLatticePolytope<TSpace>::
 insertPoints( PointSet& pts_set ) const
 {
-  for ( Point p : D )
+  for ( const Point & p : D )
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
 }
 //-----------------------------------------------------------------------------
@@ -642,7 +642,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 getInteriorPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( Point p : D )
+  for ( const Point & p : D )
     if ( isInterior( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
@@ -652,7 +652,7 @@ DGtal::BoundedLatticePolytope<TSpace>::
 getBoundaryPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( Point p : D )
+  for ( const Point & p : D )
     if ( isBoundary( p ) ) pts.push_back( p );
 }
 
