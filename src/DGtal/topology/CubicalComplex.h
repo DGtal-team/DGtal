@@ -548,7 +548,6 @@ namespace DGtal
     /**
     * Copy constructor.
     * @param other the object to clone.
-    * Forbidden by default.
     */
     CubicalComplex ( const CubicalComplex & other );
 
@@ -564,7 +563,6 @@ namespace DGtal
     * Assignment.
     * @param other the object to copy.
     * @return a reference on 'this'.
-    * Forbidden by default.
     */
     CubicalComplex & operator= ( const CubicalComplex & other );
 
