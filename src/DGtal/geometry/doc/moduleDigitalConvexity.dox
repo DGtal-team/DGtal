@@ -61,7 +61,7 @@ digitally 0-convexity is the usual digital convexity.
 
 @image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
 
-@image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
+@image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
 
 A last useful notion is the \e subconvexity. Let \f$ X \subset
 \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
@@ -125,7 +125,7 @@ std::cout << S.count() << std::endl;
 Last, you may compute Minkowski sums of a polytope with axis-aligned
 segments, squares or (hyper)-cubes (BoundedLatticePolytope::operator+=). 
 
-@Note You can check if the result of a Minkowski sum will be valid by
+@note You can check if the result of a Minkowski sum will be valid by
 calling BoundedLatticePolytope::canBeSummed before. The support is for
 now limited to polytopes built as simplices in 2D and 3D.
 
