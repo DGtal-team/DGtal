@@ -70,7 +70,7 @@ template <typename TKSpace>
 template <typename PointIterator>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isSimplex( PointIterator itB, PointIterator itE )
+isSimplexFullDimensional( PointIterator itB, PointIterator itE )
 {
   typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
   const Dimension d = KSpace::dimension;
@@ -91,7 +91,7 @@ isSimplex( PointIterator itB, PointIterator itE )
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isSimplex( std::initializer_list<Point> l )
+isSimplexFullDimensional( std::initializer_list<Point> l )
 {
   return isSimplex( l.begin(), l.end() );
 }
