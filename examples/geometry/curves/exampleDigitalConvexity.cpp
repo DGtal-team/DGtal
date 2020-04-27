@@ -29,10 +29,12 @@
 
 
 /**
-   This snippet shows how to identify and display digital fully subconvex sets of a grid
-   curve form its tangent bundle.
+   This snippet shows how to identify and display digital fully
+   subconvex sets of a grid curve form its tangent bundle.
 
    @see \ref moduleDigitalConvexity
+
+   \image html grid-curve-dig-convexity.png "Extraction of all subconvex triangles to the digital curve."
    
    \example geometry/curves/exampleDigitalConvexity.cpp
 */

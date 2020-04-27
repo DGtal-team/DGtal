@@ -420,10 +420,10 @@ namespace DGtal
        @param a any integer vector
        @param b any integer number
        @param large tells if the inequality is large (true) or strict (false).
-       @param valid_edge_constraint when 'true', tells that there are
-       half-spaces that represents th constraints on edges (n-2 cells)
+       @param valid_edge_constraint when 'true', tells that the
+       half-spaces that represents constraints on edges (n-2 cells)
        lying between two faces (n-1 cells) pointing to different
-       orthants.
+       orthants are still valid after this operation.
        
        @return the index of the constraint in the polytope.
 
@@ -439,10 +439,11 @@ namespace DGtal
        
        @param hs any half-space constraint.
        @param large tells if the inequality is large (true) or strict (false).
-       @param valid_edge_constraint when 'true', tells that there are
-       half-spaces that represents th constraints on edges (n-2 cells)
+       @param valid_edge_constraint when 'true', tells that the
+       half-spaces that represents constraints on edges (n-2 cells)
        lying between two faces (n-1 cells) pointing to different
-       orthants.
+       orthants are still valid after this operation.
+
        @return the index of the constraint in the polytope.
 
        @note For now complexity is O(n) where n=A.rows() because it

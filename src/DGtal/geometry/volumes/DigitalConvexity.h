@@ -137,11 +137,11 @@ namespace DGtal
     /**
      * Constructs the polytope from a simplex given as a range
      * [itB,itE) of lattice points.  Note that the range must contain
-     * Space::dimension+1 points in general position.
+     * Space::dimension+1 points or less in general position.
      *
      * @tparam PointIterator any model of forward iterator on Point.
-     * @param itB the start of the range of n+1 points defining the simplex.
-     * @param itE past the end the range of n+1 points defining the simplex.
+     * @param itB the start of the range of no more than n+1 points defining the simplex.
+     * @param itE past the end the range of no more than n+1 points defining the simplex.
      */
     template <typename PointIterator>
     static
@@ -150,8 +150,8 @@ namespace DGtal
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
      *
-     * @param l any list of d+1 points in general positions.
-     * @pre Note that the list must contain Space::dimension+1 points
+     * @param l any list of no more than d+1 points in general positions.
+     * @pre Note that the list must contain no more than Space::dimension+1 points
      * in general position.
      */
     static
@@ -168,7 +168,7 @@ namespace DGtal
      */
     template <typename PointIterator>
     static
-    bool isSimplex( PointIterator itB, PointIterator itE );
+    bool isSimplexFullDimensional( PointIterator itB, PointIterator itE );
 
     /**
      * Checks if the given list of lattice points \a l form a
@@ -178,7 +178,7 @@ namespace DGtal
      * @param l any list of d+1 points in general positions.
      */
     static
-    bool isSimplex( std::initializer_list<Point> l );
+    bool isSimplexFullDimensional( std::initializer_list<Point> l );
 
     /// The possible types for simplices.
     enum class SimplexType{

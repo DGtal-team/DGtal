@@ -21,7 +21,7 @@ in such a way that digital convex set are digitally connected.
 
 
 The following programs are related to this documentation:
-exampleDigitalConvexity.cpp, testBoundedLatticePolytope.cpp,
+geometry/curves/exampleDigitalConvexity.cpp, testBoundedLatticePolytope.cpp,
 testCellGeometry.cpp, testDigitalConvexity.cpp
 
 @section dgtal_dconvexity_sec1  Introduction to digital convexity
@@ -59,7 +59,7 @@ in 2D, 26-connected in 3D). Furthermore its axis-aligned slices are
 connected (with the same kind of connectedness). It is also clear that
 digitally 0-convexity is the usual digital convexity.
 
-@image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
+@image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
 
 @image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in \f$ \mathbb{Z}^2 \f$. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
 
@@ -94,9 +94,13 @@ Three classes help to check digital convexity.
 
 @subsection dgtal_dconvexity_sec21 Building a polytope
 
-For now, the class is quite limited. You may build a polytope from a
-range of \f$ d + 1 \f$ points in general position. The polytope is
-then a simplex. Otherwise you may provide a range of half-spaces. 
+For now, the class is quite limited. You may build a polytope in
+dimension \f$ d \le 3 \f$ from a range of \f$ n \le d + 1 \f$ points
+in general position. The polytope is then a simplex. For dimensions
+higher than 3, you may only builds the polytope from a full
+dimensional simplex, i.e. \f$ n = d + 1 \f$ in general
+position. Alternatively, you may provide a domain and a range of
+half-spaces to create the polytope.
 
 You may also cut a polytope by a new halfspace
 (BoundedLatticePolytope::cut), count the number of lattice points
@@ -122,12 +126,40 @@ now limited to polytopes built as simplices in 2D and 3D.
 
 @see DigitalConvexity::makeSimplex
 
-@subsection dgtal_dconvexity_sec22 Building a set of cells from digital points
+Point check services:
+- BoundedLatticePolytope::isInside checks if some point belongs to the polytope.
+- BoundedLatticePolytope::isDomainPointInside checks if some point within the polyyope bounding box belongs to the polytope.
+- BoundedLatticePolytope::isInterior checks if some point is strictly inside the polytope.
+- BoundedLatticePolytope::isBoundary checks if some point is lying on the polytope boundary.
 
-The class CellGeometry can compute and store set of cells of different
-dimensions. You specify at construction a Khalimsky space (any model
-of concepts::CCellularGridSpaceND) as well as the dimensions of the
-cells you are interested in.
+Standard polytope services:
+- BoundedLatticePolytope::interiorPolytope returns the corresponding interior polytope by making strict every constraint
+- BoundedLatticePolytope::cut cuts the polytope by the given half-space constraint
+- BoundedLatticePolytope::swap swaps this polytope with another one in constant time
+- BoundedLatticePolytope::operator*= dilates this polytope by a given factor
+- BoundedLatticePolytope::operator+= performs Minkowski sum with some axis aligned unit segment/cell
+
+Enumeration services:
+- BoundedLatticePolytope::count counts the number of lattice points in the polytope
+- BoundedLatticePolytope::countInterior counts the number of lattice points strictly inside the polytope
+- BoundedLatticePolytope::countBoundary counts the number of lattice points on the boundary of the polytope
+- BoundedLatticePolytope::countWithin counts the number of lattice points in some subdomain of the polytope
+- BoundedLatticePolytope::countUpTo counts the number of lattice points in the polytope up to some maximal number
+
+Lattice point retrieval services:
+- BoundedLatticePolytope::getPoints outputs the lattice points in the polytope
+- BoundedLatticePolytope::getInteriorPoints outputs the lattice points in the interior of the polytope
+- BoundedLatticePolytope::getBoundaryPoints outputs the lattice points on the boundary of the polytope
+- BoundedLatticePolytope::insertPoints inserts the lattice points in the polytope into some point set
+
+
+@subsection dgtal_dconvexity_sec22 Building a set of lattice cells from digital points
+
+The class CellGeometry can compute and store set of lattice cells of
+different dimensions. You specify at construction a Khalimsky space
+(any model of concepts::CCellularGridSpaceND) as well as the
+dimensions of the cells you are interested in. Internally it uses a
+CubicalComplex to store the lattice cells.
 
 \code
 using namespace DGtal::Z3i;
@@ -156,10 +188,72 @@ object, or cells belonging to a CubicalComplex.
   of dimension k of cubical complex \a CC, for `minCellDim() <= k <=
   maxCellDim()`, to this cell geometry.
 
+With respect to full digital convexity,
+CellGeometry::addCellsTouchingPolytope is very important since it
+allows to compute \f$ C^d_k \lbrack P \rbrack \f$ for an arbitrary
+polytope \f$ P \f$ and for any \f$ k \f$.
 
+@subsection dgtal_dconvexity_sec23 Checking digital (sub-)convexity
 
+Class DigitalConvexity is a helper class to build polytopes from
+digital sets and to check digital k-convexity. It provides methods for
+checking if a simplex is full dimensional, building the corresponding
+polytope, methods for getting the lattice points in a polytope,
+computing the cells touching lattice points or touching a polytope,
+and a set of methods to check k-convexity or k-subconvexity.
 
+\code
+#include "DGtal/geometry/volumes/DigitalConvexity.h"
+using namespace DGtal;
+using namespace DGtal::Z3i;
+typedef DigitalConvexity< KSpace >       DConvexity;
+...
+// Create DigitalConvexity object with a domain.
+DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
+// Create a (fat) simplex within the domain
+std::vector<Point> V = { Point(0,0), Point(4,-1), Point(2,5) };
+auto fat_simplex   = dconv.makeSimplex  ( V.begin(), V.end() );
+// Get all the points in the simplex
+auto inside_pts    = dconv.insidePoints ( fat_simplex );
+// Get the lattice cells intersected by the simplex
+auto simplex_cover = dconv.makeCellCover( fat_simplex );
+// Get the lattice cells intersected by the lattice points in the simplex
+auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
+// They are the same here since this simplex is fully convex.
+bool ok  = simplex_cover.subset( point_cover ); // one way to do it
+bool ok2 = dconv.isFullyConvex ( fat_simplex ); // the other way to do it
+\endcode
 
+Simplex services:
+- DigitalConvexity::makeSimplex builds a simplex from lattice point iterators or initializer list
+- DigitalConvexity::isSimplexFullDimensional checks that the given points form a full dimensional simplex
+- DigitalConvexity::simplexType returns the simplex type in SimplexType::INVALID (when the number of points is less than d+1), SimplexType::DEGENERATED when it is not full dimensional, SimplexType::UNITARY when it is full dimensional and of determinant 1, SimplexType::COMMON otherwise.
+- DigitalConvexity::displaySimplex outputs simplex information for debugging
+
+Polytope services:
+- DigitalConvexity::insidePoints returns the range of lattice points in the given polytope 
+- DigitalConvexity::interiorPoints returns the range of lattice points in the interior of the given polytope 
+
+Lattice cell geometry services:
+- DigitalConvexity::makeCellCover either returns the lattice cells touching the given range of points or the lattice cells touching the given polytope
+
+Convexity services:
+- DigitalConvexity::isKConvex tells if a given polytope is k-convex
+- DigitalConvexity::isFullyConvex tells if a given polytope is fully convex
+- DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover
+- DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
+
+@section dgtal_dconvexity_sec3 Further notes
+
+The class BoundedLatticePolytope is different from the class LatticePolytope2D for the following two reasons:
+- the class LatticePolytope2D is limited to 2D
+- the class LatticePolytope2D is a vertex representation (or V-representation) of a polytope while the class BoundedLatticePolytope is a half-space representation (or H-representation) of a polytope.
+
+There are no simple conversion from one to the other. Class
+LatticePolytope2D is optimized for cuts and lattice points
+enumeration, and is very specific to 2D. Class BoundedLatticePolytope
+is less optimized to the previous one but works in nD and provides
+Minkowski sum and dilation services.
 
 
 */
