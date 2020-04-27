@@ -160,6 +160,7 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
     crossProduct( ca, n );
   A.push_back( can );
   B.push_back( c.dot( can ) );
+  I = std::vector<bool>( 2*3+5, true ); // inequalities are large
   return true;
 }
 
@@ -190,6 +191,7 @@ internalInitFromSegment3D( Point a, Point b )
   B.push_back( a.dot( w ) );
   A.push_back( -1 * w );
   B.push_back( a.dot( A.back() ) );
+  I = std::vector<bool>( 2*3+4, true ); // inequalities are large
   return true;
 }
 
@@ -206,6 +208,7 @@ internalInitFromSegment2D( Point a, Point b )
   B.push_back( a.dot( n ) );
   A.push_back( -1 * n );
   B.push_back( a.dot( A.back() ) );
+  I = std::vector<bool>( 2*2+2, true ); // inequalities are large
   return true;
 }
 
@@ -218,7 +221,6 @@ init( PointIterator itB, PointIterator itE )
 {
   typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
   const Dimension d = dimension;
-  I = std::vector<bool>( 3*d+1, true ); // inequalities are large
   A.clear();
   B.clear();
   std::vector<Point> pts;
@@ -253,11 +255,13 @@ init( PointIterator itB, PointIterator itE )
 	if ( pts.size() == 2 )
 	  return internalInitFromSegment2D( pts[ 0 ], pts[ 1 ] );
       }
+      I = std::vector<bool>( 2*2, true ); // inequalities are large
       if ( pts.size() == 1 ) return true;
       clear();
       return false;
     }
   // Build Matrix A and Vector b through cofactors
+  I = std::vector<bool>( 3*d+1, true ); // inequalities are large
   Vector a;
   Integer b;
   for ( Dimension s = 0; s <= d; ++s )
@@ -276,9 +280,7 @@ init( PointIterator itB, PointIterator itE )
       b = V.determinant();
       if ( b == 0 ) 
         {
-          A.clear();
-          B.clear();
-	  I.clear();
+	  clear();
           D = Domain();
           return false;
         }
@@ -305,7 +307,7 @@ init( PointIterator itB, PointIterator itE )
 	  myValidEdgeConstraints = false;
 	}
     }
-  return false;
+  return true;
 }
 
 
