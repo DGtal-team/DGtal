@@ -39,7 +39,9 @@
 #ifdef WITH_MAGICK
 #include "DGtal/io/writers/MagickWriter.h"
 #endif
-
+#ifdef WITH_ITK
+#include "DGtal/io/writers/ITKWriter.h"
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -104,6 +106,14 @@ exportFile( const std::string & filename,
     {
       return RawWriter<TContainer>::template exportRaw<TValue>( filename, anImage, aFunctor  );
     }
+  #ifdef WITH_ITK
+  else if ( extension == "nii" || extension == "mha" ||
+            extension == "mhd" || extension == "tiff" ||
+            extension == "tif" )
+          {
+            return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
+          }
+#endif
   else
     {
       trace.error() << "Extension " << extension << " in 3D, not yet implemented in DGtal GenericWriter." << std::endl;
