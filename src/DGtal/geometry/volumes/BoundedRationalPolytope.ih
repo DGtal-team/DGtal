@@ -519,6 +519,7 @@ operator*=( Integer t )
   const Integer g = IntegerComputer< Integer >::staticGcd( q, t );
   const Integer f = t / g;
   for ( Integer& b : B ) b *= f;
+  for ( Vector&  a : A ) a /= g;
   rationalD  = Domain( rationalD.lowerBound() * f, rationalD.upperBound() * f );
   q         /= g;
   latticeD   = computeLatticeDomain( rationalD );
@@ -533,7 +534,8 @@ operator*=( Rational r )
 {
   const Integer g = IntegerComputer< Integer >::staticGcd( q * r.q, r.p );
   const Integer f = r.p / g;
-  for ( Integer& b : B ) b *= f;
+  for ( Integer& b : B ) { b *= f; }
+  for ( Vector&  a : A ) { a *= r.q; a /= g; }
   rationalD  = Domain( rationalD.lowerBound() * f, rationalD.upperBound() * f );
   q         *= r.q;
   q         /= g;
