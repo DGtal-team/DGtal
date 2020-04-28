@@ -102,24 +102,6 @@ namespace DGtal
     };
 
     /**
-     * Represents the unit segment from (0,...,0) (included) to
-     * (0,...,1,...,0) (excluded) with the 1 at position \a k.
-     */
-    struct RightStrictUnitSegment {
-      Dimension k;
-      RightStrictUnitSegment( Dimension d ) : k( d ) {}
-    };
-
-    /**
-     * Represents the unit segment from (0,...,0) (excluded) to
-     * (0,...,1,...,0) (included) with the 1 at position \a k.
-     */
-    struct LeftStrictUnitSegment {
-      Dimension k;
-      LeftStrictUnitSegment( Dimension d ) : k( d ) {}
-    };
-
-    /**
      * Represents the unit cell obtained by successive Minkowski sum
      * of UnitSegment whose dimensions are stored in \a dims. When \a
      * dims is empty, it is only the point (0,...,0).
@@ -146,59 +128,6 @@ namespace DGtal
       }
     };
     
-    /**
-     * Represents the unit cell obtained by successive Minkowski sum
-     * of RightStrictUnitSegment whose dimensions are stored in \a dims. When \a
-     * dims is empty, it is only the point (0,...,0).
-     */
-    struct RightStrictUnitCell {
-      std::vector<Dimension> dims;
-      RightStrictUnitCell( std::initializer_list<Dimension> l )
-        : dims( l.begin(), l.end() ) {}
-
-      /**
-      * Overloads 'operator<<' for displaying objects of class 'BoundedRationalPolytope::UnitCell'.
-      * @param out the output stream where the object is written.
-      * @param object the object of class 'BoundedRationalPolytope::UnitCell' to write.
-      * @return the output stream after the writing.
-      */
-      friend std::ostream&
-      operator<< ( std::ostream & out, 
-                   const RightStrictUnitCell & object )
-      {
-        out << "{";
-        for ( Dimension i = 0; i < object.dims.size(); ++i ) out << object.dims[ i ];
-        out << "}";
-        return out;
-      }
-    };
-
-    /**
-     * Represents the unit cell obtained by successive Minkowski sum
-     * of RightStrictUnitSegment whose dimensions are stored in \a dims. When \a
-     * dims is empty, it is only the point (0,...,0).
-     */
-    struct LeftStrictUnitCell {
-      std::vector<Dimension> dims;
-      LeftStrictUnitCell( std::initializer_list<Dimension> l )
-        : dims( l.begin(), l.end() ) {}
-
-      /**
-      * Overloads 'operator<<' for displaying objects of class 'BoundedRationalPolytope::UnitCell'.
-      * @param out the output stream where the object is written.
-      * @param object the object of class 'BoundedRationalPolytope::UnitCell' to write.
-      * @return the output stream after the writing.
-      */
-      friend std::ostream&
-      operator<< ( std::ostream & out, 
-                   const LeftStrictUnitCell & object )
-      {
-        out << "{";
-        for ( Dimension i = 0; i < object.dims.size(); ++i ) out << object.dims[ i ];
-        out << "}";
-        return out;
-      }
-    };
 
     /// A simple class to represent a rational value p/q, where p and
     /// q are integers.
@@ -234,14 +163,14 @@ namespace DGtal
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
      *
-     * @param d the common denominator of all given lattice point coordinates.
-     * @param l any list of no more than d+1 points in general positions.
+     * @param l any list where the first point give the denominator
+     * and then no more than d+1 points in general positions.
      *
-     * @note If your list is `l = { (3,2), (1,7), (6,6) }` and the
-     * denominator `d = 4`, then your polytope is bounded by `{
+     * @note If your list is `l = { (4,x), (3,2), (1,7), (6,6) }`, then the
+     * denominator is `d = 4` and your polytope is bounded by `{
      * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
      */
-    BoundedRationalPolytope( Integer d, std::initializer_list<Point> l );
+    BoundedRationalPolytope( std::initializer_list<Point> l );
     
     /**
      * Constructs the polytope from a simplex given as a range
@@ -348,8 +277,16 @@ namespace DGtal
     /// @name Accessor services
     /// @{
     
-    /// @return the domain of the current polytope.
+    /// @return the lattice domain of the current polytope.
     const Domain& getDomain() const;
+
+    /// @return the lattice domain of the current polytope.
+    /// @note same as getDomain
+    const Domain& getLatticeDomain() const;
+
+    /// @return the rational domain of the current polytope.
+    /// @note when divided by the polytope denominator, it is the lattice domain.
+    const Domain& getRationalDomain() const;
 
     /// @return the number of half-space constraints.
     unsigned int nbHalfSpaces() const;
@@ -532,37 +469,6 @@ namespace DGtal
      */
     Self& operator+=( UnitCell c );
 
-    /**
-     * Minkowski sum of this polytope with a strict unit segment aligned with some axis.
-     *
-     * @param s any strict unit segment.
-     * @return a reference to 'this'.
-     */
-    Self& operator+=( RightStrictUnitSegment s );
-
-    /**
-     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
-     *
-     * @param c any strict unit cell.
-     * @return a reference to 'this'.
-     */
-    Self& operator+=( RightStrictUnitCell c );
-
-    /**
-     * Minkowski sum of this polytope with a strict unit segment aligned with some axis.
-     *
-     * @param s any strict unit segment.
-     * @return a reference to 'this'.
-     */
-    Self& operator+=( LeftStrictUnitSegment s );
-
-    /**
-     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
-     *
-     * @param c any strict unit cell.
-     * @return a reference to 'this'.
-     */
-    Self& operator+=( LeftStrictUnitCell c );
     /// @}
 
     // ----------------------- Enumeration services ------------------------------
@@ -608,8 +514,8 @@ namespace DGtal
      * Computes the number of integer points within the polytope and
      * the domain bounded by \a low and \a hi.
      *
-     * @param[in] low the lowest point of the domain.
-     * @param[in] hi the highest point of the domain.
+     * @param[in] low the lowest lattice point of the domain.
+     * @param[in] hi the highest lattice point of the domain.
      * @return the number of integer points within the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
@@ -715,7 +621,9 @@ namespace DGtal
     // The vector B in the polytope representation \f$ q A x \le B \f$.
     InequalityVector  B;
     // Tight bounded box
-    Domain            D;
+    Domain            rationalD;
+    // Lattice bounded box (i.e. floor( rationalD/q ))
+    Domain            latticeD;
     // Are inequalities large ?
     std::vector<bool> I;
     // Indicates if Minkowski sums with segments will be valid
@@ -749,6 +657,21 @@ namespace DGtal
     /// @return 'true' 
     bool internalInitFromSegment2D( Point a, Point b );
 
+    /// Computes the lattice domain from the given rational domain,
+    /// i.e. d/q
+    ///
+    /// @param d a domain where integer coordinates (x,y,z) means
+    /// rational coordinates (x/q,y/q,z/q) where q is the denominator
+    /// of the rational polytope.
+    Domain computeLatticeDomain( const Domain& d );
+
+    /// Computes the rational domain from the given lattice domain,
+    /// i.e. d*q
+    ///
+    /// @param d a domain where integer coordinates (x,y,z) means
+    /// lattice coordinates.
+    Domain computeRationalDomain( const Domain& d );
+    
   }; // end of class BoundedRationalPolytope
 
   namespace detail {
@@ -916,54 +839,6 @@ namespace DGtal
   BoundedRationalPolytope<TSpace>
   operator+ ( const BoundedRationalPolytope<TSpace> & P,
               typename BoundedRationalPolytope<TSpace>::UnitCell c );
-
-  /**
-   * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.
-   *
-   * @param P any polytope.
-   * @param s any strict unit segment.
-   * @return the Polytope P + s.
-   */
-  template <typename TSpace>
-  BoundedRationalPolytope<TSpace>
-  operator+ ( const BoundedRationalPolytope<TSpace> & P,
-              typename BoundedRationalPolytope<TSpace>::RightStrictUnitSegment s );
-
-  /**
-   * Minkowski sum of polytope \a P with an axis-aligned strict unit cell \a c.
-   *
-   * @param P any polytope.
-   * @param c any strict unit cell.
-   * @return the Polytope P + c.
-   */
-  template <typename TSpace>
-  BoundedRationalPolytope<TSpace>
-  operator+ ( const BoundedRationalPolytope<TSpace> & P,
-              typename BoundedRationalPolytope<TSpace>::RightStrictUnitCell c );
-
-  /**
-   * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.
-   *
-   * @param P any polytope.
-   * @param s any strict unit segment.
-   * @return the Polytope P + s.
-   */
-  template <typename TSpace>
-  BoundedRationalPolytope<TSpace>
-  operator+ ( const BoundedRationalPolytope<TSpace> & P,
-              typename BoundedRationalPolytope<TSpace>::LeftStrictUnitSegment s );
-
-  /**
-   * Minkowski sum of polytope \a P with an axis-aligned strict unit cell \a c.
-   *
-   * @param P any polytope.
-   * @param c any strict unit cell.
-   * @return the Polytope P + c.
-   */
-  template <typename TSpace>
-  BoundedRationalPolytope<TSpace>
-  operator+ ( const BoundedRationalPolytope<TSpace> & P,
-              typename BoundedRationalPolytope<TSpace>::LeftStrictUnitCell c );
 
   /// @}
   
