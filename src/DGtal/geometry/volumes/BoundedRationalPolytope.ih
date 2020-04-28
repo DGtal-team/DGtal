@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file BoundedLatticePolytope.ih
+ * @file BoundedRationalPolytope.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2020/01/02
+ * @date 2020/04/28
  *
- * Implementation of inline methods defined in BoundedLatticePolytope.h
+ * Implementation of inline methods defined in BoundedRationalPolytope.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,8 +41,16 @@
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+DGtal::BoundedRationalPolytope<TSpace>::
+BoundedRationalPolytope()
+  : q( NumberTraits<Integer>::ZERO ), D( Point::zero, Point::zero ),
+    myValidEdgeConstraints( false )
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 clear()
 {
   A.clear();
@@ -50,49 +58,53 @@ clear()
   I.clear();
   myValidEdgeConstraints = false;
   D = Domain( Point::zero, Point::zero );
+  q = 0;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>::
-BoundedLatticePolytope( std::initializer_list<Point> l )
+DGtal::BoundedRationalPolytope<TSpace>::
+BoundedRationalPolytope( Integer denom, std::initializer_list<Point> l )
 {
   myValidEdgeConstraints = false;
-  init( l.begin(), l.end() );
+  init( denom, l.begin(), l.end() );
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 template <typename PointIterator>
-DGtal::BoundedLatticePolytope<TSpace>::
-BoundedLatticePolytope( PointIterator itB, PointIterator itE )
+DGtal::BoundedRationalPolytope<TSpace>::
+BoundedRationalPolytope( Integer denom, PointIterator itB, PointIterator itE )
 {
   myValidEdgeConstraints = false;
-  init( itB, itE );
+  init( denom, itB, itE );
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 template <typename HalfSpaceIterator>
-DGtal::BoundedLatticePolytope<TSpace>::
-BoundedLatticePolytope( const Domain& domain,
-			HalfSpaceIterator itB, HalfSpaceIterator itE,
-                        bool valid_edge_constraints )
+DGtal::BoundedRationalPolytope<TSpace>::
+BoundedRationalPolytope( Integer denom,
+			 const Domain& domain,
+			 HalfSpaceIterator itB, HalfSpaceIterator itE,
+			 bool valid_edge_constraints )
   : myValidEdgeConstraints( valid_edge_constraints )
 {
-  init( domain, itB, itE );
+  init( denom, domain, itB, itE );
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 template <typename HalfSpaceIterator>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
-init( const Domain& domain,
+DGtal::BoundedRationalPolytope<TSpace>::
+init( Integer denom,
+      const Domain& domain,
       HalfSpaceIterator itB, HalfSpaceIterator itE,
       bool valid_edge_constraints )
 {
   clear();
+  q = denom;
   myValidEdgeConstraints = valid_edge_constraints;
   const Dimension d = dimension;
   const Point lo = domain.lowerBound();
@@ -102,10 +114,10 @@ init( const Domain& domain,
   for ( Dimension s = 0; s < d; ++s )
     {
       Vector z = Vector::zero;
-      z[ s ]   = NumberTraits<Integer>::ONE;
+      z[ s ]   = q;
       A.push_back( z );
       B.push_back( hi[ s ] );
-      z[ s ]   = -NumberTraits<Integer>::ONE;
+      z[ s ]   = -q;
       A.push_back( z );
       B.push_back( -lo[ s ] );
     }
@@ -118,7 +130,7 @@ init( const Domain& domain,
     auto itF = std::find( A.begin(), A.begin()+2*d, a );
     if ( itF == A.end() )
       {
-	A.push_back( a );
+	A.push_back( q * a );
 	B.push_back( b );
       }
     else
@@ -133,31 +145,30 @@ init( const Domain& domain,
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromTriangle3D( Point a, Point b, Point c )
 {
   Vector ab = b - a;
   Vector bc = c - b;
   Vector ca = a - c;
-  Vector  n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector  n = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, bc );
   if ( n == Vector::zero ) { clear(); return false; }
-  A.push_back( n );
+  A.push_back( q * n );
   B.push_back( a.dot( A.back() ) );
-  Vector mn = -1 * n;
-  A.push_back( mn );
+  A.push_back( -q * n );
   B.push_back( a.dot( A.back() ) );
-  Vector abn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector abn = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, n );
-  A.push_back( abn );
+  A.push_back( q * abn );
   B.push_back( a.dot( abn ) );
-  Vector bcn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector bcn = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( bc, n );
-  A.push_back( bcn );
+  A.push_back( q * bcn );
   B.push_back( b.dot( bcn ) );
-  Vector can = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector can = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ca, n );
-  A.push_back( can );
+  A.push_back( q * can );
   B.push_back( c.dot( can ) );
   I = std::vector<bool>( 2*3+5, true ); // inequalities are large
   return true;
@@ -166,29 +177,29 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromSegment3D( Point a, Point b )
 {
   Vector ab = b - a;
   if ( ab == Vector::zero ) return true; // domain and constraints already computed
   Vector  t( 1, 0, 0 );
-  Vector  n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector  n = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, t );
   if ( n == Vector::zero )
     {
       t = Vector( 0, 1, 0 );
-      n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+      n = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, t );
     }
-  A.push_back( n );
+  A.push_back( q * n );
   B.push_back( a.dot( n ) );
-  A.push_back( -1 * n );
+  A.push_back( -q * n );
   B.push_back( a.dot( A.back() ) );
-  Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  Vector w = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, n );
-  A.push_back( w );
+  A.push_back( q * w );
   B.push_back( a.dot( w ) );
-  A.push_back( -1 * w );
+  A.push_back( -q * w );
   B.push_back( a.dot( A.back() ) );
   I = std::vector<bool>( 2*3+4, true ); // inequalities are large
   return true;
@@ -197,15 +208,15 @@ internalInitFromSegment3D( Point a, Point b )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromSegment2D( Point a, Point b )
 {
   Vector ab = b - a;
   if ( ab == Vector::zero ) return true; // domain and constraints already computed
   Vector  n( -ab[ 1 ], ab[ 0 ] );
-  A.push_back( n );
+  A.push_back( q * n );
   B.push_back( a.dot( n ) );
-  A.push_back( -1 * n );
+  A.push_back( -q * n );
   B.push_back( a.dot( A.back() ) );
   I = std::vector<bool>( 2*2+2, true ); // inequalities are large
   return true;
@@ -215,11 +226,12 @@ internalInitFromSegment2D( Point a, Point b )
 template <typename TSpace>
 template <typename PointIterator>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
-init( PointIterator itB, PointIterator itE )
+DGtal::BoundedRationalPolytope<TSpace>::
+init( Integer denom, PointIterator itB, PointIterator itE )
 {
   typedef SimpleMatrix<Integer,dimension,dimension> Matrix;
   clear();
+  q = denom;
   const Dimension d = dimension;
   std::vector<Point> pts;
   for ( ; itB != itE; ++itB ) pts.push_back( *itB );
@@ -234,10 +246,10 @@ init( PointIterator itB, PointIterator itE )
   for ( Dimension s = 0; s < d; ++s )
     {
       Vector z = Vector::zero;
-      z[ s ]   = NumberTraits<Integer>::ONE;
+      z[ s ]   = q;
       A.push_back( z );
       B.push_back( hi[ s ] );
-      z[ s ]   = -NumberTraits<Integer>::ONE;
+      z[ s ]   = -q;
       A.push_back( z );
       B.push_back( -lo[ s ] );
     }
@@ -289,7 +301,7 @@ init( PointIterator itB, PointIterator itE )
       b       += a.dot( pts[ s ] );
       // Check sign
       if ( a.dot( pts[ s ] ) > b ) { a *= (Integer) -1; b *= (Integer) -1; }
-      A.push_back( a );
+      A.push_back( q * a );
       B.push_back( b );
     }
   myValidEdgeConstraints = true;
@@ -297,7 +309,7 @@ init( PointIterator itB, PointIterator itE )
     { // One should add edges
       for ( unsigned int i = 0; i < pts.size(); ++i )
 	for ( unsigned int j = i+1; j < pts.size(); ++j ) {
-	  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::addEdgeConstraint
+	  detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::addEdgeConstraint
 	    ( *this, i, j, pts );
 	}
       if ( dimension >= 4 )
@@ -311,20 +323,21 @@ init( PointIterator itB, PointIterator itE )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::BoundedRationalPolytope<TSpace>::
 interiorPolytope() const
 {
-  BoundedLatticePolytope P( *this );
-  for ( auto it = P.I.begin(), itE = P.I.end(); it != itE; ++it )
-    *it = false;
+  BoundedRationalPolytope P( *this );
+  P.I = std::vector<bool>( P.A.size(), false );
+  // for ( auto it = P.I.begin(), itE = P.I.end(); it != itE; ++it )
+  //   *it = false;
   return P;
 } 
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 unsigned int 
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 cut( Dimension k, bool pos, Integer b, bool large )
 {
   ASSERT( k < dimension );
@@ -342,14 +355,14 @@ cut( Dimension k, bool pos, Integer b, bool large )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 unsigned int 
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
 {
   // Checks that is not inside.
   auto it = std::find( A.begin(), A.end(), a );
   if ( it == A.end() )
     {
-      A.push_back( a );
+      A.push_back( q * a );
       B.push_back( b );
       I.push_back( large );
       myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
@@ -367,7 +380,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 unsigned int 
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
 {
   auto a = hs.N;
@@ -378,20 +391,21 @@ cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 void 
-DGtal::BoundedLatticePolytope<TSpace>::
-swap( BoundedLatticePolytope & other )
+DGtal::BoundedRationalPolytope<TSpace>::
+swap( BoundedRationalPolytope & other )
 {
   A.swap( other.A );
   B.swap( other.B );
   I.swap( other.I );
   std::swap( D, other.D );
   std::swap( myValidEdgeConstraints, other.myValidEdgeConstraints );
+  std::swap( q, other.q );
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 isInside( const Point& p ) const
 {
   ASSERT( isValid() );
@@ -409,7 +423,7 @@ isInside( const Point& p ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 isDomainPointInside( const Point& p ) const
 {
   ASSERT( isValid() );
@@ -427,7 +441,7 @@ isDomainPointInside( const Point& p ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 isInterior( const Point& p ) const
 {
   ASSERT( isValid() );
@@ -442,7 +456,7 @@ isInterior( const Point& p ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 isBoundary( const Point& p ) const
 {
   ASSERT( isValid() );
@@ -458,19 +472,37 @@ isBoundary( const Point& p ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator*=( Integer t )
 {
-  for ( Integer& b : B ) b *= t;
-  D = Domain( D.lowerBound() * t, D.upperBound() * t );
+  const Integer g = IntegerComputer< Integer >::staticGcd( q, t );
+  const Integer f = t / g;
+  for ( Integer& b : B ) b *= f;
+  D  = Domain( D.lowerBound() * f, D.upperBound() * f );
+  q /= g;
   return *this;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
+operator*=( Rational r )
+{
+  const Integer g = IntegerComputer< Integer >::staticGcd( q * r.q, r.p );
+  const Integer f = r.p / g;
+  for ( Integer& b : B ) b *= f;
+  D  = Domain( D.lowerBound() * f, D.upperBound() * f );
+  q *= r.q;
+  q /= g;
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( UnitSegment s )
 {
   for ( Dimension i = 0; i < A.size(); ++i )
@@ -486,8 +518,8 @@ operator+=( UnitSegment s )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( LeftStrictUnitSegment s )
 {
   I[ 2*s.k + 1 ] = false;
@@ -506,8 +538,8 @@ operator+=( LeftStrictUnitSegment s )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( RightStrictUnitSegment s )
 {
   I[ 2*s.k ] = false;
@@ -525,8 +557,8 @@ operator+=( RightStrictUnitSegment s )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( UnitCell c )
 {
   for ( Dimension i = 0; i < c.dims.size(); ++i )
@@ -536,8 +568,8 @@ operator+=( UnitCell c )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( RightStrictUnitCell c )
 {
   for ( Dimension i = 0; i < c.dims.size(); ++i )
@@ -547,8 +579,8 @@ operator+=( RightStrictUnitCell c )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Self&
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Self&
+DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( LeftStrictUnitCell c )
 {
   for ( Dimension i = 0; i < c.dims.size(); ++i )
@@ -558,8 +590,8 @@ operator+=( LeftStrictUnitCell c )
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::
 count() const
 {
   Integer nb = 0;
@@ -570,8 +602,8 @@ count() const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::
 countInterior() const
 {
   Integer nb = 0;
@@ -581,8 +613,8 @@ countInterior() const
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::
 countBoundary() const
 {
   Integer nb = 0;
@@ -592,8 +624,8 @@ countBoundary() const
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::
 countWithin( Point lo, Point hi ) const
 {
   Integer nb = 0;
@@ -604,8 +636,8 @@ countWithin( Point lo, Point hi ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::
 countUpTo( Integer max) const
 {
   Integer nb = 0;
@@ -618,7 +650,7 @@ countUpTo( Integer max) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 getPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
@@ -629,7 +661,7 @@ getPoints( std::vector<Point>& pts ) const
 template <typename TSpace>
 template <typename PointSet>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 insertPoints( PointSet& pts_set ) const
 {
   for ( const Point & p : D )
@@ -638,7 +670,7 @@ insertPoints( PointSet& pts_set ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 getInteriorPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
@@ -648,7 +680,7 @@ getInteriorPoints( std::vector<Point>& pts ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 void
-DGtal::BoundedLatticePolytope<TSpace>::
+DGtal::BoundedRationalPolytope<TSpace>::
 getBoundaryPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
@@ -658,8 +690,8 @@ getBoundaryPoints( std::vector<Point>& pts ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-const typename DGtal::BoundedLatticePolytope<TSpace>::Domain&
-DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
+const typename DGtal::BoundedRationalPolytope<TSpace>::Domain&
+DGtal::BoundedRationalPolytope<TSpace>::getDomain() const
 {
   return D;
 }
@@ -667,15 +699,24 @@ DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 unsigned int
-DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
+DGtal::BoundedRationalPolytope<TSpace>::nbHalfSpaces() const
 {
   return A.size();
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-const typename DGtal::BoundedLatticePolytope<TSpace>::Vector&
-DGtal::BoundedLatticePolytope<TSpace>::getA( unsigned int i ) const
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::denominator() const
+{
+  return q;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+const typename DGtal::BoundedRationalPolytope<TSpace>::Vector&
+DGtal::BoundedRationalPolytope<TSpace>::getA( unsigned int i ) const
 {
   ASSERT( i < nbHalfSpaces() );
   return A[ i ];
@@ -683,8 +724,8 @@ DGtal::BoundedLatticePolytope<TSpace>::getA( unsigned int i ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytope<TSpace>::Integer
-DGtal::BoundedLatticePolytope<TSpace>::getB( unsigned int i ) const
+typename DGtal::BoundedRationalPolytope<TSpace>::Integer
+DGtal::BoundedRationalPolytope<TSpace>::getB( unsigned int i ) const
 {
   ASSERT( i < nbHalfSpaces() );
   return B[ i ];
@@ -693,7 +734,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getB( unsigned int i ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
+DGtal::BoundedRationalPolytope<TSpace>::isLarge( unsigned int i ) const
 {
   ASSERT( i < nbHalfSpaces() );
   return I[ i ];
@@ -701,16 +742,16 @@ DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityMatrix&
-DGtal::BoundedLatticePolytope<TSpace>::getA() const
+const typename DGtal::BoundedRationalPolytope<TSpace>::InequalityMatrix&
+DGtal::BoundedRationalPolytope<TSpace>::getA() const
 {
   return A;
 }
     
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityVector&
-DGtal::BoundedLatticePolytope<TSpace>::getB() const
+const typename DGtal::BoundedRationalPolytope<TSpace>::InequalityVector&
+DGtal::BoundedRationalPolytope<TSpace>::getB() const
 {
   return B;
 }
@@ -718,7 +759,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getB() const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 const std::vector<bool>&
-DGtal::BoundedLatticePolytope<TSpace>::getI() const
+DGtal::BoundedRationalPolytope<TSpace>::getI() const
 {
   return I;
 }
@@ -726,7 +767,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getI() const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 bool
-DGtal::BoundedLatticePolytope<TSpace>::canBeSummed() const
+DGtal::BoundedRationalPolytope<TSpace>::canBeSummed() const
 {
   return myValidEdgeConstraints;
 }
@@ -741,11 +782,11 @@ DGtal::BoundedLatticePolytope<TSpace>::canBeSummed() const
 template <typename TSpace>
 inline
 void
-DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
+DGtal::BoundedRationalPolytope<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[BoundedLatticePolytope<" << Space::dimension << "> A.rows=" << A.size()
+  out << "[BoundedRationalPolytope<" << Space::dimension << "> A.rows=" << A.size()
       << " valid_edge_constraints=" << myValidEdgeConstraints 
-      << "]" << std::endl;
+      << " denom=" << q << "]" << std::endl;
   for ( Dimension i = 0; i < A.size(); ++i )
     {
       out << "  [";
@@ -762,18 +803,18 @@ DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
 template <typename TSpace>
 inline
 bool
-DGtal::BoundedLatticePolytope<TSpace>::isValid() const
+DGtal::BoundedRationalPolytope<TSpace>::isValid() const
 {
-  return ! D.isEmpty();
+  return q > 0 && ! D.isEmpty();
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
 std::string
-DGtal::BoundedLatticePolytope<TSpace>::className
+DGtal::BoundedRationalPolytope<TSpace>::className
 () const
 {
-  return "BoundedLatticePolytope";
+  return "BoundedRationalPolytope";
 }
 
 
@@ -786,78 +827,88 @@ template <typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const BoundedLatticePolytope<TSpace> & object )
+                    const BoundedRationalPolytope<TSpace> & object )
 {
   object.selfDisplay( out );
   return out;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
+DGtal::BoundedRationalPolytope<TSpace>
 DGtal::operator* ( typename TSpace::Integer t, 
-                   const BoundedLatticePolytope<TSpace> & P )
+                   const BoundedRationalPolytope<TSpace> & P )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q *= t;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::UnitSegment s )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator* ( typename TSpace::Rational r, 
+                   const BoundedRationalPolytope<TSpace> & P )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
+  Q *= r;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::UnitSegment s )
+{
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += s;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::UnitCell c )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::UnitCell c )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += c;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::RightStrictUnitSegment s )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::RightStrictUnitSegment s )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += s;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::RightStrictUnitCell c )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::RightStrictUnitCell c )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += c;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::LeftStrictUnitSegment s )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::LeftStrictUnitSegment s )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += s;
   return Q;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
-                   typename BoundedLatticePolytope<TSpace>::LeftStrictUnitCell c )
+DGtal::BoundedRationalPolytope<TSpace>
+DGtal::operator+ ( const BoundedRationalPolytope<TSpace> & P,
+                   typename BoundedRationalPolytope<TSpace>::LeftStrictUnitCell c )
 {
-  BoundedLatticePolytope<TSpace> Q = P;
+  BoundedRationalPolytope<TSpace> Q = P;
   Q += c;
   return Q;
 }
