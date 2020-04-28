@@ -58,9 +58,10 @@ namespace DGtal
   // template class BoundedLatticePolytope
   /**
      Description of template class 'BoundedLatticePolytope' <p> \brief
-     Aim: Represents an nD polytope, i.e. a convex polyhedron, as a
-     set of inequalities. Otherwise said, it is a H-representation of
-     a polytope (as an intersection of half-spaces). A limitation is
+     Aim: Represents an nD lattice polytope, i.e. a convex polyhedron
+     bounded with vertices with integer coordinates, as a set of
+     inequalities. Otherwise said, it is a H-representation of a
+     polytope (as an intersection of half-spaces). A limitation is
      that we model only bounded polytopes, i.e. polytopes that can be
      included in a finite bounding box.
 
@@ -222,9 +223,9 @@ namespace DGtal
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
      *
-     * @param l any list of d+1 points in general positions.
-     * @pre Note that the list must contain Space::dimension+1 points
-     * in general position.
+     * @param d the common denominator of all given lattice point coordinates.
+     * @param l any list of no more than d+1 points in general positions.
+     *
      */
     BoundedLatticePolytope( std::initializer_list<Point> l );
     
@@ -232,12 +233,9 @@ namespace DGtal
      * Constructs the polytope from a simplex given as a range
      * [itB,itE) of lattice points.  
      *
-     * @pre Note that the range must contain Space::dimension+1 points
-     * in general position. Otherwise the build polytope is empty.
-     *
      * @tparam PointIterator any model of forward iterator on Point.
-     * @param itB the start of the range of n+1 points defining the simplex.
-     * @param itE past the end the range of n+1 points defining the simplex.
+     * @param itB the start of the range of no more than n+1 points defining the simplex.
+     * @param itE past the end the range of no more than n+1 points defining the simplex.
      */
     template <typename PointIterator>
     BoundedLatticePolytope( PointIterator itB, PointIterator itE );
@@ -269,7 +267,7 @@ namespace DGtal
      * @param itE past the end of the range of half-spaces.
      *
      * @param valid_edge_constraints when 'true', tells that there are
-     * half-spaces that represents th constraints on edges (n-2 cells)
+     * half-spaces that represents the constraints on edges (n-2 cells)
      * lying between two faces (n-1 cells) pointing to different
      * orthants.
      */
@@ -282,8 +280,8 @@ namespace DGtal
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
      *
-     * @param itB the start of the range of n+1 points defining the simplex.
-     * @param itE past the end the range of n+1 points defining the simplex.
+     * @param itB the start of the range of no more than n+1 points defining the simplex.
+     * @param itE past the end the range of no more than n+1 points defining the simplex.
      *
      * @return 'true' if [itB,itE) was a valid simplex, otherwise
      * return 'false' and the polytope is empty.
@@ -659,15 +657,15 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    // The matrix A in the polytope representation \f$ Ax \le B \f$.
+    /// The matrix A in the polytope representation \f$ Ax \le B \f$.
     InequalityMatrix  A;
-    // The vector B in the polytope representation \f$ Ax \le B \f$.
+    /// The vector B in the polytope representation \f$ Ax \le B \f$.
     InequalityVector  B;
-    // Bounded box
+    /// Tight bounded box
     Domain            D;
-    // Are inequalities large ?
+    /// Are inequalities large ?
     std::vector<bool> I;
-    // Indicates if Minkowski sums with segments will be valid
+    /// Indicates if Minkowski sums with segments will be valid
     bool myValidEdgeConstraints;
 
     // ------------------------- Private Datas --------------------------------
