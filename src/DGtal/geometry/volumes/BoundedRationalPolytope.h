@@ -812,7 +812,7 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedRationalPolytope<TSpace>
-  operator* ( typename BoundedRationalPolytope<TSpace>::Rational t, 
+  operator* ( typename BoundedRationalPolytope<TSpace>::Rational r, 
               const BoundedRationalPolytope<TSpace> & P );
     
 
