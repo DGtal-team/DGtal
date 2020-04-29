@@ -157,6 +157,7 @@ SCENARIO( "CellGeometry< Z2 > intersections", "[cell_geometry][2d]" )
     }
   }
 }
+
 SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
@@ -209,6 +210,108 @@ SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
     }
   }
 }
+
+SCENARIO( "CellGeometry< Z2 > rational intersections",
+	  "[cell_geometry][2d][rational]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef KSpace::Space                    Space;
+  typedef CellGeometry< KSpace >           CGeometry;
+  typedef BoundedRationalPolytope< Space >  Polytope;
+
+  GIVEN( "A rational simplex P={ Point(0/4,0/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
+    KSpace K;
+    K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+    std::vector< Point > V = { Point(0,0), Point(17,8), Point(-5,15) };
+    Polytope P( 4, V.begin(), V.end() );
+    CGeometry intersected_cover( K, 0, 2, false );
+    intersected_cover.addCellsTouchingPolytope( P );
+    CGeometry touched_points_cover( K, 0, 2, false );
+    touched_points_cover.addCellsTouchingPolytopePoints( P );
+    // trace.info() << "Polytope P=" << P << std::endl;
+    THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
+      REQUIRE( intersected_cover.cubicalComplex().euler() == 1 );
+    }
+    THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
+	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
+	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
+	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+    }
+  }
+  GIVEN( "A thin rational simplex P={ Point(6/4,6/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
+    KSpace K;
+    K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+    std::vector< Point > V = { Point(6,6), Point(17,8), Point(-5,15) };
+    Polytope P( 4, V.begin(), V.end() );
+    CGeometry intersected_cover( K, 0, 2, false );
+    intersected_cover.addCellsTouchingPolytope( P );
+    CGeometry touched_points_cover( K, 0, 2, false );
+    touched_points_cover.addCellsTouchingPolytopePoints( P );
+    // trace.info() << "Polytope P=" << P << std::endl;
+    THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
+      REQUIRE( intersected_cover.cubicalComplex().euler() == 1 );
+    }
+    THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
+	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
+	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
+	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+    }
+  }
+} // SCENARIO( "CellGeometry< Z2 > rational intersections","[cell_geometry][2d][rational]" )
+
+
+SCENARIO( "CellGeometry< Z3 > rational intersections",
+	  "[cell_geometry][3d]{rational]" )
+{
+  typedef KhalimskySpaceND<3,int>           KSpace;
+  typedef KSpace::Point                     Point;
+  typedef KSpace::Vector                    Vector;
+  typedef KSpace::Integer                   Integer;
+  typedef KSpace::Space                     Space;
+  typedef CellGeometry< KSpace >            CGeometry;
+  typedef BoundedRationalPolytope< Space >  Polytope;
+
+  GIVEN( "A simplex P={ Point(1/2,0/2,-1/2), Point(7/2,3/2,1/2), Point(-2/2,9/2,3/2), Point(6/2,7/2,10/2) }" ) {
+    KSpace K;
+    K.init( Point( -5, -5, -5 ), Point( 10, 10, 10 ), true );
+    CGeometry intersected_cover( K, 0, 3, false );
+    Polytope P = { Point(2,2,2),
+		   Point(1,0,-1), Point(7,3,1), Point(-2,9,3), Point(6,7,10) };
+    intersected_cover.addCellsTouchingPolytope( P );
+    CGeometry touched_points_cover( K, 0, 3, false );
+    touched_points_cover.addCellsTouchingPolytopePoints( P );
+    THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
+      REQUIRE( intersected_cover.cubicalComplex().euler() == -1 );
+    }
+    THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
+	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
+	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
+	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 3 )
+	       <= intersected_cover.cubicalComplex().nbCells( 3 ) );
+    }
+    THEN( "The cells touched by its inside points is a subset of the cells its convex hull intersects." ) {
+      REQUIRE( touched_points_cover.subset( intersected_cover, 0 ) );
+      REQUIRE( touched_points_cover.subset( intersected_cover, 1 ) );
+      REQUIRE( touched_points_cover.subset( intersected_cover, 2 ) );
+      REQUIRE( touched_points_cover.subset( intersected_cover, 3 ) );
+    }
+  }
+} // SCENARIO( "CellGeometry< Z3 > rational intersections", "[cell_geometry][3d]{rational]" )
+
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
