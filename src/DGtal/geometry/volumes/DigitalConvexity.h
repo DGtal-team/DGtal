@@ -50,6 +50,7 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+#include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +82,9 @@ namespace DGtal
     typedef typename KSpace::Vector         Vector;
     typedef typename KSpace::Cell           Cell;
     typedef typename KSpace::Space          Space;
-    typedef DGtal::BoundedLatticePolytope< Space > Polytope;
+    typedef DGtal::BoundedLatticePolytope < Space > Polytope;
+    typedef DGtal::BoundedLatticePolytope < Space > LatticePolytope;
+    typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     typedef DGtal::CellGeometry< KSpace >   CellGeometry;
     typedef std::vector<Point>              PointRange;
     
@@ -135,7 +138,7 @@ namespace DGtal
     /// @{
 
     /**
-     * Constructs the polytope from a simplex given as a range
+     * Constructs a lattice polytope from a simplex given as a range
      * [itB,itE) of lattice points.  Note that the range must contain
      * Space::dimension+1 points or less in general position.
      *
@@ -145,17 +148,49 @@ namespace DGtal
      */
     template <typename PointIterator>
     static
-    Polytope makeSimplex( PointIterator itB, PointIterator itE );
+    LatticePolytope makeSimplex( PointIterator itB, PointIterator itE );
 
     /**
-     * Constructs the polytope from a simplex given as an initializer_list.
+     * Constructs a lattice polytope from a simplex given as an initializer_list.
      *
      * @param l any list of no more than d+1 points in general positions.
      * @pre Note that the list must contain no more than Space::dimension+1 points
      * in general position.
      */
     static
-    Polytope makeSimplex( std::initializer_list<Point> l );
+    LatticePolytope makeSimplex( std::initializer_list<Point> l );
+
+    /**
+     * Constructs a rational polytope from a rational simplex given as a range
+     * [itB,itE) of lattice points.  Note that the range must contain
+     * Space::dimension+1 points or less in general position.
+     *
+     * @tparam PointIterator any model of forward iterator on Point.
+     * @param d the common denominator of all given lattice point coordinates.
+     * @param itB the start of the range of no more than n+1 points defining the simplex.
+     * @param itE past the end the range of no more than n+1 points defining the simplex.
+     *
+     * @note If your range is `[itB,itE) = { (3,2), (1,7), (6,6) }` and the
+     * denominator `d = 4`, then your polytope has vertices `{
+     * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
+     */
+    template <typename PointIterator>
+    static
+    RationalPolytope makeRationalSimplex( Integer d,
+					  PointIterator itB, PointIterator itE );
+
+    /**
+     * Constructs a rational polytope from a simplex given as an initializer_list.
+     *
+     * @param l any list where the first point give the denominator
+     * and then no more than d+1 points in general positions.
+     *
+     * @note If your list is `l = { (4,x), (3,2), (1,7), (6,6) }`, then the
+     * denominator is `d = 4` and your polytope has vertices `{
+     * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
+     */
+    static
+    RationalPolytope makeRationalSimplex( std::initializer_list<Point> l );
 
     /**
      * Checks if the given range [itB,itE) of lattice points form a
@@ -239,18 +274,28 @@ namespace DGtal
 
     // ----------------------- Polytope services --------------------------------------
   public:
-    /// @name Polytope services
+    /// @name Lattice and rational polytope services
     /// @{
     
-    /// @param polytope any polytope.
+    /// @param polytope any lattice polytope.
     /// @return the range of digital points that belongs to the polytope.
     static
-    PointRange insidePoints( const Polytope& polytope );
+    PointRange insidePoints( const LatticePolytope& polytope );
 
-    /// @param polytope any polytope.
+    /// @param polytope any lattice polytope.
     /// @return the range of digital points that belongs to the interior of the polytope.
     static
-    PointRange interiorPoints( const Polytope& polytope );
+    PointRange interiorPoints( const LatticePolytope& polytope );
+
+    /// @param polytope any rational polytope.
+    /// @return the range of digital points that belongs to the polytope.
+    static
+    PointRange insidePoints( const RationalPolytope& polytope );
+
+    /// @param polytope any rational polytope.
+    /// @return the range of digital points that belongs to the interior of the polytope.
+    static
+    PointRange interiorPoints( const RationalPolytope& polytope );
 
     /// @}
 
@@ -270,23 +315,36 @@ namespace DGtal
     /// @param k the last dimension for which the cell cover is computed.
     template <typename PointIterator>
     CellGeometry makeCellCover( PointIterator itB, PointIterator itE,
-				Dimension i = 0, Dimension k = KSpace::dimension ) const;
+				Dimension i = 0,
+				Dimension k = KSpace::dimension ) const;
 
     /// Builds the cell geometry containing all the j-cells touching
-    /// the polytope P, for i <= j <= k. It conbains thus all the
+    /// the lattice polytope P, for i <= j <= k. It conbains thus all the
     /// j-cells intersecting the convex enveloppe of P.
     ///
-    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param i the first dimension for which the cell cover is computed.
     /// @param k the last dimension for which the cell cover is computed.
-    CellGeometry makeCellCover( const Polytope& P,
-				Dimension i = 0, Dimension k = KSpace::dimension ) const;
+    CellGeometry makeCellCover( const LatticePolytope& P,
+				Dimension i = 0,
+				Dimension k = KSpace::dimension ) const;
+
+    /// Builds the cell geometry containing all the j-cells touching
+    /// the rational polytope P, for i <= j <= k. It conbains thus all the
+    /// j-cells intersecting the convex enveloppe of P.
+    ///
+    /// @param P any rational polytope such that `P.canBeSummed() == true`.
+    /// @param i the first dimension for which the cell cover is computed.
+    /// @param k the last dimension for which the cell cover is computed.
+    CellGeometry makeCellCover( const RationalPolytope& P,
+				Dimension i = 0,
+				Dimension k = KSpace::dimension ) const;
     /// @}
 
 
     // ----------------------- Convexity services -----------------------------------
   public:
-    /// @name Convexity services
+    /// @name Convexity services for lattice polytopes 
     /// @{
 
     /// Tells if a given polytope \a P is digitally k-convex. The digital
@@ -294,14 +352,14 @@ namespace DGtal
     /// \cap Z^d) \f$. Otherwise the property asks that the points
     /// inside P touch as many k-cells that the convex hull of P.
     
-    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
     /// @return 'true' iff the polytope \a P is digitally \a k-convex.
     ///
     /// @note A polytope is always digitally 0-convex. Furthermore, if
     /// it is not digitally d-1-convex then it is digitally not d-convex
     /// (d := KSpace::dimension).
-    bool isKConvex( const Polytope& P, const Dimension k ) const;
+    bool isKConvex( const LatticePolytope& P, const Dimension k ) const;
 
     /// Tells if a given polytope \a P is fully digitally convex. The
     /// digital 0-convexity is the usual property \f$ Conv( P \cap Z^d
@@ -309,14 +367,14 @@ namespace DGtal
     /// points inside P touch as many k-cells that the convex hull of
     /// P, for any valid dimension k.
     
-    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @return 'true' iff the polytope \a P is fully digitally convex.
     ///
     /// @note A polytope is always digitally 0-convex. Furthermore, if
     /// it is not digitally d-1-convex then it is digitally d-convex
     /// (d := KSpace::dimension). Hence, we only check k-convexity for
     /// 1 <= k <= d-1.
-    bool isFullyConvex( const Polytope& P ) const;
+    bool isFullyConvex( const LatticePolytope& P ) const;
 
     /// Tells if a given polytope \a P is digitally k-subconvex of some
     /// cell cover \a C. The digital 0-subconvexity is the usual
@@ -324,11 +382,11 @@ namespace DGtal
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
     
-    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
     /// @return 'true' iff the polytope \a P is a digitally \a k-subconvex of C.
-    bool isKSubconvex( const Polytope& P, const CellGeometry& C, const Dimension k ) const;
+    bool isKSubconvex( const LatticePolytope& P, const CellGeometry& C, const Dimension k ) const;
 
     /// Tells if a given polytope \a P is digitally fully subconvex to some
     /// cell cover \a C. The digital 0-subconvexity is the usual
@@ -336,16 +394,78 @@ namespace DGtal
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
     
-    /// @param P any polytope such that `P.canBeSummed() == true`.
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @return 'true' iff the polytope \a P is digitally fully subconvex to C.
     ///
     /// @note This method only checks the k-subconvexity for valid
     /// dimensions stored in \a C.
-    bool isFullySubconvex( const Polytope& P, const CellGeometry& C ) const;
+    bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
     
     /// @}
 
+    // ----------------------- Convexity services -----------------------------------
+  public:
+    /// @name Convexity services for rational polytopes 
+    /// @{
+
+    /// Tells if a given polytope \a P is digitally k-convex. The digital
+    /// 0-convexity is the usual property \f$ Conv( P \cap Z^d ) = P
+    /// \cap Z^d) \f$. Otherwise the property asks that the points
+    /// inside P touch as many k-cells that the convex hull of P.
+    
+    /// @param P any rational polytope such that `P.canBeSummed() == true`.
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    /// @return 'true' iff the polytope \a P is digitally \a k-convex.
+    ///
+    /// @note A polytope is always digitally 0-convex. Furthermore, if
+    /// it is not digitally d-1-convex then it is digitally not d-convex
+    /// (d := KSpace::dimension).
+    bool isKConvex( const RationalPolytope& P, const Dimension k ) const;
+
+    /// Tells if a given polytope \a P is fully digitally convex. The
+    /// digital 0-convexity is the usual property \f$ Conv( P \cap Z^d
+    /// ) = P \cap Z^d) \f$. Otherwise the property asks that the
+    /// points inside P touch as many k-cells that the convex hull of
+    /// P, for any valid dimension k.
+    
+    /// @param P any rational polytope such that `P.canBeSummed() == true`.
+    /// @return 'true' iff the polytope \a P is fully digitally convex.
+    ///
+    /// @note A polytope is always digitally 0-convex. Furthermore, if
+    /// it is not digitally d-1-convex then it is digitally d-convex
+    /// (d := KSpace::dimension). Hence, we only check k-convexity for
+    /// 1 <= k <= d-1.
+    bool isFullyConvex( const RationalPolytope& P ) const;
+
+    /// Tells if a given polytope \a P is digitally k-subconvex of some
+    /// cell cover \a C. The digital 0-subconvexity is the usual
+    /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
+    /// \f$. Otherwise the property asks that the k-cells intersected
+    /// by the convex hull of P is a subset of the k-cells of C.
+    
+    /// @param P any rational polytope such that `P.canBeSummed() == true`.
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    /// @return 'true' iff the polytope \a P is a digitally \a k-subconvex of C.
+    bool isKSubconvex( const RationalPolytope& P, const CellGeometry& C, const Dimension k ) const;
+
+    /// Tells if a given polytope \a P is digitally fully subconvex to some
+    /// cell cover \a C. The digital 0-subconvexity is the usual
+    /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
+    /// \f$. Otherwise the property asks that the k-cells intersected
+    /// by the convex hull of P is a subset of the k-cells of C.
+    
+    /// @param P any rational polytope such that `P.canBeSummed() == true`.
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @return 'true' iff the polytope \a P is digitally fully subconvex to C.
+    ///
+    /// @note This method only checks the k-subconvexity for valid
+    /// dimensions stored in \a C.
+    bool isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const;
+    
+    /// @}
+    
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services

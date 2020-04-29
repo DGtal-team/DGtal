@@ -49,20 +49,39 @@ DigitalConvexity( Point lo, Point hi )
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointIterator>
-typename DGtal::DigitalConvexity<TKSpace>::Polytope
+typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::
 makeSimplex( PointIterator itB, PointIterator itE )
 {
-  return Polytope( itB, itE );
+  return LatticePolytope( itB, itE );
 }
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::Polytope
+typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::
 makeSimplex( std::initializer_list<Point> l )
 {
-  return Polytope( l );
+  return LatticePolytope( l );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointIterator>
+typename DGtal::DigitalConvexity<TKSpace>::RationalPolytope
+DGtal::DigitalConvexity<TKSpace>::
+makeRationalSimplex( Integer d, PointIterator itB, PointIterator itE )
+{
+  return RationalPolytope( d, itB, itE );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::RationalPolytope
+DGtal::DigitalConvexity<TKSpace>::
+makeRationalSimplex( std::initializer_list<Point> l )
+{
+  return RationalPolytope( l );
 }
 
 //-----------------------------------------------------------------------------
@@ -173,7 +192,7 @@ simplexType( std::initializer_list<Point> l )
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-insidePoints( const Polytope& polytope )
+insidePoints( const LatticePolytope& polytope )
 {
   PointRange pts;
   polytope.getPoints( pts );
@@ -183,7 +202,28 @@ insidePoints( const Polytope& polytope )
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-interiorPoints( const Polytope& polytope )
+interiorPoints( const LatticePolytope& polytope )
+{
+  PointRange pts;
+  polytope.getInteriorPoints( pts );
+  return pts;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+insidePoints( const RationalPolytope& polytope )
+{
+  PointRange pts;
+  polytope.getPoints( pts );
+  return pts;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+interiorPoints( const RationalPolytope& polytope )
 {
   PointRange pts;
   polytope.getInteriorPoints( pts );
@@ -210,7 +250,22 @@ makeCellCover( PointIterator itB, PointIterator itE,
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
-makeCellCover( const Polytope& P,
+makeCellCover( const LatticePolytope& P,
+	       Dimension i, Dimension k ) const
+{
+  ASSERT( 0 <= i );
+  ASSERT( i <= k );
+  ASSERT( k <= KSpace::dimension );
+  CellGeometry cgeom( myK, i, k, false );
+  cgeom.addCellsTouchingPolytope( P );
+  return cgeom;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
+DGtal::DigitalConvexity<TKSpace>::
+makeCellCover( const RationalPolytope& P,
 	       Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
@@ -225,7 +280,7 @@ makeCellCover( const Polytope& P,
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isKConvex( const Polytope& P, const Dimension k ) const
+isKConvex( const LatticePolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
   auto S = insidePoints( P );
@@ -239,7 +294,7 @@ isKConvex( const Polytope& P, const Dimension k ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isFullyConvex( const Polytope& P ) const
+isFullyConvex( const LatticePolytope& P ) const
 {
   auto S = insidePoints( P );
   auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
@@ -257,7 +312,7 @@ isFullyConvex( const Polytope& P ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isKSubconvex( const Polytope& P, const CellGeometry& C, const Dimension k ) const
+isKSubconvex( const LatticePolytope& P, const CellGeometry& C, const Dimension k ) const
 {
   auto intersected_cells = makeCellCover( P, k, k );
   return intersected_cells.subset( C );
@@ -266,7 +321,65 @@ isKSubconvex( const Polytope& P, const CellGeometry& C, const Dimension k ) cons
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isFullySubconvex( const Polytope& P, const CellGeometry& C ) const
+isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
+{
+  bool C_prepared = C.isPreparedForSubsetOperations();
+  for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
+    {
+      auto intersected_cells = makeCellCover( P, k, k );
+      if ( C_prepared ) intersected_cells.prepareSubsetOperations();
+      if ( ! intersected_cells.subset( C ) ) return false;
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isKConvex( const RationalPolytope& P, const Dimension k ) const
+{
+  if ( k == 0 ) return true;
+  auto S = insidePoints( P );
+  auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
+  auto intersected_cells = makeCellCover( P, k, k );
+  return intersected_cells.nbCells( k ) == touched_cells.nbCells( k )
+    && intersected_cells.subset( touched_cells );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyConvex( const RationalPolytope& P ) const
+{
+  auto S = insidePoints( P );
+  auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
+  for ( Dimension k = 1; k < KSpace::dimension; ++ k )
+    {
+      auto intersected_cells = makeCellCover( P, k, k );
+      if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
+	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+	return false;
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
+	      const Dimension k ) const
+{
+  auto intersected_cells = makeCellCover( P, k, k );
+  return intersected_cells.subset( C );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 {
   bool C_prepared = C.isPreparedForSubsetOperations();
   for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
