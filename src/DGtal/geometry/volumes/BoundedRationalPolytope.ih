@@ -837,7 +837,7 @@ DGtal::operator<< ( std::ostream & out,
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 DGtal::BoundedRationalPolytope<TSpace>
-DGtal::operator* ( typename TSpace::Integer t, 
+DGtal::operator* ( typename BoundedRationalPolytope<TSpace>::Integer t, 
                    const BoundedRationalPolytope<TSpace> & P )
 {
   BoundedRationalPolytope<TSpace> Q = P;
@@ -847,7 +847,7 @@ DGtal::operator* ( typename TSpace::Integer t,
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 DGtal::BoundedRationalPolytope<TSpace>
-DGtal::operator* ( typename TSpace::Rational r, 
+DGtal::operator* ( typename BoundedRationalPolytope<TSpace>::Rational r, 
                    const BoundedRationalPolytope<TSpace> & P )
 {
   BoundedRationalPolytope<TSpace> Q = P;

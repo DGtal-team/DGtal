@@ -826,7 +826,7 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedLatticePolytope<TSpace>
-  operator* ( typename TSpace::Integer t, 
+  operator* ( typename BoundedLatticePolytope<TSpace>::Integer t, 
               const BoundedLatticePolytope<TSpace> & P );
     
 
