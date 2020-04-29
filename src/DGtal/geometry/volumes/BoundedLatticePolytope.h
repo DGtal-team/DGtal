@@ -223,7 +223,6 @@ namespace DGtal
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
      *
-     * @param d the common denominator of all given lattice point coordinates.
      * @param l any list of no more than d+1 points in general positions.
      *
      */
