@@ -158,7 +158,7 @@ addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
 template <typename TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
-addCellsTouchingPolytopePoints( const Polytope& polytope )
+addCellsTouchingPolytopePoints( const LatticePolytope& polytope )
 {
   myPrecomputeSubset = false;
   std::vector< Point > points;
@@ -169,7 +169,32 @@ addCellsTouchingPolytopePoints( const Polytope& polytope )
 template <typename TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
-addCellsTouchingPolytope( const Polytope& polytope )
+addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
+{
+  myPrecomputeSubset = false;
+  std::vector< Point > points;
+  polytope.getPoints( points );
+  addCellsTouchingPoints( points.begin(), points.end() );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytope( const LatticePolytope& polytope )
+{
+  myPrecomputeSubset = false;
+  std::vector< Point > points;
+  for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+    {
+      auto cells = getIntersectedCells( polytope, i );
+      myCC.insertCells( i, cells.begin(), cells.end() );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytope( const RationalPolytope& polytope )
 {
   myPrecomputeSubset = false;
   std::vector< Point > points;
@@ -344,22 +369,22 @@ includes( RandomIterator it1, RandomIterator itE1,
 template <typename TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
 DGtal::CellGeometry<TKSpace>::
-getIntersectedCells( const Polytope& polytope,
+getIntersectedCells( const LatticePolytope& polytope,
 		     const Dimension i ) const
 {
   ASSERT( polytope.canBeSummed() );
   if ( ! polytope.canBeSummed() )
     trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
-		    << " Polytope is not valid for Minkowski sums. " << std::endl;
+		    << " LatticePolytope is not valid for Minkowski sums. " << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Cell >      result;
   std::vector< Point >     points;
-  std::vector< Polytope  > polytopes( i+1, polytope );
+  std::vector< LatticePolytope  > polytopes( i+1, polytope );
   std::vector< Dimension > extensions( i+1, 0 );
   for ( Dimension k = 1; k < extensions.size(); ++k )
     {
       extensions[ k ] = k - 1;
-      polytopes [ k ] = polytopes[ k - 1 ] + typename Polytope::UnitSegment( k - 1 );
+      polytopes [ k ] = polytopes[ k - 1 ] + typename LatticePolytope::UnitSegment( k - 1 );
     }
   // We have to build several dilated polytopes which corresponds
   // to the binom(d,i) possible cell types.
@@ -395,7 +420,68 @@ getIntersectedCells( const Polytope& polytope,
       // Recomputes polytopes
       for ( ; k < extensions.size(); ++k )
 	polytopes [ k ] = polytopes[ k - 1 ]
-	  + typename Polytope::UnitSegment( extensions[ k ] );
+	  + typename LatticePolytope::UnitSegment( extensions[ k ] );
+    } // while ( true )
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
+DGtal::CellGeometry<TKSpace>::
+getIntersectedCells( const RationalPolytope& polytope,
+		     const Dimension i ) const
+{
+  ASSERT( polytope.canBeSummed() );
+  if ( ! polytope.canBeSummed() )
+    trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
+		    << " RationalPolytope is not valid for Minkowski sums. " << std::endl;
+  static const Dimension d = KSpace::dimension;
+  std::vector< Cell >      result;
+  std::vector< Point >     points;
+  std::vector< RationalPolytope  > polytopes( i+1, polytope );
+  std::vector< Dimension > extensions( i+1, 0 );
+  for ( Dimension k = 1; k < extensions.size(); ++k )
+    {
+      extensions[ k ] = k - 1;
+      polytopes [ k ] = polytopes[ k - 1 ]
+	+ typename RationalPolytope::UnitSegment( k - 1 );
+    }
+  // We have to build several dilated polytopes which corresponds
+  // to the binom(d,i) possible cell types.
+  while ( true )
+    {
+      if ( myVerbose )
+	{
+	  std::string str;
+	  std::ostringstream ostr( str );
+	  ostr << "Dilating Polytope along directions {";
+	  for ( Dimension k = 1; k < extensions.size(); ++k )
+	    ostr << " + " << extensions[ k ];
+	  ostr << "}" ;
+	  trace.info() << ostr.str() << std::endl;
+	}
+      // Intersected cells are bijective to points in a dilated polytope.
+      polytopes.back().getPoints( points );
+      // For each point, build its cell and push it into result.
+      for ( auto p : points ) {
+	auto cell = myK.uPointel( p );
+	for ( Dimension k = 1; k < extensions.size(); ++k )
+	  cell = myK.uIncident( cell, extensions[ k ], false );
+	result.push_back( cell );
+      }
+      // Go to next type of cell
+      Dimension   k    = i;
+      extensions[ k ] += 1;
+      // will quit when k == 0
+      while ( k > 0 && extensions[ k ] >= d+k-i ) extensions[ --k ] += 1;
+      if ( k == 0 ) break; // finished
+      for ( Dimension l = k + 1; l < extensions.size(); ++l )
+	extensions[ l ] = extensions[ l - 1 ] + 1;
+      // Recomputes polytopes
+      for ( ; k < extensions.size(); ++k )
+	polytopes [ k ] = polytopes[ k - 1 ]
+	  + typename RationalPolytope::UnitSegment( extensions[ k ] );
     } // while ( true )
   return result;
 }
