@@ -802,7 +802,7 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedRationalPolytope<TSpace>
-  operator* ( typename TSpace::Integer t, 
+  operator* ( typename BoundedRationalPolytope<TSpace>::Integer t, 
               const BoundedRationalPolytope<TSpace> & P );
 
   /**
@@ -812,7 +812,7 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedRationalPolytope<TSpace>
-  operator* ( typename TSpace::Rational t, 
+  operator* ( typename BoundedRationalPolytope<TSpace>::Rational t, 
               const BoundedRationalPolytope<TSpace> & P );
     
 

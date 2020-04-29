@@ -794,7 +794,7 @@ DGtal::operator<< ( std::ostream & out,
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 DGtal::BoundedLatticePolytope<TSpace>
-DGtal::operator* ( typename TSpace::Integer t, 
+DGtal::operator* ( typename BoundedLatticePolytope<TSpace>::Integer t, 
                    const BoundedLatticePolytope<TSpace> & P )
 {
   BoundedLatticePolytope<TSpace> Q = P;
