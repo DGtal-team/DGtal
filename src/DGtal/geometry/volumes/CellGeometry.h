@@ -52,6 +52,7 @@
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+#include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -62,7 +63,7 @@ namespace DGtal
   /**
      Description of template class 'CellGeometry' <p> \brief Aim:
      Computes and stores sets of cells and provides methods to compute
-     intersections with cells.
+     intersections of lattice and rational polytopes with cells.
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. 
@@ -90,7 +91,9 @@ namespace DGtal
 #endif
     typedef DGtal::CubicalComplex
     < KSpace, std::unordered_map< Cell, CubicalCellData> > CubicalComplex;
-    typedef DGtal::BoundedLatticePolytope< Space > Polytope;
+    typedef DGtal::BoundedLatticePolytope< Space >  Polytope;
+    typedef DGtal::BoundedLatticePolytope< Space >  LatticePolytope;
+    typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     
     static const Dimension dimension = KSpace::dimension;
 
@@ -178,13 +181,27 @@ namespace DGtal
     template <typename PointelIterator>
     void addCellsTouchingPointels( PointelIterator itB, PointelIterator itE );
 
-    /// Updates the cell cover with the cells touching the points of a polytope.
-    void addCellsTouchingPolytopePoints( const Polytope& polytope );
+    /// Updates the cell cover with the cells touching the lattice
+    /// points of a polytope.
+    /// @param polytope the lattice polytope
+    void addCellsTouchingPolytopePoints( const LatticePolytope& polytope );
+
+    /// Updates the cell cover with the cells touching the lattice
+    /// points of a rational polytope.
+    /// @param polytope the rational polytope
+    void addCellsTouchingPolytopePoints( const RationalPolytope& polytope );
 
     /// Updates the cell cover with all the cells touching the
-    /// polytope (all cells whose closure have a non empty
+    /// lattice polytope (all cells whose closure have a non empty
     /// intersection with the polytope).
-    void addCellsTouchingPolytope( const Polytope& polytope );
+    /// @param polytope the lattice polytope
+    void addCellsTouchingPolytope( const LatticePolytope& polytope );
+
+    /// Updates the cell cover with all the cells touching the
+    /// rational polytope (all cells whose closure have a non empty
+    /// intersection with the polytope).
+    /// @param polytope the rational polytope
+    void addCellsTouchingPolytope( const RationalPolytope& polytope );
 
     /// Adds the cells of dimension k of object \a other, for
     /// `minCellDim() <= k <= maxCellDim()`, to this cell geometry.
@@ -263,14 +280,23 @@ namespace DGtal
     /// @name Helper services
     /// @{
 
-    /// Given a \a polytope, such that `polytope.canBeSummed()==true`,
+    /// Given a lattice \a polytope, such that `polytope.canBeSummed()==true`,
     /// return the \a i-cells that intersect it.
     ///
-    /// @param polytope any polytope such that `polytope.canBeSummed() == true`
+    /// @param polytope any lattice polytope such that `polytope.canBeSummed() == true`
     /// @param i any integer between 0 and KSpace::dimension
     /// @return the \a i-cells that intersect this polytope.
     std::vector< Cell >
-    getIntersectedCells( const Polytope& polytope, const Dimension i ) const;
+    getIntersectedCells( const LatticePolytope& polytope, const Dimension i ) const;
+
+    /// Given a rational \a polytope, such that `polytope.canBeSummed()==true`,
+    /// return the \a i-cells that intersect it.
+    ///
+    /// @param polytope any rational polytope such that `polytope.canBeSummed() == true`
+    /// @param i any integer between 0 and KSpace::dimension
+    /// @return the \a i-cells that intersect this polytope.
+    std::vector< Cell >
+    getIntersectedCells( const RationalPolytope& polytope, const Dimension i ) const;
 
     /// Given a vector of points, return the \a i-cells that touch it.
     ///
@@ -295,8 +321,7 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const;
 
     /**
-     * Checks the validity/consistency of the object. If the polytope
-     * has been default constructed, it is invalid.
+     * Checks the validity/consistency of the object. 
      *
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -444,7 +469,6 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    typedef DGtal::BoundedLatticePolytope< Space > Polytope;
     
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
