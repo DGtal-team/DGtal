@@ -130,6 +130,9 @@ namespace DGtal
      */
     Self & operator= ( const Self & other ) = default;
 
+    /// @return a const reference to the cellular grid space used by this object.
+    const KSpace& space() const;
+    
     /// @}
 
     // ----------------------- Simplex services --------------------------------------

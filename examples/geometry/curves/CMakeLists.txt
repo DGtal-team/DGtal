@@ -18,6 +18,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleNaive3DDSSComputer
   exampleArithDSSIterator
   exampleDigitalConvexity
+  exampleRationalConvexity
 )
 
 
