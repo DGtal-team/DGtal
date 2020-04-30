@@ -167,7 +167,7 @@ namespace DGtal
      * and then no more than d+1 points in general positions.
      *
      * @note If your list is `l = { (4,x), (3,2), (1,7), (6,6) }`, then the
-     * denominator is `d = 4` and your polytope is bounded by `{
+     * denominator is `d = 4` and your polytope has vertices `{
      * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
      */
     BoundedRationalPolytope( std::initializer_list<Point> l );
@@ -182,7 +182,7 @@ namespace DGtal
      * @param itE past the end the range of no more than n+1 points defining the simplex.
      *
      * @note If your range is `[itB,itE) = { (3,2), (1,7), (6,6) }` and the
-     * denominator `d = 4`, then your polytope is bounded by `{
+     * denominator `d = 4`, then your polytope has vertices `{
      * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
      */
     template <typename PointIterator>

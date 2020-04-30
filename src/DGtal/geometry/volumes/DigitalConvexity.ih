@@ -48,6 +48,15 @@ DigitalConvexity( Point lo, Point hi )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+const TKSpace&
+DGtal::DigitalConvexity<TKSpace>::
+space() const
+{
+  return myK;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::

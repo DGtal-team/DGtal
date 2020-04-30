@@ -21,8 +21,10 @@ in such a way that digital convex set are digitally connected.
 
 
 The following programs are related to this documentation:
-geometry/curves/exampleDigitalConvexity.cpp, testBoundedLatticePolytope.cpp,
-testCellGeometry.cpp, testDigitalConvexity.cpp
+geometry/curves/exampleDigitalConvexity.cpp,
+geometry/curves/exampleRationalConvexity.cpp,
+testBoundedLatticePolytope.cpp, testCellGeometry.cpp,
+testDigitalConvexity.cpp
 
 @section dgtal_dconvexity_sec1  Introduction to digital convexity
 
@@ -92,7 +94,7 @@ Three classes help to check digital convexity.
   convexity and subconvexity.
 
 
-@subsection dgtal_dconvexity_sec21 Building a polytope
+@subsection dgtal_dconvexity_sec21 Lattice polytopes
 
 For now, the class is quite limited. You may build a polytope in
 dimension \f$ d \le 3 \f$ from a range of \f$ n \le d + 1 \f$ points
@@ -114,6 +116,8 @@ and \a n the number of lattice points in the polytope domain, then
 complexity is in \f$ O(mn) \f$.
 
 \code
+#include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+...
 using namespace DGtal::Z3i;
 typedef BoundedLatticePolytope< Space > Simplex;
 Simplex S( { Point(0,0,0), Point(3,0,0), Point(1,5,0), Point(-3,2,4) } );
@@ -167,6 +171,8 @@ dimensions of the cells you are interested in. Internally it uses a
 CubicalComplex to store the lattice cells.
 
 \code
+#include "DGtal/geometry/volumes/CellGeometry.h"
+...
 using namespace DGtal::Z3i;
 KSpace K;
 K.init( Point(-5,-5,-5), Point(15,15,15) );
@@ -209,10 +215,10 @@ and a set of methods to check k-convexity or k-subconvexity.
 
 \code
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
+...
 using namespace DGtal;
 using namespace DGtal::Z3i;
 typedef DigitalConvexity< KSpace >       DConvexity;
-...
 // Create DigitalConvexity object with a domain.
 DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
 // Create a (fat) simplex within the domain
@@ -248,7 +254,43 @@ Convexity services:
 - DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover
 - DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
 
-@section dgtal_dconvexity_sec3 Further notes
+@section dgtal_dconvexity_sec3 Rational polytopes
+
+You can also create bounded rational polytopes, i.e. polytopes with
+vertices with rational coordinates, with class
+BoundedRationalPolytope. You must give a common denominator for all
+rational coordinates. 
+
+\code
+#include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
+...
+typedef SpaceND<2,int>                    Space;
+typedef Space::Point                      Point;
+typedef BoundedRationalPolytope< Space >  Polytope;
+// A thin triangle P at (4/4,2/4), (2/4,4/4), (9/4,9/4)
+Point a( 4, 2 );
+Point b( 2, 4 );
+Point c( 9, 9 );
+Polytope P { Point(4,4), a, b, c };
+\endcode
+
+Then the interface of BoundedRationalPolytope is almost the same as
+the one of BoundedLatticePolytope (see \ref dgtal_dconvexity_sec21 ).
+
+The classs BoundedRationalPolytope offers dilatation by an arbitrary
+rational, e.g. as follows
+
+\code
+Polytope Q = Polytope::Rational( 10, 3 ) * P; // 10/3 * P
+\endcode
+
+You may also check digital convexity and compute cell covers with bounded rational polytopes, exactly in the same way as with BoundedLatticePolytope.
+
+@note Big denominators increase with the same factor coefficients of
+half space constraints, hence the integer type should be chosen
+accordingly.
+
+@section dgtal_dconvexity_sec4 Further notes
 
 The class BoundedLatticePolytope is different from the class LatticePolytope2D for the following two reasons:
 - the class LatticePolytope2D is limited to 2D
