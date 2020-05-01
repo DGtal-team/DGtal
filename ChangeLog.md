@@ -31,6 +31,10 @@
   - Add principal directions of curvature functions for implicit polynomial 3D shapes.
     (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
+- *io*
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+    (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
