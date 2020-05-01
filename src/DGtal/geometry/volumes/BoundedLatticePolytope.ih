@@ -244,6 +244,7 @@ init( PointIterator itB, PointIterator itE )
   D = Domain( lo, hi );
   if ( pts.size() != d+1 )
     { // Some degenerated cases are taken into account.
+      myValidEdgeConstraints = true;
       if ( d == 3 ) {
 	if ( pts.size() == 3 )
 	  return internalInitFromTriangle3D( pts[ 0 ], pts[ 1 ], pts[ 2 ] );
