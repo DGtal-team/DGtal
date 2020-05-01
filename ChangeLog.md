@@ -107,7 +107,7 @@
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
 - *images*
-  - Fix origin image that was not taken into account in class
+  - Fix the image origin that was not taken into account in class
     ImageContainerByITKImage. (Bertrand Kerautret
     [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
     
