@@ -33,6 +33,10 @@
   - Add principal directions of curvature functions for implicit polynomial 3D shapes.
     (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
+- *io*
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+    (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
@@ -108,9 +112,15 @@
     CCW ordering by default (in 3D).
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
+- *images*
+  - Fix the image origin that was not taken into account in class
+    ImageContainerByITKImage. (Bertrand Kerautret
+    [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+    
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction
