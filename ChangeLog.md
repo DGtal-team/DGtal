@@ -110,9 +110,15 @@
     CCW ordering by default (in 3D).
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
+- *images*
+  - Fix the image origin that was not taken into account in class
+    ImageContainerByITKImage. (Bertrand Kerautret
+    [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+    
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction

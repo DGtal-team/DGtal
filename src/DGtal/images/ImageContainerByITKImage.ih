@@ -95,13 +95,15 @@ namespace DGtal
         const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
         const typename ITKImage::IndexType start = region.GetIndex();
         const typename ITKImage::SizeType size = region.GetSize();
+        const typename ITKImage::PointType origin = myITKImagePointer->GetOrigin();
+
 
         Point lowerBound;
         Point upperBound;
         for (Dimension k = 0; k < dimension; k++)
         {
-            lowerBound[k] = start[k];
-            upperBound[k] = start[k]+size[k]-1;
+            lowerBound[k] = start[k]+origin[k];
+            upperBound[k] = start[k]+size[k]+origin[k]-1;
         }
 
         myDomain = TDomain(lowerBound, upperBound);
@@ -120,7 +122,7 @@ namespace DGtal
     {
       typename ITKImage::IndexType p;
       for (Dimension k = 0; k < dimension; k++)
-        p[k] = aPoint[k];
+        p[k] = aPoint[k]-myITKImagePointer->GetOrigin()[k];
       return myITKImagePointer->GetPixel(p);
     }
 
@@ -173,7 +175,7 @@ namespace DGtal
     {
       typename ITKImage::IndexType p;
       for (Dimension k = 0; k < dimension; k++)
-        p[k] = aPoint[k];
+        p[k] = aPoint[k]-myITKImagePointer->GetOrigin()[k];
       myITKImagePointer->SetPixel(p, V);
     }
 
