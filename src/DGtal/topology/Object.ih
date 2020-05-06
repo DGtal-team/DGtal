@@ -53,11 +53,6 @@
 /**
  * Constructor.
  *
- * @param aTopology the digital topology chosen for this set, a copy of
- * which is stored in the object.
- *
- * @param aPointSet the set of points of the object. It is copied
- * in the object.
  */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
@@ -674,7 +669,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
  * Writes the neighbors of a vertex using an output iterator
  *
  *
- * @tparam OutputObjectIterator the type of an output iterator writing
+ * @tparam OutputIterator the type of an output iterator writing
  * in a container of vertices.
  *
  * @param it the output iterator
@@ -713,7 +708,7 @@ writeNeighbors( OutputIterator & it,
  * output iterator
  *
  *
- * @tparam OutputObjectIterator the type of an output iterator writing
+ * @tparam OutputIterator the type of an output iterator writing
  * in a container of vertices.
  *
  * @tparam VertexPredicate the type of the predicate

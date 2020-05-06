@@ -248,7 +248,6 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=(
  * and a DSS is a DSS.
  * Computes the parameters of the new DSS
  * with the adding point if true.
- * @param it an iterator on a sequence of points
  * @return 'true' if the union is a DSS, 'false' otherwise.
  */
 template <typename TIterator, typename TInteger, int connectivity>
@@ -335,9 +334,6 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isValid() const
  * Computes the parameters
  * (direction, intercept, thickness)
  * of the DSS
- * @param direction
- * @param intercept
- * @param thickness
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline

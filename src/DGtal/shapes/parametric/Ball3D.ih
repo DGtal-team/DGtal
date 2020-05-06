@@ -68,7 +68,7 @@ DGtal::Ball3D<T>::Ball3D(const Ball3D& other):
 // ------------- Implementation of 'StarShaped' services ------------------
 
 /**
- * @param p any point in the plane.
+ * @param pp any point in the plane.
  *
  * @return the couple of angle parameters (Teta,Phi) respectivly between [0,2PI] and [0,Pi] corresponding to
  * this point for the shape.

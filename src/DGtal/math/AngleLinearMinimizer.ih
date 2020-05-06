@@ -178,7 +178,7 @@ DGtal::AngleLinearMinimizer::setSize( unsigned int nb )
 
 /**
  * Specifies if the curve is open or not.
- * @param is_curve_open when 'true' the curve is open and the last
+ * @param isCurveOpen when 'true' the curve is open and the last
  * value does not depend on the first one, otherwise the curve is
  * closed and the last value is linked to the first one.
  */
@@ -629,7 +629,7 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::lastDelta() const
 
 /**
  * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
+ * @param aStream the output stream where the object is written.
  */
 inline
 void
