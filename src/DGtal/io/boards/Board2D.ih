@@ -57,7 +57,7 @@ DGtal::Board2D::getMode( const std::string & objectName ) const
  * the concept CDrawableWithBoard2D, which requires for instance a
  * method setStyle( LibBoard::Board ).
  *
- * @param domain any domain.
+ * @param object the drawable object.
  * @return a reference on 'this'.
  */
 template <typename TDrawableWithBoard2D>

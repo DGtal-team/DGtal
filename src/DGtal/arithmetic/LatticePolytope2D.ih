@@ -514,7 +514,6 @@ halfSpace( const Point & A, const Point & B, const Point & inP ) const
        @param aSet (returns) the set that contains as output all the
        digital points of this polygon.
 
-       @return the number of inserted points.
        @todo this method is for now not efficient.
     */
 //-----------------------------------------------------------------------------
@@ -789,7 +788,7 @@ getAllPointsOfHull( std::vector<Point> & inPts,
  * @param pointRefC1 and pointRefC3 corresponds to grid point lying on
  * the supporting lines of C1 and of C3 resp.
  *
- * @param pos corresponds to an iterator in the list of vertices
+ * @param itOut corresponds to an iterator in the list of vertices
  * of the convex, to add the next new vertices
  *
  * NB: the method also computes grid point satisfying N1.P<=c1 and

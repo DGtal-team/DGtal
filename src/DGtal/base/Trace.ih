@@ -47,7 +47,7 @@
 /**
  * Constructor.
  *
- * @param outputStream  the output stream that will receive the traces.
+ * @param writer  the output stream that will receive the traces.
  */
 inline
 DGtal::Trace::Trace(DGtal::TraceWriter &writer):

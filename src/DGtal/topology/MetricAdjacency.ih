@@ -120,7 +120,6 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity()
 }
 
 /**
- * @param v any vertex
  * 
  * @return the number of neighbors of this vertex
  */
@@ -137,7 +136,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
  * Writes the neighbors of a vertex using an output iterator
  * 
  * 
- * @tparam OutputObjectIterator the type of an output iterator writing
+ * @tparam OutputIterator the type of an output iterator writing
  * in a container of vertices.
  * 
  * @param it the output iterator
@@ -175,7 +174,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
   * output iterator
   * 
   * 
-  * @tparam OutputObjectIterator the type of an output iterator writing
+  * @tparam OutputIterator the type of an output iterator writing
   * in a container of vertices.
   * 
   * @tparam VertexPredicate the type of the predicate

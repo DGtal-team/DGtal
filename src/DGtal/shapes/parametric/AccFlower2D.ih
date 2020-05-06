@@ -77,7 +77,7 @@ DGtal::AccFlower2D<T>::AccFlower2D(const AccFlower2D& other)
 // ------------- Implementation of 'StarShaped' services ------------------
 
 /**
- * @param p any point in the plane.
+ * @param pp any point in the plane.
  *
  * @return the angle parameter between 0 and 2*Pi corresponding to
  * this point for the shape.
@@ -95,7 +95,7 @@ DGtal::AccFlower2D<T>::parameter( const RealPoint& pp ) const
 }
 
 /**
- * @param t any angle between 0 and 2*Pi.
+ * @param tt any angle between 0 and 2*Pi.
  *
  * @return the vector (x(t),y(t)) which is the position on the
  * shape boundary.
@@ -115,7 +115,7 @@ DGtal::AccFlower2D<T>::x( const double tt ) const
 
 
 /**
- * @param t any angle between 0 and 2*Pi.
+ * @param tt any angle between 0 and 2*Pi.
  *
  * @return the vector (x'(t),y'(t)) which is the tangent to the
  * shape boundary.
@@ -141,7 +141,7 @@ DGtal::AccFlower2D<T>::xp( const double tt ) const
 }
 
 /**
- * @param t any angle between 0 and 2*Pi.
+ * @param tt any angle between 0 and 2*Pi.
  *
  * @return the vector (x''(t),y''(t)).
  */
