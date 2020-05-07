@@ -103,6 +103,8 @@
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+  - Fixing cast from const to mutable iterator in GradientColorMap.
+    (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction
