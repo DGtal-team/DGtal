@@ -253,7 +253,7 @@ DGtal::Signal<TValue>::Signal
 /**
  * Constructor.
  * @param t the array containing initial data.
- * @param size the size of the signal.
+ * @param asize the size of the signal.
  * @param z the index of the zero-th element.
  * @param periodic 'true' if the signal is periodic.
  * @param def the default value.
@@ -311,7 +311,7 @@ DGtal::Signal<TValue>::operator=( const Signal & other )
 
 /**
  * Initializer.
- * @param size the size of the signal.
+ * @param aSize the size of the signal.
  * @param z the index of the zero-th element.
  * @param periodic 'true' if the signal is periodic.
  * @param def the default value.
@@ -330,7 +330,7 @@ DGtal::Signal<TValue>::init
 /**
  * Constructor.
  * @param t the array containing initial data.
- * @param size the size of the signal.
+ * @param aSize the size of the signal.
  * @param z the index of the zero-th element.
  * @param periodic 'true' if the signal is periodic.
  * @param def the default value.
@@ -433,8 +433,6 @@ DGtal::Signal<TValue>::setAll( const TValue & val )
  * External product of a signal by a scalar value.
  * 
  * @param l the external value.
- * 
- * @return the signal where each term has been multiplied by [l].
  */
 template <typename TValue>
 void

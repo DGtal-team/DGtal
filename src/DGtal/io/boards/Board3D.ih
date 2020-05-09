@@ -44,7 +44,7 @@
 /**
  * Set the default color for future drawing.
  *
- * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+ * @param aColor a DGtal::Color (allow to set a trasnparency value).
  *
  **/
 template < typename Space, typename KSpace>
