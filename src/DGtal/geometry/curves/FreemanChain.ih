@@ -211,7 +211,7 @@ DGtal::FreemanChain<TInteger>::FreemanChain(std::istream & in ){
 
 /**
  * Copy constructor.
- * @param other the object to clone.
+ * @param aOther the object to clone.
  */
 template <typename TInteger>
 DGtal::FreemanChain<TInteger>::FreemanChain( const FreemanChain<TInteger> & aOther )
@@ -268,7 +268,7 @@ DGtal::FreemanChain<TInteger>::end() const
 
 
 /**
- * @param pos a position in the chain code.
+ * @param aPos a position in the chain code.
  * @return the next position.
  */ 
 template <typename TInteger>
@@ -282,7 +282,7 @@ DGtal::FreemanChain<TInteger>::next( Index aPos ) const
 }
 
 /**
- * @param pos a position in the chain code.
+ * @param aPos a position in the chain code.
  * @return the previous position.
  */ 
 template <typename TInteger>
@@ -1254,7 +1254,7 @@ DGtal::FreemanChain<TInteger>::computeLastPoint()
 /**
  * Overloads 'operator<<' for displaying objects of class 'FreemanChain'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'FreemanChain' to write.
+ * @param aObject the object of class 'FreemanChain' to write.
  * @return the output stream after the writing.
  */
 template <typename TInteger>

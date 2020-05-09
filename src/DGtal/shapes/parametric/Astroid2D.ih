@@ -62,7 +62,7 @@ DGtal::Astroid2D<T>::Astroid2D( const Astroid2D& other ) :
 // ------------- Implementation of 'StarShaped' services ----------------------
 
 /**
- * @param p any point in the plane.
+ * @param pp any point in the plane.
  *
  * @return the angle parameter between 0 and 2*Pi corresponding to
  * this point for the shape.
