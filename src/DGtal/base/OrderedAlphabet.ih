@@ -391,10 +391,10 @@ bool DGtal::OrderedAlphabet::duvalPP( size_t & len, size_t & nb,
  * @param n2 (returns) the number of occurrences of the letter a2
  * in the Lyndon factor
  *
- * @param Lf1 (returns) the number of occurrences of the letter a1
+ * @param lf1 (returns) the number of occurrences of the letter a1
  * from 's' to the first lower leaning point.
  *
- * @param Lf2 (returns) the number of occurrences of the letter a2
+ * @param lf2 (returns) the number of occurrences of the letter a2
  * from 's' to the first lower leaning point.
  * 
  * @param w a word which starts with a1 or a2 at position s.
