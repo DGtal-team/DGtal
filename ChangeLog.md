@@ -28,6 +28,12 @@
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
     directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+  - Add principal directions of curvature functions for implicit polynomial 3D shapes.
+    (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
+
+- *io*
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+    (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
@@ -38,6 +44,10 @@
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
   - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
+    [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
+  - Add shortcuts to principal curvatures and directions of curvature for implicit polynomial
+    3D shapes. (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
@@ -100,11 +110,17 @@
     CCW ordering by default (in 3D).
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
+- *images*
+  - Fix the image origin that was not taken into account in class
+    ImageContainerByITKImage. (Bertrand Kerautret
+    [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+    
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
   - Fixing cast from const to mutable iterator in GradientColorMap.
     (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
+
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction
@@ -112,10 +128,12 @@
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
 
 - *DEC*
-  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441))
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
   related to bad link in DEC/moduleAT documentation and missing
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
-  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
+  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
+  - Adding missing LGPL headers in the DEC examples (David Coeurjolly
+  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
 - *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
@@ -133,11 +151,19 @@
     (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
+
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
+    that is a Visual Studio 2019 build error related to befriend
+    template specializations
+   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
   - Removing the homemade CPP11 checks, using cmake macro instead
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
-
+  - Fix apple clang  compilation issue with a workaround to the
+    ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
+    using boost::first_max_element instead std::max_element. 
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
 
 # DGtal 1.0
 
