@@ -50,6 +50,8 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
+#include <boost/algorithm/minmax_element.hpp>
+
 using namespace DGtal;
 
 int main(int argc, char ** argv)
@@ -88,7 +90,7 @@ int main(int argc, char ** argv)
   QApplication application2(argc,argv);
   Viewer3D<> viewer2;
   viewer2.show();
-  DT::Value maxDT = (*std::max_element(distancemap.constRange().begin(),
+  DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(),
                                        distancemap.constRange().end()));
   GradientColorMap<DT::Value> gradient( 0, maxDT);
   gradient.addColor(DGtal::Color::Blue);
@@ -157,7 +159,7 @@ int main(int argc, char ** argv)
   QApplication application3(argc,argv);
   Viewer3D<> viewer3;
   viewer3.show();
-  Image::Value maxG = (*std::max_element(imageGranulo.constRange().begin(),
+  Image::Value maxG = (*boost::first_max_element(imageGranulo.constRange().begin(),
                                          imageGranulo.constRange().end()));
   GradientColorMap<Image::Value> gradient2( 0, maxG);
   gradient2.addColor(DGtal::Color::Blue);
