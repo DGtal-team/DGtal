@@ -194,6 +194,12 @@ user forward an Alias<T> parameter.
   public:
 
     /**
+     * Default copy constructor.
+     * @param other the object to copy.
+     */
+    Alias( const Alias & other ) = default;
+
+    /**
        Destructor. Does nothing.
      */
     inline ~Alias() {}

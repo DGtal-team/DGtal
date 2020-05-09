@@ -15,8 +15,7 @@ namespace DGtal {
    This part of the manual describes how to use the helper class
    Surfaces to build digital surfaces, closed or open, or contours
    within digital surfaces. A lot of the ideas, concepts, algorithms,
-   documentation and code is a backport from <a
-   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   documentation and code is a backport from \e ImaGene.
 
 [TOC]
 

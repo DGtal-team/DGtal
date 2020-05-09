@@ -63,17 +63,17 @@ namespace DGtal
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint2D;
-    typedef typename Space::RealVector RealVector2D;
-   
+    typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealVector RealVector;
+
     /**
-     * Destructor.
+     * Constructor.
+     * Forbidden by default.
      */
-    ~Ball2D();
-    
+    Ball2D() = delete;
+
     /**
-     * Constructor. 
+     * Constructor.
      * @param x0 the x-coordinate of the circle center.
      * @param y0 the y-coordinate of the circle center.
      * @param r the radius of the circle.
@@ -81,20 +81,31 @@ namespace DGtal
     Ball2D( const double x0, const double y0, const double r );
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param r the radius of the circle.
      */
-    Ball2D(const RealPoint2D &aPoint, const double r);
+    Ball2D( const RealPoint &aPoint, const double r );
 
     /**
-     * Constructor. 
-     * @param aPoint the circle center.
-     * @param r the radius of the circle.
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    Ball2D(const Point &aPoint, const double r);
+    Ball2D( const Ball2D & other );
 
-    
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    Ball2D& operator=( const Ball2D& other ) = delete;
+
+    /**
+     * Destructor.
+     */
+    ~Ball2D() = default;
+
   // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -102,35 +113,45 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    RealPoint2D getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return RealPoint2D(myCenter[0] - myRadius, myCenter[1] - myRadius);
+      return myCenter - myRadius;
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    RealPoint2D getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return RealPoint2D(myCenter[0] + myRadius, myCenter[1] + myRadius);
+      return myCenter + myRadius;
     }
 
     /**
      * @return the center of the star-shaped object.
      */
-    RealPoint2D center() const
+    RealPoint center() const
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the plane.
      *
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    double parameter( const RealPoint2D & p ) const;
+    double parameter( const RealPoint & p ) const;
 
 
     /**
@@ -139,7 +160,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    RealPoint2D x( const double t ) const;
+    RealPoint x( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -147,15 +168,15 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    RealVector2D xp( const double t ) const;
+    RealVector xp( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    RealVector2D xpp( const double t ) const;
-    
+    RealVector xpp( const double t ) const;
+
 
     // ------------------------- data ----------------------------
   private:
@@ -168,8 +189,8 @@ namespace DGtal
     /**
      * Center of the circle.
      */
-    RealPoint2D myCenter;
-    
+    RealPoint myCenter;
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -185,36 +206,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Ball2D();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //  Ball2D ( const Ball2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Ball2D & operator= ( const Ball2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class Ball2D
 

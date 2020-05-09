@@ -68,37 +68,37 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef double Value;
 
-    /** 
+    /**
      * Constructor. Contructs a rounded hypercube with center aCenter and width
      * aWidth.
-     * 
-     * @param aCenter the cube center. 
+     *
+     * @param aCenter the cube center.
      * @param aHalfWidth the cube half-width.
      * @param aPower  the cube power.
      */
     ImplicitRoundedHyperCube(const RealPoint &aCenter,
                              const double &aHalfWidth,
-                             const double aPower): 
+                             const double aPower):
       myCenter(aCenter),
       myHalfWidth(aHalfWidth),
       myPower(aPower)
     {};
-    
-    /** 
+
+    /**
      * Destructor.
-     * 
-     */    
+     *
+     */
     ~ImplicitRoundedHyperCube();
 
 
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Operator() of the implicit function. Given a point, it returns
      * the function value at p. In Shapes, positive values are used to
      * construct a set.
-     * 
+     *
      * @param aPoint the point to evalute the function at.
      * @return the distance of aPoint to the ball center.
      */
@@ -109,13 +109,13 @@ namespace DGtal
       double partialpower=0;
       for(Dimension i = 0; i < RealPoint::dimension; ++i)
         partialpower +=  std::pow(std::abs((double)dec[i]),  myPower);
-    
-    return std::pow(myHalfWidth, myPower) - partialpower;      
+
+    return std::pow(myHalfWidth, myPower) - partialpower;
     }
-    
-    /** 
+
+    /**
      * Return true if the given point belongs to the shape.
-     * 
+     *
      * @param aPoint the point to evalute the function at.
      * @return true if aPoint belongs to the shape.
      */
@@ -125,11 +125,11 @@ namespace DGtal
       return this->operator()(aPoint) >0.0;
     }
 
-    /** 
+    /**
      * orientation predicate (see CEuclideanOrientedShape).
-     * 
+     *
      * @param aPoint an input point.
-     * 
+     *
      * @return the orientation of the point.
      */
     inline
@@ -145,10 +145,10 @@ namespace DGtal
     }
 
 
-    /** 
+    /**
      * Returns the lower bound of the Shape bounding box.
-     * 
-     * 
+     *
+     *
      * @return the lower bound point.
      */
     inline
@@ -156,22 +156,40 @@ namespace DGtal
     {
       return (myCenter - RealPoint::diagonal(myHalfWidth));
     }
-    
-    /** 
+
+    /**
      * Returns the upper bound of the Shape bounding box.
-     * 
-     * 
+     *
+     *
      * @return the upper bound point.
      */
     inline
     RealPoint getUpperBound() const
     {
-      return (myCenter + RealPoint::diagonal(myHalfWidth)); 
+      return (myCenter + RealPoint::diagonal(myHalfWidth));
     }
-    
+
+    /**
+     * @return the center of the star-shaped object.
+     */
+    RealPoint center() const
+    {
+      return myCenter;
+    }
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -188,16 +206,16 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-   
+
     ///Cube center
     RealPoint myCenter;
 
     ///Cube HalfWidth
     double myHalfWidth;
 
-    ///Cube Power 
+    ///Cube Power
     double myPower;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -216,8 +234,8 @@ namespace DGtal
      * Forbidden by default.
      */
     ImplicitRoundedHyperCube & operator= ( const ImplicitRoundedHyperCube & other );
-    
-    
+
+
   }; // end of class ImplicitRoundedHyperCube
 
 

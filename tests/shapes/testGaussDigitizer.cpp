@@ -35,8 +35,11 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/shapes/parametric/Ball2D.h"
+#include "DGtal/shapes/parametric/Astroid2D.h"
 #include "DGtal/shapes/parametric/Ellipse2D.h"
 #include "DGtal/shapes/parametric/Flower2D.h"
+#include "DGtal/shapes/parametric/Lemniscate2D.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/curves/GridCurve.h"
@@ -84,7 +87,7 @@ testDigitization( const Shape & aShape, double h,
   RealPoint xUp( 7.4, 4.7 );
   GaussDigitizer<Space,Shape> dig;  
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
+  dig.init( aShape.getLowerBound(), aShape.getUpperBound(), h );
   
   // The domain size is given by the digitizer according to the window
   // and the step.
@@ -123,11 +126,6 @@ testDigitization( const Shape & aShape, double h,
 
   board << SetMode( gridcurve.className(), "Edges" )
   << CustomStyle( bel.className(), 
-      new CustomColors( DGtal::Color( 0, 0, 0 ),
-            DGtal::Color( 0, 192, 0 ) ) )
-  << gridcurve;
-  board << SetMode( gridcurve.className(), "Points" )
-  << CustomStyle( bel.className(), 
       new CustomColors( DGtal::Color( 255, 0, 0 ),
             DGtal::Color( 200, 0, 0 ) ) )
   << gridcurve;
@@ -148,6 +146,30 @@ bool testGaussDigitizer()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing GaussDigitizer as a Digital Shape functor." );
+
+  typedef Astroid2D< Z2i::Space > MyAstroid;
+  MyAstroid astroid( 6.2, -2.1, 7.3, 4.9 );
+  nbok += testDigitization<Z2i::Space,MyAstroid>
+    ( astroid, 1.0, "gauss-astroid-1" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyAstroid>
+    ( astroid, 0.5, "gauss-astroid-0_5" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyAstroid>
+    ( astroid, 0.25, "gauss-astroid-0_25" ) ? 1 : 0; 
+  nb++;
+
+  typedef Ball2D< Z2i::Space > MyBall;
+  MyBall ball( 6.2, -2.1, 7.3 );
+  nbok += testDigitization<Z2i::Space,MyBall>
+    ( ball, 1.0, "gauss-ball-1" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyBall>
+    ( ball, 0.5, "gauss-ball-0_5" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyBall>
+    ( ball, 0.25, "gauss-ball-0_25" ) ? 1 : 0; 
+  nb++;
 
   typedef Ellipse2D< Z2i::Space > MyEllipse;
   MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
@@ -171,6 +193,18 @@ bool testGaussDigitizer()
   nb++;
   nbok += testDigitization<Z2i::Space,MyFlower>
     ( flower, 0.25, "gauss-flower-0_25" ) ? 1 : 0; 
+  nb++;
+
+  typedef Lemniscate2D< Z2i::Space > MyLemniscate;
+  MyLemniscate lemniscate( 0.5, -2.3, 5.0 );
+  nbok += testDigitization<Z2i::Space,MyLemniscate>
+    ( lemniscate, 1.0, "gauss-lemniscate-1" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyLemniscate>
+    ( lemniscate, 0.5, "gauss-lemniscate-0_5" ) ? 1 : 0; 
+  nb++;
+  nbok += testDigitization<Z2i::Space,MyLemniscate>
+    ( lemniscate, 0.25, "gauss-lemniscate-0_25" ) ? 1 : 0; 
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "

@@ -1,6 +1,5 @@
 language: cpp
 dist: trusty
-sudo: false
 
 # Reducing the depth when cloning using git
 # https://docs.travis-ci.com/user/customizing-the-build/#git-clone-depth
@@ -15,15 +14,7 @@ os:
   - linux
   - osx
 
-matrix:
-  fast_finish: true
-  exclude:
-    - os: osx
-      compiler: gcc
-
 cache: apt
-
-secure: "Ra00iyQ+5wm7G3XfaaI40aKgfcGTigfmEd+3/TY1hYcjYnJvNOG0dekolcMDSelE8SfqLcWYnK6+vtOCmyZuUWheUhA+83Tgq/bIH6dMzSvLkJdyq2D9me4sX6zx3ct90swP7Adj8EBHmv61pH5OBeEcmNWJNIZmNQs3+1awca4="
 
 ##Deps for linux builds
 addons:
@@ -60,6 +51,10 @@ script: |
   .travis/check_tests.sh
 
 jobs:
+ fast_finish: true
+ exclude:
+   - os: osx
+     compiler: gcc
  include:
    - stage: "DGtalTools"
      name: "Testing DGtalTools + DGtal with examples"
@@ -76,10 +71,11 @@ jobs:
        .travis/checkDoxygenDocumentation.sh
      deploy:
        provider: pages
-       skip-cleanup: true
-       github-token: $GITHUB_TOKEN
-       keep-history: true
+       token: $GITHUB_TOKEN
+       keep_history: true
        repo: DGtal-team/doc-nightly
-       target-branch: master
+       target_branch: master
        verbose: true
-       local-dir: "$TRAVIS_BUILD_DIR/build/html"
+       local_dir: "$TRAVIS_BUILD_DIR/build/html"
+       strategy: api
+       skip_cleanup: true

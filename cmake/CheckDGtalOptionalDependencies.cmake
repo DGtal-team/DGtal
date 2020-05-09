@@ -210,21 +210,6 @@ IF(WITH_ITK)
     ADD_DEFINITIONS(" -DWITH_ITK ")
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
 
-
-    ## We test if ITK build accepts cpp11 compilers
-    try_compile( CPP11_ITK
-      ${CMAKE_BINARY_DIR}/CMakeTmp
-      ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
-      ITKCPP11BUG
-      CMAKE_FLAGS "-DITK_DIR=${ITK_DIR}"
-      OUTPUT_VARIABLE OUTPUT )
-    if ( CPP11_ITK )
-      message(STATUS "ITK accepts [c++11]" )
-    else ( CPP11_ITK )
-      message(STATUS "ITK does not accept [c++11]" )
-      MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will not compile.")
-    endif ( CPP11_ITK )
-
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
     # template depth. We remove this option.

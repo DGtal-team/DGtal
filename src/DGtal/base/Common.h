@@ -43,9 +43,15 @@
 // Inclusions
 
 #ifdef WITH_VISU3D_QGLVIEWER
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
 #include <QKeyEvent>
+#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 #endif
 
 #include <iostream>

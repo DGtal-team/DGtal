@@ -1,7 +1,11 @@
 # DGtal 1.1
 
+## New Features / Critical Changes
 
-## Changes
+- *Kernel package*
+  - Making `HyperRectDomain_(sub)Iterator` random-access iterators
+    (allowing parallel scans of the domain, Roland Denis,
+    [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
@@ -9,11 +13,41 @@
     fields onto 2D domains like 2D images or digital surfaces
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
 
+- *Geometry Package*
+  - New piecewise smooth digital surface regularization class (David Coeurjolly,
+  [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+
+## Changes
+
+- *General*
+  - DGtal can be compiled and used as a project (git) submodule (David
+  Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
+  - Add .gitattributes file for github to recognize ih files as c++
+    (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+
+- *Geometry*
+  - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
+    directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+  - Add principal directions of curvature functions for implicit polynomial 3D shapes.
+    (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
+
+- *io*
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+    (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+
+- *Kernel package*
+  - Add .data() function to PointVector to expose internal array data.
+    (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
   - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
+    [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
+  - Add shortcuts to principal curvatures and directions of curvature for implicit polynomial
+    3D shapes. (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
@@ -28,18 +62,38 @@
   - Provides partial flip, split and merge operations for half-edge data structures
     and triangulated surfaces (Jacques-Olivier Lachaud,
     [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
+  - Makes testVoxelComplex faster, reducing the size of the test fixture
+    (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
 
 - *Shapes package*
+  - Add a moveTo(const RealPoint& point) method to implicit and star shapes
+   (Adrien Krähenbühl,
+   [#1414](https://github.com/DGtal-team/DGtal/pull/1414))
   - Fix Lemniscate definition following Bernoulli's definition
    (Adrien Krähenbühl,
    [#1427](https://github.com/DGtal-team/DGtal/pull/1427))
+  - Homogenizes typedefs of all parametric shapes and fixes some bounding box
+    computations (Adrien Krähenbühl,
+   [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
 
 
 ## Bug Fixes
 
+- *Configuration/General*
+  - Fix compilation error/warnings with gcc 9.1.1 and clang 9.0
+  (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
+  - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
+  Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+  - Fixing Travis configuration due to syntax changes in v2
+    (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
+
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
+
+- *Geometry*
+  - Bugfix in the `testVoronoiCovarianceMeasureOnSurface` (David
+    Coeurjolly, [#1439](https://github.com/DGtal-team/DGtal/pull/1439))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -51,18 +105,39 @@
     [#1411](https://github.com/DGtal-team/DGtal/pull/1411))
   - Fix bug in Shortcuts::saveVectorFieldOBJ
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
-  - Fixing OBJ export: .mtl file written with relative path (Johanna Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Fixing OBJ export: .mtl file written with relative path (Johanna
+    Delanoy [#1420](https://github.com/DGtal-team/DGtal/pull/1420))
+  - Unify pointel ordering in Shortcuts and MeshHelper so that
+    Shortcuts::getPointelRange, Shortcuts::saveOBJ and
+    Shortcuts::makePrimalPolygonalSurface, as well as
+    MeshHelpers::digitalSurface2PrimalPolygonalSurface, all use the
+    CCW ordering by default (in 3D).
+    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
+- *images*
+  - Fix the image origin that was not taken into account in class
+    ImageContainerByITKImage. (Bertrand Kerautret
+    [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+    
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction
    (Adrien Krähenbühl,
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
 
-- *doc*
+- *DEC*
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
+  related to bad link in DEC/moduleAT documentation and missing
+  associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
+  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
+  - Adding missing LGPL headers in the DEC examples (David Coeurjolly
+  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
+
+- *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
     Coeurjolly [#1417](https://github.com/DGtal-team/DGtal/pull/1417))
   - Fixing the `doxyfiles` to have the table of contents of module pages (David
@@ -71,7 +146,26 @@
     Coeurjolly [#1432](https://github.com/DGtal-team/DGtal/pull/1432))
   - Using SourceForge to download doxygen sources during Travis CI jobs.
     (Roland Denis [#1424](https://github.com/DGtal-team/DGtal/pull/1434))
+  - CSS edit to enhance the readability of code snippets (David
+    Coeurjolly [#1438](https://github.com/DGtal-team/DGtal/pull/1438))
+  - Fixing various links in moduleCellularTopology. Fixing #1454.
+    Removing dead links to ImaGene project.
+    (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
+- *Build*
+
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
+    that is a Visual Studio 2019 build error related to befriend
+    template specializations
+   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
+  - Removing the homemade CPP11 checks, using cmake macro instead
+  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+  - Removes the check for CPP11 when building WITH_ITK
+  (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
+  - Fix apple clang  compilation issue with a workaround to the
+    ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
+    using boost::first_max_element instead std::max_element. 
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
 
 # DGtal 1.0
 

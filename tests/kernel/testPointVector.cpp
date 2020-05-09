@@ -98,6 +98,12 @@ TEST_CASE( "2D Point Vector Unit tests" )
       COMPARE_VALUE_AND_TYPE( p3.crossProduct(p1), p3_3d.crossProduct(p1_3d) );
       COMPARE_VALUE_AND_TYPE( crossProduct(p3, p1), crossProduct(p3_3d, p1_3d) );
     }
+  SECTION("Access data() of internal container")
+    {
+      const auto d = p1_3d.data();
+      CHECK(d[0] == p1[0]);
+      CHECK(d[1] == p1[1]);
+    }
 }
 
 TEST_CASE( "3D Point Vector Unit tests" )
