@@ -49,6 +49,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -252,7 +253,33 @@ namespace DGtal
 
   };
 
+/**
+ * GenericWriter
+ * Template partial specialisation for images of dimension 2 and Functor returning a Color object
+ **/
+template <typename TContainer, typename TValue >
+struct GenericWriter<TContainer, 2, TValue, GradientColorMap<TValue>  >
+{
+  BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
+  
   /**
+   * Export the 2D image file.
+   * @param filename the filename of the saved image (with a extension name).
+   * @param anImage the image to be saved.
+   * @param aFunctor to apply image transformation before saving: transform scalar value to Color by using GradientColorMap.
+   *
+   **/
+  /**
+   * Export image with specific scalar->Color functor: .
+   *
+   **/
+  
+  static bool exportFile(const std::string &filename, const TContainer &anImage,
+                         const GradientColorMap<TValue> & aFunctor );
+  
+};
+
+/**
    * GenericWriter
    * Template partial specialisation for images of dimension 2 and unsigned char value type (which allows to export pgm, ppm file format ).
    **/
