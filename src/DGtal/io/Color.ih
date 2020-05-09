@@ -131,6 +131,33 @@ DGtal::Color::alpha() const
 { 
   return myAlpha; 
 } 
+inline 
+double 
+DGtal::Color::r() const 
+{
+  return ((double) myRed)/255.0; 
+} 
+
+inline 
+double 
+DGtal::Color::g() const 
+{
+  return ((double) myGreen)/255.0;
+} 
+
+inline 
+double 
+DGtal::Color::b() const 
+{
+  return ((double) myBlue)/255.0;
+}
+ 
+inline
+double 
+DGtal::Color::a() const 
+{ 
+  return ((double) myAlpha)/255.0; 
+} 
 
 inline
 DGtal::uint32_t 

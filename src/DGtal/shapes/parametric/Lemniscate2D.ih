@@ -30,21 +30,14 @@
 #include <cstdlib>
 ///////////////////////////////////////////////////////////////////////////////
 
+#define LEMNISCATE2D_3_PI_2   (3. * M_PI / 2.)
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ----------------------------------
-
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Lemniscate2D<T>::~Lemniscate2D()
-{
-}
 
 template <typename T>
 inline
@@ -54,17 +47,15 @@ DGtal::Lemniscate2D<T>::Lemniscate2D( const double x0, const double y0,
 
 template <typename T>
 inline
-DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint2D &aPoint,
+DGtal::Lemniscate2D<T>::Lemniscate2D( const RealPoint &aPoint,
   const double a ) : myCenter(aPoint), myA(fabs(a))
 {}
 
 template <typename T>
 inline
-DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
-  const double a ) : myA(fabs(a))
-{
-  myCenter = aPoint;
-}
+DGtal::Lemniscate2D<T>::Lemniscate2D(const Lemniscate2D& other ) :
+  myCenter(other.myCenter), myA(other.myA)
+{}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ------------- Implementation of 'StarShaped' services ----------------------
@@ -78,21 +69,17 @@ DGtal::Lemniscate2D<T>::Lemniscate2D( const Point2D &aPoint,
 template <typename T>
 inline
 double
-DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
+DGtal::Lemniscate2D<T>::parameter( const RealPoint& pp ) const
 {
-  RealPoint2D p( pp-myCenter );
+  const RealPoint p( pp-myCenter );
   double angle;
 
-  if ( abs(p[0]) < abs(p[1]) )
-    return 0.;
-  if ( p[0] == 0. )
+  if ( fabs(p[0]) < fabs(p[1]) )
     angle = 0.;
-  else if ( p[0] == 0. && p[1] < 0. )
-    angle = M_PI;
-  else if ( p[1] == 0. && p[0] > 0. )
-    angle = M_PI_2;
-  else if ( p[1] == 0. && p[0] < 0. )
-    angle = 3. * M_PI_2;
+  else if ( isAlmostEqual(p[0],0.) )
+    angle = p[1] < 0. ? M_PI : 0.;
+  else if ( isAlmostEqual(p[1],0.) )
+    angle = p[0] > 0. ? M_PI_2 : LEMNISCATE2D_3_PI_2;
   else
     angle = acos(p[1]/p[0]);
 
@@ -107,16 +94,16 @@ DGtal::Lemniscate2D<T>::parameter( const RealPoint2D & pp ) const
  */
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealPoint2D
-DGtal::Lemniscate2D<T>::x( double t ) const
+typename DGtal::Lemniscate2D<T>::RealPoint
+DGtal::Lemniscate2D<T>::x( const double t ) const
 {
   const double cost = cos(t);
   const double sint = sin(t);
   const double cos2t = pow(cost,2);
-  RealPoint2D c( myA * sint / (1. + cos2t),
-                 myA * sint * cost / (1. + cos2t) );
-  c += myCenter;
-  return c;
+  return RealPoint(
+    myA * sint / (1. + cos2t) + myCenter[0],
+    myA * sint * cost / (1. + cos2t) + myCenter[1]
+  );
 }
 
 
@@ -128,23 +115,22 @@ DGtal::Lemniscate2D<T>::x( double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealVector2D
+typename DGtal::Lemniscate2D<T>::RealVector
 DGtal::Lemniscate2D<T>::xp( const double t ) const
 {
-  const double cost = cos(t);
+  const double cost  = cos(t);
   const double cos2t = pow(cost,2);
   const double sin2t = pow(sin(t),2);
 
-  RealVector2D c(
+  return RealVector(
     myA * (cost + 2*sin2t*cost+pow(cost,3)) / pow(1+cos2t,2),
-    myA * (pow(cost,4) + cos2t - sin2t +
-                         sin2t * cos2t)  / pow(1+cos2t,2) );
-  return c;
+    myA * (pow(cost,4) + cos2t - sin2t + sin2t * cos2t)
+        / pow(1+cos2t,2) );
 }
 
 template <typename T>
 inline
-typename DGtal::Lemniscate2D<T>::RealVector2D
+typename DGtal::Lemniscate2D<T>::RealVector
 DGtal::Lemniscate2D<T>::xpp( const double t ) const
 {
   const double cost = cos(t);
@@ -152,7 +138,7 @@ DGtal::Lemniscate2D<T>::xpp( const double t ) const
   const double sint = sin(t);
   const double sin3t = pow(sint,3);
 
-  RealVector2D c(
+ return RealVector(
     myA * ( 4 * sin3t * cos2t +
             6 * sin3t * pow(cost,4) +
             3 * sint * cos2t -
@@ -170,7 +156,6 @@ DGtal::Lemniscate2D<T>::xpp( const double t ) const
             2 * sint * pow(cost,7) )
         / pow(1+cos2t,4)
   );
-  return c;
 }
 
 
@@ -186,7 +171,8 @@ inline
 void
 DGtal::Lemniscate2D<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Lemniscate2D] center= " << myCenter << " a=" << myA;
+  out << "[Lemniscate2D] center= " << myCenter
+      << " a=" << myA;
 }
 
 /**

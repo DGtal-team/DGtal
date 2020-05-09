@@ -58,56 +58,64 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any ellipse in the plane.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    */
   template <typename TSpace>
   class Ellipse2D final:  public StarShaped2D<TSpace>
   {
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
   public:
 
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint2D;
-    typedef typename Space::RealVector RealVector2D;
-      
+    typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealVector RealVector;
+
     /**
-     * Destructor.
+     * Constructor.
+     * Forbidden by default.
      */
-    ~Ellipse2D();
-    
+    Ellipse2D() = delete;
+
     /**
-     * Constructor. 
+     * Constructor.
      * @param x0 the x-coordinate of the circle center.
      * @param y0 the y-coordinate of the circle center.
      * @param a0 the half big axis of the ellipse.
      * @param a1 the half small axis of the ellipse.
      * @param theta the orientation of the ellipse.
      */
-    Ellipse2D( const double x0, const double y0, 
-         const double a0, const double a1, const double theta);
+    Ellipse2D( const double x0, const double y0,
+         const double a0, const double a1, const double theta );
 
     /**
-     * Constructor. 
+     * Constructor.
      * @param aPoint the circle center.
      * @param a0 the half big axis of the ellipse.
      * @param a1 the half small axis of the ellipse.
      * @param theta the orientation of the ellipse.
      */
-    Ellipse2D(const RealPoint2D &aPoint,
-        const double a0, const double a1, const double theta);
+    Ellipse2D( const RealPoint& aPoint,
+        const double a0, const double a1, const double theta );
 
     /**
-     * Constructor. 
-     * @param aPoint the circle center.
-     * @param a0 the half big axis of the ellipse.
-     * @param a1 the half small axis of the ellipse.
-     * @param theta the orientation of the ellipse.
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    Ellipse2D(const Point &aPoint,
-        const double a0, const double a1, const double theta);
+     Ellipse2D( const Ellipse2D& other );
 
-    
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    Ellipse2D& operator=( const Ellipse2D& other ) = delete;
+
+    /**
+     * Destructor.
+     */
+    ~Ellipse2D() = default;
+
   // ------------- Implementation of 'StarShaped' services ------------------
   public:
 
@@ -115,35 +123,45 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    RealPoint2D getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return RealPoint2D(myCenter[0] - myAxis1, myCenter[1] - myAxis1);
+      return myCenter - myAxis1;
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    RealPoint2D getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return RealPoint2D(myCenter[0] + myAxis1, myCenter[1] + myAxis1);
+      return myCenter + myAxis1;
     }
 
     /**
      * @return the center of the star-shaped object.
      */
-    RealPoint2D center() const
+    RealPoint center() const
     {
       return myCenter;
     }
-   
+
+    /**
+     * Modify the shape center
+     * @param newCenter the new center position
+     */
+    inline
+    void moveTo( const RealPoint& newCenter )
+    {
+      myCenter = newCenter;
+    }
+
     /**
      * @param p any point in the plane.
      *
      * @return the angle parameter between 0 and 2*Pi corresponding to
      * this point for the shape.
      */
-    double parameter( const RealPoint2D & p ) const;
+    double parameter( const RealPoint & p ) const;
 
 
     /**
@@ -152,7 +170,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    RealPoint2D x( const double t ) const;
+    RealPoint x( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -160,24 +178,24 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    RealVector2D xp( const double t ) const;
+    RealVector xp( const double t ) const;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    RealVector2D xpp( const double t ) const;
-    
+    RealVector xpp( const double t ) const;
 
-    // ------------------------- data ----------------------------
+
+  // ------------------------- data ----------------------------
   private:
 
     /**
      * Center of the circle.
      */
-    RealPoint2D myCenter;
-    
+    RealPoint myCenter;
+
     /**
      * First axis.
      */
@@ -188,13 +206,13 @@ namespace DGtal
      * Second axis.
      */
     double myAxis2;
-    
+
     /**
      * Orientation (radian).
      */
     double myTheta;
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
   public:
 
     /**
@@ -209,35 +227,18 @@ namespace DGtal
      */
     bool isValid() const;
 
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Ellipse2D();
-
+  // ------------------------- Hidden services ------------------------------
   private:
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
+     * Equality test using relative tolerance.
      */
-    //  Ellipse2D ( const Ellipse2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Ellipse2D & operator= ( const Ellipse2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class Ellipse2D
 

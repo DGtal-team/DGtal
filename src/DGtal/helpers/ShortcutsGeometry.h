@@ -59,7 +59,7 @@ namespace DGtal
 {
 
   namespace sgf = ::DGtal::functors::ShapeGeometricFunctors;
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class ShortcutsGeometry
   /**
@@ -82,10 +82,10 @@ namespace DGtal
       using Base::parametersKSpace;
       using Base::getKSpace;
       using Base::parametersDigitizedImplicitShape3D;
-    
+
       // ----------------------- Usual space types --------------------------------------
     public:
-    
+
       /// Digital cellular space
       typedef TKSpace                                  KSpace;
       /// Digital space
@@ -157,11 +157,21 @@ namespace DGtal
       typedef std::vector< RealPoint >                            RealPoints;
 
       typedef ::DGtal::Statistic<Scalar>                          ScalarStatistic;
-    
+
       typedef sgf::ShapePositionFunctor<ImplicitShape3D>          PositionFunctor;
       typedef sgf::ShapeNormalVectorFunctor<ImplicitShape3D>      NormalFunctor;
       typedef sgf::ShapeMeanCurvatureFunctor<ImplicitShape3D>     MeanCurvatureFunctor;
       typedef sgf::ShapeGaussianCurvatureFunctor<ImplicitShape3D> GaussianCurvatureFunctor;
+      typedef sgf::ShapeFirstPrincipalCurvatureFunctor<ImplicitShape3D> FirstPrincipalCurvatureFunctor;
+      typedef sgf::ShapeSecondPrincipalCurvatureFunctor<ImplicitShape3D> SecondPrincipalCurvatureFunctor;
+      typedef sgf::ShapeFirstPrincipalDirectionFunctor<ImplicitShape3D> FirstPrincipalDirectionFunctor;
+      typedef sgf::ShapeSecondPrincipalDirectionFunctor<ImplicitShape3D> SecondPrincipalDirectionFunctor;
+      typedef sgf::ShapePrincipalCurvaturesAndDirectionsFunctor<ImplicitShape3D> PrincipalCurvaturesAndDirectionsFunctor;
+
+      typedef typename functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space>::Quantity   CurvatureTensorQuantity;
+      typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
+
+
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
       typedef TrueDigitalSurfaceLocalEstimator
@@ -170,13 +180,23 @@ namespace DGtal
         < KSpace, ImplicitShape3D, MeanCurvatureFunctor >           TrueMeanCurvatureEstimator;
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, GaussianCurvatureFunctor >       TrueGaussianCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, FirstPrincipalCurvatureFunctor > TrueFirstPrincipalCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, SecondPrincipalCurvatureFunctor > TrueSecondPrincipalCurvatureEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, FirstPrincipalDirectionFunctor > TrueFirstPrincipalDirectionEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, SecondPrincipalDirectionFunctor > TrueSecondPrincipalDirectionEstimator;
+      typedef TrueDigitalSurfaceLocalEstimator
+        < KSpace, ImplicitShape3D, PrincipalCurvaturesAndDirectionsFunctor > TruePrincipalCurvaturesAndDirectionsEstimator;
 
       typedef ::DGtal::Mesh<RealPoint>                            Mesh;
       typedef ::DGtal::TriangulatedSurface<RealPoint>             TriangulatedSurface;
       typedef ::DGtal::PolygonalSurface<RealPoint>                PolygonalSurface;
       typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
       typedef std::map<Cell,   IdxVertex>                         Cell2Index;
-    
+
       // ----------------------- Static services --------------------------------------
     public:
 
@@ -192,7 +212,7 @@ namespace DGtal
           | parametersGeometryEstimation()
           | parametersATApproximation();
       }
-    
+
       /// @return the parameters and their default values which are used
       /// to approximate the geometry of continuous shape.
       ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
@@ -207,7 +227,7 @@ namespace DGtal
           ( "projectionGamma",    0.5 )
           ( "gridstep",           1.0 );
       }
-    
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the closest positions on
       /// the surface at the specified surfels, in the same order.
@@ -275,7 +295,7 @@ namespace DGtal
                                                   maxIter, gamma );
         return proj_points;
       }
-    
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the normal vectors at the
       /// specified surfels, in the same order.
@@ -314,7 +334,7 @@ namespace DGtal
                              std::back_inserter( n_true_estimations ) );
         return n_true_estimations;
       }
-    
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the mean curvatures at the
       /// specified surfels, in the same order.
@@ -353,7 +373,7 @@ namespace DGtal
                              std::back_inserter( n_true_estimations ) );
         return n_true_estimations;
       }
-    
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the gaussian curvatures at the
       /// specified surfels, in the same order.
@@ -393,9 +413,220 @@ namespace DGtal
                              std::back_inserter( n_true_estimations ) );
         return n_true_estimations;
       }
-    
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the first (smallest)
+      /// principal curvatures at the specified surfels, in the same
+      /// order.
+      ///
+      /// @note that the first principal curvature is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the first principal curvatures, in the same
+      /// order as \a surfels.
+      static Scalars
+      getFirstPrincipalCurvatures
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        Scalars n_true_estimations;
+        TrueFirstPrincipalCurvatureEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, FirstPrincipalCurvatureFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the second (greatest)
+      /// principal curvatures at the specified surfels, in the same
+      /// order.
+      ///
+      /// @note that the second principal curvature is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the second principal curvatures, in the same
+      /// order as \a surfels.
+      static Scalars
+      getSecondPrincipalCurvatures
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        Scalars n_true_estimations;
+        TrueSecondPrincipalCurvatureEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, SecondPrincipalCurvatureFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the first principal
+      /// directions (corresponding to the smallest principal
+      /// curvature) at the specified surfels, in the same order.
+      ///
+      /// @note that the first principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the first principal directions, in the same
+      /// order as \a surfels.
+      static RealVectors
+      getFirstPrincipalDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        RealVectors n_true_estimations;
+        TrueFirstPrincipalDirectionEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, FirstPrincipalDirectionFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the second principal
+      /// directions (corresponding to the greatest principal
+      /// curvature) at the specified surfels, in the same order.
+      ///
+      /// @note that the second principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the second principal directions, in the same
+      /// order as \a surfels.
+      static RealVectors
+      getSecondPrincipalDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        RealVectors n_true_estimations;
+        TrueSecondPrincipalDirectionEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, SecondPrincipalDirectionFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a
+      /// surfels, and a gridstep \a h, returns the principal
+      /// curvatures and principal directions as a tuple (k1, k2, d1, d2) at the
+      /// specified surfels, in the same order.
+      ///
+      /// @note that the second principal direction is approximated by projecting the
+      /// surfel centroid onto the implicit 3D shape.
+      ///
+      /// @param[in] shape the implicit shape.
+      /// @param[in] K the Khalimsky space whose domain encompasses the digital shape.
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      ///
+      /// @param[in] params the parameters:
+      ///   - projectionMaxIter [    20]: the maximum number of iteration for the projection.
+      ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
+      ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
+      ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///
+      /// @return the vector containing the principal curvatures and
+      /// principal directions as a tuple (k1, k2, d1, d2), in the
+      /// same order as \a surfels.
+      static CurvatureTensorQuantities
+      getPrincipalCurvaturesAndDirections
+        ( CountedPtr<ImplicitShape3D> shape,
+          const KSpace&               K,
+          const SurfelRange&          surfels,
+          const Parameters&           params = parametersShapeGeometry() )
+      {
+        CurvatureTensorQuantities n_true_estimations;
+        TruePrincipalCurvaturesAndDirectionsEstimator true_estimator;
+        int     maxIter = params[ "projectionMaxIter"  ].as<int>();
+        double accuracy = params[ "projectionAccuracy" ].as<double>();
+        double    gamma = params[ "projectionGamma"    ].as<double>();
+        Scalar gridstep = params[ "gridstep"           ].as<Scalar>();
+        true_estimator.attach( *shape );
+        true_estimator.setParams( K, PrincipalCurvaturesAndDirectionsFunctor(),
+				  maxIter, accuracy, gamma );
+        true_estimator.init( gridstep, surfels.begin(), surfels.end() );
+        true_estimator.eval( surfels.begin(), surfels.end(),
+                             std::back_inserter( n_true_estimations ) );
+        return n_true_estimations;
+      }
+
       /// @}
-    
+
       // --------------------------- geometry estimation ------------------------------
       /// @name Geometry estimation services
       /// @{
@@ -421,7 +652,7 @@ namespace DGtal
           ( "alpha",          0.33 )
           ( "surfelEmbedding",   0 );
       }
-    
+
       /// Given a digital space \a K and a vector of \a surfels,
       /// returns the trivial normals at the specified surfels, in the
       /// same order.
@@ -479,7 +710,7 @@ namespace DGtal
           typedef LocalEstimatorFromSurfelFunctorAdapter
             < SurfaceContainer, Metric, SurfelFunctor, Functor>         NormalEstimator;
           if ( verbose > 0 )
-            trace.info() << " CTrivial normal t=" << t << " (discrete)" << std::endl;
+            trace.info() << "- CTrivial normal t-ring=" << t << " (discrete)" << std::endl;
           const Functor fct( 1.0, t );
           const KSpace &  K = surface->container().space();
           Metric    aMetric( 2.0 );
@@ -612,7 +843,7 @@ namespace DGtal
       /// getCTrivialNormalVectors.
       ///
       /// @note It is better to have surfels in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static RealVectors
         getIINormalVectors( CountedPtr<BinaryImage> bimage,
                             const SurfelRange&      surfels,
@@ -652,7 +883,7 @@ namespace DGtal
       /// getCTrivialNormalVectors.
       ///
       /// @note It is better to have surfels in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static RealVectors
         getIINormalVectors( CountedPtr< DigitizedImplicitShape3D > dshape,
                             const SurfelRange&      surfels,
@@ -664,7 +895,7 @@ namespace DGtal
         auto K =  getKSpace( params );
         return getIINormalVectors( *dshape, K, surfels, params );
       }
-    
+
       /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
       /// space \a K, a sequence of \a surfels, and some parameters \a
       /// params, returns the normal Integral Invariant (II) estimation
@@ -688,7 +919,7 @@ namespace DGtal
       /// getCTrivialNormalVectors.
       ///
       /// @note It is better to have surfels in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       template <typename TPointPredicate>
         static RealVectors
         getIINormalVectors( const TPointPredicate&  shape,
@@ -745,7 +976,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note The function is faster when surfels are in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static Scalars
         getIIMeanCurvatures( CountedPtr<BinaryImage> bimage,
                              const SurfelRange&      surfels,
@@ -781,7 +1012,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note It is better to have surfels in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static Scalars
         getIIMeanCurvatures( CountedPtr< DigitizedImplicitShape3D > dshape,
                              const SurfelRange&      surfels,
@@ -794,7 +1025,7 @@ namespace DGtal
         return getIIMeanCurvatures( *dshape, K, surfels, params );
       }
 
-    
+
       /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
       /// space \a K, a sequence of \a surfels, and some parameters \a
       /// params, returns the mean curvature Integral
@@ -815,7 +1046,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note The function is faster when surfels are in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       template <typename TPointPredicate>
         static Scalars
         getIIMeanCurvatures( const TPointPredicate&  shape,
@@ -869,7 +1100,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note The function is faster when surfels are in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static Scalars
         getIIGaussianCurvatures( CountedPtr<BinaryImage> bimage,
                                  const SurfelRange&      surfels,
@@ -905,7 +1136,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note It is better to have surfels in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       static Scalars
         getIIGaussianCurvatures( CountedPtr< DigitizedImplicitShape3D > dshape,
                                  const SurfelRange&      surfels,
@@ -918,7 +1149,7 @@ namespace DGtal
         return getIIGaussianCurvatures( *dshape, K, surfels, params );
       }
 
-    
+
       /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
       /// space \a K, a sequence of \a surfels, and some parameters \a
       /// params, returns the Gaussian curvature Integral
@@ -939,7 +1170,7 @@ namespace DGtal
       /// same order as \a surfels.
       ///
       /// @note The function is faster when surfels are in a specific order, as
-      /// given for instance by a depth-first traversal (@see getSurfelRange)
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
       template <typename TPointPredicate>
         static Scalars
         getIIGaussianCurvatures( const TPointPredicate&  shape,
@@ -975,6 +1206,131 @@ namespace DGtal
                              std::back_inserter( mc_estimations ) );
           return mc_estimations;
         }
+
+      /// Given a digital shape \a bimage, a sequence of \a surfels,
+      /// and some parameters \a vm, returns the principal curvatures and
+      /// directions using an Integral
+      /// Invariant (II) estimation at the specified surfels, in the
+      /// same order.
+      ///
+      /// @param[in] bimage the characteristic function of the shape as a binary image (inside is true, outside is false).
+      /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
+      /// @param[in] params the parameters:
+      ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+      ///
+      /// @return the vector containing the estimated Gaussian curvatures, in the
+      /// same order as \a surfels.
+      ///
+      /// @note The function is faster when surfels are in a specific order, as
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
+      static CurvatureTensorQuantities
+      getIIPrincipalCurvaturesAndDirections( CountedPtr<BinaryImage> bimage,
+                                          const SurfelRange&      surfels,
+                                          const Parameters&       params
+                                            = parametersGeometryEstimation()
+                                            | parametersKSpace() )
+      {
+        auto K =  getKSpace( bimage, params );
+        return getIIPrincipalCurvaturesAndDirections( *bimage, K, surfels, params );
+      }
+
+      /// Given a digital shape \a dshape, a sequence of \a surfels,
+      /// and some parameters \a vm, returns the principal curvatures and
+      /// directions using an Integral
+      /// Invariant (II) estimation at the specified surfels, in the
+      /// same order.
+      ///
+      /// @param[in] dshape the digitized implicit shape, which is an
+      /// implicitly defined characteristic function.
+      ///
+      /// @param[in] surfels the sequence of surfels at which we compute the normals
+      /// @param[in] params the parameters:
+      ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+      ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
+      ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
+      ///   - offset          [   5.0]: the digital dilation of the digital space,
+      ///                       useful when you process shapes adding some noise.
+      ///   - closed          [     1]: specifies if the Khalimsky space is closed (!=0) or not (==0)
+      ///
+      /// @return the vector containing the estimated principal curvatures and directions, in the
+      /// same order as \a surfels.
+      ///
+      /// @note It is better to have surfels in a specific order, as
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
+      static CurvatureTensorQuantities
+      getIIPrincipalCurvaturesAndDirections( CountedPtr< DigitizedImplicitShape3D > dshape,
+                                          const SurfelRange&      surfels,
+                                          const Parameters&       params
+                                            = parametersGeometryEstimation()
+                                            | parametersKSpace()
+                                            | parametersDigitizedImplicitShape3D() )
+      {
+        auto K =  getKSpace( params );
+        return getIIPrincipalCurvaturesAndDirections( *dshape, K, surfels, params );
+      }
+
+
+      /// Given an arbitrary PointPredicate \a shape: Point -> boolean, a Khalimsky
+      /// space \a K, a sequence of \a surfels, and some parameters \a
+      /// params, returns the principal curvatures and directions using Integral
+      /// Invariant (II) estimation at the specified surfels, in the
+      /// same order.
+      ///
+      /// @tparam TPointPredicate any type of map Point -> boolean.
+      /// @param[in] shape a function Point -> boolean telling if you are inside the shape.
+      /// @param[in] K the Khalimsky space where the shape and surfels live.
+      /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
+      /// @param[in] params the parameters:
+      ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+      ///
+      /// @return the vector containing the estimated principal curvatures and directions,
+      ///  in the same order as \a surfels.
+      ///
+      /// @note The function is faster when surfels are in a specific order, as
+      /// given for instance by a depth-first traversal (see @ref getSurfelRange)
+      template <typename TPointPredicate>
+      static CurvatureTensorQuantities
+      getIIPrincipalCurvaturesAndDirections( const TPointPredicate&  shape,
+                                          const KSpace&           K,
+                                          const SurfelRange&      surfels,
+                                          const Parameters&       params
+                                            = parametersGeometryEstimation()
+                                            | parametersKSpace() )
+      {
+        typedef functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space> IICurvFunctor;
+        typedef IntegralInvariantCovarianceEstimator<KSpace, TPointPredicate, IICurvFunctor>    IICurvEstimator;
+
+        CurvatureTensorQuantities  mc_estimations;
+        int      verbose = params[ "verbose"   ].as<int>();
+        Scalar   h       = params[ "gridstep"  ].as<Scalar>();
+        Scalar   r       = params[ "r-radius"  ].as<Scalar>();
+        Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
+        if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+        if ( verbose > 0 )
+        {
+          trace.info() << "- II principal curvatures and directions alpha=" << alpha << std::endl;
+          trace.info() << "- II principal curvatures and directions r=" << (r*h)  << " (continuous) "
+          << r << " (discrete)" << std::endl;
+        }
+        IICurvFunctor   functor;
+        functor.init( h, r*h );
+        IICurvEstimator ii_estimator( functor );
+        ii_estimator.attach( K, shape );
+        ii_estimator.setParams( r );
+        ii_estimator.init( h, surfels.begin(), surfels.end() );
+        ii_estimator.eval( surfels.begin(), surfels.end(),
+                          std::back_inserter( mc_estimations ) );
+        return mc_estimations;
+      }
 
       /// @}
 
@@ -1262,14 +1618,14 @@ namespace DGtal
       }
 
 #endif // defined(WITH_EIGEN)
-      
+
       /// @}
-      
+
       // ------------------------- Error measures services -------------------------
       /// @name Error measure services
       /// @{
     public:
-      
+
       /// Orient \a v so that it points in the same direction as \a
       /// ref_v (scalar product is then non-negative afterwards).
       ///
@@ -1279,11 +1635,11 @@ namespace DGtal
         orientVectors( RealVectors&       v,
                        const RealVectors& ref_v )
       {
-        std::transform( ref_v.cbegin(), ref_v.cend(), v.cbegin(), v.begin(), 
+        std::transform( ref_v.cbegin(), ref_v.cend(), v.cbegin(), v.begin(),
                         [] ( RealVector rw, RealVector w )
                         { return rw.dot( w ) >= 0.0 ? w : -w; } );
       }
-    
+
       /// Computes the statistic of a vector of scalars
       ///
       /// @param[in] v a vector of scalars
@@ -1296,7 +1652,7 @@ namespace DGtal
         stat.terminate();
         return stat;
       }
-    
+
       /// Computes the statistic that measures the angle differences
       /// between the two arrays of unit vectors.
       ///
@@ -1326,7 +1682,7 @@ namespace DGtal
           }
         return v;
       }
-    
+
       /// Computes the absolute difference between each element of the two vectors.
       /// @param[in] v1 any vector of values.
       /// @param[in] v2 any vector of values.
@@ -1336,7 +1692,7 @@ namespace DGtal
                                       const Scalars & v2 )
       {
         Scalars result( v1.size() );
-        std::transform( v2.cbegin(), v2.cend(), v1.cbegin(), result.begin(), 
+        std::transform( v2.cbegin(), v2.cend(), v1.cbegin(), result.begin(),
                         [] ( Scalar val1, Scalar val2 )
                         { return fabs( val1 - val2 ); } );
         return result;
@@ -1434,7 +1790,7 @@ namespace DGtal
       ShortcutsGeometry & operator= ( ShortcutsGeometry && other ) = delete;
 
       /// @}
-      
+
       // ----------------------- Interface --------------------------------------
     public:
 
@@ -1466,4 +1822,4 @@ namespace DGtal
 
 #undef ShortcutsGeometry_RECURSES
 #endif // else defined(ShortcutsGeometry_RECURSES)
-    
+

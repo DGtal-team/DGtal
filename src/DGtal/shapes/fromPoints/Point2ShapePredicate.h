@@ -112,6 +112,12 @@ namespace DGtal {
      */
     Point2ShapePredicate ( const Point2ShapePredicate & other );
 
+    /**
+     * Default assignment operator.
+     * @param other the object to copy.
+     */
+    Point2ShapePredicate &operator=( const Point2ShapePredicate & other ) = default;
+
    /**
      * @param p any point.
      * @return true iff @a p is in the interior of the shape.

@@ -62,7 +62,7 @@ namespace DGtal
    * StarShaped3D and its derived classes are models of
    * CEuclideanBoundedShape and CEuclideanOrientedShape.
    *
-   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * NB: A backport from ImaGene.
    *
    *
    * @tparam TSpace space in which the shape is defined.
@@ -70,24 +70,31 @@ namespace DGtal
   template <typename TSpace>
   class StarShaped3D
   {
-   
+
   public:
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
     typedef std::pair<double,double> AngularCoordinates;
-     
+
     /**
      * Constructor.
      */
-    StarShaped3D()
-    {}
+    StarShaped3D() = default;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    StarShaped3D & operator= ( const StarShaped3D & other ) = delete;
 
     /**
      * Destructor.
      */
-    ~StarShaped3D();
-    
-    // ------------------------- Implemented services -------------------------
+    virtual ~StarShaped3D() = default;
+
+  // ------------------------- Implemented services -------------------------
   public:
     /**
      * @return a point p such that 'isInside(p)' returns 'true'.
@@ -97,7 +104,7 @@ namespace DGtal
       return center();
     }
 
-    // ------------------------- Abstract services ----------------------------
+  // ------------------------- Abstract services ----------------------------
   public:
 
     /**
@@ -105,7 +112,7 @@ namespace DGtal
      *
      */
     virtual RealPoint getLowerBound() const = 0;
-    
+
     /**
      * @return the upper bound of the shape bounding box.
      *
@@ -116,14 +123,20 @@ namespace DGtal
      * @return the center of the star-shaped object.
      */
     virtual RealPoint center() const = 0;
-    
+
+    /**
+     * Move the center of the star-shaped object to a new position
+     * @param newCenter the new center position
+     */
+    virtual void moveTo( const RealPoint& newCenter ) = 0;
+
     /**
      * @param p any point in the sapce.
      *
      * @return the angles parameters (Teta, Phi) corresponding to
      * this point for the shape.
      */
-    virtual AngularCoordinates parameter( const RealPoint & p ) const = 0;
+    virtual AngularCoordinates parameter( const RealPoint& p ) const = 0;
 
     /**
      * @param t is a couple of Theta && Phi wich are 2 angles
@@ -132,7 +145,7 @@ namespace DGtal
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
      */
-    virtual RealPoint x( const AngularCoordinates t ) const = 0;
+    virtual RealPoint x( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -140,7 +153,7 @@ namespace DGtal
      *
      * @return the vector (gradf(M).
      */
-    virtual RealPoint gradient( const AngularCoordinates t) const = 0;
+    virtual RealPoint gradient( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -148,9 +161,7 @@ namespace DGtal
      *
      * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
      */
-    virtual RealPoint rt( const AngularCoordinates t) const = 0;
-
-
+    virtual RealPoint rt( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -158,8 +169,7 @@ namespace DGtal
      *
      * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
      */
-    virtual RealPoint rp( const AngularCoordinates t) const = 0;
-
+    virtual RealPoint rp( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -168,9 +178,7 @@ namespace DGtal
      * @return the vector (rtt(M)) wich is second the partial
      * derivative with respect to Teta(twice).
      */
-    virtual RealPoint rtt( const AngularCoordinates t) const = 0;
-
-
+    virtual RealPoint rtt( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -179,7 +187,7 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Phi.
      */
-    virtual RealPoint rpp( const AngularCoordinates t) const = 0;
+    virtual RealPoint rpp( const AngularCoordinates& t ) const = 0;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -188,12 +196,9 @@ namespace DGtal
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Teta then Phi.
      */
-    virtual RealPoint rtp( const AngularCoordinates t) const = 0;
+    virtual RealPoint rtp( const AngularCoordinates& t ) const = 0;
 
-
-
-
-    // ------------------------- star-shaped services -------------------------
+  // ------------------------- star-shaped services -------------------------
   public:
 
     /**
@@ -203,9 +208,8 @@ namespace DGtal
      *
      * @return the orientation of the point (<0 means inside, ...)
      */
-    virtual Orientation orientation( const RealPoint &p) const;
-    
-    
+    virtual Orientation orientation( const RealPoint& p ) const;
+
     /*
      * @param t is a couple of Teta && Phi wich are 2 angles
      respectivly between [0,2PI] and [0,Pi].
@@ -216,9 +220,6 @@ namespace DGtal
     /*
       virtual RealPoint tangent( AngularCoordinates t ) const;
     */
-   
-   
-
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -227,7 +228,7 @@ namespace DGtal
      * @return the vector normal made unitary which is the unit
      * normal to the shape boundary looking inside the shape.
      */
-    virtual RealPoint normal( AngularCoordinates t ) const;
+    virtual RealPoint normal( const AngularCoordinates& t ) const;
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
@@ -237,7 +238,7 @@ namespace DGtal
      * is convex, negative is concave when shape is to the left and
      * the shape boundary is followed counterclockwise.
      */
-    virtual double gaussianCurvature( AngularCoordinates t) const;
+    virtual double gaussianCurvature( const AngularCoordinates& t ) const;
 
 
     /**
@@ -248,7 +249,7 @@ namespace DGtal
      * is convex, negative is concave when shape is to the left and
      * the shape boundary is followed counterclockwise.
      */
-    virtual double meanCurvature( AngularCoordinates t) const;
+    virtual double meanCurvature( const AngularCoordinates& t ) const;
 
 
     /**
@@ -261,7 +262,7 @@ namespace DGtal
      * between x(Teta1,Phi1) and x(Teta2,Phi2).
      * @return the estimated arclength.
      */
-    virtual double arclength( AngularCoordinates t1,
+    virtual double arclength( const AngularCoordinates& t1,
                               AngularCoordinates t2,
                               unsigned int nb ) const;
 
@@ -276,20 +277,20 @@ namespace DGtal
      * between x(Teta1,Phi1) and x(Teta2,Phi2).
      * @return the estimated surfacelength.
      */
-    virtual double surfacelength( AngularCoordinates t1,
+    virtual double surfacelength( const AngularCoordinates& t1,
                                   AngularCoordinates t2,
                                   unsigned int nb ) const;
 
 
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
   public:
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -297,32 +298,18 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    //StarShaped3D();
-
+  // ------------------------- Hidden services ------------------------------
   private:
 
     /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
+     * Equality test using relative tolerance.
      */
-    StarShaped3D & operator= ( const StarShaped3D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
+    template <typename T>
+    inline
+    bool isAlmostEqual( T x, T y ) const
+    {
+      return std::abs(x - y) <= std::numeric_limits<T>::epsilon();
+    }
 
   }; // end of class StarShaped3D
 
