@@ -267,6 +267,10 @@ exportFile( const std::string & filename,
       return MagickWriter< TContainer, TFunctor >::exportMagick( filename, anImage, aFunctor );
     }
 #endif
+  else if ( extension == "raw" )
+    {
+      return RawWriter< TContainer, TFunctor >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );
+    }
   else
     {
       trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
@@ -276,76 +280,7 @@ exportFile( const std::string & filename,
   return false;
 }
 
-template <typename TContainer, typename TValue>
-inline
-bool
-DGtal::GenericWriter<TContainer, 2, TValue, DGtal::HueShadeColorMap<TValue> >::
-exportFile( const std::string & filename,
-            const TContainer &  anImage,
-            const DGtal::HueShadeColorMap<TValue> & aFunctor
-          )
-{
-  DGtal::IOException dgtalio;
-  const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
-  if ( extension == "ppm" )
-    {
-      return PPMWriter<TContainer, DGtal::HueShadeColorMap<TValue> >::exportPPM( filename, anImage, aFunctor );
-    }
-   #ifdef WITH_MAGICK
-   else if ( extension == "gif"  || extension == "jpg"  || extension == "bmp" || extension == "png"   )
-    {
-      return MagickWriter< TContainer, DGtal::HueShadeColorMap<TValue> >::exportMagick( filename, anImage, aFunctor );
-    }
-   #endif
 
-  else if ( extension == "raw" )
-    {
-      return RawWriter< TContainer, DGtal::HueShadeColorMap<TValue> >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );
-    }
-  else
-    {
-      trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter with specific HueShadeColorMap functor." << std::endl;
-      throw dgtalio;
-    }
-
-  return false;
-}
-
-
-template <typename TContainer, typename TValue>
-inline
-bool
-DGtal::GenericWriter<TContainer, 2, TValue, DGtal::GradientColorMap<TValue> >::
-exportFile( const std::string & filename,
-            const TContainer &  anImage,
-            const DGtal::GradientColorMap<TValue> & aFunctor
-          )
-{
-  DGtal::IOException dgtalio;
-  const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
-  if ( extension == "ppm" )
-    {
-      return PPMWriter<TContainer, DGtal::GradientColorMap<TValue> >::exportPPM( filename, anImage, aFunctor );
-    }
-   #ifdef WITH_MAGICK
-   else if ( extension == "gif"  || extension == "jpg"  || extension == "bmp" || extension == "png"   )
-    {
-      return MagickWriter< TContainer, DGtal::GradientColorMap<TValue> >::exportMagick( filename, anImage, aFunctor );
-    }
-   #endif
-
-  else if ( extension == "raw" )
-    {
-      return RawWriter< TContainer, DGtal::GradientColorMap<TValue> >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );
-    }
-  else
-    {
-      trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter with specific GradientColorMap functor." << std::endl;
-      throw dgtalio;
-    }
-
-  return false;
-}
 
 
 template <typename TContainer, typename TFunctor >
