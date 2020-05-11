@@ -34,8 +34,8 @@
 - *io*
   - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
-  - The GenericWriter can now use the GradientColorMap as functor to export
-    color images. New Viridis ColorGradientPreset  (Bertrand Kerautret
+  - New Viridis ColorGradientPreset and cleaning useless template specializations in
+    the GenericWriter for color image. (Bertrand Kerautret
     [#1487](https://github.com/DGtal-team/DGtal/pull/1487))
   
 - *Kernel package*
