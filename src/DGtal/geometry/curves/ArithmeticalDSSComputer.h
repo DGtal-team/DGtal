@@ -431,7 +431,7 @@ operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteg
 namespace DGtal
 {
   /**
-   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
+   * \brief Aim: This is an alias to ArithmeticalDSS that is devoted
    * to the dynamic recognition of standard and simply 4-connected digital 
    * straight segments (DSS) along any sequence of digital points. 
    *
@@ -451,7 +451,7 @@ namespace DGtal
    * @tparam TInteger type of integers used for the computation of remainders, 
    * which is a model of CInteger.  
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer. 
+   * This alias is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable. 
    *
    * @see ArithmeticalDSSComputer NaiveDSS8Computer ArithmeticalDSS  
@@ -459,47 +459,10 @@ namespace DGtal
    */
   template <typename TIterator, 
 	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  class StandardDSS4Computer: 
-    public ArithmeticalDSSComputer<TIterator, TInteger, 4>
-  {
-  public: 
-    /**
-     * Base class
-     */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super;
-    typedef typename Super::ConstIterator ConstIterator;
-
-  public: 
-
-    /**
-     * Default constructor.
-     * NB: not valid. 
-     */
-    StandardDSS4Computer (); 
-
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2d points
-     */
-    StandardDSS4Computer(const ConstIterator& it);
-
-    /**
-     * Copy constructor.
-     * @param aOther the object to clone.
-     */
-    StandardDSS4Computer ( const StandardDSS4Computer & aOther ); 
-
-    /**
-     * Assignment.
-     * @param aOther the object to copy.
-     * @return a reference on 'this'.
-     */
-    StandardDSS4Computer & operator= ( const StandardDSS4Computer & aOther );
-
-  }; 
+  using StandardDSS4Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4>;
 
   /**
-   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
+   * \brief Aim: This is an alias to ArithmeticalDSS that is devoted
    * to the dynamic recognition of naive and simply 8-connected digital straight 
    * segments (DSS) along any sequence of digital points. 
    *
@@ -512,7 +475,7 @@ namespace DGtal
    * @tparam TInteger type of integers used for the computation of remainders, 
    * which is a model of CInteger.  
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer. 
+   * This alias is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable. 
    *
    * @see ArithmeticalDSSComputer StandardDSS4Computer ArithmeticalDSS  
@@ -520,44 +483,7 @@ namespace DGtal
    */
   template <typename TIterator, 
 	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  class NaiveDSS8Computer: 
-    public ArithmeticalDSSComputer<TIterator, TInteger, 4>
-  {
-  public: 
-    /**
-     * Base class
-     */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
-    typedef typename Super::ConstIterator ConstIterator;
-
-  public: 
-
-    /**
-     * Default constructor.
-     * NB: not valid. 
-     */
-    NaiveDSS8Computer (); 
-
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2d points
-     */
-    NaiveDSS8Computer(const ConstIterator& it);
-
-    /**
-     * Copy constructor.
-     * @param aOther the object to clone.
-     */
-    NaiveDSS8Computer ( const NaiveDSS8Computer & aOther ); 
-
-    /**
-     * Assignment.
-     * @param aOther the object to copy.
-     * @return a reference on 'this'.
-     */
-    NaiveDSS8Computer & operator= ( const NaiveDSS8Computer & aOther );
-
-  }; 
+  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4>;
 
 } // namespace DGtal
 
