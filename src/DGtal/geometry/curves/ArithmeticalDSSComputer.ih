@@ -134,8 +134,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 operator==( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency>& other ) const
 {
   return ( (myBegin == other.myBegin)
-	   && (myEnd == other.myEnd)
-	   && (myDSS == other.myDSS) );
+           && (myEnd == other.myEnd)
+           && (myDSS == other.myDSS) );
 }
 
 //-----------------------------------------------------------------------------
