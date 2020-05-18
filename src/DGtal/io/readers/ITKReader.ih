@@ -54,7 +54,7 @@ namespace DGtal {
   template <typename TFunctor>
   I ITKReader<I>::importITK(
   const std::string & filename,
-  const TFunctor & aFunctor )
+  const TFunctor & aFunctor, bool shiftDomain )
   {
     typedef typename Image::Domain Domain;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
@@ -71,42 +71,42 @@ namespace DGtal {
     case itk::ImageIOBase::UCHAR:
     {
       typedef ImageContainerByITKImage<Domain, unsigned char> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::CHAR:
     {
       typedef ImageContainerByITKImage<Domain, char> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::USHORT:
     {
       typedef ImageContainerByITKImage<Domain, unsigned short> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::SHORT:
     {
       typedef ImageContainerByITKImage<Domain, short> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::UINT:
     {
       typedef ImageContainerByITKImage<Domain, unsigned int> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::INT:
     {
       typedef ImageContainerByITKImage<Domain, int> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::ULONG:
     {
       typedef ImageContainerByITKImage<Domain, unsigned long> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::LONG:
     {
       typedef ImageContainerByITKImage<Domain, long> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
 #if (ITK_VERSION_MAJOR > 4)\
     || (ITK_VERSION_MAJOR == 4 && ITK_VERSION_MINOR >= 13)
@@ -114,23 +114,23 @@ namespace DGtal {
     {
       typedef ImageContainerByITKImage<Domain, unsigned long long>
 	DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::LONGLONG:
     {
       typedef ImageContainerByITKImage<Domain, long long> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
 #endif
     case itk::ImageIOBase::FLOAT:
     {
       typedef ImageContainerByITKImage<Domain, float> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     case itk::ImageIOBase::DOUBLE:
     {
       typedef ImageContainerByITKImage<Domain, double> DGtalITKImage;
-      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor );
+      return readDGtalImageFromITKtypes<DGtalITKImage>( filename, aFunctor, shiftDomain );
     }
     }
   }
@@ -164,7 +164,7 @@ namespace DGtal {
   template <typename Domain, typename PixelType>
   inline
   ImageContainerByITKImage<Domain, PixelType>
-  ITKReader<I>::readDGtalITKImage(const std::string & filename)
+  ITKReader<I>::readDGtalITKImage(const std::string & filename, bool shiftDomain)
   {
     typedef ImageContainerByITKImage<Domain, PixelType> TypeDGtalImage;
     const unsigned int dimension = Domain::dimension;
@@ -188,8 +188,17 @@ namespace DGtal {
       throw IOException();
     }
     
-    const TypeDGtalImage image( itk_image );
-
+    TypeDGtalImage image( itk_image );
+    if (shiftDomain)
+    {
+      auto c = itk_image->GetOrigin();
+      typename Domain::Point p;
+      for (unsigned int k = 0; k < dimension; k++)
+      {
+        p[k]=c[k];
+      }
+      image.updateDomain(p);
+    }
     return image;
   }
 
@@ -200,11 +209,11 @@ namespace DGtal {
   Image
   ITKReader<I>::Aux<Image, Domain, OrigValue, TFunctor, Value>::
   readDGtalImageFromITKtypes(const std::string & filename,
-			     const TFunctor & aFunctor )
+			     const TFunctor & aFunctor, bool shiftDomain)
   {
       typedef ImageContainerByITKImage<Domain, OrigValue> TypeDGtalImage;
       TypeDGtalImage dgtal_itk_image =
-	ITKReader<I>::readDGtalITKImage<Domain, OrigValue>( filename );
+	ITKReader<I>::readDGtalITKImage<Domain, OrigValue>( filename , shiftDomain);
 
       const Domain& domain = dgtal_itk_image.domain();
 
@@ -217,6 +226,7 @@ namespace DGtal {
       Image image( domain );
       std::copy( adapted.constRange().begin(), adapted.constRange().end(),
 		 image.range().outputIterator() );
+     
       return image;
   }
 
@@ -229,13 +239,13 @@ namespace DGtal {
   ITKReader<I>::Aux<ImageContainerByITKImage<Domain, Value>, Domain, OrigValue,
 		    TFunctor, Value>::
   readDGtalImageFromITKtypes( const std::string & filename,
-			      const TFunctor & aFunctor )
+			      const TFunctor & aFunctor, bool shiftDomain )
   {
     typedef ImageContainerByITKImage<Domain, Value> Image;
       
     typedef ImageContainerByITKImage<Domain, OrigValue> TypeDGtalImage;
     TypeDGtalImage dgtal_itk_image =
-      ITKReader<I>::readDGtalITKImage<Domain, OrigValue>( filename );
+      ITKReader<I>::readDGtalITKImage<Domain, OrigValue>( filename, shiftDomain );
 
     const Domain& domain = dgtal_itk_image.domain();
 
@@ -267,13 +277,13 @@ namespace DGtal {
   template <typename TypeDGtalImage, typename TFunctor>
   typename ITKReader<I>::Image ITKReader<I>::
   readDGtalImageFromITKtypes( const std::string & filename,
-			      const TFunctor & aFunctor )
+			      const TFunctor & aFunctor, bool shiftDomain )
   {
     typedef typename Image::Domain Domain;
     typedef typename TypeDGtalImage::Value OrigValue;
 
     return Aux<Image, Domain, OrigValue, TFunctor,
-	       Value>::readDGtalImageFromITKtypes( filename, aFunctor );
+	       Value>::readDGtalImageFromITKtypes( filename, aFunctor, shiftDomain );
   }
 
 }//namespace
