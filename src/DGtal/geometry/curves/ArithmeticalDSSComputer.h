@@ -483,7 +483,7 @@ namespace DGtal
    */
   template <typename TIterator, 
 	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4>;
+  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 8>;
 
 } // namespace DGtal
 
