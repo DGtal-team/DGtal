@@ -90,6 +90,9 @@
 - *Geometry*
   - Bugfix in the `testVoronoiCovarianceMeasureOnSurface` (David
     Coeurjolly, [#1439](https://github.com/DGtal-team/DGtal/pull/1439))
+  - Defining StandardDSS4Computer & NaiveDSS8Computer as templated aliases of
+    ArithmeticalDSSComputer (fix #1483). Also fixing NaiveDSS8 adjacency.
+    (Roland Denis, [#1491](https://github.com/DGtal-team/DGtal/pull/1491))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
