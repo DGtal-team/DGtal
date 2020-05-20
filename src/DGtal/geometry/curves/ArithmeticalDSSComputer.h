@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSSComputer.h 
+ * @file ArithmeticalDSSComputer.h
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -60,28 +60,28 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class ArithmeticalDSSComputer
   /**
-   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
-   * to the dynamic recognition of digital straight segments (DSS) along any 
-   * sequence of digital points. 
+   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted
+   * to the dynamic recognition of digital straight segments (DSS) along any
+   * sequence of digital points.
    *
-   * See @ref moduleArithDSSReco for further details. See also classes 
-   * NaiveDSS8Computer and StandardDSS4Computer, which are aliases of this class. 
+   * See @ref moduleArithDSSReco for further details. See also classes
+   * NaiveDSS8Computer and StandardDSS4Computer, which are aliases of this class.
    *
    * @tparam TIterator type of iterator on 2d digital points,
-   * at least readable and forward. 
-   * @tparam TInteger type of integers used for the computation of remainders, 
-   * which is a model of CInteger.  
-   * @tparam adjacency an unsigned integer equal to 4 for standard 
-   * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default). 
+   * at least readable and forward.
+   * @tparam TInteger type of integers used for the computation of remainders,
+   * which is a model of CInteger.
+   * @tparam adjacency an unsigned integer equal to 4 for standard
+   * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer. 
-   * It is also default constructible, copy constructible, assignable and equality comparable. 
+   * This class is a model of CDynamicBidirectionalSegmentComputer.
+   * It is also default constructible, copy constructible, assignable and equality comparable.
    *
-   * @see ArithmeticalDSS NaiveDSS StandardDSS 
+   * @see ArithmeticalDSS NaiveDSS StandardDSS
    * @see exampleArithmeticalDSS.cpp exampleArithmeticalDSSComputer.cpp
    */
-  template <typename TIterator, 
-    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
+  template <typename TIterator,
+    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
     unsigned short adjacency = 8>
   class ArithmeticalDSSComputer
   {
@@ -93,19 +93,19 @@ namespace DGtal
      * Type of iterator, at least readable and forward
      */
     typedef TIterator ConstIterator;
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator> )); 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ConstIterator> )); 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ConstIterator> ));
 
     /**
      * Type of 2d digital point
      */
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point;
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
     /**
      * Type of coordinate
      */
-    typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate; 
+    typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate;
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
@@ -115,23 +115,23 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
-     * Type of objects that represents DSSs 
+     * Type of objects that represents DSSs
      */
-    typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS; 
+    typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS;
     //we expect that the iterator type returned DGtal points, used in the DSS representation
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point, typename DSS::Point >::value ));
 
     /**
-     * Type of primitive representation, defined as an alias of DSS 
+     * Type of primitive representation, defined as an alias of DSS
      */
-    typedef DSS Primitive; 
+    typedef DSS Primitive;
 
     /**
      * Type of vector, defined as an alias of point
      */
-    typedef Point Vector; 
+    typedef Point Vector;
 
-    typedef ArithmeticalDSSComputer<ConstIterator,TInteger,adjacency> Self; 
+    typedef ArithmeticalDSSComputer<ConstIterator,TInteger,adjacency> Self;
     typedef ArithmeticalDSSComputer<ReverseIterator<ConstIterator>,TInteger,adjacency> Reverse;
 
     // ----------------------- Standard services ------------------------------
@@ -169,8 +169,8 @@ namespace DGtal
      */
     ArithmeticalDSSComputer& operator= ( const ArithmeticalDSSComputer & other );
 
-    /** 
-     * @return a default-constructed instance of Self 
+    /**
+     * @return a default-constructed instance of Self
      */
     Self getSelf() const;
 
@@ -178,7 +178,7 @@ namespace DGtal
      * @return a default-constructed instance of Reverse
      */
     Reverse getReverse() const;
-        
+
     /**
      * Equality operator.
      * @param other the object to compare with.
@@ -203,21 +203,21 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-     
+
     /**
      * Tests whether the current DSS can be extended at the front.
-     *  
+     *
      * @return 'true' if yes, 'false' otherwise.
      */
     bool isExtendableFront();
 
     /**
      * Tests whether the current DSS can be extended at the back.
-     *  
+     *
      * @return 'true' if yes, 'false' otherwise.
      */
     bool isExtendableBack();
-    
+
     /**
      * Tests whether the current DSS can be extended at the front.
      * Computes the parameters of the extended DSS if yes.
@@ -233,7 +233,7 @@ namespace DGtal
     bool extendBack();
 
     /**
-     * Removes the front point of the DSS 
+     * Removes the front point of the DSS
      * if it has more than two points
      * @return 'true' if the front point is removed, 'false' otherwise.
      */
@@ -251,8 +251,8 @@ namespace DGtal
     /**
      * @return the current DSS representation.
      * NB: since we return a const reference, you must
-     * copy the result, if you want to keep it beyond 
-     * the object's existence. 
+     * copy the result, if you want to keep it beyond
+     * the object's existence.
      */
     const Primitive& primitive() const;
     /**
@@ -324,7 +324,7 @@ namespace DGtal
     /**
      * Computes the remainder of a point
      * (that does not necessarily belong to the DSS)
-     * @param aPoint the point whose remainder is returned 
+     * @param aPoint the point whose remainder is returned
      * @return the remainder
      */
     Integer remainder( const Point& aPoint ) const;
@@ -340,22 +340,22 @@ namespace DGtal
     /**
      * Computes the position of a point
      * (that does not necessarily belong to the DSS)
-     * @param aPoint the point whose position is returned 
+     * @param aPoint the point whose position is returned
      * @return the position of @a aPoint.
      */
     Integer position( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the bounding DSL
-     * of minimal parameters 
-     * @param aPoint the point to be checked 
+     * of minimal parameters
+     * @param aPoint the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
     bool isInDSL( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the bounding DSL
-     * of minimal parameters 
+     * of minimal parameters
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
@@ -386,27 +386,27 @@ namespace DGtal
     /**
     * DSS representation
     */
-    DSS myDSS; 
+    DSS myDSS;
     /**
     * begin iterator
     */
-    ConstIterator myBegin; 
+    ConstIterator myBegin;
     /**
     * end iterator
     */
-    ConstIterator myEnd; 
-    
+    ConstIterator myEnd;
+
     // ------------------ Display ------------------------------------------
 
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const; 
+    void selfDisplay ( std::ostream & out ) const;
 
-    
+
   }; // end of class ArithmeticalDSSComputer
 
 
@@ -431,133 +431,59 @@ operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteg
 namespace DGtal
 {
   /**
-   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
-   * to the dynamic recognition of standard and simply 4-connected digital 
-   * straight segments (DSS) along any sequence of digital points. 
+   * \brief Aim: This is an alias to ArithmeticalDSS that is devoted
+   * to the dynamic recognition of standard and simply 4-connected digital
+   * straight segments (DSS) along any sequence of digital points.
    *
-   * Before using a DSS computer, you must include the following header: 
+   * Before using a DSS computer, you must include the following header:
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerHeader
    *
-   * Then, you can construct a DSS computer as follows: 
+   * Then, you can construct a DSS computer as follows:
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardCtor
    *
-   * The extention is simply done as follows: 
+   * The extention is simply done as follows:
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
    *
-   * See @ref moduleArithDSSReco for further details. 
+   * See @ref moduleArithDSSReco for further details.
    *
    * @tparam TIterator type of iterator on 2d digital points,
-   * at least readable and forward. 
-   * @tparam TInteger type of integers used for the computation of remainders, 
-   * which is a model of CInteger.  
+   * at least readable and forward.
+   * @tparam TInteger type of integers used for the computation of remainders,
+   * which is a model of CInteger.
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer. 
-   * It is also default constructible, copy constructible, assignable and equality comparable. 
+   * This alias is a model of CDynamicBidirectionalSegmentComputer.
+   * It is also default constructible, copy constructible, assignable and equality comparable.
    *
-   * @see ArithmeticalDSSComputer NaiveDSS8Computer ArithmeticalDSS  
-   * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp 
+   * @see ArithmeticalDSSComputer NaiveDSS8Computer ArithmeticalDSS
+   * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp
    */
-  template <typename TIterator, 
-	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  class StandardDSS4Computer: 
-    public ArithmeticalDSSComputer<TIterator, TInteger, 4>
-  {
-  public: 
-    /**
-     * Base class
-     */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super;
-    typedef typename Super::ConstIterator ConstIterator;
-
-  public: 
-
-    /**
-     * Default constructor.
-     * NB: not valid. 
-     */
-    StandardDSS4Computer (); 
-
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2d points
-     */
-    StandardDSS4Computer(const ConstIterator& it);
-
-    /**
-     * Copy constructor.
-     * @param aOther the object to clone.
-     */
-    StandardDSS4Computer ( const StandardDSS4Computer & aOther ); 
-
-    /**
-     * Assignment.
-     * @param aOther the object to copy.
-     * @return a reference on 'this'.
-     */
-    StandardDSS4Computer & operator= ( const StandardDSS4Computer & aOther );
-
-  }; 
+  template <typename TIterator,
+            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
+  using StandardDSS4Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4>;
 
   /**
-   * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted 
-   * to the dynamic recognition of naive and simply 8-connected digital straight 
-   * segments (DSS) along any sequence of digital points. 
+   * \brief Aim: This is an alias to ArithmeticalDSS that is devoted
+   * to the dynamic recognition of naive and simply 8-connected digital straight
+   * segments (DSS) along any sequence of digital points.
    *
    * See @ref moduleArithDSSReco for further details. See also
    * exampleArithmeticalDSSComputer.cpp for a basic example using
-   * StandardDSS4Computer. The use of NaiveDSS8Computer is quite similar. 
+   * StandardDSS4Computer. The use of NaiveDSS8Computer is quite similar.
    *
    * @tparam TIterator type of iterator on 2d digital points,
-   * at least readable and forward. 
-   * @tparam TInteger type of integers used for the computation of remainders, 
-   * which is a model of CInteger.  
+   * at least readable and forward.
+   * @tparam TInteger type of integers used for the computation of remainders,
+   * which is a model of CInteger.
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer. 
-   * It is also default constructible, copy constructible, assignable and equality comparable. 
+   * This alias is a model of CDynamicBidirectionalSegmentComputer.
+   * It is also default constructible, copy constructible, assignable and equality comparable.
    *
-   * @see ArithmeticalDSSComputer StandardDSS4Computer ArithmeticalDSS  
-   * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp 
+   * @see ArithmeticalDSSComputer StandardDSS4Computer ArithmeticalDSS
+   * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp
    */
-  template <typename TIterator, 
-	    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  class NaiveDSS8Computer: 
-    public ArithmeticalDSSComputer<TIterator, TInteger, 4>
-  {
-  public: 
-    /**
-     * Base class
-     */
-    typedef ArithmeticalDSSComputer<TIterator, TInteger, 4> Super; 
-    typedef typename Super::ConstIterator ConstIterator;
-
-  public: 
-
-    /**
-     * Default constructor.
-     * NB: not valid. 
-     */
-    NaiveDSS8Computer (); 
-
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2d points
-     */
-    NaiveDSS8Computer(const ConstIterator& it);
-
-    /**
-     * Copy constructor.
-     * @param aOther the object to clone.
-     */
-    NaiveDSS8Computer ( const NaiveDSS8Computer & aOther ); 
-
-    /**
-     * Assignment.
-     * @param aOther the object to copy.
-     * @return a reference on 'this'.
-     */
-    NaiveDSS8Computer & operator= ( const NaiveDSS8Computer & aOther );
-
-  }; 
+  template <typename TIterator,
+            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
+  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 8>;
 
 } // namespace DGtal
 

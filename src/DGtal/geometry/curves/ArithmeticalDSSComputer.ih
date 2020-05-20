@@ -134,8 +134,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 operator==( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency>& other ) const
 {
   return ( (myBegin == other.myBegin)
-	   && (myEnd == other.myEnd)
-	   && (myDSS == other.myDSS) );
+           && (myEnd == other.myEnd)
+           && (myDSS == other.myDSS) );
 }
 
 //-----------------------------------------------------------------------------
@@ -443,85 +443,3 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::selfDisplay ( std:
   out << "[ArithmeticalDSSComputer] " << myDSS;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//                       Alias                                               //
-///////////////////////////////////////////////////////////////////////////////
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::StandardDSS4Computer<TIterator,TInteger>::
-StandardDSS4Computer()
-  : Super()
-{
-}
-
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::StandardDSS4Computer<TIterator,TInteger>::
-StandardDSS4Computer(const ConstIterator& it)
-  : Super(it)
-{
-}
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::StandardDSS4Computer<TIterator,TInteger>::
-StandardDSS4Computer ( const StandardDSS4Computer<TIterator,TInteger> & other )
-  : Super(other)
-{
-}
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-typename DGtal::StandardDSS4Computer<TIterator,TInteger>&
-DGtal::StandardDSS4Computer<TIterator,TInteger>::
-operator=( const StandardDSS4Computer<TIterator,TInteger> & other )
-{
-  if (this != & other)
-    Super::operator=( other );
-  return *this;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::NaiveDSS8Computer<TIterator,TInteger>::
-NaiveDSS8Computer()
-  : Super()
-{
-}
-
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::NaiveDSS8Computer<TIterator,TInteger>::
-NaiveDSS8Computer(const ConstIterator& it)
-  : Super(it)
-{
-}
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-DGtal::NaiveDSS8Computer<TIterator,TInteger>::
-NaiveDSS8Computer ( const NaiveDSS8Computer<TIterator,TInteger> & other )
-  : Super(other)
-{
-}
-
-//-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger>
-inline
-typename DGtal::NaiveDSS8Computer<TIterator,TInteger>&
-DGtal::NaiveDSS8Computer<TIterator,TInteger>::
-operator=( const NaiveDSS8Computer<TIterator,TInteger> & other )
-{
-  if (this != & other)
-    Super::operator=( other );
-  return *this;
-}
