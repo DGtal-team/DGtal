@@ -117,6 +117,9 @@
   - Fix the image origin that was not taken into account in class
     ImageContainerByITKImage. (Bertrand Kerautret
     [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+  - Add domainShift to ImageContainerByITKImage.
+    (Pablo Hernandez-Cerdan,
+    [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
     
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
