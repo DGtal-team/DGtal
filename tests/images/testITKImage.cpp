@@ -6,7 +6,7 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR a PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
@@ -81,12 +81,12 @@ bool testITKImage()
   const Integer t[ ] = { 1, 1, 1};
   const Integer t2[ ] = { 5, 5, 5};
   const Integer t3[ ] = { 2, 2, 2};
-  Point a ( t );
-  Point b ( t2 );
+  Point lowerBound ( t );
+  Point upperBound ( t2 );
   Point c ( t3 );
   Integer val;
 
-  Image myImage ( Domain(a, b) );
+  Image myImage ( Domain(lowerBound, upperBound) );
 
   trace.info() << myImage << std::endl;
   trace.info() << "getvalue= " << myImage(c) << endl;
@@ -145,9 +145,9 @@ bool testITKMethod()
 
   typedef ImageContainerByITKImage<Domain, Integer> Image;
 
-  Point a ( 0, 0 );
-  Point b ( 9, 9);
-  Domain domain(a, b);
+  Point lowerBound ( 0, 0 );
+  Point upperBound ( 9, 9);
+  Domain domain(lowerBound, upperBound);
 
   Image myImage(domain);
   trace.info() << myImage << std::endl;
@@ -210,6 +210,184 @@ bool testITKMethod()
   return nbok == 25 && nb == 25;
 }
 
+bool testITKImageWithMetadata()
+{
+  trace.beginBlock ( "ITK Image With Metadata init..." );
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef DGtal::int32_t Integer;
+  typedef SpaceND<3, Integer > Space3Type;
+  typedef HyperRectDomain<Space3Type> Domain;
+  typedef Domain::Point Point;
+
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
+
+  // REMEMBER: Origin in ITK is the physical position of the index {0,0,...}
+  // even when that zero-index is not included in the LargestPossibleRegion of the image.
+  const Integer t[ ] = { 1, 1, 1};
+  const Integer t2[ ] = { 5, 5, 5};
+  const Integer t3[ ] = { 2, 2, 2};
+  Point lowerBound ( t );
+  Point upperBound ( t2 );
+  Point c ( t3 );
+  Integer val;
+
+  Image myImage ( Domain(lowerBound, upperBound) );
+  // Fill the image
+  int nbVal = 0;
+  for (Image::Iterator it = myImage.begin(), itend = myImage.end();
+      it != itend; ++it) {
+    myImage.setValue(it, nbVal++);
+  }
+  // Change the default metadata (physical properties) of an itk_image.
+  auto itk_image = myImage.getITKImagePointer();
+  Image::ITKImage::PointType origin;
+  origin.Fill(10.0);
+  Image::ITKImage::SpacingType spacing;
+  spacing.Fill(2.0);
+  Image::ITKImage::DirectionType direction;
+  direction.SetIdentity();
+  itk_image->SetOrigin(origin);
+  itk_image->SetSpacing(spacing);
+  itk_image->SetDirection(direction);
+
+  // Check that the value of index points is not affected by a change of metadata.
+  val = myImage.operator()(lowerBound);
+  nbok += (val == 0); nb++;
+  trace.info() << "Index: " << lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
+  val = myImage.operator()(upperBound);
+  nbok += (val == 124); nb++;
+  trace.info() << "Index: " << upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
+  val = myImage.operator()(c);
+  nbok += (val == 31); nb++;
+  trace.info() << "Index: " << c << ". Value: " << val << ". Expected: " << 31 << std::endl;
+
+  Image::PhysicalPoint physical_point;
+  Image::PhysicalPoint expected_physical_point;
+  Image::Point index_point;
+
+  index_point = myImage.getIndexFromDomainPoint(lowerBound);
+  nbok += (index_point == lowerBound); nb++;
+  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  expected_physical_point = myImage.getLowerBoundAsPhysicalPoint();
+  nbok += (physical_point[0] == 12.0); nb++;
+  nbok += (physical_point == expected_physical_point); nb++;
+  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+
+  index_point = myImage.getIndexFromDomainPoint(upperBound);
+  nbok += (index_point == upperBound); nb++;
+  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  expected_physical_point = myImage.getUpperBoundAsPhysicalPoint();
+  nbok += (physical_point[0] == 20.0); nb++;
+  nbok += (physical_point == expected_physical_point); nb++;
+  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+
+  auto index_back = myImage.getIndexFromPhysicalPoint(physical_point);
+  nbok += (index_back == upperBound); nb++;
+  trace.info() << "PhysicalPoint: " << physical_point << ". Index (back): " << index_back << ". Expected: " << upperBound << std::endl;
+
+  trace.endBlock();
+
+  return nbok == 10 && nb == 10;
+}
+
+bool testITKImageWithShiftDomain()
+{
+  trace.beginBlock ( "ITK Image With ShiftDomain init..." );
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef DGtal::int32_t Integer;
+  typedef SpaceND<3, Integer > Space3Type;
+  typedef HyperRectDomain<Space3Type> Domain;
+  typedef Domain::Point Point;
+
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
+
+  const Integer t[ ] = { 1, 1, 1};
+  const Integer t2[ ] = { 5, 5, 5};
+  const Integer t3[ ] = { 2, 2, 2};
+  Point lowerBound ( t );
+  Point upperBound ( t2 );
+  Point c ( t3 );
+  Integer val;
+
+  Image myImage ( Domain(lowerBound, upperBound) );
+
+  // Fill the image
+  int nbVal = 0;
+  for (Image::Iterator it = myImage.begin(), itend = myImage.end();
+      it != itend; ++it) {
+    myImage.setValue(it, nbVal++);
+  }
+
+  // Change the default metadata (physical properties) of an itk_image.
+  auto itk_image = myImage.getITKImagePointer();
+  Image::ITKImage::PointType origin;
+  origin.Fill(10.0);
+  Image::ITKImage::SpacingType spacing;
+  spacing.Fill(2.0);
+  Image::ITKImage::DirectionType direction;
+  direction.SetIdentity();
+  itk_image->SetOrigin(origin);
+  itk_image->SetSpacing(spacing);
+  itk_image->SetDirection(direction);
+
+
+  // Apply a domainShift
+  const Integer sd[ ] = { -20, -20, -20};
+  Point domainShift(sd);
+  myImage.updateDomain(domainShift);
+  Point new_lowerBound = myImage.domain().lowerBound();
+  Point new_upperBound = myImage.domain().upperBound();
+  nbok += ( new_lowerBound == lowerBound + domainShift); nb++;
+  trace.info() << "lowerBound: " << new_lowerBound << ". Expected: " << lowerBound + domainShift << std::endl;
+  nbok += ( new_upperBound == upperBound + domainShift); nb++;
+  trace.info() << "upperBound: " << new_upperBound << ". Expected: " << upperBound + domainShift << std::endl;
+
+  // Check that the value of index points is not affected by a change of myDomainShift.
+  val = myImage.operator()(lowerBound);
+  nbok += (val == 0); nb++;
+  trace.info() << "Index: " << lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
+  val = myImage.operator()(upperBound);
+  nbok += (val == 124); nb++;
+  trace.info() << "Index: " << upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
+  val = myImage.operator()(c);
+  nbok += (val == 31); nb++;
+  trace.info() << "Index: " << c << ". Value: " << val << ". Expected: " << 31 << std::endl;
+
+  Image::PhysicalPoint physical_point;
+  Image::PhysicalPoint expected_physical_point;
+  Image::Point index_point;
+
+  index_point = lowerBound;
+  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  expected_physical_point = Image::PhysicalPoint(12.0, 12.0, 12.0);
+  nbok += (physical_point == expected_physical_point); nb++;
+  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+
+  index_point = myImage.getIndexFromDomainPoint(new_lowerBound);
+  nbok += ( index_point == lowerBound ); nb++;
+  trace.info() << "index_point: " << index_point << ". Expected: " << lowerBound << std::endl;
+  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  expected_physical_point = myImage.getLowerBoundAsPhysicalPoint();
+  nbok += (physical_point[0] == 12.0); nb++;
+  nbok += (physical_point == expected_physical_point); nb++;
+  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+
+  index_point = upperBound;
+  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  expected_physical_point = myImage.getUpperBoundAsPhysicalPoint();
+  nbok += (physical_point[0] == 20.0); nb++;
+  nbok += (physical_point == expected_physical_point); nb++;
+  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+
+  return nbok == 11 && nb == 11;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -221,7 +399,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testITKImage() && testITKMethod();
+  bool res = testITKImage() && testITKMethod() &&
+    testITKImageWithMetadata() && testITKImageWithShiftDomain();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
