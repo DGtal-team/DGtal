@@ -198,6 +198,8 @@ namespace DGtal {
         p[k] = static_cast<typename Domain::Integer>(c[k]);
       }
       image.updateDomain(p);
+      //updating only the domain is not sufficient to import correctly
+      //the itk image, in particular for the range iterator.
       auto r = itk_image->GetBufferedRegion();
       auto i = r.GetIndex();
       for (Dimension k = 0; k < dimension; k++)
