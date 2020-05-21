@@ -105,7 +105,7 @@ namespace DGtal
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
     static Image importITK(
     const std::string & filename,
-    const TFunctor & aFunctor = TFunctor(), bool shiftDomainUsingOrigin =true);
+    const TFunctor & aFunctor = TFunctor(), bool shiftDomainUsingOrigin=true);
 
     /**
      * Get the type of the ITK image.
@@ -121,7 +121,7 @@ namespace DGtal
 
     template <typename Domain, typename PixelType>
     static inline ImageContainerByITKImage<Domain, PixelType>
-    readDGtalITKImage(const std::string & filename, bool shiftDomainUsingOrigin =true);
+    readDGtalITKImage(const std::string & filename, bool shiftDomainUsingOrigin=true);
 
     
     template <typename Image, typename Domain, typename OrigValue,
@@ -130,7 +130,7 @@ namespace DGtal
     {
       static inline Image
       readDGtalImageFromITKtypes( const std::string & filename,
-				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin =true );
+				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
     };
 
     //specialization
@@ -141,7 +141,7 @@ namespace DGtal
     {
       static inline ImageContainerByITKImage<Domain, Value>
       readDGtalImageFromITKtypes( const std::string & filename,
-				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin =true );
+				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
     };
     
     
@@ -158,7 +158,7 @@ namespace DGtal
     template <typename TypeDGtalImage, typename TFunctor>
     static Image readDGtalImageFromITKtypes(
     const std::string & filename,
-    const TFunctor & aFunctor, bool shiftDomainUsingOrigin =true );
+    const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
   };
 }//namespace
 

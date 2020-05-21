@@ -34,6 +34,8 @@
 - *io*
   - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+  - Add the possibility to import images with a shifted domain in ITKReader.
+    (Bertrand Kerautret [#1492](https://github.com/DGtal-team/DGtal/pull/1492))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
