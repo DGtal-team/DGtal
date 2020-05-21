@@ -87,7 +87,7 @@ namespace DGtal
 
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
-
+    
     template <typename TDomain, typename TValue>
     void
     ImageContainerByITKImage<TDomain, TValue>::updateDomain(const Point & inputDomainShift)
