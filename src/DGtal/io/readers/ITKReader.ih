@@ -51,6 +51,14 @@
 namespace DGtal {
 
   template <typename I>
+  I ITKReader<I>::importITK(
+  const std::string & filename, bool shiftDomainUsingOrigin )
+  {
+    typename DGtal::ITKIOTrait<typename I::Value>::DefaultReadFunctor def;
+    return DGtal::ITKReader<I>::importITK(filename,def , shiftDomainUsingOrigin); 
+  }
+  
+  template <typename I>
   template <typename TFunctor>
   I ITKReader<I>::importITK(
   const std::string & filename,
