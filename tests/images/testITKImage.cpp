@@ -348,14 +348,15 @@ bool testITKImageWithShiftDomain()
   nbok += ( new_upperBound == upperBound + domainShift); nb++;
   trace.info() << "upperBound: " << new_upperBound << ". Expected: " << upperBound + domainShift << std::endl;
 
-  // Check that the value of index points is not affected by a change of myDomainShift.
-  val = myImage.operator()(lowerBound);
+  // Check that the shifted domain points to the correct indices of the image.
+  val = myImage.operator()(new_lowerBound);
+  // It should have the same value than lowerBound had before applying the domainShift
   nbok += (val == 0); nb++;
-  trace.info() << "Index: " << lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
-  val = myImage.operator()(upperBound);
+  trace.info() << "Index: " << new_lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
+  val = myImage.operator()(new_upperBound);
   nbok += (val == 124); nb++;
-  trace.info() << "Index: " << upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
-  val = myImage.operator()(c);
+  trace.info() << "Index: " << new_upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
+  val = myImage.operator()(myImage.getDomainPointFromIndex(c));
   nbok += (val == 31); nb++;
   trace.info() << "Index: " << c << ". Value: " << val << ". Expected: " << 31 << std::endl;
 

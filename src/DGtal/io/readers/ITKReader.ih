@@ -195,7 +195,7 @@ namespace DGtal {
       trace.error() << e;
       throw IOException();
     }
-    
+
     TypeDGtalImage image( itk_image );
     if (shiftDomainUsingOrigin)
     {
@@ -206,23 +206,10 @@ namespace DGtal {
         p[k] = static_cast<typename Domain::Integer>(c[k]);
       }
       image.updateDomain(p);
-      //updating only the domain is not sufficient to import correctly
-      //the itk image, in particular for the range iterator.
-      auto r = itk_image->GetBufferedRegion();
-      auto i = r.GetIndex();
-      for (Dimension k = 0; k < dimension; k++)
-      {
-        i[k] += static_cast<typename Domain::Integer>(c[k]);
-      }
-      r.SetIndex(i);
-      itk_image->SetBufferedRegion(r);
     }
-    
-    
     return image;
   }
 
-  
   template <typename I>
   template <typename Image, typename Domain, typename OrigValue,
 	    typename TFunctor, typename Value>
