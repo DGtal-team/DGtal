@@ -21,6 +21,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
  *
  * @date 2013/10/23
  *
@@ -45,6 +46,7 @@
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/PointVector.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
 
@@ -109,6 +111,8 @@ namespace DGtal
       typedef typename Domain::Integer Integer;
       typedef typename Domain::Size Size;
       typedef Point Vertex;
+      typedef PointVector<dimension, double> RealPoint;
+      typedef RealPoint PhysicalPoint;
 
       typedef typename itk::Image< TValue, dimension> ITKImage;
       typedef typename ITKImage::Pointer ITKImagePointer;
@@ -159,10 +163,14 @@ namespace DGtal
       /**
        *
        * update internal domain cache.
-       * should be called after modifying underlying ITK image.
+       * should be called after modifying underlying ITK image or to
+       * set myDomainShift.
+       *
+       * @param inputDomainShift applies a domainShift to the lowerBound and
+       * upperBound of myDomain. @sa myDomainShift
        *
        */
-      void updateDomain();
+      void updateDomain(const Point & inputDomainShift = Point());
 
       /**
        * @return the range providing begin and end
@@ -185,16 +193,16 @@ namespace DGtal
       /**
        * Get the value of an image at a given position.
        *
-       * @param aPoint  position in the image.
-       * @return the value at aPoint.
+       * @param indexPoint  position in the image.
+       * @return the value at indexPoint.
        */
-      Value operator()(const Point &aPoint) const;
+      Value operator()(const Point &indexPoint) const;
 
       /**
        * Get the value of an image at a given position.
        *
        * @param it  position in the image.
-       * @return the value at aPoint.
+       * @return the value of the point pointed by the iterator.
        */
       Value operator()(const ConstIterator &it) const;
 
@@ -202,20 +210,20 @@ namespace DGtal
        * Get the value of an image at a given position.
        *
        * @param it  position in the image.
-       * @return the value at aPoint.
+       * @return the value of the point pointed by the iterator.
        */
       Value operator()(const Iterator &it) const;
 
       /**
-       * Set a value on an Image at aPoint.
+       * Set a value on an Image at indexPoint.
        *
-       * @param aPoint location of the point to associate with aValue.
+       * @param indexPoint location of the point to associate with aValue.
        * @param aValue the value.
        */
-      void setValue(const Point &aPoint, const Value &aValue);
+      void setValue(const Point &indexPoint, const Value &aValue);
 
       /**
-       * Set a value on an Image at aPoint.
+       * Set a value on an Image at a given position
        *
        * @param it location of the point (Iterator) to associate with aValue.
        * @param V the value.
@@ -240,6 +248,12 @@ namespace DGtal
       ITKImagePointer getITKImagePointer() const
       {
           return myITKImagePointer;
+      }
+
+      inline
+      const Point & getDomainShift() const
+      {
+          return myDomainShift;
       }
 
       // ------------------------- stream ------------------------------
@@ -305,6 +319,60 @@ namespace DGtal
           return iter;
       }
 
+      // ----------------- DomainPoint to/from IndexPoint interface -------------
+
+      /**
+       * IndexPoint refers to a valid ITKImage::IndexPoint
+       * DomainPoint refers to a Point between lowerBound and upperBound of myDomain.
+       * They are different only when myDomainShift is different than Zero.
+       *
+       * @param indexPoint a point holding valid index coordinates of the ITK image.
+       * @return domainPoint a point between lowerBound and upperBound
+       */
+      inline Point getDomainPointFromIndex(const Point &indexPoint) const;
+
+      inline Point getIndexFromDomainPoint(const Point &domainPoint) const;
+
+      /**
+       * The same as @ref getDomainPointFromItkIndex and @ref getIndexFromDomainPoint
+       * but using ITK types.
+       *
+       * @param itkIndexPoint an IndexType of ITK.
+       * @return domainPoint a point between lowerBound and upperBound
+       */
+      inline Point getDomainPointFromItkIndex(const typename ITKImage::IndexType &itkIndexPoint) const;
+
+      inline typename ITKImage::IndexType getItkIndexFromDomainPoint(const Point &domainPoint) const;
+
+
+      // ------------------------- PhysicalPoint interface ----------------------
+
+      /**
+       * Get PhysicalPoints from index and viceversa.
+       *
+       * Remember that GetOrigin() in ITK is the physical location of
+       * the index {0,0...}. Not the location of the start index of the region.
+       *
+       * @param indexPoint a point holding valid index coordinates of the ITK image.
+       * @return physical point of the index.
+       */
+      inline PhysicalPoint getPhysicalPointFromIndex(const Point &indexPoint) const;
+
+      inline Point getIndexFromPhysicalPoint(const PhysicalPoint &physicalPoint) const;
+
+      /**
+       * Returns the lower and upper bounds as physical points.
+       * Note that the location of pixels in ITK are in the center of
+       * the square.
+       * But in DGtal a lowerBound is in the south-west
+       * corner of that square.
+       * And an upperBound is the north-east corner of the last pixel.
+       *
+       * @return physical point of the location of the start index of the region.
+       */
+      inline PhysicalPoint getLowerBoundAsPhysicalPoint() const;
+      inline PhysicalPoint getUpperBoundAsPhysicalPoint() const;
+
       // ------------------------- Private Datas --------------------------------
     private:
 
@@ -322,6 +390,24 @@ namespace DGtal
 
       ITKImagePointer myITKImagePointer;
       Domain myDomain; // cached from myITKImagePointer region. updated when calling update().
+
+      /**
+       * Apply a shift in the lower and upper bounds.
+       * Useful to represent multiple images, or images with physical information,
+       * i.e with non-default Origin (see ITK for Origin, Spacing and Direction metadata)
+       *
+       * Set it using the function updateDomain(inputDomainShift)
+       *
+       * Please note that this is a workaround, DGtal cannot fully work in the Physical Domain. The spacing in DGtal is fixed to 1.
+       * This allows to work to represent multiple images with different Origins,
+       * but they need to have the same Spacing and Direction for the visualization to be meaningful.
+       *
+       * Default to zero.
+       *
+       * When is not zero, use @ref getIndexFromDomainPoint and @ref getDomainPointFromIndex
+       * to switch between points in the domain and indices in the itk image.
+       */
+      Point myDomainShift = Point();
     }; // end of class ImageContainerByITKImage
 
   /**
