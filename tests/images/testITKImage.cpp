@@ -268,9 +268,10 @@ bool testITKImageWithMetadata()
   Image::PhysicalPoint expected_physical_point;
   Image::Point index_point;
 
+  // when shiftDomain is zero, index points (ITK) and domain points (DGtal) are equal
   index_point = myImage.getIndexFromDomainPoint(lowerBound);
   nbok += (index_point == lowerBound); nb++;
-  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  physical_point = myImage.getPhysicalPointFromDomainPoint(index_point);
   expected_physical_point = myImage.getLowerBoundAsPhysicalPoint();
   nbok += (physical_point[0] == 12.0); nb++;
   nbok += (physical_point == expected_physical_point); nb++;
@@ -278,13 +279,13 @@ bool testITKImageWithMetadata()
 
   index_point = myImage.getIndexFromDomainPoint(upperBound);
   nbok += (index_point == upperBound); nb++;
-  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  physical_point = myImage.getPhysicalPointFromDomainPoint(index_point);
   expected_physical_point = myImage.getUpperBoundAsPhysicalPoint();
   nbok += (physical_point[0] == 20.0); nb++;
   nbok += (physical_point == expected_physical_point); nb++;
   trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
 
-  auto index_back = myImage.getIndexFromPhysicalPoint(physical_point);
+  auto index_back = myImage.getDomainPointFromPhysicalPoint(physical_point);
   nbok += (index_back == upperBound); nb++;
   trace.info() << "PhysicalPoint: " << physical_point << ". Index (back): " << index_back << ". Expected: " << upperBound << std::endl;
 
@@ -348,42 +349,55 @@ bool testITKImageWithShiftDomain()
   nbok += ( new_upperBound == upperBound + domainShift); nb++;
   trace.info() << "upperBound: " << new_upperBound << ". Expected: " << upperBound + domainShift << std::endl;
 
-  // Check that the value of index points is not affected by a change of myDomainShift.
-  val = myImage.operator()(lowerBound);
+  // Check that the shifted domain points to the correct indices of the image.
+  val = myImage.operator()(new_lowerBound);
+  // It should have the same value than lowerBound had before applying the domainShift
   nbok += (val == 0); nb++;
-  trace.info() << "Index: " << lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
-  val = myImage.operator()(upperBound);
+  trace.info() << "Index: " << new_lowerBound << ". Value: " << val << ". Expected: " << 0 << std::endl;
+  val = myImage.operator()(new_upperBound);
   nbok += (val == 124); nb++;
-  trace.info() << "Index: " << upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
-  val = myImage.operator()(c);
+  trace.info() << "Index: " << new_upperBound << ". Value: " << val << ". Expected: " << 124 << std::endl;
+  val = myImage.operator()(myImage.getDomainPointFromIndex(c));
   nbok += (val == 31); nb++;
   trace.info() << "Index: " << c << ". Value: " << val << ". Expected: " << 31 << std::endl;
 
   Image::PhysicalPoint physical_point;
   Image::PhysicalPoint expected_physical_point;
   Image::Point index_point;
+  Image::Point domain_point;
 
   index_point = lowerBound;
-  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  domain_point = new_lowerBound;
+  physical_point = myImage.getPhysicalPointFromDomainPoint(domain_point);
   expected_physical_point = Image::PhysicalPoint(12.0, 12.0, 12.0);
   nbok += (physical_point == expected_physical_point); nb++;
-  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+  trace.info() << "Domain: " << domain_point <<
+    ". Index: " << index_point <<
+    ". PhysicalPoint: " << physical_point <<
+    ". Expected: " << expected_physical_point << std::endl;
 
   index_point = myImage.getIndexFromDomainPoint(new_lowerBound);
   nbok += ( index_point == lowerBound ); nb++;
   trace.info() << "index_point: " << index_point << ". Expected: " << lowerBound << std::endl;
-  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  physical_point = myImage.getPhysicalPointFromDomainPoint(new_lowerBound);
   expected_physical_point = myImage.getLowerBoundAsPhysicalPoint();
   nbok += (physical_point[0] == 12.0); nb++;
   nbok += (physical_point == expected_physical_point); nb++;
-  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+  trace.info() << "Domain: " << new_lowerBound <<
+    ". Index: " << index_point <<
+    ". PhysicalPoint: " << physical_point <<
+    ". Expected: " << expected_physical_point << std::endl;
 
   index_point = upperBound;
-  physical_point = myImage.getPhysicalPointFromIndex(index_point);
+  domain_point = new_upperBound;
+  physical_point = myImage.getPhysicalPointFromDomainPoint(domain_point);
   expected_physical_point = myImage.getUpperBoundAsPhysicalPoint();
   nbok += (physical_point[0] == 20.0); nb++;
   nbok += (physical_point == expected_physical_point); nb++;
-  trace.info() << "Index: " << index_point << ". PhysicalPoint: " << physical_point << ". Expected: " << expected_physical_point << std::endl;
+  trace.info() << "Domain: " << new_lowerBound <<
+    ". Index: " << index_point <<
+    ". PhysicalPoint: " << physical_point <<
+    ". Expected: " << expected_physical_point << std::endl;
 
   return nbok == 11 && nb == 11;
 }
