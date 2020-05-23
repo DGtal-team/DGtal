@@ -246,13 +246,11 @@ namespace DGtal
     template<typename TDomain, typename TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
-    ImageContainerByITKImage<TDomain, TValue>::getPhysicalPointFromIndex(const Point &indexPoint) const
+    ImageContainerByITKImage<TDomain, TValue>::getPhysicalPointFromDomainPoint(const Point &domainPoint) const
     {
-      // Transform input Point to itk Index
-      typename ITKImage::IndexType itk_index;
-      for (Dimension k = 0; k < dimension; k++)
-        itk_index[k] = indexPoint[k];
-
+      // Transform input Point to itk Index.
+      // The index would be different than the domain point if myDomainShift is not zero.
+      const auto itk_index = getItkIndexFromDomainPoint(domainPoint);
       // ITK performs the transform between index and physical spaces.
       const typename ITKImage::PointType itk_point =
         myITKImagePointer->template TransformIndexToPhysicalPoint<typename RealPoint::Component>(itk_index);
@@ -268,7 +266,7 @@ namespace DGtal
     template<typename TDomain, typename TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::Point
-    ImageContainerByITKImage<TDomain, TValue>::getIndexFromPhysicalPoint(const PhysicalPoint &physicalPoint) const
+    ImageContainerByITKImage<TDomain, TValue>::getDomainPointFromPhysicalPoint(const PhysicalPoint &physicalPoint) const
     {
       // Transform input dgtal point to itk point (real points)
       typename ITKImage::PointType itk_point;
@@ -279,19 +277,15 @@ namespace DGtal
       const typename ITKImage::IndexType itk_index =
         myITKImagePointer->TransformPhysicalPointToIndex(itk_point);
 
-      // Transform itk index to dgtal index
-      Point dgtal_index;
-      for (Dimension k = 0; k < dimension; k++)
-        dgtal_index[k] = itk_index[k];
-
-      return dgtal_index;
+      return getDomainPointFromItkIndex(itk_index);
     }
+
     template<typename TDomain, typename TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
     ImageContainerByITKImage<TDomain, TValue>::getLowerBoundAsPhysicalPoint() const
     {
-      return getPhysicalPointFromIndex(getIndexFromDomainPoint(myDomain.lowerBound()));
+      return getPhysicalPointFromDomainPoint(myDomain.lowerBound());
     }
 
     template<typename TDomain, typename TValue>
@@ -299,7 +293,7 @@ namespace DGtal
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
     ImageContainerByITKImage<TDomain, TValue>::getUpperBoundAsPhysicalPoint() const
     {
-      return getPhysicalPointFromIndex(getIndexFromDomainPoint(myDomain.upperBound()));
+      return getPhysicalPointFromDomainPoint(myDomain.upperBound());
     }
 
   ///////////////////////////////////////////////////////////////////////////////
