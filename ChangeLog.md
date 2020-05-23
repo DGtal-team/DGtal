@@ -94,6 +94,9 @@
 - *Geometry*
   - Bugfix in the `testVoronoiCovarianceMeasureOnSurface` (David
     Coeurjolly, [#1439](https://github.com/DGtal-team/DGtal/pull/1439))
+  - Defining StandardDSS4Computer & NaiveDSS8Computer as templated aliases of
+    ArithmeticalDSSComputer (fix #1483). Also fixing NaiveDSS8 adjacency.
+    (Roland Denis, [#1491](https://github.com/DGtal-team/DGtal/pull/1491))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -118,10 +121,15 @@
   - Fix the image origin that was not taken into account in class
     ImageContainerByITKImage. (Bertrand Kerautret
     [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+  - Add domainShift to ImageContainerByITKImage.
+    (Pablo Hernandez-Cerdan,
+    [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
     
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+  - Fixing cast from const to mutable iterator in GradientColorMap.
+    (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
 
 
 - *Shapes package*
