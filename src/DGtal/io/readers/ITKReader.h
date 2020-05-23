@@ -108,6 +108,21 @@ namespace DGtal
     const TFunctor & aFunctor = TFunctor(), bool shiftDomainUsingOrigin=true);
 
     /**
+     * Import an Image with a format supported by ITK.
+     *
+     * First an ImageContainerByITKImage is constructed by using the
+     * source type of the input ITK image, and in a second step the
+     * resulting image type is adapted to the TImage type with the use
+     * of a default ITKIOTrait::DefaultReadFunctor.  
+     *
+     * @param filename name of the input file.
+     * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
+     * @return read image
+     */
+    static Image importITK(const std::string & filename, bool shiftDomainUsingOrigin);
+    
+
+    /**
      * Get the type of the ITK image.
      *
      * @param filename  name of the input file.
@@ -151,6 +166,7 @@ namespace DGtal
      *
      * @param filename name of the input file
      * @param aFunctor functor used to cast image values
+     * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
      * @tparam TFunctor the type of functor used in the export.
      *
      * @return read image

@@ -134,8 +134,7 @@ TEST_CASE( "Testing ITKReader" )
     Image3Dd imShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii",
                                                         ITKIOTrait<Image3Dd::Value>::DefaultReadFunctor(), true );
 
-    Image3Dd imNonShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii",
-                                                        ITKIOTrait<Image3Dd::Value>::DefaultReadFunctor(), false );
+    Image3Dd imNonShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii", false );
 
     REQUIRE( ( imShifted( Z3i::Point( 144, 100, 21 ) ) == 113 )  );
     REQUIRE( ( imNonShifted( Z3i::Point( 94, 50, 11 ) ) == 113 )  );
