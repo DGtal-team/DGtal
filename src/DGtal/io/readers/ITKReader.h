@@ -96,6 +96,7 @@ namespace DGtal
      *
      * @param filename name of the input file.
      * @param aFunctor functor used to cast image values.
+     * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
      * @tparam TFunctor the type of functor used in the export.
      *
      * @return read image
@@ -104,7 +105,22 @@ namespace DGtal
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
     static Image importITK(
     const std::string & filename,
-    const TFunctor & aFunctor = TFunctor() );
+    const TFunctor & aFunctor = TFunctor(), bool shiftDomainUsingOrigin=true);
+
+    /**
+     * Import an Image with a format supported by ITK.
+     *
+     * First an ImageContainerByITKImage is constructed by using the
+     * source type of the input ITK image, and in a second step the
+     * resulting image type is adapted to the TImage type with the use
+     * of a default ITKIOTrait::DefaultReadFunctor.  
+     *
+     * @param filename name of the input file.
+     * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
+     * @return read image
+     */
+    static Image importITK(const std::string & filename, bool shiftDomainUsingOrigin);
+    
 
     /**
      * Get the type of the ITK image.
@@ -120,7 +136,7 @@ namespace DGtal
 
     template <typename Domain, typename PixelType>
     static inline ImageContainerByITKImage<Domain, PixelType>
-    readDGtalITKImage(const std::string & filename);
+    readDGtalITKImage(const std::string & filename, bool shiftDomainUsingOrigin=true);
 
     
     template <typename Image, typename Domain, typename OrigValue,
@@ -129,7 +145,7 @@ namespace DGtal
     {
       static inline Image
       readDGtalImageFromITKtypes( const std::string & filename,
-				  const TFunctor & aFunctor );
+				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
     };
 
     //specialization
@@ -140,7 +156,7 @@ namespace DGtal
     {
       static inline ImageContainerByITKImage<Domain, Value>
       readDGtalImageFromITKtypes( const std::string & filename,
-				  const TFunctor & aFunctor );
+				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
     };
     
     
@@ -150,6 +166,7 @@ namespace DGtal
      *
      * @param filename name of the input file
      * @param aFunctor functor used to cast image values
+     * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
      * @tparam TFunctor the type of functor used in the export.
      *
      * @return read image
@@ -157,7 +174,7 @@ namespace DGtal
     template <typename TypeDGtalImage, typename TFunctor>
     static Image readDGtalImageFromITKtypes(
     const std::string & filename,
-    const TFunctor & aFunctor );
+    const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
   };
 }//namespace
 
