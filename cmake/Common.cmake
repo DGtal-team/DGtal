@@ -78,6 +78,16 @@ OPTION(VERBOSE "Verbose messages." OFF)
 OPTION(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
 OPTION(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
+# Enable floating point exception when DGtal library is loaded. Only works for gcc.
+IF (UNIX AND NOT APPLE)
+  # Only used in Common.cpp
+  OPTION(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
+  mark_as_advanced(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
+  if(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
+    add_definitions(-DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
+  endif()
+ENDIF()
+
 SET(VERBOSE_DGTAL 0)
 SET(DEBUG_VERBOSE_DGTAL 0)
 SET(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
