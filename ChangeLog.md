@@ -24,6 +24,9 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+  - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
+    `feenableexcept` (only applies in Linux when in Debug mode).
+    (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature

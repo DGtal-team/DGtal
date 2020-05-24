@@ -47,11 +47,13 @@ namespace DGtal
 
 #ifndef NDEBUG
 #ifdef __linux__
+#ifdef DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS
   void beforeMain (void) __attribute__((constructor));
   void beforeMain (void)
   {
       feenableexcept ( FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW );
   }
+#endif
 #endif
 #endif
 
