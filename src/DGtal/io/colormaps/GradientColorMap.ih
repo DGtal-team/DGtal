@@ -97,6 +97,14 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
     myColors.push_back( Color::Red );
     myColors.push_back( Color( 132, 0, 0 ) );
     break;
+  case CMAP_VIRIDIS:
+    myColors.push_back( Color(63,17,81) );
+    myColors.push_back( Color(63,110,139) );
+    myColors.push_back( Color( 40, 175, 127 ));
+    myColors.push_back( Color( 184, 222, 41 ));
+    myColors.push_back( Color( 253, 232, 37 ));
+
+    break;
   case CMAP_CUSTOM:
     if ( firstColor != Color::None
    && lastColor != Color::None ) {
