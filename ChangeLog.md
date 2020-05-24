@@ -16,6 +16,8 @@
 - *Geometry Package*
   - New piecewise smooth digital surface regularization class (David Coeurjolly,
   [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
+  [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
 
 ## Changes
 
