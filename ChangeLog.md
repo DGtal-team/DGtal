@@ -37,7 +37,10 @@
   - New Viridis ColorGradientPreset and cleaning useless template specializations in
     the GenericWriter for color image. (Bertrand Kerautret
     [#1487](https://github.com/DGtal-team/DGtal/pull/1487))
-  
+  - Add the possibility to import images with a shifted domain in ITKReader.
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan
+    [#1492](https://github.com/DGtal-team/DGtal/pull/1492))
+
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
