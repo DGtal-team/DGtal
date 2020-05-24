@@ -34,7 +34,7 @@
 - *io*
   - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
-  - New Viridis ColorGradientPreset and cleaning useless template specializations in
+  - New Viridis ColorGradientPreset and clean of  useless template specializations in
     the GenericWriter for color image. (Bertrand Kerautret
     [#1487](https://github.com/DGtal-team/DGtal/pull/1487))
   - Add the possibility to import images with a shifted domain in ITKReader.
