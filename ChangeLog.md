@@ -26,6 +26,9 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+  - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
+    `feenableexcept` (only applies in Linux when in Debug mode).
+    (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
@@ -36,7 +39,10 @@
 - *io*
   - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
-
+  - Add the possibility to import images with a shifted domain in ITKReader.
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan
+    [#1492](https://github.com/DGtal-team/DGtal/pull/1492))
+    
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
@@ -119,6 +125,9 @@
   - Fix the image origin that was not taken into account in class
     ImageContainerByITKImage. (Bertrand Kerautret
     [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+  - Add domainShift to ImageContainerByITKImage.
+    (Pablo Hernandez-Cerdan,
+    [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
     
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
