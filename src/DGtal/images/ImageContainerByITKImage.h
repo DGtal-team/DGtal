@@ -193,10 +193,10 @@ namespace DGtal
       /**
        * Get the value of an image at a given position.
        *
-       * @param indexPoint  position in the image.
+       * @param domainPoint  position in the image.
        * @return the value at indexPoint.
        */
-      Value operator()(const Point &indexPoint) const;
+      Value operator()(const Point &domainPoint) const;
 
       /**
        * Get the value of an image at a given position.
@@ -215,12 +215,12 @@ namespace DGtal
       Value operator()(const Iterator &it) const;
 
       /**
-       * Set a value on an Image at indexPoint.
+       * Set a value on an Image at domainPoint.
        *
-       * @param indexPoint location of the point to associate with aValue.
+       * @param domainPoint location of the point to associate with aValue.
        * @param aValue the value.
        */
-      void setValue(const Point &indexPoint, const Value &aValue);
+      void setValue(const Point &domainPoint, const Value &aValue);
 
       /**
        * Set a value on an Image at a given position
@@ -348,17 +348,19 @@ namespace DGtal
       // ------------------------- PhysicalPoint interface ----------------------
 
       /**
-       * Get PhysicalPoints from index and viceversa.
+       * Get PhysicalPoints from a domain point in DGtal and viceversa.
        *
        * Remember that GetOrigin() in ITK is the physical location of
        * the index {0,0...}. Not the location of the start index of the region.
        *
-       * @param indexPoint a point holding valid index coordinates of the ITK image.
+       * @param domainPoint a point holding a point in the DGtal domain.
+       * It will be converted to a valid index of the ITK image, taking into
+       * account the value of myDomainShift.
        * @return physical point of the index.
        */
-      inline PhysicalPoint getPhysicalPointFromIndex(const Point &indexPoint) const;
+      inline PhysicalPoint getPhysicalPointFromDomainPoint(const Point &domainPoint) const;
 
-      inline Point getIndexFromPhysicalPoint(const PhysicalPoint &physicalPoint) const;
+      inline Point getDomainPointFromPhysicalPoint(const PhysicalPoint &physicalPoint) const;
 
       /**
        * Returns the lower and upper bounds as physical points.
