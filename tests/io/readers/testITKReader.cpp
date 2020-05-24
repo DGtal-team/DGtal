@@ -83,6 +83,7 @@ TEST_CASE( "Testing ITKReader" )
   // Default image selector = STLVector
   typedef ImageContainerBySTLVector<Z3i::Domain, unsigned char> Image3DUC;
   typedef ImageContainerBySTLVector<Z3i::Domain, uint16_t> Image3D16b;
+  typedef ImageContainerBySTLVector<Z3i::Domain, double> Image3Dd;
 
   SECTION(
   "Testing feature io/readers of ITKReader with  16 bits (uint16) images" )
@@ -126,7 +127,25 @@ TEST_CASE( "Testing ITKReader" )
     testSpatialInformation<int16_t>(testPath + "samples/lobsterCropedB16b.mhd" );
   }
 
+  SECTION(
+    "Checking import with/without shifted domain")
+    
+  {
+    Image3Dd imShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii",
+                                                        ITKIOTrait<Image3Dd::Value>::DefaultReadFunctor(), true );
 
+    Image3Dd imNonShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii", false );
+
+    REQUIRE( ( imShifted( Z3i::Point( 144, 100, 21 ) ) == 113 )  );
+    REQUIRE( ( imNonShifted( Z3i::Point( 94, 50, 11 ) ) == 113 )  );
+    Z3i::Point pTarget (95,76,7);
+    auto i = 101*pTarget[1]+pTarget[0]+pTarget[2]*101*101;
+    trace.info() << "value:"  << *(imNonShifted.range().begin()+i);
+    REQUIRE( ( *(imNonShifted.range().begin()+i) == *(imShifted.range().begin()+i ) ));
+    REQUIRE( ( *(imNonShifted.range().begin()+i) == 68  ));
+  }
+
+  
 }
 
 /** @ingroup Tests **/
