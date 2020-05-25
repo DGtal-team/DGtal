@@ -149,7 +149,6 @@ DGtal::NGon2D<T>::xp( const double t ) const
 }
 
 /**
- * @param t any angle between 0 and 2*Pi.
  *
  * @return the vector (x''(t),y''(t)).
  */

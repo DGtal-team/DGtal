@@ -16,6 +16,8 @@
 - *Geometry Package*
   - New piecewise smooth digital surface regularization class (David Coeurjolly,
   [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
+  [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
 
 ## Changes
 
@@ -24,10 +26,25 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+  - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
+    `feenableexcept` (only applies in Linux when in Debug mode).
+    (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
     directions and values). (David Coeurjolly, [#1460](https://github.com/DGtal-team/DGtal/pull/1460))
+  - Add principal directions of curvature functions for implicit polynomial 3D shapes.
+    (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
+
+- *io*
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+    (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+  - New Viridis ColorGradientPreset and clean of  useless template specializations in
+    the GenericWriter for color image. (Bertrand Kerautret
+    [#1487](https://github.com/DGtal-team/DGtal/pull/1487))
+  - Add the possibility to import images with a shifted domain in ITKReader.
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan
+    [#1492](https://github.com/DGtal-team/DGtal/pull/1492))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
@@ -38,6 +55,10 @@
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
   - Add shortcuts to Ambrosio-Tortorelli piecewise-smooth approximation
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1421))
+  - Add  output as OFF to module Shortcuts (Bertrand Kerautret,
+    [#1476](https://github.com/DGtal-team/DGtal/pull/1476))
+  - Add shortcuts to principal curvatures and directions of curvature for implicit polynomial
+    3D shapes. (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *Tests*
   - Upgrade of the unit-test framework (Catch) to the latest release [Catch2](https://github.com/catchorg/Catch2).
@@ -50,6 +71,8 @@
     [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
   - Makes testVoxelComplex faster, reducing the size of the test fixture
     (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
+  - Fix bug in VoxelComplex masks when cell was at the boundary of kspace
+    (Pablo Hernandez-Cerdan, [#1488](https://github.com/DGtal-team/DGtal/pull/1488))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
@@ -80,6 +103,9 @@
 - *Geometry*
   - Bugfix in the `testVoronoiCovarianceMeasureOnSurface` (David
     Coeurjolly, [#1439](https://github.com/DGtal-team/DGtal/pull/1439))
+  - Defining StandardDSS4Computer & NaiveDSS8Computer as templated aliases of
+    ArithmeticalDSSComputer (fix #1483). Also fixing NaiveDSS8 adjacency.
+    (Roland Denis, [#1491](https://github.com/DGtal-team/DGtal/pull/1491))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -100,9 +126,20 @@
     CCW ordering by default (in 3D).
     (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
 
+- *images*
+  - Fix the image origin that was not taken into account in class
+    ImageContainerByITKImage. (Bertrand Kerautret
+    [#1484](https://github.com/DGtal-team/DGtal/pull/1484))
+  - Add domainShift to ImageContainerByITKImage.
+    (Pablo Hernandez-Cerdan,
+    [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
+    
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
+  - Fixing cast from const to mutable iterator in GradientColorMap.
+    (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
+
 
 - *Shapes package*
   - Fix bug in Astroid parameter() method : orientation correction
@@ -110,10 +147,12 @@
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
 
 - *DEC*
-  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441))
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
   related to bad link in DEC/moduleAT documentation and missing
   associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
-  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442))
+  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
+  - Adding missing LGPL headers in the DEC examples (David Coeurjolly
+  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
 - *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
@@ -131,11 +170,19 @@
     (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
+
+  - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
+    that is a Visual Studio 2019 build error related to befriend
+    template specializations
+   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
   - Removing the homemade CPP11 checks, using cmake macro instead
   (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
-
+  - Fix apple clang  compilation issue with a workaround to the
+    ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
+    using boost::first_max_element instead std::max_element. 
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
 
 # DGtal 1.0
 

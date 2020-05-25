@@ -187,20 +187,48 @@ namespace DGtal
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
-    friend Self& DGtal::operator|=<>( Self&, const Self& );
-    friend Self& DGtal::operator&=<>( Self&, const Self& );
-    friend Self& DGtal::operator^=<>( Self&, const Self& );
-    friend Self& DGtal::operator-=<>( Self&, const Self& );
-    friend Self  DGtal::operator| <>( const Self&, const Self& );
-    friend Self  DGtal::operator& <>( const Self&, const Self& );
-    friend Self  DGtal::operator^ <>( const Self&, const Self& );
-    friend Self  DGtal::operator- <>( const Self&, const Self& );
-    friend Self  DGtal::operator~ <>( const Self& );
-    friend Self  DGtal::operator* <>( const Self& );
-    friend bool  DGtal::operator==<>( const Self&, const Self& );
-    friend bool  DGtal::operator!=<>( const Self&, const Self& );
-    friend bool  DGtal::operator<=<>( const Self&, const Self& );
-    friend bool  DGtal::operator>=<>( const Self&, const Self& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator|=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator&=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator^=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>&
+    DGtal::operator-=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator| ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator& ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator^ ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator- ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator~ ( const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend CubicalComplex<K,C>
+    DGtal::operator* ( const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator==( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator!=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator<=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
+    template < typename K, typename C > 
+    friend bool
+    DGtal::operator>=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
 
     typedef TKSpace                             KSpace;        ///< Type of the cellular grid space.
     typedef TCellContainer                      CellContainer; ///< Type for storing cells, an associative container Cell -> Data
@@ -214,6 +242,7 @@ namespace DGtal
     static const Dimension dimension = KSpace::dimension;
     typedef typename KSpace::Integer     Integer;     ///< Type for integers in the space.
     typedef typename KSpace::Cell        Cell;        ///< Type for a cell in the space.
+    typedef typename Cell::PreCell       PreCell;     ///< Type for a precell in the space.
     typedef typename KSpace::Cells       Cells;       ///< Type for a sequence of cells in the space.
     typedef typename KSpace::Space       Space;       ///< Type of the digital space
     typedef typename KSpace::Size        Size;        ///< Type for a number of elements
@@ -520,7 +549,6 @@ namespace DGtal
     /**
     * Copy constructor.
     * @param other the object to clone.
-    * Forbidden by default.
     */
     CubicalComplex ( const CubicalComplex & other );
 
@@ -536,7 +564,6 @@ namespace DGtal
     * Assignment.
     * @param other the object to copy.
     * @return a reference on 'this'.
-    * Forbidden by default.
     */
     CubicalComplex & operator= ( const CubicalComplex & other );
 
@@ -816,6 +843,7 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( const Cell& aCell ) const;
+    bool belongs( const PreCell& aCell ) const;
 
     /**
     * @param d the dimension of cell \a aCell.
@@ -823,6 +851,7 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( Dimension d, const Cell& aCell ) const;
+    bool belongs( Dimension d, const PreCell& aCell ) const;
 
     /**
     * Erases cell \a aCell from the complex.

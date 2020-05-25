@@ -88,7 +88,7 @@ namespace DGtal {
   *  | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
   *  |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
   *  | Initialization | x.init( \e h, \e itb, \e ite )|   | void                         | \e h > 0     | Grid step and range initialization in [\e itb,\e ite) |   | model dependent |
-  *  | Evaluation     | x.eval( \e it )               |   | Quantity                     |              | Estimation of the quantity at \e \e it, which must belong to [\e itb,\e ite) |   | model dependent |
+  *  | Evaluation     | x.eval( \e it )               |   | Quantity                     |              | Estimation of the quantity at \e it, which must belong to [\e itb,\e ite) |   | model dependent |
   *  | Evaluation     | \e ito = x.eval( \e itb2, \e ite2, \e ito ) |   | a model of output iterator |  | Estimation for each element of [\e itb2, \e ite2), which must be a subrange of or the whole range [\e itb,\e ite) |   | model dependent |
   *  | gridstep  accessor | x.h()                     |   | double                       |              | Accessor to the gridstep  value           |   | O(1)            |
   *
