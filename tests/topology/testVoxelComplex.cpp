@@ -47,6 +47,9 @@
 #include "DGtal/topology/NeighborhoodConfigurations.h"
 #include "DGtal/topology/tables/NeighborhoodTables.h"
 // #include <DGtal/io/viewers/Viewer3D.h>
+#ifdef WITH_DGtalLUT
+#include "DGtal/topology/tables/NeighborhoodLUT.h"
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -313,9 +316,15 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Test Simplicity", "[simplicity]") {
 TEST_CASE_METHOD(Fixture_complex_diamond, "Test table wrappers",
                  "[table][simple]") {
     auto &vc = complex_fixture;
-    trace.beginBlock("loadTable");
+    trace.beginBlock("set table with loadTable");
     vc.setSimplicityTable(functions::loadTable(simplicity::tableSimple26_6));
     trace.endBlock();
+#ifdef WITH_DGtalLUT
+    // Duplicate the setSimplicityTable just to measure the time difference with LUT
+    trace.beginBlock("set table with LUT");
+    vc.setSimplicityTable(simplicity::LUTSimple26_6);
+    trace.endBlock();
+#endif
     auto dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
     for (std::size_t n = 0; n < 10; ++n)

@@ -44,3 +44,8 @@ install(TARGETS DGtal
 IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
   SET_TARGET_PROPERTIES(DGtal PROPERTIES COMPILE_FLAGS "-fPIC")
 ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+
+# -----------------------------------------------------------------------------
+# Optionally generate DGtalLUT Target with Look-Up-Tables pre-loaded.
+# ----------------------------------------------------------------------------
+INCLUDE(DGtalLUT)

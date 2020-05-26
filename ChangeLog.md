@@ -73,6 +73,8 @@
     (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
   - Fix bug in VoxelComplex masks when cell was at the boundary of kspace
     (Pablo Hernandez-Cerdan, [#1488](https://github.com/DGtal-team/DGtal/pull/1488))
+  - Add WITH_DGtalLUT option providing DGtalLUT library with pre-loaded LookUpTables
+    (Pablo Hernandez-Cerdan, [#1496](https://github.com/DGtal-team/DGtal/pull/1496))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes

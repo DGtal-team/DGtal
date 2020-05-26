@@ -24,6 +24,12 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
+# Test DGtalLUT in VoxelComplex
+if(WITH_DGtalLUT)
+  target_link_libraries (testVoxelComplex DGtalLUT)
+  target_compile_definitions(testVoxelComplex PRIVATE WITH_DGtalLUT)
+endif()
+
 SET(DGTAL_BENCH_SRC
    testObject-benchmark
    testImplicitDigitalSurface-benchmark

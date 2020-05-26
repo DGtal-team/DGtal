@@ -1,6 +1,10 @@
 MESSAGE(STATUS "Generating DGtalConfig files")
 
-export(TARGETS  DGtal FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
+set(_all_targets DGtal)
+if(WITH_DGtalLUT)
+  list(APPEND _all_targets DGtalLUT)
+endif()
+export(TARGETS ${_all_targets} FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)

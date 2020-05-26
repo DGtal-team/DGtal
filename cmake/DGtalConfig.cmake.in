@@ -171,3 +171,6 @@ ENDIF(@FFTW3_FOUND_DGTAL@)
 
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
 set(DGTAL_LIBRARIES DGtal)
+IF(@WITH_DGtalLUT@) # WITH_DGtalLUT
+  list(APPEND DGTAL_LIBRARIES DGtalLUT)
+ENDIF(@WITH_DGtalLUT@)
