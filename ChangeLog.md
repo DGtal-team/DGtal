@@ -95,7 +95,9 @@
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
   - Fixing Travis configuration due to syntax changes in v2
     (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
-
+  - Compression of png files used in for the documentation
+    (preparing 1.1 release), (David Coeurjolly, [#1494](https://github.com/DGtal-team/DGtal/pull/1494))
+    
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
     [#1412](https://github.com/DGtal-team/DGtal/pull/1412))
