@@ -107,9 +107,6 @@ int main( int argc, char** argv )
   aBoard << c;
   // Compute subconvex rational segments.
   auto    c_cover = dconv.makeCellCover( T.begin(), T.end(), 1, 1 );
-  trace.beginBlock( "Prepare subset operations" );
-  c_cover.prepareSubsetOperations();
-  trace.endBlock();
   trace.beginBlock( "Compute fully subconvex rational sets" );
   Point denominator( 2, 2 );
   unsigned int last_j = 0;

@@ -81,9 +81,6 @@ int main( int argc, char** argv )
   aBoard.setUnit(Board2D::UCentimeter);
   DigitalConvexity<KSpace> dconv( lowerBound, upperBound );
   auto c_cover = dconv.makeCellCover( T.begin(), T.end(), 1, 1 );
-  trace.beginBlock( "Prepare subset operations" );
-  c_cover.prepareSubsetOperations();
-  trace.endBlock();
   const float sx = -0.5;
   const float sy = -0.5;
   trace.beginBlock( "Compute fully subconvex sets" );

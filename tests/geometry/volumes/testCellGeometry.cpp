@@ -61,13 +61,12 @@ SCENARIO( "CellGeometry< Z2 > unit tests", "[cell_geometry][2d]" )
     CGeometry geometry( K, 0, 2, false );
     geometry.addCellsTouchingPoints( V.begin(), V.end() );
     THEN( "Its cell geometry contains more 1-cells and 2-cells than points" ) {
-      CAPTURE( geometry.cubicalComplex() );
-      REQUIRE( V.size() == geometry.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( V.size() <  geometry.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( V.size() <  geometry.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( V.size() == geometry.computeNbCells( 0 ) );
+      REQUIRE( V.size() <  geometry.computeNbCells( 1 ) );
+      REQUIRE( V.size() <  geometry.computeNbCells( 2 ) );
     }
     THEN( "Its cells form an open complex with euler characteristic 3" ) {
-      REQUIRE( geometry.cubicalComplex().euler() == 3 );
+      REQUIRE( geometry.computeEuler() == 3 );
     }
   }
 }
@@ -91,14 +90,13 @@ SCENARIO( "CellGeometry< Z3 > unit tests", "[cell_geometry][3d]" )
     CGeometry geometry( K, 0, 3, false );
     geometry.addCellsTouchingPoints( D.begin(), D.end() );
     THEN( "Its cell geometry contains more 1-cells and 2-cells than points" ) {
-      CAPTURE( geometry.cubicalComplex() );
-      REQUIRE( D.size() == geometry.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( D.size() <  geometry.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( D.size() <  geometry.cubicalComplex().nbCells( 2 ) );
-      REQUIRE( D.size() <  geometry.cubicalComplex().nbCells( 3 ) );
+      REQUIRE( D.size() == geometry.computeNbCells( 0 ) );
+      REQUIRE( D.size() <  geometry.computeNbCells( 1 ) );
+      REQUIRE( D.size() <  geometry.computeNbCells( 2 ) );
+      REQUIRE( D.size() <  geometry.computeNbCells( 3 ) );
     }
     THEN( "Its cells form an open complex with euler characteristic -1" ) {
-      REQUIRE( geometry.cubicalComplex().euler() == -1 );
+      REQUIRE( geometry.computeEuler() == -1 );
     }
   }
 
@@ -106,10 +104,9 @@ SCENARIO( "CellGeometry< Z3 > unit tests", "[cell_geometry][3d]" )
     CGeometry geometry( K, 0, 2, false );
     geometry.addCellsTouchingPoints( D.begin(), D.end() );
     THEN( "Its cell geometry contains more 1-cells and 2-cells than points" ) {
-      CAPTURE( geometry.cubicalComplex() );
-      REQUIRE( D.size() == geometry.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( D.size() <  geometry.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( D.size() <  geometry.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( D.size() == geometry.computeNbCells( 0 ) );
+      REQUIRE( D.size() <  geometry.computeNbCells( 1 ) );
+      REQUIRE( D.size() <  geometry.computeNbCells( 2 ) );
     }
   }
 }
@@ -137,23 +134,23 @@ SCENARIO( "CellGeometry< Z2 > intersections", "[cell_geometry][2d]" )
     touched_points_cover.addCellsTouchingPolytopePoints( P );
     // trace.info() << "Polytope P=" << P << std::endl;
     THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
-      REQUIRE( intersected_cover.cubicalComplex().euler() == 1 );
+      REQUIRE( intersected_cover.computeEuler() == 1 );
     }
     THEN( "Its convex hull intersects more cells than its vertices touch." ) {
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 0 )
-	       < intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 1 )
-	       < intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 2 )
-	       < intersected_cover.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( touched_cover.computeNbCells( 0 )
+	       < intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_cover.computeNbCells( 1 )
+	       < intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_cover.computeNbCells( 2 )
+	       < intersected_cover.computeNbCells( 2 ) );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
-	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
-	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
-	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 0 )
+	       <= intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 1 )
+	       <= intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 2 )
+	       <= intersected_cover.computeNbCells( 2 ) );
     }
   }
 }
@@ -180,27 +177,27 @@ SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
     CGeometry touched_points_cover( K, 0, 3, false );
     touched_points_cover.addCellsTouchingPolytopePoints( P );
     THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
-      REQUIRE( intersected_cover.cubicalComplex().euler() == -1 );
+      REQUIRE( intersected_cover.computeEuler() == -1 );
     }
     THEN( "Its convex hull intersects more cells than its vertices touch." ) {
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 0 )
-	       < intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 1 )
-	       < intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 2 )
-	       < intersected_cover.cubicalComplex().nbCells( 2 ) );
-      REQUIRE( touched_cover.cubicalComplex().nbCells( 3 )
-	       < intersected_cover.cubicalComplex().nbCells( 3 ) );
+      REQUIRE( touched_cover.computeNbCells( 0 )
+	       < intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_cover.computeNbCells( 1 )
+	       < intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_cover.computeNbCells( 2 )
+	       < intersected_cover.computeNbCells( 2 ) );
+      REQUIRE( touched_cover.computeNbCells( 3 )
+	       < intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
-	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
-	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
-	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 3 )
-	       <= intersected_cover.cubicalComplex().nbCells( 3 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 0 )
+	       <= intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 1 )
+	       <= intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 2 )
+	       <= intersected_cover.computeNbCells( 2 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 3 )
+	       <= intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "The cells touched by its inside points is a subset of the cells its convex hull intersects." ) {
       REQUIRE( touched_points_cover.subset( intersected_cover, 0 ) );
@@ -233,15 +230,15 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
     touched_points_cover.addCellsTouchingPolytopePoints( P );
     // trace.info() << "Polytope P=" << P << std::endl;
     THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
-      REQUIRE( intersected_cover.cubicalComplex().euler() == 1 );
+      REQUIRE( intersected_cover.computeEuler() == 1 );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
-	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
-	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
-	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 0 )
+	       <= intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 1 )
+	       <= intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 2 )
+	       <= intersected_cover.computeNbCells( 2 ) );
     }
   }
   GIVEN( "A thin rational simplex P={ Point(6/4,6/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
@@ -255,15 +252,15 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
     touched_points_cover.addCellsTouchingPolytopePoints( P );
     // trace.info() << "Polytope P=" << P << std::endl;
     THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
-      REQUIRE( intersected_cover.cubicalComplex().euler() == 1 );
+      REQUIRE( intersected_cover.computeEuler() == 1 );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
-	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
-	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
-	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 0 )
+	       <= intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 1 )
+	       <= intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 2 )
+	       <= intersected_cover.computeNbCells( 2 ) );
     }
   }
 } // SCENARIO( "CellGeometry< Z2 > rational intersections","[cell_geometry][2d][rational]" )
@@ -290,17 +287,17 @@ SCENARIO( "CellGeometry< Z3 > rational intersections",
     CGeometry touched_points_cover( K, 0, 3, false );
     touched_points_cover.addCellsTouchingPolytopePoints( P );
     THEN( "The cells intersected by its convex hull form an open and simply connected complex." ) {
-      REQUIRE( intersected_cover.cubicalComplex().euler() == -1 );
+      REQUIRE( intersected_cover.computeEuler() == -1 );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 0 )
-	       <= intersected_cover.cubicalComplex().nbCells( 0 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 1 )
-	       <= intersected_cover.cubicalComplex().nbCells( 1 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 2 )
-	       <= intersected_cover.cubicalComplex().nbCells( 2 ) );
-      REQUIRE( touched_points_cover.cubicalComplex().nbCells( 3 )
-	       <= intersected_cover.cubicalComplex().nbCells( 3 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 0 )
+	       <= intersected_cover.computeNbCells( 0 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 1 )
+	       <= intersected_cover.computeNbCells( 1 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 2 )
+	       <= intersected_cover.computeNbCells( 2 ) );
+      REQUIRE( touched_points_cover.computeNbCells( 3 )
+	       <= intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "The cells touched by its inside points is a subset of the cells its convex hull intersects." ) {
       REQUIRE( touched_points_cover.subset( intersected_cover, 0 ) );

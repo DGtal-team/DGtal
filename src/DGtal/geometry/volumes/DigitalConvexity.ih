@@ -295,7 +295,7 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
   auto S = insidePoints( P );
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
   auto intersected_cells = makeCellCover( P, k, k );
-  return intersected_cells.nbCells( k ) == touched_cells.nbCells( k )
+  return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }
 
@@ -306,15 +306,25 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const LatticePolytope& P ) const
 {
   auto S = insidePoints( P );
-  auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
+      auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
       auto intersected_cells = makeCellCover( P, k, k );
-      if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
-	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+      if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
+	   || ( ! intersected_cells.subset( touched_cells ) ) )
 	return false;
     }
   return true;
+  // auto S = insidePoints( P );
+  // auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
+  // for ( Dimension k = 1; k < KSpace::dimension; ++ k )
+  //   {
+  //     auto intersected_cells = makeCellCover( P, k, k );
+  //     if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
+  // 	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+  // 	return false;
+  //   }
+  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -332,14 +342,16 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 {
-  bool C_prepared = C.isPreparedForSubsetOperations();
-  for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
-    {
-      auto intersected_cells = makeCellCover( P, k, k );
-      if ( C_prepared ) intersected_cells.prepareSubsetOperations();
-      if ( ! intersected_cells.subset( C ) ) return false;
-    }
-  return true;
+  auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
+  return intersected_cells.subset( C );
+  // bool C_prepared = C.isPreparedForSubsetOperations();
+  // for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
+  //   {
+  //     auto intersected_cells = makeCellCover( P, k, k );
+  //     if ( C_prepared ) intersected_cells.prepareSubsetOperations();
+  //     if ( ! intersected_cells.subset( C ) ) return false;
+  //   }
+  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -352,7 +364,7 @@ isKConvex( const RationalPolytope& P, const Dimension k ) const
   auto S = insidePoints( P );
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
   auto intersected_cells = makeCellCover( P, k, k );
-  return intersected_cells.nbCells( k ) == touched_cells.nbCells( k )
+  return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }
 
@@ -363,15 +375,25 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const RationalPolytope& P ) const
 {
   auto S = insidePoints( P );
-  auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
+      auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
       auto intersected_cells = makeCellCover( P, k, k );
-      if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
-	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+      if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
+	   || ( ! intersected_cells.subset( touched_cells ) ) )
 	return false;
     }
   return true;
+  // auto S = insidePoints( P );
+  // auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
+  // for ( Dimension k = 1; k < KSpace::dimension; ++ k )
+  //   {
+  //     auto intersected_cells = makeCellCover( P, k, k );
+  //     if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
+  // 	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
+  // 	return false;
+  //   }
+  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -390,14 +412,16 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 {
-  bool C_prepared = C.isPreparedForSubsetOperations();
-  for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
-    {
-      auto intersected_cells = makeCellCover( P, k, k );
-      if ( C_prepared ) intersected_cells.prepareSubsetOperations();
-      if ( ! intersected_cells.subset( C ) ) return false;
-    }
-  return true;
+  auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
+  return intersected_cells.subset( C );
+  // bool C_prepared = C.isPreparedForSubsetOperations();
+  // for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
+  //   {
+  //     auto intersected_cells = makeCellCover( P, k, k );
+  //     if ( C_prepared ) intersected_cells.prepareSubsetOperations();
+  //     if ( ! intersected_cells.subset( C ) ) return false;
+  //   }
+  // return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
