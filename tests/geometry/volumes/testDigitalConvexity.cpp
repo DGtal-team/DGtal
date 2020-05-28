@@ -68,9 +68,9 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
       REQUIRE( dconv.isSimplexFullDimensional( V.begin(), V.end() ) );
     }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 1 ) == 12 );
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 2 ) == 12 );
+      REQUIRE( vertex_cover.computeNbCells( 0 ) == 3 );
+      REQUIRE( vertex_cover.computeNbCells( 1 ) == 12 );
+      REQUIRE( vertex_cover.computeNbCells( 2 ) == 12 );
     }
     THEN( "Its vertex cover is a subset of its point cover" ) {
       REQUIRE( vertex_cover.subset( point_cover ) );
@@ -93,9 +93,9 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
       REQUIRE( dconv.isSimplexFullDimensional( V.begin(), V.end() ) );
     }
     THEN( "Its vertex cover contains 3 0-cells, 12 1-cells, 12 2-cells" ) {
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 0 ) == 3 );
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 1 ) == 12 );
-      REQUIRE( vertex_cover.cubicalComplex().nbCells( 2 ) == 12 );
+      REQUIRE( vertex_cover.computeNbCells( 0 ) == 3 );
+      REQUIRE( vertex_cover.computeNbCells( 1 ) == 12 );
+      REQUIRE( vertex_cover.computeNbCells( 2 ) == 12 );
     }
     THEN( "Its vertex cover is a subset of its point cover" ) {
       REQUIRE( vertex_cover.subset( point_cover ) );
