@@ -780,6 +780,114 @@ namespace DGtal
 	}
       else return std::make_pair( first, first );
     }
+
+    // ---------------------- set services -------------------------
+  public:
+
+    /// @param other any unordered set with same sort of elements
+    /// @return 'true' if and only if this set includes \a other, and
+    /// 'false' otherwise.
+    ///
+    /// @note Much faster that using \ref count or \ref find on each
+    /// element, since it proceeds block by block.
+    bool includes( const Self& other ) const
+    {
+      return includes_v1( other );
+      // bool v1 = includes_v1( other );
+      // bool v2 = includes_v2( other );
+      // if ( v1 != v2 )
+      // 	{
+      // 	  trace.error() << "[UnorderedSetByBlock::includes] both version differs "
+      // 			<< " v_itmap=" << v1 << " v_it=" << v2 << std::endl;
+      // 	  trace_includes_v1( other );
+      // 	  trace_includes_v2( other );
+      // 	  trace.error() << "------- end trace ----- " << std::endl;
+      // 	}
+      // return v1;
+    }
+    bool includes_v1( const Self& other ) const
+    {
+      auto       itMap_other    = other.my_elements.cbegin();
+      const auto itEndMap_other = other.my_elements.cend();
+      const auto itEndMap_this  = my_elements.cend();
+      for ( ; itMap_other != itEndMap_other; ++itMap_other )
+      	{
+	  // trace.info() << " " << itMap_other->first;
+      	  const auto itMap_this = my_elements.find( itMap_other->first );
+      	  if ( itMap_this == itEndMap_this ) return false;
+      	  const Word w_this  = itMap_this->second;
+      	  const Word w_other = itMap_other->second;
+      	  if ( ( w_this & w_other ) != w_other ) return false;
+      	}
+      return true;
+    }
+    bool trace_includes_v1( const Self& other ) const
+    {
+      trace.info() << "[trace_includes_v1] #this=" << size()
+		   << " #other=" << other.size() << std::endl;
+      auto       itMap_other    = other.my_elements.cbegin();
+      const auto itEndMap_other = other.my_elements.cend();
+      const auto itEndMap_this  = my_elements.cend();
+      for ( ; itMap_other != itEndMap_other; ++itMap_other )
+      	{
+	  trace.info() << "other: cell=" << itMap_other->first
+		       << " value=" << std::hex << itMap_other->second << std::endl;
+      	  const auto itMap_this = my_elements.find( itMap_other->first );
+	  if ( itMap_this != itEndMap_this ) 
+	    trace.info() << "this : cell=" << itMap_this->first
+			 << " value=" << std::hex << itMap_this->second << std::endl;
+	  else
+	    trace.info() << "this : end cell" << std::endl;
+      	  if ( itMap_this == itEndMap_this ) return false;
+      	  const Word w_this  = itMap_this->second;
+      	  const Word w_other = itMap_other->second;
+      	  if ( ( w_this & w_other ) != w_other ) return false;
+      	}
+      return true;
+    }
+
+    bool includes_v2( const Self& other ) const
+    {
+      auto it_other  = other.cbegin();
+      auto itEnd_other = other.cend(); 
+      while ( it_other != itEnd_other )
+      	{
+      	  const auto it_this = find( *it_other );
+      	  if ( it_this == cend() ) return false;
+      	  auto   itMap_other = it_other.it;
+      	  const Word w_this  = it_this.it->second;
+      	  const Word w_other = itMap_other->second;
+      	  if ( ( w_this & w_other ) != w_other ) return false;
+      	  it_other = const_iterator( other, ++itMap_other );
+      	}
+      return true;
+    }
+    bool trace_includes_v2( const Self& other ) const
+    {
+      trace.info() << "[trace_includes_v2] #this=" << size()
+		   << " #other=" << other.size() << std::endl;
+      auto it_other  = other.cbegin();
+      auto itEnd_other = other.cend(); 
+      while ( it_other != itEnd_other )
+      	{
+	  trace.info() << "other: cell=" << it_other.it->first
+		       << " value=" << std::hex << it_other.it->second << std::endl;
+      	  const auto it_this = find( *it_other );
+      	  if ( it_this != cend() )
+	    trace.info() << "this : cell=" << it_this.it->first
+			 << " value=" << std::hex << it_this.it->second << std::endl;
+	  else
+	    trace.info() << "this : end cell" << std::endl;
+      	  if ( it_this == cend() ) return false;
+      	  auto   itMap_other = it_other.it;
+      	  const Word w_this  = it_this.it->second;
+      	  const Word w_other = itMap_other->second;
+      	  if ( ( w_this & w_other ) != w_other ) return false;
+      	  it_other = const_iterator( other, ++itMap_other );
+      	}
+      return true;
+    }
+
     
     // ---------------------- hash policy services -----------------------------
   public:

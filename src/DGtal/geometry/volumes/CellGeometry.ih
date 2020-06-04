@@ -263,10 +263,11 @@ bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other ) const
 {
-  for ( auto&& c : myKPoints )
-    if ( other.myKPoints.count( c ) == 0 )
-      return false;
-  return true;
+  return other.myKPoints.includes( myKPoints );
+  // for ( auto&& c : myKPoints )
+  //   if ( other.myKPoints.count( c ) == 0 )
+  //     return false;
+  // return true;
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -274,10 +275,16 @@ bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other, const Dimension k ) const
 {
+  UnorderedSetByBlock< Point > k_dim_points;
   for ( auto&& c : myKPoints )
-    if ( dim( c ) == k && other.myKPoints.count( c ) == 0 )
-      return false;
-  return true;
+    if ( dim( c ) == k )
+      k_dim_points.emplace( c );
+  return other.myKPoints.includes( k_dim_points );
+  // for ( auto&& c : myKPoints )
+  //   if ( dim( c ) == k && other.myKPoints.count( c ) == 0 )
+  //     return false;
+  // return true;
+
   // if ( myMaxCellDim < k ) return true;
   // if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
   // if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
