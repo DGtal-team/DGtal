@@ -38,6 +38,74 @@ namespace DGtal
 {
 
   /// Splits an integral-array element into an integral-array element
+  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// of dimension 3:
+  /// \code
+  /// Splitter< Point > split;
+  /// auto v = split( Point( 117, 43, 52 ) );
+  /// v.first  == 117 & 0x1f
+  /// v.second == Point( 117 & 0xffff...ffe0, 43, 52 );
+  /// \endcode
+  ///
+  /// @tparam TElement the type of array-like element.
+  ///
+  /// @note In subclass, we use mask operations instead of mult/div 32. The result
+  /// 4 x times faster !
+  ///
+  /// @note The generic class is not implemented since it is based on bit operations.
+  ///
+  /// @see UnorderedSetByBlock
+  template < typename TElement >
+  struct Splitter {
+    typedef Splitter< TElement > Self;
+    typedef TElement             Element;
+    typedef uint32_t             Word;
+
+    /// Splits an element \a e into a pair grouping its block
+    /// coordinates and its bit within this block.
+    ///
+    /// @param e any lattice point
+    ///
+    /// @return a pair grouping its block coordinates and its bit
+    /// within this block.
+    static
+    std::pair< Element, DGtal::Dimension >
+    split( const Element& e )
+    {
+      STATIC_ASSERT( "[Splitter<TElement>::split] Generic version not implemented." );
+      return std::make_pair( e, 0 );
+    }
+
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param e the block coordinate of the element.
+    /// @param x the bit coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
+    static
+    Element
+    join( const Element& e, DGtal::Dimension x )
+    {
+      STATIC_ASSERT( "[Splitter<TElement>::join] Generic version not implemented." );
+      (void)x; // Avoids unused parameter warning
+      return e;
+    }
+
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param p a pair grouping the block coordinate and the bit
+    /// coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
+    static
+    Element
+    join( const std::pair< Element, DGtal::Dimension >& p )
+    {
+      return join( p.first, p.second );
+    }
+  };
+  
+  /// Splits an integral-array element into an integral-array element
   /// and a 32 bit integer. The defaut behaviour is for an element e
   /// of dimension n:
   /// \code
