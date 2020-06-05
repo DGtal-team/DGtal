@@ -415,6 +415,7 @@ namespace DGtal
 	ASSERT( collection == other.collection );
         return it == other.it && bit == other.bit;
       }
+
       const Key dereference() const
       {
 	return collection->my_splitter.join( it->first, bit );
@@ -547,6 +548,16 @@ namespace DGtal
 	ASSERT( collection == other.collection );
         return it == other.it && bit == other.bit;
       }
+
+      // The equality comparator with const_iterator must also be
+      // provided to respect the standard that says that iterator and
+      // const_iterator should always be comparable.
+      bool equal( const const_iterator & other ) const
+      {
+	ASSERT( collection == other.collection );
+        return it == other.it && bit == other.bit;
+      }
+      
       const Key dereference() const
       {
 	return collection->my_splitter.join( it->first, bit );
@@ -805,12 +816,14 @@ namespace DGtal
     iterator erase( const_iterator pos ) noexcept
     {
       ASSERT( this == &pos.collection );
+      ASSERT( pos  != cend() );
       ASSERT( ( pos.it->second & ( ( (Word) 1 ) << pos.bit ) ) != 0 );
       my_size -= 1;
-      if ( ( pos.it->second &= ~( ( (Word) 1 ) << pos.bit ) ) == 0 )
+      Word & w = const_cast< Word& >( pos.it->second );
+      if ( ( w &= ~( ( (Word) 1 ) << pos.bit ) ) == 0 )
 	return iterator( *this, my_elements.erase( pos.it ) );
       else
-	return iterator( *this, pos.it, pos.bit );
+	return iterator( *this, my_elements.erase( pos.it, pos.it ), pos.bit );
     }
     
     /// Removes the elements in the range [first; last), which must be
