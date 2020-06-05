@@ -71,7 +71,7 @@ namespace DGtal
     std::pair< Element, DGtal::Dimension >
     split( const Element& e )
     {
-      BOOST_STATIC_ASSERT( "[Splitter<TElement>::split] Generic version not implemented." );
+      BOOST_STATIC_ASSERT( true && "[Splitter<TElement>::split] Generic version not implemented." );
       return std::make_pair( e, 0 );
     }
 
@@ -85,7 +85,7 @@ namespace DGtal
     Element
     join( const Element& e, DGtal::Dimension x )
     {
-      BOOST_STATIC_ASSERT( "[Splitter<TElement>::join] Generic version not implemented." );
+      BOOST_STATIC_ASSERT( true && "[Splitter<TElement>::join] Generic version not implemented." );
       (void)x; // Avoids unused parameter warning
       return e;
     }
@@ -815,7 +815,7 @@ namespace DGtal
     /// dereferenceable) cannot be used as a value for pos.
     iterator erase( const_iterator pos ) noexcept
     {
-      ASSERT( this == &pos.collection );
+      ASSERT( this == pos.collection );
       ASSERT( pos  != cend() );
       ASSERT( ( pos.it->second & ( ( (Word) 1 ) << pos.bit ) ) != 0 );
       my_size -= 1;
@@ -843,13 +843,11 @@ namespace DGtal
     ///
     iterator erase( const_iterator first, const_iterator last ) noexcept
     {
-      ASSERT( this == &first.collection );
-      ASSERT( this == &last.collection );
+      ASSERT( this == first.collection );
+      ASSERT( this == last.collection );
       if ( first == cend() ) return end();
       auto itB = first.it;
       auto itE = last.it;
-      auto bitB = first.bit;
-      auto bitE = last.bit;
       Word mask = 0;
       // Take care of range over one block only
       if ( itB == itE )
@@ -1144,12 +1142,12 @@ namespace DGtal
      * has changed. Effectively calls `rehash(std::ceil(count /
      * max_load_factor()))`.
      *
-     * @param count new capacity of the container (should be thought
+     * @param block_count new capacity of the container (should be thought
      * in terms of number of expected blocks).
      */
-    void reserve( size_type count )
+    void reserve( size_type block_count )
     {
-      my_elements.reserve( count );
+      my_elements.reserve( block_count );
     }
 
     /// @}
