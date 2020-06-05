@@ -16,8 +16,13 @@
 - *Geometry Package*
   - New piecewise smooth digital surface regularization class (David Coeurjolly,
   [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
-  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
-  [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  - Provides support for digital full convexity and subconvexity
+    (Jacques-Olivier Lachaud,
+    [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  - Updates cell geometry and digital convexity to use specialized
+    unordered set data structure UnorderedSetByBlock for storing
+    digital points (Jacques-Olivier Lachaud,
+    [#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 ## Changes
 
@@ -49,6 +54,10 @@
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+  - Add a specialized unordered set data structure
+    UnorderedSetByBlock for storing digital points, which is more
+    compact and as efficient as unordered set
+    (Jacques-Olivier Lachaud,[#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
