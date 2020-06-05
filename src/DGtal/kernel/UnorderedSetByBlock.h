@@ -263,7 +263,7 @@ namespace DGtal
   /// Almost all standard operations of unordered_set in c++11 are implemented.
   ///
   /// @tparam Key the type of integral array.
-  /// @tparam TSpitter the type for splitting a key into a block and a bit (see \ref Splitter).
+  /// @tparam TSplitter the type for splitting a key into a block and a bit (see \ref Splitter).
   /// @tparam Hash the type that provides a hasher for Key.
   /// @tparam Key the type that provides an equality comparator for Key.
   /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
@@ -1167,7 +1167,7 @@ namespace DGtal
   /// UnorderedSetByBlock::swap.
   ///
   /// @tparam Key the type of integral array.
-  /// @tparam TSpitter the type for splitting a key into a block and a bit (see \ref Splitter).
+  /// @tparam TSplitter the type for splitting a key into a block and a bit (see \ref Splitter).
   /// @tparam Hash the type that provides a hasher for Key.
   /// @tparam Key the type that provides an equality comparator for Key.
   /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
