@@ -32,7 +32,7 @@
 #include <boost/iterator/iterator_facade.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Bits.h"
-#include "DGtal/base/ConstAlias.h"
+#include "DGtal/kernel/PointVector.h"
 
 namespace DGtal
 {
@@ -72,7 +72,7 @@ namespace DGtal
     std::pair< Element, DGtal::Dimension >
     split( const Element& e )
     {
-      STATIC_ASSERT( "[Splitter<TElement>::split] Generic version not implemented." );
+      BOOST_STATIC_ASSERT( "[Splitter<TElement>::split] Generic version not implemented." );
       return std::make_pair( e, 0 );
     }
 
@@ -86,7 +86,7 @@ namespace DGtal
     Element
     join( const Element& e, DGtal::Dimension x )
     {
-      STATIC_ASSERT( "[Splitter<TElement>::join] Generic version not implemented." );
+      BOOST_STATIC_ASSERT( "[Splitter<TElement>::join] Generic version not implemented." );
       (void)x; // Avoids unused parameter warning
       return e;
     }
@@ -106,61 +106,180 @@ namespace DGtal
   };
   
   /// Splits an integral-array element into an integral-array element
-  /// and a 32 bit integer. The defaut behaviour is for an element e
-  /// of dimension n:
+  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// of dimension 3:
   /// \code
   /// Splitter< Point > split;
   /// auto v = split( Point( 117, 43, 52 ) );
-  /// v.first  == 117 % 32
-  /// v.second == Point( 117 / 32, 43, 52 );
+  /// v.first  == 117 & 0x1f
+  /// v.second == Point( 117 & 0xffff...ffe0, 43, 52 );
   /// \endcode
   ///
-  /// @tparam TElement the type of array-like element.
+  /// @tparam dim the dimension of the integral array.
+  /// @tparam TContainer the container for PointVector.
   ///
-  /// @note We use mask operations instead of mult/div 32. The result
+  /// @note In subclass, we use mask operations instead of mult/div 32. The result
   /// 4 x times faster !
   ///
-  /// @todo Use specialization to check integer type size. Here only
-  /// works for 32 bits int.
-  template < typename TElement >
-  struct Splitter {
-    typedef Splitter< TElement > Self;
-    typedef TElement             Element;
+  /// @note Specialization for 32 bits integer types
+  ///
+  /// @see UnorderedSetByBlock
+  template < DGtal::Dimension dim, typename TContainer >
+  struct Splitter< PointVector< dim, DGtal::int32_t, TContainer > > {
+    typedef PointVector< dim, DGtal::int32_t, TContainer > Element;
+    typedef Splitter< Element >  Self;
     typedef uint32_t             Word;
 
+    /// Splits an element \a e into a pair grouping its block
+    /// coordinates and its bit within this block.
+    ///
+    /// @param e any lattice point
+    ///
+    /// @return a pair grouping its block coordinates and its bit
+    /// within this block.
     static
     std::pair< Element, DGtal::Dimension >
     split( const Element& e )
     {
       Element se = e;
-      // se[ 0 ]   /= 32;
       se[ 0 ]   &= 0xffffffe0;
       return std::make_pair( se, (DGtal::Dimension) e[ 0 ] & 0x0000001f );
     }
 
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param e the block coordinate of the element.
+    /// @param x the bit coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
     static
     Element
     join( const Element& e, DGtal::Dimension x )
     {
       Element ge = e;
-      // ge[ 0 ]   *= 32;
-      // ge[ 0 ]   += x;
       ge[ 0 ] |= x;
       return ge;
     }
 
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param p a pair grouping the block coordinate and the bit
+    /// coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
     static
     Element
     join( const std::pair< Element, DGtal::Dimension >& p )
     {
       Element ge = p.first;
-      // ge[ 0 ]   *= 32;
-      // ge[ 0 ]   += p.second;
       ge[ 0 ] |= p.second; 
       return ge;
     }
-  };
+  }; // struct Splitter< PointVector< dim, DGtal::int32_t, TContainer > >
 
+  /// Splits an integral-array element into an integral-array element
+  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// of dimension 3:
+  /// \code
+  /// Splitter< Point > split;
+  /// auto v = split( Point( 117, 43, 52 ) );
+  /// v.first  == 117 & 0x1f
+  /// v.second == Point( 117 & 0xffff...ffe0, 43, 52 );
+  /// \endcode
+  ///
+  /// @tparam dim the dimension of the integral array.
+  /// @tparam TContainer the container for PointVector.
+  ///
+  /// @note In subclass, we use mask operations instead of mult/div 32. The result
+  /// 4 x times faster !
+  ///
+  /// @note Specialization for 32 bits integer types
+  ///
+  /// @see UnorderedSetByBlock
+  template < DGtal::Dimension dim, typename TContainer >
+  struct Splitter< PointVector< dim, DGtal::int64_t, TContainer > > {
+    typedef PointVector< dim, DGtal::int64_t, TContainer > Element;
+    typedef Splitter< Element >  Self;
+    typedef uint32_t             Word;
+
+    /// Splits an element \a e into a pair grouping its block
+    /// coordinates and its bit within this block.
+    ///
+    /// @param e any lattice point
+    ///
+    /// @return a pair grouping its block coordinates and its bit
+    /// within this block.
+    static
+    std::pair< Element, DGtal::Dimension >
+    split( const Element& e )
+    {
+      Element se = e;
+      se[ 0 ]   &= 0xffffffffffffffe0ll;
+      return std::make_pair( se, (DGtal::Dimension) e[ 0 ] & 0x000000000000001fll );
+    }
+
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param e the block coordinate of the element.
+    /// @param x the bit coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
+    static
+    Element
+    join( const Element& e, DGtal::Dimension x )
+    {
+      Element ge = e;
+      ge[ 0 ] |= x;
+      return ge;
+    }
+
+    /// Rejoins a splitted element (see \ref split).
+    ///
+    /// @param p a pair grouping the block coordinate and the bit
+    /// coordinate of the element.
+    ///
+    /// @return the corresponding rejoined element.
+    static
+    Element
+    join( const std::pair< Element, DGtal::Dimension >& p )
+    {
+      Element ge = p.first;
+      ge[ 0 ] |= p.second; 
+      return ge;
+    }
+  }; // struct Splitter< PointVector< dim, DGtal::int64_t, TContainer > >
+
+  /// This data structure represents a set of elements that must be
+  /// integral arrays (i.e. digital points). It is similar to an
+  /// unordered_set, but much more compact in general. The container
+  /// used is a unordered_map from point to a 32-bit word. The idea is
+  /// to group consecutive elements/points along x axis by blocks of
+  /// 32 bits.  If any point in a block is present, the corresponding
+  /// element is present in the unordered_map and bits to 1 in the
+  /// word correspond to points present in the set. On average, memory
+  /// occupancy is divided by four, the structure is four times faster
+  /// for traversal and approximately same speed for
+  /// queries/insertion/erase.
+  ///
+  /// Almost all standard operations of unordered_set are implemented.
+  ///
+  /// @tparam Key the type of integral array.
+  /// @tparam TSpitter the type for splitting a key into a block and a bit (see \ref Splitter).
+  /// @tparam Hash the type that provides a hasher for Key.
+  /// @tparam Key the type that provides an equality comparator for Key.
+  /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
+  ///
+  /// Specialized versions of Splitter are written for usual digital
+  /// points of Z2i or Z3i.
+  ///
+  /// @code
+  /// #include "DGtal/kernel/UnorderedSetByBlock.h"
+  /// ...
+  /// typedef DGtal::PointVector< 3, int >  Point3i; // digital point in Z3;
+  /// std::unordered_set< Point3i >         aSet;    // usual data structure
+  /// DGtal::UnorderedSetByBlock< Point3i > aSet2;   // this data structure
+  /// // same code
+  /// @endcode
   template < typename Key,
 	     typename TSplitter = Splitter< Key >,
 	     class Hash = std::hash<Key>,
@@ -200,7 +319,6 @@ namespace DGtal
     typedef Key* pointer;
     /// Const Pointer to value_type/Key
     typedef const Key* const_pointer;
-    /// iterator, const_iterator, local_iterator, const_local_iterator
 
   public:
     // ---------------------- iterators --------------------------------
@@ -274,8 +392,6 @@ namespace DGtal
       void increment()
       {
 	ASSERT( current != 0 && "Invalid increment on const_iterator" );
-	// trace.info() << "current before increment=" << current << std::endl;
-	// trace.info() << "bit before increment=" << bit << std::endl;
 	current &= ~( (Word)1 << bit );
 	if ( current == 0 )
 	  {
@@ -293,8 +409,6 @@ namespace DGtal
 	  }
 	else
 	  bit = Bits::leastSignificantBit( current );
-	// trace.info() << "current after increment=" << current << std::endl;
-	// trace.info() << "bit after increment=" << bit << std::endl;
       }
       
       bool equal( const const_iterator & other ) const
@@ -381,12 +495,16 @@ namespace DGtal
 	    current = 0;
 	  }
       }
-      
+
+      /// Constructor from const_iterator
+      /// @param other any const_iterator
       iterator( const const_iterator& other )
 	: collection( other.collection ), it( other.it ),
 	  bit( other.bit ), current( other.current )
       {}
 
+      /// Move constructor from const_iterator
+      /// @param other any const_iterator
       iterator( const_iterator&& other )
 	: collection( std::move( other.collection ) ),
 	  it( std::move( other.it ) ),
@@ -394,17 +512,18 @@ namespace DGtal
 	  current( std::move( other.current ) )
       {}
       
+      /// Conversation to const_iterator
+      /// @return the corresponding const_iterator
       operator const_iterator() const
       {
 	return const_iterator( *collection, it, bit );
       }
+      
     private:
       friend class boost::iterator_core_access;
       void increment()
       {
 	ASSERT( current != 0 && "Invalid increment on iterator" );
-	// trace.info() << "current before increment=" << current << std::endl;
-	// trace.info() << "bit before increment=" << bit << std::endl;
 	current &= ~( (Word)1 << bit );
 	if ( current == 0 )
 	  {
@@ -422,8 +541,6 @@ namespace DGtal
 	  }
 	else
 	  bit = Bits::leastSignificantBit( current );
-	// trace.info() << "current after increment=" << current << std::endl;
-	// trace.info() << "bit after increment=" << bit << std::endl;
       }
       
       bool equal( const iterator & other ) const
@@ -449,6 +566,12 @@ namespace DGtal
 
     // ------------------------- standard services ----------------------------------
   public:
+    /// Main constructor.
+    /// @param bucket_count the initial number of buckets for the underlying container.
+    /// @param splitter the splitter object for keys.
+    /// @param hash the hash object for keys.
+    /// @param equal the key equality comparator object for keys.
+    /// @param alloc the allocator for the underlying container.
     UnorderedSetByBlock( size_type bucket_count = 23,
 			 const Splitter & splitter = Splitter(),
 			 const Hash& hash = Hash(),
