@@ -613,14 +613,32 @@ namespace DGtal
 	my_size( std::move( other.my_size ) )
     {}
     
-    /// Default assignment
+    /// Assignment
     /// @param other the object to clone
     /// @return a reference to this
-    Self& operator=( const Self& other ) = default;
+    Self& operator=( const Self& other )
+    {
+      if ( this != &other )
+	{
+	  my_splitter = other.my_splitter;
+	  my_elements = other.my_elements;
+	  my_size     = other.my_size;
+	}
+      return *this;
+    }
     /// Default move assignment
     /// @param other the object to clone
     /// @return a reference to this
-    Self& operator=( Self&& other ) = default;
+    Self& operator=( Self&& other )
+    {
+      if ( this != &other )
+	{
+	  my_splitter = std::move( other.my_splitter );
+	  my_elements = std::move( other.my_elements );
+	  my_size     = std::move( other.my_size );
+	}
+      return *this;
+    }
 
     /// @}
     

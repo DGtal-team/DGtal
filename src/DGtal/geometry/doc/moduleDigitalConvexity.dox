@@ -297,7 +297,7 @@ The class BoundedLatticePolytope is different from the class LatticePolytope2D f
 There are no simple conversion from one to the other. Class
 LatticePolytope2D is optimized for cuts and lattice points
 enumeration, and is very specific to 2D. Class BoundedLatticePolytope
-is less optimized to the previous one but works in nD and provides
+is less optimized than the previous one but works in nD and provides
 Minkowski sum and dilation services.
 
 
