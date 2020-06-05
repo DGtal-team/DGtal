@@ -26,13 +26,12 @@
 #ifndef UNORDEREDSETBYBLOCK_HPP
 #define UNORDEREDSETBYBLOCK_HPP
 
-#include <vector>
-#include <unordered_set>
 #include <unordered_map>
 #include <boost/iterator/iterator_facade.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/PointHashFunctions.h"
 
 namespace DGtal
 {
@@ -261,7 +260,7 @@ namespace DGtal
   /// for traversal and approximately same speed for
   /// queries/insertion/erase.
   ///
-  /// Almost all standard operations of unordered_set are implemented.
+  /// Almost all standard operations of unordered_set in c++11 are implemented.
   ///
   /// @tparam Key the type of integral array.
   /// @tparam TSpitter the type for splitting a key into a block and a bit (see \ref Splitter).
@@ -278,7 +277,7 @@ namespace DGtal
   /// typedef DGtal::PointVector< 3, int >  Point3i; // digital point in Z3;
   /// std::unordered_set< Point3i >         aSet;    // usual data structure
   /// DGtal::UnorderedSetByBlock< Point3i > aSet2;   // this data structure
-  /// // same code
+  /// // same code after for aSet or aSet2.
   /// @endcode
   template < typename Key,
 	     typename TSplitter = Splitter< Key >,
