@@ -265,7 +265,7 @@ namespace DGtal
   /// @tparam Key the type of integral array.
   /// @tparam TSplitter the type for splitting a key into a block and a bit (see \ref Splitter).
   /// @tparam Hash the type that provides a hasher for Key.
-  /// @tparam Key the type that provides an equality comparator for Key.
+  /// @tparam KeyEqual the type that provides an equality comparator for Key.
   /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
   ///
   /// Specialized versions of Splitter are written for usual digital
@@ -1169,7 +1169,7 @@ namespace DGtal
   /// @tparam Key the type of integral array.
   /// @tparam TSplitter the type for splitting a key into a block and a bit (see \ref Splitter).
   /// @tparam Hash the type that provides a hasher for Key.
-  /// @tparam Key the type that provides an equality comparator for Key.
+  /// @tparam KeyEqual the type that provides an equality comparator for Key.
   /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
   template < typename Key,
 	     typename TSplitter,
