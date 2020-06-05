@@ -95,6 +95,8 @@
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
   - Fixing Travis configuration due to syntax changes in v2
     (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
+  - Compression of png files used in for the documentation
+    (preparing 1.1 release), (David Coeurjolly, [#1494](https://github.com/DGtal-team/DGtal/pull/1494))
   - Fix `CMAKE_C_FLAGS` when `WITH_OPENMP=ON`
     (Pablo Hernandez-Cerdan, [#1495](https://github.com/DGtal-team/DGtal/pull/1495))
 
