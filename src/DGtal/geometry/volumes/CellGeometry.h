@@ -46,7 +46,7 @@
 #include <string>
 #include <unordered_set>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/UnorderedSetByBlock.h"
+#include "DGtal/kernel/UnorderedSetByBlock.h"
 #include "DGtal/kernel/PointHashFunctions.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
