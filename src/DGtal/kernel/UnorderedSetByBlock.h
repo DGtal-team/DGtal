@@ -596,12 +596,23 @@ namespace DGtal
 
     /// Default destructor
     ~UnorderedSetByBlock() = default;
-    /// Default copy constructor
+
+    /// Copy constructor
     /// @param other the object to clone
-    UnorderedSetByBlock( const Self& other ) = default;
-    /// Default move constructor
+    UnorderedSetByBlock( const Self& other )
+      : my_splitter( other.my_splitter ),
+	my_elements( other.my_elements ),
+	my_size( other.my_size )
+    {}
+    
+    /// Move constructor
     /// @param other the object to clone
-    UnorderedSetByBlock( Self&& other ) = default;
+    UnorderedSetByBlock( Self&& other )
+      : my_splitter( std::move( other.my_splitter ) ),
+	my_elements( std::move( other.my_elements ) ),
+	my_size( std::move( other.my_size ) )
+    {}
+    
     /// Default assignment
     /// @param other the object to clone
     /// @return a reference to this
