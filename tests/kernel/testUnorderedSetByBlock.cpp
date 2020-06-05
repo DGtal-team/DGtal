@@ -62,6 +62,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests", "[unorderedse
 
   const int nb_inserted = 100;
   const int nb_sought   = 200;
+  const int nb_erased   = 100;
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
@@ -71,14 +72,6 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests", "[unorderedse
       stdSet.insert( p );
       blkSet.insert( p );
     }
-  // Check conversion iterator -> const_iterator
-  BlockUnorderedSet::iterator       itB   = blkSet.begin();
-  BlockUnorderedSet::const_iterator citB  = blkSet.begin();
-  BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();
-  bool ok1  =  itB == blkSet.begin();  
-  bool ok2  =  itB == blkSet.cbegin();  
-  bool ok3  = citB == blkSet.begin();  
-  bool ok4  = citB == blkSet.cbegin();  
   WHEN( "Inserting identical elements in std::unordered_set<> and in UnorderedSetByBlock<>, they contains the same number of elements" ) {
     REQUIRE( blkSet.size() <= nb_inserted   );
     REQUIRE( blkSet.size() == stdSet.size() );
@@ -157,6 +150,86 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests", "[unorderedse
     REQUIRE( std_nb_value_ok == stdFound.size() );
     REQUIRE( blk_nb_value_ok == std_nb_value_ok );
     REQUIRE( blk_nb_value_ok == blkFound.size() );
+  }
+  WHEN( "Erasing elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are left" ) {
+    std::vector< Point > stdErase;
+    std::vector< Point > blkErase;
+    int std_nb_erase_ok = 0;
+    int blk_nb_erase_ok = 0;
+    for ( int i = 0; i < nb_erased; i++ )
+      {
+	Point p = randomPoint<Point>( 10 );
+	auto stdFindIt   = stdSet.find ( p );
+	auto stdIsErased = stdSet.erase( p );
+	if ( stdFindIt != stdSet.cend() )
+	  {
+	    std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
+	    stdErase.push_back( p );
+	  }
+	else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
+	auto blkFindIt   = blkSet.find ( p );
+	auto blkIsErased = blkSet.erase( p );
+	if ( blkFindIt != blkSet.cend() )
+	  {
+	    blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
+	    blkErase.push_back( p );
+	  }
+	else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
+      }
+    REQUIRE( blkSet  .size() == stdSet  .size() );
+    REQUIRE( blkErase.size() == stdErase.size() );
+    REQUIRE( blk_nb_erase_ok == std_nb_erase_ok );
+    std::vector< Point > stdTrv;
+    std::vector< Point > blkTrv;
+    for ( auto&& p : stdSet ) stdTrv.push_back( p );
+    for ( auto&& p : blkSet ) blkTrv.push_back( p );
+    REQUIRE( blkTrv.size() == stdTrv.size() );
+    std::sort( stdTrv.begin(), stdTrv.end() );
+    std::sort( blkTrv.begin(), blkTrv.end() );
+    REQUIRE( std::equal( stdTrv.cbegin(), stdTrv.cend(), blkTrv.cbegin() ) );
+  }
+  WHEN( "Erasing a range in identical std::unordered_set<> and UnorderedSetByBlock<>, the same number of elements is left" ) {
+    auto stdItB = stdSet.begin(); std::advance( stdItB, 10 );
+    auto blkItB = blkSet.begin(); std::advance( blkItB, 10 );
+    auto stdItE = stdItB;         std::advance( stdItE, 20 );
+    auto blkItE = blkItB;         std::advance( blkItE, 20 );
+    stdSet.erase( stdItB, stdItE );
+    blkSet.erase( blkItB, blkItE );
+    REQUIRE( blkSet  .size() == stdSet  .size() );
+  }
+  THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
+    const auto stdMem = blkSet.memory_usage_unordered_set();
+    const auto blkMem = blkSet.memory_usage();
+    REQUIRE( blkMem <= stdMem );
+  }
+    
+  
+  THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
+    BlockUnorderedSet::iterator        itB  = blkSet.begin();
+    BlockUnorderedSet::const_iterator citB  = blkSet.begin();
+    BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();
+    BlockUnorderedSet::iterator        itE  = blkSet.end();
+    BlockUnorderedSet::const_iterator citE  = blkSet.end();
+    BlockUnorderedSet::const_iterator citEp = blkSet.cend();
+    REQUIRE(  itB  == blkSet.begin()  );
+    REQUIRE(  itB  == blkSet.cbegin() );
+    REQUIRE( citB  == blkSet.begin()  );
+    REQUIRE( citB  == blkSet.cbegin() );
+    REQUIRE( citBp == blkSet.cbegin() );
+    REQUIRE(  itE  == blkSet.end()  );
+    REQUIRE(  itE  == blkSet.cend() );
+    REQUIRE( citE  == blkSet.end()  );
+    REQUIRE( citE  == blkSet.cend() );
+    REQUIRE( citEp == blkSet.cend() );
+    REQUIRE(  itB  !=  itE  );
+    REQUIRE(  itB  != citE  );
+    REQUIRE(  itB  != citEp );
+    REQUIRE( citB  !=  itE  );
+    REQUIRE( citB  != citE  );
+    REQUIRE( citB  != citEp );
+    REQUIRE( citBp !=  itE  );
+    REQUIRE( citBp != citE  );
+    REQUIRE( citBp != citEp );
   }
 }
 
