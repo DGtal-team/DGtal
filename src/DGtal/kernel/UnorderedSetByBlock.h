@@ -565,7 +565,10 @@ namespace DGtal
     };
 
     // ------------------------- standard services ----------------------------------
+    /// @name Standard services (construction, initialization, assignment)
+    /// @{
   public:
+    
     /// Main constructor.
     /// @param bucket_count the initial number of buckets for the underlying container.
     /// @param splitter the splitter object for keys.
@@ -598,7 +601,12 @@ namespace DGtal
     /// @return a reference to this
     Self& operator=( Self&& other ) = default;
 
+    /// @}
+    
     // ---------------------- iterator services -----------------------------
+    /// @name Iterator services
+    /// @{
+  public:
     
     /// @return an iterator of the first stored element
     iterator begin()
@@ -633,7 +641,12 @@ namespace DGtal
       return const_iterator( *this, my_elements.cend() );
     }
 
+    /// @}
+
     // ---------------------- capacity services -----------------------------
+    /// @name Capacity services
+    /// @{
+  public:
     
     /// @return 'true' iff the container is empty
     bool empty() const noexcept { return my_elements.empty(); }
@@ -674,7 +687,11 @@ namespace DGtal
       return mem;
     }
 
-    // ---------------------- modifier  services -----------------------------
+    /// @}
+    
+    // ---------------------- modifier services -----------------------------
+    /// @name Modifier services
+    /// @{
   public:
     
     /// Clears the container
@@ -886,7 +903,11 @@ namespace DGtal
       else return 0;
     }
 
+    /// @}
+    
     // ---------------------- lookup services -----------------------------
+    /// @name Lookup services
+    /// @{
   public:
 
     /// Finds an element with key equivalent to key.
@@ -972,7 +993,11 @@ namespace DGtal
       else return std::make_pair( first, first );
     }
 
+    /// @}
+
     // ---------------------- set services -------------------------
+    /// @name Set services
+    /// @{
   public:
 
     /// @param other any unordered set with same sort of elements
@@ -983,27 +1008,21 @@ namespace DGtal
     /// element, since it proceeds block by block.
     bool includes( const Self& other ) const
     {
-      return includes_v1( other );
-      // bool v1 = includes_v1( other );
-      // bool v2 = includes_v2( other );
-      // if ( v1 != v2 )
-      // 	{
-      // 	  trace.error() << "[UnorderedSetByBlock::includes] both version differs "
-      // 			<< " v_itmap=" << v1 << " v_it=" << v2 << std::endl;
-      // 	  trace_includes_v1( other );
-      // 	  trace_includes_v2( other );
-      // 	  trace.error() << "------- end trace ----- " << std::endl;
-      // 	}
-      // return v1;
+      return internal_includes_by_map_iterator( other );
     }
-    bool includes_v1( const Self& other ) const
+
+  protected:
+    /// Performs includes operation using underlying container iterator.
+    /// @param other any unordered set with same sort of elements
+    /// @return 'true' if and only if this set includes \a other, and
+    /// 'false' otherwise.
+    bool internal_includes_by_map_iterator( const Self& other ) const
     {
       auto       itMap_other    = other.my_elements.cbegin();
       const auto itEndMap_other = other.my_elements.cend();
       const auto itEndMap_this  = my_elements.cend();
       for ( ; itMap_other != itEndMap_other; ++itMap_other )
       	{
-	  // trace.info() << " " << itMap_other->first;
       	  const auto itMap_this = my_elements.find( itMap_other->first );
       	  if ( itMap_this == itEndMap_this ) return false;
       	  const Word w_this  = itMap_this->second;
@@ -1012,7 +1031,13 @@ namespace DGtal
       	}
       return true;
     }
-    bool trace_includes_v1( const Self& other ) const
+
+    /// Performs includes operation using underlying container
+    /// iterator. Verbose version for debug.
+    /// @param other any unordered set with same sort of elements
+    /// @return 'true' if and only if this set includes \a other, and
+    /// 'false' otherwise.
+    bool internal_trace_includes_by_map_iterator( const Self& other ) const
     {
       trace.info() << "[trace_includes_v1] #this=" << size()
 		   << " #other=" << other.size() << std::endl;
@@ -1037,7 +1062,12 @@ namespace DGtal
       return true;
     }
 
-    bool includes_v2( const Self& other ) const
+    /// Performs includes operation using iterators and big steps,
+    /// slightly slower than internal_includes_by_map_iterator.
+    /// @param other any unordered set with same sort of elements
+    /// @return 'true' if and only if this set includes \a other, and
+    /// 'false' otherwise.
+    bool internal_includes_by_iterator( const Self& other ) const
     {
       auto it_other  = other.cbegin();
       auto itEnd_other = other.cend(); 
@@ -1053,7 +1083,15 @@ namespace DGtal
       	}
       return true;
     }
-    bool trace_includes_v2( const Self& other ) const
+    
+    /// Performs includes operation using iterators and big steps,
+    /// slightly slower than internal_includes_by_map_iterator. Verbose
+    /// version for debug.
+    ///
+    /// @param other any unordered set with same sort of elements
+    /// @return 'true' if and only if this set includes \a other, and
+    /// 'false' otherwise.
+    bool trave_internal_includes_by_iterator( const Self& other ) const
     {
       trace.info() << "[trace_includes_v2] #this=" << size()
 		   << " #other=" << other.size() << std::endl;
@@ -1079,8 +1117,11 @@ namespace DGtal
       return true;
     }
 
-    
+    /// @}
+
     // ---------------------- hash policy services -----------------------------
+    /// @name Hash policy services
+    /// @{
   public:
     
     /**
@@ -1099,6 +1140,8 @@ namespace DGtal
       my_elements.reserve( count );
     }
 
+    /// @}
+    
   private:
     // -------------------------- data ---------------------------------
     /// The splitter object
@@ -1110,6 +1153,14 @@ namespace DGtal
   };
 
 
+  /// This functions swaps in O(1) the given two sets. Calls
+  /// UnorderedSetByBlock::swap.
+  ///
+  /// @tparam Key the type of integral array.
+  /// @tparam TSpitter the type for splitting a key into a block and a bit (see \ref Splitter).
+  /// @tparam Hash the type that provides a hasher for Key.
+  /// @tparam Key the type that provides an equality comparator for Key.
+  /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
   template < typename Key,
 	     typename TSplitter,
 	     class Hash,
