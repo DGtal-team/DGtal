@@ -980,7 +980,7 @@ namespace DGtal
     }
 
     /// @param key the value to look-up.
-    /// @eturn the number of elements with key that compares equal to
+    /// @return the number of elements with key that compares equal to
     /// the specified argument key, which is either 1 or 0 since this
     /// container does not allow duplicates.
     size_type count( const Key& key ) const
