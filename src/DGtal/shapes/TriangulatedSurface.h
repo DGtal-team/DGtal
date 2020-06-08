@@ -569,8 +569,9 @@ namespace DGtal
   public:
 
     /// An edge is (topologically) flippable iff: (1) it does not lie
-    /// on the boundary, (2) it is bordered by two triangles. (2) is
-    /// always true for a triangulated surface.
+    /// on the boundary, (2) it is bordered by two triangles, (3) the
+    /// two other vertices of the quad are not already neighbors. (2)
+    /// is always true for a triangulated surface.
     ///
     /// @param a any arc.
     /// @return 'true' if the edge containing \a a is topologically flippable.
