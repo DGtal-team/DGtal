@@ -441,8 +441,14 @@ inline
 bool
 DGtal::TriangulatedSurface<TPoint>::isFlippable( const Arc a ) const
 {
-  return ( ! isArcBoundary( a ) )
-    && ( ! isArcBoundary( opposite( a ) ) );
+  if ( isArcBoundary( a ) || isArcBoundary( opposite( a ) ) ) return false;
+  const auto v1 = head( next( a ) );
+  const auto v2 = head( next( opposite( a ) ) );
+  std::vector< Index > neighbors_v1;
+  auto outIt = std::back_inserter( neighbors_v1 );
+  writeNeighbors( outIt, v1 );
+  const auto itv2 = std::find( neighbors_v1.cbegin(), neighbors_v1.cend(), v2 );
+  return itv2 == neighbors_v1.cend();
 }
 
 //-----------------------------------------------------------------------------
