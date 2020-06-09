@@ -88,6 +88,9 @@ namespace DGtal {
     typedef std::vector< RealVector >          RealVectors;
     typedef std::vector< RealPoint >           RealPoints;
 
+    /// The enum class specifying the possible shrouds regularization.
+    enum class Regularization { AREA, SNAKE, SQUARED_CURVATURE };
+    
     // ----------------------- Standard services ------------------------------
   public:
     /// @name Standard services (construction, initialization)
@@ -253,6 +256,46 @@ namespace DGtal {
     /// @name Regularization services
     /// @{
 
+    /// Generic method for shrouds regularization.
+    /// @param reg your choice of regularization in AREA, SNAKE, SQUARED_CURVATURE (works best)
+    /// @param randomization if greater than 0.0 add some perturbation to
+    /// the solution. May be used for quitting a local minima.
+    ///
+    /// @param max_loo the maximum \f$ l_\infty \f$-norm of one step
+    /// of regularization before stopping the regularization.
+    ///
+    /// @param maxNb the maximum number of optimization steps.
+    ///
+    /// @param alpha parameter for Snake first order regularization (~ area)
+    /// @param beta  parameter for Snake second order regularization (~ curvature)
+    std::pair<double,double>
+    regularize( Regularization   reg = Regularization::SQUARED_CURVATURE,
+		double randomization = 0.0,
+		double       max_loo = 0.0001,
+		int            maxNb = 100,
+		double         alpha = 1.0,
+		double          beta = 1.0 )
+    {
+      double loo      = 0.0;
+      double  l2      = 0.0;
+      int     nb      = 0;
+      double   r      = 0.5;
+      do {
+	std::tie( loo, l2 ) =
+	  reg == Regularization::SQUARED_CURVATURE
+	  ? oneStepSquaredCurvatureMinimization( r )
+	  : reg == Regularization::SNAKE
+	  ? oneStepSnakeMinimization( alpha, beta, r )
+	  : oneStepAreaMinimization( r );
+	trace.info() << "[Shrouds iteration " << nb
+		     << "] dx <= " << loo << " l2=" << l2 << std::endl;
+	r  *= 0.9;
+	nb += 1;
+      } while ( loo > max_loo && nb < maxNb );
+      return std::make_pair( loo, l2 );
+    }
+					 
+    
     /// Smooths the shape according to the minimization of area.
     ///
     /// @param randomization if greater than 0.0 add some perturbation to
@@ -478,7 +521,7 @@ namespace DGtal {
   ShroudsRegularization<TDigitalSurfaceContainer>
   makeShroudsRegularization
   ( CountedPtr< IndexedDigitalSurface< TDigitalSurfaceContainer > > surface,
-    Scalar eps = 0.00001 )
+    double eps = 0.00001 )
   {
     return ShroudsRegularization<TDigitalSurfaceContainer>( surface, eps );
   }
