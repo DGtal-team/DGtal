@@ -33,8 +33,8 @@
 
 template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
-ShroudsRegularization< TDigitalSurfaceContainer >::
-oneStepAreaMinimization( double randomization = 0.0 )
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+oneStepAreaMinimization( double randomization )
 {
   parameterize();
   Scalars newT = myT;
@@ -44,7 +44,7 @@ oneStepAreaMinimization( double randomization = 0.0 )
       double  left = 0.0;
       double  coef = 0.0;
       const auto s = myPtrIdxSurface->surfel( v );
-      const auto k = myK.sOrthDir( s );
+      const auto k = myPtrK->sOrthDir( s );
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
@@ -78,14 +78,14 @@ oneStepAreaMinimization( double randomization = 0.0 )
     loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
     l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
   }
-  return std::make_pair( loo, sqrt( l2 ) );
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
 template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
-ShroudsRegularization< TDigitalSurfaceContainer >::
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSnakeMinimization
-( double alpha = 1.0, double beta = 1.0, double randomization = 0.0 )
+( double alpha, double beta, double randomization )
 {
   parameterize();
   Scalars newT = myT;
@@ -95,7 +95,7 @@ oneStepSnakeMinimization
       double  left = 0.0;
       double  coef = 0.0;
       const auto s = myPtrIdxSurface->surfel( v );
-      const auto k = myK.sOrthDir( s );
+      const auto k = myPtrK->sOrthDir( s );
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
@@ -129,7 +129,6 @@ oneStepSnakeMinimization
       newT[ v ] = ( right - left ) / coef
 	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
     }
-  cout << endl;
   auto X     = positions();
   // Damping between old and new positions.
   for ( Vertex v = 0; v < myT.size(); ++v )
@@ -142,14 +141,14 @@ oneStepSnakeMinimization
     loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
     l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
   }
-  return std::make_pair( loo, sqrt( l2 ) );
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
 template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
-ShroudsRegularization< TDigitalSurfaceContainer >::
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSquaredCurvatureMinimization
-( double randomization = 0.0 )
+( double randomization )
 {
   parameterize();
   Scalars newT = myT;
@@ -159,7 +158,7 @@ oneStepSquaredCurvatureMinimization
       double  left = 0.0;
       double  coef = 0.0;
       const auto s = myPtrIdxSurface->surfel( v );
-      const auto k = myK.sOrthDir( s );
+      const auto k = myPtrK->sOrthDir( s );
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
@@ -272,12 +271,12 @@ oneStepSquaredCurvatureMinimization
     loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
     l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
   }
-  return std::make_pair( loo, sqrt( l2 ) );
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
 template < typename TDigitalSurfaceContainer >
 void
-ShroudsRegularization< TDigitalSurfaceContainer >::
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 enforceBounds()
 {
   for ( Vertex v = 0; v < myT.size(); ++v )
