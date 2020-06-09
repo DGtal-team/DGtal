@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/IndexedDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface2DSlice.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -59,17 +60,19 @@ namespace DGtal {
   /// surface, generally according to curvature-related
   /// regularizers.
   ///
-  /// @tparam TKSpace any celular grid space (any model of
-  /// concepts::CCellularGridSpaceND), generally some
-  /// KhalimskySpaceND.
-  ///
+  /// @tparam TDigitalSurfaceContainer any digital surface container
+  /// (a model concepts::CDigitalSurfaceContainer), for instance a
+  /// SetOfSurfels.
   ///
   /// @see testShroudsRegularization.cpp
   template <typename TDigitalSurfaceContainer>
   class ShroudsRegularization
   {
+    BOOST_CONCEPT_ASSERT
+    (( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ) );
+    
   public:
-    typedef TDigitalSurfaceContainer           Container
+    typedef TDigitalSurfaceContainer           Container;
     typedef ShroudsRegularization< Container > Self;
     typedef typename Container::KSpace         KSpace;
     typedef typename KSpace::Space             Space;
@@ -91,7 +94,7 @@ namespace DGtal {
     /// @{
     
     /// Default constructor. The object is not valid.
-    Shroud()
+    ShroudsRegularization()
       : myPtrIdxSurface( nullptr ), myPtrK( nullptr )
     {}
     
@@ -101,7 +104,8 @@ namespace DGtal {
     /// @param eps the bounds for varying the positions of vertices in ]0,1[
     ///
     /// @note Complexity is linear in the number of surfels of \a surface.
-    Shroud( CountedPtr< IdxDigitalSurface > surface, Scalar eps = 0.00001 )
+    ShroudsRegularization( CountedPtr< IdxDigitalSurface > surface,
+			   Scalar eps = 0.00001 )
       : myPtrIdxSurface( surface ),
 	myPtrK( &surface->container().space() ),
 	myEpsilon( eps )
@@ -116,7 +120,7 @@ namespace DGtal {
     /// @note Complexity is linear in the number of surfels of \a surface.
     void init()
     {
-      const auto embedder = SH3::getSCellEmbedder( myK );
+      const auto embedder = CanonicSCellEmbedder<KSpace>( *myPtrK );
       const auto nbV      = myPtrIdxSurface->nbVertices();
       myT.resize( nbV );
       myInsV.resize( nbV );
@@ -129,9 +133,9 @@ namespace DGtal {
       for ( Vertex v = 0; v < myT.size(); ++v )
 	{
 	  const auto s = myPtrIdxSurface->surfel( v );
-	  const auto k = myK.sOrthDir( s );
-	  myInsV[ v ]  = embedder( myK.sDirectIncident( s, k ) );
-	  myOutV[ v ]  = embedder( myK.sIndirectIncident( s, k ) );
+	  const auto k = myPtrK->sOrthDir( s );
+	  myInsV[ v ]  = embedder( myPtrK->sDirectIncident( s, k ) );
+	  myOutV[ v ]  = embedder( myPtrK->sIndirectIncident( s, k ) );
 	}
     }
     /// @}
@@ -392,7 +396,9 @@ namespace DGtal {
 	      Tracker* tracker = myPtrIdxSurface->container().newTracker( surf );
 	      Slice    slice( tracker, i );
 	      if ( ! slice.isClosed() ) {
-		trace.error() << "Shrouds works solely on closed surfaces." << endl;
+		trace.error() << "[ShroudsRegularization::precomputeTopology]"
+			      << " Shrouds works solely on closed surfaces."
+			      << std::endl;
 		return;
 	      }
 	      auto start = slice.cstart();
@@ -456,6 +462,26 @@ namespace DGtal {
     
   }; // end of class ShroudsRegularization
   
+  /// Helper function for constructing a ShroudsRegularization from a
+  /// (closed) \a surface.
+  ///
+  /// @tparam TDigitalSurfaceContainer any digital surface container
+  /// (a model concepts::CDigitalSurfaceContainer), for instance a
+  /// SetOfSurfels.
+  ///
+  /// @param surface a counted pointer on an indexed digital surface.
+  /// @param eps the bounds for varying the positions of vertices in ]0,1[
+  ///
+  /// @note Complexity is linear in the number of surfels of \a surface.
+  /// @see testShroudsRegularization.cpp
+  template < typename TDigitalSurfaceContainer > 
+  ShroudsRegularization<TDigitalSurfaceContainer>
+  makeShroudsRegularization
+  ( CountedPtr< IndexedDigitalSurface< TDigitalSurfaceContainer > > surface,
+    Scalar eps = 0.00001 )
+  {
+    return ShroudsRegularization<TDigitalSurfaceContainer>( surface, eps );
+  }
   
 } // namespace surfaces
 
