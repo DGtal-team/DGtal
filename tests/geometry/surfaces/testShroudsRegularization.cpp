@@ -111,5 +111,4 @@ TEST_CASE( "Testing ShroudsRegularization" )
   //! [ShroudsRegSnake]
 
   REQUIRE( energyRegSnk < energyInitSnk );
-
 }
