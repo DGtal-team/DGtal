@@ -18,6 +18,8 @@
   [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
   - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
   [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  - Implementation of Shrouds algorithm for smoothing digital surfaces class
+    (Jacques-Olivier Lachaud, [#1500](https://github.com/DGtal-team/DGtal/pull/1500))
 
 ## Changes
 
