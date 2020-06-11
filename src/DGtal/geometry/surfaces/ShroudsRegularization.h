@@ -104,7 +104,6 @@ namespace DGtal {
     /// Constructor from (closed) \a surface.
     /// Also calls methods \ref precomputeTopology and \ref init.
     /// @param surface a counted pointer on an indexed digital surface.
-    /// @param eps the bounds for varying the positions of vertices in ]0,1[
     ///
     /// @note Complexity is linear in the number of surfels of \a surface.
     ShroudsRegularization( CountedPtr< IdxDigitalSurface > surface,
@@ -141,6 +140,19 @@ namespace DGtal {
 	  myOutV[ v ]  = embedder( myPtrK->sIndirectIncident( s, k ) );
 	}
     }
+
+    /// Sets some parameters that affects the output regularized shape.
+    ///
+    /// @param eps the bounds for varying the positions of vertices in ]0,1[
+    /// @param alpha parameter for Snake first order regularization (~ area)
+    /// @param beta  parameter for Snake second order regularization (~ curvature)
+    void setParams( double eps, double alpha = 1.0, double beta = 1.0 )
+    {
+      myEpsilon = eps;
+      myAlpha   = alpha;
+      myBeta    = beta;
+    }
+    
     /// @}
     
     // ----------------------- Accessor services ------------------------------
@@ -477,7 +489,11 @@ namespace DGtal {
     const KSpace*                      myPtrK;
     /// The limiting bounds for the displacement of vertices along
     /// their unit dual edge: \f$ \lbrack \epsilon, 1-\epsilon \rbrack \f$
-    const Scalar                       myEpsilon;
+    Scalar                             myEpsilon;
+    /// The alpha parameter for Snake first order regularization (~ area)
+    Scalar                             myAlpha;
+    /// The beta parameter for Snake second order regularization (~ curvature)
+    Scalar                             myBeta;
     /// the index of the invalid vertex.
     Vertex                             myInvalid;
     /// the vector of vertex displacements along their dual edge (each
