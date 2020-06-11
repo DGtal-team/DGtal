@@ -34,8 +34,9 @@
 template < typename TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
-energyArea() const
+energyArea()
 {
+  parameterize();
   double E = 0.0;
   for ( Vertex v = 0; v < myT.size(); ++v )
     {
@@ -58,12 +59,12 @@ energyArea() const
 template < typename TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
-energySnake() const
+energySnake()
 {
+  parameterize();
   double E = 0.0;
   for ( Vertex v = 0; v < myT.size(); ++v )
     {
-      double area  = 1.0;
       const auto s = myPtrIdxSurface->surfel( v );
       const auto k = myPtrK->sOrthDir( s );
       for ( Dimension i = 0; i < 3; ++i )
@@ -83,7 +84,7 @@ energySnake() const
 	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
 	  const Scalar ypp = cn * vn[ k ] - ci * vi[ k ] + cp * vp[ k ];
 	  E += l * ( myAlpha * ( xp * xp + yp * yp )
-		     + myBeta * ( xpp * xpp + ypp * ypp ) );
+	  	     + myBeta * ( xpp * xpp + ypp * ypp ) );
 	}
     }
   return E;
@@ -92,8 +93,9 @@ energySnake() const
 template < typename TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
-energySquaredCurvature() const
+energySquaredCurvature() 
 {
+  parameterize();
   double E = 0.0;
   for ( Vertex v = 0; v < myT.size(); ++v )
     {
