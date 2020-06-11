@@ -365,8 +365,9 @@ namespace DGtal {
     /// Smooths the shape according to the minimization of elastic + thin plate
     /// energy (like snakes).
     ///
-    /// \f[ E(C) = \int_C alpha * (x'(s)^2 + y'(s)^2) + beta *
-    /// (x''(s)^2 + y''(s)^2) ds, \f]
+    /// \f[
+    /// E^{snk}(C) = \int_C alpha * (x'(s)^2 + y'(s)^2) + beta * (x''(s)^2 + y''(s)^2) ds, 
+    /// \f]
     ///
     /// for \f$ C=(x(s),y(s)) \f$ and boundary constraints.
     ///
@@ -403,7 +404,7 @@ namespace DGtal {
     /// Smooths the shape according to the minimization of squared curvature.
     ///
     /// \f[
-    /// E(C) = int_C (x'(s)*y''(s) + x''(s)*y'(s))^2 / (x'(s)^2 + y'(s)^2)^3 ds,
+    /// E^{\kappa^2}(C) = \int_C (x'(s)*y''(s) + x''(s)*y'(s))^2 / (x'(s)^2 + y'(s)^2)^3 ds,
     /// \f]
     ///
     /// for \f$ C=(x(s),y(s)) \f$ and boundary constraints.
