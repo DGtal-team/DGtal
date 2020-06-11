@@ -64,6 +64,7 @@ namespace DGtal {
   /// (a model concepts::CDigitalSurfaceContainer), for instance a
   /// SetOfSurfels.
   ///
+  /// @see moduleShrouds
   /// @see testShroudsRegularization.cpp
   template <typename TDigitalSurfaceContainer>
   class ShroudsRegularization

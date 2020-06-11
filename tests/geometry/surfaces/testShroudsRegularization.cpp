@@ -14,7 +14,7 @@
  *
  **/
 /**
- * @file
+ * @file testShroudsRegularization.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -51,7 +51,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
   typedef ShroudsRegularization< Container >::Regularization RegType;
   
   auto params = SH3::defaultParameters();
-  params( "polynomial", "goursat" )( "gridstep", 0.3)("verbose", 0);
+  params( "polynomial", "goursat" )( "gridstep", 1)("verbose", 0);
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
