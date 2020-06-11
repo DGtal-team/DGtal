@@ -37,7 +37,7 @@ namespace DGtal
 {
 
   /// Splits an integral-array element into an integral-array element
-  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// and a 32 bit integer. The expected behaviour is the following one for an element e
   /// of dimension 3:
   /// \code
   /// Splitter< Point > split;
@@ -105,7 +105,7 @@ namespace DGtal
   };
   
   /// Splits an integral-array element into an integral-array element
-  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// and a 32 bit integer. The expected behaviour is the following one for an element e
   /// of dimension 3:
   /// \code
   /// Splitter< Point > split;
@@ -177,7 +177,7 @@ namespace DGtal
   }; // struct Splitter< PointVector< dim, DGtal::int32_t, TContainer > >
 
   /// Splits an integral-array element into an integral-array element
-  /// and a 32 bit integer. The expected behaviour is for an element e
+  /// and a 32 bit integer. The expected behaviour is the following one for an element e
   /// of dimension 3:
   /// \code
   /// Splitter< Point > split;
@@ -192,7 +192,7 @@ namespace DGtal
   /// @note In subclass, we use mask operations instead of mult/div 32. The result
   /// 4 x times faster !
   ///
-  /// @note Specialization for 32 bits integer types
+  /// @note Specialization for 64 bits integer types
   ///
   /// @see UnorderedSetByBlock
   template < DGtal::Dimension dim, typename TContainer >

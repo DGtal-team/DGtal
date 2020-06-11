@@ -209,7 +209,7 @@ namespace DGtal
     /// @param k any non negative integer
     /// @return computes and returns the number of k-dimensional cells
     /// in this cell geometry.
-    Size computeNbCells( Dimension k ) const;
+    Size computeNbCells(const Dimension k ) const;
     /// @return computes and return the Euler chracteristic of this set of cells.
     Integer computeEuler() const;
     /// @return the smallest dimension for which cells are stored in this object.
@@ -472,20 +472,20 @@ namespace DGtal
     static
     UnorderedSetByBlock<typename KSpace::Point>
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock<typename KSpace::Point> kpoints;
       if ( i == 0 ) 
-	for ( auto it = itB; it != itE; ++it )
-	  kpoints.insert( K.uKCoords( K.uPointel( *it ) ) );
+        for ( auto it = itB; it != itE; ++it )
+          kpoints.insert( K.uKCoords( K.uPointel( *it ) ) );
       else
-	for ( auto it = itB; it != itE; ++it )
-	  {
-	    auto pointel = K.uPointel( *it );
-	    auto cofaces = K.uCoFaces( pointel );
-	    for ( auto&& f : cofaces )
-	      if ( K.uDim( f ) == i ) kpoints.insert( K.uKCoords( f ) );
-	  }
+        for ( auto it = itB; it != itE; ++it )
+          {
+            auto pointel = K.uPointel( *it );
+            auto cofaces = K.uCoFaces( pointel );
+            for ( auto&& f : cofaces )
+              if ( K.uDim( f ) == i ) kpoints.insert( K.uKCoords( f ) );
+          }
       return kpoints;
     }
     
@@ -558,17 +558,17 @@ namespace DGtal
     static
     UnorderedSetByBlock< typename KSpace::Point >
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock< typename KSpace::Point > kpoints;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto kp = K.uKCoords( K.uPointel( *it ) );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]     );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]     );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1 );
-	}
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1 );
+        }
       return kpoints;
     }
     
@@ -646,19 +646,19 @@ namespace DGtal
     static
     UnorderedSetByBlock< typename KSpace::Point >
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock< typename KSpace::Point > kpoints;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto kp = K.uKCoords( K.uPointel( *it ) );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] + 1 );
-	}
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] + 1 );
+        }
       return kpoints;
     }
     
@@ -736,17 +736,17 @@ namespace DGtal
     static
     UnorderedSetByBlock< typename KSpace::Point >
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock< typename KSpace::Point > kpoints;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto kp = K.uKCoords( K.uPointel( *it ) );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1 );
-	}
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1 );
+        }
       return kpoints;
     }
     
@@ -844,25 +844,25 @@ namespace DGtal
     static
     UnorderedSetByBlock< typename KSpace::Point >
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock< typename KSpace::Point > kpoints;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto kp = K.uKCoords( K.uPointel( *it ) );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ]     );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] + 1 );
-	}
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] + 1 );
+        }
       return kpoints;
     }
     
@@ -955,21 +955,21 @@ namespace DGtal
     static
     UnorderedSetByBlock< typename KSpace::Point >
     getIncidentKPointsToPoints( const KSpace& K,
-				PointIterator itB, PointIterator itE )
+                                PointIterator itB, PointIterator itE )
     {
       UnorderedSetByBlock< typename KSpace::Point > kpoints;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto kp = K.uKCoords( K.uPointel( *it ) );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
-	  kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
-	}
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
+        }
       return kpoints;
     }
     
