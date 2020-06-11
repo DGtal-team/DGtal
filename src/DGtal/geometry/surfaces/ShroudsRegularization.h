@@ -106,18 +106,19 @@ namespace DGtal {
     /// @param surface a counted pointer on an indexed digital surface.
     ///
     /// @note Complexity is linear in the number of surfels of \a surface.
-    ShroudsRegularization( CountedPtr< IdxDigitalSurface > surface,
-			   Scalar eps = 0.00001 )
+    ShroudsRegularization( CountedPtr< IdxDigitalSurface > surface )
       : myPtrIdxSurface( surface ),
 	myPtrK( &surface->container().space() ),
-	myEpsilon( eps )
+	myEpsilon( 0.0001 ), myAlpha( 1.0 ), myBeta( 1.0 )
     {
       precomputeTopology();
       init();
     }
 
-    /// Prepares the shroud for optimization. Must be called before any
-    /// call to oneStep, oneStepELSnake, oneStepELCurv2.
+    /// Prepares the shroud for optimization. Must be called before
+    /// any call to \ref regularize, \ref oneStepAreaMinimization,
+    /// \ref oneStepSnakeMinimization, 
+    /// \ref oneStepSquaredCurvatureMinimization.
     ///
     /// @note Complexity is linear in the number of surfels of \a surface.
     void init()
@@ -151,6 +152,17 @@ namespace DGtal {
       myEpsilon = eps;
       myAlpha   = alpha;
       myBeta    = beta;
+    }
+    /// Retrieves the parameters that affects the output regularized shape.
+    ///
+    /// @return a tuple (eps, alpha, beta) where \a eps is the bounds
+    /// for varying the positions of vertices in ]0,1[, \a alpha is
+    /// the parameter for Snake first order regularization (~ area),
+    /// \a beta is the parameter for Snake second order regularization
+    /// (~ curvature).
+    std::tuple< double, double, double > getParams() const
+    {
+      return std::make_tuple( myEpsilon, myAlpha, myBeta );
     }
     
     /// @}
@@ -269,7 +281,10 @@ namespace DGtal {
     /// @{
 
     /// Generic method for shrouds regularization.
-    /// @param reg your choice of regularization in AREA, SNAKE, SQUARED_CURVATURE (works best)
+    ///
+    /// @param reg your choice of regularization in AREA (not nice in
+    /// 3D), SNAKE (not so bad), SQUARED_CURVATURE (works best)
+    ///
     /// @param randomization if greater than 0.0 add some perturbation to
     /// the solution. May be used for quitting a local minima.
     ///
@@ -278,15 +293,14 @@ namespace DGtal {
     ///
     /// @param maxNb the maximum number of optimization steps.
     ///
-    /// @param alpha parameter for Snake first order regularization (~ area)
-    /// @param beta  parameter for Snake second order regularization (~ curvature)
+    /// @see oneStepAreaMinimization
+    /// @see oneStepSnakeMinimization
+    /// @see oneStepSquaredCurvatureMinimization
     std::pair<double,double>
     regularize( Regularization   reg = Regularization::SQUARED_CURVATURE,
 		double randomization = 0.0,
 		double       max_loo = 0.0001,
-		int            maxNb = 100,
-		double         alpha = 1.0,
-		double          beta = 1.0 )
+		int            maxNb = 100 )
     {
       double loo      = 0.0;
       double  l2      = 0.0;
@@ -297,16 +311,44 @@ namespace DGtal {
 	  reg == Regularization::SQUARED_CURVATURE
 	  ? oneStepSquaredCurvatureMinimization( r )
 	  : reg == Regularization::SNAKE
-	  ? oneStepSnakeMinimization( alpha, beta, r )
+	  ? oneStepSnakeMinimization( myAlpha, myBeta, r )
 	  : oneStepAreaMinimization( r );
-	trace.info() << "[Shrouds iteration " << nb
-		     << "] dx <= " << loo << " l2=" << l2 << std::endl;
+	if ( nb % 50 == 0 )
+	  trace.info() << "[Shrouds iteration " << nb
+		       << " E=" << energy( reg )
+		       << "] dx <= " << loo << " l2=" << l2 << std::endl;
 	r  *= 0.9;
 	nb += 1;
       } while ( loo > max_loo && nb < maxNb );
       return std::make_pair( loo, l2 );
     }
-					 
+
+    /// @param reg your choice of regularization in AREA (not nice in
+    /// 3D), SNAKE (not so bad), SQUARED_CURVATURE (works best)
+    ///
+    /// @return the current energy of the shrouds, according to the
+    /// chosen regularization process.
+    double energy( Regularization reg = Regularization::SQUARED_CURVATURE ) const
+    {
+      if ( reg == Regularization::SQUARED_CURVATURE )
+	return energySquaredCurvature();
+      else if ( reg == Regularization::SNAKE )
+        return energySnake();
+      else
+	return energyArea();
+    }
+
+    /// @return the current energy associated to the squared curvature
+    /// regularization process.
+    double energySquaredCurvature() const;
+
+    /// @return the current energy associated to the snake
+    /// regularization process.
+    double energySnake() const;
+
+    /// @return the current energy associated to the area
+    /// regularization process.
+    double energyArea() const;
     
     /// Smooths the shape according to the minimization of area.
     ///

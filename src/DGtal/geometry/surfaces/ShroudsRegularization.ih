@@ -32,6 +32,98 @@
 //////////////////////////////////////////////////////////////////////////////
 
 template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energyArea() const
+{
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double area  = 1.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  area *= l;
+	}
+      E += area;
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energySnake() const
+{
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double area  = 1.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar ci = 2.0 / ( dp*dn );
+	  const RealPoint vn = position( myNext[ i ][ v ] );
+	  const RealPoint vp = position( myPrev[ i ][ v ] );
+	  const RealPoint vi = position( v );
+	  const Scalar xp = ( vn[ i ] - vp[ i ] ) / ( dn + dp );
+	  const Scalar yp = ( vn[ k ] - vp[ k ] ) / ( dn + dp );
+	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
+	  const Scalar ypp = cn * vn[ k ] - ci * vi[ k ] + cp * vp[ k ];
+	  E += l * ( myAlpha * ( xp * xp + yp * yp )
+		     + myBeta * ( xpp * xpp + ypp * ypp ) );
+	}
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energySquaredCurvature() const
+{
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double area  = 1.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar ci = 2.0 / ( dp*dn );
+	  const RealPoint vn = position( myNext[ i ][ v ] );
+	  const RealPoint vp = position( myPrev[ i ][ v ] );
+	  const RealPoint vi = position( v );
+	  const Scalar xp = ( vn[ i ] - vp[ i ] ) / ( dn + dp );
+	  const Scalar yp = ( vn[ k ] - vp[ k ] ) / ( dn + dp );
+	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
+	  const Scalar ypp = cn * vn[ k ] - ci * vi[ k ] + cp * vp[ k ];
+	  E += l * ( pow( xp * ypp - yp * xpp, 2.0 )
+		     / pow( xp * xp + yp * yp, 3.0 ) );
+	}
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepAreaMinimization( double randomization )
