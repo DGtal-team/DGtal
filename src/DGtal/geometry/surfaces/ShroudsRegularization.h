@@ -51,8 +51,8 @@
 namespace DGtal {
   /// Description of template class 'ShroudsRegularization' <p>
   ///
-  /// \brief Aim: Implements the Shrouds Regularization as described
-  /// in @cite coeurjolly17regDGCI.
+  /// \brief Aim: Implements the Shrouds Regularization algorithm of
+  /// Nielson et al \cite nielson2003shrouds.
   ///
   /// Represents a decomposition of a closed digital surface into
   /// three stacks of slices, one per dimension. Gives methods to
@@ -60,11 +60,14 @@ namespace DGtal {
   /// surface, generally according to curvature-related
   /// regularizers.
   ///
+  /// @see \ref moduleShrouds
+  ///
+  /// @note This method is limited to \b closed digital surfaces.
+  ///
   /// @tparam TDigitalSurfaceContainer any digital surface container
   /// (a model concepts::CDigitalSurfaceContainer), for instance a
   /// SetOfSurfels.
   ///
-  /// @see moduleShrouds
   /// @see testShroudsRegularization.cpp
   template <typename TDigitalSurfaceContainer>
   class ShroudsRegularization
@@ -366,7 +369,7 @@ namespace DGtal {
     /// energy (like snakes).
     ///
     /// \f[
-    /// E^{snk}(C) = \int_C alpha * (x'(s)^2 + y'(s)^2) + beta * (x''(s)^2 + y''(s)^2) ds, 
+    /// E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds, 
     /// \f]
     ///
     /// for \f$ C=(x(s),y(s)) \f$ and boundary constraints.
@@ -404,7 +407,7 @@ namespace DGtal {
     /// Smooths the shape according to the minimization of squared curvature.
     ///
     /// \f[
-    /// E^{\kappa^2}(C) = \int_C (x'(s)*y''(s) + x''(s)*y'(s))^2 / (x'(s)^2 + y'(s)^2)^3 ds,
+    /// E^{\kappa^2}(C) = \int_C (x'(s) y''(s) + x''(s) y'(s))^2 / (x'(s)^2 + y'(s)^2)^3 ds,
     /// \f]
     ///
     /// for \f$ C=(x(s),y(s)) \f$ and boundary constraints.

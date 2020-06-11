@@ -60,7 +60,6 @@ TEST_CASE( "Testing ShroudsRegularization" )
   
   //! [ShroudsRegUsage]
   auto idxsurface     = SH3::makeIdxDigitalSurface( surface, params );
-  auto surfels        = SH3::getIdxSurfelRange( idxsurface, params );
   ShroudsRegularization< Container > shrouds_reg( idxsurface );
   auto originalPos    = shrouds_reg.positions();
   //! [ShroudsRegUsage]
