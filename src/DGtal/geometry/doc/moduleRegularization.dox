@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
 
-@page moduleRegularization Digital Surface Regularization
+@page moduleRegularization Digital Surface Regularization by normal vector alignment 
 
 @writers David Coeurjolly
 
@@ -25,6 +25,12 @@ Related example:  geometry/surfaces/testDigitalSurfaceRegularization.cpp
 
 [TOC]
 
+\note In opposition with the method described in \ref moduleShrouds,
+this digital surface regularization method is not limited to closed
+surface and may process open digital surfaces. Furthermore, the
+optimized energy is convex and much less iterations are needed to
+converge to the optimal position. The price to pay is the computation
+of an estimated normal vector field.
 
 \section moduleReg_sec1 Introduction
 
