@@ -59,59 +59,58 @@ TEST_CASE( "Testing ShroudsRegularization" )
   //! [ShroudsRegInit]
   
   //! [ShroudsRegUsage]
-  auto idxsurface      = SH3::makeIdxDigitalSurface( surface, params );
-  auto surfels         = SH3::getIdxSurfelRange( idxsurface, params );
+  auto idxsurface     = SH3::makeIdxDigitalSurface( surface, params );
+  auto surfels        = SH3::getIdxSurfelRange( idxsurface, params );
   ShroudsRegularization< Container > shrouds_reg( idxsurface );
-  auto originalPos     = shrouds_reg.positions();
+  auto originalPos    = shrouds_reg.positions();
   //! [ShroudsRegUsage]
   {
     auto polySurf = SH3::makeDualPolygonalSurface( idxsurface );
     SH3::saveOBJ( polySurf, "goursat-shrouds-init.obj" );
   }
   
-  //! [ShroudsRegOptimize]
-  double loo      = 0.0;
-  double  l2      = 0.0;
+  //! [ShroudsRegK2]
+  double          loo = 0.0;
+  double           l2 = 0.0;
+  double energyInitK2 = shrouds_reg.energy    ( RegType::SQUARED_CURVATURE );
   std::tie( loo, l2 ) = shrouds_reg.regularize( RegType::SQUARED_CURVATURE,
-						0.5, 0.0001, 1000 );
-  auto regularizedPos = shrouds_reg.positions();
-  //! [ShroudsRegOptimize]
+						0.5, 0.0001, 100 );
+  double energyRegK2  = shrouds_reg.energy    ( RegType::SQUARED_CURVATURE );
+  //! [ShroudsRegK2]
+  
   REQUIRE( loo < 0.1 );
   REQUIRE( l2 <= loo );
+  REQUIRE( energyRegK2 < energyInitK2 );
 
   {
     //! [ShroudsRegSaveObj]
-    auto polySurf = SH3::makeDualPolygonalSurface( idxsurface );
-    auto polySurfPos = polySurf->positions();
+    auto regularizedPos = shrouds_reg.positions();
+    auto polySurf       = SH3::makeDualPolygonalSurface( idxsurface );
+    auto polySurfPos    = polySurf->positions();
     for ( auto i = 0; i < regularizedPos.size(); i++ )
       polySurfPos[ i ] = regularizedPos[ i ];
     SH3::saveOBJ( polySurf, "goursat-shrouds-reg-k2.obj" );
     //! [ShroudsRegSaveObj]
   }
 
+  //! [ShroudsRegArea]
   shrouds_reg.init();  
-  std::tie( loo, l2 ) = shrouds_reg.regularize( RegType::AREA,
-						0.5, 0.0001, 1000 );
-  {
-    auto regularizedPos = shrouds_reg.positions();
-    auto polySurf = SH3::makeDualPolygonalSurface( idxsurface );
-    auto polySurfPos = polySurf->positions();
-    for ( auto i = 0; i < regularizedPos.size(); i++ )
-      polySurfPos[ i ] = regularizedPos[ i ];
-    SH3::saveOBJ( polySurf, "goursat-shrouds-reg-area.obj" );
-    //! [ShroudsRegSaveObj]
-  }
+  double energyInitArea= shrouds_reg.energy    ( RegType::AREA );
+  std::tie( loo, l2 )  = shrouds_reg.regularize( RegType::AREA,
+						 0.5, 0.0001, 100 );
+  double energyRegArea = shrouds_reg.energy    ( RegType::AREA );
+  //! [ShroudsRegArea]
 
+  REQUIRE( energyRegArea < energyInitArea );
+  
+  //! [ShroudsRegSnake]
   shrouds_reg.init();  
+  double energyInitSnk= shrouds_reg.energy    ( RegType::SNAKE );
   std::tie( loo, l2 ) = shrouds_reg.regularize( RegType::SNAKE,
-						0.5, 0.0001, 1000 );
-  {
-    auto regularizedPos = shrouds_reg.positions();
-    auto polySurf = SH3::makeDualPolygonalSurface( idxsurface );
-    auto polySurfPos = polySurf->positions();
-    for ( auto i = 0; i < regularizedPos.size(); i++ )
-      polySurfPos[ i ] = regularizedPos[ i ];
-    SH3::saveOBJ( polySurf, "goursat-shrouds-reg-snake.obj" );
-    //! [ShroudsRegSaveObj]
-  }
+						0.5, 0.0001, 100 );
+  double energyRegSnk = shrouds_reg.energy    ( RegType::SNAKE );
+  //! [ShroudsRegSnake]
+
+  REQUIRE( energyRegSnk < energyInitSnk );
+
 }
