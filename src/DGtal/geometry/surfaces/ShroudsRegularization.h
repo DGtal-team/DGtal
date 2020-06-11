@@ -328,7 +328,7 @@ namespace DGtal {
     ///
     /// @return the current energy of the shrouds, according to the
     /// chosen regularization process.
-    double energy( Regularization reg = Regularization::SQUARED_CURVATURE ) const
+    double energy( Regularization reg = Regularization::SQUARED_CURVATURE )
     {
       if ( reg == Regularization::SQUARED_CURVATURE )
 	return energySquaredCurvature();
@@ -340,15 +340,15 @@ namespace DGtal {
 
     /// @return the current energy associated to the squared curvature
     /// regularization process.
-    double energySquaredCurvature() const;
+    double energySquaredCurvature();
 
     /// @return the current energy associated to the snake
     /// regularization process.
-    double energySnake() const;
+    double energySnake();
 
     /// @return the current energy associated to the area
     /// regularization process.
-    double energyArea() const;
+    double energyArea();
     
     /// Smooths the shape according to the minimization of area.
     ///
