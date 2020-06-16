@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/kernel/CUnsignedNumber.h"
-#include "DGtal/kernel/CIntegralNumber.h"
+#include "DGtal/kernel/CBoundedNumber.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/PointHashFunctions.h"
 
@@ -85,7 +85,7 @@ namespace DGtal
     split( Element e )
     {
       auto block_coords = 
-        ( e[ 0 ] & static_cast<Coordinate>( sizeof( Word ) * CHAR_BITS - 1 ) );
+        ( e[ 0 ] & static_cast<Coordinate>( sizeof( Word ) * 8 - 1 ) );
       e[ 0 ] -= block_coords;    
       return { e, block_coords };
     }

@@ -171,7 +171,7 @@ addCellsTouchingPolytope( const LatticePolytope& polytope )
     { 
       auto kpoints = getIntersectedKPoints( polytope, i );
       for ( auto&& c : kpoints )
-	myKPoints.emplace( c );
+	myKPoints.insert( c );
     }
 }
 //-----------------------------------------------------------------------------
@@ -184,7 +184,7 @@ addCellsTouchingPolytope( const RationalPolytope& polytope )
     { 
       auto kpoints = getIntersectedKPoints( polytope, i );
       for ( auto&& c : kpoints )
-	myKPoints.emplace( c );
+	myKPoints.insert( c );
     }
 }
 //-----------------------------------------------------------------------------
@@ -196,7 +196,7 @@ operator+=( const CellGeometry& other )
   if ( this != &other )
     {
       for ( auto&& c : other.myKPoints )
-        myKPoints.emplace( c );
+        myKPoints.insert( c );
       myMinCellDim = std::min( myMinCellDim, other.myMinCellDim );
       myMaxCellDim = std::max( myMaxCellDim, other.myMaxCellDim );
     }
@@ -278,7 +278,7 @@ subset( const CellGeometry& other, const Dimension k ) const
   UnorderedSetByBlock< Point, Splitter< Point, uint64_t > > k_dim_points;
   for ( auto&& c : myKPoints )
     if ( dim( c ) == k )
-      k_dim_points.emplace( c );
+      k_dim_points.insert( c );
   return other.myKPoints.includes( k_dim_points );
 }
 
