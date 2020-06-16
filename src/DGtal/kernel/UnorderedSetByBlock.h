@@ -163,6 +163,7 @@ namespace DGtal
     typedef UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual > Self;
     typedef TSplitter               Splitter;
     typedef typename Splitter::Word Word;
+    typedef typename Splitter::Coordinate Coordinate;
     /// The underlying container, an unordered_map.
     typedef std::unordered_map< Key, Word, Hash, KeyEqual,
 				UnorderedMapAllocator > Container;
@@ -226,7 +227,8 @@ namespace DGtal
       /// @param aSet a reference to the visited unordered block set
       /// @param anIt an iterator in the container of this set.
       /// @param aBit the bit index in the word pointed by \a anIt.
-      const_iterator( const Self& aSet, typename Container::const_iterator anIt, DGtal::Dimension aBit )
+      const_iterator( const Self& aSet, typename Container::const_iterator anIt,
+		      Coordinate aBit )
 	: collection( &aSet ), it( anIt ), bit( aBit )
       {
 	if ( it != collection->my_elements.cend() )
@@ -298,7 +300,7 @@ namespace DGtal
       /// the hidden iterator that traverses the block map.
       typename Container::const_iterator it;
       /// the current position in the block.
-      DGtal::Dimension             bit;
+      Coordinate                   bit;
       /// the current value of the block, where visited bits have been erased.
       Word                         current;
       
@@ -336,7 +338,7 @@ namespace DGtal
       /// @param aSet a reference to the visited unordered block set
       /// @param anIt an iterator in the container of this set.
       /// @param aBit the bit index in the word pointed by \a anIt.
-      iterator( Self& aSet, typename Container::iterator anIt, DGtal::Dimension aBit )
+      iterator( Self& aSet, typename Container::iterator anIt, Coordinate aBit )
 	: collection( &aSet ), it( anIt ), bit( aBit )
       {
 	if ( it != collection->my_elements.end() )
@@ -440,7 +442,7 @@ namespace DGtal
       /// the hidden iterator that traverses the block map.
       typename Container::iterator it;
       /// the current position in the block.
-      DGtal::Dimension             bit;
+      Coordinate                   bit;
       /// the current value of the block, where visited bits have been erased.
       Word                         current;
       
