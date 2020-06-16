@@ -70,7 +70,7 @@ namespace DGtal
     typedef TWord                        Word;
     typedef typename Element::Coordinate Coordinate;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber< Word > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Word > ));
     BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber< Word > ));
     
     /// Splits an element \a e into a pair grouping its block
