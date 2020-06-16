@@ -622,7 +622,8 @@ namespace DGtal
   public:
     
     /// An edge is (topologically) flippable iff: (1) it does not lie
-    /// on the boundary, (2) it is bordered by two triangles.
+    /// on the boundary, (2) it is bordered by two triangles, (3) the
+    /// two other vertices of the quad are not already neighbors.
     ///
     /// @param hei any valid half-edge index.
     /// @return 'true' if the edge containing \a hei is topologically flippable.
@@ -631,14 +632,22 @@ namespace DGtal
     bool isFlippable( const Index hei ) const
     {
       ASSERT( hei != HALF_EDGE_INVALID_INDEX );
-      const HalfEdge& he = halfEdge( hei );
-      const Index    hei2 = he.opposite;
+      const HalfEdge&   he = halfEdge( hei );
+      const Index     hei2 = he.opposite;
+      const HalfEdge&  he2 = halfEdge( hei2 );
       // check if hei borders an infinite face.
-      if ( he.face == HALF_EDGE_INVALID_INDEX ) return false; 
+      if ( he.face  == HALF_EDGE_INVALID_INDEX ) return false; 
       // check if hei2 borders an infinite face.
-      if ( halfEdge( hei2 ).face == HALF_EDGE_INVALID_INDEX ) return false; 
+      if ( he2.face == HALF_EDGE_INVALID_INDEX ) return false; 
       // Checks that he1 and he2 border a triangle.
-      return ( nbSides( hei ) == 3 ) && ( nbSides( hei2 ) == 3);
+      if ( ( nbSides( hei ) != 3 ) || ( nbSides( hei2 ) != 3 ) ) return false;
+      // Checks that the two other vertices of the two surrounding
+      // triangles are not already neighbors
+      const VertexIndex v1 = halfEdge( he.next  ).toVertex;
+      const VertexIndex v2 = halfEdge( he2.next ).toVertex;
+      const auto neighb_v1 = neighboringVertices( v1 );
+      const auto     it_v2 = std::find( neighb_v1.cbegin(), neighb_v1.cend(), v2 );
+      return it_v2 == neighb_v1.cend();
     }
 
     /// Tries to flip the edge containing \a hei.
