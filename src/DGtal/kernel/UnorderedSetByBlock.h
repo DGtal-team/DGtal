@@ -39,21 +39,24 @@ namespace DGtal
 {
 
   /// Splits an integral-array element into an integral-array element
-  /// and a 32 bit integer. The expected behaviour is for an element e
-  /// of dimension 3:
+  /// and a 32 or 64 bit integer (depending on \a TWord). The expected
+  /// behaviour is for an element e of dimension 3 (and 32 bits word):
+  ///
   /// \code
-  /// Splitter< Point > split;
+  /// Splitter< Point > split; // default is split with 32 bits word
   /// auto v = split( Point( 117, 43, 52 ) );
-  /// v.first  == 117 & 0x1f
-  /// v.second == Point( 117 & 0xffff...ffe0, 43, 52 );
+  /// v.first  == 117 & 31
+  /// v.second == Point( 117 - v.first, 43, 52 );
+  /// \endcode
+  ///
+  /// \code
+  /// Splitter< Point,uint64_t > split; // for 64 bits word
+  /// auto v = split( Point( 117, 43, 52 ) );
+  /// v.first  == 117 & 63
+  /// v.second == Point( 117 - v.first, 43, 52 );
   /// \endcode
   ///
   /// @tparam TElement the type of array-like element.
-  ///
-  /// @note In subclass, we use mask operations instead of mult/div 32. The result
-  /// 4 x times faster !
-  ///
-  /// @note The generic class is not implemented since it is based on bit operations.
   ///
   /// @see UnorderedSetByBlock
   template < typename TElement, typename TWord = uint32_t >
@@ -82,13 +85,6 @@ namespace DGtal
       e[ 0 ] -= block_coords;    
       return { e, block_coords };
     }
-    // static
-    // std::pair< Element, DGtal::Dimension >
-    // split( const Element& e )
-    // {
-    //   BOOST_STATIC_ASSERT( true && "[Splitter<TElement>::split] Generic version not implemented." );
-    //   return std::make_pair( e, 0 );
-    // }
 
     /// Rejoins a splitted element (see \ref split).
     ///
@@ -104,15 +100,6 @@ namespace DGtal
       return e;
     }
 
-    // static
-    // Element
-    // join( const Element& e, DGtal::Dimension x )
-    // {
-    //   BOOST_STATIC_ASSERT( true && "[Splitter<TElement>::join] Generic version not implemented." );
-    //   (void)x; // Avoids unused parameter warning
-    //   return e;
-    // }
-
     /// Rejoins a splitted element (see \ref split).
     ///
     /// @param p a pair grouping the block coordinate and the bit
@@ -127,12 +114,6 @@ namespace DGtal
       ge[ 0 ] |= p.second; 
       return ge;
     }
-    // static
-    // Element
-    // join( const std::pair< Element, DGtal::Dimension >& p )
-    // {
-    //   return join( p.first, p.second );
-    // }
   };
   
   // /// Splits an integral-array element into an integral-array element

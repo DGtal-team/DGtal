@@ -351,7 +351,8 @@ namespace DGtal
     /// The cellular space for cells.
     KSpace myK;
     /// The unordered set that stores cells.
-    UnorderedSetByBlock< Point > myKPoints;
+    UnorderedSetByBlock< Point,
+			 Splitter< Point, uint64_t> > myKPoints;
     /// The minimum cell dimension
     Dimension myMinCellDim;
     /// The maximal cell dimension
@@ -470,11 +471,13 @@ namespace DGtal
     /// @note General method. Note as efficient as specializations.
     template <typename PointIterator>
     static
-    UnorderedSetByBlock<typename KSpace::Point>
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t > >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock<typename KSpace::Point> kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t > > kpoints;
       if ( i == 0 ) 
 	for ( auto it = itB; it != itE; ++it )
 	  kpoints.insert( K.uKCoords( K.uPointel( *it ) ) );
@@ -556,11 +559,13 @@ namespace DGtal
     /// @return the incident 1-kpoints to the given range of points [itB, itE).
     template <typename PointIterator>
     static
-    UnorderedSetByBlock< typename KSpace::Point >
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t > >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock< typename KSpace::Point > kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t > > kpoints;
       for ( auto it = itB; it != itE; ++it )
 	{
 	  auto kp = K.uKCoords( K.uPointel( *it ) );
@@ -644,11 +649,13 @@ namespace DGtal
     /// @return the incident 1-kpoints to the given range of points [itB, itE).
     template <typename PointIterator>
     static
-    UnorderedSetByBlock< typename KSpace::Point >
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t > >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock< typename KSpace::Point > kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t > > kpoints;
       for ( auto it = itB; it != itE; ++it )
 	{
 	  auto kp = K.uKCoords( K.uPointel( *it ) );
@@ -734,11 +741,13 @@ namespace DGtal
     /// @return the incident 2-kpoints to the given range of points [itB, itE).
     template <typename PointIterator>
     static
-    UnorderedSetByBlock< typename KSpace::Point >
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t> >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock< typename KSpace::Point > kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t> > kpoints;
       for ( auto it = itB; it != itE; ++it )
 	{
 	  auto kp = K.uKCoords( K.uPointel( *it ) );
@@ -842,11 +851,13 @@ namespace DGtal
     /// @return the incident 2-kpoints to the given range of points [itB, itE).
     template <typename PointIterator>
     static
-    UnorderedSetByBlock< typename KSpace::Point >
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t> >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock< typename KSpace::Point > kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t> > kpoints;
       for ( auto it = itB; it != itE; ++it )
 	{
 	  auto kp = K.uKCoords( K.uPointel( *it ) );
@@ -953,11 +964,13 @@ namespace DGtal
     /// @return the incident 3-kpoints to the given range of points [itB, itE).
     template <typename PointIterator>
     static
-    UnorderedSetByBlock< typename KSpace::Point >
+    UnorderedSetByBlock< typename KSpace::Point,
+			 Splitter< typename KSpace::Point, uint64_t> >
     getIncidentKPointsToPoints( const KSpace& K,
 				PointIterator itB, PointIterator itE )
     {
-      UnorderedSetByBlock< typename KSpace::Point > kpoints;
+      UnorderedSetByBlock< typename KSpace::Point,
+			   Splitter< typename KSpace::Point, uint64_t> > kpoints;
       for ( auto it = itB; it != itE; ++it )
 	{
 	  auto kp = K.uKCoords( K.uPointel( *it ) );

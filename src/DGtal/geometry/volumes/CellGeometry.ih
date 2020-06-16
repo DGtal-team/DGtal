@@ -275,7 +275,7 @@ bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other, const Dimension k ) const
 {
-  UnorderedSetByBlock< Point > k_dim_points;
+  UnorderedSetByBlock< Point, Splitter< Point, uint64_t > > k_dim_points;
   for ( auto&& c : myKPoints )
     if ( dim( c ) == k )
       k_dim_points.emplace( c );
@@ -592,7 +592,7 @@ std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
 DGtal::CellGeometry<TKSpace>::
 getTouchedKPoints( const std::vector< Point >& points, const Dimension i ) const
 {
-  UnorderedSetByBlock< Point > kpoints;
+  UnorderedSetByBlock< Point, Splitter< Point, uint64_t > > kpoints;
   if ( i == 0 )
     kpoints = CellGeometryFunctions< KSpace, 0, KSpace::dimension>
       ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
