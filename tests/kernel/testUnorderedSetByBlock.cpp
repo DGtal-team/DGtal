@@ -189,13 +189,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     REQUIRE( std::equal( stdTrv.cbegin(), stdTrv.cend(), blkTrv.cbegin() ) );
   }
   WHEN( "Erasing a range in identical std::unordered_set<> and UnorderedSetByBlock<>, the same number of elements is left" ) {
+    int nb_std_before = stdSet.size();
+    int nb_blk_before = blkSet.size();
     auto stdItB = stdSet.begin(); std::advance( stdItB, 10 );
     auto blkItB = blkSet.begin(); std::advance( blkItB, 10 );
     auto stdItE = stdItB;         std::advance( stdItE, 20 );
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    REQUIRE( blkSet  .size() == stdSet  .size() );
+    int nb_std = 0;
+    int nb_blk = 0;
+    for ( auto&& c : stdSet ) nb_std += 1;
+    for ( auto&& c : blkSet ) nb_blk += 1;
+    REQUIRE( stdSet.size() == nb_std );
+    REQUIRE( stdSet.size() == nb_std_before - 20 );
+    REQUIRE( blkSet.size() == nb_blk );
+    REQUIRE( blkSet.size() == nb_blk_before - 20 );
+    REQUIRE( blkSet.size() == stdSet.size() );
   }
   THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
     const auto stdMem = blkSet.memory_usage_unordered_set();
@@ -369,13 +379,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     REQUIRE( std::equal( stdTrv.cbegin(), stdTrv.cend(), blkTrv.cbegin() ) );
   }
   WHEN( "Erasing a range in identical std::unordered_set<> and UnorderedSetByBlock<>, the same number of elements is left" ) {
+    int nb_std_before = stdSet.size();
+    int nb_blk_before = blkSet.size();
     auto stdItB = stdSet.begin(); std::advance( stdItB, 10 );
     auto blkItB = blkSet.begin(); std::advance( blkItB, 10 );
     auto stdItE = stdItB;         std::advance( stdItE, 20 );
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    REQUIRE( blkSet  .size() == stdSet  .size() );
+    int nb_std = 0;
+    int nb_blk = 0;
+    for ( auto&& c : stdSet ) nb_std += 1;
+    for ( auto&& c : blkSet ) nb_blk += 1;
+    REQUIRE( stdSet.size() == nb_std );
+    REQUIRE( stdSet.size() == nb_std_before - 20 );
+    REQUIRE( blkSet.size() == nb_blk );
+    REQUIRE( blkSet.size() == nb_blk_before - 20 );
+    REQUIRE( blkSet.size() == stdSet.size() );
   }
   THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
     const auto stdMem = blkSet.memory_usage_unordered_set();
@@ -549,6 +569,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     REQUIRE( std::equal( stdTrv.cbegin(), stdTrv.cend(), blkTrv.cbegin() ) );
   }
   WHEN( "Erasing a range in identical std::unordered_set<> and UnorderedSetByBlock<>, the same number of elements is left" ) {
+    int nb_std_before = stdSet.size();
+    int nb_blk_before = blkSet.size();
     auto stdItB = stdSet.begin(); std::advance( stdItB, 10 );
     auto blkItB = blkSet.begin(); std::advance( blkItB, 10 );
     auto stdItE = stdItB;         std::advance( stdItE, 20 );
@@ -560,7 +582,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     for ( auto&& c : stdSet ) nb_std += 1;
     for ( auto&& c : blkSet ) nb_blk += 1;
     REQUIRE( stdSet.size() == nb_std );
+    REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
+    REQUIRE( blkSet.size() == nb_blk_before - 20 );
     REQUIRE( blkSet.size() == stdSet.size() );
   }
   THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
@@ -736,13 +760,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     REQUIRE( std::equal( stdTrv.cbegin(), stdTrv.cend(), blkTrv.cbegin() ) );
   }
   WHEN( "Erasing a range in identical std::unordered_set<> and UnorderedSetByBlock<>, the same number of elements is left" ) {
+    int nb_std_before = stdSet.size();
+    int nb_blk_before = blkSet.size();
     auto stdItB = stdSet.begin(); std::advance( stdItB, 10 );
     auto blkItB = blkSet.begin(); std::advance( blkItB, 10 );
     auto stdItE = stdItB;         std::advance( stdItE, 20 );
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    REQUIRE( blkSet  .size() == stdSet  .size() );
+    int nb_std = 0;
+    int nb_blk = 0;
+    for ( auto&& c : stdSet ) nb_std += 1;
+    for ( auto&& c : blkSet ) nb_blk += 1;
+    REQUIRE( stdSet.size() == nb_std );
+    REQUIRE( stdSet.size() == nb_std_before - 20 );
+    REQUIRE( blkSet.size() == nb_blk );
+    REQUIRE( blkSet.size() == nb_blk_before - 20 );
+    REQUIRE( blkSet.size() == stdSet.size() );
   }
   THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
     const auto stdMem = blkSet.memory_usage_unordered_set();
