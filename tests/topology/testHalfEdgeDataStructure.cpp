@@ -495,14 +495,14 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
   }
   GIVEN( "A tetrahedron" ) {
     HalfEdgeDataStructure mesh = makeTetrahedron();
-    THEN( "All edges are flippable" ) {
+    THEN( "No edges are flippable" ) {
       int nbflippable = 0;
       for ( Size e = 0; e < mesh.nbEdges(); e++ )
         {
           if ( mesh.isFlippable( mesh.halfEdgeIndexFromEdgeIndex( e ) ) )
             nbflippable++;
         }
-      REQUIRE( nbflippable == mesh.nbEdges() );
+      REQUIRE( nbflippable == 0 );
     }
   }
   GIVEN( "Two triangles incident by an edge" ) {

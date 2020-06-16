@@ -58,6 +58,9 @@ namespace DGtal
   ///
   /// @tparam TElement the type of array-like element.
   ///
+  /// @tparam TWord the type for holding blocks (uint64_t or uint32_t generally),
+  /// a model of concepts::CIntegralNumber and concepts::CUnsignedNumber.
+  ///
   /// @see UnorderedSetByBlock
   template < typename TElement, typename TWord = uint32_t >
   struct Splitter {

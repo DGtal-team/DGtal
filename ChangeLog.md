@@ -137,7 +137,7 @@
     Shortcuts::makePrimalPolygonalSurface, as well as
     MeshHelpers::digitalSurface2PrimalPolygonalSurface, all use the
     CCW ordering by default (in 3D).
-    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
+    (Jacques-Olivier Lachaud,[#1445](https://github.com/DGtal-team/DGtal/pull/1445))
 
 - *images*
   - Fix the image origin that was not taken into account in class
@@ -146,18 +146,23 @@
   - Add domainShift to ImageContainerByITKImage.
     (Pablo Hernandez-Cerdan,
     [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
-    
+
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
   - Fixing cast from const to mutable iterator in GradientColorMap.
     (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
 
+- *Topology*
+  - Add missing constraint to flips in HalfEdgeDataStructure
+    (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
-- *Shapes package*
+- *Shapes*
   - Fix bug in Astroid parameter() method : orientation correction
    (Adrien Krähenbühl,
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+  - Add missing constraint to flips in TriangulatedSurface
+    (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
 - *DEC*
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
