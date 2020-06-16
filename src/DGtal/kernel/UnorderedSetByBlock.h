@@ -28,6 +28,7 @@
 
 #include <unordered_map>
 #include <boost/iterator/iterator_facade.hpp>
+#include <climits>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Bits.h"
 #include "DGtal/kernel/CUnsignedNumber.h"
