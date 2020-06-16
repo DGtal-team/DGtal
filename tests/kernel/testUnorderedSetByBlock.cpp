@@ -555,7 +555,13 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    REQUIRE( blkSet  .size() == stdSet  .size() );
+    int nb_std = 0;
+    int nb_blk = 0;
+    for ( auto&& c : stdSet ) nb_std += 1;
+    for ( auto&& c : blkSet ) nb_blk += 1;
+    REQUIRE( stdSet.size() == nb_std );
+    REQUIRE( blkSet.size() == nb_blk );
+    REQUIRE( blkSet.size() == stdSet.size() );
   }
   THEN( "The memory usage of UnorderedSetByBlock<> is inferior to the one of std::unordered_set<>" ) {
     const auto stdMem = blkSet.memory_usage_unordered_set();
