@@ -84,7 +84,7 @@ namespace DGtal
     split( Element e )
     {
       auto block_coords = 
-	( e[ 0 ] & static_cast<Coordinate>( sizeof( Word ) * 8 - 1 ) );
+        ( e[ 0 ] & static_cast<Coordinate>( sizeof( Word ) * CHAR_BITS - 1 ) );
       e[ 0 ] -= block_coords;    
       return { e, block_coords };
     }
