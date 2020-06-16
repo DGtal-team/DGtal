@@ -45,7 +45,7 @@ Point randomPoint( int S )
 {
   Point p;
   for ( DGtal::Dimension i = 0; i < Point::dimension; i++ )
-    p[ i ] = (rand() - S/2) % S;
+    p[ i ] = (rand() % S) - S/2;
   return p;
 }
 
