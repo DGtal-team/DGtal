@@ -280,29 +280,6 @@ subset( const CellGeometry& other, const Dimension k ) const
     if ( dim( c ) == k )
       k_dim_points.emplace( c );
   return other.myKPoints.includes( k_dim_points );
-  // for ( auto&& c : myKPoints )
-  //   if ( dim( c ) == k && other.myKPoints.count( c ) == 0 )
-  //     return false;
-  // return true;
-
-  // if ( myMaxCellDim < k ) return true;
-  // if ( other.myMaxCellDim < k ) return cubicalComplex().nbCells( k ) == 0;
-  // if ( k < other.myMinCellDim ) return cubicalComplex().nbCells( k ) == 0;
-  // if ( ! other.myPrecomputeSubset || ! myPrecomputeSubset )
-  //   {
-  //     const auto& oCC   = other.cubicalComplex();
-  //     const auto& cells = cubicalComplex().getCells( k );
-  //     for ( auto&& cv : cells )
-  // 	if ( oCC.findCell( k, cv.first ) == oCC.end( k ) ) return false;
-  //     return true;
-  //   }
-  // else
-  //   {
-  //     const Dimension j  = k - myMinCellDim;
-  //     const Dimension oj = k - other.myMinCellDim;
-  //     return Self::includes( other.myCells[ oj ].begin(), other.myCells[ oj ].end(),
-  // 			     myCells[ j ].begin(), myCells[ j ].end() );
-  //   }
 }
 
 //-----------------------------------------------------------------------------

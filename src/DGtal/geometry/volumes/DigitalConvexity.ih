@@ -315,16 +315,6 @@ isFullyConvex( const LatticePolytope& P ) const
 	return false;
     }
   return true;
-  // auto S = insidePoints( P );
-  // auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
-  // for ( Dimension k = 1; k < KSpace::dimension; ++ k )
-  //   {
-  //     auto intersected_cells = makeCellCover( P, k, k );
-  //     if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
-  // 	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
-  // 	return false;
-  //   }
-  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -344,14 +334,6 @@ isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 {
   auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
   return intersected_cells.subset( C );
-  // bool C_prepared = C.isPreparedForSubsetOperations();
-  // for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
-  //   {
-  //     auto intersected_cells = makeCellCover( P, k, k );
-  //     if ( C_prepared ) intersected_cells.prepareSubsetOperations();
-  //     if ( ! intersected_cells.subset( C ) ) return false;
-  //   }
-  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -384,16 +366,6 @@ isFullyConvex( const RationalPolytope& P ) const
 	return false;
     }
   return true;
-  // auto S = insidePoints( P );
-  // auto touched_cells     = makeCellCover( S.begin(), S.end(), 1, KSpace::dimension - 1 );
-  // for ( Dimension k = 1; k < KSpace::dimension; ++ k )
-  //   {
-  //     auto intersected_cells = makeCellCover( P, k, k );
-  //     if ( ( intersected_cells.nbCells( k ) != touched_cells.nbCells( k ) )
-  // 	   || ( ! intersected_cells.subset( touched_cells, k ) ) )
-  // 	return false;
-  //   }
-  // return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -414,14 +386,6 @@ isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 {
   auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
   return intersected_cells.subset( C );
-  // bool C_prepared = C.isPreparedForSubsetOperations();
-  // for ( Dimension k = C.minCellDim(); k <= C.maxCellDim(); ++k )
-  //   {
-  //     auto intersected_cells = makeCellCover( P, k, k );
-  //     if ( C_prepared ) intersected_cells.prepareSubsetOperations();
-  //     if ( ! intersected_cells.subset( C ) ) return false;
-  //   }
-  // return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
