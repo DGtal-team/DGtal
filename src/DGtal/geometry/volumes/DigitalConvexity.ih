@@ -245,7 +245,7 @@ template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( PointIterator itB, PointIterator itE,
-	       Dimension i, Dimension k ) const
+               Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
   ASSERT( i <= k );
@@ -260,7 +260,7 @@ template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const LatticePolytope& P,
-	       Dimension i, Dimension k ) const
+               Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
   ASSERT( i <= k );
@@ -275,7 +275,7 @@ template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const RationalPolytope& P,
-	       Dimension i, Dimension k ) const
+               Dimension i, Dimension k ) const
 {
   ASSERT( 0 <= i );
   ASSERT( i <= k );
@@ -311,8 +311,8 @@ isFullyConvex( const LatticePolytope& P ) const
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
       auto intersected_cells = makeCellCover( P, k, k );
       if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
-	   || ( ! intersected_cells.subset( touched_cells ) ) )
-	return false;
+           || ( ! intersected_cells.subset( touched_cells ) ) )
+        return false;
     }
   return true;
 }
@@ -362,8 +362,8 @@ isFullyConvex( const RationalPolytope& P ) const
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
       auto intersected_cells = makeCellCover( P, k, k );
       if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
-	   || ( ! intersected_cells.subset( touched_cells ) ) )
-	return false;
+           || ( ! intersected_cells.subset( touched_cells ) ) )
+        return false;
     }
   return true;
 }
@@ -373,7 +373,7 @@ template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
-	      const Dimension k ) const
+              const Dimension k ) const
 {
   auto intersected_cells = makeCellCover( P, k, k );
   return intersected_cells.subset( C );

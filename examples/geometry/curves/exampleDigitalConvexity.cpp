@@ -35,7 +35,7 @@
    @see \ref moduleDigitalConvexity
 
    \image html grid-curve-dig-convexity.png "Extraction of all subconvex triangles to the digital curve."
-   
+
    \example geometry/curves/exampleDigitalConvexity.cpp
 */
 
@@ -57,7 +57,7 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i; 
+using namespace Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example for 2d gridcurves" );
   string S = examplesPath + "samples/contourS.fc";
-  
+
   // domain
   const Point lowerBound( -200, -200 );
   const Point upperBound( 200, 200 );
@@ -73,8 +73,8 @@ int main( int argc, char** argv )
   fstream inputStream( S.c_str(), ios::in );
   FreemanChain<int> fc(inputStream);
   inputStream.close();
-  Curve c; 
-  c.initFromPointsRange( fc.begin(), fc.end() ); 
+  Curve c;
+  c.initFromPointsRange( fc.begin(), fc.end() );
   auto points = c.getPointsRange();
   std::vector<Point> T( points.begin(), points.end() );
   Board2D aBoard;
@@ -87,21 +87,21 @@ int main( int argc, char** argv )
   for ( unsigned int i = 0; i < T.size(); ++i )
     for ( unsigned int j = i+2; j < T.size(); ++j )
       {
-	aBoard.setPenColorRGBi( rand() % 255, rand() % 255, rand() % 255 );
-	unsigned int k = (i+j)/2;
-	if ( ! dconv.isSimplexFullDimensional( { T[i], T[j], T[k] } ) ) continue;
-	auto triangle = dconv.makeSimplex( { T[i], T[j], T[k] } );
-	if ( dconv.isFullySubconvex( triangle, c_cover ) )
-	  {
-	    aBoard.drawLine( sx+(float)T[i][0], sy+(float)T[i][1],
-			     sx+(float)T[j][0], sy+(float)T[j][1] );
-	    aBoard.drawLine( sx+(float)T[i][0], sy+(float)T[i][1],
-			     sx+(float)T[k][0], sy+(float)T[k][1] );
-	    aBoard.drawLine( sx+(float)T[k][0], sy+(float)T[k][1],
-			     sx+(float)T[j][0], sy+(float)T[j][1] );
-	  }
-	else
-	  j = T.size();
+        aBoard.setPenColorRGBi( rand() % 255, rand() % 255, rand() % 255 );
+        unsigned int k = (i+j)/2;
+        if ( ! dconv.isSimplexFullDimensional( { T[i], T[j], T[k] } ) ) continue;
+        auto triangle = dconv.makeSimplex( { T[i], T[j], T[k] } );
+        if ( dconv.isFullySubconvex( triangle, c_cover ) )
+          {
+            aBoard.drawLine( sx+(float)T[i][0], sy+(float)T[i][1],
+                             sx+(float)T[j][0], sy+(float)T[j][1] );
+            aBoard.drawLine( sx+(float)T[i][0], sy+(float)T[i][1],
+                             sx+(float)T[k][0], sy+(float)T[k][1] );
+            aBoard.drawLine( sx+(float)T[k][0], sy+(float)T[k][1],
+                             sx+(float)T[j][0], sy+(float)T[j][1] );
+          }
+        else
+          j = T.size();
       }
   trace.endBlock();
   aBoard.setPenColor( Color::Black );
