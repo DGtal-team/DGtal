@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
 
-@page moduleShrouds Digital Surface Regularization by Shrouds algorithm
+@page moduleShrouds Digital surface regularization using the Shrouds algorithm
 
 @writers Jacques-Olivier Lachaud
 
@@ -18,7 +18,7 @@ regularization of digital surfaces using the "Shrouds" algorithm, by
 Nielson et al \cite nielson2003shrouds. 
 
 On binary 3D images, the "Shrouds" algorithm builds a smooth surface
-that separates interior voxels from exterior voxels. It starts from
+that separates interior from exterior voxels. It starts from
 the (closed) digital surface that separates interior voxels from
 exterior voxels. The 3D smooth surface reconstruction problem is
 transformed into a series of 2D smooth contour reconstruction
