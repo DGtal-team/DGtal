@@ -33,6 +33,13 @@ slices.
 @note This method is limited to closed surface reconstruction, in
 opposition with the method presented in \ref moduleRegularization.
 
+\b Disclaimer. This implementation is our interpretation of the work
+presented in \cite nielson2003shrouds, and tries to follow at best the
+ideas presented therein. However, a major part of the numerical
+resolution is not detailed. We have infered a reasonnable way of
+solving the fourth order equations but results may differ from the
+original implementation. For instance, visually on the bunny example
+of the paper, our results are very close (and looks better).
 
 Related example:  geometry/surfaces/testShroudsRegularization.cpp
 
