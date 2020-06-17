@@ -204,7 +204,9 @@ namespace DGtal
     {
       friend struct UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual >;
       /// Default constructor
-      const_iterator() : collection( nullptr ), it(), bit( 0 ), current( 0 ) {}
+      const_iterator() : collection( nullptr ), it(),
+			 bit( static_cast<Coordinate>(0) ),
+			 current( static_cast<Word>(0) ) {}
 
       /// Constructor from set and container iterator
       /// @param aSet a reference to the visited unordered block set
@@ -215,12 +217,12 @@ namespace DGtal
 	if ( it != collection->my_elements.cend() )
 	  {
 	    current  = it->second;
-	    bit      = Bits::leastSignificantBit( current );
+	    bit      = static_cast<Coordinate>( Bits::leastSignificantBit( current ) );
 	  }
 	else
 	  {
-	    current = 0;
-	    bit     = 0;
+	    current = static_cast<Word>(0);
+	    bit     = static_cast<Coordinate>(0);
 	  }
       }
 
@@ -235,10 +237,10 @@ namespace DGtal
 	if ( it != collection->my_elements.cend() )
 	  {
 	    current  = it->second;
-	    current &= ~((Word) (( 1 << bit ) - 1));
+	    current &= ~( ( static_cast<Word>(1) << bit ) - static_cast<Word>(1) );
 	  }
 	else
-	  current = 0;
+	  current = static_cast<Word>(0);
       }
 
       /// Constructor from set and starting key.
@@ -252,12 +254,13 @@ namespace DGtal
 	if ( it != collection->my_elements.cend() )
 	  {
 	    bit     = se.second;
-	    current = it->second & ~( ( ((Word) 1) << bit ) - 1 );
+	    current = it->second & ~( (static_cast<Word>(1) << bit )
+				      - static_cast<Word>(1) );
 	  }
 	else
 	  {
-	    bit     = 0;
-	    current = 0;
+	    bit     = static_cast<Coordinate>(0);
+	    current = static_cast<Word>(0);
 	  }
       }
       
@@ -265,24 +268,25 @@ namespace DGtal
       friend class boost::iterator_core_access;
       void increment()
       {
-	ASSERT( current != 0 && "Invalid increment on const_iterator" );
-	current &= ~( (Word)1 << bit );
-	if ( current == 0 )
+	ASSERT( current != static_cast<Word>(0)
+		&& "Invalid increment on const_iterator" );
+	current &= ~( static_cast<Word>(1) << bit );
+	if ( current == static_cast<Word>(0) )
 	  {
 	    ++it;
 	    if ( it != collection->my_elements.cend() )
 	      {
 		current = it->second;
-		bit     = Bits::leastSignificantBit( current );
+		bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
 	      }
 	    else
 	      {
-		current = 0;
-		bit     = 0; // NB: LSB(0) is undefined
+		current = static_cast<Word>(0);
+		bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
 	      }
 	  }
 	else
-	  bit = Bits::leastSignificantBit( current );
+	  bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
       }
       
       bool equal( const const_iterator & other ) const
@@ -315,7 +319,9 @@ namespace DGtal
     {
       friend struct UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual >;
       /// Default constructor
-      iterator() : collection( nullptr ), it(), bit( 0 ), current( 0 ) {}
+      iterator() : collection( nullptr ), it(),
+		   bit( static_cast<Coordinate>(0) ),
+		   current( static_cast<Word>(0) ) {}
 
       /// Constructor from set and container iterator
       /// @param aSet a reference to the visited unordered block set
@@ -326,12 +332,12 @@ namespace DGtal
 	if ( it != collection->my_elements.end() )
 	  {
 	    current  = it->second;
-	    bit      = Bits::leastSignificantBit( current );
+	    bit      = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
 	  }
 	else
 	  {
-	    current = 0;
-	    bit     = 0;
+	    current = static_cast<Word>(0);
+	    bit     = static_cast<Coordinate>(0);
 	  }
       }
 
@@ -345,15 +351,18 @@ namespace DGtal
 	if ( it != collection->my_elements.end() )
 	  {
 	    current  = it->second;
-	    current &= ~((Word) (( 1 << bit ) - 1));
+	    current &= ~( ( static_cast<Word>(1) << bit )
+			  - static_cast<Word>(1) );
 	  }
 	else
-	  current = 0;
+	  current = static_cast<Word>(0);
       }
 
       /// Constructor from set and starting key.
       /// @param aSet a reference to the visited unordered block set
-      /// @param key any key (if it is in the set, the iterator point on the key, otherwise it is iterator `end()`.
+      ///
+      /// @param key any key (if it is in the set, the iterator point
+      /// on the key, otherwise it is iterator `end()`.
       iterator( Self& aSet, const Key& key )
 	: collection( &aSet )
       {
@@ -362,12 +371,13 @@ namespace DGtal
 	if ( it != collection->my_elements.end() )
 	  {
 	    bit     = se.second;
-	    current = it->second & ~( ( ((Word) 1) << bit ) - 1 );
+	    current = it->second & ~( (static_cast<Word>(1) << bit )
+				      - static_cast<Word>(1) );
 	  }
 	else
 	  {
-	    bit     = 0;
-	    current = 0;
+	    bit     = static_cast<Coordinate>(0);
+	    current = static_cast<Word>(0);
 	  }
       }
 
@@ -398,24 +408,25 @@ namespace DGtal
       friend class boost::iterator_core_access;
       void increment()
       {
-	ASSERT( current != 0 && "Invalid increment on iterator" );
-	current &= ~( (Word)1 << bit );
-	if ( current == 0 )
+	ASSERT( current != static_cast<Word>(0)
+		&& "Invalid increment on iterator" );
+	current &= ~( static_cast<Word>(1) << bit );
+	if ( current == static_cast<Word>(0) )
 	  {
 	    ++it;
 	    if ( it != collection->my_elements.end() )
 	      {
 		current = it->second;
-		bit     = Bits::leastSignificantBit( current );
+		bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
 	      }
 	    else
 	      {
-		current = 0;
-		bit     = 0; // NB: LSB(0) is undefined
+		current = static_cast<Word>(0);
+		bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
 	      }
 	  }
 	else
-	  bit = Bits::leastSignificantBit( current );
+	  bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
       }
       
       bool equal( const iterator & other ) const
@@ -772,7 +783,8 @@ namespace DGtal
 	  ++first;
 	}
       // Erase first block if empty
-      if ( ( my_elements[ itB->first ] &= ~mask ) == 0 ) my_elements.erase( itB );
+      if ( ( my_elements[ itB->first ] &= ~mask ) == (Word) 0 )
+	my_elements.erase( itB );
       // Count erased elements in main range.
       for ( itB = first.it; itB != itE; ++itB )
 	my_size -= Bits::nbSetBits( itB->second );
@@ -790,7 +802,8 @@ namespace DGtal
 	  ++first;
 	}
       // Erase last block if empty
-      if ( ( my_elements[ itB->first ] &= ~mask ) == 0 ) my_elements.erase( itB );
+      if ( ( my_elements[ itB->first ] &= ~mask ) == (Word) 0 )
+	my_elements.erase( itB );
       return iterator( *this,
 		       my_elements.find( itE->first ),
 		       last.bit ); // must be valid or end.
