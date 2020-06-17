@@ -659,17 +659,18 @@ namespace DGtal
       auto it = my_elements.find( se.first );
       if ( it == my_elements.end() )
 	{
-	  auto   p = my_elements.insert( std::make_pair( se.first,
-							 ( (Word) 1 ) << se.second ) );
+	  auto   p = my_elements.insert
+	    ( std::make_pair( se.first,
+			      static_cast<Word>(1) << se.second ) );
 	  my_size += 1;
 	  return std::make_pair( iterator( *this, p.first, se.second ), true );
 	}
       else
 	{
-	  bool exist = it->second & ( ( (Word) 1 ) << se.second );
+	  bool exist = it->second & ( static_cast<Word>(1) << se.second );
 	  if ( ! exist )
 	    {
-	      it->second |= ( (Word) 1 ) << se.second;
+	      it->second |= static_cast<Word>(1) << se.second;
 	      my_size    += 1;
 	    }
 	  return std::make_pair( iterator( *this, it, se.second ), ! exist );
@@ -697,17 +698,18 @@ namespace DGtal
       auto it = my_elements.find( se.first );
       if ( it == my_elements.end() )
 	{
-	  auto   p = my_elements.insert( std::make_pair( se.first,
-							 ( (Word) 1 ) << se.second ) );
+	  auto   p =
+	    my_elements.insert( std::make_pair( se.first,
+						static_cast<Word>(1) << se.second ) );
 	  my_size += 1;
 	  return std::make_pair( iterator( *this, p.first, se.second ), true );
 	}
       else
 	{
-	  bool exist = it->second & ( ( (Word) 1 ) << se.second );
+	  bool exist = it->second & ( static_cast<Word>(1) << se.second );
 	  if ( ! exist )
 	    {
-	      it->second |= ( (Word) 1 ) << se.second;
+	      it->second |= static_cast<Word>(1) << se.second;
 	      my_size    += 1;
 	    }
 	  return std::make_pair( iterator( *this, it, se.second ), ! exist );
@@ -729,10 +731,12 @@ namespace DGtal
     {
       ASSERT( this == pos.collection );
       ASSERT( pos  != cend() );
-      ASSERT( ( pos.it->second & ( ( (Word) 1 ) << pos.bit ) ) != 0 );
+      ASSERT( ( pos.it->second & ( static_cast<Word>(1) << pos.bit ) )
+	      != static_cast<Word>(0) );
       my_size -= 1;
       Word & w = const_cast< Word& >( pos.it->second );
-      if ( ( w &= ~( ( (Word) 1 ) << pos.bit ) ) == 0 )
+      if ( ( w &= ~( static_cast<Word>(1) << pos.bit ) )
+	   == static_cast<Word>(0) )
 	return iterator( *this, my_elements.erase( pos.it ) );
       else
 	return iterator( *this, my_elements.erase( pos.it, pos.it ), pos.bit );
@@ -760,13 +764,13 @@ namespace DGtal
       if ( first == cend() ) return end();
       auto itB = first.it;
       auto itE = last.it;
-      Word mask = 0;
+      Word mask = static_cast<Word>(0);
       // Take care of range over one block only
       if ( itB == itE )
 	{
 	  while ( first != last )
 	    {
-	      mask    |= ( (Word) 1 ) << first.bit;
+	      mask    |= static_cast<Word>(1) << first.bit;
 	      my_size -= 1;
 	      ++first;
 	    }
@@ -778,12 +782,13 @@ namespace DGtal
       // Take care of first element.
       while ( first.it == itB )
 	{
-	  mask    |= ( (Word) 1 ) << first.bit;
+	  mask    |= static_cast<Word>(1) << first.bit;
 	  my_size -= 1;
 	  ++first;
 	}
       // Erase first block if empty
-      if ( ( my_elements[ itB->first ] &= ~mask ) == (Word) 0 )
+      if ( ( my_elements[ itB->first ] &= ~mask )
+	   == static_cast<Word>(0) )
 	my_elements.erase( itB );
       // Count erased elements in main range.
       for ( itB = first.it; itB != itE; ++itB )
@@ -794,15 +799,16 @@ namespace DGtal
       if ( itE == my_elements.cend() ) return end();
       itB   = itE;
       first = const_iterator( *this, itB );
-      mask  = 0;
+      mask  = static_cast<Word>(0);
       while ( first != last )
 	{
-	  mask    |= ( (Word) 1 ) << first.bit;
+	  mask    |= static_cast<Word>(1) << first.bit;
 	  my_size -= 1;
 	  ++first;
 	}
       // Erase last block if empty
-      if ( ( my_elements[ itB->first ] &= ~mask ) == (Word) 0 )
+      if ( ( my_elements[ itB->first ] &= ~mask )
+	   == static_cast<Word>(0) )
 	my_elements.erase( itB );
       return iterator( *this,
 		       my_elements.find( itE->first ),
@@ -844,7 +850,7 @@ namespace DGtal
       const auto se = my_splitter.split( key );
       const auto it = my_elements.find( se.first );
       if ( it == my_elements.end() ) return end();
-      const bool exist = it->second & ( ( (Word) 1 ) << se.second );
+      const bool exist = it->second & ( static_cast<Word>(1) << se.second );
       if ( exist ) return iterator( *this, it, se.second );
       else         return end();
     }
@@ -859,7 +865,7 @@ namespace DGtal
       const auto se = my_splitter.split( key );
       const auto it = my_elements.find( se.first );
       if ( it == my_elements.cend() ) return cend();
-      const bool exist = it->second & ( ( (Word) 1 ) << se.second );
+      const bool exist = it->second & ( static_cast<Word>(1) << se.second );
       if ( exist ) return const_iterator( *this, it, se.second );
       else         return cend();
     }
@@ -873,7 +879,7 @@ namespace DGtal
       const auto se = my_splitter.split( key );
       const auto it = my_elements.find( se.first );
       if ( it == my_elements.cend() ) return 0;
-      const bool exist = it->second & ( ( (Word) 1 ) << se.second );
+      const bool exist = it->second & ( static_cast<Word>(1) << se.second );
       return exist ? 1 : 0;
     }
 
@@ -1015,7 +1021,7 @@ namespace DGtal
     /// @param other any unordered set with same sort of elements
     /// @return 'true' if and only if this set includes \a other, and
     /// 'false' otherwise.
-    bool trave_internal_includes_by_iterator( const Self& other ) const
+    bool internal_trace_includes_by_iterator( const Self& other ) const
     {
       trace.info() << "[trace_includes_v2] #this=" << size()
 		   << " #other=" << other.size() << std::endl;
