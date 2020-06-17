@@ -57,7 +57,7 @@ SCENARIO( "CellGeometry< Z2 > unit tests", "[cell_geometry][2d]" )
   KSpace K;
   K.init( Point( -5, -5 ), Point( 10, 10 ), true );
   GIVEN( "Some points (0,0), Point(2,1), Point(1,3)" ) {
-    std::vector< Point > V = { Point(0,0), Point(2,1), Point(1,3) }; 
+    std::vector< Point > V = { Point(0,0), Point(2,1), Point(1,3) };
     CGeometry geometry( K, 0, 2, false );
     geometry.addCellsTouchingPoints( V.begin(), V.end() );
     THEN( "Its cell geometry contains more 1-cells and 2-cells than points" ) {
@@ -85,7 +85,7 @@ SCENARIO( "CellGeometry< Z3 > unit tests", "[cell_geometry][3d]" )
   const int N = 10;
   K.init( Point( -1, -1, -1 ), Point( N, N, N ), true );
   Domain D( Point( 0, 0, 0 ), Point( N-1, N-1, N-1 ) );
-  
+
   GIVEN( "Some a block of points (0,0,0)-(N-1,N-1,N-1)" ) {
     CGeometry geometry( K, 0, 3, false );
     geometry.addCellsTouchingPoints( D.begin(), D.end() );
@@ -138,19 +138,19 @@ SCENARIO( "CellGeometry< Z2 > intersections", "[cell_geometry][2d]" )
     }
     THEN( "Its convex hull intersects more cells than its vertices touch." ) {
       REQUIRE( touched_cover.computeNbCells( 0 )
-	       < intersected_cover.computeNbCells( 0 ) );
+               < intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_cover.computeNbCells( 1 )
-	       < intersected_cover.computeNbCells( 1 ) );
+               < intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_cover.computeNbCells( 2 )
-	       < intersected_cover.computeNbCells( 2 ) );
+               < intersected_cover.computeNbCells( 2 ) );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
       REQUIRE( touched_points_cover.computeNbCells( 0 )
-	       <= intersected_cover.computeNbCells( 0 ) );
+               <= intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_points_cover.computeNbCells( 1 )
-	       <= intersected_cover.computeNbCells( 1 ) );
+               <= intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_points_cover.computeNbCells( 2 )
-	       <= intersected_cover.computeNbCells( 2 ) );
+               <= intersected_cover.computeNbCells( 2 ) );
     }
   }
 }
@@ -181,23 +181,23 @@ SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
     }
     THEN( "Its convex hull intersects more cells than its vertices touch." ) {
       REQUIRE( touched_cover.computeNbCells( 0 )
-	       < intersected_cover.computeNbCells( 0 ) );
+               < intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_cover.computeNbCells( 1 )
-	       < intersected_cover.computeNbCells( 1 ) );
+               < intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_cover.computeNbCells( 2 )
-	       < intersected_cover.computeNbCells( 2 ) );
+               < intersected_cover.computeNbCells( 2 ) );
       REQUIRE( touched_cover.computeNbCells( 3 )
-	       < intersected_cover.computeNbCells( 3 ) );
+               < intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
       REQUIRE( touched_points_cover.computeNbCells( 0 )
-	       <= intersected_cover.computeNbCells( 0 ) );
+               <= intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_points_cover.computeNbCells( 1 )
-	       <= intersected_cover.computeNbCells( 1 ) );
+               <= intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_points_cover.computeNbCells( 2 )
-	       <= intersected_cover.computeNbCells( 2 ) );
+               <= intersected_cover.computeNbCells( 2 ) );
       REQUIRE( touched_points_cover.computeNbCells( 3 )
-	       <= intersected_cover.computeNbCells( 3 ) );
+               <= intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "The cells touched by its inside points is a subset of the cells its convex hull intersects." ) {
       REQUIRE( touched_points_cover.subset( intersected_cover, 0 ) );
@@ -209,7 +209,7 @@ SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
 }
 
 SCENARIO( "CellGeometry< Z2 > rational intersections",
-	  "[cell_geometry][2d][rational]" )
+          "[cell_geometry][2d][rational]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
@@ -234,11 +234,11 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
       REQUIRE( touched_points_cover.computeNbCells( 0 )
-	       <= intersected_cover.computeNbCells( 0 ) );
+               <= intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_points_cover.computeNbCells( 1 )
-	       <= intersected_cover.computeNbCells( 1 ) );
+               <= intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_points_cover.computeNbCells( 2 )
-	       <= intersected_cover.computeNbCells( 2 ) );
+               <= intersected_cover.computeNbCells( 2 ) );
     }
   }
   GIVEN( "A thin rational simplex P={ Point(6/4,6/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
@@ -256,18 +256,18 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
       REQUIRE( touched_points_cover.computeNbCells( 0 )
-	       <= intersected_cover.computeNbCells( 0 ) );
+               <= intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_points_cover.computeNbCells( 1 )
-	       <= intersected_cover.computeNbCells( 1 ) );
+               <= intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_points_cover.computeNbCells( 2 )
-	       <= intersected_cover.computeNbCells( 2 ) );
+               <= intersected_cover.computeNbCells( 2 ) );
     }
   }
 } // SCENARIO( "CellGeometry< Z2 > rational intersections","[cell_geometry][2d][rational]" )
 
 
 SCENARIO( "CellGeometry< Z3 > rational intersections",
-	  "[cell_geometry][3d]{rational]" )
+          "[cell_geometry][3d]{rational]" )
 {
   typedef KhalimskySpaceND<3,int>           KSpace;
   typedef KSpace::Point                     Point;
@@ -282,7 +282,7 @@ SCENARIO( "CellGeometry< Z3 > rational intersections",
     K.init( Point( -5, -5, -5 ), Point( 10, 10, 10 ), true );
     CGeometry intersected_cover( K, 0, 3, false );
     Polytope P = { Point(2,2,2),
-		   Point(1,0,-1), Point(7,3,1), Point(-2,9,3), Point(6,7,10) };
+                   Point(1,0,-1), Point(7,3,1), Point(-2,9,3), Point(6,7,10) };
     intersected_cover.addCellsTouchingPolytope( P );
     CGeometry touched_points_cover( K, 0, 3, false );
     touched_points_cover.addCellsTouchingPolytopePoints( P );
@@ -291,13 +291,13 @@ SCENARIO( "CellGeometry< Z3 > rational intersections",
     }
     THEN( "Its convex hull intersects at least as many cells as its inside points touch." ) {
       REQUIRE( touched_points_cover.computeNbCells( 0 )
-	       <= intersected_cover.computeNbCells( 0 ) );
+               <= intersected_cover.computeNbCells( 0 ) );
       REQUIRE( touched_points_cover.computeNbCells( 1 )
-	       <= intersected_cover.computeNbCells( 1 ) );
+               <= intersected_cover.computeNbCells( 1 ) );
       REQUIRE( touched_points_cover.computeNbCells( 2 )
-	       <= intersected_cover.computeNbCells( 2 ) );
+               <= intersected_cover.computeNbCells( 2 ) );
       REQUIRE( touched_points_cover.computeNbCells( 3 )
-	       <= intersected_cover.computeNbCells( 3 ) );
+               <= intersected_cover.computeNbCells( 3 ) );
     }
     THEN( "The cells touched by its inside points is a subset of the cells its convex hull intersects." ) {
       REQUIRE( touched_points_cover.subset( intersected_cover, 0 ) );

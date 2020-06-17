@@ -124,24 +124,24 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2
 
   Domain     domain( Point( 0, 0 ), Point( 4, 4 ) );
   DConvexity dconv( Point( -1, -1 ), Point( 5, 5 ) );
-  
+
   WHEN( "Computing all triangles in domain (0,0)-(4,4)." ) {
     unsigned int nb_notsimplex = 0;
     unsigned int nb_invalid    = 0;
     unsigned int nb_degenerated= 0;
     unsigned int nb_common     = 0;
     unsigned int nb_unitary    = 0;
-    for ( auto a : domain ) 
-      for ( auto b : domain ) 
-	for ( auto c : domain )
-	  {
-	    nb_notsimplex   += ! dconv.isSimplexFullDimensional( { a, b, c } ) ? 1 : 0;
-	    auto tri_type    = dconv.simplexType( { a, b, c } );
-	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
-	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
-	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
-	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
-	  }
+    for ( auto a : domain )
+      for ( auto b : domain )
+        for ( auto c : domain )
+          {
+            nb_notsimplex   += ! dconv.isSimplexFullDimensional( { a, b, c } ) ? 1 : 0;
+            auto tri_type    = dconv.simplexType( { a, b, c } );
+            nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
+            nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
+            nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
+            nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
+          }
     THEN( "All 2737 invalid triangles are degenerated " ) {
       REQUIRE( nb_invalid == 0 );
       REQUIRE( nb_notsimplex == nb_degenerated );
@@ -165,22 +165,22 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2
     unsigned int nb1      = 0;
     unsigned int nb2      = 0;
     unsigned int nb01_not2 = 0;
-    for ( auto a : domain ) 
-      for ( auto b : domain ) 
-	for ( auto c : domain )
-	  {
-	    if ( ! ( ( a < b ) && ( b < c ) ) ) continue;
-	    if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
-	    auto triangle = dconv.makeSimplex( { a, b, c } );
-	    bool cvx0     = dconv.isKConvex( triangle, 0 );
-	    bool cvx1     = dconv.isKConvex( triangle, 1 );
-	    bool cvx2     = dconv.isKConvex( triangle, 2 );
-	    nbsimplex += 1;
-	    nb0       += cvx0 ? 1 : 0;
-	    nb1       += cvx1 ? 1 : 0;
-	    nb2       += cvx2 ? 1 : 0;
-	    nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
-	  }
+    for ( auto a : domain )
+      for ( auto b : domain )
+        for ( auto c : domain )
+          {
+            if ( ! ( ( a < b ) && ( b < c ) ) ) continue;
+            if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
+            auto triangle = dconv.makeSimplex( { a, b, c } );
+            bool cvx0     = dconv.isKConvex( triangle, 0 );
+            bool cvx1     = dconv.isKConvex( triangle, 1 );
+            bool cvx2     = dconv.isKConvex( triangle, 2 );
+            nbsimplex += 1;
+            nb0       += cvx0 ? 1 : 0;
+            nb1       += cvx1 ? 1 : 0;
+            nb2       += cvx2 ? 1 : 0;
+            nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
+          }
     THEN( "All valid triangles are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
     }
@@ -206,7 +206,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
-  
+
   WHEN( "Computing all lexicographically ordered tetrahedra anchored at (0,0,0) in domain (0,0,0)-(3,3,3)." ) {
     unsigned int nb_notsimplex = 0;
     unsigned int nb_invalid    = 0;
@@ -214,18 +214,18 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nb_common     = 0;
     unsigned int nb_unitary    = 0;
     Point a(0,0,0);
-    for ( auto b : domain ) 
+    for ( auto b : domain )
       for ( auto c : domain )
-	for ( auto d : domain )
-	  {
-	    if ( ! ( ( a < b ) && ( b < c ) && ( c < d ) ) ) continue;
-	    nb_notsimplex   += ! dconv.isSimplexFullDimensional( {a,b,c,d} ) ? 1 : 0;
-	    auto tri_type    = dconv.simplexType( { a, b, c, d } );
-	    nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
-	    nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
-	    nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
-	    nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
-	  }
+        for ( auto d : domain )
+          {
+            if ( ! ( ( a < b ) && ( b < c ) && ( c < d ) ) ) continue;
+            nb_notsimplex   += ! dconv.isSimplexFullDimensional( {a,b,c,d} ) ? 1 : 0;
+            auto tri_type    = dconv.simplexType( { a, b, c, d } );
+            nb_degenerated  += tri_type == DConvexity::SimplexType::DEGENERATED ? 1 : 0;
+            nb_invalid      += tri_type == DConvexity::SimplexType::INVALID ? 1 : 0;
+            nb_unitary      += tri_type == DConvexity::SimplexType::UNITARY ? 1 : 0;
+            nb_common       += tri_type == DConvexity::SimplexType::COMMON  ? 1 : 0;
+          }
     THEN( "All 4228 invalid tetrahedra are degenerated " ) {
       REQUIRE( nb_invalid == 0 );
       REQUIRE( nb_notsimplex == nb_degenerated );
@@ -244,7 +244,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     }
   }
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 200; 
+    const unsigned int nb = 200;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -255,25 +255,25 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nb0123   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
-	Point a( rand() % 5, rand() % 5, rand() % 5 );
-	Point b( rand() % 5, rand() % 5, rand() % 5 );
-	Point c( rand() % 5, rand() % 5, rand() % 5 );
-	Point d( rand() % 5, rand() % 5, rand() % 5 );
-	if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
-	auto tetra = dconv.makeSimplex( { a, b, c, d } );
-	bool cvx0     = dconv.isKConvex( tetra, 0 );
-	bool cvx1     = dconv.isKConvex( tetra, 1 );
-	bool cvx2     = dconv.isKConvex( tetra, 2 );
-	bool cvx3     = dconv.isKConvex( tetra, 3 );
-	bool cvxf     = dconv.isFullyConvex( tetra );
-	nbsimplex += 1;
-	nb0       += cvx0 ? 1 : 0;
-	nb1       += cvx1 ? 1 : 0;
-	nb2       += cvx2 ? 1 : 0;
-	nb3       += cvx3 ? 1 : 0;
-	nbf       += cvxf ? 1 : 0;
-	nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
-	nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
+        Point a( rand() % 5, rand() % 5, rand() % 5 );
+        Point b( rand() % 5, rand() % 5, rand() % 5 );
+        Point c( rand() % 5, rand() % 5, rand() % 5 );
+        Point d( rand() % 5, rand() % 5, rand() % 5 );
+        if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
+        auto tetra = dconv.makeSimplex( { a, b, c, d } );
+        bool cvx0     = dconv.isKConvex( tetra, 0 );
+        bool cvx1     = dconv.isKConvex( tetra, 1 );
+        bool cvx2     = dconv.isKConvex( tetra, 2 );
+        bool cvx3     = dconv.isKConvex( tetra, 3 );
+        bool cvxf     = dconv.isFullyConvex( tetra );
+        nbsimplex += 1;
+        nb0       += cvx0 ? 1 : 0;
+        nb1       += cvx1 ? 1 : 0;
+        nb2       += cvx2 ? 1 : 0;
+        nb3       += cvx3 ? 1 : 0;
+        nbf       += cvxf ? 1 : 0;
+        nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
+        nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
@@ -304,7 +304,7 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 400; 
+    const unsigned int nb = 400;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -315,25 +315,25 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
     unsigned int nb0123   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
-	Point a( 2*(rand() % 10), rand() % 20, 2*(rand() % 10) );
-	Point b( rand() % 20, 2*(rand() % 10), 2*(rand() % 10) );
-	Point c( 2*(rand() % 10), 2*(rand() % 10), rand() % 20 );
-	Point d( 2*(rand() % 10), 2*(rand() % 10), 2*(rand() % 10) );
-	if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
-	auto tetra = dconv.makeRationalSimplex( { Point(2,2,2), a, b, c, d } );
-	bool cvx0     = dconv.isKConvex( tetra, 0 );
-	bool cvx1     = dconv.isKConvex( tetra, 1 );
-	bool cvx2     = dconv.isKConvex( tetra, 2 );
-	bool cvx3     = dconv.isKConvex( tetra, 3 );
-	bool cvxf     = dconv.isFullyConvex( tetra );
-	nbsimplex += 1;
-	nb0       += cvx0 ? 1 : 0;
-	nb1       += cvx1 ? 1 : 0;
-	nb2       += cvx2 ? 1 : 0;
-	nb3       += cvx3 ? 1 : 0;
-	nbf       += cvxf ? 1 : 0;
-	nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
-	nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
+        Point a( 2*(rand() % 10), rand() % 20, 2*(rand() % 10) );
+        Point b( rand() % 20, 2*(rand() % 10), 2*(rand() % 10) );
+        Point c( 2*(rand() % 10), 2*(rand() % 10), rand() % 20 );
+        Point d( 2*(rand() % 10), 2*(rand() % 10), 2*(rand() % 10) );
+        if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
+        auto tetra = dconv.makeRationalSimplex( { Point(2,2,2), a, b, c, d } );
+        bool cvx0     = dconv.isKConvex( tetra, 0 );
+        bool cvx1     = dconv.isKConvex( tetra, 1 );
+        bool cvx2     = dconv.isKConvex( tetra, 2 );
+        bool cvx3     = dconv.isKConvex( tetra, 3 );
+        bool cvxf     = dconv.isFullyConvex( tetra );
+        nbsimplex += 1;
+        nb0       += cvx0 ? 1 : 0;
+        nb1       += cvx1 ? 1 : 0;
+        nb2       += cvx2 ? 1 : 0;
+        nb3       += cvx3 ? 1 : 0;
+        nbf       += cvxf ? 1 : 0;
+        nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
+        nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
@@ -370,7 +370,7 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1 ), Point( 10, 10 ) );
   WHEN( "Computing many triangle in domain (0,0)-(9,9)." ) {
-    const unsigned int nb = 400; 
+    const unsigned int nb = 400;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -384,22 +384,22 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
     unsigned int nbf_notlat = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
-	Point a( 2*(rand() % 10),    rand() % 20  );
-	Point b(    rand() % 20 , 2*(rand() % 10) );
-	Point c( 2*(rand() % 10), 2*(rand() % 10) );
-	if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
-	auto tetra = dconv.makeRationalSimplex( { Point(2,2), a, b, c } );
-	bool cvx0     = dconv.isKConvex( tetra, 0 );
-	bool cvx1     = dconv.isKConvex( tetra, 1 );
-	bool cvx2     = dconv.isKConvex( tetra, 2 );
-	bool cvxf     = dconv.isFullyConvex( tetra );
-	nbsimplex += 1;
-	nb0       += cvx0 ? 1 : 0;
-	nb1       += cvx1 ? 1 : 0;
-	nb2       += cvx2 ? 1 : 0;
-	nbf       += cvxf ? 1 : 0;
-	nb012     += ( cvx0 && cvx1 && cvx2 ) ? 1 : 0;
-	nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
+        Point a( 2*(rand() % 10),    rand() % 20  );
+        Point b(    rand() % 20 , 2*(rand() % 10) );
+        Point c( 2*(rand() % 10), 2*(rand() % 10) );
+        if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
+        auto tetra = dconv.makeRationalSimplex( { Point(2,2), a, b, c } );
+        bool cvx0     = dconv.isKConvex( tetra, 0 );
+        bool cvx1     = dconv.isKConvex( tetra, 1 );
+        bool cvx2     = dconv.isKConvex( tetra, 2 );
+        bool cvxf     = dconv.isFullyConvex( tetra );
+        nbsimplex += 1;
+        nb0       += cvx0 ? 1 : 0;
+        nb1       += cvx1 ? 1 : 0;
+        nb2       += cvx2 ? 1 : 0;
+        nbf       += cvxf ? 1 : 0;
+        nb012     += ( cvx0 && cvx1 && cvx2 ) ? 1 : 0;
+        nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );

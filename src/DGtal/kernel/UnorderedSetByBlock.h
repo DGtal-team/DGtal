@@ -21,7 +21,7 @@
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2020/04/24
- * 
+ *
  */
 #ifndef UNORDEREDSETBYBLOCK_HPP
 #define UNORDEREDSETBYBLOCK_HPP
@@ -72,7 +72,7 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Word > ));
     BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber< Word > ));
-    
+
     /// Splits an element \a e into a pair grouping its block
     /// coordinates and its bit within this block.
     ///
@@ -84,9 +84,9 @@ namespace DGtal
     std::pair< Element, Coordinate >
     split( Element e )
     {
-      auto block_coords = 
+      auto block_coords =
         ( e[ 0 ] & static_cast<Coordinate>( sizeof( Word ) * CHAR_BIT - 1 ) );
-      e[ 0 ] -= block_coords;    
+      e[ 0 ] -= block_coords;
       return { e, block_coords };
     }
 
@@ -115,11 +115,11 @@ namespace DGtal
     join( const std::pair< Element, Coordinate >& p )
     {
       Element ge = p.first;
-      ge[ 0 ] |= p.second; 
+      ge[ 0 ] |= p.second;
       return ge;
     }
   };
-  
+
 
   /// This data structure represents a set of elements that must be
   /// integral arrays (i.e. digital points). It is similar to an
@@ -153,13 +153,13 @@ namespace DGtal
   /// // same code after for aSet or aSet2.
   /// @endcode
   template < typename Key,
-	     typename TSplitter = Splitter< Key >,
-	     class Hash = std::hash<Key>,
-	     class KeyEqual = std::equal_to<Key>,
-	     class UnorderedMapAllocator = std::allocator<
-	       std::pair<const Key, typename TSplitter::Word >
-	       >
-	     >
+             typename TSplitter = Splitter< Key >,
+             class Hash = std::hash<Key>,
+             class KeyEqual = std::equal_to<Key>,
+             class UnorderedMapAllocator = std::allocator<
+               std::pair<const Key, typename TSplitter::Word >
+               >
+             >
   struct UnorderedSetByBlock {
     typedef UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual > Self;
     typedef TSplitter               Splitter;
@@ -167,8 +167,8 @@ namespace DGtal
     typedef typename Splitter::Coordinate Coordinate;
     /// The underlying container, an unordered_map.
     typedef std::unordered_map< Key, Word, Hash, KeyEqual,
-				UnorderedMapAllocator > Container;
-    
+                                UnorderedMapAllocator > Container;
+
     // Standard types
     /// Key
     typedef Key key_type;
@@ -195,35 +195,35 @@ namespace DGtal
 
   public:
     // ---------------------- iterators --------------------------------
-    
+
     /// Read iterator on set elements. Model of ForwardIterator.
     struct const_iterator
       : public boost::iterator_facade< const_iterator, Key const,
-				       boost::forward_traversal_tag,
-				       Key const >
+                                       boost::forward_traversal_tag,
+                                       Key const >
     {
       friend struct UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual >;
       /// Default constructor
       const_iterator() : collection( nullptr ), it(),
-			 bit( static_cast<Coordinate>(0) ),
-			 current( static_cast<Word>(0) ) {}
+                         bit( static_cast<Coordinate>(0) ),
+                         current( static_cast<Word>(0) ) {}
 
       /// Constructor from set and container iterator
       /// @param aSet a reference to the visited unordered block set
       /// @param anIt an iterator in the container of this set.
       const_iterator( const Self& aSet, typename Container::const_iterator anIt )
-	: collection( &aSet ), it( anIt )
+        : collection( &aSet ), it( anIt )
       {
-	if ( it != collection->my_elements.cend() )
-	  {
-	    current  = it->second;
-	    bit      = static_cast<Coordinate>( Bits::leastSignificantBit( current ) );
-	  }
-	else
-	  {
-	    current = static_cast<Word>(0);
-	    bit     = static_cast<Coordinate>(0);
-	  }
+        if ( it != collection->my_elements.cend() )
+          {
+            current  = it->second;
+            bit      = static_cast<Coordinate>( Bits::leastSignificantBit( current ) );
+          }
+        else
+          {
+            current = static_cast<Word>(0);
+            bit     = static_cast<Coordinate>(0);
+          }
       }
 
       /// Constructor from set, container iterator and starting bit
@@ -231,73 +231,73 @@ namespace DGtal
       /// @param anIt an iterator in the container of this set.
       /// @param aBit the bit index in the word pointed by \a anIt.
       const_iterator( const Self& aSet, typename Container::const_iterator anIt,
-		      Coordinate aBit )
-	: collection( &aSet ), it( anIt ), bit( aBit )
+                      Coordinate aBit )
+        : collection( &aSet ), it( anIt ), bit( aBit )
       {
-	if ( it != collection->my_elements.cend() )
-	  {
-	    current  = it->second;
-	    current &= ~( ( static_cast<Word>(1) << bit ) - static_cast<Word>(1) );
-	  }
-	else
-	  current = static_cast<Word>(0);
+        if ( it != collection->my_elements.cend() )
+          {
+            current  = it->second;
+            current &= ~( ( static_cast<Word>(1) << bit ) - static_cast<Word>(1) );
+          }
+        else
+          current = static_cast<Word>(0);
       }
 
       /// Constructor from set and starting key.
       /// @param aSet a reference to the visited unordered block set
       /// @param key any key (if it is in the set, the iterator point on the key, otherwise it is iterator `cend()`.
       const_iterator( const Self& aSet, const Key& key )
-	: collection( &aSet )
+        : collection( &aSet )
       {
-	auto se  = collection->my_splitter.split( key );
-	it       = collection->my_elements.find( se.first );
-	if ( it != collection->my_elements.cend() )
-	  {
-	    bit     = se.second;
-	    current = it->second & ~( (static_cast<Word>(1) << bit )
-				      - static_cast<Word>(1) );
-	  }
-	else
-	  {
-	    bit     = static_cast<Coordinate>(0);
-	    current = static_cast<Word>(0);
-	  }
+        auto se  = collection->my_splitter.split( key );
+        it       = collection->my_elements.find( se.first );
+        if ( it != collection->my_elements.cend() )
+          {
+            bit     = se.second;
+            current = it->second & ~( (static_cast<Word>(1) << bit )
+                                      - static_cast<Word>(1) );
+          }
+        else
+          {
+            bit     = static_cast<Coordinate>(0);
+            current = static_cast<Word>(0);
+          }
       }
-      
+
     private:
       friend class boost::iterator_core_access;
       void increment()
       {
-	ASSERT( current != static_cast<Word>(0)
-		&& "Invalid increment on const_iterator" );
-	current &= ~( static_cast<Word>(1) << bit );
-	if ( current == static_cast<Word>(0) )
-	  {
-	    ++it;
-	    if ( it != collection->my_elements.cend() )
-	      {
-		current = it->second;
-		bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
-	      }
-	    else
-	      {
-		current = static_cast<Word>(0);
-		bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
-	      }
-	  }
-	else
-	  bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
+        ASSERT( current != static_cast<Word>(0)
+                && "Invalid increment on const_iterator" );
+        current &= ~( static_cast<Word>(1) << bit );
+        if ( current == static_cast<Word>(0) )
+          {
+            ++it;
+            if ( it != collection->my_elements.cend() )
+              {
+                current = it->second;
+                bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
+              }
+            else
+              {
+                current = static_cast<Word>(0);
+                bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
+              }
+          }
+        else
+          bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
       }
-      
+
       bool equal( const const_iterator & other ) const
       {
-	ASSERT( collection == other.collection );
+        ASSERT( collection == other.collection );
         return it == other.it && bit == other.bit;
       }
 
       const Key dereference() const
       {
-	return collection->my_splitter.join( it->first, bit );
+        return collection->my_splitter.join( it->first, bit );
       }
 
       /// the collection that this iterator is traversing.
@@ -308,37 +308,37 @@ namespace DGtal
       Coordinate                   bit;
       /// the current value of the block, where visited bits have been erased.
       Word                         current;
-      
+
     };
 
     /// Read-write iterator on set elements. Model of ForwardIterator.
     struct iterator
       : public boost::iterator_facade< iterator, Key const,
-				       boost::forward_traversal_tag,
-				       Key const >
+                                       boost::forward_traversal_tag,
+                                       Key const >
     {
       friend struct UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual >;
       /// Default constructor
       iterator() : collection( nullptr ), it(),
-		   bit( static_cast<Coordinate>(0) ),
-		   current( static_cast<Word>(0) ) {}
+                   bit( static_cast<Coordinate>(0) ),
+                   current( static_cast<Word>(0) ) {}
 
       /// Constructor from set and container iterator
       /// @param aSet a reference to the visited unordered block set
       /// @param anIt an iterator in the container of this set.
       iterator( Self& aSet, typename Container::iterator anIt )
-	: collection( &aSet ), it( anIt )
+        : collection( &aSet ), it( anIt )
       {
-	if ( it != collection->my_elements.end() )
-	  {
-	    current  = it->second;
-	    bit      = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
-	  }
-	else
-	  {
-	    current = static_cast<Word>(0);
-	    bit     = static_cast<Coordinate>(0);
-	  }
+        if ( it != collection->my_elements.end() )
+          {
+            current  = it->second;
+            bit      = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
+          }
+        else
+          {
+            current = static_cast<Word>(0);
+            bit     = static_cast<Coordinate>(0);
+          }
       }
 
       /// Constructor from set, container iterator and starting bit
@@ -346,16 +346,16 @@ namespace DGtal
       /// @param anIt an iterator in the container of this set.
       /// @param aBit the bit index in the word pointed by \a anIt.
       iterator( Self& aSet, typename Container::iterator anIt, Coordinate aBit )
-	: collection( &aSet ), it( anIt ), bit( aBit )
+        : collection( &aSet ), it( anIt ), bit( aBit )
       {
-	if ( it != collection->my_elements.end() )
-	  {
-	    current  = it->second;
-	    current &= ~( ( static_cast<Word>(1) << bit )
-			  - static_cast<Word>(1) );
-	  }
-	else
-	  current = static_cast<Word>(0);
+        if ( it != collection->my_elements.end() )
+          {
+            current  = it->second;
+            current &= ~( ( static_cast<Word>(1) << bit )
+                          - static_cast<Word>(1) );
+          }
+        else
+          current = static_cast<Word>(0);
       }
 
       /// Constructor from set and starting key.
@@ -364,74 +364,74 @@ namespace DGtal
       /// @param key any key (if it is in the set, the iterator point
       /// on the key, otherwise it is iterator `end()`.
       iterator( Self& aSet, const Key& key )
-	: collection( &aSet )
+        : collection( &aSet )
       {
-	auto se  = collection->my_splitter.split( key );
-	it       = collection->my_elements.find( se.first );
-	if ( it != collection->my_elements.end() )
-	  {
-	    bit     = se.second;
-	    current = it->second & ~( (static_cast<Word>(1) << bit )
-				      - static_cast<Word>(1) );
-	  }
-	else
-	  {
-	    bit     = static_cast<Coordinate>(0);
-	    current = static_cast<Word>(0);
-	  }
+        auto se  = collection->my_splitter.split( key );
+        it       = collection->my_elements.find( se.first );
+        if ( it != collection->my_elements.end() )
+          {
+            bit     = se.second;
+            current = it->second & ~( (static_cast<Word>(1) << bit )
+                                      - static_cast<Word>(1) );
+          }
+        else
+          {
+            bit     = static_cast<Coordinate>(0);
+            current = static_cast<Word>(0);
+          }
       }
 
       /// Constructor from const_iterator
       /// @param other any const_iterator
       iterator( const const_iterator& other )
-	: collection( other.collection ), it( other.it ),
-	  bit( other.bit ), current( other.current )
+        : collection( other.collection ), it( other.it ),
+          bit( other.bit ), current( other.current )
       {}
 
       /// Move constructor from const_iterator
       /// @param other any const_iterator
       iterator( const_iterator&& other )
-	: collection( std::move( other.collection ) ),
-	  it( std::move( other.it ) ),
-	  bit( std::move( other.bit ) ),
-	  current( std::move( other.current ) )
+        : collection( std::move( other.collection ) ),
+          it( std::move( other.it ) ),
+          bit( std::move( other.bit ) ),
+          current( std::move( other.current ) )
       {}
-      
+
       /// Conversation to const_iterator
       /// @return the corresponding const_iterator
       operator const_iterator() const
       {
-	return const_iterator( *collection, it, bit );
+        return const_iterator( *collection, it, bit );
       }
-      
+
     private:
       friend class boost::iterator_core_access;
       void increment()
       {
-	ASSERT( current != static_cast<Word>(0)
-		&& "Invalid increment on iterator" );
-	current &= ~( static_cast<Word>(1) << bit );
-	if ( current == static_cast<Word>(0) )
-	  {
-	    ++it;
-	    if ( it != collection->my_elements.end() )
-	      {
-		current = it->second;
-		bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
-	      }
-	    else
-	      {
-		current = static_cast<Word>(0);
-		bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
-	      }
-	  }
-	else
-	  bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
+        ASSERT( current != static_cast<Word>(0)
+                && "Invalid increment on iterator" );
+        current &= ~( static_cast<Word>(1) << bit );
+        if ( current == static_cast<Word>(0) )
+          {
+            ++it;
+            if ( it != collection->my_elements.end() )
+              {
+                current = it->second;
+                bit     = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
+              }
+            else
+              {
+                current = static_cast<Word>(0);
+                bit     = static_cast<Coordinate>(0); // NB: LSB(0) is undefined
+              }
+          }
+        else
+          bit = static_cast<Coordinate>(Bits::leastSignificantBit( current ));
       }
-      
+
       bool equal( const iterator & other ) const
       {
-	ASSERT( collection == other.collection );
+        ASSERT( collection == other.collection );
         return it == other.it && bit == other.bit;
       }
 
@@ -440,13 +440,13 @@ namespace DGtal
       // const_iterator should always be comparable.
       bool equal( const const_iterator & other ) const
       {
-	ASSERT( collection == other.collection );
+        ASSERT( collection == other.collection );
         return it == other.it && bit == other.bit;
       }
-      
+
       const Key dereference() const
       {
-	return collection->my_splitter.join( it->first, bit );
+        return collection->my_splitter.join( it->first, bit );
       }
 
       /// the collection that this iterator is traversing.
@@ -457,14 +457,14 @@ namespace DGtal
       Coordinate                   bit;
       /// the current value of the block, where visited bits have been erased.
       Word                         current;
-      
+
     };
 
     // ------------------------- standard services ----------------------------------
     /// @name Standard services (construction, initialization, assignment)
     /// @{
   public:
-    
+
     /// Main constructor.
     /// @param bucket_count the initial number of buckets for the underlying container.
     /// @param splitter the splitter object for keys.
@@ -472,13 +472,13 @@ namespace DGtal
     /// @param equal the key equality comparator object for keys.
     /// @param alloc the allocator for the underlying container.
     UnorderedSetByBlock( size_type bucket_count = 23,
-			 const Splitter & splitter = Splitter(),
-			 const Hash& hash = Hash(),
-			 const key_equal& equal = key_equal(),
-			 const UnorderedMapAllocator& alloc = UnorderedMapAllocator())
+                         const Splitter & splitter = Splitter(),
+                         const Hash& hash = Hash(),
+                         const key_equal& equal = key_equal(),
+                         const UnorderedMapAllocator& alloc = UnorderedMapAllocator())
       : my_splitter( splitter ),
-	my_elements( bucket_count, hash, equal, alloc ),
-	my_size( 0 ) {}
+        my_elements( bucket_count, hash, equal, alloc ),
+        my_size( 0 ) {}
 
     /// Default destructor
     ~UnorderedSetByBlock() = default;
@@ -487,29 +487,29 @@ namespace DGtal
     /// @param other the object to clone
     UnorderedSetByBlock( const Self& other )
       : my_splitter( other.my_splitter ),
-	my_elements( other.my_elements ),
-	my_size( other.my_size )
+        my_elements( other.my_elements ),
+        my_size( other.my_size )
     {}
-    
+
     /// Move constructor
     /// @param other the object to clone
     UnorderedSetByBlock( Self&& other )
       : my_splitter( std::move( other.my_splitter ) ),
-	my_elements( std::move( other.my_elements ) ),
-	my_size( std::move( other.my_size ) )
+        my_elements( std::move( other.my_elements ) ),
+        my_size( std::move( other.my_size ) )
     {}
-    
+
     /// Assignment
     /// @param other the object to clone
     /// @return a reference to this
     Self& operator=( const Self& other )
     {
       if ( this != &other )
-	{
-	  my_splitter = other.my_splitter;
-	  my_elements = other.my_elements;
-	  my_size     = other.my_size;
-	}
+        {
+          my_splitter = other.my_splitter;
+          my_elements = other.my_elements;
+          my_size     = other.my_size;
+        }
       return *this;
     }
     /// Default move assignment
@@ -524,12 +524,12 @@ namespace DGtal
     }
 
     /// @}
-    
+
     // ---------------------- iterator services -----------------------------
     /// @name Iterator services
     /// @{
   public:
-    
+
     /// @return an iterator of the first stored element
     iterator begin()
     {
@@ -540,7 +540,7 @@ namespace DGtal
     {
       return iterator( *this, my_elements.end() );
     }
-    
+
     /// @return an iterator of the first stored element
     const_iterator begin() const
     {
@@ -569,7 +569,7 @@ namespace DGtal
     /// @name Capacity services
     /// @{
   public:
-    
+
     /// @return 'true' iff the container is empty
     bool empty() const noexcept { return my_elements.empty(); }
     /// @return the number of elements stored in the container.
@@ -586,12 +586,12 @@ namespace DGtal
     size_type memory_usage() const noexcept
     {
       size_type mem = (my_elements.bucket_count()+1) * sizeof( void* )
-	+ 2 * sizeof( size_type );
+        + 2 * sizeof( size_type );
       mem += blocks() * ( sizeof( void* )       /* next */
-			  + sizeof( Key )       /* key */
-			  + sizeof( Word )      /* value */
-			  + sizeof( size_type ) /* hash  */
-			  + sizeof( void* )     /* dyn. alloc. */ );
+                          + sizeof( Key )       /* key */
+                          + sizeof( Word )      /* value */
+                          + sizeof( size_type ) /* hash  */
+                          + sizeof( void* )     /* dyn. alloc. */ );
       return mem;
     }
 
@@ -601,21 +601,21 @@ namespace DGtal
     size_type memory_usage_unordered_set() const noexcept
     {
       size_type mem = (my_elements.bucket_count()+1) * sizeof( void* )
-	+ 2 * sizeof( size_type );
+        + 2 * sizeof( size_type );
       mem += size() * ( sizeof( void* )       /* next */
-			+ sizeof( Key )       /* key */
-			+ sizeof( size_type ) /* hash  */
-			+ sizeof( void* )     /* dyn. alloc. */ );
+                        + sizeof( Key )       /* key */
+                        + sizeof( size_type ) /* hash  */
+                        + sizeof( void* )     /* dyn. alloc. */ );
       return mem;
     }
 
     /// @}
-    
+
     // ---------------------- modifier services -----------------------------
     /// @name Modifier services
     /// @{
   public:
-    
+
     /// Clears the container
     void clear() noexcept
     {
@@ -639,7 +639,7 @@ namespace DGtal
       std::swap( my_elements, other.my_elements );
       std::swap( my_size, other.my_size );
     }
-    
+
     /**
      *  @brief Attempts to insert an element into the set.
      *  @param  value  Element to be inserted.
@@ -658,23 +658,23 @@ namespace DGtal
       const auto se = my_splitter.split( value );
       auto it = my_elements.find( se.first );
       if ( it == my_elements.end() )
-	{
-	  auto   p = my_elements.insert
-	    ( std::make_pair( se.first,
-			      static_cast<Word>(1) << se.second ) );
-	  my_size += 1;
-	  return std::make_pair( iterator( *this, p.first, se.second ), true );
-	}
+        {
+          auto   p = my_elements.insert
+            ( std::make_pair( se.first,
+                              static_cast<Word>(1) << se.second ) );
+          my_size += 1;
+          return std::make_pair( iterator( *this, p.first, se.second ), true );
+        }
       else
-	{
-	  bool exist = it->second & ( static_cast<Word>(1) << se.second );
-	  if ( ! exist )
-	    {
-	      it->second |= static_cast<Word>(1) << se.second;
-	      my_size    += 1;
-	    }
-	  return std::make_pair( iterator( *this, it, se.second ), ! exist );
-	}
+        {
+          bool exist = it->second & ( static_cast<Word>(1) << se.second );
+          if ( ! exist )
+            {
+              it->second |= static_cast<Word>(1) << se.second;
+              my_size    += 1;
+            }
+          return std::make_pair( iterator( *this, it, se.second ), ! exist );
+        }
     }
 
     /**
@@ -697,23 +697,23 @@ namespace DGtal
       const auto se = my_splitter.split( Key( std::forward<_Args>(__args)... ) );
       auto it = my_elements.find( se.first );
       if ( it == my_elements.end() )
-	{
-	  auto   p =
-	    my_elements.insert( std::make_pair( se.first,
-						static_cast<Word>(1) << se.second ) );
-	  my_size += 1;
-	  return std::make_pair( iterator( *this, p.first, se.second ), true );
-	}
+        {
+          auto   p =
+            my_elements.insert( std::make_pair( se.first,
+                                                static_cast<Word>(1) << se.second ) );
+          my_size += 1;
+          return std::make_pair( iterator( *this, p.first, se.second ), true );
+        }
       else
-	{
-	  bool exist = it->second & ( static_cast<Word>(1) << se.second );
-	  if ( ! exist )
-	    {
-	      it->second |= static_cast<Word>(1) << se.second;
-	      my_size    += 1;
-	    }
-	  return std::make_pair( iterator( *this, it, se.second ), ! exist );
-	}
+        {
+          bool exist = it->second & ( static_cast<Word>(1) << se.second );
+          if ( ! exist )
+            {
+              it->second |= static_cast<Word>(1) << se.second;
+              my_size    += 1;
+            }
+          return std::make_pair( iterator( *this, it, se.second ), ! exist );
+        }
     }
 
     /// Removes specified element from the container.
@@ -732,16 +732,16 @@ namespace DGtal
       ASSERT( this == pos.collection );
       ASSERT( pos  != cend() );
       ASSERT( ( pos.it->second & ( static_cast<Word>(1) << pos.bit ) )
-	      != static_cast<Word>(0) );
+              != static_cast<Word>(0) );
       my_size -= 1;
       Word & w = const_cast< Word& >( pos.it->second );
       if ( ( w &= ~( static_cast<Word>(1) << pos.bit ) )
-	   == static_cast<Word>(0) )
-	return iterator( *this, my_elements.erase( pos.it ) );
+           == static_cast<Word>(0) )
+        return iterator( *this, my_elements.erase( pos.it ) );
       else
-	return iterator( *this, my_elements.erase( pos.it, pos.it ), pos.bit );
+        return iterator( *this, my_elements.erase( pos.it, pos.it ), pos.bit );
     }
-    
+
     /// Removes the elements in the range [first; last), which must be
     /// a valid range in *this.
     ///
@@ -767,32 +767,32 @@ namespace DGtal
       Word mask = static_cast<Word>(0);
       // Take care of range over one block only
       if ( itB == itE )
-	{
-	  while ( first != last )
-	    {
-	      mask    |= static_cast<Word>(1) << first.bit;
-	      my_size -= 1;
-	      ++first;
-	    }
-	  my_elements[ itB->first ] &= ~mask;
-	  return iterator( *this,
-			   my_elements.find( itE->first ),
-			   last.bit ); // must be valid
-	} 
+        {
+          while ( first != last )
+            {
+              mask    |= static_cast<Word>(1) << first.bit;
+              my_size -= 1;
+              ++first;
+            }
+          my_elements[ itB->first ] &= ~mask;
+          return iterator( *this,
+                           my_elements.find( itE->first ),
+                           last.bit ); // must be valid
+        }
       // Take care of first element.
       while ( first.it == itB )
-	{
-	  mask    |= static_cast<Word>(1) << first.bit;
-	  my_size -= 1;
-	  ++first;
-	}
+        {
+          mask    |= static_cast<Word>(1) << first.bit;
+          my_size -= 1;
+          ++first;
+        }
       // Erase first block if empty
       if ( ( my_elements[ itB->first ] &= ~mask )
-	   == static_cast<Word>(0) )
-	my_elements.erase( itB );
+           == static_cast<Word>(0) )
+        my_elements.erase( itB );
       // Count erased elements in main range.
       for ( itB = first.it; itB != itE; ++itB )
-	my_size -= Bits::nbSetBits( itB->second );
+        my_size -= Bits::nbSetBits( itB->second );
       // Erase elements in main range
       my_elements.erase( first.it, itE );
       // Take care of last element.
@@ -801,20 +801,20 @@ namespace DGtal
       first = const_iterator( *this, itB );
       mask  = static_cast<Word>(0);
       while ( first != last )
-	{
-	  mask    |= static_cast<Word>(1) << first.bit;
-	  my_size -= 1;
-	  ++first;
-	}
+        {
+          mask    |= static_cast<Word>(1) << first.bit;
+          my_size -= 1;
+          ++first;
+        }
       // Erase last block if empty
       if ( ( my_elements[ itB->first ] &= ~mask )
-	   == static_cast<Word>(0) )
-	my_elements.erase( itB );
+           == static_cast<Word>(0) )
+        my_elements.erase( itB );
       return iterator( *this,
-		       my_elements.find( itE->first ),
-		       last.bit ); // must be valid or end.
+                       my_elements.find( itE->first ),
+                       last.bit ); // must be valid or end.
     }
-    
+
     /// Removes specified element from the container, if it exists.
     /// @param key the value to erase from the set
     /// @return the number of value removed from the set (either 0 or 1 ).
@@ -826,15 +826,15 @@ namespace DGtal
     {
       auto it = find( key );
       if ( it != end() )
-	{
-	  erase( it );
-	  return 1;
-	}
+        {
+          erase( it );
+          return 1;
+        }
       else return 0;
     }
 
     /// @}
-    
+
     // ---------------------- lookup services -----------------------------
     /// @name Lookup services
     /// @{
@@ -854,7 +854,7 @@ namespace DGtal
       if ( exist ) return iterator( *this, it, se.second );
       else         return end();
     }
-    
+
     /// Finds an element with key equivalent to key.
     /// @param key the value to look-up.
     ///
@@ -896,13 +896,13 @@ namespace DGtal
     {
       iterator first = find( key );
       if ( first != end() )
-	{
-	  iterator last = first;
-	  return std::make_pair( first, ++last );
-	}
+        {
+          iterator last = first;
+          return std::make_pair( first, ++last );
+        }
       else return std::make_pair( first, first );
     }
-    
+
     /// Returns the bounds of a range that includes all the elements
     /// that compare equal to k. In set containers, where keys are
     /// unique, the range will include one element at most.
@@ -916,10 +916,10 @@ namespace DGtal
     {
       const_iterator first = find( key );
       if ( first != end() )
-	{
-	  const_iterator last = first;
-	  return std::make_pair( first, ++last );
-	}
+        {
+          const_iterator last = first;
+          return std::make_pair( first, ++last );
+        }
       else return std::make_pair( first, first );
     }
 
@@ -952,13 +952,13 @@ namespace DGtal
       const auto itEndMap_other = other.my_elements.cend();
       const auto itEndMap_this  = my_elements.cend();
       for ( ; itMap_other != itEndMap_other; ++itMap_other )
-      	{
-      	  const auto itMap_this = my_elements.find( itMap_other->first );
-      	  if ( itMap_this == itEndMap_this ) return false;
-      	  const Word w_this  = itMap_this->second;
-      	  const Word w_other = itMap_other->second;
-      	  if ( ( w_this & w_other ) != w_other ) return false;
-      	}
+        {
+          const auto itMap_this = my_elements.find( itMap_other->first );
+          if ( itMap_this == itEndMap_this ) return false;
+          const Word w_this  = itMap_this->second;
+          const Word w_other = itMap_other->second;
+          if ( ( w_this & w_other ) != w_other ) return false;
+        }
       return true;
     }
 
@@ -970,25 +970,25 @@ namespace DGtal
     bool internal_trace_includes_by_map_iterator( const Self& other ) const
     {
       trace.info() << "[trace_includes_v1] #this=" << size()
-		   << " #other=" << other.size() << std::endl;
+                   << " #other=" << other.size() << std::endl;
       auto       itMap_other    = other.my_elements.cbegin();
       const auto itEndMap_other = other.my_elements.cend();
       const auto itEndMap_this  = my_elements.cend();
       for ( ; itMap_other != itEndMap_other; ++itMap_other )
-      	{
-	  trace.info() << "other: cell=" << itMap_other->first
-		       << " value=" << std::hex << itMap_other->second << std::endl;
-      	  const auto itMap_this = my_elements.find( itMap_other->first );
-	  if ( itMap_this != itEndMap_this ) 
-	    trace.info() << "this : cell=" << itMap_this->first
-			 << " value=" << std::hex << itMap_this->second << std::endl;
-	  else
-	    trace.info() << "this : end cell" << std::endl;
-      	  if ( itMap_this == itEndMap_this ) return false;
-      	  const Word w_this  = itMap_this->second;
-      	  const Word w_other = itMap_other->second;
-      	  if ( ( w_this & w_other ) != w_other ) return false;
-      	}
+        {
+          trace.info() << "other: cell=" << itMap_other->first
+                << " value=" << std::hex << itMap_other->second << std::endl;
+          const auto itMap_this = my_elements.find( itMap_other->first );
+          if ( itMap_this != itEndMap_this )
+            trace.info() << "this : cell=" << itMap_this->first
+                  << " value=" << std::hex << itMap_this->second << std::endl;
+          else
+            trace.info() << "this : end cell" << std::endl;
+          if ( itMap_this == itEndMap_this ) return false;
+          const Word w_this  = itMap_this->second;
+          const Word w_other = itMap_other->second;
+          if ( ( w_this & w_other ) != w_other ) return false;
+        }
       return true;
     }
 
@@ -1000,20 +1000,20 @@ namespace DGtal
     bool internal_includes_by_iterator( const Self& other ) const
     {
       auto it_other  = other.cbegin();
-      auto itEnd_other = other.cend(); 
+      auto itEnd_other = other.cend();
       while ( it_other != itEnd_other )
-      	{
-      	  const auto it_this = find( *it_other );
-      	  if ( it_this == cend() ) return false;
-      	  auto   itMap_other = it_other.it;
-      	  const Word w_this  = it_this.it->second;
-      	  const Word w_other = itMap_other->second;
-      	  if ( ( w_this & w_other ) != w_other ) return false;
-      	  it_other = const_iterator( other, ++itMap_other );
-      	}
+        {
+          const auto it_this = find( *it_other );
+          if ( it_this == cend() ) return false;
+          auto   itMap_other = it_other.it;
+          const Word w_this  = it_this.it->second;
+          const Word w_other = itMap_other->second;
+          if ( ( w_this & w_other ) != w_other ) return false;
+          it_other = const_iterator( other, ++itMap_other );
+        }
       return true;
     }
-    
+
     /// Performs includes operation using iterators and big steps,
     /// slightly slower than internal_includes_by_map_iterator. Verbose
     /// version for debug.
@@ -1024,26 +1024,26 @@ namespace DGtal
     bool internal_trace_includes_by_iterator( const Self& other ) const
     {
       trace.info() << "[trace_includes_v2] #this=" << size()
-		   << " #other=" << other.size() << std::endl;
+                   << " #other=" << other.size() << std::endl;
       auto it_other  = other.cbegin();
-      auto itEnd_other = other.cend(); 
+      auto itEnd_other = other.cend();
       while ( it_other != itEnd_other )
-      	{
-	  trace.info() << "other: cell=" << it_other.it->first
-		       << " value=" << std::hex << it_other.it->second << std::endl;
-      	  const auto it_this = find( *it_other );
-      	  if ( it_this != cend() )
-	    trace.info() << "this : cell=" << it_this.it->first
-			 << " value=" << std::hex << it_this.it->second << std::endl;
-	  else
-	    trace.info() << "this : end cell" << std::endl;
-      	  if ( it_this == cend() ) return false;
-      	  auto   itMap_other = it_other.it;
-      	  const Word w_this  = it_this.it->second;
-      	  const Word w_other = itMap_other->second;
-      	  if ( ( w_this & w_other ) != w_other ) return false;
-      	  it_other = const_iterator( other, ++itMap_other );
-      	}
+        {
+          trace.info() << "other: cell=" << it_other.it->first
+                << " value=" << std::hex << it_other.it->second << std::endl;
+          const auto it_this = find( *it_other );
+          if ( it_this != cend() )
+            trace.info() << "this : cell=" << it_this.it->first
+                  << " value=" << std::hex << it_this.it->second << std::endl;
+          else
+            trace.info() << "this : end cell" << std::endl;
+          if ( it_this == cend() ) return false;
+          auto   itMap_other = it_other.it;
+          const Word w_this  = it_this.it->second;
+          const Word w_other = itMap_other->second;
+          if ( ( w_this & w_other ) != w_other ) return false;
+          it_other = const_iterator( other, ++itMap_other );
+        }
       return true;
     }
 
@@ -1053,7 +1053,7 @@ namespace DGtal
     /// @name Hash policy services
     /// @{
   public:
-    
+
     /**
      * Sets the number of buckets to the number needed to accomodate
      * at least count elements without exceeding maximum load factor
@@ -1071,7 +1071,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
   private:
     // -------------------------- data ---------------------------------
     /// The splitter object
@@ -1092,10 +1092,10 @@ namespace DGtal
   /// @tparam KeyEqual the type that provides an equality comparator for Key.
   /// @tparam UnorderedMapAllocator the type that provides an allocator for the underlying unordered_map container.
   template < typename Key,
-	     typename TSplitter,
-	     class Hash,
-	     class KeyEqual,
-	     class UnorderedMapAllocator >
+             typename TSplitter,
+             class Hash,
+             class KeyEqual,
+             class UnorderedMapAllocator >
   void swap
   ( UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual, UnorderedMapAllocator >& s1,
     UnorderedSetByBlock< Key, TSplitter, Hash, KeyEqual, UnorderedMapAllocator >& s2 )
@@ -1103,7 +1103,7 @@ namespace DGtal
   {
     s1.swap( s2 );
   }
-  
+
 } // namespace DGtal
 
 #endif // #ifndef UNORDEREDSETBYBLOCK_HPP

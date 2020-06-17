@@ -97,11 +97,11 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     std::vector< Point > blkFound, blkNotFound;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
-	else stdNotFound.push_back( p );
-	if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
+        else stdNotFound.push_back( p );
+        if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -110,9 +110,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
   }
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
@@ -121,21 +121,21 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     int blk_nb_value_ok = 0;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	const auto stdIt = stdSet.find( p );
-	if ( stdIt != stdSet.end() )
-	  {
-	    stdFound.push_back( p );
-	    std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
-	  }
-	else stdNotFound.push_back( p );
-	const auto blkIt = blkSet.find( p );
-	if ( blkIt != blkSet.end() )
-	  {
-	    blkFound.push_back( p );
-	    blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
-	  }
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        const auto stdIt = stdSet.find( p );
+        if ( stdIt != stdSet.end() )
+          {
+            stdFound.push_back( p );
+            std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
+          }
+        else stdNotFound.push_back( p );
+        const auto blkIt = blkSet.find( p );
+        if ( blkIt != blkSet.end() )
+          {
+            blkFound.push_back( p );
+            blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
+          }
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -144,9 +144,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
     REQUIRE( std_nb_value_ok == stdFound.size() );
     REQUIRE( blk_nb_value_ok == std_nb_value_ok );
     REQUIRE( blk_nb_value_ok == blkFound.size() );
@@ -158,23 +158,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     int blk_nb_erase_ok = 0;
     for ( int i = 0; i < nb_erased; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	auto stdFindIt   = stdSet.find ( p );
-	auto stdIsErased = stdSet.erase( p );
-	if ( stdFindIt != stdSet.cend() )
-	  {
-	    std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
-	    stdErase.push_back( p );
-	  }
-	else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
-	auto blkFindIt   = blkSet.find ( p );
-	auto blkIsErased = blkSet.erase( p );
-	if ( blkFindIt != blkSet.cend() )
-	  {
-	    blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
-	    blkErase.push_back( p );
-	  }
-	else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
+        Point p = randomPoint<Point>( 10 );
+        auto stdFindIt   = stdSet.find ( p );
+        auto stdIsErased = stdSet.erase( p );
+        if ( stdFindIt != stdSet.cend() )
+          {
+            std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
+            stdErase.push_back( p );
+          }
+        else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
+        auto blkFindIt   = blkSet.find ( p );
+        auto blkIsErased = blkSet.erase( p );
+        if ( blkFindIt != blkSet.cend() )
+          {
+            blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
+            blkErase.push_back( p );
+          }
+        else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
       }
     REQUIRE( blkSet  .size() == stdSet  .size() );
     REQUIRE( blkErase.size() == stdErase.size() );
@@ -212,8 +212,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     const auto blkMem = blkSet.memory_usage();
     REQUIRE( blkMem <= stdMem );
   }
-    
-  
+
+
   THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
@@ -287,11 +287,11 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     std::vector< Point > blkFound, blkNotFound;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
-	else stdNotFound.push_back( p );
-	if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
+        else stdNotFound.push_back( p );
+        if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -300,9 +300,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
   }
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
@@ -311,21 +311,21 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     int blk_nb_value_ok = 0;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	const auto stdIt = stdSet.find( p );
-	if ( stdIt != stdSet.end() )
-	  {
-	    stdFound.push_back( p );
-	    std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
-	  }
-	else stdNotFound.push_back( p );
-	const auto blkIt = blkSet.find( p );
-	if ( blkIt != blkSet.end() )
-	  {
-	    blkFound.push_back( p );
-	    blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
-	  }
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        const auto stdIt = stdSet.find( p );
+        if ( stdIt != stdSet.end() )
+          {
+            stdFound.push_back( p );
+            std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
+          }
+        else stdNotFound.push_back( p );
+        const auto blkIt = blkSet.find( p );
+        if ( blkIt != blkSet.end() )
+          {
+            blkFound.push_back( p );
+            blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
+          }
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -334,9 +334,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
     REQUIRE( std_nb_value_ok == stdFound.size() );
     REQUIRE( blk_nb_value_ok == std_nb_value_ok );
     REQUIRE( blk_nb_value_ok == blkFound.size() );
@@ -348,23 +348,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     int blk_nb_erase_ok = 0;
     for ( int i = 0; i < nb_erased; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	auto stdFindIt   = stdSet.find ( p );
-	auto stdIsErased = stdSet.erase( p );
-	if ( stdFindIt != stdSet.cend() )
-	  {
-	    std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
-	    stdErase.push_back( p );
-	  }
-	else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
-	auto blkFindIt   = blkSet.find ( p );
-	auto blkIsErased = blkSet.erase( p );
-	if ( blkFindIt != blkSet.cend() )
-	  {
-	    blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
-	    blkErase.push_back( p );
-	  }
-	else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
+        Point p = randomPoint<Point>( 10 );
+        auto stdFindIt   = stdSet.find ( p );
+        auto stdIsErased = stdSet.erase( p );
+        if ( stdFindIt != stdSet.cend() )
+          {
+            std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
+            stdErase.push_back( p );
+          }
+        else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
+        auto blkFindIt   = blkSet.find ( p );
+        auto blkIsErased = blkSet.erase( p );
+        if ( blkFindIt != blkSet.cend() )
+          {
+            blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
+            blkErase.push_back( p );
+          }
+        else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
       }
     REQUIRE( blkSet  .size() == stdSet  .size() );
     REQUIRE( blkErase.size() == stdErase.size() );
@@ -402,8 +402,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     const auto blkMem = blkSet.memory_usage();
     REQUIRE( blkMem <= stdMem );
   }
-    
-  
+
+
   THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
@@ -477,11 +477,11 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     std::vector< Point > blkFound, blkNotFound;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
-	else stdNotFound.push_back( p );
-	if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
+        else stdNotFound.push_back( p );
+        if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -490,9 +490,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
   }
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
@@ -501,21 +501,21 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     int blk_nb_value_ok = 0;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	const auto stdIt = stdSet.find( p );
-	if ( stdIt != stdSet.end() )
-	  {
-	    stdFound.push_back( p );
-	    std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
-	  }
-	else stdNotFound.push_back( p );
-	const auto blkIt = blkSet.find( p );
-	if ( blkIt != blkSet.end() )
-	  {
-	    blkFound.push_back( p );
-	    blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
-	  }
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        const auto stdIt = stdSet.find( p );
+        if ( stdIt != stdSet.end() )
+          {
+            stdFound.push_back( p );
+            std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
+          }
+        else stdNotFound.push_back( p );
+        const auto blkIt = blkSet.find( p );
+        if ( blkIt != blkSet.end() )
+          {
+            blkFound.push_back( p );
+            blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
+          }
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -524,9 +524,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
     REQUIRE( std_nb_value_ok == stdFound.size() );
     REQUIRE( blk_nb_value_ok == std_nb_value_ok );
     REQUIRE( blk_nb_value_ok == blkFound.size() );
@@ -538,23 +538,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     int blk_nb_erase_ok = 0;
     for ( int i = 0; i < nb_erased; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	auto stdFindIt   = stdSet.find ( p );
-	auto stdIsErased = stdSet.erase( p );
-	if ( stdFindIt != stdSet.cend() )
-	  {
-	    std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
-	    stdErase.push_back( p );
-	  }
-	else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
-	auto blkFindIt   = blkSet.find ( p );
-	auto blkIsErased = blkSet.erase( p );
-	if ( blkFindIt != blkSet.cend() )
-	  {
-	    blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
-	    blkErase.push_back( p );
-	  }
-	else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
+        Point p = randomPoint<Point>( 10 );
+        auto stdFindIt   = stdSet.find ( p );
+        auto stdIsErased = stdSet.erase( p );
+        if ( stdFindIt != stdSet.cend() )
+          {
+            std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
+            stdErase.push_back( p );
+          }
+        else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
+        auto blkFindIt   = blkSet.find ( p );
+        auto blkIsErased = blkSet.erase( p );
+        if ( blkFindIt != blkSet.cend() )
+          {
+            blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
+            blkErase.push_back( p );
+          }
+        else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
       }
     REQUIRE( blkSet  .size() == stdSet  .size() );
     REQUIRE( blkErase.size() == stdErase.size() );
@@ -592,8 +592,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     const auto blkMem = blkSet.memory_usage();
     REQUIRE( blkMem <= stdMem );
   }
-    
-  
+
+
   THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
@@ -668,11 +668,11 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     std::vector< Point > blkFound, blkNotFound;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
-	else stdNotFound.push_back( p );
-	if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
+        else stdNotFound.push_back( p );
+        if ( blkSet.count( p ) != 0 ) blkFound.push_back( p );
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -681,9 +681,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
   }
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
@@ -692,21 +692,21 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     int blk_nb_value_ok = 0;
     for ( int i = 0; i < nb_sought; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	const auto stdIt = stdSet.find( p );
-	if ( stdIt != stdSet.end() )
-	  {
-	    stdFound.push_back( p );
-	    std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
-	  }
-	else stdNotFound.push_back( p );
-	const auto blkIt = blkSet.find( p );
-	if ( blkIt != blkSet.end() )
-	  {
-	    blkFound.push_back( p );
-	    blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
-	  }
-	else blkNotFound.push_back( p );
+        Point p = randomPoint<Point>( 10 );
+        const auto stdIt = stdSet.find( p );
+        if ( stdIt != stdSet.end() )
+          {
+            stdFound.push_back( p );
+            std_nb_value_ok += ( *stdIt == p ) ? 1 : 0;
+          }
+        else stdNotFound.push_back( p );
+        const auto blkIt = blkSet.find( p );
+        if ( blkIt != blkSet.end() )
+          {
+            blkFound.push_back( p );
+            blk_nb_value_ok += ( *blkIt == p ) ? 1 : 0;
+          }
+        else blkNotFound.push_back( p );
       }
     REQUIRE( blkFound   .size() == stdFound   .size() );
     REQUIRE( blkNotFound.size() == stdNotFound.size() );
@@ -715,9 +715,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     std::sort( blkFound   .begin(), blkFound   .end() );
     std::sort( blkNotFound.begin(), blkNotFound.end() );
     REQUIRE( std::equal( stdFound.cbegin(), stdFound.cend(),
-			 blkFound.cbegin() ) );
+                         blkFound.cbegin() ) );
     REQUIRE( std::equal( stdNotFound.cbegin(), stdNotFound.cend(),
-			 blkNotFound.cbegin() ) );
+                         blkNotFound.cbegin() ) );
     REQUIRE( std_nb_value_ok == stdFound.size() );
     REQUIRE( blk_nb_value_ok == std_nb_value_ok );
     REQUIRE( blk_nb_value_ok == blkFound.size() );
@@ -729,23 +729,23 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     int blk_nb_erase_ok = 0;
     for ( int i = 0; i < nb_erased; i++ )
       {
-	Point p = randomPoint<Point>( 10 );
-	auto stdFindIt   = stdSet.find ( p );
-	auto stdIsErased = stdSet.erase( p );
-	if ( stdFindIt != stdSet.cend() )
-	  {
-	    std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
-	    stdErase.push_back( p );
-	  }
-	else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
-	auto blkFindIt   = blkSet.find ( p );
-	auto blkIsErased = blkSet.erase( p );
-	if ( blkFindIt != blkSet.cend() )
-	  {
-	    blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
-	    blkErase.push_back( p );
-	  }
-	else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
+        Point p = randomPoint<Point>( 10 );
+        auto stdFindIt   = stdSet.find ( p );
+        auto stdIsErased = stdSet.erase( p );
+        if ( stdFindIt != stdSet.cend() )
+          {
+            std_nb_erase_ok  += ( stdIsErased != 0 ) ? 1 : 0;
+            stdErase.push_back( p );
+          }
+        else std_nb_erase_ok += ( stdIsErased == 0 ) ? 1 : 0;
+        auto blkFindIt   = blkSet.find ( p );
+        auto blkIsErased = blkSet.erase( p );
+        if ( blkFindIt != blkSet.cend() )
+          {
+            blk_nb_erase_ok  += ( blkIsErased != 0 ) ? 1 : 0;
+            blkErase.push_back( p );
+          }
+        else blk_nb_erase_ok += ( blkIsErased == 0 ) ? 1 : 0;
       }
     REQUIRE( blkSet  .size() == stdSet  .size() );
     REQUIRE( blkErase.size() == stdErase.size() );
@@ -783,8 +783,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     const auto blkMem = blkSet.memory_usage();
     REQUIRE( blkMem <= stdMem );
   }
-    
-  
+
+
   THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
