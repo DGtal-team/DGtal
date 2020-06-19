@@ -128,7 +128,7 @@ energySquaredCurvature()
 template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
-oneStepAreaMinimization( double randomization )
+oneStepAreaMinimization( const double randomization )
 {
   parameterize();
   Scalars newT = myT;
@@ -179,7 +179,7 @@ template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSnakeMinimization
-( double alpha, double beta, double randomization )
+( const double alpha, const double beta, const double randomization )
 {
   parameterize();
   Scalars newT = myT;
@@ -242,7 +242,7 @@ template < typename TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSquaredCurvatureMinimization
-( double randomization )
+( const double randomization )
 {
   parameterize();
   Scalars newT = myT;

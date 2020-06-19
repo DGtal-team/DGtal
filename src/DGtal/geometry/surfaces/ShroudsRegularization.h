@@ -332,7 +332,7 @@ namespace DGtal {
     ///
     /// @return the current energy of the shrouds, according to the
     /// chosen regularization process.
-    double energy( constRegularization reg = Regularization::SQUARED_CURVATURE )
+    double energy( const Regularization reg = Regularization::SQUARED_CURVATURE )
     {
       if ( reg == Regularization::SQUARED_CURVATURE )
 	return energySquaredCurvature();
