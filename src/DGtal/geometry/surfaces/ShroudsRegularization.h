@@ -146,7 +146,7 @@ namespace DGtal {
 	}
     }
 
-    /// Sets some parameters that affects the output regularized shape.
+    /// Sets some parameters that affect the output regularized shape.
     ///
     /// @param eps the bounds for varying the positions of vertices in ]0,1[
     /// @param alpha parameter for Snake first order regularization (~ area)
@@ -157,7 +157,7 @@ namespace DGtal {
       myAlpha   = alpha;
       myBeta    = beta;
     }
-    /// Retrieves the parameters that affects the output regularized shape.
+    /// Retrieves the parameters that affect the output regularized shape.
     ///
     /// @return a tuple (eps, alpha, beta) where \a eps is the bounds
     /// for varying the positions of vertices in ]0,1[, \a alpha is
@@ -179,14 +179,14 @@ namespace DGtal {
     /// @param v any valid vertex.
     /// @param t some adjustement parameter
     /// @return the position of vertex v for this parameter t.
-    RealPoint position( Vertex v, double t ) const
+    RealPoint position( const Vertex v, const double t ) const
     {
       return (1-t) * myInsV[ v ] + t * myOutV[ v ];
     }
     
     /// @param v any valid vertex.
     /// @return its position.
-    RealPoint position( Vertex v ) const
+    RealPoint position( const Vertex v ) const
     {
       const auto t = myT[ v ];
       return (1-t) * myInsV[ v ] + t * myOutV[ v ];
@@ -205,7 +205,7 @@ namespace DGtal {
     /// (i.e. `(orthDir(v)+1)%3` and `(orthDir(v)+2)%3`).
     ///
     /// @return the orthogonal direction to vertex v.
-    Dimension orthDir( Vertex v ) const
+    Dimension orthDir( const Vertex v ) const
     {
       return myOrthDir[ v ];
     }
@@ -213,7 +213,7 @@ namespace DGtal {
     /// Useful to navigate tangentially along a slice.
     /// @param v_i a pair (vertex,tangent direction)
     /// @return the next vertex and associated tangent direction along the slice. 
-    std::pair<Vertex,Dimension> next( std::pair<Vertex,Dimension> v_i ) const
+    std::pair<Vertex,Dimension> next( const std::pair<Vertex,Dimension> & v_i ) const
     {
       const Vertex    vn = myNext[ v_i.second ][ v_i.first ];
       const Dimension in = myOrthDir[ vn ] == v_i.second
@@ -224,7 +224,7 @@ namespace DGtal {
     /// Useful to navigate tangentially along a slice.
     /// @param v_i a pair (vertex,tangent direction)
     /// @return the previous vertex and associated tangent direction along the slice. 
-    std::pair<Vertex,Dimension> prev( std::pair<Vertex,Dimension> v_i ) const
+    std::pair<Vertex,Dimension> prev( const std::pair<Vertex,Dimension> &v_i ) const
     {
       const Vertex    vp = myPrev[ v_i.second ][ v_i.first ];
       const Dimension ip = myOrthDir[ vp ] == v_i.second
@@ -258,7 +258,7 @@ namespace DGtal {
     /// @param v_i a pair (vertex,tangent direction)
     /// @return the coefficient for centered first-order finite difference.
     /// @note We have y'_i ~= c1 * (y_{i+1} - y_{i-1} )
-    Scalar c1( std::pair<Vertex,Dimension> v_i ) const
+    Scalar c1( const std::pair<Vertex,Dimension> &v_i ) const
     {
       const Scalar din = myNextD[ v_i.second ][ v_i.first ];
       const Scalar dip = myPrevD[ v_i.second ][ v_i.first ];
@@ -268,7 +268,7 @@ namespace DGtal {
     /// @param v_i a pair (vertex,tangent direction)
     /// @return the coefficients for centered second-order finite difference.
     /// @note We have y''_i ~= c2<0> * y_{i+1} - c2<1> * y_{i} + c2<2> * y_{i-1}
-    std::tuple<Scalar,Scalar,Scalar> c2_all( std::pair<Vertex,Dimension> v_i ) const
+    std::tuple<Scalar,Scalar,Scalar> c2_all( const std::pair<Vertex,Dimension> &v_i ) const
     {
       const Scalar din = myNextD[ v_i.second ][ v_i.first ];
       const Scalar dip = myPrevD[ v_i.second ][ v_i.first ];
@@ -301,10 +301,10 @@ namespace DGtal {
     /// @see oneStepSnakeMinimization
     /// @see oneStepSquaredCurvatureMinimization
     std::pair<double,double>
-    regularize( Regularization   reg = Regularization::SQUARED_CURVATURE,
-		double randomization = 0.0,
-		double       max_loo = 0.0001,
-		int            maxNb = 100 )
+    regularize( const Regularization   reg = Regularization::SQUARED_CURVATURE,
+		const double randomization = 0.0,
+		const double       max_loo = 0.0001,
+		const int            maxNb = 100 )
     {
       double loo      = 0.0;
       double  l2      = 0.0;
@@ -332,7 +332,7 @@ namespace DGtal {
     ///
     /// @return the current energy of the shrouds, according to the
     /// chosen regularization process.
-    double energy( Regularization reg = Regularization::SQUARED_CURVATURE )
+    double energy( constRegularization reg = Regularization::SQUARED_CURVATURE )
     {
       if ( reg == Regularization::SQUARED_CURVATURE )
 	return energySquaredCurvature();
@@ -363,7 +363,7 @@ namespace DGtal {
     /// vertex displacements.
     ///
     /// @note Not very nice.
-    std::pair<double,double> oneStepAreaMinimization( double randomization = 0.0 );
+    std::pair<double,double> oneStepAreaMinimization( const double randomization = 0.0 );
 
     /// Smooths the shape according to the minimization of elastic + thin plate
     /// energy (like snakes).
@@ -390,7 +390,7 @@ namespace DGtal {
     /// orthogonal direction at \f$ X \f$, then \f$ x(s)=X[i], y(s)=X[k] \f$.
     ///
     /// At a vertex \f$ v(s) \f$, the position is parameterized by \a t. Varying
-    /// \a t only modify the vertical position \f$ X[k] \f$, i.e. \a y.
+    /// \a t only modifies the vertical position \f$ X[k] \f$, i.e. \a y.
     /// So \f$ y(t) = (1-t)*I[v][k] + t*O[v][k] \f$
     /// (for \f$ I[v] \f$ and \f$ O[v] \f$ inside and outside voxel positions).
     ///
@@ -402,7 +402,7 @@ namespace DGtal {
     /// \f$ and \f$ d(X,Xp) \f$.  \f$ y'' ~= ( c_0 * Xn[k] - c_1 *
     /// X[k] + c_2 * Xp[k] ) \f$ solely \b depend on t.
     std::pair<double,double> oneStepSnakeMinimization
-    ( double alpha = 1.0, double beta = 1.0, double randomization = 0.0 );
+    ( const double alpha = 1.0, const double beta = 1.0, const double randomization = 0.0 );
 
     /// Smooths the shape according to the minimization of squared curvature.
     ///
@@ -437,7 +437,7 @@ namespace DGtal {
     /// orthogonal direction at \f$ X \f$, then \f$ x(s)=X[i], y(s)=X[k] \f$.
     ///
     /// At a vertex \f$ v(s) \f$, the position is parameterized by \a t. Varying
-    /// \a t only modify the vertical position \f$ X[k] \f$, i.e. \a y.
+    /// \a t only modifies the vertical position \f$ X[k] \f$, i.e. \a y.
     /// So \f$ y(t) = (1-t)*I[v][k] + t*O[v][k] \f$
     /// (for \f$ I[v] \f$ and \f$ O[v] \f$ inside and outside voxel positions).
     ///
@@ -459,7 +459,7 @@ namespace DGtal {
     /// where \f$ X[k] = y(t) = (1-t)*I[v][k] + t*O[v][k]. \f$
     /// And so on.
     std::pair<double,double> oneStepSquaredCurvatureMinimization
-    ( double randomization = 0.0 );
+    ( const double randomization = 0.0 );
 
     /// Forces t to stay in ]0,1[
     void enforceBounds();
