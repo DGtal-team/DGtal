@@ -31,6 +31,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iterator>
 #include <unordered_set>
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/UnorderedSetByBlock.h"
@@ -197,10 +198,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    int nb_std = 0;
-    int nb_blk = 0;
-    for ( auto&& c : stdSet ) nb_std += 1;
-    for ( auto&& c : blkSet ) nb_blk += 1;
+    int nb_std = std::distance(stdSet.begin(), stdSet.end());
+    int nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -387,10 +386,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    int nb_std = 0;
-    int nb_blk = 0;
-    for ( auto&& c : stdSet ) nb_std += 1;
-    for ( auto&& c : blkSet ) nb_blk += 1;
+    int nb_std = std::distance(stdSet.begin(), stdSet.end());
+    int nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -577,10 +574,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    int nb_std = 0;
-    int nb_blk = 0;
-    for ( auto&& c : stdSet ) nb_std += 1;
-    for ( auto&& c : blkSet ) nb_blk += 1;
+    int nb_std = std::distance(stdSet.begin(), stdSet.end());
+    int nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -768,10 +763,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    int nb_std = 0;
-    int nb_blk = 0;
-    for ( auto&& c : stdSet ) nb_std += 1;
-    for ( auto&& c : blkSet ) nb_blk += 1;
+    int nb_std = std::distance(stdSet.begin(), stdSet.end());
+    int nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
