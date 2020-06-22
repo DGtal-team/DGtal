@@ -25,10 +25,10 @@ Related example:  geometry/surfaces/testDigitalSurfaceRegularization.cpp
 
 [TOC]
 
-\note In opposition with the method described in \ref moduleShrouds,
+\note In opposition to the method described in \ref moduleShrouds,
 this digital surface regularization method is not limited to closed
 surfaces and can process open digital surfaces. Furthermore, the
-optimized energy is convex and much less iterations are needed to
+optimized energy is convex and fewer iterations are needed to
 converge to the optimal position. The price to pay is the computation
 of an estimated normal vector field.
 
