@@ -22,6 +22,10 @@
     Nielson et al., Shrouds: optimal separating surfaces for enumerated volumes.
     In Proc. VisSym 2003, vol. 3, pp. 75-84
     (Jacques-Olivier Lachaud, [#1500](https://github.com/DGtal-team/DGtal/pull/1500))
+  - Updates cell geometry and digital convexity to use specialized
+    unordered set data structure UnorderedSetByBlock for storing
+    digital points (Jacques-Olivier Lachaud,
+    [#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 ## Changes
 
@@ -53,6 +57,10 @@
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+  - Add a specialized unordered set data structure
+    UnorderedSetByBlock for storing digital points, which is more
+    compact and as efficient as unordered set
+    (Jacques-Olivier Lachaud,[#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,

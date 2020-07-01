@@ -45,12 +45,12 @@
 #include <vector>
 #include <string>
 #include <unordered_set>
-#include <unordered_map>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/UnorderedSetByBlock.h"
+#include "DGtal/kernel/PointHashFunctions.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
-#include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 #include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -66,12 +66,12 @@ namespace DGtal
      intersections of lattice and rational polytopes with cells.
 
      It is a model of boost::CopyConstructible,
-     boost::DefaultConstructible, boost::Assignable. 
+     boost::DefaultConstructible, boost::Assignable.
 
      @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
    */
   template < typename TKSpace >
-  class CellGeometry 
+  class CellGeometry
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
 
@@ -89,12 +89,10 @@ namespace DGtal
 #else
     typedef DGtal::int64_t                  BigInteger;
 #endif
-    typedef DGtal::CubicalComplex
-    < KSpace, std::unordered_map< Cell, CubicalCellData> > CubicalComplex;
     typedef DGtal::BoundedLatticePolytope< Space >  Polytope;
     typedef DGtal::BoundedLatticePolytope< Space >  LatticePolytope;
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
-    
+
     static const Dimension dimension = KSpace::dimension;
 
 
@@ -107,7 +105,7 @@ namespace DGtal
     ~CellGeometry() = default;
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     CellGeometry();
 
@@ -131,21 +129,10 @@ namespace DGtal
      * @param verbose tells if verbose mode.
      */
     CellGeometry ( const KSpace & K,
-		   Dimension min_cell_dim = 0,
-		   Dimension max_cell_dim = KSpace::dimension,
-		   bool verbose = false );
-    /**
-     * Constructor from cubical complex.
-     * @param CC any cubical complex
-     * @param min_cell_dim the minimum cell dimension that is used for processing.
-     * @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity).
-     * @param verbose tells if verbose mode.
-     */
-    CellGeometry ( const CubicalComplex& CC,
-		   Dimension min_cell_dim = 0,
-		   Dimension max_cell_dim = KSpace::dimension,
-		   bool verbose = false );
-    
+                   Dimension min_cell_dim = 0,
+                   Dimension max_cell_dim = KSpace::dimension,
+                   bool verbose = false );
+
     /**
      * Assignment.
      * @param other the object to copy.
@@ -161,21 +148,21 @@ namespace DGtal
     /// @param max_cell_dim the maximal cell dimension that is used for processing (K::dimension - 1 is sufficient to check convexity)
     /// @param verbose tells if verbose mode.
     void init( const KSpace & K,
-	       Dimension min_cell_dim = 0,
-	       Dimension max_cell_dim = KSpace::dimension,
-	       bool verbose = false );
+               Dimension min_cell_dim = 0,
+               Dimension max_cell_dim = KSpace::dimension,
+               bool verbose = false );
     /// @}
 
     // ----------------------- Cells services ------------------------------
   public:
     /// @name Cells services
     /// @{
-    
+
     /// Updates the cell cover with the cells touching a range of
     /// digital points [itB, itE).
     template <typename PointIterator>
     void addCellsTouchingPoints( PointIterator itB, PointIterator itE );
-    
+
     /// Updates the cell cover with the cells touching a range of
     /// digital pointels [itB, itE).
     template <typename PointelIterator>
@@ -210,13 +197,6 @@ namespace DGtal
     /// @return a reference to this object.
     CellGeometry& operator+=( const CellGeometry& other );
 
-    /// Adds the cells of dimension k of cubical complex \a CC, for
-    /// `minCellDim() <= k <= maxCellDim()`, to this cell geometry.
-    ///
-    /// @param CC any cubical complex.
-    /// @return a reference to this object.
-    CellGeometry& operator+=( const CubicalComplex& CC );
-    
     /// @}
 
     // ----------------------- Accessor services ------------------------------
@@ -224,16 +204,19 @@ namespace DGtal
     /// @name Accessor services
     /// @{
 
-    /// @return a reference to the cubical complex storing cell information.
-    const CubicalComplex& cubicalComplex() const;
-    /// @param k the dimension of cells.
-    /// @return the number of cells of dimension \a k in this cell geometry.
-    Size nbCells( Dimension k ) const;
+    /// @return the total number of cells in this cell geometry.
+    Size nbCells() const;
+    /// @param k any non negative integer
+    /// @return computes and returns the number of k-dimensional cells
+    /// in this cell geometry.
+    Size computeNbCells(const Dimension k ) const;
+    /// @return computes and return the Euler chracteristic of this set of cells.
+    Integer computeEuler() const;
     /// @return the smallest dimension for which cells are stored in this object.
     Dimension minCellDim() const;
     /// @return the highest dimension for which cells are stored in this object.
     Dimension maxCellDim() const;
-    
+
     /// @}
 
     // ----------------------- Cell services ------------------------------
@@ -241,16 +224,6 @@ namespace DGtal
     /// @name Cell services
     /// @{
 
-    /// This methods performs some precomputation in order to speed-up
-    /// multiple future calls to \ref subset. This should be called
-    /// when this cell geometry is no more updated.
-    void prepareSubsetOperations();
-
-    /// This methods tells if \ref prepareSubsetOperations has been
-    /// called on this object before and the cell geometry has not
-    /// been updated in-between.
-    bool isPreparedForSubsetOperations() const;
-    
     /// Tells if the cells of 'this' are subset of the cells of \a
     /// other, for all valid dimensions of 'this' (i.e. from
     /// myMinCellDim till myMaxCellDim).
@@ -272,13 +245,40 @@ namespace DGtal
     /// @note if `other.maxCellDim() < k` or `k < other.minCellDim()`
     /// then it means that \a other contains no cell of dimension k.
     bool subset( const CellGeometry& other, const Dimension k ) const;
-    
+
     /// @}
-    
+
     // ----------------------- helper services ------------------------------
   public:
     /// @name Helper services
     /// @{
+
+    /// Given a lattice \a polytope, such that `polytope.canBeSummed()==true`,
+    /// return the \a i-kpoints that intersect it.
+    ///
+    /// @param polytope any lattice polytope such that `polytope.canBeSummed() == true`
+    /// @param i any integer between 0 and KSpace::dimension
+    /// @return the \a i-kpoints that intersect this polytope.
+    std::vector< Point >
+    getIntersectedKPoints( const LatticePolytope& polytope, const Dimension i ) const;
+
+    /// Given a rational \a polytope, such that `polytope.canBeSummed()==true`,
+    /// return the \a i-kpoints that intersect it.
+    ///
+    /// @param polytope any rational polytope such that `polytope.canBeSummed() == true`
+    /// @param i any integer between 0 and KSpace::dimension
+    /// @return the \a i-kpoints that intersect this polytope.
+    std::vector< Point >
+    getIntersectedKPoints( const RationalPolytope& polytope, const Dimension i ) const;
+
+    /// Given a vector of points, return the \a i-kpoints that touch it.
+    ///
+    /// @param points any vector of points
+    /// @param i any integer between 0 and KSpace::dimension (and limited to 5-D at most).
+    /// @return the \a i-kpoints that intersect this polytope.
+    std::vector< Point >
+    getTouchedKPoints( const std::vector< Point >& points, const Dimension i ) const;
+
 
     /// Given a lattice \a polytope, such that `polytope.canBeSummed()==true`,
     /// return the \a i-cells that intersect it.
@@ -305,10 +305,21 @@ namespace DGtal
     /// @return the \a i-cells that intersect this polytope.
     std::vector< Cell >
     getTouchedCells( const std::vector< Point >& points, const Dimension i ) const;
-    
+
     /// @}
-    
-    
+
+    // ----------------------- Khalimsky point services -------------------------------
+  public:
+    /// @name Khalimsky point services
+    /// @{
+
+    /// @param kp a Khalimsky point (i.e. an integer point whose coordinates
+    /// parities correspond to cells).
+    /// @return the dimension of the cell associated to this Khalimsky point.
+    static Dimension dim( const Point& kp );
+
+    /// @}
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services
@@ -321,7 +332,7 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const;
 
     /**
-     * Checks the validity/consistency of the object. 
+     * Checks the validity/consistency of the object.
      *
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -339,20 +350,16 @@ namespace DGtal
 
     /// The cellular space for cells.
     KSpace myK;
-    /// The cubical complex that stores cells.
-    CubicalComplex myCC;
+    /// The unordered set that stores cells.
+    UnorderedSetByBlock< Point,
+                         Splitter< Point, uint64_t> > myKPoints;
     /// The minimum cell dimension
     Dimension myMinCellDim;
     /// The maximal cell dimension
     Dimension myMaxCellDim;
     /// Tells if verbose mode.
     bool myVerbose;
-    /// Tells if the user has forced a precomputation of cell vectors
-    /// to speed-up subset computations
-    bool myPrecomputeSubset;
-    /// The data structures for subset precomputation.
-    std::vector< std::vector< Cell > > myCells;
-    
+
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -366,13 +373,13 @@ namespace DGtal
     template <typename RandomIterator>
     static
     bool includes( RandomIterator it2, RandomIterator itE2,
-		   RandomIterator it1, RandomIterator itE1 );
+                   RandomIterator it1, RandomIterator itE1 );
 
   }; // end of class CellGeometry
 
   /// @name Functions related to CellGeometry (output)
   /// @{
-  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'CellGeometry'.
    * @param out the output stream where the object is written.
@@ -381,7 +388,7 @@ namespace DGtal
    */
   template <typename TKSpace>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const CellGeometry<TKSpace> & object );
 
   /// @}
@@ -401,7 +408,7 @@ namespace DGtal
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
     typedef typename KSpace::Point Point;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -412,23 +419,23 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
-      if ( i == 0 ) 
-	for ( auto it = itB; it != itE; ++it )
-	  cells.insert( *it );
+      if ( i == 0 )
+        for ( auto it = itB; it != itE; ++it )
+          cells.insert( *it );
       else
-	for ( auto it = itB; it != itE; ++it )
-	  {
-	    auto pointel = *it;
-	    auto cofaces = K.uCoFaces( pointel );
-	    for ( auto&& f : cofaces )
-	      if ( K.uDim( f ) == i ) cells.insert( f );
-	  }
+        for ( auto it = itB; it != itE; ++it )
+          {
+            auto pointel = *it;
+            auto cofaces = K.uCoFaces( pointel );
+            for ( auto&& f : cofaces )
+              if ( K.uDim( f ) == i ) cells.insert( f );
+          }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
@@ -439,21 +446,50 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
-      if ( i == 0 ) 
-	for ( auto it = itB; it != itE; ++it )
-	  cells.insert( K.uPointel( *it ) );
+      if ( i == 0 )
+        for ( auto it = itB; it != itE; ++it )
+          cells.insert( K.uPointel( *it ) );
       else
-	for ( auto it = itB; it != itE; ++it )
-	  {
-	    auto pointel = K.uPointel( *it );
-	    auto cofaces = K.uCoFaces( pointel );
-	    for ( auto&& f : cofaces )
-	      if ( K.uDim( f ) == i ) cells.insert( f );
-	  }
+        for ( auto it = itB; it != itE; ++it )
+          {
+            auto pointel = K.uPointel( *it );
+            auto cofaces = K.uCoFaces( pointel );
+            for ( auto&& f : cofaces )
+              if ( K.uDim( f ) == i ) cells.insert( f );
+          }
       return cells;
+    }
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident i-kpoints to the given range of points [itB, itE).
+    /// @note General method. Note as efficient as specializations.
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t > >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t > > kpoints;
+      if ( i == 0 )
+        for ( auto it = itB; it != itE; ++it )
+          kpoints.insert( K.uKCoords( K.uPointel( *it ) ) );
+      else
+        for ( auto it = itB; it != itE; ++it )
+          {
+            auto pointel = K.uPointel( *it );
+            auto cofaces = K.uCoFaces( pointel );
+            for ( auto&& f : cofaces )
+              if ( K.uDim( f ) == i ) kpoints.insert( K.uKCoords( f ) );
+          }
+      return kpoints;
     }
 
 
@@ -469,7 +505,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -479,42 +515,66 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  cells.insert( K.uIncident( pointel, 0, true ) );
-	  cells.insert( K.uIncident( pointel, 0, false ) );
-	  cells.insert( K.uIncident( pointel, 1, true ) );
-	  cells.insert( K.uIncident( pointel, 1, false ) );
-	}
+        {
+          auto pointel = *it;
+          cells.insert( K.uIncident( pointel, 0, true ) );
+          cells.insert( K.uIncident( pointel, 0, false ) );
+          cells.insert( K.uIncident( pointel, 1, true ) );
+          cells.insert( K.uIncident( pointel, 1, false ) );
+        }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
     /// @param itE past the end of a range of points.
     /// @return the incident 1-cells to the given range of points [itB, itE).
-    /// @note General method. Note as efficient as specializations.
     template <typename PointIterator>
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  cells.insert( K.uIncident( pointel, 0, true ) );
-	  cells.insert( K.uIncident( pointel, 0, false ) );
-	  cells.insert( K.uIncident( pointel, 1, true ) );
-	  cells.insert( K.uIncident( pointel, 1, false ) );
-	}
+        {
+          auto pointel = K.uPointel( *it );
+          cells.insert( K.uIncident( pointel, 0, true ) );
+          cells.insert( K.uIncident( pointel, 0, false ) );
+          cells.insert( K.uIncident( pointel, 1, true ) );
+          cells.insert( K.uIncident( pointel, 1, false ) );
+        }
       return cells;
+    }
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 1-kpoints to the given range of points [itB, itE).
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t > >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t > > kpoints;
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1 );
+        }
+      return kpoints;
     }
 
   }; // end struct CellGeometryFunctions
@@ -529,7 +589,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -539,22 +599,22 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  cells.insert( K.uIncident( pointel, 0, true ) );
-	  cells.insert( K.uIncident( pointel, 0, false ) );
-	  cells.insert( K.uIncident( pointel, 1, true ) );
-	  cells.insert( K.uIncident( pointel, 1, false ) );
-	  cells.insert( K.uIncident( pointel, 2, true ) );
-	  cells.insert( K.uIncident( pointel, 2, false ) );
-	}
+        {
+          auto pointel = *it;
+          cells.insert( K.uIncident( pointel, 0, true ) );
+          cells.insert( K.uIncident( pointel, 0, false ) );
+          cells.insert( K.uIncident( pointel, 1, true ) );
+          cells.insert( K.uIncident( pointel, 1, false ) );
+          cells.insert( K.uIncident( pointel, 2, true ) );
+          cells.insert( K.uIncident( pointel, 2, false ) );
+        }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
@@ -565,23 +625,50 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::cout << "<1,3> specialization" << std::endl;
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  cells.insert( K.uIncident( pointel, 0, true ) );
-	  cells.insert( K.uIncident( pointel, 0, false ) );
-	  cells.insert( K.uIncident( pointel, 1, true ) );
-	  cells.insert( K.uIncident( pointel, 1, false ) );
-	  cells.insert( K.uIncident( pointel, 2, true ) );
-	  cells.insert( K.uIncident( pointel, 2, false ) );
-	}
+        {
+          auto pointel = K.uPointel( *it );
+          cells.insert( K.uIncident( pointel, 0, true ) );
+          cells.insert( K.uIncident( pointel, 0, false ) );
+          cells.insert( K.uIncident( pointel, 1, true ) );
+          cells.insert( K.uIncident( pointel, 1, false ) );
+          cells.insert( K.uIncident( pointel, 2, true ) );
+          cells.insert( K.uIncident( pointel, 2, false ) );
+        }
       return cells;
     }
-    
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 1-kpoints to the given range of points [itB, itE).
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t > >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t > > kpoints;
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ]    , kp[ 2 ] + 1 );
+        }
+      return kpoints;
+    }
+
   }; // end struct CellGeometryFunctions
 
   /// Specialization for 2-cells in 2D.
@@ -594,7 +681,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -604,22 +691,22 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  cells.insert( K.uIncident( linelxp, 1, true ) );
-	  cells.insert( K.uIncident( linelxp, 1, false ) );
-	  cells.insert( K.uIncident( linelxm, 1, true ) );
-	  cells.insert( K.uIncident( linelxm, 1, false ) );
-	}
+        {
+          auto pointel = *it;
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          cells.insert( K.uIncident( linelxp, 1, true ) );
+          cells.insert( K.uIncident( linelxp, 1, false ) );
+          cells.insert( K.uIncident( linelxm, 1, true ) );
+          cells.insert( K.uIncident( linelxm, 1, false ) );
+        }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
@@ -630,23 +717,48 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::cout << "<2,2> specialization" << std::endl;
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  cells.insert( K.uIncident( linelxp, 1, true ) );
-	  cells.insert( K.uIncident( linelxp, 1, false ) );
-	  cells.insert( K.uIncident( linelxm, 1, true ) );
-	  cells.insert( K.uIncident( linelxm, 1, false ) );
-	}
+        {
+          auto pointel = K.uPointel( *it );
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          cells.insert( K.uIncident( linelxp, 1, true ) );
+          cells.insert( K.uIncident( linelxp, 1, false ) );
+          cells.insert( K.uIncident( linelxm, 1, true ) );
+          cells.insert( K.uIncident( linelxm, 1, false ) );
+        }
       return cells;
     }
-    
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 2-kpoints to the given range of points [itB, itE).
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t> >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t> > kpoints;
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1 );
+        }
+      return kpoints;
+    }
+
   }; // end struct CellGeometryFunctions
 
   /// Specialization for 2-cells in 3D.
@@ -659,7 +771,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -669,32 +781,32 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  auto linelyp = K.uIncident( pointel, 1, true );
-	  auto linelym = K.uIncident( pointel, 1, false );
-	  cells.insert( K.uIncident( linelxp, 1, true ) );
-	  cells.insert( K.uIncident( linelxp, 1, false ) );
-	  cells.insert( K.uIncident( linelxp, 2, true ) );
-	  cells.insert( K.uIncident( linelxp, 2, false ) );
-	  cells.insert( K.uIncident( linelxm, 1, true ) );
-	  cells.insert( K.uIncident( linelxm, 1, false ) );
-	  cells.insert( K.uIncident( linelxm, 2, true ) );
-	  cells.insert( K.uIncident( linelxm, 2, false ) );
-	  cells.insert( K.uIncident( linelyp, 2, true ) );
-	  cells.insert( K.uIncident( linelyp, 2, false ) );
-	  cells.insert( K.uIncident( linelym, 2, true ) );
-	  cells.insert( K.uIncident( linelym, 2, false ) );
-	}
+        {
+          auto pointel = *it;
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          auto linelyp = K.uIncident( pointel, 1, true );
+          auto linelym = K.uIncident( pointel, 1, false );
+          cells.insert( K.uIncident( linelxp, 1, true ) );
+          cells.insert( K.uIncident( linelxp, 1, false ) );
+          cells.insert( K.uIncident( linelxp, 2, true ) );
+          cells.insert( K.uIncident( linelxp, 2, false ) );
+          cells.insert( K.uIncident( linelxm, 1, true ) );
+          cells.insert( K.uIncident( linelxm, 1, false ) );
+          cells.insert( K.uIncident( linelxm, 2, true ) );
+          cells.insert( K.uIncident( linelxm, 2, false ) );
+          cells.insert( K.uIncident( linelyp, 2, true ) );
+          cells.insert( K.uIncident( linelyp, 2, false ) );
+          cells.insert( K.uIncident( linelym, 2, true ) );
+          cells.insert( K.uIncident( linelym, 2, false ) );
+        }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
@@ -705,33 +817,66 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::cout << "<2,3> specialization" << std::endl;
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  auto linelyp = K.uIncident( pointel, 1, true );
-	  auto linelym = K.uIncident( pointel, 1, false );
-	  cells.insert( K.uIncident( linelxp, 1, true ) );
-	  cells.insert( K.uIncident( linelxp, 1, false ) );
-	  cells.insert( K.uIncident( linelxp, 2, true ) );
-	  cells.insert( K.uIncident( linelxp, 2, false ) );
-	  cells.insert( K.uIncident( linelxm, 1, true ) );
-	  cells.insert( K.uIncident( linelxm, 1, false ) );
-	  cells.insert( K.uIncident( linelxm, 2, true ) );
-	  cells.insert( K.uIncident( linelxm, 2, false ) );
-	  cells.insert( K.uIncident( linelyp, 2, true ) );
-	  cells.insert( K.uIncident( linelyp, 2, false ) );
-	  cells.insert( K.uIncident( linelym, 2, true ) );
-	  cells.insert( K.uIncident( linelym, 2, false ) );
-	}
+        {
+          auto pointel = K.uPointel( *it );
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          auto linelyp = K.uIncident( pointel, 1, true );
+          auto linelym = K.uIncident( pointel, 1, false );
+          cells.insert( K.uIncident( linelxp, 1, true ) );
+          cells.insert( K.uIncident( linelxp, 1, false ) );
+          cells.insert( K.uIncident( linelxp, 2, true ) );
+          cells.insert( K.uIncident( linelxp, 2, false ) );
+          cells.insert( K.uIncident( linelxm, 1, true ) );
+          cells.insert( K.uIncident( linelxm, 1, false ) );
+          cells.insert( K.uIncident( linelxm, 2, true ) );
+          cells.insert( K.uIncident( linelxm, 2, false ) );
+          cells.insert( K.uIncident( linelyp, 2, true ) );
+          cells.insert( K.uIncident( linelyp, 2, false ) );
+          cells.insert( K.uIncident( linelym, 2, true ) );
+          cells.insert( K.uIncident( linelym, 2, false ) );
+        }
       return cells;
     }
-    
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 2-kpoints to the given range of points [itB, itE).
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t> >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t> > kpoints;
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ]     );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ]    , kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ]    , kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ]    , kp[ 1 ] + 1, kp[ 2 ] + 1 );
+        }
+      return kpoints;
+    }
+
   }; // end struct CellGeometryFunctions
 
   /// Specialization for 3-cells in 3D.
@@ -744,7 +889,7 @@ namespace DGtal
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
-    
+
     /// @tparam PointelIterator any model of forward iterator on pointels.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of pointels.
@@ -754,30 +899,30 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPointels( const KSpace& K,
-				PointelIterator itB, PointelIterator itE )
+                                PointelIterator itB, PointelIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = *it;
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  auto surfxpyp = K.uIncident( linelxp, 1, true );
-	  auto surfxpym = K.uIncident( linelxp, 1, false );
-	  auto surfxmyp = K.uIncident( linelxm, 1, true );
-	  auto surfxmym = K.uIncident( linelxm, 1, false );
-	  cells.insert( K.uIncident( surfxpyp, 2, true ) );
-	  cells.insert( K.uIncident( surfxpyp, 2, false ) );
-	  cells.insert( K.uIncident( surfxpym, 2, true ) );
-	  cells.insert( K.uIncident( surfxpym, 2, false ) );
-	  cells.insert( K.uIncident( surfxmyp, 2, true ) );
-	  cells.insert( K.uIncident( surfxmyp, 2, false ) );
-	  cells.insert( K.uIncident( surfxmym, 2, true ) );
-	  cells.insert( K.uIncident( surfxmym, 2, false ) );
-	}
+        {
+          auto pointel = *it;
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          auto surfxpyp = K.uIncident( linelxp, 1, true );
+          auto surfxpym = K.uIncident( linelxp, 1, false );
+          auto surfxmyp = K.uIncident( linelxm, 1, true );
+          auto surfxmym = K.uIncident( linelxm, 1, false );
+          cells.insert( K.uIncident( surfxpyp, 2, true ) );
+          cells.insert( K.uIncident( surfxpyp, 2, false ) );
+          cells.insert( K.uIncident( surfxpym, 2, true ) );
+          cells.insert( K.uIncident( surfxpym, 2, false ) );
+          cells.insert( K.uIncident( surfxmyp, 2, true ) );
+          cells.insert( K.uIncident( surfxmyp, 2, false ) );
+          cells.insert( K.uIncident( surfxmym, 2, true ) );
+          cells.insert( K.uIncident( surfxmym, 2, false ) );
+        }
       return cells;
     }
-    
+
     /// @tparam PointIterator any model of forward iterator on points.
     /// @param K a valid cellular grid space large enough to hold the cells.
     /// @param itB the start of a range of points.
@@ -788,33 +933,62 @@ namespace DGtal
     static
     std::unordered_set<typename KSpace::Cell>
     getIncidentCellsToPoints( const KSpace& K,
-			      PointIterator itB, PointIterator itE )
+                              PointIterator itB, PointIterator itE )
     {
       std::unordered_set<typename KSpace::Cell> cells;
       for ( auto it = itB; it != itE; ++it )
-	{
-	  auto pointel = K.uPointel( *it );
-	  auto linelxp = K.uIncident( pointel, 0, true );
-	  auto linelxm = K.uIncident( pointel, 0, false );
-	  auto surfxpyp = K.uIncident( linelxp, 1, true );
-	  auto surfxpym = K.uIncident( linelxp, 1, false );
-	  auto surfxmyp = K.uIncident( linelxm, 1, true );
-	  auto surfxmym = K.uIncident( linelxm, 1, false );
-	  cells.insert( K.uIncident( surfxpyp, 2, true ) );
-	  cells.insert( K.uIncident( surfxpyp, 2, false ) );
-	  cells.insert( K.uIncident( surfxpym, 2, true ) );
-	  cells.insert( K.uIncident( surfxpym, 2, false ) );
-	  cells.insert( K.uIncident( surfxmyp, 2, true ) );
-	  cells.insert( K.uIncident( surfxmyp, 2, false ) );
-	  cells.insert( K.uIncident( surfxmym, 2, true ) );
-	  cells.insert( K.uIncident( surfxmym, 2, false ) );
-	}
+        {
+          auto pointel = K.uPointel( *it );
+          auto linelxp = K.uIncident( pointel, 0, true );
+          auto linelxm = K.uIncident( pointel, 0, false );
+          auto surfxpyp = K.uIncident( linelxp, 1, true );
+          auto surfxpym = K.uIncident( linelxp, 1, false );
+          auto surfxmyp = K.uIncident( linelxm, 1, true );
+          auto surfxmym = K.uIncident( linelxm, 1, false );
+          cells.insert( K.uIncident( surfxpyp, 2, true ) );
+          cells.insert( K.uIncident( surfxpyp, 2, false ) );
+          cells.insert( K.uIncident( surfxpym, 2, true ) );
+          cells.insert( K.uIncident( surfxpym, 2, false ) );
+          cells.insert( K.uIncident( surfxmyp, 2, true ) );
+          cells.insert( K.uIncident( surfxmyp, 2, false ) );
+          cells.insert( K.uIncident( surfxmym, 2, true ) );
+          cells.insert( K.uIncident( surfxmym, 2, false ) );
+        }
       return cells;
     }
-    
+
+    /// @tparam PointIterator any model of forward iterator on points.
+    /// @param K a valid cellular grid space large enough to hold the cells.
+    /// @param itB the start of a range of points.
+    /// @param itE past the end of a range of points.
+    /// @return the incident 3-kpoints to the given range of points [itB, itE).
+    template <typename PointIterator>
+    static
+    UnorderedSetByBlock< typename KSpace::Point,
+                         Splitter< typename KSpace::Point, uint64_t> >
+    getIncidentKPointsToPoints( const KSpace& K,
+                                PointIterator itB, PointIterator itE )
+    {
+      UnorderedSetByBlock< typename KSpace::Point,
+                           Splitter< typename KSpace::Point, uint64_t> > kpoints;
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto kp = K.uKCoords( K.uPointel( *it ) );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] - 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] - 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] - 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
+          kpoints.emplace( kp[ 0 ] + 1, kp[ 1 ] + 1, kp[ 2 ] + 1 );
+        }
+      return kpoints;
+    }
+
   }; // end struct CellGeometryFunctions
 
-  
+
 } // namespace DGtal
 
 
