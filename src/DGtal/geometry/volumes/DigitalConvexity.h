@@ -65,12 +65,12 @@ namespace DGtal
      digital k-convexity.
 
      It is a model of boost::CopyConstructible,
-     boost::DefaultConstructible, boost::Assignable. 
+     boost::DefaultConstructible, boost::Assignable.
 
      @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
    */
   template < typename TKSpace >
-  class DigitalConvexity 
+  class DigitalConvexity
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
 
@@ -87,7 +87,7 @@ namespace DGtal
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     typedef DGtal::CellGeometry< KSpace >   CellGeometry;
     typedef std::vector<Point>              PointRange;
-    
+
     static const Dimension dimension = KSpace::dimension;
 
 
@@ -100,7 +100,7 @@ namespace DGtal
     ~DigitalConvexity() = default;
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     DigitalConvexity() = default;
 
@@ -122,7 +122,7 @@ namespace DGtal
      * @param hi the highest point of the domain (bounding box for computations).
      */
     DigitalConvexity( Point lo, Point hi );
-    
+
     /**
      * Assignment.
      * @param other the object to copy.
@@ -132,7 +132,7 @@ namespace DGtal
 
     /// @return a const reference to the cellular grid space used by this object.
     const KSpace& space() const;
-    
+
     /// @}
 
     // ----------------------- Simplex services --------------------------------------
@@ -180,7 +180,7 @@ namespace DGtal
     template <typename PointIterator>
     static
     RationalPolytope makeRationalSimplex( Integer d,
-					  PointIterator itB, PointIterator itE );
+                                          PointIterator itB, PointIterator itE );
 
     /**
      * Constructs a rational polytope from a simplex given as an initializer_list.
@@ -225,7 +225,7 @@ namespace DGtal
       UNITARY,     ///< When its edges form a unit parallelotope (det = +/- 1)
       COMMON       ///< Common simplex
     };
-    
+
     /**
      * Returns the type of simplex formed by the given range [itB,itE)
      * of lattice points.
@@ -272,14 +272,14 @@ namespace DGtal
      */
     static
     void displaySimplex( std::ostream& out, std::initializer_list<Point> l );
-    
+
     /// @}
 
     // ----------------------- Polytope services --------------------------------------
   public:
     /// @name Lattice and rational polytope services
     /// @{
-    
+
     /// @param polytope any lattice polytope.
     /// @return the range of digital points that belongs to the polytope.
     static
@@ -318,8 +318,8 @@ namespace DGtal
     /// @param k the last dimension for which the cell cover is computed.
     template <typename PointIterator>
     CellGeometry makeCellCover( PointIterator itB, PointIterator itE,
-				Dimension i = 0,
-				Dimension k = KSpace::dimension ) const;
+                                Dimension i = 0,
+                                Dimension k = KSpace::dimension ) const;
 
     /// Builds the cell geometry containing all the j-cells touching
     /// the lattice polytope P, for i <= j <= k. It conbains thus all the
@@ -329,8 +329,8 @@ namespace DGtal
     /// @param i the first dimension for which the cell cover is computed.
     /// @param k the last dimension for which the cell cover is computed.
     CellGeometry makeCellCover( const LatticePolytope& P,
-				Dimension i = 0,
-				Dimension k = KSpace::dimension ) const;
+                                Dimension i = 0,
+                                Dimension k = KSpace::dimension ) const;
 
     /// Builds the cell geometry containing all the j-cells touching
     /// the rational polytope P, for i <= j <= k. It conbains thus all the
@@ -340,21 +340,21 @@ namespace DGtal
     /// @param i the first dimension for which the cell cover is computed.
     /// @param k the last dimension for which the cell cover is computed.
     CellGeometry makeCellCover( const RationalPolytope& P,
-				Dimension i = 0,
-				Dimension k = KSpace::dimension ) const;
+                                Dimension i = 0,
+                                Dimension k = KSpace::dimension ) const;
     /// @}
 
 
     // ----------------------- Convexity services -----------------------------------
   public:
-    /// @name Convexity services for lattice polytopes 
+    /// @name Convexity services for lattice polytopes
     /// @{
 
     /// Tells if a given polytope \a P is digitally k-convex. The digital
     /// 0-convexity is the usual property \f$ Conv( P \cap Z^d ) = P
     /// \cap Z^d) \f$. Otherwise the property asks that the points
     /// inside P touch as many k-cells that the convex hull of P.
-    
+
     /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
     /// @return 'true' iff the polytope \a P is digitally \a k-convex.
@@ -369,7 +369,7 @@ namespace DGtal
     /// ) = P \cap Z^d) \f$. Otherwise the property asks that the
     /// points inside P touch as many k-cells that the convex hull of
     /// P, for any valid dimension k.
-    
+
     /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @return 'true' iff the polytope \a P is fully digitally convex.
     ///
@@ -384,7 +384,7 @@ namespace DGtal
     /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
-    
+
     /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
@@ -396,7 +396,7 @@ namespace DGtal
     /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
-    
+
     /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @return 'true' iff the polytope \a P is digitally fully subconvex to C.
@@ -404,19 +404,19 @@ namespace DGtal
     /// @note This method only checks the k-subconvexity for valid
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
-    
+
     /// @}
 
     // ----------------------- Convexity services -----------------------------------
   public:
-    /// @name Convexity services for rational polytopes 
+    /// @name Convexity services for rational polytopes
     /// @{
 
     /// Tells if a given polytope \a P is digitally k-convex. The digital
     /// 0-convexity is the usual property \f$ Conv( P \cap Z^d ) = P
     /// \cap Z^d) \f$. Otherwise the property asks that the points
     /// inside P touch as many k-cells that the convex hull of P.
-    
+
     /// @param P any rational polytope such that `P.canBeSummed() == true`.
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
     /// @return 'true' iff the polytope \a P is digitally \a k-convex.
@@ -431,7 +431,7 @@ namespace DGtal
     /// ) = P \cap Z^d) \f$. Otherwise the property asks that the
     /// points inside P touch as many k-cells that the convex hull of
     /// P, for any valid dimension k.
-    
+
     /// @param P any rational polytope such that `P.canBeSummed() == true`.
     /// @return 'true' iff the polytope \a P is fully digitally convex.
     ///
@@ -446,7 +446,7 @@ namespace DGtal
     /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
-    
+
     /// @param P any rational polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
@@ -458,7 +458,7 @@ namespace DGtal
     /// property \f$ Conv( P \cap Z^d ) \subset C \cap Z^d)
     /// \f$. Otherwise the property asks that the k-cells intersected
     /// by the convex hull of P is a subset of the k-cells of C.
-    
+
     /// @param P any rational polytope such that `P.canBeSummed() == true`.
     /// @param C any cell cover geometry (i.e. a cubical complex).
     /// @return 'true' iff the polytope \a P is digitally fully subconvex to C.
@@ -466,9 +466,9 @@ namespace DGtal
     /// @note This method only checks the k-subconvexity for valid
     /// dimensions stored in \a C.
     bool isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const;
-    
+
     /// @}
-    
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services
@@ -494,7 +494,7 @@ namespace DGtal
   protected:
     /// The cellular grid space where computations are done.
     KSpace myK;
-    
+
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -506,7 +506,7 @@ namespace DGtal
 
   /// @name Functions related to DigitalConvexity (output)
   /// @{
-  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'DigitalConvexity'.
    * @param out the output stream where the object is written.
@@ -515,11 +515,11 @@ namespace DGtal
    */
   template <typename TKSpace>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const DigitalConvexity<TKSpace> & object );
 
   /// @}
-  
+
 } // namespace DGtal
 
 
