@@ -166,9 +166,10 @@ Lattice point retrieval services:
 
 The class CellGeometry can compute and store set of lattice cells of
 different dimensions. You specify at construction a Khalimsky space
-(any model of concepts::CCellularGridSpaceND) or a CubicalComplex, as well as the
+(any model of concepts::CCellularGridSpaceND), as well as the
 dimensions of the cells you are interested in. Internally it uses a
-CubicalComplex to store the lattice cells.
+variant of unordered set of points (see \ref UnorderedSetByBlock) to
+store the lattice cells in a compact manner.
 
 \code
 #include "DGtal/geometry/volumes/CellGeometry.h"
@@ -181,7 +182,7 @@ CellGeometry< KSpace > cell_geometry( K, 1, 2 ); // only 1-cells and 2-cells
 
 Then you may add cells that touch a range of points, or cells
 intersected by a polytope, or cells belonging to another CellGeometry
-object, or cells belonging to a CubicalComplex.
+object.
 
 - CellGeometry::addCellsTouchingPoints: Updates the cell cover with
   the cells touching a range of digital points [itB, itE).
@@ -194,9 +195,6 @@ object, or cells belonging to a CubicalComplex.
   non empty intersection with the polytope).
 - CellGeometry::operator+=( const CellGeometry& other ): Adds the
   cells of dimension k of object \a other, for `minCellDim() <= k <=
-  maxCellDim()`, to this cell geometry.
-- CellGeometry::operator+=( const CubicalComplex& CC ): Adds the cells
-  of dimension k of cubical complex \a CC, for `minCellDim() <= k <=
   maxCellDim()`, to this cell geometry.
 
 With respect to full digital convexity,
@@ -299,7 +297,7 @@ The class BoundedLatticePolytope is different from the class LatticePolytope2D f
 There are no simple conversion from one to the other. Class
 LatticePolytope2D is optimized for cuts and lattice points
 enumeration, and is very specific to 2D. Class BoundedLatticePolytope
-is less optimized to the previous one but works in nD and provides
+is less optimized than the previous one but works in nD and provides
 Minkowski sum and dilation services.
 
 
