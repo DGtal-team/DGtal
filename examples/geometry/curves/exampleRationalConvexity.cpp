@@ -35,7 +35,7 @@
    @see \ref moduleDigitalConvexity
 
    \image html grid-curve-subconvex-rational-segment.png "Extraction of all maximal rational segments between midpoints that are subconvex to the digital curve."
-   
+
    \example geometry/curves/exampleRationalConvexity.cpp
 */
 
@@ -58,7 +58,7 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i; 
+using namespace Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,17 +66,17 @@ int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example for 2d gridcurves" );
   string S = examplesPath + "samples/contourS.fc";
-  
+
   // domain
   const Point lowerBound( -200, -200 );
   const Point upperBound( 200, 200 );
   DigitalConvexity<KSpace> dconv( lowerBound, upperBound );
-  
+
   fstream inputStream( S.c_str(), ios::in );
   FreemanChain<int> fc(inputStream);
   inputStream.close();
-  Curve c; 
-  c.initFromPointsRange( fc.begin(), fc.end() ); 
+  Curve c;
+  c.initFromPointsRange( fc.begin(), fc.end() );
   auto points = c.getPointsRange();
   std::vector<Point> T( points.begin(), points.end() );
   auto midpoints = c.getMidPointsRange();
@@ -85,7 +85,7 @@ int main( int argc, char** argv )
   for ( auto && rp : midpoints )
     // there is a shift of (0.5,0.5) between points and cells embedder.
     T2.push_back( Point( (int) round( 2. * rp[ 0 ] + 1. ),
-			 (int) round( 2. * rp[ 1 ] + 1. ) ) );
+                         (int) round( 2. * rp[ 1 ] + 1. ) ) );
   Board2D aBoard;
   aBoard.setUnit(Board2D::UCentimeter);
   // Display cells
@@ -101,15 +101,12 @@ int main( int argc, char** argv )
     }
   for ( auto && pixel : pixels )
     aBoard << CustomStyle( pixel.className(), new CustomColors( grey, grey ) )
-	   << pixel;
+           << pixel;
   // Display contour
   aBoard.setPenColor( Color::Black );
   aBoard << c;
   // Compute subconvex rational segments.
   auto    c_cover = dconv.makeCellCover( T.begin(), T.end(), 1, 1 );
-  trace.beginBlock( "Prepare subset operations" );
-  c_cover.prepareSubsetOperations();
-  trace.endBlock();
   trace.beginBlock( "Compute fully subconvex rational sets" );
   Point denominator( 2, 2 );
   unsigned int last_j = 0;
@@ -119,16 +116,16 @@ int main( int argc, char** argv )
       aBoard.setPenColorRGBi( rand() % 255, rand() % 255, rand() % 255 );
       unsigned int start_j = ( i + 1 ) % T2.size();
       for ( j = ( start_j + 1 ) % T2.size(); j != start_j;  j = ( j + 1 ) % T2.size() )
-	{
-	  auto segment = dconv.makeRationalSimplex( { denominator, T2[i], T2[j] } );
-	  if ( ! dconv.isFullySubconvex( segment, c_cover ) ) break;
-	}
+        {
+          auto segment = dconv.makeRationalSimplex( { denominator, T2[i], T2[j] } );
+          if ( ! dconv.isFullySubconvex( segment, c_cover ) ) break;
+        }
       j = ( j + T2.size() - 1 ) % T2.size();
-      if ( j != last_j ) 
-	{ // display fully subconvex segments
-	  aBoard.setLineWidth( 2.5 );
-	  aBoard.drawLine( RT[i][0], RT[i][1], RT[j][0], RT[j][1] );
-	}
+      if ( j != last_j )
+        { // display fully subconvex segments
+          aBoard.setLineWidth( 2.5 );
+          aBoard.drawLine( RT[i][0], RT[i][1], RT[j][0], RT[j][1] );
+        }
       last_j = j;
     }
   trace.endBlock();
