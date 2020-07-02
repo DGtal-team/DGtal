@@ -421,3 +421,87 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
   }
 }
 
+SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", "[subconvexity][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -5, -5, -5 ), Point( 5, 5, 5 ) );
+  DConvexity dconv( Point( -6, -6, -6 ), Point( 6, 6, 6 ) );
+
+  WHEN( "Computing many tetrahedra" ) {
+    const unsigned int nb   = 400;
+    unsigned int nb_fulldim = 0;
+    unsigned int nb_ok_seg  = 0;
+    unsigned int nb_ok_tri  = 0;
+    for ( unsigned int i = 0; i < nb; ++i )
+      {
+        const Point a { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point b { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point c { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point d { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const std::vector<Point> pts = { a, b, c, d };
+        const bool fulldim = dconv.isSimplexFullDimensional(pts.cbegin(), pts.cend());
+        nb_fulldim += fulldim ? 1 : 0;
+        if ( ! fulldim ) continue;
+        auto simplex = dconv.makeSimplex( pts.cbegin(), pts.cend() );
+        auto cover = dconv.makeCellCover( simplex, 0, 3 );
+        {
+          unsigned int nb_subconvex = 0;
+          unsigned int nb_total     = 0;
+          for ( unsigned int i = 0; i < 4; i++ )
+            for ( unsigned int j = i+1; j < 4; j++ )
+              {
+                auto segment = dconv.makeSimplex( { pts[ i ], pts[ j ] } );
+                bool ok = dconv.isFullySubconvex( segment, cover );
+                nb_subconvex += ok ? 1 : 0;
+                nb_total     += 1;
+                if ( ! ok ) {
+                  trace.info() << "****** SEGMENT NOT SUBCONVEX ******" << std::endl; 
+                  trace.info() << "splx v =" << a << b << c << d << std::endl;
+                  trace.info() << "simplex=" << simplex << std::endl;
+                  trace.info() << "seg v  =" << pts[ i ] << pts[ j ] << std::endl;
+                  trace.info() << "segment=" << segment << std::endl;
+                }
+              }
+          nb_ok_seg += ( nb_subconvex == nb_total ) ? 1 : 0;
+        }
+        {
+          unsigned int nb_subconvex = 0;
+          unsigned int nb_total     = 0;
+          for ( unsigned int i = 0; i < 4; i++ )
+            for ( unsigned int j = i+1; j < 4; j++ )
+              for ( unsigned int k = j+1; k < 4; k++ )
+                {
+                  auto triangle = dconv.makeSimplex({ pts[ i ], pts[ j ], pts[ k ] });
+                  bool ok = dconv.isFullySubconvex( triangle, cover );
+                  nb_subconvex += ok ? 1 : 0;
+                  nb_total     += 1;
+                  if ( ! ok ) {
+                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "splx v =" << a << b << c << d << std::endl;
+                    trace.info() << "simplex=" << simplex << std::endl;
+                    trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
+                                 << pts[ k ] << std::endl;
+                    trace.info() << "triangle=" << triangle << std::endl;
+                  }
+                }
+          nb_ok_tri += ( nb_subconvex == nb_total ) ? 1 : 0;
+        }
+      }
+    THEN( "At least half the tetrahedra are full dimensional." ) {
+      REQUIRE( nb_fulldim >= nb / 2 );
+    }
+    THEN( "All segments of a tetrahedron should be subconvex to it." ) {
+      REQUIRE( nb_ok_seg == nb_fulldim );
+    }
+    THEN( "All triangles of a tetrahedron should be subconvex to it." ) {
+      REQUIRE( nb_ok_tri == nb_fulldim );
+    }
+  }
+}

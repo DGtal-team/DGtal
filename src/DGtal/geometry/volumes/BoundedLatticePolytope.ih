@@ -147,19 +147,26 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
   Vector mn = -1 * n;
   A.push_back( mn );
   B.push_back( a.dot( A.back() ) );
-  Vector abn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( ab, n );
-  A.push_back( abn );
-  B.push_back( a.dot( abn ) );
-  Vector bcn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( bc, n );
-  A.push_back( bcn );
-  B.push_back( b.dot( bcn ) );
-  Vector can = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( ca, n );
-  A.push_back( can );
-  B.push_back( c.dot( can ) );
-  I = std::vector<bool>( 2*3+5, true ); // inequalities are large
+  I = std::vector<bool>( B.size(), true ); // inequalities are large
+  std::vector<Point> pts = { a, b, c };
+  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    addEdgeConstraint( *this, 0, 1, pts );
+  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    addEdgeConstraint( *this, 1, 2, pts );
+  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+    addEdgeConstraint( *this, 2, 0, pts );
+  // Vector abn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  //   crossProduct( ab, n );
+  // A.push_back( abn );
+  // B.push_back( a.dot( abn ) );
+  // Vector bcn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  //   crossProduct( bc, n );
+  // A.push_back( bcn );
+  // B.push_back( b.dot( bcn ) );
+  // Vector can = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  //   crossProduct( ca, n );
+  // A.push_back( can );
+  // B.push_back( c.dot( can ) );
   return true;
 }
 
@@ -175,11 +182,11 @@ internalInitFromSegment3D( Point a, Point b )
   for ( Dimension k = 0; k < 3; ++k )
     {
       const auto t = Vector::base( k );
-      Vector  v = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+      Vector  w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
         crossProduct( ab, t );
-      if ( v == Vector::zero ) continue;
-      Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-        crossProduct( v, ab );
+      if ( w == Vector::zero ) continue;
+      // Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+      //   crossProduct( v, ab );
       A.push_back( w );
       B.push_back( a.dot( w ) );
       A.push_back( -1 * w );
