@@ -155,18 +155,6 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
     addEdgeConstraint( *this, 1, 2, pts );
   detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
     addEdgeConstraint( *this, 2, 0, pts );
-  // Vector abn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-  //   crossProduct( ab, n );
-  // A.push_back( abn );
-  // B.push_back( a.dot( abn ) );
-  // Vector bcn = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-  //   crossProduct( bc, n );
-  // A.push_back( bcn );
-  // B.push_back( b.dot( bcn ) );
-  // Vector can = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-  //   crossProduct( ca, n );
-  // A.push_back( can );
-  // B.push_back( c.dot( can ) );
   return true;
 }
 
@@ -178,28 +166,20 @@ internalInitFromSegment3D( Point a, Point b )
 {
   Vector ab = b - a;
   if ( ab == Vector::zero ) return true; // domain and constraints already computed
-  Dimension n = 0;
+  Dimension nb = 0;
   for ( Dimension k = 0; k < 3; ++k )
     {
       const auto t = Vector::base( k );
       Vector  w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
         crossProduct( ab, t );
       if ( w == Vector::zero ) continue;
-      // Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-      //   crossProduct( v, ab );
       A.push_back( w );
       B.push_back( a.dot( w ) );
       A.push_back( -1 * w );
       B.push_back( a.dot( A.back() ) );
-      n += 2;
+      nb += 2;
     }
-  // Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-  //   crossProduct( ab, n );
-  // A.push_back( w );
-  // B.push_back( a.dot( w ) );
-  // A.push_back( -1 * w );
-  // B.push_back( a.dot( A.back() ) );
-  I = std::vector<bool>( 2*3+n, true ); // inequalities are large
+  I = std::vector<bool>( 2 * 3 + nb, true ); // inequalities are large
   return true;
 }
 
