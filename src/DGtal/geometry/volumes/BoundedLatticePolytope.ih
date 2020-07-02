@@ -171,26 +171,28 @@ internalInitFromSegment3D( Point a, Point b )
 {
   Vector ab = b - a;
   if ( ab == Vector::zero ) return true; // domain and constraints already computed
-  Vector  t( 1, 0, 0 );
-  Vector  n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( ab, t );
-  if ( n == Vector::zero )
+  Dimension n = 0;
+  for ( Dimension k = 0; k < 3; ++k )
     {
-      t = Vector( 0, 1, 0 );
-      n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( ab, t );
+      const auto t = Vector::base( k );
+      Vector  v = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+        crossProduct( ab, t );
+      if ( v == Vector::zero ) continue;
+      Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+        crossProduct( v, ab );
+      A.push_back( w );
+      B.push_back( a.dot( w ) );
+      A.push_back( -1 * w );
+      B.push_back( a.dot( A.back() ) );
+      n += 2;
     }
-  A.push_back( n );
-  B.push_back( a.dot( n ) );
-  A.push_back( -1 * n );
-  B.push_back( a.dot( A.back() ) );
-  Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
-    crossProduct( ab, n );
-  A.push_back( w );
-  B.push_back( a.dot( w ) );
-  A.push_back( -1 * w );
-  B.push_back( a.dot( A.back() ) );
-  I = std::vector<bool>( 2*3+4, true ); // inequalities are large
+  // Vector w = detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::
+  //   crossProduct( ab, n );
+  // A.push_back( w );
+  // B.push_back( a.dot( w ) );
+  // A.push_back( -1 * w );
+  // B.push_back( a.dot( A.back() ) );
+  I = std::vector<bool>( 2*3+n, true ); // inequalities are large
   return true;
 }
 
