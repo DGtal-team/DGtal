@@ -119,6 +119,9 @@
   - Defining StandardDSS4Computer & NaiveDSS8Computer as templated aliases of
     ArithmeticalDSSComputer (fix #1483). Also fixing NaiveDSS8 adjacency.
     (Roland Denis, [#1491](https://github.com/DGtal-team/DGtal/pull/1491))
+  - Fix initialisation in BoundedLatticePolytope when creating non full
+    dimensional simplices in 3D (segments, triangles). (Jacques-Olivier Lachaud,
+    [#1502](https://github.com/DGtal-team/DGtal/pull/1502))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
