@@ -78,6 +78,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - Geometry Processing
   - \ref moduleRegularization (David Coeurjolly, Jacques-Olivier Lachaud, Pierre Gueth)
+  - \ref moduleShrouds (Jacques-Olivier Lachaud, David Coeurjolly)
 
 - Tools 
   - \ref moduleGeometricPredicates (Tristan Roussillon)
