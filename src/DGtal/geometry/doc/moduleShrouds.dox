@@ -1,0 +1,197 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+
+@page moduleShrouds Digital surface regularization using the Shrouds algorithm
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageGeometry.
+
+
+This part of the manual describes classes and functions related to the
+regularization of digital surfaces using the "Shrouds" algorithm, by
+Nielson et al \cite nielson2003shrouds. 
+
+On binary 3D images, the "Shrouds" algorithm builds a smooth surface
+that separates the interior voxels from the exterior voxels. It starts from
+the (closed) digital surface that separates interior voxels from
+exterior voxels. The 3D smooth surface reconstruction problem is
+transformed into a series of 2D smooth contour reconstruction
+problems, by slicing the 3D volume (and thus the digital surface) with
+axis-align planes. Each contour is regularized  to minimize its
+squared curvature and the separation property is obtained by forcing
+each vertex to lie on its unit edge joining an interior voxel to an
+exterior voxel (i.e. the edge that is dual to the surfel). The 2D
+problems are intertwined since each vertex is shared by two
+slices. 
+
+@note This method is limited to closed surface reconstruction, in
+opposition to the method presented in \ref moduleRegularization.
+
+\b Disclaimer. This implementation is our interpretation of the work
+presented in \cite nielson2003shrouds, and tries to follow at best the
+ideas presented therein. However, a major part of the numerical
+resolution is not detailed. We have inferred a reasonable way of
+solving the fourth-order equations but results may differ from the
+original implementation. For instance, visually on the bunny example
+of the paper, our results are very close (and look better). This
+implementation comes thus without any guarantee.
+
+Related example:  geometry/surfaces/testShroudsRegularization.cpp
+
+[TOC]
+
+
+\section moduleShrouds_sec1 Introduction
+
+Let \a I be a binary image and \a S the digital surface that is the
+boundary of the object in \a I. Slicing \a S by a plane aligned
+orthogonal to an axis \a k defines a ring of consecutive surfels, that
+can be seen as a simple contour joining points \f$ X[s] \f$ associated
+to each surfel \f$ s \in S \f$. If we define a meaningful adjacency on
+the digital surface (see \ref moduleDigitalSurfaces), when joining
+points \f$ X[\cdot] \f$ corresponding adjacent surfels within the
+slice, we build closed 2D contours. Since each surfel in 3D has only
+two tangent directions, each surfel belongs to exactly two orthogonal
+contours. During the regularization, the "Shrouds" algorithm principle
+is to move the point \f$ X[s] \f$ associated to each surfel \a s in a
+constrained way : it can only move on the unit segment that is
+orthogonal to the surfel, otherwise said the point is constrained to
+lie on the edge dual to the primal surfel. 
+
+The "Shrouds" algorithm minimizes a global energy that is determined
+by the positions of each point on its two contours. The user can
+choose between minimizing the area of the output surface
+(ShroudsRegularization::Regularization::AREA), the snake energy of the
+output surface (ShroudsRegularization::Regularization::SNAKE) or the
+squared curvature of the output surface
+(ShroudsRegularization::Regularization::SQUARED_CURVATURE). The latter
+one gives the best results.
+
+The snake energy \f$ E^{snk} \f$ and the squared curvature energy \f$
+E^{\kappa^2} \f$ are defined per slice on each 2D contour. 
+
+For a slice contour \f$ C=(x(s),y(s)) \f$ and boundary constraints, we define:
+
+\f[ 
+E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds, 
+\f]
+
+and
+
+\f[
+E^{\kappa^2}(C) = \int_C (x'(s) y''(s) + x''(s) y'(s))^2 / (x'(s)^2 + y'(s)^2)^3 ds,
+\f]
+
+\note This process does not optimize the true 3D squared mean
+curvature of the surface or its 3D elastic and thin plate energy.
+
+Apart from area energy, energies \f$ E^{snk}(C) \f$ and \f$
+E^{\kappa^2}(C) \f$ are not convex and movement constraints on \f$ X
+\f$ make things worse. We propose here dedicated finite difference
+algorithms giving a reasonnable gradient descent for the
+regularization process, together with randomization at the beginning.
+
+\section moduleShrouds_sec2 Main usage with squared curvature energy
+
+Starting from an implicit digital surface (with a gridstep set to 0.3
+instead of 1 on images):
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegInit
+
+we obtain the following slice geometry, best seen on the polygonal surface dual to the digital surface:
+
+@image html goursat-g0_3-shrouds-init-s.png "Initialization for the Shrouds algorithm (dual surface to goursat digital surface)."
+
+The regularization class instance can be set up with default
+parameters using the following syntax:
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegUsage
+
+You may use ShroudsRegularization::setParams to change some parameters:
+
+- \f$ \epsilon \f$ the bounds for varying the positions of points on
+  dual edge in \f$ [\epsilon,1-\epsilon] \f$, where 0 is the center of
+  the bordering inner voxel and 1 is the center of the bordering outer
+  voxel.
+- \f$ \alpha \f$  parameter for Snake first order regularization (~ area).
+- \f$ \beta \f$   parameter for Snake second order regularization (~ curvature).
+
+We can now minimize the squared curvature energy as follows:
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegK2
+
+The user can specify the number of steps of the gradient
+descent as well as the randomization. If the
+ShroudsRegularization::regularize method is called another time, the
+descent starts from the previous results (aka warm restart).
+
+Using the default settings, we obtain the following reconstruction,
+after respectively 100 and 1000 iterations:
+
+<table>
+<tr>
+<td>
+@image html goursat-g0_3-shrouds-k2-100-s.png "Optimized surface according to squared curvature (100 iterations)."
+</td>
+<td>
+@image html goursat-g0_3-shrouds-k2-1000-s.png "Optimized surface according to squared curvature (1000 iterations)."
+</td>
+</tr>
+</table>
+
+Clearly, the result after 1000 iterations is more satisfactory.  You
+may output the result for instance as:
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegSaveObj
+
+@note The regularized position are retrieved using the
+ShroudsRegularization::positions. The current energy can be retrieved
+with ShroudsRegularization::energy.
+
+
+
+\section moduleShrouds_other Shrouds regularization with area and snake energy
+
+You may optimize according the shape according to area minimization as follows:
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegArea
+
+and according to snake energy as follows (use ShroudsRegularization::setParams to change \f$ \alpha,\beta \f$ parameters):
+
+@snippet geometry/surfaces/testShroudsRegularization.cpp ShroudsRegSnake
+
+We display below the three possible optimizations (after 1000
+iterations), which shows that squared curvature energy \f$
+E^{\kappa^2}(C) \f$ produces the best output.
+
+<table>
+<tr>
+<td>
+@image html goursat-g0_3-shrouds-k2-1000-s.png "Optimized surface according to squared curvature."
+</td>
+<td>
+@image html goursat-g0_3-shrouds-snake-s.png "Optimized surface according to snake energy."
+</td>
+<td>
+@image html goursat-g0_3-shrouds-area-s.png "Optimized surface according to area."
+</td>
+</tr>
+</table>
+
+\note Results are visually very good, notably due to the nice slice /
+isocontouring effect. However, the output polygonal surface contains
+many cells with bad geometric properties (very small or elongated
+faces).
+
+
+*/
+
+
+
+}
