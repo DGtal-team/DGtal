@@ -15,10 +15,13 @@
 
 - *Geometry Package*
   - New piecewise smooth digital surface regularization class (David Coeurjolly,
-  [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
-  - Provides support for digital full convexity and subconvexity
-    (Jacques-Olivier Lachaud,
+    [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
     [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  - Implementation of Shrouds algorithm for smoothing digital surfaces:
+    Nielson et al., Shrouds: optimal separating surfaces for enumerated volumes.
+    In Proc. VisSym 2003, vol. 3, pp. 75-84
+    (Jacques-Olivier Lachaud, [#1500](https://github.com/DGtal-team/DGtal/pull/1500))
   - Updates cell geometry and digital convexity to use specialized
     unordered set data structure UnorderedSetByBlock for storing
     digital points (Jacques-Olivier Lachaud,
