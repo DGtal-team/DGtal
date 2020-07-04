@@ -786,7 +786,7 @@ namespace DGtal
 		Integer v = n.dot( p );
 		if ( v < b )  nb_in++;
 	      }
-	      if ( nb_in == dimension - 1 ) {
+	      if ( nb_in == pts.size() - 2 ) {
 		P.cut( n, b, true, true );
 	      }
 	    }
