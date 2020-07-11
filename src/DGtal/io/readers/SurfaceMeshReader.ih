@@ -1,0 +1,159 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SurfaceMesh.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/02/18
+ *
+ * Implementation of inline methods defined in SurfaceMesh.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <limits>
+//////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
+verifyIndices( const std::vector< Index > indices )
+{
+  std::set<Index> sindices( indices.begin(), indices.end() );
+  return sindices.size() == indices.size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::vector< std::string > 
+DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
+split( const std::string& str, char delim )
+{
+  std::stringstream ss(str);
+  std::string token;
+  std::vector< std::string > cont;
+  while ( std::getline( ss, token, delim ) ) cont.push_back(token);
+  return cont;
+}    
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
+readOBJ( std::istream & input, SurfaceMesh & smesh )
+{
+  std::vector<RealPoint>  vertices;
+  std::vector<RealVector> normals;
+  std::vector< std::vector< Index > > faces;
+  std::vector< std::vector< Index > > faces_normals_idx;
+  std::string linestr;
+  std::string keyword;
+  std::string indices;
+  RealPoint  p;
+  RealVector n;
+  std::getline( input, linestr );
+  Index l = 0;
+  for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )
+    {
+      if ( linestr.empty() ) continue; // skip empty line
+      if ( linestr[0] == '#' ) continue; // skip comment line
+      std::istringstream lineinput( linestr );
+      std::operator>>( lineinput, keyword ); // lineinput >> keyword;
+      if ( keyword == "v" ) {
+	lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
+	// std::cout << "[" << l << "] v " << p << std::endl;
+	vertices.push_back( p );
+      } else if ( keyword == "vn" ) {
+	lineinput >> n[ 0 ] >> n[ 1 ] >> n[ 2 ];
+	normals.push_back( n );
+      } else if ( keyword == "f" ) {
+	std::vector< Index > face, face_normals;
+	while ( ! lineinput.eof() ) {
+          std::operator>>( lineinput, indices ); // lineinput >> indices;
+	  if ( indices.empty() ) break;
+	  auto vtxinfo = split( indices, '/' );
+	  if ( vtxinfo.size() == 0 ) break;
+	  Index v  = std::stoi( vtxinfo[ 0 ] );
+	  Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
+	  face.push_back( v - 1 );
+	  face_normals.push_back( vn - 1 );
+	  indices = "";
+	}
+	if ( ! face.empty() && verifyIndices( face ) )
+	  {
+	    faces.push_back( face );
+	    faces_normals_idx.push_back( face_normals );
+	  }
+      }
+      // Weird: necessary to clear them.
+      keyword = ""; linestr = "";
+    } // while ( ! input.eof() )
+  // Creating SurfaceMesh
+  trace.info() << "[SurfaceMeshReader::readOBJ] Read"
+	       << " #lines=" << l
+	       << " #V=" << vertices.size()
+	       << " #VN=" << normals.size()
+	       << " #F=" << faces.size() << std::endl;
+  if ( input.bad() )
+    trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occured."
+		    << " Proceeding but the mesh may be damaged." << std::endl;
+  bool ok = smesh.init( vertices.begin(), vertices.end(),
+			faces.begin(), faces.end() );
+  if ( ! ok )
+	trace.warning() << "[SurfaceMeshReader::readOBJ]"
+			<< " Error initializing mesh." << std::endl;
+  if ( ( ! normals.empty() ) && ( normals.size() == vertices.size() ) )
+    { // Build vertex normal map
+      bool ok_vtx_normals = smesh.setVertexNormals( normals.begin(), normals.end() );
+      if ( ! ok_vtx_normals )
+	trace.warning() << "[SurfaceMeshReader::readOBJ]"
+			<< " Error setting vertex normals." << std::endl;
+      ok = ok && ok_vtx_normals;
+    }
+  if ( ! normals.empty() )
+    { // Build face normal map
+      std::vector< RealVector > faces_normals;
+      Index i = 0;
+      for ( auto face_n_indices : faces_normals_idx )
+	{ 
+	  RealVector n;
+	  for ( auto k : face_n_indices ) n += normals[ k ];
+	  n /= face_n_indices.size();
+	  faces_normals.push_back( n );
+	}
+      bool ok_face_normals = smesh.setFaceNormals( faces_normals.begin(),
+						   faces_normals.end() );
+      if ( ! ok_face_normals )
+	trace.warning() << "[SurfaceMeshReader::readOBJ]"
+			<< " Error setting face normals." << std::endl;
+      ok = ok && ok_face_normals;
+    }
+  return ( ! input.bad() ) && ok;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
