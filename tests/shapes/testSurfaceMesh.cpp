@@ -134,18 +134,19 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
       }      
-    // THEN( "The mesh has 6 boundary vertices" ) {
-    //   VertexRange bv = polymesh.allBoundaryVertices();
-    //   std::sort( bv.begin(), bv.end() );
-    //   int expected_bv [] = { 4, 5, 6, 7, 8, 9 };
-    //   REQUIRE( bv.size() == 6 );
-    //   bool bv_ok = std::equal( bv.begin(), bv.end(), expected_bv );
-    //   REQUIRE( bv_ok );
-    // }
-    // THEN( "The mesh has 6 boundary arcs" ) {
-    //   ArcRange ba = polymesh.allBoundaryArcs();
-    //   REQUIRE( ba.size() == 6 );
-    // }
+    THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges" ) {
+      auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
+      auto mani_inner   = polymesh.computeManifoldInnerEdges();
+      auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
+      auto mani_inner_u = polymesh.computeManifoldInnerUnconsistentEdges();
+      auto non_mani     = polymesh.computeNonManifoldEdges();
+      CAPTURE( polymesh );
+      REQUIRE( mani_bdry.size()    == 6 );
+      REQUIRE( mani_inner.size()   == 9 );
+      REQUIRE( mani_inner_c.size() == 9 );
+      REQUIRE( mani_inner_u.size() == 0 );
+      REQUIRE( non_mani.size()     == 0 );
+    }
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Edge e13      = polymesh.makeEdge( 1, 3 );
       auto lfs      = polymesh.edgeLeftFaces( e13 );
