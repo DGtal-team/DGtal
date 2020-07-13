@@ -388,6 +388,36 @@ namespace DGtal
     
     /// @}
 
+    //---------------------------------------------------------------------------
+  public:
+    /// @name Other topological services
+    /// @{
+
+    /// @return the edges that lie on the boundary of the mesh,
+    /// i.e. they have only one incident face.
+    EdgeRange computeManifoldBoundaryEdges() const;
+    /// @return the edges that lie on the inside of the mesh, with
+    /// two incident faces, consistently oriented or not.
+    ///
+    /// @note union of \ref computeManifoldInnerConsistentEdges and
+    /// \ref computeManifoldInnerUnconsistentEdges
+    EdgeRange computeManifoldInnerEdges() const;
+    /// @return the edges that lie on the inside of the mesh, with
+    /// consistent local orientation, i.e. they have one left incident
+    /// face, and one right incident face.
+    EdgeRange computeManifoldInnerConsistentEdges() const;
+    /// @return the edges that have two incident faces, but not
+    /// correctly oriented, i.e. they may have two left incident faces
+    /// and no right incident face, or two right incident faces and no
+    /// left incident face.
+    EdgeRange computeManifoldInnerUnconsistentEdges() const;
+    /// @return the edges that are non manifold, i.e. neither boundary
+    /// or inner edges: they may have more than two incident faces, or
+    /// two left incident faces for instance.
+    EdgeRange computeNonManifoldEdges() const;
+    
+    /// @}
+    
     // ----------------------- Undirected simple graph services ----------------------
   public:
     /// @name Undirected simple graph services
