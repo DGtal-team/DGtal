@@ -79,34 +79,78 @@ namespace DGtal
     typedef typename SurfaceMesh::Scalars        Scalars;
     typedef std::vector< Color >                    Colors;
 
-    /// Writes a simplified mesh in an output file (in OBJ file format).
+    /// Writes a surface mesh in an output file (in OBJ file format).
     /// @param[inout] the output stream where the OBJ file is written.
-    /// @param[in] the simplified mesh.
+    /// @param[in] smesh the surface mesh.
     /// @return 'true' if writing in the output stream was ok.
     static
     bool writeOBJ( std::ostream & output, const SurfaceMesh & smesh );
 
+    /// Writes a surface mesh in the given OBJ file (and an associated
+    /// MTL file) and associate color information.
+    ///
+    /// @param[in] objfile the name of the OBJ file (like "bunny" or "bunny.obj").
+    /// @param[in] smesh the surface mesh.
+    ///
+    /// @param[in] diffuse_colors either empty or a vector containing
+    /// the diffuse color for each face.
+    ///
+    /// @param[in] ambient_color,diffuse_color,specular_color the
+    /// default color information for each face.
     static
     bool writeOBJ( std::string            objfile,
-                   const SurfaceMesh & smesh, 
+                   const SurfaceMesh &    smesh, 
                    const Colors&          diffuse_colors = Colors(),
                    const Color&           ambient_color  = Color( 32, 32, 32 ),
                    const Color&           diffuse_color  = Color( 200, 200, 255 ),
                    const Color&           specular_color = Color::White );
 
+    /// Writes in an OBJ file the geometric lines on edges that
+    /// satisfies the given edge predicate.
+    ///
+    /// @tparam EdgePredicate any type of functor SurfaceMesh::Edge -> bool.
+    ///
+    /// @param[in] objfile the name of the OBJ file (like "contour" or
+    /// "contour.obj").
+    /// @param[in] smesh the surface mesh.
+    /// @param[in] the edge predicate, a functor SurfaceMesh::Edge -> bool.
+    ///
+    /// @param[in] relative_thickness the thickness as a ratio of the
+    /// average edge length of the mesh.
+    ///
+    /// @param[in] ambient_color,diffuse_color,specular_color the
+    /// default color information for each face.
     template <typename EdgePredicate>
     static
     bool writeEdgeLinesOBJ( std::string            objfile,
-                            const SurfaceMesh & smesh,
+                            const SurfaceMesh &    smesh,
                             const EdgePredicate &  edge_predicate,
                             const double           relative_thickness = 0.05,
                             const Color&           ambient_color = Color::Black,
                             const Color&           diffuse_color = Color::Black,
                             const Color&           specular_color= Color::Black );
 
+    /// Writes in an OBJ file the geometric isolines of a scalar field
+    /// around value \a iso_value. Scalar values of the scalar field
+    /// should be given at vertices and face centroids.
+    ///
+    /// @param[in] objfile the name of the OBJ file (like "isocontour" or
+    /// "isocontour.obj").
+    /// @param[in] smesh the surface mesh.
+    ///
+    /// @param[in] face_values, vertex_values the range of values of
+    /// the scalard field at faces and at vertices.
+    ///
+    /// @param[in] iso_value the value of the isoline to output.
+    ///
+    /// @param[in] relative_thickness the thickness as a ratio of the
+    /// average edge length of the mesh.
+    ///
+    /// @param[in] ambient_color,diffuse_color,specular_color the
+    /// default color information for each face.
     static
     bool writeIsoLinesOBJ( std::string            objfile,
-                           const SurfaceMesh & smesh,
+                           const SurfaceMesh &    smesh,
                            const Scalars&         face_values,
                            const Scalars&         vertex_values,
                            const Scalar           iso_value,
