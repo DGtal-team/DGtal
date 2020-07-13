@@ -281,7 +281,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
   typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
   typedef PolygonMeshHelper::Normals            Normals;
   auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
-                                                 10, 10, Normals::NO_NORMALS );
+                                                 10, 10, Normals::VERTEX_NORMALS );
   WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) { 
     PolygonMesh readmesh;
     std::ostringstream output;
@@ -299,6 +299,11 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
       REQUIRE( polymesh.nbVertices() == readmesh.nbVertices() );
       REQUIRE( polymesh.nbEdges()    == readmesh.nbEdges() );
       REQUIRE( polymesh.nbFaces()    == readmesh.nbFaces() );
+      REQUIRE( polymesh.neighborVertices( 0 ).size()
+               == readmesh.neighborVertices( 0 ).size() );
+      REQUIRE( polymesh.neighborVertices( 20 ).size()
+               == readmesh.neighborVertices( 20 ).size() );
+      REQUIRE( polymesh.vertexNormals().size() == readmesh.vertexNormals().size() );
     }
   }
 }
