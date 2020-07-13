@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
@@ -38,7 +39,9 @@
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/shapes/SurfaceMesh.h"
-#include "DGtal/shapes/MeshHelpers.h"
+#include "DGtal/shapes/SurfaceMeshHelper.h"
+#include "DGtal/io/readers/SurfaceMeshReader.h"
+#include "DGtal/io/writers/SurfaceMeshWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -54,7 +57,8 @@ SurfaceMesh< PointVector<3,double>,
              PointVector<3,double> > makeBox()
 {
   typedef PointVector<3,double>                 RealPoint;
-  typedef SurfaceMesh< RealPoint, RealPoint >   PolygonMesh;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
   typedef PolygonMesh::Vertices                 Vertices;
   std::vector< RealPoint > positions;
   std::vector< Vertices  > faces;
@@ -78,10 +82,19 @@ SurfaceMesh< PointVector<3,double>,
                       faces.cbegin(), faces.cend() );
 }
 
+SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]" )
+{
+  typedef PointVector<3,double>               RealPoint;
+  typedef PointVector<3,double>               RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector > PolygonMesh;
+  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
+}
+
 SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
 {
   typedef PointVector<3,double>                 RealPoint;
-  typedef SurfaceMesh< RealPoint, RealPoint >   PolygonMesh;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
   typedef PolygonMesh::VertexRange              VertexRange;
   typedef PolygonMesh::Face                     Face;
   typedef PolygonMesh::Edge                     Edge;
@@ -191,9 +204,101 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
   }
 }
 
-SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]" )
+
+SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
 {
-  typedef PointVector<3,double>               RealPoint;
-  typedef SurfaceMesh< RealPoint, RealPoint > PolygonMesh;
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
+  typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
+  typedef PolygonMeshHelper::Normals            Normals;
+  GIVEN( "A sphere of radius 10" ) {
+    auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
+                                                   10, 10, Normals::NO_NORMALS );
+    THEN( "The mesh has Euler characteristic 2" ) {
+      REQUIRE( polymesh.Euler() == 2 );
+    }
+    THEN( "It is a consistent manifold without boundary" ) {
+      auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
+      auto mani_inner   = polymesh.computeManifoldInnerEdges();
+      auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
+      auto mani_inner_u = polymesh.computeManifoldInnerUnconsistentEdges();
+      auto non_mani     = polymesh.computeNonManifoldEdges();
+      CAPTURE( polymesh );
+      REQUIRE( mani_bdry.size()    == 0 );
+      REQUIRE( mani_inner.size()   == mani_inner_c.size() );
+      REQUIRE( mani_inner_u.size() == 0 );
+      REQUIRE( non_mani.size()     == 0 );
+    }
+  }
+  GIVEN( "A torus with radii 3 and 1" ) {
+    auto polymesh = PolygonMeshHelper::makeTorus( 3.0, 1.0, RealPoint::zero,
+                                                  10, 10, 0, Normals::NO_NORMALS );
+    THEN( "The mesh has Euler characteristic 0" ) {
+      REQUIRE( polymesh.Euler() == 0 );
+    }
+    THEN( "It is a consistent manifold without boundary" ) {
+      auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
+      auto mani_inner   = polymesh.computeManifoldInnerEdges();
+      auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
+      auto mani_inner_u = polymesh.computeManifoldInnerUnconsistentEdges();
+      auto non_mani     = polymesh.computeNonManifoldEdges();
+      CAPTURE( polymesh );
+      REQUIRE( mani_bdry.size()    == 0 );
+      REQUIRE( mani_inner.size()   == mani_inner_c.size() );
+      REQUIRE( mani_inner_u.size() == 0 );
+      REQUIRE( non_mani.size()     == 0 );
+    }
+  }
+  GIVEN( "A lantern with radii 3" ) {
+    auto polymesh = PolygonMeshHelper::makeLantern( 3.0, 3.0, RealPoint::zero,
+                                                    10, 10, Normals::NO_NORMALS );
+    THEN( "The mesh has Euler characteristic 0" ) {
+      REQUIRE( polymesh.Euler() == 0 );
+    }
+    THEN( "It is a consistent manifold with boundary" ) {
+      auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
+      auto mani_inner   = polymesh.computeManifoldInnerEdges();
+      auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
+      auto mani_inner_u = polymesh.computeManifoldInnerUnconsistentEdges();
+      auto non_mani     = polymesh.computeNonManifoldEdges();
+      CAPTURE( polymesh );
+      REQUIRE( mani_bdry.size()    == 20 );
+      REQUIRE( mani_inner.size()   == mani_inner_c.size() );
+      REQUIRE( mani_inner_u.size() == 0 );
+      REQUIRE( non_mani.size()     == 0 );
+    }
+  }
+}
+
+SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
+{
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
+  typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
+  typedef SurfaceMeshReader< RealPoint, RealVector > PolygonMeshReader;
+  typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
+  typedef PolygonMeshHelper::Normals            Normals;
+  auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
+                                                 10, 10, Normals::NO_NORMALS );
+  WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) { 
+    PolygonMesh readmesh;
+    std::ostringstream output;
+    bool okw = PolygonMeshWriter::writeOBJ( output, polymesh );
+    std::string file = output.str();
+    std::istringstream input( file ); 
+    bool okr = PolygonMeshReader::readOBJ ( input,  readmesh );
+    THEN( "The read mesh is the same as the original one" ) {
+      CAPTURE( file );
+      CAPTURE( polymesh );
+      CAPTURE( readmesh );
+      REQUIRE( okw );
+      REQUIRE( okr );
+      REQUIRE( polymesh.Euler()      == readmesh.Euler() );
+      REQUIRE( polymesh.nbVertices() == readmesh.nbVertices() );
+      REQUIRE( polymesh.nbEdges()    == readmesh.nbEdges() );
+      REQUIRE( polymesh.nbFaces()    == readmesh.nbFaces() );
+    }
+  }
 }
