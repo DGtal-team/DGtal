@@ -58,7 +58,7 @@ namespace DGtal
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
-   */
+  */
   template < typename TRealPoint, typename TRealVector >
   struct SurfaceMeshReader
   {

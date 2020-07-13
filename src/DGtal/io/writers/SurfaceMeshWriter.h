@@ -58,7 +58,7 @@ namespace DGtal
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
-   */
+  */
   template < typename TRealPoint, typename TRealVector >
   struct SurfaceMeshWriter
   {
@@ -97,23 +97,23 @@ namespace DGtal
     template <typename EdgePredicate>
     static
     bool writeEdgeLinesOBJ( std::string            objfile,
-			    const SurfaceMesh & smesh,
-			    const EdgePredicate &  edge_predicate,
-			    const double           relative_thickness = 0.05,
-			    const Color&           ambient_color = Color::Black,
-			    const Color&           diffuse_color = Color::Black,
-			    const Color&           specular_color= Color::Black );
+                            const SurfaceMesh & smesh,
+                            const EdgePredicate &  edge_predicate,
+                            const double           relative_thickness = 0.05,
+                            const Color&           ambient_color = Color::Black,
+                            const Color&           diffuse_color = Color::Black,
+                            const Color&           specular_color= Color::Black );
 
     static
     bool writeIsoLinesOBJ( std::string            objfile,
-			   const SurfaceMesh & smesh,
-			   const Scalars&         face_values,
-			   const Scalars&         vertex_values,
-			   const Scalar           iso_value,
-			   const double           relative_thickness = 0.05,
-			   const Color&           ambient_color = Color::Black,
-			   const Color&           diffuse_color = Color::Black,
-			   const Color&           specular_color= Color::Black );
+                           const SurfaceMesh & smesh,
+                           const Scalars&         face_values,
+                           const Scalars&         vertex_values,
+                           const Scalar           iso_value,
+                           const double           relative_thickness = 0.05,
+                           const Color&           ambient_color = Color::Black,
+                           const Color&           diffuse_color = Color::Black,
+                           const Color&           specular_color= Color::Black );
       
   };
 
