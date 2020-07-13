@@ -88,15 +88,16 @@ namespace DGtal
     std::vector< std::string > split( const std::string& str, char delim = ' ');
 
     /// Reads an input file as an OBJ file format and outputs the
-    /// corresponding simplified mesh.
-    /// @param[inout] the input stream where the OBJ file is read.
-    /// @param[out] the output simplified mesh.
-    /// @return 'true' if both reading the input stream was ok and the created mesh is ok.
+    /// corresponding surface mesh.
+    ///
+    /// @param[inout] input the input stream where the OBJ file is read.
+    /// @param[out] smesh the output surface mesh.
+    ///
+    /// @return 'true' if both reading the input stream was ok and the
+    /// created mesh is ok.
     static
     bool readOBJ( std::istream & input, SurfaceMesh & smesh );
   };
-
-
   
 } // namespace DGtal
 
