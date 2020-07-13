@@ -62,31 +62,31 @@ namespace DGtal
      We sum up below the possible classes for representing meshes:
      
      - @ref Mesh represents soaps of triangles with traversal
-       operations but without any link between vertices;
+     operations but without any link between vertices;
      - @ref TriangulatedSurface represents 2-manifold triangulated
-       meshes, possibly with boundaries, and provides traversal and
-       neighborhood operations (underlying fast index representation);
+     meshes, possibly with boundaries, and provides traversal and
+     neighborhood operations (underlying fast index representation);
      - @ref PolygonalSurface represents 2-manifold polygonal
-       meshes, possibly with boundaries, and provides traversal and
-       neighborhood operations (underlying fast index representation);
+     meshes, possibly with boundaries, and provides traversal and
+     neighborhood operations (underlying fast index representation);
      - @ref SurfaceMesh represents arbitrary sets of faces with
-       possible connexions between faces, edges and vertices, provides
-       traversal and neighborhood operations (underlying fast index
-       representation), and may represent non manifold meshes.
+     possible connexions between faces, edges and vertices, provides
+     traversal and neighborhood operations (underlying fast index
+     representation), and may represent non manifold meshes.
      - @ref DigitalSurface is a common interface to represent
-       arbitrary digital surfaces, i.e. boundaries of sets of voxels
-       or interfaces between such sets;
+     arbitrary digital surfaces, i.e. boundaries of sets of voxels
+     or interfaces between such sets;
      - @ref IndexedDigitalSurface is a common interface to represent
-       arbitrary digital surfaces, i.e. boundaries of sets of voxels
-       or interfaces between such sets, but with underlying fast index
-       representation.
+     arbitrary digital surfaces, i.e. boundaries of sets of voxels
+     or interfaces between such sets, but with underlying fast index
+     representation.
 
      See also SurfaceMeshReader and SurfaceMeshWriter for input/output
      operations for SurfaceMesh.
 
      @tparam TRealPoint an arbitrary model of 3D RealPoint.
      @tparam TRealVector an arbitrary model of 3D RealVector.
-   */
+  */
   template < typename TRealPoint, typename TRealVector >
   struct SurfaceMesh
   {
@@ -459,7 +459,7 @@ namespace DGtal
     template <typename OutputIterator>
     void
     writeNeighbors( OutputIterator &it ,
-		    const Vertex & v ) const
+                    const Vertex & v ) const
     {
       for ( auto&& nv : myNeighborVertices[ v ] )
         *it++ = nv;
@@ -484,8 +484,8 @@ namespace DGtal
     template <typename OutputIterator, typename VertexPredicate>
     void
     writeNeighbors( OutputIterator &it ,
-		    const Vertex & v,
-		    const VertexPredicate & pred) const
+                    const Vertex & v,
+                    const VertexPredicate & pred) const
     {
       for ( auto&& nv : myNeighborVertices[ v ] )
         if ( pred( nv ) ) *it++ = nv;
@@ -733,7 +733,7 @@ namespace DGtal
   template < typename TRealPoint, typename TRealVector >
   std::ostream&
   operator<< ( std::ostream & out,
-	       const SurfaceMesh<TRealPoint, TRealVector> & object );  
+               const SurfaceMesh<TRealPoint, TRealVector> & object );  
   
 } // namespace DGtal
 
