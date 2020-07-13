@@ -67,9 +67,9 @@ init( RealPointIterator itPos, RealPointIterator itPosEnd,
     {
       Vertices f_vtcs;
       for ( auto it = itVertices->begin(), itE = itVertices->end(); it != itE; ++it )
-	{
-	  Index vtx = *it;
-	  if ( vtx >= nbVertices() )
+        {
+          Index vtx = *it;
+          if ( vtx >= nbVertices() )
             {
               trace.warning() << "[SurfaceMesh::init] Invalid vtx "
                               << vtx << " at face " << f
@@ -77,12 +77,12 @@ init( RealPointIterator itPos, RealPointIterator itPosEnd,
                               << ". Ignoring vertex." << std::endl;
               ok = false;
             }
-	  else
-	    {
-	      myIncidentFaces[ vtx ].push_back( f );
-	      f_vtcs.push_back( vtx );
-	    }
-	}
+          else
+            {
+              myIncidentFaces[ vtx ].push_back( f );
+              f_vtcs.push_back( vtx );
+            }
+        }
       myIncidentVertices.push_back( f_vtcs );
     }
   computeNeighbors();
@@ -148,11 +148,11 @@ computeFaceNormalsFromPositions()
       p /= face.size();
       // compute normal as sum of triangle normal vectors.
       for ( Index i = 0; i < face.size(); ++i )
-	{
-	  const Index  j = face[ i ];
-	  const Index nj = face[ (i+1) % face.size() ];
-	  n += ( myPositions[ j ] - p ).crossProduct( myPositions[ nj ] - p );
-	}
+        {
+          const Index  j = face[ i ];
+          const Index nj = face[ (i+1) % face.size() ];
+          n += ( myPositions[ j ] - p ).crossProduct( myPositions[ nj ] - p );
+        }
       auto n_norm = n.norm();
       myFaceNormals[ f ] = n_norm != 0.0 ? n / n_norm : n;
       f++;
@@ -403,7 +403,7 @@ perturbateWithAdaptiveUniformRandomNoise( Scalar p )
       const RealPoint x = myPositions[ v ];
       Scalar local_length = 0.0;
       for ( auto nv : myNeighborVertices[ v ] )
-	local_length += ( myPositions[ nv ] - x ).norm();
+        local_length += ( myPositions[ nv ] - x ).norm();
       local_average_lengths[ v ] = local_length / myNeighborVertices[ v ].size();
     }
   for ( Index v = 0; v < nbVertices(); ++v )
@@ -477,19 +477,19 @@ computeFacesInclusionsInBall( Scalar r, Index f ) const
       active.pop();
       Scalar weight = faceInclusionRatio( p, r, current );
       if ( weight > 0.0 )
-	{
-	  result.push_back( std::make_pair( current, weight ) );
-	  auto neighbors = myNeighborFaces[ current ];
-	  for ( auto n : neighbors )
-	    if ( marked.find( n ) == marked.end() )
-	      {
-		active.push( n );
-		marked.insert( n );
-	      }
-	}
+        {
+          result.push_back( std::make_pair( current, weight ) );
+          auto neighbors = myNeighborFaces[ current ];
+          for ( auto n : neighbors )
+            if ( marked.find( n ) == marked.end() )
+              {
+                active.push( n );
+                marked.insert( n );
+              }
+        }
     }
   // trace.info() << "#Marked=" << marked.size()
-  // 	       << " #Result=" << result.size() << std::endl;
+  //                << " #Result=" << result.size() << std::endl;
   return result;
 }
 
@@ -522,37 +522,37 @@ computeCellsInclusionsInBall( Scalar r, Index f ) const
       active.pop();
       Scalar fweight = faceInclusionRatio( p, r, current );
       if ( fweight > 0.0 )
-	{
-	  result_f.push_back( std::make_pair( current, fweight ) );
-	  // Taking care of faces, and the breadth-first traversal
-	  const auto& neighbors = myNeighborFaces[ current ];
-	  for ( auto n : neighbors )
-	    if ( marked.find( n ) == marked.end() )
-	      {
-		active.push( n );
-		marked.insert( n );
-	      }
-	  // Taking care of edges and vertices
-	  const auto& inc_v = myIncidentVertices[ current ];
-	  for ( Size i = 0; i < inc_v.size(); ++i )
-	    {
-	      const Vertex vi = inc_v[ i ];
-	      const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
-	      if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
-		set_v.insert( vi );
-	      const Edge e_ij = makeEdge( vi, vn );
-	      if ( e_ij >= nbEdges() ) {
-		trace.error() << "bad edge " << vi << " " << vn << std::endl;
-		continue;
-	      }
-	      Scalar eweight = edgeInclusionRatio( p, r, e_ij );
-	      if ( eweight > 0.0 )
-		result_e.push_back( std::make_pair( e_ij, eweight ) );
-	    }
-	}
+        {
+          result_f.push_back( std::make_pair( current, fweight ) );
+          // Taking care of faces, and the breadth-first traversal
+          const auto& neighbors = myNeighborFaces[ current ];
+          for ( auto n : neighbors )
+            if ( marked.find( n ) == marked.end() )
+              {
+                active.push( n );
+                marked.insert( n );
+              }
+          // Taking care of edges and vertices
+          const auto& inc_v = myIncidentVertices[ current ];
+          for ( Size i = 0; i < inc_v.size(); ++i )
+            {
+              const Vertex vi = inc_v[ i ];
+              const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
+              if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
+                set_v.insert( vi );
+              const Edge e_ij = makeEdge( vi, vn );
+              if ( e_ij >= nbEdges() ) {
+                trace.error() << "bad edge " << vi << " " << vn << std::endl;
+                continue;
+              }
+              Scalar eweight = edgeInclusionRatio( p, r, e_ij );
+              if ( eweight > 0.0 )
+                result_e.push_back( std::make_pair( e_ij, eweight ) );
+            }
+        }
     }
   // trace.info() << "#Marked=" << marked.size()
-  // 	       << " #Result=" << result.size() << std::endl;
+  //                << " #Result=" << result.size() << std::endl;
   result_v = Vertices( set_v.cbegin(), set_v.cend() );
   return std::make_tuple( result_v, result_e, result_f );
 }
@@ -644,9 +644,9 @@ isValid() const
 {
   return myPositions.size() == myIncidentFaces.size()
     && ( myVertexNormals.size() == 0
-	 || ( myVertexNormals.size() == myPositions.size() ) )
+         || ( myVertexNormals.size() == myPositions.size() ) )
     && ( myFaceNormals.size() == 0
-	 || ( myFaceNormals.size() == myIncidentVertices.size() ) );
+         || ( myFaceNormals.size() == myIncidentVertices.size() ) );
 }
 
 
@@ -680,8 +680,8 @@ computeNeighbors()
       std::set< Index > neighbor_faces_set;
       std::sort( incident_vertices.begin(), incident_vertices.end() );
       for ( auto idx_v : incident_vertices )
-	{
-	  const auto & incident_faces = incidentFaces( idx_v );
+        {
+          const auto & incident_faces = incidentFaces( idx_v );
           for ( auto inc_f : incident_faces )
             {
               // Keep only faces incident to two vertices of f.
@@ -694,7 +694,7 @@ computeNeighbors()
               if ( common.size() == 2 )
                 neighbor_faces_set.insert( inc_f );
             }
-	}
+        }
       neighbor_faces_set.erase( idx_f );
       Faces neighbor_faces( neighbor_faces_set.begin(), neighbor_faces_set.end() );
       myNeighborFaces[ idx_f++ ] = neighbor_faces;
@@ -708,11 +708,11 @@ computeNeighbors()
   //       {
   //         const auto & incident_vertices = incidentVertices()[ idx_f ];
   //         neighbor_vertices_set.insert( incident_vertices.begin(),
-  //       				incident_vertices.end() );
+  //                                       incident_vertices.end() );
   //       }
   //     neighbor_vertices_set.erase( idx_v );
   //     Vertices neighbor_vertices( neighbor_vertices_set.begin(),
-  //       			  neighbor_vertices_set.end() );
+  //                                 neighbor_vertices_set.end() );
   //     myNeighborVertices[ idx_v++ ] = neighbor_vertices;
   //   }
 }
@@ -731,17 +731,17 @@ computeEdges()
     {
       const Size n = incident_vertices.size();
       for ( Size i = 0; i < n; i++ )
-	{
-	  VertexPair e = std::make_pair( incident_vertices[ i ],
-					 incident_vertices[ (i+1) % n ] );
-	  if ( e.first < e.second ) {
-	    edge2face_left[ e ].push_back( idx_f );
-	  } else {
-	    std::swap( e.first, e.second );
-	    edge2face_right[ e ].push_back( idx_f );
-	  }
-	  edges.insert( e );
-	}
+        {
+          VertexPair e = std::make_pair( incident_vertices[ i ],
+                                         incident_vertices[ (i+1) % n ] );
+          if ( e.first < e.second ) {
+            edge2face_left[ e ].push_back( idx_f );
+          } else {
+            std::swap( e.first, e.second );
+            edge2face_right[ e ].push_back( idx_f );
+          }
+          edges.insert( e );
+        }
       idx_f++;
     }
   const Size nbe = edges.size();
@@ -757,8 +757,8 @@ computeEdges()
       myEdgeRightFaces[ idx_e ] = edge2face_right[ e ];
       myEdgeFaces     [ idx_e ] = myEdgeRightFaces[ idx_e ];
       myEdgeFaces     [ idx_e ].insert( myEdgeFaces[ idx_e ].cend(),
-					myEdgeLeftFaces[ idx_e ].cbegin(),
-					myEdgeLeftFaces[ idx_e ].cend() );
+                                        myEdgeLeftFaces[ idx_e ].cbegin(),
+                                        myEdgeLeftFaces[ idx_e ].cend() );
       idx_e++;
     }
 }

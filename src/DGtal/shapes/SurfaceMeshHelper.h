@@ -58,7 +58,7 @@ namespace DGtal
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
-   */
+  */
   template < typename TRealPoint, typename TRealVector >
   struct SurfaceMeshHelper
   {
@@ -120,22 +120,22 @@ namespace DGtal
 
     static
     Scalars torusMeanCurvatures( Scalar big_radius, Scalar small_radius, 
-				 Size m, Size n, int twist );
+                                 Size m, Size n, int twist );
     static
     Scalars torusGaussianCurvatures( Scalar big_radius, Scalar small_radius, 
-				     Size m, Size n, int twist );
+                                     Size m, Size n, int twist );
     static
     Scalars torusFirstPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-					   Size m, Size n, int twist );
+                                           Size m, Size n, int twist );
     static
     Scalars torusSecondPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-					    Size m, Size n, int twist );
+                                            Size m, Size n, int twist );
     static
     RealVectors torusFirstPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-					       Size m, Size n, int twist );
+                                               Size m, Size n, int twist );
     static
     RealVectors torusSecondPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-						Size m, Size n, int twist );
+                                                Size m, Size n, int twist );
     
   };
   
