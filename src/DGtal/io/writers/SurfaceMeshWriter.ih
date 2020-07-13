@@ -72,7 +72,7 @@ template <typename TRealPoint, typename TRealVector>
 bool
 DGtal::SurfaceMeshWriter<TRealPoint, TRealVector>::
 writeOBJ( std::string            objfile,
-          const SurfaceMesh & smesh, 
+          const SurfaceMesh &    smesh, 
           const Colors&          diffuse_colors,
           const Color&           ambient_color,
           const Color&           diffuse_color,
