@@ -45,7 +45,6 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/Color.h"
 
 namespace DGtal
 {
