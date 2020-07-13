@@ -87,8 +87,9 @@ namespace DGtal
     /// @name Sphere services
     /// @{
 
-    /// Builds a surface mesh representing a sphere with \a m latitudes
-    /// (poles excluded) and \a n longitudes.
+    /// Builds a surface mesh representing a sphere of given
+    /// parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] center the center of the sphere.
@@ -105,26 +106,82 @@ namespace DGtal
     makeSphere( Scalar radius, RealPoint center,
                 Size m, Size n, Normals normals );
     
+    /// Returns the mean curvature at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the mean curvature at each vertex.
     static
     Scalars
     sphereMeanCurvatures( Scalar radius, Size m, Size n );
     
+    /// Returns the Gaussian curvature at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the Gaussian curvature at each vertex.
     static
     Scalars
     sphereGaussianCurvatures( Scalar radius, Size m, Size n );
 
+    /// Returns the first principal curvature at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the first principal curvature at each vertex.
     static
     Scalars
     sphereFirstPrincipalCurvatures( Scalar radius, Size m, Size n );
 
+    /// Returns the second principal curvature at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the second principal curvature at each vertex.
     static
     Scalars
     sphereSecondPrincipalCurvatures( Scalar radius, Size m, Size n );
 
+    /// Returns the first principal direction at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the first principal direction at each vertex (umbilic,
+    /// any tangent direction is ok).
     static
     RealVectors
     sphereFirstPrincipalDirections( Scalar radius, Size m, Size n );
 
+    /// Returns the second principal direction at each vertex of a sphere of
+    /// given parameters with \a m latitudes (poles excluded) and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the sphere.
+    /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the second principal direction at each vertex (umbilic,
+    /// any tangent direction is ok).
     static
     RealVectors
     sphereSecondPrincipalDirections( Scalar radius, Size m, Size n );
@@ -154,18 +211,84 @@ namespace DGtal
     SurfaceMesh
     makeLantern( Scalar radius, Scalar height, RealPoint center,
                  Size m, Size n, Normals normals );
+
+    /// Returns the mean curvature at each vertex of a Schwarz lantern of
+    /// given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the mean curvature at each vertex.
     static
-    Scalars lanternMeanCurvatures( Scalar radius, Size m, Size n );
+    Scalars
+    lanternMeanCurvatures( Scalar radius, Size m, Size n );
+      
+    /// Returns the Gaussian curvature at each vertex of a Schwarz lantern of
+    /// given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the Gaussian curvature at each vertex.
     static
-    Scalars lanternGaussianCurvatures( Scalar radius, Size m, Size n );
+    Scalars
+    lanternGaussianCurvatures( Scalar radius, Size m, Size n );
+
+    /// Returns the first principal curvature at each vertex of a
+    /// Schwarz lantern of given parameters with \a m latitudes and \a
+    /// n longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the first principal curvature at each vertex (zero).
     static
-    Scalars lanternFirstPrincipalCurvatures( Scalar radius, Size m, Size n );
+    Scalars
+    lanternFirstPrincipalCurvatures( Scalar radius, Size m, Size n );
+
+    /// Returns the second principal curvature at each vertex of a
+    /// Schwarz lantern of given parameters with \a m latitudes and \a
+    /// n longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the second principal curvature at each vertex (1/radius).
     static
-    Scalars lanternSecondPrincipalCurvatures( Scalar radius, Size m, Size n );
+    Scalars
+    lanternSecondPrincipalCurvatures( Scalar radius, Size m, Size n );
+
+    /// Returns the first principal direction at each vertex of a
+    /// Schwarz lantern of given parameters with \a m latitudes and \a
+    /// n longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the first principal direction at each vertex (z-axis).
     static
-    RealVectors lanternFirstPrincipalDirections( Scalar radius, Size m, Size n );
+    RealVectors
+    lanternFirstPrincipalDirections( Scalar radius, Size m, Size n );
+
+    /// Returns the second principal direction at each vertex of a
+    /// Schwarz lantern of given parameters with \a m latitudes and \a
+    /// n longitudes.
+    ///
+    /// @param[in] radius the radius of the lantern.
+    /// @param[in] m the number of latitudes, minimum is 2.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @return the second principal direction at each vertex (xy-plane).
     static
-    RealVectors lanternSecondPrincipalDirections( Scalar radius, Size m, Size n );
+    RealVectors
+    lanternSecondPrincipalDirections( Scalar radius, Size m, Size n );
 
     /// @}
     
@@ -197,24 +320,121 @@ namespace DGtal
     makeTorus( Scalar big_radius, Scalar small_radius, RealPoint center,
                Size m, Size n, int twist, Normals normals );
 
+    /// Returns the mean curvature at each vertex of a torus of
+    /// given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the mean curvature at each vertex.
     static
-    Scalars torusMeanCurvatures( Scalar big_radius, Scalar small_radius, 
-                                 Size m, Size n, int twist );
+    Scalars
+    torusMeanCurvatures( Scalar big_radius, Scalar small_radius, 
+                         Size m, Size n, int twist );
+    
+    /// Returns the Gaussian curvature at each vertex of a torus of
+    /// given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the Gaussian curvature at each vertex.
     static
-    Scalars torusGaussianCurvatures( Scalar big_radius, Scalar small_radius, 
-                                     Size m, Size n, int twist );
+    Scalars
+    torusGaussianCurvatures( Scalar big_radius, Scalar small_radius, 
+                             Size m, Size n, int twist );
+    
+    /// Returns the first principal curvature at each vertex of a
+    /// torus of given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the first principal curvature at each vertex.
     static
-    Scalars torusFirstPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-                                           Size m, Size n, int twist );
+    Scalars
+    torusFirstPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
+                                   Size m, Size n, int twist );
+
+    /// Returns the second principal curvature at each vertex of a
+    /// torus of given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the second principal curvature at each vertex.
     static
-    Scalars torusSecondPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-                                            Size m, Size n, int twist );
+    Scalars
+    torusSecondPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
+                                    Size m, Size n, int twist );
+
+    /// Returns the first principal direction at each vertex of a
+    /// torus of given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the first principal direction at each vertex (in xy-plane).
     static
-    RealVectors torusFirstPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-                                               Size m, Size n, int twist );
+    RealVectors
+    torusFirstPrincipalDirections( Scalar big_radius, Scalar small_radius, 
+                                   Size m, Size n, int twist );
+
+    /// Returns the second principal direction at each vertex of a
+    /// torus of given parameters with \a m latitudes and \a n
+    /// longitudes.
+    ///
+    /// @param[in] big_radius the big radius of the torus.
+    /// @param[in] small_radius the small radius of the torus.
+    /// @param[in] m the number of latitudes, minimum is 3.
+    /// @param[in] m the number of longitudes, minimum is 3.
+    ///
+    /// @param[in] twist the integer shift when visiting a whole
+    /// parallel: 0 is a natural torus parameterization, +n or -n
+    /// makes the visitor arriving on another parallel after one turn.
+    ///
+    /// @return the second principal direction at each vertex
+    /// (in meridian-sliced plane).
     static
-    RealVectors torusSecondPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-                                                Size m, Size n, int twist );
+    RealVectors
+    torusSecondPrincipalDirections( Scalar big_radius, Scalar small_radius, 
+                                    Size m, Size n, int twist );
+    
     /// @}
     
   };
