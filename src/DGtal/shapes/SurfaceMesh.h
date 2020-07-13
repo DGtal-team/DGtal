@@ -44,6 +44,7 @@
 #include <sstream>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/IntegerSequenceIterator.h"
 #include "DGtal/helpers/StdDefs.h"
 
 namespace DGtal
@@ -91,9 +92,11 @@ namespace DGtal
   {
     typedef TRealPoint                              RealPoint;
     typedef TRealVector                             RealVector;
-    typedef SurfaceMesh< RealPoint, RealVector > Self;
+    typedef SurfaceMesh< RealPoint, RealVector >    Self;
+    
     static const Dimension dimension = RealPoint::dimension;
     BOOST_STATIC_ASSERT( ( dimension == 3 ) );
+    
     typedef typename RealVector::Component          Scalar;
     typedef std::vector<Scalar>                     Scalars;
     /// The type for counting elements.
@@ -107,12 +110,29 @@ namespace DGtal
     typedef std::pair< Face, Scalar >               WeightedFace;
     /// The type that defines a range of vertices
     typedef std::vector< Vertex >                   Vertices;
+    typedef std::vector< Vertex >                   VertexRange;
     /// The type that defines a range of faces
     typedef std::vector< Edge >                     Edges;
+    typedef std::vector< Edge >                     EdgeRange;
     typedef std::vector< WeightedEdge >             WeightedEdges;
+    typedef std::vector< WeightedEdge >             WeightedEdgeRange;
     typedef std::vector< Face >                     Faces;
+    typedef std::vector< Face >                     FaceRange;
     typedef std::vector< WeightedFace >             WeightedFaces;
+    typedef std::vector< WeightedFace >             WeightedFaceRange;
     typedef std::pair< Vertex, Vertex >             VertexPair;
+
+    // Required by CUndirectedSimpleLocalGraph
+    typedef std::set<Vertex>                   VertexSet;
+    template <typename Value> struct           VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+
+    // Required by CUndirectedSimpleGraph
+    
+    /// Non mutable iterator for visiting vertices.
+    typedef IntegerSequenceIterator< Vertex >       ConstIterator;
+    
     //---------------------------------------------------------------------------
   public:
     /// @name Standard services
@@ -134,19 +154,46 @@ namespace DGtal
     Self& operator=( const Self& other ) = default;
 
     /// Builds a mesh from vertex positions and polygonal faces.
-    template <typename RealPointIterator, typename FaceIterator>
+    ///
+    /// @tparam RealPointIterator any forward iterator on RealPoint.
+    /// @tparam VerticesIterator any forward iterator on a range of vertices.
+    ///
+    /// @param itPos,itPosEnd a range of iterators pointing on the positions of all the
+    /// vertices of the mesh.
+    ///
+    /// @param itVertices,itVerticesEnd a range of iterators pointing
+    /// on the (oriented) faces of the mesh, each face being a range
+    /// of vertex indices.
+    template <typename RealPointIterator, typename VerticesIterator>
     SurfaceMesh( RealPointIterator itPos, RealPointIterator itPosEnd,
-                    FaceIterator itFace, FaceIterator itFaceEnd );
+                 VerticesIterator itVertices, VerticesIterator itVerticesEnd );
 
     /// Initializes a mesh from vertex positions and polygonal faces
     /// (clears everything before).
-    template <typename RealPointIterator, typename FaceIterator>
+    ///
+    /// @tparam RealPointIterator any forward iterator on RealPoint.
+    /// @tparam VerticesIterator any forward iterator on a range of vertices.
+    ///
+    /// @param itPos,itPosEnd a range of iterators pointing on the positions of all the
+    /// vertices of the mesh.
+    ///
+    /// @param itVertices,itVerticesEnd a range of iterators pointing
+    /// on the (oriented) faces of the mesh, each face being a range
+    /// of vertex indices.
+    template <typename RealPointIterator, typename VerticesIterator>
     bool init( RealPointIterator itPos, RealPointIterator itPosEnd,
-	       FaceIterator itFace, FaceIterator itFaceEnd );
+               VerticesIterator itVertices, VerticesIterator itVerticesEnd );
 
     /// Clears everything. The object is empty.
     void clear();
 
+    /// @}
+    
+    //---------------------------------------------------------------------------
+  public:
+    /// @name Vertex and face vectors initialization and conversion services
+    /// @{
+    
     /// Given a range of real vectors, sets the normals of every
     /// vertex to the given vectors.
     template <typename RealVectorIterator>
@@ -178,17 +225,27 @@ namespace DGtal
     /// vertex information.
     void computeVertexNormalsFromFaceNormalsWithMaxWeights();
 
+    /// @param vvalues any vector of vertex values.
+    /// @return a vector of face values approximating \a vvalues.
+    /// @tparam AnyRing any summable and averagable type.
     template <typename AnyRing>
     std::vector<AnyRing> computeFaceValuesFromVertexValues
     ( const std::vector<AnyRing>& vvalues ) const;
     
+    /// @param vvalues any vector of vertex values.
+    /// @return a vector of face values approximating \a vvalues.
+    /// @tparam AnyRing any summable and averagable type.
     template <typename AnyRing>
     std::vector<AnyRing> computeVertexValuesFromFaceValues
     ( const std::vector<AnyRing>& fvalues ) const;
 
+    /// @param vuvectors any vector of unit vectors on vertices.
+    /// @return a vector of unit vectors on faces approximating \a vuvectors.
     std::vector<RealVector> computeFaceUnitVectorsFromVertexUnitVectors
     ( const std::vector<RealVector>& vuvectors ) const;
 
+    /// @param fuvectors any vector of unit vectors on faces.
+    /// @return a vector of unit vectors on vertices approximating \a fuvectors.
     std::vector<RealVector> computeVertexUnitVectorsFromFaceUnitVectors
     ( const std::vector<RealVector>& fuvectors ) const;
     
@@ -199,72 +256,114 @@ namespace DGtal
     /// @name Accessors
     /// @{
 
-    /// @return the number of faces of the mesh.
-    Size nbFaces() const
-    { return myIncidentVertices.size(); }
+    /// @return the number of vertices of the mesh.
+    Size nbVertices() const
+    { return myIncidentFaces.size(); }
 
     /// @return the number of (unordered) edges of the mesh.
     Size nbEdges() const
     { return myEdgeVertices.size(); }
 
-    /// @return the number of vertices of the mesh.
-    Size nbVertices() const
-    { return myIncidentFaces.size(); }
+    /// @return the number of faces of the mesh.
+    Size nbFaces() const
+    { return myIncidentVertices.size(); }
 
+    /// @return the euler characteristic of the triangulated surface
+    /// (a famous topological invariant that is the number of vertices
+    /// minus the number of edges plus the number of faces).
+    long Euler() const
+    { return nbVertices() - nbEdges() + nbFaces(); }
+    
     /// @param i any vertex of the mesh
     /// @param j any vertex of the mesh
     /// @return the edge index of edge (i,j) or `nbEdges()` if this
     /// edge does not exist.
     /// @note O(log E) time complexity.
     Edge makeEdge( Vertex i, Vertex j ) const;
+
+    /// @param f any face
+    /// @return a const reference to the range giving for face \a f 
+    /// its incident vertices.
+    const Vertices&  incidentVertices( Face f ) const
+    { return myIncidentVertices[ f ]; }
+
+    /// @param v any vertex
+    /// @return a const reference to the range giving for vertex \a v
+    /// its incident faces.
+    const Faces& incidentFaces( Vertex v ) const
+    { return myIncidentFaces[ v ]; }
     
+    /// @param f any face
+    /// @return a const reference to the range of neighbor faces for face \a f.
+    const Faces& neighborFaces( Face f ) const
+    { return myNeighborFaces[ f ]; }
+
+    /// @param v any vertex
+    /// @return a const reference to the range of neighbor vertices for vertex \a v.
+    const Vertices& neighborVertices( Vertex v ) const
+    { return myNeighborVertices[ v ]; }
+
+    /// @param e any edge
+    /// @return a const reference to the vector giving for edge \a e
+    /// its two vertices (as a pair (i,j), i<j).
+    const VertexPair& edgeVertices( Edge e ) const
+    { return myEdgeVertices[ e ]; }
+    
+    /// @param e any edge
+    /// @return a const reference to the range giving for edge \a e
+    /// its incident faces (one, two, or more if non manifold)
+    const Faces& edgeFaces( Edge e ) const
+    { return myEdgeFaces[ e ]; }
+
+    /// @param e any edge
+    /// @return a const reference to the range giving for edge \a e
+    /// its incident faces to its right (zero if open, one, or more if
+    /// non manifold).
+    ///
+    /// @note an edge is stored as a vertex pair (i,j), i < j. So a
+    /// face to its right, being defined ccw, means that the face is
+    /// some `(..., j, i, ... )`.
+    const Faces& edgeRightFaces( Edge e ) const 
+    { return myEdgeRightFaces[ e ]; }
+
+    /// @param e any edge
+    /// @return a const reference to the range giving for edge \a e
+    /// its incident faces to its left (zero if open, one, or more if
+    /// non manifold).
+    ///
+    /// @note an edge is stored as a vertex pair (i,j), i < j. So a
+    /// face to its left, being defined ccw, means that the face is
+    /// some `(..., i, j, ... )`.
+    const Faces& edgeLeftFaces( Edge e ) const 
+    { return myEdgeLeftFaces[ e ]; }
+
     /// @return a const reference to the vector giving for each face
     /// its incident vertices.
-    const std::vector< Vertices >& incidentVertices() const
+    const std::vector< Vertices >& allIncidentVertices() const
     { return myIncidentVertices; }
 
     /// @return a const reference to the vector giving for each vertex
     /// its incident faces.
-    const std::vector< Faces >& incidentFaces() const
+    const std::vector< Faces >& allIncidentFaces() const
     { return myIncidentFaces; }
-
-    /// @return a const reference to the vector of positions (of vertices).
-    const std::vector< RealVector >& positions() const
-    { return myPositions; }
-
-    /// @return a const reference to the vector of normals to vertices.
-    const std::vector< RealVector >& vertexNormals() const
-    { return myVertexNormals; }
-
-    /// @return a const reference to the vector of normals to faces.
-    const std::vector< RealVector >& faceNormals() const
-    { return myFaceNormals; }
-
-    /// @return a reference to the vector of normals to vertices.
-    std::vector< RealVector >& vertexNormals() 
-    { return myVertexNormals; }
-
-    /// @return a reference to the vector of normals to faces.
-    std::vector< RealVector >& faceNormals() 
-    { return myFaceNormals; }
-
+    
     /// @return a const reference to the vector of neighbor faces for each face.
-    const std::vector< Faces >& neighborFaces() const
+    const std::vector< Faces >& allNeighborFaces() const
     { return myNeighborFaces; }
 
     /// @return a const reference to the vector of neighbor vertices for each vertex.
-    const std::vector< Vertices >& neighborVertices() const
+    const std::vector< Vertices >& allNeighborVertices() const
     { return myNeighborVertices; }
 
     /// @return a const reference to the vector giving for each edge
     /// its two vertices (as a pair (i,j), i<j).
     /// @note edges are sorted in increasing order.
-    const std::vector< VertexPair >& edgeVertices() const
+    const std::vector< VertexPair >& allEdgeVertices() const
     { return myEdgeVertices; }
     
     /// @return a const reference to the vector giving for each edge
     /// its incident faces (one, two, or more if non manifold)
-    const std::vector< Faces >& edgeFaces() const
+    const std::vector< Faces >& allEdgeFaces() const
     { return myEdgeFaces; }
 
     /// @return a const reference to the vector giving for each edge
@@ -274,7 +373,7 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its right, being defined ccw, means that the face is
     /// some `(..., j, i, ... )`.
-    const std::vector< Faces >& edgeRightFaces() const 
+    const std::vector< Faces >& allEdgeRightFaces() const 
     { return myEdgeRightFaces; }
 
     /// @return a const reference to the vector giving for each edge
@@ -284,27 +383,171 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its left, being defined ccw, means that the face is
     /// some `(..., i, j, ... )`.
-    const std::vector< Faces >& edgeLeftFaces() const 
+    const std::vector< Faces >& allEdgeLeftFaces() const 
     { return myEdgeLeftFaces; }
-    
     
     /// @}
 
+    // ----------------------- Undirected simple graph services ----------------------
+  public:
+    /// @name Undirected simple graph services
+    /// @{
+    
+    /**
+     * @return the number of vertices of the surface.
+     */
+    Size size() const
+    { return nbVertices(); }
+
+    /**
+     * @return an estimate of the maximum number of neighbors for this adjacency
+     *
+     * @note chosen here to be 8. Number of neighbors is 6 on average
+     * for planar triangulations.
+     */
+    Size bestCapacity() const
+    { return 8; }
+      
+    /**
+     * @param v any vertex
+     *
+     * @return the number of neighbors of this vertex
+     */
+    Size degree( const Vertex & v ) const
+    { return myNeighborVertices[ v ].size(); }
+
+    /**
+     * Writes the neighbors of a vertex using an output iterator
+     *
+     * @tparam OutputIterator the type of an output iterator writing
+     * in a container of vertices.
+     *
+     * @param it the output iterator
+     *
+     * @param v the vertex whose neighbors will be writen
+     */
+    template <typename OutputIterator>
+    void
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v ) const
+    {
+      for ( auto&& nv : myNeighborVertices[ v ] )
+        *it++ = nv;
+    }
+
+    /**
+     * Writes the neighbors of a vertex which satisfy a predicate using an
+     * output iterator
+     *
+     *
+     * @tparam OutputIterator the type of an output iterator writing
+     * in a container of vertices.
+     *
+     * @tparam VertexPredicate the type of the predicate
+     *
+     * @param it the output iterator
+     *
+     * @param v the vertex whose neighbors will be written
+     *
+     * @param pred the predicate that must be satisfied
+     */
+    template <typename OutputIterator, typename VertexPredicate>
+    void
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v,
+		    const VertexPredicate & pred) const
+    {
+      for ( auto&& nv : myNeighborVertices[ v ] )
+        if ( pred( nv ) ) *it++ = nv;
+    }
+
+    /// @return a (non mutable) iterator pointing on the first vertex.
+    ConstIterator begin() const
+    { return ConstIterator( 0 ); }
+
+    /// @return a (non mutable) iterator pointing after the last vertex.
+    ConstIterator end() const
+    { return ConstIterator( nbVertices() ); }
+
+    /// @}
+    
     //---------------------------------------------------------------------------
   public:
     /// @name Geometric services
     /// @{
 
+    /// @return a const reference to the vector of positions (of vertices).
+    const std::vector< RealPoint >& positions() const
+    { return myPositions; }
+
+    /// Mutable accessor to vertex position.
+    /// @param v any vertex.
+    /// @return the mutable position associated to \a v.
+    RealPoint& position( Vertex v )
+    { return myPositions[ v ]; }
+    
+    /// Const accessor to vertex position.
+    /// @param v any vertex.
+    /// @return the non-mutable position associated to \a v.
+    const RealPoint& position( Vertex v ) const
+    { return myPositions[ v ]; }
+      
+    /// @return a const reference to the vector of normals to vertices.
+    const std::vector< RealVector >& vertexNormals() const
+    { return myVertexNormals; }
+
+    /// @return a reference to the vector of normals to vertices.
+    std::vector< RealVector >& vertexNormals() 
+    { return myVertexNormals; }
+
+    /// Mutable accessor to vertex normal.
+    /// @param v any vertex.
+    /// @return the mutable normal associated to \a v.
+    RealVector& vertexNormal( Vertex v )
+    { return myVertexNormals[ v ]; }
+    
+    /// Const accessor to vertex normal.
+    /// @param v any vertex.
+    /// @return the non-mutable normal associated to \a v.
+    const RealVector& vertexNormal( Vertex v ) const
+    { return myVertexNormals[ v ]; }
+    
+    /// @return a const reference to the vector of normals to faces.
+    const std::vector< RealVector >& faceNormals() const
+    { return myFaceNormals; }
+
+    /// @return a reference to the vector of normals to faces.
+    std::vector< RealVector >& faceNormals() 
+    { return myFaceNormals; }
+
+    /// Mutable accessor to face normal.
+    /// @param f any face.
+    /// @return the mutable normal associated to \a f.
+    RealVector& faceNormal( Face f )
+    { return myFaceNormals[ f ]; }
+    
+    /// Const accessor to face normal.
+    /// @param f any face.
+    /// @return the non-mutable normal associated to \a f.
+    const RealVector& faceNormal( Face f ) const
+    { return myFaceNormals[ f ]; }
+    
     /// @return the average of the length of edges.
     Scalar averageEdgeLength() const;
+
     /// @param f any valid face index
-    /// @return the average distance between the centroid of face \a f and its vertices.
+    /// @return the average distance between the centroid of face \a f
+    /// and its vertices.
     Scalar localWindow( Face f ) const;
 
     /// Perturbate the positions with a uniform random noise of 'p *
     /// averageEdgeLength' along arbitrary directions.
     /// @param p any positive real value.
     void perturbateWithUniformRandomNoise( Scalar p );
+
+    /// Perturbate the positions with a uniform random noise of 'p *
+    /// averageLocalEdgeLength' along arbitrary directions.
+    /// @param p any positive real value.
     void perturbateWithAdaptiveUniformRandomNoise( Scalar p );
 
     /// @param e any valid edge index.
@@ -324,8 +567,29 @@ namespace DGtal
     /// @note Used in computeVertexNormalsFromFaceNormalsWithMaxWeights
     Scalars getMaxWeights( Index v ) const;
     
+    /// Given a ball of radius \a r centered on the centroid of face
+    /// \a f, return the faces having an non empty intersection with
+    /// this ball, each one weighted by its ratio of inclusion.
+    ///
+    /// @param r the radius of the ball.
+    /// @param f the face where the ball is centered.
+    ///
+    /// @return the range of faces having an non empty intersection
+    /// with this ball, each one weighted by its ratio of inclusion.
     WeightedFaces
     computeFacesInclusionsInBall( Scalar r, Index f ) const;
+    
+    /// Given a ball of radius \a r centered on the centroid of face
+    /// \a f, return the vertices/edges/faces having an non empty intersection with
+    /// this ball, each edge/face weighted by its ratio of inclusion.
+    ///
+    /// @param r the radius of the ball.
+    /// @param f the face where the ball is centered.
+    ///
+    /// @return the range of vertices/edges/faces having an non empty intersection
+    /// with this ball, each edge/face weighted by its ratio of inclusion.
+    ///
+    /// @note a vertex is either included or not, so no weight is necessary.
     std::tuple< Vertices, WeightedEdges, WeightedFaces >
     computeCellsInclusionsInBall( Scalar r, Index f ) const;
     
