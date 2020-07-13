@@ -116,10 +116,10 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
     }
     THEN( "Euler number is 1 as is the Euler number of a disk." )
       {
-	REQUIRE( polymesh.nbVertices() == 10 );
-	REQUIRE( polymesh.nbEdges() == 15 );
-	REQUIRE( polymesh.nbFaces() == 6 );
-	REQUIRE( polymesh.Euler() == 1 );
+        REQUIRE( polymesh.nbVertices() == 10 );
+        REQUIRE( polymesh.nbEdges() == 15 );
+        REQUIRE( polymesh.nbFaces() == 6 );
+        REQUIRE( polymesh.Euler() == 1 );
       }
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
@@ -136,10 +136,10 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
         REQUIRE( distances.size() == 10 );
         int expected_vertices[] = { 0, 1, 2, 4, 3, 5, 6, 9, 7, 8 };
         int expected_distance[] = { 0, 1, 1, 1, 2, 2, 2, 2, 3, 3 };
-	auto itb = vertices.begin();
-	std::sort( itb+1, itb+4 );
-	std::sort( itb+4, itb+8 );
-	std::sort( itb+8, itb+10 );
+        auto itb = vertices.begin();
+        std::sort( itb+1, itb+4 );
+        std::sort( itb+4, itb+8 );
+        std::sort( itb+8, itb+10 );
         bool vertices_ok
           = std::equal( vertices.begin(), vertices.end(), expected_vertices );
         REQUIRE( vertices_ok );
@@ -195,10 +195,10 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
     THEN( "We can iterate over the vertices" ) {
       auto positions       = polymesh.positions();
       RealPoint    exp_positions[] = { { 0,0,0 }, { 1,0,0 }, { 0,1,0 }, { 1,1,0 },
-				       { 0,0,1 }, { 1,0,1 }, { 0,1,1 }, { 1,1,1 },
-				       { 1,0,2 }, { 0,0,2 } };
+                                       { 0,0,1 }, { 1,0,1 }, { 0,1,1 }, { 1,1,1 },
+                                       { 1,0,2 }, { 0,0,2 } };
       for ( auto it = polymesh.begin(), itE = polymesh.end(); it != itE; ++it ) {
-	REQUIRE( positions[ *it ] == exp_positions[ *it ] );
+        REQUIRE( positions[ *it ] == exp_positions[ *it ] );
       }
     }
   }
