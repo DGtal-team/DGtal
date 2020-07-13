@@ -57,13 +57,13 @@ writeOBJ( std::ostream & output, const SurfaceMesh & smesh )
         output << "vn " << vn[ 0 ] << " " << vn[ 1 ] << " " << vn[ 2 ] << std::endl;
       output << "# " << smesh.vertexNormals().size() << " normal vectors" << std::endl;
     }
-  for ( auto f : smesh.incidentVertices() )
+  for ( auto f : smesh.allIncidentVertices() )
     {
       output << "f";
       for ( auto v : f ) output << " " << (v+1);
       output << std::endl;
     }
-  output << "# " << smesh.incidentVertices().size() << " faces" << std::endl;
+  output << "# " << smesh.allIncidentVertices().size() << " faces" << std::endl;
   return output.good();
 }
 
