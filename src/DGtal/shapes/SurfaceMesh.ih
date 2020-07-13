@@ -41,37 +41,42 @@
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-template <typename RealPointIterator, typename FaceIterator>
+template <typename RealPointIterator, typename VerticesIterator>
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 SurfaceMesh( RealPointIterator itPos, RealPointIterator itPosEnd,
-                    FaceIterator itFace, FaceIterator itFaceEnd )
+             VerticesIterator itVertices, VerticesIterator itVerticesEnd )
 {
-  bool ok = init( itPos, itPosEnd, itFace, itFaceEnd );
+  bool ok = init( itPos, itPosEnd, itVertices, itVerticesEnd );
   if ( !ok ) clear();
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-template <typename RealPointIterator, typename FaceIterator>
+template <typename RealPointIterator, typename VerticesIterator>
 bool
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 init( RealPointIterator itPos, RealPointIterator itPosEnd,
-      FaceIterator itFace, FaceIterator itFaceEnd )
+      VerticesIterator itVertices, VerticesIterator itVerticesEnd )
 {
   clear();
   myPositions = std::vector< RealPoint >( itPos, itPosEnd );
   myIncidentFaces.resize( myPositions.size() );
   Index f = 0; // current face index
   bool ok = true;
-  for ( ; ok && itFace != itFaceEnd; ++itFace, ++f )
+  for ( ; itVertices != itVerticesEnd; ++itVertices, ++f )
     {
       Vertices f_vtcs;
-      for ( auto it = itFace->begin(), itE = itFace->end(); it != itE; ++it )
+      for ( auto it = itVertices->begin(), itE = itVertices->end(); it != itE; ++it )
 	{
 	  Index vtx = *it;
-	  if ( vtx >= myIncidentFaces.size() )
-	    trace.warning() << "[SurfaceMesh::init] Invalid vtx "
-			    << vtx << " at face " << f << std::endl;
+	  if ( vtx >= nbVertices() )
+            {
+              trace.warning() << "[SurfaceMesh::init] Invalid vtx "
+                              << vtx << " at face " << f
+                              << " since #V=" << nbVertices()
+                              << ". Ignoring vertex." << std::endl;
+              ok = false;
+            }
 	  else
 	    {
 	      myIncidentFaces[ vtx ].push_back( f );
@@ -96,6 +101,12 @@ clear()
   myPositions.clear();
   myVertexNormals.clear();
   myFaceNormals.clear();
+  myNeighborFaces.clear();
+  myNeighborVertices.clear();
+  myEdgeVertices.clear();
+  myEdgeFaces.clear();
+  myEdgeRightFaces.clear();
+  myEdgeLeftFaces.clear();
 }
 
 //-----------------------------------------------------------------------------
@@ -649,7 +660,7 @@ computeNeighbors()
   myNeighborVertices.resize( nbVertices() );
   std::vector< std::set< Index > > tmp( nbVertices() );
   // For each vertex, computes its neighboring vertices
-  for ( auto incident_vertices : incidentVertices() )
+  for ( auto incident_vertices : allIncidentVertices() )
     {
       const Size nb_iv = incident_vertices.size();
       for ( Size k = 0; k < nb_iv; ++k )
@@ -664,17 +675,17 @@ computeNeighbors()
   
   // For each face, computes its neighboring faces
   Index idx_f = 0;
-  for ( auto incident_vertices : incidentVertices() )
+  for ( auto incident_vertices : allIncidentVertices() )
     {
       std::set< Index > neighbor_faces_set;
       std::sort( incident_vertices.begin(), incident_vertices.end() );
       for ( auto idx_v : incident_vertices )
 	{
-	  const auto & incident_faces = incidentFaces()[ idx_v ];
+	  const auto & incident_faces = incidentFaces( idx_v );
           for ( auto inc_f : incident_faces )
             {
               // Keep only faces incident to two vertices of f.
-              auto incident_vertices2 = incidentVertices()[ inc_f ];
+              auto incident_vertices2 = incidentVertices( inc_f );
               std::sort( incident_vertices2.begin(), incident_vertices2.end() );
               Vertices common;
               std::set_intersection( incident_vertices.cbegin(),  incident_vertices.cend(),
@@ -716,7 +727,7 @@ computeEdges()
   std::map< VertexPair, std::vector<Face> > edge2face_left;
   std::set< VertexPair > edges;
   Index idx_f = 0;
-  for ( auto incident_vertices : incidentVertices() )
+  for ( auto incident_vertices : allIncidentVertices() )
     {
       const Size n = incident_vertices.size();
       for ( Size i = 0; i < n; i++ )
