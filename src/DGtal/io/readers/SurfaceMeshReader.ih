@@ -84,54 +84,53 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
       std::istringstream lineinput( linestr );
       std::operator>>( lineinput, keyword ); // lineinput >> keyword;
       if ( keyword == "v" ) {
-	lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
-	// std::cout << "[" << l << "] v " << p << std::endl;
-	vertices.push_back( p );
+        lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
+        vertices.push_back( p );
       } else if ( keyword == "vn" ) {
-	lineinput >> n[ 0 ] >> n[ 1 ] >> n[ 2 ];
-	normals.push_back( n );
+        lineinput >> n[ 0 ] >> n[ 1 ] >> n[ 2 ];
+        normals.push_back( n );
       } else if ( keyword == "f" ) {
-	std::vector< Index > face, face_normals;
-	while ( ! lineinput.eof() ) {
+        std::vector< Index > face, face_normals;
+        while ( ! lineinput.eof() ) {
           std::operator>>( lineinput, indices ); // lineinput >> indices;
-	  if ( indices.empty() ) break;
-	  auto vtxinfo = split( indices, '/' );
-	  if ( vtxinfo.size() == 0 ) break;
-	  Index v  = std::stoi( vtxinfo[ 0 ] );
-	  Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
-	  face.push_back( v - 1 );
-	  face_normals.push_back( vn - 1 );
-	  indices = "";
-	}
-	if ( ! face.empty() && verifyIndices( face ) )
-	  {
-	    faces.push_back( face );
-	    faces_normals_idx.push_back( face_normals );
-	  }
+          if ( indices.empty() ) break;
+          auto vtxinfo = split( indices, '/' );
+          if ( vtxinfo.size() == 0 ) break;
+          Index v  = std::stoi( vtxinfo[ 0 ] );
+          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
+          face.push_back( v - 1 );
+          face_normals.push_back( vn - 1 );
+          indices = "";
+        }
+        if ( ! face.empty() && verifyIndices( face ) )
+          {
+            faces.push_back( face );
+            faces_normals_idx.push_back( face_normals );
+          }
       }
       // Weird: necessary to clear them.
       keyword = ""; linestr = "";
     } // while ( ! input.eof() )
   // Creating SurfaceMesh
   trace.info() << "[SurfaceMeshReader::readOBJ] Read"
-	       << " #lines=" << l
-	       << " #V=" << vertices.size()
-	       << " #VN=" << normals.size()
-	       << " #F=" << faces.size() << std::endl;
+               << " #lines=" << l
+               << " #V=" << vertices.size()
+               << " #VN=" << normals.size()
+               << " #F=" << faces.size() << std::endl;
   if ( input.bad() )
     trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occured."
-		    << " Proceeding but the mesh may be damaged." << std::endl;
+                    << " Proceeding but the mesh may be damaged." << std::endl;
   bool ok = smesh.init( vertices.begin(), vertices.end(),
-			faces.begin(), faces.end() );
+                        faces.begin(), faces.end() );
   if ( ! ok )
-	trace.warning() << "[SurfaceMeshReader::readOBJ]"
-			<< " Error initializing mesh." << std::endl;
+    trace.warning() << "[SurfaceMeshReader::readOBJ]"
+                    << " Error initializing mesh." << std::endl;
   if ( ( ! normals.empty() ) && ( normals.size() == vertices.size() ) )
     { // Build vertex normal map
       bool ok_vtx_normals = smesh.setVertexNormals( normals.begin(), normals.end() );
       if ( ! ok_vtx_normals )
-	trace.warning() << "[SurfaceMeshReader::readOBJ]"
-			<< " Error setting vertex normals." << std::endl;
+        trace.warning() << "[SurfaceMeshReader::readOBJ]"
+                        << " Error setting vertex normals." << std::endl;
       ok = ok && ok_vtx_normals;
     }
   if ( ! normals.empty() )
@@ -139,17 +138,17 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
       std::vector< RealVector > faces_normals;
       Index i = 0;
       for ( auto face_n_indices : faces_normals_idx )
-	{ 
-	  RealVector n;
-	  for ( auto k : face_n_indices ) n += normals[ k ];
-	  n /= face_n_indices.size();
-	  faces_normals.push_back( n );
-	}
+        { 
+          RealVector n;
+          for ( auto k : face_n_indices ) n += normals[ k ];
+          n /= face_n_indices.size();
+          faces_normals.push_back( n );
+        }
       bool ok_face_normals = smesh.setFaceNormals( faces_normals.begin(),
-						   faces_normals.end() );
+                                                   faces_normals.end() );
       if ( ! ok_face_normals )
-	trace.warning() << "[SurfaceMeshReader::readOBJ]"
-			<< " Error setting face normals." << std::endl;
+        trace.warning() << "[SurfaceMeshReader::readOBJ]"
+                        << " Error setting face normals." << std::endl;
       ok = ok && ok_face_normals;
     }
   return ( ! input.bad() ) && ok;
