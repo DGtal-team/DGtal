@@ -51,6 +51,7 @@
 
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/shapes/SurfaceMesh.h"
+#include "DGtal/shapes/MeshHelpers.h"
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/Color.h"
@@ -77,14 +78,15 @@ int main( int argc, char** argv )
   //! [exampleSurfaceMesh-read-mesh]
   trace.endBlock();
 
-  Mesh< RealPoint > viewmesh( true );
-  for ( auto&& v : smesh.positions() )
-    viewmesh.addVertex( v );
-  for ( auto&& f : smesh.allIncidentVertices() )
-    {
-      Mesh< RealPoint >::MeshFace face( f.cbegin(), f.cend() );
-      viewmesh.addFace( face, Color( 200, 200, 255, 255 ) );
-    }
+  Mesh< RealPoint > viewmesh;
+  MeshHelpers::surfaceMesh2Mesh( smesh, viewmesh );
+  // for ( auto&& v : smesh.positions() )
+  //   viewmesh.addVertex( v );
+  // for ( auto&& f : smesh.allIncidentVertices() )
+  //   {
+  //     Mesh< RealPoint >::MeshFace face( f.cbegin(), f.cend() );
+  //     viewmesh.addFace( face, Color( 200, 200, 255, 255 ) );
+  //   }
 
   QApplication application(argc,argv);
   Viewer3D<> viewer;
