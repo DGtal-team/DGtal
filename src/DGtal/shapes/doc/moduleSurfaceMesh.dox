@@ -1,0 +1,63 @@
+/**
+* @file moduleSurfaceMesh.dox
+*
+* @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+* Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+*
+* @date 2017/05/7
+*
+* Documentation file for module moduleSurfaceMesh
+*
+* This file is part of the DGtal library.
+*/
+
+/* 
+* Useful to avoid writing DGtal:: in front of every class.
+* Do not forget to add an entry in src/DGtal/base/Config.h.in !
+*/
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleSurfaceMesh Surface mesh data structure for representing manifold or non-manifold polygonal surfaces in R3
+@author Jacques-Olivier Lachaud
+
+@since 1.1
+
+Part of \ref packageShapes
+  
+This part of the manual describes how to represent and manipulate
+generic polygonal surfaces embedded in \f$ \mathbb{R}^3 \f$. The class
+\a ref SurfaceMesh proposes an index-based data structure that encodes
+all topological relations between vertices, edges and faces, even if
+the mesh presents some non manifold places (like 3 triangles tied
+along the same edge). Input/output operations to and from OBJ files
+are provided through classes \ref SurfaceMeshReader and \ref
+SurfaceMeshWriter. Creation of classical 2D shapes (sphere, torus,
+Schwarz lantern) with groundtruth geometry is provided in \ref
+SurfaceMeshHelper.
+
+[TOC]
+
+The following programs are related to this documentation:
+@see testSurfaceMesh.cpp
+
+
+\section SurfMesh_sec1 Creating a surface mesh
+
+A surface mesh (class \ref SurfaceMesh) is a template class
+parameterized by the types chosen for 3D points and 3D vectors. A
+common choice is `PointVector< double, 3 >` for both, or equivalently
+`Z3i::RealPoint` and `Z3i::RealVector`. Although the topological part
+of the class does not impose a 3D embedding, the class SurfaceMesh
+imposes it since its target is 3D geometry processing. Indeed some
+geometric operations like computing normals from positions or i/o to
+OBJ format have meaning only in 3D.
+
+There are several ways for creating a surface mesh:
+
+- by hand with a range of points for each vertex and a range of
+  indices for of each polygonal face (see SurfaceMesh::init).
+- by reading an OBJ  (see SurfaceMeshReader::readOBJ).
+- by using classical predefined surfaces (see SurfaceMeshHelper::makeSphere, SurfaceMeshHelper::makeTorus, SurfaceMeshHelper::makeLantern).
+
+*/
