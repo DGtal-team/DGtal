@@ -27,6 +27,12 @@
     digital points (Jacques-Olivier Lachaud,
     [#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
+- *Shapes package*
+  - Add a new surface mesh representation for manifold or non-manifold polygonal
+    surfaces in R3 (Jacques-Olivier Lachaud,
+    [#1503](https://github.com/DGtal-team/DGtal/pull/1503))
+
+
 ## Changes
 
 - *General*
