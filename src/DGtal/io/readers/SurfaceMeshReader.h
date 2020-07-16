@@ -45,6 +45,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 
 namespace DGtal
 {

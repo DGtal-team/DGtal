@@ -45,6 +45,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/io/Color.h"
 
 namespace DGtal
@@ -77,7 +78,7 @@ namespace DGtal
     typedef typename SurfaceMesh::Faces          Faces;
     typedef typename SurfaceMesh::Scalar         Scalar;
     typedef typename SurfaceMesh::Scalars        Scalars;
-    typedef std::vector< Color >                    Colors;
+    typedef std::vector< Color >                 Colors;
 
     /// Writes a surface mesh in an output file (in OBJ file format).
     /// @param[inout] the output stream where the OBJ file is written.

@@ -354,7 +354,7 @@ averageEdgeLength() const
   double      lengths = 0.0;
   for ( Edge e = 0; e < nbEdges(); ++e )
     {
-      auto vtcs = edgeVertices()[ e ];
+      auto vtcs = edgeVertices( e );
       const RealPoint  p  = myPositions[ vtcs.first  ];
       const RealVector pq = myPositions[ vtcs.second ] - p;
       lengths += pq.norm();
@@ -371,9 +371,9 @@ localWindow( Face f ) const
 {
   const RealPoint x = faceCentroid( f );
   Scalar local_length = 0.0;
-  for ( auto v : incidentVertices()[ f ] )
+  for ( auto v : incidentVertices( f ) )
     local_length += ( myPositions[ v ] - x ).norm();
-  return local_length / incidentVertices()[ f ].size();
+  return local_length / incidentVertices( f ).size();
 }
 
 //-----------------------------------------------------------------------------
