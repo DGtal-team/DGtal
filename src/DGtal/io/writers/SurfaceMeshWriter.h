@@ -23,7 +23,7 @@
  *
  * @date 2020/07/11
  *
- * Header file for module SurfaceMeshWriter.cpp
+ * Header file for class SurfaceMeshWriter
  *
  * This file is part of the DGtal library.
  */
