@@ -53,7 +53,9 @@ make concrete such objects in a given grid step grid.
 
 Since 0.9.4, there is a module that provides classes and services to
 represent combinatorial surfaces, based on an half-edge data
-structure.
+structure. Since 1.1, there is a module that provides classes and
+services to represent generic polygonal surfaces, either manifold or
+non-manifold.
 
 @b Modules
 
