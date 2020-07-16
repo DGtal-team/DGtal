@@ -188,9 +188,9 @@ More generally, you can transfer (by averaging) vector of values:
 
 The following local geometric services are provided:
 
-- the area of a face with SurfMesh::faceArea
-- the centroid of a face with SurfMesh::faceCentroid
-- the centroid of an edge with SurfMesh::edgeCentroid
+- the area of a face with SurfaceMesh::faceArea
+- the centroid of a face with SurfaceMesh::faceCentroid
+- the centroid of an edge with SurfaceMesh::edgeCentroid
 - the average distance between the centroid of face and its vertices
   with SurfaceMesh::localWindow
 - the classical Max's weights for each incident face to a vertex with
