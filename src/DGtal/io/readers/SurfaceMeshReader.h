@@ -23,7 +23,7 @@
  *
  * @date 2020/07/11
  *
- * Header file for module SurfaceMeshReader.cpp
+ * Header file for class SurfaceMeshReader
  *
  * This file is part of the DGtal library.
  */

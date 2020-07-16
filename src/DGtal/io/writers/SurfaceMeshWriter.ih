@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file SurfaceMesh.ih
+ * @file SurfaceMeshWriter.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2020/02/18
  *
- * Implementation of inline methods defined in SurfaceMesh.h
+ * Implementation of inline methods defined in SurfaceMeshWriter.h
  *
  * This file is part of the DGtal library.
  */
