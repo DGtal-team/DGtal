@@ -134,7 +134,7 @@ writeOBJ( std::string            objfile,
     }
   // Write faces with material(s)
   Index idx_f = 0;
-  for ( auto f : smesh.incidentVertices() )
+  for ( auto f : smesh.allIncidentVertices() )
     {
       output_obj << "usemtl material_"
                  << ( has_material ? mapMaterial[ diffuse_colors[ idx_f ] ] : idxMaterial )
@@ -148,7 +148,7 @@ writeOBJ( std::string            objfile,
       output_obj << std::endl;
       idx_f++;
     }
-  output_obj << "# " << smesh.incidentVertices().size() << " faces" << std::endl;
+  output_obj << "# " << smesh.allIncidentVertices().size() << " faces" << std::endl;
   output_mtl.close();
   return output_obj.good();
 }
@@ -225,7 +225,7 @@ writeIsoLinesOBJ( std::string            objfile,
     { // form triangles between barycenter and consecutives vertices
       const auto  vb = face_values[ f ];
       const auto  xb = smesh.faceCentroid( f );
-      const auto& iv = smesh.incidentVertices()[ f ];
+      const auto& iv = smesh.incidentVertices( f );
       for ( Size i = 0; i < iv.size(); ++i )
         {
           const auto   vv0 = vertex_values[ iv[ i ] ];
