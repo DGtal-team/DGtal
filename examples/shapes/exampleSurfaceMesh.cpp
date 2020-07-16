@@ -51,6 +51,7 @@
 
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/shapes/SurfaceMesh.h"
+#include "DGtal/shapes/SurfaceMeshHelper.h"
 #include "DGtal/shapes/MeshHelpers.h"
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
@@ -78,8 +79,31 @@ int main( int argc, char** argv )
   //! [exampleSurfaceMesh-read-mesh]
   trace.endBlock();
 
-  Mesh< RealPoint > viewmesh;
-  MeshHelpers::surfaceMesh2Mesh( smesh, viewmesh );
+  trace.beginBlock ( "Building a torus" );
+  //! [exampleSurfaceMesh-make-torus]
+  typedef SurfaceMeshHelper< RealPoint, RealVector > Helper;
+  auto torus_mesh = Helper::makeTorus
+    ( 2.5, 0.5, RealPoint { 0.0, 0.0, 0.0 }, 40, 40, 0, Helper::Normals::NO_NORMALS );
+  //! [exampleSurfaceMesh-make-torus]
+  trace.endBlock();
+
+  trace.beginBlock ( "Building a pyramid" );
+  //! [exampleSurfaceMesh-make-pyramid]
+  typedef SurfaceMesh< RealPoint, RealVector > MySurfaceMesh;
+  typedef MySurfaceMesh::Vertices              Vertices;
+  std::vector< RealPoint > positions =
+    { { 0, 0, 5 }, { 1, 1, 3 }, { -1, 1, 3 }, { -1, -1, 3 }, { 1, -1, 3 } };
+  std::vector< Vertices  > faces =
+    { { 0, 1, 2 }, { 0, 2, 3 }, { 0, 3, 4 }, { 0, 4, 1 }, { 4, 3, 2, 1 } };
+  auto pyramid_mesh = MySurfaceMesh( positions.cbegin(), positions.cend(),
+                                     faces.cbegin(), faces.cend() );
+  //! [exampleSurfaceMesh-make-pyramid]
+  trace.endBlock();
+  
+  Mesh< RealPoint > viewmesh, viewmesh2, viewmesh3;
+  MeshHelpers::surfaceMesh2Mesh( smesh,      viewmesh  );
+  MeshHelpers::surfaceMesh2Mesh( torus_mesh, viewmesh2 );
+  MeshHelpers::surfaceMesh2Mesh( pyramid_mesh, viewmesh3 );
   // for ( auto&& v : smesh.positions() )
   //   viewmesh.addVertex( v );
   // for ( auto&& f : smesh.allIncidentVertices() )
@@ -91,7 +115,7 @@ int main( int argc, char** argv )
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.show();
-  viewer << viewmesh;
+  viewer << viewmesh << viewmesh2 << viewmesh3;
   viewer << Viewer3D<>::updateDisplay;
   application.exec();
   

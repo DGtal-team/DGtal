@@ -39,7 +39,7 @@ SurfaceMeshHelper.
 [TOC]
 
 The following programs are related to this documentation:
-@see testSurfaceMesh.cpp
+@see testSurfaceMesh.cpp, exampleSurfaceMesh.cpp
 
 
 \section SurfMesh_sec1 Creating a surface mesh
@@ -53,11 +53,89 @@ imposes it since its target is 3D geometry processing. Indeed some
 geometric operations like computing normals from positions or i/o to
 OBJ format have meaning only in 3D.
 
-There are several ways for creating a surface mesh:
+There are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples): 
 
 - by hand with a range of points for each vertex and a range of
-  indices for of each polygonal face (see SurfaceMesh::init).
+  indices for of each polygonal face (see SurfaceMesh::SurfaceMesh and
+  SurfaceMesh::init).
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-make-pyramid
+
 - by reading an OBJ  (see SurfaceMeshReader::readOBJ).
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-read-mesh
+
 - by using classical predefined surfaces (see SurfaceMeshHelper::makeSphere, SurfaceMeshHelper::makeTorus, SurfaceMeshHelper::makeLantern).
 
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-make-torus
+
+@image html exampleSurfaceMesh.jpg "Creating surface meshes from OBJ file, by specifying vertex/face information or predefined shapes"
+
+\section SurfMesh_sec2 Topological relations within a surface mesh
+
+All topological relations are precomputed as arrays in SurfaceMesh
+class (which is thus not adapted to dynamic topological updates). You
+may access the number of cells with SurfaceMesh::nbVertices,
+SurfaceMesh::nbEdges, SurfaceMesh::nbFaces. Note that edge indices
+corresponds to pairs of vertices (i,j) with i<j.
+
+You may ask for each vertex \a v:
+- its vector of incident faces with SurfaceMesh::incidentFaces (order not significant)
+- its vector of neighbor vertices with SurfaceMesh::neighborVertices (order not significant)
+
+You may ask for each face \a f:
+- its vector of incident vertices with SurfaceMesh::incidentVertices (the order is significant: to each consecutive pair of vertices, there is a corresponding edge).
+- its vector of neighbor faces with SurfaceMesh::neighborFaces (order not significant)
+
+You may create an edge index with SurfaceMesh::makeEdge. If the two
+vertices (i,j) do not form an edge, then the returned index is
+SurfaceMesh::nbEdges. Note that calling `makeEdge(i,j)` or
+`makeEdge(j,i)` returns always the same index, whether valid or
+invalid.
+
+You may ask for each edge \a e:
+- its two incident vertices with SurfaceMesh::incidentVertices, as pair (i,j) with (i<j).
+- its vector of bordering faces with SurfaceMesh::edgeFaces (they can be incident clockwise or counterclockwise)
+- its vector of left bordering faces with SurfaceMesh::edgeLeftFaces (a face to its left, being defined ccw, means that the face is some `(..., i, j, ... )`)
+- its vector of right bordering faces with SurfaceMesh::edgeRightFaces (a face to its left, being defined ccw, means that the face is some `(..., j, i, ... )`)
+
+All the preceding methods have global variants returning all incident
+faces, all incident vertices, etc: SurfaceMesh::allIncidentFaces,
+SurfaceMesh::allIncidentVertices, SurfaceMesh::allNeighborFaces,
+SurfaceMesh::allNeighborVertices, SurfaceMesh::allEdgeFaces,
+SurfaceMesh::allEdgeLeftFaces, SurfaceMesh::allEdgeRightFaces.
+
+Since vertices/edges/faces are indices, visiting them is simply a loop
+from 0 (included) till SurfaceMesh::nbVertices / SurfaceMesh::nbEdges /
+SurfaceMesh::nbFaces (all excluded).
+
+\section SurfMesh_sec3 A surface mesh is a graph
+
+Class SurfaceMesh is a model of concepts::CUndirectedSimpleGraph (see
+also moduleGraphDefinitions). Hence you can for instance perform a
+breadth first traversal on its vertices.
+
+\code
+#include "DGtal/shapes/SurfaceMesh.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+...
+typedef SurfaceMesh< RealPoint, RealVector > PolygonMesh;
+PolygonMesh smesh;
+...
+// BFS traversal from vertex 0
+BreadthFirstVisitor< PolygonMesh > visitor( smesh, 0 );
+std::vector<unsigned long> vertices;
+std::vector<unsigned long> distances;
+while ( ! visitor.finished() )
+  {
+    vertices.push_back ( visitor.current().first  );
+    distances.push_back( visitor.current().second );
+    visitor.expand();
+  }
+\endcode
+
+
+
+
 */
+} // namespace DGtal {
