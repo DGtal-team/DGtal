@@ -36,7 +36,7 @@
 
    \image html grid-curve-dig-convexity.png "Extraction of all subconvex triangles to the digital curve."
 
-   \example geometry/shapes/exampleSurfaceMesh.cpp
+   \example shapes/exampleSurfaceMesh.cpp
 */
 
 
