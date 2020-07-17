@@ -94,7 +94,7 @@ namespace DGtal
     /// @param[in] radius the radius of the sphere.
     /// @param[in] center the center of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] normals specifies built-time normals of the output
     /// mesh: NO_NORMALS no normals, VERTEX_NORMALS the normals at
@@ -112,7 +112,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the mean curvature at each vertex.
     static
@@ -125,7 +125,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the Gaussian curvature at each vertex.
     static
@@ -138,7 +138,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the first principal curvature at each vertex.
     static
@@ -151,7 +151,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the second principal curvature at each vertex.
     static
@@ -164,7 +164,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the first principal direction at each vertex (umbilic,
     /// any tangent direction is ok).
@@ -178,7 +178,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the sphere.
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the second principal direction at each vertex (umbilic,
     /// any tangent direction is ok).
@@ -200,7 +200,7 @@ namespace DGtal
     /// @param[in] height the height of the lantern.
     /// @param[in] center the center of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] normals specifies built-time normals of the output
     /// mesh: NO_NORMALS no normals, VERTEX_NORMALS the normals at
@@ -218,7 +218,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the mean curvature at each vertex.
     static
@@ -231,7 +231,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the Gaussian curvature at each vertex.
     static
@@ -244,7 +244,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the first principal curvature at each vertex (zero).
     static
@@ -257,7 +257,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the second principal curvature at each vertex (1/radius).
     static
@@ -270,7 +270,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the first principal direction at each vertex (z-axis).
     static
@@ -283,7 +283,7 @@ namespace DGtal
     ///
     /// @param[in] radius the radius of the lantern.
     /// @param[in] m the number of latitudes, minimum is 2.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @return the second principal direction at each vertex (xy-plane).
     static
@@ -304,7 +304,7 @@ namespace DGtal
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] center the center of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -327,7 +327,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -346,7 +346,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -365,7 +365,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -384,7 +384,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -403,7 +403,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n
@@ -422,7 +422,7 @@ namespace DGtal
     /// @param[in] big_radius the big radius of the torus.
     /// @param[in] small_radius the small radius of the torus.
     /// @param[in] m the number of latitudes, minimum is 3.
-    /// @param[in] m the number of longitudes, minimum is 3.
+    /// @param[in] n the number of longitudes, minimum is 3.
     ///
     /// @param[in] twist the integer shift when visiting a whole
     /// parallel: 0 is a natural torus parameterization, +n or -n

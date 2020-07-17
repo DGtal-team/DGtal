@@ -232,8 +232,8 @@ namespace DGtal
     std::vector<AnyRing> computeFaceValuesFromVertexValues
     ( const std::vector<AnyRing>& vvalues ) const;
     
-    /// @param vvalues any vector of vertex values.
-    /// @return a vector of face values approximating \a vvalues.
+    /// @param fvalues any vector of vertex values.
+    /// @return a vector of vertex values approximating \a fvalues.
     /// @tparam AnyRing any summable and averagable type.
     template <typename AnyRing>
     std::vector<AnyRing> computeVertexValuesFromFaceValues

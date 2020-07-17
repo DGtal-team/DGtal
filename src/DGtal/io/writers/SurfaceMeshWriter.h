@@ -81,7 +81,7 @@ namespace DGtal
     typedef std::vector< Color >                 Colors;
 
     /// Writes a surface mesh in an output file (in OBJ file format).
-    /// @param[inout] the output stream where the OBJ file is written.
+    /// @param[inout] output the output stream where the OBJ file is written.
     /// @param[in] smesh the surface mesh.
     /// @return 'true' if writing in the output stream was ok.
     static
@@ -114,7 +114,9 @@ namespace DGtal
     /// @param[in] objfile the name of the OBJ file (like "contour" or
     /// "contour.obj").
     /// @param[in] smesh the surface mesh.
-    /// @param[in] the edge predicate, a functor SurfaceMesh::Edge -> bool.
+    ///
+    /// @param[in] edge_predicate the edge predicate, a functor
+    /// SurfaceMesh::Edge -> bool.
     ///
     /// @param[in] relative_thickness the thickness as a ratio of the
     /// average edge length of the mesh.
