@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file geometry/shapes/exampleSurfaceMesh.cpp
+ * @file shapes/exampleSurfaceMesh.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -70,9 +70,15 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
+  //! [exampleSurfaceMesh-typedef]
+  // The following typedefs are useful
+  typedef SurfaceMesh< RealPoint, RealVector >       SurfMesh;
+  typedef SurfaceMeshHelper< RealPoint, RealVector > Helper;
+  typedef SurfMesh::Vertices                         Vertices;
+  //! [exampleSurfaceMesh-typedef]
+  
   trace.beginBlock ( "Reading a mesh OBJ file" );
   //! [exampleSurfaceMesh-read-mesh]
-  typedef SurfaceMesh< RealPoint, RealVector > SurfMesh;
   SurfMesh    smesh;
   std::string S = examplesPath + "samples/spot.obj";
   std::ifstream input( S.c_str() );
@@ -85,7 +91,6 @@ int main( int argc, char** argv )
 
   trace.beginBlock ( "Building a torus" );
   //! [exampleSurfaceMesh-make-torus]
-  typedef SurfaceMeshHelper< RealPoint, RealVector > Helper;
   auto torus_mesh = Helper::makeTorus
     ( 2.5, 0.5, RealPoint { 0.0, 0.0, 0.0 }, 40, 40, 0, Helper::Normals::NO_NORMALS );
   //! [exampleSurfaceMesh-make-torus]
@@ -93,7 +98,6 @@ int main( int argc, char** argv )
 
   trace.beginBlock ( "Building a pyramid" );
   //! [exampleSurfaceMesh-make-pyramid]
-  typedef SurfMesh::Vertices Vertices;
   std::vector< RealPoint > positions =
     { { 0, 0, 5 }, { 1, 1, 3 }, { -1, 1, 3 }, { -1, -1, 3 }, { 1, -1, 3 } };
   std::vector< Vertices  > faces =
@@ -106,12 +110,14 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Traversing a mesh by BF" );
   //! [exampleSurfaceMesh-graph-bft]
   BreadthFirstVisitor< SurfMesh > visitor( smesh, 0 );
-  std::vector<double>        distances( smesh.nbVertices() );
+  std::vector<double>             distances( smesh.nbVertices() );
+  double biggest_d = 0.0;
   while ( ! visitor.finished() )
     {
       auto v = visitor.current().first;  // current vertex
       auto d = visitor.current().second; // current distance
-      distances[ v ] = (double) d;
+      biggest_d      = (double) d;
+      distances[ v ] = biggest_d;
       visitor.expand();
     }
   //! [exampleSurfaceMesh-graph-bft]
@@ -120,21 +126,15 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Colored output of BF traversal" );
   //! [exampleSurfaceMesh-write-obj]
   // Displaying faces colored by their distance to vertex 0.
-  auto cmap = GradientColorMap< double >( 0.0, distances.back(), CMAP_JET );
+  auto face_distances = smesh.computeFaceValuesFromVertexValues( distances );
+  auto cmap = GradientColorMap< double >( 0.0, biggest_d, CMAP_JET );
   std::vector<Color> face_colors( smesh.nbFaces() );
   for ( SurfMesh::Face j = 0; j < smesh.nbFaces(); ++j )
-    {
-      auto ivtcs = smesh.incidentVertices( j );
-      SurfMesh::Vertex best = ivtcs[ 0 ];
-      for ( auto&& v : ivtcs )
-        if ( distances[ v ] < distances[ best ] ) best = v;
-      face_colors[ j ] = cmap( distances[ best ] );      
-    }
+    face_colors[ j ] = cmap( face_distances[ j ] );      
   typedef SurfaceMeshWriter< RealPoint, RealVector > Writer;
   Writer::writeOBJ( "spot-bft.obj", smesh, face_colors );
 
   // Displaying three isolines.
-  auto face_distances = smesh.computeFaceValuesFromVertexValues( distances );
   Writer::writeIsoLinesOBJ( "spot-iso-0_25.obj", smesh,
                             face_distances, distances, distances.back() * 0.25, 0.2 );
   Writer::writeIsoLinesOBJ( "spot-iso-0_5.obj",  smesh,
