@@ -60,7 +60,11 @@ imposes it since its target is 3D geometry processing. Indeed some
 geometric operations like computing normals from positions or i/o to
 OBJ format have meaning only in 3D.
 
-There are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples): 
+First, write the following typedefs:
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-typedef
+
+Then, there are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples): 
 
 - by hand with a range of points for each vertex and a range of
   indices for of each polygonal face (see SurfaceMesh::SurfaceMesh and
