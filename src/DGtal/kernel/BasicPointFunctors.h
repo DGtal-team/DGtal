@@ -615,8 +615,8 @@ namespace functors
       Point domainLowerBound=aSourceDomain.lowerBound();
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
-        domainLowerBound[dim] /= aGridSize[dim];
-        domainUpperBound[dim] /= aGridSize[dim];
+        domainLowerBound[dim] /= NumberTraits<TInteger>::castToDouble( aGridSize[dim] );
+        domainUpperBound[dim] /= NumberTraits<TInteger>::castToDouble( aGridSize[dim] );
       }
       myNewDomain = TDomain(domainLowerBound,
                             domainUpperBound);
