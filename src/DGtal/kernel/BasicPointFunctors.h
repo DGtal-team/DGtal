@@ -592,6 +592,7 @@ namespace functors
   public:
     typedef typename TDomain::Space  Space;
     typedef typename TDomain::Size Size;
+    typedef typename TDomain::Integer IntergerDom;
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Point Point;
 
@@ -615,8 +616,10 @@ namespace functors
       Point domainLowerBound=aSourceDomain.lowerBound();
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
-        domainLowerBound[dim] /= NumberTraits<TInteger>::castToDouble( aGridSize[dim] );
-        domainUpperBound[dim] /= NumberTraits<TInteger>::castToDouble( aGridSize[dim] );
+        domainLowerBound[dim] = static_cast<IntergerDom>(floor(NumberTraits<IntergerDom>::castToDouble(domainLowerBound[dim]) /
+                                                               NumberTraits<TValue>::castToDouble( aGridSize[dim] )));        
+        domainUpperBound[dim] = static_cast<IntergerDom>(floor(NumberTraits<IntergerDom>::castToDouble(domainUpperBound[dim]) /
+                                                               NumberTraits<TValue>::castToDouble( aGridSize[dim] )));
       }
       myNewDomain = TDomain(domainLowerBound,
                             domainUpperBound);
