@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testLinearizer
    testPointFunctorHolder
    testNumberTraits
+   testUnorderedSetByBlock
    )
 
 

@@ -1,0 +1,378 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ShroudsRegularization.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2020/06/09
+ *
+ * Implementation of inline methods defined in ShroudsRegularization.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energyArea()
+{
+  parameterize();
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double area  = 1.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  area *= l;
+	}
+      E += area;
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energySnake()
+{
+  parameterize();
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar ci = 2.0 / ( dp*dn );
+	  const RealPoint vn = position( myNext[ i ][ v ] );
+	  const RealPoint vp = position( myPrev[ i ][ v ] );
+	  const RealPoint vi = position( v );
+	  const Scalar xp = ( vn[ i ] - vp[ i ] ) / ( dn + dp );
+	  const Scalar yp = ( vn[ k ] - vp[ k ] ) / ( dn + dp );
+	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
+	  const Scalar ypp = cn * vn[ k ] - ci * vi[ k ] + cp * vp[ k ];
+	  E += l * ( myAlpha * ( xp * xp + yp * yp )
+	  	     + myBeta * ( xpp * xpp + ypp * ypp ) );
+	}
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
+double
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+energySquaredCurvature() 
+{
+  parameterize();
+  double E = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double area  = 1.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar ci = 2.0 / ( dp*dn );
+	  const RealPoint vn = position( myNext[ i ][ v ] );
+	  const RealPoint vp = position( myPrev[ i ][ v ] );
+	  const RealPoint vi = position( v );
+	  const Scalar xp = ( vn[ i ] - vp[ i ] ) / ( dn + dp );
+	  const Scalar yp = ( vn[ k ] - vp[ k ] ) / ( dn + dp );
+	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
+	  const Scalar ypp = cn * vn[ k ] - ci * vi[ k ] + cp * vp[ k ];
+	  E += l * ( pow( xp * ypp - yp * xpp, 2.0 )
+		     / pow( xp * xp + yp * yp, 3.0 ) );
+	}
+    }
+  return E;
+}
+
+template < typename TDigitalSurfaceContainer >
+std::pair<double,double>
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+oneStepAreaMinimization( const double randomization )
+{
+  parameterize();
+  Scalars newT = myT;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double right = 0.0;
+      double  left = 0.0;
+      double  coef = 0.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dp  = myPrevD[ i ][ v ]; 	
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar ci = 2.0 / ( dp*dn );
+	  const RealPoint vn = position( myNext[ i ][ v ] );
+	  const RealPoint vp = position( myPrev[ i ][ v ] );
+	  const RealPoint vi = position( v );
+	  const Scalar yp = ( vn[ k ] - vp[ k ] ) / ( dn + dp );
+	  const Scalar xp = ( vn[ i ] - vp[ i ] ) / ( dn + dp );
+	  const Scalar xpp = cn * vn[ i ] - ci * vi[ i ] + cp * vp[ i ];
+	  right += yp * xpp / xp;
+	  left  += cn * vn[ k ] + cp * vp[ k ] - ci * myInsV[ v ][ k ];
+	  coef  += ci * ( myInsV[ v ][ k ] - myOutV[ v ][ k ] );
+	}
+      newT[ v ] = ( right - left ) / coef
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+    }
+  // Weak damping since problem is convex.
+  auto X     = positions();
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    myT[ v ] = 0.9 * newT[ v ] + 0.1 * myT[ v ];
+  enforceBounds();
+  auto Xnext = positions();
+  Scalar  l2 = 0.0;
+  Scalar loo = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v ) {
+    loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
+    l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
+  }
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
+}
+
+template < typename TDigitalSurfaceContainer >
+std::pair<double,double>
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+oneStepSnakeMinimization
+( const double alpha, const double beta, const double randomization )
+{
+  parameterize();
+  Scalars newT = myT;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double right = 0.0;
+      double  left = 0.0;
+      double  coef = 0.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const auto   v_i = std::make_pair( v, i );
+	  const auto  vn_i = next( v_i );
+	  const auto vnn_i = next( vn_i );
+	  const auto  vp_i = prev( v_i );
+	  const auto vpp_i = prev( vp_i );
+	  const auto     c = c2_all( v_i );
+	  const auto    cn = c2_all( vn_i );
+	  const auto    cp = c2_all( vp_i );
+	  const RealPoint Xnn = position( vnn_i.first );
+	  const RealPoint  Xn = position( vn_i.first );	    
+	  const RealPoint   X = position( v );
+	  const RealPoint Xpp = position( vpp_i.first );
+	  const RealPoint  Xp = position( vp_i.first );	    
+	  right += beta * ( - get<0>( c ) * get<0>( cn ) * Xnn[ k ]
+			    + ( get<0>( c ) * get<1>( cn )
+				+ get<1>( c ) * get<0>( c ) ) * Xn[ k ]
+			    + ( get<2>( c ) * get<1>( cp )
+				+ get<1>( c ) * get<2>( c ) ) * Xp[ k ]
+			    - get<2>( c ) * get<2>( cp ) * Xpp[ k ] )
+	    + alpha * ( get<0>( c ) * Xn[ k ] + get<2>( c ) * Xp[ k ] ); 
+	  Scalar a = get<0>( c ) * get<2>( cn ) + get<1>( c ) * get<1>( c )
+	    + get<2>( c ) * get<0>( cp );
+	  left  += ( beta * a + alpha * get<1>( c ) ) * myInsV[ v ][ k ];
+	  coef  += ( beta * a + alpha * get<1>( c ) )
+	    * ( myOutV[ v ][ k ] - myInsV[ v ][ k ] );
+	}
+      // Possibly randomization to avoid local minima.
+      newT[ v ] = ( right - left ) / coef
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+    }
+  auto X     = positions();
+  // Damping between old and new positions.
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    myT[ v ] = 0.5 * newT[ v ] + 0.5 * myT[ v ];
+  enforceBounds();
+  auto Xnext = positions();
+  Scalar  l2 = 0.0;
+  Scalar loo = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v ) {
+    loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
+    l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
+  }
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
+}
+
+template < typename TDigitalSurfaceContainer >
+std::pair<double,double>
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+oneStepSquaredCurvatureMinimization
+( const double randomization )
+{
+  parameterize();
+  Scalars newT = myT;
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    {
+      double right = 0.0;
+      double  left = 0.0;
+      double  coef = 0.0;
+      const auto s = myPtrIdxSurface->surfel( v );
+      const auto k = myPtrK->sOrthDir( s );
+      for ( Dimension i = 0; i < 3; ++i )
+	{
+	  if ( i == k )  continue; // not a valid slice
+	  const auto   v_i = std::make_pair( v, i );
+	  const auto  vn_i = next( v_i );
+	  const auto vnn_i = next( vn_i );
+	  const auto  vp_i = prev( v_i );
+	  const auto vpp_i = prev( vp_i );
+	  const auto   c_1 = c1( v_i );
+	  const auto     c = c2_all( v_i );
+	  const auto    cn = c2_all( vn_i );
+	  const auto    cp = c2_all( vp_i );
+	  const RealPoint xnn = position( vnn_i.first );
+	  const RealPoint  xn = position( vn_i.first );	    
+	  const RealPoint   x = position( v );
+	  const RealPoint xpp = position( vpp_i.first );
+	  const RealPoint  xp = position( vp_i.first );
+	  const Scalar    x_1 = c_1 * ( xn[ i ] - xp[ i ] );
+	  const Scalar    y_1 = c_1 * ( xn[ k ] - xp[ k ] );
+	  const Scalar    x_2 = get<0>( c ) * xn[ i ]
+	    - get<1>( c ) * x[ i ] + get<2>( c ) * xp[ i ];
+	  const Scalar   xn_2 = get<0>( cn ) * xnn[ i ]
+	    - get<1>( cn ) * xn[ i ] + get<2>( cn ) * x[ i ];
+	  const Scalar   xp_2 = get<0>( cp ) * x[ i ]
+	    - get<1>( cp ) * xp[ i ] + get<2>( cp ) * xpp[ i ];
+	  const Scalar    x_3 = c_1 * ( xn_2 - xp_2 );
+	  const Scalar    x_4 = get<0>( c ) * xn_2
+	    - get<1>( c ) * x_2 + get<2>( c ) * xp_2;
+	  const Scalar    y_2 = get<0>( c ) * xn[ k ]
+	    - get<1>( c ) * x[ k ] + get<2>( c ) * xp[ k ];
+	  const Scalar   yn_2 = get<0>( cn ) * xnn[ k ]
+	    - get<1>( cn ) * xn[ k ] + get<2>( cn ) * x[ k ];
+	  const Scalar   yp_2 = get<0>( cp ) * x[ k ]
+	    - get<1>( cp ) * xp[ k ] + get<2>( cp ) * xpp[ k ];
+	  const Scalar    y_3 = c_1 * ( yn_2 - yp_2 );
+	  const Scalar    y_4 = get<0>( c ) * yn_2
+	    - get<1>( c ) * y_2 + get<2>( c ) * yp_2;
+	  
+	  // We linearize Euler-Lagrange
+	  // EL = 24*x'^3*x''^3*y' 
+	  // + x'''*( - 13*x'^4*x''*y' - 14*x'^2*x''*y'^3 - x''*y'^5 )
+	  // + y'''*( 8*x'^5*x'' + 4*x'^3*x''*y'^2 - 4*x'*x''*y'^4 )
+	  // + x''''*( x'^5*y' + 2*x'^3*y'^3 + x'*y'^5 )
+	  // + y''*( 12*x'^4*y'*y''' + 12*x'^2*y'^3*y''' - 24*x'^4*x''^2 + 5*x'^5*x''' + 51*x'^2*x''^2*y'^2 - 2*x'^3*x'''*y'^2 + 3*x''^2*y'^4 - 7*x'*x'''*y'^4 )
+	  // + y''^2*( -54*x'^3*x''*y' + 18*x'*x''*y'^3 )
+	  // + y''^3*( 3*x'^4 - 21*x'^2*y'^2 )
+	  // + y''''*( - x'^6 - 2*x'^4*y'^2 - x'^2*y'^4 )
+	  
+	  const Scalar x_1_pow2 = x_1 * x_1;
+	  const Scalar x_1_pow3 = x_1_pow2 * x_1;
+	  const Scalar x_1_pow4 = x_1_pow2 * x_1_pow2;
+	  const Scalar x_1_pow5 = x_1_pow4 * x_1;
+	  const Scalar x_1_pow6 = x_1_pow3 * x_1_pow3;
+	  const Scalar x_2_pow2 = x_2 * x_2;
+	  const Scalar x_2_pow3 = x_2_pow2 * x_1;
+	  const Scalar y_1_pow2 = y_1 * y_1;
+	  const Scalar y_1_pow3 = y_1_pow2 * y_1;
+	  const Scalar y_1_pow4 = y_1_pow2 * y_1_pow2;
+	  const Scalar y_1_pow5 = y_1_pow4 * y_1;
+	  // EL = 24*x'^3*x''^3*y'
+	  right += - 24. * x_1_pow3 * x_2_pow3 * y_1;
+	  // + x'''*( - 13*x'^4*x''*y' - 14*x'^2*x''*y'^3 - x''*y'^5 )
+	  right += - x_3*( -13. * x_1_pow4 * x_2 * y_1 - 14. * x_1_pow2 * x_2 * y_1_pow3
+			   - x_2 * y_1_pow5 );
+	  // + y'''*( 8*x'^5*x'' + 4*x'^3*x''*y'^2 - 4*x'*x''*y'^4 )
+	  right += - y_3*( 8. * x_1_pow5 * x_2 + 4. * x_1_pow3 * x_2 * y_1_pow2
+			   - 4. * x_1 * x_2 * y_1_pow4 );
+	  // + x''''*( x'^5*y' + 2*x'^3*y'^3 + x'*y'^5 )
+	  right += - x_4 * ( x_1_pow5 * y_1 + 2. * x_1_pow3 * y_1_pow3 + x_1 * y_1_pow5 );
+	  // + y''*( 12*x'^4*y'*y''' + 12*x'^2*y'^3*y''' - 24*x'^4*x''^2 + 5*x'^5*x''' + 51*x'^2*x''^2*y'^2 - 2*x'^3*x'''*y'^2 + 3*x''^2*y'^4 - 7*x'*x'''*y'^4 )
+	  const Scalar y_2_fact =
+	    12. * x_1_pow4 * y_1 * y_3
+	    + 12. * x_1_pow2 * y_1_pow3 * y_3 - 24. * x_1_pow4 * x_2_pow2
+	    + 5. * x_1_pow5 * x_3 + 51. * x_1_pow2 * x_2_pow2 * y_1_pow2
+	    - 2. * x_1_pow3 * x_3 * y_1_pow2 + 3. * x_2_pow2 * y_1_pow4
+	    - 7. * x_1 * x_3 * y_1_pow4;
+	  // + y''^2*( -54*x'^3*x''*y' + 18*x'*x''*y'^3 )
+	  const Scalar y_2_pow2_fact =
+	    - 54. * x_1_pow3 * x_2 * y_1 + 18. * x_1 * x_2 * y_1_pow3;
+	  // + y''^3*( 3*x'^4 - 21*x'^2*y'^2 )
+	  const Scalar y_2_pow3_fact =
+	    3. * x_1_pow4 - 21. * x_1_pow2 * y_1_pow2;
+	  // + y''''*( - x'^6 - 2*x'^4*y'^2 - x'^2*y'^4 )
+	  const Scalar y_4_fact =
+	    - x_1_pow6 - 2. * x_1_pow4 * y_1_pow2 - x_1_pow2 * y_1_pow4;
+	  const Scalar gbl_y_2_fact =
+	    y_2_fact + y_2_pow2_fact * y_2 + y_2_pow3_fact * y_2 * y_2
+	    - get<1>( c ) * y_4_fact;
+	  right += - y_4_fact * ( get<0>( c ) * yn_2 + get<2>( c ) * yp_2 );
+	  right += - gbl_y_2_fact * ( get<0>( c ) * xn[ k ] + get<2>( c ) * xp[ k ] );
+	  left += -get<1>( c ) * gbl_y_2_fact * myInsV[ v ][ k ];	    
+	  coef += -get<1>( c ) * gbl_y_2_fact * ( myOutV[ v ][ k ] - myInsV[ v ][ k ] );
+	  
+	}
+      // Possible randomization to avoid local minima.
+      newT[ v ] = ( right - left ) / coef
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+    }
+  // Damping between old and new positions.
+  // Move vertices slightly toward optimal solution (since the
+  // problem has been linearized).
+  auto X     = positions();
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    myT[ v ] = 0.2 * newT[ v ] + 0.8 * myT[ v ];
+  enforceBounds();
+  auto Xnext = positions();
+  Scalar  l2 = 0.0;
+  Scalar loo = 0.0;
+  for ( Vertex v = 0; v < myT.size(); ++v ) {
+    loo = std::max( loo, ( Xnext[ v ] - X[ v ] ).norm() );
+    l2 += ( Xnext[ v ] - X[ v ] ).squaredNorm();
+  }
+  return std::make_pair( loo, sqrt( l2 / myT.size() ) );
+}
+
+template < typename TDigitalSurfaceContainer >
+void
+DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
+enforceBounds()
+{
+  for ( Vertex v = 0; v < myT.size(); ++v )
+    myT[ v ] = std::max( myEpsilon, std::min( 1.0 - myEpsilon, myT[ v ] ) );
+}

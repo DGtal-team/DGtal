@@ -30,3 +30,5 @@ tests/base/testTrace3\.cpp
 tests/io/readers/#testGenericReader\.cpp#
 
 src/DGtal/io/writers/\.#MagickWriter\.h
+
+.DS_Store
