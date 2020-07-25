@@ -66,7 +66,8 @@ namespace DGtal
            CMAP_COOL,
            CMAP_COPPER,
            CMAP_HOT,
-           CMAP_JET };
+           CMAP_JET,
+           CMAP_VIRIDIS};
 
   /////////////////////////////////////////////////////////////////////////////
   // template class GradientColorMap

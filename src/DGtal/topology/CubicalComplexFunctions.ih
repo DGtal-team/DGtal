@@ -305,7 +305,7 @@ objectFromSpels(
                 const CubicalComplex< TKSpace, TCellContainer > & C)
 {
 
-  auto & cs = C.space();
+  const auto & cs = C.space();
   // Get domain of C KSpace.
   typename TObject::Domain domain(cs.lowerBound(), cs.upperBound());
   typename TObject::DigitalSet dset(domain);
@@ -332,20 +332,21 @@ getSpelNeighborhoodConfigurationOccupancy
   using Point  = typename TComplex::Point;
   using Space  = typename TComplex::Space;
   using Domain = HyperRectDomain< Space >;
-  
+
   Point p1 = Point::diagonal( -1 );
   Point p2 = Point::diagonal(  1 );
   Point c = Point::diagonal( 0 );
   Domain domain( p1, p2 );
-  const auto & not_found( input_complex.end() );
-  // const auto & not_found( input_complex.end(3) );
+
+  using KPreSpace = typename TComplex::KSpace::PreCellularGridSpace;
+  const auto & kspace = input_complex.space();
+  const auto & not_found( input_complex.end(3) );
   NeighborhoodConfiguration cfg{0};
   for ( auto it = domain.begin(); it != domain.end(); ++it ) {
-    if( *it != c  &&
-        input_complex.find(
-                           input_complex.space().uSpel(center + *it) ) != not_found )
-      // input_complex.findCell( 3,
-      //     input_complex.space().uSpel(center + *it) ) != not_found )
+    if( *it == c) continue;
+    const auto pre_cell = KPreSpace::uSpel(center + *it);
+    if (input_complex.belongs(pre_cell) &&
+        input_complex.findCell(3, kspace.uCell(pre_cell)) != not_found )
       cfg |= mapPointToMask.at(*it) ;
   }
   return cfg;

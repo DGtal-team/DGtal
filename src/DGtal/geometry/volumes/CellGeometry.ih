@@ -1,0 +1,685 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file CellGeometry.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/01/02
+ *
+ * Implementation of inline methods defined in CellGeometry.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <string>
+#include <sstream>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::CellGeometry<TKSpace>::
+CellGeometry()
+  : myK(), myKPoints(),
+    myMinCellDim( 0 ), myMaxCellDim( KSpace::dimension ),
+    myVerbose( false )
+
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::CellGeometry<TKSpace>::
+CellGeometry( const KSpace & K,
+              Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
+  : myK( K ), myKPoints(),
+    myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
+    myVerbose( verbose )
+{
+  ASSERT( 0 <= myMinCellDim );
+  ASSERT( myMinCellDim <= myMaxCellDim );
+  ASSERT( myMaxCellDim <= myK.dimension );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+init( const KSpace & K,
+      Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
+{
+  ASSERT( 0 <= myMinCellDim );
+  ASSERT( myMinCellDim <= myMaxCellDim );
+  ASSERT( myMaxCellDim <= myK.dimension );
+  myK = K;
+  myKPoints.clear();
+  myMinCellDim       = min_cell_dim;
+  myMaxCellDim       = max_cell_dim;
+  myVerbose          = verbose;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointIterator>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPoints( PointIterator itB, PointIterator itE )
+{
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
+    for ( auto it = itB; it != itE; ++it )
+      {
+        auto pointel = myK.uPointel( *it );
+        auto cofaces = myK.uCoFaces( pointel );
+        myKPoints.emplace( myK.uKCoords( pointel ) );
+        for ( auto && c : cofaces )
+          myKPoints.emplace( myK.uKCoords( c ) );
+      }
+  } else {
+    for ( auto it = itB; it != itE; ++it )
+      {
+        auto pointel = myK.uPointel( *it );
+        auto cofaces = myK.uCoFaces( pointel );
+        myKPoints.emplace( myK.uKCoords( pointel ) );
+        for ( auto&& f : cofaces ) {
+          Dimension d = myK.uDim( f );
+          if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+            myKPoints.emplace( myK.uKCoords( f ) );
+        }
+      }
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename PointelIterator>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
+{
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
+    for ( auto it = itB; it != itE; ++it )
+      {
+        auto pointel = *it;
+        auto cofaces = myK.uCoFaces( pointel );
+        myKPoints.emplace( myK.uKCoords( pointel ) );
+        for ( auto && c : cofaces )
+          myKPoints.emplace( myK.uKCoords( c ) );
+      }
+  } else {
+    for ( auto it = itB; it != itE; ++it )
+      {
+        auto pointel = *it;
+        auto cofaces = myK.uCoFaces( pointel );
+        myKPoints.emplace( myK.uKCoords( pointel ) );
+        for ( auto&& f : cofaces ) {
+          Dimension d = myK.uDim( f );
+          if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+            myKPoints.emplace( myK.uKCoords( f ) );
+        }
+      }
+  }
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytopePoints( const LatticePolytope& polytope )
+{
+  std::vector< Point > points;
+  polytope.getPoints( points );
+  addCellsTouchingPoints( points.begin(), points.end() );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
+{
+  std::vector< Point > points;
+  polytope.getPoints( points );
+  addCellsTouchingPoints( points.begin(), points.end() );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytope( const LatticePolytope& polytope )
+{
+  for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+    {
+      auto kpoints = getIntersectedKPoints( polytope, i );
+      for ( auto&& c : kpoints )
+        myKPoints.insert( c );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPolytope( const RationalPolytope& polytope )
+{
+  for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+    {
+      auto kpoints = getIntersectedKPoints( polytope, i );
+      for ( auto&& c : kpoints )
+        myKPoints.insert( c );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>&
+DGtal::CellGeometry<TKSpace>::
+operator+=( const CellGeometry& other )
+{
+  if ( this != &other )
+    {
+      for ( auto&& c : other.myKPoints )
+        myKPoints.insert( c );
+      myMinCellDim = std::min( myMinCellDim, other.myMinCellDim );
+      myMaxCellDim = std::max( myMaxCellDim, other.myMaxCellDim );
+    }
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>::Size
+DGtal::CellGeometry<TKSpace>::
+nbCells() const
+{
+  return myKPoints.size();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>::Size
+DGtal::CellGeometry<TKSpace>::
+computeNbCells( const Dimension k ) const
+{
+  if ( k < minCellDim() || k > maxCellDim() ) return 0;
+  Size nb = 0;
+  for ( auto&& c : myKPoints )
+    nb += ( dim( c ) == k ) ? 1 : 0;
+  return nb;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::CellGeometry<TKSpace>::Integer
+DGtal::CellGeometry<TKSpace>::
+computeEuler() const
+{
+  Integer euler = 0;
+  bool    pos   = true;
+  for ( Dimension k = 0; k <= maxCellDim(); ++k )
+    {
+      if ( pos ) euler += computeNbCells( k );
+      else       euler -= computeNbCells( k );
+      pos = ! pos;
+    }
+  return euler;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::Dimension
+DGtal::CellGeometry<TKSpace>::
+minCellDim() const
+{
+  return myMinCellDim;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::Dimension
+DGtal::CellGeometry<TKSpace>::
+maxCellDim() const
+{
+  return myMaxCellDim;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::CellGeometry<TKSpace>::
+subset( const CellGeometry& other ) const
+{
+  return other.myKPoints.includes( myKPoints );
+  // for ( auto&& c : myKPoints )
+  //   if ( other.myKPoints.count( c ) == 0 )
+  //     return false;
+  // return true;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::CellGeometry<TKSpace>::
+subset( const CellGeometry& other, const Dimension k ) const
+{
+  UnorderedSetByBlock< Point, Splitter< Point, uint64_t > > k_dim_points;
+  for ( auto&& c : myKPoints )
+    if ( dim( c ) == k )
+      k_dim_points.insert( c );
+  return other.myKPoints.includes( k_dim_points );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename RandomIterator>
+bool
+DGtal::CellGeometry<TKSpace>::
+includes( RandomIterator it1, RandomIterator itE1,
+          RandomIterator it2, RandomIterator itE2 )
+{
+  std::size_t k;
+  for ( ; it2 != itE2; ++it1)
+    {
+      if (it1 == itE1 || *it2 < *it1) return false;
+      // exponential march
+      for ( k = 1; ( it1 < itE1 ) && ( *it1 < *it2 ); k *= 2 ) it1 += k;
+      if ( it1 < itE1 ) {
+        if ( *it2 == *it1 ) ++it2; //equality
+        else {
+          it1 = lower_bound( it1 - k/2, it1, *it2 );
+          if ( *it2 != *it1 ) return false;
+          ++it2;
+        }
+      } else {
+        it1 = lower_bound( it1 - k/2, itE1, *it2 );
+        if ( it1 == itE1 || *it2 != *it1 ) return false;
+        ++it2;
+      }
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
+DGtal::CellGeometry<TKSpace>::
+getIntersectedKPoints( const LatticePolytope& polytope,
+                       const Dimension i ) const
+{
+  ASSERT( polytope.canBeSummed() );
+  if ( ! polytope.canBeSummed() )
+    trace.warning() << "[CellGeometryFunctions::getIntersectedKPoints]"
+                    << " LatticePolytope is not valid for Minkowski sums. " << std::endl;
+  static const Dimension d = KSpace::dimension;
+  std::vector< Point >     result;
+  std::vector< Point >     points;
+  std::vector< LatticePolytope  > polytopes( i+1, polytope );
+  std::vector< Dimension > extensions( i+1, 0 );
+  for ( Dimension k = 1; k < extensions.size(); ++k )
+    {
+      extensions[ k ] = k - 1;
+      polytopes [ k ] = polytopes[ k - 1 ] + typename LatticePolytope::UnitSegment( k - 1 );
+    }
+  // We have to build several dilated polytopes which corresponds
+  // to the binom(d,i) possible cell types.
+  while ( true )
+    {
+      if ( myVerbose )
+        {
+          std::string str;
+          std::ostringstream ostr( str );
+          ostr << "Dilating Polytope along directions {";
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            ostr << " + " << extensions[ k ];
+          ostr << "}" ;
+          trace.info() << ostr.str() << std::endl;
+        }
+      // Intersected cells are bijective to points in a dilated polytope.
+      polytopes.back().getPoints( points );
+      // For each point, build its Khalimsky points and push it into result.
+      for ( auto p : points ) {
+        auto kp   = myK.uKCoords( myK.uPointel( p ) );
+        for ( Dimension k = 1; k < extensions.size(); ++k )
+           // decrease Khalimsky coordinate to get incident cell
+          kp[ extensions[ k ] ] -= 1;
+        result.push_back( kp );
+      }
+      // Go to next type of cell
+      Dimension   k    = i;
+      extensions[ k ] += 1;
+      // will quit when k == 0
+      while ( k > 0 && extensions[ k ] >= d+k-i ) extensions[ --k ] += 1;
+      if ( k == 0 ) break; // finished
+      for ( Dimension l = k + 1; l < extensions.size(); ++l )
+        extensions[ l ] = extensions[ l - 1 ] + 1;
+      // Recomputes polytopes
+      for ( ; k < extensions.size(); ++k )
+        polytopes [ k ] = polytopes[ k - 1 ]
+          + typename LatticePolytope::UnitSegment( extensions[ k ] );
+    } // while ( true )
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
+DGtal::CellGeometry<TKSpace>::
+getIntersectedCells( const LatticePolytope& polytope,
+                     const Dimension i ) const
+{
+  ASSERT( polytope.canBeSummed() );
+  if ( ! polytope.canBeSummed() )
+    trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
+                    << " LatticePolytope is not valid for Minkowski sums. " << std::endl;
+  static const Dimension d = KSpace::dimension;
+  std::vector< Cell >      result;
+  std::vector< Point >     points;
+  std::vector< LatticePolytope  > polytopes( i+1, polytope );
+  std::vector< Dimension > extensions( i+1, 0 );
+  for ( Dimension k = 1; k < extensions.size(); ++k )
+    {
+      extensions[ k ] = k - 1;
+      polytopes [ k ] = polytopes[ k - 1 ] + typename LatticePolytope::UnitSegment( k - 1 );
+    }
+  // We have to build several dilated polytopes which corresponds
+  // to the binom(d,i) possible cell types.
+  while ( true )
+    {
+      if ( myVerbose )
+        {
+          std::string str;
+          std::ostringstream ostr( str );
+          ostr << "Dilating Polytope along directions {";
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            ostr << " + " << extensions[ k ];
+          ostr << "}" ;
+          trace.info() << ostr.str() << std::endl;
+        }
+      // Intersected cells are bijective to points in a dilated polytope.
+      polytopes.back().getPoints( points );
+      // For each point, build its cell and push it into result.
+      for ( auto p : points ) {
+        auto cell = myK.uPointel( p );
+        for ( Dimension k = 1; k < extensions.size(); ++k )
+          cell = myK.uIncident( cell, extensions[ k ], false );
+        result.push_back( cell );
+      }
+      // Go to next type of cell
+      Dimension   k    = i;
+      extensions[ k ] += 1;
+      // will quit when k == 0
+      while ( k > 0 && extensions[ k ] >= d+k-i ) extensions[ --k ] += 1;
+      if ( k == 0 ) break; // finished
+      for ( Dimension l = k + 1; l < extensions.size(); ++l )
+        extensions[ l ] = extensions[ l - 1 ] + 1;
+      // Recomputes polytopes
+      for ( ; k < extensions.size(); ++k )
+        polytopes [ k ] = polytopes[ k - 1 ]
+          + typename LatticePolytope::UnitSegment( extensions[ k ] );
+    } // while ( true )
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
+DGtal::CellGeometry<TKSpace>::
+getIntersectedCells( const RationalPolytope& polytope,
+                     const Dimension i ) const
+{
+  ASSERT( polytope.canBeSummed() );
+  if ( ! polytope.canBeSummed() )
+    trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
+                    << " RationalPolytope is not valid for Minkowski sums. " << std::endl;
+  static const Dimension d = KSpace::dimension;
+  std::vector< Cell >      result;
+  std::vector< Point >     points;
+  std::vector< RationalPolytope  > polytopes( i+1, polytope );
+  std::vector< Dimension > extensions( i+1, 0 );
+  for ( Dimension k = 1; k < extensions.size(); ++k )
+    {
+      extensions[ k ] = k - 1;
+      polytopes [ k ] = polytopes[ k - 1 ]
+        + typename RationalPolytope::UnitSegment( k - 1 );
+    }
+  // We have to build several dilated polytopes which corresponds
+  // to the binom(d,i) possible cell types.
+  while ( true )
+    {
+      if ( myVerbose )
+        {
+          std::string str;
+          std::ostringstream ostr( str );
+          ostr << "Dilating Polytope along directions {";
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            ostr << " + " << extensions[ k ];
+          ostr << "}" ;
+          trace.info() << ostr.str() << std::endl;
+        }
+      // Intersected cells are bijective to points in a dilated polytope.
+      polytopes.back().getPoints( points );
+      // For each point, build its cell and push it into result.
+      for ( auto p : points ) {
+        auto cell = myK.uPointel( p );
+        for ( Dimension k = 1; k < extensions.size(); ++k )
+          cell = myK.uIncident( cell, extensions[ k ], false );
+        result.push_back( cell );
+      }
+      // Go to next type of cell
+      Dimension   k    = i;
+      extensions[ k ] += 1;
+      // will quit when k == 0
+      while ( k > 0 && extensions[ k ] >= d+k-i ) extensions[ --k ] += 1;
+      if ( k == 0 ) break; // finished
+      for ( Dimension l = k + 1; l < extensions.size(); ++l )
+        extensions[ l ] = extensions[ l - 1 ] + 1;
+      // Recomputes polytopes
+      for ( ; k < extensions.size(); ++k )
+        polytopes [ k ] = polytopes[ k - 1 ]
+          + typename RationalPolytope::UnitSegment( extensions[ k ] );
+    } // while ( true )
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
+DGtal::CellGeometry<TKSpace>::
+getIntersectedKPoints( const RationalPolytope& polytope,
+                       const Dimension i ) const
+{
+  ASSERT( polytope.canBeSummed() );
+  if ( ! polytope.canBeSummed() )
+    trace.warning() << "[CellGeometryFunctions::getIntersectedKPoints]"
+                    << " RationalPolytope is not valid for Minkowski sums. " << std::endl;
+  static const Dimension d = KSpace::dimension;
+  std::vector< Point >     result;
+  std::vector< Point >     points;
+  std::vector< RationalPolytope  > polytopes( i+1, polytope );
+  std::vector< Dimension > extensions( i+1, 0 );
+  for ( Dimension k = 1; k < extensions.size(); ++k )
+    {
+      extensions[ k ] = k - 1;
+      polytopes [ k ] = polytopes[ k - 1 ]
+        + typename RationalPolytope::UnitSegment( k - 1 );
+    }
+  // We have to build several dilated polytopes which corresponds
+  // to the binom(d,i) possible cell types.
+  while ( true )
+    {
+      if ( myVerbose )
+        {
+          std::string str;
+          std::ostringstream ostr( str );
+          ostr << "Dilating Polytope along directions {";
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            ostr << " + " << extensions[ k ];
+          ostr << "}" ;
+          trace.info() << ostr.str() << std::endl;
+        }
+      // Intersected cells are bijective to points in a dilated polytope.
+      polytopes.back().getPoints( points );
+      // For each point, build its Khalimsky points and push it into result.
+      for ( auto p : points ) {
+        auto kp   = myK.uKCoords( myK.uPointel( p ) );
+        for ( Dimension k = 1; k < extensions.size(); ++k )
+           // decrease Khalimsky coordinate to get incident cell
+          kp[ extensions[ k ] ] -= 1;
+        result.push_back( kp );
+      }
+      // Go to next type of cell
+      Dimension   k    = i;
+      extensions[ k ] += 1;
+      // will quit when k == 0
+      while ( k > 0 && extensions[ k ] >= d+k-i ) extensions[ --k ] += 1;
+      if ( k == 0 ) break; // finished
+      for ( Dimension l = k + 1; l < extensions.size(); ++l )
+        extensions[ l ] = extensions[ l - 1 ] + 1;
+      // Recomputes polytopes
+      for ( ; k < extensions.size(); ++k )
+        polytopes [ k ] = polytopes[ k - 1 ]
+          + typename RationalPolytope::UnitSegment( extensions[ k ] );
+    } // while ( true )
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
+DGtal::CellGeometry<TKSpace>::
+getTouchedCells( const std::vector< Point >& points, const Dimension i ) const
+{
+  std::unordered_set< Cell > cells;
+  if ( i == 0 )
+    cells = CellGeometryFunctions< KSpace, 0, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 1 )
+    cells = CellGeometryFunctions< KSpace, 1, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 2 )
+    cells = CellGeometryFunctions< KSpace, 2, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 3 )
+    cells = CellGeometryFunctions< KSpace, 3, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 4 )
+    cells = CellGeometryFunctions< KSpace, 4, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 5 )
+    cells = CellGeometryFunctions< KSpace, 5, KSpace::dimension>
+      ::getIncidentCellsToPoints( myK, points.begin(), points.end() );
+  else trace.error() << "[DGtal::CellGeometry<TKSpace>::getTouchedCells]"
+                     << " Computation are limited to n-D, n <= 5" << std::endl;
+  return std::vector< Cell >( cells.begin(), cells.end() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
+DGtal::CellGeometry<TKSpace>::
+getTouchedKPoints( const std::vector< Point >& points, const Dimension i ) const
+{
+  UnorderedSetByBlock< Point, Splitter< Point, uint64_t > > kpoints;
+  if ( i == 0 )
+    kpoints = CellGeometryFunctions< KSpace, 0, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 1 )
+    kpoints = CellGeometryFunctions< KSpace, 1, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 2 )
+    kpoints = CellGeometryFunctions< KSpace, 2, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 3 )
+    kpoints = CellGeometryFunctions< KSpace, 3, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 4 )
+    kpoints = CellGeometryFunctions< KSpace, 4, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else if ( i == 5 )
+    kpoints = CellGeometryFunctions< KSpace, 5, KSpace::dimension>
+      ::getIncidentKPointsToPoints( myK, points.begin(), points.end() );
+  else trace.error() << "[DGtal::CellGeometry<TKSpace>::getTouchedKPoints]"
+                     << " Computation are limited to n-D, n <= 5" << std::endl;
+  return std::vector< Cell >( kpoints.begin(), kpoints.end() );
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::Dimension
+DGtal::CellGeometry<TKSpace>::
+dim( const Point & kp )
+{
+  Dimension d = 0;
+  for ( Dimension i = 0; i < KSpace::dimension; ++i )
+    d += kp[ i ] & 1 ? 1 : 0;
+  return d;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TKSpace>
+inline
+void
+DGtal::CellGeometry<TKSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[CellGeometry]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TKSpace>
+inline
+bool
+DGtal::CellGeometry<TKSpace>::isValid() const
+{
+  return true;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+std::string
+DGtal::CellGeometry<TKSpace>::className
+() const
+{
+  return "CellGeometry";
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                    const CellGeometry<TKSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

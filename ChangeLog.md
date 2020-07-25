@@ -15,7 +15,17 @@
 
 - *Geometry Package*
   - New piecewise smooth digital surface regularization class (David Coeurjolly,
-  [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+    [#1440](https://github.com/DGtal-team/DGtal/pull/1440))
+  - Provides support for digital full convexity and subconvexity (Jacques-Olivier Lachaud,
+    [#1459](https://github.com/DGtal-team/DGtal/pull/1459))
+  - Implementation of Shrouds algorithm for smoothing digital surfaces:
+    Nielson et al., Shrouds: optimal separating surfaces for enumerated volumes.
+    In Proc. VisSym 2003, vol. 3, pp. 75-84
+    (Jacques-Olivier Lachaud, [#1500](https://github.com/DGtal-team/DGtal/pull/1500))
+  - Updates cell geometry and digital convexity to use specialized
+    unordered set data structure UnorderedSetByBlock for storing
+    digital points (Jacques-Olivier Lachaud,
+    [#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 ## Changes
 
@@ -24,6 +34,9 @@
   Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
+  - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
+    `feenableexcept` (only applies in Linux when in Debug mode).
+    (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
@@ -34,10 +47,20 @@
 - *io*
   - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
+  - New Viridis ColorGradientPreset and clean of  useless template specializations in
+    the GenericWriter for color image. (Bertrand Kerautret
+    [#1487](https://github.com/DGtal-team/DGtal/pull/1487))
+  - Add the possibility to import images with a shifted domain in ITKReader.
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan
+    [#1492](https://github.com/DGtal-team/DGtal/pull/1492))
 
 - *Kernel package*
   - Add .data() function to PointVector to expose internal array data.
     (Pablo Hernandez-Cerdan, [#1452](https://github.com/DGtal-team/DGtal/pull/1452))
+  - Add a specialized unordered set data structure
+    UnorderedSetByBlock for storing digital points, which is more
+    compact and as efficient as unordered set
+    (Jacques-Olivier Lachaud,[#1499](https://github.com/DGtal-team/DGtal/pull/1499))
 
 - *Helpers*
   - Add vector field output as OBJ to module Shortcuts (Jacques-Olivier Lachaud,
@@ -64,6 +87,8 @@
     [#1428](https://github.com/DGtal-team/DGtal/pull/1428))
   - Makes testVoxelComplex faster, reducing the size of the test fixture
     (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
+  - Fix bug in VoxelComplex masks when cell was at the boundary of kspace
+    (Pablo Hernandez-Cerdan, [#1488](https://github.com/DGtal-team/DGtal/pull/1488))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
@@ -86,6 +111,10 @@
   Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
   - Fixing Travis configuration due to syntax changes in v2
     (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
+  - Compression of png files used in for the documentation
+    (preparing 1.1 release), (David Coeurjolly, [#1494](https://github.com/DGtal-team/DGtal/pull/1494))
+  - Fix `CMAKE_C_FLAGS` when `WITH_OPENMP=ON`
+    (Pablo Hernandez-Cerdan, [#1495](https://github.com/DGtal-team/DGtal/pull/1495))
 
 - *Mathematics*
   - Put SimpleMatrix * scalar operation in DGtal namespace (Jacques-Olivier Lachaud,
@@ -97,6 +126,9 @@
   - Defining StandardDSS4Computer & NaiveDSS8Computer as templated aliases of
     ArithmeticalDSSComputer (fix #1483). Also fixing NaiveDSS8 adjacency.
     (Roland Denis, [#1491](https://github.com/DGtal-team/DGtal/pull/1491))
+  - Fix initialisation in BoundedLatticePolytope when creating non full
+    dimensional simplices in 3D (segments, triangles). (Jacques-Olivier Lachaud,
+    [#1502](https://github.com/DGtal-team/DGtal/pull/1502))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -115,7 +147,7 @@
     Shortcuts::makePrimalPolygonalSurface, as well as
     MeshHelpers::digitalSurface2PrimalPolygonalSurface, all use the
     CCW ordering by default (in 3D).
-    (Jacques-Olivier Lachaud,[#1421](https://github.com/DGtal-team/DGtal/pull/1445))
+    (Jacques-Olivier Lachaud,[#1445](https://github.com/DGtal-team/DGtal/pull/1445))
 
 - *images*
   - Fix the image origin that was not taken into account in class
@@ -124,18 +156,23 @@
   - Add domainShift to ImageContainerByITKImage.
     (Pablo Hernandez-Cerdan,
     [#1490](https://github.com/DGtal-team/DGtal/pull/1490))
-    
+
 - *IO*
   - Removing a `using namespace std;` in the Viewer3D hearder file. (David
     Coeurjolly [#1413](https://github.com/DGtal-team/DGtal/pull/1413))
   - Fixing cast from const to mutable iterator in GradientColorMap.
     (Roland Denis [#1486](https://github.com/DGtal-team/DGtal/pull/1486))
 
+- *Topology*
+  - Add missing constraint to flips in HalfEdgeDataStructure
+    (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
-- *Shapes package*
+- *Shapes*
   - Fix bug in Astroid parameter() method : orientation correction
    (Adrien Krähenbühl,
    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+  - Add missing constraint to flips in TriangulatedSurface
+    (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
 - *DEC*
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
