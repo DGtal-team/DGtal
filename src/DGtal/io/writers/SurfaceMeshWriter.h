@@ -161,7 +161,41 @@ namespace DGtal
                            const Color&           ambient_color = Color::Black,
                            const Color&           diffuse_color = Color::Black,
                            const Color&           specular_color= Color::Black );
-      
+
+    /// Writes in an OBJ file the geometric isolines of a scalar field
+    /// around values \a iso_values. Scalar values of the scalar field
+    /// should be given at vertices and face centroids.
+    ///
+    /// @param[in] objfile the name of the OBJ file (like "isocontour" or
+    /// "isocontour.obj").
+    /// @param[in] smesh the surface mesh.
+    ///
+    /// @param[in] face_values, vertex_values the range of values of
+    /// the scalard field at faces and at vertices.
+    ///
+    /// @param[in] iso_values the values of the isolines to output.
+    ///
+    /// @param[in] relative_thickness the thickness as a ratio of the
+    /// average edge length of the mesh.
+    ///
+    /// @param[in] diffuse_colors the range of colors for each isoline
+    /// (in same order) or empty range (then the color is always \a
+    /// diffuse_color).
+    ///
+    /// @param[in] ambient_color,diffuse_color,specular_color the
+    /// default color information for each face.
+    static
+    bool writeIsoLinesOBJ( std::string            objfile,
+                           const SurfaceMesh &    smesh,
+                           const Scalars&         face_values,
+                           const Scalars&         vertex_values,
+                           const Scalars&         iso_values,
+                           const double           relative_thickness = 0.05,
+                           const Colors&          diffuse_colors = Colors(),
+                           const Color&           ambient_color = Color::Black,
+                           const Color&           diffuse_color = Color::Black,
+                           const Color&           specular_color= Color::Black );
+    
   };
 
   
