@@ -198,7 +198,7 @@ template <typename TRealPoint, typename TRealVector>
 bool
 DGtal::SurfaceMeshWriter<TRealPoint, TRealVector>::
 writeIsoLinesOBJ( std::string            objfile,
-                  const SurfaceMesh & smesh,
+                  const SurfaceMesh &    smesh,
                   const Scalars&         face_values,
                   const Scalars&         vertex_values,
                   const Scalar           iso_value,
@@ -268,6 +268,91 @@ writeIsoLinesOBJ( std::string            objfile,
   return SH::saveVectorFieldOBJ
     ( positions, edge_vectors, avg_el*relative_thickness,
       Colors(), objfile, ambient_color, diffuse_color, specular_color );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMeshWriter<TRealPoint, TRealVector>::
+writeIsoLinesOBJ( std::string            objfile,
+                  const SurfaceMesh &    smesh,
+                  const Scalars&         face_values,
+                  const Scalars&         vertex_values,
+                  const Scalars&         iso_values,
+                  const double           relative_thickness,
+                  const Colors&          diffuse_colors,
+                  const Color&           ambient_color,
+                  const Color&           diffuse_color,
+                  const Color&           specular_color )
+{
+  typedef KhalimskySpaceND< 3, int >    KSpace;
+  typedef Shortcuts< KSpace >           SH;
+  typedef typename SH::RealPoint        RealPoint;
+  typedef typename SH::RealPoints       RealPoints;
+  typedef typename SH::RealVector       RealVector;
+  typedef typename SH::RealVectors      RealVectors;
+  typedef typename SH::Colors           Colors;
+
+  RealPoints  positions;
+  RealVectors edge_vectors;
+  Scalar      lengths = 0.0;
+  Colors      output_colors;
+  // We have: (1-t)*v0 + t*v1 = v
+  const auto  t = [] ( Scalar v0, Scalar v1, Scalar v )
+    { return ( v - v0 ) / ( v1 - v0 ); };
+  for ( Face f = 0; f < smesh.nbFaces(); ++f )
+    { // form triangles between barycenter and consecutives vertices
+      const auto  vb = face_values[ f ];
+      const auto  xb = smesh.faceCentroid( f );
+      const auto& iv = smesh.incidentVertices( f );
+      for ( Size i = 0; i < iv.size(); ++i )
+        {
+          const auto   vv0 = vertex_values[ iv[ i ] ];
+          const auto   vv1 = vertex_values[ iv[ (i+1) % iv.size() ] ];
+          const auto   xv0 = smesh.positions()[ iv[ i ] ];
+          const auto   xv1 = smesh.positions()[ iv[ (i+1) % iv.size() ] ];
+          for ( Size iso_i = 0; iso_i < iso_values.size(); ++iso_i )
+            {
+              const auto iso_value = iso_values[ iso_i ];
+              const bool  ebv0 = ( vb - iso_value ) * ( vv0 - iso_value ) <= 0.0;
+              const bool  ebv1 = ( vb - iso_value ) * ( vv1 - iso_value ) <= 0.0;
+              const bool ev0v1 = ( vv0 - iso_value ) * ( vv1 - iso_value ) <= 0.0;
+              if ( ! ebv0 && ! ebv1 ) continue;
+              std::vector<RealPoint> crossings;
+              if ( ebv0 ) {
+                const Scalar tbv0 = t( vb, vv0, iso_value );   
+                crossings.push_back( (1.0 - tbv0)*xb + tbv0*xv0 );
+              }
+              if ( ebv1 ) {
+                const Scalar tbv1 = t( vb, vv1, iso_value );   
+                crossings.push_back( (1.0 - tbv1)*xb + tbv1*xv1 );
+              }
+              if ( ev0v1 ) {
+                const Scalar tv0v1 = t( vv0, vv1, iso_value );   
+                crossings.push_back( (1.0 - tv0v1)*xv0 + tv0v1*xv1 );
+              }
+              if ( crossings.size() < 2 )
+                trace.warning() << "[SurfaceMeshWriter::writeIsoLinesOBJ]"
+                                << " Weird iso-line on face " << f << std::endl;
+              else {
+                for ( Size i = 0; i < crossings.size(); ++i )
+                  for ( Size j = i+1; j < crossings.size(); ++j )
+                    {
+                      RealVector pq = crossings[ j ] - crossings[ i ];
+                      if ( pq.squaredNorm() < 1e-8 ) continue;
+                      positions.push_back( crossings[ i ] );
+                      edge_vectors.push_back( pq );
+                      if ( ! diffuse_colors.empty() )
+                        output_colors.push_back( diffuse_colors[ iso_i ] );
+                    }
+              }
+            } // for ( Size iso_i = 0; iso_i < iso_values.size(); ++iso_i )
+        } // for ( Size i = 0; i < iv.size(); ++i )
+    } // for ( Face f = 0; f < smesh.nbFaces(); ++f )
+  const Scalar avg_el = smesh.averageEdgeLength();
+  return SH::saveVectorFieldOBJ
+    ( positions, edge_vectors, avg_el*relative_thickness,
+      output_colors, objfile, ambient_color, diffuse_color, specular_color );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
