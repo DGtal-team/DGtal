@@ -240,12 +240,13 @@ namespace DGtal
     /// @tparam RealPoint the type for 3d points.
     /// @tparam RealVector the type for 3d vectors.
     /// @param[in]     smesh the input surface mesh.
+    /// @param[in]     cols a vector defining the face colors.
     /// @param[in,out] mesh the output mesh (which should be empty).
     template < typename RealPoint, typename RealVector >
     static
     void surfaceMesh2Mesh
     ( const SurfaceMesh< RealPoint, RealVector >& smesh,
-      Mesh< RealPoint >& mesh );
+     Mesh< RealPoint >& mesh, const std::vector<Color> &cols = {} );
     
     /// Exports a triangulated surface as an OBJ file (with topology)
     /// into the given output stream.
