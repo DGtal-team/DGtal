@@ -141,6 +141,14 @@ namespace DGtal
     /// Default destructor.
     ~SurfaceMesh() = default;
     /// Default constructor.
+    ///
+    /// A typical construction usage is
+    /// @code
+    /// std::vector< RealPoint > positions = { { 0, 0, 5 }, { 1, 1, 3 }, { -1, 1, 3 }, { -1, -1, 3 }, { 1, -1, 3 } };
+    /// std::vector< Vertices  > faces = { { 0, 1, 2 }, { 0, 2, 3 }, { 0, 3, 4 }, { 0, 4, 1 }, { 4, 3, 2, 1 } };
+    /// SurfMesh pyramid_mesh;
+    /// pyramid_mesh.init( positions.cbegin(), positions.cend(), faces.cbegin(), faces.cend() );
+    /// @endcode
     SurfaceMesh() = default;
     /// Default copy constructor.
     /// @param other the object to clone
@@ -164,6 +172,13 @@ namespace DGtal
     /// @param itVertices,itVerticesEnd a range of iterators pointing
     /// on the (oriented) faces of the mesh, each face being a range
     /// of vertex indices.
+    ///
+    /// A typical construction usage is
+    /// @code
+    /// std::vector< RealPoint > positions = { { 0, 0, 5 }, { 1, 1, 3 }, { -1, 1, 3 }, { -1, -1, 3 }, { 1, -1, 3 } };
+    /// std::vector< Vertices  > faces = { { 0, 1, 2 }, { 0, 2, 3 }, { 0, 3, 4 }, { 0, 4, 1 }, { 4, 3, 2, 1 } };
+    /// auto pyramid_mesh = SurfMesh( positions.cbegin(), positions.cend(), faces.cbegin(), faces.cend() );
+    /// @endcode
     template <typename RealPointIterator, typename VerticesIterator>
     SurfaceMesh( RealPointIterator itPos, RealPointIterator itPosEnd,
                  VerticesIterator itVertices, VerticesIterator itVerticesEnd );
@@ -180,6 +195,14 @@ namespace DGtal
     /// @param itVertices,itVerticesEnd a range of iterators pointing
     /// on the (oriented) faces of the mesh, each face being a range
     /// of vertex indices.
+    ///
+    /// A typical construction usage is
+    /// @code
+    /// std::vector< RealPoint > positions = { { 0, 0, 5 }, { 1, 1, 3 }, { -1, 1, 3 }, { -1, -1, 3 }, { 1, -1, 3 } };
+    /// std::vector< Vertices  > faces = { { 0, 1, 2 }, { 0, 2, 3 }, { 0, 3, 4 }, { 0, 4, 1 }, { 4, 3, 2, 1 } };
+    /// SurfMesh pyramid_mesh;
+    /// pyramid_mesh.init( positions.cbegin(), positions.cend(), faces.cbegin(), faces.cend() );
+    /// @endcode
     template <typename RealPointIterator, typename VerticesIterator>
     bool init( RealPointIterator itPos, RealPointIterator itPosEnd,
                VerticesIterator itVertices, VerticesIterator itVerticesEnd );
