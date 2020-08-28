@@ -213,6 +213,9 @@
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element. 
     (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
+  - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
+    Fix issue #1501.
+    (Pablo Hernandez-Cerdan, [#1506](https://github.com/DGtal-team/DGtal/pull/1506))
 
 # DGtal 1.0
 
