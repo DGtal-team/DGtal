@@ -145,8 +145,9 @@ int main( int argc, char** argv )
   trace.endBlock();
 
   // Conversion to Mesh for easy display.
-  Mesh< RealPoint > viewmesh, viewmesh2, viewmesh3;
-  MeshHelpers::surfaceMesh2Mesh( smesh,      viewmesh  );
+  Mesh< RealPoint > viewmesh(true);
+  Mesh< RealPoint >  viewmesh2, viewmesh3;
+  MeshHelpers::surfaceMesh2Mesh( smesh,      viewmesh , face_colors );
   MeshHelpers::surfaceMesh2Mesh( torus_mesh, viewmesh2 );
   MeshHelpers::surfaceMesh2Mesh( pyramid_mesh, viewmesh3 );
 
