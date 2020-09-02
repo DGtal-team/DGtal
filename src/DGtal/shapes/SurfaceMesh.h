@@ -53,8 +53,8 @@ namespace DGtal
   // template class SurfaceMesh
   /**
      Description of template class 'SurfaceMesh' <p> \brief Aim:
-     Represents a mesh as faces and a list of vertices. Vertices may
-     be shared among faces but no correct topology is
+     Represents an embedded mesh as faces and a list of vertices. Vertices may
+     be shared among faces but no specific topology is
      required. However, you also have methods to navigate between
      neighbor vertices, faces, etc. The mesh can be equipped with
      normals at faces and/or vertices.
@@ -108,7 +108,7 @@ namespace DGtal
     typedef Index                                   Vertex;
     typedef std::pair< Edge, Scalar >               WeightedEdge;
     typedef std::pair< Face, Scalar >               WeightedFace;
-    /// The type that defines a range of vertices
+    /// The type that defines a range of vertices (e.g. to define faces)
     typedef std::vector< Vertex >                   Vertices;
     typedef std::vector< Vertex >                   VertexRange;
     /// The type that defines a range of faces
@@ -164,7 +164,7 @@ namespace DGtal
     /// Builds a mesh from vertex positions and polygonal faces.
     ///
     /// @tparam RealPointIterator any forward iterator on RealPoint.
-    /// @tparam VerticesIterator any forward iterator on a range of vertices.
+    /// @tparam VerticesIterator any forward iterator on the range of vertices defining a face.
     ///
     /// @param itPos,itPosEnd a range of iterators pointing on the positions of all the
     /// vertices of the mesh.
@@ -229,7 +229,7 @@ namespace DGtal
 
     /// Uses the positions of vertices to compute a normal vector to
     /// each face of the mesh. It computes the barycenter,
-    /// triangulates implicitly the face to build the normal vector.
+    /// triangulates implicitly the face to build the normal vector from the average of implicit triangle normals.
     void computeFaceNormalsFromPositions();
 
     /// Uses the normals associated with vertices to compute a normal
@@ -770,4 +770,3 @@ namespace DGtal
 
 #undef SurfaceMesh_RECURSES
 #endif // else defined(SurfaceMesh_RECURSES)
-

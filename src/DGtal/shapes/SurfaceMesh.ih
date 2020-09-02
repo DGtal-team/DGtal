@@ -488,8 +488,6 @@ computeFacesInclusionsInBall( Scalar r, Index f ) const
               }
         }
     }
-  // trace.info() << "#Marked=" << marked.size()
-  //                << " #Result=" << result.size() << std::endl;
   return result;
 }
 
@@ -551,8 +549,6 @@ computeCellsInclusionsInBall( Scalar r, Index f ) const
             }
         }
     }
-  // trace.info() << "#Marked=" << marked.size()
-  //                << " #Result=" << result.size() << std::endl;
   result_v = Vertices( set_v.cbegin(), set_v.cend() );
   return std::make_tuple( result_v, result_e, result_f );
 }
