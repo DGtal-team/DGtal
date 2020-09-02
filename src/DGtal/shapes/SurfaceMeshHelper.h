@@ -72,15 +72,15 @@ namespace DGtal
     typedef typename RealVector::Component          Scalar;
     typedef std::vector<Scalar>                     Scalars;
     typedef std::vector<RealVector>                 RealVectors;
-    typedef typename SurfaceMesh::Size           Size;
-    typedef typename SurfaceMesh::Index          Index;
-    typedef typename SurfaceMesh::Vertices       Vertices;
-    typedef typename SurfaceMesh::Faces          Faces;
+    typedef typename SurfaceMesh::Size              Size;
+    typedef typename SurfaceMesh::Index             Index;
+    typedef typename SurfaceMesh::Vertices          Vertices;
+    typedef typename SurfaceMesh::Faces             Faces;
 
     /// Enum type for specifying if the mesh should have after
     /// construction: NO_NORMALS no normals, VERTEX_NORMALS the
     /// normals at each vertex, FACE_NORMALS the normals at each face.
-    enum class Normals { NO_NORMALS, VERTEX_NORMALS, FACE_NORMALS };
+    enum class NormalsType { NO_NORMALS, VERTEX_NORMALS, FACE_NORMALS };
 
     //---------------------------------------------------------------------------
   public:
@@ -104,7 +104,7 @@ namespace DGtal
     static
     SurfaceMesh
     makeSphere( const Scalar radius, const RealPoint &center,
-                const Size m, const Size n, Normals normals );
+                Size m, Size n, NormalsType normals );
     
     /// Returns the mean curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -117,7 +117,7 @@ namespace DGtal
     /// @return the mean curvature at each vertex.
     static
     Scalars
-    sphereMeanCurvatures( Scalar radius, Size m, Size n );
+    sphereMeanCurvatures( const Scalar radius, Size m, Size n );
     
     /// Returns the Gaussian curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -130,7 +130,7 @@ namespace DGtal
     /// @return the Gaussian curvature at each vertex.
     static
     Scalars
-    sphereGaussianCurvatures( Scalar radius, Size m, Size n );
+    sphereGaussianCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the first principal curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -143,7 +143,7 @@ namespace DGtal
     /// @return the first principal curvature at each vertex.
     static
     Scalars
-    sphereFirstPrincipalCurvatures( Scalar radius, Size m, Size n );
+    sphereFirstPrincipalCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the second principal curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -156,7 +156,7 @@ namespace DGtal
     /// @return the second principal curvature at each vertex.
     static
     Scalars
-    sphereSecondPrincipalCurvatures( Scalar radius, Size m, Size n );
+    sphereSecondPrincipalCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the first principal direction at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -170,7 +170,7 @@ namespace DGtal
     /// any tangent direction is ok).
     static
     RealVectors
-    sphereFirstPrincipalDirections( Scalar radius, Size m, Size n );
+    sphereFirstPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// Returns the second principal direction at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -184,7 +184,7 @@ namespace DGtal
     /// any tangent direction is ok).
     static
     RealVectors
-    sphereSecondPrincipalDirections( Scalar radius, Size m, Size n );
+    sphereSecondPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// @}
     
@@ -209,8 +209,8 @@ namespace DGtal
     /// @return the corresponding surface mesh.
     static
     SurfaceMesh
-    makeLantern( Scalar radius, Scalar height, RealPoint center,
-                 Size m, Size n, Normals normals );
+    makeLantern( const Scalar radius, const Scalar height, const RealPoint& center,
+                 Size m, Size n, const NormalsType normals );
 
     /// Returns the mean curvature at each vertex of a Schwarz lantern of
     /// given parameters with \a m latitudes and \a n
@@ -223,7 +223,7 @@ namespace DGtal
     /// @return the mean curvature at each vertex.
     static
     Scalars
-    lanternMeanCurvatures( Scalar radius, Size m, Size n );
+    lanternMeanCurvatures( const Scalar radius, Size m, Size n );
       
     /// Returns the Gaussian curvature at each vertex of a Schwarz lantern of
     /// given parameters with \a m latitudes and \a n
@@ -236,7 +236,7 @@ namespace DGtal
     /// @return the Gaussian curvature at each vertex.
     static
     Scalars
-    lanternGaussianCurvatures( Scalar radius, Size m, Size n );
+    lanternGaussianCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the first principal curvature at each vertex of a
     /// Schwarz lantern of given parameters with \a m latitudes and \a
@@ -249,7 +249,7 @@ namespace DGtal
     /// @return the first principal curvature at each vertex (zero).
     static
     Scalars
-    lanternFirstPrincipalCurvatures( Scalar radius, Size m, Size n );
+    lanternFirstPrincipalCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the second principal curvature at each vertex of a
     /// Schwarz lantern of given parameters with \a m latitudes and \a
@@ -262,7 +262,7 @@ namespace DGtal
     /// @return the second principal curvature at each vertex (1/radius).
     static
     Scalars
-    lanternSecondPrincipalCurvatures( Scalar radius, Size m, Size n );
+    lanternSecondPrincipalCurvatures( const Scalar radius, Size m, Size n );
 
     /// Returns the first principal direction at each vertex of a
     /// Schwarz lantern of given parameters with \a m latitudes and \a
@@ -275,7 +275,7 @@ namespace DGtal
     /// @return the first principal direction at each vertex (z-axis).
     static
     RealVectors
-    lanternFirstPrincipalDirections( Scalar radius, Size m, Size n );
+    lanternFirstPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// Returns the second principal direction at each vertex of a
     /// Schwarz lantern of given parameters with \a m latitudes and \a
@@ -288,7 +288,7 @@ namespace DGtal
     /// @return the second principal direction at each vertex (xy-plane).
     static
     RealVectors
-    lanternSecondPrincipalDirections( Scalar radius, Size m, Size n );
+    lanternSecondPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// @}
     
@@ -317,8 +317,8 @@ namespace DGtal
     /// @return the corresponding surface mesh.
     static
     SurfaceMesh
-    makeTorus( Scalar big_radius, Scalar small_radius, RealPoint center,
-               Size m, Size n, int twist, Normals normals );
+    makeTorus( const Scalar big_radius, const Scalar small_radius, const RealPoint& center,
+               Size m, Size n, const int twist, const NormalsType normals );
 
     /// Returns the mean curvature at each vertex of a torus of
     /// given parameters with \a m latitudes and \a n
@@ -336,8 +336,8 @@ namespace DGtal
     /// @return the mean curvature at each vertex.
     static
     Scalars
-    torusMeanCurvatures( Scalar big_radius, Scalar small_radius, 
-                         Size m, Size n, int twist );
+    torusMeanCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                         Size m, Size n, const int twist );
     
     /// Returns the Gaussian curvature at each vertex of a torus of
     /// given parameters with \a m latitudes and \a n
@@ -355,8 +355,8 @@ namespace DGtal
     /// @return the Gaussian curvature at each vertex.
     static
     Scalars
-    torusGaussianCurvatures( Scalar big_radius, Scalar small_radius, 
-                             Size m, Size n, int twist );
+    torusGaussianCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                             Size m, Size n, const int twist );
     
     /// Returns the first principal curvature at each vertex of a
     /// torus of given parameters with \a m latitudes and \a n
@@ -374,8 +374,8 @@ namespace DGtal
     /// @return the first principal curvature at each vertex.
     static
     Scalars
-    torusFirstPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-                                   Size m, Size n, int twist );
+    torusFirstPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                                   Size m, Size n, const int twist );
 
     /// Returns the second principal curvature at each vertex of a
     /// torus of given parameters with \a m latitudes and \a n
@@ -393,8 +393,8 @@ namespace DGtal
     /// @return the second principal curvature at each vertex.
     static
     Scalars
-    torusSecondPrincipalCurvatures( Scalar big_radius, Scalar small_radius, 
-                                    Size m, Size n, int twist );
+    torusSecondPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                                    Size m, Size n, const int twist );
 
     /// Returns the first principal direction at each vertex of a
     /// torus of given parameters with \a m latitudes and \a n
@@ -412,8 +412,8 @@ namespace DGtal
     /// @return the first principal direction at each vertex (in xy-plane).
     static
     RealVectors
-    torusFirstPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-                                   Size m, Size n, int twist );
+    torusFirstPrincipalDirections( const Scalar big_radius, const Scalar small_radius, 
+                                   Size m, Size n, const int twist );
 
     /// Returns the second principal direction at each vertex of a
     /// torus of given parameters with \a m latitudes and \a n
@@ -432,8 +432,8 @@ namespace DGtal
     /// (in meridian-sliced plane).
     static
     RealVectors
-    torusSecondPrincipalDirections( Scalar big_radius, Scalar small_radius, 
-                                    Size m, Size n, int twist );
+    torusSecondPrincipalDirections( const Scalar big_radius, const Scalar small_radius, 
+                                    Size m, Size n, const int twist );
     
     /// @}
     

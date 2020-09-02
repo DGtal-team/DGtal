@@ -211,10 +211,10 @@ SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
   typedef PointVector<3,double>                 RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
-  typedef PolygonMeshHelper::Normals            Normals;
+  typedef PolygonMeshHelper::NormalsType            NormalsType;
   GIVEN( "A sphere of radius 10" ) {
     auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
-                                                   10, 10, Normals::NO_NORMALS );
+                                                   10, 10, NormalsType::NO_NORMALS );
     THEN( "The mesh has Euler characteristic 2" ) {
       REQUIRE( polymesh.Euler() == 2 );
     }
@@ -233,7 +233,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
   }
   GIVEN( "A torus with radii 3 and 1" ) {
     auto polymesh = PolygonMeshHelper::makeTorus( 3.0, 1.0, RealPoint::zero,
-                                                  10, 10, 0, Normals::NO_NORMALS );
+                                                  10, 10, 0, NormalsType::NO_NORMALS );
     THEN( "The mesh has Euler characteristic 0" ) {
       REQUIRE( polymesh.Euler() == 0 );
     }
@@ -252,7 +252,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
   }
   GIVEN( "A lantern with radii 3" ) {
     auto polymesh = PolygonMeshHelper::makeLantern( 3.0, 3.0, RealPoint::zero,
-                                                    10, 10, Normals::NO_NORMALS );
+                                                    10, 10, NormalsType::NO_NORMALS );
     THEN( "The mesh has Euler characteristic 0" ) {
       REQUIRE( polymesh.Euler() == 0 );
     }
@@ -279,9 +279,9 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef SurfaceMeshReader< RealPoint, RealVector > PolygonMeshReader;
   typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
-  typedef PolygonMeshHelper::Normals            Normals;
+  typedef PolygonMeshHelper::NormalsType            NormalsType;
   auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
-                                                 10, 10, Normals::VERTEX_NORMALS );
+                                                 10, 10, NormalsType::VERTEX_NORMALS );
   WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) { 
     PolygonMesh readmesh;
     std::ostringstream output;
