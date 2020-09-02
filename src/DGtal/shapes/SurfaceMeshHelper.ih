@@ -69,8 +69,6 @@ makeSphere( const Scalar radius, const RealPoint& center,
         p[ fv( i, j ) ] = center + radius * RealPoint( cos( theta ) * cos( phi ),
                                                        sin( theta ) * cos( phi ),
                                                        sin( phi ) );
-        // trace.info() << fv( i, j ) << "=(" << i << "," << j << ")"
-        //              << " " << p[ fv( i, j ) ] << std::endl;
       }
   for ( Size j = 0; j < n; ++j )
     faces.push_back( std::vector< Size > { 0u, fv( 0, (j+1) % n ), fv( 0, j ) } ); 
@@ -266,8 +264,6 @@ makeLantern( const Scalar radius, const Scalar height, const RealPoint& center,
         p[ fv( i, j ) ] = center + RealPoint( radius * cos( theta ),
                                               radius * sin( theta ),
                                               h );
-        // trace.info() << fv( i, j ) << "=(" << i << "," << j << ")"
-        //              << " " << p[ fv( i, j ) ] << std::endl;
       }
   for ( Size i = 0; i < m-1; ++i )
     for ( Size j = 0; j < n; ++j )
@@ -442,8 +438,6 @@ makeTorus( const Scalar big_radius, const Scalar small_radius, const RealPoint& 
           + RealPoint( ( big_radius + small_radius * cos( phi ) ) * cos( theta ),
                        ( big_radius + small_radius * cos( phi ) ) * sin( theta ),
                        small_radius * sin( phi ) );
-        // trace.info() << fv( i, j ) << "=(" << i << "," << j << ")"
-        //              << " " << p[ fv( i, j ) ] << std::endl;
       }
   for ( Size i = 0; i < m; ++i )
     for ( Size j = 0; j < n; ++j )
