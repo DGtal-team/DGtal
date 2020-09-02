@@ -84,19 +84,19 @@ Then, there are several ways for creating a surface mesh (see \ref exampleSurfac
 
 \section SurfMesh_sec2 Topological relations within a surface mesh
 
-All topological relations are precomputed as arrays in SurfaceMesh
+All topological relations are precomputed as static arrays in SurfaceMesh
 class (which is thus not adapted to dynamic topological updates). You
 may access the number of cells with SurfaceMesh::nbVertices,
 SurfaceMesh::nbEdges, SurfaceMesh::nbFaces. Note that edge indices
 corresponds to pairs of vertices (i,j) with i<j.
 
 You may ask for each vertex \a v:
-- its vector of incident faces with SurfaceMesh::incidentFaces (order not significant)
-- its vector of neighbor vertices with SurfaceMesh::neighborVertices (order not significant)
+- its range of incident faces with SurfaceMesh::incidentFaces (order not significant)
+- its range of neighbor vertices with SurfaceMesh::neighborVertices (order not significant)
 
 You may ask for each face \a f:
-- its vector of incident vertices with SurfaceMesh::incidentVertices (the order is significant: to each consecutive pair of vertices, there is a corresponding edge).
-- its vector of neighbor faces with SurfaceMesh::neighborFaces (order not significant)
+- its range of incident vertices with SurfaceMesh::incidentVertices (the order is significant: to each consecutive pair of vertices, there is a corresponding edge).
+- its range of neighbor faces with SurfaceMesh::neighborFaces (order not significant)
 
 You may create an edge index with SurfaceMesh::makeEdge. If the two
 vertices (i,j) do not form an edge, then the returned index is
@@ -106,9 +106,9 @@ invalid.
 
 You may ask for each edge \a e:
 - its two incident vertices with SurfaceMesh::incidentVertices, as pair (i,j) with (i<j).
-- its vector of bordering faces with SurfaceMesh::edgeFaces (they can be incident clockwise or counterclockwise)
-- its vector of left bordering faces with SurfaceMesh::edgeLeftFaces (a face to its left, being defined ccw, means that the face is some `(..., i, j, ... )`)
-- its vector of right bordering faces with SurfaceMesh::edgeRightFaces (a face to its left, being defined ccw, means that the face is some `(..., j, i, ... )`)
+- its range of bordering faces with SurfaceMesh::edgeFaces (they can be incident clockwise or counterclockwise)
+- its range of left bordering faces with SurfaceMesh::edgeLeftFaces (a face to its left, being defined ccw, means that the face is some `(..., i, j, ... )`)
+- its range of right bordering faces with SurfaceMesh::edgeRightFaces (a face to its left, being defined ccw, means that the face is some `(..., j, i, ... )`)
 
 All the preceding methods have global variants returning all incident
 faces, all incident vertices, etc: SurfaceMesh::allIncidentFaces,

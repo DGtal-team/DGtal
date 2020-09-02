@@ -55,7 +55,7 @@ namespace DGtal
   // template class SurfaceMeshWriter
   /**
      Description of template class 'SurfaceMeshWriter' <p> \brief Aim:
-     An helper class for writing mesh file formats and creating a SurfaceMesh.
+     An helper class for writing mesh file formats (Waverfront OBJ at this point) and creating a SurfaceMesh.
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
@@ -106,7 +106,7 @@ namespace DGtal
                    const Color&           diffuse_color  = Color( 200, 200, 255 ),
                    const Color&           specular_color = Color::White );
 
-    /// Writes in an OBJ file the geometric lines on edges that
+    /// Writes, in an OBJ file, the geometric lines on edges that
     /// satisfies the given edge predicate.
     ///
     /// @tparam EdgePredicate any type of functor SurfaceMesh::Edge -> bool.
@@ -133,7 +133,7 @@ namespace DGtal
                             const Color&           diffuse_color = Color::Black,
                             const Color&           specular_color= Color::Black );
 
-    /// Writes in an OBJ file the geometric isolines of a scalar field
+    /// Writes, in an OBJ file, the geometric isolines of a scalar field
     /// around value \a iso_value. Scalar values of the scalar field
     /// should be given at vertices and face centroids.
     ///
@@ -162,7 +162,7 @@ namespace DGtal
                            const Color&           diffuse_color = Color::Black,
                            const Color&           specular_color= Color::Black );
 
-    /// Writes in an OBJ file the geometric isolines of a scalar field
+    /// Writes, in an OBJ file, the geometric isolines of a scalar field
     /// around values \a iso_values. Scalar values of the scalar field
     /// should be given at vertices and face centroids.
     ///
@@ -211,4 +211,3 @@ namespace DGtal
 
 #undef SurfaceMeshWriter_RECURSES
 #endif // else defined(SurfaceMeshWriter_RECURSES)
-

@@ -41,7 +41,7 @@
 template <typename TRealPoint, typename TRealVector>
 bool
 DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
-verifyIndices( const std::vector< Index > indices )
+verifyIndicesUniqueness( const std::vector< Index > &indices )
 {
   std::set<Index> sindices( indices.begin(), indices.end() );
   return sindices.size() == indices.size();
@@ -110,7 +110,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
       }
       // Weird: necessary to clear them.
       keyword = ""; linestr = "";
-    } // while ( ! input.eof() )
+    }
   // Creating SurfaceMesh
   trace.info() << "[SurfaceMeshReader::readOBJ] Read"
                << " #lines=" << l
