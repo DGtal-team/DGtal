@@ -54,7 +54,7 @@ namespace DGtal
   // template class SurfaceMeshReader
   /**
      Description of template class 'SurfaceMeshReader' <p> \brief Aim:
-     An helper class for reading mesh files and creating a SurfaceMesh.
+     An helper class for reading mesh files (Wavefront OBJ at this point) and creating a SurfaceMesh.
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
@@ -77,7 +77,7 @@ namespace DGtal
     /// Checks that every index in \a indices are different from the others.
     /// @param indices a vector of integer indices
     /// @return 'true' iff the integer indices are all pairwise different.
-    static bool verifyIndices( const std::vector< Index > indices );
+    static bool verifyIndicesUniqueness( const std::vector< Index > &indices );
 
     /// Splits a string \a str into several strings according to a
     /// delimiter \a delim.
@@ -111,4 +111,3 @@ namespace DGtal
 
 #undef SurfaceMeshReader_RECURSES
 #endif // else defined(SurfaceMeshReader_RECURSES)
-
