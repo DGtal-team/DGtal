@@ -29,12 +29,17 @@
 
 
 /**
-   This snippet shows how to identify and display digital fully
-   subconvex sets of a grid curve form its tangent bundle.
+   This snippet shows how to build SurfaceMesh objects from different sources:
+   
+   - pyramid: construction from list of coordinates and list of faces
+   - torus:   construction from predefined mesh surface
+   - cow:     construction from OBJ file.
+
+   It also shows how to export it as OBJ files.
 
    @see \ref moduleSurfaceMesh
 
-   \image html grid-curve-dig-convexity.png "Extraction of all subconvex triangles to the digital curve."
+   \image html exampleSurfaceMesh.jpg "Visualisation of three surface meshes, using conversion from SurfaceMesh to Mesh"
 
    \example shapes/exampleSurfaceMesh.cpp
 */
