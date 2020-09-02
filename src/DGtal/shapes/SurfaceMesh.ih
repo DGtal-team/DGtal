@@ -695,22 +695,6 @@ computeNeighbors()
       Faces neighbor_faces( neighbor_faces_set.begin(), neighbor_faces_set.end() );
       myNeighborFaces[ idx_f++ ] = neighbor_faces;
     }
-  // // For each vertex, computes its neighboring vertices
-  // Index idx_v = 0;
-  // for ( auto incident_faces : incidentFaces() )
-  //   {
-  //     std::set< Index > neighbor_vertices_set;
-  //     for ( auto idx_f : incident_faces )
-  //       {
-  //         const auto & incident_vertices = incidentVertices()[ idx_f ];
-  //         neighbor_vertices_set.insert( incident_vertices.begin(),
-  //                                       incident_vertices.end() );
-  //       }
-  //     neighbor_vertices_set.erase( idx_v );
-  //     Vertices neighbor_vertices( neighbor_vertices_set.begin(),
-  //                                 neighbor_vertices_set.end() );
-  //     myNeighborVertices[ idx_v++ ] = neighbor_vertices;
-  //   }
 }
 
 //-----------------------------------------------------------------------------
