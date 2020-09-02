@@ -202,10 +202,12 @@ The following local geometric services are provided:
   SurfaceMesh::computeVertexNormalsFromFaceNormalsWithMaxWeights)
 - the vector of weighted faces comprising all the faces included in
   some ball with SurfaceMesh::computeFacesInclusionsInBall, where the
-  weights represent the inclusion ratio.
+  weights represent the inclusion ratio of each face in the given ball
+  (from 0, empty intersection, to 1, completely included).
 - the vectors of weighted cells comprising all the cells included in
   some ball with SurfaceMesh::computeCellsInclusionsInBall, where the
-  weights represent the inclusion ratio.
+  weights represent the inclusion ratio (from 0, empty intersection,
+  to 1, completely included).
 
 The following global geometric services are provided:
 
