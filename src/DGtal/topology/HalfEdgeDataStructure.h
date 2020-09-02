@@ -76,10 +76,6 @@ namespace DGtal
    * std::cout << mesh << std::endl;
    * \endcode
    *
-   * @todo For now, the construction of the half-edge structure
-   * (method HalfEdgeDataStructure::build) is limited to triangles. It
-   * would be not difficult to adapt it to cellular surfaces.
-   * 
    * @note Large parts of this class are taken from
    * https://github.com/yig/halfedge, written by Yotam Gingold.
    */

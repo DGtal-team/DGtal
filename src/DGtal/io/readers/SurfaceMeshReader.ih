@@ -102,7 +102,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
           face_normals.push_back( vn - 1 );
           indices = "";
         }
-        if ( ! face.empty() && verifyIndices( face ) )
+        if ( ! face.empty() && verifyIndicesUniqueness( face ) )
           {
             faces.push_back( face );
             faces_normals_idx.push_back( face_normals );
