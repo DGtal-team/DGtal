@@ -97,7 +97,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Building a torus" );
   //! [exampleSurfaceMesh-make-torus]
   auto torus_mesh = Helper::makeTorus
-    ( 2.5, 0.5, RealPoint { 0.0, 0.0, 0.0 }, 40, 40, 0, Helper::Normals::NO_NORMALS );
+    ( 2.5, 0.5, RealPoint { 0.0, 0.0, 0.0 }, 40, 40, 0, Helper::NormalsType::NO_NORMALS );
   //! [exampleSurfaceMesh-make-torus]
   trace.endBlock();
 
