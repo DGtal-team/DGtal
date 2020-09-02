@@ -108,18 +108,14 @@ namespace DGtal
     typedef Index                                   Vertex;
     typedef std::pair< Edge, Scalar >               WeightedEdge;
     typedef std::pair< Face, Scalar >               WeightedFace;
-    /// The type that defines a range of vertices (e.g. to define faces)
+    /// The type that defines a list/range of vertices (e.g. to define faces)
     typedef std::vector< Vertex >                   Vertices;
-    typedef std::vector< Vertex >                   VertexRange;
-    /// The type that defines a range of faces
+    /// The type that defines a list/range of faces
     typedef std::vector< Edge >                     Edges;
-    typedef std::vector< Edge >                     EdgeRange;
     typedef std::vector< WeightedEdge >             WeightedEdges;
-    typedef std::vector< WeightedEdge >             WeightedEdgeRange;
     typedef std::vector< Face >                     Faces;
     typedef std::vector< Face >                     FaceRange;
     typedef std::vector< WeightedFace >             WeightedFaces;
-    typedef std::vector< WeightedFace >             WeightedFaceRange;
     typedef std::pair< Vertex, Vertex >             VertexPair;
 
     // Required by CUndirectedSimpleLocalGraph
@@ -244,7 +240,7 @@ namespace DGtal
     
     /// Uses the normals associated with faces to compute a normal
     /// vector to each vertex of the mesh. It uses the weights
-    /// proposed by [Max, 1999] for combining face information into
+    /// proposed by \cite max1999weights for combining face information into
     /// vertex information.
     void computeVertexNormalsFromFaceNormalsWithMaxWeights();
 
@@ -617,30 +613,46 @@ namespace DGtal
 
     /// @param v any valid vertex index.
     /// @return the Max's weights for each incident face to \a v, in the same order as `myIncidentFaces[ v ]`.
-    /// @note Used in computeVertexNormalsFromFaceNormalsWithMaxWeights
+    /// @note Used in computeVertexNormalsFromFaceNormalsWithMaxWeights, see \cite max1999weights
     Scalars getMaxWeights( Index v ) const;
     
     /// Given a ball of radius \a r centered on the centroid of face
-    /// \a f, return the faces having an non empty intersection with
-    /// this ball, each one weighted by its ratio of inclusion.
+    /// \a f, return the faces having a non empty intersection with
+    /// this ball, each one weighted by its ratio of inclusion (in the
+    /// range [0,1] where 0 is empty intersection and 1 is completely
+    /// included).
     ///
     /// @param r the radius of the ball.
     /// @param f the face where the ball is centered.
     ///
     /// @return the range of faces having an non empty intersection
-    /// with this ball, each one weighted by its ratio of inclusion.
+    /// with this ball, each one weighted by its ratio of inclusion
+    /// (in the range [0,1] where 0 is empty intersection and 1 is
+    /// completely included).
+    ///
+    /// @note For edges, the ratio is the length of the part of the
+    /// edge included in the ball and the total edge length. For
+    /// faces, the ratio is the @e approximated @e area of the face
+    /// part inside the ball and the face area. The approximation is
+    /// estimated by computing the distance of face vertices and face
+    /// barycenter to the ball center and by linear interpolation of
+    /// the results.
     WeightedFaces
     computeFacesInclusionsInBall( Scalar r, Index f ) const;
     
     /// Given a ball of radius \a r centered on the centroid of face
-    /// \a f, return the vertices/edges/faces having an non empty intersection with
-    /// this ball, each edge/face weighted by its ratio of inclusion.
+    /// \a f, return the vertices/edges/faces having an non empty
+    /// intersection with this ball, each edge/face weighted by its
+    /// ratio of inclusion (in the range [0,1] where 0 is empty
+    /// intersection and 1 is completely included).
     ///
     /// @param r the radius of the ball.
     /// @param f the face where the ball is centered.
     ///
-    /// @return the range of vertices/edges/faces having an non empty intersection
-    /// with this ball, each edge/face weighted by its ratio of inclusion.
+    /// @return the range of vertices/edges/faces having an non empty
+    /// intersection with this ball, each edge/face weighted by its
+    /// ratio of inclusion (in the range [0,1] where 0 is empty
+    /// intersection and 1 is completely included).
     ///
     /// @note a vertex is either included or not, so no weight is necessary.
     std::tuple< Vertices, WeightedEdges, WeightedFaces >
@@ -655,6 +667,10 @@ namespace DGtal
     ///
     /// @return the inclusion ratio as a scalar between 0 (no
     /// intersection) and 1 (inclusion).
+    ///
+    /// @note The approximation is estimated by computing the distance
+    /// of face vertices and face barycenter to the ball center and by
+    /// linear interpolation of the results.
     Scalar faceInclusionRatio( RealPoint p, Scalar r, Index f ) const;
 
     /// Computes an approximation of the inclusion ratio of a given
@@ -666,6 +682,10 @@ namespace DGtal
     ///
     /// @return the inclusion ratio as a scalar between 0 (no
     /// intersection) and 1 (inclusion).
+    ///
+    /// @note The approximation is estimated by computing the distance
+    /// of edge vertices and edge midpoint to the ball center and by
+    /// linear interpolation of the results.
     Scalar edgeInclusionRatio( RealPoint p, Scalar r, Index e ) const;
 
     /// Computes the inclusion ratio of a given
