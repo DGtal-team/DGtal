@@ -153,13 +153,19 @@ inline
 void
 DGtal::MeshHelpers::surfaceMesh2Mesh
 ( const SurfaceMesh< RealPoint, RealVector >& smesh,
-  Mesh< RealPoint >& mesh )
+Mesh< RealPoint >& mesh, const std::vector<Color> &cols )
 {
+  bool hasColor = cols.size() == smesh.nbFaces();
   for ( auto&& v : smesh.positions() )
     mesh.addVertex( v );
-  for ( auto&& f : smesh.allIncidentVertices() )
+    unsigned int i = 0;
+    for ( auto&& f : smesh.allIncidentVertices() )
     {
       typename Mesh< RealPoint >::MeshFace face( f.cbegin(), f.cend() );
+      if (hasColor){
+        mesh.addFace( face, cols[i] );
+        i++;
+      }
       mesh.addFace( face );
     }
 }
