@@ -103,8 +103,8 @@ namespace DGtal
     /// @return the corresponding surface mesh.
     static
     SurfaceMesh
-    makeSphere( Scalar radius, RealPoint center,
-                Size m, Size n, Normals normals );
+    makeSphere( const Scalar radius, const RealPoint &center,
+                const Size m, const Size n, Normals normals );
     
     /// Returns the mean curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
@@ -451,4 +451,3 @@ namespace DGtal
 
 #undef SurfaceMeshHelper_RECURSES
 #endif // else defined(SurfaceMeshHelper_RECURSES)
-
