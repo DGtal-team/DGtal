@@ -47,6 +47,8 @@
   - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
     `feenableexcept` (only applies in Linux when in Debug mode).
     (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
+  - Travis: Fix broken Eigen url. Update Eigen in travis to 3.3.7.
+    (Pablo Hernandez, [#1508](https://github.com/DGtal-team/DGtal/pull/1508))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature

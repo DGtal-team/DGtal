@@ -8,11 +8,11 @@ if [ "$TRAVIS_OS_NAME" == linux ];
 then
     cd "$HOME"
 
-    wget http://bitbucket.org/eigen/eigen/get/3.2.10.tar.bz2
-    bunzip2 3.2.10.tar.bz2
-    tar xf 3.2.10.tar
+    wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2
+    bunzip2 eigen-3.3.7.tar.bz2
+    tar xf eigen-3.3.7.tar
 
-    cd eigen-eigen-b9cd8366d4e8
+    cd eigen-3.3.7
     mkdir build ; cd build
 
     cmake .. -DCMAKE_INSTALL_PREFIX="$DEPS_DIR"
