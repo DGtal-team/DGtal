@@ -58,7 +58,7 @@ SurfaceMesh< PointVector<3,double>,
 {
   typedef PointVector<3,double>                 RealPoint;
   typedef PointVector<3,double>                 RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
+  typedef SurfaceMesh< RealPoint, RealVector >  PolygonMesh;
   typedef PolygonMesh::Vertices                 Vertices;
   std::vector< RealPoint > positions;
   std::vector< Vertices  > faces;
@@ -84,8 +84,8 @@ SurfaceMesh< PointVector<3,double>,
 
 SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]" )
 {
-  typedef PointVector<3,double>               RealPoint;
-  typedef PointVector<3,double>               RealVector;
+  typedef PointVector<3,double>                RealPoint;
+  typedef PointVector<3,double>                RealVector;
   typedef SurfaceMesh< RealPoint, RealVector > PolygonMesh;
   BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
 }
@@ -94,8 +94,8 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
 {
   typedef PointVector<3,double>                 RealPoint;
   typedef PointVector<3,double>                 RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
-  typedef PolygonMesh::VertexRange              VertexRange;
+  typedef SurfaceMesh< RealPoint, RealVector >  PolygonMesh;
+  typedef PolygonMesh::Vertices                 Vertices;
   typedef PolygonMesh::Face                     Face;
   typedef PolygonMesh::Edge                     Edge;
   typedef PolygonMesh::Vertex                   Vertex;
@@ -163,7 +163,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Edge e13      = polymesh.makeEdge( 1, 3 );
       auto lfs      = polymesh.edgeLeftFaces( e13 );
-      VertexRange T = polymesh.incidentVertices( lfs[ 0 ] );
+      Vertices T = polymesh.incidentVertices( lfs[ 0 ] );
       REQUIRE( T.size() == 4 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 1 );
@@ -174,7 +174,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
     THEN( "The face along (3,1) is a quadrangle (3,1,0,2)" ) {
       Edge e13      = polymesh.makeEdge( 1, 3 );
       auto rfs      = polymesh.edgeRightFaces( e13 );
-      VertexRange T = polymesh.incidentVertices( rfs[ 0 ] );
+      Vertices T = polymesh.incidentVertices( rfs[ 0 ] );
       REQUIRE( T.size() == 4 );
       std::sort( T.begin(), T.end() );
       REQUIRE( T[ 0 ] == 0 );
@@ -207,11 +207,11 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
 
 SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
 {
-  typedef PointVector<3,double>                 RealPoint;
-  typedef PointVector<3,double>                 RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
+  typedef PointVector<3,double>                      RealPoint;
+  typedef PointVector<3,double>                      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
-  typedef PolygonMeshHelper::NormalsType            NormalsType;
+  typedef PolygonMeshHelper::NormalsType             NormalsType;
   GIVEN( "A sphere of radius 10" ) {
     auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
                                                    10, 10, NormalsType::NO_NORMALS );
@@ -273,13 +273,13 @@ SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
 
 SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
 {
-  typedef PointVector<3,double>                 RealPoint;
-  typedef PointVector<3,double>                 RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >   PolygonMesh;
+  typedef PointVector<3,double>                      RealPoint;
+  typedef PointVector<3,double>                      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef SurfaceMeshReader< RealPoint, RealVector > PolygonMeshReader;
   typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
-  typedef PolygonMeshHelper::NormalsType            NormalsType;
+  typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
                                                  10, 10, NormalsType::VERTEX_NORMALS );
   WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) { 

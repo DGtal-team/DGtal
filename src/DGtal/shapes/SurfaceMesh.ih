@@ -761,11 +761,11 @@ computeEdges()
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::EdgeRange
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeManifoldBoundaryEdges() const
 {
-  EdgeRange edges;
+  Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
       if ( myEdgeFaces[ e ].size() == 1 )
@@ -776,11 +776,11 @@ computeManifoldBoundaryEdges() const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::EdgeRange
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeManifoldInnerEdges() const
 {
-  EdgeRange edges;
+  Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
       if ( myEdgeFaces[ e ].size() == 2 )
@@ -791,11 +791,11 @@ computeManifoldInnerEdges() const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::EdgeRange
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeManifoldInnerConsistentEdges() const
 {
-  EdgeRange edges;
+  Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
       if ( ( myEdgeRightFaces[ e ].size() == 1 )
@@ -807,11 +807,11 @@ computeManifoldInnerConsistentEdges() const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::EdgeRange
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeManifoldInnerUnconsistentEdges() const
 {
-  EdgeRange edges;
+  Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
       if ( ( myEdgeRightFaces[ e ].size() == 2 )
@@ -823,11 +823,11 @@ computeManifoldInnerUnconsistentEdges() const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::EdgeRange
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeNonManifoldEdges() const
 {
-  EdgeRange edges;
+  Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
       if ( myEdgeFaces[ e ].size() >= 3 ) 
