@@ -6,6 +6,10 @@
   - Making `HyperRectDomain_(sub)Iterator` random-access iterators
     (allowing parallel scans of the domain, Roland Denis,
     [#1416](https://github.com/DGtal-team/DGtal/pull/1416))
+  - Fix bug in BasicDomainSubSampler for negative coordinates of the
+    domain lower bound. (Bertrand Kerautret
+    [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
+    
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
