@@ -14,7 +14,8 @@ if (  WITH_VISU3D_QGLVIEWER )
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
      viewPolygonalMarchingCubes
-)
+     exampleSurfaceMesh
+  )
   FOREACH(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC}) 
     add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE}  DGtal
