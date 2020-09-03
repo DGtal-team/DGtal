@@ -46,8 +46,8 @@ namespace DGtal{
     using ConfigMap = boost::dynamic_bitset<> ;
     CountedPtr<ConfigMap> table(new ConfigMap(known_size));
     try {
-      std::ifstream in_file(input_filename);
       if (compressed) {
+        std::ifstream in_file(input_filename, std::ios::binary);
         namespace io = boost::iostreams ;
         io::filtering_streambuf<io::input> filter;
         filter.push(io::zlib_decompressor());
@@ -56,9 +56,9 @@ namespace DGtal{
         io::copy(filter,compressed_stream);
         compressed_stream >> *table ;
       } else {
+        std::ifstream in_file(input_filename);
         in_file >> *table ;
       }
-      in_file.close();
     } catch(std::exception &e) {
       throw std::runtime_error("loadTable error in: " + input_filename + " with exception: " +  e.what());
     }
