@@ -10,7 +10,6 @@
     domain lower bound. (Bertrand Kerautret
     [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
     
-
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
     order to make piecewise-smooth approximations of scalar or vector
@@ -41,6 +40,8 @@
   - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
     `feenableexcept` (only applies in Linux when in Debug mode).
     (Pablo Hernandez-Cerdan, [#1489](https://github.com/DGtal-team/DGtal/pull/1489))
+  - Travis: Fix broken Eigen url. Update Eigen in travis to 3.3.7.
+    (Pablo Hernandez, [#1508](https://github.com/DGtal-team/DGtal/pull/1508))
 
 - *Geometry*
   - New Integral Invariant functor to retrieve the curvature tensor (principal curvature
@@ -93,6 +94,8 @@
     (Pablo Hernandez-Cerdan, [#1451](https://github.com/DGtal-team/DGtal/pull/1451))
   - Fix bug in VoxelComplex masks when cell was at the boundary of kspace
     (Pablo Hernandez-Cerdan, [#1488](https://github.com/DGtal-team/DGtal/pull/1488))
+  - Fix loadTable not able to read compressed tables in Windows
+    (Pablo Hernandez-Cerdan, [#1505](https://github.com/DGtal-team/DGtal/pull/1505))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
@@ -215,6 +218,9 @@
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element. 
     (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
+  - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
+    Fix issue #1501.
+    (Pablo Hernandez-Cerdan, [#1506](https://github.com/DGtal-team/DGtal/pull/1506))
 
 # DGtal 1.0
 
