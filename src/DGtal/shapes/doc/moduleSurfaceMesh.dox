@@ -1,0 +1,239 @@
+/**
+* @file moduleSurfaceMesh.dox
+*
+* @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+* Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+*
+* @date 2017/05/7
+*
+* Documentation file for module moduleSurfaceMesh
+*
+* This file is part of the DGtal library.
+*/
+
+/* 
+* Useful to avoid writing DGtal:: in front of every class.
+* Do not forget to add an entry in src/DGtal/base/Config.h.in !
+*/
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleSurfaceMesh Surface mesh data structure for representing manifold or non-manifold polygonal surfaces in R3
+@author Jacques-Olivier Lachaud
+
+@since 1.1
+
+Part of \ref packageShapes
+  
+This part of the manual describes how to represent and manipulate
+generic polygonal surfaces embedded in \f$ \mathbb{R}^3 \f$. The class
+\ref SurfaceMesh proposes an index-based data structure that encodes
+all topological relations between vertices, edges and faces, even if
+the mesh presents some non manifold places (like 3 triangles tied
+along the same edge). Input/output operations to and from OBJ files
+are provided through classes \ref SurfaceMeshReader and \ref
+SurfaceMeshWriter. Creation of classical surface 3D shapes (sphere, torus,
+Schwarz lantern) with groundtruth geometry is provided in \ref
+SurfaceMeshHelper.
+
+[TOC]
+
+The following programs are related to this documentation:
+@see testSurfaceMesh.cpp, exampleSurfaceMesh.cpp
+
+The useful includes are:
+\code
+#include "DGtal/shapes/SurfaceMesh.h"           // main class
+#include "DGtal/shapes/SurfaceMeshHelper.h"     // creation/conversion
+#include "DGtal/io/readers/SurfaceMeshReader.h" // input from OBJ file
+#include "DGtal/io/readers/SurfaceMeshWriter.h" // output to OBJ file
+\endcode
+
+\section SurfMesh_sec1 Creating a surface mesh
+
+A surface mesh (class \ref SurfaceMesh) is a template class
+parameterized by the types chosen for 3D points and 3D vectors. A
+common choice is `PointVector< double, 3 >` for both, or equivalently
+`Z3i::RealPoint` and `Z3i::RealVector`. Although the topological part
+of the class does not impose a 3D embedding, the class SurfaceMesh
+imposes it since its target is 3D geometry processing. Indeed some
+geometric operations like computing normals from positions or i/o to
+OBJ format have meaning only in 3D.
+
+First, write the following typedefs:
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-typedef
+
+Then, there are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples): 
+
+- by hand with a range of points for each vertex and a range of
+  indices for of each polygonal face (see SurfaceMesh::SurfaceMesh and
+  SurfaceMesh::init).
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-make-pyramid
+
+- by reading an OBJ  (see SurfaceMeshReader::readOBJ).
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-read-mesh
+
+- by using classical predefined surfaces (see SurfaceMeshHelper::makeSphere, SurfaceMeshHelper::makeTorus, SurfaceMeshHelper::makeLantern).
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-make-torus
+
+@image html exampleSurfaceMesh.jpg "Creating surface meshes from OBJ file, by specifying vertex/face information or predefined shapes"
+
+\section SurfMesh_sec2 Topological relations within a surface mesh
+
+All topological relations are precomputed as static arrays in SurfaceMesh
+class (which is thus not adapted to dynamic topological updates). You
+may access the number of cells with SurfaceMesh::nbVertices,
+SurfaceMesh::nbEdges, SurfaceMesh::nbFaces. Note that edge indices
+corresponds to pairs of vertices (i,j) with i<j.
+
+You may ask for each vertex \a v:
+- its range of incident faces with SurfaceMesh::incidentFaces (order not significant)
+- its range of neighbor vertices with SurfaceMesh::neighborVertices (order not significant)
+
+You may ask for each face \a f:
+- its range of incident vertices with SurfaceMesh::incidentVertices (the order is significant: to each consecutive pair of vertices, there is a corresponding edge).
+- its range of neighbor faces with SurfaceMesh::neighborFaces (order not significant)
+
+You may create an edge index with SurfaceMesh::makeEdge. If the two
+vertices (i,j) do not form an edge, then the returned index is
+SurfaceMesh::nbEdges. Note that calling `makeEdge(i,j)` or
+`makeEdge(j,i)` returns always the same index, whether valid or
+invalid.
+
+You may ask for each edge \a e:
+- its two incident vertices with SurfaceMesh::incidentVertices, as pair (i,j) with (i<j).
+- its range of bordering faces with SurfaceMesh::edgeFaces (they can be incident clockwise or counterclockwise)
+- its range of left bordering faces with SurfaceMesh::edgeLeftFaces (a face to its left, being defined ccw, means that the face is some `(..., i, j, ... )`)
+- its range of right bordering faces with SurfaceMesh::edgeRightFaces (a face to its left, being defined ccw, means that the face is some `(..., j, i, ... )`)
+
+All the preceding methods have global variants returning all incident
+faces, all incident vertices, etc: SurfaceMesh::allIncidentFaces,
+SurfaceMesh::allIncidentVertices, SurfaceMesh::allNeighborFaces,
+SurfaceMesh::allNeighborVertices, SurfaceMesh::allEdgeFaces,
+SurfaceMesh::allEdgeLeftFaces, SurfaceMesh::allEdgeRightFaces.
+
+Since vertices/edges/faces are indices, visiting them is simply a loop
+from 0 (included) till SurfaceMesh::nbVertices / SurfaceMesh::nbEdges /
+SurfaceMesh::nbFaces (all excluded).
+
+\section SurfMesh_sec3 A surface mesh is a graph
+
+Class SurfaceMesh is a model of concepts::CUndirectedSimpleGraph (see
+also moduleGraphDefinitions). Hence you can for instance perform a
+breadth first traversal on its vertices.
+
+\code
+#include "DGtal/shapes/SurfaceMesh.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+...
+typedef SurfaceMesh< RealPoint, RealVector > SurfMesh;
+SurfMesh smesh;
+\endcode
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-graph-bft
+
+\section SurfMesh_sec4 Getting manifold, boundary and non-manifold parts
+
+SurfaceMesh can compute range of edges that have the same topology.
+
+- SurfaceMesh::computeManifoldBoundaryEdges returns the edges that lie
+  on the boundary of the mesh, i.e. they have only one incident face.
+- SurfaceMesh::computeManifoldInnerEdges returns the edges that lie on
+  the inside of the mesh, with two incident faces, consistently
+  oriented or not.
+- SurfaceMesh::computeManifoldInnerConsistentEdges returns the edges
+  that lie on the inside of the mesh, with consistent local
+  orientation, i.e. they have one left incident face, and one right
+  incident face.
+- SurfaceMesh::computeManifoldInnerUnconsistentEdges returns the edges
+  that have two incident faces, but not correctly oriented, i.e. they
+  may have two left incident faces and no right incident face, or two
+  right incident faces and no left incident face.
+- SurfaceMesh::computeNonManifoldEdges returns the edges that are non
+  manifold, i.e. neither boundary or inner edges: they may have more
+  than two incident faces, or two left incident faces for instance.
+
+Locating non manifold vertices (like pinched vertices) requires more
+work and is not implemented.
+
+\section SurfMesh_sec5 Geometric positions and normals, and other information associated to cells
+
+Vertex positions can be accessed and modified through methods
+SurfaceMesh::positions, or SurfaceMesh::position with a given vertex
+index.
+
+You may associate normal vectors to the mesh as follows:
+- to vertices with SurfaceMesh::setVertexNormals
+- to faces with SurfaceMesh::setFaceNormals
+- to faces from vertex positions with SurfaceMesh::computeFaceNormalsFromPositions
+- from faces to vertices with SurfaceMesh::computeVertexNormalsFromFaceNormals or SurfaceMesh::computeVertexNormalsFromFaceNormalsWithMaxWeights
+- from vertices to faces with SurfaceMesh::computeFaceNormalsFromVertexNormals
+
+Normals are then accessed with SurfaceMesh::vertexNormals for
+vertices, SurfaceMesh::faceNormals for faces, or per element with
+SurfaceMesh::vertexNormal and SurfaceMesh::faceNormal.
+
+More generally, you can transfer (by averaging) vector of values:
+
+- from faces to vertices with
+  SurfaceMesh::computeVertexValuesFromFaceValues or
+  SurfaceMesh::computeVertexUnitVectorsFromFaceUnitVectors for unit
+  vectors
+- from vertices to faces with
+  SurfaceMesh::computeFaceValuesFromVertexValues or
+  SurfaceMesh::computeFaceUnitVectorsFromVertexUnitVectors for unit
+  vectors
+
+\section SurfMesh_sec6 Further geometric services
+
+The following local geometric services are provided:
+
+- the area of a face with SurfaceMesh::faceArea
+- the centroid of a face with SurfaceMesh::faceCentroid
+- the centroid of an edge with SurfaceMesh::edgeCentroid
+- the average distance between the centroid of face and its vertices
+  with SurfaceMesh::localWindow
+- the classical Max's weights for each incident face to a vertex with
+  SurfaceMesh::getMaxWeights (see
+  SurfaceMesh::computeVertexNormalsFromFaceNormalsWithMaxWeights)
+- the vector of weighted faces comprising all the faces included in
+  some ball with SurfaceMesh::computeFacesInclusionsInBall, where the
+  weights represent the inclusion ratio of each face in the given ball
+  (from 0, empty intersection, to 1, completely included).
+- the vectors of weighted cells comprising all the cells included in
+  some ball with SurfaceMesh::computeCellsInclusionsInBall, where the
+  weights represent the inclusion ratio (from 0, empty intersection,
+  to 1, completely included).
+
+The following global geometric services are provided:
+
+- the average of the length of edges with SurfaceMesh::averageEdgeLength
+
+You may also perturbate the mesh positions with uniform or non uniform
+random noise: with SurfaceMesh::perturbateWithUniformRandomNoise and
+SurfaceMesh::perturbateWithAdaptiveUniformRandomNoise;
+
+\section SurfMesh_sec7 Conversion and output to OBJ file format
+
+You can convert a \ref SurfaceMesh to a \ref Mesh object simply by
+calling MeshHelpers::surfaceMesh2Mesh.
+
+You can also output OBJ file (if available, with vertex normal
+information) using class SurfaceMeshWriter::writeOBJ, with some
+specialization allowing you to color faces. Edge lines and iso-lines
+can also be output as OBJ in same class. 
+
+The snippet below shows how to output the distances computed in \ref
+SurfMesh_sec3 as a surface colored per face with three isolines
+corresponding to relative distances 0.25, 0.5 and 0.75.
+
+@snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-write-obj
+
+@image html spot-bft-isolines.png "SurfaceMesh faces colored according to distance to bluest vertex and three isodistance lines"
+
+*/
+} // namespace DGtal {

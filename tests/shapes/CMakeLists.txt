@@ -31,11 +31,11 @@ SET(DGTAL_TESTS_SRC
   testDigitalShapesDecorator
   testTriangulatedSurface
   testPolygonalSurface
+  testSurfaceMesh
   testProjection
   testShapeMoveCenter
   testAstroid2D
   testLemniscate2D
-
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
