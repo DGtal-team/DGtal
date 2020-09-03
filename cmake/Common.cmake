@@ -44,6 +44,15 @@ IF (MSVC)
 ENDIF (MSVC)
 
 # -----------------------------------------------------------------------------
+# GCC 10.1 Incompatibility
+# -----------------------------------------------------------------------------
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 10.1)
+  message("CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
+  message(FATAL_ERROR "DGtal cannot be compiled in GCC 10.1 due to a bug in the compiler. "
+    "Try llvm, or other version of gcc (solved in gcc 10.2). Issue: https://github.com/DGtal-team/DGtal/issues/1501")
+endif()
+
+# -----------------------------------------------------------------------------
 # Doxygen targets
 # -----------------------------------------------------------------------------
 message(STATUS "-------------------------------------------------------------------------------")
