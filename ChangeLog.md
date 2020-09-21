@@ -206,7 +206,6 @@
     (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
-
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
     that is a Visual Studio 2019 build error related to befriend
     template specializations
