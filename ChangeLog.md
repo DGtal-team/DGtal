@@ -9,7 +9,7 @@
   - Fix bug in BasicDomainSubSampler for negative coordinates of the
     domain lower bound. (Bertrand Kerautret
     [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
-    
+
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
     order to make piecewise-smooth approximations of scalar or vector
@@ -34,7 +34,6 @@
   - Add a new surface mesh representation for manifold or non-manifold polygonal
     surfaces in R^3 (Jacques-Olivier Lachaud,
     [#1503](https://github.com/DGtal-team/DGtal/pull/1503))
-
 
 ## Changes
 
@@ -218,7 +217,7 @@
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
-    using boost::first_max_element instead std::max_element. 
+    using boost::first_max_element instead std::max_element.
     (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
   - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
     Fix issue #1501.
