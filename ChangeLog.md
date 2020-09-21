@@ -114,9 +114,9 @@
 
 - *Configuration/General*
   - Fix compilation error/warnings with gcc 9.1.1 and clang 9.0
-  (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
+    (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
   - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
-  Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+    Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
   - Fixing Travis configuration due to syntax changes in v2
     (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
   - Compression of png files used in for the documentation
@@ -184,11 +184,11 @@
 
 - *DEC*
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
-  related to bad link in DEC/moduleAT documentation and missing
-  associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
-  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
+    related to bad link in DEC/moduleAT documentation and missing
+    associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
+    Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
   - Adding missing LGPL headers in the DEC examples (David Coeurjolly
-  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
+    [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
 - *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
