@@ -6,7 +6,7 @@ set +e # The brew install has errors
 #
 # Note: gmp and boost already installed
 #
-brew update
+brew update > brew.log
 #brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen
 brew install qt5 graphicsmagick fftw eigen ninja
 # Explicit install of libqglviewer
@@ -18,4 +18,3 @@ BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo 
 
 # Restoring set options
 set -$set_options
-
