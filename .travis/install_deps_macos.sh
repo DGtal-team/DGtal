@@ -11,7 +11,7 @@ brew update > brew.log
 brew install qt5 graphicsmagick fftw eigen ninja
 # Explicit install of libqglviewer
 brew tap DGtal-team/homebrew-dgtal
-brew install libqglviewer.rb
+brew install libqglviewer
 
 ## Temporary HDF5 build issue
 BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
