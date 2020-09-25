@@ -1,0 +1,637 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SurfaceMeshHelper.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/02/18
+ *
+ * Implementation of inline methods defined in SurfaceMeshHelper.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <limits>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::SurfaceMesh 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+makeSphere( const Scalar radius, const RealPoint& center,
+            Size m, Size n, const NormalsType normals )
+{
+  m = std::max( m, (Size)1 ); // nb latitudes (except poles)
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  std::vector< RealPoint > p( nbv );         // positions
+  std::vector< std::vector< Size > > faces; // faces = ( incident vertices )
+  p[     0 ] = center + radius * RealPoint( 0.0, 0.0, -1.0 );
+  p[ m*n+1 ] = center + radius * RealPoint( 0.0, 0.0,  1.0 );
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j + (Size)1; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) j ) / (double) n;
+        const Scalar   phi = ( M_PI * (double) (i+1) ) / (double) (m+1) - 0.5 * M_PI;
+        p[ fv( i, j ) ] = center + radius * RealPoint( cos( theta ) * cos( phi ),
+                                                       sin( theta ) * cos( phi ),
+                                                       sin( phi ) );
+      }
+  for ( Size j = 0; j < n; ++j )
+    faces.push_back( std::vector< Size > { 0u, fv( 0, (j+1) % n ), fv( 0, j ) } ); 
+  for ( Size i = 0; i < m-1; ++i )
+    for ( Size j = 0; j < n; ++j )
+      faces.push_back( std::vector< Size >
+                       { fv( i, j ), fv( i, (j+1) % n ), fv( i+1, (j+1) % n ), fv( i+1, j ) } );
+  for ( Size j = 0; j < n; ++j )
+    faces.push_back( std::vector< Size > { fv( m-1, j ), fv( m-1, (j+1) % n ), m*n+(Size)1 } );
+  SurfaceMesh smesh( p.cbegin(), p.cend(), faces.cbegin(), faces.cend() );
+  if ( normals == NormalsType::VERTEX_NORMALS )
+    {
+      std::vector< RealVector > vnormals( nbv );
+      for ( Size k = 0; k < nbv; ++k )
+        vnormals[ k ] = ( p[ k ] - center ).getNormalized();
+      smesh.setVertexNormals( vnormals.cbegin(), vnormals.cend() );
+    }
+  else if ( normals == NormalsType::FACE_NORMALS )
+    {
+      std::vector< RealVector > fnormals( smesh.nbFaces() );
+      for ( Size k = 0; k < fnormals.size(); ++k )
+        fnormals[ k ] = ( smesh.faceCentroid( k ) - center ).getNormalized();
+      smesh.setFaceNormals( fnormals.cbegin(), fnormals.cend() );
+    }
+  return smesh;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereMeanCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  return Scalars( nbv, 1.0 / radius );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereGaussianCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  return Scalars( nbv, 1.0 / ( radius * radius ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereFirstPrincipalCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  return Scalars( nbv, 1.0 / radius );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereSecondPrincipalCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  return Scalars( nbv, 1.0 / radius );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereFirstPrincipalDirections( const Scalar radius, Size m, Size n )
+{
+  // since the sphere is made of umbilic points, returned directions
+  // are arbitrary tangent vectors. Here we return latitude vectors.
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  std::vector< RealVector > d1( nbv ); // directions
+  d1[     0 ] = RealVector( 0.0, 1.0, 0.0 );
+  d1[ m*n+1 ] = RealVector( 0.0, 1.0, 0.0 );
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j + (Size)1; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) j ) / (double) n;
+        d1[ fv( i, j ) ]   = RealVector( -sin( theta ), cos( theta ), 0.0 );
+      }
+  return d1;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+sphereSecondPrincipalDirections( const Scalar radius, Size m, Size n )
+{
+  // since the sphere is made of umbilic points, returned directions
+  // are arbitrary tangent vectors. Here we return latitude vectors.
+  n = std::max( n, (Size)1 ); // nb latitudes (except poles)
+  m = std::max( m, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0        : bottom pole
+  //         1 --    m: first row
+  //       m+1 --  2*m: second row
+  // ...
+  // (n-1)*m+1 --  n*m: before last row
+  //     n*m+1        : top pole    
+  const Size nbv = 2 + n * m;
+  std::vector< RealVector > d2( nbv ); // directions
+  d2[     0 ] = RealVector( 1.0, 0.0, 0.0 );
+  d2[ m*n+1 ] = RealVector( -1.0, 0.0, 0.0 );
+  const auto fv = [n] (Size i, Size j) -> Size  { return i * n + j + (Size)1; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) j ) / (double) n;
+        const Scalar   phi = ( M_PI * (double) (i+1) ) / (double) (m+1) - 0.5 * M_PI;
+        d2[ fv( i, j ) ] = RealVector( -cos( theta ) * sin( phi ),
+                                       -sin( theta ) * sin( phi ), cos( phi ) );
+      }
+  return d2;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::SurfaceMesh 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+makeLantern( const Scalar radius, const Scalar height, const RealPoint& center,
+             Size m, Size n, const NormalsType normals )
+{
+  m = std::max( m, (Size)2 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row (shifted)
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealPoint > p( nbv );         // positions
+  std::vector< std::vector< Size > > faces; // faces = ( incident vertices )
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( i % 2 == 0 )
+          ? ( 2.0 * M_PI * (double) j ) / (double) n
+          : ( 2.0 * M_PI * ( 0.5 + (double) j ) ) / (double) n;
+        const Scalar     h = height * ( (double) i / (double) (m-1) - 0.5 );
+        p[ fv( i, j ) ] = center + RealPoint( radius * cos( theta ),
+                                              radius * sin( theta ),
+                                              h );
+      }
+  for ( Size i = 0; i < m-1; ++i )
+    for ( Size j = 0; j < n; ++j )
+      if ( i % 2 == 0 )
+        {
+          faces.push_back( std::vector< Size >
+                           { fv( i, j ), fv( i, (j+1) % n ), fv( i+1, j ) } );
+          faces.push_back( std::vector< Size >
+                           { fv( i, (j+1) % n ), fv( i+1, (j+1) % n ), fv( i+1, j )} );
+        }
+      else
+        {
+          faces.push_back( std::vector< Size >
+                           { fv( i, j ), fv( i+1, (j+1)%n ), fv( i+1, j ) } );
+          faces.push_back( std::vector< Size >
+                           { fv( i+1, (j+1)%n ), fv( i, j ), fv( i, (j+1) % n ) } );
+        }
+  SurfaceMesh smesh( p.cbegin(), p.cend(), faces.cbegin(), faces.cend() );
+  if ( normals == NormalsType::VERTEX_NORMALS )
+    {
+      std::vector< RealVector > vnormals( nbv );
+      for ( Size k = 0; k < nbv; ++k )
+        {
+          RealVector n = p[ k ] - center;
+          n[ 2 ] = 0.0;
+          vnormals[ k ] = n.getNormalized();
+        }
+      smesh.setVertexNormals( vnormals.cbegin(), vnormals.cend() );
+    }
+  else if ( normals == NormalsType::FACE_NORMALS )
+    {
+      std::vector< RealVector > fnormals( smesh.nbFaces() );
+      for ( Size k = 0; k < fnormals.size(); ++k )
+        {
+          RealVector n = smesh.faceCentroid( k ) - center;
+          n[ 2 ] = 0.0;
+          fnormals[ k ] = n.getNormalized();
+        }
+      smesh.setFaceNormals( fnormals.cbegin(), fnormals.cend() );
+    }
+  return smesh;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternMeanCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)2 ); // nb latitudes
+  m = std::max( m, (Size)3 ); // nb longitudes
+  const Size nbv = n * m;
+  return Scalars( nbv, 1.0 / ( 2.0 * radius ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternGaussianCurvatures( const Scalar radius, Size m, Size n )
+{
+  n = std::max( n, (Size)2 ); // nb latitudes
+  m = std::max( m, (Size)3 ); // nb longitudes
+  const Size nbv = n * m;
+  return Scalars( nbv, 0.0 );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternFirstPrincipalCurvatures( const Scalar radius, Size m, Size n )
+{
+  m = std::max( m, (Size)2 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row (shifted)
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  return Scalars( nbv, 0.0 );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternSecondPrincipalCurvatures( const Scalar radius, Size m, Size n )
+{
+  m = std::max( m, (Size)2 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row (shifted)
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  return Scalars( nbv, 1.0 / radius );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternFirstPrincipalDirections( const Scalar radius, Size m, Size n )
+{
+  m = std::max( m, (Size)2 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row (shifted)
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealVector > d1( nbv, RealVector( 0.0, 0.0, -1.0 ) ); // directions
+  return d1;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+lanternSecondPrincipalDirections( const Scalar radius, Size m, Size n )
+{
+  m = std::max( m, (Size)2 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row (shifted)
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealVector > d2( nbv ); // directions
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( i % 2 == 0 )
+          ? ( 2.0 * M_PI * (double) j ) / (double) n
+          : ( 2.0 * M_PI * ( 0.5 + (double) j ) ) / (double) n;
+        d2[ fv( i, j ) ] = RealVector( -sin( theta ), cos( theta ), 0.0 );
+      }
+  return d2;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::SurfaceMesh 
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+makeTorus( const Scalar big_radius, const Scalar small_radius, const RealPoint& center,
+           Size m, Size n, const int twist, const NormalsType normals )
+{
+  m = std::max( m, (Size)3 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row 
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealPoint > p( nbv );         // positions
+  std::vector< std::vector< Size > > faces; // faces = ( incident vertices )
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) i ) / (double) m;
+        const Scalar   phi = ( 2.0 * M_PI * (double) j ) / (double) n
+          + twist * 2.0 * M_PI * (double) i / ( double ) m;
+        p[ fv( i, j ) ] = center
+          + RealPoint( ( big_radius + small_radius * cos( phi ) ) * cos( theta ),
+                       ( big_radius + small_radius * cos( phi ) ) * sin( theta ),
+                       small_radius * sin( phi ) );
+      }
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        faces.push_back( std::vector< Size >
+                         { fv( i, j ), fv( (i+1)%m, j ), fv( i, (j+1) % n ) } );
+        faces.push_back( std::vector< Size >
+                         { fv( i, (j+1) % n ), fv( (i+1)%m, j ), fv( (i+1)%m, (j+1) % n ) } );
+      }
+  SurfaceMesh smesh( p.cbegin(), p.cend(), faces.cbegin(), faces.cend() );
+  if ( normals == NormalsType::VERTEX_NORMALS )
+    {
+      std::vector< RealVector > vnormals( nbv );
+      for ( Size i = 0; i < m; ++i )
+        {
+          const Scalar theta = ( 2.0 * M_PI * (double) i ) / (double) m;
+          const RealPoint  c = center + RealPoint( big_radius * cos( theta ),
+                                                   big_radius * sin( theta ), 0.0 );
+          for ( Size j = 0; j < n; ++j )
+            vnormals[ fv( i, j ) ] = ( p[ fv( i, j ) ] - c ).getNormalized();
+        }
+      smesh.setVertexNormals( vnormals.cbegin(), vnormals.cend() );
+    }
+  else if ( normals == NormalsType::FACE_NORMALS )
+    {
+      std::vector< RealVector > fnormals( smesh.nbFaces() );
+      Size k = 0;
+      for ( Size i = 0; i < m; ++i )
+        {
+          const Scalar theta = ( 2.0 * M_PI * (double) i ) / (double) m;
+          const RealPoint  c = center + RealPoint( big_radius * cos( theta ),
+                                                   big_radius * sin( theta ), 0.0 );
+          for ( Size j = 0; j < n; ++j )
+            {
+              fnormals[ k   ] = ( smesh.faceCentroid( k   ) - c ).getNormalized();
+              fnormals[ k+1 ] = ( smesh.faceCentroid( k+1 ) - c ).getNormalized();
+              k += 2;
+            }
+        }
+      smesh.setFaceNormals( fnormals.cbegin(), fnormals.cend() );
+    }
+  return smesh;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusMeanCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                     Size m, Size n, const int twist )
+{
+  m = std::max( m, (Size)3 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  const Size nbv = n * m;
+  Scalars hvalues( 2*nbv );
+  // H = - ( R + 2r cos phi ) / ( 2r(R + r cos phi) )
+  // G = cos phi / ( r(R + r cos phi) )
+  auto H = [&] ( int i, int j )
+    {
+      const Scalar   phi = ( 2.0 * M_PI * (double) j ) / (double) n
+      + twist * 2.0 * M_PI * (double) i / ( double ) m;
+      return ( big_radius + 2.0 * small_radius * cos( phi ) )
+      / ( 2.0 * small_radius * ( big_radius + small_radius * cos( phi ) ) );
+    };
+  Index f = 0;
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        hvalues[ f++ ] = ( H( i, j ) + H( (i+1)%m, j ) + H( i, (j+1) % n ) ) / 3.0;
+        hvalues[ f++ ] = ( H( i, (j+1)%n ) + H( (i+1)%m, j ) + H( (i+1)%m, (j+1)%n ) ) / 3.0;
+      }
+  return hvalues;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusGaussianCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                         Size m, Size n, const int twist )
+{
+  m = std::max( m, (Size)3 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  const Size nbv = n * m;
+  Scalars gvalues( 2*nbv );
+  // H = - ( R + 2r cos phi ) / ( 2r(R + r cos phi) )
+  // G = cos phi / ( r(R + r cos phi) )
+  auto G = [&] ( int i, int j )
+    {
+      const Scalar   phi = ( 2.0 * M_PI * (double) j ) / (double) n
+      + twist * 2.0 * M_PI * (double) i / ( double ) m;
+      return  cos( phi )
+      / ( small_radius * ( big_radius + small_radius * cos( phi ) ) );
+    };
+  Index f = 0;
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        gvalues[ f++ ] = ( G( i, j ) + G( (i+1)%m, j ) + G( i, (j+1) % n ) ) / 3.0;
+        gvalues[ f++ ] = ( G( i, (j+1)%n ) + G( (i+1)%m, j ) + G( (i+1)%m, (j+1)%n ) ) / 3.0;
+      }
+  return gvalues;
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusFirstPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                               Size m, Size n, const int twist )
+{
+  const auto H = torusMeanCurvatures( big_radius, small_radius, m, n, twist );
+  const auto G = torusGaussianCurvatures( big_radius, small_radius, m, n, twist );
+  // k1 = H - sqrt( fabs( H * H - G ))
+  Scalars k1( H.size() );
+  const auto compute_k1 =
+    [&] ( Size i ) { return H[ i ] - sqrt( fabs( H[ i ] * H[ i ] - G[ i ] ) ); };
+  for ( Size i = 0; i < k1.size(); ++i ) k1[ i ] = compute_k1( i );
+  return k1;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusSecondPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+                                Size m, Size n, const int twist )
+{
+  const auto H = torusMeanCurvatures( big_radius, small_radius, m, n, twist );
+  const auto G = torusGaussianCurvatures( big_radius, small_radius, m, n, twist );
+  // k2 = H + sqrt( fabs( H * H - G ))
+  Scalars k2( H.size() );
+  const auto compute_k2 =
+    [&] ( Size i ) { return H[ i ] + sqrt( fabs( H[ i ] * H[ i ] - G[ i ] ) ); };
+  for ( Size i = 0; i < k2.size(); ++i ) k2[ i ] = compute_k2( i );
+  return k2;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusFirstPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
+                               Size m, Size n, const int twist )
+{
+  m = std::max( m, (Size)3 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row 
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealVector > d1( nbv );         // directions
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) i ) / (double) m;
+        d1[ fv( i, j ) ] = RealVector( sin( theta ), cos( theta ), 0.0 );
+      }
+  return d1;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
+DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
+torusSecondPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
+                                Size m, Size n, const int twist )
+{
+  m = std::max( m, (Size)3 ); // nb latitudes
+  n = std::max( n, (Size)3 ); // nb longitudes
+  // vertices are numbered as follows
+  //         0 --  m-1: first row
+  //         m -- 2m-1: second row 
+  // ...
+  //   (n-1)*m -- nm-1: last row
+  const Size nbv = n * m;
+  std::vector< RealVector > d2( nbv );         // directions
+  const auto fv = [n] (Size i, Size j) -> Size { return i * n + j; };
+  for ( Size i = 0; i < m; ++i )
+    for ( Size j = 0; j < n; ++j )
+      {
+        const Scalar theta = ( 2.0 * M_PI * (double) i ) / (double) m;
+        const Scalar   phi = ( 2.0 * M_PI * (double) j ) / (double) n
+          + twist * 2.0 * M_PI * (double) i / ( double ) m;
+        d2[ fv( i, j ) ] = RealVector( -( sin( phi ) ) * cos( theta ),
+                                       -( sin( phi ) ) * sin( theta ),
+                                       cos( phi ) );
+      }
+  return d2;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////

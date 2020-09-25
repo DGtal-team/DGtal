@@ -1,0 +1,838 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SurfaceMesh.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/02/18
+ *
+ * Implementation of inline methods defined in SurfaceMesh.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <limits>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+template <typename RealPointIterator, typename VerticesIterator>
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+SurfaceMesh( RealPointIterator itPos, RealPointIterator itPosEnd,
+             VerticesIterator itVertices, VerticesIterator itVerticesEnd )
+{
+  bool ok = init( itPos, itPosEnd, itVertices, itVerticesEnd );
+  if ( !ok ) clear();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+template <typename RealPointIterator, typename VerticesIterator>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+init( RealPointIterator itPos, RealPointIterator itPosEnd,
+      VerticesIterator itVertices, VerticesIterator itVerticesEnd )
+{
+  clear();
+  myPositions = std::vector< RealPoint >( itPos, itPosEnd );
+  myIncidentFaces.resize( myPositions.size() );
+  Index f = 0; // current face index
+  bool ok = true;
+  for ( ; itVertices != itVerticesEnd; ++itVertices, ++f )
+    {
+      Vertices f_vtcs;
+      for ( auto it = itVertices->begin(), itE = itVertices->end(); it != itE; ++it )
+        {
+          Index vtx = *it;
+          if ( vtx >= nbVertices() )
+            {
+              trace.warning() << "[SurfaceMesh::init] Invalid vtx "
+                              << vtx << " at face " << f
+                              << " since #V=" << nbVertices()
+                              << ". Ignoring vertex." << std::endl;
+              ok = false;
+            }
+          else
+            {
+              myIncidentFaces[ vtx ].push_back( f );
+              f_vtcs.push_back( vtx );
+            }
+        }
+      myIncidentVertices.push_back( f_vtcs );
+    }
+  computeNeighbors();
+  computeEdges();
+  return ok;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+clear()
+{
+  myIncidentVertices.clear();
+  myIncidentFaces.clear();
+  myPositions.clear();
+  myVertexNormals.clear();
+  myFaceNormals.clear();
+  myNeighborFaces.clear();
+  myNeighborVertices.clear();
+  myEdgeVertices.clear();
+  myEdgeFaces.clear();
+  myEdgeRightFaces.clear();
+  myEdgeLeftFaces.clear();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+template <typename RealVectorIterator>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+setVertexNormals( RealVectorIterator itN, RealVectorIterator itNEnd )
+{
+  myVertexNormals = std::vector< RealVector >( itN, itNEnd );
+  return myVertexNormals.size() == myPositions.size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+template <typename RealVectorIterator>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+setFaceNormals( RealVectorIterator itN, RealVectorIterator itNEnd )
+{
+  myFaceNormals = std::vector< RealVector >( itN, itNEnd );
+  return myFaceNormals.size() == myIncidentVertices.size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFaceNormalsFromPositions()
+{
+  myFaceNormals.resize( myIncidentVertices.size() );
+  Index f = 0;
+  for ( auto face : myIncidentVertices )
+    {
+      RealPoint  p; // barycenter
+      RealVector n; // normal
+      // compute barycenter
+      for ( auto idx : face ) p += myPositions[ idx ];
+      p /= face.size();
+      // compute normal as sum of triangle normal vectors.
+      for ( Index i = 0; i < face.size(); ++i )
+        {
+          const Index  j = face[ i ];
+          const Index nj = face[ (i+1) % face.size() ];
+          n += ( myPositions[ j ] - p ).crossProduct( myPositions[ nj ] - p );
+        }
+      auto n_norm = n.norm();
+      myFaceNormals[ f ] = n_norm != 0.0 ? n / n_norm : n;
+      f++;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFaceNormalsFromVertexNormals()
+{
+  if ( myVertexNormals.empty() ) return;
+  myFaceNormals.resize( myIncidentVertices.size() );
+  Index f = 0;
+  for ( auto face : myIncidentVertices )
+    {
+      RealVector n; // normal
+      for ( auto idx : face ) n += myVertexNormals[ idx ];
+      auto n_norm = n.norm();
+      myFaceNormals[ f ] = n_norm != 0.0 ? n / n_norm : n;
+      f++;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeVertexNormalsFromFaceNormals()
+{
+  if ( myFaceNormals.empty() ) return;
+  myVertexNormals.resize( myIncidentFaces.size() );
+  Index v = 0;
+  for ( auto vertex : myIncidentFaces )
+    {
+      RealVector n; // normal
+      for ( auto idx : vertex ) n += myFaceNormals[ idx ];
+      auto n_norm = n.norm();
+      myVertexNormals[ v ] = n_norm != 0.0 ? n / n_norm : n;
+      v++;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeVertexNormalsFromFaceNormalsWithMaxWeights()
+{
+  if ( myFaceNormals.empty() ) return;
+  myVertexNormals.resize( myIncidentFaces.size() );
+  Index v = 0;
+  for ( auto incident_faces : myIncidentFaces )
+    {
+      RealVector n; // normal
+      const auto weights = getMaxWeights( v );
+      Index i = 0;
+      for ( auto idx_f : incident_faces ) n += weights[ i++ ] * myFaceNormals[ idx_f ];
+      auto n_norm = n.norm();
+      myVertexNormals[ v ] = n_norm != 0.0 ? n / n_norm : n;
+      v++;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalars
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+getMaxWeights( Index v ) const
+{
+  Scalars        weights;
+  const auto & neighbors = myNeighborVertices[ v ];
+  const RealPoint      x = myPositions[ v ]; 
+  for ( auto idx_f : myIncidentFaces[ v ] )
+    {
+      // Find adjacent vertices to v
+      std::vector< Index > adj_vertices;
+      for ( auto idx_v : myIncidentVertices[ idx_f ] )
+        {
+          auto it = std::find( neighbors.cbegin(), neighbors.cend(), idx_v );
+          if ( it != neighbors.cend() ) adj_vertices.push_back( *it );
+        }
+      if ( adj_vertices.size() != 2 )
+        {
+          trace.warning() << "[SurfaceMesh::getMaxWeights] "
+                          << adj_vertices.size() << " adjacent vertices to vertex "
+                          << v << " on face" << idx_f << "." << std::endl;
+          for ( auto a : adj_vertices ) std::cerr << " " << a;
+          std::cerr << std::endl;
+        }
+      if (adj_vertices.size() >= 2 )
+        {
+          const Scalar area = faceArea( idx_f );
+          const Scalar   l1 = ( myPositions[ adj_vertices[ 0 ] ] - x ).squaredNorm();
+          const Scalar   l2 = ( myPositions[ adj_vertices[ 1 ] ] - x ).squaredNorm();
+          const Scalar l1l2 = l1 * l2;
+          weights.push_back( l1l2 != 0 ? fabs( area ) / l1l2 : 0.0 );
+        }
+      else weights.push_back( 0.0 );
+    }
+  return weights;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+template <typename AnyRing>
+std::vector<AnyRing> 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFaceValuesFromVertexValues( const std::vector<AnyRing>& vvalues ) const
+{
+  ASSERT( vvalues.size() == nbVertices() );
+  std::vector<AnyRing> fvalues( nbFaces() );
+  Index f = 0;
+  for ( auto face : myIncidentVertices )
+    {
+      AnyRing n = NumberTraits<AnyRing>::ZERO;
+      for ( auto idx : face ) n += vvalues[ idx ];
+      fvalues[ f++ ] = n / face.size();
+    }
+  return fvalues;
+}
+    
+template <typename TRealPoint, typename TRealVector>
+template <typename AnyRing>
+std::vector<AnyRing> 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeVertexValuesFromFaceValues( const std::vector<AnyRing>& fvalues ) const
+{
+  ASSERT( fvalues.size() == nbFaces() );
+  std::vector<AnyRing> vvalues( nbVertices() );
+  Index v = 0;
+  for ( auto vertex : myIncidentFaces )
+    {
+      AnyRing n = NumberTraits<AnyRing>::ZERO;
+      for ( auto idx : vertex ) n += fvalues[ idx ];
+      vvalues[ v++ ] = n / vertex.size();
+    }
+  return vvalues;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::vector<TRealVector>
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFaceUnitVectorsFromVertexUnitVectors
+( const std::vector<RealVector>& vuvectors ) const
+{
+  ASSERT( vuvectors.size() == nbVertices() );
+  std::vector<RealVector> fuvectors( nbFaces() );
+  Index f = 0;
+  for ( auto face : myIncidentVertices )
+    {
+      RealVector n;
+      for ( auto idx : face ) n += vuvectors[ idx ];
+      const auto n_norm = n.norm();
+      fuvectors[ f++ ] = n_norm != 0.0 ? n / n_norm : n;
+    }
+  return fuvectors;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::vector<TRealVector>
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeVertexUnitVectorsFromFaceUnitVectors
+( const std::vector<RealVector>& fuvectors ) const
+{
+  ASSERT( fuvectors.size() == nbFaces() );
+  std::vector<RealVector> vuvectors( nbVertices() );
+  Index v = 0;
+  for ( auto vertex : myIncidentFaces )
+    {
+      RealVector n;
+      for ( auto idx : vertex ) n += fuvectors[ idx ];
+      const auto n_norm = n.norm();
+      vuvectors[ v++ ] = n_norm != 0.0 ? n / n_norm : n;
+    }
+  return vuvectors;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edge 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+makeEdge( Vertex i, Vertex j ) const
+{
+  VertexPair vp = i < j ? std::make_pair( i,j ) : std::make_pair( j,i );
+  auto it = std::lower_bound( myEdgeVertices.cbegin(), myEdgeVertices.cend(), vp );
+  if ( it == myEdgeVertices.cend() || *it != vp ) return nbEdges();
+  return it - myEdgeVertices.cbegin();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+averageEdgeLength() const
+{
+  double      lengths = 0.0;
+  for ( Edge e = 0; e < nbEdges(); ++e )
+    {
+      auto vtcs = edgeVertices( e );
+      const RealPoint  p  = myPositions[ vtcs.first  ];
+      const RealVector pq = myPositions[ vtcs.second ] - p;
+      lengths += pq.norm();
+    }
+  lengths /= nbEdges();
+  return lengths;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+localWindow( Face f ) const
+{
+  const RealPoint x = faceCentroid( f );
+  Scalar local_length = 0.0;
+  for ( auto v : incidentVertices( f ) )
+    local_length += ( myPositions[ v ] - x ).norm();
+  return local_length / incidentVertices( f ).size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+perturbateWithUniformRandomNoise( Scalar p )
+{
+  for ( auto& x : myPositions )
+    {
+      RealVector d( rand01()*2.0 - 1.0, rand01()*2.0 - 1.0, rand01()*2.0 - 1.0 );
+      d = d.getNormalized();
+      Scalar l = rand01() * p;
+      x += l * d;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+perturbateWithAdaptiveUniformRandomNoise( Scalar p )
+{
+  Scalars local_average_lengths( nbVertices() );
+  for ( Index v = 0; v < nbVertices(); ++v )
+    {
+      const RealPoint x = myPositions[ v ];
+      Scalar local_length = 0.0;
+      for ( auto nv : myNeighborVertices[ v ] )
+        local_length += ( myPositions[ nv ] - x ).norm();
+      local_average_lengths[ v ] = local_length / myNeighborVertices[ v ].size();
+    }
+  for ( Index v = 0; v < nbVertices(); ++v )
+    {
+      RealVector d( rand01()*2.0 - 1.0, rand01()*2.0 - 1.0, rand01()*2.0 - 1.0 );
+      d = d.getNormalized();
+      Scalar l = rand01() * p * local_average_lengths[ v ];
+      myPositions[ v ] += l * d;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::RealPoint
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+faceCentroid( Index f ) const
+{
+  RealPoint c;
+  for ( auto v : myIncidentVertices[ f ] )
+    c += myPositions[ v ];
+  return c / myIncidentVertices[ f ].size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::RealPoint
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+edgeCentroid( Index e ) const
+{
+  const auto& vtcs = myEdgeVertices[ e ];
+  RealPoint c = myPositions[ vtcs.first ] + myPositions[ vtcs.second ];
+  return c / 2.0;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+faceArea( Index f ) const
+{
+  Scalar area = 0.0;
+  const auto & inc_vtcs = myIncidentVertices[ f ];
+  RealPoint p = myPositions[ inc_vtcs.back() ];
+  const Index m = inc_vtcs.size() - 2;
+  for ( Index i = 0; i < m; ++i )
+    area += ( myPositions[ inc_vtcs[ i ] ] - p )
+      .crossProduct( myPositions[ inc_vtcs[ i+1 ] ] - p ).norm();
+  return area / 2.0;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFacesInclusionsInBall( Scalar r, Index f ) const
+{
+  WeightedFaces result;
+  if ( r < 0.000001 )
+    {
+      result.push_back( std::make_pair( f, 0.000001 ) );
+      return result;
+    }
+  RealPoint p = faceCentroid( f );
+  std::unordered_set< Index > marked;
+  std::queue< Index > active;
+  active.push( f );
+  marked.insert( f );
+  while ( ! active.empty() )
+    {
+      Index current = active.front();
+      active.pop();
+      Scalar weight = faceInclusionRatio( p, r, current );
+      if ( weight > 0.0 )
+        {
+          result.push_back( std::make_pair( current, weight ) );
+          auto neighbors = myNeighborFaces[ current ];
+          for ( auto n : neighbors )
+            if ( marked.find( n ) == marked.end() )
+              {
+                active.push( n );
+                marked.insert( n );
+              }
+        }
+    }
+  return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::tuple
+< typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Vertices,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeCellsInclusionsInBall( Scalar r, Index f ) const
+{
+  Vertices      result_v;
+  std::set<Vertex> set_v;
+  WeightedEdges result_e;
+  WeightedFaces result_f;
+  if ( r < 0.000001 )
+    {
+      result_f.push_back( std::make_pair( f, 0.000001 ) );
+      return std::make_tuple( result_v, result_e, result_f );
+    }
+  RealPoint p = faceCentroid( f );
+  std::set< Index > marked;
+  std::queue< Index > active;
+  active.push( f );
+  marked.insert( f );
+  while ( ! active.empty() )
+    {
+      Index current = active.front();
+      active.pop();
+      Scalar fweight = faceInclusionRatio( p, r, current );
+      if ( fweight > 0.0 )
+        {
+          result_f.push_back( std::make_pair( current, fweight ) );
+          // Taking care of faces, and the breadth-first traversal
+          const auto& neighbors = myNeighborFaces[ current ];
+          for ( auto n : neighbors )
+            if ( marked.find( n ) == marked.end() )
+              {
+                active.push( n );
+                marked.insert( n );
+              }
+          // Taking care of edges and vertices
+          const auto& inc_v = myIncidentVertices[ current ];
+          for ( Size i = 0; i < inc_v.size(); ++i )
+            {
+              const Vertex vi = inc_v[ i ];
+              const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
+              if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
+                set_v.insert( vi );
+              const Edge e_ij = makeEdge( vi, vn );
+              if ( e_ij >= nbEdges() ) {
+                trace.error() << "bad edge " << vi << " " << vn << std::endl;
+                continue;
+              }
+              Scalar eweight = edgeInclusionRatio( p, r, e_ij );
+              if ( eweight > 0.0 )
+                result_e.push_back( std::make_pair( e_ij, eweight ) );
+            }
+        }
+    }
+  result_v = Vertices( set_v.cbegin(), set_v.cend() );
+  return std::make_tuple( result_v, result_e, result_f );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+faceInclusionRatio( RealPoint p, Scalar r, Index f ) const
+{
+  const auto vertices = myIncidentVertices[ f ];
+  const RealPoint   b = faceCentroid( f );
+  Scalar        d_min = ( b - p ).norm();
+  Scalar        d_max = d_min;
+  for ( auto v : vertices )
+    {
+      Scalar    d = ( myPositions[ v ] - p ).norm();
+      d_max = std::max( d_max, d );
+      d_min = std::min( d_min, d );
+    }
+  if      ( d_max <= r     ) return 1.0;
+  else if ( r     <= d_min ) return 0.0;
+  return ( r - d_min ) / ( d_max - d_min );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+edgeInclusionRatio( RealPoint p, Scalar r, Index e ) const
+{
+  const auto vertices = myEdgeVertices[ e ];
+  const RealPoint   b = edgeCentroid( e );
+  const Scalar     d0 = ( myPositions[ vertices.first ] - p ).norm();
+  const Scalar     d1 = ( myPositions[ vertices.second ] - p ).norm();
+  Scalar        d_min = ( b - p ).norm();
+  Scalar        d_max = d_min;
+  d_max = std::max( d_max, std::max( d0, d1 ) );
+  d_min = std::min( d_min, std::min( d0, d1 ) );
+  if      ( d_max <= r     ) return 1.0;
+  else if ( r     <= d_min ) return 0.0;
+  return ( r - d_min ) / ( d_max - d_min );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+vertexInclusionRatio( RealPoint p, Scalar r, Index v ) const
+{
+  const RealPoint   b = myPositions[ v ];
+  return ( ( b - p ).norm() <= r ) ? 1.0 : 0.0;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+selfDisplay ( std::ostream & out ) const
+{
+  out << "[SurfaceMesh" << ( isValid() ? " (OK)" : " (KO)" )
+      << " #V=" << myPositions.size()
+      << " #VN=" << myVertexNormals.size()
+      << " #E=" << myEdgeVertices.size()
+      << " #F=" << myIncidentVertices.size()
+      << " #FN=" << myFaceNormals.size();
+  double nb_nf  = 0.0;
+  double nb_nv  = 0.0;
+  double nb_nfe = 0.0;
+  for ( auto nf  : myNeighborFaces )    nb_nf  += nf.size();
+  for ( auto nv  : myNeighborVertices ) nb_nv  += nv.size();
+  for ( auto nfe : myEdgeFaces )        nb_nfe += nfe.size();
+  nb_nf  /= nbFaces();
+  nb_nv  /= nbVertices();
+  nb_nfe /= nbEdges();
+  out << " E[IF]=" << nb_nf << " E[IV]=" << nb_nv << " E[IFE]=" << nb_nfe;
+  out << "]";
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+isValid() const
+{
+  return myPositions.size() == myIncidentFaces.size()
+    && ( myVertexNormals.size() == 0
+         || ( myVertexNormals.size() == myPositions.size() ) )
+    && ( myFaceNormals.size() == 0
+         || ( myFaceNormals.size() == myIncidentVertices.size() ) );
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeNeighbors()
+{
+  myNeighborFaces   .resize( nbFaces() );
+  myNeighborVertices.resize( nbVertices() );
+  std::vector< std::set< Index > > tmp( nbVertices() );
+  // For each vertex, computes its neighboring vertices
+  for ( auto incident_vertices : allIncidentVertices() )
+    {
+      const Size nb_iv = incident_vertices.size();
+      for ( Size k = 0; k < nb_iv; ++k )
+        {
+          tmp[ incident_vertices[ k           ] ].insert( incident_vertices[ (k+1)%nb_iv ] );
+          tmp[ incident_vertices[ (k+1)%nb_iv ] ].insert( incident_vertices[ k           ] );
+        }
+    }
+  // For each vertex, computes its neighboring vertices
+  for ( Index idx_v = 0; idx_v < nbVertices(); ++idx_v )
+    myNeighborVertices[ idx_v ] = Vertices( tmp[ idx_v ].cbegin(), tmp[ idx_v ].cend() );
+  
+  // For each face, computes its neighboring faces
+  Index idx_f = 0;
+  for ( auto incident_vertices : allIncidentVertices() )
+    {
+      std::set< Index > neighbor_faces_set;
+      std::sort( incident_vertices.begin(), incident_vertices.end() );
+      for ( auto idx_v : incident_vertices )
+        {
+          const auto & incident_faces = incidentFaces( idx_v );
+          for ( auto inc_f : incident_faces )
+            {
+              // Keep only faces incident to two vertices of f.
+              auto incident_vertices2 = incidentVertices( inc_f );
+              std::sort( incident_vertices2.begin(), incident_vertices2.end() );
+              Vertices common;
+              std::set_intersection( incident_vertices.cbegin(),  incident_vertices.cend(),
+                                     incident_vertices2.cbegin(), incident_vertices2.cend(),
+                                     std::back_inserter( common ) );
+              if ( common.size() == 2 )
+                neighbor_faces_set.insert( inc_f );
+            }
+        }
+      neighbor_faces_set.erase( idx_f );
+      Faces neighbor_faces( neighbor_faces_set.begin(), neighbor_faces_set.end() );
+      myNeighborFaces[ idx_f++ ] = neighbor_faces;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeEdges()
+{
+  std::map< VertexPair, std::vector<Face> > edge2face_right;
+  std::map< VertexPair, std::vector<Face> > edge2face_left;
+  std::set< VertexPair > edges;
+  Index idx_f = 0;
+  for ( auto incident_vertices : allIncidentVertices() )
+    {
+      const Size n = incident_vertices.size();
+      for ( Size i = 0; i < n; i++ )
+        {
+          VertexPair e = std::make_pair( incident_vertices[ i ],
+                                         incident_vertices[ (i+1) % n ] );
+          if ( e.first < e.second ) {
+            edge2face_left[ e ].push_back( idx_f );
+          } else {
+            std::swap( e.first, e.second );
+            edge2face_right[ e ].push_back( idx_f );
+          }
+          edges.insert( e );
+        }
+      idx_f++;
+    }
+  const Size nbe = edges.size();
+  myEdgeVertices.resize  ( nbe );
+  myEdgeFaces.resize     ( nbe );
+  myEdgeRightFaces.resize( nbe );
+  myEdgeLeftFaces.resize ( nbe );
+  Index idx_e = 0;
+  for ( auto e : edges )
+    {
+      myEdgeVertices  [ idx_e ] = e;
+      myEdgeLeftFaces [ idx_e ] = edge2face_left [ e ];
+      myEdgeRightFaces[ idx_e ] = edge2face_right[ e ];
+      myEdgeFaces     [ idx_e ] = myEdgeRightFaces[ idx_e ];
+      myEdgeFaces     [ idx_e ].insert( myEdgeFaces[ idx_e ].end(),
+                                        myEdgeLeftFaces[ idx_e ].cbegin(),
+                                        myEdgeLeftFaces[ idx_e ].cend() );
+      idx_e++;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeManifoldBoundaryEdges() const
+{
+  Edges edges;
+  for ( Index e = 0; e < myEdgeFaces.size(); ++e )
+    {
+      if ( myEdgeFaces[ e ].size() == 1 )
+        edges.push_back( e );
+    }
+  return edges;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeManifoldInnerEdges() const
+{
+  Edges edges;
+  for ( Index e = 0; e < myEdgeFaces.size(); ++e )
+    {
+      if ( myEdgeFaces[ e ].size() == 2 )
+        edges.push_back( e );
+    }
+  return edges;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeManifoldInnerConsistentEdges() const
+{
+  Edges edges;
+  for ( Index e = 0; e < myEdgeFaces.size(); ++e )
+    {
+      if ( ( myEdgeRightFaces[ e ].size() == 1 )
+           && ( myEdgeLeftFaces[ e ].size() == 1 ) )
+        edges.push_back( e );
+    }
+  return edges;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeManifoldInnerUnconsistentEdges() const
+{
+  Edges edges;
+  for ( Index e = 0; e < myEdgeFaces.size(); ++e )
+    {
+      if ( ( myEdgeRightFaces[ e ].size() == 2 )
+           || ( myEdgeLeftFaces[ e ].size() == 2 ) )
+        edges.push_back( e );
+    }
+  return edges;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edges
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeNonManifoldEdges() const
+{
+  Edges edges;
+  for ( Index e = 0; e < myEdgeFaces.size(); ++e )
+    {
+      if ( myEdgeFaces[ e ].size() >= 3 ) 
+        edges.push_back( e );
+    }
+  return edges;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+                    const SurfaceMesh<TRealPoint, TRealVector> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
