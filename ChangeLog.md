@@ -2,6 +2,15 @@
 
 ## New Features / Critical Changes
 
+- *Project*
+  - For this release, we have cleaned up the git history (using [bfg](https://rtyley.github.io/bfg-repo-cleaner/)),
+    removing old deprecated files or commit errors. For a complete description,
+    please follow the discussion of Issue [#1477](https://github.com/DGtal-team/DGtal/issues/1477).
+    If you are doing a clean `git clone` of the project, or use the release archive,
+    everything should be fine. If you have branches on the release 1.1beta, you
+    would need to rebase your current working copy.
+    (David Coeurjolly, [#1510](https://github.com/DGtal-team/DGtal/pull/1510))
+
 - *Kernel package*
   - Making `HyperRectDomain_(sub)Iterator` random-access iterators
     (allowing parallel scans of the domain, Roland Denis,
