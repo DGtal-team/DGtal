@@ -48,6 +48,7 @@
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/PolygonalSurface.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,10 +78,10 @@ namespace DGtal
     /// @return 'true' on success, 'false' if the input \a mesh was
     /// not a combinatorial surface.
     template <typename Point>
-      static
-      bool mesh2TriangulatedSurface
-      ( const Mesh<Point>& mesh,
-        TriangulatedSurface<Point>& trisurf );
+    static
+    bool mesh2TriangulatedSurface
+    ( const Mesh<Point>& mesh,
+      TriangulatedSurface<Point>& trisurf );
 
     /// Builds a polygon mesh (class PolygonalSurface) from
     /// a mesh (class Mesh). The output polygonal
@@ -93,10 +94,10 @@ namespace DGtal
     /// @return 'true' on success, 'false' if the input \a mesh was
     /// not a combinatorial surface.
     template <typename Point>
-      static
-      bool mesh2PolygonalSurface
-      ( const Mesh<Point>& mesh,
-        PolygonalSurface<Point>& polysurf );
+    static
+    bool mesh2PolygonalSurface
+    ( const Mesh<Point>& mesh,
+      PolygonalSurface<Point>& polysurf );
 
     /// Builds a polygonal surface from a triangulated
     /// surface. Polygonal faces are triangulated according to \a
@@ -126,11 +127,11 @@ namespace DGtal
     /// (e.g. (0,1,2,3) gives (0,1,2) and (2,0,3) and (3,2,1,0) gives
     /// (3,2,0) and (0,2,1): then edge {2,0} is shared by four faces).
     template <typename Point>
-      static
-      void polygonalSurface2TriangulatedSurface
-      ( const PolygonalSurface<Point>& polysurf,
-        TriangulatedSurface<Point>&    trisurf,
-        bool  centroid = true );
+    static
+    void polygonalSurface2TriangulatedSurface
+    ( const PolygonalSurface<Point>& polysurf,
+      TriangulatedSurface<Point>&    trisurf,
+      bool  centroid = true );
 
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// the dual graph of a 2-dimensional digital surface in K^3 (class
@@ -149,14 +150,14 @@ namespace DGtal
     /// @param[out] trisurf the output triangulated surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a trisurf.
     template < typename DigitalSurfaceContainer,
-      typename CellEmbedder,
-      typename VertexMap >
-      static
-      void digitalSurface2DualTriangulatedSurface
-      ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
-        const CellEmbedder& cembedder,
-        TriangulatedSurface<typename CellEmbedder::Value>& trisurf,
-        VertexMap& vertexmap );
+               typename CellEmbedder,
+               typename VertexMap >
+    static
+    void digitalSurface2DualTriangulatedSurface
+    ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+      const CellEmbedder& cembedder,
+      TriangulatedSurface<typename CellEmbedder::Value>& trisurf,
+      VertexMap& vertexmap );
 
     /// Builds a polygonal surface (class PolygonalSurface) from
     /// the dual graph of a 2-dimensional digital surface in K^3 (class
@@ -170,14 +171,14 @@ namespace DGtal
     /// @param[out] polysurf the output polygonal surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a polysurf.
     template < typename DigitalSurfaceContainer,
-      typename CellEmbedder,
-      typename VertexMap >
-      static
-      void digitalSurface2DualPolygonalSurface
-      ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
-        const CellEmbedder& cembedder,
-        PolygonalSurface<typename CellEmbedder::Value>& polysurf,
-        VertexMap& vertexmap );
+               typename CellEmbedder,
+               typename VertexMap >
+    static
+    void digitalSurface2DualPolygonalSurface
+    ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+      const CellEmbedder& cembedder,
+      PolygonalSurface<typename CellEmbedder::Value>& polysurf,
+      VertexMap& vertexmap );
 
     /// Builds a polygonal surface (class PolygonalSurface) from
     /// the primal graph of a 2-dimensional digital surface in K^3 (class
@@ -193,14 +194,14 @@ namespace DGtal
     /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
     /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
     template < typename DigitalSurfaceContainer,
-      typename CellEmbedder,
-      typename CellMap >
-      static
-      bool digitalSurface2PrimalPolygonalSurface
-      ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
-        const CellEmbedder& cembedder,
-        PolygonalSurface<typename CellEmbedder::Value>& polysurf,
-        CellMap& cellmap );
+               typename CellEmbedder,
+               typename CellMap >
+    static
+    bool digitalSurface2PrimalPolygonalSurface
+    ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+      const CellEmbedder& cembedder,
+      PolygonalSurface<typename CellEmbedder::Value>& polysurf,
+      CellMap& cellmap );
     
     
     /// Builds a mesh (class Mesh) from a triangulated surface (class
@@ -212,10 +213,10 @@ namespace DGtal
     /// @param[in]  trisurf the input triangulated surface mesh.
     /// @param[in,out] mesh the output mesh (which should be empty).
     template <typename Point>
-      static
-      void triangulatedSurface2Mesh
-      ( const TriangulatedSurface<Point>& trisurf,
-        Mesh<Point>& mesh );
+    static
+    void triangulatedSurface2Mesh
+    ( const TriangulatedSurface<Point>& trisurf,
+      Mesh<Point>& mesh );
 
     /// Builds a mesh (class Mesh) from a polygon mesh (class
     /// PolygonalSurface). Note that the mesh looses the topology
@@ -226,11 +227,27 @@ namespace DGtal
     /// @param[in]     polysurf the input polygonal surface (ie a polygon mesh).
     /// @param[in,out] mesh the output mesh (which should be empty).
     template <typename Point>
-      static
-      void polygonalSurface2Mesh
-      ( const PolygonalSurface<Point>& polysurf,
-        Mesh<Point>& mesh );
+    static
+    void polygonalSurface2Mesh
+    ( const PolygonalSurface<Point>& polysurf,
+      Mesh<Point>& mesh );
 
+    /// Builds a mesh (class Mesh) from a surface mesh (class
+    /// SurfaceMesh). Note that the mesh looses the topology
+    /// of the surface mesh, since it is essentially a soup of
+    /// triangles.
+    ///
+    /// @tparam RealPoint the type for 3d points.
+    /// @tparam RealVector the type for 3d vectors.
+    /// @param[in]     smesh the input surface mesh.
+    /// @param[in]     cols a vector defining the face colors.
+    /// @param[in,out] mesh the output mesh (which should be empty).
+    template < typename RealPoint, typename RealVector >
+    static
+    void surfaceMesh2Mesh
+    ( const SurfaceMesh< RealPoint, RealVector >& smesh,
+     Mesh< RealPoint >& mesh, const std::vector<Color> &cols = {} );
+    
     /// Exports a triangulated surface as an OBJ file (with topology)
     /// into the given output stream.
     ///
@@ -238,10 +255,10 @@ namespace DGtal
     /// @param[in,out] output an output stream
     /// @param[in]     trisurf the input triangulated surface mesh.
     template <typename Point>
-      static
-      bool exportOBJ
-      ( std::ostream& output,
-        const TriangulatedSurface<Point>& trisurf );
+    static
+    bool exportOBJ
+    ( std::ostream& output,
+      const TriangulatedSurface<Point>& trisurf );
 
     /// Exports a polygonal surface as an OBJ file (with topology)
     /// into the given output stream.
@@ -250,10 +267,10 @@ namespace DGtal
     /// @param[in,out] output an output stream
     /// @param[in]     polysurf the input polygonal surface mesh.
     template <typename Point>
-      static
-      bool exportOBJ
-      ( std::ostream& output,
-        const PolygonalSurface<Point>& polysurf );
+    static
+    bool exportOBJ
+    ( std::ostream& output,
+      const PolygonalSurface<Point>& polysurf );
 
 
     /// Exports a triangulated or polygonal surface as an OBJ file
@@ -270,16 +287,16 @@ namespace DGtal
     /// @param[in]     diffuse_color the diffuse color of all faces if \a diffuse_colors was empty.
     /// @param[in]     specular_color the specular color of all faces.
     template <typename TTriangulatedOrPolygonalSurface>
-      static
-      bool exportOBJwithFaceNormalAndColor
-      ( std::ostream& output_obj,
-        const std::string&             mtl_filename,
-        const TTriangulatedOrPolygonalSurface& polysurf,
-        const std::vector< typename TTriangulatedOrPolygonalSurface::Point >&    normals,
-        const std::vector< Color >&    diffuse_colors,
-        const Color&                   ambient_color  = Color( 32, 32, 32 ),
-        const Color&                   diffuse_color  = Color( 200, 200, 255 ),
-        const Color&                   specular_color = Color::White );
+    static
+    bool exportOBJwithFaceNormalAndColor
+    ( std::ostream& output_obj,
+      const std::string&             mtl_filename,
+      const TTriangulatedOrPolygonalSurface& polysurf,
+      const std::vector< typename TTriangulatedOrPolygonalSurface::Point >&    normals,
+      const std::vector< Color >&    diffuse_colors,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White );
 
     
     /// Exports a new material in a MTL stream.
@@ -290,12 +307,12 @@ namespace DGtal
     /// @param[in]     diffuse_color the diffuse color for the material.
     /// @param[in]     specular_color the specular color for the material.
     static
-      bool exportMTLNewMaterial
-      ( std::ostream& output_mtl,
-        unsigned int idxMaterial,
-        const Color& ambient_color,
-        const Color& diffuse_color,
-        const Color& specular_color );
+    bool exportMTLNewMaterial
+    ( std::ostream& output_mtl,
+      unsigned int idxMaterial,
+      const Color& ambient_color,
+      const Color& diffuse_color,
+      const Color& specular_color );
 
   }; // end of class MeshHelpers
 
