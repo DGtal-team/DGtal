@@ -110,6 +110,10 @@
     computations (Adrien Krähenbühl,
    [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
 
+- *IO*
+  - When the 3D built-in viewer is enabled (libqglviewer), the default
+    required Qt version is now Qt5 instead of Qt4 (David Coeurjolly,
+    [#14XX](https://github.com/DGtal-team/DGtal/pull/14XX))
 
 ## Bug Fixes
 
