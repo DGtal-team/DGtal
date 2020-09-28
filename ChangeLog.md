@@ -96,6 +96,10 @@
     (David Coeurjolly [#1418](https://github.com/DGtal-team/DGtal/pull/1418))
     (Roland Denis [#1419](https://github.com/DGtal-team/DGtal/pull/1419))
 
+- *Geometry*
+  - Add const directives to some curve estimators on shapes.
+    (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
+    
 - *Topology*
   - Provides partial flip, split and merge operations for half-edge data structures
     and triangulated surfaces (Jacques-Olivier Lachaud,

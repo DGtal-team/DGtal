@@ -143,34 +143,25 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 
     ////////////////////////////////////////estimations
     double trueValue = M_PI*2*radius;
-    L1LengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstCirculator > l1length;
-    l1length.init(h, ra.c(), ra.c());
+    L1LengthEstimator< GridCurve<KSpace>::PointsRange::ConstCirculator > l1length;
     TwoStepLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
-    locallength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     BLUELocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > BLUElength;
-    BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     RosenProffittLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > RosenProffittlength;
-    RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     DSSLengthEstimator< GridCurve<KSpace>::PointsRange::ConstCirculator > DSSlength;
-    DSSlength.init(h, rp.c(), rp.c());
-    // MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
-    // MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    // FPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > FPlength;
-    // FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstCirculator > MLPlength;
+    FPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstCirculator > FPlength;
 
     trace.info() << "#Estimations" <<std::endl;
     trace.info() << "#h true naive 1-sqrt(2) BLUE RosenProffitt DSS MLP FP " <<std::endl;
     trace.info() << h << " " << trueValue  
-                 << " " << l1length.eval() 
-                 << " " << locallength.eval() 
-                 << " " << BLUElength.eval() 
-                 << " " << RosenProffittlength.eval() 
-		 <<  " " << DSSlength.eval() 
-                 // << " " << MLPlength.eval() 
-                 // <<  " " << FPlength.eval() 
-		 << std::endl;
-
-
+                 << " " << l1length.eval(rp.c(), rp.c(), h) 
+                 << " " << locallength.eval(ra.begin(), ra.end(), h) 
+                 << " " << BLUElength.eval(ra.begin(), ra.end(), h) 
+                 << " " << RosenProffittlength.eval(ra.begin(), ra.end(), h)
+                 << " " << DSSlength.eval(rp.c(), rp.c(), h) 
+                 << " " << MLPlength.eval(rp.c(), rp.c(), h)
+                 << " " << FPlength.eval(rp.c(), rp.c(), h)
+     << std::endl;
 
   return true;
 }

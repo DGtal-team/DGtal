@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Functor to compare two local geometric estimators. 
    * 
    *
-   * @tparam TFirstEsimator  type of the first estimator.
+   * @tparam TFirstEsimator type of the first estimator.
    * @tparam TSecondEstimator type of the second estimator.
    * 
    */
@@ -89,37 +89,40 @@ namespace DGtal
      * given point.
      *
      * @pre both estimators must have been initialised with the same
-     * parameters (geometry, resolution h, ...).
+     * parameters (geometry, shape, ...).
      *
      * @param aFirstEstimator the first estimator.
      * @param aSecondEstimator the second estimator.
      * @param it the point to evaluate the difference.
+     * @param h grid size (must be > 0).
      * @return the difference between the two estiamtor values at
      * *it. (firstEstimator value - secondEstimator value). 
      */
     static 
     Quantity compare(FirstEstimator & aFirstEstimator,
          SecondEstimator & aSecondEstimator,
-         const ConstIterator &it)
+         const ConstIterator &it,
+         const double h = 1.)
     {
-      ASSERT( aFirstEstimator.isValid());
-      ASSERT( aSecondEstimator.isValid());
-      
-      return aFirstEstimator.eval(it) - aSecondEstimator.eval(it);
+      ASSERT( aFirstEstimator.isValid() );
+      ASSERT( aSecondEstimator.isValid( ));
+
+      return aFirstEstimator.eval(it, h) - aSecondEstimator.eval(it, h);
     }
-    
-    
+
+
    /**
      * Return a statistic on the error (difference) between the two
      * estimators for points ranging from itb to ite.
      *
      * @pre both estimators must have been initialised with the same
-     * parameters (geometry, resolution h, ...).
+     * parameters (geometry, shape, ...).
      *
      * @param aFirstEstimator the first estimator.
      * @param aSecondEstimator the second estimator.
      * @param itb starting point of the comparison.
      * @param ite ending point of the comparison.
+     * @param h grid size (must be > 0).
      * @param storeSamples if true, the instance of Statistic will
      * store all the values.
      * @return the statistic of differences between the two estiamtor values 
@@ -130,29 +133,31 @@ namespace DGtal
       SecondEstimator & aSecondEstimator,
       const ConstIterator & itb, 
       const ConstIterator & ite,
+      const double h = 1.,
       const bool storeSamples = false)
     {
       OutputStatistic stats(storeSamples);
-      
+
       for(ConstIterator it = itb; it!= ite; ++it)
-  stats.addValue( compare(aFirstEstimator,aSecondEstimator,it));
-      
+        stats.addValue(compare(aFirstEstimator, aSecondEstimator, it, h));
+
       stats.terminate();
       return stats;
     }
-    
-    
+
+
     /**
      * Return the angular error between the two estimations (if
      * Quantity values are vectors) at a
      * given point.
      *
      * @pre both estimators must have been initialised with the same
-     * parameters (geometry, resolution h, ...).
+     * parameters (geometry, shape, ...).
      *
      * @param aFirstEstimator the first estimator.
      * @param aSecondEstimator the second estimator.
      * @param it the point to evaluate the difference.
+     * @param h grid size (must be > 0).
      * @return the difference between the two estiamtor values at
      * *it. (firstEstimator value - secondEstimator value). 
      */
@@ -160,22 +165,22 @@ namespace DGtal
     double 
     compareVectors(FirstEstimator & aFirstEstimator,
        SecondEstimator & aSecondEstimator,
-       const ConstIterator &it)
+       const ConstIterator &it,
+       const double h = 1.)
     {
       ASSERT( aFirstEstimator.isValid());
       ASSERT( aSecondEstimator.isValid());
-      Quantity v1 = aFirstEstimator.eval(it), v2 = aSecondEstimator.eval(it);
-      
+      Quantity v1 = aFirstEstimator.eval(it, h), v2 = aSecondEstimator.eval(it, h);
+
       ASSERT( v1.norm() != 0.0 );
       ASSERT( v2.norm() != 0.0 );
       double ndot = (double) v1.dot(v2)
-  / ( (double) ( v1.norm() * v2.norm() ) );
+                    / ( (double) ( v1.norm() * v2.norm() ) );
       return ( ndot > 1.0 ) ? 0.0
-  : ( ndot < -1.0 ) ? M_PI : acos( ndot );
-      
+              : ( ndot < -1.0 ) ? M_PI : acos( ndot );
     }
-    
-    
+
+
    /**
      * Return a statistic on the error (angular error) between the two
      * estimators for points ranging from itb to ite.
@@ -187,6 +192,7 @@ namespace DGtal
      * @param aSecondEstimator the second estimator.
      * @param itb starting point of the comparison.
      * @param ite ending point of the comparison.
+     * @param h grid size (must be >0).
      * @param storeSamples if true, the instance of Statistic will
      * store all the values.
      * @return the statistic of differences between the two estiamtor values 
@@ -197,20 +203,21 @@ namespace DGtal
        SecondEstimator & aSecondEstimator,
        const ConstIterator & itb, 
        const ConstIterator & ite,
+       const double h,
        const bool storeSamples = false)
     {
       OutputVectorStatistic stats(storeSamples);
-      
+
       for(ConstIterator it = itb; it!= ite; ++it)
-  stats.addValue( compareVectors(aFirstEstimator,aSecondEstimator,it));
-      
+        stats.addValue(compareVectors(aFirstEstimator, aSecondEstimator, it, h));
+
       stats.terminate();
       return stats;
     }
-    
+
     // ------------------------- Hidden services ------------------------------
   private:
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.

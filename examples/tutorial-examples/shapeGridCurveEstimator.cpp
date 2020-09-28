@@ -118,21 +118,20 @@ int main()
   //! [shapeGridCurveEstimator-lengthEstimation]
   //length estimation
   DSSLengthEstimator< Range::ConstCirculator > DSSlength;
-  DSSlength.init( h, r.c(), r.c() );
-  double length1 = DSSlength.eval();
-  trace.info() << "Length (h=" << h << "): " << length1 << std::endl; 
+  double length1 = DSSlength.eval(r.c(), r.c(), h);
+  trace.info() << "Length (h=" << h << "): " << length1 << std::endl;
   //! [shapeGridCurveEstimator-lengthEstimation]
 
-//@TODO correct init method of trueLengthEstimator (remove &flower)
   //! [shapeGridCurveEstimator-trueLengthEstimation]
   typedef ParametricShapeArcLengthFunctor< Flower > Length;
   TrueGlobalEstimatorOnPoints< 
-    Range::ConstIterator, 
+    Range::ConstCirculator, 
     Flower, 
     Length  >  trueLengthEstimator;
-  trueLengthEstimator.init( h, r.begin(), r.end(), &flower, c.isClosed());
-  double trueLength = trueLengthEstimator.eval(); 
-  trace.info() << "ground truth: " << trueLength << std::endl; 
+  trueLengthEstimator.attach(flower);
+  // Note: Not equivalent to eval(r.c(), r.c(), h)
+  double trueLength = trueLengthEstimator.eval();
+  trace.info() << "ground truth: " << trueLength << std::endl;
   //! [shapeGridCurveEstimator-trueLengthEstimation]
 
   //! [shapeGridCurveEstimator-higher]
@@ -151,8 +150,7 @@ int main()
   c.initFromVector( boundaryPoints );
   Range r2 = c.getPointsRange(); 
   //estimate length
-  DSSlength.init( h, r2.c(), r2.c() );
-  double length2 = DSSlength.eval();
+  double length2 = DSSlength.eval(r2.c(), r2.c(), h);
   trace.info() << "Length (h=" << h << "): " << length2 << std::endl;  
   //! [shapeGridCurveEstimator-higher]
   

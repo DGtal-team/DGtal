@@ -81,7 +81,7 @@ bool test(const I& itb, const I& ite)
   SCEstimator f; 
 
   Estimator e(sc,f); 
-  e.init(1,itb,ite);
+  e.init(itb,ite);
 
   unsigned int nb = 0; 
   unsigned int nbok = 0; 
@@ -94,7 +94,7 @@ bool test(const I& itb, const I& ite)
 	ConstIterator it = itb; 
 	do 
 	  {
-	    Value q = e.eval(it);  
+	    Value q = e.eval(it,1.);  
 	    cout << q << " "; 
 	    v1.push_back( q ); 
 	    ++it; 

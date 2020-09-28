@@ -95,8 +95,7 @@ namespace DGtal
        @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
     */
     template <typename T>
-    struct CCurveLocalGeometricEstimator: 
-      boost::DefaultConstructible<T>
+    struct CCurveLocalGeometricEstimator
     {
 
       // ----------------------- Concept checks ------------------------------
@@ -112,9 +111,6 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
       {
-        //init method
-        myX.init( myH, myItb, myIte ); 
-
         concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
         concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
       }
