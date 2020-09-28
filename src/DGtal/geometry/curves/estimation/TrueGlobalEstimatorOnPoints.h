@@ -56,8 +56,8 @@ namespace DGtal
   // template class TrueGlobalEstimatorOnPoints
   /**
    * Description of template class 'TrueGlobalEstimatorOnPoints' <p>
-   * \brief Aim: Computes the true quantity to each element of a range associated to 
-   * a parametric shape.
+   * \brief Aim: Computes the true quantity associated to a parametric shape or
+   * to a subrange associated to a parametric shape.
    *
    * @tparam TConstIteratorOnPoints type of iterator on points used as
    * query points.
@@ -65,14 +65,16 @@ namespace DGtal
    * @tparam TParametricShapeFunctor type of Functor used to evaluate
    * the quantity.
    */
-  template <typename TConstIteratorOnPoints, typename TParametricShape, typename TParametricShapeFunctor>
+  template <typename TConstIteratorOnPoints,
+      typename TParametricShape,
+      typename TParametricShapeFunctor>
   class TrueGlobalEstimatorOnPoints
   {
 
     // ----------------------- Types ------------------------------
   public:
 
-    typedef TConstIteratorOnPoints ConstIteratorOnPoints;
+    typedef TConstIteratorOnPoints ConstIterator;
 
     typedef TParametricShape ParametricShape;
     typedef typename ParametricShape::RealPoint RealPoint; 
@@ -87,59 +89,48 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    TrueGlobalEstimatorOnPoints() 
-    {
-      myFlagIsInit = false;
-    }
-   
-    /**
-     * Constructor.
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     * @param aShape a shape 
-     * @param isClosed true if the input range is closed.
-     */
-    TrueGlobalEstimatorOnPoints(const double h, 
-             const ConstIteratorOnPoints& itb, 
-             const ConstIteratorOnPoints& ite,
-             ParametricShape* aShape,
-             const bool& isClosed);
-    
+    TrueGlobalEstimatorOnPoints();
+
     /**
      * Destructor.
      */
-    ~TrueGlobalEstimatorOnPoints() {};
+    ~TrueGlobalEstimatorOnPoints();
+
+    /**
+     * Copy constructor.
+     */
+    TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & ) = delete;
+
+    /**
+     * Assignment operator.
+     */
+    TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Initialisation.
-     * @param h grid size (must be >0).
+     * Attach a shape
+     * @param aShape parametric shape
+     */
+    void attach(const ParametricShape& aShape);
+
+    /**
+     * Estimation computed on the total closed attached shape
+     * @return the estimated quantity on the shape
+     */
+    Quantity eval() const;
+
+    /**
+     * Estimation on subrange [@e itb , @e ite)
      * @param itb begin iterator
      * @param ite end iterator
-     * @param aShape a shape
-     * @param isClosed true if the input range is viewed as closed.
+     * @param h grid size (must be > 0).
+     * @return the estimated quantity from itb till ite (excluded)
      */
-    void init(const double h, 
-        const ConstIteratorOnPoints& itb, 
-        const ConstIteratorOnPoints& ite,
-        ParametricShape* aShape,
-        const bool& isClosed);
-    
-    /**
-     * @return the estimated quantity 
-     */
-    Quantity eval() ;
-    
-    /**
-     * @return the estimated quantity
-     * from itb till ite (exculded)
-     */
-    Quantity eval(const ConstIteratorOnPoints& itb, 
-      const ConstIteratorOnPoints& ite); 
-
+    Quantity eval(const ConstIterator& itb, 
+        const ConstIterator& ite,
+        const double h = 1.) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -147,48 +138,11 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Grid size
-    double myH; 
-    
-    ///Bool if the curve is closed
-    bool myFlagIsClosed;
-    
-    ///True if the init() has been called.
-    bool myFlagIsInit;
-    
     ///Parametric quantity functor
-    ParametricShapeFunctor myFunctor;
-    
-    ///Copy of the begin iterator
-    ConstIteratorOnPoints myBegin;
-    
-    ///Copy of the end iterator
-    ConstIteratorOnPoints myEnd;
-
-    // ------------------------- Hidden services ------------------------------
-  private:
-    
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    TrueGlobalEstimatorOnPoints ( const TrueGlobalEstimatorOnPoints & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    TrueGlobalEstimatorOnPoints & operator= ( const TrueGlobalEstimatorOnPoints & other );
-
+    const ParametricShapeFunctor* myFunctorPtr;
 
   }; // end of class TrueGlobalEstimatorOnPoints
 

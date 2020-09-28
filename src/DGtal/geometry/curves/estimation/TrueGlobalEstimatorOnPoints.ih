@@ -39,108 +39,69 @@
 // ----------------------- Standard services ------------------------------
 
 
-/**
- * Constructor.
- */
+// ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints(const double h, 
-                      const ConstIteratorOnPoints& itb, 
-                      const ConstIteratorOnPoints& ite,
-                      PShape* aShape,
-                      const bool& isClosed) 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueGlobalEstimatorOnPoints()
+  : myFunctorPtr(nullptr) {}
+
+// ------------------------------------------------------------------------
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::~TrueGlobalEstimatorOnPoints()
 {
-  init(h,itb,ite,aShape,isClosed);
+  if ( myFunctorPtr != nullptr )
+    delete myFunctorPtr;
 }
 
-/**
- * Init.
- */
+// ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 void
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::init(const double h, 
-                  const ConstIteratorOnPoints& itb, 
-                  const ConstIteratorOnPoints& ite,
-                  PShape* aShape,
-                  const bool& isClosed) 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
+::attach(const ParametricShape& aShape) 
 {
-  myH = h;
-
-  myBegin = itb;
-  myEnd = ite;
-  
-  myFlagIsClosed = isClosed;
-  myFlagIsInit = true;
-  
-  myFunctor =  ParametricShapeFunctor(aShape);
-  
+  if ( myFunctorPtr != nullptr )
+    delete myFunctorPtr;
+  myFunctorPtr = new ParametricShapeFunctor(aShape);
 }
 
-/**
- * @return the estimated quantity at *it
- * from itb till ite
- */
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval()
-{
-  ASSERT(myH>0);
-  if (myFlagIsClosed) {
-    return myFunctor();
-  } else {
-    //get the first and last points
-    ConstIteratorOnPoints i = myBegin;
-    ConstIteratorOnPoints j(i); ++j; 
-    for ( ; j != myEnd ; ++i, ++j) {}
-    //myH is the coordinates unit
-    RealPoint p( *myBegin );
-    p *= myH;
-    RealPoint p2( *i );
-    p2 *= myH;
-    return myFunctor(p,p2);
-  }
-}
-
-  
-/**
- * @return the estimated quantity at *it
- */
+// ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
-DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIteratorOnPoints& itb,
-                   const ConstIteratorOnPoints& ite)
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 {
-  ASSERT(myH>0);
-  if (myFlagIsClosed) {
-    return myFunctor();
-  } else {
-    //get the first and last points
-    ConstIteratorOnPoints i = itb;
-    ConstIteratorOnPoints j(i); ++j; 
-    for ( ; j != ite; ++i, ++j) {};
-    //myH is the coordinates unit
-    RealPoint p( *itb );
-    p *= myH;
-    RealPoint p2( *i );
-    p2 *= myH;
-    return myFunctor(p,p2);
-  }
+  ASSERT(isValid());
+  return myFunctorPtr->operator()();
 }
 
+// ------------------------------------------------------------------------
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIterator& itb,
+    const ConstIterator& ite,
+    const double h) const
+{
+  ASSERT(isValid() && h>0.);
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
+  ConstIterator lastPoint(ite);
+  --lastPoint;
+
+  RealPoint p( *itb );
+  RealPoint p2( *lastPoint );
+
+  return myFunctorPtr->operator()(p*h,p2*h);
+}
+
+// ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 bool
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
 {
-    return myFlagIsInit;
+    return myFunctorPtr != nullptr;
 }
 
 
