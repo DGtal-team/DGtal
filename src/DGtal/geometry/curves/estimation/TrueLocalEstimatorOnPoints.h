@@ -114,7 +114,7 @@ namespace DGtal
 
     /**
      * Estimation at *it
-     * @param it iterator to the point
+     * @param it iterator to the point. 
      * @param h grid size (must be > 0).
      * @return the estimated quantity at *it
      */
