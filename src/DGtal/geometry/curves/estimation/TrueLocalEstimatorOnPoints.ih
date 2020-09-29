@@ -38,55 +38,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-
-// ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::TrueLocalEstimatorOnPoints()
-  :myH(0.0), myBegin(), myEnd(), myFunctorPtr(0)
-{
-}
-
-// ------------------------------------------------------------------------
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-bool
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
-{
-  return ( (myH > 0)&&(myFunctorPtr != 0) );
-}
-
-// ------------------------------------------------------------------------
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-void
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::init(const double h, 
-       const ConstIterator& itb, 
-       const ConstIterator& ite) 
-{
-  myH = h;
-  ASSERT(myH > 0); 
-  myBegin = itb;
-  myEnd = ite;
-}
-
-// ------------------------------------------------------------------------
-template <typename CIt, typename PShape, typename PShapeFunctor>
-inline
-void
-DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::attach(ParametricShape* aShapePtr) 
-{
-  myFunctorPtr =  new ParametricShapeFunctor(aShapePtr);
-}
+  : myFunctorPtr(nullptr) {}
 
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::~TrueLocalEstimatorOnPoints()
 {
-  delete myFunctorPtr; 
+  if ( myFunctorPtr != nullptr )
+    delete myFunctorPtr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+void
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
+::attach(const ParametricShape& aShape) 
+{
+  if ( myFunctorPtr != nullptr )
+    delete myFunctorPtr;
+  myFunctorPtr = new ParametricShapeFunctor(aShape);
 }
 
 // ------------------------------------------------------------------------
@@ -94,11 +71,11 @@ template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::eval(const ConstIterator& it) const
+::eval(const ConstIterator& it, const double h) const
 { 
   ASSERT( isValid() ); 
   RealPoint p( *it );
-  p *= myH;
+  p *= h;
   return myFunctorPtr->operator()(p);
 }
 
@@ -110,18 +87,29 @@ OutputIterator
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
 ::eval(const ConstIterator& itb, 
        const ConstIterator& ite,
-       OutputIterator result) const
+       OutputIterator result,
+       const double h) const
 {
   ASSERT( isValid() ); 
+  if (isEmpty(itb, ite))
+    return result;
+  
   // do-while loop to deal with the case of a whole circular range
-  if (isNotEmpty(itb, ite))
-    {
-      ConstIterator it = itb; 
-      do
+  ConstIterator it = itb; 
+  do
 	{
-	  *result++ = eval( it );
+	  *result++ = eval( it, h );
 	  ++it; 
 	} while (it != ite);
-    }
+
   return result;
+}
+
+// ------------------------------------------------------------------------
+template <typename CIt, typename PShape, typename PShapeFunctor>
+inline
+bool
+DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
+{
+  return myFunctorPtr != nullptr;
 }

@@ -78,39 +78,32 @@ namespace DGtal
 
     /**
      * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
      */
-    ParametricShapeArcLengthFunctor(){}
+    ParametricShapeArcLengthFunctor() = delete;
 
 
     /**
      * Constructor.
      * @param aShape the input shape.
      */
-    ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeArcLengthFunctor(const ParametricShape &aShape): myShape(aShape) {};
 
 
     /**
      * Destructor.
      */
-    ~ParametricShapeArcLengthFunctor(){}
+    ~ParametricShapeArcLengthFunctor() = default;
 
 
     // ----------------------- Interface --------------------------------------
   public:
-
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ParametricShapeArcLengthFunctor & operator= ( const ParametricShapeArcLengthFunctor & other )
-    {
-      myShape = other.myShape;
-      return *this;
-    }
-
+    ParametricShapeArcLengthFunctor & operator= ( const ParametricShapeArcLengthFunctor & other ) = delete;
 
     /**
      * Compute the arc length between two points.
@@ -119,20 +112,17 @@ namespace DGtal
      * @param aSecondPoint the second point
      * @return the estimated arc length
      */
-    Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint)
+    Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint) const
     {
-
-      ASSERT(myShape);
-
       //determining nbSamples from the bounding box size of the shape
-      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
       unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
       //computes the angles
-      double t = myShape->parameter( aFirstPoint );
-      double t2 = myShape->parameter( aSecondPoint );
-      return myShape->arclength (t,t2,nbSamples);
+      double t = myShape.parameter( aFirstPoint );
+      double t2 = myShape.parameter( aSecondPoint );
+      return myShape.arclength( t, t2, nbSamples );
 
     }
 
@@ -141,24 +131,21 @@ namespace DGtal
      *
      * @return the estimated length
      */
-    Quantity operator()()
+    Quantity operator()() const
     {
-
-      ASSERT(myShape);
-
       //determining nbSamples from the bounding box size of the shape
-      RealPoint v = myShape->getUpperBound() - myShape->getLowerBound();
+      RealPoint v = myShape.getUpperBound() - myShape.getLowerBound();
       double n = v.norm(RealPoint::L_infty);
       unsigned int nbSamples = (unsigned int) ceil( n*100 );
 
-      return myShape->arclength (0,2*M_PI,nbSamples);
+      return myShape.arclength( 0,2*M_PI, nbSamples );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Copy of the implicit shape.
-    ParametricShape *myShape;
+    ///Reference of the implicit shape.
+    const ParametricShape& myShape;
 
     // ------------------------- Internals ------------------------------------
   private:

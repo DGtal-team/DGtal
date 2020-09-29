@@ -78,7 +78,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    ParametricShapeTangentFunctor(){}
+    ParametricShapeTangentFunctor() = delete;
 
 
     /**
@@ -86,13 +86,13 @@ namespace DGtal
      *
      * @param aShape the input shape.
      */
-    ParametricShapeTangentFunctor(ParametricShape *aShape): myShape(aShape) {};
+    ParametricShapeTangentFunctor(const ParametricShape &aShape): myShape(aShape) {}
     
     
     /**
      * Destructor.
      */
-    ~ParametricShapeTangentFunctor(){}
+    ~ParametricShapeTangentFunctor() = default;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -103,11 +103,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    ParametricShapeTangentFunctor & operator= ( const ParametricShapeTangentFunctor & other )
-    {
-      myShape = other.myShape;
-      return *this;
-    }
+    ParametricShapeTangentFunctor & operator= ( const ParametricShapeTangentFunctor & other ) = delete;
 
    
     /** 
@@ -116,20 +112,18 @@ namespace DGtal
      * @param aPoint the point at which the tangent is computed. 
      * @return the tangent at [aPoint].
      */
-    Quantity operator()(const RealPoint &aPoint)
+    Quantity operator()(const RealPoint &aPoint) const
     {
-      ASSERT(myShape);
-
-      double t = myShape->parameter( aPoint );   
-      return  myShape->tangent( t );
+      double t = myShape.parameter( aPoint );
+      return  myShape.tangent( t );
     }
     
 
     // ------------------------- Private Datas --------------------------------
   private:
     
-    ///Copy of the implicit shape.
-    ParametricShape *myShape;
+    ///Reference of the implicit shape.
+    const ParametricShape &myShape;
     
     // ------------------------- Internals ------------------------------------
   private:

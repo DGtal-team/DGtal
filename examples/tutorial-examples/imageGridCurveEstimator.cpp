@@ -111,8 +111,7 @@ int main()
     //! [imageGridCurveEstimator-lengthEstimation]
     //length estimation based on a DSS segmentation
     DSSLengthEstimator< Range::ConstCirculator > DSSlength;
-    DSSlength.init(1, r.c(), r.c());
-    trace.info() << "Length: " << DSSlength.eval() << std::endl; 
+    trace.info() << "Length: " << DSSlength.eval(r.c(), r.c(), 1.) << std::endl; 
     //! [imageGridCurveEstimator-lengthEstimation]
 
     //DSS segmentation display

@@ -121,11 +121,11 @@ estimatorOnShapeDigitization( const string& name,
           std::cout << "# open grid curve" << endl;
           
           //! [MostCenteredInit]
-          estimator.init( h, r.begin(), r.end() );
+          estimator.init( r.begin(), r.end() );
           //! [MostCenteredInit]
           
           //! [MostCenteredEvaluation]
-          estimator.eval( r.begin(), r.end(), std::back_inserter(estimations) );
+          estimator.eval( r.begin(), r.end(), std::back_inserter(estimations), h );
           //! [MostCenteredEvaluation]
         }
       else
@@ -137,8 +137,8 @@ estimatorOnShapeDigitization( const string& name,
           SCEstimator sce;
           CurvatureEstimator estimator(sc, sce);
           std::cout << "# closed grid curve" << endl;
-          estimator.init( h, r.c(), r.c() );
-          estimator.eval( r.c(), r.c(), std::back_inserter(estimations) );
+          estimator.init( r.c(), r.c() );
+          estimator.eval( r.c(), r.c(), std::back_inserter(estimations), h );
         }
       // Print (standard output)
       std::cout << "# idx kappa" << endl;
