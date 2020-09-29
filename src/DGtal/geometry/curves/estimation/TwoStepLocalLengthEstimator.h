@@ -73,46 +73,55 @@ namespace DGtal
 
     typedef double Quantity;
 
-
     /**
      * Default Constructor.
      */
-    TwoStepLocalLengthEstimator(const double wdirect, const double wdiag):
-      myWeightDirect(wdirect), myWeightDiagonal(wdiag)
-    {}
+    TwoStepLocalLengthEstimator() = delete;
 
+    /**
+     * Constructor with direct and diagonal weights.
+     * @param wdirect direct weight
+     * @param wdiag diagonal weight
+     */
+    TwoStepLocalLengthEstimator(const double wdirect, const double wdiag);
 
     /**
      * Destructor.
      */
-    ~TwoStepLocalLengthEstimator();
+    ~TwoStepLocalLengthEstimator() = default;
 
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    TwoStepLocalLengthEstimator ( const TwoStepLocalLengthEstimator & other ) = delete;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    TwoStepLocalLengthEstimator & operator= ( const TwoStepLocalLengthEstimator & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Initialize the measure computation.
-     *
-     * @param h grid size (must be >0).
+     * Computation of the l1 length of the curve.
+     * Iterated structure must contain pairs. The direct or diagonal case
+     * is resolved using the dot function on the second element of pairs.
+     * Complexity: O(|Range|)
      * @param itb begin iterator
      * @param ite end iterator
-     * @param isClosed true if the input range is closed.
-     */
-    void init( const double h, const ConstIterator& itb,
-	       const ConstIterator& ite,
-	       const bool& isClosed);
-
-
-    /**
-     * Computation of the l1 length of the curve.
-     * Complexity: O(|Range|)
-     * @pre init() method must be called before.
+     * @param h grid size (must be > 0).
      *
      * @return the curve length.
      */
-    Quantity eval( ) const;
-
+    Quantity eval( const ConstIterator& itb,
+        const ConstIterator& ite,
+        const double h = 1. ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -129,40 +138,9 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Grid size.
-    double myH;
-
-    ///Copy of the range.
-    ConstIterator myBeginIt;
-    ConstIterator myEndIt;
-
-    ///Boolean to make sure that init() has been called before eval().
-    bool myIsInitBefore;
-
     ///Weights
     double myWeightDirect;
     double myWeightDiagonal;
-
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    TwoStepLocalLengthEstimator ( const TwoStepLocalLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    TwoStepLocalLengthEstimator & operator= ( const TwoStepLocalLengthEstimator & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class TwoStepLocalLengthEstimator
 

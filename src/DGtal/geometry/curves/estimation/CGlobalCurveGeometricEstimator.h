@@ -93,8 +93,7 @@ namespace DGtal
        @tparam T the type that should be a model of CGlobalGeometricEstimator.
     */
     template <typename T>
-    struct CGlobalGeometricEstimator: 
-      boost::DefaultConstructible<T>
+    struct CGlobalGeometricEstimator
     {
 
       // ----------------------- Concept checks ------------------------------
@@ -110,9 +109,6 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CGlobalGeometricEstimator )
       {
-        //init method
-        myX.init( myH, myItb, myIte ); 
-
         ConceptUtils::sameType( myQ, myX.eval( ) );
       }
 

@@ -2,6 +2,15 @@
 
 ## New Features / Critical Changes
 
+- *Project*
+  - For this release, we have cleaned up the git history (using [bfg](https://rtyley.github.io/bfg-repo-cleaner/)),
+    removing old deprecated files or commit errors. For a complete description,
+    please follow the discussion of Issue [#1477](https://github.com/DGtal-team/DGtal/issues/1477).
+    If you are doing a clean `git clone` of the project, or use the release archive,
+    everything should be fine. If you have branches on the release 1.1beta, you
+    would need to rebase your current working copy.
+    (David Coeurjolly, [#1510](https://github.com/DGtal-team/DGtal/pull/1510))
+
 - *Kernel package*
   - Making `HyperRectDomain_(sub)Iterator` random-access iterators
     (allowing parallel scans of the domain, Roland Denis,
@@ -9,7 +18,7 @@
   - Fix bug in BasicDomainSubSampler for negative coordinates of the
     domain lower bound. (Bertrand Kerautret
     [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
-    
+
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
     order to make piecewise-smooth approximations of scalar or vector
@@ -35,12 +44,11 @@
     surfaces in R^3 (Jacques-Olivier Lachaud,
     [#1503](https://github.com/DGtal-team/DGtal/pull/1503))
 
-
 ## Changes
 
 - *General*
   - DGtal can be compiled and used as a project (git) submodule (David
-  Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
+    Coeurjolly [#1444](https://github.com/DGtal-team/DGtal/pull/1444))
   - Add .gitattributes file for github to recognize ih files as c++
     (Pablo Hernandez-Cerdan [#1457](https://github.com/DGtal-team/DGtal/pull/1457))
   - Add CMake option `DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS` to control enabling
@@ -109,6 +117,9 @@
   - Homogenizes typedefs of all parametric shapes and fixes some bounding box
     computations (Adrien Krähenbühl,
    [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
+  - Add const directives to some curve estimators on shapes.
+    (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
+    
 
 - *IO*
   - When the 3D built-in viewer is enabled (libqglviewer), the default
@@ -120,9 +131,9 @@
 
 - *Configuration/General*
   - Fix compilation error/warnings with gcc 9.1.1 and clang 9.0
-  (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
+    (Boris Mansencal, [#1431](https://github.com/DGtal-team/DGtal/pull/1431))
   - Disable some gcc/clang warnings in Qt5 raised by Apple clang compiler (David
-  Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
+    Coeurjolly, [#1436](https://github.com/DGtal-team/DGtal/pull/1436))
   - Fixing Travis configuration due to syntax changes in v2
     (Roland Denis, [#1465](https://github.com/DGtal-team/DGtal/pull/1465))
   - Compression of png files used in for the documentation
@@ -190,11 +201,11 @@
 
 - *DEC*
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1441)
-  related to bad link in DEC/moduleAT documentation and missing
-  associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
-  Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
+    related to bad link in DEC/moduleAT documentation and missing
+    associated example exampleSurfaceATnormals.cpp (Jacques-Olivier
+    Lachaud,[#1442](https://github.com/DGtal-team/DGtal/pull/1442)
   - Adding missing LGPL headers in the DEC examples (David Coeurjolly
-  [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
+    [#1472]((https://github.com/DGtal-team/DGtal/pull/1472))
 
 - *Documentation*
   - Promoting the `Shortcuts` documentation page on the main page. (David
@@ -212,7 +223,6 @@
     (Roland Denis [#1455](https://github.com/DGtal-team/DGtal/pull/1455))
 
 - *Build*
-
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
     that is a Visual Studio 2019 build error related to befriend
     template specializations
@@ -223,7 +233,7 @@
   (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
-    using boost::first_max_element instead std::max_element. 
+    using boost::first_max_element instead std::max_element.
     (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
   - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
     Fix issue #1501.

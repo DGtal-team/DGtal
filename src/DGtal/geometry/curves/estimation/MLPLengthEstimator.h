@@ -84,38 +84,45 @@ namespace DGtal
     /**
      * Default Constructor.
      */
-    MLPLengthEstimator();
+    MLPLengthEstimator() = default;
 
 
     /**
      * Destructor.
      */
-    ~MLPLengthEstimator();
+    ~MLPLengthEstimator() = default;
 
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    MLPLengthEstimator ( const MLPLengthEstimator & other ) = delete;
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    MLPLengthEstimator & operator= ( const MLPLengthEstimator & other ) = delete;
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Initialize the measure computation.
-     *
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     * @param isClosed true if the input range is closed.
-     */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
-
-
-    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
-     * @pre init() method must be called before.
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param h grid size (must be > 0).
      *
      * @return the curve length.
      */
-    Quantity eval( ) const;
-
+    Quantity eval( const ConstIterator& itb,
+        const ConstIterator& ite,
+        const double h = 1. ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -128,38 +135,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-      // ------------------------- Private Datas --------------------------------
-  private:
-
-    ///Grid size.
-    double myH;
-
-    ///polygonal representation of the input
-    std::vector<Point> myRep;
-
-    ///Boolean to make sure that init() has been called before eval().
-    bool myIsInitBefore;
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    MLPLengthEstimator ( const MLPLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    MLPLengthEstimator & operator= ( const MLPLengthEstimator & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class MLPLengthEstimator
 

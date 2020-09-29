@@ -75,6 +75,9 @@ namespace DGtal
   template <typename TConstIterator>
   class DSSLengthEstimator
   {
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< TConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< TConstIterator > ));
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -91,37 +94,47 @@ namespace DGtal
     /**
      * Default Constructor.
      */
-    DSSLengthEstimator();
+    DSSLengthEstimator() = default;
 
 
     /**
      * Destructor.
      */
-    ~DSSLengthEstimator();
+    ~DSSLengthEstimator() = default;
+
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     * Forbidden by default.
+     */
+    DSSLengthEstimator ( const DSSLengthEstimator & other ) = delete;
+
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    DSSLengthEstimator & operator= ( const DSSLengthEstimator & other ) = delete;
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Initialize the measure computation.
-     *
-     * @param h grid size (must be >0).
-     * @param itb begin iterator
-     * @param ite end iterator
-     */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
-
-
-    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
      * @pre init() method must be called before.
-     *
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param h grid size (must be > 0).
      * @return the curve length.
      */
-    Quantity eval( ) const;
-
+    Quantity eval( const ConstIterator& itb,
+        const ConstIterator& ite,
+        const double h = 1. ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -134,42 +147,6 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-      // ------------------------- Private Datas --------------------------------
-  private:
-
-    ///Grid size.
-    double myH;
-
-    ///polygonal representation of the input
-    std::vector<Point> myRep;
-
-    ///Boolean to make sure that init() has been called before eval().
-    bool myIsInitBefore;
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DSSLengthEstimator ( const DSSLengthEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DSSLengthEstimator & operator= ( const DSSLengthEstimator & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-    Point lastPoint (const ConstIterator& ite);
-    Point lastPoint (const ConstIterator& c, CirculatorType);
-    Point lastPoint (const ConstIterator& ite, IteratorType);
 
   }; // end of class DSSLengthEstimator
 

@@ -80,7 +80,6 @@ bool testTrueLocalEstimator(const std::string &filename)
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
-  
   typedef Ball2D<Z2i::Space> Shape;
   typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
   typedef Range::ConstIterator ConstIteratorOnPoints;
@@ -101,25 +100,23 @@ bool testTrueLocalEstimator(const std::string &filename)
   TrueTangentEstimator tangentEstimator;
   TrueLengthEstimator lengthEstimator;
 
-  curvatureEstimator.init( 1, r.begin(), r.end() );
-  curvatureEstimator.attach( &ball );
-  tangentEstimator.init( 1, r.begin(), r.end() );
-  tangentEstimator.attach( &ball );
- 
+  curvatureEstimator.attach( ball );
+  tangentEstimator.attach( ball );
+  lengthEstimator.attach ( ball );
 
   ConstIteratorOnPoints it = r.begin();
   ConstIteratorOnPoints it2 = it+15;
-  lengthEstimator.init( 1, it, it2, &ball, true);
-  
-  
-  trace.info() << "Current point = "<<*it<<std::endl;
-  trace.info() << "Current point+15 = "<<*it2<<std::endl;
-  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval(it,it2)<<std::endl;
-  
-  return true;
 
+  trace.info() << "Current point = " << *it << std::endl;
+  trace.info() << "Current point+15 = " << *it2 << std::endl;
+  // TODO: All these estimations consider projections of points from grid curve c on ball.
+  //       These are not estimations on the grid curve c. Not sure that make sense.
+  trace.info() << "Eval curvature (begin, h=1) = " << curvatureEstimator.eval(it2, 1.) << std::endl;
+  trace.info() << "Eval tangent (begin, h=1) = " << tangentEstimator.eval(it2, 1.) << std::endl;
+  trace.info() << "Eval length (h=1) = " << lengthEstimator.eval(it, it2, 1.) << std::endl;
+  trace.info() << "Eval ball length (h=1) = " << lengthEstimator.eval() << std::endl;
+
+  return true;
 }
 
 template <typename Shape>
@@ -136,10 +133,10 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   typedef Space::RealPoint RealPoint;
   RealPoint xLow( -10.0, -10.0 );
   RealPoint xUp( 10.0, 10.0 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
   dig.init( xLow, xUp, h ); 
-  
+
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
@@ -148,12 +145,14 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
-    {
-      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-    << " error in creating KSpace." << std::endl;
-    }
+  {
+    std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+              << " error in creating KSpace." << std::endl;
+  }
   else
-    try {
+  {
+    try
+    {
       // Extracts shape boundary
       SurfelAdjacency<KSpace::dimension> SAdj( true );
       SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
@@ -163,30 +162,33 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       // Create GridCurve
       GridCurve<KSpace> gridcurve;
       gridcurve.initFromVector( points );
+
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;
       typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
-      TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
+
+      TrueLocalEstimatorOnPoints<ConstIteratorOnPoints, Shape, Curvature> curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
-      curvatureEstimator.init( h, r.begin(), r.end() );
-      curvatureEstimator.attach( &aShape ); 
+      curvatureEstimator.attach( aShape ); 
+
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
-      it != ite; ++it, ++i )
-  {
-    RealPoint x = *it;
-    double kappa = curvatureEstimator.eval( it );
-    std::cout << i << " " << x[ 0 ] << " " << x[1] 
-        << " " << kappa << std::endl;
-  }
-    }    
-    catch ( InputException& e )
+            it != ite; ++it, ++i )
       {
-  std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
-      << " error in finding a bel." << std::endl;
-  ok = false;
+        const RealPoint& x = *it; 
+        const double kappa = curvatureEstimator.eval( it, h );
+        std::cout << i << " " << x[0] << " " << x[1] 
+                  << " " << kappa << std::endl;
       }
+    }
+    catch ( InputException& e )
+    {
+      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+          << " error in finding a bel." << std::endl;
+      ok = false;
+    }
+  }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;
@@ -204,14 +206,12 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-
-
   std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
 
   bool res = testTrueLocalEstimator(sinus2D4); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+
   typedef Ellipse2D< Z2i::Space > MyEllipse;
   MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
   res = res && 
@@ -231,7 +231,6 @@ int main( int argc, char** argv )
     ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
 
   return res ? 0 : 1;
-
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
