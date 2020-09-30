@@ -17,7 +17,6 @@ BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
 if [ $TRAVIS_OS_NAME == osx ]
 then
     source "$SRC_DIR/.travis/install_deps_macos.sh"
-    BTYPE="$BTYPE -DWITH_QGLVIEWER=false"
 fi
 
 #############################

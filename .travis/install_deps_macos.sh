@@ -15,6 +15,7 @@ brew install graphicsmagick fftw eigen ninja
 
 ## Temporary HDF5 build issue
 BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
+BTYPE="$BTYPE -DWITH_LIBQGLVIEWER=false" && echo "Disabling QGLViewer on MacOS";
 #BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo "Forcing Qt5 on MacOS";
 
 # Restoring set options
