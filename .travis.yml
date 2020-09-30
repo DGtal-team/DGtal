@@ -14,7 +14,7 @@ os:
 #  - linux
   - osx
 
-cache: apt
+cache: 
  directories:
     - $HOME/Library/Caches/Homebrew
     - /usr/local/Homebrew
