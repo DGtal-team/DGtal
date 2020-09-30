@@ -42,6 +42,15 @@ addons:
     - bison
     - texlive
 
+addons:
+  homebrew:
+    packages:
+     - graphicsmagick
+     - fftw
+     - eigen
+     - ninja
+    update: true
+
 ############
 # Main rules
 ############
