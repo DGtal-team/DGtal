@@ -6,16 +6,16 @@ set +e # The brew install has errors
 #
 # Note: gmp and boost already installed
 #
-brew update > brew.log
+#brew update > brew.log
 #brew install qt5 doxygen homebrew/science/hdf5 graphviz graphicsmagick fftw eigen
-brew install graphicsmagick fftw eigen ninja
+#brew install graphicsmagick fftw eigen ninja
 # Explicit install of libqglviewer
 #brew tap DGtal-team/homebrew-dgtal
 #brew install libqglviewer
 
 ## Temporary HDF5 build issue
 BTYPE="$BTYPE -DWITH_HDF5=false" && echo "Disabling HDF5 on MacOS";
-BTYPE="$BTYPE -DWITH_LIBQGLVIEWER=false" && echo "Disabling QGLViewer on MacOS";
+BTYPE="$BTYPE -DWITH_QGLVIEWER=false -DWITH_QT5=true" && echo "Disabling QGLViewer on MacOS";
 #BTYPE="$BTYPE -DWITH_QT5=true -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)" && echo "Forcing Qt5 on MacOS";
 
 # Restoring set options
