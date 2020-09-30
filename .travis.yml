@@ -15,6 +15,9 @@ os:
   - osx
 
 cache: apt
+ directories:
+    - $HOME/Library/Caches/Homebrew
+    - /usr/local/Homebrew
 
 ##Deps for linux builds
 addons:
@@ -41,8 +44,6 @@ addons:
     - flex
     - bison
     - texlive
-
-addons:
   homebrew:
     packages:
      - graphicsmagick
@@ -52,11 +53,6 @@ addons:
     update: true
 
 
-##Caching strategy for homebrew
-cache:
-  directories:
-    - $HOME/Library/Caches/Homebrew
-    - /usr/local/Homebrew
 before_cache:
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
 # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
