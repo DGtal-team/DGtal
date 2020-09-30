@@ -47,7 +47,7 @@ addons:
      - fftw
      - eigen
      - ninja    
-    update: true
+##    update: true
 
 ############
 # Main rules
