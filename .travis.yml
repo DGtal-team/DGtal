@@ -41,14 +41,12 @@ addons:
     - flex
     - bison
     - texlive
-
-addons:
   homebrew:
     packages:
      - graphicsmagick
      - fftw
      - eigen
-     - ninja
+     - ninja    
     update: true
 
 ############
