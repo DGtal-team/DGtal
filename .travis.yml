@@ -7,11 +7,11 @@ git:
   depth: 3
 
 compiler:
- # - gcc
+  - gcc
   - clang
 
 os:
-#  - linux
+  - linux
   - osx
 
 cache:
