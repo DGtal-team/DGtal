@@ -96,4 +96,3 @@ jobs:
        verbose: true
        local_dir: "$TRAVIS_BUILD_DIR/build/html"
        strategy: api
-       skip_cleanup: true
