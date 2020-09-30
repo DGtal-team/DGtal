@@ -52,7 +52,6 @@ addons:
      - ninja    
     update: true
 
-
 before_cache:
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
 # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
