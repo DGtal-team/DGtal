@@ -8,14 +8,15 @@ $SCRIPT_BEGIN
 BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=false"
 BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
               -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug \
-              -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_QT5=true -DWITH_EIGEN=true\
+              -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_EIGEN=true\
               -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true \
-              -DWARNING_AS_ERROR=OFF -DCMAKE_INSTALL_PREFIX='$DEPS_DIR'"
+              -DWARNING_AS_ERROR=OFF -DCMAKE_INSTALL_PREFIX='$DEPS_DIR'\
+              -DWITH_QGLVIEWER=true -DWITH_QT5=true"
 
 # OSX dependencies and build customization (hence the source)
 if [ $TRAVIS_OS_NAME == osx ]
 then
-  source "$SRC_DIR/.travis/install_deps_macos.sh"
+    source "$SRC_DIR/.travis/install_deps_macos.sh"
 fi
 
 #############################
