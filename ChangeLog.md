@@ -9,13 +9,13 @@
     If you are doing a clean `git clone` of the project, or use the release archive,
     everything should be fine. If you have branches on the release 1.1beta, you
     would need to reset your current working copy. For instance, if
-    you have cloned the DGtal-team/DGtal repository, just reset your
+    you have cloned the `DGtal-team/DGtal` repository, just reset your
     master branch using:
     ```
     git fetch origin
     git reset --hard origin/master
     ```
-    If you have cloned a fork of DGtal-team/DGtal (*i.e.* the `origin`
+    If you have cloned a fork of `DGtal-team/DGtal` (*i.e.* the `origin`
     remote correspond to your fork and not the DGtal-team one), Fetch
     the DGtal-team remote (nammed `DGtal` here):
     ```
