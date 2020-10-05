@@ -87,6 +87,9 @@ jobs:
        .travis/install_doxygen.sh &&
        .travis/build_dgtal_doc.sh &&
        .travis/checkDoxygenDocumentation.sh
+       echo $PWD
+       echo "LSSSSSSSSSS"
+       ls
      deploy:
        provider: pages
        token: $GITHUB_TOKEN
