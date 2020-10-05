@@ -94,9 +94,9 @@ jobs:
      deploy:
        provider: pages
        token: $GITHUB_TOKEN
+       skip_cleanup: true
        keep_history: true
        repo: DGtal-team/doc-nightly
        target_branch: master
        verbose: true
        local_dir: "$TRAVIS_BUILD_DIR/build/html"
-       strategy: api
