@@ -89,7 +89,8 @@ jobs:
        .travis/checkDoxygenDocumentation.sh
        echo $PWD
        echo "LSSSSSSSSSS"
-       ls
+       ll build
+       ll build/html
      deploy:
        provider: pages
        token: $GITHUB_TOKEN
