@@ -64,9 +64,9 @@ before_cache:
 # Main rules
 ############
 script: |
-  source .travis/before_global.sh &&
-  .travis/build_all.sh &&
-  .travis/check_tests.sh
+  #source .travis/before_global.sh &&
+ # .travis/build_all.sh &&
+ # .travis/check_tests.sh
 
 jobs:
  fast_finish: true
@@ -77,9 +77,9 @@ jobs:
    - stage: "DGtalTools"
      name: "Testing DGtalTools + DGtal with examples"
      script: |
-       source .travis/before_global.sh &&
-       .travis/build_dgtal.sh &&
-       .travis/getAndCheckDGtalTools.sh
+       #source .travis/before_global.sh &&
+       #.travis/build_dgtal.sh &&
+       #.travis/getAndCheckDGtalTools.sh
    - stage: "Documentation"
      name: "Building and deploying the documentation"
      script: |
