@@ -22,6 +22,16 @@
     git fetch DGtal
     git reset --hard DGtal/master
     ```
+
+    _For advanced developers_
+    If there are some branches out there you want to "update" to the new history:
+    First go to unmerged branch and copy the SHA of the commits you want to get. Or, if they are consecutive, copy the oldest and newest SHA.
+    ```
+    git checkout master #Updated to new history
+    git checkout -b myOpenPR_after_new_history
+    git cherry-pick oldestSha^..newestSha
+    ```
+
     (David Coeurjolly, [#1510](https://github.com/DGtal-team/DGtal/pull/1510))
 
 - *Kernel package*
@@ -132,7 +142,7 @@
    [#1462](https://github.com/DGtal-team/DGtal/pull/1462))
   - Add const directives to some curve estimators on shapes.
     (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
-    
+
 
 - *IO*
   - When the 3D built-in viewer is enabled (libqglviewer), the default
