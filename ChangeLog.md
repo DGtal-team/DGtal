@@ -41,6 +41,10 @@
   - Fix bug in BasicDomainSubSampler for negative coordinates of the
     domain lower bound. (Bertrand Kerautret
     [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
+  - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
+     the origin point placement.
+    (Florian Delconte and Bertrand Kerautret 
+    [#1520](https://github.com/DGtal-team/DGtal/pull/#1520)) 
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
