@@ -41,10 +41,6 @@
   - Fix bug in BasicDomainSubSampler for negative coordinates of the
     domain lower bound. (Bertrand Kerautret
     [#1504](https://github.com/DGtal-team/DGtal/pull/1504))
-  - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
-     the origin point placement.
-    (Florian Delconte and Bertrand Kerautret 
-    [#1520](https://github.com/DGtal-team/DGtal/pull/1520))
 
 - *DEC*
   - Add discrete calculus model of Ambrosio-Tortorelli functional in
@@ -180,6 +176,11 @@
   - Fix initialisation in BoundedLatticePolytope when creating non full
     dimensional simplices in 3D (segments, triangles). (Jacques-Olivier Lachaud,
     [#1502](https://github.com/DGtal-team/DGtal/pull/1502))
+
+- *Kernel*
+  - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
+    the origin point placement. (Florian Delconte and Bertrand Kerautret 
+    [#1520](https://github.com/DGtal-team/DGtal/pull/1520))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
