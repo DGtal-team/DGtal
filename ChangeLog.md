@@ -145,7 +145,6 @@
   - Add const directives to some curve estimators on shapes.
     (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
 
-
 - *IO*
   - When the 3D built-in viewer is enabled (libqglviewer), the default
     required Qt version is now Qt5 instead of Qt4. You can revert to
@@ -179,6 +178,11 @@
   - Fix initialisation in BoundedLatticePolytope when creating non full
     dimensional simplices in 3D (segments, triangles). (Jacques-Olivier Lachaud,
     [#1502](https://github.com/DGtal-team/DGtal/pull/1502))
+
+- *Kernel*
+  - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
+    the origin point placement. (Florian Delconte and Bertrand Kerautret 
+    [#1520](https://github.com/DGtal-team/DGtal/pull/1520))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -219,8 +223,8 @@
 
 - *Shapes*
   - Fix bug in Astroid parameter() method : orientation correction
-   (Adrien Krähenbühl,
-   [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+    (Adrien Krähenbühl,
+    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
   - Add missing constraint to flips in TriangulatedSurface
     (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
@@ -251,11 +255,11 @@
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
     that is a Visual Studio 2019 build error related to befriend
     template specializations
-   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
+    (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
   - Removing the homemade CPP11 checks, using cmake macro instead
-  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+    (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
-  (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
+    (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element.
