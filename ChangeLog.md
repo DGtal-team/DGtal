@@ -1,3 +1,6 @@
+# DGtal 1.2 (dev)
+
+
 # DGtal 1.1
 
 ## New Features / Critical Changes
@@ -181,7 +184,7 @@
 
 - *Kernel*
   - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
-    the origin point placement. (Florian Delconte and Bertrand Kerautret 
+    the origin point placement. (Florian Delconte and Bertrand Kerautret
     [#1520](https://github.com/DGtal-team/DGtal/pull/1520))
 
 - *Helpers*
