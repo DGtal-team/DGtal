@@ -7,14 +7,14 @@
 #
  
 
-IF (WIN32)
-  IF (CYGWIN)
+if (WIN32)
+  if (CYGWIN)
 
     FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h)
 
     FIND_LIBRARY(SOQT_LIBRARY SoQt)
 
-  ELSE (CYGWIN)
+  else()
     message("[xx] Unchecked system." )
     FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\SoQt\\2;Installation Path]/include"
@@ -28,41 +28,41 @@ IF (WIN32)
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\SoQt\\2;Installation Path]/lib"
     )
 
-    IF (SOQT_LIBRARY_DEBUG AND SOQT_LIBRARY_RELEASE)
-      SET(SOQT_LIBRARY optimized ${SOQT_LIBRARY_RELEASE}
+    if (SOQT_LIBRARY_DEBUG AND SOQT_LIBRARY_RELEASE)
+      set(SOQT_LIBRARY optimized ${SOQT_LIBRARY_RELEASE}
                          debug ${SOQT_LIBRARY_DEBUG})
-    ELSE (SOQT_LIBRARY_DEBUG AND SOQT_LIBRARY_RELEASE)
-      IF (SOQT_LIBRARY_DEBUG)
-        SET (SOQT_LIBRARY ${SOQT_LIBRARY_DEBUG})
-      ENDIF (SOQT_LIBRARY_DEBUG)
-      IF (SOQT_LIBRARY_RELEASE)
-        SET (SOQT_LIBRARY ${SOQT_LIBRARY_RELEASE})
-      ENDIF (SOQT_LIBRARY_RELEASE)
-    ENDIF (SOQT_LIBRARY_DEBUG AND SOQT_LIBRARY_RELEASE)
+    else()
+      if (SOQT_LIBRARY_DEBUG)
+        set (SOQT_LIBRARY ${SOQT_LIBRARY_DEBUG})
+      endif()
+      if (SOQT_LIBRARY_RELEASE)
+        set (SOQT_LIBRARY ${SOQT_LIBRARY_RELEASE})
+      endif()
+    endif()
 
-    IF (SOQT_LIBRARY)
+    if (SOQT_LIBRARY)
       ADD_DEFINITIONS ( -DSOQT_NOT_DLL )
-    ENDIF (SOQT_LIBRARY)
+    endif()
 
-  ENDIF (CYGWIN)
+  endif()
 
-ELSE (WIN32)
-  IF(APPLE)
+else()
+  if(APPLE)
     FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h
      /Library/Frameworks/Inventor.framework/Headers 
     )
     FIND_LIBRARY(SOQT_LIBRARY SoQt
       /Library/Frameworks/Inventor.framework/Libraries
     )   
-    SET(SOQT_LIBRARY "-framework SoQt" CACHE STRING "SoQt library for OSX")
-   ELSE(APPLE)
+    set(SOQT_LIBRARY "-framework SoQt" CACHE STRING "SoQt library for OSX")
+   else()
        FIND_PATH(SOQT_INCLUDE_DIR Inventor/Qt/SoQt.h
 	/home/lachaud/local/include)
        FIND_LIBRARY(SOQT_LIBRARY SoQt
 	/home/lachaud/local/lib)   
-  ENDIF(APPLE)
+  endif()
 
-ENDIF (WIN32)
+endif()
 
 # handle the QUIETLY and REQUIRED arguments and set SOQT_FOUND to TRUE if 
 # all listed variables are TRUE

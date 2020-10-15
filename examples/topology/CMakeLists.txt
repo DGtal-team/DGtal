@@ -1,4 +1,4 @@
-SET(DGTAL_EXAMPLES_TOPO_SRC
+set(DGTAL_EXAMPLES_TOPO_SRC
   ctopo-1
   ctopo-2
   ctopo-fillContours
@@ -16,15 +16,15 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   area-estimation-with-indexed-digital-surface
 )
 
-FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
+foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
   add_executable(${FILE} ${FILE})
   target_link_libraries ( ${FILE}  DGtal
     ${DGtalLibDependencies})   
-ENDFOREACH(FILE)
+endforeach()
 
 
 if (  WITH_VISU3D_QGLVIEWER )
-   SET(DGTAL_EXAMPLES_QGL_SRC
+   set(DGTAL_EXAMPLES_QGL_SRC
      cubical-complex-collapse
      homotopicThinning3D
      3dBorderExtraction
@@ -39,11 +39,11 @@ if (  WITH_VISU3D_QGLVIEWER )
      frontierAndBoundary
      digitalSurfaceSlice
    )
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE}  DGtal
                             ${DGtalLibDependencies})   
-  ENDFOREACH(FILE)
+  endforeach()
 
-endif ( WITH_VISU3D_QGLVIEWER   )
+endif()
 

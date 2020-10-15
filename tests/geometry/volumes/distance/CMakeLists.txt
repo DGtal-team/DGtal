@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testDistanceTransformation
   testDistanceTransformationND
   testDistanceTransformationMetrics
@@ -17,22 +17,19 @@ SET(DGTAL_TESTS_SRC
   )
 
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
-SET(DGTAL_BENCH_SRC
+set(DGTAL_BENCH_SRC
   testMetrics-benchmark
   )
 
-IF(BUILD_BENCHMARKS)
+if(BUILD_BENCHMARKS)
   #Benchmark target
-  FOREACH(FILE ${DGTAL_BENCH_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal)
+  foreach(FILE ${DGTAL_BENCH_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
     add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
-  ENDFOREACH(FILE)
-ENDIF(BUILD_BENCHMARKS)
+    add_dependencies(benchmark ${FILE}-benchmark)
+  endforeach()
+endif()

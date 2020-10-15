@@ -1,4 +1,4 @@
 
-SET(DGTAL_SRC ${DGTAL_SRC} 
+set(DGTAL_SRC ${DGTAL_SRC} 
     DGtal/helpers/StdDefs)
 

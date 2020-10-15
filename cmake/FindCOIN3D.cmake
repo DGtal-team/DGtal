@@ -7,14 +7,14 @@
 #
  
 
-IF (WIN32)
-  IF (CYGWIN)
+if (WIN32)
+  if (CYGWIN)
 
     FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h)
 
     FIND_LIBRARY(COIN3D_LIBRARY Coin)
 
-  ELSE (CYGWIN)
+  else()
 
     FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/include"
@@ -28,34 +28,34 @@ IF (WIN32)
       "[HKEY_LOCAL_MACHINE\\SOFTWARE\\SIM\\Coin3D\\2;Installation Path]/lib"
     )
 
-    IF (COIN3D_LIBRARY_DEBUG AND COIN3D_LIBRARY_RELEASE)
-      SET(COIN3D_LIBRARY optimized ${COIN3D_LIBRARY_RELEASE}
+    if (COIN3D_LIBRARY_DEBUG AND COIN3D_LIBRARY_RELEASE)
+      set(COIN3D_LIBRARY optimized ${COIN3D_LIBRARY_RELEASE}
                          debug ${COIN3D_LIBRARY_DEBUG})
-    ELSE (COIN3D_LIBRARY_DEBUG AND COIN3D_LIBRARY_RELEASE)
-      IF (COIN3D_LIBRARY_DEBUG)
-        SET (COIN3D_LIBRARY ${COIN3D_LIBRARY_DEBUG})
-      ENDIF (COIN3D_LIBRARY_DEBUG)
-      IF (COIN3D_LIBRARY_RELEASE)
-        SET (COIN3D_LIBRARY ${COIN3D_LIBRARY_RELEASE})
-      ENDIF (COIN3D_LIBRARY_RELEASE)
-    ENDIF (COIN3D_LIBRARY_DEBUG AND COIN3D_LIBRARY_RELEASE)
+    else()
+      if (COIN3D_LIBRARY_DEBUG)
+        set (COIN3D_LIBRARY ${COIN3D_LIBRARY_DEBUG})
+      endif()
+      if (COIN3D_LIBRARY_RELEASE)
+        set (COIN3D_LIBRARY ${COIN3D_LIBRARY_RELEASE})
+      endif()
+    endif()
 
-    IF (COIN3D_LIBRARY)
+    if (COIN3D_LIBRARY)
       ADD_DEFINITIONS ( -DCOIN_NOT_DLL )
-    ENDIF (COIN3D_LIBRARY)
+    endif()
 
-  ENDIF (CYGWIN)
+  endif()
 
-ELSE (WIN32)
-  IF(APPLE)
+else()
+  if(APPLE)
     FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
      /Library/Frameworks/Inventor.framework/Headers 
     )
     FIND_LIBRARY(COIN3D_LIBRARY Coin
       /Library/Frameworks/Inventor.framework/Libraries
     )   
-    SET(COIN3D_LIBRARY "-framework Coin3d" CACHE STRING "Coin3D library for OSX")
-   ELSE(APPLE)
+    set(COIN3D_LIBRARY "-framework Coin3d" CACHE STRING "Coin3D library for OSX")
+   else()
 
   FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
 	  /usr/include/
@@ -68,9 +68,9 @@ ELSE (WIN32)
 	  /usr/local/lib/
 	  /home/lachaud/local/lib/
     )   
-  ENDIF(APPLE)
+  endif()
 
-ENDIF (WIN32)
+endif()
 
 # handle the QUIETLY and REQUIRED arguments and set COIN3D_FOUND to TRUE if 
 # all listed variables are TRUE

@@ -12,10 +12,10 @@ else ( DOT_EXE )
   message( WARNING "Note: dot program not found in environment. If you wish to use it in doxygen, you should add its path to the variable PATH." )
   message( STATUS "disabling dot." )
   set( HAVE_DOT NO )
-endif ( DOT_EXE )
+endif()
 if (NOT EXISTS ${PROJECT_SOURCE_DIR}/doc/html)
   file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/doc/html)
-endif (NOT EXISTS ${PROJECT_SOURCE_DIR}/doc/html)
+endif()
 
 ## Installation target
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/doc/html DESTINATION ${INSTALL_DOC_PATH})

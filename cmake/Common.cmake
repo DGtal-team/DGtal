@@ -50,9 +50,9 @@ endif()
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib
 # -----------------------------------------------------------------------------
-IF (MSVC)
+if (MSVC)
   set(CMAKE_DEBUG_POSTFIX "d")
-ENDIF (MSVC)
+endif()
 
 # -----------------------------------------------------------------------------
 # GCC 10.1 Incompatibility
@@ -87,54 +87,54 @@ ADD_CUSTOM_TARGET(uninstall
 # -----------------------------------------------------------------------------
 # Parsing cmake options
 # -----------------------------------------------------------------------------
-IF (MSVC)
-  OPTION(BUILD_SHARED_LIBS "Build shared libraries." OFF)
-ELSE (MSVC)
-  OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
-ENDIF (MSVC)
-OPTION(BUILD_TESTING "Build testing." OFF)
-OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
-OPTION(VERBOSE "Verbose messages." OFF)
-OPTION(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
-OPTION(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
+if (MSVC)
+  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+else()
+  option(BUILD_SHARED_LIBS "Build shared libraries." ON)
+endif()
+option(BUILD_TESTING "Build testing." OFF)
+option(DEBUG_VERBOSE "Verbose debug messages." OFF)
+option(VERBOSE "Verbose messages." OFF)
+option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
 # Enable floating point exception when DGtal library is loaded. Only works for gcc.
-IF (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
   # Only used in Common.cpp
-  OPTION(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
+  option(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
   mark_as_advanced(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
   if(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
     add_definitions(-DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
   endif()
-ENDIF()
+endif()
 
-SET(VERBOSE_DGTAL 0)
-SET(DEBUG_VERBOSE_DGTAL 0)
-SET(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
+set(VERBOSE_DGTAL 0)
+set(DEBUG_VERBOSE_DGTAL 0)
+set(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
-IF (DEBUG_VERBOSE)
-  SET(DEBUG_VERBOSE_DGTAL 1)
+if (DEBUG_VERBOSE)
+  set(DEBUG_VERBOSE_DGTAL 1)
   ADD_DEFINITIONS(-DDEBUG_VERBOSE)
   MESSAGE(STATUS "Debug verbose mode activated")
-ENDIF(DEBUG_VERBOSE)
-IF (VERBOSE)
-  SET(VERBOSE_DGTAL 1)
+endif()
+if (VERBOSE)
+  set(VERBOSE_DGTAL 1)
   ADD_DEFINITIONS(-DVERBOSE)
   MESSAGE(STATUS "Verbose mode activated")
-ENDIF(VERBOSE)
+endif()
 
-IF(COLOR_WITH_ALPHA_ARITH)
-  SET(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
+if(COLOR_WITH_ALPHA_ARITH)
+  set(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
   ADD_DEFINITIONS(-DCOLOR_WITH_ALPHA_ARITH)
-ENDIF(COLOR_WITH_ALPHA_ARITH)
+endif()
 
 # -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------
-OPTION(BUILD_BENCHMARKS "Build benchmarks." OFF)
-IF(BUILD_BENCHMARKS)
+option(BUILD_BENCHMARKS "Build benchmarks." OFF)
+if(BUILD_BENCHMARKS)
   ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
-ENDIF(BUILD_BENCHMARKS)
+endif()
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -151,17 +151,17 @@ CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
 #------------------------------------------------------------------------------
 # Building in the source tree is forbidden
 #------------------------------------------------------------------------------
-IF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   MESSAGE(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
-ENDIF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+endif()
 
 
 # -----------------------------------------------------------------------------
 # Debug specific options
 # -----------------------------------------------------------------------------
-OPTION(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
-IF (WARNING_AS_ERROR)
-  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+option(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+if (WARNING_AS_ERROR)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
   MESSAGE(STATUS "Warnings as Errors ENABLED.")
-ENDIF(WARNING_AS_ERROR)
+endif()

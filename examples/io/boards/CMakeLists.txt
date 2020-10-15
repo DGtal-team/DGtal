@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
    dgtalBoard2D-1-points
    dgtalBoard2D-2-sets
    dgtalBoard2D-3-custom-classes
@@ -13,7 +13,7 @@ SET(DGTAL_TESTS_SRC
 
 
 if( WITH_CAIRO )
-  SET(DGTAL_TESTS_SRC
+  set(DGTAL_TESTS_SRC
     ${DGTAL_TESTS_SRC}
     dgtalBoard3DTo2D-0-demo-kernel-2
     dgtalBoard3DTo2D-1-points
@@ -25,12 +25,12 @@ if( WITH_CAIRO )
     dgtalBoard3DTo2D-6
     dgtalBoard3DTo2D-KSCell
   )
-endif ( WITH_CAIRO )
+endif()
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} DGtal )
-ENDFOREACH(FILE)
+endforeach()
 
 

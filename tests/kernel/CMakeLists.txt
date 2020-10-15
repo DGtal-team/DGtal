@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC_KERNEL
+set(DGTAL_TESTS_SRC_KERNEL
    testDigitalSet
    testHyperRectDomain
    testInteger
@@ -16,43 +16,38 @@ SET(DGTAL_TESTS_SRC_KERNEL
    )
 
 
-FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC_KERNEL})
+  DGtal_add_test(${FILE})
+endforeach()
 
-IF(BUILD_BENCHMARKS)
-  SET(DGTAL_BENCH_SRC
+if(BUILD_BENCHMARKS)
+  set(DGTAL_BENCH_SRC
     benchmarkHyperRectDomain
     benchmarkHyperRectDomain-catch
   )
 
-  IF(WITH_BENCHMARK)
-    SET(DGTAL_BENCH_SRC
+  if(WITH_BENCHMARK)
+    set(DGTAL_BENCH_SRC
       ${DGTAL_BENCH_SRC}
       benchmarkSetContainer
       benchmarkHyperRectDomain-google
     )
-  ENDIF(WITH_BENCHMARK)
+  endif()
 
   #Benchmark target
-  FOREACH(FILE ${DGTAL_BENCH_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    ADD_DEPENDENCIES(benchmark ${FILE})
-  ENDFOREACH(FILE)
-ENDIF(BUILD_BENCHMARKS)
+  foreach(FILE ${DGTAL_BENCH_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+    add_dependencies(benchmark ${FILE})
+  endforeach()
+endif()
 
 #-----------------------
 #GMP based tests
 #----------------------
-IF(GMP_FOUND)
-  SET(DGTAL_TESTS_GMP_SRC testDGtalGMP)
+if(GMP_FOUND)
+  set(DGTAL_TESTS_GMP_SRC testDGtalGMP)
 
-  FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
-ENDIF(GMP_FOUND)
+  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
+    DGtal_add_test(${FILE})
+  endforeach()
+endif()
