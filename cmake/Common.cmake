@@ -73,18 +73,18 @@ if("${INSTALL_DOC_PATH_CUSTOM}" STREQUAL "")
 else()
   set(INSTALL_DOC_PATH "${INSTALL_DOC_PATH_ABSOLUTE}")
 endif()
-INCLUDE(doxygen)
-INCLUDE(TargetDoxygenDoc OPTIONAL)
-INCLUDE(TargetDoxygenDox OPTIONAL)
+include(doxygen)
+include(TargetDoxygenDoc OPTIONAL)
+include(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
 # -----------------------------------------------------------------------------
-CONFIGURE_FILE(
+configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake
   @ONLY)
-ADD_CUSTOM_TARGET(uninstall
+add_custom_target(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
 
 # -----------------------------------------------------------------------------
@@ -107,7 +107,7 @@ if (UNIX AND NOT APPLE)
   option(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
   mark_as_advanced(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
   if(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-    add_definitions(-DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
+    target_compile_definitions(DGtal PRIVATE -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
   endif()
 endif()
 
@@ -117,18 +117,18 @@ set(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
 if (DEBUG_VERBOSE)
   set(DEBUG_VERBOSE_DGTAL 1)
-  ADD_DEFINITIONS(-DDEBUG_VERBOSE)
-  MESSAGE(STATUS "Debug verbose mode activated")
+  target_compile_definitions(DGtal PUBLIC -DDEBUG_VERBOSE)
+  message(STATUS "Debug verbose mode activated")
 endif()
 if (VERBOSE)
   set(VERBOSE_DGTAL 1)
-  ADD_DEFINITIONS(-DVERBOSE)
-  MESSAGE(STATUS "Verbose mode activated")
+  target_compile_definitions(DGtal PUBLIC -DVERBOSE)
+  message(STATUS "Verbose mode activated")
 endif()
 
 if(COLOR_WITH_ALPHA_ARITH)
   set(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
-  ADD_DEFINITIONS(-DCOLOR_WITH_ALPHA_ARITH)
+  target_compile_definitions(DGtal PUBLIC -DCOLOR_WITH_ALPHA_ARITH)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -136,26 +136,26 @@ endif()
 # -----------------------------------------------------------------------------
 option(BUILD_BENCHMARKS "Build benchmarks." OFF)
 if(BUILD_BENCHMARKS)
-  ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
+  add_custom_target(benchmark COMMAND echo "Benchmarks launched.....")
 endif()
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
 #------------------------------------------------------------------------------
-ADD_CUSTOM_TARGET(distclean
+add_custom_target(distclean
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetDistclean.cmake")
 
 #------------------------------------------------------------------------------
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
-CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
+configure_file(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
   ${PROJECT_BINARY_DIR}/src/DGtal/base/Config.h)
 
 #------------------------------------------------------------------------------
 # Building in the source tree is forbidden
 #------------------------------------------------------------------------------
 if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
-  MESSAGE(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
+  message(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 endif()
 
@@ -166,5 +166,5 @@ endif()
 option(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
 if (WARNING_AS_ERROR)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
-  MESSAGE(STATUS "Warnings as Errors ENABLED.")
+  message(STATUS "Warnings as Errors ENABLED.")
 endif()
