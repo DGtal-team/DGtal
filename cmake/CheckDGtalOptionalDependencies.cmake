@@ -31,7 +31,7 @@ option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 #----------------------------------
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     message( STATUS "Removing -frounding-math flag when compiling with Clang" )
-    string( REPLACE "-frounding-math" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} )
+    string( REPLACE "-frounding-math" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
     message( STATUS " " )
 endif()
 #---------------------------------
