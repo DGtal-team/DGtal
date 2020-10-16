@@ -4,6 +4,10 @@
   - Fix some small errors : includes, variable names, code example
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
 
+- *General*
+  - Only set CMAKE_CXX_STANDARD if not defined already
+    (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
+
 # DGtal 1.1
 
 ## New Features / Critical Changes
