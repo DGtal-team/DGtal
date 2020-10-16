@@ -126,7 +126,7 @@ the DefaultFunctor type).
 
 To use it you need first to include the following header:
 @code 
-   #include "DGTal/io/writers/GenericWriter.h"
+   #include "DGtal/io/writers/GenericWriter.h"
    #include "DGtal/helpers/StdDefs.h"
    typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
    typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
@@ -208,7 +208,7 @@ RawReader::importRaw8).
 
 
 @code 
-   #include "DGTal/io/readers/GenericReader.h"
+   #include "DGtal/io/readers/GenericReader.h"
    #include "DGtal/helpers/StdDefs.h"
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;

@@ -544,7 +544,7 @@ namespace DGtal
      * orthogonal to @a myShift, 'false' otherwise.
      * @param aP1 any point
      * @param aP2 any point
-     * @return 'true' is @a aP2 is strictly before @a aP2,
+     * @return 'true' is @a aP1 is strictly before @a aP2,
      * 'false' otherwise
      * @see beforeOrEqual position
      */
@@ -556,7 +556,7 @@ namespace DGtal
      * 'false' otherwise.
      * @param aP1 any point
      * @param aP2 any point
-     * @return 'true' is @a aP2 is before or equal to @a aP2,
+     * @return 'true' is @a aP1 is before or equal to @a aP2,
      * 'false' otherwise
      * @see before position
      */
