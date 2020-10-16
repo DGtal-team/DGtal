@@ -57,8 +57,8 @@ endif()
 target_include_directories(DGtal PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>
-  # INSTALL_INCLUDE_DIR is already absolute
-  $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
+  # INSTALL_INTERFACE must not contain absolute paths
+  $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
   )
 
 install(TARGETS DGtal

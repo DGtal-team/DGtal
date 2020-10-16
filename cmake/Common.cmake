@@ -12,20 +12,17 @@ message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
 
 #------------------------------------------------------------------------------
-# Offer the user the choice of overriding the installation directories
+# Hardcode relative paths to CMAKE_INSTALL_PREFIX
 #------------------------------------------------------------------------------
-set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries.")
-set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables.")
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header file./")
-set(INSTALL_DATA_DIR lib/DGtal CACHE PATH "Installation directory for DGtal cmake files.")
+set(INSTALL_LIB_DIR_RELATIVE lib CACHE PATH "Installation directory for libraries. Relative to CMAKE_INSTALL_PREFIX.")
+set(INSTALL_BIN_DIR_RELATIVE bin CACHE PATH "Installation directory for executables. Relative to CMAKE_INSTALL_PREFIX.")
+set(INSTALL_INCLUDE_DIR_RELATIVE include CACHE PATH "Installation directory for headers. Relative to CMAKE_INSTALL_PREFIX.")
+set(INSTALL_DATA_DIR_RELATIVE lib/DGtal  CACHE PATH "Installation directory for CMake files. Relative to CMAKE_INSTALL_PREFIX.")
 #------------------------------------------------------------------------------
-# Make relative paths absolute (needed later on)
+# Set absolute paths in INSTALL_(LIB/BIN/INCLUDE/DATA)_DIR
 #------------------------------------------------------------------------------
 foreach(p LIB BIN INCLUDE DATA)
-  set(var INSTALL_${p}_DIR)
-  if(NOT IS_ABSOLUTE "${${var}}")
-    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-  endif()
+  set(INSTALL_${p}_DIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_${p}_DIR_RELATIVE}")
 endforeach()
 
 
@@ -69,7 +66,13 @@ endif()
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "Checking if doxygen/dot is installed:")
 message(STATUS " ")
-set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/share/DGtal CACHE PATH "Installation directory for DGtal documentation files.")
+set(INSTALL_DOC_DIR_RELATIVE share/DGtal CACHE PATH "Relative installation directory for DGtal documentation files.")
+set(INSTALL_DOC_PATH_CUSTOM "" CACHE PATH "Custom absolute path to the directory to install DGtal documentation files. If empty, CMAKE_INSTALL_PREFIX/INSTALL_DOC_DIR_RELATIVE will be used.")
+if("${INSTALL_DOC_PATH_CUSTOM}" STREQUAL "")
+  set(INSTALL_DOC_PATH "${CMAKE_INSTALL_PREFIX}/${INSTALL_DOC_DIR_RELATIVE}")
+else()
+  set(INSTALL_DOC_PATH "${INSTALL_DOC_PATH_ABSOLUTE}")
+endif()
 INCLUDE(doxygen)
 INCLUDE(TargetDoxygenDoc OPTIONAL)
 INCLUDE(TargetDoxygenDox OPTIONAL)
