@@ -7,29 +7,39 @@ export(TARGETS  DGtal FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 # export(PACKAGE DGtal)
 # Not working on cmake 2.6, I remove this option but keep the codeline (DC)
 
-# Create a DGtalConfig.cmake file for the use from the build tree
-set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
-set(DGTAL_LIB_DIR "${PROJECT_BINARY_DIR}/src")
-set(DGTAL_CMAKE_DIR "${PROJECT_BINARY_DIR}")
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+# Provide HINTS to find_dependency in DGtalConfig.cmake if DGTAL_CONFIG_HINTS
+# is ON. Disable it when deploying.
+set(_dependencies_list
+  Boost ZLIB
+  GMP Magick ITK Cairo HDF5 QGLVIEWER Qt5 OPENMP Eigen3 CGAL FFTW3
+  )
+foreach(dep ${_dependencies_list})
+  # message(STATUS "  HINTS \"${${dep}_DIR}\"")
+  if(DGTAL_CONFIG_HINTS)
+    if(NOT "${${dep}_DIR}" STREQUAL "")
+      set(${dep}_HINTS "  HINTS \"${${dep}_DIR}\"")
+    else()
+      set(${dep}_HINTS "  #NO_HINTS (no ${dep}_DIR)")
+    endif()
+  else()
+    set(${dep}_HINTS "  # NO_HINTS")
+  endif()
+endforeach()
+# Create a DGtalConfig.cmake file for the use from the build tree
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfig.cmake" @ONLY)
-
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfigVersion.cmake" @ONLY)
 
 # Install the export set for use with the install-tree
+set(DGTAL_CMAKE_DIR_INSTALL "${INSTALL_DATA_DIR}")
 install(EXPORT DGtalLibraryDepends DESTINATION
-  "${INSTALL_DATA_DIR}"
+  ${DGTAL_CMAKE_DIR_INSTALL}
   COMPONENT dev)
 
 # Create a DGtalConfig.cmake file for the use from the install tree
 # and install it
-set(DGTAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
-set(DGTAL_LIB_DIR "${INSTALL_LIB_DIR}")
-set(DGTAL_CMAKE_DIR "${INSTALL_DATA_DIR}")
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake" @ONLY)
 
@@ -38,4 +48,4 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
 install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
-  DESTINATION "${DGTAL_CMAKE_DIR}" COMPONENT dev)
+  DESTINATION "${DGTAL_CMAKE_DIR_INSTALL}" COMPONENT dev)

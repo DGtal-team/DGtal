@@ -12,22 +12,22 @@ include(CMakeFindDependencyMacro)
 
 #### Required dependencies  ####
 find_dependency(Boost REQUIRED
-  HINTS "@BOOST_DIR@"
+  @Boost_HINTS@
   )
 find_dependency(ZLIB REQUIRED
-  HINTS "@ZLIB_DIR@"
+  @ZLIB_HINTS@
   )
 
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_dependency(GMP REQUIRED
-    HINTS "@GMP_DIR@"
+    @GMP_HINTS@
     )
   set(WITH_GMP 1)
 endif()
 
 if(@MAGICK++_FOUND_DGTAL@) #if MAGICK++_FOUND_DGTAL
   find_dependency(Magick REQUIRED
-    HINTS "@Magick_DIR@"
+    @Magick_HINTS@
     )
   set(WITH_MAGICK 1)
 endif()
@@ -35,27 +35,27 @@ endif()
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set(WITH_ITK 1)
   find_dependency(ITK REQUIRED
-    HINTS "@ITK_DIR@"
+    @ITK_HINTS@
     )
 endif()
 
 if(@CAIRO_FOUND_DGTAL@) #if CAIRO_FOUND_DGTAL
   find_dependency(Cairo REQUIRED
-    HINTS "@Cairo_DIR@"
+    @Cairo_HINTS@
     )
   set(WITH_CAIRO 1)
 endif()
 
 if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL
   find_dependency(HDF5 REQUIRED HL C
-    HINTS "@HDF5_DIR@"
+    @HDF5_HINTS@
     )
   set(WITH_HDF5 1)
 endif()
 
 if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
   find_dependency(QGLVIEWER REQUIRED
-    HINTS "@QFLVIEWER_DIR@"
+    @QGLVIEWER_HINTS@
     )
   set(WITH_VISU3D_QGLVIEWER 1)
 endif (@QGLVIEWER_FOUND_DGTAL@)
@@ -71,7 +71,7 @@ endif (@QT4_FOUND_DGTAL@)
 
 if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
   find_dependency(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED
-    HINTS "@Qt5_DIR@"
+    @Qt5_HINTS@
     )
   set(WITH_QT5 1)
   # set(DGTAL_Qt5_DIR @Qt5_DIR@)
@@ -83,7 +83,7 @@ endif (@QT5_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
   find_dependency(OpenMP REQUIRED
-    HINTS "@OpenMP_DIR@"
+    @OpenMP_HINTS@
     )
   set(WITH_OPENMP 1)
 endif()
@@ -91,7 +91,7 @@ endif()
 
 if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
   find_dependency(Eigen3 REQUIRED
-    HINTS "@Eigen3_DIR@"
+    @Eigen3_HINTS@
     )
   set(WITH_EIGEN 1)
   set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} "@EIGEN3_INCLUDE_DIR@" )
@@ -100,14 +100,14 @@ endif()
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
   find_dependency(CGAL COMPONENTS Core Eigen3
-    HINTS "@CGAL_DIR@"
+    @CGAL_HINTS@
     )
   set(WITH_CGAL 1)
 endif()
 
 if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   find_dependency(FFTW3 REQUIRED
-    HINTS "@FFTW3_DIR@"
+    @FFTW3_HINTS@
     )
   set(WITH_FFTW3 1)
 endif()

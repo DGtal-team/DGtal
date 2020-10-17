@@ -100,6 +100,8 @@ option(DEBUG_VERBOSE "Verbose debug messages." OFF)
 option(VERBOSE "Verbose messages." OFF)
 option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
+option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
+mark_as_advanced(DGTAL_CONFIG_HINTS)
 
 # Enable floating point exception when DGtal library is loaded. Only works for gcc.
 if (UNIX AND NOT APPLE)
