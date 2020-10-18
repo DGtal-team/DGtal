@@ -12,18 +12,18 @@ export(TARGETS  DGtal FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 # is ON. Disable it when deploying.
 set(_dependencies_list
   Boost ZLIB
-  GMP Magick ITK Cairo HDF5 QGLVIEWER Qt5 OPENMP Eigen3 CGAL FFTW3
+  GMP Magick ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3 CGAL FFTW3
   )
 foreach(dep ${_dependencies_list})
-  # message(STATUS "  HINTS \"${${dep}_DIR}\"")
   if(DGTAL_CONFIG_HINTS)
-    if(NOT "${${dep}_DIR}" STREQUAL "")
-      set(${dep}_HINTS "  HINTS \"${${dep}_DIR}\"")
+    if("${${dep}_DIR}" STREQUAL "" OR
+       "${${dep}_DIR}" STREQUAL "${dep}_DIR-NOTFOUND")
+      set(${dep}_HINTS "# NO_HINTS (no ${dep}_DIR or ${dep}_DIR-NOTFOUND)")
     else()
-      set(${dep}_HINTS "  #NO_HINTS (no ${dep}_DIR)")
+      set(${dep}_HINTS "HINTS \"${${dep}_DIR}\"")
     endif()
   else()
-    set(${dep}_HINTS "  # NO_HINTS")
+    set(${dep}_HINTS "# NO_HINTS (disabled with DGTAL_CONFIG_HINTS=OFF)")
   endif()
 endforeach()
 # Create a DGtalConfig.cmake file for the use from the build tree
