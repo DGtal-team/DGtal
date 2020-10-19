@@ -10,6 +10,9 @@ set(DGTAL_VERSION "@DGTAL_VERSION@")
 
 include(CMakeFindDependencyMacro)
 
+get_filename_component(DGTAL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DGTAL_CMAKE_DIR}/Modules")
+
 #### Required dependencies  ####
 find_dependency(Boost REQUIRED
   @Boost_HINTS@
@@ -19,14 +22,14 @@ find_dependency(ZLIB REQUIRED
   )
 
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
-  find_dependency(GMP REQUIRED
+  find_package(GMP REQUIRED
     @GMP_HINTS@
     )
   set(WITH_GMP 1)
 endif()
 
 if(@MAGICK++_FOUND_DGTAL@) #if MAGICK++_FOUND_DGTAL
-  find_dependency(Magick REQUIRED
+  find_package(Magick REQUIRED
     @Magick_HINTS@
     )
   set(WITH_MAGICK 1)
@@ -40,7 +43,7 @@ if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
 endif()
 
 if(@CAIRO_FOUND_DGTAL@) #if CAIRO_FOUND_DGTAL
-  find_dependency(Cairo REQUIRED
+  find_package(Cairo REQUIRED
     @Cairo_HINTS@
     )
   set(WITH_CAIRO 1)
@@ -54,7 +57,7 @@ if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL
 endif()
 
 if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
-  find_dependency(QGLVIEWER REQUIRED
+  find_package(QGLVIEWER REQUIRED
     @QGLVIEWER_HINTS@
     )
   set(WITH_VISU3D_QGLVIEWER 1)
@@ -106,13 +109,12 @@ if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
 endif()
 
 if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
-  find_dependency(FFTW3 REQUIRED
+  find_package(FFTW3 REQUIRED
     @FFTW3_HINTS@
     )
   set(WITH_FFTW3 1)
 endif()
 
-get_filename_component(DGTAL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 if(NOT TARGET DGtal)
   # Our imported targets, including dependencies
   include ("${DGTAL_CMAKE_DIR}/DGtalLibraryDepends.cmake")

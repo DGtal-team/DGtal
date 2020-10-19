@@ -49,3 +49,16 @@ install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
   DESTINATION "${DGTAL_CMAKE_DIR_INSTALL}" COMPONENT dev)
+
+# Distribute FindFoo.cmake files to the build and install tree
+set(_find_cmake_files
+  "${PROJECT_SOURCE_DIR}/cmake/FindCairo.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindFFTW3.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindMagick.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindQGLVIEWER.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindGMP.cmake"
+  )
+file(COPY ${_find_cmake_files}
+  DESTINATION "${PROJECT_BINARY_DIR}/Modules")
+install(FILES ${_find_cmake_files}
+  DESTINATION "${DGTAL_CMAKE_DIR_INSTALL}/Modules" COMPONENT dev)
