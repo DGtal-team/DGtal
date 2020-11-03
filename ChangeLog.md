@@ -1,5 +1,8 @@
 # DGtal 1.2 (dev)
 
+- *Documentation*
+  - Fix some small errors : includes, variable names, code example
+    (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
 
 # DGtal 1.1
 
