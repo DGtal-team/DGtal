@@ -1,0 +1,21 @@
+# https://aka.ms/yaml
+
+stages:
+- stage: 'DeployLinux'
+  dependsOn: []
+  jobs:
+  - job: build_linux # name of the deployment job (A-Z, a-z, 0-9, and underscore)
+    displayName: 'DeployLinuxWithDockcross' # friendly name to display in the UI
+    timeoutInMinutes: 0
+    pool:                # see the following "Pool" schema
+      vmImage: 'ubuntu-18.04'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'echo Hi ; cat > delete_me.txt  '
+        workingDirectory: '$(Build.SourcesDirectory)'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/delete_me.txt'
+        artifactName: 'LinuxWheels'
