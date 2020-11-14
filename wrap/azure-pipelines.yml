@@ -13,9 +13,5 @@ stages:
     - task: Bash@3
       inputs:
         targetType: 'inline'
-        script: 'echo Hi ; cat > delete_me.txt  '
+        script: 'echo Hi!'
         workingDirectory: '$(Build.SourcesDirectory)'
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Build.SourcesDirectory)/delete_me.txt'
-        artifactName: 'LinuxWheels'
