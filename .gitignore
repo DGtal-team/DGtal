@@ -32,3 +32,8 @@ tests/io/readers/#testGenericReader\.cpp#
 src/DGtal/io/writers/\.#MagickWriter\.h
 
 .DS_Store
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]

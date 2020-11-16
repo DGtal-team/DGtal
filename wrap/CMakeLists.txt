@@ -110,6 +110,10 @@ export(TARGETS _dgtal
   NAMESPACE DGtal::
   APPEND FILE ${dgtal_export_file})
 
-if(BUILD_TESTING)
-  # TODO add_subdirectory(test)
+option(DGTAL_BUILD_TESTING_PYTHON "Enable python testing" ON)
+if(NOT BUILD_TESTING AND DGTAL_BUILD_TESTING_PYTHON)
+  enable_testing()
+endif()
+if(BUILD_TESTING OR DGTAL_BUILD_TESTING_PYTHON)
+  add_subdirectory(test)
 endif()

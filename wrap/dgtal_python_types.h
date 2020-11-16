@@ -14,17 +14,14 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#ifndef DGTAL_PYTHON_TYPES_H
+#define DGTAL_PYTHON_TYPES_H
 
-namespace py = pybind11;
+#include "DGtal/base/Common.h"
 
-void init_PointVector(py::module &);
-
-void init_dgtal_kernel(py::module & mparent) {
-    // TODO: Ask feedback about submodules
-    // Everything in dgtal., or dgtal.kernel. etc.
-    // Other option is that common modules as:
-    // kernel/core/base live in the dgtal namespace.
-    auto m = mparent.def_submodule("kernel");
-    init_PointVector(m);
+namespace DGtal {
+    using PythonInteger = DGtal::int32_t;
+    using PythonReal = double;
 }
+
+#endif
