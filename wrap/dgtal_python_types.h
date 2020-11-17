@@ -22,6 +22,8 @@
 namespace DGtal {
     using PythonInteger = DGtal::int32_t;
     using PythonReal = double;
+    const std::string PythonInteger_str = "int";
+    const std::string PythonReal_str = "float";
 }
 
 #endif

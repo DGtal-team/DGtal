@@ -242,26 +242,31 @@ void declare_PointVector_all_mixings(pybind11::class_<TSelf> & in_py_class)
 }
 
 template<typename TPointVector>
-pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const std::string &typestr) {
+pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const std::string &typestr,
+        const std::string &component_str) {
     namespace py = pybind11;
     using TT = TPointVector;
+    using TTComponent = typename TT::Component;
 
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
 
+    py_class.def("dtype", [&component_str](const TT &self) {
+            return component_str;
+            });
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());
     if(TT::dimension == 2) {
-        py_class.def(py::init<const typename TT::Component &,
-                const typename TT::Component &>());
+        py_class.def(py::init<const TTComponent &,
+                const TTComponent &>());
     } else if(TT::dimension == 3)  {
-        py_class.def(py::init<const typename TT::Component &,
-                const typename TT::Component &,
-                const typename TT::Component &>());
+        py_class.def(py::init<const TTComponent &,
+                const TTComponent &,
+                const TTComponent &>());
     } else if(TT::dimension == 4)  {
-        py_class.def(py::init<const typename TT::Component &,
-                const typename TT::Component &,
-                const typename TT::Component &,
-                const typename TT::Component &>());
+        py_class.def(py::init<const TTComponent &,
+                const TTComponent &,
+                const TTComponent &,
+                const TTComponent &>());
     }
 
     // ----------------------- Python operators -------------------------------
@@ -271,7 +276,7 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const st
         return self[index];
         });
     py_class.def("__setitem__", [](TT & self, const size_t index,
-                const typename TT::Component value) {
+                const TTComponent value) {
         if (index >= self.size()) throw py::index_error();
         self[index] = value;
         });
@@ -284,7 +289,7 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const st
     py_class.def(py::pickle(
             [](const TT & self) { // __getstate__
             /* Return a tuple that fully encodes the state of the object */
-            using TArray = std::array<typename TT::Component, TT::dimension >;
+            using TArray = std::array<TTComponent, TT::dimension >;
             TArray values;
             for(size_t i = 0; i < TT::dimension; ++i){
                 values[i] = self[i];
@@ -295,7 +300,7 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const st
             if(t.size() != 1) {
                 throw std::runtime_error("Invalid state!");
             }
-            using TArray = std::array<typename TT::Component, TT::dimension >;
+            using TArray = std::array<TTComponent, TT::dimension >;
             TT point(t[0].cast<TArray>().data());
             return point;
             }
@@ -310,8 +315,8 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const st
     declare_PointVector_arithmetic_in_place_operators_between_types<TT>(py_class);
     declare_PointVector_comparison_operators_between_types<TT>(py_class);
 
-    declare_PointVector_arithmetic_operators_between_types<typename TT::Component>(py_class);
-    declare_PointVector_arithmetic_in_place_operators_between_types<typename TT::Component>(py_class);
+    declare_PointVector_arithmetic_operators_between_types<TTComponent>(py_class);
+    declare_PointVector_arithmetic_in_place_operators_between_types<TTComponent>(py_class);
 
 
     // ----------------------- Class functions --------------------------------
