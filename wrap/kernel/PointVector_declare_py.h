@@ -268,6 +268,40 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const st
                 const TTComponent &,
                 const TTComponent &>());
     }
+    // ----------------------- Bridges ----------------------------------------
+    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    // Allows: numpy.array(an_instance, copy = False)
+    py_class.def_buffer([](TT &self) -> py::buffer_info {
+        return py::buffer_info(
+            self.data(),                                  /* Pointer to buffer */
+            static_cast<ssize_t>(sizeof(TTComponent)),    /* Size of one scalar */
+            py::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor */
+            1,                                            /* Number of dimensions */
+            { TT::dimension },                            /* Shape, buffer dimensions */
+            { static_cast<ssize_t>(sizeof(TTComponent)) } /* Strides (in bytes) for each index */
+            );
+        });
+
+    // Note(phcerdan): A constructor from a py::buffer would be most helpful
+    // in a factory/helper function, which will return the appropiate PointVector type
+    // i.e PointVector(np.array([2., 3.1, 4.])) will return a RealPoint3D
+    py_class.def(py::init([](py::buffer buf) {
+        /* Note(phcerdan): Adapted from numpy/stl_bind.h vector_buffer */
+        /* Request a buffer descriptor from Python */
+        auto info = buf.request();
+
+        /* Sanity checks */
+        if (info.ndim != 1 || info.strides[0] % static_cast<ssize_t>(sizeof(TTComponent)))
+            throw py::type_error("Only valid 1D buffers can be copied to a PointVector");
+        if (!py::detail::compare_buffer_info<TTComponent>::compare(info) || (ssize_t) sizeof(TTComponent) != info.itemsize)
+            throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTComponent>::format() + ")");
+
+        if(info.shape[0] != TT::dimension)
+            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TT::dimension) + ")");
+
+        TTComponent *p = static_cast<TTComponent*>(info.ptr);
+        return TT(p);
+        }));
 
     // ----------------------- Python operators -------------------------------
     py_class.def("__len__", &TT::size);

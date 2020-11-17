@@ -5,6 +5,7 @@ import copy
 import functools
 import math
 
+
 @pytest.mark.parametrize("Type", [
     ("Point2D"), ("RealPoint2D"),
     ("Point3D"), ("RealPoint3D")])
@@ -180,3 +181,32 @@ def test_function_members(Self):
     reseted = copy.deepcopy(ps)
     reseted.reset()
     assert reseted == ps.zero
+
+
+@pytest.mark.parametrize("Self", [
+    ("Point2D"),
+    ("RealPoint3D")])
+def test_bridge_buffer(Self):
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    kernel_submodule = getattr(dgtal, "kernel")
+    Self = getattr(kernel_submodule, Self)
+    ps = Self()
+    ps[0] = 2
+    ps[1] = 4
+    dtype = getattr(np, ps.dtype())
+    if ps.dimension == 2:
+        expected_np_array = np.array([ps[0], ps[1]], dtype=dtype)
+    elif ps.dimension == 3:
+        ps[2] = 6
+        expected_np_array = np.array([ps[0], ps[1], ps[2]], dtype=dtype)
+    else:
+        raise RuntimeError("Dimension not supported")
+
+    # Test def_buffer
+    np_array = np.array(ps, copy = False)
+    np.testing.assert_array_almost_equal(np_array, expected_np_array)
+
+    # Test constructor from py::buffer
+    ps_from_np_array = Self(np_array)
+    assert ps_from_np_array == ps
