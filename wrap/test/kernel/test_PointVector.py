@@ -17,6 +17,19 @@ def test_default_constructor(Type):
 
 @pytest.mark.parametrize("Type", [
     ("Point2D"),
+    ("RealPoint3D")])
+def test_copy_constructor(Type):
+    kernel_submodule = getattr(dgtal, "kernel")
+    Type = getattr(kernel_submodule, Type)
+    p = Type()
+    p[0] = 2
+    p[1] = 4
+    p_copy_constructed = Type(p)
+    assert p_copy_constructed[0] == 2
+    assert p_copy_constructed[1] == 4
+
+@pytest.mark.parametrize("Type", [
+    ("Point2D"),
     ("RealPoint2D")])
 def test_2D_constructor(Type):
     kernel_submodule = getattr(dgtal, "kernel")

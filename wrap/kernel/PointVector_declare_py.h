@@ -256,6 +256,7 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m,
             });
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());
+    py_class.def(py::init<const TT &>());
     if(TT::dimension == 2) {
         py_class.def(py::init<const TTComponent &,
                 const TTComponent &>());
