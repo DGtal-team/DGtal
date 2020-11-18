@@ -111,12 +111,12 @@ init( const Domain& domain,
     }
   // Add other halfplanes
   Integer nb_hp = 0;
-  for ( auto it = itB; itB != itE; ++it, ++nb_hp ) {
+  for ( auto it = itB; it != itE; ++it, ++nb_hp ) {
     // Checks that is not inside.
     auto a = it->N;
     auto b = it->c;
     auto itF = std::find( A.begin(), A.begin()+2*d, a );
-    if ( itF == A.end() )
+    if ( itF == A.begin()+2*d )
       {
 	A.push_back( a );
 	B.push_back( b );
