@@ -15,18 +15,20 @@
  **/
 
 #include "dgtal_pybind11_common.h"
+#include "dgtal_python_types.h"
+
+#include "HyperRectDomain_declare_py.h"
+#include "DGtal/kernel/SpaceND.h"
 
 namespace py = pybind11;
+using namespace DGtal;
 
-void init_PointVector(py::module &);
-void init_HyperRectDomain(py::module &);
+void init_HyperRectDomain(py::module & m) {
+    using Z2i  = SpaceND<2, DGtal::PythonInteger>;
+    using DomainZ2i = HyperRectDomain <Z2i>;
+    auto py_class_DomainZ2i = declare_HyperRectDomain<DomainZ2i>(m, "DomainZ2i");
 
-void init_dgtal_kernel(py::module & mparent) {
-    // TODO: Ask feedback about submodules
-    // Everything in dgtal., or dgtal.kernel. etc.
-    // Other option is that common modules as:
-    // kernel/core/base live in the dgtal namespace.
-    auto m = mparent.def_submodule("kernel");
-    init_PointVector(m);
-    init_HyperRectDomain(m);
+    using Z3i  = SpaceND<3, DGtal::PythonInteger>;
+    using DomainZ3i = HyperRectDomain <Z3i>;
+    auto py_class_DomainZ3i = declare_HyperRectDomain<DomainZ3i>(m, "DomainZ3i");
 }
