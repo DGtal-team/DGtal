@@ -83,6 +83,10 @@ namespace DGtal
      * Destructor.
      */
     ~ClosedIntegerHalfPlane();
+    /**
+     * Default constructor.
+     */
+    ClosedIntegerHalfPlane() = default;
 
     /**
        Constructor from normal and constant.
