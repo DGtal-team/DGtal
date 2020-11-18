@@ -14,21 +14,17 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#ifndef DGTAL_DIGITALSETBYSTLVECTOR_TYPES_PY_H
+#define DGTAL_DIGITALSETBYSTLVECTOR_TYPES_PY_H
 
-namespace py = pybind11;
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 
-void init_PointVector(py::module &);
-void init_HyperRectDomain(py::module &);
-void init_DigitalSetBySTLVector(py::module &);
+#include "kernel/HyperRectDomain_types_py.h" // For DomainZ2i
 
-void init_dgtal_kernel(py::module & mparent) {
-    // TODO: Ask feedback about submodules
-    // Everything in dgtal., or dgtal.kernel. etc.
-    // Other option is that common modules as:
-    // kernel/core/base live in the dgtal namespace.
-    auto m = mparent.def_submodule("kernel");
-    init_PointVector(m);
-    init_HyperRectDomain(m);
-    init_DigitalSetBySTLVector(m);
-}
+namespace DGtal {
+    namespace Python {
+        using DigitalSetZ2i = DigitalSetBySTLVector<DomainZ2i>;
+        using DigitalSetZ3i = DigitalSetBySTLVector<DomainZ3i>;
+    } // namespace Python
+} // namespace DGtal
+#endif

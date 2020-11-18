@@ -1,6 +1,7 @@
 set(python_tests_
   test_PointVector.py
   test_HyperRectDomain.py
+  test_DigitalSetBySTLVector.py
   )
 
 get_filename_component(module_name_ ${CMAKE_CURRENT_SOURCE_DIR} NAME)

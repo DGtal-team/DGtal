@@ -69,3 +69,8 @@ Imagine we want to add wrappings for the class `HyperRectDomain` from the `kerne
   See existing examples to guide you in the process.
 
 
+Dev notes
+==========
+- [] Add `data()` to DigitalSetBySTLVector.h, to expose low level details to python.
+  This would allow slicing, pickling, copy, setitem, getitem and other python goodies.
+

@@ -4,6 +4,7 @@ set(current_sources_
   ${module_name_}_init.cpp
   PointVector_py.cpp
   HyperRectDomain_py.cpp
+  DigitalSetBySTLVector_py.cpp
   )
 list(TRANSFORM current_sources_ PREPEND "${module_path_}/")
 
