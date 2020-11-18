@@ -242,15 +242,16 @@ void declare_PointVector_all_mixings(pybind11::class_<TSelf> & in_py_class)
 }
 
 template<typename TPointVector>
-pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m, const std::string &typestr,
-        const std::string &component_str) {
+pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m,
+        const std::string &typestr, const std::string &component_str) {
     namespace py = pybind11;
     using TT = TPointVector;
     using TTComponent = typename TT::Component;
 
     auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
 
-    py_class.def("dtype", [&component_str](const TT &self) {
+    py_class.def_property_readonly_static("dtype",
+            [&component_str](py::object /* self */) {
             return component_str;
             });
     // ----------------------- Constructors -----------------------------------
@@ -423,7 +424,7 @@ val: Component [Default = 1]
     // __repr__ is for reproducibility, shows signature of constructor.
     py_class.def("__repr__", [typestr](const TT& self) {
             std::stringstream os;
-            os << typestr <<"(";
+            os << typestr << "(";
             for (DGtal::Dimension i = 0; i < TT::dimension ; ++i)
             os << self[ i ] << (i == TT::dimension - 1 ? "" : ", ");
             os << ")";

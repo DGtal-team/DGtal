@@ -194,7 +194,7 @@ def test_bridge_buffer(Self):
     ps = Self()
     ps[0] = 2
     ps[1] = 4
-    dtype = getattr(np, ps.dtype())
+    dtype = getattr(np, ps.dtype)
     if ps.dimension == 2:
         expected_np_array = np.array([ps[0], ps[1]], dtype=dtype)
     elif ps.dimension == 3:
@@ -210,3 +210,14 @@ def test_bridge_buffer(Self):
     # Test constructor from py::buffer
     ps_from_np_array = Self(np_array)
     assert ps_from_np_array == ps
+
+
+@pytest.mark.parametrize("Type", [("Point2D"), ("RealPoint3D")])
+def test_printers(Type):
+    kernel_submodule = getattr(dgtal, "kernel")
+    Type = getattr(kernel_submodule, Type)
+    ps = Type()
+    print("__str__:")
+    print(ps)
+    print("__repr__:")
+    print(ps.__repr__())
