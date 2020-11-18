@@ -19,7 +19,6 @@
 #define DGTAL_POINTVECTOR_DECLARE_PY_H
 
 #include "dgtal_pybind11_common.h"
-#include "dgtal_python_types.h"
 
 #include "DGtal/kernel/PointVector.h"
 

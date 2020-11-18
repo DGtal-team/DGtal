@@ -24,13 +24,27 @@ are available in Python. All the types in Z2i and Z3i namespaces are wrapped, th
 Imagine we want to add wrappings for the class `HyperRectDomain` from the `kernel` module.
 
 - Inside the folder `wrap/kernel` add the files:
-  - `HyperRectDomain_py.cpp`. In this file we choose what specifc types of `HyperRectDomain` we are wrapping.
-  Here we define the function `init_HyperRectDomain`:
+  - `HyperRectDomain_types_py.h`, to add (and reuse later) the specific types of `HyperRectDomain` that are going to be wrapped into python.
+  ```
+  #include "Common_types_py.h" // For DGtal::Python::Integer
+  namespace DGtal {
+      namespace Python {
+          using Z2i  = DGtal::SpaceND<2, DGtal::Python::Integer>;
+          using DomainZ2i = DGtal::HyperRectDomain <Z2i>;
+      } // namespace Python
+  } // namespace DGtal
+  ```
+
+  - `HyperRectDomain_py.cpp`. This is the file to compile where we define the function `init_HyperRectDomain`.
+  Using the types from HyperRectDomain_types_py we wrap that type with the template function `declare_HyperRectDomain`.
   ```cpp
+  #include "dgtal_pybind11_common.h"
+
+  #include "HyperRectDomain_types_py.h" // For DGtal::Python::DomainZ2i
+  #include "HyperRectDomain_declare_py.h"
+
   void init_HyperRectDomain(py::module & m) {
-    using Z2i  = SpaceND<2, DGtal::PythonInteger>;
-    using DomainZ2i = HyperRectDomain <Z2i>;
-    auto py_class_DomainZ2i = declare_HyperRectDomain<DomainZ2i>(m, "DomainZ2i");
+    auto py_class_DomainZ2i = declare_HyperRectDomain<DGtal::Python::DomainZ2i>(m, "DomainZ2i");
   }
   ```
 

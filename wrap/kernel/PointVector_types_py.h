@@ -14,16 +14,18 @@
  *
  **/
 
-#ifndef DGTAL_PYTHON_TYPES_H
-#define DGTAL_PYTHON_TYPES_H
+#ifndef DGTAL_POINTVECTOR_TYPES_PY_H
+#define DGTAL_POINTVECTOR_TYPES_PY_H
 
-#include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
+#include "base/Common_types_py.h"
 
 namespace DGtal {
-    using PythonInteger = DGtal::int32_t;
-    using PythonReal = double;
-    const std::string PythonInteger_str = "int";
-    const std::string PythonReal_str = "float";
-}
-
+    namespace Python {
+        using Point2D = PointVector<2, DGtal::Python::Integer>;
+        using Point3D = PointVector<3, DGtal::Python::Integer>;
+        using RealPoint2D = PointVector<2, DGtal::Python::Real>;
+        using RealPoint3D = PointVector<3, DGtal::Python::Real>;
+    } // namespace Python
+} // namespace DGtal
 #endif

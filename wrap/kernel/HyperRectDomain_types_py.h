@@ -14,15 +14,20 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#ifndef DGTAL_HYPERRECTDOMAIN_TYPES_PY_H
+#define DGTAL_HYPERRECTDOMAIN_TYPES_PY_H
 
-#include "HyperRectDomain_types_py.h"
-#include "HyperRectDomain_declare_py.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "base/Common_types_py.h"
 
-namespace py = pybind11;
-using namespace DGtal;
+namespace DGtal {
+    namespace Python {
+        using Z2i  = SpaceND<2, DGtal::Python::Integer>;
+        using DomainZ2i = HyperRectDomain <Z2i>;
 
-void init_HyperRectDomain(py::module & m) {
-    auto py_class_DomainZ2i = declare_HyperRectDomain<Python::DomainZ2i>(m, "DomainZ2i");
-    auto py_class_DomainZ3i = declare_HyperRectDomain<Python::DomainZ3i>(m, "DomainZ3i");
-}
+        using Z3i  = SpaceND<3, DGtal::Python::Integer>;
+        using DomainZ3i = HyperRectDomain <Z3i>;
+    } // namespace Python
+} // namespace DGtal
+#endif

@@ -14,15 +14,18 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#ifndef DGTAL_COMMON_TYPES_H
+#define DGTAL_COMMON_TYPES_H
 
-#include "HyperRectDomain_types_py.h"
-#include "HyperRectDomain_declare_py.h"
+#include "DGtal/base/Common.h"
 
-namespace py = pybind11;
-using namespace DGtal;
-
-void init_HyperRectDomain(py::module & m) {
-    auto py_class_DomainZ2i = declare_HyperRectDomain<Python::DomainZ2i>(m, "DomainZ2i");
-    auto py_class_DomainZ3i = declare_HyperRectDomain<Python::DomainZ3i>(m, "DomainZ3i");
+namespace DGtal {
+    namespace Python {
+        using Integer = DGtal::int32_t;
+        using Real = double;
+        const std::string Integer_str = "int";
+        const std::string Real_str = "float";
+    }
 }
+
+#endif

@@ -18,9 +18,9 @@
 #define DGTAL_HYPERRECTDOMAIN_DECLARE_PY_H
 
 #include "dgtal_pybind11_common.h"
-#include "pybind11/pytypes.h"
-#include "dgtal_python_types.h"
+#include <pybind11/pytypes.h>
 
+#include "base/Common_types_py.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 template<typename THyperRectDomain>
@@ -34,7 +34,7 @@ pybind11::class_<THyperRectDomain> declare_HyperRectDomain(pybind11::module &m,
     auto py_class = py::class_<TT>(m, typestr.c_str());
 
     py_class.def("dtype", [](const TT &self) {
-            return DGtal::PythonInteger_str;
+            return DGtal::Python::Integer_str;
             });
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());
