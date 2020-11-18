@@ -12,6 +12,15 @@
   - Only set CMAKE_CXX_STANDARD if not defined already
     (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
 
+- *Arithmetic*
+  - Add default constructor to ClosedIntegerHalfSpace
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+
+- *Geometry*
+  - Fix BoundedLatticePolytope::init when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+
+
 # DGtal 1.1
 
 ## New Features / Critical Changes
