@@ -15,15 +15,21 @@
  **/
 
 #include "dgtal_pybind11_common.h"
+
+#include "KhalimskySpaceND_types_py.h"
+#include "KhalimskySpaceND_declare_py.h"
+
 namespace py = pybind11;
+using namespace DGtal;
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
+void init_KhalimskySpaceND(py::module & m) {
+    using Cell2D = DGtal::Python::Cell2D;
+    using SCell2D = DGtal::Python::SCell2D;
+    using KSpace2D = DGtal::Python::KSpace2D;
+    using Cell3D = DGtal::Python::Cell3D;
+    using SCell3D = DGtal::Python::SCell3D;
+    using KSpace3D = DGtal::Python::KSpace3D;
 
-PYBIND11_MODULE(_dgtal, m) {
-    m.doc() = "Digital Geometry Tools and Algorithms.";
-    init_dgtal_kernel(m);
-    init_dgtal_base(m);
-    init_dgtal_topology(m);
+    auto py_class_Cell2D = declare_KhalimskyCell<Cell2D>(m, "Cell2D");
+    auto py_class_Cell3D = declare_KhalimskyCell<Cell3D>(m, "Cell3D");
 }

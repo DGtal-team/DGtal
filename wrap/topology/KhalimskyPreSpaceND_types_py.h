@@ -13,17 +13,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+#ifndef DGTAL_KHALIMSKYPRESPACEND_TYPES_PY_H
+#define DGTAL_KHALIMSKYPRESPACEND_TYPES_PY_H
 
-#include "dgtal_pybind11_common.h"
-namespace py = pybind11;
+#include "base/Common_types_py.h" // For DGtal::Python::Integer
+#include "DGtal/topology/KhalimskyPreSpaceND.h"
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
+namespace DGtal {
+    namespace Python {
+        using KPreSpace2D = DGtal::KhalimskyPreSpaceND<2, Python::Integer>;
+        using PreCell2D = KPreSpace2D::Cell;
+        using SPreCell2D = KPreSpace2D::SCell;
 
-PYBIND11_MODULE(_dgtal, m) {
-    m.doc() = "Digital Geometry Tools and Algorithms.";
-    init_dgtal_kernel(m);
-    init_dgtal_base(m);
-    init_dgtal_topology(m);
-}
+        using KPreSpace3D = DGtal::KhalimskyPreSpaceND<3, Python::Integer>;
+        using PreCell3D = KPreSpace3D::Cell;
+        using SPreCell3D = KPreSpace3D::SCell;
+    } // namespace Python
+} // namespace DGtal
+#endif

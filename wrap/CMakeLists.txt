@@ -13,6 +13,7 @@ set(enabled_include_system_dirs_)
 
 add_subdirectory(kernel)
 add_subdirectory(base)
+add_subdirectory(topology)
 #TODO add_subdirectory(arithmetic)
 #TODO add_subdirectory(dec)
 #TODO add_subdirectory(geometry)
@@ -22,7 +23,6 @@ add_subdirectory(base)
 #TODO add_subdirectory(io)
 #TODO add_subdirectory(math)
 #TODO add_subdirectory(shapes)
-#TODO add_subdirectory(topology)
 
 if(WITH_ITK)
   # Add itk wrapping of Image

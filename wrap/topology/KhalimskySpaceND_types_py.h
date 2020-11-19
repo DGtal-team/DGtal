@@ -14,16 +14,21 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
-namespace py = pybind11;
+#ifndef DGTAL_KHALIMSKYSPACEND_TYPES_PY_CPP
+#define DGTAL_KHALIMSKYSPACEND_TYPES_PY_CPP
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
+#include "base/Common_types_py.h" // For DGtal::Python::Integer
+#include "DGtal/topology/KhalimskySpaceND.h"
 
-PYBIND11_MODULE(_dgtal, m) {
-    m.doc() = "Digital Geometry Tools and Algorithms.";
-    init_dgtal_kernel(m);
-    init_dgtal_base(m);
-    init_dgtal_topology(m);
-}
+namespace DGtal {
+    namespace Python {
+        using KSpace2D = DGtal::KhalimskySpaceND<2, Python::Integer>;
+        using Cell2D = KSpace2D::Cell;
+        using SCell2D = KSpace2D::SCell;
+
+        using KSpace3D = DGtal::KhalimskySpaceND<3, Python::Integer>;
+        using Cell3D = KSpace3D::Cell;
+        using SCell3D = KSpace3D::SCell;
+    } // namespace Python
+} // namespace DGtal
+#endif
