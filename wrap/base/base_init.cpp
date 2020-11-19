@@ -17,8 +17,9 @@
 #include "dgtal_pybind11_common.h"
 
 namespace py = pybind11;
-void init_common(py::module &);
+void init_orientation(py::module &);
 
-void init_dgtal_base(py::module & m) {
-    init_common(m);
+void init_dgtal_base(py::module & mparent) {
+    auto m = mparent.def_submodule("base");
+    init_orientation(m);
 }

@@ -21,7 +21,7 @@
 namespace py = pybind11;
 using namespace DGtal;
 
-void init_common(py::module &m) {
+void init_orientation(py::module &m) {
     py::enum_<Orientation>(m, "Orientation")
         .value("INSIDE", INSIDE)
         .value("ON", ON)
