@@ -276,6 +276,21 @@ namespace DGtal
      */
     Range range() ;
 
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+     */
+    const Self & container() const { return *this; };
+    /** @copydoc container() */
+    Self & container() { return *this; };
+
+    /**
+     * Give access to the underlying data.
+     * @return a (might be const) reference to the data.
+    */
+    const Node** & data() const noexcept { return myData; };
+    /** @copydoc data() */
+    Node** & data() noexcept { return myData; };
 
     /**
      * Returns the value corresponding to a key.

@@ -116,6 +116,7 @@ namespace DGtal
 
       typedef typename itk::Image< TValue, dimension> ITKImage;
       typedef typename ITKImage::Pointer ITKImagePointer;
+      typedef typename ITKImage::PixelContainer Container;
       typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
       typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
 
@@ -188,6 +189,20 @@ namespace DGtal
       Range range()
       {
           return Range(*this);
+      }
+
+      /**
+       * Give access to the underlying container.
+       * @return a (might be const) reference to the container.
+      */
+      const Container & container() const
+      {
+        return *(myITKImagePointer->GetPixelContainer());
+      }
+      /** @copydoc container() */
+      Container & container()
+      {
+        return *(myITKImagePointer->GetPixelContainer());
       }
 
       /**

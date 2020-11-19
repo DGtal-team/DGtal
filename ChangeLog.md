@@ -11,6 +11,8 @@
 - *General*
   - Only set CMAKE_CXX_STANDARD if not defined already
     (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
+  - Add `container()` member function to DigitalSets and ImageContainers
+    (Pablo Hernandez-Cerdan [#1532](https://github.com/DGtal-team/DGtal/pull/1532))
 
 - *Arithmetic*
   - Add default constructor to ClosedIntegerHalfSpace
