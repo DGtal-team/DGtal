@@ -111,7 +111,7 @@ init( const Domain& domain,
     }
   // Add other halfplanes
   Integer nb_hp = 0;
-  for ( auto it = itB; it != itE; ++it, ++nb_hp ) {
+  for ( auto it = itB; it != itE; ++it ) {
     // Checks that is not inside.
     auto a = it->N;
     auto b = it->c;
@@ -120,6 +120,7 @@ init( const Domain& domain,
       {
 	A.push_back( a );
 	B.push_back( b );
+        ++nb_hp;
       }
     else
       {
