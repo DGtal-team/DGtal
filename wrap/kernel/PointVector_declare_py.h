@@ -305,7 +305,7 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m,
         }));
 
     // ----------------------- Python operators -------------------------------
-    py_class.def("__len__", &TT::size);
+    py_class.def_static("__len__", &TT::size);
     py_class.def("__getitem__", [](const TT & self, const size_t index) {
         if (index >= self.size()) throw py::index_error();
         return self[index];
