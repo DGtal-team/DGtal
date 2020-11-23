@@ -161,12 +161,13 @@ namespace DGtal
     /// @tparam RealPointIterator any forward iterator on RealPoint.
     /// @tparam VerticesIterator any forward iterator on the range of vertices defining a face.
     ///
-    /// @param itPos,itPosEnd a range of iterators pointing on the positions of all the
-    /// vertices of the mesh.
+    /// @param itPos start of range of iterators pointing on the positions of vertices of the mesh
+    /// @param itPosEnd end of range of iterators pointing on the positions of vertices of the mesh.
     ///
-    /// @param itVertices,itVerticesEnd a range of iterators pointing
-    /// on the (oriented) faces of the mesh, each face being a range
-    /// of vertex indices.
+    /// @param itVertices start of range of iterators pointing on the (oriented)
+    ///   faces of the mesh, each face being a range of vertex indices.
+    /// @param itVerticesEnd end of range of iterators pointing on the (oriented)
+    ///   faces of the mesh, each face being a range of vertex indices.
     ///
     /// A typical construction usage is
     /// @code
@@ -184,12 +185,13 @@ namespace DGtal
     /// @tparam RealPointIterator any forward iterator on RealPoint.
     /// @tparam VerticesIterator any forward iterator on a range of vertices.
     ///
-    /// @param itPos,itPosEnd a range of iterators pointing on the positions of all the
-    /// vertices of the mesh.
+    /// @param itPos start of range of iterators pointing on the positions of vertices of the mesh
+    /// @param itPosEnd end of range of iterators pointing on the positions of vertices of the mesh.
     ///
-    /// @param itVertices,itVerticesEnd a range of iterators pointing
-    /// on the (oriented) faces of the mesh, each face being a range
-    /// of vertex indices.
+    /// @param itVertices start of range of iterators pointing on the (oriented)
+    ///   faces of the mesh, each face being a range of vertex indices.
+    /// @param itVerticesEnd end of range of iterators pointing on the (oriented)
+    ///   faces of the mesh, each face being a range of vertex indices.
     ///
     /// A typical construction usage is
     /// @code
