@@ -31,10 +31,10 @@ void init_KhalimskyPreSpaceND(py::module & m) {
     using KPreSpace3D = DGtal::Python::KPreSpace3D;
 
     auto py_class_PreCell2D = declare_KhalimskyPreCell<PreCell2D>(m, "PreCell2D");
-    // auto py_class_SPreCell2D = declare_SignedKhalimskyPreCell<SPreCell2D>(m, "SPreCell2D");
-    // auto py_class_KPreSpace2D = declare_KhalimskyPreSpaceND<KPreSpace2D>(m, "KPreSpace2D");
+    auto py_class_SPreCell2D = declare_SignedKhalimskyPreCell<SPreCell2D>(m, "SPreCell2D");
+    auto py_class_KPreSpace2D = declare_KhalimskyPreSpaceND<KPreSpace2D>(m, "KPreSpace2D");
 
     auto py_class_PreCell3D = declare_KhalimskyPreCell<PreCell3D>(m, "PreCell3D");
-    // auto py_class_SPreCell3D = declare_SignedKhalimskyPreCell<SPreCell3D>(m, "SPreCell3D");
-    // auto py_class_KPreSpace3D = declare_KhalimskyPreSpaceND<KPreSpace3D>(m, "KPreSpace3D");
+    auto py_class_SPreCell3D = declare_SignedKhalimskyPreCell<SPreCell3D>(m, "SPreCell3D");
+    auto py_class_KPreSpace3D = declare_KhalimskyPreSpaceND<KPreSpace3D>(m, "KPreSpace3D");
 }

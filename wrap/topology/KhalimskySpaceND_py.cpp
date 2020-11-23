@@ -22,6 +22,7 @@
 namespace py = pybind11;
 using namespace DGtal;
 
+
 void init_KhalimskySpaceND(py::module & m) {
     using Cell2D = DGtal::Python::Cell2D;
     using SCell2D = DGtal::Python::SCell2D;
