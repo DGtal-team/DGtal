@@ -170,8 +170,7 @@ pybind11::class_<TKhalimskySpaceND> declare_KhalimskySpaceND(pybind11::module &m
     py::enum_<typename TT::Closure>(py_class, "Closure")
         .value("CLOSED", TT::CLOSED)
         .value("OPEN", TT::OPEN)
-        .value("PERIODIC", TT::PERIODIC)
-        .export_values();
+        .value("PERIODIC", TT::PERIODIC);
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());

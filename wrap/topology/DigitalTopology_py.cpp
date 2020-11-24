@@ -28,8 +28,7 @@ void init_DigitalTopology(py::module & m) {
             R"(Possible properties of digital topologies.)")
         .value("UNKNOWN_DT", DGtal::UNKNOWN_DT)
         .value("NOT_JORDAN_DT", DGtal::NOT_JORDAN_DT)
-        .value("JORDAN_DT", DGtal::JORDAN_DT)
-        .export_values();
+        .value("JORDAN_DT", DGtal::JORDAN_DT);
 
     // --- 2D ---
     auto py_class_DT4_8 = declare_DigitalTopology<Python::DT4_8>(m, "DT4_8");

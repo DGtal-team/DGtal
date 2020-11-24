@@ -16,7 +16,7 @@ def test_DigitalTopology(Type):
     topo = Topo(fadj, badj)
     assert topo.foreground() == fadj
     assert topo.background() == badj
-    assert topo.properties() == submodule.UNKNOWN_DT
-    topo = Topo(foreground=fadj, background=badj, props=submodule.JORDAN_DT)
+    assert topo.properties() == submodule.DigitalTopologyProperties.UNKNOWN_DT
+    topo = Topo(foreground=fadj, background=badj, props=submodule.DigitalTopologyProperties.JORDAN_DT)
     print(topo.__repr__())
     print(topo)

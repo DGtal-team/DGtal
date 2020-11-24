@@ -25,6 +25,5 @@ void init_orientation(py::module &m) {
     py::enum_<Orientation>(m, "Orientation")
         .value("INSIDE", INSIDE)
         .value("ON", ON)
-        .value("OUTSIDE", OUTSIDE)
-        .export_values();
+        .value("OUTSIDE", OUTSIDE);
 };
