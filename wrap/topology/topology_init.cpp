@@ -21,10 +21,12 @@ namespace py = pybind11;
 void init_KhalimskyPreSpaceND(py::module &);
 void init_KhalimskySpaceND(py::module &);
 void init_MetricAdjacency(py::module &);
+void init_DigitalTopology(py::module &);
 
 void init_dgtal_topology(py::module & mparent) {
     auto m = mparent.def_submodule("topology");
     init_KhalimskyPreSpaceND(m);
     init_KhalimskySpaceND(m);
     init_MetricAdjacency(m);
+    init_DigitalTopology(m);
 }
