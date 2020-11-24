@@ -14,17 +14,20 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#ifndef DGTAL_METRICADJACENCY_TYPES_PY_H
+#define DGTAL_METRICADJACENCY_TYPES_PY_H
 
-namespace py = pybind11;
+#include "kernel/HyperRectDomain_types_py.h" // For Z2i, Z3i (SpaceND)
+#include "DGtal/topology/MetricAdjacency.h"
 
-void init_KhalimskyPreSpaceND(py::module &);
-void init_KhalimskySpaceND(py::module &);
-void init_MetricAdjacency(py::module &);
+namespace DGtal {
+    namespace Python {
+        using Adj4 = DGtal::MetricAdjacency< DGtal::Python::Z2i, 1>;
+        using Adj8 = DGtal::MetricAdjacency< DGtal::Python::Z2i, 2>;
 
-void init_dgtal_topology(py::module & mparent) {
-    auto m = mparent.def_submodule("topology");
-    init_KhalimskyPreSpaceND(m);
-    init_KhalimskySpaceND(m);
-    init_MetricAdjacency(m);
-}
+        using Adj6 = DGtal::MetricAdjacency< DGtal::Python::Z3i, 1>;
+        using Adj18 = DGtal::MetricAdjacency< DGtal::Python::Z3i, 2>;
+        using Adj26 = DGtal::MetricAdjacency< DGtal::Python::Z3i, 3>;
+    } // namespace Python
+} // namespace DGtal
+#endif

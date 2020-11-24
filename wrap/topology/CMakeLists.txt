@@ -4,6 +4,7 @@ set(current_sources_
   ${module_name_}_init.cpp
   KhalimskyPreSpaceND_py.cpp
   KhalimskySpaceND_py.cpp
+  MetricAdjacency_py.cpp
   )
 list(TRANSFORM current_sources_ PREPEND "${module_path_}/")
 

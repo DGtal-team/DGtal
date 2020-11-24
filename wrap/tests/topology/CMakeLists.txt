@@ -1,6 +1,7 @@
 set(python_tests_
   test_KhalimskyPreSpaceND.py
   test_KhalimskySpaceND.py
+  test_MetricAdjacency.py
   )
 
 get_filename_component(module_name_ ${CMAKE_CURRENT_SOURCE_DIR} NAME)

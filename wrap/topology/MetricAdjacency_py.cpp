@@ -16,15 +16,23 @@
 
 #include "dgtal_pybind11_common.h"
 
+#include "MetricAdjacency_types_py.h"
+#include "MetricAdjacency_declare_py.h"
+
 namespace py = pybind11;
+using namespace DGtal;
 
-void init_KhalimskyPreSpaceND(py::module &);
-void init_KhalimskySpaceND(py::module &);
-void init_MetricAdjacency(py::module &);
-
-void init_dgtal_topology(py::module & mparent) {
-    auto m = mparent.def_submodule("topology");
-    init_KhalimskyPreSpaceND(m);
-    init_KhalimskySpaceND(m);
-    init_MetricAdjacency(m);
+void init_MetricAdjacency(py::module & m) {
+    // --- 2D ---
+    using Adj4 = Python::Adj4;
+    using Adj8 = Python::Adj8;
+    auto py_class_Adj4 = declare_MetricAdjacency<Adj4>(m, "Adj4");
+    auto py_class_Adj8 = declare_MetricAdjacency<Adj8>(m, "Adj8");
+    // --- 3D ---
+    using Adj6 = Python::Adj6;
+    using Adj18 = Python::Adj18;
+    using Adj26 = Python::Adj26;
+    auto py_class_Adj6 = declare_MetricAdjacency<Adj6>(m, "Adj6");
+    auto py_class_Adj18 = declare_MetricAdjacency<Adj18>(m, "Adj18");
+    auto py_class_Adj26 = declare_MetricAdjacency<Adj26>(m, "Adj26");
 }

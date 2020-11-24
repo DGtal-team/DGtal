@@ -73,4 +73,24 @@ Dev notes
 ==========
 - [] Add `data()` to DigitalSetBySTLVector.h, to expose low level details to python.
   This would allow slicing, pickling, copy, setitem, getitem and other python goodies.
+  Instead of `data()`, we add `container()` to DigitalSets and ImageContainers PR #1532
+
+## Classes wrapped
+
+### StdDefs:
+- [x] PointVector: `Point2D`, `Point3D`, `RealPoint2D`, `RealPoint3D`
+- [x] HyperRectDomain: `DomainZ2i`, `DomainZ3i`
+- [x] DigitalSetBySTLVector: `DigitalSetZ2i`, `DigitalSetZ3i`
+- [x] KhalimskyPreSpaceND: `PreCell2D`, `SPreCell2D`, `KPreSpace2D` (and 3D)
+- [x] KhalimskySpaceND: `Cell2D`, `SCell2D`, `KSpace2D` (and 3D)
+- [x] MetricAdjacency: 2D: `Adj4`, `Adj8`, 3D: `Adj6`, `Adj18`, `Adj26`
+- [ ] DigitalTopology
+- [ ] Object
+
+### IO:
+
+### Other:
+- [ ] CubicalComplex and VoxelComplex
+- [ ] DigitalSurface
+
 
