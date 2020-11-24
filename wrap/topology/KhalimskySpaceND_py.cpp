@@ -32,5 +32,10 @@ void init_KhalimskySpaceND(py::module & m) {
     using KSpace3D = DGtal::Python::KSpace3D;
 
     auto py_class_Cell2D = declare_KhalimskyCell<Cell2D>(m, "Cell2D");
+    auto py_class_SCell2D = declare_SignedKhalimskyCell<SCell2D>(m, "SCell2D");
+    auto py_class_KSpace2D = declare_KhalimskySpaceND<KSpace2D>(m, "KSpace2D");
+
     auto py_class_Cell3D = declare_KhalimskyCell<Cell3D>(m, "Cell3D");
+    auto py_class_SCell3D = declare_SignedKhalimskyCell<SCell3D>(m, "SCell3D");
+    auto py_class_KSpace3D = declare_KhalimskySpaceND<KSpace3D>(m, "KSpace3D");
 }

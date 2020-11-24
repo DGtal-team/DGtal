@@ -33,8 +33,8 @@ pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell_common(pybind11::mo
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreCell;
-    using TTInteger = typename TKhalimskyPreCell::Integer;
-    using TTPoint = typename TKhalimskyPreCell::Point;
+    using TTInteger = typename TT::Integer;
+    using TTPoint = typename TT::Point;
     auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
 
     // ----------------------- Constructors -----------------------------------
@@ -87,8 +87,8 @@ pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell(pybind11::module &m
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreCell;
-    using TTPoint = typename TKhalimskyPreCell::Point;
-    using TTInteger = typename TKhalimskyPreCell::Integer;
+    using TTPoint = typename TT::Point;
+    using TTInteger = typename TT::Integer;
     auto py_class = declare_KhalimskyPreCell_common<TT>(m, typestr);
     py_class.def(py::init<const TTPoint &>());
 
@@ -236,7 +236,7 @@ kpoint: Point
     Khalimsky coordinates of a cell.
 
 Return
--------
+------
     Unsigned precell.
 )", py::arg("kpoint"));
 
@@ -251,7 +251,7 @@ cell: Cell
     Another cell defining the topology.
 
 Return
--------
+------
     The pre-cell having the topology of [cell] and the given digital coordinates [p].
 )", py::arg("point"), py::arg("cell"));
 
@@ -266,7 +266,7 @@ sign: Bool
     The sign of the cell (either POS (True) or NEG (False)), defaults to True.
 
 Return
--------
+------
     Signed precell.
 )", py::arg("kpoint"), py::arg("sign")=true);
 
@@ -281,7 +281,7 @@ cell: Cell
     Another cell defining the topology and sign.
 
 Return
--------
+------
     The pre-cell having the topology and sign of [cell] and the given digital coordinates [p].
 )", py::arg("point"), py::arg("cell"));
 
@@ -294,7 +294,7 @@ p: Point
     An integer point (digital coordinates of cell).
 
 Return
--------
+------
     The pre-spel having the given digital coordinates [p].
 )", py::arg("point"));
 
@@ -309,7 +309,7 @@ sign: Bool
     The sign of the cell (either POS (True) or NEG (False), defaults to True.
 
 Return
--------
+------
     The signed pre-spel having the given digital coordinates [p] and [sign].
 )", py::arg("point"), py::arg("sign")=true);
 
@@ -322,7 +322,7 @@ p: Point
     An integer point (digital coordinates of cell).
 
 Return
--------
+------
     The pre-pointel having the given digital coordinates [p].
 )", py::arg("point"));
 
@@ -337,7 +337,7 @@ sign: Bool
     The sign of the cell (either POS (True) or NEG (False), defaults to True.
 
 Return
--------
+------
     The signed pre-pointel having the given digital coordinates [p] and [sign].
 )", py::arg("point"), py::arg("sign")=true);
 
