@@ -14,8 +14,7 @@ foreach(python_test ${python_tests_})
     COMMAND
     ${PYTHON_EXECUTABLE}
     -m pytest
-    # Verbose, show all output with ctest -V
-    -rA
+    ${pytest_options}
     ${test_folder}/${python_test}
     )
   # Set PYTHONPATH to allow `import dgtal`. dgtal folder is in the build folder.
