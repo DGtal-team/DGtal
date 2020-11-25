@@ -7,7 +7,7 @@ def test_constructor_with_domain(Type):
     DigitalSet = getattr(kernel_submodule, Type)
     Domain = DigitalSet.TDomain
     Point = DigitalSet.TPoint
-    # Conctruct Domain
+    # Construct Domain
     lb = Point.zero
     ub = Point.diagonal(4)
     dom = Domain(lb, ub)
@@ -21,7 +21,7 @@ def test_function_members(Type):
     DigitalSet = getattr(kernel_submodule, Type)
     Domain = DigitalSet.TDomain
     Point = DigitalSet.TPoint
-    # Conctruct Domain
+    # Construct Domain
     lb = Point.zero
     ub = Point.diagonal(4)
     dom = Domain(lb, ub)
