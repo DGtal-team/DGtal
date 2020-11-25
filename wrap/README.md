@@ -85,7 +85,7 @@ Dev notes
 - [x] KhalimskySpaceND: `Cell2D`, `SCell2D`, `KSpace2D` (and 3D)
 - [x] MetricAdjacency: 2D: `Adj4`, `Adj8`, 3D: `Adj6`, `Adj18`, `Adj26`
 - [x] DigitalTopology: `DT4_8`, `DT8_4`, `DT6_18`, `DT18_6`, `DT6_26`, `DT26_6`
-- [ ] Object
+- [x] Object: `Object4_8`, `Object8_4`, `Object6_18`, `Object18_6`, `Object6_26`, `Object26_6`
 
 ### IO:
 

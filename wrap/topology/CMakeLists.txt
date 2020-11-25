@@ -6,6 +6,7 @@ set(current_sources_
   KhalimskySpaceND_py.cpp
   MetricAdjacency_py.cpp
   DigitalTopology_py.cpp
+  Object_py.cpp
   )
 list(TRANSFORM current_sources_ PREPEND "${module_path_}/")
 
