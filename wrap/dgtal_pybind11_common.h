@@ -25,7 +25,7 @@
 #include <pybind11/stl_bind.h>
 #include <pybind11/stl.h>
 
-#include "topology/KhalimskyPreSpaceND_types_py.h"
+#include "topology/KhalimskyPreSpaceND_types_py.h" // For KPreSpace2D
 
 namespace pybind11 { namespace detail {
 
