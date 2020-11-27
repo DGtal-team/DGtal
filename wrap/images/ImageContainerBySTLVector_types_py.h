@@ -19,6 +19,7 @@
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "kernel/HyperRectDomain_types_py.h"
+#include "kernel/PointVector_types_py.h"
 #include "io/Color_types_py.h"
 
 /*
@@ -36,8 +37,18 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ2i, Real>;
         using ImageContainerByVector2DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ2i, float>;
+
         using ImageContainerByVector2DColor =
             DGtal::ImageContainerBySTLVector<DomainZ2i, Color>;
+
+        using ImageContainerByVector2DPoint2D =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, Point2D>;
+        using ImageContainerByVector2DRealPoint2D =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, RealPoint2D>;
+        using ImageContainerByVector2DPoint3D =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, Point3D>;
+        using ImageContainerByVector2DRealPoint3D =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, RealPoint3D>;
 
         // --- 3D ---
         using ImageContainerByVector3DInteger =
@@ -46,8 +57,18 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ3i, Real>;
         using ImageContainerByVector3DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ3i, float>;
+
         using ImageContainerByVector3DColor =
             DGtal::ImageContainerBySTLVector<DomainZ3i, Color>;
+
+        using ImageContainerByVector3DPoint2D =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, Point2D>;
+        using ImageContainerByVector3DRealPoint2D =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, RealPoint2D>;
+        using ImageContainerByVector3DPoint3D =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, Point3D>;
+        using ImageContainerByVector3DRealPoint3D =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, RealPoint3D>;
     } // namespace Python
 } // namespace DGtal
 #endif

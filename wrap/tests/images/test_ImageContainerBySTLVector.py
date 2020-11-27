@@ -43,7 +43,16 @@ def test_ImageContainerWithSingleValues(Type):
 
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DColor"),
-    ("ImageContainerByVector3DColor")])
+    ("ImageContainerByVector3DColor"),
+    ("ImageContainerByVector2DPoint2D"),
+    ("ImageContainerByVector2DRealPoint2D"),
+    ("ImageContainerByVector2DPoint3D"),
+    ("ImageContainerByVector2DRealPoint3D"),
+    ("ImageContainerByVector3DPoint2D"),
+    ("ImageContainerByVector3DRealPoint2D"),
+    ("ImageContainerByVector3DPoint3D"),
+    ("ImageContainerByVector3DRealPoint3D")
+])
 def test_ImageContainerWithDGtalTypes(Type):
     submodule = getattr(dgtal, "images")
     ImageContainer = getattr(submodule, Type)
