@@ -272,6 +272,14 @@ namespace DGtal
     Iterator end();
 
     /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+    */
+    const Container & container() const;
+    /** @copydoc container() */
+    Container & container();
+
+    /**
      * set union to left.
      * @param aSet any other set.
      */

@@ -325,6 +325,22 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::end()
   return mySet.end();
 }
 
+template <typename Domain, typename Container>
+inline
+const typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Container &
+DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container() const
+{
+  return mySet;
+}
+
+template <typename Domain, typename Container>
+inline
+typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Container &
+DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container()
+{
+  return mySet;
+}
+
 /**
  * set union to left.
  * @param aSet any other set.

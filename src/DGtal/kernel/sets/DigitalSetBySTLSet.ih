@@ -320,6 +320,22 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::end()
   return mySet.end();
 }
 
+template <typename Domain, typename Compare>
+inline
+const typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Container &
+DGtal::DigitalSetBySTLSet<Domain, Compare>::container() const
+{
+  return mySet;
+}
+
+template <typename Domain, typename Compare>
+inline
+typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Container &
+DGtal::DigitalSetBySTLSet<Domain, Compare>::container()
+{
+  return mySet;
+}
+
 /**
  * set union to left.
  * @param aSet any other set.

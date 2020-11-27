@@ -122,6 +122,9 @@ bool testITKImage()
     trace.warning() << myImage(it) << " ";
   trace.info() << endl;
 
+  auto & container = myImage.container();
+  (void)container;
+
 
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "true == true" << std::endl;

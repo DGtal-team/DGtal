@@ -101,6 +101,7 @@ namespace DGtal
 
     typedef ImageContainerBySTLMap<TDomain,TValue> Self;
     typedef std::map<typename TDomain::Point, TValue > Parent;
+    typedef Parent Container;
 
     /// domain
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
@@ -215,6 +216,14 @@ namespace DGtal
      * and output iterators on the values of the image.
      */
     Range range();
+
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+    */
+    const Container & container() const { return static_cast<Parent>(*this); };
+    /** @copydoc container() */
+    Container & container() { return static_cast<Parent>(*this); };
 
     /**
      * Writes/Displays the object on an output stream.
