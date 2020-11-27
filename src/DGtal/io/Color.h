@@ -139,7 +139,7 @@ namespace DGtal
     Color& setRGBi( const unsigned char aRedValue,
 		    const unsigned char aGreenValue,
 		    const unsigned char aBlueValue,
-		    const unsigned char aAlphaValue );
+		    const unsigned char aAlphaValue = 255);
 
     /**
      * Set the color parameter from an unsigned integer coding each canal.
