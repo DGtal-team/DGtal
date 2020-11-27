@@ -22,6 +22,10 @@
   - Fix BoundedLatticePolytope::init when using half-spaces initialization
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
 
+- *IO*
+  - Fix Color::getRGBA
+    (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
+
 
 # DGtal 1.1
 
