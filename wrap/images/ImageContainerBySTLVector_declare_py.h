@@ -22,6 +22,38 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "ImageContainerBySTLVector_types_py.h"
 
+// py::type::of<int> fails at compilation time.
+// But it works for any wrapped type.
+// The following is a SFINAE workaround to return also a type for
+// pure python types (not wrapped by pybind11).
+// This implementation found a bug in pybind11: https://github.com/pybind/pybind11/issues/2700
+template<typename T>
+using IsCPPType = typename std::enable_if<std::is_base_of<pybind11::detail::type_caster_generic, pybind11::detail::make_caster<T>>::value>::type;
+
+template<typename T>
+using IsNotCPPType = typename std::enable_if<!std::is_base_of<pybind11::detail::type_caster_generic, pybind11::detail::make_caster<T>>::value>::type;
+
+template<typename TT>
+void def_TValue(
+        pybind11::class_<TT, std::unique_ptr<TT>> & py_class,
+        IsCPPType<typename TT::Value> * = nullptr) {
+    py_class.def_property_readonly_static("TValue",
+            [](pybind11::object /* self */ ) {
+            return pybind11::type::of<typename TT::Value>();
+            });
+}
+template<typename TT>
+void def_TValue(pybind11::class_<TT, std::unique_ptr<TT>> & py_class,
+        IsNotCPPType<typename TT::Value> * = nullptr) {
+    py_class.def_property_readonly_static("TValue",
+            [](pybind11::object /* self */ ) {
+            return pybind11::type::of(
+                        pybind11::cast(typename TT::Value())
+                    );
+            });
+}
+
+
 template<typename TImageContainerBySTLVector>
 pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(pybind11::module &m,
     const std::string &typestr) {
@@ -165,6 +197,7 @@ point: Point
             [](py::object /* self */) {
             return py::type::of<TTDomain>();
             });
+    def_TValue<TT>(py_class);
 
     // ----------------------- Print / Display --------------------------------
     py_class.def("__str__", [](const TT & self) {

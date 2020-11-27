@@ -30,10 +30,14 @@ void init_ImageContainerBySTLVector(py::module & m) {
         declare_ImageContainerBySTLVector<Python::ImageContainerByVector2DReal>(m, "ImageContainerByVector2DReal");
     auto py_class_ImageContainerByVector2DFloat =
         declare_ImageContainerBySTLVector<Python::ImageContainerByVector2DFloat>(m, "ImageContainerByVector2DFloat");
+    auto py_class_ImageContainerByVector2DColor =
+        declare_ImageContainerBySTLVector<Python::ImageContainerByVector2DColor>(m, "ImageContainerByVector2DColor");
     // --- 3D ---
         declare_ImageContainerBySTLVector<Python::ImageContainerByVector3DInteger>(m, "ImageContainerByVector3DInteger");
     auto py_class_ImageContainerByVector3DReal =
         declare_ImageContainerBySTLVector<Python::ImageContainerByVector3DReal>(m, "ImageContainerByVector3DReal");
     auto py_class_ImageContainerByVector3DFloat =
         declare_ImageContainerBySTLVector<Python::ImageContainerByVector3DFloat>(m, "ImageContainerByVector3DFloat");
+    auto py_class_ImageContainerByVector3DColor =
+        declare_ImageContainerBySTLVector<Python::ImageContainerByVector3DColor>(m, "ImageContainerByVector3DColor");
 }

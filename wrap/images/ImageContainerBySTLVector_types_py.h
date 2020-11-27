@@ -19,6 +19,7 @@
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "kernel/HyperRectDomain_types_py.h"
+#include "io/Color_types_py.h"
 
 /*
  * List of TValues for ImageContainer:
@@ -35,6 +36,8 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ2i, Real>;
         using ImageContainerByVector2DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ2i, float>;
+        using ImageContainerByVector2DColor =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, Color>;
 
         // --- 3D ---
         using ImageContainerByVector3DInteger =
@@ -43,6 +46,8 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ3i, Real>;
         using ImageContainerByVector3DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ3i, float>;
+        using ImageContainerByVector3DColor =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, Color>;
     } // namespace Python
 } // namespace DGtal
 #endif
