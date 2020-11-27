@@ -14,20 +14,14 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
-namespace py = pybind11;
+#ifndef DGTAL_COLOR_TYPES_PY_H
+#define DGTAL_COLOR_TYPES_PY_H
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
-void init_dgtal_images(py::module &);
-void init_dgtal_io(py::module &);
+#include "DGtal/io/Color.h"
 
-PYBIND11_MODULE(_dgtal, m) {
-    m.doc() = "Digital Geometry Tools and Algorithms.";
-    init_dgtal_kernel(m);
-    init_dgtal_base(m);
-    init_dgtal_topology(m);
-    init_dgtal_images(m);
-    init_dgtal_io(m);
-}
+namespace DGtal {
+    namespace Python {
+        using Color = DGtal::Color;
+    } // namespace Python
+} // namespace DGtal
+#endif

@@ -15,19 +15,12 @@
  **/
 
 #include "dgtal_pybind11_common.h"
+
 namespace py = pybind11;
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
-void init_dgtal_images(py::module &);
-void init_dgtal_io(py::module &);
+void init_Color(py::module &);
 
-PYBIND11_MODULE(_dgtal, m) {
-    m.doc() = "Digital Geometry Tools and Algorithms.";
-    init_dgtal_kernel(m);
-    init_dgtal_base(m);
-    init_dgtal_topology(m);
-    init_dgtal_images(m);
-    init_dgtal_io(m);
+void init_dgtal_io(py::module & mparent) {
+    auto m = mparent.def_submodule("io");
+    init_Color(m);
 }

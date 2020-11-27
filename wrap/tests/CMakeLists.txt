@@ -6,3 +6,4 @@ set(pytest_options
 add_subdirectory(kernel)
 add_subdirectory(topology)
 add_subdirectory(images)
+add_subdirectory(io)
