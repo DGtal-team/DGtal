@@ -134,7 +134,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::range()
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-typename DGtal::ImageContainerBySTLVector<Domain, T>::Vector
+const typename DGtal::ImageContainerBySTLVector<Domain, T>::Vector&
 DGtal::ImageContainerBySTLVector<Domain, T>::extent() const
 {
   return myExtent;
