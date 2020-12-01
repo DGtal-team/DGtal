@@ -6,6 +6,13 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal required dependencies: ")
 
 # -----------------------------------------------------------------------------
+# Downloading external deps
+# -----------------------------------------------------------------------------
+message(STATUS "Downloading external projects")
+include(FetchExternalDeps)
+message(STATUS "Done.")
+
+# -----------------------------------------------------------------------------
 # Looking for boost
 # -----------------------------------------------------------------------------
 set(Boost_USE_STATIC_LIBS   ON)
