@@ -167,3 +167,64 @@ def test_bridge_buffer(Type):
         np_array_from_array = np.array(img_from_array)
     else:
         raise RuntimeError("Dimension not supported")
+
+@pytest.mark.parametrize("Type", [
+    ("ImageContainerByVector2DUnsignedChar"),
+    ("ImageContainerByVector2DShort"),
+    ("ImageContainerByVector3DInteger")])
+def test_ImageContainerITKBridge(Type):
+    os = pytest.importorskip("os")
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    itk = pytest.importorskip("itk")
+    dirname = os.path.dirname(os.path.abspath(__file__))
+    samples_folder = os.path.join(dirname, '../../../tests/samples')
+    if Type == "ImageContainerByVector2DUnsignedChar":
+        image_basename = 'contourS.png'
+        image_filename = os.path.join(samples_folder, image_basename)
+        itk_image = itk.imread(image_filename)
+        itk_np_array = itk.GetArrayViewFromImage(itk_image)
+    elif Type == "ImageContainerByVector2DShort":
+        image_basename = 'contourS.png'
+        image_filename = os.path.join(samples_folder, image_basename)
+        PixelType = itk.SS
+        Dimension = 2
+        ImageType = itk.Image[PixelType, Dimension]
+        reader = itk.ImageFileReader[ImageType].New(file_name=image_filename)
+        reader.Update()
+        itk_image = reader.GetOutput()
+        itk_np_array = itk.GetArrayViewFromImage(itk_image)
+    elif Type == "ImageContainerByVector3DInteger":
+        image_basename = 'lobsterCroped16b.mhd'
+        image_filename = os.path.join(samples_folder, image_basename)
+        itk_image = itk.imread(image_filename)
+        # Copy array to convert it to a new type that dgtal can operate with.
+        itk_np_array = itk.GetArrayFromImage(itk_image)
+        print("dtype: ", itk_np_array.dtype)
+        assert itk_np_array.dtype == 'uint16'
+        itk_np_array = itk_np_array.astype('int32')
+
+    if Type == "ImageContainerByVector2DUnsignedChar":
+        assert itk_image.GetPixel([1,2]) == 208
+    elif Type == "ImageContainerByVector2DShort":
+        assert itk_image.GetPixel([1,2]) == 208
+    elif Type == "ImageContainerByVector3DInteger":
+        assert itk_image.GetPixel([1,2,1]) == 58223
+
+    submodule = getattr(dgtal, "images")
+    ImageContainer = getattr(submodule, Type)
+    Domain = ImageContainer.TDomain
+    Point = ImageContainer.TPoint
+    print("itk_image: ", type(itk_image))
+    # Important to specify order='C'.
+    # C (row major) is the default ordering from itk.GetArrayFromImage
+    # DGtal default is 'F' (colum major)
+    dgtal_image = ImageContainer(itk_np_array, order='C')
+
+    if Type == "ImageContainerByVector2DUnsignedChar":
+        assert dgtal_image[Point(1,2)] == 208
+    elif Type == "ImageContainerByVector2DShort":
+        assert dgtal_image[Point(1,2)] == 208
+    elif Type == "ImageContainerByVector3DInteger":
+        assert dgtal_image[Point(1,2,1)] == 58223
+
