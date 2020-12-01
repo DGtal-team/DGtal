@@ -1,4 +1,7 @@
 Include(FetchContent)
+
+# https://cliutils.gitlab.io/modern-cmake/chapters/projects/fetch.html
+# special macro for cmake >= 3.11 but < 3.14+
 if(${CMAKE_VERSION} VERSION_LESS 3.14)
     macro(FetchContent_MakeAvailable NAME)
         FetchContent_GetProperties(${NAME})
