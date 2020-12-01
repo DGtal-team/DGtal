@@ -96,14 +96,26 @@ void def_buffer_bridge(
         const auto valuesize = static_cast<ssize_t>(sizeof(TTValue));
 
         /* Sanity checks */
-        if (info.ndim != TTPoint::dimension || info.strides[0] % valuesize ) {
+        if (info.ndim != TTPoint::dimension) {
             throw py::type_error("The dimension of the input buffer (" +
                     std::to_string(info.ndim) +
                     ") is invalid for the dimension of this type (" +
                     std::to_string(TTPoint::dimension) + ").");
         }
-        if (!py::detail::compare_buffer_info<TTValue>::compare(info) || valuesize != info.itemsize)
+        if(valuesize != info.itemsize) {
+            throw py::type_error("Data types have different size. Python: " +
+                    std::to_string(info.itemsize) +
+                    ", C++: " + std::to_string(valuesize) + ".");
+        }
+        if (info.strides[0] % valuesize ) {
+            throw py::type_error("The strides of the input buffer (" +
+                    std::to_string(info.strides[0]) +
+                    ") are not multiple of the expected value size (" +
+                    std::to_string(valuesize) + "). Maybe the data types or the order (F or C) are incompatible for this conversion.");
+        }
+        if (!py::detail::compare_buffer_info<TTValue>::compare(info)) {
             throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTValue>::format() + ")");
+        }
 
         TTPoint upper_bound = lower_bound;
         // Adapted shape to deal with f_contiguous and c_contiguous
