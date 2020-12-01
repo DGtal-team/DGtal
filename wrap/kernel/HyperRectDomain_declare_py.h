@@ -53,6 +53,7 @@ pybind11::class_<THyperRectDomain> declare_HyperRectDomain(pybind11::module &m,
 
     // ----------------------- Class functions --------------------------------
     py_class.def("is_empty", &TT::isEmpty, R"(True if the domain is empty)");
+    py_class.def("size", &TT::size, "Return the number of points of the domain.");
 
     // ----------------------- Class data -------------------------------------
     py_class.def_readwrite("lower_bound", &TT::myLowerBound);
