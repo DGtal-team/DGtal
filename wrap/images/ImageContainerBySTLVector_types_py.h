@@ -37,6 +37,10 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ2i, Real>;
         using ImageContainerByVector2DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ2i, float>;
+        using ImageContainerByVector2DShort =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, short>;
+        using ImageContainerByVector2DUnsignedChar =
+            DGtal::ImageContainerBySTLVector<DomainZ2i, unsigned char>;
 
         using ImageContainerByVector2DColor =
             DGtal::ImageContainerBySTLVector<DomainZ2i, Color>;
@@ -57,6 +61,10 @@ namespace DGtal {
             DGtal::ImageContainerBySTLVector<DomainZ3i, Real>;
         using ImageContainerByVector3DFloat =
             DGtal::ImageContainerBySTLVector<DomainZ3i, float>;
+        using ImageContainerByVector3DShort =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, short>;
+        using ImageContainerByVector3DUnsignedChar =
+            DGtal::ImageContainerBySTLVector<DomainZ3i, unsigned char>;
 
         using ImageContainerByVector3DColor =
             DGtal::ImageContainerBySTLVector<DomainZ3i, Color>;

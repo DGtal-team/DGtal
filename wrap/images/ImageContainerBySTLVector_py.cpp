@@ -42,6 +42,18 @@ void init_ImageContainerBySTLVector(py::module & m) {
         declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector2DFloat>(m, typestr_2DFloat );
     def_common_functions(py_class_ImageContainerByVector2DFloat, typestr_2DFloat);
     def_buffer_bridge(py_class_ImageContainerByVector2DFloat);
+    // Short
+    const std::string typestr_2DShort = "ImageContainerByVector2DShort";
+    auto py_class_ImageContainerByVector2DShort =
+        declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector2DShort>(m, typestr_2DShort );
+    def_common_functions(py_class_ImageContainerByVector2DShort, typestr_2DShort);
+    def_buffer_bridge(py_class_ImageContainerByVector2DShort);
+    // Unsigned char (Binary images)
+    const std::string typestr_2DUnsignedChar = "ImageContainerByVector2DUnsignedChar";
+    auto py_class_ImageContainerByVector2DUnsignedChar =
+        declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector2DUnsignedChar>(m, typestr_2DUnsignedChar );
+    def_common_functions(py_class_ImageContainerByVector2DUnsignedChar, typestr_2DUnsignedChar);
+    def_buffer_bridge(py_class_ImageContainerByVector2DUnsignedChar);
 
     // Color
     const std::string typestr_2DColor = "ImageContainerByVector2DColor";
@@ -90,6 +102,18 @@ void init_ImageContainerBySTLVector(py::module & m) {
         declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector3DFloat>(m, typestr_3DFloat );
     def_common_functions(py_class_ImageContainerByVector3DFloat, typestr_3DFloat);
     def_buffer_bridge(py_class_ImageContainerByVector3DFloat);
+    // Short
+    const std::string typestr_3DShort = "ImageContainerByVector3DShort";
+    auto py_class_ImageContainerByVector3DShort =
+        declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector3DShort>(m, typestr_3DShort );
+    def_common_functions(py_class_ImageContainerByVector3DShort, typestr_3DShort);
+    def_buffer_bridge(py_class_ImageContainerByVector3DShort);
+    // Unsigned char (Binary images)
+    const std::string typestr_3DUnsignedChar = "ImageContainerByVector3DUnsignedChar";
+    auto py_class_ImageContainerByVector3DUnsignedChar =
+        declare_ImageContainerBySTLVector_with_buffer_protocol<Python::ImageContainerByVector3DUnsignedChar>(m, typestr_3DUnsignedChar );
+    def_common_functions(py_class_ImageContainerByVector3DUnsignedChar, typestr_3DUnsignedChar);
+    def_buffer_bridge(py_class_ImageContainerByVector3DUnsignedChar);
 
     // Color
     const std::string typestr_3DColor = "ImageContainerByVector3DColor";
