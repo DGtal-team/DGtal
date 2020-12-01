@@ -35,7 +35,7 @@ using IsNotCPPType = typename std::enable_if<!std::is_base_of<pybind11::detail::
 
 template<typename TT>
 void def_TValue(
-        pybind11::class_<TT, std::unique_ptr<TT>> & py_class,
+        pybind11::class_<TT> & py_class,
         IsCPPType<typename TT::Value> * = nullptr) {
     py_class.def_property_readonly_static("TValue",
             [](pybind11::object /* self */ ) {
@@ -43,7 +43,7 @@ void def_TValue(
             });
 }
 template<typename TT>
-void def_TValue(pybind11::class_<TT, std::unique_ptr<TT>> & py_class,
+void def_TValue(pybind11::class_<TT> & py_class,
         IsNotCPPType<typename TT::Value> * = nullptr) {
     py_class.def_property_readonly_static("TValue",
             [](pybind11::object /* self */ ) {
@@ -53,10 +53,110 @@ void def_TValue(pybind11::class_<TT, std::unique_ptr<TT>> & py_class,
             });
 }
 
+template<typename TT>
+void def_buffer_bridge(
+        pybind11::class_<TT> & py_class) {
+    namespace py = pybind11;
+    using TTPoint = typename TT::Point;
+    using TTValue = typename TT::Value;
+    using TTDomain = typename TT::Domain;
+    // ----------------------- Bridges ----------------------------------------
+    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    /* Implements interface with the buffer protocol.
+     * For example: `numpy.array(an_instance, copy=False
+     * Note that the order of the linear array on the image container is F_contiguous
+     * (column major).
+     */
+    py_class.def_buffer([](TT &self) -> py::buffer_info {
+        const auto dextent = self.extent();
+        // Note that shape would be the reverse of dextent for c_contiguous (row-major)
+        // But the container works in f_contiguous (column major).
+        const std::vector<ssize_t> shape(dextent.begin(), dextent.end());
+        const auto valuesize = static_cast<ssize_t>(sizeof(TTValue));
+        // DGtal::Linearizer is column major by default
+        return py::buffer_info(
+            self.data(),                                  /* Pointer to buffer */
+            valuesize,                                    /* Size of one scalar */
+            py::format_descriptor<TTValue>::format(),     /* Python struct-style format descriptor */
+            TTPoint::dimension,                           /* Number of dimensions */
+            shape,                                        /* Shape, buffer dimensions */
+            // c_strides == row major. --->, --->
+            // f_strides == col major. |, |
+            pybind11::detail::f_strides(shape, valuesize) /* Strides (in bytes) for each index */
+            );
+        });
 
+    // Allows: ImageContainer(np_array, lower_bound=Point(0,0,0), order='F')
+    py_class.def(py::init([](py::buffer buf,
+                    const TTPoint & lower_bound,
+                    const std::string order) {
+        /* Note(phcerdan): Adapted from numpy/stl_bind.h vector_buffer */
+        /* Request a buffer descriptor from Python */
+        auto info = buf.request();
+        const auto valuesize = static_cast<ssize_t>(sizeof(TTValue));
+
+        /* Sanity checks */
+        if (info.ndim != TTPoint::dimension || info.strides[0] % valuesize ) {
+            throw py::type_error("The dimension of the input buffer (" +
+                    std::to_string(info.ndim) +
+                    ") is invalid for the dimension of this type (" +
+                    std::to_string(TTPoint::dimension) + ").");
+        }
+        if (!py::detail::compare_buffer_info<TTValue>::compare(info) || valuesize != info.itemsize)
+            throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTValue>::format() + ")");
+
+        TTPoint upper_bound = lower_bound;
+        // Adapted shape to deal with f_contiguous and c_contiguous
+        // f_contiguous use begin, c_contiguous is reversed (rbegin, rend)
+        const auto adapted_shape = (order == "F") ?
+            decltype(info.shape)(info.shape.begin(), info.shape.end()) :
+            decltype(info.shape)(info.shape.rbegin(), info.shape.rend());
+
+        for(size_t i = 0; i < TTPoint::dimension; ++i) {
+            // In DGtal the upper_bound is included in a domain.
+            // Bounds are indices, not sizes.
+            // Shape is a size, we adapt it to index with -1
+            upper_bound[i] += adapted_shape[i] - 1;
+        }
+        // Construct with domain
+        TTDomain domain(lower_bound, upper_bound);
+        auto out = TT(domain);
+        // Populate data of the container, copy is needed, vector has to own its memory.
+        memcpy(out.data(), static_cast<TTValue*>(info.ptr), info.size * valuesize);
+        return out;
+        }),
+R"(Construct ImageContainer from an appropiate python buffer and a lower bound.
+Parameters
+----------
+buffer: python buffer
+    The dimensions of the buffer must match those in this ImageContainer type.
+    The buffer must be F_contiguous (column major).
+lower_bound: Point (Optional)
+    Defaults to TPoint.zero of this ImageContainer.
+order: F or C (Optional)
+    Order of the input buffer.
+    Defaults to F, i.e F_contiguous (column major)
+    C is C_contiguous (row major).
+)", py::arg("buffer"), py::arg("lower_bound") = TTPoint::zero, py::arg("order") = "F");
+}
+
+template<typename TImageContainerBySTLVector>
+pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector_with_buffer_protocol(pybind11::module &m,
+    const std::string &typestr) {
+    namespace py = pybind11;
+    using TT = TImageContainerBySTLVector;
+    return py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
+}
 template<typename TImageContainerBySTLVector>
 pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(pybind11::module &m,
     const std::string &typestr) {
+    namespace py = pybind11;
+    using TT = TImageContainerBySTLVector;
+    return py::class_<TT>(m, typestr.c_str());
+}
+
+template<typename TImageContainerBySTLVector>
+void def_common_functions(pybind11::class_<TImageContainerBySTLVector> & py_class, const std::string &typestr) {
     namespace py = pybind11;
     using TT = TImageContainerBySTLVector;
     using TTPoint = typename TT::Point;
@@ -66,8 +166,7 @@ pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(p
     using T = typename Vector::value_type;
     using DiffType = typename Vector::difference_type;
     using SizeType = typename Vector::size_type;
-    using Class_ = py::class_<TT, std::unique_ptr<TT>>;
-    auto py_class = Class_(m, typestr.c_str());
+    using Class_ = py::class_<TT>;
     auto & cl = py_class;
 
     auto wrap_i = [](DiffType i, SizeType n) {
@@ -213,7 +312,5 @@ point: Point
         self.selfDisplay(os);
         return os.str();
         });
-
-    return py_class;
 }
 #endif
