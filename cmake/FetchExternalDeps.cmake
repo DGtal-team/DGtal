@@ -2,7 +2,7 @@ Include(FetchContent)
 
 
 # -----------------------------------------------------------------------------
-# Fetching Catch2 (only if BUILD_TESTING variable has been set to true)
+# Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
   FetchContent_Declare(
