@@ -1,5 +1,13 @@
 Include(FetchContent)
-
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+    macro(FetchContent_MakeAvailable NAME)
+        FetchContent_GetProperties(${NAME})
+        if(NOT ${NAME}_POPULATED)
+            FetchContent_Populate(${NAME})
+            add_subdirectory(${${NAME}_SOURCE_DIR} ${${NAME}_BINARY_DIR})
+        endif()
+    endmacro()
+endif()
 
 # -----------------------------------------------------------------------------
 # Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
