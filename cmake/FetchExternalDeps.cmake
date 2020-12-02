@@ -10,7 +10,9 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
             add_subdirectory(${${lcNAME}_SOURCE_DIR} ${${lcNAME}_BINARY_DIR})
         endif()
     endmacro()
-endif()
+  endif()
+
+  
 # -----------------------------------------------------------------------------
 # Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
