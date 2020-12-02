@@ -1,5 +1,7 @@
 # DGtal 1.2 (dev)
 
+## Changes
+
 - *Project*
   - Add azure-pipelines in `wrap` folder to kickstart python wrappings
     (Pablo Hernandez-Cerdan [#1529](https://github.com/DGtal-team/DGtal/pull/1529))
@@ -28,6 +30,10 @@
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
 
+- *Build*
+  - We now use cmake *Fetch_Content* to download the stable release of
+    Catch2 (used in our unit-tests) when building the project (David
+    Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
 
 # DGtal 1.1
 
