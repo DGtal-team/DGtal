@@ -71,7 +71,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Color();
+    ~Color() = default;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -91,11 +91,8 @@ namespace DGtal
      *
      * @param aColor the color to copy.
      */
-    
-    Color( const Color &aColor ):
-      myRed(aColor.myRed),myGreen(aColor.myGreen),
-      myBlue(aColor.myBlue), myAlpha(aColor.myAlpha)
-    {}
+
+    Color( const Color &aColor ) = default;
 
     /**
      * Constructor from R, G, B and Alpha parameter.
@@ -105,8 +102,6 @@ namespace DGtal
      * @param aBlueValue blue component
      * @param aAlphaValue color transparency.
      */
-    
-    
     Color( const unsigned char aRedValue,
            const unsigned char  aGreenValue,
            const unsigned char  aBlueValue,
@@ -356,17 +351,8 @@ namespace DGtal
      * @param pv the object to copy.
      * @return a reference on 'this'.
      */
-    Color & operator= ( const Color & pv )
-    {
-      this->myRed = pv.myRed;
-      this->myGreen = pv.myGreen;
-      this->myBlue = pv.myBlue;
-      this->myAlpha = pv.myAlpha;
-      return *this;
-    }
-    
+    Color & operator= ( const Color & pv ) = default;
 
-    
     void flushPostscript( std::ostream & ) const;
 
     std::string svg() const;

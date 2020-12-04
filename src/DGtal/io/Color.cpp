@@ -179,16 +179,6 @@ DGtal::Color::tikz() const
 }
 
 
-
-/**
- * Destructor.
- */
-DGtal::Color::~Color()
-{
-}
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

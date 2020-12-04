@@ -117,13 +117,20 @@ bool testColor()
   trace.info() << " val == Color::Red "<< val<<std::endl;
   nbok += (val==Color::Red) ? 1 : 0; 
   nb++;
+
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "red" << std::endl;
 
-  
+  // Test Color is trivialy_copiable
+  const auto is_trivially_copyable_ = std::is_trivially_copyable<Color>::value;
+  trace.info() << "is_trivially_copyable: "<< is_trivially_copyable_ <<std::endl;
+  nbok += (is_trivially_copyable_) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "is_trivially_copyable" << std::endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
