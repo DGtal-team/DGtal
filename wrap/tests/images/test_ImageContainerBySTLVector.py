@@ -231,3 +231,71 @@ def test_ImageContainerITKBridge(Type):
     elif Type == "ImageContainerByVector3DInteger":
         assert dgtal_image[Point(1,2,1)] == 58223
 
+@pytest.mark.parametrize("Type", [
+    ("ImageContainerByVector2DPoint2D"),
+    ("ImageContainerByVector2DRealPoint2D"),
+    ("ImageContainerByVector2DPoint3D"),
+    ("ImageContainerByVector2DRealPoint3D"),
+    ("ImageContainerByVector3DPoint2D"),
+    ("ImageContainerByVector3DRealPoint2D"),
+    ("ImageContainerByVector3DPoint3D"),
+    ("ImageContainerByVector3DRealPoint3D")
+])
+def test_bridge_buffer_with_Points(Type):
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    submodule = getattr(dgtal, "images")
+    ImageContainer = getattr(submodule, Type)
+    Domain = ImageContainer.TDomain
+    DomainPoint = ImageContainer.TPoint
+    ImagePoint = ImageContainer.TValue
+    # Construct Domain
+    lb = DomainPoint.zero
+    if DomainPoint.dimension == 2:
+        ub = DomainPoint(2,3)
+        p1 = DomainPoint(1, 0)
+    else:
+        ub = DomainPoint(2,3,4)
+        p1 = DomainPoint(1, 0, 0)
+
+    dom = Domain(lb, ub)
+    img = ImageContainer(dom)
+    dtype = img.TValue
+    img[p1] = img.TValue.diagonal(10)
+
+    # Test def_buffer
+    np_array_c = np.array(img, copy=False)
+    assert np_array_c.flags.c_contiguous == True
+    assert np_array_c.flags.f_contiguous == False
+    if Type == "ImageContainerByVector2DPoint2D":
+        print("np_array_c:\n", np_array_c)
+    # Check number of elements: number of points * dimension of the point.
+    assert np_array_c.size == img.domain.size() * ImagePoint.dimension
+    # Check shape (upper bound is reversed).
+    # The dimensionality of the point is appended at the end of the shape.
+    if DomainPoint.dimension == 2:
+        assert np_array_c.shape[0] == img.domain.upper_bound[1] + 1
+        assert np_array_c.shape[1] == img.domain.upper_bound[0] + 1
+        assert np_array_c.shape[2] == ImagePoint.dimension
+        assert np_array_c.shape == (4, 3, ImagePoint.dimension)
+        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        np.testing.assert_array_equal(np_array_c[0, 1], np.array(img.TValue.diagonal(10)))
+        # modify image through np_array_c (view)
+        np_array_c[1,1] = np.array(img.TValue.diagonal(1))
+    else:
+        assert np_array_c.shape[0] == img.domain.upper_bound[2] + 1
+        assert np_array_c.shape[1] == img.domain.upper_bound[1] + 1
+        assert np_array_c.shape[2] == img.domain.upper_bound[0] + 1
+        assert np_array_c.shape[3] == ImagePoint.dimension
+        assert np_array_c.shape == (5, 4, 3, ImagePoint.dimension)
+        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        np.testing.assert_array_equal(np_array_c[0, 0, 1], np.array(img.TValue.diagonal(10)))
+        # modify image through np_array_c (view)
+        np_array_c[1,1,1] = np.array(img.TValue.diagonal(1))
+
+    assert img[DomainPoint.diagonal(1)] == img.TValue.diagonal(1)
+    # Test constructor via array
+    img_from_array = ImageContainer(np_array_c, lower_bound_ijk=dom.lower_bound, order='C')
+    assert img_from_array.domain.lower_bound == dom.lower_bound
+    assert img_from_array.domain.upper_bound == dom.upper_bound
+    assert img_from_array[p1] == img.TValue.diagonal(10)

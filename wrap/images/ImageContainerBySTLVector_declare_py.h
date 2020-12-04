@@ -410,4 +410,165 @@ point: Point
         return os.str();
         });
 }
+
+template<typename TT, typename TTComponent>
+TT constructor_from_buffer_point_container(pybind11::buffer buf,
+        typename TT::Point lower_bound_ijk = TT::Point::zero,
+        const std::string & order = "C") {
+    namespace py = pybind11;
+    using TTPoint = typename TT::Point;
+    using TTContainer = typename TT::Value;
+    using TTDomain = typename TT::Domain;
+
+    /* Request a buffer descriptor from Python */
+    auto info = buf.request();
+    const auto containersize = static_cast<ssize_t>(sizeof(TTContainer));
+    const auto componentsize = static_cast<ssize_t>(sizeof(TTComponent));
+
+    /* Sanity checks */
+    if(order != "C" && order != "F") {
+        throw py::type_error("The provided order [" + order + "] is invalid. "
+                "Valid options are: 'C' or 'F'.");
+    }
+    if (info.ndim != TTPoint::dimension + 1) {
+        throw py::type_error("The dimension of the input buffer (" +
+                std::to_string(info.ndim) +
+                ") is invalid for the dimension of this type (" +
+                std::to_string(TTPoint::dimension + 1) + ").");
+    }
+    if(componentsize != info.itemsize) {
+        throw py::type_error("Data types have different size. Python: " +
+                std::to_string(info.itemsize) +
+                ", C++: " + std::to_string(componentsize) + ".");
+    }
+    if (info.strides[0] % componentsize ) {
+        throw py::type_error("The strides of the input buffer (" +
+                std::to_string(info.strides[0]) +
+                ") are not multiple of the expected value size (" +
+                std::to_string(componentsize) + "). "
+                "Maybe the data types or the order (F or C) are incompatible "
+                "for this conversion.");
+    }
+    if (!py::detail::compare_buffer_info<TTComponent>::compare(info)) {
+        throw py::type_error("Format mismatch (Python: " + info.format +
+                " C++: " + py::format_descriptor<TTComponent>::format() + ")");
+    }
+
+    TTPoint upper_bound_ijk = lower_bound_ijk;
+
+    // Adapted shape to deal with f_contiguous and c_contiguous
+    // f_contiguous use begin, c_contiguous is reversed (rbegin, rend)
+    // The last index of the shape corresponds to the dimension of the point
+    // So we ignore it for the domain computations
+    const auto adapted_shape = (order == "F") ?
+        decltype(info.shape)(info.shape.begin(), info.shape.end() - 1) :
+        decltype(info.shape)(info.shape.rbegin() + 1, info.shape.rend());
+
+    for(size_t i = 0; i < TTPoint::dimension; ++i) {
+        // In DGtal the upper_bound is included in a domain.
+        // Bounds are indices, not sizes.
+        // Shape is a size, we adapt it to index with -1
+        upper_bound_ijk[i] += adapted_shape[i] - 1;
+    }
+    // Construct with domain
+    TTDomain domain(lower_bound_ijk, upper_bound_ijk);
+    auto out = TT(domain);
+    assert( /* The container should be simple enough for memory to be continuous */
+            containersize == componentsize * TTContainer::size());
+    // Populate data of the container, copy is needed, vector has to own its memory.
+    memcpy(out.data(), static_cast<TTComponent*>(info.ptr), info.size * componentsize);
+    return out;
+}
+
+template<typename TT, typename TTComponent>
+void def_buffer_bridge_for_PointVector(
+        pybind11::class_<TT> & py_class) {
+    namespace py = pybind11;
+    using TTPoint = typename TT::Point;
+    using TTDomain = typename TT::Domain;
+    using TTContainer = typename TT::Value;
+
+    // ----------------------- Bridges ----------------------------------------
+    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    /* Implements interface with the buffer protocol.
+     * For example: `numpy.array(an_instance, copy=False
+     * Note that the order of the linear array on the image container is F_contiguous
+     * (column major) (i, j, k ) in C++, but we return a C_contiguous (row major) buffer,
+     * (k, j, i) to ease up the interface with other python packages (which by default work with C order)
+     */
+    py_class.def_buffer([](TT &self) -> py::buffer_info {
+        const auto containersize = static_cast<ssize_t>(sizeof(TTContainer));
+        const auto componentsize = static_cast<ssize_t>(sizeof(TTComponent));
+        assert( /* The container should be simple enough for memory to be continuous */
+                containersize == componentsize * TTContainer::size());
+        const auto dextent = self.extent();
+        // The reverse of dextent for c_contiguous (row-major)
+        std::vector<ssize_t> shape(dextent.rbegin(), dextent.rend());
+        // The c_strides of the original shape
+        auto c_strides = pybind11::detail::c_strides(shape, containersize);
+        // We are "appending" our n-dimensional pixel type as a new dimension.
+        // We add to the shape of the image, another dimension at the end with
+        // the len of the container (2 if we are holding Point2D for example)
+        shape.push_back(TTContainer::size());
+        // The variation in the this dimension is the size of the elements of Point
+        c_strides.push_back(componentsize);
+        const auto ndimensions = TTPoint::dimension + 1;
+        return py::buffer_info(
+            self.data(),                                  /* Pointer to buffer */
+            componentsize,                                /* Size of one scalar */
+            py::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor of the component */
+            ndimensions,                                  /* Number of dimensions */
+            shape,                                        /* Shape, buffer dimensions */
+            c_strides                                     /* Strides (in bytes) for each index */
+            );
+        });
+
+    // Allows: ImageContainer(np_array, lower_bound=Point(0,0,0), order='F')
+    py_class.def(py::init([](py::buffer buf,
+                    const TTPoint & lower_bound_ijk,
+                    const std::string &order) {
+        return constructor_from_buffer_point_container<TT, TTComponent>(buf, lower_bound_ijk, order);
+        }),
+R"(Construct ImageContainer from an appropiate python buffer and a lower bound.
+Parameters
+----------
+buffer: python buffer
+    The dimensions of the buffer must match those in this ImageContainer type.
+    The buffer must be F_contiguous (column major).
+lower_bound: Point (Optional)
+    Defaults to TPoint.zero of this ImageContainer.
+order: F or C (Optional)
+    Order of the input buffer.
+    F, i.e F_contiguous (column major)
+    C is C_contiguous (row major).
+)", py::arg("buffer"), py::arg("lower_bound_ijk") = TTPoint::zero, py::arg("order"));
+
+    py_class.def(py::init([](py::array_t<TTComponent, py::array::c_style> np_array,
+                    const TTPoint &lower_bound_ijk) {
+        return constructor_from_buffer_point_container<TT, TTComponent>(np_array, lower_bound_ijk, "C");
+    }),
+R"(Construct ImageContainer from a numpy array (c_style) and a lower bound.
+Parameters
+----------
+buffer: python buffer
+    The dimensions of the buffer must match those in this ImageContainer type.
+    The buffer must be F_contiguous (column major).
+lower_bound: Point (Optional)
+    Defaults to TPoint.zero of this ImageContainer.
+)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+
+    py_class.def(py::init([](py::array_t<TTComponent, py::array::f_style> np_array,
+                    const TTPoint &lower_bound_ijk) {
+        return constructor_from_buffer_point_container<TT, TTComponent>(np_array, lower_bound_ijk, "F");
+    }),
+R"(Construct ImageContainer from a numpy array (f_style) and a lower bound.
+Parameters
+----------
+buffer: python buffer
+    The dimensions of the buffer must match those in this ImageContainer type.
+    The buffer must be F_contiguous (column major).
+lower_bound: Point (Optional)
+    Defaults to TPoint.zero of this ImageContainer.
+)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+}
 #endif
