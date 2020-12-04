@@ -23,42 +23,42 @@
  *
  * @date 2020/12/04
  *
- * Header file for module PlaneProbingRNeighborhood.cpp
+ * Header file for module PlaneProbingR1Neighborhood.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PlaneProbingRNeighborhood_RECURSES)
-#error Recursive header files inclusion detected in PlaneProbingRNeighborhood.h
-#else // defined(PlaneProbingRNeighborhood_RECURSES)
+#if defined(PlaneProbingR1Neighborhood_RECURSES)
+#error Recursive header files inclusion detected in PlaneProbingR1Neighborhood.h
+#else // defined(PlaneProbingR1Neighborhood_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PlaneProbingRNeighborhood_RECURSES
+#define PlaneProbingR1Neighborhood_RECURSES
 
-#if !defined PlaneProbingRNeighborhood_h
+#if !defined PlaneProbingR1Neighborhood_h
 /** Prevents repeated inclusion of headers. */
-#define PlaneProbingRNeighborhood_h
+#define PlaneProbingR1Neighborhood_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingNeighborhood.h"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class PlaneProbingRNeighborhood
+  // template class PlaneProbingR1Neighborhood
   /**
-   * Description of template class 'PlaneProbingRNeighborhood' <p>
+   * Description of template class 'PlaneProbingR1Neighborhood' <p>
    * \brief Aim:
    *
    * @tparam TPredicate the InPlane predicate.
    */
   template <typename TPredicate>
-  class PlaneProbingRNeighborhood : public PlaneProbingNeighborhood<TPredicate>
+  class PlaneProbingR1Neighborhood : public PlaneProbingRNeighborhood<TPredicate>
   {
     // ----------------------- Public types ------------------------------
   public:
@@ -66,46 +66,47 @@ namespace DGtal
       using Point      = typename TPredicate::Point;
       using Triangle   = detail::Triplet<Point>;
       using ProbingRay = detail::ProbingRay;
+      using Integer    = typename Point::Coordinate;
 
     // ----------------------- Standard services ------------------------------
   public:
     /**
      * Default constructor.
      */
-    PlaneProbingRNeighborhood() = delete;
+    PlaneProbingR1Neighborhood() = delete;
 
-    PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
+    PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**
      * Destructor.
      */
-    ~PlaneProbingRNeighborhood();
+    ~PlaneProbingR1Neighborhood();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    PlaneProbingRNeighborhood ( const PlaneProbingRNeighborhood & other ) = delete;
+    PlaneProbingR1Neighborhood ( const PlaneProbingR1Neighborhood & other ) = delete;
 
     /**
      * Move constructor.
      * @param other the object to move.
      */
-    PlaneProbingRNeighborhood ( PlaneProbingRNeighborhood && other ) = delete;
+    PlaneProbingR1Neighborhood ( PlaneProbingR1Neighborhood && other ) = delete;
 
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    PlaneProbingRNeighborhood & operator= ( const PlaneProbingRNeighborhood & other ) = delete;
+    PlaneProbingR1Neighborhood & operator= ( const PlaneProbingR1Neighborhood & other ) = delete;
 
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
-    PlaneProbingRNeighborhood & operator= ( PlaneProbingRNeighborhood && other ) = delete;
+    PlaneProbingR1Neighborhood & operator= ( PlaneProbingR1Neighborhood && other ) = delete;
 
     // ----------------------- Plane Probing services ------------------------------
   public:
@@ -128,9 +129,6 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
-
-    ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -140,31 +138,45 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    int getNeighborhoodCode () const;
 
-  }; // end of class PlaneProbingRNeighborhood
+    std::pair<ProbingRay, ProbingRay> candidateRay (int index) const;
+
+    std::vector<ProbingRay> intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const;
+
+    bool isValidIntersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay,
+                                    std::vector<ProbingRay> const& aLst) const;
+
+    ProbingRay closestPointOnRayConstant (ProbingRay const& aRay) const;
+
+    ProbingRay closestPointOnRayLinear (ProbingRay const& aRay) const;
+
+    ProbingRay closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const;
+
+  }; // end of class PlaneProbingR1Neighborhood
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'PlaneProbingRNeighborhood'.
+   * Overloads 'operator<<' for displaying objects of class 'PlaneProbingR1Neighborhood'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'PlaneProbingRNeighborhood' to write.
+   * @param object the object of class 'PlaneProbingR1Neighborhood' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingRNeighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingR1Neighborhood<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.ih"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingR1Neighborhood.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PlaneProbingRNeighborhood_h
+#endif // !defined PlaneProbingR1Neighborhood_h
 
-#undef PlaneProbingRNeighborhood_RECURSES
-#endif // else defined(PlaneProbingRNeighborhood_RECURSES)
+#undef PlaneProbingR1Neighborhood_RECURSES
+#endif // else defined(PlaneProbingR1Neighborhood_RECURSES)

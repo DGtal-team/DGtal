@@ -35,6 +35,7 @@
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingR1Neighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,8 +55,8 @@ PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predi
         myNeighborhood = new PlaneProbingHNeighborhood<TPredicate>(myPredicate, myQ, myM);
     } else if (mode == DGtal::ProbingMode::R) {
         myNeighborhood = new PlaneProbingRNeighborhood<TPredicate>(myPredicate, myQ, myM);
-    } else {
-        assert(false);
+    } else if (mode == DGtal::ProbingMode::R1) {
+        myNeighborhood = new PlaneProbingR1Neighborhood<TPredicate>(myPredicate, myQ, myM);
     }
 
     assert(isValid());

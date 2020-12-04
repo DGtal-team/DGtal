@@ -1,0 +1,443 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/04
+ *
+ * Implementation of inline methods defined in PlaneProbingR1Neighborhood.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::
+PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
+    : DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM)
+{}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::
+~PlaneProbingR1Neighborhood()
+{}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane Probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
+{
+    int code = getNeighborhoodCode();
+
+    switch (code) {
+        // One vertex of the H-neighborhood is in P
+        case 1:
+            this->myPoints.push_back(ProbingRay({ 0, 1, 2 }, 0));
+            break;
+
+        case 2:
+            this->myPoints.push_back(ProbingRay({ 0, 2, 1 }, 0));
+            break;
+
+        case 4:
+            this->myPoints.push_back(ProbingRay({ 1, 2, 0 }, 0));
+            break;
+
+        case 8:
+            this->myPoints.push_back(ProbingRay({ 1, 0, 2 }, 0));
+            break;
+
+        case 16:
+            this->myPoints.push_back(ProbingRay({ 2, 0, 1 }, 0));
+            break;
+
+        case 32:
+            this->myPoints.push_back(ProbingRay({ 2, 1, 0 }, 0));
+            break;
+
+            // Two vertices of the H-neighborhood are in P
+        case 6:
+            this->myPoints.push_back(ProbingRay({ 0, 2, 1 }, 0));
+            this->myPoints.push_back(ProbingRay({ 1, 2, 0 }, 0));
+            break;
+
+        case 24:
+            this->myPoints.push_back(ProbingRay({ 1, 0, 2 }, 0));
+            this->myPoints.push_back(ProbingRay({ 2, 0, 1 }, 0));
+            break;
+
+        case 33:
+            this->myPoints.push_back(ProbingRay({ 2, 1, 0 }, 0));
+            this->myPoints.push_back(ProbingRay({ 0, 1, 2 }, 0));
+            break;
+
+        case 3:
+            this->myPoints.push_back(closestRayPoint(candidateRay(0)));
+            break;
+
+        case 12:
+            this->myPoints.push_back(closestRayPoint(candidateRay(1)));
+            break;
+
+        case 48:
+            this->myPoints.push_back(closestRayPoint(candidateRay(2)));
+            break;
+
+            // Three vertices of the H-neighborhood are in P
+        case 35:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(0);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 2, 1, 0 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        case 7:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(0);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 1, 2, 0 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        case 14:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(1);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 0, 2, 1 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        case 28:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(1);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 2, 0, 1 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        case 56:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(2);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 1, 0, 2 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        case 49:
+            {
+                std::pair<ProbingRay, ProbingRay> candidate = candidateRay(2);
+                ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 0, 1, 2 }, 0) });
+                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
+{
+    int code = 0;
+
+    for (int i = 0; i < 6; ++i) {
+        ProbingRay const& r = this->myNeighborhood[i];
+
+        // We skip the ray if it is not part of the rays that should be considered at this step
+        if (this->myNeighbors.size() > 0 && std::find(this->myNeighbors.begin(), this->myNeighbors.end(), r) == this->myNeighbors.end())
+        {
+            continue;
+        }
+
+        if (this->myPredicate(r.getAbsPt(this->myM, this->myQ)))
+        {
+            code += (1 << i);
+        }
+    }
+
+    return code;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+std::pair<DGtal::detail::ProbingRay, DGtal::detail::ProbingRay>
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::candidateRay (int index) const
+{
+    int indexM1 = (index - 1 + 3) % 3, indexM2 = (index - 2 + 3) % 3;
+    ProbingRay r1({ index, indexM1, indexM2 }, 0),
+               r2({ index, indexM2, indexM1 }, 0);
+
+    if (detail::squaredNorm(this->myM[indexM1]) >= detail::squaredNorm(this->myM[indexM2])) {
+        return std::make_pair(r1, r2.getBase());
+    } else {
+        return std::make_pair(r2, r1.getBase());
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+std::vector<DGtal::detail::ProbingRay>
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const
+{
+    ProbingRay startingPoint = aRay.getBase();
+    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+
+    Point origin = -this->myM[aRay.sigma(0)],
+               y = this->myM[aRay.sigma(1)],
+               x = this->myM[aRay.sigma(2)];
+
+    Integer a = detail::squaredNorm(x),
+            b = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                          -aPoint.getRelPt(this->myM), origin + x }) - a + 2*x.dot(y),
+            c = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                          -aPoint.getRelPt(this->myM), origin + y });
+    Integer delta = b*b - 4*a*c;
+
+    std::vector<ProbingRay> res;
+
+    if (delta < 0) {
+        return res;
+    }
+
+    Integer i1 = std::ceil( (-b - std::sqrt(delta)) / (2*a) ),
+            i2 = std::floor( (-b + std::sqrt(delta)) / (2*a) );
+    Integer zero = DGtal::NumberTraits<Integer>::ZERO;
+    if (i1 <= i2 && i2 >= zero) {
+        i1 = std::max(zero, i1);
+
+        ProbingRay p1(aRay.sigma(), i1), p2(aRay.sigma(), i2);
+
+        // Case of cospherical points
+        if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                      -aPoint.getRelPt(this->myM) , -p1.getRelPt(this->myM) }) == 0) {
+            if (p1.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
+                i1++;
+            }
+        }
+
+        if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                      -aPoint.getRelPt(this->myM) , -p2.getRelPt(this->myM) }) == 0) {
+            if (p2.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
+                i2--;
+            }
+        }
+
+        if (i1 > i2) {
+            return res;
+        }
+
+        p1 = ProbingRay(aRay.sigma(), i1);
+        p2 = ProbingRay(aRay.sigma(), i2);
+
+        // Add extremal points to the list
+        res.push_back(p1);
+        res.push_back(p2);
+    }
+
+    return res;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+bool
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay,
+                                                                          std::vector<ProbingRay> const& aLst) const
+{
+    ProbingRay startingPoint = aRay.getBase();
+    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+
+    Point refPoint = aPoint.getRelPt(this->myM);
+    bool res = true;
+
+    if (aLst.size() > 0) {
+        ProbingRay currentX = startingPoint;
+        while (! detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM))) {
+            currentX = currentX.next(1);
+        }
+
+        ProbingRay first = currentX;
+        while (detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM))) {
+            currentX = currentX.next(1);
+        }
+
+        ProbingRay last = currentX.previous(1);
+        return (aLst.size() == 2) && (first == aLst[0]) && (last == aLst[1]);
+    } else {
+        int n = 15;
+        ProbingRay currentX = startingPoint;
+        while (res && currentX.index() < n) {
+            res = !detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM));
+            currentX = currentX.next(1);
+        }
+    }
+
+    return res;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::detail::ProbingRay
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (ProbingRay const& aRay) const
+{
+    ProbingRay startingPoint = aRay.getBase();
+    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+
+    Point origin = -this->myM[aRay.sigma(0)],
+                u = this->myM[aRay.sigma(1)],
+                v = this->myM[aRay.sigma(2)];
+
+    Integer a = detail::squaredNorm(v), b = 3*a,
+            c = 2 * u.dot(v) + detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                                         origin + u , origin + v });
+    Integer delta = b*b - 4*a*c;
+
+    if (delta >= 0) {
+        int index = std::ceil( (-b + std::sqrt(delta)) / (2*a) );
+        index = std::max(0, index);
+
+        // Case of cospherical points
+        ProbingRay p1(aRay.sigma(), index), p2(aRay.sigma(), index+1);
+
+        if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
+                                      -p1.getRelPt(this->myM), -p2.getRelPt(this->myM) }) == 0) {
+            if (p1.getAbsPt(this->myM, this->myQ) >= p2.getAbsPt(this->myM, this->myQ)) {
+                index++;
+            }
+        }
+
+        return ProbingRay(aRay.sigma(), index);
+    } else {
+        return aRay.getBase();
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::detail::ProbingRay
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingRay const& aRay) const
+{
+    ProbingRay startingPoint = aRay.getBase();
+    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+
+    ProbingRay previousX = startingPoint;
+    ProbingRay currentX = previousX.next(1);
+    while (detail::isSmallest(this->negM(), -previousX.getRelPt(this->myM),
+                              -currentX.getRelPt(this->myM))) {
+        previousX = currentX;
+        currentX = previousX.next(1);
+    }
+
+    return previousX;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::detail::ProbingRay
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const
+{
+    ProbingRay const& ray = aRayPoint.first;
+    ProbingRay const& point = aRayPoint.second;
+
+    ProbingRay res = point;
+    std::vector<ProbingRay> intersections = intersectSphereRay(point, ray);
+    assert(isValidIntersectSphereRay(point, ray, intersections));
+
+    if (intersections.size() > 0) {
+        ProbingRay y1 = intersections[0], y2 = intersections[1];
+        if (this->myPredicate(y1.getAbsPt(this->myM, this->myQ))) {
+            ProbingRay y = closestPointOnRayConstant(ray);
+            assert(y == closestPointOnRayLinear(ray));
+            if (y1 <= y && y <= y2) {
+                if (this->myPredicate(y.getAbsPt(this->myM, this->myQ))) {
+                    res = y;
+                } else {
+                    res = this->closestPointOnRayLogWithPredicate(y1);
+                    assert(res == this->closestPointOnRayLinearWithPredicate(ray.getBase()));
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::PlaneProbingR1Neighborhood<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingR1Neighborhood]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::PlaneProbingR1Neighborhood<T>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingR1Neighborhood<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

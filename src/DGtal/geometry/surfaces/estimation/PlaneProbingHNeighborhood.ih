@@ -53,6 +53,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Plane Probing services ------------------------------
+
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 void DGtal::PlaneProbingHNeighborhood<TPredicate>::compute ()
