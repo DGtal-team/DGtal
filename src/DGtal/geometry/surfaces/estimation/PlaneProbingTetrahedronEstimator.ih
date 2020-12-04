@@ -1,0 +1,285 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/04
+ *
+ * Implementation of inline methods defined in PlaneProbingTetrahedronEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cassert>
+#include <cstdlib>
+#include <array>
+#include <vector>
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
+PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate)
+    : myM(aM), myPredicate(aPredicate), myS(aM[0] + aM[1] + aM[2]), myQ(aPoint + myS)
+{
+    if (mode == DGtal::ProbingMode::H) {
+        myNeighborhood = new PlaneProbingHNeighborhood<TPredicate>(myPredicate, myQ, myM);
+    } else {
+        assert(false);
+    }
+
+    assert(isValid());
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
+~PlaneProbingTetrahedronEstimator ()
+{
+    delete myNeighborhood;
+    myNeighborhood = nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
+{
+    assert(aIndex == 0 || aIndex == 1 || aIndex == 2);
+    return myM[aIndex];
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::q () const
+{
+    return myQ;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::shift () const
+{
+    return myS;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Triangle
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::vertices () const
+{
+    return { myQ - myM[0], myQ - myM[1], myQ - myM[2] };
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+std::pair<typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point,
+          typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point>
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getBasis () const
+{
+    Point u = myM[1] - myM[0],
+    v = myM[2] - myM[1],
+    w = myM[0] - myM[2];
+    assert(w == -u - v);
+
+    if (DGtal::detail::squaredNorm(u) < DGtal::detail::squaredNorm(v)) {
+        if (DGtal::detail::squaredNorm(u) < DGtal::detail::squaredNorm(w)) {
+            if (DGtal::detail::squaredNorm(-w) < DGtal::detail::squaredNorm(v)) {
+                return std::make_pair(u, -w);
+            } else {
+                return std::make_pair(u, v);
+            }
+        } else {
+            if (DGtal::detail::squaredNorm(-v) < DGtal::detail::squaredNorm(u)) {
+                return std::make_pair(w, -v);
+            } else {
+                return std::make_pair(w, u);
+            }
+        }
+    } else {
+        if (DGtal::detail::squaredNorm(v) < DGtal::detail::squaredNorm(w)) {
+            if (DGtal::detail::squaredNorm(-u) < DGtal::detail::squaredNorm(w)) {
+                return std::make_pair(v, -u);
+            } else {
+                return std::make_pair(v, w);
+            }
+        } else {
+            if (DGtal::detail::squaredNorm(-v) < DGtal::detail::squaredNorm(u)) {
+                return std::make_pair(w, -v);
+            } else {
+                return std::make_pair(w, u);
+            }
+        }
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isReduced () const
+{
+    auto basis = getBasis();
+    return DGtal::detail::isBasisReduced(basis.first, basis.second);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
+{
+    auto basis = getBasis();
+    return basis.first.crossProduct(basis.second);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
+{
+    ProbingRay closest;
+
+    if (myNeighborhood->closestCandidate(aNeighbors, closest)) {
+        update(closest);
+        assert(isValid());
+        return true;
+    }
+
+    return false;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
+{
+    return advance({});
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ------------------------- Internals ------------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Triangle const& aTriangle) const
+{
+    Triangle vec = { myQ - aTriangle[0], myQ - aTriangle[1], myQ - aTriangle[2] };
+
+    Point s = myM[0] + myM[1] + myM[2];
+    std::array<bool, 3> res, res_not;
+    for (int i = 0; i < 3; ++i) {
+        int im1 = (i - 1 + 3) % 3;
+        Point nk = vec[im1].crossProduct(vec[i]);
+
+        res[i] = (nk.dot(-s) <= 0);
+        res_not[i] = !res[i];
+    }
+
+    return (res[0] && res[1] && res[2]) || (res_not[0] && res_not[1] && res_not[2]);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (ProbingRay const& aRay)
+{
+    Point oldM = myM[aRay.sigma(0)];
+    myM[aRay.sigma(0)] = aRay.getRelPt(myM);
+    myOperations.push_back({ oldM, aRay.sigma(), aRay.index() });
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingTetrahedronEstimator]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isValid() const
+{
+    Triangle v = vertices();
+    for (int i = 0; i < 3; ++i) {
+        if (! myPredicate(v[i])) {
+            return false;
+        }
+    }
+
+    Point nest = getNormal();
+    for (int i = 0; i < 3; ++i) {
+        if (myM[i].dot(nest) != 1) {
+            return false;
+        }
+    }
+
+    if (! isProjectedInside(v)) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingTetrahedronEstimator<TPredicate, mode> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

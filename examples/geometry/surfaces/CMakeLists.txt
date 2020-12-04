@@ -2,7 +2,8 @@
 set(DGTAL_EXAMPLES_SRC
 	exampleIntegralInvariantCurvature2D
 	exampleEstimatorFromSurfelFunctors
-        dvcm-2d-curvature
+    dvcm-2d-curvature
+    examplePlaneProbingTetrahedronEstimator
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
