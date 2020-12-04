@@ -1,0 +1,188 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/04
+ *
+ * Implementation of inline methods defined in PlaneProbingRNeighborhood.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::PlaneProbingRNeighborhood<TPredicate>::
+PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
+    : DGtal::PlaneProbingNeighborhood<TPredicate>(aPredicate, aQ, aM)
+{}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::PlaneProbingRNeighborhood<TPredicate>::
+~PlaneProbingRNeighborhood()
+{}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane Probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+void DGtal::PlaneProbingRNeighborhood<TPredicate>::compute ()
+{
+    for (const auto& r: this->getNeighbors()) {
+        Point p = r.getAbsPt(this->myM, this->myQ);
+
+        if (this->myPredicate(p)) {
+            ProbingRay pt = closestPointOnRayLogWithPredicate(r.getBase());
+
+            assert(pt == closestPointOnRayLinearWithPredicate(r.getBase()));
+            assert(this->myPredicate(pt.getAbsPt(this->myM, this->myQ)));
+
+            this->myPoints.push_back(pt);
+        }
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::detail::ProbingRay
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const
+{
+    assert(this->myPredicate(aRay.getAbsPt(this->myM, this->myQ)));
+
+    // Exponential march
+    ProbingRay Xk = aRay, Xl = aRay.next(1);
+    while (this->myPredicate(Xk.getAbsPt(this->myM, this->myQ)) &&
+           DGtal::detail::isSmallest(this->negM(),
+                              -Xk.getRelPt(this->myM), -Xl.getRelPt(this->myM))) {
+        int d = Xl.index() - Xk.index();
+        Xk = Xl;
+        Xl = Xl.next(2 * d);
+    }
+    Xk = Xk.previous(int((Xl.index() - Xk.index()) / 2));
+
+    // Binary search
+    int d = Xl.index() - Xk.index();
+    while (d > 4) {
+        assert(this->myPredicate(Xk.getAbsPt(this->myM, this->myQ)));
+
+        ProbingRay Xalpha = Xk.next(int(d / 4)),
+                   Xbeta  = Xk.next(int(d / 2)),
+                   Xgamma = Xk.next(int(3*d/4));
+
+        assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() && Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
+
+        if (this->myPredicate(Xbeta.getAbsPt(this->myM, this->myQ)) &&
+            detail::isSmallest(this->negM(),
+                               -Xbeta.getRelPt(this->myM), -Xgamma.getRelPt(this->myM))) {
+            Xk = Xbeta;
+        } else if (! this->myPredicate(Xalpha.getAbsPt(this->myM, this->myQ)) ||
+                   detail::isSmallest(this->negM(),
+                                      -Xbeta.getRelPt(this->myM), -Xalpha.getRelPt(this->myM))) {
+            Xl = Xbeta;
+        } else {
+            Xk = Xalpha;
+            Xl = Xgamma;
+        }
+
+        d = Xl.index() - Xk.index();
+    }
+
+    return closestPointOnRayLinearWithPredicate(Xk);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+DGtal::detail::ProbingRay
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const
+{
+    assert(this->myPredicate(aRay.getAbsPt(this->myM, this->myQ)));
+
+    ProbingRay previousX = aRay, currentX = previousX.next(1);
+    while (this->myPredicate(currentX.getAbsPt(this->myM, this->myQ)) &&
+           detail::isSmallest(this->negM(),
+                              -previousX.getRelPt(this->myM), -currentX.getRelPt(this->myM))) {
+        previousX = currentX;
+        currentX = previousX.next(1);
+    }
+
+    assert(this->myPredicate(previousX.getAbsPt(this->myM, this->myQ)));
+
+    return previousX;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::PlaneProbingRNeighborhood<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingRNeighborhood]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::PlaneProbingRNeighborhood<T>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingRNeighborhood<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

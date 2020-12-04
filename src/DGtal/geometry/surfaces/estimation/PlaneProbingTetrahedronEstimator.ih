@@ -32,7 +32,9 @@
 #include <cstdlib>
 #include <array>
 #include <vector>
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,6 +52,8 @@ PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predi
 {
     if (mode == DGtal::ProbingMode::H) {
         myNeighborhood = new PlaneProbingHNeighborhood<TPredicate>(myPredicate, myQ, myM);
+    } else if (mode == DGtal::ProbingMode::R) {
+        myNeighborhood = new PlaneProbingRNeighborhood<TPredicate>(myPredicate, myQ, myM);
     } else {
         assert(false);
     }

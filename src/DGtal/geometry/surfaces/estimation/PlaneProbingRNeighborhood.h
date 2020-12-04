@@ -23,20 +23,20 @@
  *
  * @date 2020/12/04
  *
- * Header file for module PlaneProbingHNeighborhood.cpp
+ * Header file for module PlaneProbingRNeighborhood.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PlaneProbingHNeighborhood_RECURSES)
-#error Recursive header files inclusion detected in PlaneProbingHNeighborhood.h
-#else // defined(PlaneProbingHNeighborhood_RECURSES)
+#if defined(PlaneProbingRNeighborhood_RECURSES)
+#error Recursive header files inclusion detected in PlaneProbingRNeighborhood.h
+#else // defined(PlaneProbingRNeighborhood_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PlaneProbingHNeighborhood_RECURSES
+#define PlaneProbingRNeighborhood_RECURSES
 
-#if !defined PlaneProbingHNeighborhood_h
+#if !defined PlaneProbingRNeighborhood_h
 /** Prevents repeated inclusion of headers. */
-#define PlaneProbingHNeighborhood_h
+#define PlaneProbingRNeighborhood_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,15 +50,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class PlaneProbingHNeighborhood
+  // template class PlaneProbingRNeighborhood
   /**
-   * Description of template class 'PlaneProbingHNeighborhood' <p>
+   * Description of template class 'PlaneProbingRNeighborhood' <p>
    * \brief Aim:
    *
    * @tparam TPredicate the InPlane predicate.
    */
   template <typename TPredicate>
-  class PlaneProbingHNeighborhood : public PlaneProbingNeighborhood<TPredicate>
+  class PlaneProbingRNeighborhood : public PlaneProbingNeighborhood<TPredicate>
   {
     // ----------------------- Public types ------------------------------
   public:
@@ -72,40 +72,40 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    PlaneProbingHNeighborhood() = delete;
+    PlaneProbingRNeighborhood() = delete;
 
-    PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
+    PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**
      * Destructor.
      */
-    ~PlaneProbingHNeighborhood();
+    ~PlaneProbingRNeighborhood();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    PlaneProbingHNeighborhood ( const PlaneProbingHNeighborhood & other ) = delete;
+    PlaneProbingRNeighborhood ( const PlaneProbingRNeighborhood & other ) = delete;
 
     /**
      * Move constructor.
      * @param other the object to move.
      */
-    PlaneProbingHNeighborhood ( PlaneProbingHNeighborhood && other ) = delete;
+    PlaneProbingRNeighborhood ( PlaneProbingRNeighborhood && other ) = delete;
 
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    PlaneProbingHNeighborhood & operator= ( const PlaneProbingHNeighborhood & other ) = delete;
+    PlaneProbingRNeighborhood & operator= ( const PlaneProbingRNeighborhood & other ) = delete;
 
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
-    PlaneProbingHNeighborhood & operator= ( PlaneProbingHNeighborhood && other ) = delete;
+    PlaneProbingRNeighborhood & operator= ( PlaneProbingRNeighborhood && other ) = delete;
 
     // ----------------------- Plane Probing services ------------------------------
   public:
@@ -137,31 +137,34 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
 
-  }; // end of class PlaneProbingHNeighborhood
+    ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
+
+  }; // end of class PlaneProbingRNeighborhood
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'PlaneProbingHNeighborhood'.
+   * Overloads 'operator<<' for displaying objects of class 'PlaneProbingRNeighborhood'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'PlaneProbingHNeighborhood' to write.
+   * @param object the object of class 'PlaneProbingRNeighborhood' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingHNeighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingRNeighborhood<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.ih"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PlaneProbingHNeighborhood_h
+#endif // !defined PlaneProbingRNeighborhood_h
 
-#undef PlaneProbingHNeighborhood_RECURSES
-#endif // else defined(PlaneProbingHNeighborhood_RECURSES)
+#undef PlaneProbingRNeighborhood_RECURSES
+#endif // else defined(PlaneProbingRNeighborhood_RECURSES)
