@@ -52,8 +52,7 @@ inline
 DGtal::DigitalPlanePredicate<TSpace>::
 DigitalPlanePredicate (const DGtal::DigitalPlanePredicate<TSpace> & other)
     : myNormal(other.normal()), myMu(other.mu()), myNu(other.nu())
-{
-}
+{}
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -61,8 +60,7 @@ inline
 DGtal::DigitalPlanePredicate<TSpace>::
 DigitalPlanePredicate (DGtal::DigitalPlanePredicate<TSpace> && other)
     : myNormal(other.normal()), myMu(other.mu()), myNu(other.nu())
-{
-}
+{}
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -123,6 +121,10 @@ DGtal::DigitalPlanePredicate<TSpace>::nu () const
     return myNu;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//-------------------- model of concepts::CPointPredicate -----------------------------
+
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
 bool DGtal::DigitalPlanePredicate<TSpace>::

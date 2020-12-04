@@ -62,12 +62,16 @@ namespace DGtal
    * and when \f$ \nu = \| N \|_\infty \f$, then it represents a naive digital plane.
    *
      @tparam TSpace any digital space, i.e., a model of CSpace.
+
+     \b Models: A DigitalPlanePredicate is a model of concepts::CPointPredicate.
    */
   template <typename TSpace>
   class DigitalPlanePredicate
   {
     BOOST_CONCEPT_ASSERT((concepts::CSpace<TSpace>));
 
+    // ----------------------- public types ------------------------------
+  public:
     using Self    = DigitalPlanePredicate<TSpace>;
     using Space   = TSpace;
     using Integer = typename Space::Integer;
@@ -137,6 +141,7 @@ namespace DGtal
      */
     Integer nu () const;
 
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
     /**
      * Checks whether a point \a aPoint belongs to the digital plane.
