@@ -49,7 +49,7 @@ bool testColor()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Color ..." );
 
   Color b(0,0,0,255);
@@ -58,37 +58,37 @@ bool testColor()
   Color w(255,255,255,255);
 
   trace.info() << " B+G = g "<< b+g<<std::endl;
-  nbok += ((b+g)==g) ? 1 : 0; 
+  nbok += ((b+g)==g) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "add" << std::endl;
 
   trace.info() << " g+g = gg "<< g*2<< " expected ="<<gg<<std::endl;
-  nbok += ((g+g)==gg) ? 1 : 0; 
+  nbok += ((g+g)==gg) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "add (bis)" << std::endl;
 
   trace.info() << " W+W = w "<< w+w<<std::endl;
-  nbok += ((w+w)==w) ? 1 : 0; 
+  nbok += ((w+w)==w) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "max " << std::endl;
 
   trace.info() << " g*2 = gg "<< g*2<< " expected ="<<gg<<std::endl;
-  nbok += ((g*2)==gg) ? 1 : 0; 
+  nbok += ((g*2)==gg) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
 
   trace.info() << " 1.*red = red "<< 1.0*Color::Red<< " expected ="<<Color::Red<<std::endl;
-  nbok += ((1.0*Color::Red)==Color::Red) ? 1 : 0; 
+  nbok += ((1.0*Color::Red)==Color::Red) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
 
   trace.info() << " 2*g = gg "<< 2.0*g<< " expected ="<<gg<<std::endl;
-  nbok += ((2*g)==gg) ? 1 : 0; 
+  nbok += ((2*g)==gg) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coeff" << std::endl;
@@ -99,23 +99,23 @@ bool testColor()
   Color c = a+aa;
 #ifdef COLOR_WITH_ALPHA_ARITH
   trace.info() << " a+aa = "<< a+aa<<std::endl;
-  nbok += (c == Color(0,0,0,96)) ? 1 : 0; 
+  nbok += (c == Color(0,0,0,96)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "alpha arith (enabled)" << std::endl;
 #else
   trace.info() << " a+aa = "<< a+aa<<std::endl;
-  nbok += (c == Color(0,0,0,64)) ? 1 : 0; 
+  nbok += (c == Color(0,0,0,64)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "alpha arith (disabled)" << std::endl;
-#endif  
+#endif
 
   Color val;
   val.setRGBi(0,0,0,255);
   val += 1.0*Color::Red;
   trace.info() << " val == Color::Red "<< val<<std::endl;
-  nbok += (val==Color::Red) ? 1 : 0; 
+  nbok += (val==Color::Red) ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "

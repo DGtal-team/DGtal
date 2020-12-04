@@ -20,7 +20,7 @@
  * @file Color.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
- * 
+ *
  * @date 2011/07/17
  *
  * Header file for module Color.cpp
@@ -44,7 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <boost/lexical_cast.hpp>
-#include <algorithm>  
+#include <algorithm>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,7 +54,7 @@ namespace DGtal
   // class Color
   /**
    * Description of class 'Color' <p>
-   * 
+   *
    * @brief Structure representing an RGB triple with alpha component.
    *
    * @note if compilation flag COLOR_WITH_ALPHA_ARITH is set, then the
@@ -82,7 +82,7 @@ namespace DGtal
      * @param aRgb an unsigned int representing the color.
      * @param aAlpha color transparency (default value =255);
      */
-    
+
     Color( const unsigned int aRgb,
            unsigned char aAlpha = 255 );
 
@@ -107,7 +107,7 @@ namespace DGtal
            const unsigned char  aBlueValue,
            const unsigned char aAlphaValue = 255 )
       : myRed(aRedValue),myGreen(aGreenValue),myBlue(aBlueValue),myAlpha(aAlphaValue) { }
-    
+
 
     /**
      * Constructor from gray scale value.
@@ -115,7 +115,7 @@ namespace DGtal
      * @param aGrayValue the color gray value.
      * @param aAlphaValue color transparency (default value =255);.
      */
-    
+
     Color( unsigned char aGrayValue,
            unsigned char aAlphaValue = 255 )
       : myRed(aGrayValue),myGreen(aGrayValue), myBlue(aGrayValue), myAlpha(aAlphaValue) { }
@@ -125,12 +125,12 @@ namespace DGtal
      * Default Constructor.
      *
      */
-    
+
     Color( )
       : myRed(0),myGreen(0),myBlue(0), myAlpha(255)
     {
     }
-    
+
     Color& setRGBi( const unsigned char aRedValue,
 		    const unsigned char aGreenValue,
 		    const unsigned char aBlueValue,
@@ -145,21 +145,21 @@ namespace DGtal
      * @return a reference on the itself.
      *
      */
-    
+
     Color& setRGBA( DGtal::uint32_t aRGBA );
-    
+
     void red( const unsigned char aRedValue );
 
     void green( const unsigned char aGreenValue );
-    
+
     void blue( const unsigned char aBlueValue );
 
     void alpha( const unsigned char aAlphaValue );
-    
+
     unsigned char red() const ;
 
     unsigned char green() const ;
-    
+
     unsigned char blue() const ;
 
     unsigned char alpha() const ;
@@ -168,7 +168,7 @@ namespace DGtal
     double r() const ;
 
     double g() const ;
-    
+
     double b() const ;
 
     double a() const ;
@@ -178,14 +178,14 @@ namespace DGtal
      * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B canal on 8 bits starting from least significant bit.
      **/
-    
+
     DGtal::uint32_t getRGB() const;
 
     /**
      * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B, A canal on 8 bits starting from least significant bit.
      **/
-        
+
     DGtal::uint32_t getRGBA() const;
 
 
@@ -197,31 +197,31 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-  
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
 
-    
 
-    Color & setRGBf( float red, 
+
+    Color & setRGBf( float red,
 		     float green,
 		     float blue,
 		     float alpha = 1.0 );
-  
+
     bool operator==( const Color & aColor ) const;
 
     bool operator!=( const Color & aColor ) const;
 
     bool operator<( const Color & aColor ) const;
 
-    
+
     /**
      * Addition operator with assignement.
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
      * @param v is the Color that gets added to @a *this.
      * @return a reference on 'this'.
@@ -240,7 +240,7 @@ namespace DGtal
     /**
      * Addition operator.
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
      *
      * @param v is the Color that gets added to @a *this.
@@ -263,7 +263,7 @@ namespace DGtal
     /**
      * Substraction operator with assignement.
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
      *
      * @param v is the Point that gets substracted to  *this.
@@ -283,7 +283,7 @@ namespace DGtal
     /**
      * Substraction operator.
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
      * @param v is the Color that gets substacted to @a *this.
      * @return a new Point that is the subtraction 'this'-[v].
@@ -302,14 +302,14 @@ namespace DGtal
       return c;
     }
 
-    /** 
+    /**
      * Multiplication by a scalar (component-wise)
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
-     * 
+     *
      * @param coeff the scalar
-     * 
+     *
      * @return the scaled color
      */
     Color &operator *= ( const double coeff)
@@ -323,10 +323,10 @@ namespace DGtal
       return *this;
     }
 
-    /** 
+    /**
      * Multiplication by a scalar (component-wise)
      *
-     * @note returned components are clamped to [0,255] interval. 
+     * @note returned components are clamped to [0,255] interval.
      *
      * @param coeff the scalar.
      * @return a scaled color
@@ -344,7 +344,7 @@ namespace DGtal
 #endif
       return c;
     }
-   
+
     /**
      * Assignement Operator
      *
@@ -357,28 +357,28 @@ namespace DGtal
 
     std::string svg() const;
 
-    /** 
+    /**
      * Return a an SVG parameter string for the opacity value.
-     * 
-     * @param aPrefix A prefix string to be appended to the returned 
+     *
+     * @param aPrefix A prefix string to be appended to the returned
      * string if not empty.
-     * 
+     *
      * @return An empty string if alpha == 255, otherwise the string \<prefix\>-opacity="<alpha-value>".
      */
     std::string svgAlpha( const char * aPrefix ) const;
 
     std::string postscript() const;
 
-    /** 
+    /**
      * Return a string representation of the color usable in TikZ commands.
      * Use the corresponding named color (or a mixture of a named color and black)
      * for predefined colors. Use a mixture of red, green and blue for general
      * colors.
-     * 
+     *
      * @return a string representation of the color usable in TikZ commands.
      */
     std::string tikz() const;
-  
+
     static const Color None;
     static const Color Black;
     static const Color Gray;
@@ -409,11 +409,11 @@ namespace DGtal
 
   private:
 
-    /** 
+    /**
      * Clamp an int to [0,255]
-     * 
+     *
      * @param [in] value the value to clamp
-     * 
+     *
      * @return the clamped value
      */
     unsigned char clamp(const double value)  const
@@ -442,8 +442,8 @@ namespace DGtal
   Color
   operator*( const double coeff,
 	     const Color &aColor );
- 
- 
+
+
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
@@ -459,7 +459,7 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods 
+// Includes inline functions/methods
 #include "DGtal/io/Color.ih"
 
 
