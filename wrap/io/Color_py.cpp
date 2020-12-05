@@ -26,7 +26,7 @@ void init_Color(py::module & m) {
     using TT = Color;
     using TTValue = unsigned char;
     const std::string typestr = "Color";
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());
@@ -152,4 +152,29 @@ void init_Color(py::module & m) {
         self.selfDisplay(os);
         return os.str();
     });
+
+    py_class.def_buffer([](TT &self) -> py::buffer_info {
+        return py::buffer_info(
+            &self, /* Pointer to buffer */
+            static_cast<ssize_t>(sizeof(TTValue)),    /* Size of one scalar */
+            py::format_descriptor<TTValue>::format(), /* Python struct-style format descriptor */
+            1,                                            /* Number of dimensions */
+            { 4 },                            /* Shape, buffer dimensions */
+            { static_cast<ssize_t>(sizeof(TTValue)) } /* Strides (in bytes) for each index */
+            );
+    });
+
+    py_class.def(py::init([](py::buffer buf) {
+        auto info = buf.request();
+        /* Sanity checks */
+        if (info.ndim != 1 || info.strides[0] % static_cast<ssize_t>(sizeof(TTValue)))
+            throw py::type_error("Only valid 1D buffers can be copied to a Color");
+        if (!py::detail::compare_buffer_info<TTValue>::compare(info) || (ssize_t) sizeof(TTValue) != info.itemsize)
+            throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTValue>::format() + ")");
+
+        if(info.shape[0] != 4)
+            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(4) + ")");
+        TTValue *p = static_cast<TTValue*>(info.ptr);
+        return TT(*p, *(p+1), *(p+2), *(p+3));
+    }));
 }

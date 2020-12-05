@@ -57,6 +57,19 @@ def test_Color():
                                alpha=minus_c.a())
     assert other_color == minus_c
 
-
+def test_Color_buffer():
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    submodule = getattr(dgtal, "io")
+    Color = getattr(submodule, "Color")
+    color = Color(10, 11, 12, 200)
+    # def_buffer
+    np_color = np.array(color)
+    print("np_color: ", np_color.__repr__())
+    np.testing.assert_array_equal(np_color, np.array([10, 11, 12, 200], dtype='uint8'))
+    # constructor from buffer
+    color_from_np_array = Color(np_color)
+    print("color_from_np_array: ", color_from_np_array)
+    assert color_from_np_array == color
 
 
