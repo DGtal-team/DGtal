@@ -299,3 +299,71 @@ def test_bridge_buffer_with_Points(Type):
     assert img_from_array.domain.lower_bound == dom.lower_bound
     assert img_from_array.domain.upper_bound == dom.upper_bound
     assert img_from_array[p1] == img.TValue.diagonal(10)
+
+@pytest.mark.parametrize("Type", [
+    ("ImageContainerByVector2DColor"),
+    ("ImageContainerByVector3DColor")
+])
+def test_bridge_buffer_with_Color(Type):
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    submodule = getattr(dgtal, "images")
+    ImageContainer = getattr(submodule, Type)
+    Domain = ImageContainer.TDomain
+    DomainPoint = ImageContainer.TPoint
+    ImagePoint = ImageContainer.TValue
+    Color = ImagePoint
+
+    # Construct Domain
+    lb = DomainPoint.zero
+    if DomainPoint.dimension == 2:
+        ub = DomainPoint(2,3)
+        p1 = DomainPoint(1, 0)
+    else:
+        ub = DomainPoint(2,3,4)
+        p1 = DomainPoint(1, 0, 0)
+
+    dom = Domain(lb, ub)
+    img = ImageContainer(dom)
+    dtype = img.TValue
+    a_color = img.TValue(10, 11, 12, 200)
+    another_color = img.TValue(1,1,1,1)
+    img[p1] = a_color
+
+    # Test def_buffer
+    np_array_c = np.array(img, copy=False)
+    assert np_array_c.flags.c_contiguous == True
+    assert np_array_c.flags.f_contiguous == False
+    if Type == "ImageContainerByVector2DColor":
+        print("np_array_c:\n", np_array_c)
+    color_dimension = 4 # r, g, b, alpha
+    # Check number of elements: number of points * color_dimension
+    assert np_array_c.size == img.domain.size() * color_dimension
+    # Check shape (upper bound is reversed).
+    # The dimensionality of the point is appended at the end of the shape.
+    if DomainPoint.dimension == 2:
+        assert np_array_c.shape[0] == img.domain.upper_bound[1] + 1
+        assert np_array_c.shape[1] == img.domain.upper_bound[0] + 1
+        assert np_array_c.shape[2] == color_dimension
+        assert np_array_c.shape == (4, 3, color_dimension)
+        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        np.testing.assert_array_equal(np_array_c[0, 1], np.array(a_color))
+        # modify image through np_array_c (view)
+        np_array_c[1,1] = np.array(another_color)
+    else:
+        assert np_array_c.shape[0] == img.domain.upper_bound[2] + 1
+        assert np_array_c.shape[1] == img.domain.upper_bound[1] + 1
+        assert np_array_c.shape[2] == img.domain.upper_bound[0] + 1
+        assert np_array_c.shape[3] == color_dimension
+        assert np_array_c.shape == (5, 4, 3, color_dimension)
+        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        np.testing.assert_array_equal(np_array_c[0, 0, 1], np.array(a_color))
+        # modify image through np_array_c (view)
+        np_array_c[1,1,1] = np.array(another_color)
+
+    assert img[DomainPoint.diagonal(1)] == another_color
+    # # Test constructor via array
+    img_from_array = ImageContainer(np_array_c, lower_bound_ijk=dom.lower_bound, order='C')
+    assert img_from_array.domain.lower_bound == dom.lower_bound
+    assert img_from_array.domain.upper_bound == dom.upper_bound
+    assert img_from_array[p1] == a_color
