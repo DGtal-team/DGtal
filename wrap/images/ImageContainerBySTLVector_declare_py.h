@@ -233,32 +233,14 @@ pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(p
 
     // ----------- Start std::vector binding ------------/
 
-    // Declare the buffer interface if a buffer_protocol() is passed in
-    py::detail::vector_buffer<TT, Class_>(cl);
-
     // Register copy constructor (if possible)
     py::detail::vector_if_copy_constructible<Vector, Class_>(cl);
-
-    // Register stream insertion operator (if possible)
-    py::detail::vector_if_insertion_operator<Vector, Class_>(cl, typestr);
-
-    // Modifiers require copyable vector value type and default constructor.
-    // Also it adds append, pop, etc, that we are not really interested.
-    // py::detail::vector_modifiers<Vector, Class_>(cl);
     cl.def("__setitem__",
         [wrap_i](Vector &v, DiffType i, const T &t) {
             i = wrap_i(i, v.size());
             v[(SizeType)i] = t;
-        }
-    );
-
-    cl.def("__delitem__",
-        [wrap_i](Vector &v, DiffType i) {
-            i = wrap_i(i, v.size());
-            v.erase(v.begin() + i);
         },
-        "Delete the list elements at index ``i``"
-    );
+        "Set item using linear index");
 
     // Accessor and iterator; return by value if copyable, otherwise we return by ref + keep-alive
     py::detail::vector_accessor<Vector, Class_>(cl);
