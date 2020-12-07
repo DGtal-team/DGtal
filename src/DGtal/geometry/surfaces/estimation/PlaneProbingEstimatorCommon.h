@@ -126,39 +126,6 @@ namespace DGtal
         }
 
         /**
-         * Computes the relative position of a point with respect to a sphere passing through 4 points.
-         *
-         * @param aPoints 3 input points.
-         * @param aX 1 more input point.
-         * @param aY the test point.
-         * @return 'true' if \a aY lies inside the sphere passing through \a aPoints and \a aX.
-         */
-        template < typename Point >
-        bool
-        isSmallest (std::array<Point, 3> const& aPoints, Point const& aX, Point const& aY)
-        {
-            using Integer = typename Point::Coordinate;
-            Integer zero = DGtal::NumberTraits<Integer>::ZERO;
-
-            std::array<Point, 5> ps;
-            for (int i = 0; i < 3; ++i)
-            {
-                ps[i] = aPoints[i];
-            }
-            ps[3] = aX;
-            ps[4] = aY;
-
-            Integer res = distToSphere(ps);
-            if (res == zero) {
-                return aY < aX;
-            } else if (res < zero) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        /**
          * Test if a pair of vectors form a reduced basis.
          *
          * @param aU the first vector.
@@ -176,21 +143,13 @@ namespace DGtal
         }
 
         /**
-         * A Triplet is an alias for an array of 3 elements.
-         */
-        template < typename T >
-        using Triplet = std::array<T, 3>;
-
-        /**
-         * Triplet of integers.
-         */
-        using Permutation = Triplet<int>;
-
-        /**
          * A ray consists of a permutation 'sigma' and an index (position on the ray).
          */
         class ProbingRay
         {
+            public:
+                using Permutation = std::array<int, 3>;
+
             public:
                 /**
                  * Default constructor.
@@ -240,13 +199,13 @@ namespace DGtal
                 }
 
                 template < typename Point >
-                Point getRelPt (Triplet<Point> const& aM) const
+                Point getRelPt (std::array<Point, 3> const& aM) const
                 {
                     return aM[mySigma[0]] - aM[mySigma[1]] - aM[mySigma[2]] * myIndex;
                 }
 
                 template < typename Point >
-                Point getAbsPt (Triplet<Point> const& aM, Point const& aQ) const
+                Point getAbsPt (std::array<Point, 3> const& aM, Point const& aQ) const
                 {
                     return aQ - getRelPt(aM);
                 }
@@ -303,7 +262,7 @@ namespace DGtal
          * @return the reduced basis.
          */
         template < typename Point >
-        std::pair<Point, Point> computeReducedBasis (Triplet<Point> const& aM)
+        std::pair<Point, Point> computeReducedBasis (std::array<Point, 3> const& aM)
         {
             Point u = aM[1] - aM[0],
                   v = aM[2] - aM[1],

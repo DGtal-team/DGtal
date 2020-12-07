@@ -191,6 +191,13 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
     return advance({});
 }
 
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
+{
+    while (! advance()) {}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // ------------------------- Internals ------------------------------------
 

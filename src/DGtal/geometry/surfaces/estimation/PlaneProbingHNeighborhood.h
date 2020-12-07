@@ -64,8 +64,8 @@ namespace DGtal
   public:
       using Predicate  = TPredicate;
       using Point      = typename TPredicate::Point;
-      using Triangle   = detail::Triplet<Point>;
-      using ProbingRay = detail::ProbingRay;
+      using Triangle   = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
+      using ProbingRay = typename PlaneProbingNeighborhood<TPredicate>::ProbingRay;
 
     // ----------------------- Standard services ------------------------------
   public:

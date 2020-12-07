@@ -64,12 +64,14 @@ namespace DGtal
   {
     // ----------------------- Public types ------------------------------
   public:
-      using Self       = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
-      using Predicate  = TPredicate;
-      using Point      = typename Predicate::Point;
-      using Triangle   = detail::Triplet<Point>;
-      using Integer    = typename Point::Coordinate;
-      using ProbingRay = detail::ProbingRay;
+      using Self         = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
+      using Predicate    = TPredicate;
+      using Point        = typename Predicate::Point;
+      using Neighborhood = PlaneProbingNeighborhood<TPredicate>;
+      using Triangle     = typename Neighborhood::Triangle;
+      using Integer      = typename Point::Coordinate;
+      using ProbingRay   = typename Neighborhood::ProbingRay;
+      using Permutation  = typename ProbingRay::Permutation;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -131,6 +133,8 @@ namespace DGtal
 
     bool advance ();
 
+    void compute ();
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -154,11 +158,11 @@ namespace DGtal
     Triangle myM;
     Predicate myPredicate;
     Point myS, myQ;
-    PlaneProbingNeighborhood<TPredicate>* myNeighborhood = nullptr;
+    Neighborhood* myNeighborhood = nullptr;
 
     struct Operation {
         Point oldM;
-        detail::Permutation sigma;
+        Permutation sigma;
         Integer lambda;
     };
 

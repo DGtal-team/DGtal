@@ -74,7 +74,7 @@ void DGtal::PlaneProbingRNeighborhood<TPredicate>::compute ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingRNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const
 {
     assert(this->myPredicate(aRay.getAbsPt(this->myM, this->myQ)));
@@ -82,8 +82,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
     // Exponential march
     ProbingRay Xk = aRay, Xl = aRay.next(1);
     while (this->myPredicate(Xk.getAbsPt(this->myM, this->myQ)) &&
-           DGtal::detail::isSmallest(this->negM(),
-                              -Xk.getRelPt(this->myM), -Xl.getRelPt(this->myM))) {
+           this->isSmallest(-Xk.getRelPt(this->myM), -Xl.getRelPt(this->myM))) {
         int d = Xl.index() - Xk.index();
         Xk = Xl;
         Xl = Xl.next(2 * d);
@@ -102,12 +101,10 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
         assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() && Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
 
         if (this->myPredicate(Xbeta.getAbsPt(this->myM, this->myQ)) &&
-            detail::isSmallest(this->negM(),
-                               -Xbeta.getRelPt(this->myM), -Xgamma.getRelPt(this->myM))) {
+            this->isSmallest(-Xbeta.getRelPt(this->myM), -Xgamma.getRelPt(this->myM))) {
             Xk = Xbeta;
         } else if (! this->myPredicate(Xalpha.getAbsPt(this->myM, this->myQ)) ||
-                   detail::isSmallest(this->negM(),
-                                      -Xbeta.getRelPt(this->myM), -Xalpha.getRelPt(this->myM))) {
+                   this->isSmallest(-Xbeta.getRelPt(this->myM), -Xalpha.getRelPt(this->myM))) {
             Xl = Xbeta;
         } else {
             Xk = Xalpha;
@@ -122,15 +119,14 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingRNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const
 {
     assert(this->myPredicate(aRay.getAbsPt(this->myM, this->myQ)));
 
     ProbingRay previousX = aRay, currentX = previousX.next(1);
     while (this->myPredicate(currentX.getAbsPt(this->myM, this->myQ)) &&
-           detail::isSmallest(this->negM(),
-                              -previousX.getRelPt(this->myM), -currentX.getRelPt(this->myM))) {
+           this->isSmallest(-previousX.getRelPt(this->myM), -currentX.getRelPt(this->myM))) {
         previousX = currentX;
         currentX = previousX.next(1);
     }

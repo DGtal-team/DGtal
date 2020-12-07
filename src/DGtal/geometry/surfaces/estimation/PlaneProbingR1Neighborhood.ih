@@ -194,7 +194,8 @@ int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-std::pair<DGtal::detail::ProbingRay, DGtal::detail::ProbingRay>
+std::pair<typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay,
+          typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::candidateRay (int index) const
 {
     int indexM1 = (index - 1 + 3) % 3, indexM2 = (index - 2 + 3) % 3;
@@ -210,7 +211,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::candidateRay (int index) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-std::vector<DGtal::detail::ProbingRay>
+std::vector<typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const
 {
     ProbingRay startingPoint = aRay.getBase();
@@ -285,12 +286,12 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
 
     if (aLst.size() > 0) {
         ProbingRay currentX = startingPoint;
-        while (! detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM))) {
+        while (! this->isSmallest(-refPoint, -currentX.getRelPt(this->myM))) {
             currentX = currentX.next(1);
         }
 
         ProbingRay first = currentX;
-        while (detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM))) {
+        while (this->isSmallest(-refPoint, -currentX.getRelPt(this->myM))) {
             currentX = currentX.next(1);
         }
 
@@ -300,7 +301,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
         int n = 15;
         ProbingRay currentX = startingPoint;
         while (res && currentX.index() < n) {
-            res = !detail::isSmallest(this->negM(), -refPoint, -currentX.getRelPt(this->myM));
+            res = !this->isSmallest(-refPoint, -currentX.getRelPt(this->myM));
             currentX = currentX.next(1);
         }
     }
@@ -310,7 +311,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (ProbingRay const& aRay) const
 {
     ProbingRay startingPoint = aRay.getBase();
@@ -347,7 +348,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (Probin
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingRay const& aRay) const
 {
     ProbingRay startingPoint = aRay.getBase();
@@ -355,8 +356,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingR
 
     ProbingRay previousX = startingPoint;
     ProbingRay currentX = previousX.next(1);
-    while (detail::isSmallest(this->negM(), -previousX.getRelPt(this->myM),
-                              -currentX.getRelPt(this->myM))) {
+    while (this->isSmallest(-previousX.getRelPt(this->myM), -currentX.getRelPt(this->myM))) {
         previousX = currentX;
         currentX = previousX.next(1);
     }
@@ -366,7 +366,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingR
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const
 {
     ProbingRay const& ray = aRayPoint.first;

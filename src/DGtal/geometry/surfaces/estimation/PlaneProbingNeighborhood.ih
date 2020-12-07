@@ -78,8 +78,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<Pro
 
     ProbingRay minPoint = aPoints[N-1];
     for (int k = 0; k < N-1; ++k) {
-        if (DGtal::detail::isSmallest(negM(),
-                                      -minPoint.getRelPt(myM), -aPoints[k].getRelPt(myM))) {
+        if (isSmallest(-minPoint.getRelPt(myM), -aPoints[k].getRelPt(myM))) {
             minPoint = aPoints[k];
         }
     }
@@ -110,14 +109,6 @@ closestCandidate (std::vector<DGtal::detail::ProbingRay> const& neighbors, DGtal
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle
-DGtal::PlaneProbingNeighborhood<TPredicate>::negM () const
-{
-    return { -myM[0], -myM[1], -myM[2] };
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
 std::vector<typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingNeighborhood<TPredicate>::getNeighbors () const
 {
@@ -128,6 +119,34 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::getNeighbors () const
 
     return std::vector<ProbingRay>(myNeighborhood, myNeighborhood + 6);
 }
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+bool
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+isSmallest (Point const& aX,
+            Point const& aY) const
+{
+    Integer zero = DGtal::NumberTraits<Integer>::ZERO;
+
+    std::array<Point, 5> ps;
+    for (int i = 0; i < 3; ++i)
+    {
+        ps[i] = -myM[i];
+    }
+    ps[3] = aX;
+    ps[4] = aY;
+
+    Integer res = DGtal::detail::distToSphere(ps);
+    if (res == zero) {
+        return aY < aX;
+    } else if (res < zero) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

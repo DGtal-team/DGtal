@@ -33,7 +33,6 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/DigitalPlanePredicate.h"
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingTetrahedronEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -43,8 +42,7 @@ using namespace DGtal;
 using DigitalPlane = DigitalPlanePredicate<Z3i::Space>;
 using Point = DigitalPlane::Vector;
 using Vector = DigitalPlane::Point;
-using Neighborhood = PlaneProbingHNeighborhood<DigitalPlane>;
-using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::H>;
+using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +51,7 @@ int main(void)
   Vector n(2, 6, 15);
   DigitalPlane plane(n, 0, n.norm1());
   Point o(0, 0, 0);
-  detail::Triplet<Point> m = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
+  std::array<Point, 3> m = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
   Estimator estimator(o, m, plane);
 
   int it = 0;

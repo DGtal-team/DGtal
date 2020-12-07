@@ -65,7 +65,8 @@ namespace DGtal
   public:
       using Predicate  = TPredicate;
       using Point      = typename Predicate::Point;
-      using Triangle   = detail::Triplet<Point>;
+      using Integer    = typename Point::Coordinate;
+      using Triangle   = std::array<Point, 3>;
       using ProbingRay = detail::ProbingRay;
 
     // ----------------------- Standard services ------------------------------
@@ -137,19 +138,25 @@ namespace DGtal
     static const ProbingRay myNeighborhood[6];
     std::vector<ProbingRay> myNeighbors;
 
-    virtual void compute () = 0;
-
-    Triangle negM () const;
-
-    ProbingRay closestPointInList (std::vector<ProbingRay> const& aPoints) const;
-
-    std::vector<ProbingRay> getNeighbors () const;
-
     // ------------------------- Private Datas --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
   protected:
+    virtual void compute () = 0;
+
+    ProbingRay closestPointInList (std::vector<ProbingRay> const& aPoints) const;
+
+    std::vector<ProbingRay> getNeighbors () const;
+
+    /**
+     * Computes the relative position of a point with respect to a sphere passing through 4 points.
+     *
+     * @param aX 1 more input point.
+     * @param aY the test point.
+     * @return 'true' if \a aY lies inside the sphere passing through \a vertices and \a aX.
+     */
+    bool isSmallest (Point const& aX, Point const& aY) const;
 
     // ------------------------- Internals ------------------------------------
   private:
