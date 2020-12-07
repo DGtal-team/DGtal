@@ -56,6 +56,27 @@ void def_TValue(pybind11::class_<TT> & py_class,
             });
 }
 
+template<typename TPoint>
+using Is2D = typename std::enable_if<TPoint::dimension == 2>::type;
+template<typename TPoint>
+using Is3D = typename std::enable_if<TPoint::dimension == 3>::type;
+
+template<typename TT>
+void def_toindices(pybind11::class_<TT> & py_class,
+        Is2D<typename TT::Point> * = nullptr) {
+    py_class.def("toindices", [](const TT & self, const typename TT::Point & a_point) {
+            return pybind11::make_tuple(a_point[1], a_point[0]);
+    }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
+}
+template<typename TT>
+void def_toindices(pybind11::class_<TT> & py_class,
+        Is3D<typename TT::Point> * = nullptr) {
+    py_class.def("toindices", [](const TT & self, const typename TT::Point & a_point) {
+            return pybind11::make_tuple(a_point[2], a_point[1], a_point[0]);
+    }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
+}
+
+
 template<typename TT>
 TT constructor_from_buffer(pybind11::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
@@ -298,6 +319,9 @@ R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-m
             self.setValue(point, value);
             },
 R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-major, F_style.)");
+
+    def_toindices<TT>(py_class);
+
     // ----------------------- Class operators --------------------------------
 
     // ----------------------- Class functions --------------------------------
