@@ -296,12 +296,11 @@ pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(p
             }
             TTPoint point;
             for(DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
-                point[i] = tup[static_cast<DGtal::Dimension>(TTPoint::dimension - 1 - i)].
-                    cast<DGtal::Dimension>();
+                point[i] = tup[i].cast<DGtal::Dimension>();
             }
             return self.operator()(point);
             },
-R"(Via a tuple of integers of the right dimension. Index style [k,j,i] (row-major, c_style.)");
+R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-major, F_style.)");
 
     py_class.def("__setitem__",
             [](TT &self, const py::tuple &tup, const TTValue & value) {
@@ -312,12 +311,11 @@ R"(Via a tuple of integers of the right dimension. Index style [k,j,i] (row-majo
             }
             TTPoint point;
             for(DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
-                point[i] = tup[static_cast<DGtal::Dimension>(TTPoint::dimension - 1 - i)].
-                    cast<DGtal::Dimension>();
+                point[i] = tup[i].cast<DGtal::Dimension>();
             }
             self.setValue(point, value);
             },
-R"(Via a tuple of integers of the right dimension. Index style [k,j,i] (row-major, c_style.)");
+R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-major, F_style.)");
     // ----------------------- Class operators --------------------------------
 
     // ----------------------- Class functions --------------------------------
