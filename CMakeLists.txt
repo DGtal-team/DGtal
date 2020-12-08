@@ -49,11 +49,7 @@ list(TRANSFORM BOARD_SRC PREPEND "src/")
 list(TRANSFORM DGTALIO_SRC PREPEND "src/")
 
 # DGtal Target. Library is added on the top directory to use target_link_libraries for CMake < 3.13
-if (BUILD_SHARED_LIBS)
-  add_library (DGtal SHARED ${DGTAL_SRC} ${DGTALIO_SRC} ${BOARD_SRC} )
-else()
-  add_library (DGtal STATIC ${DGTAL_SRC} ${DGTALIO_SRC} ${BOARD_SRC})
-endif()
+add_library (DGtal ${DGTAL_SRC} ${DGTALIO_SRC} ${BOARD_SRC} )
 target_include_directories(DGtal PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>
