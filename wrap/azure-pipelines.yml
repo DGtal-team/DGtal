@@ -12,6 +12,9 @@ stages:
     steps:
     - task: Bash@3
       inputs:
-        targetType: 'inline'
-        script: 'echo Hi!'
+        filePath: '$(Build.SourcesDirectory)/wrap/deploy/deploy_linux.sh'
         workingDirectory: '$(Build.SourcesDirectory)'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/wrap/deploy/dist/'
+        artifactName: 'LinuxWheels'

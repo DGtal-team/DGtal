@@ -64,7 +64,7 @@ endif()
 
 install(FILES ${wrap_header_common}
   DESTINATION ${CMAKE_INSTALL_PYTHONINCLUDEDIR}
-  COMPONENT development)
+  COMPONENT dev)
 
 install(FILES __init__.py
   DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR}
@@ -81,12 +81,6 @@ add_custom_command(
   ${CMAKE_BUILD_PYTHONLIBDIR}/$<TARGET_FILE_NAME:_dgtal>
   )
 
-# Copy and install fixtures
-file(COPY fixtures DESTINATION ${CMAKE_BUILD_PYTHONLIBDIR})
-install(DIRECTORY fixtures
-  DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR}
-  COMPONENT runtime
-  )
 # Copy and install tables (package_data)
 set(table_folder "${PROJECT_SOURCE_DIR}/src/DGtal/topology/tables")
 file(COPY ${table_folder}
@@ -104,11 +98,19 @@ install(TARGETS _dgtal
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR} COMPONENT runtime
   LIBRARY DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR} COMPONENT runtime
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR} COMPONENT development)
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR} COMPONENT dev)
 # export _dgtal to the build tree
 export(TARGETS _dgtal
   NAMESPACE DGtal::
   APPEND FILE ${dgtal_export_file})
+
+# Add custom target to only install component: runtime (libraries for python)
+add_custom_target(dgtal-install-runtime
+  ${CMAKE_COMMAND}
+  -DCMAKE_INSTALL_COMPONENT=runtime
+  -P "${PROJECT_BINARY_DIR}/cmake_install.cmake"
+  DEPENDS DGtal _dgtal
+  )
 
 option(DGTAL_BUILD_TESTING_PYTHON "Enable python testing" ON)
 if(NOT BUILD_TESTING AND DGTAL_BUILD_TESTING_PYTHON)

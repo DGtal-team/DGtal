@@ -1,0 +1,1 @@
+git+git://github.com/phcerdan/scikit-build@add_cmake_target#egg=scikit-build

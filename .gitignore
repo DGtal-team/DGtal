@@ -37,3 +37,8 @@ src/DGtal/io/writers/\.#MagickWriter\.h
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+# Deploy artifacts
+wrap/deploy/_skbuild/
+wrap/deploy/dist/
+wrap/deploy/dgtal.egg-info/
+
