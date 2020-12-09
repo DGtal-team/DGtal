@@ -135,9 +135,11 @@ namespace DGtal
 
     bool advance ();
 
-    void compute ();
+    Quantity compute ();
 
     HexagonState hexagonState () const;
+
+    void translateQ ();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -165,7 +167,7 @@ namespace DGtal
     Neighborhood* myNeighborhood = nullptr;
 
     struct Operation {
-        Point oldM;
+        Point translation;
         Permutation sigma;
         Integer lambda;
     };

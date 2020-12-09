@@ -197,9 +197,12 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-void DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
 {
     while (advance()) {}
+
+    return getNormal();
 }
 
 // ------------------------------------------------------------------------
@@ -208,6 +211,15 @@ typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Neighborhood
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::hexagonState () const
 {
     return myNeighborhood->hexagonState();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
+{
+    Operation const& lastOp = myOperations[myOperations.size() - 1];
+    myQ -= lastOp.translation;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,7 +252,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (ProbingRay co
 {
     Point oldM = myM[aRay.sigma(0)];
     myM[aRay.sigma(0)] = aRay.getRelPt(myM);
-    myOperations.push_back({ oldM, aRay.sigma(), aRay.index() });
+    myOperations.push_back({ oldM - myM[aRay.sigma(0)], aRay.sigma(), aRay.index() });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
