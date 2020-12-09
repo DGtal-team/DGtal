@@ -1,0 +1,90 @@
+# https://aka.ms/yaml
+
+# Only build dependencies once daily, and only if master has changed.
+trigger: none
+pr: none
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+      - master
+
+stages:
+- stage: 'DeployLinux'
+  dependsOn: []
+  pool:
+    vmImage: 'ubuntu-18.04'
+  variables:
+    DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
+  jobs:
+  - job: build_dependencies_linux
+    displayName: 'BuildDependencies'
+    timeoutInMinutes: 0
+    steps:
+    - script: |
+        mkdir $DEPENDENCIES_BUILD_DIR
+        echo $DEPENDENCIES_BUILD_DIR
+      displayName: "mkdir DEPENDENCIES_BUILD_DIR"
+    - script: sudo apt-get -y install libxt-dev libgl1-mesa-dev
+      displayName: "install libXt and opengl dependencies"
+    - task: Bash@3
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/dependencies/deploy_dependencies_unix.sh'
+        workingDirectory: '$(Build.SourcesDirectory)'
+      displayName: 'Build dependencies'
+    - publish: $(DEPENDENCIES_BUILD_DIR)
+      artifact: DEPENDENCIES_BUILD_DIR_LINUX
+
+- stage: 'DeployMacOS'
+  dependsOn: []
+  pool:
+    vmImage: 'macOS-10.15'
+  variables:
+    DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
+  jobs:
+  - job: build_dependencies_macos
+    displayName: 'BuildDependencies'
+    timeoutInMinutes: 0
+    steps:
+    - script: |
+        mkdir $DEPENDENCIES_BUILD_DIR
+        echo $DEPENDENCIES_BUILD_DIR
+      displayName: "mkdir DEPENDENCIES_BUILD_DIR"
+    - task: Bash@3
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/dependencies/deploy_dependencies_unix.sh'
+        workingDirectory: '$(Build.SourcesDirectory)'
+      displayName: 'Build dependencies'
+    - publish: $(DEPENDENCIES_BUILD_DIR)
+      artifact: DEPENDENCIES_BUILD_DIR_MACOS
+
+- stage: 'DeployWindows'
+  dependsOn: []
+  pool:
+    vmImage: 'windows-2019'
+  variables:
+    DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
+  jobs:
+  - job: build_dependencies_win
+    displayName: 'BuildDependencies'
+    timeoutInMinutes: 0
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          mkdir $DEPENDENCIES_BUILD_DIR
+          echo $DEPENDENCIES_BUILD_DIR
+      displayName: "mkdir DEPENDENCIES_BUILD_DIR"
+    - script: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        cd $(DEPENDENCIES_BUILD_DIR)
+        cmake $(Build.SourcesDirectory)\dependencies -G Ninja -DCMAKE_C_COMPILER:FILEPATH="cl.exe" -DCMAKE_CXX_COMPILER:FILEPATH="cl.exe" -DCMAKE_BUILD_TYPE=Release
+        cmake --build .
+        cmake --build . --target clean_artifacts
+      workingDirectory: $(Agent.BuildDirectory)
+      displayName: 'Build dependencies'
+
+    - publish: $(DEPENDENCIES_BUILD_DIR)
+      artifact: DEPENDENCIES_BUILD_DIR_WIN

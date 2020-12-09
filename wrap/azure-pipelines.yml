@@ -18,3 +18,92 @@ stages:
       inputs:
         targetPath: '$(Build.SourcesDirectory)/wrap/deploy/dist/'
         artifactName: 'LinuxWheels'
+
+- stage: 'DeployMacOS'
+  dependsOn: []
+  pool:
+    vmImage: 'macOS-10.15'
+  variables:
+    DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
+  jobs:
+  - job: build_macos
+    displayName: 'Build project and deploy'
+    timeoutInMinutes: 0
+    strategy:
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        source: 'specific'
+        project: 'DGtal-mine' # rename to DGtal when merged upstream
+        pipeline: 8 # Check dependendencies pipeline id in the browser, to be changed when merged.
+        runVersion: 'latest'
+        artifact: DEPENDENCIES_BUILD_DIR_MACOS
+        path: $(DEPENDENCIES_BUILD_DIR)
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+    - task: Bash@3
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/wrap/deploy/deploy_macos_one_python.sh'
+        workingDirectory: '$(Build.SourcesDirectory)'
+      displayName: 'Build project'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/wrap/deploy/dist/'
+        artifactName: 'MacOSWheel$(python.version)'
+
+- stage: 'DeployWindows'
+  dependsOn: []
+  pool:
+    vmImage: 'windows-2019'
+  variables:
+    DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
+  jobs:
+  - job: build_win
+    displayName: 'Build project and deploy'
+    timeoutInMinutes: 0
+    strategy:
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        source: 'specific'
+        project: 'DGtal-mine' # rename to DGtal when merged upstream
+        pipeline: 8 # Check dependendencies pipeline id in the browser, to be changed when merged.
+        runVersion: 'latest'
+        artifact: DEPENDENCIES_BUILD_DIR_WIN
+        path: $(DEPENDENCIES_BUILD_DIR)
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+    - script: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        python -m pip install cmake
+        python -m pip install ninja
+        python -m pip install -r requirements-deploy.txt
+        python setup.py bdist_wheel --build-type Release -G Ninja -- -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" -DBOOST_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/boost-build -DZLIB_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/zlib
+      workingDirectory: '$(Build.SourcesDirectory)\wrap\deploy'
+      displayName: 'Build project'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: $(Build.SourcesDirectory)/wrap/deploy/dist
+        artifactName: 'WindowsWheel$(python.version)'
