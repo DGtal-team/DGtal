@@ -1,0 +1,230 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/07
+ *
+ * Implementation of inline methods defined in PlaneProbingParallelepipedEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::
+PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
+                                     Predicate const& aPredicate, Integer const& aBound)
+    : myNotAbovePredicate(aPredicate, aBound, this),
+      myTetrahedronEstimator(aPoint, aM, myNotAbovePredicate)
+{
+    myIsInReverseState = state() < 4;
+    assert(isValid());
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane Probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
+{
+    return myTetrahedronEstimator.q();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) const
+{
+    return myTetrahedronEstimator.m(aIndex);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getOrigin () const
+{
+    return myTetrahedronEstimator.q() - myTetrahedronEstimator.m(0) - myTetrahedronEstimator.m(1) - myTetrahedronEstimator.m(2);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () const
+{
+    return myNotAbovePredicate.InPlane(getOrigin()) != myNotAbovePredicate.InPlane(q());
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState () const
+{
+    return myIsInReverseState;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
+{
+    bool res = myTetrahedronEstimator.advance(aNeighbors);
+
+    if (res)
+    {
+        if (myIsInReverseState)
+        {
+            myTetrahedronEstimator.translateQ();
+        }
+
+        if (isSeparating())
+        {
+            reverseIf();
+            return res;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
+{
+    return advance({});
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
+{
+    while (advance()) {}
+    return getNormal();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::reverseIf ()
+{
+    int n = state();
+
+    if ((n < 4 && !myIsInReverseState ) || (n >= 4 && myIsInReverseState))
+    {
+        myIsInReverseState = !myIsInReverseState;
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
+{
+    return myTetrahedronEstimator.getNormal();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+int
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::state () const
+{
+    Point p = getOrigin();
+    int inside = 0;
+    std::vector<Point> parallelepiped = { p, q(),
+                                          p + m(0), p + m(1), p + m(2),
+                                          q() - m(0), q() - m(1), q() - m(2) };
+
+    for (int i = 0; i < 8; ++i)
+    {
+        if (myNotAbovePredicate.InPlane(parallelepiped[i]))
+        {
+            ++inside;
+        }
+    }
+
+    return inside;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+void
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingParallelepipedEstimator]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isValid() const
+{
+    return myTetrahedronEstimator.isValid();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingParallelepipedEstimator<TPredicate, mode> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
