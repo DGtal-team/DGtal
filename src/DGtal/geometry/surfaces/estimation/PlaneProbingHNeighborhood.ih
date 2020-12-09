@@ -56,18 +56,24 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-void DGtal::PlaneProbingHNeighborhood<TPredicate>::compute ()
+typename DGtal::PlaneProbingHNeighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
 {
-    for (const auto& n: this->getNeighbors()) {
-        ProbingRay r = n.getBase();
-        Point p = r.getAbsPt(this->myM, this->myQ);
+    this->myCandidates.clear();
 
-        if (this->myPredicate(p)) {
-            this->myPoints.push_back(r);
+    std::array<bool, 6> state;
+    for (int i = 0; i < 6; ++i) {
+        ProbingRay r = this->myNeighborhood[i].getBase();
+        state[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+
+        if (state[i] && this->isNeighbor(r))
+        {
+            this->myCandidates.push_back(r);
         }
     }
-}
 
+    return this->classify(state);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

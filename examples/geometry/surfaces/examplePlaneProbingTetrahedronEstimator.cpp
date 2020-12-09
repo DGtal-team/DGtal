@@ -58,6 +58,17 @@ int main(void)
   while (estimator.advance()) {
       it++;
 
+      auto state = estimator.hexagonState();
+      if (state == Estimator::Neighborhood::HexagonState::Planar) {
+          std::cout << "Planar" << std::endl;
+      } else if (state == Estimator::Neighborhood::HexagonState::Empty) {
+          std::cout << "Empty" << std::endl;
+      } else if (state == Estimator::Neighborhood::HexagonState::NonPlanar) {
+          std::cout << "NonPlanar" << std::endl;
+      } else if (state == Estimator::Neighborhood::HexagonState::NonConvex) {
+          std::cout << "NonConvex" << std::endl;
+      }
+
       std::clog << "it = " << it << " "
           << estimator.m(0) << " " << estimator.m(1) << " " << estimator.m(2) << " "
           << estimator.getNormal() << std::endl;

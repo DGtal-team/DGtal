@@ -56,62 +56,65 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
+typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
 {
+    this->myCandidates.clear();
+
     int code = getNeighborhoodCode();
 
     switch (code) {
         // One vertex of the H-neighborhood is in P
         case 1:
-            this->myPoints.push_back(ProbingRay({ 0, 1, 2 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 0, 1, 2 }, 0));
             break;
 
         case 2:
-            this->myPoints.push_back(ProbingRay({ 0, 2, 1 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 0, 2, 1 }, 0));
             break;
 
         case 4:
-            this->myPoints.push_back(ProbingRay({ 1, 2, 0 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 1, 2, 0 }, 0));
             break;
 
         case 8:
-            this->myPoints.push_back(ProbingRay({ 1, 0, 2 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 1, 0, 2 }, 0));
             break;
 
         case 16:
-            this->myPoints.push_back(ProbingRay({ 2, 0, 1 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 2, 0, 1 }, 0));
             break;
 
         case 32:
-            this->myPoints.push_back(ProbingRay({ 2, 1, 0 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 2, 1, 0 }, 0));
             break;
 
             // Two vertices of the H-neighborhood are in P
         case 6:
-            this->myPoints.push_back(ProbingRay({ 0, 2, 1 }, 0));
-            this->myPoints.push_back(ProbingRay({ 1, 2, 0 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 0, 2, 1 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 1, 2, 0 }, 0));
             break;
 
         case 24:
-            this->myPoints.push_back(ProbingRay({ 1, 0, 2 }, 0));
-            this->myPoints.push_back(ProbingRay({ 2, 0, 1 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 1, 0, 2 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 2, 0, 1 }, 0));
             break;
 
         case 33:
-            this->myPoints.push_back(ProbingRay({ 2, 1, 0 }, 0));
-            this->myPoints.push_back(ProbingRay({ 0, 1, 2 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 2, 1, 0 }, 0));
+            this->myCandidates.push_back(ProbingRay({ 0, 1, 2 }, 0));
             break;
 
         case 3:
-            this->myPoints.push_back(closestRayPoint(candidateRay(0)));
+            this->myCandidates.push_back(closestRayPoint(candidateRay(0)));
             break;
 
         case 12:
-            this->myPoints.push_back(closestRayPoint(candidateRay(1)));
+            this->myCandidates.push_back(closestRayPoint(candidateRay(1)));
             break;
 
         case 48:
-            this->myPoints.push_back(closestRayPoint(candidateRay(2)));
+            this->myCandidates.push_back(closestRayPoint(candidateRay(2)));
             break;
 
             // Three vertices of the H-neighborhood are in P
@@ -119,7 +122,7 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(0);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 2, 1, 0 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
@@ -127,7 +130,7 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(0);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 1, 2, 0 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
@@ -135,7 +138,7 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(1);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 0, 2, 1 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
@@ -143,7 +146,7 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(1);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 2, 0, 1 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
@@ -151,7 +154,7 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(2);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 1, 0, 2 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
@@ -159,13 +162,15 @@ void DGtal::PlaneProbingR1Neighborhood<TPredicate>::compute ()
             {
                 std::pair<ProbingRay, ProbingRay> candidate = candidateRay(2);
                 ProbingRay closest = this->closestPointInList({ candidate.second, ProbingRay({ 0, 1, 2 }, 0) });
-                this->myPoints.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
+                this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
 
         default:
             break;
     }
+
+    return this->classify(myState);
 }
 
 // ------------------------------------------------------------------------
@@ -176,14 +181,10 @@ int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
 
     for (int i = 0; i < 6; ++i) {
         ProbingRay const& r = this->myNeighborhood[i];
+        myState[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
 
         // We skip the ray if it is not part of the rays that should be considered at this step
-        if (this->myNeighbors.size() > 0 && std::find(this->myNeighbors.begin(), this->myNeighbors.end(), r) == this->myNeighbors.end())
-        {
-            continue;
-        }
-
-        if (this->myPredicate(r.getAbsPt(this->myM, this->myQ)))
+        if (myState[i] && this->isNeighbor(r))
         {
             code += (1 << i);
         }

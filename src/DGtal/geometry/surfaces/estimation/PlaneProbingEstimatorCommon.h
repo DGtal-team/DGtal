@@ -158,6 +158,7 @@ namespace DGtal
 
                 /**
                  * Constructs a ray with a permutation and an index.
+                 *
                  * @param aSigma a permutation.
                  * @param aIndex an index.
                  */

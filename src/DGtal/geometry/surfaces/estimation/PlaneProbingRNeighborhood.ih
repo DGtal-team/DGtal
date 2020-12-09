@@ -56,20 +56,29 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-void DGtal::PlaneProbingRNeighborhood<TPredicate>::compute ()
+typename DGtal::PlaneProbingRNeighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 {
-    for (const auto& r: this->getNeighbors()) {
-        Point p = r.getAbsPt(this->myM, this->myQ);
+    this->myCandidates.clear();
 
-        if (this->myPredicate(p)) {
+    std::array<bool, 6> state;
+    for (int i = 0; i < 6; ++i)
+    {
+        ProbingRay r = this->myNeighborhood[i].getBase();
+        state[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+
+        if (state[i] && this->isNeighbor(r))
+        {
             ProbingRay pt = closestPointOnRayLogWithPredicate(r.getBase());
 
             assert(pt == closestPointOnRayLinearWithPredicate(r.getBase()));
             assert(this->myPredicate(pt.getAbsPt(this->myM, this->myQ)));
 
-            this->myPoints.push_back(pt);
+            this->myCandidates.push_back(pt);
         }
     }
+
+    return this->classify(state);
 }
 
 // ------------------------------------------------------------------------

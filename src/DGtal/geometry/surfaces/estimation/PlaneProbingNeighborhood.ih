@@ -88,15 +88,65 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<Pro
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const& aState) const
+{
+    int inside = 0;
+    for (int i = 0; i < 6; ++i)
+    {
+        if (aState[i])
+        {
+            inside++;
+        }
+    }
+
+    if (inside == 0)
+    {
+        // All the points are not in the plane => algorithm stops
+        return HexagonState::Empty;
+    }
+    else if (inside == 1)
+    {
+        // Only one point in the plane => algorithm continues
+        return HexagonState::Planar;
+    }
+    else if (inside == 2 || inside == 3)
+    {
+        // two points aligned with q in the plane => algorithm stops
+        for (int i = 0; i < 3; ++i)
+        {
+            if (aState[i] && aState[(i + 3) % 6])
+            {
+                return HexagonState::NonConvex;
+            }
+        }
+
+        // three consecutive points where the two extremities are in the plane but not the middle one => algorithm stops
+        // otherwise => algorithm continues
+        for (int i = 0; i < 6; ++i)
+        {
+            if (aState[i] && !aState[(i + 1) % 6] && aState[(i + 2) % 6])
+            {
+                return HexagonState::NonPlanar;
+            }
+        }
+
+        return HexagonState::Planar;
+    }
+
+    // Strictly more than 3 points in the plane => algorithm stops
+    return HexagonState::NonConvex;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
 bool DGtal::PlaneProbingNeighborhood<TPredicate>::
 closestCandidate (std::vector<DGtal::detail::ProbingRay> const& neighbors, DGtal::detail::ProbingRay& closest)
 {
     myNeighbors = neighbors;
 
-    myPoints.clear();
-    compute();
-
-    std::vector<DGtal::detail::ProbingRay> innerPoints(myPoints.begin(), myPoints.end());
+    // myCandidates is filled by calling hexagonState
+    std::vector<DGtal::detail::ProbingRay> innerPoints(myCandidates.begin(), myCandidates.end());
 
     if (innerPoints.size() == 0) {
         return false;
@@ -109,15 +159,15 @@ closestCandidate (std::vector<DGtal::detail::ProbingRay> const& neighbors, DGtal
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-std::vector<typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay>
-DGtal::PlaneProbingNeighborhood<TPredicate>::getNeighbors () const
+bool
+DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (ProbingRay const& r) const
 {
-    if (myNeighbors.size() > 0)
+    if (myNeighbors.empty())
     {
-        return myNeighbors;
+        return true;
     }
 
-    return std::vector<ProbingRay>(myNeighborhood, myNeighborhood + 6);
+    return std::find( myNeighbors.begin(), myNeighbors.end(), r) != myNeighbors.end();
 }
 
 // ------------------------------------------------------------------------

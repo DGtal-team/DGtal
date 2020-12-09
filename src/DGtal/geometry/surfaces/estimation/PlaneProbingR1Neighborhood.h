@@ -62,11 +62,12 @@ namespace DGtal
   {
     // ----------------------- Public types ------------------------------
   public:
-      using Predicate  = TPredicate;
-      using Point      = typename TPredicate::Point;
-      using Triangle   = typename PlaneProbingRNeighborhood<TPredicate>::Triangle;
-      using ProbingRay = typename PlaneProbingRNeighborhood<TPredicate>::ProbingRay;
-      using Integer    = typename Point::Coordinate;
+      using Predicate    = TPredicate;
+      using Point        = typename TPredicate::Point;
+      using Triangle     = typename PlaneProbingRNeighborhood<TPredicate>::Triangle;
+      using ProbingRay   = typename PlaneProbingRNeighborhood<TPredicate>::ProbingRay;
+      using Integer      = typename Point::Coordinate;
+      using HexagonState = typename PlaneProbingRNeighborhood<TPredicate>::HexagonState;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -110,7 +111,7 @@ namespace DGtal
 
     // ----------------------- Plane Probing services ------------------------------
   public:
-    void compute ();
+    HexagonState hexagonState ();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -132,6 +133,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
+    mutable std::array<bool, 6> myState;
 
     // ------------------------- Hidden services ------------------------------
   protected:

@@ -72,6 +72,8 @@ namespace DGtal
       using Integer      = typename Point::Coordinate;
       using ProbingRay   = typename Neighborhood::ProbingRay;
       using Permutation  = typename ProbingRay::Permutation;
+      using Quantity     = Point;
+      using HexagonState = typename Neighborhood::HexagonState;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -134,6 +136,8 @@ namespace DGtal
     bool advance ();
 
     void compute ();
+
+    HexagonState hexagonState () const;
 
     // ----------------------- Interface --------------------------------------
   public:

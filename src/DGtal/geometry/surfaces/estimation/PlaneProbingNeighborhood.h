@@ -69,6 +69,14 @@ namespace DGtal
       using Triangle   = std::array<Point, 3>;
       using ProbingRay = detail::ProbingRay;
 
+      enum class HexagonState
+      {
+          Empty,
+          Planar,
+          NonPlanar,
+          NonConvex,
+      };
+
     // ----------------------- Standard services ------------------------------
   public:
     /**
@@ -113,6 +121,10 @@ namespace DGtal
   public:
     bool closestCandidate (std::vector<ProbingRay> const& neighbors, ProbingRay& closest);
 
+    virtual HexagonState hexagonState () = 0;
+
+    HexagonState classify (std::array<bool, 6> const& aState) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -133,7 +145,7 @@ namespace DGtal
     Predicate const& myPredicate;
     Point const& myQ;
     Triangle const& myM;
-    std::vector<ProbingRay> myPoints;
+    std::vector<ProbingRay> myCandidates;
 
     static const ProbingRay myNeighborhood[6];
     std::vector<ProbingRay> myNeighbors;
@@ -143,11 +155,9 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-    virtual void compute () = 0;
-
     ProbingRay closestPointInList (std::vector<ProbingRay> const& aPoints) const;
 
-    std::vector<ProbingRay> getNeighbors () const;
+    bool isNeighbor (ProbingRay const& r) const;
 
     /**
      * Computes the relative position of a point with respect to a sphere passing through 4 points.
