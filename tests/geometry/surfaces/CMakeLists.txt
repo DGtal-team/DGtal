@@ -1,6 +1,7 @@
 set(TESTS_SRC
   testChordGenericStandardPlaneComputer
   testDigitalPlanePredicate
+  testPlaneProbingTetrahedronEstimator
   )
 
 foreach(FILE ${TESTS_SRC})
