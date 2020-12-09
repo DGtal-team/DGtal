@@ -215,6 +215,8 @@ template < typename TPredicate >
 std::vector<typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const
 {
+    using NumberTraits = DGtal::NumberTraits<Integer>;
+
     ProbingRay startingPoint = aRay.getBase();
     assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
 
@@ -224,9 +226,9 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
 
     Integer a = detail::squaredNorm(x),
             b = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                          -aPoint.getRelPt(this->myM), origin + x }) - a + 2*x.dot(y),
+                                            -aPoint.getRelPt(this->myM), origin + x }) - a + 2*x.dot(y),
             c = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                          -aPoint.getRelPt(this->myM), origin + y });
+                                            -aPoint.getRelPt(this->myM), origin + y });
     Integer delta = b*b - 4*a*c;
 
     std::vector<ProbingRay> res;
@@ -235,9 +237,9 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
         return res;
     }
 
-    Integer i1 = std::ceil( (-b - std::sqrt(delta)) / (2*a) ),
-            i2 = std::floor( (-b + std::sqrt(delta)) / (2*a) );
-    Integer zero = DGtal::NumberTraits<Integer>::ZERO;
+    Integer i1 = std::ceil(double(-b - sqrt(delta)) / (2*a) ),
+            i2 = std::floor(double(-b + sqrt(delta)) / (2*a) );
+    Integer zero = NumberTraits::ZERO;
     if (i1 <= i2 && i2 >= zero) {
         i1 = std::max(zero, i1);
 
@@ -245,14 +247,14 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
 
         // Case of cospherical points
         if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                      -aPoint.getRelPt(this->myM) , -p1.getRelPt(this->myM) }) == 0) {
+                                        -aPoint.getRelPt(this->myM) , -p1.getRelPt(this->myM) }) == 0) {
             if (p1.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
                 i1++;
             }
         }
 
         if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                      -aPoint.getRelPt(this->myM) , -p2.getRelPt(this->myM) }) == 0) {
+                                        -aPoint.getRelPt(this->myM) , -p2.getRelPt(this->myM) }) == 0) {
             if (p2.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
                 i2--;
             }
@@ -315,6 +317,8 @@ template < typename TPredicate >
 typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (ProbingRay const& aRay) const
 {
+    using NumberTraits = DGtal::NumberTraits<Integer>;
+
     ProbingRay startingPoint = aRay.getBase();
     assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
 
@@ -328,8 +332,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (Probin
     Integer delta = b*b - 4*a*c;
 
     if (delta >= 0) {
-        int index = std::ceil( (-b + std::sqrt(delta)) / (2*a) );
-        index = std::max(0, index);
+        Integer index = std::ceil(double(-b + sqrt(delta)) / (2*a));
+        index = std::max(NumberTraits::ZERO, index);
 
         // Case of cospherical points
         ProbingRay p1(aRay.sigma(), index), p2(aRay.sigma(), index+1);

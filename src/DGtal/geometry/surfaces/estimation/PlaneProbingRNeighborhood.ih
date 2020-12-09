@@ -92,20 +92,20 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
     ProbingRay Xk = aRay, Xl = aRay.next(1);
     while (this->myPredicate(Xk.getAbsPt(this->myM, this->myQ)) &&
            this->isSmallest(-Xk.getRelPt(this->myM), -Xl.getRelPt(this->myM))) {
-        int d = Xl.index() - Xk.index();
+        Integer d = Xl.index() - Xk.index();
         Xk = Xl;
         Xl = Xl.next(2 * d);
     }
-    Xk = Xk.previous(int((Xl.index() - Xk.index()) / 2));
+    Xk = Xk.previous(Integer((Xl.index() - Xk.index()) / 2));
 
     // Binary search
-    int d = Xl.index() - Xk.index();
+    Integer d = Xl.index() - Xk.index();
     while (d > 4) {
         assert(this->myPredicate(Xk.getAbsPt(this->myM, this->myQ)));
 
-        ProbingRay Xalpha = Xk.next(int(d / 4)),
-                   Xbeta  = Xk.next(int(d / 2)),
-                   Xgamma = Xk.next(int(3*d/4));
+        ProbingRay Xalpha = Xk.next(Integer(d / 4)),
+                   Xbeta  = Xk.next(Integer(d / 2)),
+                   Xgamma = Xk.next(Integer(3*d/4));
 
         assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() && Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
 

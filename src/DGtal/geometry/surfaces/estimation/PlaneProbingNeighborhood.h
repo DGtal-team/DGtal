@@ -67,7 +67,7 @@ namespace DGtal
       using Point      = typename Predicate::Point;
       using Integer    = typename Point::Coordinate;
       using Triangle   = std::array<Point, 3>;
-      using ProbingRay = detail::ProbingRay;
+      using ProbingRay = detail::ProbingRay<Integer>;
 
       enum class HexagonState
       {

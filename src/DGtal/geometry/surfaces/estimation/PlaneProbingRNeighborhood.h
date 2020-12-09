@@ -65,6 +65,7 @@ namespace DGtal
       using Predicate    = TPredicate;
       using Point        = typename TPredicate::Point;
       using Triangle     = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
+      using Integer      = typename PlaneProbingNeighborhood<TPredicate>::Integer;
       using ProbingRay   = typename PlaneProbingNeighborhood<TPredicate>::ProbingRay;
       using HexagonState = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
 

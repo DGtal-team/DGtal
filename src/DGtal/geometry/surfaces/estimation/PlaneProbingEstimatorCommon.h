@@ -145,6 +145,7 @@ namespace DGtal
         /**
          * A ray consists of a permutation 'sigma' and an index (position on the ray).
          */
+        template < typename Integer = int >
         class ProbingRay
         {
             public:
@@ -162,7 +163,7 @@ namespace DGtal
                  * @param aSigma a permutation.
                  * @param aIndex an index.
                  */
-                ProbingRay (Permutation const& aSigma, int aIndex = 0)
+                ProbingRay (Permutation const& aSigma, Integer aIndex = 0)
                     : mySigma(aSigma), myIndex(aIndex)
                 {}
 
@@ -177,7 +178,7 @@ namespace DGtal
                 /**
                  * Returns the permutation that defines the ray.
                  */
-                Permutation sigma () const
+                Permutation const& sigma () const
                 {
                     return mySigma;
                 }
@@ -194,7 +195,7 @@ namespace DGtal
                 /**
                  * Returns index of the current point on the ray.
                  */
-                int index () const
+                Integer const& index () const
                 {
                     return myIndex;
                 }
@@ -226,19 +227,19 @@ namespace DGtal
                     return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
                 }
 
-                ProbingRay next (int aInc) const
+                ProbingRay next (Integer aInc) const
                 {
                     return ProbingRay(mySigma, myIndex + aInc);
                 }
 
-                ProbingRay previous (int aDec) const
+                ProbingRay previous (Integer aDec) const
                 {
                     return ProbingRay(mySigma, myIndex - aDec);
                 }
 
             private:
                 Permutation mySigma;
-                int myIndex;
+                Integer myIndex;
         };
 
         /**
@@ -247,7 +248,8 @@ namespace DGtal
          * @param aOs an ouput stream.
          * @param aRay the probing ray to display.
          */
-        std::ostream& operator<< (std::ostream& aOs, ProbingRay const& aRay)
+        template < typename Integer >
+        std::ostream& operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay)
         {
             aOs << "sigma=(" <<
                 aRay.sigma(0) << ", " <<

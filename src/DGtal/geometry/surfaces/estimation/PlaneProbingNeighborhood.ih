@@ -37,11 +37,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 template < typename TPredicate >
-const DGtal::detail::ProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
+const typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
 {
-    DGtal::detail::ProbingRay({0, 1, 2}), DGtal::detail::ProbingRay({0, 2, 1}),
-    DGtal::detail::ProbingRay({1, 2, 0}), DGtal::detail::ProbingRay({1, 0, 2}),
-    DGtal::detail::ProbingRay({2, 0, 1}), DGtal::detail::ProbingRay({2, 1, 0}),
+    ProbingRay({0, 1, 2}), ProbingRay({0, 2, 1}),
+    ProbingRay({1, 2, 0}), ProbingRay({1, 0, 2}),
+    ProbingRay({2, 0, 1}), ProbingRay({2, 1, 0}),
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-DGtal::detail::ProbingRay
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<ProbingRay> const& aPoints) const
 {
     int N = aPoints.size();
@@ -141,12 +141,12 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 bool DGtal::PlaneProbingNeighborhood<TPredicate>::
-closestCandidate (std::vector<DGtal::detail::ProbingRay> const& neighbors, DGtal::detail::ProbingRay& closest)
+closestCandidate (std::vector<ProbingRay> const& neighbors, ProbingRay& closest)
 {
     myNeighbors = neighbors;
 
     // myCandidates is filled by calling hexagonState
-    std::vector<DGtal::detail::ProbingRay> innerPoints(myCandidates.begin(), myCandidates.end());
+    std::vector<ProbingRay> innerPoints(myCandidates.begin(), myCandidates.end());
 
     if (innerPoints.size() == 0) {
         return false;
