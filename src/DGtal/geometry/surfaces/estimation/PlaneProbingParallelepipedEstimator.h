@@ -72,6 +72,7 @@ namespace DGtal
       {
           public:
               using Point = Self::Point;
+              using Integer = Self::Integer;
 
           public:
               NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
@@ -91,7 +92,7 @@ namespace DGtal
               {
                   Point u = aPoint - q(), s = q();
 
-                  assert(! myPredicate(s));
+                  ASSERT(! myPredicate(s));
 
                   Integer l = DGtal::NumberTraits<Integer>::ONE;
 

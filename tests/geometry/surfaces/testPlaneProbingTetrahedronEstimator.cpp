@@ -74,84 +74,105 @@ generateNormals(Integer const& N)
     return normals;
 }
 
-template < typename Integer, typename F >
-void testPlaneProbingTetrahedronEstimator (std::vector<typename SpaceND<3, Integer>::Vector> const& normals,
-                                          F const& f)
+template < typename Integer, ProbingMode mode, typename F >
+void testPlaneProbingTetrahedronEstimator (typename SpaceND<3, Integer>::Vector const& n, F const& f)
 {
     using Space = SpaceND<3, Integer>;
     using DigitalPlane = DigitalPlanePredicate<Space>;
     using Point = typename DigitalPlane::Vector;
-
-    using EstimatorH = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::H>;
-    using EstimatorR = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R>;
-    using EstimatorR1 = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;
+    using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, mode>;
 
     Point o(0, 0, 0);
     std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
 
-    for (const auto& n: normals)
-    {
-        DigitalPlane plane(n, 0, n.norm1());
+    DigitalPlane plane(n, 0, n.norm1());
+    Estimator estimator(o, frame, plane);
 
-        EstimatorH estimatorH(o, frame, plane);
-        EstimatorR estimatorR(o, frame, plane);
-        EstimatorR1 estimatorR1(o, frame, plane);
-
-        f(n, estimatorH, estimatorR, estimatorR1);
-    }
+    f(estimator);
 }
 
 TEST_CASE( "Testing PlaneProbingTetrahedronEstimator" )
 {
-    const int maxComponent = 100;
+    const int maxComponent = 50;
     const auto normals = generateNormals(maxComponent);
     const int nbNormals = normals.size();
 
     SECTION("H-algorithm should return correct normal")
     {
-
         int nbOk = 0;
-        testPlaneProbingTetrahedronEstimator<int>(normals,
-                                                  [&] (const auto& n,
-                                                       auto& estimatorH,
-                                                       auto& /* estimatorR */,
-                                                       auto& /* estimatorR1 */) {
-                                                      estimatorH.compute();
+        for (const auto& n: normals) {
+            testPlaneProbingTetrahedronEstimator<int, ProbingMode::H>
+                (n,
+                 [&] (auto& estimator) {
+                    estimator.compute();
+                    auto estimated = estimator.getNormal();
 
-                                                      auto estimated = estimatorH.getNormal();
-
-                                                      if (estimated == n)
-                                                      {
-                                                          nbOk++;
-                                                      }
-                                                  });
+                    if (estimated == n)
+                    {
+                        nbOk++;
+                    }
+                 });
+        }
 
         REQUIRE(nbNormals == nbOk);
     }
 
     SECTION("R and R1 algorithm should return correct and the same normal and the basis should be reduced")
     {
+        using Point = PointVector<3, int>;
+
         int nbOk = 0;
-        testPlaneProbingTetrahedronEstimator<int>(normals,
-                                                  [&] (const auto& n,
-                                                       auto& /* estimatorH */,
-                                                       auto& estimatorR,
-                                                       auto& estimatorR1) {
-                                                      estimatorR.compute();
-                                                      estimatorR1.compute();
+        Point estimatedR, estimatedR1;
+        bool isReducedR = false, isReducedR1 = false;
 
-                                                      auto estimatedR = estimatorR.getNormal();
-                                                      auto estimatedR1 = estimatorR1.getNormal();
+        for (const auto& n: normals) {
+            testPlaneProbingTetrahedronEstimator<int, ProbingMode::R>
+                (n,
+                 [&] (auto& estimator) {
+                    estimator.compute();
+                    estimatedR = estimator.getNormal();
+                    isReducedR = estimator.isReduced();
+                 });
 
-                                                      if (estimatedR == n && estimatedR1 == estimatedR &&
-                                                          estimatorR.isReduced() && estimatorR1.isReduced())
-                                                      {
-                                                          nbOk++;
-                                                      }
-                                                  });
+            testPlaneProbingTetrahedronEstimator<int, ProbingMode::R1>
+                (n,
+                 [&] (auto& estimator) {
+                    estimator.compute();
+                    estimatedR1 = estimator.getNormal();
+                    isReducedR1 = estimator.isReduced();
+                 });
+
+            if (estimatedR == n && estimatedR1 == estimatedR &&
+                isReducedR && isReducedR1)
+            {
+                nbOk++;
+            }
+        }
 
         REQUIRE(nbNormals == nbOk);
     }
+
+#ifdef WITH_GMP
+    SECTION("H-algorithm should return correct normal with BigInteger")
+    {
+        int nbOk = 0;
+        for (const auto& n: normals) {
+            testPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>
+                (n,
+                 [&] (auto& estimator) {
+                    estimator.compute();
+                    auto estimated = estimator.getNormal();
+
+                    if (estimated == n)
+                    {
+                        nbOk++;
+                    }
+                 });
+        }
+
+        REQUIRE(nbNormals == nbOk);
+    }
+#endif
 }
 
 /** @ingroup Tests **/

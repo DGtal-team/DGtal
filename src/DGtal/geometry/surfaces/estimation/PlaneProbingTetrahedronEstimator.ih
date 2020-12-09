@@ -42,6 +42,60 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+namespace DGtal
+{
+    namespace detail
+    {
+        // Helper class to choose the PlaneProbingNeighborhood class at compile-time
+        // (used in the constructor of PlaneProbingTetrahedronEstimator)
+        template < typename TPredicate, DGtal::ProbingMode mode >
+        struct PlaneProbingNeighborhoodSelector
+        {
+            static DGtal::PlaneProbingNeighborhood<TPredicate>*
+                select(TPredicate const&,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point const&,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle const&);
+        };
+
+        template < typename TPredicate >
+        struct PlaneProbingNeighborhoodSelector<TPredicate, DGtal::ProbingMode::H>
+        {
+            static DGtal::PlaneProbingNeighborhood<TPredicate>*
+                select(TPredicate const& aPredicate,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point const& aQ,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle const& aM)
+                {
+                    return new DGtal::PlaneProbingHNeighborhood<TPredicate>(aPredicate, aQ, aM);
+                }
+        };
+
+        template < typename TPredicate >
+        struct PlaneProbingNeighborhoodSelector<TPredicate, DGtal::ProbingMode::R>
+        {
+            static DGtal::PlaneProbingNeighborhood<TPredicate>*
+                select(TPredicate const& aPredicate,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point const& aQ,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle const& aM)
+                {
+                    return new DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM);
+                }
+        };
+
+        template < typename TPredicate >
+        struct PlaneProbingNeighborhoodSelector<TPredicate, DGtal::ProbingMode::R1>
+        {
+            static DGtal::PlaneProbingNeighborhood<TPredicate>*
+                select(TPredicate const& aPredicate,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point const& aQ,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle const& aM)
+                {
+                    return new DGtal::PlaneProbingR1Neighborhood<TPredicate>(aPredicate, aQ, aM);
+                }
+        };
+
+    } // namespace detail
+} // namespace DGtal
+
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -51,13 +105,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate)
     : myM(aM), myPredicate(aPredicate), myS(aM[0] + aM[1] + aM[2]), myQ(aPoint + myS)
 {
-    if (mode == DGtal::ProbingMode::H) {
-        myNeighborhood = new PlaneProbingHNeighborhood<TPredicate>(myPredicate, myQ, myM);
-    } else if (mode == DGtal::ProbingMode::R) {
-        myNeighborhood = new PlaneProbingRNeighborhood<TPredicate>(myPredicate, myQ, myM);
-    } else if (mode == DGtal::ProbingMode::R1) {
-        myNeighborhood = new PlaneProbingR1Neighborhood<TPredicate>(myPredicate, myQ, myM);
-    }
+    myNeighborhood = DGtal::detail::PlaneProbingNeighborhoodSelector<TPredicate, mode>::select(myPredicate, myQ, myM);
 
     assert(isValid());
 }
@@ -299,7 +347,6 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isValid() const
 
     return true;
 }
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
