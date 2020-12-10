@@ -154,7 +154,7 @@ namespace DGtal
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    virtual bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -176,11 +176,10 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
+    bool isProjectedInside (Triangle const& aTriangle) const;
 
     // ------------------------- Internals ------------------------------------
   private:
-    bool isProjectedInside (Triangle const& aTriangle) const;
-
     void update (ProbingRay const& aRay);
 
   }; // end of class PlaneProbingTetrahedronEstimator
@@ -195,6 +194,28 @@ namespace DGtal
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, const PlaneProbingTetrahedronEstimator<T> & object );
+
+  /*
+   * Helper class that overrides the isValid check to be compatible with the parallelepiped-based estimators
+   * where the 3 vertices \f$ v_i  \f$ are not necessarily in the plane.
+   */
+  template <typename TPredicate, ProbingMode mode = ProbingMode::H>
+  class PlaneProbingTetrahedronEstimatorParallelepiped : public PlaneProbingTetrahedronEstimator<TPredicate, mode>
+  {
+    // ----------------------- Public types ------------------------------
+    public:
+      using Predicate = TPredicate;
+      using Point     = typename PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point;
+      using Triangle  = typename PlaneProbingTetrahedronEstimator<TPredicate, mode>::Triangle;
+
+    // ----------------------- Standard services ------------------------------
+    public:
+      PlaneProbingTetrahedronEstimatorParallelepiped (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate);
+
+    // ----------------------- Interface --------------------------------------
+    public:
+      bool isValid() const override;
+  };
 
 } // namespace DGtal
 

@@ -119,7 +119,7 @@ namespace DGtal
 
     // ----------------------- Plane Probing services ------------------------------
   public:
-    bool closestCandidate (std::vector<ProbingRay> const& neighbors, ProbingRay& closest);
+    ProbingRay closestCandidate (std::vector<ProbingRay> const& neighbors);
 
     virtual HexagonState hexagonState () = 0;
 

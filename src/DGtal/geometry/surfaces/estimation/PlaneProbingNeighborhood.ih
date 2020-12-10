@@ -140,21 +140,20 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-bool DGtal::PlaneProbingNeighborhood<TPredicate>::
-closestCandidate (std::vector<ProbingRay> const& neighbors, ProbingRay& closest)
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+closestCandidate (std::vector<ProbingRay> const& neighbors)
 {
     myNeighbors = neighbors;
 
     // myCandidates is filled by calling hexagonState
     std::vector<ProbingRay> innerPoints(myCandidates.begin(), myCandidates.end());
 
-    if (innerPoints.size() == 0) {
-        return false;
-    }
+    // One should call hexagonState before closestCandidate to ensure that the
+    // there is at least one point int the plane in the H-neighbhorhood
+    ASSERT(! innerPoints.empty());
 
-    closest = closestPointInList(innerPoints);
-
-    return true;
+    return closestPointInList(innerPoints);
 }
 
 // ------------------------------------------------------------------------

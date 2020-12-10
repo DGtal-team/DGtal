@@ -87,6 +87,7 @@ void testPlaneProbingTetrahedronEstimator (typename SpaceND<3, Integer>::Vector 
 
     DigitalPlane plane(n, 0, n.norm1());
     Estimator estimator(o, frame, plane);
+    ASSERT(estimator.isValid());
 
     f(estimator);
 }

@@ -126,8 +126,7 @@ namespace DGtal
               }
       };
 
-      // TODO: use slightly different version of tetrahedron estimator with different checks in isValid  (vertices inside)
-      using TetrahedronEstimator = PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode>;
+      using TetrahedronEstimator = PlaneProbingTetrahedronEstimatorParallelepiped<NotAbovePredicate, mode>;
       using Triangle             = typename TetrahedronEstimator::Triangle;
       using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
       using Quantity             = typename TetrahedronEstimator::Quantity;
