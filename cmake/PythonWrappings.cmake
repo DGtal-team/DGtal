@@ -12,5 +12,12 @@ if(DGTAL_WRAP_PYTHON)
     add_subdirectory(${pybind11_SOURCE_DIR} ${pybind11_BINARY_DIR})
   endif()
 
+  option(DGTAL_BUILD_TESTING_PYTHON "Enable python testing" ON)
+  if(NOT BUILD_TESTING AND DGTAL_BUILD_TESTING_PYTHON)
+    enable_testing()
+    include(CTest)
+    message(STATUS "Tests for Python-only ENABLED")
+  endif()
+
   add_subdirectory(wrap)
 endif()
