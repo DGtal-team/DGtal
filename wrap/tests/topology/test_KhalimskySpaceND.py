@@ -131,11 +131,12 @@ def test_KSpace(Type):
     assert space.uGetDecr(cell=cell, dim=0)
     assert not space.uIsMin(cell=cell, dim=0)
     assert space.uGetAdd(cell=cell, dim=0, x=2)
-    assert space.uGetSub(cell=cell, dim=0, x=2)
+    assert space.uGetSub(cell=cell, dim=0, x=1)
 
     assert space.uTranslation(cell=cell, vec=a_point)
     assert space.uProjection(cell=cell, bound=cell, dim=1)
-    space.uProject(cell=modified_cell, bound=cell, dim=1)
+    assert space.uIsOpen(cell=cell, dim=1) == space.uIsOpen(cell=cell, dim=1)
+    space.uProject(cell=cell, bound=cell, dim=1)
     assert not space.uNext(cell=cell, lower=cell, upper=cell)
 
     # Signed geometry services
@@ -148,11 +149,12 @@ def test_KSpace(Type):
     assert space.sGetDecr(cell=scell_pos, dim=0)
     assert not space.sIsMin(cell=scell_pos, dim=0)
     assert space.sGetAdd(cell=scell_pos, dim=0, x=2)
-    assert space.sGetSub(cell=scell_pos, dim=0, x=2)
+    assert space.sGetSub(cell=scell_pos, dim=0, x=1)
 
     assert space.sTranslation(cell=scell_pos, vec=a_point)
     assert space.sProjection(cell=scell_pos, bound=scell_pos, dim=1)
-    space.sProject(cell=modified_scell_pos, bound=scell_pos, dim=1)
+    assert space.sIsOpen(cell=scell_pos, dim=1) == space.sIsOpen(cell=scell_pos, dim=1)
+    space.sProject(cell=scell_pos, bound=scell_pos, dim=1)
     assert not space.sNext(cell=scell_pos, lower=scell_pos, upper=scell_pos)
 
     # Neighborhood services

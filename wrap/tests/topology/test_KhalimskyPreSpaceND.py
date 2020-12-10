@@ -176,7 +176,9 @@ def test_KPreSpace(Type):
 
     assert space.uTranslation(cell=pre_cell, vec=a_point)
     assert space.uProjection(cell=pre_cell, bound=pre_cell, dim=1)
-    space.uProject(cell=modified_pre_cell, bound=pre_cell, dim=1)
+    pre_cell_copy = copy.deepcopy(pre_cell)
+    assert space.uIsOpen(cell=pre_cell_copy, dim=1) == space.uIsOpen(cell=pre_cell, dim=1)
+    space.uProject(cell=pre_cell_copy, bound=pre_cell, dim=1)
     assert not space.uNext(cell=pre_cell, lower=pre_cell, upper=pre_cell)
 
     # Signed geometry services
@@ -191,7 +193,9 @@ def test_KPreSpace(Type):
 
     assert space.sTranslation(cell=scell_pos, vec=a_point)
     assert space.sProjection(cell=scell_pos, bound=scell_pos, dim=1)
-    space.sProject(cell=modified_scell_pos, bound=scell_pos, dim=1)
+    scell_pos_copy = copy.deepcopy(scell_pos)
+    assert space.sIsOpen(cell=scell_pos_copy, dim=1) == space.sIsOpen(cell=scell_pos, dim=1)
+    space.sProject(cell=scell_pos_copy, bound=scell_pos, dim=1)
     assert not space.sNext(cell=scell_pos, lower=scell_pos, upper=scell_pos)
 
     # Neighborhood services

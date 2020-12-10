@@ -638,7 +638,7 @@ TT constructor_from_buffer_color_container(pybind11::buffer buf,
     TTDomain domain(lower_bound_ijk, upper_bound_ijk);
     auto out = TT(domain);
     assert( /* The container should be simple enough for memory to be continuous */
-            containersize == componentsize * TTContainer::size());
+            containersize == componentsize * container_dimension);
     // Populate data of the container, copy is needed, vector has to own its memory.
     memcpy(out.data(), static_cast<TTComponent*>(info.ptr), info.size * componentsize);
     return out;
