@@ -56,6 +56,65 @@ PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
+NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
+                   Self* aParallelepipedEstimator)
+    : myPredicate(aPredicate), myBound(aBound), myParallelpipedEstimator(aParallelepipedEstimator)
+{
+    ASSERT(myParallelpipedEstimator != nullptr);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
+InPlane (Point const& aPoint) const
+{
+    return myPredicate(aPoint);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
+operator() (Point const& aPoint) const
+{
+    Point u = aPoint - q(), s = q();
+
+    ASSERT(! myPredicate(s));
+
+    Integer l = DGtal::NumberTraits<Integer>::ONE;
+
+    while (l < myBound)
+    {
+        if (myPredicate(s + u * l))
+        {
+            return true;
+        }
+
+        if (myPredicate(s - u * l))
+        {
+            return false;
+        }
+
+        l *= 2;
+    }
+
+    return false;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
+q () const
+{
+    ASSERT(myParallelpipedEstimator != nullptr);
+    return myParallelpipedEstimator->q();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
 {

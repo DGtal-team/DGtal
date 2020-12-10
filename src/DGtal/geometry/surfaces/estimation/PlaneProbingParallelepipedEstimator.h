@@ -62,74 +62,38 @@ namespace DGtal
   {
     // ----------------------- Public types ------------------------------
   public:
+      class NotAbovePredicate;
+
       using Self                 = PlaneProbingParallelepipedEstimator<TPredicate, mode>;
       using Predicate            = TPredicate;
       using Point                = typename Predicate::Point;
       using Integer              = typename Predicate::Integer;
-
-      // TODO: put the implementation in the 'ih 'file
-      class NotAbovePredicate
-      {
-          public:
-              using Point = Self::Point;
-              using Integer = Self::Integer;
-
-          public:
-              NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
-                                 Self* aParallelepipedEstimator)
-                  : myPredicate(aPredicate), myBound(aBound),
-                    myParallelpipedEstimator(aParallelepipedEstimator)
-              {
-                  ASSERT(myParallelpipedEstimator != nullptr);
-              }
-
-              bool InPlane (Point const& aPoint) const
-              {
-                  return myPredicate(aPoint);
-              }
-
-              bool operator() (Point const& aPoint) const
-              {
-                  Point u = aPoint - q(), s = q();
-
-                  ASSERT(! myPredicate(s));
-
-                  Integer l = DGtal::NumberTraits<Integer>::ONE;
-
-                  while (l < myBound)
-                  {
-                      if (myPredicate(s + u * l))
-                      {
-                          return true;
-                      }
-
-                      if (myPredicate(s - u * l))
-                      {
-                          return false;
-                      }
-
-                      l *= 2;
-                  }
-
-                  return false;
-              }
-
-          private:
-              Predicate const& myPredicate;
-              Integer myBound;
-              Self* myParallelpipedEstimator = nullptr;
-
-              Point q () const
-              {
-                  ASSERT(myParallelpipedEstimator != nullptr);
-                  return myParallelpipedEstimator->q();
-              }
-      };
-
       using TetrahedronEstimator = PlaneProbingTetrahedronEstimatorParallelepiped<NotAbovePredicate, mode>;
       using Triangle             = typename TetrahedronEstimator::Triangle;
       using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
       using Quantity             = typename TetrahedronEstimator::Quantity;
+
+      class NotAbovePredicate
+      {
+      public:
+          using Point = Self::Point;
+          using Integer = Self::Integer;
+
+      public:
+          NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound, Self* aParallelepipedEstimator);
+
+          bool InPlane (Point const& aPoint) const;
+
+          bool operator() (Point const& aPoint) const;
+
+      private:
+          Predicate const& myPredicate;
+          Integer myBound;
+          Self* myParallelpipedEstimator = nullptr;
+
+          Point q () const;
+      };
+
 
     // ----------------------- Standard services ------------------------------
   public:
