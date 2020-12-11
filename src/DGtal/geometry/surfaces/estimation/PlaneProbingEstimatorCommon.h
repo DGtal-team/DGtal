@@ -143,7 +143,9 @@ namespace DGtal
         }
 
         /**
-         * A ray consists of a permutation 'sigma' and an index (position on the ray).
+         * A ray consists of a permutation 'sigma' and an integer index (position on the ray).
+         *
+         * @tparam Integer the integer type.
          */
         template < typename Integer = int >
         class ProbingRay
@@ -200,23 +202,35 @@ namespace DGtal
                     return myIndex;
                 }
 
+                /**
+                 * Get a vector from the fixed point 'q' to the point on the ray.
+                 */
                 template < typename Point >
                 Point getRelPt (std::array<Point, 3> const& aM) const
                 {
                     return aM[mySigma[0]] - aM[mySigma[1]] - aM[mySigma[2]] * myIndex;
                 }
 
+                /**
+                 * Get the current point on the ray.
+                 */
                 template < typename Point >
                 Point getAbsPt (std::array<Point, 3> const& aM, Point const& aQ) const
                 {
                     return aQ - getRelPt(aM);
                 }
 
+                /**
+                 * Equality test between two rays.
+                 */
                 bool operator== (ProbingRay const& aRay) const
                 {
                     return (mySigma == aRay.mySigma) && (myIndex == aRay.index());
                 }
 
+                /**
+                 * Inequality test between two rays.
+                 */
                 bool operator!= (ProbingRay const& aRay) const
                 {
                     return !(*this == aRay);
@@ -227,19 +241,25 @@ namespace DGtal
                     return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
                 }
 
-                ProbingRay next (Integer aInc) const
+                /**
+                 * Get a new point on a ray, incrementing the current index by aInc.
+                 */
+                ProbingRay next (Integer const& aInc) const
                 {
                     return ProbingRay(mySigma, myIndex + aInc);
                 }
 
-                ProbingRay previous (Integer aDec) const
+                /**
+                 * Get a new point on a ray, idecrementing the current index by aDec.
+                 */
+                ProbingRay previous (Integer const& aDec) const
                 {
                     return ProbingRay(mySigma, myIndex - aDec);
                 }
 
             private:
-                Permutation mySigma;
-                Integer myIndex;
+                Permutation mySigma; /**< The permutation. */
+                Integer myIndex; /**< The index. */
         };
 
         /**

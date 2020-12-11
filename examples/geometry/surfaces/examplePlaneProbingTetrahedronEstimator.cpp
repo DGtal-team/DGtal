@@ -39,7 +39,9 @@
 using namespace std;
 using namespace DGtal;
 
-using DigitalPlane = DigitalPlanePredicate<Z3i::Space>;
+using Integer = int;
+using Space = SpaceND<3, Integer>;
+using DigitalPlane = DigitalPlanePredicate<Space>;
 using Point = DigitalPlane::Vector;
 using Vector = DigitalPlane::Point;
 using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;

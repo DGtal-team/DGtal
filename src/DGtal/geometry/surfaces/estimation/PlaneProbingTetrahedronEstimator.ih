@@ -133,7 +133,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point const&
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
 {
     assert(aIndex == 0 || aIndex == 1 || aIndex == 2);
@@ -142,7 +142,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point const&
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::q () const
 {
     return myQ;

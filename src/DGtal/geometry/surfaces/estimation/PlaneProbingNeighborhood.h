@@ -54,9 +54,10 @@ namespace DGtal
   // template class PlaneProbingNeighborhood
   /**
    * Description of template class 'PlaneProbingNeighborhood' <p>
-   * \brief Aim:
+   * \brief Aim: A base virtual class that represents a way to probe a neighborhood,
+   * used in the plane probing based estimators.
    *
-   * \tparam TPredicate the InPlane predicate.
+   * \tparam TPredicate the probing predicate.
    */
   template <typename TPredicate>
   class PlaneProbingNeighborhood
@@ -69,6 +70,9 @@ namespace DGtal
       using Triangle   = std::array<Point, 3>;
       using ProbingRay = detail::ProbingRay<Integer>;
 
+      /**
+       * Represents a configuration of the H-neighborhood.
+       */
       enum class HexagonState
       {
           Empty,
@@ -84,6 +88,13 @@ namespace DGtal
      */
     PlaneProbingNeighborhood() = delete;
 
+    /**
+     * Constructor.
+     *
+     * @param aPredicate a probing predicate.
+     * @param aQ the fixed point 'q'.
+     * @param aM a frame composed of the three vectors.
+     */
     PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**
@@ -119,10 +130,28 @@ namespace DGtal
 
     // ----------------------- Plane Probing services ------------------------------
   public:
-    ProbingRay closestCandidate (std::vector<ProbingRay> const& neighbors);
+    /**
+     * Computes the closest candidate point, used for updating a frame in a plane probing based estimator.
+     *
+     * @param aNeighbors a list of candidate rays (if empty, we consider the whole H-neighborhood).
+     * @return the closest ray point.
+     */
+    ProbingRay closestCandidate (std::vector<ProbingRay> const& aNeighbors);
 
+    /**
+     * Computes the current state of the neighborhood.
+     * This is the function that is overloaded for the different probing modes.
+     *
+     * @return the hexagon state.
+     */
     virtual HexagonState hexagonState () = 0;
 
+    /**
+     * Classify the state of the H-neighborhood encoded as an array of 6 booleans.
+     *
+     * @param aState
+     * @return the hexagon state.
+     */
     HexagonState classify (std::array<bool, 6> const& aState) const;
 
     // ----------------------- Interface --------------------------------------
@@ -142,25 +171,38 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    Predicate const& myPredicate;
-    Point const& myQ;
-    Triangle const& myM;
-    std::vector<ProbingRay> myCandidates;
+    Predicate const& myPredicate; /**< A reference on the probing predicate. */
+    Point const& myQ; /**< A reference on the fixed point. */
+    Triangle const& myM; /**< A reference on the frame. */
+    std::vector<ProbingRay> myCandidates; /**< Will contain the candidates at one step. */
 
-    static const ProbingRay myNeighborhood[6];
-    std::vector<ProbingRay> myNeighbors;
+    static const ProbingRay myNeighborhood[6]; /**< The six rays defining the H-neighborhood. */
+    std::vector<ProbingRay> myNeighbors; /**< An array of rays to filter the neighborhood. */
 
     // ------------------------- Private Datas --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
   protected:
+    /**
+     * Computes the closest point, among a list of candidates, using a Delaunay-based criterion.
+     *
+     * @param aPoints the list of points.
+     * @return the closest point.
+     */
     ProbingRay closestPointInList (std::vector<ProbingRay> const& aPoints) const;
 
-    bool isNeighbor (ProbingRay const& r) const;
+    /**
+     * Tests whether a ray should be probed or not, according to the current
+     * set of 'neighbors'.
+     *
+     * @param aRay the ray point to test.
+     */
+    bool isNeighbor (ProbingRay const& aRay) const;
 
     /**
-     * Computes the relative position of a point with respect to a sphere passing through 4 points.
+     * Computes the relative position of a point with respect to a sphere passing through 4 points
+     * (the three vertices of the current frame plus one point).
      *
      * @param aX 1 more input point.
      * @param aY the test point.
@@ -180,9 +222,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingNeighborhood' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingNeighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingNeighborhood<TPredicate> & object );
 
 } // namespace DGtal
 
