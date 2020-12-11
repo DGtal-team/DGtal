@@ -102,6 +102,9 @@ namespace DGtal
      */
     PlaneProbingParallelepipedEstimator() = delete;
 
+    /**
+     * Constructor.
+     */
     PlaneProbingParallelepipedEstimator(Point const& aPoint, Triangle const& aM,
                                         Predicate const& aPredicate, Integer const& aBound);
 

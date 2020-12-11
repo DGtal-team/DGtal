@@ -40,9 +40,10 @@ using namespace std;
 using namespace DGtal;
 
 using DigitalPlane = DigitalPlanePredicate<Z3i::Space>;
-using Point = DigitalPlane::Vector;
-using Vector = DigitalPlane::Point;
-using Estimator = PlaneProbingParallelepipedEstimator<DigitalPlane, ProbingMode::H>;
+using Point        = DigitalPlane::Vector;
+using Integer      = Point::Coordinate;
+using Vector       = DigitalPlane::Point;
+using Estimator    = PlaneProbingParallelepipedEstimator<DigitalPlane, ProbingMode::H>;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +56,7 @@ int main(int argc, const char** argv)
 
   DigitalPlane plane(n, -height, n.norm1());
   Point o(0, 0, 0);
-  int bound = n.norm1() + 1;
+  Integer bound = n.norm1() + 1;
   std::array<Point, 3> m = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
   Estimator estimator(o, m, plane, bound);
 
@@ -69,6 +70,8 @@ int main(int argc, const char** argv)
           << estimator.m(0) << " " << estimator.m(1) << " " << estimator.m(2) << " "
           << estimator.getNormal() << std::endl;
   }
+
+  ASSERT(estimator.getNormal() == n);
 
   return 0;
 }

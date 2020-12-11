@@ -75,7 +75,7 @@ generateNormals(Integer const& N)
 }
 
 template < typename Integer, ProbingMode mode, typename F >
-void testPlaneProbingParallelepipedEstimator (typename SpaceND<3, Integer>::Vector const& n, unsigned int height,
+void testPlaneProbingParallelepipedEstimator (typename SpaceND<3, Integer>::Vector const& n, int height,
                                               F const& f)
 {
     using Space = SpaceND<3, Integer>;
@@ -103,7 +103,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
         int nbOk = 0;
 
         for (const auto& n: normals) {
-            for (unsigned int height = 0; height < n.normInfinity(); ++height) {
+            for (int height = 0; height < int(n.normInfinity()); ++height) {
                 ++nbNormals;
 
                 testPlaneProbingParallelepipedEstimator<int, ProbingMode::H>
@@ -116,10 +116,31 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
                         {
                             nbOk++;
                         }
-                        else
+                     });
+            }
+        }
+
+        REQUIRE(nbNormals == nbOk);
+    }
+#ifdef WITH_GMp
+    SECTION("H-algorithm should return correct normal with BigInteger")
+    {
+        int nbNormals = 0;
+        int nbOk = 0;
+
+        for (const auto& n: normals) {
+            for (int height = 0; height < int(n.normInfinity()); ++height) {
+                ++nbNormals;
+
+                testPlaneProbingParallelepipedEstimator<BigInteger, ProbingMode::H>
+                    (n, height,
+                     [&] (auto& estimator) {
+                        estimator.compute();
+                        auto estimated = estimator.getNormal();
+
+                        if (estimated == n)
                         {
-                            std::cout << "n = " << n << ", " << height << std::endl;
-                            std::cout << "estimated = " << estimated << std::endl;
+                            nbOk++;
                         }
                      });
             }
@@ -127,6 +148,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 
         REQUIRE(nbNormals == nbOk);
     }
+#endif
 }
 
 /** @ingroup Tests **/
