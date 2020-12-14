@@ -157,6 +157,8 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
+    // TODO: decomposition
+
     bool res = myTetrahedronEstimator.advance(aNeighbors);
 
     if (res)
@@ -191,6 +193,7 @@ typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 {
     while (advance()) {}
+
     return getNormal();
 }
 

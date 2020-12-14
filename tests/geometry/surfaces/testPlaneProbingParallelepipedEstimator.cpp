@@ -94,10 +94,10 @@ void testPlaneProbingParallelepipedEstimator (typename SpaceND<3, Integer>::Vect
 
 TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 {
-    const int maxComponent = 10;
+    const int maxComponent = 20;
     const auto normals = generateNormals(maxComponent);
 
-    SECTION("H-algorithm should return correct normal")
+    SECTION("H-algorithm should return the correct normal")
     {
         int nbNormals = 0;
         int nbOk = 0;
@@ -109,8 +109,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
                 testPlaneProbingParallelepipedEstimator<int, ProbingMode::H>
                     (n, height,
                      [&] (auto& estimator) {
-                        estimator.compute();
-                        auto estimated = estimator.getNormal();
+                        auto estimated = estimator.compute();
 
                         if (estimated == n)
                         {
@@ -122,8 +121,8 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 
         REQUIRE(nbNormals == nbOk);
     }
-#ifdef WITH_GMp
-    SECTION("H-algorithm should return correct normal with BigInteger")
+#ifdef WITH_GMP
+    SECTION("H-algorithm should return the correct normal with BigInteger")
     {
         int nbNormals = 0;
         int nbOk = 0;
@@ -135,8 +134,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
                 testPlaneProbingParallelepipedEstimator<BigInteger, ProbingMode::H>
                     (n, height,
                      [&] (auto& estimator) {
-                        estimator.compute();
-                        auto estimated = estimator.getNormal();
+                        auto estimated = estimator.compute();
 
                         if (estimated == n)
                         {

@@ -64,7 +64,7 @@ int main(int argc, const char** argv)
   while (estimator.advance()) {
       it++;
 
-      std::cout << "state=" << estimator.state() << ", isInReverseState=" << estimator.isInReverseState() << std::endl;
+      std::cout << "state=" << estimator.getState() << ", isInReverseState=" << estimator.isInReverseState() << std::endl;
 
       std::clog << "it = " << it << " "
           << estimator.m(0) << " " << estimator.m(1) << " " << estimator.m(2) << " "
