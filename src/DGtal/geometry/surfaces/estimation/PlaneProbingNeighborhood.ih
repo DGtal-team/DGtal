@@ -140,20 +140,38 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
-typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay
+void
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-closestCandidate (std::vector<ProbingRay> const& neighbors)
+setNeighbors (std::vector<ProbingRay> const& aNeighbors)
 {
-    myNeighbors = neighbors;
+    myNeighbors = aNeighbors;
+}
 
-    // myCandidates is filled by calling hexagonState
-    std::vector<ProbingRay> innerPoints(myCandidates.begin(), myCandidates.end());
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+closestCandidate ()
+{
+    // One should call hexagonState before closestCandidate, and check the return value
+    // to ensure that there is at least one point in the plane in the H-neighbhorhood
+    ASSERT(! myCandidates.empty());
 
-    // One should call hexagonState before closestCandidate to ensure that the
-    // there is at least one point int the plane in the H-neighbhorhood
-    ASSERT(! innerPoints.empty());
+    ProbingRay closest = closestPointInList(myCandidates);
 
-    return closestPointInList(innerPoints);
+    return getOperation(closest);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+getOperation (ProbingRay const& aClosest) const
+{
+    return  {
+        aClosest.sigma(),
+        { 1, -1, aClosest.index() },
+    };
 }
 
 // ------------------------------------------------------------------------

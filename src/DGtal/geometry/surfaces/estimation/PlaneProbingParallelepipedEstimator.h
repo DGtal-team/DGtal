@@ -147,7 +147,7 @@ namespace DGtal
 
     Point getOrigin () const;
 
-    int state () const;
+    int getState () const;
 
     bool isSeparating () const;
 

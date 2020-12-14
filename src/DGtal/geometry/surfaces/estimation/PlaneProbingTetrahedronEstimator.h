@@ -65,16 +65,17 @@ namespace DGtal
   {
     // ----------------------- Public types ------------------------------
   public:
-      using Self         = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
-      using Predicate    = TPredicate;
-      using Point        = typename Predicate::Point;
-      using Neighborhood = PlaneProbingNeighborhood<TPredicate>;
-      using Triangle     = typename Neighborhood::Triangle;
-      using Integer      = typename Point::Coordinate;
-      using ProbingRay   = typename Neighborhood::ProbingRay;
-      using Permutation  = typename ProbingRay::Permutation;
-      using Quantity     = Point;
-      using HexagonState = typename Neighborhood::HexagonState;
+      using Self            = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
+      using Predicate       = TPredicate;
+      using Point           = typename Predicate::Point;
+      using Neighborhood    = PlaneProbingNeighborhood<TPredicate>;
+      using Triangle        = typename Neighborhood::Triangle;
+      using Integer         = typename Point::Coordinate;
+      using ProbingRay      = typename Neighborhood::ProbingRay;
+      using Permutation     = typename ProbingRay::Permutation;
+      using Quantity        = Point;
+      using HexagonState    = typename Neighborhood::HexagonState;
+      using UpdateOperation = typename Neighborhood::UpdateOperation;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -222,19 +223,7 @@ namespace DGtal
     Point myS; /**< The shift vector. */
     Point myQ; /**< The fixed point 'q'. */
     Neighborhood* myNeighborhood = nullptr; /**< Describes what kind of probing method is used. */
-
-    /**
-     * One operation represents one update step, it contains the pair \f$ (\sigma, \lambda) \f$
-     * used to update a vector, as well as a 'translation' vector that describes how the base point was changed.
-     */
-    struct Operation
-    {
-        Point translation;
-        Permutation sigma;
-        Integer lambda;
-    };
-
-    std::vector<Operation> myOperations; /**< The list of all operations. */
+    std::vector<UpdateOperation> myOperations; /**< The list of all operations. */
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -250,9 +239,9 @@ namespace DGtal
     /**
      * Updates one height vector.
      *
-     * @param aRay the ray to update.
+     * @param aOp operation describing the update step.
      */
-    void update (ProbingRay const& aRay);
+    void update (UpdateOperation const& aOp);
 
   }; // end of class PlaneProbingTetrahedronEstimator
 

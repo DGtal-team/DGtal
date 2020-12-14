@@ -81,6 +81,16 @@ namespace DGtal
           NonConvex,
       };
 
+      /**
+       * Represents one update step, it contains the pair \f$ (\sigma, coeffs) \f$ used to update
+       * the current frame.
+       */
+      struct UpdateOperation
+      {
+          std::array<int, 3>     sigma;
+          std::array<Integer, 3> coeffs;
+      };
+
     // ----------------------- Standard services ------------------------------
   public:
     /**
@@ -130,13 +140,10 @@ namespace DGtal
 
     // ----------------------- Plane Probing services ------------------------------
   public:
-    /**
-     * Computes the closest candidate point, used for updating a frame in a plane probing based estimator.
-     *
+    /*
      * @param aNeighbors a list of candidate rays (if empty, we consider the whole H-neighborhood).
-     * @return the closest ray point.
      */
-    ProbingRay closestCandidate (std::vector<ProbingRay> const& aNeighbors);
+    void setNeighbors (std::vector<ProbingRay> const& aNeighbors);
 
     /**
      * Computes the current state of the neighborhood.
@@ -145,6 +152,21 @@ namespace DGtal
      * @return the hexagon state.
      */
     virtual HexagonState hexagonState () = 0;
+
+    /**
+     * Computes the closest candidate point, used for updating a frame in a plane probing based estimator.
+     *
+     * @return the update operation to apply.
+     */
+    UpdateOperation closestCandidate ();
+
+    /**
+     * Constructs an update operation from the closest candidate point.
+     *
+     * @param aClosest the closest candidate point.
+     * @return the update operation.
+     */
+    virtual UpdateOperation getOperation (ProbingRay const& aClosest) const;
 
     /**
      * Classify the state of the H-neighborhood encoded as an array of 6 booleans.

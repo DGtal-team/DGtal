@@ -149,7 +149,7 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState () const
 {
-    return state() < 4;
+    return getState() < 4;
 }
 
 // ------------------------------------------------------------------------
@@ -161,7 +161,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
 
     if (res)
     {
-        int nState = state();
+        int nState = getState();
 
         if (nState < 4)
         {
@@ -205,7 +205,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 int
-DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::state () const
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getState () const
 {
     Point p = getOrigin();
     int inside = 0;

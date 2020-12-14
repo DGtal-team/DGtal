@@ -229,11 +229,12 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
+    myNeighborhood->setNeighbors(aNeighbors);
     HexagonState state = hexagonState();
 
     if (state == HexagonState::Planar) {
-        ProbingRay closest = myNeighborhood->closestCandidate(aNeighbors);
-        update(closest);
+        UpdateOperation op = myNeighborhood->closestCandidate();
+        update(op);
         assert(isValid());
         return true;
     }
@@ -272,8 +273,9 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
 {
-    Operation const& lastOp = myOperations[myOperations.size() - 1];
-    myQ -= lastOp.translation;
+    UpdateOperation const& lastOp = myOperations[myOperations.size() - 1];
+    Point translation = lastOp.coeffs[1] * myM[lastOp.sigma[1]] + lastOp.coeffs[2] * myM[lastOp.sigma[2]];
+    myQ += translation;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -302,11 +304,10 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Tr
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (ProbingRay const& aRay)
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
 {
-    Point oldM = myM[aRay.sigma(0)];
-    myM[aRay.sigma(0)] = aRay.getRelPt(myM);
-    myOperations.push_back({ oldM - myM[aRay.sigma(0)], aRay.sigma(), aRay.index() });
+    myM[aOp.sigma[0]] = aOp.coeffs[0] * myM[aOp.sigma[0]] + aOp.coeffs[1] * myM[aOp.sigma[1]] + aOp.coeffs[2] * myM[aOp.sigma[2]];
+    myOperations.push_back(aOp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
