@@ -158,23 +158,50 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
-    // TODO: decomposition
-
     bool flag;
     UpdateOperation op;
     std::tie(flag, op) = myTetrahedronEstimator.advance(aNeighbors);
 
     if (flag)
     {
-        if (getState() < 4)
-        {
-            myIsInReverseState = !myIsInReverseState;
-            myTetrahedronEstimator.translateQ();
-        }
+        Integer lambda = -op.coeffs[2];
 
-        if (! isSeparating())
+        // Decomposition of operations to ensure separability
+        if (lambda > 0)
         {
-            return false;
+            // Undo the "ray" operation
+            UpdateOperation undoOp;
+            undoOp.sigma = op.sigma;
+            undoOp.coeffs = { Integer(1), Integer(0), -op.coeffs[2] };
+            myTetrahedronEstimator.applyOperation(undoOp);
+
+            // Iteratively apply "lambda" elementary operations
+            for (Integer k = Integer(1); k <= lambda; ++k)
+            {
+                UpdateOperation iterOp;
+                iterOp.sigma = op.sigma;
+                iterOp.coeffs = { Integer(1), Integer(0), -Integer(1) };
+                myTetrahedronEstimator.applyOperation(iterOp);
+
+                if (getState() < 4)
+                {
+                    Point translation = iterOp.coeffs[1] * m(iterOp.sigma[1]) + iterOp.coeffs[2] * m(iterOp.sigma[2]);
+                    myIsInReverseState = !myIsInReverseState;
+                    myTetrahedronEstimator.translateQ(translation);
+                }
+
+                ASSERT(isSeparating());
+            }
+        }
+        else
+        {
+            if (getState() < 4)
+            {
+                myIsInReverseState = !myIsInReverseState;
+                myTetrahedronEstimator.translateQ();
+            }
+
+            ASSERT(isSeparating());
         }
     }
 
@@ -205,6 +232,15 @@ typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 {
     return myTetrahedronEstimator.getNormal();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+std::pair<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point,
+          typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point>
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
+{
+    return myTetrahedronEstimator.getBasis();
 }
 
 // ------------------------------------------------------------------------

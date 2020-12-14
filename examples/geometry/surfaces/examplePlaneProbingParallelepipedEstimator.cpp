@@ -43,7 +43,7 @@ using DigitalPlane = DigitalPlanePredicate<Z3i::Space>;
 using Point        = DigitalPlane::Vector;
 using Integer      = Point::Coordinate;
 using Vector       = DigitalPlane::Point;
-using Estimator    = PlaneProbingParallelepipedEstimator<DigitalPlane, ProbingMode::H>;
+using Estimator    = PlaneProbingParallelepipedEstimator<DigitalPlane, ProbingMode::R1>;
 
 ///////////////////////////////////////////////////////////////////////////////
 

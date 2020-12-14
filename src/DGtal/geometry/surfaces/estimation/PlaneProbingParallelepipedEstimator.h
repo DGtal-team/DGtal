@@ -160,6 +160,8 @@ namespace DGtal
 
     Point getNormal() const;
 
+    std::pair<Point, Point> getBasis () const;
+
     bool isInReverseState () const;
 
     // ----------------------- Interface --------------------------------------

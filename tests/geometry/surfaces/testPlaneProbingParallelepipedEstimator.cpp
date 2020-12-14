@@ -121,6 +121,33 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 
         REQUIRE(nbNormals == nbOk);
     }
+
+    SECTION("R1-algorithm should return the correct normal and a reduced basis")
+    {
+        int nbNormals = 0;
+        int nbOk = 0;
+
+        for (const auto& n: normals) {
+            for (int height = 0; height < int(n.normInfinity()); ++height) {
+                ++nbNormals;
+
+                testPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>
+                    (n, height,
+                     [&] (auto& estimator) {
+                        auto estimated = estimator.compute();
+                        auto basis = estimator.getBasis();
+
+                        if (estimated == n && DGtal::detail::isBasisReduced(basis.first, basis.second))
+                        {
+                            nbOk++;
+                        }
+                     });
+            }
+        }
+
+        REQUIRE(nbNormals == nbOk);
+    }
+
 #ifdef WITH_GMP
     SECTION("H-algorithm should return the correct normal with BigInteger")
     {

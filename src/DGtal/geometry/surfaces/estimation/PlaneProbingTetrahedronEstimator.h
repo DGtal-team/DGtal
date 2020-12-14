@@ -154,7 +154,7 @@ namespace DGtal
     std::pair<Point, Point> getBasis() const;
 
     /**
-     * Tells if the current basis is reduced or not.
+     * "true" if the current basis is reduced or not, "false" otherwise.
      */
     bool isReduced () const;
 
@@ -195,10 +195,17 @@ namespace DGtal
     void translateQ (Point const& aTranslation);
 
     /**
-     * Translaes the fixed point \f$ q \f$, this is used by the parallelepiped version of the estimator,
+     * Translates the fixed point \f$ q \f$, this is used by the parallelepiped version of the estimator,
      * see PlaneProbingParallelepipedEstimator.
      */
     void translateQ ();
+
+    /**
+     * Applies an operation.
+     *
+     * @param aOp the operation to apply.
+     */
+    void applyOperation (UpdateOperation const& aOp);
 
     // ----------------------- Interface --------------------------------------
   public:

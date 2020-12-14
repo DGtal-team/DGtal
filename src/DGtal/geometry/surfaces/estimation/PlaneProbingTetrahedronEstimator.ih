@@ -313,9 +313,17 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Tr
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::applyOperation (UpdateOperation const& aOp)
 {
     myM[aOp.sigma[0]] = aOp.coeffs[0] * myM[aOp.sigma[0]] + aOp.coeffs[1] * myM[aOp.sigma[1]] + aOp.coeffs[2] * myM[aOp.sigma[2]];
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
+{
+    applyOperation(aOp);
     myOperations.push_back(aOp);
 }
 
