@@ -76,6 +76,9 @@ namespace DGtal
      */
     PlaneProbingR1Neighborhood() = delete;
 
+    /**
+     * Constructor.
+     */
     PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**
@@ -164,9 +167,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingR1Neighborhood' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingR1Neighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingR1Neighborhood<TPredicate> & object );
 
 } // namespace DGtal
 

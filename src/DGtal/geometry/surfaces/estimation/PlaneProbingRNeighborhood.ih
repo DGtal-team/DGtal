@@ -107,7 +107,8 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
                    Xbeta  = Xk.next(Integer(d / 2)),
                    Xgamma = Xk.next(Integer(3*d/4));
 
-        assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() && Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
+        assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() &&
+               Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
 
         if (this->myPredicate(Xbeta.getAbsPt(this->myM, this->myQ)) &&
             this->isSmallest(-Xbeta.getRelPt(this->myM), -Xgamma.getRelPt(this->myM))) {
@@ -152,10 +153,10 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredica
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename TPredicate>
 inline
 void
-DGtal::PlaneProbingRNeighborhood<T>::selfDisplay ( std::ostream & out ) const
+DGtal::PlaneProbingRNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PlaneProbingRNeighborhood]";
 }
@@ -164,10 +165,10 @@ DGtal::PlaneProbingRNeighborhood<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename TPredicate>
 inline
 bool
-DGtal::PlaneProbingRNeighborhood<T>::isValid() const
+DGtal::PlaneProbingRNeighborhood<TPredicate>::isValid() const
 {
     return true;
 }
@@ -177,11 +178,11 @@ DGtal::PlaneProbingRNeighborhood<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <typename TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const PlaneProbingRNeighborhood<T> & object )
+                  const PlaneProbingRNeighborhood<TPredicate> & object )
 {
   object.selfDisplay( out );
   return out;

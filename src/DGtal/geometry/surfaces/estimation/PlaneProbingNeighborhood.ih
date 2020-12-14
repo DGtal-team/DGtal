@@ -173,8 +173,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (ProbingRay const& r) co
 template < typename TPredicate >
 bool
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-isSmallest (Point const& aX,
-            Point const& aY) const
+isSmallest (Point const& aX, Point const& aY) const
 {
     Integer zero = DGtal::NumberTraits<Integer>::ZERO;
 
@@ -204,10 +203,10 @@ isSmallest (Point const& aX,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename TPredicate>
 inline
 void
-DGtal::PlaneProbingNeighborhood<T>::selfDisplay ( std::ostream & out ) const
+DGtal::PlaneProbingNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PlaneProbingNeighborhood]";
 }
@@ -216,10 +215,8 @@ DGtal::PlaneProbingNeighborhood<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
-inline
-bool
-DGtal::PlaneProbingNeighborhood<T>::isValid() const
+template <typename TPredicate>
+inline bool DGtal::PlaneProbingNeighborhood<TPredicate>::isValid() const
 {
     return true;
 }
@@ -229,11 +226,11 @@ DGtal::PlaneProbingNeighborhood<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <typename TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const PlaneProbingNeighborhood<T> & object )
+                  const PlaneProbingNeighborhood<TPredicate> & object )
 {
   object.selfDisplay( out );
   return out;

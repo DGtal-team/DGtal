@@ -148,9 +148,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingHNeighborhood' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingHNeighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingHNeighborhood<TPredicate> & object );
 
 } // namespace DGtal
 

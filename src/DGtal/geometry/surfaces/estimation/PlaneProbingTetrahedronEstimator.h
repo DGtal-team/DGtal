@@ -95,7 +95,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~PlaneProbingTetrahedronEstimator();
+    virtual ~PlaneProbingTetrahedronEstimator();
 
     /**
      * Copy constructor.

@@ -76,6 +76,9 @@ namespace DGtal
      */
     PlaneProbingRNeighborhood() = delete;
 
+    /**
+     * Constructor.
+     */
     PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**
@@ -130,9 +133,6 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
-
-    ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -140,6 +140,9 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
+    ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
+
+    ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -153,9 +156,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingRNeighborhood' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingRNeighborhood<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingRNeighborhood<TPredicate> & object );
 
 } // namespace DGtal
 

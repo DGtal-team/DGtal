@@ -407,10 +407,10 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestRayPoint (std::pair<Probin
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename TPredicate>
 inline
 void
-DGtal::PlaneProbingR1Neighborhood<T>::selfDisplay ( std::ostream & out ) const
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PlaneProbingR1Neighborhood]";
 }
@@ -419,10 +419,10 @@ DGtal::PlaneProbingR1Neighborhood<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename TPredicate>
 inline
 bool
-DGtal::PlaneProbingR1Neighborhood<T>::isValid() const
+DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValid() const
 {
     return true;
 }
@@ -432,11 +432,11 @@ DGtal::PlaneProbingR1Neighborhood<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <typename TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const PlaneProbingR1Neighborhood<T> & object )
+                  const PlaneProbingR1Neighborhood<TPredicate> & object )
 {
   object.selfDisplay( out );
   return out;

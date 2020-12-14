@@ -189,9 +189,6 @@ namespace DGtal
   private:
     NotAbovePredicate myNotAbovePredicate;
     TetrahedronEstimator myTetrahedronEstimator;
-    bool myIsInReverseState;
-
-    void reverseIf ();
   }; // end of class PlaneProbingParallelepipedEstimator
 
 
