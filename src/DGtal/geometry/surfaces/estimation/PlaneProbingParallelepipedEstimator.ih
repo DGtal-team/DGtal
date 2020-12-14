@@ -47,7 +47,8 @@ PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
     : myNotAbovePredicate(aPredicate, aBound, this),
       myTetrahedronEstimator(aPoint, aM, myNotAbovePredicate)
 {
-    assert(isValid());
+    ASSERT(isValid());
+    myIsInReverseState = getState() < 4;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -149,7 +150,7 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState () const
 {
-    return getState() < 4;
+    return myIsInReverseState;
 }
 
 // ------------------------------------------------------------------------
@@ -159,14 +160,15 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
 {
     // TODO: decomposition
 
-    bool res = myTetrahedronEstimator.advance(aNeighbors);
+    bool flag;
+    UpdateOperation op;
+    std::tie(flag, op) = myTetrahedronEstimator.advance(aNeighbors);
 
-    if (res)
+    if (flag)
     {
-        int nState = getState();
-
-        if (nState < 4)
+        if (getState() < 4)
         {
+            myIsInReverseState = !myIsInReverseState;
             myTetrahedronEstimator.translateQ();
         }
 
@@ -176,7 +178,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
         }
     }
 
-    return res;
+    return flag;
 }
 
 // ------------------------------------------------------------------------

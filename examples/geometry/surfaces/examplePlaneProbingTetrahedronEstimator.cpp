@@ -58,7 +58,7 @@ int main(void)
   ASSERT(estimator.isValid());
 
   int it = 0;
-  while (estimator.advance()) {
+  while (estimator.advance().first) {
       it++;
 
       auto state = estimator.hexagonState();

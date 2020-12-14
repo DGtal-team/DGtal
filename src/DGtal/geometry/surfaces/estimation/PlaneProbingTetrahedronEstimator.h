@@ -171,14 +171,14 @@ namespace DGtal
      * @param aNeighbors the list of candidates ray to consider.
      * @return false if the algorithm has terminated, true otherwise.
      */
-    bool advance (std::vector<ProbingRay> const& aNeighbors);
+    std::pair<bool, UpdateOperation> advance (std::vector<ProbingRay> const& aNeighbors);
 
     /**
      * Do one step of the estimation.
      *
      * @return false if the algorithm has terminated, true otherwise.
      */
-    bool advance ();
+    std::pair<bool, UpdateOperation> advance ();
 
     /**
      * Estimate the normal using a plane-probing approach, calls \a advance repeatedly.
@@ -191,6 +191,8 @@ namespace DGtal
      * Returns the current local configuration (planar, non-convex, non-planar).
      */
     HexagonState hexagonState () const;
+
+    void translateQ (Point const& aTranslation);
 
     /**
      * Translaes the fixed point \f$ q \f$, this is used by the parallelepiped version of the estimator,

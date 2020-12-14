@@ -72,6 +72,7 @@ namespace DGtal
       using Triangle             = typename TetrahedronEstimator::Triangle;
       using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
       using Quantity             = typename TetrahedronEstimator::Quantity;
+      using UpdateOperation      = typename TetrahedronEstimator::UpdateOperation;
 
       class NotAbovePredicate
       {
@@ -189,6 +190,7 @@ namespace DGtal
   private:
     NotAbovePredicate myNotAbovePredicate;
     TetrahedronEstimator myTetrahedronEstimator;
+    bool myIsInReverseState;
   }; // end of class PlaneProbingParallelepipedEstimator
 
 

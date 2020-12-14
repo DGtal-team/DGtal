@@ -226,7 +226,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-bool
+std::pair<bool, typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::UpdateOperation>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
     myNeighborhood->setNeighbors(aNeighbors);
@@ -236,15 +236,15 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<
         UpdateOperation op = myNeighborhood->closestCandidate();
         update(op);
         assert(isValid());
-        return true;
+        return { true, op };
     }
 
-    return false;
+    return { false, {} };
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-bool
+std::pair<bool, typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::UpdateOperation>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 {
     return advance({});
@@ -255,7 +255,7 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
 {
-    while (advance()) {}
+    while (advance().first) {}
 
     return getNormal();
 }
@@ -271,11 +271,20 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::hexagonState () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ (Point const& aTranslation)
+{
+    myQ += aTranslation;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
 {
     UpdateOperation const& lastOp = myOperations[myOperations.size() - 1];
     Point translation = lastOp.coeffs[1] * myM[lastOp.sigma[1]] + lastOp.coeffs[2] * myM[lastOp.sigma[2]];
-    myQ += translation;
+
+    translateQ(translation);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
