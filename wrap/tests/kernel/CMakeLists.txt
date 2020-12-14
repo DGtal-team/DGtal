@@ -16,9 +16,7 @@ foreach(python_test ${python_tests_})
     -m pytest
     ${pytest_options}
     ${test_folder}/${python_test}
+    # Execute the tests from the right directory to allow `ìmport dgtal` to work
+    WORKING_DIRECTORY "${CMAKE_BUILD_PYTHONLIBDIR}/.."
     )
-  # Set PYTHONPATH to allow `import dgtal`. dgtal folder is in the build folder.
-  # Allowing ctest -R "a_python_test_name_" -V to work
-  set_tests_properties(${python_test_name_} PROPERTIES
-    ENVIRONMENT PYTHONPATH=$ENV{PYTHONPATH}:${CMAKE_BUILD_PYTHONLIBDIR}/..)
 endforeach()
