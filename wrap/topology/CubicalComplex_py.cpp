@@ -1,0 +1,45 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#include "dgtal_pybind11_common.h"
+
+#include "CubicalComplex_types_py.h"
+#include "CubicalComplex_declare_py.h"
+
+namespace py = pybind11;
+using namespace DGtal;
+
+void init_CubicalComplex(py::module & m) {
+    // CubicalCellData
+    auto py_class_CubicalCellData = py::class_<CubicalCellData>(m, "CubicalCellData");
+    py_class_CubicalCellData.def(py::init());
+    py_class_CubicalCellData.def(py::init<DGtal::uint32_t>());
+    py_class_CubicalCellData.def_readwrite("data", &CubicalCellData::data);
+    py_class_CubicalCellData.def("__repr__", [](const CubicalCellData & self) {
+        std::stringstream os;
+        os << "data: " << self.data;
+        return os.str();
+    });
+
+
+    // CellMap
+    declare_CellMap<Python::CellMap2D>(m, "CellMap2D");
+    declare_CellMap<Python::CellMap3D>(m, "CellMap3D");
+
+    // CubicalComplex
+    declare_CubicalComplex<Python::CubicalComplex2D>(m, "CubicalComplex2D");
+    declare_CubicalComplex<Python::CubicalComplex3D>(m, "CubicalComplex3D");
+}

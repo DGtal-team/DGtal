@@ -4,6 +4,7 @@ set(python_tests_
   test_MetricAdjacency.py
   test_DigitalTopology.py
   test_Object.py
+  test_CubicalComplex.py
   )
 
 get_filename_component(module_name_ ${CMAKE_CURRENT_SOURCE_DIR} NAME)

@@ -26,6 +26,12 @@
 #include <pybind11/stl.h>
 
 #include "topology/KhalimskyPreSpaceND_types_py.h" // For KPreSpace2D
+#include "topology/CubicalComplex_types_py.h" // For CellMap2|3D
+
+// To avoid automatic conversion to dictionaries from pybind11/stl.h
+// Later, we use py::bind_map to create bindings.
+PYBIND11_MAKE_OPAQUE(DGtal::Python::CellMap2D);
+PYBIND11_MAKE_OPAQUE(DGtal::Python::CellMap3D);
 
 namespace pybind11 { namespace detail {
 
@@ -40,19 +46,6 @@ namespace pybind11 { namespace detail {
     typename DGtal::Python::KPreSpace3D::AnyCellCollection<CellType>>
         : list_caster<DGtal::Python::KPreSpace3D::AnyCellCollection<CellType>,
         CellType> { };
-    // Development Note(phcerdan): TODO delete {
-    // Not sure why, but we cannot replace `2u`, `3u`
-    // for CellType::Point::dimension, it doesn't find the specialization
-    // template<typename CellType>
-    // struct type_caster<
-    // typename DGtal::KhalimskyPreSpaceND<
-    //     2u, DGtal::Python::Integer >::AnyCellCollection<CellType>
-    //     >
-    //     : list_caster<
-    //     typename DGtal::KhalimskyPreSpaceND<
-    //         CellType::Point::dimension, DGtal::Python::Integer >::AnyCellCollection<CellType>,
-    //     CellType> { };
-    // } // end note
 
 }} //namespace pybind11::detail
 
