@@ -843,6 +843,10 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( const Cell& aCell ) const;
+    /**
+    * @param aCell any pre-cell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
     bool belongs( const PreCell& aCell ) const;
 
     /**
@@ -851,6 +855,11 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( Dimension d, const Cell& aCell ) const;
+    /**
+    * @param d the dimension of cell \a aCell.
+    * @param aCell any precell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
     bool belongs( Dimension d, const PreCell& aCell ) const;
 
     /**
