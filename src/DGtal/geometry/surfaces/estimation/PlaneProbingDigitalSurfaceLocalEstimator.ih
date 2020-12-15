@@ -1,0 +1,277 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/07
+ *
+ * Implementation of inline methods defined in PlaneProbingDigitalSurfaceLocalEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+PlaneProbingDigitalSurfaceLocalEstimator ()
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
+    : mySurface(aSurface), myPredicate(mySurface)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+~PlaneProbingDigitalSurfaceLocalEstimator ()
+{
+    myProbingAlgorithm = nullptr;
+}
+
+// ----------------- model of CSurfelLocalEstimator -----------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+template < typename SurfelConstIterator >
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */)
+{
+    myH = h;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+template < typename SurfelConstIterator >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Quantity
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+eval (SurfelConstIterator it)
+{
+    ASSERT(mySurface != nullptr);
+    ASSERT(myProbingFactory);
+
+    Surfel s = *it;
+
+    ProbingFrame initialFrame = probingFrameFromSurfel(s);
+    ProbingFrame frame = initialFrame;
+    if (myPreEstimations.count(s)) {
+        RealPoint preEstimation = myPreEstimations[s];
+        frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
+    }
+
+    // TODO: if no pre-estimation is given, do an estimation using maximal segments
+
+    myProbingAlgorithm = myProbingFactory(frame, myPredicate);
+    Point normal = myProbingAlgorithm->compute();
+
+    delete myProbingAlgorithm;
+    myProbingAlgorithm = nullptr;
+
+    return normal;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+template < typename SurfelConstIterator, typename OutputIterator >
+OutputIterator
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
+{
+    for (auto it = itb; it != ite; ++it)
+    {
+        *out++ = eval(it);
+    }
+
+    return out;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Scalar
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+h () const
+{
+    return myH;
+}
+
+// --------------- model of CDigitalSurfaceLocalEstimator ------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+attach (ConstAlias<Surface> aSurface)
+{
+    mySurface = aSurface;
+    myPredicate = Predicate(mySurface);
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+setParams (ProbingFactory const& aProbingFactory,
+           std::map<Surfel, RealPoint> const& aPreEstimations,
+           bool aVerbose)
+{
+    myProbingFactory = aProbingFactory;
+    myPreEstimations = aPreEstimations;
+    myVerbose = aVerbose;
+}
+
+// ------------------------- Internals ------------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+probingFrameFromSurfel (Surfel const& aSurfel) const
+{
+    ASSERT(mySurface != nullptr);
+
+    KSpace const& K = mySurface->container().space();
+
+    typename KSpace::DirIterator q1 = K.sDirs(aSurfel), q2 = q1;
+    ++q2;
+
+    // Incident linels
+    Cell surfel = K.unsigns(aSurfel);
+    Cell linel1 = K.uIncident(surfel, *q1, false),
+         linel2 = K.uIncident(surfel, *q2, false);
+    Cell p1_1 = K.uIncident(linel1, *q2, false), p1_2 = K.uIncident(linel1, *q2, true),
+         p2_1 = K.uIncident(linel2, *q1, false), p2_2 = K.uIncident(linel2, *q1, true);
+
+    ASSERT(p1_1 == p2_1);
+
+    Point myP  = K.uCoords(p1_1),
+          myB1 = K.uCoords(p2_2) - myP,
+          myB2 = K.uCoords(p1_2) - myP;
+
+    // Make the normal consistent with the exterior normal
+    Point n = myB1.crossProduct(myB2);
+
+    typename KSpace::DirIterator orth = K.sOrthDirs(aSurfel);
+    SCell voxel_direct   = K.sDirectIncident(aSurfel, *orth),
+          voxel_indirect = K.sIndirectIncident(aSurfel, *orth);
+    Point n_interior = K.sCoords(voxel_direct) - K.sCoords(voxel_indirect); // oriented towards the interior (direct) side
+
+    if (n.dot(n_interior) > 0) {
+        myP += myB2;
+        myB2 = -myB2;
+    }
+
+    Point myNormal = myB1.crossProduct(myB2);
+    assert(myNormal.dot(n_interior) < 0);
+
+    return { myP, myB1, myB2, myNormal };
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const
+{
+    ProbingFrame frame = aInitialFrame;
+    ProbingFrame frameQExt;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        Point shift = frame.shift();
+        if (! myPredicate(frame.p + shift))
+        {
+            frameQExt = frame;
+
+            int signs = 0;
+            signs += int(signComponent(shift[0]) == signComponent(aPreEstimation[0]));
+            signs += int(signComponent(shift[1]) == signComponent(aPreEstimation[1]));
+            signs += int(signComponent(shift[2]) == signComponent(aPreEstimation[2]));
+
+            if (signs == 3)
+            {
+                return frame;
+            }
+        }
+
+        frame = frame.rotatedCopy();
+    }
+
+    return frameQExt;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template < typename TSurface, typename TProbingAlgorithm >
+inline
+void
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingDigitalSurfaceLocalEstimator]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template < typename TSurface, typename TProbingAlgorithm >
+inline
+bool
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template < typename TSurface, typename TProbingAlgorithm >
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
