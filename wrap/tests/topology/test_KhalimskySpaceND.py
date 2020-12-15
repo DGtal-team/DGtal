@@ -27,6 +27,13 @@ def test_KSpace(Type):
     space.init(lower=lower, upper=upper, is_closed=True)
     assert space.Closure.CLOSED == 0
     space.init(lower=lower, upper=upper, closure=space.Closure.CLOSED)
+    # Test Closure methods
+    assert space.isSpaceClosed()
+    assert space.isSpaceClosed(0)
+    assert space.getClosure(0) == space.Closure.CLOSED
+    assert not space.isSpacePeriodic()
+    assert not space.isSpacePeriodic(0)
+    assert not space.isAnyDimensionPeriodic()
 
     if space.dimension == 2:
         PreCell = getattr(submodule, "PreCell2D")

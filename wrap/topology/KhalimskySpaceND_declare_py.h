@@ -514,6 +514,47 @@ Return
 ------
     The sign of input [cell].
 )", py::arg("cell"));
+    // ----------------------- Closure helpers ------------------------
+    py_class.def("isSpaceClosed", py::detail::overload_cast_impl<>()(&TT::isSpaceClosed, py::const_),
+R"(Return true if the space is closed or periodic for all dimensions.
+)");
+    py_class.def("isSpaceClosed", py::detail::overload_cast_impl<DGtal::Dimension>()(&TT::isSpaceClosed, py::const_),
+R"(Return true if the space is closed or periodic along the specified dimension.
+
+Parameters
+----------
+dim: Dimension
+    Any valid dimension
+)", py::arg("dim"));
+
+    py_class.def("isSpacePeriodic", py::detail::overload_cast_impl<>()(&TT::isSpacePeriodic, py::const_),
+R"(Return true if the space is periodic for all dimensions.
+)");
+    py_class.def("isSpacePeriodic", py::detail::overload_cast_impl<DGtal::Dimension>()(&TT::isSpacePeriodic, py::const_),
+R"(Return true if the space is periodic along the specified dimension.
+
+Parameters
+----------
+dim: Dimension
+    Any valid dimension
+)", py::arg("dim"));
+
+    py_class.def("isAnyDimensionPeriodic", &TT::isAnyDimensionPeriodic,
+R"( Return true if any dimension is periodic
+
+Return
+------
+    True if at least one dimension is periodic.
+)");
+
+    py_class.def("getClosure", &TT::getClosure,
+R"(Returns the closure type along the specified dimension.
+
+Parameters
+----------
+dim: Dimension
+    Any valid dimension
+)", py::arg("dim"));
 
     // ----------------------- Write accessors to cells ------------------------
 
