@@ -22,6 +22,7 @@ if (  WITH_VISU3D_QGLVIEWER )
 	exampleIntegralInvariantCurvature3D
     dvcm-3d
     examplePlaneProbingSurfaceLocalEstimator
+    exampleMaximalSegmentSliceEstimation
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
    add_executable(${FILE} ${FILE})
