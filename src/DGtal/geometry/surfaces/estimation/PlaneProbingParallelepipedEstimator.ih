@@ -190,6 +190,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
                     myTetrahedronEstimator.translateQ(translation);
                 }
 
+                // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
                 ASSERT(isSeparating());
             }
         }
@@ -201,6 +202,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
                 myTetrahedronEstimator.translateQ();
             }
 
+            // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
             ASSERT(isSeparating());
         }
     }

@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/DigitalSurfacePredicate.h"
+#include "DGtal/geometry/surfaces/estimation/MaximalSegmentSliceEstimation.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -72,6 +73,7 @@ namespace DGtal
       using Scalar           = double;
       using Predicate        = DigitalSurfacePredicate<Surface>;
       using ProbingFactory   = std::function<ProbingAlgorithm*(const ProbingFrame&, Predicate const&)>;
+      using PreEstimation    = MaximalSegmentSliceEstimation<Surface>;
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
@@ -165,6 +167,13 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Get the pre-estimation on a given normal.
+     *
+     * @param aSurfel a surfel.
+     */
+    RealPoint getPreEstimation (Surfel const& s) const;
+
     // ------------------------- Protected Datas ------------------------------
   protected:
 
@@ -177,6 +186,7 @@ namespace DGtal
     ProbingFactory myProbingFactory;
     std::map<Surfel, RealPoint> myPreEstimations;
     bool myVerbose;
+    PreEstimation myPreEstimationEstimator;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -192,9 +202,9 @@ namespace DGtal
 
         ProbingFrame rotatedCopy () const
         {
-            Point newP  = p + b1,
-                  newB1 = b2,
-                  newB2 = -b1,
+            Point newP      = p + b1,
+                  newB1     = b2,
+                  newB2     = -b1,
                   newNormal = newB1.crossProduct(newB2);
 
             return  { newP, newB1, newB2, newNormal };
@@ -207,6 +217,7 @@ namespace DGtal
     };
 
     ProbingFrame probingFrameFromSurfel (Surfel const& aSurfel) const;
+
     ProbingFrame probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const;
 
     static int signComponent (double x)

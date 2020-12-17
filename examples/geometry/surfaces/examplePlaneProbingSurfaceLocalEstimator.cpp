@@ -105,11 +105,13 @@ int main( int argc, char** argv )
     bool verbose = true;
 
     std::map<Surfel, RealPoint> preEstimations;
-    auto preEstimationsVector = SHG3::getCTrivialNormalVectors(surface, surfels, params);
-    for (std::size_t i = 0; i < surfels.size(); ++i)
-    {
-        preEstimations[surfels[i]] = preEstimationsVector[i];
-    }
+    // The user can provide the pre-estimation
+    // auto preEstimationsVector = SHG3::getCTrivialNormalVectors(surface, surfels, params);
+    // for (std::size_t i = 0; i < surfels.size(); ++i)
+    // {
+    //     preEstimations[surfels[i]] = preEstimationsVector[i];
+    // }
+    // Or it is directly done inside the Estimator::eval function
 
     Estimator estimator;
     estimator.init(gridstep, surfels.begin(), surfels.end());
@@ -132,8 +134,9 @@ int main( int argc, char** argv )
         viewer << s;
 
         // Pre-estimation in red
+        RealPoint const& preEstimation = estimator.getPreEstimation(s);
         viewer.setLineColor(Color::Red);
-        viewer.addLine(origin, origin + 1.5 * preEstimationsVector[i].getNormalized(), 0.3);
+        viewer.addLine(origin, origin + 1.5 * preEstimation.getNormalized(), 0.3);
 
         // Estimated normal in green;
         viewer.setLineColor(Color::Green);

@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     QApplication application(argc, argv);
 
     auto params = SH3::defaultParameters();
-    params("polynomial", "goursat")("gridstep", "1.0");
+    params("polynomial", "ellipsoid")("gridstep", "1.0");
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto K               = SH3::getKSpace( params );
@@ -95,8 +95,12 @@ int main(int argc, char** argv)
     for (std::size_t i = 0; i < surfels.size(); ++i)
     {
         const Surfel& s = surfels[i];
-        const Quantity& n = quantities[i];
+        const Quantity& q = quantities[i];
 
+        if (q.flatDirections.size() == 2)
+            continue;
+
+        const RealPoint& n = q.normal;
         RealPoint origin = centerSurfel(K, s);
 
         viewer.setFillColor(fillColor);

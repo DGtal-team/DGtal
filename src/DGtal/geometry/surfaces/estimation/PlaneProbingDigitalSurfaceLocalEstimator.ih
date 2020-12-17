@@ -49,7 +49,7 @@ PlaneProbingDigitalSurfaceLocalEstimator ()
 template < typename TSurface, typename TProbingAlgorithm >
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
-    : mySurface(aSurface), myPredicate(mySurface)
+    : mySurface(aSurface), myPredicate(mySurface), myPreEstimationEstimator(mySurface)
 {
 }
 
@@ -84,14 +84,21 @@ eval (SurfelConstIterator it)
 
     Surfel s = *it;
 
-    ProbingFrame initialFrame = probingFrameFromSurfel(s);
-    ProbingFrame frame = initialFrame;
+    // If no pre-estimation is given, we make one using maximal segments
+    RealPoint preEstimation;
     if (myPreEstimations.count(s)) {
-        RealPoint preEstimation = myPreEstimations[s];
-        frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
+        preEstimation = myPreEstimations[s];
+    } else {
+        auto preEstimationQuantity = myPreEstimationEstimator.eval(it);
+        preEstimation = preEstimationQuantity.normal;
+        myPreEstimations[s] = preEstimation; // cache the value for future calls
     }
 
-    // TODO: if no pre-estimation is given, do an estimation using maximal segments
+    // TODO: handle preEstimation.flatDirections to initialize a variation of
+    // the computer to handle flat regions
+
+    ProbingFrame initialFrame = probingFrameFromSurfel(s);
+    ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
 
     myProbingAlgorithm = myProbingFactory(frame, myPredicate);
     Point normal = myProbingAlgorithm->compute();
@@ -135,6 +142,7 @@ attach (ConstAlias<Surface> aSurface)
 {
     mySurface = aSurface;
     myPredicate = Predicate(mySurface);
+    myPreEstimationEstimator = PreEstimation(mySurface);
 }
 
 // ------------------------------------------------------------------------
@@ -256,6 +264,15 @@ DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::is
     return true;
 }
 
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::RealPoint
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+getPreEstimation (Surfel const& s) const
+{
+    ASSERT(myPreEstimations.count(s));
+    return myPreEstimations.at(s);
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

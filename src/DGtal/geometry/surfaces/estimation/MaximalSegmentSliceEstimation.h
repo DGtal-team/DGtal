@@ -79,7 +79,10 @@ namespace DGtal
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
-      using Quantity = RealPoint;
+      struct Quantity {
+          RealPoint normal; /**< The estimated normal. */
+          std::vector<int> flatDirections; /**< The dimensions that were found to be locally flat. */
+      };
 
     // ----------------------- Private types ------------------------------
   private:
@@ -112,27 +115,27 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other ) = delete;
+    MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other );
 
     /**
      * Move constructor.
      * @param other the object to move.
      */
-    MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other ) = delete;
+    MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other );
 
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    MaximalSegmentSliceEstimation & operator= ( const MaximalSegmentSliceEstimation & other ) = delete;
+    MaximalSegmentSliceEstimation & operator= ( const MaximalSegmentSliceEstimation & other );
 
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
-    MaximalSegmentSliceEstimation & operator= ( MaximalSegmentSliceEstimation && other ) = delete;
+    MaximalSegmentSliceEstimation & operator= ( MaximalSegmentSliceEstimation && other );
 
     // ----------------- model of CSurfelLocalEstimator -----------------------
   public:

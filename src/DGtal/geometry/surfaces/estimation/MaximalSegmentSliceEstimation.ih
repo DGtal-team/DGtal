@@ -55,6 +55,50 @@ MaximalSegmentSliceEstimation (ConstAlias<Surface> aSurface)
 // ------------------------------------------------------------------------
 template < typename TSurface >
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
+MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other )
+    : mySurface(other.mySurface), myH(other.myH)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other )
+    : mySurface(other.mySurface), myH(other.myH)
+{
+    // TODO: invalidate other.mySurface?
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+DGtal::MaximalSegmentSliceEstimation<TSurface>&
+DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegmentSliceEstimation & other )
+{
+    if (this != &other)
+    {
+        mySurface = other.mySurface;
+        myH = other.myH;
+    }
+
+    return *this;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+DGtal::MaximalSegmentSliceEstimation<TSurface>&
+DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( MaximalSegmentSliceEstimation && other )
+{
+    mySurface = other.mySurface;
+    // TODO: invalidate other.mySurface?
+    // other.mySurface = nullptr;
+    myH = other.myH;
+
+    return *this;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
 ~MaximalSegmentSliceEstimation ()
 {}
 
@@ -98,24 +142,26 @@ eval (SurfelConstIterator it)
     Point2 n_left2, n_right2;
     std::tie(n_left2, n_right2) = getExtremalPoints(points2);
 
-    // Find the components whose normals are in opposite quadrant => flat direction
+    // Find the components whose normals are in different quadrants => flat direction
     auto signComponent = [](double x) -> int {
         return (x >= 0) ? 1 : -1;
     };
 
+    // TODO: check criterion
     auto differentQuadrant = [&signComponent](Point2 const& u, Point2 const& v) -> bool {
         int sxu = signComponent(u[0]), syu = signComponent(u[1]);
         int sxv = signComponent(v[0]), syv = signComponent(v[1]);
 
+        // return ((sxu != sxv) && (syu == syv)) || ((sxu == sxv) && (syu != syv));
         return (sxu != sxv) || (syu != syv);
     };
 
-    std::vector<int> zeroComponents;
+    std::vector<int> flatDirections;
     if (differentQuadrant(n_right1, n_left1)) {
-        zeroComponents.push_back(*q1);
+        flatDirections.push_back(*q1);
     }
     if (differentQuadrant(n_right2, n_left2)) {
-        zeroComponents.push_back(*q2);
+        flatDirections.push_back(*q2);
     }
 
     // Project the normal in the correct plane
@@ -136,9 +182,7 @@ eval (SurfelConstIterator it)
         n = -n;
     }
 
-    // TODO: check if n is the null vector
-
-    return n.getNormalized();
+    return { n.getNormalized(), flatDirections };
 }
 
 // ------------------------------------------------------------------------
