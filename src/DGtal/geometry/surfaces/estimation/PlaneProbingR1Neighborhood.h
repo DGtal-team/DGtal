@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,13 +54,15 @@ namespace DGtal
   // template class PlaneProbingR1Neighborhood
   /**
    * Description of template class 'PlaneProbingR1Neighborhood' <p>
-   * \brief Aim:
+   * \brief Aim: Represent a way to probe the R-neighborhood, with the R1 optimization.
    *
-   * @tparam TPredicate the InPlane predicate.
+   * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate>
   class PlaneProbingR1Neighborhood : public PlaneProbingRNeighborhood<TPredicate>
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       using Predicate    = TPredicate;
@@ -78,6 +81,10 @@ namespace DGtal
 
     /**
      * Constructor.
+     *
+     * @param aPredicate a probing predicate.
+     * @param aQ the fixed point 'q'.
+     * @param aM a frame composed of the three vectors.
      */
     PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
@@ -136,7 +143,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    mutable std::array<bool, 6> myState;
+    mutable std::array<bool, 6> myState; /**< The current state of the H-neighborhood. */
 
     // ------------------------- Hidden services ------------------------------
   protected:

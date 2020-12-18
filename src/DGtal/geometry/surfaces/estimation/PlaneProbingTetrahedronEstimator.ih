@@ -101,6 +101,7 @@ namespace DGtal
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate)
     : myM(aM), myPredicate(aPredicate), myS(aM[0] + aM[1] + aM[2]), myQ(aPoint + myS)
@@ -113,6 +114,7 @@ PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predi
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 DGtal::PlaneProbingTetrahedronEstimatorParallelepiped<TPredicate, mode>::
 PlaneProbingTetrahedronEstimatorParallelepiped (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate)
     : DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>(aPoint, aM, aPredicate)
@@ -121,6 +123,7 @@ PlaneProbingTetrahedronEstimatorParallelepiped (Point const& aPoint, Triangle co
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 ~PlaneProbingTetrahedronEstimator ()
 {
@@ -133,6 +136,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point const&
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
 {
@@ -142,6 +146,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point const&
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::q () const
 {
@@ -150,6 +155,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::q () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::shift () const
 {
@@ -158,6 +164,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::shift () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Triangle
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::vertices () const
 {
@@ -166,6 +173,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::vertices () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 std::pair<typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point,
           typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getBasis () const
@@ -208,6 +216,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getBasis () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isReduced () const
 {
@@ -217,6 +226,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isReduced () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
 {
@@ -226,6 +236,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 std::pair<bool, typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::UpdateOperation>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
@@ -244,6 +255,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 std::pair<bool, typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::UpdateOperation>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 {
@@ -252,6 +264,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
 {
@@ -262,6 +275,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Neighborhood::HexagonState
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::hexagonState () const
 {
@@ -270,6 +284,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::hexagonState () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ (Point const& aTranslation)
 {
@@ -278,6 +293,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ (Point con
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
 {
@@ -292,6 +308,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Triangle const& aTriangle) const
 {
@@ -312,6 +329,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Tr
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::applyOperation (UpdateOperation const& aOp)
 {
@@ -320,6 +338,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::applyOperation (Updat
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 void
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
 {

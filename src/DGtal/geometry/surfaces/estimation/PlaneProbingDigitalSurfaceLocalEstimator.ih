@@ -40,6 +40,7 @@
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator ()
 {
@@ -47,6 +48,7 @@ PlaneProbingDigitalSurfaceLocalEstimator ()
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
     : mySurface(aSurface), myPredicate(mySurface), myPreEstimationEstimator(mySurface)
@@ -55,6 +57,7 @@ PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 ~PlaneProbingDigitalSurfaceLocalEstimator ()
 {
@@ -66,6 +69,7 @@ DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
 template < typename SurfelConstIterator >
+inline
 void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */)
 {
@@ -75,6 +79,7 @@ init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
 template < typename SurfelConstIterator >
+inline
 typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Quantity
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 eval (SurfelConstIterator it)
@@ -112,6 +117,7 @@ eval (SurfelConstIterator it)
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
 template < typename SurfelConstIterator, typename OutputIterator >
+inline
 OutputIterator
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
@@ -127,6 +133,7 @@ eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
 typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Scalar
+inline
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 h () const
 {
@@ -137,6 +144,7 @@ h () const
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 attach (ConstAlias<Surface> aSurface)
 {
@@ -147,6 +155,7 @@ attach (ConstAlias<Surface> aSurface)
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 setParams (ProbingFactory const& aProbingFactory,
            std::map<Surfel, RealPoint> const& aPreEstimations,
@@ -161,6 +170,7 @@ setParams (ProbingFactory const& aProbingFactory,
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 probingFrameFromSurfel (Surfel const& aSurfel) const
@@ -206,6 +216,7 @@ probingFrameFromSurfel (Surfel const& aSurfel) const
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+inline
 typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const

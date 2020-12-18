@@ -41,6 +41,7 @@
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::
 PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
                                      Predicate const& aPredicate, Integer const& aBound)
@@ -56,43 +57,64 @@ PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
 NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
                    Self* aParallelepipedEstimator)
-    : myPredicate(aPredicate), myBound(aBound), myParallelpipedEstimator(aParallelepipedEstimator)
+    : myPredicate(&aPredicate), myBound(aBound), myParallelpipedEstimator(aParallelepipedEstimator)
 {
+    ASSERT(myPredicate != nullptr);
     ASSERT(myParallelpipedEstimator != nullptr);
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-bool
+inline
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate&
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
-InPlane (Point const& aPoint) const
+operator=(const NotAbovePredicate & other)
 {
-    return myPredicate(aPoint);
+    if (this != &other)
+    {
+        myPredicate = other.myPredicate;
+        myBound = other.myBound;
+        myParallelpipedEstimator = other.myParallelpipedEstimator;
+    }
+
+    return *this;
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
+InPlane (Point const& aPoint) const
+{
+    return (*myPredicate)(aPoint);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
 operator() (Point const& aPoint) const
 {
     Point u = aPoint - q(), s = q();
 
-    ASSERT(! myPredicate(s));
+    ASSERT(! InPlane(s));
 
     Integer l = DGtal::NumberTraits<Integer>::ONE;
 
     while (l < myBound)
     {
-        if (myPredicate(s + u * l))
+        if (InPlane(s + u * l))
         {
             return true;
         }
 
-        if (myPredicate(s - u * l))
+        if (InPlane(s - u * l))
         {
             return false;
         }
@@ -105,6 +127,7 @@ operator() (Point const& aPoint) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
 q () const
@@ -115,6 +138,7 @@ q () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
 {
@@ -123,6 +147,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) const
 {
@@ -131,6 +156,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) con
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getOrigin () const
 {
@@ -139,6 +165,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getOrigin () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () const
 {
@@ -147,6 +174,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () co
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState () const
 {
@@ -212,6 +240,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
 {
@@ -220,6 +249,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 {
@@ -230,6 +260,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 {
@@ -238,6 +269,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 std::pair<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point,
           typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point>
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
@@ -247,6 +279,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 int
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getState () const
 {

@@ -40,6 +40,7 @@
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingHNeighborhood<TPredicate>::
 PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
     : DGtal::PlaneProbingNeighborhood<TPredicate>(aPredicate, aQ, aM)
@@ -47,6 +48,7 @@ PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingHNeighborhood<TPredicate>::
 ~PlaneProbingHNeighborhood()
 {}
@@ -56,6 +58,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingHNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
 {

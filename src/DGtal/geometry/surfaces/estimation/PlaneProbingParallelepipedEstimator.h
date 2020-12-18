@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingTetrahedronEstimator.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,11 +56,13 @@ namespace DGtal
    * Description of template class 'PlaneProbingParallelepipedEstimator' <p>
    * \brief Aim:
    *
-   * @tparam TPredicate the InPlane predicate.
+   * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate, ProbingMode mode>
   class PlaneProbingParallelepipedEstimator
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       class NotAbovePredicate;
@@ -83,12 +86,14 @@ namespace DGtal
       public:
           NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound, Self* aParallelepipedEstimator);
 
+          NotAbovePredicate& operator= (const NotAbovePredicate & other);
+
           bool InPlane (Point const& aPoint) const;
 
           bool operator() (Point const& aPoint) const;
 
       private:
-          Predicate const& myPredicate;
+          const Predicate* myPredicate = nullptr;
           Integer myBound;
           Self* myParallelpipedEstimator = nullptr;
 

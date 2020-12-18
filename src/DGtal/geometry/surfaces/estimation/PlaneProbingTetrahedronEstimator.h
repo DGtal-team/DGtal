@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingNeighborhood.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,12 +58,14 @@ namespace DGtal
    * \brief Aim: A class that locally estimates a normal on a digital set using only
    * a predicate "does a point x belong to the digital set or not?".
    *
-   * @tparam TPredicate the probing predicate.
+   * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    * @tparam mode the probing mode, see DGtal::ProbingMode.
    */
   template <typename TPredicate, ProbingMode mode = ProbingMode::H>
   class PlaneProbingTetrahedronEstimator
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       using Self            = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
@@ -271,7 +274,7 @@ namespace DGtal
    * Helper class that overrides the isValid check to be compatible with the parallelepiped-based estimators
    * where the 3 vertices of the base frame \f$ v_i  \f$ are not necessarily in the plane.
    *
-   * @tparam TPredicate the probing predicate.
+   * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    * @tparam mode the probing mode, see ProbingMode.
    */
   template <typename TPredicate, ProbingMode mode = ProbingMode::H>

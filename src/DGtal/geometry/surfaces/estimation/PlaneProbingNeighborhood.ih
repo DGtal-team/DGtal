@@ -53,6 +53,7 @@ const typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay DGtal::Pl
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
     : myPredicate(aPredicate), myQ(aQ), myM(aM)
@@ -60,6 +61,7 @@ PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle 
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 {}
 
@@ -68,6 +70,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<ProbingRay> const& aPoints) const
 {
@@ -88,6 +91,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<Pro
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const& aState) const
 {
@@ -140,6 +144,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 void
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 setNeighbors (std::vector<ProbingRay> const& aNeighbors)
@@ -149,6 +154,7 @@ setNeighbors (std::vector<ProbingRay> const& aNeighbors)
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 closestCandidate ()
@@ -164,6 +170,7 @@ closestCandidate ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 getOperation (ProbingRay const& aClosest) const
@@ -176,6 +183,7 @@ getOperation (ProbingRay const& aClosest) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 bool
 DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (ProbingRay const& r) const
 {
@@ -184,11 +192,12 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (ProbingRay const& r) co
         return true;
     }
 
-    return std::find( myNeighbors.begin(), myNeighbors.end(), r) != myNeighbors.end();
+    return std::find(myNeighbors.begin(), myNeighbors.end(), r) != myNeighbors.end();
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 bool
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 isSmallest (Point const& aX, Point const& aY) const

@@ -72,16 +72,17 @@ DGtal::DigitalSurfacePredicate<TSurface>::
 DigitalSurfacePredicate (DigitalSurfacePredicate<TSurface>&& other)
     : mySurface(other.mySurface)
 {
-    // TODO
+    // TODO: invalide other.mySurface?
     buildPointSet();
 }
 
 //-----------------------------------------------------------------------------
 template <typename TSurface>
+inline
 DGtal::DigitalSurfacePredicate<TSurface>&
 DGtal::DigitalSurfacePredicate<TSurface>::operator= (const DigitalSurfacePredicate<TSurface>& other)
 {
-    if (this != other)
+    if (this != &other)
     {
         mySurface = other.mySurface;
         buildPointSet();
@@ -92,10 +93,11 @@ DGtal::DigitalSurfacePredicate<TSurface>::operator= (const DigitalSurfacePredica
 
 //-----------------------------------------------------------------------------
 template <typename TSurface>
+inline
 DGtal::DigitalSurfacePredicate<TSurface>&
 DGtal::DigitalSurfacePredicate<TSurface>::operator= (DigitalSurfacePredicate<TSurface>&& other)
 {
-    // TODO
+    // TODO: invalidate other.mySurface?
     mySurface = other.mySurface;
     buildPointSet();
     return *this;
@@ -140,12 +142,12 @@ DGtal::DigitalSurfacePredicate<TSurface>::buildPointSet ()
 
     // Extract all the pointels of the digital surface
     KSpace const& K = space();
-    for (auto it = mySurface->begin(); it != mySurface->end(); ++it) {
-        typename KSpace::Cells faces = K.uFaces(K.unsigns(*it));
+    for (const auto& f: *mySurface) {
+        typename KSpace::Cells faces = K.uFaces(K.unsigns(f));
 
-        for (auto cit = faces.begin(); cit != faces.end(); ++cit) {
-            if (K.uDim(*cit) == 0) {
-                myPointSet.insert(K.uCoords(*cit));
+        for (const auto& c: faces) {
+            if (K.uDim(c) == 0) {
+                myPointSet.insert(K.uCoords(c));
             }
         }
     }

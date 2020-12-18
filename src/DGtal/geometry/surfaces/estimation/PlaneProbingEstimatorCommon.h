@@ -78,6 +78,7 @@ namespace DGtal
          * @return the determinant of the input matrix.
          */
         template < int N, typename T >
+        inline
         T determinant (const T aMatrix[N][N])
         {
             DGtal::SimpleMatrix<T, N, N> m;
@@ -100,6 +101,7 @@ namespace DGtal
          * @return the distance of the last point to the sphere defined by the first 4 points.
         */
         template < typename Point >
+        inline
         typename Point::Coordinate distToSphere (std::array<Point, 5> const& aPoints)
         {
             using Integer = typename Point::Coordinate;
@@ -133,6 +135,7 @@ namespace DGtal
          * @return 'true' if (\a aU, \a aV) is a reduced basis, 'false' otherwise.
          */
         template < typename Point >
+        inline
         bool isBasisReduced (Point const& aU, Point const& aV)
         {
             Point w = aU + aV, x = aU - aV;

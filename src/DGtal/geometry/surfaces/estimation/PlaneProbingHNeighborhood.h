@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingNeighborhood.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,13 +54,15 @@ namespace DGtal
   // template class PlaneProbingHNeighborhood
   /**
    * Description of template class 'PlaneProbingHNeighborhood' <p>
-   * \brief Aim:
+   * \brief Aim: Represent a way to probe the H-neighborhood.
    *
-   * @tparam TPredicate the InPlane predicate.
+   * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate>
   class PlaneProbingHNeighborhood : public PlaneProbingNeighborhood<TPredicate>
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       using Predicate    = TPredicate;
@@ -75,6 +78,13 @@ namespace DGtal
      */
     PlaneProbingHNeighborhood() = delete;
 
+    /**
+     * Constructor.
+     *
+     * @param aPredicate a probing predicate.
+     * @param aQ the fixed point 'q'.
+     * @param aM a frame composed of the three vectors.
+     */
     PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
     /**

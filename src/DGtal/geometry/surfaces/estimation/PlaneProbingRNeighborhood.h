@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingNeighborhood.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,13 +54,15 @@ namespace DGtal
   // template class PlaneProbingRNeighborhood
   /**
    * Description of template class 'PlaneProbingRNeighborhood' <p>
-   * \brief Aim:
+   * \brief Aim: Represent a way to probe the R-neighborhood.
    *
-   * @tparam TPredicate the InPlane predicate.
+   * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate>
   class PlaneProbingRNeighborhood : public PlaneProbingNeighborhood<TPredicate>
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       using Predicate    = TPredicate;
@@ -78,6 +81,10 @@ namespace DGtal
 
     /**
      * Constructor.
+     *
+     * @param aPredicate a probing predicate.
+     * @param aQ the fixed point 'q'.
+     * @param aM a frame composed of the three vectors.
      */
     PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
 
@@ -136,12 +143,23 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    std::vector<ProbingRay> candidates;
 
     // ------------------------- Hidden services ------------------------------
   protected:
+    /**
+     * Finds the closest point on a given ray using an exponential march and a binary search.
+     *
+     * @param aRay a ray.
+     * @return the closest point on the ray.
+     */
     ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
 
+    /**
+     * Finds the closest point on a given ray using a linear search.
+     *
+     * @param aRay a ray.
+     * @return the closest point on the ray.
+     */
     ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
 
     // ------------------------- Internals ------------------------------------

@@ -40,12 +40,14 @@
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 MaximalSegmentSliceEstimation ()
 {}
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 MaximalSegmentSliceEstimation (ConstAlias<Surface> aSurface)
     : mySurface(aSurface)
@@ -54,6 +56,7 @@ MaximalSegmentSliceEstimation (ConstAlias<Surface> aSurface)
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other )
     : mySurface(other.mySurface), myH(other.myH)
@@ -62,6 +65,7 @@ MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other )
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other )
     : mySurface(other.mySurface), myH(other.myH)
@@ -71,6 +75,7 @@ MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other )
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>&
 DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegmentSliceEstimation & other )
 {
@@ -85,6 +90,7 @@ DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegment
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>&
 DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( MaximalSegmentSliceEstimation && other )
 {
@@ -98,6 +104,7 @@ DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( MaximalSegmentSliceE
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 ~MaximalSegmentSliceEstimation ()
 {}
@@ -107,6 +114,7 @@ DGtal::MaximalSegmentSliceEstimation<TSurface>::
 // ------------------------------------------------------------------------
 template < typename TSurface >
 template < typename SurfelConstIterator >
+inline
 void DGtal::MaximalSegmentSliceEstimation<TSurface>::
 init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */)
 {
@@ -116,6 +124,7 @@ init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite
 // ------------------------------------------------------------------------
 template < typename TSurface >
 template < typename SurfelConstIterator >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Quantity
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 eval (SurfelConstIterator it)
@@ -188,6 +197,7 @@ eval (SurfelConstIterator it)
 // ------------------------------------------------------------------------
 template < typename TSurface >
 template < typename SurfelConstIterator, typename OutputIterator >
+inline
 OutputIterator
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
@@ -202,6 +212,7 @@ eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Scalar
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 h () const
@@ -213,6 +224,7 @@ h () const
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 void DGtal::MaximalSegmentSliceEstimation<TSurface>::
 attach (ConstAlias<Surface> aSurface)
 {
@@ -251,6 +263,7 @@ DGtal::MaximalSegmentSliceEstimation<TSurface>::isValid() const
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::KSpace const&
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 space () const
@@ -260,6 +273,7 @@ space () const
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::RealPoint
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 centerSurfel (Surfel const& aSurfel) const {
@@ -276,6 +290,7 @@ centerSurfel (Surfel const& aSurfel) const {
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 std::pair<typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point,
           typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point>
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
@@ -304,6 +319,7 @@ trackingPointsSurfel (Surfel const& aSurfel, Dimension const& aOtherDir) const
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::RealPoint2
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 projectInPlane (Dimension const& aDir1, Dimension const& aDir2,
@@ -328,6 +344,7 @@ projectInPlane (Dimension const& aDir1, Dimension const& aDir2,
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Container
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 slicePoints (Surfel const& aSurfel,
@@ -390,6 +407,7 @@ slicePoints (Surfel const& aSurfel,
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 std::pair<typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point2,
           typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point2>
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
@@ -416,6 +434,7 @@ getExtremalPoints (Container const& aPoints) const
 
 // ------------------------------------------------------------------------
 template < typename TSurface >
+inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 trivialNormal (Surfel const& aSurfel) const

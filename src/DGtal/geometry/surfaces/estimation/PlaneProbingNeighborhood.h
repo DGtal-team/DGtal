@@ -45,6 +45,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,13 +56,16 @@ namespace DGtal
   /**
    * Description of template class 'PlaneProbingNeighborhood' <p>
    * \brief Aim: A base virtual class that represents a way to probe a neighborhood,
-   * used in the plane probing based estimators.
+   * used in the plane probing based estimators, see DGtal::PlaneProbingTetrahedronEstimator or
+   * DGtal::PlaneProbingParallelepipedEstimator.
    *
-   * \tparam TPredicate the probing predicate.
+   * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate>
   class PlaneProbingNeighborhood
   {
+    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
+
     // ----------------------- Public types ------------------------------
   public:
       using Predicate  = TPredicate;
@@ -72,6 +76,7 @@ namespace DGtal
 
       /**
        * Represents a configuration of the H-neighborhood.
+       * TODO: details
        */
       enum class HexagonState
       {
@@ -141,7 +146,7 @@ namespace DGtal
     // ----------------------- Plane Probing services ------------------------------
   public:
     /*
-     * @param aNeighbors a list of candidate rays (if empty, we consider the whole H-neighborhood).
+     * @param aNeighbors a list of rays to filter the candidates (if empty, there is no filtering).
      */
     void setNeighbors (std::vector<ProbingRay> const& aNeighbors);
 

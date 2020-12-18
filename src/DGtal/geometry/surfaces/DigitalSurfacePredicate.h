@@ -52,9 +52,14 @@ namespace DGtal
   // template class DigitalSurfacePredicate
   /**
    * Description of template class 'DigitalSurfacePredicate' <p>
-   * \brief Aim:
+   * \brief Aim: A point predicate which tells whether a point belongs to the
+   * set of pointels of a given digital surface or not.
    *
-   * @tparam TSurface the surface type.
+   * Internally the set of pointels is stored in a DGtal::UnorderedSetByBlock.
+   *
+   * @tparam TSurface any digital surface type.
+   *
+     \b Models: A DigitalSurfacePredicate is a model of concepts::CPointPredicate.
    */
   template <typename TSurface>
   class DigitalSurfacePredicate
@@ -115,10 +120,10 @@ namespace DGtal
     //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
     /**
-     * Test whether a point belongs to a digital surface or not.
+     * Test whether a point is a pointel of a digital surface or not.
      *
-     * @param aPoint a digital point.
-     * @return 'true' if the point belongs to the digital surface, false otherwise.
+     * @param aPoint any digital point.
+     * @return 'true' if the point is a pointel of the digital surface, false otherwise.
      */
     bool operator() (Point const& aPoint) const;
 
@@ -142,7 +147,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    CountedConstPtrOrConstPtr<Surface> mySurface; /**< A pointer on the digital surface */
+    CountedConstPtrOrConstPtr<Surface> mySurface; /**< A pointer on the digital surface. */
     UnorderedSetByBlock<Point> myPointSet; /**< The set of pointels. */
 
     // ------------------------- Hidden services ------------------------------
@@ -156,7 +161,7 @@ namespace DGtal
     KSpace const& space () const;
 
     /**
-     * Computes the set of pointels, fills the myPointSet set.
+     * Computes the set of pointels, fills the myPointSet object.
      */
     void buildPointSet();
 

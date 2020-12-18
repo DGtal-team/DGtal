@@ -40,6 +40,7 @@
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::
 PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
     : DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM)
@@ -47,6 +48,7 @@ PlaneProbingR1Neighborhood(Predicate const& aPredicate, Point const& aQ, Triangl
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::
 ~PlaneProbingR1Neighborhood()
 {}
@@ -56,6 +58,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
 {
@@ -175,6 +178,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
 {
     int code = 0;
@@ -195,6 +199,7 @@ int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 std::pair<typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay,
           typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::candidateRay (int index) const
@@ -212,6 +217,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::candidateRay (int index) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 std::vector<typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay>
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const
 {
@@ -277,6 +283,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 bool
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay,
                                                                           std::vector<ProbingRay> const& aLst) const
@@ -314,6 +321,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (ProbingRay const& aRay) const
 {
@@ -353,6 +361,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (Probin
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingRay const& aRay) const
 {
@@ -371,6 +380,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingR
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const
 {

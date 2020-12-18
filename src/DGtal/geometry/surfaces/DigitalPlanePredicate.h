@@ -52,11 +52,14 @@ namespace DGtal
   // template class DigitalPlanePredicate
   /**
    * Description of template class 'DigitalPlanePredicate' <p>
-   * \brief Aim: A digital plane is a digitization of an Euclidean plane, it can
-   * be seen as the set of digital points comprised between two parallel planes.
+   * \brief Aim: Representing digital planes which are digitizations of Euclidean planes
+   * as point predicates.
    *
-   * If N is the normal, \f$ \mu \f$ the lower bound and \f$ \nu \f$ the thickness then the corresponding
-   * digital plane is the set of digital points  \f$ x \f$ such that \f$ \mu \leq x \cdot N < \mu + \nu \f$.
+   * A digital plane is a digitization of an Euclidean plane, it can
+   * be seen as the set of digital points comprised between two parallel Euclidean planes.
+   *
+   * If N is a normal vector, \f$ \mu \f$ the lower bound and \f$ \nu \f$ the thickness then the corresponding
+   * digital plane is the set of digital points \f$ x \f$ such that \f$ \mu \leq x \cdot N < \mu + \nu \f$.
    *
    * When \f$ \nu = \| N \|_1 \f$, then it represents a standard digital plane,
    * and when \f$ \nu = \| N \|_\infty \f$, then it represents a naive digital plane.
@@ -147,7 +150,6 @@ namespace DGtal
      * Checks whether a point \a aPoint belongs to the digital plane.
      *
      * @param aPoint any digital point.
-     *
      * @return 'true' if p belongs to the digital plane, 'false' otherwise.
      */
     bool operator() (Point const& aPoint) const;
@@ -172,9 +174,9 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    Vector myNormal;
-    Integer myMu;
-    Integer myNu;
+    Vector myNormal; /**< The normal vector. */
+    Integer myMu; /**< The lower bound. */
+    Integer myNu; /**< The thickness. */
 
     // ------------------------- Hidden services ------------------------------
   protected:

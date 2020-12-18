@@ -55,7 +55,7 @@ namespace DGtal
    * Description of template class 'PlaneProbingDigitalSurfaceLocalEstimator' <p>
    * \brief Aim:
    *
-   * @tparam TSurface the surface type.
+   * @tparam TSurface the digital surface type.
    * @tparam TProbingAlgorithm the probing algorithm.
    */
   template <typename TSurface, typename TProbingAlgorithm>

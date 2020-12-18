@@ -40,6 +40,7 @@
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingRNeighborhood<TPredicate>::
 PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
     : DGtal::PlaneProbingNeighborhood<TPredicate>(aPredicate, aQ, aM)
@@ -47,6 +48,7 @@ PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 DGtal::PlaneProbingRNeighborhood<TPredicate>::
 ~PlaneProbingRNeighborhood()
 {}
@@ -56,6 +58,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingRNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 {
@@ -83,6 +86,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingRNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const
 {
@@ -129,6 +133,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+inline
 typename DGtal::PlaneProbingRNeighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const
 {
