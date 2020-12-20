@@ -28,6 +28,12 @@
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
 
+## Bug fixes
+- *IO*
+  - Removing the default grey background and raising an error if CAIRO has not between
+    set for the Board3DTo2D export (David Coeurjolly,
+    [#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
+
 
 # DGtal 1.1
 

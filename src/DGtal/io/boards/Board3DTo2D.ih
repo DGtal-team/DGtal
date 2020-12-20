@@ -328,13 +328,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
 
     cr = cairo_create (surface);
 
-    // Fill the background with gray
-    cairo_set_source_rgba (cr, .3, .3, .3, 1.);
-    cairo_rectangle (cr, 0, 0, Viewport[2], Viewport[3]);
-    cairo_fill (cr);
-
     // Draw the shapes
-
     // myBallSetList
     for(unsigned int i=0; i<Board3DTo2D<Space, KSpace>::myBallSetList.size(); i++)
     {
@@ -635,9 +629,6 @@ DGtal::Board3DTo2D<Space, KSpace>::init()
     Board3DTo2D<Space, KSpace>::myCurrentFillColor = DGtal::Color (220, 220, 220);
     Board3DTo2D<Space, KSpace>::myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
-    /*createNewCubeList();
-std::vector<cubeD3D> aKSCubeList;*/
-
     Board3DTo2D<Space, KSpace>::myDefaultColor= DGtal::Color(255, 255, 255);
 
     //
@@ -648,9 +639,7 @@ std::vector<cubeD3D> aKSCubeList;*/
 
     ZNear = 0.001;
     ZFar = 100.0;
-    //ZNear = 4.578200;
-    //ZFar = 22.578199;
-
+  
    Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]="SolidMode";
 }
 
