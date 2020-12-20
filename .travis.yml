@@ -14,6 +14,8 @@ os:
   - linux
   - osx
 
+osx_image: xcode12
+
 cache:
   apt: true
   directories:
@@ -50,7 +52,7 @@ addons:
      - graphicsmagick
      - fftw
      - eigen
-     - ninja    
+     - ninja
     update: true
 
 before_cache:
