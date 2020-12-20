@@ -27,6 +27,8 @@
 - *IO*
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
+  - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
+    [#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
 
 ## Bug fixes
 - *IO*
