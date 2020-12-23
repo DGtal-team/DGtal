@@ -70,22 +70,23 @@ pybind11::class_<TCubicalComplex> declare_CubicalComplex(pybind11::module &m,
     // ----------------------- Class operators --------------------------------
 
     // Arithmetic
-    // py_class.def(py::self + py::self);
-    // py_class.def(py::self - py::self);
-    // py_class.def(py::self * py::self);
-    // py_class.def(py::self / py::self);
-    // py_class.def(py::self += py::self);
-    // py_class.def(py::self -= py::self);
-    // py_class.def(py::self *= py::self);
-    // py_class.def(py::self /= py::self);
+    py_class.def(py::self | py::self, "Union");
+    py_class.def(py::self |= py::self, "Union in-place");
+    py_class.def(py::self & py::self, "Intersection");
+    py_class.def(py::self &= py::self, "Intersection in-place");
+    py_class.def(py::self - py::self, "Difference");
+    py_class.def(py::self -= py::self, "Difference in-place");
+    py_class.def(py::self ^ py::self, "Symmetric difference");
+    py_class.def(py::self ^= py::self, "Symmetric difference in-place");
+    py_class.def(~py::self, "Close");
+    // Open not implemented: in python operator * is not unary
+    // py_class.def(*py::self);//, "Open");
 
     // Comparisons
     py_class.def(py::self == py::self);
     py_class.def(py::self != py::self);
     py_class.def(py::self <= py::self);
     py_class.def(py::self >= py::self);
-
-    // py_class.def(py::hash(py::self));
 
     // ----------------------- Class functions --------------------------------
     py_class.def("clear", py::detail::overload_cast_impl<>()(&TT::clear),

@@ -112,5 +112,16 @@ def test_DigitalTopology(Type):
     ccomplex.close()
     ccomplex.open()
 
-
+    # Operators
+    ccother = ccomplex | ccomplex
+    print("operator |: ", ccother)
+    ccother = ccomplex & ccomplex
+    print("operator &: ", ccother)
+    ccother = ccomplex - ccomplex
+    print("operator -: ", ccother)
+    ccother = ccomplex ^ ccomplex
+    print("operator ^: ", ccother)
+    ccother = ~ccomplex
+    print("Close ~: ", ccother)
+    # ccother = *ccomplex # not valid in python
 
