@@ -49,7 +49,6 @@ addons:
     - texlive
   homebrew:
     packages:
-     - graphicsmagick
      - fftw
      - eigen
      - ninja
