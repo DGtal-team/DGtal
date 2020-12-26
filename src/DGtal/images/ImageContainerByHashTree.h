@@ -281,7 +281,10 @@ namespace DGtal
      * @return a (might be const) reference to the container.
      */
     const Self & container() const { return *this; };
-    /** @copydoc container() */
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+     */
     Self & container() { return *this; };
 
     /**
@@ -289,7 +292,10 @@ namespace DGtal
      * @return a (might be const) reference to the data.
     */
     const Node** & data() const noexcept { return myData; };
-    /** @copydoc data() */
+    /**
+     * Give access to the underlying data.
+     * @return a (might be const) reference to the data.
+     */
     Node** & data() noexcept { return myData; };
 
     /**

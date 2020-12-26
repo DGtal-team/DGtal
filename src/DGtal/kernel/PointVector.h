@@ -977,7 +977,11 @@ namespace DGtal
      * @return container.data()
      */
     inline const Component* data() const noexcept;
-    /** @copydoc data() */
+    /**
+     * PointVector data() (const and non-const) access to raw data of a std container
+     *
+     * @return container.data()
+     */
     inline Component* data() noexcept;
 
     // ----------------------- Array services ------------------------------
