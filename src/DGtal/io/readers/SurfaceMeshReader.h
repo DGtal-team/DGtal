@@ -90,7 +90,7 @@ namespace DGtal
     /// Reads an input file as an OBJ file format and outputs the
     /// corresponding surface mesh.
     ///
-    /// @param[inout] input the input stream where the OBJ file is read.
+    /// @param[in,out] input the input stream where the OBJ file is read.
     /// @param[out] smesh the output surface mesh.
     ///
     /// @return 'true' if both reading the input stream was ok and the

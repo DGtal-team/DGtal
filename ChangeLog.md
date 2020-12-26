@@ -30,11 +30,16 @@
   - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
     [#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
 
-## Bug fixes
+## Bug fixes
+
+- *Documentation*
+  - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
 - *IO*
   - Removing the default grey background and raising an error if CAIRO has not between
     set for the Board3DTo2D export (David Coeurjolly,
-    [#XXXX](https://github.com/DGtal-team/DGtal/pull/XXXX))
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
 
 # DGtal 1.1
