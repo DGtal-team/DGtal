@@ -33,11 +33,6 @@ cmake "$SRC_DIR" $BTYPE -G Ninja
 #     make all
 #############################
 echo "Building..."
-
-#Sequential DEC examples, this would also build library
-#make examplePropagation
-ninja testDiscreteExteriorCalculusExtended
-#make exampleDiscreteExteriorCalculusChladni
 ninja
 
 $SCRIPT_END

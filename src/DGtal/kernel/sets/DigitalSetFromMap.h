@@ -275,7 +275,10 @@ namespace DGtal
      * @return a (might be const) reference to the stored container.
     */
     const Container & container() const { return *myImgPtr;};
-    /** @copydoc container() */
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+     */
     Container & container(){ return *myImgPtr;};
 
     /**
