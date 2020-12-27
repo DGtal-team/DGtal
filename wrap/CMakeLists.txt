@@ -33,7 +33,7 @@ set(wrap_header_common
   dgtal_pybind11_common.h)
 
 # Add the pybind module
-# Use SHARED instead of the deault MODULE to allow external plugins to link to it.
+# Use SHARED instead of the default MODULE to allow external plugins to link to it.
 # This would require the same CI/CD to build and link these external plugins.
 pybind11_add_module(_dgtal
   SHARED
