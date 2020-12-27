@@ -24,11 +24,6 @@ add_subdirectory(io)
 #TODO add_subdirectory(math)
 #TODO add_subdirectory(shapes)
 
-if(WITH_ITK)
-  # Add itk wrapping of Image
-  #TODO add_subdirectory(bridges/itk)
-endif()
-
 set(wrap_header_common
   dgtal_pybind11_common.h)
 

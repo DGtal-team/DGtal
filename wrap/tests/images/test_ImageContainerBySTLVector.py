@@ -219,9 +219,7 @@ def test_ImageContainerITKBridge(Type):
     Domain = ImageContainer.TDomain
     Point = ImageContainer.TPoint
     print("itk_image: ", type(itk_image))
-    # Important to specify order='C'.
     # C (row major) is the default ordering from itk.GetArrayFromImage
-    # DGtal default is 'F' (colum major)
     dgtal_image = ImageContainer(itk_np_array, order='C')
 
     if Type == "ImageContainerByVector2DUnsignedChar":
