@@ -5,6 +5,8 @@
 - *Project*
   - Add azure-pipelines in `wrap` folder to kickstart python wrappings
     (Pablo Hernandez-Cerdan [#1529](https://github.com/DGtal-team/DGtal/pull/1529))
+  - Modernize CMake: Avoid global includes and links, use `target_` commands instead
+    (Pablo Hernandez-Cerdan, David Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/pull/1524))
 
 - *Documentation*
   - Fix some small errors : includes, variable names, code example
