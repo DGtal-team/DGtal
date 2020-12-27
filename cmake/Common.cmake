@@ -31,10 +31,21 @@ endforeach()
 
 
 # -----------------------------------------------------------------------------
-# CPP11 
+# CPP11
 # -----------------------------------------------------------------------------
-set (CMAKE_CXX_STANDARD 11)
-set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 11)
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED})
+else()
+  # Throw if CMAKE_CXX_STANDARD is 98
+  if(${CMAKE_CXX_STANDARD} EQUAL 98)
+    message(FATAL_ERROR "CMAKE_CXX_STANDARD is set to ${CMAKE_CXX_STANDARD}, "
+      "but DGtal requires at least ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED}.")
+  endif()
+endif()
+if(NOT CMAKE_CXX_STANDARD_REQUIRED)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
 
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib

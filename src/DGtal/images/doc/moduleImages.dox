@@ -137,7 +137,7 @@ for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end();
 {
   Image::Value v = image( *it ); 
   v += 5; //adding 5 to all values
-  image.setValue( v ); 
+  image.setValue( *it, v ); 
 }
 @endcode
 

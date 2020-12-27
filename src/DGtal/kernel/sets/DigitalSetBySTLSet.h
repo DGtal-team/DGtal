@@ -90,6 +90,7 @@ namespace DGtal
     typedef typename Domain::Space Space;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
+    typedef std::set<Point> Container;
     typedef typename std::set<Point>::iterator Iterator;
     typedef typename std::set<Point>::const_iterator ConstIterator;
 
@@ -253,6 +254,17 @@ namespace DGtal
      * @return a iterator on the element after the last in this set.
      */
     Iterator end();
+
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+    */
+    const Container & container() const;
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+     */
+    Container & container();
 
     /**
      * set union to left.

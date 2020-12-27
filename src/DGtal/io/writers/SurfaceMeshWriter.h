@@ -81,7 +81,7 @@ namespace DGtal
     typedef std::vector< Color >                 Colors;
 
     /// Writes a surface mesh in an output file (in OBJ file format).
-    /// @param[inout] output the output stream where the OBJ file is written.
+    /// @param[in,out] output the output stream where the OBJ file is written.
     /// @param[in] smesh the surface mesh.
     /// @return 'true' if writing in the output stream was ok.
     static

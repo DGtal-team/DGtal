@@ -972,11 +972,16 @@ namespace DGtal
     ConstReverseIterator rend() const;
 
     /**
-     * PointVector data() access to raw data of a std container
+     * PointVector data() (const and non-const) access to raw data of a std container
      *
      * @return container.data()
      */
     inline const Component* data() const noexcept;
+    /**
+     * PointVector data() (const and non-const) access to raw data of a std container
+     *
+     * @return container.data()
+     */
     inline Component* data() noexcept;
 
     // ----------------------- Array services ------------------------------

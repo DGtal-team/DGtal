@@ -76,6 +76,7 @@ namespace DGtal
   public:
 
     typedef TMapImage Image;
+    typedef Image Container;
     typedef std::pair<const typename Image::Point, 
 		      typename Image::Value> Pair;
     typedef DigitalSetFromMap<Image> Self; 
@@ -268,6 +269,17 @@ namespace DGtal
      * @return a iterator on the element after the last in this set.
      */
     Iterator end();
+
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+    */
+    const Container & container() const { return *myImgPtr;};
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the stored container.
+     */
+    Container & container(){ return *myImgPtr;};
 
     /**
      * set union to left.

@@ -27,6 +27,9 @@
  *
  * This file is part of the DGtal library.
  */
+#if !defined(WITH_CAIRO)
+#error "Board3DTo2D requires Cairo (WITH_CAIRO option when building DGtal)"
+#endif
 
 #if defined(Board3DTo2D_RECURSES)
 #error Recursive header files inclusion detected in Board3DTo2D.h
@@ -51,7 +54,6 @@
 #include "DGtal/io/Color.h"
 
 #include "DGtal/kernel/CSpace.h"
-
 
 //////////////////////////////////////////////////////////////////////////////
 

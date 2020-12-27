@@ -1,3 +1,47 @@
+# DGtal 1.2 (dev)
+
+- *Project*
+  - Add azure-pipelines in `wrap` folder to kickstart python wrappings
+    (Pablo Hernandez-Cerdan [#1529](https://github.com/DGtal-team/DGtal/pull/1529))
+
+- *Documentation*
+  - Fix some small errors : includes, variable names, code example
+    (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
+  - Fix doxygen errors in DigitalConvexity, SurfaceMesh
+    (Pablo Hernandez-Cerdan [#1534](https://github.com/DGtal-team/DGtal/pull/1534))
+
+- *General*
+  - Only set CMAKE_CXX_STANDARD if not defined already
+    (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
+  - Add `container()` member function to DigitalSets and ImageContainers
+    (Pablo Hernandez-Cerdan [#1532](https://github.com/DGtal-team/DGtal/pull/1532))
+
+- *Arithmetic*
+  - Add default constructor to ClosedIntegerHalfSpace
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+
+- *Geometry*
+  - Fix BoundedLatticePolytope::init when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+
+- *IO*
+  - Fix Color::getRGBA
+    (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
+  - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+## Bug fixes
+
+- *Documentation*
+  - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+- *IO*
+  - Removing the default grey background and raising an error if CAIRO has not between
+    set for the Board3DTo2D export (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+
 # DGtal 1.1
 
 ## New Features / Critical Changes
@@ -147,7 +191,6 @@
   - Add const directives to some curve estimators on shapes.
     (Adrien Krähenbühl [#1429](https://github.com/DGtal-team/DGtal/pull/1429))
 
-
 - *IO*
   - When the 3D built-in viewer is enabled (libqglviewer), the default
     required Qt version is now Qt5 instead of Qt4. You can revert to
@@ -181,6 +224,11 @@
   - Fix initialisation in BoundedLatticePolytope when creating non full
     dimensional simplices in 3D (segments, triangles). (Jacques-Olivier Lachaud,
     [#1502](https://github.com/DGtal-team/DGtal/pull/1502))
+
+- *Kernel*
+  - Point2DEmbedderIn3D edit to recover behavior of version 0.9.4 in
+    the origin point placement. (Florian Delconte and Bertrand Kerautret
+    [#1520](https://github.com/DGtal-team/DGtal/pull/1520))
 
 - *Helpers*
   - Fix Metric problem due to implicit RealPoint toward Point conversion when computing
@@ -221,8 +269,8 @@
 
 - *Shapes*
   - Fix bug in Astroid parameter() method : orientation correction
-   (Adrien Krähenbühl,
-   [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
+    (Adrien Krähenbühl,
+    [#1325](https://github.com/DGtal-team/DGtal/pull/1426))
   - Add missing constraint to flips in TriangulatedSurface
     (Jacques-Olivier Lachaud,[#1498](https://github.com/DGtal-team/DGtal/pull/1498))
 
@@ -253,11 +301,11 @@
   - Fix issue (https://github.com/DGtal-team/DGtal/issues/1478),
     that is a Visual Studio 2019 build error related to befriend
     template specializations
-   (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
+    (Jacques-Olivier Lachaud [#1481](https://github.com/DGtal-team/DGtal/pull/1481))
   - Removing the homemade CPP11 checks, using cmake macro instead
-  (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
+    (David Coeurjolly, [#1446](https://github.com/DGtal-team/DGtal/pull/1446))
   - Removes the check for CPP11 when building WITH_ITK
-  (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
+    (Pablo Hernandez-Cerdan, [#1453](https://github.com/DGtal-team/DGtal/pull/1453))
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element.

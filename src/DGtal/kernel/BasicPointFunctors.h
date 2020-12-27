@@ -457,8 +457,8 @@ namespace functors
       uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*anNormalVector[0];
 
       uDir2/=uDir2.norm();
-
-      myOriginPointEmbeddedIn3D = Point(anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2, functors::Round<>());
+      
+      myOriginPointEmbeddedIn3D = anOriginPoint + Point(uDir1*anWidth/2) + Point(uDir2*anWidth/2);
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
     }
