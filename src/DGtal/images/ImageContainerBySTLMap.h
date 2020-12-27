@@ -222,7 +222,10 @@ namespace DGtal
      * @return a (might be const) reference to the container.
     */
     const Container & container() const { return static_cast<Parent>(*this); };
-    /** @copydoc container() */
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+     */
     Container & container() { return static_cast<Parent>(*this); };
 
     /**

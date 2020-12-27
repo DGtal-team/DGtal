@@ -199,7 +199,10 @@ namespace DGtal
       {
         return *(myITKImagePointer->GetPixelContainer());
       }
-      /** @copydoc container() */
+      /**
+       * Give access to the underlying container.
+       * @return a (might be const) reference to the container.
+       */
       Container & container()
       {
         return *(myITKImagePointer->GetPixelContainer());

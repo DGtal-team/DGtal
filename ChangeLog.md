@@ -29,6 +29,19 @@
 - *IO*
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
+  - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+## Bug fixes
+
+- *Documentation*
+  - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+- *IO*
+  - Removing the default grey background and raising an error if CAIRO has not between
+    set for the Board3DTo2D export (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
 - *Build*
   - We now use cmake *Fetch_Content* to download the stable release of
