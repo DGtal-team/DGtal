@@ -197,6 +197,10 @@ bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
   trace.info() << "Iterate: (" << nbok << "/" << nb << ") "
   	       << std::endl;
 
+  // access to underlying container
+  auto & container = set1.container();
+  (void)container; // remove unused warning
+
   //erasure
   set1.erase( b );
   nbok += ( (set1.size() == 2)

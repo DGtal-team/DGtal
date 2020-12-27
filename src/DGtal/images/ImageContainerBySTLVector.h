@@ -129,6 +129,8 @@ namespace DGtal
   public:
 
     typedef ImageContainerBySTLVector<TDomain, TValue> Self;
+    typedef std::vector<TValue> Parent;
+    typedef Parent Container;
 
     /// domain
     BOOST_CONCEPT_ASSERT ( ( concepts::CDomain<TDomain> ) );
@@ -283,6 +285,17 @@ namespace DGtal
      * iterators to scan the values of image.
      */
     Range range();
+
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+    */
+    const Container & container() const { return static_cast<Parent>(*this); };
+    /**
+     * Give access to the underlying container.
+     * @return a (might be const) reference to the container.
+     */
+    Container & container() { return static_cast<Parent>(*this); };
 
 
     /////////////////////////// Custom Iterator ///////////////

@@ -379,6 +379,22 @@ DGtal::DigitalSetBySTLVector<Domain>::end()
   return myVector.end();
 }
 
+template <typename Domain>
+inline
+const typename DGtal::DigitalSetBySTLVector<Domain>::Container &
+DGtal::DigitalSetBySTLVector<Domain>::container() const
+{
+  return myVector;
+}
+
+template <typename Domain>
+inline
+typename DGtal::DigitalSetBySTLVector<Domain>::Container &
+DGtal::DigitalSetBySTLVector<Domain>::container()
+{
+  return myVector;
+}
+
 /**
  * set union to left.
  * @param aSet any other set.

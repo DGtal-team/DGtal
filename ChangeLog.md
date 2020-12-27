@@ -7,10 +7,14 @@
 - *Documentation*
   - Fix some small errors : includes, variable names, code example
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
+  - Fix doxygen errors in DigitalConvexity, SurfaceMesh
+    (Pablo Hernandez-Cerdan [#1534](https://github.com/DGtal-team/DGtal/pull/1534))
 
 - *General*
   - Only set CMAKE_CXX_STANDARD if not defined already
     (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
+  - Add `container()` member function to DigitalSets and ImageContainers
+    (Pablo Hernandez-Cerdan [#1532](https://github.com/DGtal-team/DGtal/pull/1532))
 
 - *Arithmetic*
   - Add default constructor to ClosedIntegerHalfSpace
@@ -19,6 +23,23 @@
 - *Geometry*
   - Fix BoundedLatticePolytope::init when using half-spaces initialization
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+
+- *IO*
+  - Fix Color::getRGBA
+    (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
+  - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+## Bug fixes
+
+- *Documentation*
+  - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
+- *IO*
+  - Removing the default grey background and raising an error if CAIRO has not between
+    set for the Board3DTo2D export (David Coeurjolly,
+    [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
 
 # DGtal 1.1
