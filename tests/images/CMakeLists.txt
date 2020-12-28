@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testImageSimple
   testImageAdapter
   testImageCache
@@ -18,46 +18,40 @@ SET(DGTAL_TESTS_SRC
   )
 
 if( WITH_HDF5 )
-  SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
-  testImageFactoryFromHDF5)
-endif( WITH_HDF5 )
+  set(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC} testImageFactoryFromHDF5)
+endif()
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
-IF(BUILD_BENCHMARKS)
-  SET(DGTAL_BENCH_SRC)
+if(BUILD_BENCHMARKS)
+  set(DGTAL_BENCH_SRC)
 
-  IF(WITH_BENCHMARK)
-    SET(DGTAL_BENCH_SRC
+  if(WITH_BENCHMARK)
+    set(DGTAL_BENCH_SRC
       ${DGTAL_BENCH_SRC}
       benchmarkImageContainer
     )
-  ENDIF(WITH_BENCHMARK)
+  endif()
 
   #Benchmark target
-  FOREACH(FILE ${DGTAL_BENCH_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    ADD_DEPENDENCIES(benchmark ${FILE})
-  ENDFOREACH(FILE)
-ENDIF(BUILD_BENCHMARKS)
+  foreach(FILE ${DGTAL_BENCH_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+    add_dependencies(benchmark ${FILE})
+  endforeach()
+endif()
 
 
 #-----------------------
 #ITK based tests
 #----------------------
-IF(ITK_FOUND)
-  SET(DGTAL_TESTS_ITK_SRC testITKImage)
-ELSE(ITK_FOUND)
-  SET(DGTAL_TESTS_ITK_SRC "")
-ENDIF(ITK_FOUND)
+if(ITK_FOUND)
+  set(DGTAL_TESTS_ITK_SRC testITKImage)
+else()
+  set(DGTAL_TESTS_ITK_SRC "")
+endif()
 
-FOREACH(FILE ${DGTAL_TESTS_ITK_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_ITK_SRC})
+  DGtal_add_test(${FILE})
+endforeach()

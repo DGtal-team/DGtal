@@ -1,8 +1,12 @@
 # DGtal 1.2 (dev)
 
+## Changes
+
 - *Project*
   - Add azure-pipelines in `wrap` folder to kickstart python wrappings
     (Pablo Hernandez-Cerdan [#1529](https://github.com/DGtal-team/DGtal/pull/1529))
+  - Modernize CMake: Avoid global includes and links, use `target_` commands instead
+    (Pablo Hernandez-Cerdan, David Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/pull/1524))
 
 - *Documentation*
   - Fix some small errors : includes, variable names, code example
@@ -41,6 +45,10 @@
     set for the Board3DTo2D export (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
+- *Build*
+  - We now use cmake *Fetch_Content* to download the stable release of
+    Catch2 (used in our unit-tests) when building the project (David
+    Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
 
 # DGtal 1.1
 
