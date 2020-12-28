@@ -31,7 +31,35 @@ pybind11::class_<TDigitalTopology> declare_DigitalTopology(pybind11::module &m,
     using TTForegroundAdjacency = typename TT::ForegroundAdjacency;
     using TTBackgroundAdjacency = typename TT::BackgroundAdjacency;
     using DigitalTopologyProperties = DGtal::DigitalTopologyProperties;
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(Represents a digital topology as a couple of adjacency relations.
+
+The most famous are the (4,8) and (8,4) topologies on Z^2 (see
+seminal Rosenfeld paper). The two given adjacency relations
+should be defined for all digital points used afterwards. For
+instance, they should operate on points of the same dimension.
+The first adjacency defines the foreground topology while the
+second adjacency defines the background topology. The opposite
+topology is the reverse couple. Both adjacencies should be
+instantiable.
+
+A digital topology is classically denoted by a couple
+(kappa,lambda), which explains the notations in the class.
+
+Example of usage:
+
+    import dgtal
+    Topo = dgtal.topology.DT26_6
+    ForwardAdj = Topo.TForegroundAdjacency
+    BackwardAdj = Topo.TBackgroundAdjacency
+    fadj = ForwardAdj()
+    badj = BackwardAdj()
+    topo = Topo(foreground=fadj, background=badj,
+                props=dgtal.topology.DigitalTopologyProperties.JORDAN_DT)
+    print(topo)
+
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init<const TT &>());

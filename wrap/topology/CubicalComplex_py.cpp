@@ -24,7 +24,24 @@ using namespace DGtal;
 
 void init_CubicalComplex(py::module & m) {
     // CubicalCellData
-    auto py_class_CubicalCellData = py::class_<CubicalCellData>(m, "CubicalCellData");
+    const std::string docs_CubicalCellData =
+R"(Any cell is stored within a cubical complex with an associated
+data.
+Its basic usage is to store flags associated to the cells, but it may store other
+values.
+
+Predefined flags are:
+CubicalComplex.REMOVED,
+CubicalComplex.COLLAPSIBLE,
+CubicalComplex.FIXED,
+CubicalComplex::USER1.
+Other bits can be used to associate an integer to the cell.
+The corresponding mask is CubicalComplex.VALUE.
+
+Such data is notably used in collapse operation
+)";
+    auto py_class_CubicalCellData = py::class_<CubicalCellData>(m, "CubicalCellData",
+            docs_CubicalCellData.c_str());
     py_class_CubicalCellData.def(py::init());
     py_class_CubicalCellData.def(py::init<DGtal::uint32_t>());
     py_class_CubicalCellData.def_readwrite("data", &CubicalCellData::data);

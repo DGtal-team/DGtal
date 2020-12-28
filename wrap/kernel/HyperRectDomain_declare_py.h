@@ -31,7 +31,19 @@ pybind11::class_<THyperRectDomain> declare_HyperRectDomain(pybind11::module &m,
     using TTSpace = typename THyperRectDomain::Space;
     using TTPoint = typename THyperRectDomain::Point;
     using TTRealPoint = typename TTSpace::RealPoint;
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(Parallelepidec region of a digital space, model of a 'CDomain'.
+
+The following code snippet demonstrates how to use \p HyperRectDomain
+
+    import dgtal
+    Domain = dgtal.kernel.DomainZ2i
+    Point = Domain.TPoint
+    lower_bound = Point.zero
+    upper_bound = Point.diagonal(4)
+    dom = Domain(lower_bound, upper_bound)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     py_class.def("dtype", [](const TT &self) {
             return DGtal::Python::Integer_str;

@@ -29,7 +29,10 @@ pybind11::class_<TKhalimskyCell> declare_KhalimskyCell_common(pybind11::module &
     using TT = TKhalimskyCell;
     using TTInteger = typename TT::Integer;
     using TTPoint = typename TT::Point;
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
+
+    const std::string docs =
+R"(Represents an cell in a cellular grid space by its Khalimsky coordinates.)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init([](){ return TT();}));
@@ -164,7 +167,70 @@ pybind11::class_<TKhalimskySpaceND> declare_KhalimskySpaceND(pybind11::module &m
     using TTSCell = typename TT::SCell;
     using TTSPreCell = typename TT::SPreCell;
 
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(KhalimskySpaceND represents the cubical grid as a cell complex, whose cells are
+defined as an array of integers. The topology of the cells is defined by the
+parity of the coordinates (even: closed, odd: open).
+
+This class is a model of CCellularGridSpaceND.
+
+When initializing the space using init(), the user should choose,
+for each dimension spanned by the space, between a closed and non-periodic (default) cell dimension,
+an open cell dimension or a periodic cell dimension.
+The space is generally finite, except for arbitrary size integers and when the
+space has a periodic dimension.
+
+Supposing that the space has been initialized with digital bounds \c lower and \c upper,
+the methods lowerBound() and upperBound() will always return, respectively, \c lower and \c upper.
+It as also true for periodic dimension, in order to span over the unique digital points of the space.
+
+In the same way, lowerCell() and upperCell() respect the following rules:
+- the k-th Khalimsky coordinate of lowerCell() is equal to:
+   - `2*lower[k]` if the k-th dimension is closed or periodic,
+   - `2*lower[k]+1` if the k-th dimension is open;
+- the k-th Khalimsky coordinate of upperCell() is equal to:
+   - `2*upper[k]+2` if the k-th dimension is closed,
+   - `2*upper[k]+1` if the k-th dimension is open or periodic.
+   .
+.
+The special behavior for periodic dimensions guarantees that each cell has unique
+Khalimsky coordinates in this range.
+It is useful to span the space and also for cell-based containers (see e.g. CubicalComplex).
+Uniqueness also gives meaning to equality tests between cells.
+
+Following this concept, the related methods size(), min(), max(),
+uFirst(), uLast(), uGetMin(), uGetMax(), uDistanceToMin(), uDistanceToMax(),
+sFirst(), sLast(), sGetMin(), sGetMax(), sDistanceToMin() and sDistanceToMax()
+behave for periodic dimensions like for finite dimensions, using the bounds described above.
+
+Thus, if a cell needs to be compared to the bounds, prefer using dedicated tests like
+uIsMin(), uIsMax(), sIsMin() and sIsMax() that return always false for a periodic dimension,
+and uIsInside() and sIsInside() that return always true for a periodic dimension.
+
+To be consistent with those choices, each cell returned or modified by a KhalimskySpaceND method
+will have his Khalimsky coordinates along periodic dimensions between the corresponding
+coordinates of lowerCell() and upperCell().
+But, in order to keep low computational cost, each cell passed by parameter to a KhalimskySpaceND
+method must follow the same conditions.
+This validity can be tested with the dedicated methods uIsValid() and sIsValid().
+
+Exceptions exist for uCell(const PreCell &) and sCell(const SPreCell &) that are specially featured
+to correct Khalimsky coordinates of a given cell.
+In addition, when a method accepts a coordinate as parameter, it is always corrected along
+periodic dimensions.
+
+Example of usage:
+
+    import dgtal
+    KSpace = dgtal.topology.KSpace3D
+    space = KSpace()
+    lower = space.TPoint.diagonal(0)
+    upper = space.TPoint.diagonal(20)
+    space.init(lower=lower, upper=upper, is_closed=True)
+    space.uCell(kpoint=KSpace.TPoint.diagonal(10))
+    space.uPointel(point=KSpace.TPoint.diagonal(10))
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // Wrap Closure enum
     py::enum_<typename TT::Closure>(py_class, "Closure")

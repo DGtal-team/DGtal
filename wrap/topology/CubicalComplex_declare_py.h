@@ -48,7 +48,43 @@ pybind11::class_<TCubicalComplex> declare_CubicalComplex(pybind11::module &m,
     using TTCell = typename TT::Cell;
     using TTPreCell = typename TT::PreCell;
     using TTData = typename TT::Data;
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(This class represents an arbitrary cubical complex living in some
+Khalimsky space.
+Cubical complexes are sets of cells of different dimensions related together
+with incidence relations.
+Two cells in a cubical complex are incident if and only if they are
+incident in the surrounding Khalimsky space. In other words,
+cubical complexes are defined here as subsets of Khalimsky spaces.
+
+CubicalComplex is close from being an AssociativeContainer, but values are not
+sorted (they are sorted per dimension), and are not modifiable.
+
+The CellContainer is chosen to be a std::unordered_map for python wrappings.
+
+Example of usage:
+
+import dgtal
+CComplex = dgtal.topology.CubicalComplex3D
+KSpace = CComplex.TKSpace
+space = KSpace()
+lower = space.TPoint.diagonal(0)
+upper = space.TPoint.diagonal(5)
+space.init(lower=lower, upper=upper, is_closed=True)
+ccomplex = CComplex(space)
+cell1 = space.uCell(KSpace.TPoint.diagonal(1))
+ccomplex.insertCell(cell1)
+cell2 = space.uCell(KSpace.TPoint.diagonal(2))
+ccomplex.insert(cell2)
+cells = ccomplex.getCells(dim=0)
+print("cells: ", cells)
+cell1_found = ccomplex.find(cell1)
+
+faces = ccomplex.faces(cell1)
+directFaces = ccomplex.directFaces(cell1)
+isCellInterior = ccomplex.isCellInterior(cell1)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init<const TTKSpace &>());
     py_class.def(py::init<const TT &>());

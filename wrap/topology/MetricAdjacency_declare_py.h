@@ -30,7 +30,22 @@ pybind11::class_<TMetricAdjacency> declare_MetricAdjacency(pybind11::module &m,
     using TTPoint = typename TT::Point;
     // Vertex is alias to Point
     using TTVertex = typename TT::Vertex;
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(Describes digital adjacencies in digital spaces that are defined
+with the 1-norm and the infinity-norm.
+
+It induces the classical 4 and 8 adjacencies in 2D, the 6, 18 and
+26 adjacencies in 3D, and the omega and alpha adjacencies in nD.
+
+Example of usage:
+
+    import dgtal
+    Adj = dgtal.topology.Adj26
+    pointA = Adj.TPoint(3, 4, 1)
+    pointB = Adj.TPoint(3, 3, 1)
+    print(Adj.isAdjacentTo(pointA, pointB)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());

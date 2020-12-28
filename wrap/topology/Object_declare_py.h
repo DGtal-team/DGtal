@@ -38,7 +38,50 @@ pybind11::class_<TObject> declare_Object(pybind11::module &m,
     using TTBackgroundAdjacency = typename TT::BackgroundAdjacency;
     using Connectedness = DGtal::Connectedness;
 
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(An object (or digital object) represents a set in some digital space
+associated with a digital topology.
+
+The digital topology induces a connectedness relation on the
+object (transitive closure of the foreground adjacency) and a
+connectedness relation on the complement of the set (transitive
+closure of the background adjacency).
+
+Objects may be connected or not. The connectedness is stored with
+the object, if it is known. Objects have a border, which are the
+points which touch the complement in the sense of background
+adjacency.
+
+Example of usage:
+
+    import dgtal
+    Object = dgtal.topology.Object26_6
+    # Instantitate DigitalTopology
+    Topo = Object.TDigitalTopology
+    FAdj = Topo.TForegroundAdjacency
+    BAdj = Topo.TBackgroundAdjacency
+    fadj = FAdj()
+    badj = BAdj()
+    topo = Topo(fadj, badj)
+    # Instantitate DigitalSet
+    DigitalSet = Object.TDigitalSet
+    Domain = DigitalSet.TDomain
+    Point = Object.TPoint
+    # Construct Domain
+    lb = Point.zero
+    ub = Point.diagonal(10)
+    dom = Domain(lb, ub)
+    ds = DigitalSet(dom)
+    p1 = Point.diagonal(1)
+    p2 = Point.diagonal(2)
+    ds.insert(p1)
+    ds.insert(p2)
+    # Create object with topo and digital set
+    obj = Object(topo, ds)
+    obj.border()
+    obj.properNeighborhood(p1)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init());

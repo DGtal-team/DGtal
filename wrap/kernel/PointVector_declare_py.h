@@ -247,7 +247,33 @@ pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m,
     using TT = TPointVector;
     using TTComponent = typename TT::Component;
 
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
+    const std::string docs =
+R"(A PointVector may represent either a symbolic point or a symbolic
+vector depending on the context. The coordinates of the point or
+the components of the vector should be part of a ring. For
+performance reasons, these two types are just aliases. The user
+should take care how to use it depending on the context. For
+instance, adding two points has no meaning, but will be
+authorized by the compiler.
+
+All operations involving PointVector, and some of its methods,
+follow the classical arithmetic conversion rules.
+
+Example of usage:
+
+    import dgtal
+    Point = dgtal.kernel.RealPoint3D
+    point1 = Point(2,4,6)
+    point1 = Point(2,4,6)
+    # Arithmetic operators
+    print(point1 + point1)
+    print(point1.norm1())
+
+    # As numpy array (view), no copies.
+    import numpy as np
+    np_array = np.array(point1, copy = False)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
 
     py_class.def_property_readonly_static("dtype",
             [&component_str](py::object /* self */) {

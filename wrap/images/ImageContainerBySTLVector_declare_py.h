@@ -231,8 +231,28 @@ pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(p
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TImageContainerBySTLVector;
+    const std::string docs =
+R"(Model of CImage implementing the association Point<->Value using a STL vector as container.
 
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
+Example of usage:
+
+    import dgtal
+    ImageContainer = dgtal.images.ImageContainerByVector2DColor
+    Domain = ImageContainer.TDomain
+    Point = ImageContainer.TPoint
+    # Construct Domain
+    lb = Point.zero
+    ub = Point.diagonal(4)
+    dom = Domain(lb, ub)
+    img = ImageContainer(dom)
+    ValueType = img.TValue # Color, Int, Point2D, depends on the chosen ImageContainer type.
+    value1 = ValueType()
+    point1 = Point.diagonal(1)
+    img[point1] = value1
+    print(img[point1])
+)";
+
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
 
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;

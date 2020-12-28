@@ -35,7 +35,10 @@ pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell_common(pybind11::mo
     using TT = TKhalimskyPreCell;
     using TTInteger = typename TT::Integer;
     using TTPoint = typename TT::Point;
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol());
+    const std::string docs =
+R"(Represents an (unsigned|signed) cell in an unbounded cellular grid space by its
+Khalimsky coordinates.)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init([](){ return TT();}));
@@ -219,7 +222,33 @@ pybind11::class_<TKhalimskyPreSpaceND> declare_KhalimskyPreSpaceND(pybind11::mod
     using TTSign = typename TT::Sign;
     using TTSCell = typename TT::SCell;
 
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(Represents the cubical grid as a cell complex, whose cells are
+defined as an array of integers. The topology of the cells is
+defined by the parity of the coordinates (even: closed, odd:
+open).
+
+This class is a model of CPreCellularGridSpaceND.
+
+This cellular grid space has no bounds (depending on the Integer type)
+and thus only provides static methods.
+
+Example of usage:
+
+    import dgtal
+    KPreSpace = dgtal.topology.KPreSpace3D
+    space = KPreSpace() # instantiation not required, but allowd (all methods are static)
+    space = KPreSpace
+    a_point = space.TPoint(10,10,10)
+    space.uCell(kpoint=a_point)
+    space.uSpel(point=a_point)
+    pre_cell = KSpace.TPreCell()
+    pre_cell[0] = 2
+    pre_cell[1] = 4
+    pre_cell[2] = 0
+    space.uCoords(cell=pre_cell)
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     // Not needed, all member functions are static, and there is no data.

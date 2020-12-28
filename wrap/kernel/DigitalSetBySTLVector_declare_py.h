@@ -28,7 +28,34 @@ pybind11::class_<TDigitalSetBySTLVector> declare_DigitalSetBySTLVector(pybind11:
     using TT = TDigitalSetBySTLVector;
     using TTDomain = typename TDigitalSetBySTLVector::Domain;
     using TTPoint = typename TDigitalSetBySTLVector::Point;
-    auto py_class = py::class_<TT>(m, typestr.c_str());
+    const std::string docs =
+R"(Describes a modifiable set of points within the given domain [Domain].
+Realizes the concept CDigitalSet by using the STL container std::vector.
+
+Example of usage:
+    import dgtal
+    DigitalSet = dgtal.kernel.DigitalSetZ3i
+    Domain = DigitalSet.TDomain
+    Point = DigitalSet.TPoint
+    # Construct Domain
+    lower_bound = Point.zero
+    upper_bound = Point.diagonal(4)
+    dom = Domain(lower_bound, upper_bound)
+    ds = DigitalSet(dom)
+
+    # insert
+    ds.insert(Point.diagonal(2)
+    ds.insert(Point.diagonal(3)
+    # erase
+    ds.erase(Point.diagonal(2)
+    # Iterate over points:
+    point_list = [p for p in ds]
+    # Bounding box
+    [lower, upper] = ds.bounding_box()
+    # Complement
+    ds_complement = ds.complement()
+)";
+    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init<const TTDomain &>());
