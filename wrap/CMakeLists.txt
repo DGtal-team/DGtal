@@ -16,13 +16,6 @@ add_subdirectory(base)
 add_subdirectory(topology)
 add_subdirectory(images)
 add_subdirectory(io)
-#TODO add_subdirectory(arithmetic)
-#TODO add_subdirectory(dec)
-#TODO add_subdirectory(geometry)
-#TODO add_subdirectory(graph)
-#TODO add_subdirectory(helpers)
-#TODO add_subdirectory(math)
-#TODO add_subdirectory(shapes)
 
 set(wrap_header_common
   dgtal_pybind11_common.h)

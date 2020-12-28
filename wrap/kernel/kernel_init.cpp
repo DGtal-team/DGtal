@@ -23,10 +23,6 @@ void init_HyperRectDomain(py::module &);
 void init_DigitalSetBySTLVector(py::module &);
 
 void init_dgtal_kernel(py::module & mparent) {
-    // TODO: Ask feedback about submodules
-    // Everything in dgtal., or dgtal.kernel. etc.
-    // Other option is that common modules as:
-    // kernel/core/base live in the dgtal namespace.
     auto m = mparent.def_submodule("kernel");
     init_PointVector(m);
     init_HyperRectDomain(m);
