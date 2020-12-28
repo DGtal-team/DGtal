@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.11)
 project(dgtal-dependencies)
 
 # Download/build and optionally install 3rd party dependencies of DGTAL
