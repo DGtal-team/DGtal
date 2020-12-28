@@ -40,11 +40,8 @@ add_library(DGtal::_dgtal ALIAS _dgtal)
 target_link_libraries(_dgtal PRIVATE ${enabled_libs_})
 target_include_directories(_dgtal PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  # TODO remove next two line when modernize cmake is integrated.
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/>
-  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src/>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_PYTHONINCLUDEDIR}>
-  ) # For dgtal_pybind11_common.h
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_PYTHONINCLUDEDIR}> # For dgtal_pybind11_common.h
+  )
 target_include_directories(_dgtal PRIVATE ${enabled_include_dirs_})
 target_include_directories(_dgtal SYSTEM PRIVATE ${enabled_include_system_dirs_})
 if(WITH_ITK)
