@@ -51,6 +51,12 @@ stages:
         mkdir $DEPENDENCIES_BUILD_DIR
         echo $DEPENDENCIES_BUILD_DIR
       displayName: "mkdir DEPENDENCIES_BUILD_DIR"
+    # Use the specified version of Python from the tool cache, optionally adding it to the PATH.
+    # This is fix because MacOS was using deprecated python2 and not adding it to the path, so ninja wasn't found.
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
     - task: Bash@3
       inputs:
         filePath: '$(Build.SourcesDirectory)/dependencies/deploy_dependencies_unix.sh'

@@ -19,8 +19,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'specific'
-        project: 'DGtal-mine'
-        pipeline: 8
+        project: 'DGtal'
+        pipeline: 4
         runVersion: 'latest'
         artifact: DEPENDENCIES_BUILD_DIR_LINUX
         path: $(DEPENDENCIES_BUILD_DIR)
@@ -60,8 +60,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'specific'
-        project: 'DGtal-mine'
-        pipeline: 8
+        project: 'DGtal'
+        pipeline: 4
         runVersion: 'latest'
         artifact: DEPENDENCIES_BUILD_DIR_MACOS
         path: $(DEPENDENCIES_BUILD_DIR)
@@ -99,8 +99,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'specific'
-        project: 'DGtal-mine'
-        pipeline: 8
+        project: 'DGtal'
+        pipeline: 4
         runVersion: 'latest'
         artifact: DEPENDENCIES_BUILD_DIR_WIN
         path: $(DEPENDENCIES_BUILD_DIR)
@@ -113,7 +113,7 @@ stages:
         python -m pip install ninja
         python -m pip install -r wrap\tests\requirements-test.txt
         mkdir build
-        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DDGTAL_BUILD_TESTING_PYTHON:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" -DDGTAL_WRAP_PYTHON:BOOL=ON -DBoost_USE_STATIC_LIBS:BOOL=ON -DBOOST_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/boost-build -DZLIB_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/zlib -S "$(Build.SourcesDirectory)" -B "$(Build.SourcesDirectory)\build"
+        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DDGTAL_BUILD_TESTING_PYTHON:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" -DDGTAL_WRAP_PYTHON:BOOL=ON -DBoost_USE_STATIC_LIBS:BOOL=ON -DBOOST_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/boost-build -DZLIB_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/zlib -S "$(Build.SourcesDirectory)" -B "$(Build.SourcesDirectory)\build"
         cmake --build "$(Build.SourcesDirectory)\build"
       workingDirectory: '$(Build.SourcesDirectory)'
       displayName: 'Build project'

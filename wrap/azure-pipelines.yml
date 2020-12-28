@@ -43,8 +43,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'specific'
-        project: 'DGtal-mine' # rename to DGtal when merged upstream
-        pipeline: 8 # Check dependendencies pipeline id in the browser, to be changed when merged.
+        project: 'DGtal'
+        pipeline: 4
         runVersion: 'latest'
         artifact: DEPENDENCIES_BUILD_DIR_MACOS
         path: $(DEPENDENCIES_BUILD_DIR)
@@ -86,8 +86,8 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'specific'
-        project: 'DGtal-mine' # rename to DGtal when merged upstream
-        pipeline: 8 # Check dependendencies pipeline id in the browser, to be changed when merged.
+        project: 'DGtal'
+        pipeline: 4
         runVersion: 'latest'
         artifact: DEPENDENCIES_BUILD_DIR_WIN
         path: $(DEPENDENCIES_BUILD_DIR)
