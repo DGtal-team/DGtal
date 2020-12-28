@@ -12,7 +12,7 @@ def test_CubicalCellData():
 
 @pytest.mark.parametrize("Type", [
     ("CubicalComplex2D"), ("CubicalComplex3D")])
-def test_DigitalTopology(Type):
+def test_CubicalComplex(Type):
     submodule = getattr(dgtal, "topology")
     CComplex = getattr(submodule, Type)
     KSpace = CComplex.TKSpace
