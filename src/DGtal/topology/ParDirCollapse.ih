@@ -94,7 +94,7 @@ DGtal::ParDirCollapse< CC >::eval ( unsigned int iterations )
                             }
                         }
                     }
-                    removed = DGtal::functions::collapse ( *complex, SUB.begin(), SUB.end(), P, true, true, true );
+                    removed = DGtal::functions::collapse ( *complex, SUB.begin(), SUB.end(), P, true, true, verbose );
                     SUB.clear();
                     priority = 0;
                     collapseval += removed;
