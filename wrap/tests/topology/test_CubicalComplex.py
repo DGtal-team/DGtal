@@ -125,3 +125,24 @@ def test_CubicalComplex(Type):
     print("Close ~: ", ccother)
     # ccother = *ccomplex # not valid in python
 
+@pytest.mark.parametrize("Type", [
+    ("CubicalComplex2D"), ("CubicalComplex3D")])
+def test_CubicalComplexThinning(Type):
+    submodule = getattr(dgtal, "topology")
+    CComplex = getattr(submodule, Type)
+    KSpace = CComplex.TKSpace
+    space = KSpace()
+    lower = space.TPoint.diagonal(0)
+    upper = space.TPoint.diagonal(5)
+    space.init(lower=lower, upper=upper, is_closed=True)
+    ccomplex = CComplex(space)
+    cell1 = space.uCell(KSpace.TPoint.diagonal(1))
+    ccomplex.insertCell(cell1)
+    cell2 = space.uCell(KSpace.TPoint.diagonal(2))
+    ccomplex.insertCell(cell2)
+    ccomplex.close()
+    # Make a copy
+    ccomplex_copy = copy.deepcopy(ccomplex)
+    ccomplex_copy.thinning()
+    print("Thinned: ", ccomplex_copy)
+    assert len(ccomplex_copy) == 1

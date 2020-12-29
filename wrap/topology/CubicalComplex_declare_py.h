@@ -20,6 +20,7 @@
 #include "dgtal_pybind11_common.h"
 
 #include "DGtal/topology/CubicalComplex.h"
+#include "DGtal/topology/ParDirCollapse.h"
 #include "CubicalComplex_types_py.h"
 
 template<typename TCellMap>
@@ -88,6 +89,13 @@ isCellInterior = ccomplex.isCellInterior(cell1)
     // ----------------------- Constructors -----------------------------------
     py_class.def(py::init<const TTKSpace &>());
     py_class.def(py::init<const TT &>());
+
+    py_class.def("__copy__", [](const TT &self) {
+        return TT(self);
+    }, "Equivalent to __deepcopy__.");
+    py_class.def("__deepcopy__", [](const TT &self, py::dict) {
+        return TT(self);
+    }, py::arg("memo"));
 
     // ----------------------- Python operators -------------------------------
     py_class.def("__len__", &TT::size);
@@ -539,6 +547,66 @@ dim: Dimension
     py_class.def_property_readonly_static("VALUE",
             [](py::object /* self */) { return TT::VALUE; },
             R"(Predefined flag for CubicalCellData.)");
+
+    // ----------------- Python only functions  -------------------------------
+    // ParDirCollapse
+    py_class.def("thinning", [](TT &self, const std::string &method, const size_t iterations, bool verbose) {
+        DGtal::ParDirCollapse < TT > thinning ( self.space() );
+        thinning.verbose = verbose;
+        thinning.attach(&self);
+        if(method == "pardir") {
+          if(iterations == 0) {
+            while( thinning.eval(1) ) {};
+          } else {
+            thinning.eval(iterations);
+          }
+        } else if( method == "pardir_surface") {
+            thinning.collapseSurface();
+        } else if( method == "pardir_isthmus") {
+            thinning.collapseIsthmus();
+        } else {
+            throw py::value_error("Not valid method ("
+                    + method + "). Valid methods are: pardir, surface or isthmus.");
+        }
+    },
+R"(Impements thinning algorithms in cubical complexes.
+
+Based on article: Chaussard, J. and Couprie, M., Surface Thinning in 3D Cubical Complexes,
+Combinatorial Image Analysis, (2009)
+
+Methods:
+pardir (ParDirCollapse) : Directional collapse of free pairs of faces. [Default]
+
+pardir_surface: (CollapseSurface): Extension of ParDirCollapse such that faces
+of dimension one lower than the dimension of the complex are preserved.
+
+pardir_isthmus (CollapseIsthmus): Extension of ParDirCollapse such that faces
+of dimension one lower than the dimension of the complex are preserved
+when they do not contain free faces of dimension two lower than the
+dimension of the complex.
+
+The complex is thinned in-place.
+Make a copy to the complex before applying this method if this is not desired:
+import copy
+thinned = copy.deepcopy(ccomplex)
+thinned.thinning()
+
+Parameters
+----------
+method: String ["pardir"]
+    Options: pardir, pardir_surface, pardir_isthmus
+
+iterations: Int [0]
+    Number of iterations for the pardir method.
+    The default 0 means the algorithm continues until full collapse (no more cells to remove).
+    Only applies to "pardir" method, the other methods will always fully collapse.
+verbose: Bool [False]
+    State is reported during the run.
+)",
+    py::arg("method") = "pardir",
+    py::arg("iterations") = 0,
+    py::arg("verbose") = false
+    );
 
     // ----------------------- Print / Display --------------------------------
     py_class.def("__str__", [](const TT & self) {
