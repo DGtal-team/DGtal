@@ -255,7 +255,8 @@ namespace DGtal
     template <typename HalfSpaceIterator>
     BoundedLatticePolytope( const Domain& domain,
 			    HalfSpaceIterator itB, HalfSpaceIterator itE,
-                            bool valid_edge_constraints = false );
+                            bool valid_edge_constraints = false,
+                            bool check_duplicate_constraints = false );
 
     /**
      * Initializes a polytope from a domain and a vector of half-spaces.
@@ -273,7 +274,8 @@ namespace DGtal
     template <typename HalfSpaceIterator>
     void init( const Domain& domain,
 	       HalfSpaceIterator itB, HalfSpaceIterator itE,
-               bool valid_edge_constraints = false );
+               bool valid_edge_constraints = false,
+               bool check_duplicate_constraints = false );
 
     
     /**
