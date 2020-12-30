@@ -20,10 +20,6 @@
   - Add default constructor to ClosedIntegerHalfSpace
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
 
-- *Geometry*
-  - Fix BoundedLatticePolytope::init when using half-spaces initialization
-    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
-
 - *IO*
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
@@ -41,6 +37,12 @@
     set for the Board3DTo2D export (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
+- *Geometry*
+  - Small fix and updates in BoundedLatticePolytope and BoundedRationalPolytope
+    initialization when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1538](https://github.com/DGtal-team/DGtal/pull/1538))
+  - Fix BoundedLatticePolytope::init when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
 
 # DGtal 1.1
 
