@@ -1,5 +1,5 @@
 
-SET(BOARD_SRC ${BOARD_SRC}
+set(BOARD_SRC ${BOARD_SRC}
   Board/Board
   Board/Path
   Board/PSFonts

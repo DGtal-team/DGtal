@@ -1,6 +1,4 @@
-
-
-SET(DGTAL_TESTS_SRC_IOVIEWERS
+set(DGTAL_TESTS_SRC_IOVIEWERS
   testColor
   testSimpleBoard
   testBoard2DCustomStyle
@@ -9,13 +7,11 @@ SET(DGTAL_TESTS_SRC_IOVIEWERS
 
 if (WITH_ITK)
     set(DGTAL_TESTS_SRC_IOVIEWERS ${DGTAL_TESTS_SRC_IOVIEWERS} testITKio)
-endif (WITH_ITK)
+endif()
 
-FOREACH(FILE ${DGTAL_TESTS_SRC_IOVIEWERS})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal )
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC_IOVIEWERS})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
 add_subdirectory(viewers)

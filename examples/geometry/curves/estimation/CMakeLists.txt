@@ -1,4 +1,4 @@
-SET(DGTAL_EXAMPLES_SRC
+set(DGTAL_EXAMPLES_SRC
   exampleCurvature
   exampleLMST2D
   exampleLMST3D
@@ -6,7 +6,7 @@ SET(DGTAL_EXAMPLES_SRC
 )
 
 
-FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
+foreach(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
   target_link_libraries (${FILE} DGtal  )
-ENDFOREACH(FILE)
+endforeach()

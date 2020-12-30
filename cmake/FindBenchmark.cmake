@@ -11,7 +11,7 @@ find_package(Threads REQUIRED)
 if (BENCHMARK_INCLUDE_DIR AND BENCHMARK_LIBRARIES)
   # Already in cache, be silent
   set(BENCHMARK_FIND_QUIETLY TRUE)
-endif (BENCHMARK_INCLUDE_DIR AND BENCHMARK_LIBRARIES)
+endif()
 
 find_path(BENCHMARK_INCLUDE_DIR NAMES benchmark/benchmark.h
     /usr/local/include/benchmark

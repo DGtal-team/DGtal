@@ -1,6 +1,6 @@
 add_subdirectory(determinant)
 
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testRayIntersection
   testPreimage
   testSphericalAccumulator
@@ -10,19 +10,16 @@ SET(DGTAL_TESTS_SRC
   testConvexHull2DThickness
   testConvexHull2DReverse)
 
-SET(DGTAL_TESTS_QSRC
+set(DGTAL_TESTS_QSRC
   testSphericalAccumulatorQGL)
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
-IF (WITH_VISU3D_QGLVIEWER)
-  FOREACH(FILE ${DGTAL_TESTS_QSRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
-ENDIF()
+if (WITH_VISU3D_QGLVIEWER)
+  foreach(FILE ${DGTAL_TESTS_QSRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  endforeach()
+endif()

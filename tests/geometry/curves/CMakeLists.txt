@@ -1,6 +1,6 @@
 add_subdirectory(estimation)
 
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testArithDSS3d
   testFreemanChain
   testSegmentation
@@ -23,10 +23,8 @@ SET(DGTAL_TESTS_SRC
   )
 
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
 

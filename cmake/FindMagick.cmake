@@ -15,8 +15,8 @@
 #  MAGICK++_LIBRARIES    - libraries you need to link to
 #
 
-SET(MAGICK_FOUND   0 )
-SET(MAGICK++_FOUND 0 )
+set(MAGICK_FOUND   0 )
+set(MAGICK++_FOUND 0 )
 
 FIND_PATH( MAGICK_INCLUDE_DIR magick.h
   "$ENV{MAGICK_LOCATION}/magick"
@@ -51,7 +51,7 @@ FIND_PATH( MAGICK++_INCLUDE_DIR Magick++.h
   /opt/local/include/GraphicsMagick
   )
 
-IF (MSVC)
+if (MSVC)
   # Under Windows, the name of the lib file is CORE_RL_magick
   FIND_LIBRARY( MAGICK_LIBRARIES NAMES Magick GraphicsMagick CORE_RL_magick
     PATHS 
@@ -77,7 +77,7 @@ IF (MSVC)
     /usr/local/lib
      DOC   "GraphicsMagick Magick++ library"
   )
-ELSE (MSVC)
+else()
   FIND_LIBRARY( Magick GraphicsMagick
     PATHS 
     "$ENV{MAGICK_LOCATION}/magick/.libs"
@@ -102,39 +102,39 @@ ELSE (MSVC)
     /usr/local/lib
      DOC   "GraphicsMagick Magick++ library"
   )
-ENDIF (MSVC)
+endif()
 
 
-SET(MAGICK_LIBRARIES ${Magick} )
-SET(MAGICK++_LIBRARIES ${Magick++} )
+set(MAGICK_LIBRARIES ${Magick} )
+set(MAGICK++_LIBRARIES ${Magick++} )
 
 
-IF (MAGICK_INCLUDE_DIR)
-  IF(MAGICK_LIBRARIES)
-    SET(MAGICK_FOUND 1)
+if (MAGICK_INCLUDE_DIR)
+  if(MAGICK_LIBRARIES)
+    set(MAGICK_FOUND 1)
     GET_FILENAME_COMPONENT(MAGICK_LIBRARY_DIR ${Magick}   PATH)
-  ENDIF(MAGICK_LIBRARIES)
-ENDIF(MAGICK_INCLUDE_DIR)
+  endif()
+endif()
 
-IF (MAGICK++_INCLUDE_DIR)
-  IF(MAGICK++_LIBRARIES)
-    SET(MAGICK++_FOUND 1)
+if (MAGICK++_INCLUDE_DIR)
+  if(MAGICK++_LIBRARIES)
+    set(MAGICK++_FOUND 1)
     GET_FILENAME_COMPONENT(MAGICK++_LIBRARY_DIR ${Magick++} PATH)
-  ENDIF(MAGICK++_LIBRARIES)
-ENDIF(MAGICK++_INCLUDE_DIR)
+  endif()
+endif()
 
 
-IF(NOT MAGICK_FOUND)
+if(NOT MAGICK_FOUND)
   # make FIND_PACKAGE friendly
-  IF(NOT Magick_FIND_QUIETLY)
-    IF(Magick_FIND_REQUIRED)
+  if(NOT Magick_FIND_QUIETLY)
+    if(Magick_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
               "GraphicsMagick required, please specify it's location with MAGICK_HOME, MAGICK_LOCATION or MAGICK++_LOCATION")
-    ELSE(Magick_FIND_REQUIRED)
+    else()
       MESSAGE(STATUS "GraphicsMagick was not found.")
-    ENDIF(Magick_FIND_REQUIRED)
-  ENDIF(NOT Magick_FIND_QUIETLY)
-ENDIF(NOT MAGICK_FOUND)
+    endif()
+  endif()
+endif()
 
 
 #####

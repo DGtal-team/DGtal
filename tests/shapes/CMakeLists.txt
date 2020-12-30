@@ -1,25 +1,22 @@
 
 ### Visu QGLViewer
 
-SET(QGLVIEWER_BASED_TESTS_SRC
+set(QGLVIEWER_BASED_TESTS_SRC
  testMeshDisplay
    )
 
 if (  WITH_VISU3D_QGLVIEWER )
 
-  FOREACH(FILE ${QGLVIEWER_BASED_TESTS_SRC})
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})
-    #add_test(${FILE} ${FILE})
+  foreach(FILE ${QGLVIEWER_BASED_TESTS_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
     #not a test since IHM
-  ENDFOREACH(FILE)
+  endforeach()
 
-endif ( WITH_VISU3D_QGLVIEWER   )
+endif()
 
 
 
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testGaussDigitizer
   testHalfPlane
   testImplicitFunctionModels
@@ -38,24 +35,20 @@ SET(DGTAL_TESTS_SRC
   testLemniscate2D
   )
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal )
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
 ##### Shapes with viewer.
 
-SET(QGLVIEWER_SHAPES_TESTS_SRC
+set(QGLVIEWER_SHAPES_TESTS_SRC
 #  testPolynomial
   testBall3D
   )
 
 if ( WITH_VISU3D_QGLVIEWER )
-  FOREACH(FILE ${QGLVIEWER_SHAPES_TESTS_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-      ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
-endif ( WITH_VISU3D_QGLVIEWER )
+  foreach(FILE ${QGLVIEWER_SHAPES_TESTS_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  endforeach()
+endif()

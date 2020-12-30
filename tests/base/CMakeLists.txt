@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
    testBasicBoolFunctors
    testOrderedAlphabet
    testCirculator
@@ -30,11 +30,9 @@ SET(DGTAL_TESTS_SRC
    testSimpleRandomAccessRangeFromPoint
    testFunctorHolder)
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
 #--- Benchmark specific
@@ -45,12 +43,11 @@ if (BUILD_BENCHMARKS)
     set(DGTAL_TESTS_SRC_BENCHMARK
       ${DGTAL_TESTS_SRC_BENCHMARK}
       testBenchmark)
-  endif (WITH_BENCHMARK)
+  endif()
 
-  FOREACH(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    ADD_DEPENDENCIES(benchmark ${FILE})
-  ENDFOREACH(FILE)
+  foreach(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+    add_dependencies(benchmark ${FILE})
+  endforeach()
 
-endif (BUILD_BENCHMARKS)
+endif()
