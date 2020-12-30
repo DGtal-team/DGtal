@@ -251,6 +251,12 @@ namespace DGtal
      * half-spaces that represents th constraints on edges (n-2 cells)
      * lying between two faces (n-1 cells) pointing to different
      * orthants.
+     *
+     * @param check_duplicate_constraints when 'true', the
+     * initialization checks if the given range of half-spaces
+     * contains axis-aligned half-space constraints already defined by
+     * the domain and if so it merges the duplicated constraints,
+     * otherwise it accepts and stores the constraints as is.
      */
     template <typename HalfSpaceIterator>
     BoundedLatticePolytope( const Domain& domain,
@@ -270,13 +276,18 @@ namespace DGtal
      * half-spaces that represents the constraints on edges (n-2 cells)
      * lying between two faces (n-1 cells) pointing to different
      * orthants.
+     *
+     * @param check_duplicate_constraints when 'true', the
+     * initialization checks if the given range of half-spaces
+     * contains axis-aligned half-space constraints already defined by
+     * the domain and if so it merges the duplicated constraints,
+     * otherwise it accepts and stores the constraints as is.
      */
     template <typename HalfSpaceIterator>
     void init( const Domain& domain,
 	       HalfSpaceIterator itB, HalfSpaceIterator itE,
                bool valid_edge_constraints = false,
                bool check_duplicate_constraints = false );
-
     
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
