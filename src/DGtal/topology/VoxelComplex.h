@@ -240,7 +240,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     void cellsClose(Dimension k_d, const Cells &cells);
 
     /**
-     * Insert cell (voxel) in the khalimsky space AND in the object set.
+     * Insert cell (voxel) in the khalimsky space
      *
      * @param kcell input voxel
      * @param close_it if true, apply @ref voxelClose.
@@ -279,39 +279,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * Note that the input digital set is not cleared in this function before inserting.
      */
     template<typename TDigitalSet>
-    void dumpVoxels(TDigitalSet & in_out_set);
-
-    /**
-     * Clears the voxel complex, which becomes empty.
-     * This includes the khalmisky cells and also the object points.
-     */
-    void clear();
-
-    /**
-    * Clears all cells of dimension \a d of the voxel complex.
-    * @param d the dimension of cell \a aCell.
-    */
-    void clear( Dimension d );
-
-    /**
-     * Erase element pointed by iterator \a it.
-     * @param position any iterator on a valid cell.
-     */
-    void erase( typename Parent::Iterator position );
-
-    /**
-     * Erases cell \a aCell from the complex (STL version, see eraseCell).
-     * @param aCell any cell valid in the Khalimsky space associated to the complex.
-     * @return the number of cells effectively removed from the cubical complex.
-     */
-    Size erase( const Cell& aCell );
-
-    /**
-     * Erases range of cells [\a first, \a last ).
-     * @param first an iterator on the beginning of a range of cells within this complex.
-     * @param last an iterator on the end of a range of cells within this complex.
-     */
-    void erase( typename Parent::Iterator first, typename Parent::Iterator last );
+    void dumpVoxels(TDigitalSet & in_out_set) const;
 
     //------ Spels ------//
     /**
@@ -386,16 +354,11 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     bool isSimpleByThinning(const Cell &input_spel) const;
     /**
      * Check if the input_spel from khalimsky space is simple using
-     * object properties.
+     * either a simplicity_table if loaded, or isSimpleByThinning.
      *
      * @param input_spel khalimsky space spel.
      *
      * @return true if input_spel is simple.
-     * @note It uses isSimple from Object.
-     * There are no guarantees than objectSet and khalimsky space are
-     * synchronized so user must take care of the sync of space and kspace,
-     * using insertion methods such as @see insertVoxelCell, insertVoxelPoint
-     * @see Object::isSimple
      */
     bool isSimple(const Cell &input_spel) const;
 

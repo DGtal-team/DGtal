@@ -30,6 +30,7 @@
 #include <DGtal/graph/ObjectBoostGraphInterface.h>
 #include <DGtal/topology/CubicalComplexFunctions.h>
 #include <DGtal/topology/NeighborhoodConfigurations.h>
+#include <DGtal/helpers/StdDefs.h>
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -218,58 +219,13 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelPoint(
 template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline void
-DGtal::VoxelComplex<TKSpace, TCellContainer>::dumpVoxels(TDigitalSet & in_out_set)
+DGtal::VoxelComplex<TKSpace, TCellContainer>::dumpVoxels(
+    TDigitalSet & in_out_set) const
 {
     const auto &ks = this->space();
     for (auto it = this->begin(3), itE = this->end(3) ; it != itE ; ++it ){
         in_out_set.insertNew(ks.uCoords(it->first));
     }
-}
-//---------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
-inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::clear()
-{
-    this->Parent::clear();
-}
-
-//---------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
-inline
-void
-DGtal::VoxelComplex<TKSpace, TCellContainer>::
-clear( Dimension d )
-{
-  this->Parent::clear(d);
-}
-
-//---------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
-inline
-void
-DGtal::VoxelComplex<TKSpace, TCellContainer>::
-erase( typename Parent::Iterator it )
-{
-  this->Parent::erase( it );
-}
-
-//-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
-inline
-typename DGtal::VoxelComplex<TKSpace, TCellContainer>::Size
-DGtal::VoxelComplex<TKSpace, TCellContainer>::
-erase( const Cell& aCell )
-{
-    return this->Parent::erase(aCell);
-}
-
-//-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
-inline
-void
-DGtal::VoxelComplex<TKSpace, TCellContainer>::
-erase( typename Parent::Iterator first, typename Parent::Iterator last )
-{
-    this->Parent::erase(first, last);
 }
 //-----------------------------------------------------------------------------
 
