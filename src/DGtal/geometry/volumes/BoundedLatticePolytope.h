@@ -288,6 +288,7 @@ namespace DGtal
 	       HalfSpaceIterator itB, HalfSpaceIterator itE,
                bool valid_edge_constraints = false,
                bool check_duplicate_constraints = false );
+
     
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
