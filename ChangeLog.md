@@ -42,7 +42,7 @@
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
 - *Geometry*
-  - Small fix and updates in BoundedLatticePolytope and BoundedRationalPolytope
+  - Small fixes and updates in BoundedLatticePolytope and BoundedRationalPolytope
     initialization when using half-spaces initialization
     (Jacques-Olivier Lachaud,[#1538](https://github.com/DGtal-team/DGtal/pull/1538))
   - Fix BoundedLatticePolytope::init when using half-spaces initialization
