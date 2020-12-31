@@ -46,7 +46,7 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clock.h"
-#include "QuickHullKernels.h"
+#include "DGtal/geometry/tools/QuickHullKernels.h"
 
 namespace DGtal
 {
