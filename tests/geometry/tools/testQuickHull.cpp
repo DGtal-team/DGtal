@@ -33,7 +33,7 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "QuickHull.h"
+#include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
