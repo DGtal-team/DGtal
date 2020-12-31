@@ -1,13 +1,11 @@
-SET(DGTAL_TESTS_SRC_HELPERS
+set(DGTAL_TESTS_SRC_HELPERS
   testParametricShape
   testImplicitShape
   testParameters
   testShortcuts
   )
 
-FOREACH(FILE ${DGTAL_TESTS_SRC_HELPERS})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC_HELPERS})
+  DGtal_add_test(${FILE})
+endforeach()
 

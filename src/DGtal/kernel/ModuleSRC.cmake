@@ -1,6 +1,6 @@
 ## Sources associated to the module kernel
 ##
 
-SET(DGTAL_SRC ${DGTAL_SRC} 
+set(DGTAL_SRC ${DGTAL_SRC} 
 		DGtal/kernel/NumberTraits)
 

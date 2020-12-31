@@ -1,5 +1,5 @@
 ## Sources associated to the module math
 ##
 
-SET(DGTAL_SRC ${DGTAL_SRC}
+set(DGTAL_SRC ${DGTAL_SRC}
 		BoostAddons/zlib.cpp)

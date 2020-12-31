@@ -11,9 +11,9 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
         add_executable(${FILE} ${FILE})
         target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    endforeach(FILE)
+    endforeach()
 
-endif(WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
+endif()
 
 if (WITH_EIGEN)
 	set(DGTAL_EXAMPLES_SRC2_DEC
@@ -24,5 +24,5 @@ if (WITH_EIGEN)
     foreach(FILE ${DGTAL_EXAMPLES_SRC2_DEC})
         add_executable(${FILE} ${FILE})
         target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    endforeach(FILE)
+    endforeach()
 endif()

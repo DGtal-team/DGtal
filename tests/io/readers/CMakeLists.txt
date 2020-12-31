@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC_IO_READERS
+set(DGTAL_TESTS_SRC_IO_READERS
        testPNMReader
        testVolReader
        testRawReader
@@ -9,54 +9,46 @@ SET(DGTAL_TESTS_SRC_IO_READERS
        testMPolynomialReader )
 
 
-FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
-IF(MAGICK++_FOUND)
+if(MAGICK++_FOUND)
 
-  SET(DGTAL_TESTS_SRC_IO_READERS_Magick
+  set(DGTAL_TESTS_SRC_IO_READERS_Magick
     testMagickReader
     )
 
-  FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_Magick})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
+  foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS_Magick})
+    DGtal_add_test(${FILE})
+  endforeach()
 
-ENDIF(MAGICK++_FOUND)
+endif()
 
 
-IF(HDF5_FOUND)
+if(HDF5_FOUND)
 
-  SET(DGTAL_TESTS_SRC_IO_READERS_HDF5
+  set(DGTAL_TESTS_SRC_IO_READERS_HDF5
     testHDF5Reader
     )
 
-  FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_HDF5})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
+  foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS_HDF5})
+    DGtal_add_test(${FILE})
+  endforeach()
 
-ENDIF(HDF5_FOUND)
+endif()
 
-IF(ITK_FOUND)
+if(ITK_FOUND)
 
-  SET(DGTAL_TESTS_SRC_IO_READERS_DICOM
+  set(DGTAL_TESTS_SRC_IO_READERS_DICOM
     testDicomReader
     testITKReader
     testITKDicomReader
   )
 
-  FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_DICOM})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
+  foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS_DICOM})
+    DGtal_add_test(${FILE})
+  endforeach()
 
-ENDIF(ITK_FOUND)
+endif()
