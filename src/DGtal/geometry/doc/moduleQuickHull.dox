@@ -1,0 +1,84 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleQuickHull QuickHull algorithm in arbitrary dimension for convex hull and Delaunay cell complex computation
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.2
+
+Part of the \ref packageGeometry.
+  
+This part of the manual describes the DGtal implementation of the
+famous "QuickHull" algorithm by Barber et al. \cite
+barber1996quickhull, and how to use it to compute convex hulls and
+Delaunay convex cell decompositions.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+testQuickHull.cpp
+
+@section dgtal_quickhull_sec1 The QuickHull convex hull algorithm
+
+The objective of the QuickHull algorithm is to compute the convex hull
+of a set of points \a V lying in a space of arbitrary dimension \a d (here
+\a d is greater than one). This algorithm has the limitation to
+process only full dimensional convex hulls, because of the way it is
+initialized. It maintains and updates a list of facets (which defines
+the faces of the current polytope) by following these steps:
+
+1. Initialization: an initial \a d-dimensional simplex is built with
+\f$ d+1 \f$ facets. Furthermore, each remaining point of \a V is
+associated to one of these facets if it is \b above it. Hence, each
+point of \a V is either associated to no facet and is thus already
+inside the current hull, or it is associated to only one facet.
+
+Points \b on each facet and \b neighbors of facets are computed (easy for a
+simplex) and all the facets are then queued.
+
+2. While the queue of facet is not empty, the front facet \a f is popped.
+   - ignore it if contains no "above" point(s)
+   - otherwise pick the furthest above point \a p
+   - find by neighbor adjacencies from \a f all the facets visible from \a p (i.e. \a p is above them)
+   - define the horizon H as the set of ridges R, where a ridge is a pair of two neighbor facets, where the first is visible from \a ^, whilst the second is not.
+   - define the new facets as the ones formed by the umbrella from \a p to its ridges.
+   - merge possible parallel facets and update "on" points
+   - reassign "above" points of \a f to these new facets and put them into the queue
+
+3. The algorithm stops when all current facets have no "above" points.
+
+4. Optionnaly extract vertices of the convex hull polytopes by
+determining the "on" points that belong to at least \a d facets.
+
+@note In opposition with the usual QuickHull implementation, this
+class uses a kernel that can be chosen in order to provide exact
+computations. This is the case for lattice points, but also rational
+points. Computation times are very similar.
+
+@note In opposition with CGAL `3D convex hull` package, or with the
+arbitrary dimensional `dD Triangulation` package, this algorithm does
+not build a simplicial convex hull. Facets may not be triangles or
+simplices in higher dimensions. This happens frequently for lattice
+points, where coplanar and cospherical situations are common.
+
+@note This version is generally more than twice faster than CGAL
+convex_hull_3 for the usual CGAL kernels Cartesian and
+Exact_predicates_inexact_constructions_kernel.
+
+@note However this implementation is not tailored for incremental
+dynamic convex hull computations.
+
+@note Last the method for computing the Delaunay triangulation by
+using the convex hull in a higher dimensional space is generally much
+slower than CGAL method for computing the Delaunay triangulation by
+point location.
+
+
+*/
