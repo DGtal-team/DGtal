@@ -132,6 +132,34 @@ OBJ file.
 
 \snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-OutputMesh
 
+<table>
+<tr>
+<td> 
+\image html qhull-lattice-ball-12_5.png "Convex hull of lattice ball with radius 12.5"
+</td><td> 
+\image html qhull-lattice-ball-25.png "Convex hull of lattice ball with radius 25"
+</td><td> 
+\image html qhull-lattice-ball-50.png "Convex hull of lattice ball with radius 50"
+</td>
+</tr>
+</table>
+
+@note To give an idea of computation times, for 1e7 lattice points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3):
+
+\verbatim
+/tools/exampleLatticeBallQuickHull3D 10000000 1000
+
+#points=9990515 #vertices=14183 #facets=28036
+purge duplicates= 4221 ms.
+init simplex    = 223 ms.
+quickhull core  = 3214 ms.
+compute vertices= 255 ms.
+total time      = 7913 ms.
+\endverbatim
+ 
+@note Half of the time is spent on removing duplicated input
+points. If you know that your range of points does not contain
+duplicates, you can specify it to QuickHull::setInput.
 
 */
 
