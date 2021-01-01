@@ -4,6 +4,7 @@ set(DGTAL_EXAMPLES_SRC
   examplePreimage
   exampleConvexHull2D
   exampleAlphaShape
+  exampleLatticeBallQuickHull3D
 )
 
 

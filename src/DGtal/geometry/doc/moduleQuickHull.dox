@@ -15,9 +15,9 @@ namespace DGtal {
 Part of the \ref packageGeometry.
   
 This part of the manual describes the DGtal implementation of the
-famous "QuickHull" algorithm by Barber et al. \cite
-barber1996quickhull, and how to use it to compute convex hulls and
-Delaunay convex cell decompositions.
+famous "QuickHull" algorithm by Barber et al. \cite barber1996 , and
+how to use it to compute convex hulls and Delaunay convex cell
+decompositions.
 
 [TOC]
 
@@ -39,9 +39,8 @@ the faces of the current polytope) by following these steps:
 associated to one of these facets if it is \b above it. Hence, each
 point of \a V is either associated to no facet and is thus already
 inside the current hull, or it is associated to only one facet.
-
-Points \b on each facet and \b neighbors of facets are computed (easy for a
-simplex) and all the facets are then queued.
+Points \b on each facet and \b neighbors of facets are computed (easy
+for a simplex) and all the facets are then queued.
 
 2. While the queue of facet is not empty, the front facet \a f is popped.
    - ignore it if contains no "above" point(s)
@@ -75,10 +74,63 @@ Exact_predicates_inexact_constructions_kernel.
 @note However this implementation is not tailored for incremental
 dynamic convex hull computations.
 
-@note Last the method for computing the Delaunay triangulation by
+@note Last, the method for computing the Delaunay triangulation by
 using the convex hull in a higher dimensional space is generally much
 slower than CGAL method for computing the Delaunay triangulation by
 point location.
+
+@section dgtal_quickhull_sec2 Computing convex hulls and Delaunay cell complex using QuickHull
+
+In order to get a fine control over convex hull computations, you can
+use class QuickHull directly. It is required to choose a \b kernel
+specific to your objective. For now, the available kernels are:
+
+- \ref ConvexHullIntegralKernel : it allows the computation of the
+  convex hull of a range of lattice points in arbitrary dimension.
+
+- \ref ConvexHullRationalKernel : it allows the computation of the
+  convex hull of a range of rational points in arbitrary
+  dimension. The user fixes the precision at kernel instantiation.
+
+- \ref DelaunayIntegralKernel : it allows the computation of the
+  Delaunay cell complex of a range of lattice points in arbitrary
+  dimension.
+
+- \ref DelaunayRationalKernel : it allows the computation of the
+  Delaunay cell complex of a range of rational points in arbitrary
+  dimension. The user fixes the precision at kernel instantiation.
+
+
+@subsection dgtal_quickhull_sec21 Convex hull of lattice points
+
+To compute the convex hull of lattice points, you need to include `QuickHull.h`.
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-Includes
+
+You should then define some typedefs:
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-Typedefs
+
+Then we assume that \a V contains a range of lattice 3D points (with
+either 32 bits or 64 bits precision). You may compute their convex
+hull (facets and vertices) with (QuickHull::setInput and QuickHull::computeConvexHull):
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-Computation
+
+You may check computation times with (QuickHull::timings)
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-Timings
+
+You can easily retrieves the vertex positions with
+QuickHull::getVertexPositions (you can put them in a vector of real or
+lattice points), and retrieves the consistently oriented vertices for
+each face with QuickHull::getFacetVertices. Below we show how to build
+a SurfaceMesh that represents the convex hull boundary and save it as
+OBJ file.
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-BuildMesh
+
+\snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-OutputMesh
 
 
 */
