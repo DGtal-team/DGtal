@@ -147,7 +147,7 @@ OBJ file.
 @note To give an idea of computation times, for 1e7 lattice points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3):
 
 \verbatim
-/tools/exampleLatticeBallQuickHull3D 10000000 1000
+examples/geometry/tools/exampleLatticeBallQuickHull3D 10000000 1000
 
 #points=9990515 #vertices=14183 #facets=28036
 purge duplicates= 4221 ms.
@@ -155,6 +155,79 @@ init simplex    = 223 ms.
 quickhull core  = 3214 ms.
 compute vertices= 255 ms.
 total time      = 7913 ms.
+\endverbatim
+ 
+@note Half of the time is spent on removing duplicated input
+points. If you know that your range of points does not contain
+duplicates, you can specify it to QuickHull::setInput.
+
+
+@subsection dgtal_quickhull_sec22 Convex hull of rational points
+
+QuickHull cannot handle exactly "real" points, but can handle rational
+approximations of such points. The user must specify a precision, the
+rational denominator, at kernel creation.  To compute the convex hull
+of rational points, you need to include `QuickHull.h`.
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Includes
+
+You should then define some typedefs:
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Typedefs
+
+Then we assume that \a V contains a range of real 3D points (with
+double precision). You may compute their approximate convex hull (facets and
+vertices) with (QuickHull::setInput and QuickHull::computeConvexHull):
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Computation
+
+You may check computation times with (QuickHull::timings)
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Timings
+
+You can easily retrieves the exact rational vertex positions with
+QuickHull::getVertexPositions (you can put them in a vector of real points), and retrieves the consistently oriented vertices for
+each face with QuickHull::getFacetVertices. Below we show how to build
+a SurfaceMesh that represents the convex hull boundary and save it as
+OBJ file.
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-BuildMesh
+
+\snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-OutputMesh
+
+<table>
+<tr>
+<td> 
+\image html qhull-rational-ball-10_5-p1-s.png "Convex hull of rational ball with radius 10.5 with precision 1"
+</td><td> 
+\image html qhull-rational-ball-10_5-p2-s.png "Convex hull of rational ball with radius 10.5 with precision 2"
+</td><td> 
+\image html qhull-rational-ball-10_5-p2-s.png "Convex hull of rational ball with radius 10.5 with precision 4"
+</td>
+</tr>
+<tr>
+<td> 
+\image html qhull-rational-ball-10_5-p16-s.png "Convex hull of rational ball with radius 10.5 with precision 16"
+</td><td> 
+\image html qhull-rational-ball-10_5-p128-s.png "Convex hull of rational ball with radius 10.5 with precision 128"
+</td><td> 
+\image html qhull-rational-ball-10_5-p1024-s.png "Convex hull of rational ball with radius 10.5 with precision 1024"
+</td>
+</tr>
+
+</table>
+
+@note To give an idea of computation times, for 1e7 real points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3), for a precision of 1024:
+
+\verbatim
+examples/geometry/tools/exampleRationalBallQuickHull3D 10000000 1000 1024
+
+#points=10000000 #vertices=14267 #facets=28503
+purge duplicates= 4049 ms.
+init simplex    = 322 ms.
+quickhull core  = 3271 ms.
+compute vertices= 239 ms.
+total time      = 7882 ms.
 \endverbatim
  
 @note Half of the time is spent on removing duplicated input
