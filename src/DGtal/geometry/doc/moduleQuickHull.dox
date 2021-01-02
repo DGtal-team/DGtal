@@ -202,7 +202,7 @@ OBJ file.
 </td><td> 
 \image html qhull-rational-ball-10_5-p2-s.png "Convex hull of rational ball with radius 10.5 with precision 2"
 </td><td> 
-\image html qhull-rational-ball-10_5-p2-s.png "Convex hull of rational ball with radius 10.5 with precision 4"
+\image html qhull-rational-ball-10_5-p4-s.png "Convex hull of rational ball with radius 10.5 with precision 4"
 </td>
 </tr>
 <tr>
