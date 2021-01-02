@@ -56,19 +56,19 @@ for a simplex) and all the facets are then queued.
 4. Optionnaly extract vertices of the convex hull polytopes by
 determining the "on" points that belong to at least \a d facets.
 
-@note In opposition with the usual QuickHull implementation, this
+@note In opposition with the usual `qhull` implementation, this
 class uses a kernel that can be chosen in order to provide exact
 computations. This is the case for lattice points, but also rational
 points. Computation times are very similar.
 
-@note In opposition with CGAL `3D convex hull` package, or with the
-arbitrary dimensional `dD Triangulation` package, this algorithm does
+@note In opposition with `CGAL 3D convex hull` package, or with the
+arbitrary dimensional `CGAL dD Triangulation` package, this algorithm does
 not build a simplicial convex hull. Facets may not be triangles or
 simplices in higher dimensions. This happens frequently for lattice
 points, where coplanar and cospherical situations are common.
 
-@note This version is generally more than twice faster than CGAL
-convex_hull_3 for the usual CGAL kernels Cartesian and
+@note This version is generally more than twice faster than `CGAL` function
+`convex_hull_3` for the usual CGAL kernels Cartesian and
 Exact_predicates_inexact_constructions_kernel.
 
 @note However this implementation is not tailored for incremental
@@ -77,7 +77,7 @@ dynamic convex hull computations.
 @note Last, the method for computing the Delaunay triangulation by
 using the convex hull in a higher dimensional space is generally much
 slower than CGAL method for computing the Delaunay triangulation by
-point location.
+point location (5-10 times slower in our experience).
 
 @section dgtal_quickhull_sec2 Computing convex hulls and Delaunay cell complex using QuickHull
 
