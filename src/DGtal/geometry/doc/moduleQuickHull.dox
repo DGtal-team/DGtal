@@ -135,11 +135,11 @@ OBJ file.
 <table>
 <tr>
 <td> 
-\image html qhull-lattice-ball-12_5.png "Convex hull of lattice ball with radius 12.5"
+\image html qhull-lattice-ball-12_5-s.png "Convex hull of lattice ball with radius 12.5"
 </td><td> 
-\image html qhull-lattice-ball-25.png "Convex hull of lattice ball with radius 25"
+\image html qhull-lattice-ball-25-s.png "Convex hull of lattice ball with radius 25"
 </td><td> 
-\image html qhull-lattice-ball-50.png "Convex hull of lattice ball with radius 50"
+\image html qhull-lattice-ball-50-s.png "Convex hull of lattice ball with radius 50"
 </td>
 </tr>
 </table>
