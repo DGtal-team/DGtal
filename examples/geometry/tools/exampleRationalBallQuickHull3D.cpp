@@ -28,11 +28,20 @@
  */
 
 /**
-   Computation of the convex hull of a lattice point set in 3D by Quick Hull algorithm.
+   Computation of the convex hull of a set of real points in 3D by Quick Hull algorithm.
 
 \verbatim
-# 10000 points in digital ball of radius 100
-exampleRationalBallQuickHull3D 10000 100
+# 1000000 points in digital ball of radius 1000 with precision 1024
+./examples/geometry/tools/exampleRationalBallQuickHull3D 1000000 1000 1024
+\endverbatim
+outputs
+\verbatim
+#points=1000000 #vertices=4490 #facets=8975
+purge duplicates= 254 ms.
+init simplex    = 29 ms.
+quickhull core  = 326 ms.
+compute vertices= 24 ms.
+total time      = 634 ms.
 \endverbatim
 
 @see \ref moduleQuickHull
