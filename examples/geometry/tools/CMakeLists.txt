@@ -6,6 +6,7 @@ set(DGTAL_EXAMPLES_SRC
   exampleAlphaShape
   exampleLatticeBallQuickHull3D
   exampleRationalBallQuickHull3D
+  exampleLatticeBallDelaunay2D
 )
 
 

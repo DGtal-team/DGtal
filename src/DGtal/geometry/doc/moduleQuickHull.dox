@@ -144,7 +144,7 @@ OBJ file.
 </tr>
 </table>
 
-@note To give an idea of computation times, for 1e7 lattice points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3):
+To give an idea of computation times, for 1e7 lattice points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3):
 
 \verbatim
 examples/geometry/tools/exampleLatticeBallQuickHull3D 10000000 1000
@@ -176,16 +176,23 @@ You should then define some typedefs:
 \snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Typedefs
 
 Then we assume that \a V contains a range of real 3D points (with
-double precision). You may compute their approximate convex hull (facets and
-vertices) with (QuickHull::setInput and QuickHull::computeConvexHull):
+double precision). You may compute their approximate convex hull
+(facets and vertices) with the following lines (QuickHull::setInput
+and QuickHull::computeConvexHull):
 
 \snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Computation
+
+The \b precision is the denominator used for representing rational
+coordinates. Real points with `double` precision are rounded to these
+nearest rational coordinates. 
+
+@note Different real points may be rounded to the same rational point.
 
 You may check computation times with (QuickHull::timings)
 
 \snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Timings
 
-You can easily retrieves the exact rational vertex positions with
+You can easily retrieves the rational vertex positions with
 QuickHull::getVertexPositions (you can put them in a vector of real points), and retrieves the consistently oriented vertices for
 each face with QuickHull::getFacetVertices. Below we show how to build
 a SurfaceMesh that represents the convex hull boundary and save it as
@@ -217,7 +224,7 @@ OBJ file.
 
 </table>
 
-@note To give an idea of computation times, for 1e7 real points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3), for a precision of 1024:
+To give an idea of computation times, for 1e7 real points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3), for a precision of 1024:
 
 \verbatim
 examples/geometry/tools/exampleRationalBallQuickHull3D 10000000 1000 1024
@@ -233,6 +240,67 @@ total time      = 7882 ms.
 @note Half of the time is spent on removing duplicated input
 points. If you know that your range of points does not contain
 duplicates, you can specify it to QuickHull::setInput.
+
+@note If you choose a too big precision, integer computations required
+by convex hull computations might overflow. With this kernel, the
+internal type for integers is 64 bits precision. Hence the higher the
+dimension, the less should be the precision.
+
+
+@subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D example)
+
+Computing the Delaunay complex of lattice points is very similar to computing its convex hull. You should just use the appropriate kernel as follows:
+
+\snippet geometry/tools/exampleLatticeBallDelaunay2D.cpp Delaunay2D-Typedefs
+
+Then we assume that \a V contains a range of lattice 3D points (with
+either 32 bits or 64 bits precision). You may compute their Delaunay complex
+hull (facets and vertices) with (QuickHull::setInput and QuickHull::computeConvexHull):
+
+\snippet geometry/tools/exampleLatticeBallDelaunay2D.cpp Delaunay2D-Computation
+
+You can easily retrieves the vertex positions with
+QuickHull::getVertexPositions (you can put them in a vector of real or
+lattice points), and retrieves the consistently oriented vertices for
+each \b cell with QuickHull::getFacetVertices.
+
+In opposition with convex hull computation, facets here designate the
+d-dimensional Delaunay cells (here d=2). You also have finite facets
+(the ones within the convex hull) and infinite facets (the ones of the
+furthest site Delaunay decomposition).  Below we show how to build a
+SurfaceMesh that represents the finite Delaunay cells and save it as
+OBJ file.
+
+\snippet geometry/tools/exampleLatticeBallDelaunay2D.cpp Delaunay2D-BuildMesh
+
+\snippet geometry/tools/exampleLatticeBallDelaunay2D.cpp Delaunay2D-OutputMesh
+
+@note If you wish to visit the infinite facets, you may start from
+facet numbered `hull.nbFiniteFacets()`.
+
+<table>
+<tr>
+<td> 
+\image html qhull-delaunay2d-ball-20-100.png "Delaunay cell decomposition of 100 randomly chosen points in a lattice ball with radius 20"
+</td><td> 
+\image html qhull-delaunay2d-ball-20-1000.png "Delaunay cell decomposition of 1000 randomly chosen points in a lattice ball with radius 20"
+</td>
+</tr>
+</table>
+
+To give an idea of computation times, for 1e6 lattice points randomly chosen in a ball of radius 1000, computations times are as follows on a Macbook pro (processor 2,7 GHz Quad-Core Intel Core i7, memory 16 GB 2133 MHz LPDDR3):
+
+\verbatim
+examples/geometry/tools/exampleLatticeBallDelaunay2D 1000000 1000
+
+#points=856202 #vertices=856202 #facets=1459906
+purge duplicates= 284 ms.
+init simplex    = 15 ms.
+quickhull core  = 19316 ms.
+compute vertices= 1109 ms.
+total time      = 20723 ms.
+\endverbatim
+ 
 
 */
 
