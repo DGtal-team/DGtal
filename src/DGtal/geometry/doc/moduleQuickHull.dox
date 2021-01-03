@@ -23,7 +23,9 @@ decompositions.
 
 
 The following programs are related to this documentation:
-testQuickHull.cpp
+testQuickHull.cpp , exampleLatticeBallQuickHull3D.cpp ,
+exampleLatticeBallDelaunay2D.cpp , exampleRationalBallQuickHull3D.cpp
+
 
 @section dgtal_quickhull_sec1 The QuickHull convex hull algorithm
 
@@ -301,6 +303,42 @@ compute vertices= 1109 ms.
 total time      = 20723 ms.
 \endverbatim
  
+
+@subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D example)
+
+It is completely similar with the previous example, just replace the kernel by DelaunayRationalKernel and specify a precision at kernel instantiation.
+
+
+@subsection dgtal_quickhull_sec25 Further information stored in QuickHull object
+
+A number of public data is stored in object QuickHull and is
+meaningfull after a convex hull computation:
+
+- QuickHull::input2comp the surjective mapping giving for each input point index its index in the point range processed by quick hull
+
+- QuickHull::comp2input the injective mapping giving for each processed point index its index in the input point range.
+
+- QuickHull::p2v the map giving for each processed point index its
+  index in the range of vertices (or UNASSIGNED if it is not an index)
+
+- QuickHull::v2p the map giving for each vertex index its index in the
+  range of processed points.
+
+To sum up, the maps are as follows and gives indices in respective arrays:
+
+\verbatim
+              input2comp                        p2v
+input points ------------> processed points ----------> convex hull vertices
+(user given)               (no duplicates)                 (output)
+
+              comp2input                        v2p
+input points <------------ processed points <---------- convex hull vertices
+(user given)               (no duplicates)                 (output)
+
+\endverbatim
+
+QuikHull:timings stores also the respective times taken by each step
+of the computation (see examples).
 
 */
 
