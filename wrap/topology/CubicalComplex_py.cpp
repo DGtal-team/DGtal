@@ -57,6 +57,8 @@ Such data is notably used in collapse operation
     declare_CellMap<Python::CellMap3D>(m, "CellMap3D");
 
     // CubicalComplex
-    declare_CubicalComplex<Python::CubicalComplex2D>(m, "CubicalComplex2D");
-    declare_CubicalComplex<Python::CubicalComplex3D>(m, "CubicalComplex3D");
+    auto py_class_CubicalComplex2D = declare_CubicalComplex<Python::CubicalComplex2D>(m, "CubicalComplex2D");
+    declare_CubicalComplex2DMethods<Python::CubicalComplex2D>(py_class_CubicalComplex2D);
+    auto py_class_CubicalComplex3D = declare_CubicalComplex<Python::CubicalComplex3D>(m, "CubicalComplex3D");
+    declare_CubicalComplex3DMethods<Python::CubicalComplex3D>(py_class_CubicalComplex3D);
 }

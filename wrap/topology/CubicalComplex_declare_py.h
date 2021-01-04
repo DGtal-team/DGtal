@@ -22,6 +22,7 @@
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/ParDirCollapse.h"
 #include "CubicalComplex_types_py.h"
+#include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ3i
 
 template<typename TCellMap>
 pybind11::class_<TCellMap> declare_CellMap(pybind11::module &m,
@@ -625,4 +626,38 @@ verbose: Bool [False]
 
     return py_class;
 }
+
+template<typename TCubicalComplex, typename TPyClass>
+void declare_CubicalComplex3DMethods( TPyClass & py_class) {
+    namespace py = pybind11;
+    using TT = TCubicalComplex;
+    py_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ3i & digital_set) {
+             self.construct(digital_set);
+            },
+R"(Construct the CubicalComplex with the input digital_set
+
+Parameters
+----------
+digital_set: DigitalSetZ3i
+    Input set to construct the complex
+)", py::arg("digital_set"));
+}
+
+template<typename TCubicalComplex, typename TPyClass>
+void declare_CubicalComplex2DMethods( TPyClass & py_class) {
+    namespace py = pybind11;
+    using TT = TCubicalComplex;
+    py_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ2i & digital_set) {
+             self.construct(digital_set);
+            },
+R"(Construct the CubicalComplex with the input digital_set
+
+Parameters
+----------
+digital_set: DigitalSetZ2i
+    Input set to construct the complex
+)", py::arg("digital_set"));
+}
+
+
 #endif
