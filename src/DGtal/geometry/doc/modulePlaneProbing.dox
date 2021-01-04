@@ -1,0 +1,44 @@
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/18
+ *
+ * Documentation file for feature PlaneProbing
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page modulePlaneProbing Plane-probing based normal estimators
+@writers Jacques-Olivier Lachaud, Jocelyn Meyron, Tristan Roussillon
+
+@since 1.2
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes what are plane-probing estimators and how to define and use them
+to estimate normals on digital surfaces.
+
+[TOC]
+
+\section sectPlaneProbing1 First Section
+
+\subsection subsectPlaneProbing11 Subsection 1.1
+
+\section sectPlaneProbing2 Section Two
+
+\subsection subsectPlaneProbing21  Subsection 2.1
+
+\subsection subsectPlaneProbing22  Subsection 2.2
+
+*/
+
+}
