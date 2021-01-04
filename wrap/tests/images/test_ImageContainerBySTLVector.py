@@ -46,6 +46,11 @@ def test_ImageContainerWithSingleValues(Type):
     elif Type == "ImageContainerByVector3DInteger":
         assert img[1,1,1] == 2
 
+    min_value = 1
+    max_value = 4
+    digital_set = img.set_from_image(min_value, max_value)
+    assert digital_set.size() == 3
+
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DColor"),
     ("ImageContainerByVector3DColor"),
@@ -82,6 +87,13 @@ def test_ImageContainerWithDGtalTypes(Type):
     img[p1] = v1;
     assert img[p1] == v1
 
+    if Type == "ImageContainerByVector3DRealPoint3D":
+        # Here ValueType is RealPoint3D
+        img[p2] = ValueType.diagonal(2)
+        min_value = ValueType.zero
+        max_value = ValueType.diagonal(3)
+        digital_set = img.set_from_image(min_value, max_value)
+        assert digital_set.size() == 1
 
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DInteger"),
