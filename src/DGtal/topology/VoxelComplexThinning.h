@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <chrono>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/VoxelComplex.h"
 #include "DGtal/topology/VoxelComplexFunctions.h"
