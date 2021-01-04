@@ -79,6 +79,9 @@ The following code snippet demonstrates how to use \p HyperRectDomain
             [](py::object /* self */) {
             return py::type::of<TTRealPoint>();
             });
+    py_class.def_property_readonly_static("dimension",
+            [](py::object /* self */) { return TT::dimension; },
+            R"(The dimension of the domain.)");
 
     // ----------------------- Print / Display --------------------------------
     py_class.def("__str__", [](const TT & self) {
