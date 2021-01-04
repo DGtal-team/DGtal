@@ -99,14 +99,6 @@ operator=(const Self &other)
 template <typename TKSpace, typename TCellContainer>
 template <typename TDigitalSet>
 inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::construct(
-    const TDigitalSet &input_set)
-{
-    Parent::construct(input_set);
-}
-
-template <typename TKSpace, typename TCellContainer>
-template <typename TDigitalSet>
-inline void DGtal::VoxelComplex<TKSpace, TCellContainer>::construct(
     const TDigitalSet &input_set,
     const Alias<ConfigMap> input_table)
 {

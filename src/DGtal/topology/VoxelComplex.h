@@ -165,15 +165,6 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     Self &operator=(const Self &other);
 
     /**
-     * Construct the VoxelComplex with target \a input_set
-     *
-     * @param input_set input set to construct the complex.
-     *
-     */
-    template < typename TDigitalSet >
-    void construct(const TDigitalSet &input_set);
-
-    /**
      * Construct from digital set and precomputed look up table for simplicity.
      * Object and methods involving object will be empty/invalid.
      * But they might not be needed thanks to the loaded table.
