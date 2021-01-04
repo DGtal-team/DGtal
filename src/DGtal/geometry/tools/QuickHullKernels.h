@@ -93,6 +93,8 @@ namespace DGtal
     ///
     /// @param[in] itb,ite a range of values.
     ///
+    /// @param[in] F a function that may transform input values to output values
+    ///
     /// @param[in] remove_duplicates when 'true' remove duplicate
     /// values, otherwise, `output_values.size()` is equal to the size
     /// of the range itb,ite.
@@ -380,7 +382,7 @@ namespace DGtal
     /// a process by QuickHull.
     /// 
     /// @param[out] input2comp the surjective mapping between
-    /// the \a input_points range and the \as processed_points range
+    /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
     /// @param[out] comp2input the injective mapping between the 
@@ -389,7 +391,7 @@ namespace DGtal
     ///
     /// @param[in] input_points the range of input points.
     ///
-    /// @param[in] when 'true', this method removes possible
+    /// @param[in] remove_duplicates when 'true', this method removes possible
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
@@ -496,7 +498,7 @@ namespace DGtal
     /// a process by QuickHull.
     /// 
     /// @param[out] input2comp the surjective mapping between
-    /// the \a input_points range and the \as processed_points range
+    /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
     /// @param[out] comp2input the injective mapping between the 
@@ -505,7 +507,7 @@ namespace DGtal
     ///
     /// @param[in] input_points the range of input points.
     ///
-    /// @param[in] when 'true', this method removes possible
+    /// @param[in] remove_duplicates when 'true', this method removes possible
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
@@ -621,7 +623,7 @@ namespace DGtal
     /// a process by QuickHull.
     /// 
     /// @param[out] input2comp the surjective mapping between
-    /// the \a input_points range and the \as processed_points range
+    /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
     /// @param[out] comp2input the injective mapping between the 
@@ -630,7 +632,7 @@ namespace DGtal
     ///
     /// @param[in] input_points the range of input points.
     ///
-    /// @param[in] when 'true', this method removes possible
+    /// @param[in] remove_duplicates when 'true', this method removes possible
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
@@ -746,7 +748,7 @@ namespace DGtal
     /// a process by QuickHull.
     /// 
     /// @param[out] input2comp the surjective mapping between
-    /// the \a input_points range and the \as processed_points range
+    /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
     /// @param[out] comp2input the injective mapping between the 
@@ -755,7 +757,7 @@ namespace DGtal
     ///
     /// @param[in] input_points the range of input points.
     ///
-    /// @param[in] when 'true', this method removes possible
+    /// @param[in] remove_duplicates when 'true', this method removes possible
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
