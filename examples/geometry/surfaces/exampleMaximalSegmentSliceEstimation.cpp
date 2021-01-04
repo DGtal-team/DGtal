@@ -83,7 +83,7 @@ int main(int argc, char** argv)
     viewer << SetMode3D(Surfel().className(), "Basic");
     viewer.show();
 
-    Estimator estimator(surface);
+    Estimator estimator;
     estimator.init(gridstep, surfels.begin(), surfels.end());
     estimator.attach(surface);
 

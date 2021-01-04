@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <unordered_map>
 #include "ConfigExamples.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
@@ -104,7 +105,7 @@ int main( int argc, char** argv )
 
     bool verbose = true;
 
-    std::map<Surfel, RealPoint> preEstimations;
+    std::unordered_map<Surfel, RealPoint> preEstimations;
     // The user can provide the pre-estimation
     // auto preEstimationsVector = SHG3::getCTrivialNormalVectors(surface, surfels, params);
     // for (std::size_t i = 0; i < surfels.size(); ++i)

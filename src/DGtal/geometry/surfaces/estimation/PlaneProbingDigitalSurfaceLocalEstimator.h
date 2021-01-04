@@ -41,9 +41,11 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <unordered_map>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/DigitalSurfacePredicate.h"
 #include "DGtal/geometry/surfaces/estimation/MaximalSegmentSliceEstimation.h"
+#include "DGtal/topology/KhalimskyCellHashFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -169,7 +171,7 @@ namespace DGtal
     void attach (ConstAlias<Surface> aSurface);
 
     void setParams (ProbingFactory const& aProbingFactory,
-                    std::map<Surfel, RealPoint> const& aPreEstimations = {},
+                    std::unordered_map<Surfel, RealPoint> const& aPreEstimations = {},
                     bool aVerbose = false);
 
     // ----------------------- Interface --------------------------------------
@@ -204,7 +206,7 @@ namespace DGtal
     Predicate myPredicate;
     bool myH;
     ProbingFactory myProbingFactory;
-    std::map<Surfel, RealPoint> myPreEstimations;
+    std::unordered_map<Surfel, RealPoint> myPreEstimations;
     bool myVerbose;
     PreEstimation myPreEstimationEstimator;
 

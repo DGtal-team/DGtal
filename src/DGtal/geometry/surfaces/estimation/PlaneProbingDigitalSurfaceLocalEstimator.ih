@@ -158,7 +158,7 @@ template < typename TSurface, typename TProbingAlgorithm >
 inline
 void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 setParams (ProbingFactory const& aProbingFactory,
-           std::map<Surfel, RealPoint> const& aPreEstimations,
+           std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
            bool aVerbose)
 {
     myProbingFactory = aProbingFactory;

@@ -49,7 +49,7 @@ using Estimator    = PlaneProbingParallelepipedEstimator<DigitalPlane, ProbingMo
 
 int main(int argc, const char** argv)
 {
-  const int height = (argc > 1) ? std::atoi(argv[1]) : 0;
+  const int height = (argc > 1) ? std::atoi(argv[1]) : 2;
   std::cout << "height=" << height << std::endl;
 
   Vector n(2, 6, 15);
