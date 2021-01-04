@@ -74,23 +74,26 @@ generateNormals(Integer const& N)
     return normals;
 }
 
-template < typename Integer, ProbingMode mode, typename F >
-void testPlaneProbingParallelepipedEstimator (typename SpaceND<3, Integer>::Vector const& n, int height,
-                                              F const& f)
+template < typename Integer, ProbingMode mode >
+struct TestPlaneProbingParallelepipedEstimator
 {
-    using Space = SpaceND<3, Integer>;
+    using Space        = SpaceND<3, Integer>;
     using DigitalPlane = DigitalPlanePredicate<Space>;
-    using Point = typename DigitalPlane::Vector;
-    using Estimator = PlaneProbingParallelepipedEstimator<DigitalPlane, mode>;
+    using Point        = typename DigitalPlane::Vector;
+    using Estimator    = PlaneProbingParallelepipedEstimator<DigitalPlane, mode>;
 
-    Point o(0, 0, 0);
-    std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
+    template < typename F >
+    static void compute (Point const& n, int height, F const& f)
+    {
+        Point o(0, 0, 0);
+        std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
 
-    DigitalPlane plane(n, -height, n.norm1());
-    Estimator estimator(o, frame, plane, n.norm1() + 1);
+        DigitalPlane plane(n, -height, n.norm1());
+        Estimator estimator(o, frame, plane, n.norm1() + 1);
 
-    f(estimator);
-}
+        f(estimator);
+    }
+};
 
 TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 {
@@ -106,9 +109,9 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
             for (int height = 0; height < int(n.normInfinity()); ++height) {
                 ++nbNormals;
 
-                testPlaneProbingParallelepipedEstimator<int, ProbingMode::H>
+                TestPlaneProbingParallelepipedEstimator<int, ProbingMode::H>::compute
                     (n, height,
-                     [&] (auto& estimator) {
+                     [&] (TestPlaneProbingParallelepipedEstimator<int, ProbingMode::H>::Estimator& estimator) {
                         auto estimated = estimator.compute();
 
                         if (estimated == n)
@@ -131,9 +134,9 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
             for (int height = 0; height < int(n.normInfinity()); ++height) {
                 ++nbNormals;
 
-                testPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>
+                TestPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>::compute
                     (n, height,
-                     [&] (auto& estimator) {
+                     [&] (TestPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>::Estimator& estimator) {
                         auto estimated = estimator.compute();
                         auto basis = estimator.getBasis();
 
@@ -158,9 +161,9 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
             for (int height = 0; height < int(n.normInfinity()); ++height) {
                 ++nbNormals;
 
-                testPlaneProbingParallelepipedEstimator<BigInteger, ProbingMode::H>
+                TestPlaneProbingParallelepipedEstimator<BigInteger, ProbingMode::H>::compute
                     (n, height,
-                     [&] (auto& estimator) {
+                     [&] (TestPlaneProbingParallelepipedEstimator<BigInteger, ProbingMode::H>::Estimator& estimator) {
                         auto estimated = estimator.compute();
 
                         if (estimated == n)

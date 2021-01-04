@@ -74,25 +74,29 @@ generateNormals(Integer const& N)
     return normals;
 }
 
-template < typename Integer, ProbingMode mode, typename F >
-void testPlaneProbingTetrahedronEstimator (typename SpaceND<3, Integer>::Vector const& n, F const& f)
+template < typename Integer, ProbingMode mode >
+struct TestPlaneProbingTetrahedronEstimator
 {
-    using Space = SpaceND<3, Integer>;
+    using Space        = SpaceND<3, Integer>;
     using DigitalPlane = DigitalPlanePredicate<Space>;
-    using Point = typename DigitalPlane::Vector;
-    using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, mode>;
+    using Point        = typename DigitalPlane::Vector;
+    using Estimator    = PlaneProbingTetrahedronEstimator<DigitalPlane, mode>;
 
-    Point o(0, 0, 0);
-    std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
+    template < typename F >
+    static void compute (Point const& n, F const& f)
+    {
+        Point o(0, 0, 0);
+        std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
 
-    DigitalPlane plane(n, 0, n.norm1());
-    Estimator estimator(o, frame, plane);
-    ASSERT(estimator.isValid());
+        DigitalPlane plane(n, 0, n.norm1());
+        Estimator estimator(o, frame, plane);
+        ASSERT(estimator.isValid());
 
-    f(estimator);
-}
+        f(estimator);
+    }
+};
 
-TEST_CASE( "Testing PlaneProbingTetrahedronEstimator" )
+TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
 {
     const int maxComponent = 50;
     const auto normals = generateNormals(maxComponent);
@@ -102,9 +106,9 @@ TEST_CASE( "Testing PlaneProbingTetrahedronEstimator" )
     {
         int nbOk = 0;
         for (const auto& n: normals) {
-            testPlaneProbingTetrahedronEstimator<int, ProbingMode::H>
+            TestPlaneProbingTetrahedronEstimator<int, ProbingMode::H>::compute
                 (n,
-                 [&] (auto& estimator) {
+                 [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::H>::Estimator& estimator) {
                     auto estimated = estimator.compute();
 
                     if (estimated == n)
@@ -126,16 +130,16 @@ TEST_CASE( "Testing PlaneProbingTetrahedronEstimator" )
         bool isReducedR = false, isReducedR1 = false;
 
         for (const auto& n: normals) {
-            testPlaneProbingTetrahedronEstimator<int, ProbingMode::R>
+            TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::compute
                 (n,
-                 [&] (auto& estimator) {
+                 [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::Estimator& estimator) {
                     estimatedR = estimator.compute();
                     isReducedR = estimator.isReduced();
                  });
 
-            testPlaneProbingTetrahedronEstimator<int, ProbingMode::R1>
+            TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R1>::compute
                 (n,
-                 [&] (auto& estimator) {
+                 [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R1>::Estimator& estimator) {
                     estimatedR1 = estimator.compute();
                     isReducedR1 = estimator.isReduced();
                  });
@@ -155,9 +159,9 @@ TEST_CASE( "Testing PlaneProbingTetrahedronEstimator" )
     {
         int nbOk = 0;
         for (const auto& n: normals) {
-            testPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>
+            TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>::compute
                 (n,
-                 [&] (auto& estimator) {
+                 [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>::Estimator& estimator) {
                     auto estimated = estimator.compute();
 
                     if (estimated == n)

@@ -94,7 +94,7 @@ int main( int argc, char** argv )
     viewer.show();
 
     // Parameters
-    ProbingFactory probingFactory = [&bound](const auto& frame, const auto& surfacePredicate) {
+    ProbingFactory probingFactory = [&bound](const Estimator::ProbingFrame& frame, const SurfacePredicate& surfacePredicate) {
         // Tetrahedron-based estimator
         return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, surfacePredicate);
 

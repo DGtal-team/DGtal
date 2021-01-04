@@ -61,16 +61,36 @@ namespace DGtal
   template <typename TSurface, typename TProbingAlgorithm>
   class PlaneProbingDigitalSurfaceLocalEstimator
   {
-    // ----------------------- Private types ------------------------------
-  private:
-      struct ProbingFrame;
-
     // ----------------------- Public types ------------------------------
   public:
       using Surface          = TSurface;
       using ProbingAlgorithm = TProbingAlgorithm;
       using Point            = typename ProbingAlgorithm::Point;
       using Scalar           = double;
+
+      struct ProbingFrame
+      {
+          Point p;
+          Point b1;
+          Point b2;
+          Point normal;
+
+          ProbingFrame rotatedCopy () const
+          {
+              Point newP      = p + b1,
+                    newB1     = b2,
+                    newB2     = -b1,
+                    newNormal = newB1.crossProduct(newB2);
+
+              return  { newP, newB1, newB2, newNormal };
+          }
+
+          Point shift () const
+          {
+              return b1 + b2 + normal;
+          }
+      };
+
       using Predicate        = DigitalSurfacePredicate<Surface>;
       using ProbingFactory   = std::function<ProbingAlgorithm*(const ProbingFrame&, Predicate const&)>;
       using PreEstimation    = MaximalSegmentSliceEstimation<Surface>;
@@ -193,28 +213,6 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    struct ProbingFrame
-    {
-        Point p;
-        Point b1;
-        Point b2;
-        Point normal;
-
-        ProbingFrame rotatedCopy () const
-        {
-            Point newP      = p + b1,
-                  newB1     = b2,
-                  newB2     = -b1,
-                  newNormal = newB1.crossProduct(newB2);
-
-            return  { newP, newB1, newB2, newNormal };
-        }
-
-        Point shift () const
-        {
-            return b1 + b2 + normal;
-        }
-    };
 
     ProbingFrame probingFrameFromSurfel (Surfel const& aSurfel) const;
 
