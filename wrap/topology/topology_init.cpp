@@ -25,6 +25,7 @@ void init_MetricAdjacency(py::module &);
 void init_DigitalTopology(py::module &);
 void init_Object(py::module &);
 void init_CubicalComplex(py::module &);
+void init_VoxelComplex(py::module &);
 
 void init_dgtal_topology(py::module & mparent) {
     auto m = mparent.def_submodule("topology");
@@ -40,4 +41,5 @@ void init_dgtal_topology(py::module & mparent) {
     init_DigitalTopology(m);
     init_Object(m);
     init_CubicalComplex(m);
+    init_VoxelComplex(m);
 }

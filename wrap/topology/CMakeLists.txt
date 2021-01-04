@@ -8,6 +8,7 @@ set(current_sources_
   DigitalTopology_py.cpp
   Object_py.cpp
   CubicalComplex_py.cpp
+  VoxelComplex_py.cpp
   )
 list(TRANSFORM current_sources_ PREPEND "${module_path_}/")
 
