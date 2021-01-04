@@ -44,6 +44,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clock.h"
 #include "DGtal/geometry/tools/QuickHullKernels.h"
@@ -148,7 +149,7 @@ int main( int argc, char* argv[] )
     // BOOST_STATIC_CONSTANT( Index, UNASSIGNED = (Index) -1 );
     // static constexpr Index UNASSIGNED = (Index) -1;
     // static const Index UNASSIGNED = (Index) -1;
-    enum { UNASSIGNED = -1 };
+    enum { UNASSIGNED = (Index) -1 };
 
     /// A facet is d-1 dimensional convex cell lying on the boundary
     /// of a full dimensional convex set. Its supporting hyperplane
@@ -941,7 +942,6 @@ int main( int argc, char* argv[] )
         trace.error() << "[Quickhull::renumberInfiniteFacets]"
                       << " Error renumbering infinite facets "
                       << " up finite=" << i << " low infinite=" << k << std::endl;
-      const Index nf = i;
       std::vector< Facet > new_facets( facets.size() );
       for ( Index f = 0; f < facets.size(); f++ )
         new_facets[ renumbering[ f ] ].swap( facets[ f ] );
@@ -1067,17 +1067,17 @@ int main( int argc, char* argv[] )
             facets[ nf ].display( trace.info() );
           }
           // Checks that the facet is not parallel to another in the Horizon
-          for ( Index j = 0; j < new_facets.size() - 1; j++ )
-            if ( areFacetsParallel( new_facets[ j ], nf ) ) {
+          for ( Index k = 0; k < new_facets.size() - 1; k++ )
+            if ( areFacetsParallel( new_facets[ k ], nf ) ) {
               if ( debug_level >= 1 ) {
-                trace.info() << "Facets " << new_facets[ j ] << " and " << nf
+                trace.info() << "Facets " << new_facets[ k ] << " and " << nf
                           << " are parallel => merge." << std::endl;
               }
-              mergeParallelFacets( new_facets[ j ], nf );
+              mergeParallelFacets( new_facets[ k ], nf );
               new_facets.pop_back();
               deleteFacet( nf );
               if ( debug_level >= 3 ) {
-                facets[ new_facets[ j ] ].display( trace.info() );
+                facets[ new_facets[ k ] ].display( trace.info() );
               }
             }
         }
@@ -1424,16 +1424,16 @@ int main( int argc, char* argv[] )
       IndexRange        best = pickIntegers( dimension + 1, nb );
       CombinatorialPlaneSimplex splx;
       for ( Index j = 0; j < dimension; ++j ) splx[ j ] = best[ j ];
-      auto H = kernel.compute( points, splx, best.back() );
-      Scalar     best_volume = kernel.volume( H, points[ best.back() ] );
+      const auto     first_H = kernel.compute( points, splx, best.back() );
+      Scalar     best_volume = kernel.volume ( first_H, points[ best.back() ] );
       const Size     nbtries = std::min( (Size) 10, 1 + nb / 10 );
       const Size max_nbtries = std::max( (Size) 10, 2 * nb );
-      for ( int i = 0; i < max_nbtries; i++ )
+      for ( Size i = 0; i < max_nbtries; i++ )
         {
           IndexRange tmp = pickIntegers( dimension + 1, nb );
           for ( Index j = 0; j < dimension; ++j ) splx[ j ] = tmp[ j ];
-          auto H = kernel.compute( points, splx, tmp.back() );
-          const Scalar  tmp_volume = kernel.volume( H, points[ tmp.back() ] );
+          const auto        tmp_H = kernel.compute( points, splx, tmp.back() );
+          const Scalar tmp_volume = kernel.volume ( tmp_H, points[ tmp.back() ] );
           if ( best_volume < tmp_volume ) {
             if ( debug_level >= 1 ) {
               trace.info() << "(" << i << ")"
