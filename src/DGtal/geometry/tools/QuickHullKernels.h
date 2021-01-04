@@ -157,7 +157,7 @@ namespace DGtal
      the convex hull (either the same as input points for convex hull,
      or one more than input points for Delaunay triangulation)
   */
-  template < DGtal::Dimension dim >
+  template < Dimension dim >
   struct ConvexHullCommonKernel {
     typedef DGtal::PointVector< dim, DGtal::int64_t > Point;
     typedef DGtal::PointVector< dim, DGtal::int64_t > Vector;
@@ -227,12 +227,12 @@ namespace DGtal
       Matrix A;
       Vector N;
       Scalar c;
-      for ( int i = 1; i < dimension; i++ )
-        for ( int j = 0; j < dimension; j++ )
+      for ( Dimension i = 1; i < dimension; i++ )
+        for ( Dimension j = 0; j < dimension; j++ )
           A.setComponent( i-1, j,
                           vpoints[ simplex[ i ] ][ j ]
                           - vpoints[ simplex[ 0 ] ][ j ] );
-      for ( int j = 0; j < dimension; j++ )
+      for ( Dimension j = 0; j < dimension; j++ )
         N[ j ] = A.cofactor( dimension-1, j );
       c = N.dot( vpoints[ simplex[ 0 ] ] );
       return HalfSpace { N, c };
@@ -309,7 +309,7 @@ namespace DGtal
     { return height( H, p ) == 0; } 
     
     
-  }; //   template < DGtal::Dimension dim >  struct ConvexHullIntegralKernel {
+  }; //   template < Dimension dim >  struct ConvexHullIntegralKernel {
 
 
   
@@ -322,7 +322,7 @@ namespace DGtal
 
      @tparam dim the dimension of the space of processed points.
   */
-  template < DGtal::Dimension dim >
+  template < Dimension dim >
   struct ConvexHullIntegralKernel : public ConvexHullCommonKernel< dim >
   {
     typedef ConvexHullCommonKernel< dim > Base;
@@ -401,7 +401,7 @@ namespace DGtal
       const auto F = [&] ( InputPoint input ) -> Point
         {
           Point p;
-          for ( DGtal::Dimension i = 0; i < dimension; i++ )
+          for ( Dimension i = 0; i < dimension; i++ )
             p[ i ] = static_cast< Scalar >( input[ i ] );
           return p;
         };
@@ -419,7 +419,7 @@ namespace DGtal
         out_p[ k ] = p[ k ];
     }
 
-  }; //   template < DGtal::Dimension dim >  struct ConvexHullIntegralKernel {
+  }; //   template < Dimension dim >  struct ConvexHullIntegralKernel {
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -434,7 +434,7 @@ namespace DGtal
 
      @tparam dim the dimension of the space of processed points.
   */
-  template < DGtal::Dimension dim >
+  template < Dimension dim >
   struct DelaunayIntegralKernel : public ConvexHullCommonKernel< dim+1 >
   {
     typedef ConvexHullCommonKernel< dim+1 > Base;
@@ -518,7 +518,7 @@ namespace DGtal
         {
           Point p;
           Scalar z = 0;
-          for ( DGtal::Dimension i = 0; i < dimension-1; i++ ) {
+          for ( Dimension i = 0; i < dimension-1; i++ ) {
             const Scalar x = static_cast< Scalar >( input[ i ] );
             p[ i ]   = x;
             z       += x*x;
@@ -540,7 +540,7 @@ namespace DGtal
         out_p[ k ] = p[ k ];
     }
         
-  }; //   template < DGtal::Dimension dim >  struct DelaunayIntegralKernel {
+  }; //   template < Dimension dim >  struct DelaunayIntegralKernel {
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -555,7 +555,7 @@ namespace DGtal
 
      @tparam dim the dimension of the space of processed points.
   */
-  template < DGtal::Dimension dim >
+  template < Dimension dim >
   struct ConvexHullRationalKernel : public ConvexHullCommonKernel< dim >
   {
     typedef ConvexHullCommonKernel< dim > Base;
@@ -641,7 +641,7 @@ namespace DGtal
       const auto F = [&] ( InputPoint input ) -> Point
         {
           Point p;
-          for ( DGtal::Dimension i = 0; i < dimension; i++ )
+          for ( Dimension i = 0; i < dimension; i++ )
             p[ i ] = static_cast< Scalar >( round( input[ i ] * precision ) );
           return p;
         };
@@ -660,7 +660,7 @@ namespace DGtal
     }
     
     
-  }; //   template < DGtal::Dimension dim >  struct ConvexHullRationalKernel {
+  }; //   template < Dimension dim >  struct ConvexHullRationalKernel {
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -676,7 +676,7 @@ namespace DGtal
 
      @tparam dim the dimension of the space of processed points.
   */
-  template < DGtal::Dimension dim >
+  template < Dimension dim >
   struct DelaunayRationalKernel : public ConvexHullCommonKernel< dim+1 >
   {
     typedef ConvexHullCommonKernel< dim+1 > Base;
@@ -767,7 +767,7 @@ namespace DGtal
         {
           Point p;
           Scalar z = 0;
-          for ( DGtal::Dimension i = 0; i < dimension - 1; i++ ) {
+          for ( Dimension i = 0; i < dimension - 1; i++ ) {
             const Scalar x = static_cast< Scalar >( round( input[ i ] * precision ) );
             p[ i ] = x;
             z       += x*x;
@@ -789,7 +789,7 @@ namespace DGtal
         out_p[ k ] = ( (double) p[ k ] ) / precision;
     }
     
-  }; //   template < DGtal::Dimension dim >  struct DelaunayRationalKernel {
+  }; //   template < Dimension dim >  struct DelaunayRationalKernel {
 
   
   
