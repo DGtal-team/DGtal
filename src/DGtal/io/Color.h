@@ -217,6 +217,12 @@ namespace DGtal
 
     bool operator<( const Color & aColor ) const;
 
+    bool operator>( const Color & aColor ) const;
+
+    bool operator<=( const Color & aColor ) const;
+
+    bool operator>=( const Color & aColor ) const;
+
 
     /**
      * Addition operator with assignement.

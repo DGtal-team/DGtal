@@ -119,6 +119,24 @@ DGtal::Color::operator<( const Color & aColor ) const
   return false;
 }
 
+bool
+DGtal::Color::operator>( const Color & aColor ) const
+{
+  return !this->operator<(aColor);
+}
+
+bool
+DGtal::Color::operator<=( const Color & aColor ) const
+{
+  return this->operator<(aColor) || this->operator==(aColor);
+}
+
+bool
+DGtal::Color::operator>=( const Color & aColor ) const
+{
+  return this->operator>(aColor) || this->operator==(aColor);
+}
+
 
 void
 DGtal::Color::flushPostscript( std::ostream & stream ) const
