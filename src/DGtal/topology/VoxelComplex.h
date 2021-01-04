@@ -181,6 +181,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
     template < typename TDigitalSet >
     void construct(const TDigitalSet &input_set,
                    const Alias<ConfigMap> input_table);
+    using Parent::construct;
 
     /**
      * Set precomputed look up table for simplicity.
