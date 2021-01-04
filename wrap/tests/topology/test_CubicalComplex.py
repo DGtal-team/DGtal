@@ -125,6 +125,19 @@ def test_CubicalComplex(Type):
     print("Close ~: ", ccother)
     # ccother = *ccomplex # not valid in python
 
+    # construct
+    cc_from_set = CComplex(space)
+    DigitalSet = CComplex.TDigitalSet
+    Domain = DigitalSet.TDomain
+    dom = Domain(lower, upper)
+    digital_set = DigitalSet(dom)
+    digital_set.insert(Domain.TPoint.diagonal(1))
+    digital_set.insert(Domain.TPoint.diagonal(2))
+    digital_set.insert(Domain.TPoint.diagonal(3))
+    cc_from_set.construct(digital_set)
+    assert cc_from_set.nbCells(dom.dimension) == 3
+    print("construct from set: #cells(dim=max):", cc_from_set.nbCells(dom.dimension))
+
 @pytest.mark.parametrize("Type", [
     ("CubicalComplex2D"), ("CubicalComplex3D")])
 def test_CubicalComplexThinning(Type):

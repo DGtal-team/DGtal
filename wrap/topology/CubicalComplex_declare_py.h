@@ -641,6 +641,11 @@ Parameters
 digital_set: DigitalSetZ3i
     Input set to construct the complex
 )", py::arg("digital_set"));
+
+    py_class.def_property_readonly_static("TDigitalSet",
+            [](py::object /* self */) {
+            return py::type::of<DGtal::Python::DigitalSetZ3i>();
+            });
 }
 
 template<typename TCubicalComplex, typename TPyClass>
@@ -657,6 +662,11 @@ Parameters
 digital_set: DigitalSetZ2i
     Input set to construct the complex
 )", py::arg("digital_set"));
+
+    py_class.def_property_readonly_static("TDigitalSet",
+            [](py::object /* self */) {
+            return py::type::of<DGtal::Python::DigitalSetZ2i>();
+            });
 }
 
 
