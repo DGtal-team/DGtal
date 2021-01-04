@@ -108,7 +108,7 @@ isCellInterior = ccomplex.isCellInterior(cell1)
     //         return self.operator[](cell);
     //     });
 
-    py_class.def("iter", [](const TT & self, size_t dim) {
+    py_class.def("iter", [](const TT & self, DGtal::Dimension dim) {
         if(dim > TT::dimension) throw py::index_error();
         return py::make_iterator(self.begin(dim), self.end(dim)); },
          py::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
@@ -551,7 +551,7 @@ dim: Dimension
 
     // ----------------- Python only functions  -------------------------------
     // ParDirCollapse
-    py_class.def("thinning", [](TT &self, const std::string &method, const size_t iterations, bool verbose) {
+    py_class.def("thinning", [](TT &self, const std::string &method, const unsigned int iterations, bool verbose) {
         DGtal::ParDirCollapse < TT > thinning ( self.space() );
         thinning.verbose = verbose;
         thinning.attach(&self);

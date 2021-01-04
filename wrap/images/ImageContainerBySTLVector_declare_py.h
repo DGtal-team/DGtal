@@ -128,7 +128,7 @@ TT constructor_from_buffer(pybind11::buffer buf,
         decltype(info.shape)(info.shape.begin(), info.shape.end()) :
         decltype(info.shape)(info.shape.rbegin(), info.shape.rend());
 
-    for(size_t i = 0; i < TTPoint::dimension; ++i) {
+    for(DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
         // In DGtal the upper_bound is included in a domain.
         // Bounds are indices, not sizes.
         // Shape is a size, we adapt it to index with -1
@@ -482,7 +482,7 @@ TT constructor_from_buffer_point_container(pybind11::buffer buf,
         decltype(info.shape)(info.shape.begin(), info.shape.end() - 1) :
         decltype(info.shape)(info.shape.rbegin() + 1, info.shape.rend());
 
-    for(size_t i = 0; i < TTPoint::dimension; ++i) {
+    for(DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
         // In DGtal the upper_bound is included in a domain.
         // Bounds are indices, not sizes.
         // Shape is a size, we adapt it to index with -1
@@ -648,7 +648,7 @@ TT constructor_from_buffer_color_container(pybind11::buffer buf,
         decltype(info.shape)(info.shape.begin(), info.shape.end() - 1) :
         decltype(info.shape)(info.shape.rbegin() + 1, info.shape.rend());
 
-    for(size_t i = 0; i < TTPoint::dimension; ++i) {
+    for(DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
         // In DGtal the upper_bound is included in a domain.
         // Bounds are indices, not sizes.
         // Shape is a size, we adapt it to index with -1

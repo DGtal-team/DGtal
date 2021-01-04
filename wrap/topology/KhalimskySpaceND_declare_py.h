@@ -41,7 +41,7 @@ R"(Represents an cell in a cellular grid space by its Khalimsky coordinates.)";
     py_class.def("__len__", [](const TT & self) {
             return self.preCell().coordinates.size();
             });
-    py_class.def("__getitem__", [](const TT & self, const size_t index) {
+    py_class.def("__getitem__", [](const TT & self, const DGtal::Dimension index) {
         if (index >= self.preCell().coordinates.size()) throw py::index_error();
         return self.preCell().coordinates[index];
         });

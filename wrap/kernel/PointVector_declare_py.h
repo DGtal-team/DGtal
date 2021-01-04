@@ -332,11 +332,11 @@ Example of usage:
 
     // ----------------------- Python operators -------------------------------
     py_class.def_static("__len__", &TT::size);
-    py_class.def("__getitem__", [](const TT & self, const size_t index) {
+    py_class.def("__getitem__", [](const TT & self, const DGtal::Dimension index) {
         if (index >= self.size()) throw py::index_error();
         return self[index];
         });
-    py_class.def("__setitem__", [](TT & self, const size_t index,
+    py_class.def("__setitem__", [](TT & self, const DGtal::Dimension index,
                 const TTComponent value) {
         if (index >= self.size()) throw py::index_error();
         self[index] = value;
@@ -352,7 +352,7 @@ Example of usage:
             /* Return a tuple that fully encodes the state of the object */
             using TArray = std::array<TTComponent, TT::dimension >;
             TArray values;
-            for(size_t i = 0; i < TT::dimension; ++i){
+            for(DGtal::Dimension i = 0; i < TT::dimension; ++i){
                 values[i] = self[i];
             }
             return py::make_tuple(values);

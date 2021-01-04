@@ -49,11 +49,11 @@ Khalimsky coordinates.)";
     py_class.def("__len__", [](const TT & self) {
             return self.coordinates.size();
             });
-    py_class.def("__getitem__", [](const TT & self, const size_t index) {
+    py_class.def("__getitem__", [](const TT & self, const DGtal::Dimension index) {
         if (index >= self.coordinates.size()) throw py::index_error();
         return self.coordinates[index];
         });
-    py_class.def("__setitem__", [](TT & self, const size_t index,
+    py_class.def("__setitem__", [](TT & self, const DGtal::Dimension index,
                 const TTInteger value) {
         if (index >= self.coordinates.size()) throw py::index_error();
         self.coordinates[index] = value;

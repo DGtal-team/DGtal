@@ -136,7 +136,7 @@ Returns a new set which is the complement in the domain of this set.)");
         for ( auto it = self.begin(); it != self.end(); ++it) {
             auto point = *it;
             os << "{ ";
-                for ( size_t i = 0; i < TTPoint::dimension; ++i) {
+                for ( DGtal::Dimension i = 0; i < TTPoint::dimension; ++i) {
                 os << point[i];
                 if(i < TTPoint::dimension - 1) {
                     os << ", ";
