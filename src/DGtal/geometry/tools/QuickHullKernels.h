@@ -364,6 +364,7 @@ namespace DGtal
     /// corresponds to an infinite facet.
     bool isHalfSpaceFacetInfinite( const HalfSpace& hs ) const
     {
+      (void) hs; // unused parameter
       return false;
     }
     
@@ -604,6 +605,7 @@ namespace DGtal
     /// corresponds to an infinite facet.
     bool isHalfSpaceFacetInfinite( const HalfSpace& hs ) const
     {
+      (void) hs; // unused parameter      
       return false;
     }
     

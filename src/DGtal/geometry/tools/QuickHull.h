@@ -179,14 +179,14 @@ int main( int argc, char* argv[] )
       }
       void addPointOn( Index p )
       {
-        auto it = std::find( on_set.cbegin(), on_set.cend(), p );
+        const auto it = std::find( on_set.cbegin(), on_set.cend(), p );
         if ( it == on_set.cend() ) on_set.push_back( p );
       }
       void display( std::ostream& out ) const
       {
         const Vector N = H.internalNormal(); 
         out << "[Facet iN=(" << N[0];
-        for ( int i = 1; i < N.dimension; i++ ) out << "," << N[i];
+        for ( Dimension i = 1; i < N.dimension; i++ ) out << "," << N[ i ];
         out << ") c=" << H.internalIntercept() << " b=" << below << " n={";
         for ( auto&& n : neighbors ) out << " " << n;
         out << " } #out=" << outside_set.size();
@@ -199,7 +199,7 @@ int main( int argc, char* argv[] )
 
       void addNeighbor( Index n )
       {
-        auto it = std::find( neighbors.cbegin(), neighbors.cend(), n );
+        const auto it = std::find( neighbors.cbegin(), neighbors.cend(), n );
         if ( it == neighbors.cend() ) neighbors.push_back( n );
       }
       void subNeighbor( Index n )
@@ -223,9 +223,9 @@ int main( int argc, char* argv[] )
       Size variableMemory() const
       {
         Size M;
-        M += neighbors.capacity() * sizeof( Index );
+        M += neighbors.capacity()   * sizeof( Index );
         M += outside_set.capacity() * sizeof( Index );
-        M += on_set.capacity() * sizeof( Index );
+        M += on_set.capacity()      * sizeof( Index );
         return M;
       }
     };
