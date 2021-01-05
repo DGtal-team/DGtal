@@ -95,7 +95,8 @@ inline
 typename DGtal::NGon2D<T>::RealPoint 
 DGtal::NGon2D<T>::x( const double t ) const
 {
-  const double angle = t - myPhi + (angle < 0.0 ? NGON2D_2_PI : 0.);
+  double angle = t - myPhi;
+  angle = (angle < 0.0) ? angle + NGON2D_2_PI : angle;
 
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
 
