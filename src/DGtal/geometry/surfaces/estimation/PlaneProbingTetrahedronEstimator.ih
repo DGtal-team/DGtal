@@ -316,7 +316,8 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Tr
 
     Point s = myM[0] + myM[1] + myM[2];
     std::array<bool, 3> res, res_not;
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 3; ++i)
+    {
         int im1 = (i - 1 + 3) % 3;
         Point nk = vec[im1].crossProduct(vec[i]);
 

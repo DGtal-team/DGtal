@@ -183,6 +183,22 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState (
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+void
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (UpdateOperation const& aOp)
+{
+    if (getState() < 4)
+    {
+        Point translation = aOp.coeffs[1] * m(aOp.sigma[1]) + aOp.coeffs[2] * m(aOp.sigma[2]);
+        myIsInReverseState = !myIsInReverseState;
+        myTetrahedronEstimator.translateQ(translation);
+
+        // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
+        ASSERT(isSeparating());
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
@@ -197,41 +213,38 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
         // Decomposition of operations to ensure separability
         if (lambda > 0)
         {
+            assert(op.coeffs[0] == 1);
+
             // Undo the "ray" operation
             UpdateOperation undoOp;
             undoOp.sigma = op.sigma;
-            undoOp.coeffs = { Integer(1), Integer(0), -op.coeffs[2] };
+            undoOp.coeffs = { Integer(1), -op.coeffs[1], -op.coeffs[2] };
             myTetrahedronEstimator.applyOperation(undoOp);
 
-            // Iteratively apply "lambda" elementary operations
+            // Iteratively apply elementary operations
+            for (Integer k = Integer(1); k <= -op.coeffs[1]; ++k)
+            {
+                UpdateOperation iterOp;
+                iterOp.sigma = op.sigma;
+                iterOp.coeffs = { Integer(1), Integer(-1), Integer(0) };
+                myTetrahedronEstimator.applyOperation(iterOp);
+
+                translateIf(iterOp);
+            }
+
             for (Integer k = Integer(1); k <= lambda; ++k)
             {
                 UpdateOperation iterOp;
                 iterOp.sigma = op.sigma;
-                iterOp.coeffs = { Integer(1), Integer(0), -Integer(1) };
+                iterOp.coeffs = { Integer(1), Integer(0), Integer(-1) };
                 myTetrahedronEstimator.applyOperation(iterOp);
 
-                if (getState() < 4)
-                {
-                    Point translation = iterOp.coeffs[1] * m(iterOp.sigma[1]) + iterOp.coeffs[2] * m(iterOp.sigma[2]);
-                    myIsInReverseState = !myIsInReverseState;
-                    myTetrahedronEstimator.translateQ(translation);
-                }
-
-                // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
-                ASSERT(isSeparating());
+                translateIf(iterOp);
             }
         }
         else
         {
-            if (getState() < 4)
-            {
-                myIsInReverseState = !myIsInReverseState;
-                myTetrahedronEstimator.translateQ();
-            }
-
-            // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
-            ASSERT(isSeparating());
+            translateIf(op);
         }
     }
 
