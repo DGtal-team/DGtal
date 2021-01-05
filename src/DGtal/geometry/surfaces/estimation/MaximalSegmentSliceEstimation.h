@@ -79,10 +79,7 @@ namespace DGtal
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
-      struct Quantity {
-          RealPoint normal; /**< The estimated normal. */
-          std::vector<int> flatDirections; /**< The dimensions that were found to be locally flat. */
-      };
+      using Quantity = RealPoint;
 
     // ----------------------- Private types ------------------------------
   private:

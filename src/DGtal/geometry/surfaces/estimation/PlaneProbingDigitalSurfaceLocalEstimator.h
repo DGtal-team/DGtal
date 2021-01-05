@@ -225,6 +225,21 @@ namespace DGtal
         return (x >= 0) ? 1 : -1;
     }
 
+    static std::vector<int> findZeros (RealPoint const& p)
+    {
+        std::vector<int> zeros;
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (p[i] == 0)
+            {
+                zeros.push_back(i);
+            }
+        }
+
+        return zeros;
+    }
+
   }; // end of class PlaneProbingDigitalSurfaceLocalEstimator
 
 

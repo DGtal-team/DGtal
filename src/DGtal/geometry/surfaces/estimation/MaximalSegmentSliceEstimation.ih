@@ -191,7 +191,12 @@ eval (SurfelConstIterator it)
         n = -n;
     }
 
-    return { n.getNormalized(), flatDirections };
+    // Set to zero the flat directions
+    for (const auto& d: flatDirections) {
+        n[d] = NumberTraits<Integer>::ZERO;
+    }
+
+    return n;
 }
 
 // ------------------------------------------------------------------------
@@ -276,7 +281,8 @@ template < typename TSurface >
 inline
 typename DGtal::MaximalSegmentSliceEstimation<TSurface>::RealPoint
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
-centerSurfel (Surfel const& aSurfel) const {
+centerSurfel (Surfel const& aSurfel) const
+{
     KSpace const& K = space();
 
     typename KSpace::DirIterator local_q1 = K.sDirs(aSurfel), local_q2 = local_q1;

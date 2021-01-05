@@ -95,12 +95,13 @@ int main(int argc, char** argv)
     for (std::size_t i = 0; i < surfels.size(); ++i)
     {
         const Surfel& s = surfels[i];
-        const Quantity& q = quantities[i];
+        const Quantity& normal = quantities[i];
 
-        if (q.flatDirections.size() == 2)
+        // TODO: check why sometimes the estimated normal is zero
+        if (normal == Point::zero)
             continue;
 
-        const RealPoint& n = q.normal;
+        const RealPoint& n = normal.getNormalized();
         RealPoint origin = centerSurfel(K, s);
 
         viewer.setFillColor(fillColor);

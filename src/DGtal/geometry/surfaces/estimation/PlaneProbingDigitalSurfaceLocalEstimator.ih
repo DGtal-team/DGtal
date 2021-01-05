@@ -94,13 +94,12 @@ eval (SurfelConstIterator it)
     if (myPreEstimations.count(s)) {
         preEstimation = myPreEstimations[s];
     } else {
-        auto preEstimationQuantity = myPreEstimationEstimator.eval(it);
-        preEstimation = preEstimationQuantity.normal;
+        preEstimation = myPreEstimationEstimator.eval(it);
         myPreEstimations[s] = preEstimation; // cache the value for future calls
     }
 
-    // TODO: handle preEstimation.flatDirections to initialize a variation of
-    // the computer to handle flat regions
+    // TODO: use zeros to initialize a variation of the computer to handle flat regions
+    const auto zeros = findZeros(preEstimation);
 
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
     ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
