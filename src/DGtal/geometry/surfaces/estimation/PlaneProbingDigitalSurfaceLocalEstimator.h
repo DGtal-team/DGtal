@@ -122,6 +122,30 @@ namespace DGtal
      */
     PlaneProbingDigitalSurfaceLocalEstimator(ConstAlias<Surface> aSurface);
 
+    /*
+     * Constructor.
+     *
+     * @param aProbingFactory functor to produce a plane-probing estimator from a frame and a predicate.
+     * @param aPreEstimations map of pre-estimated normal vectors (empty by default) to help choose the correct octant.
+     * @param aVerbose a boolean indicating the level of verbosity.
+     */
+    PlaneProbingDigitalSurfaceLocalEstimator(ProbingFactory const& aProbingFactory,
+                                             std::unordered_map<Surfel, RealPoint> const& aPreEstimations = {},
+                                             bool aVerbose = false);
+
+    /*
+     * Constructor.
+     *
+     * @param aSurface a digital surface.
+     * @param aProbingFactory functor to produce a plane-probing estimator from a frame and a predicate.
+     * @param aPreEstimations map of pre-estimated normal vectors (empty by default) to help choose the correct octant.
+     * @param aVerbose a boolean indicating the level of verbosity.
+     */
+    PlaneProbingDigitalSurfaceLocalEstimator(ConstAlias<Surface> aSurface,
+                                             ProbingFactory const& aProbingFactory,
+                                             std::unordered_map<Surfel, RealPoint> const& aPreEstimations = {},
+                                             bool aVerbose = false);
+
     /**
      * Destructor.
      */
@@ -202,13 +226,13 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     ProbingAlgorithm* myProbingAlgorithm = nullptr;
+    bool myH;
     CountedConstPtrOrConstPtr<Surface> mySurface;
     Predicate myPredicate;
-    bool myH;
+    PreEstimation myPreEstimationEstimator;
     ProbingFactory myProbingFactory;
     std::unordered_map<Surfel, RealPoint> myPreEstimations;
     bool myVerbose;
-    PreEstimation myPreEstimationEstimator;
 
     // ------------------------- Hidden services ------------------------------
   protected:

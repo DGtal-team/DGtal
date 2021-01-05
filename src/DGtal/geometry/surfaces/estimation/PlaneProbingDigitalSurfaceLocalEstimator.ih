@@ -59,6 +59,30 @@ PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
 template < typename TSurface, typename TProbingAlgorithm >
 inline
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+PlaneProbingDigitalSurfaceLocalEstimator(ProbingFactory const& aProbingFactory,
+                                         std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
+                                         bool aVerbose)
+    : myProbingFactory(aProbingFactory), myPreEstimations(aPreEstimations), myVerbose(aVerbose)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+inline
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+PlaneProbingDigitalSurfaceLocalEstimator(ConstAlias<Surface> aSurface,
+                                         ProbingFactory const& aProbingFactory,
+                                         std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
+                                         bool aVerbose)
+    : mySurface(aSurface), myPredicate(mySurface), myPreEstimationEstimator(mySurface),
+      myProbingFactory(aProbingFactory), myPreEstimations(aPreEstimations), myVerbose(aVerbose)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface, typename TProbingAlgorithm >
+inline
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 ~PlaneProbingDigitalSurfaceLocalEstimator ()
 {
     myProbingAlgorithm = nullptr;

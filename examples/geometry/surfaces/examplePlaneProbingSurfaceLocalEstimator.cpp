@@ -114,10 +114,8 @@ int main( int argc, char** argv )
     // }
     // Or it is directly done inside the Estimator::eval function
 
-    Estimator estimator;
+    Estimator estimator(surface, probingFactory, preEstimations, verbose);
     estimator.init(gridstep, surfels.begin(), surfels.end());
-    estimator.attach(surface);
-    estimator.setParams(probingFactory, preEstimations, verbose);
 
     std::vector<Quantity> quantities;
     estimator.eval(surfels.begin(), surfels.end(), std::back_inserter(quantities));
