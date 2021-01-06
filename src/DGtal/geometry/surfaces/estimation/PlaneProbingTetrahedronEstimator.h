@@ -172,7 +172,8 @@ namespace DGtal
      * of 'flat' zones.
      *
      * @param aNeighbors the list of candidates ray to consider.
-     * @return false if the algorithm has terminated, true otherwise.
+     * @return a pair (op, b) where b = false if the algorithm has terminated, true otherwise; and op is the
+     * operation used to update the current tetrahedron.
      */
     std::pair<bool, UpdateOperation> advance (std::vector<ProbingRay> const& aNeighbors);
 
@@ -182,6 +183,14 @@ namespace DGtal
      * @return false if the algorithm has terminated, true otherwise.
      */
     std::pair<bool, UpdateOperation> advance ();
+
+    /**
+     * Estimate the normal using a plane-probing approach, calls \a advance repeatedly.
+     *
+     * @param aNeighbors the list of candidates ray to consider.
+     * @return the estimated normal.
+     */
+    Quantity compute (std::vector<ProbingRay> const& aNeighbors);
 
     /**
      * Estimate the normal using a plane-probing approach, calls \a advance repeatedly.

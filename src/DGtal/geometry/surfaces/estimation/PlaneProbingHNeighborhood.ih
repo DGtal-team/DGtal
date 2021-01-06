@@ -64,14 +64,18 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
 {
     this->myCandidates.clear();
 
-    std::array<bool, 6> state;
-    for (int i = 0; i < 6; ++i) {
+    std::array<bool, 6> state({ false, false, false, false, false, false });
+    for (int i = 0; i < 6; ++i)
+    {
         ProbingRay r = this->myNeighborhood[i].getBase();
-        state[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
 
-        if (state[i] && this->isNeighbor(r))
-        {
-            this->myCandidates.push_back(r);
+        if (this->isNeighbor(r)) {
+            state[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+
+            if (state[i])
+            {
+                this->myCandidates.push_back(r);
+            }
         }
     }
 

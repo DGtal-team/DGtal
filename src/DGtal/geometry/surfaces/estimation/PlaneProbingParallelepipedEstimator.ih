@@ -264,11 +264,20 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
-DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute (std::vector<ProbingRay> const& aNeighbors)
 {
-    while (advance()) {}
+    while (advance(aNeighbors)) {}
 
     return getNormal();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
+{
+    return compute({});
 }
 
 // ------------------------------------------------------------------------

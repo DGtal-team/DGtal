@@ -96,6 +96,7 @@ namespace DGtal
       using Predicate        = DigitalSurfacePredicate<Surface>;
       using ProbingFactory   = std::function<ProbingAlgorithm*(const ProbingFrame&, Predicate const&)>;
       using PreEstimation    = MaximalSegmentSliceEstimation<Surface>;
+      using ProbingRay       = typename ProbingAlgorithm::ProbingRay;
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
@@ -264,6 +265,31 @@ namespace DGtal
         return zeros;
     }
 
+    static std::vector<ProbingRay> getProbingRaysOneFlatDirection (int aIndex)
+    {
+        if (aIndex == 0)
+        {
+            return { ProbingRay({ 2, 1, 0 }), ProbingRay({ 1, 2, 0 }) };
+        }
+        else if (aIndex == 1)
+        {
+            return { ProbingRay({ 0, 2, 1 }), ProbingRay({ 2, 0, 1 }) };
+        }
+        else
+        {
+            assert(aIndex == 2);
+            return { ProbingRay({ 1, 0, 2 }), ProbingRay({ 0, 1, 2 }) };
+        }
+    }
+
+    Point getNormalOneFlatDirection (int aIndex) const
+    {
+        int im1 = (aIndex - 1 + 3) % 3,
+            im2 = (aIndex - 2 + 3) % 3;
+
+        return myProbingAlgorithm->m(im1).crossProduct(myProbingAlgorithm->m(aIndex)) +
+            myProbingAlgorithm->m(aIndex).crossProduct(myProbingAlgorithm->m(im2));
+    }
   }; // end of class PlaneProbingDigitalSurfaceLocalEstimator
 
 

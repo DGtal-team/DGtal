@@ -127,9 +127,25 @@ eval (SurfelConstIterator it)
 
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
     ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
-
     myProbingAlgorithm = myProbingFactory(frame, myPredicate);
-    Point normal = myProbingAlgorithm->compute();
+
+    Point normal;
+    if (zeros.size() == 0)
+    {
+        normal = myProbingAlgorithm->compute();
+    }
+    else if (zeros.size() == 1)
+    {
+        // TODO: check
+        // int index = zeros[0];
+        // myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
+        // normal = getNormalOneFlatDirection(index);
+        normal = myProbingAlgorithm->compute();
+    }
+    else if (zeros.size() == 2)
+    {
+        normal = frame.normal;
+    }
 
     delete myProbingAlgorithm;
     myProbingAlgorithm = nullptr;

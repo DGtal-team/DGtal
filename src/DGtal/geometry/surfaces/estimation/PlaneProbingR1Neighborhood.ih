@@ -183,12 +183,18 @@ int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
 {
     int code = 0;
 
+    myState = { false, false, false, false, false, false };
     for (int i = 0; i < 6; ++i) {
         ProbingRay const& r = this->myNeighborhood[i];
-        myState[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
 
         // We skip the ray if it is not part of the rays that should be considered at this step
-        if (myState[i] && this->isNeighbor(r))
+        if (! this->isNeighbor(r))
+        {
+            continue;
+        }
+
+        myState[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+        if (myState[i])
         {
             code += (1 << i);
         }

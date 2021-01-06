@@ -243,7 +243,8 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<
     myNeighborhood->setNeighbors(aNeighbors);
     HexagonState state = hexagonState();
 
-    if (state == HexagonState::Planar) {
+    if (state == HexagonState::Planar)
+    {
         UpdateOperation op = myNeighborhood->closestCandidate();
         update(op);
         assert(isValid());
@@ -266,11 +267,20 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute (std::vector<ProbingRay> const& aNeighbors)
 {
-    while (advance().first) {}
+    while (advance(aNeighbors).first) {}
 
     return getNormal();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute ()
+{
+    return compute({});
 }
 
 // ------------------------------------------------------------------------
