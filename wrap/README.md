@@ -97,8 +97,12 @@ Imagine we want to add wrappings for the class `HyperRectDomain` from the `kerne
 
 ### Other:
 - [x] CubicalComplex `CubicalComplex2D`, `CubicalComplex3D` (using `std::unordered_map` as CellContainer).
-- [ ] VoxelComplex
-- [ ] DigitalSurface
+- [x] VoxelComplex
+- Add factory functions to `__init__.py` to ease the construction of the wrapped types:
+  - [x] Point: `dgtal.Point(dim, dtype, data)`
+  `dgtal.Point` will return a `dgtal.kernel.Point2D` if `dim == 2` and `dtype == 'int32'`, or a `dgtal.kernel.Point3D`
+  if `dim == 3` and `dtype == 'float'`. The `data` argument will be passed to the constructor, accepting list,
+  tuples and `numpy.array`s of the right type and dimension.
 
 
 Dev notes

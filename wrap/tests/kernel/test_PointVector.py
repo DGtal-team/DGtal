@@ -234,3 +234,33 @@ def test_printers(Type):
     print(ps)
     print("__repr__:")
     print(ps.__repr__())
+
+@pytest.mark.parametrize("dtype", [("int32"), ("float")])
+def test_factory(dtype):
+    dim = 2
+    default_constructed = dgtal.Point(dim=dim, dtype=dtype)
+    with_data_as_tuple = dgtal.Point(dim=dim, dtype=dtype, data=[2,3])
+    with_data_as_list = dgtal.Point(dim=dim, dtype=dtype, data=(2,3))
+    assert default_constructed[0] == 0
+    assert with_data_as_tuple[1] == 3
+    assert with_data_as_list[1] == 3
+    dim = 3
+    default_constructed = dgtal.Point(dim=dim, dtype=dtype)
+    with_data_as_tuple = dgtal.Point(dim=dim, dtype=dtype, data=[2,3,4])
+    with_data_as_list = dgtal.Point(dim=dim, dtype=dtype, data=(2,3,4))
+    assert default_constructed[0] == 0
+    assert with_data_as_tuple[2] == 4
+    assert with_data_as_list[2] == 4
+
+@pytest.mark.parametrize("dtype", [("int32"), ("float")])
+def test_factoryWithNumpyArray(dtype):
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+    dim = 2
+    np_array = np.array([2,3], dtype=dtype)
+    with_data_as_np_array = dgtal.Point(dim=dim, dtype=dtype, data=np_array)
+    assert with_data_as_np_array[1] == 3
+    dim = 3
+    np_array = np.array([2,3,4], dtype=dtype)
+    with_data_as_np_array = dgtal.Point(dim=dim, dtype=dtype, data=np_array)
+    assert with_data_as_np_array[2] == 4
