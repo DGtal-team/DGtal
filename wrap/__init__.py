@@ -40,3 +40,27 @@ def Point(dim, dtype='int32', data=()):
             return kernel.RealPoint2D(*data)
         elif dim == 3:
             return kernel.RealPoint3D(*data)
+
+def Domain(lower_bound, upper_bound):
+    """
+    Factory helper function for DGtal::HyperRectDomain.
+
+    Parameters
+    ----------
+    lower_bound: Point
+        lower point of the domain (2D or 3D)
+    upper_bound: Point
+        upper point of the domain (2D or 3D)
+
+    Example:
+      dgtal.Domain(lower_bound=dgtal.Point(dim=2).zero,
+                   upper_bound=dgtal.Point(dim=2).diagonal(2))
+    """
+    if lower_bound.dimension != upper_bound.dimension:
+        raise ValueError("lower_bound and upper_bound have different dimension")
+
+    dim = lower_bound.dimension
+    if dim == 2:
+        return kernel.DomainZ2i(lower_bound=lower_bound, upper_bound=upper_bound)
+    elif dim == 3:
+        return kernel.DomainZ3i(lower_bound=lower_bound, upper_bound=upper_bound)

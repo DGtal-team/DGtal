@@ -49,9 +49,21 @@ The following code snippet demonstrates how to use \p HyperRectDomain
             return DGtal::Python::Integer_str;
             });
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init());
-    py_class.def(py::init<const TTPoint &, const TTPoint&>());
-    py_class.def(py::init<const TTRealPoint &, const TTRealPoint&>());
+    py_class.def(py::init(), "Default constructor.");
+
+    py_class.def(py::init<const TTPoint &, const TTPoint&>(),
+R"(Constructor from two points lower_bound, upper_bound defining the space diagonal.)",
+        py::arg("lower_bound"), py::arg("upper_bound"));
+
+    py_class.def(py::init<const TTRealPoint &, const TTRealPoint&>(),
+R"(Constructor from two points lower_bound, upper_bound with
+real coordinates defining the space diagonal.
+
+The domain actualy defined is the smallest domain with integer bounds that
+contains the two given points.
+)",
+        py::arg("lower_bound"), py::arg("upper_bound"));
+
     py_class.def(py::init<const TT &>());
 
     // ----------------------- Python operators -------------------------------

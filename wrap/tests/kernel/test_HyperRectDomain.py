@@ -44,3 +44,12 @@ def test_printers(Type):
     print(dom)
     print("__repr__:")
     print(dom.__repr__())
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory(dim):
+    lower_bound = dgtal.Point(dim=dim).zero
+    upper_bound = dgtal.Point(dim=dim).diagonal(5)
+    dom = dgtal.Domain(lower_bound=lower_bound,
+                       upper_bound=upper_bound)
+    assert dom.lower_bound == lower_bound
+    assert dom.upper_bound == upper_bound
