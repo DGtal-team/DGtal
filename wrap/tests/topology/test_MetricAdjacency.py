@@ -42,3 +42,8 @@ def test_MetricAdjacency(Type):
     print("point pa neighbors: ", neighbors)
     assert len(neighbors) == capacity
 
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory(dim):
+    for max_norm in range(1, dim + 1):
+        adj = dgtal.MetricAdjacency(dim=dim, max_norm=max_norm)
+        assert adj.TPoint.dimension == dim

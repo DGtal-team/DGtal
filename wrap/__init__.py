@@ -219,3 +219,43 @@ def KSpace(dim):
         return topology.KSpace2D()
     elif dim == 3:
         return topology.KSpace3D()
+
+def MetricAdjacency(dim, max_norm):
+    """
+    Factory helper function for DGtal::MetricAdjacency
+
+    Parameters
+    ----------
+    dim: Int
+        Dimension of the space (2D or 3D)
+    max_norm: Int
+        Defines which point are adjacents. Valid: [1, ... , dim]
+
+    Example:
+        # 3D
+        adj26 = dgtal.MetricAdjacency(dim=3, max_norm=3)
+        adj18 = dgtal.MetricAdjacency(dim=3, max_norm=2)
+        adj6 = dgtal.MetricAdjacency(dim=3, max_norm=1)
+        # 2D
+        adj8 = dgtal.MetricAdjacency(dim=2, max_norm=2)
+        adj4 = dgtal.MetricAdjacency(dim=2, max_norm=1)
+
+    These metrics are also available using:
+        adj26 = dgtal.kernel.Adj26()
+    """
+    _check_dim(dim)
+    if max_norm < 1 or max_norm > dim:
+        raise ValueError("max_norm must be greater than 0, and not greater than input dimension.")
+
+    if dim == 2:
+        if max_norm == 1:
+            return topology.Adj4()
+        elif max_norm == 2:
+            return topology.Adj8()
+    elif dim == 3:
+        if max_norm == 1:
+            return topology.Adj6()
+        elif max_norm == 2:
+            return topology.Adj18()
+        elif max_norm == 3:
+            return topology.Adj26()
