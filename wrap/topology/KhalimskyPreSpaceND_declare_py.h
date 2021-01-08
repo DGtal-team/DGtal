@@ -93,7 +93,13 @@ pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell(pybind11::module &m
     using TTPoint = typename TT::Point;
     using TTInteger = typename TT::Integer;
     auto py_class = declare_KhalimskyPreCell_common<TT>(m, typestr);
-    py_class.def(py::init<const TTPoint &>());
+    py_class.def(py::init<const TTPoint &>(),
+R"(Constructor from its Khalimsky coordinates.
+Parameters
+----------
+point: dgtal.Point
+    Khalimsky coordinates as a point.
+)", py::arg("point"));
 
     // ----------------------- Bridges ----------------------------------------
     // Python buffers (requires py::buffer_protocol in py_class instantiation)
@@ -169,7 +175,15 @@ pybind11::class_<TSignedKhalimskyPreCell> declare_SignedKhalimskyPreCell(pybind1
     using TT = TSignedKhalimskyPreCell;
     using TTPoint = typename TSignedKhalimskyPreCell::Point;
     auto py_class = declare_KhalimskyPreCell_common<TT>(m, typestr);
-    py_class.def(py::init<const TTPoint &, bool>());
+    py_class.def(py::init<const TTPoint &, bool>(),
+R"(Constructor from its Khalimsky coordinates and the sign of the cell.
+Parameters
+----------
+point: dgtal.Point
+    Khalimsky coordinates as a point.
+positive: Bool
+    Sign of the PreCell
+)", py::arg("point"), py::arg("positive"));
     py_class.def_readwrite("positive", &TT::positive, R"(Cell sign.)");
 
     // ----------------------- Pickling ---------------------------------------

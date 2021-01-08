@@ -191,3 +191,10 @@ def test_KSpace(Type):
         assert len(cofaces) == 2
     elif space.dimension == 3:
         assert len(cofaces) == 8
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory(dim):
+    lower = dgtal.Point(dim=dim).zero
+    upper = dgtal.Point(dim=dim).diagonal(3)
+    space = dgtal.KSpace(dim=dim)
+    space.init(lower=lower, upper=upper, is_closed=True)

@@ -4,6 +4,14 @@ from ._dgtal import *
 from pathlib import Path as _Path
 tables_folder = str(_Path(__file__).parent.absolute() / "tables")
 
+def _check_dim(dim):
+    """
+    Internal function to raise error if dimension is not valid.
+    Used in the factory helper functions.
+    """
+    if dim != 2 and dim != 3:
+        raise ValueError("Dimension (dim = " + str(dim) + ") is not valid. Should be 2 or 3.")
+
 def Point(dim, dtype='int32', data=()):
     """
     Factory helper function for DGtal::PointVector.
@@ -25,8 +33,8 @@ def Point(dim, dtype='int32', data=()):
 
     Use help(Point(dim=2)) for more info.
     """
-    if dim != 2 and dim != 3:
-        raise ValueError("Dimension (dim = " + dim + ") is not valid. Should be 2 or 3.")
+    _check_dim(dim)
+
     if dtype != 'int32' and dtype != 'float':
         raise ValueError("Unhandled dtype (" + dtype + "). Valid: 'int32', and 'float'.")
 
@@ -60,6 +68,8 @@ def Domain(lower_bound, upper_bound):
         raise ValueError("lower_bound and upper_bound have different dimension")
 
     dim = lower_bound.dimension
+    _check_dim(dim)
+
     if dim == 2:
         return kernel.DomainZ2i(lower_bound=lower_bound, upper_bound=upper_bound)
     elif dim == 3:
@@ -80,7 +90,132 @@ def DigitalSet(domain):
     digital_set = dgtal.DigitalSet(domain=domain)
     """
     dim = domain.dimension
+    _check_dim(dim)
+
     if dim == 2:
         return kernel.DigitalSetZ2i(domain=domain)
     elif dim == 3:
         return kernel.DigitalSetZ3i(domain=domain)
+
+def KPreSpace(dim):
+    """
+    Factory helper function for DGtal::KhalimskyPreSpace
+
+    Parameters
+    ----------
+    dim: Int
+        Dimension of the space (2D or 3D)
+
+    Example:
+    pre_ks = dgtal.KPreSpace(dim=2)
+    """
+    _check_dim(dim)
+
+    if dim == 2:
+        return topology.KPreSpace2D()
+    elif dim == 3:
+        return topology.KPreSpace3D()
+
+def PreCell(dim=(), point=()):
+    """
+    Factory helper function for DGtal::PreCell
+
+    Parameters
+    ----------
+    dim: Int
+        Dimension of the space (2D or 3D)
+    point: dgtal.Point
+        If no point provided, return a PreCell of the input dimension.
+
+    Example:
+    pre_cell_empty = dgtal.PreCell(dim=2)
+    pre_cell = dgtal.PreCell(point=dgtal.Point(dim=2).diagonal(2))
+    """
+    if not dim and not point:
+        raise ValueError("Provide at least one of the following parameters: dim or point")
+
+    if point:
+        dim_point = point.dimension
+        if dim:
+            if dim != dim_point:
+                raise ValueError("dim and point dimension are different. Provide only a valid point.")
+
+        _check_dim(dim_point)
+        if dim_point == 2:
+            return topology.PreCell2D(point=point)
+        elif dim_point == 3:
+            return topology.PreCell3D(point=point)
+    else:
+        _check_dim(dim)
+        if dim == 2:
+            return topology.PreCell2D()
+        elif dim == 3:
+            return topology.PreCell3D()
+
+def SPreCell(dim=(), point=(), positive=True):
+    """
+    Factory helper function for DGtal::PreCell
+
+    Parameters
+    ----------
+    dim: Int
+        Dimension of the space (2D or 3D)
+    point: dgtal.Point of the same dimension
+        If empty (default) returns a default constructed PreCell
+    positive: Bool [True by default]
+        Sign of the cell.
+
+    Example:
+    spre_cell_empty = dgtal.SPreCell(dim=2)
+    spre_cell_pos = dgtal.SPreCell(point=dgtal.Point(dim=2).diagonal(2))
+    spre_cell_neg = dgtal.SPreCell(point=dgtal.Point(dim=2).diagonal(2),
+                                   positive=False)
+    """
+    if not dim and not point:
+        raise ValueError("Provide at least one of the following parameters: dim or point")
+
+    if point:
+        dim_point = point.dimension
+        if dim:
+            if dim != dim_point:
+                raise ValueError("dim and point dimension are different. Provide only a valid point.")
+
+        _check_dim(dim_point)
+        if dim_point == 2:
+            return topology.SPreCell2D(point=point, positive=positive)
+        elif dim_point == 3:
+            return topology.SPreCell3D(point=point, positive=positive)
+    else:
+        _check_dim(dim)
+        if dim == 2:
+            pre_cell = topology.SPreCell2D()
+        elif dim == 3:
+            pre_cell = topology.SPreCell3D()
+        pre_cell.positive = positive
+        return pre_cell
+
+
+def KSpace(dim):
+    """
+    Factory helper function for DGtal::KhalimskySpace
+    Call:
+        kspace.init(lower=dgtal.Point, upper=dgtal.Point , is_closed=True|False)
+    to initialize it to a valid state.
+
+    Parameters
+    ----------
+    dim: Int
+        Dimension of the space (2D or 3D)
+
+    Example:
+    ks = dgtal.KSpace(dim=2)
+    ks.init(lower=dgtal.Point(dim=2).zero,
+            upper=dgtal.Point(dim=2).diagonal(2),
+            is_closed=True)
+    """
+    _check_dim(dim)
+
+    if dim == 2:
+        return topology.KSpace2D()
+    elif dim == 3:
+        return topology.KSpace3D()

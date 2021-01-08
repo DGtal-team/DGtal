@@ -225,3 +225,20 @@ def test_KPreSpace(Type):
         assert len(cofaces) == 2
     elif space.dimension == 3:
         assert len(cofaces) == 8
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factoryPreCell(dim):
+    # With just dim
+    dgtal.PreCell(dim=dim)
+    dgtal.SPreCell(dim=dim)
+    # With just point
+    dgtal.PreCell (point=dgtal.Point(dim=dim).diagonal(2))
+    dgtal.SPreCell(point=dgtal.Point(dim=dim).diagonal(2))
+    dgtal.SPreCell(point=dgtal.Point(dim=dim).diagonal(2), positive=False)
+    with pytest.raises(ValueError):
+        dgtal.PreCell(dim=4)
+    with pytest.raises(ValueError):
+        dgtal.PreCell(dim=3, point=dgtal.Point(dim=2).diagonal(2))
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory(dim):
+    space = dgtal.KPreSpace(dim=dim)
