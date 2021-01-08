@@ -112,7 +112,7 @@ int main( int argc, char** argv )
     // {
     //     preEstimations[surfels[i]] = preEstimationsVector[i];
     // }
-    // Or it is directly done inside the Estimator::eval function
+    // Or it can implicitly be done inside the Estimator::eval function (using a MaximalSegmentSliceEstimation estimator)
 
     Estimator estimator(surface, probingFactory, preEstimations, verbose);
     estimator.init(gridstep, surfels.begin(), surfels.end());
