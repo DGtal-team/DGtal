@@ -57,3 +57,13 @@ def test_function_members(Type):
     # Clear and Empty
     ds.clear()
     assert ds.empty()
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory(dim):
+    lower_bound = dgtal.Point(dim=dim).zero
+    upper_bound = dgtal.Point(dim=dim).diagonal(3)
+    domain = dgtal.Domain(lower_bound=lower_bound,
+                          upper_bound=upper_bound)
+    ds = dgtal.DigitalSet(domain=domain)
+    ds.insert(dgtal.Point(dim=dim).diagonal(2))
+    assert len(ds) == 1

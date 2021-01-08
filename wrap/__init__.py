@@ -64,3 +64,23 @@ def Domain(lower_bound, upper_bound):
         return kernel.DomainZ2i(lower_bound=lower_bound, upper_bound=upper_bound)
     elif dim == 3:
         return kernel.DomainZ3i(lower_bound=lower_bound, upper_bound=upper_bound)
+
+def DigitalSet(domain):
+    """
+    Factory helper function for DGtal::DigitalSetBySTLVector
+
+    Parameters
+    ----------
+    domain: Domain
+        A domain of the desired dimension (2 or 3)
+
+    Example:
+    domain = dgtal.Domain(lower_bound=dgtal.Point(dim=2).zero,
+                          upper_bound=dgtal.Point(dim=2).diagonal(2))
+    digital_set = dgtal.DigitalSet(domain=domain)
+    """
+    dim = domain.dimension
+    if dim == 2:
+        return kernel.DigitalSetZ2i(domain=domain)
+    elif dim == 3:
+        return kernel.DigitalSetZ3i(domain=domain)

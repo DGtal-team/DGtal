@@ -58,7 +58,14 @@ Example of usage:
     auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TTDomain &>());
+    py_class.def(py::init<const TTDomain &>(),
+R"(Creates the empty set in the input domain.
+Parameters
+----------
+domain: Domain
+    A digital domain
+)", py::arg("domain"));
+
     py_class.def(py::init<const TT &>());
 
     // ----------------------- Python operators -------------------------------
