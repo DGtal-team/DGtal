@@ -302,8 +302,8 @@ DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
   typedef typename QHull::Ridge             Ridge;
   typedef typename QHull::IndexRange        IndexRange;
 
-  ASSERT( hull.status() >= typename QHull::Status::VerticesCompleted
-          && hull.status() <= typename QHull::Status::AllCompleted );
+  ASSERT( hull.status() >= QHull::Status::VerticesCompleted
+          && hull.status() <= QHull::Status::AllCompleted );
   
   // Get cell vertices and sort them
   hull.getFacetVertices( cell_vertices );
