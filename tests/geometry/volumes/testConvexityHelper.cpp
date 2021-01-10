@@ -45,7 +45,8 @@ using namespace DGtal;
 // Functions for testing class ConvexityHelper in 2D.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "ConvexityHelper< 2 > unit tests", "[convexity_helper][2d]" )
+SCENARIO( "ConvexityHelper< 2 > unit tests",
+          "[convexity_helper][lattice_polytope][2d]" )
 {
   typedef ConvexityHelper< 2 >    Helper;
   typedef Helper::Point           Point;
@@ -67,6 +68,59 @@ SCENARIO( "ConvexityHelper< 2 > unit tests", "[convexity_helper][2d]" )
         REQUIRE( P.isInside( V[ 2 ] ) );
         REQUIRE( P.isInside( V[ 3 ] ) );
         REQUIRE( P.isInside( V[ 4 ] ) );
+      }
+      THEN( "The polytope contains 58 points" ) {
+        REQUIRE( P.count() == 58 );
+      }
+      THEN( "The interior of the polytope contains 53 points" ) {
+        REQUIRE( P.countInterior() == 53 );
+      }
+      THEN( "The boundary of the polytope contains 5 points" ) {
+        REQUIRE( P.countBoundary() == 5 );
+      }
+    }
+  }
+} 
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class ConvexityHelper in 3D.
+///////////////////////////////////////////////////////////////////////////////
+
+SCENARIO( "ConvexityHelper< 3 > unit tests",
+          "[convexity_helper][lattice_polytope][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  GIVEN( "Given an octahedron star { (0,0,0), (-2,0,0), (2,0,0), (0,-2,0), (0,2,0), (0,0,-2), (0,0,2) } " ) {
+    std::vector<Point> V
+      = { Point(0,0,0), Point(-2,0,0), Point(2,0,0), Point(0,-2,0), Point(0,2,0),
+      Point(0,0,-2), Point(0,0,2) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 8 non trivial facets plus 12 edge constraints" ) {
+        REQUIRE( P.nbHalfSpaces() - 6 == 20 );
+      }
+      THEN( "The polytope is Minkowski summable" ) {
+        REQUIRE( P.canBeSummed() );
+      }
+      THEN( "The polytope contains the input points" ) {
+        REQUIRE( P.isInside( V[ 0 ] ) );
+        REQUIRE( P.isInside( V[ 1 ] ) );
+        REQUIRE( P.isInside( V[ 2 ] ) );
+        REQUIRE( P.isInside( V[ 3 ] ) );
+        REQUIRE( P.isInside( V[ 4 ] ) );
+        REQUIRE( P.isInside( V[ 5 ] ) );
+        REQUIRE( P.isInside( V[ 6 ] ) );
+      }
+      THEN( "The polytope contains 25 points" ) {
+        REQUIRE( P.count() == 25 );
+      }
+      THEN( "The interior of the polytope contains 7 points" ) {
+        REQUIRE( P.countInterior() == 7 );
+      }
+      THEN( "The boundary of the polytope contains 18 points" ) {
+        REQUIRE( P.countBoundary() == 18 );
       }
     }
   }

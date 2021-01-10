@@ -229,7 +229,7 @@ namespace DGtal
     /// indices of its vertices.
     /// 
     /// @pre `hull.status() >= Status::VerticesCompleted` and
-    /// `hull.status() >= Status::AllCompleted`
+    /// `hull.status() <= Status::AllCompleted`
     template < typename QHull >
     static
     void

@@ -65,7 +65,10 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
   // Compute convex hull
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
-  bool ok = hull.computeConvexHull( ConvexHull::Status::FacetsCompleted );
+  const auto target = ( make_minkowski_summable && dimension >= 3 )
+    ? ConvexHull::Status::VerticesCompleted
+    : ConvexHull::Status::FacetsCompleted;
+  bool ok = hull.computeConvexHull( target );
   if ( ! ok ) return LatticePolytope();
   // Initialize polytope
   std::vector< ConvexHullHalfSpace > HS;
@@ -300,7 +303,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
   typedef typename QHull::IndexRange        IndexRange;
 
   ASSERT( hull.status() >= typename QHull::Status::VerticesCompleted
-          && hull.status() >= typename QHull::Status::AllCompleted );
+          && hull.status() <= typename QHull::Status::AllCompleted );
   
   // Get cell vertices and sort them
   hull.getFacetVertices( cell_vertices );
