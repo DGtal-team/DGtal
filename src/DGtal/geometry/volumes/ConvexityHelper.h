@@ -45,10 +45,10 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+#include "DGtal/geometry/volumes/ConvexCellComplex.h"
 #include "DGtal/shapes/PolygonalSurface.h"
-#include "QuickHull.h"
-#include "ConvexCellComplex.h"
 
 namespace DGtal
 {
@@ -215,6 +215,21 @@ namespace DGtal
     /// @name Utility services
     /// @{
 
+    /// @tparam QHull any QuickHull concrete type.
+    /// @param[in] hull a computed QuickHull object
+    ///
+    /// @param[out] cell_vertices the vector giving for each cell the
+    /// indices of its vertices.
+    ///
+    /// @param[out] r2f the map giving for each ridge (i.e. the pair
+    /// of cells defining each face) the index of its corresponding
+    /// face.
+    ///
+    /// @param[out] face_vertices the vector giving for each face the
+    /// indices of its vertices.
+    /// 
+    /// @pre `hull.status() >= Status::VerticesCompleted` and
+    /// `hull.status() >= Status::AllCompleted`
     template < typename QHull >
     static
     void
