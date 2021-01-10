@@ -78,7 +78,6 @@ namespace DGtal
   public:
     typedef BoundedLatticePolytope<TSpace>  Self;
     typedef TSpace                          Space;
-    typedef std::size_t                     Size;
     typedef typename Space::Integer         Integer;
     typedef typename Space::Point           Point;
     typedef typename Space::Vector          Vector;
@@ -796,7 +795,7 @@ namespace DGtal
 	    {
 	      Vector   n = ab.crossProduct( Point::base( k, (s == 0) ? 1 : -1 ) );
 	      Integer  b = n.dot( pts[ i ] );
-	      Size nb_in = 0;
+              std::size_t nb_in = 0;
 	      for ( auto p : pts ) {
 		Integer v = n.dot( p );
 		if ( v < b )  nb_in++;
