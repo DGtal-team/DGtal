@@ -52,6 +52,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
+  typedef typename ConvexHull::Ridge           Ridge;
   if ( input_points.empty() ) return LatticePolytope();
   // Compute domain
   Point l = input_points[ 0 ];
@@ -79,6 +80,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
     nu = (Integer) H.internalIntercept();
     PHS.emplace_back( N, nu );
   }
+  trace.info() << "hull=" << hull << " #H=" << PHS.size() << std::endl;
   if ( make_minkowski_summable && dimension >= 4 )
     trace.warning() << "[ConvexityHelper::computeLatticePolytope]"
                     << " Not implemented starting from dimension 4."
@@ -288,7 +290,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger >
 template < typename QHull >
-bool
+void
 DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
 ( const QHull& hull,
   std::vector< IndexRange >& cell_vertices,

@@ -49,20 +49,14 @@ SCENARIO( "ConvexityHelper< 2 > unit tests", "[convexity_helper][2d]" )
 {
   typedef ConvexityHelper< 2 >    Helper;
   typedef Helper::Point           Point;
-  typedef SpaceND< 2, int >                Space;      
-  typedef Space::Point                     Point;
-  typedef Space::Vector                    Vector;
-  typedef QHull::Index                     Index;
-  typedef QHull::IndexRange                IndexRange;
-
-  
   GIVEN( "Given a star { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
     WHEN( "Computing its lattice polytope" ){
-      auto P = Helper::computeLatticePolytope( V, false, true );
-      THEN( "The polytope is valid and has 4 facets" ) {
-        REQUIRE( P.nbHalfSpaces() == 4 );
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 4 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 4 == 4 );
       }
       THEN( "The polytope is Minkowski summable" ) {
         REQUIRE( P.canBeSummed() );
