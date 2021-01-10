@@ -242,7 +242,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
 {
   typedef QuickHull< LatticeDelaunayKernel >   Delaunay;
   typedef typename Delaunay::Ridge             Ridge;
-  typedef typename Delaunay::IndexRange        IndexRange;
   typedef typename ConvexCellComplex< Point >::FaceRange FaceRange;
   
   std::cout << "Compute convex hull in higher dimension" << std::endl;
@@ -300,7 +299,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
   std::vector< IndexRange >& face_vertices )
 {
   typedef typename QHull::Ridge             Ridge;
-  typedef typename QHull::IndexRange        IndexRange;
 
   ASSERT( hull.status() >= QHull::Status::VerticesCompleted
           && hull.status() <= QHull::Status::AllCompleted );
