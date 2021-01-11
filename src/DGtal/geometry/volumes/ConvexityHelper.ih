@@ -65,7 +65,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
   // Compute convex hull
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
-  const auto target = ( make_minkowski_summable && dimension >= 3 )
+  const auto target = ( make_minkowski_summable && dimension == 3 )
     ? ConvexHull::Status::VerticesCompleted
     : ConvexHull::Status::FacetsCompleted;
   bool ok = hull.computeConvexHull( target );
@@ -139,7 +139,7 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
       }
     }
   return LatticePolytope( domain, PHS.cbegin(), PHS.cend(),
-                          dimension <= 3, true );
+                          make_minkowski_summable && ( dimension <= 3 ), true );
 }
 
 //-----------------------------------------------------------------------------
@@ -304,7 +304,12 @@ DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
           && hull.status() <= QHull::Status::AllCompleted );
   
   // Get cell vertices and sort them
-  hull.getFacetVertices( cell_vertices );
+  bool ok_fv = hull.getFacetVertices( cell_vertices );
+  if ( ! ok_fv )
+    trace.error() << "[ConvexityHelper::computeFacetAndRidgeVertices]"
+                  << " method hull.getFacetVertices failed."
+                  << " Maybe QuickHull was not computed till VerticesCompleted."
+                  << std::endl;
   std::vector< IndexRange > sorted_cell_vertices = cell_vertices;
   for ( auto& vtcs : sorted_cell_vertices )
     std::sort( vtcs.begin(), vtcs.end() );
