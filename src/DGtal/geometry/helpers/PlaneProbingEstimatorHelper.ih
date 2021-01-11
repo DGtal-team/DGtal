@@ -21,7 +21,7 @@
  *
  * @date 2020/09/15
  *
- * Implementation of inline methods defined in PlaneProbingEstimatorCommon.h
+ * Implementation of inline methods defined in PlaneProbingEstimatorHelper.h
  *
  * This file is part of the DGtal library.
  */

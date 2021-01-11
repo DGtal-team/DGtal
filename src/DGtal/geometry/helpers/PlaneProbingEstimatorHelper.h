@@ -23,20 +23,20 @@
  *
  * @date 2020/12/04
  *
- * Header file for module PlaneProbingEstimatorCommon.cpp
+ * Header file for module PlaneProbingEstimatorHelper.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PlaneProbingEstimatorCommon_RECURSES)
-#error Recursive header files inclusion detected in PlaneProbingEstimatorCommon.h
-#else // defined(PlaneProbingEstimatorCommon_RECURSES)
+#if defined(PlaneProbingEstimatorHelper_RECURSES)
+#error Recursive header files inclusion detected in PlaneProbingEstimatorHelper.h
+#else // defined(PlaneProbingEstimatorHelper_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PlaneProbingEstimatorCommon_RECURSES
+#define PlaneProbingEstimatorHelper_RECURSES
 
-#if !defined PlaneProbingEstimatorCommon_h
+#if !defined PlaneProbingEstimatorHelper_h
 /** Prevents repeated inclusion of headers. */
-#define PlaneProbingEstimatorCommon_h
+#define PlaneProbingEstimatorHelper_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -173,7 +173,7 @@ namespace DGtal
                 {}
 
                 /**
-                 * Returns the first point on the ray.
+                 * @return the first point on the ray.
                  */
                 ProbingRay getBase () const
                 {
@@ -181,7 +181,7 @@ namespace DGtal
                 }
 
                 /**
-                 * Returns the permutation that defines the ray.
+                 * @return the permutation that defines the ray.
                  */
                 Permutation const& sigma () const
                 {
@@ -189,7 +189,8 @@ namespace DGtal
                 }
 
                 /**
-                 * Returns the i-th element of the permutation that defines the ray.
+                 * @param aIndex an index between 0 and 2.
+                 * @return the i-th element of the permutation that defines the ray.
                  */
                 int sigma (int aIndex) const
                 {
@@ -198,7 +199,7 @@ namespace DGtal
                 }
 
                 /**
-                 * Returns index of the current point on the ray.
+                 * @return index of the current point on the ray.
                  */
                 Integer const& index () const
                 {
@@ -206,7 +207,8 @@ namespace DGtal
                 }
 
                 /**
-                 * Get a vector from the fixed point 'q' to the point on the ray.
+                 * @param aM a triplet of 3 vectors defining the current frame.
+                 * @return the vector from the fixed point 'q' to the current point on the ray.
                  */
                 template < typename Point >
                 Point getRelPt (std::array<Point, 3> const& aM) const
@@ -215,7 +217,8 @@ namespace DGtal
                 }
 
                 /**
-                 * Get the current point on the ray.
+                 * @param aM a triplet of 3 vectors defining the current frame.
+                 * @¶eturn the current point on the ray.
                  */
                 template < typename Point >
                 Point getAbsPt (std::array<Point, 3> const& aM, Point const& aQ) const
@@ -225,6 +228,9 @@ namespace DGtal
 
                 /**
                  * Equality test between two rays.
+                 *
+                 * @param aRay an other ray.
+                 * @return true if the two rays are the same, false otherwise.
                  */
                 bool operator== (ProbingRay const& aRay) const
                 {
@@ -233,6 +239,9 @@ namespace DGtal
 
                 /**
                  * Inequality test between two rays.
+                 *
+                 * @param aRay an other ray.
+                 * @return true if the two rays are different, false otherwise.
                  */
                 bool operator!= (ProbingRay const& aRay) const
                 {
@@ -245,7 +254,8 @@ namespace DGtal
                 }
 
                 /**
-                 * Get a new point on a ray, incrementing the current index by aInc.
+                 * @param aInc an increment.
+                 * @return a new point on a ray, with index the current index incremented by aInc.
                  */
                 ProbingRay next (Integer const& aInc) const
                 {
@@ -253,7 +263,8 @@ namespace DGtal
                 }
 
                 /**
-                 * Get a new point on a ray, idecrementing the current index by aDec.
+                 * @param aDec a decrement.
+                 * @return a new point on a ray, with index the current index decremented by aInc.
                  */
                 ProbingRay previous (Integer const& aDec) const
                 {
@@ -272,6 +283,7 @@ namespace DGtal
          * @param aRay the probing ray to display.
          */
         template < typename Integer >
+        inline
         std::ostream& operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay)
         {
             aOs << "sigma=(" <<
@@ -281,52 +293,16 @@ namespace DGtal
             return aOs;
         }
     } // namespace detail
-
-    /**
-     * Probing mode for plane-probing estimators.
-     */
-    enum class ProbingMode
-    {
-        H,
-        R,
-        R1,
-    };
-
-    /**
-     * Display a mode on the standard output.
-     *
-     * @param aOs the output stream.
-     * @param aMode the mode to display.
-     */
-    std::ostream& operator<< (std::ostream& aOs, ProbingMode const& aMode)
-    {
-        switch (aMode)
-        {
-            case ProbingMode::H:
-                aOs << "H";
-                break;
-
-            case ProbingMode::R:
-                aOs << "R";
-                break;
-
-            case ProbingMode::R1:
-                aOs << "R1";
-                break;
-        }
-
-        return aOs;
-    }
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.ih"
+#include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PlaneProbingEstimatorCommon_h
+#endif // !defined PlaneProbingEstimatorHelper_h
 
-#undef PlaneProbingEstimatorCommon_RECURSES
-#endif // else defined(PlaneProbingEstimatorCommon_RECURSES)
+#undef PlaneProbingEstimatorHelper_RECURSES
+#endif // else defined(PlaneProbingEstimatorHelper_RECURSES)

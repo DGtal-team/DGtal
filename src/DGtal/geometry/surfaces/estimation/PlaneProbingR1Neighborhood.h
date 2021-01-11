@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
+#include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 #include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////

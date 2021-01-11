@@ -32,7 +32,7 @@
 #include <cstdlib>
 #include <array>
 #include <vector>
-#include "DGtal/geometry/surfaces/estimation/PlaneProbingEstimatorCommon.h"
+#include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingR1Neighborhood.h"
