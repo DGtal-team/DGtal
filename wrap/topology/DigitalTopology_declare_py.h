@@ -55,7 +55,7 @@ Example of usage:
     fadj = ForwardAdj()
     badj = BackwardAdj()
     topo = Topo(foreground=fadj, background=badj,
-                props=dgtal.topology.DigitalTopologyProperties.JORDAN_DT)
+                properties=dgtal.topology.DigitalTopologyProperties.JORDAN_DT)
     print(topo)
 
 )";
@@ -65,8 +65,8 @@ Example of usage:
     py_class.def(py::init<const TT &>());
     py_class.def(py::init([]( const TTForegroundAdjacency & kappa,
                     const TTBackgroundAdjacency & lambda,
-                    DigitalTopologyProperties props) {
-                return TT(kappa, lambda, props);
+                    DigitalTopologyProperties properties) {
+                return TT(kappa, lambda, properties);
                 }),
 R"(Defines the digital topology (kappa,lambda).
 
@@ -76,9 +76,9 @@ foreground: MetricAdjacency
     (Kappa) The adjacency object chosen for the foreground topology.
 background: MetricAdjacency
     (Lambda) The adjacency object chosen for the background topology.
-props: DigitalTopologyProperties
+properties: DigitalTopologyProperties
     A hint of the properties of this digital topology, default is UNKNOWN_DT.
-)", py::arg("foreground"), py::arg("background"), py::arg("props")=DigitalTopologyProperties::UNKNOWN_DT);
+)", py::arg("foreground"), py::arg("background"), py::arg("properties")=DigitalTopologyProperties::UNKNOWN_DT);
 
     // ----------------------- Python operators -------------------------------
 
@@ -105,6 +105,11 @@ NOT_JORDAN iff the topology is known to be NOT_JORDAN, UNKNOWN otherwise.)");
     py_class.def_property_readonly_static("TBackgroundAdjacency",
             [](py::object /* self */) {
             return py::type::of<TTBackgroundAdjacency>();
+            });
+    py_class.def_property_readonly_static("adjacency_pair_string",
+            [](py::object /*self*/) {
+            return std::to_string(TTForegroundAdjacency::bestCapacity()) +
+            "_" + std::to_string(TTBackgroundAdjacency::bestCapacity());
             });
 
     // ----------------------- Print / Display --------------------------------

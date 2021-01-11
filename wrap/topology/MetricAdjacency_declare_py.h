@@ -136,8 +136,10 @@ Return
             R"(The dimension of the Space.)");
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    py_class.def("__str__", [typestr](const TT & self) {
         std::stringstream os;
+        os << typestr;
+        os << ": ";
         self.selfDisplay(os);
         return os.str();
     });

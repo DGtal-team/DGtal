@@ -50,3 +50,20 @@ def test_Object(Type):
     assert obj.properNeighborhoodSize(p1) == obj.properNeighborhoodSize(p2)
     assert obj.geodesicNeighborhood(p1, 0).size() == obj.geodesicNeighborhood(p2, 0).size()
     assert obj.geodesicNeighborhoodInComplement(p1, 1).size() == obj.geodesicNeighborhoodInComplement(p2, 1).size()
+
+def test_factory():
+    topo8_4 = dgtal.DigitalTopology(foreground="8", background="4")
+    domain = dgtal.Domain(lower_bound=dgtal.Point(dim=2),
+                          upper_bound=dgtal.Point(dim=2).diagonal(2))
+    obj_with_domain = dgtal.Object(topology=topo8_4, domain=domain)
+    a_point = dgtal.Point(data=[1,2])
+    other_point = dgtal.Point(data=[0,1])
+    obj_with_domain.pointSet().insert(a_point)
+    assert len(obj_with_domain) == 1
+    point_set = dgtal.DigitalSet(domain=domain)
+    point_set.insert(a_point)
+    obj_with_point_set = dgtal.Object(topology=topo8_4, point_set=point_set)
+    assert len(obj_with_point_set) == 1
+    # point set is copied inside object.
+    point_set.insert(other_point)
+    assert len(obj_with_point_set) == 1

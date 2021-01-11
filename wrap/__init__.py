@@ -2,6 +2,7 @@ from ._dgtal import *
 
 # dgtal.tables_folder is used in Object and VoxelComplex.
 from pathlib import Path as _Path
+import sys as _sys
 tables_folder = str(_Path(__file__).parent.absolute() / "tables")
 
 def _check_dim(dim):
@@ -259,3 +260,150 @@ def MetricAdjacency(dim, max_norm):
             return topology.Adj18()
         elif max_norm == 3:
             return topology.Adj26()
+
+def _check_valid_adjacency_pair(foreground_adjacency, background_adjacency):
+    """
+    Given a foreground_adjacency and background_adjacency in the format of either:
+    a string (i.e. "8") or an instance of MetricAdjacency (i.e dgtal.topology.Adj8())
+    Returns a string if the pair of adjacencies is valid: "8_4" or raise a ValueError.
+    """
+    if type(foreground_adjacency) == str:
+        fadj_t = getattr(topology, "Adj" + foreground_adjacency)
+    else:
+        fadj_t = type(foreground_adjacency)
+
+    if type(background_adjacency) == str:
+        badj_t = getattr(topology, "Adj" + background_adjacency)
+    else:
+        badj_t = type(background_adjacency)
+
+    # Check that foreground_adjacency and background_adjacency
+    # are instances, and not types.
+    wrong_type = "<class 'pybind11_builtins.pybind11_type'>"
+    if (str(fadj_t) == wrong_type) or (str(badj_t) == wrong_type):
+        raise ValueError("foreground/background adjacencies need to be an instance, not a type.\n"
+        "Use dgtal.topology.Adj8() instead of dgtal.topology.Adj8")
+    # 2D
+    # 4-8 and 8-4
+    if fadj_t == topology.Adj4 and badj_t == topology.Adj8:
+        return "4_8"
+    if fadj_t == topology.Adj8 and badj_t == topology.Adj4:
+        return "8_4"
+
+    # 3D
+    # 6-18, 6-26
+    if fadj_t == topology.Adj6:
+        if badj_t == topology.Adj18:
+            return "6_18"
+        elif badj_t == topology.Adj26:
+            return "6_26"
+
+    # 18-6, 26-6
+    if badj_t == topology.Adj6:
+        if fadj_t == topology.Adj18:
+            return "18_6"
+        elif fadj_t == topology.Adj26:
+            return "26_6"
+
+    raise ValueError("Invalid pair of foreground and background adjacency. fadj: " + str(fadj_t) + " , badj: " + str(badj_t) + ".")
+
+def DigitalTopology(foreground, background,
+                    properties = topology.DigitalTopologyProperties.UNKNOWN_DT):
+    """
+    Factory helper function for DGtal::DigitalTopology
+
+    The only valid pair of foreground and background adjacencies are:
+    # 2D
+    "8_4", "4_8"
+    # 3D
+    "26_6", "6_26", "18_6", "6_18",
+
+    Parameters
+    ----------
+    foreground: str or dgtal.MetricAdjacency
+        A valid dgtal.MetricAdjacency or a string
+        represeting it.
+
+        foreground = dgtal.topology.Adj8()
+        foreground = dgtal.MetricAdjacency(dim=2, max_norm=2)
+        # Or use a str:
+        foreground = "8"
+    background: str or dgtal.MetricAdjacency
+        A valid dgtal.MetricAdjacency or a string
+        represeting it.
+
+        background = dgtal.topology.Adj4()
+        background = dgtal.MetricAdjacency(dim=2, max_norm=1)
+        # Or use a str:
+        background = "4"
+    properties: Enum from dgtal.topology.DigitalTopologyProperties
+        Default to dgtal.topology.DigitalTopologyProperties.UNKNOWN_DT
+
+    Example:
+        topo8_4 = dgtal.DigitalTopology(foreground=dgtal.topology.Adj8,
+                                        background=dgtal.topology.Adj4)
+        # using str adjacencies:
+        dgtal.DigitalTopology(
+                  foreground="8",
+                  background="4",
+                  properties=dgtal.topology.DigitalTopologyProperties.JORDAN_DT)
+    """
+    adjacency_pair_string = _check_valid_adjacency_pair(foreground, background)
+    TDigitalTopology = getattr(topology, "DT" + adjacency_pair_string)
+    if type(foreground) == str:
+        foreground = TDigitalTopology.TForegroundAdjacency()
+    if type(background) == str:
+        background = TDigitalTopology.TBackgroundAdjacency()
+
+    return TDigitalTopology(foreground=foreground,
+                            background=background,
+                            properties=properties)
+
+def Object(topology,
+           domain = None, point_set = None,
+           connectedness = topology.Connectedness.UNKNOWN):
+    """
+    Factory helper function for DGtal::Object
+
+    Need to provide one of the parameters: domain or point_set
+
+    Parameters
+    ----------
+    topology: instance of any dgtal.DigitalTopology
+        A valid instance dgtal.DigitalTopology
+    domain: dgtal.Domain
+        A Domain. It will create an Object with an empty point_set in this domain.
+    point_set: dgtal.DigitalSet
+        A digital set (which has a domain). It will create an
+        Object with the input point_set.
+    connectedness: Enum from dgtal.topology.Connectedness
+        Default to dgtal.topology.Connectedness.UNKNOWN
+
+    Example:
+        topo8_4 = dgtal.DigitalTopology(foreground=dgtal.topology.Adj8,
+                                        background=dgtal.topology.Adj4)
+        domain = dgtal.Domain(lower_bound=dgtal.Point(dim=2),
+                              upper_bound=dgtal.Point(dim=2).diagonal(2))
+        # empty object in domain
+        empty_object = dgtal.Object(topology=topo8_4, domain=domain)
+        empty_object.pointSet().insert(dgtal.Point(data=[1,2]))
+        # with an input digital_set
+        point_set = dgtal.DigitalSet(domain=domain)
+        point_set.insert(dgtal.Point(data=[1,2]))
+        object = dgtal.Object(topology=topo8_4, point_set=point_set)
+    """
+    if not domain and not point_set:
+        raise ValueError("Provide one of: domain or point_set (none provided)")
+    if domain and point_set:
+        raise ValueError("Provide one of: domain or point_set (both provided)")
+
+    # Name clash of module with argument, workaround:
+    module_topology = _sys.modules['dgtal._dgtal.topology']
+    TObject = getattr(module_topology, "Object" + topology.adjacency_pair_string)
+    if domain:
+        # Empty object, connectedness is ignored.
+        return TObject(topology=topology, domain=domain)
+    elif point_set:
+        return TObject(topology=topology, point_set=point_set,
+                       connectedness=connectedness)
+

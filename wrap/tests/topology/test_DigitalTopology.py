@@ -17,6 +17,35 @@ def test_DigitalTopology(Type):
     assert topo.foreground() == fadj
     assert topo.background() == badj
     assert topo.properties() == submodule.DigitalTopologyProperties.UNKNOWN_DT
-    topo = Topo(foreground=fadj, background=badj, props=submodule.DigitalTopologyProperties.JORDAN_DT)
+    topo = Topo(foreground=fadj, background=badj, properties=submodule.DigitalTopologyProperties.JORDAN_DT)
     print(topo.__repr__())
     print(topo)
+
+def test_factory():
+    # With strings
+    topo8_4 = dgtal.DigitalTopology(
+        foreground="8", background="4",
+        properties=dgtal.topology.DigitalTopologyProperties.JORDAN_DT)
+    # With adjacencies
+    topo8_4 = dgtal.DigitalTopology(foreground=dgtal.topology.Adj8(),
+                                    background=dgtal.topology.Adj4())
+    # assert
+    fadj = topo8_4.TForegroundAdjacency()
+    assert topo8_4.foreground() == fadj
+    assert topo8_4.adjacency_pair_string == "8_4"
+
+    with pytest.raises(ValueError):
+        dgtal.DigitalTopology(foreground="8",
+                              background="8")
+
+    # exercise all the valid pair of adjacencies
+    dgtal.DigitalTopology(foreground="4",
+                          background="8")
+    dgtal.DigitalTopology(foreground="6",
+                          background="18")
+    dgtal.DigitalTopology(foreground="6",
+                          background="26")
+    dgtal.DigitalTopology(foreground="18",
+                          background="6")
+    dgtal.DigitalTopology(foreground="26",
+                          background="6")
