@@ -10,7 +10,7 @@ set(DGTAL_EXAMPLES_SRC
   exampleGridCurve2d
   exampleStabbingLineComputer
   exampleStabbingCircleComputer
-  exampleFrechetShortcut 
+  exampleFrechetShortcut
   exampleArithmeticalDSS
   exampleArithmeticalDSSComputer
   exampleDSLSubsegment
@@ -24,8 +24,7 @@ set(DGTAL_EXAMPLES_SRC
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  # The dependancy libs are needed
-  target_link_libraries (${FILE} DGtal ${DGtalLibDependencies} )
+  target_link_libraries (${FILE} DGtal)
 endforeach()
 
 
@@ -36,8 +35,7 @@ if(MAGICK++_FOUND)
     )
   foreach(FILE ${DGTALE_EXAMPLES_IO_Magick})
     add_executable(${FILE} ${FILE})
-    # The dependancy libs are needed
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies} )
+    target_link_libraries (${FILE} DGtal)
   endforeach()
 endif()
 
@@ -45,18 +43,17 @@ endif()
 ### Test with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
    set(DGTAL_EXAMPLES_QGL_SRC
-      exampleArithDSS3d
+     exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
      exampleParamCurve3dDigitization
      exampleParamCurve3dDigitizationTransformationDecorator
      exampleTrofoliKnot
      )
- 
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC} ) 
+
+  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC} )
    add_executable(${FILE} ${FILE})
-    # The dependancy libs are needed
-    target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal)
   endforeach()
 
 endif()
