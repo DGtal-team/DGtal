@@ -389,15 +389,12 @@ endif()
 # -----------------------------------------------------------------------------
 set(EIGEN_FOUND_DGTAL 0)
 if(WITH_EIGEN)
-  find_package(Eigen3 REQUIRED)
-  if(EIGEN3_FOUND)
-    set(EIGEN_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
-    target_include_directories(DGtal PUBLIC ${EIGEN3_INCLUDE_DIR})
-    message(STATUS "Eigen3 (version ${EIGEN3_VERSION}) found.")
-  else()
-    message(FATAL_ERROR "Eigen3 is not found or the installed version (${EIGEN3_VERSION}) is below 3.2.1. ")
-  endif()
+  set(Eigen3_dgtal_min_version 3.3) # 3.3 is the first version where Eigen3Config.cmake is generated.
+  find_package(Eigen3 ${Eigen3_dgtal_min_version} REQUIRED CONFIG)
+  set(EIGEN_FOUND_DGTAL 1)
+  target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
+  target_link_libraries(DGtal INTERFACE Eigen3::Eigen)
+  message(STATUS "Eigen3 (version ${Eigen3_VERSION}) found.")
 endif()
 
 # -----------------------------------------------------------------------------
