@@ -13,7 +13,7 @@ def _check_dim(dim):
     if dim != 2 and dim != 3:
         raise ValueError("Dimension (dim = " + str(dim) + ") is not valid. Should be 2 or 3.")
 
-def Point(dim, dtype='int32', data=()):
+def Point(dim=None, dtype='int32', data=None):
     """
     Factory helper function for DGtal::PointVector.
 
@@ -32,8 +32,22 @@ def Point(dim, dtype='int32', data=()):
         RealPoint2D: dim=2, dtype='float'
         RealPoint3D: dim=3, dtype='float'
 
+    Example:
+        point2D_empty = dgtal.Point(dim=2)
+        point2D = dgtal.Point(data=[2,3])
+        real_point3D = dgtal.Point(dtype='float', data=(2,3,4))
+        # With numpy.arrays
+        real_point3D = dgtal.Point(dtype='float',
+                                   data=numpy.array([2,3,4], dtype='float')
+                                   )
     Use help(Point(dim=2)) for more info.
     """
+    if not dim:
+        if data is None:
+            raise ValueError("At least provide parameter dim or data")
+        else:
+            dim = len(data)
+
     _check_dim(dim)
 
     if dtype != 'int32' and dtype != 'float':
@@ -41,14 +55,26 @@ def Point(dim, dtype='int32', data=()):
 
     if dtype == 'int32':
         if dim == 2:
-            return kernel.Point2D(*data)
+            if data is None:
+                return kernel.Point2D()
+            else:
+                return kernel.Point2D(*data)
         elif dim == 3:
-            return kernel.Point3D(*data)
+            if data is None:
+                return kernel.Point3D()
+            else:
+                return kernel.Point3D(*data)
     elif dtype == 'float':
         if dim == 2:
-            return kernel.RealPoint2D(*data)
+            if data is None:
+                return kernel.RealPoint2D()
+            else:
+                return kernel.RealPoint2D(*data)
         elif dim == 3:
-            return kernel.RealPoint3D(*data)
+            if data is None:
+                return kernel.RealPoint3D()
+            else:
+                return kernel.RealPoint3D(*data)
 
 def Domain(lower_bound, upper_bound):
     """
