@@ -129,18 +129,40 @@ R"(Returns the number of elements in the set.)");
     py_class.def("domain", &TT::domain,
 R"(A reference to the embedding domain.)");
 
-    // We only wrap the non-const version
-    py_class.def("pointSet", py::detail::overload_cast_impl<>()(&TT::pointSet),
-R"(A reference to the point set containing the points of the digital object.)");
+    // We only wrap the const version to avoid CowPtr to make a copy every time
+    // we call this function. Python doesn't know about const objects.
+    const std::string point_set_docs =
+R"(A reference to the point set containing the points of the digital object.)";
+    py_class.def("pointSet", [](const TT & self) -> const TTDigitalSet & {
+            return self.pointSet();
+            },
+            py::return_value_policy::reference_internal,
+            point_set_docs.c_str());
+    py_class.def_property("point_set",
+            // Getter
+            [](const TT & self) -> const TTDigitalSet & {
+                return self.pointSet();
+            },
+            // Setter
+            [](TT & self, const TTDigitalSet & value) -> void {
+                self.pointSet() = value;
+            },
+            py::return_value_policy::reference_internal,
+            point_set_docs.c_str());
 
-    py_class.def("topology", &TT::topology,
-R"(A reference to the topology of this object.)");
+    py_class.def("topology",
+            [](const TT & self) -> const TTDigitalTopology & {
+                return self.topology();
+            },
+            py::return_value_policy::reference_internal,
+            R"(A reference to the topology of this object.)");
 
     py_class.def("adjacency", &TT::adjacency,
 R"(A reference to the adjacency of this object.)");
 
     py_class.def("connectedness", &TT::connectedness,
-R"(A reference to the connectedness of this object. CONNECTED, DISCONNECTED, or UNKNOWN.)");
+R"(Returns the connectedness of this object. CONNECTED, DISCONNECTED, or UNKNOWN.
+If UNKNOWN, you might use computeConnectedness())");
 
     py_class.def("computeConnectedness", &TT::computeConnectedness,
 R"(Computes the connectedness of this object if `connectedness() == UNKNOWN`.
