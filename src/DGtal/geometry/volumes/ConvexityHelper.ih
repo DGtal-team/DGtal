@@ -99,18 +99,23 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
                                     ridge2index, ridge_vertices );
       for ( auto p : ridge2index ) {
         const auto   r = p.first;
+        std::cout << "Ridge (" << r.first << "," << r.second << ")"
+                  << " has index " << p.second << std::endl;
         const auto&  U = PHS[ r.first  ].N; // normal of facet 1
         const auto&  V = PHS[ r.second ].N; // normal of facet 2
         const auto&  S = ridge_vertices[ p.second ]; // vertices along facets 1, 2
         ASSERT( S.size() == 2 && "Invalid ridge" );
         const auto& P0 = positions[ S[ 0 ] ];
         const auto& P1 = positions[ S[ 1 ] ];
+        std::cout << "  #R=" << S.size() << " " << P0 << " " << P1 << std::endl;
         auto         E = P1 - P0; // edge 1, 2
         const auto UxV =
           detail::BoundedLatticePolytopeSpecializer< dimension, Integer>
           ::crossProduct( U, V ); // parallel to E
         ASSERT( E.dot( UxV ) != 0 && "Invalid E / UxV" );
         if ( E.dot( UxV ) <= 0 ) E = -E; // force correct orientation
+        std::cout << "  U=" << U << " V=" << V << std::endl;
+        std::cout << "  UxV=" << UxV << " E=" << E << std::endl;
         const auto  E1 = 
           detail::BoundedLatticePolytopeSpecializer< dimension, Integer>
           ::crossProduct( U, E ); // edge on facet 1
@@ -129,11 +134,13 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
             PHS.emplace_back( -W, -W.dot( P0 ) );
             ASSERT( E1.dot(-W ) < 0 && "Invalid E1 /-W" );
             ASSERT( E2.dot(-W ) < 0 && "Invalid E2 /-W" );
+            std::cout << "  out: -W=" << -W << std::endl;
           }
           else if ( nn1 < 0 && nn2 < 0 ) {
             PHS.emplace_back( W, W.dot( P0 ) );
             ASSERT( E1.dot( W ) < 0 && "Invalid E1 / W" );
             ASSERT( E2.dot( W ) < 0 && "Invalid E2 / W" );
+            std::cout << "  out: W=" << W << std::endl;
           }
         }
       }
