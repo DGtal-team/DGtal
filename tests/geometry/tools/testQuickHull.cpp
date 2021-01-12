@@ -66,7 +66,6 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[quickhull][
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
-  typedef Space::Vector                    Vector;
   typedef QHull::Index                     Index;
   typedef QHull::IndexRange                IndexRange;
 
@@ -147,8 +146,6 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[quickhull][
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 3, int >                Space;      
   typedef Space::Point                     Point;
-  typedef Space::Vector                    Vector;
-  typedef QHull::Index                     Index;
   typedef QHull::IndexRange                IndexRange;
 
   
@@ -201,9 +198,6 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > unit tests", "[quickhull][
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 4, int >                Space;      
   typedef Space::Point                     Point;
-  typedef Space::Vector                    Vector;
-  typedef QHull::Index                     Index;
-  typedef QHull::IndexRange                IndexRange;
 
   
   GIVEN( "Given an octahedron" ) {
