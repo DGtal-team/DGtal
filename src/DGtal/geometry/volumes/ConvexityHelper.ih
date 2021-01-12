@@ -101,8 +101,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
         const auto   r = p.first;
         std::cout << "Ridge (" << r.first << "," << r.second << ")"
                   << " has index " << p.second << std::endl;
-        const auto&  U = PHS[ r.first  ].N; // normal of facet 1
-        const auto&  V = PHS[ r.second ].N; // normal of facet 2
+        // Copy by value since PHS may be reallocated  during the iteration.
+        const auto   U = PHS[ r.first  ].N; // normal of facet 1
+        const auto   V = PHS[ r.second ].N; // normal of facet 2
         const auto&  S = ridge_vertices[ p.second ]; // vertices along facets 1, 2
         ASSERT( S.size() == 2 && "Invalid ridge" );
         const auto& P0 = positions[ S[ 0 ] ];
