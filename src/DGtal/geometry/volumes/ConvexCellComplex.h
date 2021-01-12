@@ -197,7 +197,7 @@ namespace DGtal
                           true_face_vertices[ f.first ].crend() );
     }
 
-    /// @param[in] c any face
+    /// @param[in] f any face
     /// @return its associated cell (or INFINITE_CELL)
     Cell faceCell( const Face f ) const
     {
