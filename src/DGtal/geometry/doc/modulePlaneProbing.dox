@@ -12,7 +12,6 @@
 
 /*
  * Useful to avoid writing DGtal:: in front of every class.
- * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
@@ -29,15 +28,38 @@ to estimate normals on digital surfaces.
 
 [TOC]
 
-\section sectPlaneProbing1 First Section
+The following programs are related to this documentation:
+geometry/surfaces/examplePlaneProbingParallelepipedEstimator.cpp,
+geometry/surfaces/examplePlaneProbingTetrahedronEstimator.cpp,
+geometry/surfaces/examplePlaneProbingSurfaceLocalEstimator.cpp,
+testDigitalPlanePredicate.cpp,
+testPlaneProbingTetrahedronEstimator.cpp,
+testPlaneProbingParallelepipedEstimator.cpp.
+
+\section sectPlaneProbing1 Introduction to plane-probing algorithms
+
+@cite LPRJMIV2017
+@cite RLDGCI2019
+@cite LMRJMIV2020
 
 \subsection subsectPlaneProbing11 Subsection 1.1
 
-\section sectPlaneProbing2 Section Two
+\subsection subsectPlaneProbing12 Different estimators
 
-\subsection subsectPlaneProbing21  Subsection 2.1
+\section sectPlaneProbing2 Constructing and using a plane-probing estimator
 
-\subsection subsectPlaneProbing22  Subsection 2.2
+The general form is the folllowing
+\code
+using ProbingEstimator = PlaneProbingEstimator<Predicate, ProbingMode>; // where PlaneProbingEstimator = PlaneProbingTetrahedronEstimator or PlaneProbingParallelepipedEstimator
+\endcode
+
+\subsection subsectPlaneProbing21 On an analytical digital plane
+
+\subsection subsectPlaneProbing22 On a digital surface
+
+@note Due to its nature, \ref PlaneProbingTetrahedronEstimator only work on reentrant corners. If you want to have a correct estimation on every surfel, use a PlaneProbingParallelepipedEstimator.
+
+\section sectPlaneProbing3 Implementation details
 
 */
 

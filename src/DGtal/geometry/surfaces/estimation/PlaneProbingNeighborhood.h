@@ -76,14 +76,13 @@ namespace DGtal
 
       /**
        * Represents a configuration of the H-neighborhood.
-       * TODO: details
        */
       enum class HexagonState
       {
-          Empty,
-          Planar,
-          NonPlanar,
-          NonConvex,
+          Empty, /**< None of the 6 points of the H-neighborhood belongs to the digital plane. */
+          NonConvex, /**< At least 2 points aligned with q in the digital plane. */
+          NonPlanar, /**< At least 3 consecutive points (a, b, c) where a and c are in the digital plane and b is not. */
+          Planar, /**< The underlying digital set represents a piece of digital plane. */
       };
 
       /**

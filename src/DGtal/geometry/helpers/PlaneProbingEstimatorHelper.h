@@ -74,7 +74,7 @@ namespace DGtal
         /**
          * Determinant of a NxN matrix represented by a two-dimensional static array.
          *
-         * @param aMatrix the matrix.
+         * @param aMatrix the static array representing the matrix.
          * @return the determinant of the input matrix.
          */
         template < int N, typename T >
@@ -145,8 +145,16 @@ namespace DGtal
                    (squaredNorm(aV) <= squaredNorm(x));
         }
 
+        /////////////////////////////////////////////////////////////////////////////
+        // template class ProbingRay
         /**
-         * A ray consists of a permutation 'sigma' and an integer index (position on the ray).
+         * Description of template class 'ProbingRay' <p>
+         * A ray consists of a permutation \f$ \sigma \f$ and an integer index \f$ \lambda \f$ (position on the ray).
+         * For a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ and a point \f$ q \f$, a point on the ray is defined as:
+         * \f$ q - m_{\sigma(0)} + m_{\sigma(1)} + \lambda m_{\sigma(2)} \f$.
+         *
+         * This class is used to represent rays for a plane-probing estimator, so in practice the point \f$ q \f$ is the fixed point
+         * and the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ are the vectors defining the current probing frame.
          *
          * @tparam Integer the integer type.
          */
@@ -168,12 +176,12 @@ namespace DGtal
                  * @param aSigma a permutation.
                  * @param aIndex an index.
                  */
-                ProbingRay (Permutation const& aSigma, Integer aIndex = 0)
+                ProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0))
                     : mySigma(aSigma), myIndex(aIndex)
                 {}
 
                 /**
-                 * @return the first point on the ray.
+                 * @return the first point on the ray (with index 0).
                  */
                 ProbingRay getBase () const
                 {
@@ -248,6 +256,13 @@ namespace DGtal
                     return !(*this == aRay);
                 }
 
+                /**
+                 * Comparison operator between two rays (lexicographic order on the indices).
+                 *
+                 * @param aRay an other ray.
+                 * @return true if *this <= aRay, false otherwise.
+                 *
+                 */
                 bool operator<= (ProbingRay const& aRay) const
                 {
                     return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
@@ -274,13 +289,14 @@ namespace DGtal
             private:
                 Permutation mySigma; /**< The permutation. */
                 Integer myIndex; /**< The index. */
-        };
+        }; // end of class ProbingRay
 
         /**
          * Display a probing ray on the standard output.
          *
-         * @param aOs an ouput stream.
+         * @param aOs the output stream where the object is written.
          * @param aRay the probing ray to display.
+         * @return the output stream after the writing.
          */
         template < typename Integer >
         inline

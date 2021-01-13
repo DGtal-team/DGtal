@@ -52,7 +52,7 @@ namespace DGtal
   // template class DigitalPlanePredicate
   /**
    * Description of template class 'DigitalPlanePredicate' <p>
-   * \brief Aim: Representing digital planes which are digitizations of Euclidean planes
+   * \brief Aim: Representing digital planes, which are digitizations of Euclidean planes,
    * as point predicates.
    *
    * A digital plane is a digitization of an Euclidean plane, it can
@@ -64,9 +64,9 @@ namespace DGtal
    * When \f$ \nu = \| N \|_1 \f$, then it represents a standard digital plane,
    * and when \f$ \nu = \| N \|_\infty \f$, then it represents a naive digital plane.
    *
-     @tparam TSpace any digital space, i.e., a model of CSpace.
-
-     \b Models: A DigitalPlanePredicate is a model of concepts::CPointPredicate.
+   * @tparam TSpace any digital space, i.e., a model of CSpace.
+   *
+   * \b Models: A DigitalPlanePredicate is a model of concepts::CPointPredicate.
    */
   template <typename TSpace>
   class DigitalPlanePredicate

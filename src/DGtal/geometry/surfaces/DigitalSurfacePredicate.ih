@@ -72,7 +72,7 @@ DGtal::DigitalSurfacePredicate<TSurface>::
 DigitalSurfacePredicate (DigitalSurfacePredicate<TSurface>&& other)
     : mySurface(other.mySurface)
 {
-    // TODO: invalide other.mySurface?
+    // TODO: invalidate other.mySurface?
     buildPointSet();
 }
 
