@@ -377,3 +377,56 @@ def test_bridge_buffer_with_Color(Type):
     assert img_from_array.domain.lower_bound == dom.lower_bound
     assert img_from_array.domain.upper_bound == dom.upper_bound
     assert img_from_array[p1] == a_color
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory_with_domain(dim):
+    lower_bound = dgtal.Point(dim=dim)
+    upper_bound = dgtal.Point(dim=dim).diagonal(2)
+    domain = dgtal.Domain(lower_bound=lower_bound, upper_bound=upper_bound)
+    with_domain = dgtal.ImageContainer(domain=domain, dtype='int32')
+
+@pytest.mark.parametrize("dim", [(2), (3)])
+def test_factory_with_data(dim):
+    numpy = pytest.importorskip("numpy")
+    np = numpy
+
+    # single value data
+    dtype = 'int32'
+    if dim == 2:
+        data=[[2,3], [3,4], [4,5], [3,4]]
+        expected_shape = (4,2)
+        expected_upper_bound = (1,3)
+    if dim == 3:
+        data=[[[2,2],[3,3],[4,4]], [[3,3],[4,4],[5,5]]]
+        expected_shape = (2,3,2)
+        expected_upper_bound = (1,2,1)
+    array_single_value_dtype = np.array(data, dtype=dtype)
+    assert array_single_value_dtype.shape == expected_shape
+    img_single_value_dtype = dgtal.ImageContainer(dtype=dtype, data=array_single_value_dtype)
+    print(img_single_value_dtype)
+    assert img_single_value_dtype.domain.dimension == dim
+    assert img_single_value_dtype.domain.lower_bound == dgtal.Point(dim=dim).zero
+    assert img_single_value_dtype.domain.upper_bound == dgtal.Point(dim=dim, data=expected_upper_bound)
+
+    # multi-dimensional value data (3D real point)
+    dtype = 'real_point3D'
+    if dim == 2:
+        data = [[[2,2,2],[3,3,3]], [[3,3,3],[4,4,4]], [[4,4,4],[5,5,5]], [[3,3,3],[4,4,4]]]
+        expected_shape = (4,2, 3)
+        expected_upper_bound = (1,3)
+    if dim == 3:
+        data=[[[[2,2,2],[2,2,2]],
+               [[3,3,3],[3,3,3]],
+               [[4,4,4],[4,4,4]]],
+              [[[3,3,3],[3,3,3]],
+               [[4,4,4],[4,4,4]],
+               [[5,5,5],[5,5,5]]]]
+        expected_shape = (2,3,2, 3)
+        expected_upper_bound = (1,2,1)
+
+    array_real_point3D = np.array(data, dtype='float')
+    assert array_real_point3D.shape == expected_shape
+    img_real_point3D = dgtal.ImageContainer(dtype=dtype, data=array_real_point3D)
+    assert img_real_point3D.domain.dimension == dim
+    assert img_real_point3D.domain.lower_bound == dgtal.Point(dim=dim).zero
+    assert img_real_point3D.domain.upper_bound == dgtal.Point(dim=dim, data=expected_upper_bound)

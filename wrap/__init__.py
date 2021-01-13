@@ -13,6 +13,10 @@ def _check_dim(dim):
     if dim != 2 and dim != 3:
         raise ValueError("Dimension (dim = " + str(dim) + ") is not valid. Should be 2 or 3.")
 
+########################################
+############ kernel ####################
+########################################
+
 def Point(dim=None, dtype='int32', data=None):
     """
     Factory helper function for DGtal::PointVector.
@@ -123,6 +127,10 @@ def DigitalSet(domain):
         return kernel.DigitalSetZ2i(domain=domain)
     elif dim == 3:
         return kernel.DigitalSetZ3i(domain=domain)
+
+########################################
+############ topology ##################
+########################################
 
 def KPreSpace(dim):
     """
@@ -433,3 +441,196 @@ def Object(topology,
         return TObject(topology=topology, point_set=point_set,
                        connectedness=connectedness)
 
+########################################
+############ image #####################
+########################################
+
+def ImageContainer(dtype, domain=None, data=None, lower_bound_ijk=None):
+    """
+    Factory helper function for DGtal::ImageContainer[BySTLVector]
+
+    If the domain parameter is provided:
+        The container will have a number of elements equal
+    to the max number of elements that the input domain can hold.
+    The type of those elements is set by dtype, and will be initialized
+    to the value returned by the default constructor of that type.
+
+    Note that the ImageContainer accepts any buffer protocol, but the interface
+    is not provided in this factory function.
+    It is available directly using the type from:
+        dgtal.images.ImageContainerByVector[2DFloat, ...](buffer, lower_bound_ijk, order='C')
+
+    Parameters
+    ----------
+    dtype: str
+        Type of values stored in the container.
+
+        Options:
+          Python           | C++
+          ----------------------------------------
+          'int32           | DGtal::Python::Integer (int32_t)
+          'float'          | DGtal::Python::Real (double)
+          'float32'        | float
+          'color'          | DGtal::Python::Color
+          'point2D'        | DGtal::Python::Point2D
+          'point3D'        | DGtal::Python::Point3D
+          'real_point2D'   | DGtal::Python::RealPoint2D
+          'real_point3D'   | DGtal::Python::RealPoint3D
+
+    domain: dgtal.Domain [Optional]
+        A Domain 2D or 3D. It will copied in the container.
+        Required if data is not provided.
+    data: numpy.array [Optional]
+        The dimension of the container will be infered from the data.
+        Required if domain is not provided.
+    lower_bound_ijk: dgtal.Point [Optional - only used if data is provided]
+        Set the lower_bound of the domain when data is provided (defaults to the zero point)
+
+    Example (container default initialized with domain):
+        domain = dgtal.Domain(lower_bound=dgtal.Point(dim=2),
+                              upper_bound=dgtal.Point(dim=2).diagonal(2))
+        img_float_default_initialized = dgtal.ImageContainer(domain=domain, dtype='float')
+
+    Example (with numpy array of single dimension type):
+        # Construct an array to populate a 2D ImageContainer holding values of type 'int32'
+        data=[[2,3], [3,4], [4,5], [3,4]]
+        data_shape = (4,2)
+        expected_domain_upper_bound = (1,3)
+        array_single_value = np.array(data, dtype='int32')
+        img_single_value = dgtal.ImageContainer(dtype='int32', data=array_single_value)
+
+    Example (with numpy array of multi dimensional type):
+        # Construct an array to populate a 2D ImageContainer holding values of type point3D
+        data = [[[2,2,2],[3,3,3]], [[3,3,3],[4,4,4]], [[4,4,4],[5,5,5]], [[3,3,3],[4,4,4]]]
+        data_shape = (4,2,3)
+        expected_domain_upper_bound = (1,3)
+        # point3D value dtype is 'int32', real_points3D is 'float'.
+        array_point3D = np.array(data, dtype='int32')
+        img_point3D = dgtal.ImageContainer(dtype='point3D', data=array_real_point3D)
+    """
+    # Check needed arguments
+    domain_is_provided = False
+    data_is_provided = False
+    lower_bound_is_provided = False
+    if domain is not None:
+        domain_is_provided = True
+    if data is not None:
+        data_is_provided = True
+    if lower_bound_ijk is not None:
+        lower_bound_is_provided = True
+
+    if not domain_is_provided and not data_is_provided:
+        raise ValueError("Provide one of the parameter: domain or data")
+    if domain_is_provided and data_is_provided:
+        raise ValueError("Provide only one of the parameter set: domain or data and lower_bound, not both")
+
+    # Check for valid dtype
+    single_value_dtypes = ['int32', 'float', 'float32']
+    multi_value_dtypes = ['color',
+                          'point2D', 'point3D',
+                          'real_point2D', 'real_point3D']
+    valid_dtypes = single_value_dtypes + multi_value_dtypes
+    if dtype not in valid_dtypes:
+        raise ValueError("Invalid dtype: '" + dtype + "'.\nValid dtypes: " + str(valid_dtypes) + ".")
+
+    # Get dimension from domain or data.
+    if domain_is_provided:
+        dim = domain.dimension
+    elif data_is_provided:
+        # Only will works for numpy arrays or data with ndim
+        dim = data.ndim
+        if dtype in multi_value_dtypes:
+            # The array has an extra dimension (because the value is  multi-dimensional)
+            dim = dim - 1
+            # The dimension of the value itself (point2D is 2) is stored in: data.shape[-1]
+
+    _check_dim(dim)
+
+    # Provide a default lower_bound_ijk if None
+    if data_is_provided and not lower_bound_is_provided:
+        lower_bound_ijk = Point(dim=dim).zero
+
+
+    if dim == 2:
+        if dtype == 'int32':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DInteger(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DInteger(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'float':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DReal(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DReal(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'float32':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DFloat(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DFloat(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'color':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DColor(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DColor(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'point2D':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DPoint2D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DPoint2D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'point3D':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DPoint3D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DPoint3D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'real_point2D':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DRealPoint2D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DRealPoint2D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'real_point3D':
+            if domain_is_provided:
+                return images.ImageContainerByVector2DRealPoint3D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector2DRealPoint3D(array=data, lower_bound_ijk=lower_bound_ijk)
+
+    elif dim == 3:
+        if dtype == 'int32':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DInteger(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DInteger(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'float':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DReal(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DReal(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'float32':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DFloat(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DFloat(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'color':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DColor(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DColor(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'point2D':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DPoint2D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DPoint2D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'point3D':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DPoint3D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DPoint3D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'real_point2D':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DRealPoint2D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DRealPoint2D(array=data, lower_bound_ijk=lower_bound_ijk)
+        elif dtype == 'real_point3D':
+            if domain_is_provided:
+                return images.ImageContainerByVector3DRealPoint3D(domain=domain)
+            elif data_is_provided:
+                return images.ImageContainerByVector3DRealPoint3D(array=data, lower_bound_ijk=lower_bound_ijk)

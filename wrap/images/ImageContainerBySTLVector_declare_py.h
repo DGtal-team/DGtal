@@ -187,7 +187,6 @@ Parameters
 ----------
 buffer: python buffer
     The dimensions of the buffer must match those in this ImageContainer type.
-    The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
 order: F or C (Optional)
@@ -298,7 +297,13 @@ Example of usage:
     // ----------- End std::vector binding ------------/
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TTDomain &>());
+    py_class.def(py::init<const TTDomain &>(),
+R"(Constructor from a domain.
+Parameters
+----------
+domain: dgtal.Domain
+    Input domain
+)", py::arg("domain"));
 
     // ----------------------- Python operators -------------------------------
     // Accessors with points
