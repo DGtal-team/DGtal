@@ -79,7 +79,7 @@ int main( int argc, char** argv )
 {
     QApplication application(argc, argv);
 
-    std::string volfile = (argc > 1) ? argv[1] : (examplesPath + "samples/Al.100.vol");
+    std::string volfile = (argc > 1) ? argv[1] : (examplesPath + "samples/cat10.vol");
 
     auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
     auto bimage    = SH3::makeBinaryImage(volfile, params);

@@ -46,33 +46,22 @@ using namespace DGtal;
 // Functions for testing class PlaneProbingTetrahedronEstimator.
 ///////////////////////////////////////////////////////////////////////////////
 
-template < typename Integer >
-std::vector<typename SpaceND<3, Integer>::Vector>
-generateNormals(Integer const& N)
-{
-    using Space = SpaceND<3, Integer>;
-    using Vector = typename Space::Point;
+static const Z3i::Vector NORMALS[100] = {
+    {1, 117, 148}, {1, 118, 149}, {1, 120, 25}, {1, 120, 152}, {1, 121, 153}, {1, 122, 154}, {1, 123, 155}, {1, 123, 156}, {1, 124, 26}, {1, 124, 157},
+    {1, 125, 26}, {1, 125, 158}, {1, 126, 77}, {1, 126, 159}, {1, 127, 160}, {1, 127, 161}, {1, 128, 27}, {1, 128, 162}, {1, 129, 27}, {1, 129, 163},
+    {1, 130, 164}, {1, 130, 165}, {1, 131, 165}, {1, 131, 166}, {1, 132, 28}, {1, 132, 166}, {1, 132, 167}, {1, 133, 28}, {1, 133, 168}, {1, 134, 169},
+    {1, 134, 170}, {1, 135, 170}, {1, 135, 171}, {1, 136, 171}, {1, 136, 172}, {1, 137, 29}, {1, 137, 173}, {1, 137, 174}, {1, 138, 174}, {1, 138, 175},
+    {1, 139, 175}, {1, 139, 176}, {1, 140, 176}, {1, 140, 177}, {1, 140, 178}, {1, 141, 30}, {1, 141, 178}, {1, 141, 179}, {1, 142, 179}, {1, 142, 180},
+    {1, 143, 180}, {1, 143, 181}, {1, 144, 182}, {1, 144, 183}, {1, 145, 183}, {1, 145, 184}, {1, 146, 184}, {1, 146, 185}, {1, 147, 186}, {1, 147, 187},
+    {1, 148, 187}, {1, 148, 188}, {1, 149, 188}, {1, 149, 189}, {1, 150, 190}, {1, 151, 191}, {1, 151, 192}, {1, 152, 192}, {1, 152, 193}, {1, 153, 194},
+    {1, 154, 195}, {1, 154, 196}, {1, 155, 196}, {1, 155, 197}, {1, 156, 198}, {1, 157, 199}, {1, 173, 30}, {1, 174, 30}, {1, 175, 30}, {1, 178, 31},
+    {1, 179, 31}, {1, 180, 31}, {1, 181, 31}, {1, 184, 32}, {1, 185, 32}, {1, 186, 32}, {1, 187, 32}, {1, 188, 32}, {1, 189, 33}, {1, 190, 33},
+    {1, 191, 33}, {1, 192, 33}, {1, 193, 33}, {1, 194, 33}, {1, 194, 34}, {1, 195, 34}, {1, 196, 34}, {1, 197, 34}, {1, 198, 34}, {1, 199, 34},
+};
 
-    std::vector<Vector> normals;
-
-    IntegerComputer<Integer> intComp;
-
-    for (Integer i = 1; i <= N; ++i)
-    {
-        for (Integer j = 1; j <= N; ++j)
-        {
-            for (Integer k = 1; k <= N; ++k)
-            {
-                if (intComp.gcd(intComp.gcd(i, j), k) == 1)
-                {
-                    normals.emplace_back(i, j, k);
-                }
-            }
-        }
-    }
-
-    return normals;
-}
+static const Z3i::Vector NORMALS_BIG[2] = {
+    {1, 59438, 82499}, {2071, 8513, 6444},
+};
 
 template < typename Integer, ProbingMode mode >
 struct TestPlaneProbingTetrahedronEstimator
@@ -98,27 +87,25 @@ struct TestPlaneProbingTetrahedronEstimator
 
 TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
 {
-    const int maxComponent = 50;
-    const auto normals = generateNormals(maxComponent);
-    const int nbNormals = normals.size();
-
-    SECTION("H-algorithm should return the correct normal")
+    SECTION("H-algorithm should return the correct normal, but a non-reduced basis")
     {
         int nbOk = 0;
-        for (const auto& n: normals) {
+
+        for (const auto& n: NORMALS) {
             TestPlaneProbingTetrahedronEstimator<int, ProbingMode::H>::compute
                 (n,
                  [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::H>::Estimator& estimator) {
                     auto estimated = estimator.compute();
+                    bool isReducedH = estimator.isReduced();
 
-                    if (estimated == n)
+                    if (estimated == n && !isReducedH)
                     {
                         nbOk++;
                     }
                  });
         }
 
-        REQUIRE(nbNormals == nbOk);
+        REQUIRE(nbOk == 100);
     }
 
     SECTION("R and R1 algorithm should return the correct, same normal and the final basis should be reduced")
@@ -129,7 +116,7 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
         Point estimatedR, estimatedR1;
         bool isReducedR = false, isReducedR1 = false;
 
-        for (const auto& n: normals) {
+        for (const auto& n: NORMALS) {
             TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::compute
                 (n,
                  [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::Estimator& estimator) {
@@ -151,27 +138,40 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
             }
         }
 
-        REQUIRE(nbNormals == nbOk);
+        REQUIRE(nbOk == 100);
     }
 
 #ifdef WITH_GMP
-    SECTION("H-algorithm should return the correct normal with BigInteger")
+    SECTION("H and R algorithm should return the correct normal, R-algorithm a reduced basis with BigInteger")
     {
+        using Point = PointVector<3, BigInteger>;
+
         int nbOk = 0;
-        for (const auto& n: normals) {
+        Point estimatedH, estimatedR;
+        bool isReducedH = false, isReducedR = false;
+
+        for (const auto& n: NORMALS_BIG) {
             TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>::compute
                 (n,
                  [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>::Estimator& estimator) {
-                    auto estimated = estimator.compute();
-
-                    if (estimated == n)
-                    {
-                        nbOk++;
-                    }
+                    estimatedH = estimator.compute();
+                    isReducedH = estimator.isReduced();
                  });
+
+            TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::R>::compute
+                (n,
+                 [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::R>::Estimator& estimator) {
+                    estimatedR = estimator.compute();
+                    isReducedR = estimator.isReduced();
+                 });
+
+            if (estimatedH == n && estimatedR == estimatedH && !isReducedH && isReducedR)
+            {
+                nbOk++;
+            }
         }
 
-        REQUIRE(nbNormals == nbOk);
+        REQUIRE(nbOk == 2);
     }
 #endif
 }
