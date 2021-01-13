@@ -87,8 +87,10 @@ properties: DigitalTopologyProperties
     // ----------------------- Class functions --------------------------------
     // Note, kappa, lambda, names changed because lambda is a restricted keyword in python.
     py_class.def("foreground", &TT::kappa,
+            py::return_value_policy::reference_internal,
             R"(Reference to foreground adjacency (connectedness))");
     py_class.def("background", &TT::lambda,
+            py::return_value_policy::reference_internal,
             R"(Reference to background adjacency (connectedness))");
     py_class.def("properties", &TT::properties, R"(JORDAN iff the topology is Jordan,
 NOT_JORDAN iff the topology is known to be NOT_JORDAN, UNKNOWN otherwise.)");

@@ -30,8 +30,8 @@ def test_factory():
     topo8_4 = dgtal.DigitalTopology(foreground=dgtal.topology.Adj8(),
                                     background=dgtal.topology.Adj4())
     # assert
-    fadj = topo8_4.TForegroundAdjacency()
-    assert topo8_4.foreground() == fadj
+    fadj = topo8_4.foreground() # returns reference
+    assert topo8_4.foreground() != topo8_4.TForegroundAdjacency()
     assert topo8_4.adjacency_pair_string == "8_4"
 
     with pytest.raises(ValueError):
