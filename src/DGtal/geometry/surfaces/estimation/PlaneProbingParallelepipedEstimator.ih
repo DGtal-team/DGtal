@@ -199,6 +199,58 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (Updat
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
+std::vector<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::UpdateOperation>
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::geometricalDecomposition (UpdateOperation const& aOp) const
+{
+    const auto& sigma = aOp.sigma;
+    const auto& coeffs = aOp.coeffs;
+
+    assert(coeffs[0] == 1);
+
+    // aOp is already elementary
+    if (coeffs[1] + coeffs[2] == -1)
+    {
+        return { aOp };
+    }
+
+    Point e10 = m(sigma[1]) - m(sigma[0]), e12 = m(sigma[2]) - m(sigma[1]);
+
+    std::vector<UpdateOperation> operations;
+    Integer c1(0), c2(0);
+
+    while (c1 != -coeffs[1] && c2 != -coeffs[2])
+    {
+        Point v = e10 + (c1 + 1) * m(sigma[1]) + c2 * m(sigma[2]);
+
+        if (e10.dot(v) >= 0)
+        {
+            operations.push_back({ sigma, { 1, -1, 0 } });
+            c1++;
+        }
+        else
+        {
+            operations.push_back({ sigma, { 1, 0, -1 } });
+            c2++;
+        }
+    }
+
+    while (c1 != -coeffs[1])
+    {
+        operations.push_back({ sigma, { 1, -1, 0 } });
+        c1++;
+    }
+
+    while (c2 != -coeffs[2])
+    {
+        operations.push_back({ sigma, { 1, 0, -1 } });
+        c2++;
+    }
+
+    return operations;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
 {
@@ -215,30 +267,17 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
         {
             assert(op.coeffs[0] == 1);
 
-            // Undo the "ray" operation
+            // Undo the last operation
             UpdateOperation undoOp;
             undoOp.sigma = op.sigma;
             undoOp.coeffs = { Integer(1), -op.coeffs[1], -op.coeffs[2] };
             myTetrahedronEstimator.applyOperation(undoOp);
 
             // Iteratively apply elementary operations
-            for (Integer k = Integer(1); k <= -op.coeffs[1]; ++k)
+            const auto& operations = geometricalDecomposition(op);
+            for (const auto& iterOp: operations)
             {
-                UpdateOperation iterOp;
-                iterOp.sigma = op.sigma;
-                iterOp.coeffs = { Integer(1), Integer(-1), Integer(0) };
                 myTetrahedronEstimator.applyOperation(iterOp);
-
-                translateIf(iterOp);
-            }
-
-            for (Integer k = Integer(1); k <= lambda; ++k)
-            {
-                UpdateOperation iterOp;
-                iterOp.sigma = op.sigma;
-                iterOp.coeffs = { Integer(1), Integer(0), Integer(-1) };
-                myTetrahedronEstimator.applyOperation(iterOp);
-
                 translateIf(iterOp);
             }
         }

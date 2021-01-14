@@ -284,6 +284,13 @@ namespace DGtal
     bool myIsInReverseState; /**< We store whether we are in a reversed state or not */
 
     /**
+     * Decompose a non-elementary operations into a list of elementary ones.
+     *
+     * @return a list of elementary operations.
+     */
+    std::vector<UpdateOperation> geometricalDecomposition (UpdateOperation const& aOp) const;
+
+    /**
      * Translates (reverses) the current parallelepiped if needed (depending on the state).
      *
      * @param aOp the operation to apply.
