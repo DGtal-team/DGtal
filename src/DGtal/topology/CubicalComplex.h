@@ -553,7 +553,8 @@ namespace DGtal
     CubicalComplex ( const CubicalComplex & other );
 
     /**
-    * Constructor a complex from a digital set.
+    * Construct a complex from a digital set.
+    * @tparam TDigitalSet either kind of DigitalSet
     * @param set - a digital set from which to create a complex.
     * Set has to be of the same dimension as a Khalimsky space.
     */
