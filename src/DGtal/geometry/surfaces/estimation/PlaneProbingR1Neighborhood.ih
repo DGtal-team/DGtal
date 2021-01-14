@@ -193,7 +193,7 @@ int DGtal::PlaneProbingR1Neighborhood<TPredicate>::getNeighborhoodCode () const
             continue;
         }
 
-        myState[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+        myState[i] = this->myPredicate(this->absolutePoint(r));
         if (myState[i])
         {
             code += (1 << i);
@@ -230,7 +230,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
     using NumberTraits = DGtal::NumberTraits<Integer>;
 
     ProbingRay startingPoint = aRay.getBase();
-    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+    assert(this->myPredicate(this->absolutePoint(startingPoint)));
 
     Point origin = -this->myM[aRay.sigma(0)],
                y = this->myM[aRay.sigma(1)],
@@ -238,9 +238,9 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
 
     Integer a = detail::squaredNorm(x),
             b = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                            -aPoint.getRelPt(this->myM), origin + x }) - a + 2*x.dot(y),
+                                            this->relativePoint(aPoint), origin + x }) - a + 2*x.dot(y),
             c = detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                            -aPoint.getRelPt(this->myM), origin + y });
+                                            this->relativePoint(aPoint), origin + y });
     Integer delta = b*b - 4*a*c;
 
     std::vector<ProbingRay> res;
@@ -259,15 +259,15 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::intersectSphereRay (ProbingRay co
 
         // Case of cospherical points
         if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                        -aPoint.getRelPt(this->myM) , -p1.getRelPt(this->myM) }) == 0) {
-            if (p1.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
+                                        this->relativePoint(aPoint) , this->relativePoint(p1) }) == 0) {
+            if (this->absolutePoint(p1) >= this->absolutePoint(aPoint)) {
                 i1++;
             }
         }
 
         if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                        -aPoint.getRelPt(this->myM) , -p2.getRelPt(this->myM) }) == 0) {
-            if (p2.getAbsPt(this->myM, this->myQ) >= aPoint.getAbsPt(this->myM, this->myQ)) {
+                                        this->relativePoint(aPoint) , this->relativePoint(p2) }) == 0) {
+            if (this->absolutePoint(p2) >= this->absolutePoint(aPoint)) {
                 i2--;
             }
         }
@@ -295,19 +295,19 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
                                                                           std::vector<ProbingRay> const& aLst) const
 {
     ProbingRay startingPoint = aRay.getBase();
-    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+    assert(this->myPredicate(this->absolutePoint(startingPoint)));
 
-    Point refPoint = aPoint.getRelPt(this->myM);
+    Point refPoint = this->relativePoint(aPoint);
     bool res = true;
 
     if (aLst.size() > 0) {
         ProbingRay currentX = startingPoint;
-        while (! this->isSmallest(-refPoint, -currentX.getRelPt(this->myM))) {
+        while (! this->isSmallest(refPoint, this->relativePoint(currentX))) {
             currentX = currentX.next(1);
         }
 
         ProbingRay first = currentX;
-        while (this->isSmallest(-refPoint, -currentX.getRelPt(this->myM))) {
+        while (this->isSmallest(refPoint, this->relativePoint(currentX))) {
             currentX = currentX.next(1);
         }
 
@@ -317,7 +317,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::isValidIntersectSphereRay (Probin
         int n = 15;
         ProbingRay currentX = startingPoint;
         while (res && currentX.index() < n) {
-            res = !this->isSmallest(-refPoint, -currentX.getRelPt(this->myM));
+            res = !this->isSmallest(refPoint, this->relativePoint(currentX));
             currentX = currentX.next(1);
         }
     }
@@ -334,7 +334,7 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (Probin
     using NumberTraits = DGtal::NumberTraits<Integer>;
 
     ProbingRay startingPoint = aRay.getBase();
-    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+    assert(this->myPredicate(this->absolutePoint(startingPoint)));
 
     Point origin = -this->myM[aRay.sigma(0)],
                 u = this->myM[aRay.sigma(1)],
@@ -353,8 +353,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayConstant (Probin
         ProbingRay p1(aRay.sigma(), index), p2(aRay.sigma(), index+1);
 
         if (detail::distToSphere<Point>({ -this->myM[0], -this->myM[1], -this->myM[2],
-                                      -p1.getRelPt(this->myM), -p2.getRelPt(this->myM) }) == 0) {
-            if (p1.getAbsPt(this->myM, this->myQ) >= p2.getAbsPt(this->myM, this->myQ)) {
+                                      this->relativePoint(p1), this->relativePoint(p2) }) == 0) {
+            if (this->absolutePoint(p1) >= this->absolutePoint(p2)) {
                 index++;
             }
         }
@@ -372,11 +372,11 @@ typename DGtal::PlaneProbingR1Neighborhood<TPredicate>::ProbingRay
 DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestPointOnRayLinear (ProbingRay const& aRay) const
 {
     ProbingRay startingPoint = aRay.getBase();
-    assert(this->myPredicate(startingPoint.getAbsPt(this->myM, this->myQ)));
+    assert(this->myPredicate(this->absolutePoint(startingPoint)));
 
     ProbingRay previousX = startingPoint;
     ProbingRay currentX = previousX.next(1);
-    while (this->isSmallest(-previousX.getRelPt(this->myM), -currentX.getRelPt(this->myM))) {
+    while (this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX))) {
         previousX = currentX;
         currentX = previousX.next(1);
     }
@@ -399,11 +399,11 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::closestRayPoint (std::pair<Probin
 
     if (intersections.size() > 0) {
         ProbingRay y1 = intersections[0], y2 = intersections[1];
-        if (this->myPredicate(y1.getAbsPt(this->myM, this->myQ))) {
+        if (this->myPredicate(this->absolutePoint(y1))) {
             ProbingRay y = closestPointOnRayConstant(ray);
             assert(y == closestPointOnRayLinear(ray));
             if (y1 <= y && y <= y2) {
-                if (this->myPredicate(y.getAbsPt(this->myM, this->myQ))) {
+                if (this->myPredicate(this->absolutePoint(y))) {
                     res = y;
                 } else {
                     res = this->closestPointOnRayLogWithPredicate(y1);

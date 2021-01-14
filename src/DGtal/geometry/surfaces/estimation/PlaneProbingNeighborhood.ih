@@ -81,7 +81,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<Pro
 
     ProbingRay minPoint = aPoints[N-1];
     for (int k = 0; k < N-1; ++k) {
-        if (isSmallest(-minPoint.getRelPt(myM), -aPoints[k].getRelPt(myM))) {
+        if (isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
             minPoint = aPoints[k];
         }
     }
@@ -220,6 +220,26 @@ isSmallest (Point const& aX, Point const& aY) const
     } else {
         return false;
     }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+relativePoint (ProbingRay const& aRay) const
+{
+    return -myM[aRay.sigma(0)] + myM[aRay.sigma(1)] + myM[aRay.sigma(2)] * aRay.index();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+absolutePoint (ProbingRay const& aRay) const
+{
+    return myQ + relativePoint(aRay);
 }
 
 

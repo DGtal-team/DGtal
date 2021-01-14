@@ -215,26 +215,6 @@ namespace DGtal
                 }
 
                 /**
-                 * @param aM a triplet of 3 vectors defining the current frame.
-                 * @return the vector from the fixed point 'q' to the current point on the ray.
-                 */
-                template < typename Point >
-                Point getRelPt (std::array<Point, 3> const& aM) const
-                {
-                    return aM[mySigma[0]] - aM[mySigma[1]] - aM[mySigma[2]] * myIndex;
-                }
-
-                /**
-                 * @param aM a triplet of 3 vectors defining the current frame.
-                 * @¶eturn the current point on the ray.
-                 */
-                template < typename Point >
-                Point getAbsPt (std::array<Point, 3> const& aM, Point const& aQ) const
-                {
-                    return aQ - getRelPt(aM);
-                }
-
-                /**
                  * Equality test between two rays.
                  *
                  * @param aRay an other ray.

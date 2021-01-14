@@ -71,7 +71,7 @@ namespace DGtal
       using Predicate            = TPredicate;
       using Point                = typename Predicate::Point;
       using Integer              = typename Predicate::Integer;
-      using TetrahedronEstimator = PlaneProbingTetrahedronEstimatorParallelepiped<NotAbovePredicate, mode>;
+      using TetrahedronEstimator = PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode>;
       using Triangle             = typename TetrahedronEstimator::Triangle;
       using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
       using Quantity             = typename TetrahedronEstimator::Quantity;
@@ -109,7 +109,7 @@ namespace DGtal
           bool InPlane (Point const& aPoint) const;
 
           /**
-           * The NotAbove predicate, see XXX.
+           * The NotAbove predicate, see @cite LMRJMIV2020.
            *
            * @param aPoint any digital point.
            * @return true if the point is not above the fixed point, false otherwise.

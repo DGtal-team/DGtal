@@ -70,7 +70,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
         ProbingRay r = this->myNeighborhood[i].getBase();
 
         if (this->isNeighbor(r)) {
-            state[i] = this->myPredicate(r.getAbsPt(this->myM, this->myQ));
+            state[i] = this->myPredicate(this->absolutePoint(r));
 
             if (state[i])
             {

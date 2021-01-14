@@ -78,7 +78,7 @@ struct TestPlaneProbingParallelepipedEstimator
         std::array<Point, 3> frame = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
 
         DigitalPlane plane(n, -height, n.norm1());
-        Estimator estimator(o, frame, plane, n.norm1() + 1);
+        Estimator estimator(o, frame, plane, 2 * n.norm1());
 
         f(estimator);
     }

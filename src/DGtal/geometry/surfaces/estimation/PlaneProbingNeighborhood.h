@@ -236,6 +236,22 @@ namespace DGtal
      */
     bool isSmallest (Point const& aX, Point const& aY) const;
 
+    /**
+     * Returns the vector from the point q to the current point on the ray.
+     *
+     * @param aRay a point on a ray.
+     * @return the vector from the fixed point 'q' to the current point on the ray.
+     */
+    Point relativePoint (ProbingRay const& aRay) const;
+
+    /**
+     * Returns the current point on the ray.
+     *
+     * @param aRay a point on a ray.
+     * @return the current point on the ray.
+     */
+    Point absolutePoint (ProbingRay const& aRay) const;
+
     // ------------------------- Internals ------------------------------------
   private:
 
