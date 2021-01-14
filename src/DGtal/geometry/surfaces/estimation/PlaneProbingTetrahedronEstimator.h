@@ -268,7 +268,7 @@ namespace DGtal
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    virtual bool isValid() const;
+    bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -312,45 +312,6 @@ namespace DGtal
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, const PlaneProbingTetrahedronEstimator<T> & object );
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class PlaneProbingTetrahedronEstimatorParallelepiped
-  /*
-   * Helper class that overrides the isValid check to be compatible with the parallelepiped-based estimators
-   * where the 3 vertices of the base frame \f$ v_i  \f$ are not necessarily in the plane.
-   *
-   * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
-   * @tparam mode the probing mode, see ProbingMode.
-   */
-  template <typename TPredicate, ProbingMode mode = ProbingMode::H>
-  class PlaneProbingTetrahedronEstimatorParallelepiped : public PlaneProbingTetrahedronEstimator<TPredicate, mode>
-  {
-    // ----------------------- Public types ------------------------------
-    public:
-      using Predicate = TPredicate;
-      using Point     = typename PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point;
-      using Triangle  = typename PlaneProbingTetrahedronEstimator<TPredicate, mode>::Triangle;
-
-    // ----------------------- Standard services ------------------------------
-    public:
-    /**
-     * Constructs a plane probing tetrahedron estimator from an initial frame and a probing predicate.
-     *
-     * @param aPoint the base point of the initial frame.
-     * @param aM the three vectors of the initial frame.
-     * @param aPredicate the probing predicate.
-     */
-      PlaneProbingTetrahedronEstimatorParallelepiped (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate);
-
-    // ----------------------- Interface --------------------------------------
-    public:
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-      bool isValid() const override;
-  };
-
 } // namespace DGtal
 
 

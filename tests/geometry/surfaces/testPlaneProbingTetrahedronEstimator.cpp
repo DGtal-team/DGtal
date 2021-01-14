@@ -79,7 +79,6 @@ struct TestPlaneProbingTetrahedronEstimator
 
         DigitalPlane plane(n, 0, n.norm1());
         Estimator estimator(o, frame, plane);
-        ASSERT(estimator.isValid());
 
         f(estimator);
     }

@@ -55,7 +55,6 @@ int main(void)
   Point o(0, 0, 0);
   std::array<Point, 3> m = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
   Estimator estimator(o, m, plane);
-  ASSERT(estimator.isValid());
 
   int it = 0;
   while (estimator.advance().first) {

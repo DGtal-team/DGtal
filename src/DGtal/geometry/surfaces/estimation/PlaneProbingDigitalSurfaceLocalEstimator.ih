@@ -128,7 +128,19 @@ eval (SurfelConstIterator it)
     // Compute an initial frame using the pre-estimation
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
     ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
-    myProbingAlgorithm = myProbingFactory(frame, myPredicate);
+
+    // If the constructor of the probing estimator throws, we return the normal of the frame
+    // (this happens for instance when using a tetrahedron estimator on a digital surface,
+    // the initial frame will be considered invalid since not all the points of the upper
+    // triangle belong to the surface)
+    try
+    {
+        myProbingAlgorithm = myProbingFactory(frame, myPredicate);
+    }
+    catch (std::runtime_error const& e)
+    {
+        return frame.normal;
+    }
 
     // We use slightly different versions depending on the number of zeros
     // in the pre-estimation vector.
@@ -147,6 +159,7 @@ eval (SurfelConstIterator it)
     }
     else if (zeros.size() == 2)
     {
+        // TODO: check
         // normal = frame.normal;
         normal = myProbingAlgorithm->compute();
     }

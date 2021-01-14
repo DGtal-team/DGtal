@@ -108,17 +108,10 @@ PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predi
 {
     myNeighborhood = DGtal::detail::PlaneProbingNeighborhoodSelector<TPredicate, mode>::select(myPredicate, myQ, myM);
 
-    // TODO: Since isValid is virtual, we cannot call it in the constructor
-    // assert(isValid());
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
-inline
-DGtal::PlaneProbingTetrahedronEstimatorParallelepiped<TPredicate, mode>::
-PlaneProbingTetrahedronEstimatorParallelepiped (Point const& aPoint, Triangle const& aM, Predicate const& aPredicate)
-    : DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>(aPoint, aM, aPredicate)
-{
+    if (! isValid())
+    {
+        throw std::runtime_error("Invalid frame passed in PlaneProbingTetrahedronEstimator constructor");
+    }
 }
 
 // ------------------------------------------------------------------------
@@ -401,31 +394,6 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isValid() const
 
     return true;
 }
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename TPredicate, DGtal::ProbingMode mode>
-inline
-bool
-DGtal::PlaneProbingTetrahedronEstimatorParallelepiped<TPredicate, mode>::isValid() const
-{
-    Point nest = this->getNormal();
-    for (int i = 0; i < 3; ++i) {
-        if (this->m(i).dot(nest) != 1) {
-            return false;
-        }
-    }
-
-    Triangle v = this->vertices();
-    if (! this->isProjectedInside(v)) {
-        return false;
-    }
-
-    return true;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

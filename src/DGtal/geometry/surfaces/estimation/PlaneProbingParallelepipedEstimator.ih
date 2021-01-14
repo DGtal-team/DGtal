@@ -207,9 +207,9 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::geometricalDecompo
 
     assert(coeffs[0] == 1);
 
-    // aOp is already elementary
     if (coeffs[1] + coeffs[2] == -1)
     {
+        // aOp is already elementary
         return { aOp };
     }
 
