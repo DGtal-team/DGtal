@@ -4,7 +4,7 @@ set(DGTAL_EXAMPLES_TOPO_SRC
   ctopo-fillContours
   khalimskySpaceScanner
   volMarchingCubes
-  volToOFF  
+  volToOFF
   trackImplicitPolynomialSurfaceToOFF
   generateSimplicityTables2D
   generateSimplicityTables3D
@@ -16,10 +16,9 @@ set(DGTAL_EXAMPLES_TOPO_SRC
   area-estimation-with-indexed-digital-surface
 )
 
-foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
+foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries ( ${FILE}  DGtal
-    ${DGtalLibDependencies})   
+  target_link_libraries (${FILE} DGtal)
 endforeach()
 
 
@@ -39,10 +38,9 @@ if (  WITH_VISU3D_QGLVIEWER )
      frontierAndBoundary
      digitalSurfaceSlice
    )
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})   
+  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal)
   endforeach()
 
 endif()
