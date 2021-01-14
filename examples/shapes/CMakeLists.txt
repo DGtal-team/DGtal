@@ -16,12 +16,11 @@ if (  WITH_VISU3D_QGLVIEWER )
      viewPolygonalMarchingCubes
      exampleSurfaceMesh
   )
-  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC}) 
+  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-      ${DGtalLibDependencies})   
+    target_link_libraries (${FILE} DGtal)
   endforeach()
-  
+
 endif()
 
 if (WITH_EIGEN AND WITH_QGLVIEWER)

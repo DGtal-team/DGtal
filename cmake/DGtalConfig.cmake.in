@@ -93,11 +93,10 @@ endif()
 
 
 if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-  find_dependency(Eigen3 REQUIRED
+  find_dependency(Eigen3 @Eigen3_dgtal_min_version@ REQUIRED CONFIG
     @Eigen3_HINTS@
     )
   set(WITH_EIGEN 1)
-  set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} "@EIGEN3_INCLUDE_DIR@" )
 endif()
 
 

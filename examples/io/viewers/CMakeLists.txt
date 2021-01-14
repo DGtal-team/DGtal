@@ -5,7 +5,7 @@ set(DGTAL_TESTS_SRC
    viewer3D-4-modes
    viewer3D-5-custom
    viewer3D-4bis-illustrationMode
-   viewer3D-6-clipping   
+   viewer3D-6-clipping
    viewer3D-8-2DSliceImages
    viewer3D-8bis-2Dimages
    viewer3D-7bis-planes
@@ -23,13 +23,13 @@ set(DGTAL_TESTS_GMP_SRC
 
 foreach(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE}  DGtal ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal)
 endforeach()
 
 if(GMP_FOUND)
   foreach(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE}  DGtal ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal)
   endforeach()
 endif()
 
