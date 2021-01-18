@@ -88,6 +88,9 @@ namespace DGtal
       /**
        * Represents one update step, it contains the pair \f$ (\sigma, coeffs) \f$ used to update
        * the current frame.
+       *
+       * For a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$, the update is done as follows:
+       * \f$ m_{\sigma[0]} \leftarrow coeffs[0] m_{\sigma[0]} + coeffs[1] m_{\sigma[1]} + coeffs[2] m_{\sigma[2]} \f$.
        */
       struct UpdateOperation
       {
@@ -153,7 +156,7 @@ namespace DGtal
      * Computes the current state of the neighborhood.
      * This is the function that is overloaded for the different probing modes.
      *
-     * @return the hexagon state.
+     * @return the hexagon state, see HexagonState.
      */
     virtual HexagonState hexagonState () = 0;
 
@@ -176,7 +179,7 @@ namespace DGtal
      * Classify the state of the H-neighborhood encoded as an array of 6 booleans.
      *
      * @param aState
-     * @return the hexagon state.
+     * @return the hexagon state, see HexagonState.
      */
     HexagonState classify (std::array<bool, 6> const& aState) const;
 
@@ -223,6 +226,7 @@ namespace DGtal
      * set of 'neighbors'.
      *
      * @param aRay the ray point to test.
+     * @return 'true' if aRay should be considered, 'false' otherwise.
      */
     bool isNeighbor (ProbingRay const& aRay) const;
 

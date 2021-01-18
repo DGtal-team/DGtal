@@ -54,7 +54,8 @@ namespace DGtal
   // template class PlaneProbingR1Neighborhood
   /**
    * Description of template class 'PlaneProbingR1Neighborhood' <p>
-   * \brief Aim: Represent a way to probe the R-neighborhood, with the R1 optimization.
+   * \brief Aim: Represent a way to probe the R-neighborhood, with the R1 optimization,
+   * see \cite RLDGCI2019 for details.
    *
    * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
@@ -150,19 +151,51 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    /**
+     * @return an integer coding the current configuration of the H-neighborhood.
+     */
     int getNeighborhoodCode () const;
 
+    /**
+     * @param index an integer between 0 and 2.
+     * @return a pair of a point on a ray and a ray.
+     */
     std::pair<ProbingRay, ProbingRay> candidateRay (int index) const;
 
+    /**
+     * @param aPoint a point on a ray.
+     * @param aRay a ray.
+     * @return extremal points of aRay included in the sphere passing through aPoint and the current triangle.
+     */
     std::vector<ProbingRay> intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const;
 
+    /**
+     * Sanity check for point returned by intersectSphereRay.
+     *
+     * @param aPoint a point on a ray.
+     * @param aRay a ray.
+     * @param aLst a list of points on a ray.
+     * @return 'true' if the points of aLst are indeed in the sphere passing through aPoint and the current triangle, 'false' otherwise.
+     */
     bool isValidIntersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay,
                                     std::vector<ProbingRay> const& aLst) const;
 
+    /**
+     * @param aRay a ray.
+     * @return the closest point on a ray using \cite RLDGCI2019 Algorithm 4.
+     */
     ProbingRay closestPointOnRayConstant (ProbingRay const& aRay) const;
 
+    /**
+     * @param aRay a ray.
+     * @return the closest point on the ray using a linear search.
+     */
     ProbingRay closestPointOnRayLinear (ProbingRay const& aRay) const;
 
+    /**
+     * @param aRayPoint a pair describing a ray and a point on a ray.
+     * @return the closest point among the points of a ray and a point on another ray.
+     */
     ProbingRay closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const;
 
   }; // end of class PlaneProbingR1Neighborhood

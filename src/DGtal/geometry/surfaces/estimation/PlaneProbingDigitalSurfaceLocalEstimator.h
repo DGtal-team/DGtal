@@ -195,21 +195,56 @@ namespace DGtal
 
     // ----------------- model of CSurfelLocalEstimator -----------------------
   public:
+    /**
+     * Initializes the estimator (in this case, do nothing apart from storing the gridstep).
+     *
+     * @param h the grdstep.
+     * @param itb an iterator on the start of the range of surfels.
+     * @param ite a past-the-end iterator of the range of surfels.
+     */
     template < typename SurfelConstIterator >
     void init (Scalar const& h, SurfelConstIterator itb, SurfelConstIterator ite);
 
+    /**
+     * Estimates the quantity on a surfel.
+     *
+     * @param it an iterator whose value type is Surfel.
+     * @return the estimated quantity.
+     */
     template < typename SurfelConstIterator >
     Quantity eval (SurfelConstIterator it);
 
+    /**
+     * Estimates the quantity on a range of surfels.
+     *
+     * @param itb an iterator on the start of the range of surfels.
+     * @param ite a past-the-end iterator of the range of surfels.
+     * @pram out an output iterator to store the results.
+     * @return the modified output iterator.
+     */
     template < typename SurfelConstIterator, typename OutputIterator >
     OutputIterator eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out);
 
+    /**
+     * @return the gridstep.
+     */
     Scalar h () const;
 
     // --------------- model of CDigitalSurfaceLocalEstimator ------------------
   public:
+    /**
+     * Attaches the digital surface passed as a parameter to the estimator.
+     * @param aSurface a digital surface.
+     */
     void attach (ConstAlias<Surface> aSurface);
 
+    /**
+     * Sets some parameters of the estimator.
+     *
+     * @param aProbingFactory a function to build plane-probing estimators from a probing frame.
+     * @param aPreEstimations an optional hashmap Surfel -> RealPoint of pre-estimation vectors.
+     * @param aVerbose verbosity flag.
+     */
     void setParams (ProbingFactory const& aProbingFactory,
                     std::unordered_map<Surfel, RealPoint> const& aPreEstimations = {},
                     bool aVerbose = false);
@@ -230,9 +265,8 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Get the pre-estimation on a given normal.
-     *
      * @param aSurfel a surfel.
+     * @return the pre-estimation vector on a given normal.
      */
     RealPoint getPreEstimation (Surfel const& s) const;
 
@@ -241,30 +275,51 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    ProbingAlgorithm* myProbingAlgorithm = nullptr;
-    bool myH;
-    CountedConstPtrOrConstPtr<Surface> mySurface;
-    Predicate myPredicate;
-    PreEstimation myPreEstimationEstimator;
-    ProbingFactory myProbingFactory;
-    std::unordered_map<Surfel, RealPoint> myPreEstimations;
-    bool myVerbose;
+    ProbingAlgorithm* myProbingAlgorithm = nullptr; /**< A pointer on the probing algorithm, instantiated in eval. */
+    Scalar myH; /**< The gridstep. */
+    CountedConstPtrOrConstPtr<Surface> mySurface; /**< A constant pointer on the digital surface. */
+    Predicate myPredicate; /**< The InPlane predicate. */
+    PreEstimation myPreEstimationEstimator; /**< An estimator to compute a pre-estimation if is not given. */
+    ProbingFactory myProbingFactory; /**< A factory function to build plane-probing estimators from a frame, used in eval. */
+    std::unordered_map<Surfel, RealPoint> myPreEstimations; /**< A hashmap of pre-estimation vectors */
+    bool myVerbose; /**< Verbosity flag. */
 
     // ------------------------- Hidden services ------------------------------
   protected:
 
     // ------------------------- Internals ------------------------------------
   private:
-
+    /**
+     * Builds a probing frame (a base point and three vectors, see ProbingFrame) over a surfel.
+     *
+     * @param aSurfel a surfel.
+     * @return a probing frame adapted to the surfel.
+     */
     ProbingFrame probingFrameFromSurfel (Surfel const& aSurfel) const;
 
+    /**
+     * Tries to build a probing frame matching an initial pre-estimated normal vector:
+     * the octant of the frame should coincide with the pre-estimation.
+     *
+     * @param aInitialFrame an initial probing frame.
+     * @param aPreEstimation a pre-estimation vector.
+     * @return aInitialFrame if no frame were found, the new frame otherwise.
+     */
     ProbingFrame probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const;
 
+    /**
+     * @param x a scalar.
+     * @return an integer that is 1 if x is non-negative, 0 otherwise.
+     */
     static int signComponent (double x)
     {
         return (x >= 0) ? 1 : -1;
     }
 
+    /**
+     * @param p a RealPoint.
+     * @return the indices of the null entries of p.
+     */
     static std::vector<int> findZeros (RealPoint const& p)
     {
         std::vector<int> zeros;
@@ -280,6 +335,12 @@ namespace DGtal
         return zeros;
     }
 
+    /**
+     * Builds a set of candidates when we detected that one direction of the space was flat.
+     *
+     * @param aIndex an integer between 0 and 2.
+     * @return the array of candidates.
+     */
     static std::vector<ProbingRay> getProbingRaysOneFlatDirection (int aIndex)
     {
         if (aIndex == 0)
@@ -297,6 +358,12 @@ namespace DGtal
         }
     }
 
+    /**
+     * Computes the estimated normal when we detected that one direction of the space was flat.
+     *
+     * @param aIndex an integer between 0 and 2.
+     * @return the estimated normal.
+     */
     Point getNormalOneFlatDirection (int aIndex) const
     {
         int im1 = (aIndex - 1 + 3) % 3,

@@ -166,9 +166,8 @@ namespace DGtal
     // ----------------------- Plane Probing services ------------------------------
   public:
     /**
-     * Get the i⁻th height vector.
-     *
      * @param aIndex the index of the vector (between 0 and 2).
+     * @return the i-th height vector \f$ m_i \f$.
      */
     Point const& m (int aIndex) const;
 
