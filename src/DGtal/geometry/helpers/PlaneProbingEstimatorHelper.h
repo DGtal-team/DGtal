@@ -23,7 +23,7 @@
  *
  * @date 2020/12/04
  *
- * Header file for module PlaneProbingEstimatorHelper.cpp
+ * Helper functions for plane-probing algorithms.
  *
  * This file is part of the DGtal library.
  */
@@ -57,19 +57,7 @@ namespace DGtal
          * @return the squared norm of the input point.
          */
         template < typename Point >
-        inline
-        typename Point::Coordinate squaredNorm (Point const& aPoint)
-        {
-            using Integer = typename Point::Coordinate;
-            Integer res = DGtal::NumberTraits<Integer>::ZERO;
-
-            for (typename Point::Dimension i = 0; i < aPoint.size(); ++i)
-            {
-                res += aPoint[i] * aPoint[i];
-            }
-
-            return res;
-        }
+        typename Point::Coordinate squaredNorm (Point const& aPoint);
 
         /**
          * Determinant of a NxN matrix represented by a two-dimensional static array.
@@ -78,21 +66,7 @@ namespace DGtal
          * @return the determinant of the input matrix.
          */
         template < int N, typename T >
-        inline
-        T determinant (const T aMatrix[N][N])
-        {
-            DGtal::SimpleMatrix<T, N, N> m;
-
-            for (int i = 0; i < N; ++i)
-            {
-                for (int j = 0; j < N; ++j)
-                {
-                    m.setComponent(i, j, aMatrix[i][j]);
-                }
-            }
-
-            return m.determinant();
-        }
+        T determinant (const T aMatrix[N][N]);
 
         /**
          * Computes the distance of a point to a sphere passing through 4 given points.
@@ -102,30 +76,7 @@ namespace DGtal
         */
         template < typename Point >
         inline
-        typename Point::Coordinate distToSphere (std::array<Point, 5> const& aPoints)
-        {
-            using Integer = typename Point::Coordinate;
-            Integer one = DGtal::NumberTraits<Integer>::ONE,
-                    zero = DGtal::NumberTraits<Integer>::ZERO;
-
-            Integer M0[4][4] = { { aPoints[0][0], aPoints[0][1], aPoints[0][2], one },
-                                 { aPoints[1][0], aPoints[1][1], aPoints[1][2], one },
-                                 { aPoints[2][0], aPoints[2][1], aPoints[2][2], one },
-                                 { aPoints[3][0], aPoints[3][1], aPoints[3][2], one } };
-
-            if (determinant(M0) == zero)
-            {
-                throw std::runtime_error("4 coplanar points in distToSphere");
-            }
-
-            Integer M[5][5] = { { aPoints[0][0], aPoints[0][1], aPoints[0][2], squaredNorm(aPoints[0]), one },
-                                { aPoints[1][0], aPoints[1][1], aPoints[1][2], squaredNorm(aPoints[1]), one },
-                                { aPoints[2][0], aPoints[2][1], aPoints[2][2], squaredNorm(aPoints[2]), one },
-                                { aPoints[3][0], aPoints[3][1], aPoints[3][2], squaredNorm(aPoints[3]), one },
-                                { aPoints[4][0], aPoints[4][1], aPoints[4][2], squaredNorm(aPoints[4]), one } };
-
-            return determinant(M);
-        }
+        typename Point::Coordinate distToSphere (std::array<Point, 5> const& aPoints);
 
         /**
          * Test if a pair of vectors form a reduced basis.
@@ -136,14 +87,7 @@ namespace DGtal
          */
         template < typename Point >
         inline
-        bool isBasisReduced (Point const& aU, Point const& aV)
-        {
-            Point w = aU + aV, x = aU - aV;
-            return (squaredNorm(aU) <= squaredNorm(w)) &&
-                   (squaredNorm(aU) <= squaredNorm(x)) &&
-                   (squaredNorm(aV) <= squaredNorm(w)) &&
-                   (squaredNorm(aV) <= squaredNorm(x));
-        }
+        bool isBasisReduced (Point const& aU, Point const& aV);
 
         /////////////////////////////////////////////////////////////////////////////
         // template class ProbingRay
@@ -161,6 +105,7 @@ namespace DGtal
         template < typename Integer = int >
         class ProbingRay
         {
+            // ----------------------- Public types ------------------------------
             public:
                 using Permutation = std::array<int, 3>;
 
@@ -176,43 +121,28 @@ namespace DGtal
                  * @param aSigma a permutation.
                  * @param aIndex an index.
                  */
-                ProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0))
-                    : mySigma(aSigma), myIndex(aIndex)
-                {}
+                ProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0));
 
                 /**
                  * @return the first point on the ray (with index 0).
                  */
-                ProbingRay getBase () const
-                {
-                    return ProbingRay(mySigma, 0);
-                }
+                ProbingRay getBase () const;
 
                 /**
                  * @return the permutation that defines the ray.
                  */
-                Permutation const& sigma () const
-                {
-                    return mySigma;
-                }
+                Permutation const& sigma () const;
 
                 /**
                  * @param aIndex an index between 0 and 2.
                  * @return the i-th element of the permutation that defines the ray.
                  */
-                int sigma (int aIndex) const
-                {
-                    assert(aIndex >= 0 && aIndex <= 2);
-                    return mySigma[aIndex];
-                }
+                int sigma (int aIndex) const;
 
                 /**
                  * @return index of the current point on the ray.
                  */
-                Integer const& index () const
-                {
-                    return myIndex;
-                }
+                Integer const& index () const;
 
                 /**
                  * Equality test between two rays.
@@ -220,10 +150,7 @@ namespace DGtal
                  * @param aRay an other ray.
                  * @return true if the two rays are the same, false otherwise.
                  */
-                bool operator== (ProbingRay const& aRay) const
-                {
-                    return (mySigma == aRay.mySigma) && (myIndex == aRay.index());
-                }
+                bool operator== (ProbingRay const& aRay) const;
 
                 /**
                  * Inequality test between two rays.
@@ -231,10 +158,7 @@ namespace DGtal
                  * @param aRay an other ray.
                  * @return true if the two rays are different, false otherwise.
                  */
-                bool operator!= (ProbingRay const& aRay) const
-                {
-                    return !(*this == aRay);
-                }
+                bool operator!= (ProbingRay const& aRay) const;
 
                 /**
                  * Comparison operator between two rays (lexicographic order on the indices).
@@ -243,28 +167,19 @@ namespace DGtal
                  * @return true if *this <= aRay, false otherwise.
                  *
                  */
-                bool operator<= (ProbingRay const& aRay) const
-                {
-                    return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
-                }
+                bool operator<= (ProbingRay const& aRay) const;
 
                 /**
                  * @param aInc an increment.
                  * @return a new point on a ray, with index the current index incremented by aInc.
                  */
-                ProbingRay next (Integer const& aInc) const
-                {
-                    return ProbingRay(mySigma, myIndex + aInc);
-                }
+                ProbingRay next (Integer const& aInc) const;
 
                 /**
                  * @param aDec a decrement.
                  * @return a new point on a ray, with index the current index decremented by aInc.
                  */
-                ProbingRay previous (Integer const& aDec) const
-                {
-                    return ProbingRay(mySigma, myIndex - aDec);
-                }
+                ProbingRay previous (Integer const& aDec) const;
 
             private:
                 Permutation mySigma; /**< The permutation. */
@@ -279,15 +194,7 @@ namespace DGtal
          * @return the output stream after the writing.
          */
         template < typename Integer >
-        inline
-        std::ostream& operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay)
-        {
-            aOs << "sigma=(" <<
-                aRay.sigma(0) << ", " <<
-                aRay.sigma(1) << ", " <<
-                aRay.sigma(2) << "); i=" << aRay.index();
-            return aOs;
-        }
+        std::ostream& operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay);
     } // namespace detail
 } // namespace DGtal
 
