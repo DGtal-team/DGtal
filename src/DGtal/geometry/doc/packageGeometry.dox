@@ -70,6 +70,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref LocalEstimatorsFromSurfel (David Coeurjolly)
   - \ref moduleVCM (Louis Cuel, Jacques-Olivier Lachaud, Quentin Mérigot, Boris Thibert)
   - \ref modulePlaneProbing (Jacques-Olivier Lachaud, Jocelyn Meyron, Tristan Roussillon)
+  - \ref moduleMaximalSegmentSliceEstimation (Jocelyn Meyron, Tristan Roussillon)
 
 - Volumetric analysis
   - \ref moduleMetrics (David Coeurjolly)

@@ -1,0 +1,44 @@
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/14/01
+ *
+ * Documentation file for feature MaximalSegmentSliceEstimation
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleMaximalSegmentSliceEstimation Maximal segments and slices of digital surface based normal estimator
+@writers Jocelyn Meyron, Tristan Roussillon
+
+@since 1.2
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes the normal estimation algorithm based on maximal segment computation
+on digital surface slices.
+
+[TOC]
+
+The following program is related to this documentation:
+geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp.
+
+\section sectMaximalSegmentSliceEstimation1 Introduction to plane-probing algorithms
+
+\subsection subsectMaximalSegmentSliceEstimation11 Subsection 1.1
+
+\subsection subsectMaximalSegmentSliceEstimation12 Subsection 1?2
+
+\section sectMaximalSegmentSliceEstimation2 Implementation details
+
+*/
+
+}
