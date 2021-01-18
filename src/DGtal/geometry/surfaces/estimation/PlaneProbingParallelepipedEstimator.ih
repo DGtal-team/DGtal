@@ -338,6 +338,15 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
     return myTetrahedronEstimator.getBasis();
 }
 
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isReduced () const
+{
+    auto basis = getBasis();
+    return DGtal::detail::isBasisReduced(basis.first, basis.second);
+}
+
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline

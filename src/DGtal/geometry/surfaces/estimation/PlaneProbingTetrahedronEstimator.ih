@@ -150,9 +150,9 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::q () const
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::shift () const
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getOrigin () const
 {
-    return myS;
+    return myQ - (myM[0] + myM[1] + myM[2]);
 }
 
 // ------------------------------------------------------------------------

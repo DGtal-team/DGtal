@@ -99,8 +99,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
                     (n, height,
                      [&] (TestPlaneProbingParallelepipedEstimator<int, ProbingMode::H>::Estimator& estimator) {
                         auto estimated = estimator.compute();
-                        auto basis = estimator.getBasis();
-                        bool isReducedH = DGtal::detail::isBasisReduced(basis.first, basis.second);
+                        bool isReducedH = estimator.isReduced();
 
                         if (estimated == n && !isReducedH)
                         {
@@ -126,8 +125,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
                     (n, height,
                      [&] (TestPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>::Estimator& estimator) {
                         auto estimated = estimator.compute();
-                        auto basis = estimator.getBasis();
-                        bool isReducedR = DGtal::detail::isBasisReduced(basis.first, basis.second);
+                        bool isReducedR = estimator.isReduced();
 
                         if (estimated == n && isReducedR)
                         {

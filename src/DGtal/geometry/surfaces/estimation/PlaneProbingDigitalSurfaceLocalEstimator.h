@@ -55,10 +55,15 @@ namespace DGtal
   // template class PlaneProbingDigitalSurfaceLocalEstimator
   /**
    * Description of template class 'PlaneProbingDigitalSurfaceLocalEstimator' <p>
-   * \brief Aim:
+   * \brief Aim: Adapt a plane-probing estimator on a digital surface to estimate normal vectors.
+   *
+   * This class uses a plane-probing algorithm (whose type is given by the template parameter TProbingAlgorithm) to estimate
+   * normal vectors on a digital surface per surfel.
    *
    * @tparam TSurface the digital surface type.
-   * @tparam TProbingAlgorithm the probing algorithm.
+   * @tparam TProbingAlgorithm the probing algorithm (see \ref PlaneProbingTetrahedronEstimator or PlaneProbingParallelepipedEstimator).
+   *
+   * \b Models: A PlaneProbingDigitalSurfaceLocalEstimator is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
   template <typename TSurface, typename TProbingAlgorithm>
   class PlaneProbingDigitalSurfaceLocalEstimator
@@ -70,13 +75,20 @@ namespace DGtal
       using Point            = typename ProbingAlgorithm::Point;
       using Scalar           = double;
 
+      /**
+       * A probing frame represents a 3D orthogonal frame, that is internally used
+       * to define the starting position of a plane-probing algorithm.
+       */
       struct ProbingFrame
       {
-          Point p;
-          Point b1;
-          Point b2;
-          Point normal;
+          Point p; /**< The base point/ */
+          Point b1; /**< The first base vector. */
+          Point b2; /**< The second base vector. */
+          Point normal; /**< A vector that is orthogonal to b1 and b2. */
 
+          /**
+           * @return a copy of the current probing frame rotated clockwise.
+           */
           ProbingFrame rotatedCopy () const
           {
               Point newP      = p + b1,
@@ -87,6 +99,9 @@ namespace DGtal
               return  { newP, newB1, newB2, newNormal };
           }
 
+          /**
+           * @return the 'shift' vector of the frame i.e. the octant that it represents.
+           */
           Point shift () const
           {
               return b1 + b2 + normal;
