@@ -97,13 +97,26 @@ Imagine we want to add wrappings for the class `HyperRectDomain` from the `kerne
 
 ### Other:
 - [x] CubicalComplex `CubicalComplex2D`, `CubicalComplex3D` (using `std::unordered_map` as CellContainer).
-- [x] VoxelComplex
-- Add factory functions to `__init__.py` to ease the construction of the wrapped types:
-  - [x] Point: `dgtal.Point(dim, dtype, data)`
+- [x] VoxelComplex: `VoxelComplex` (3D-only)
+
+### Factory functions
+Factory functions are defined in `__init__.py` to ease the construction of the wrapped types:
+
+- [x] Point: `dgtal.Point(dim, dtype, data)`
   `dgtal.Point` will return a `dgtal.kernel.Point2D` if `dim == 2` and `dtype == 'int32'`, or a `dgtal.kernel.Point3D`
   if `dim == 3` and `dtype == 'float'`. The `data` argument will be passed to the constructor, accepting list,
   tuples and `numpy.array`s of the right type and dimension.
-
+  Also: `dgtal.Point(data=[2,3])` will return a `dgtal.kernel.Point2D`, dimension will be inferred.
+- [x] Domain: `dgtal.Domain(lower_bound, upper_bound)`
+- [x] DigitalSet: `dgtal.DigitalSet(domain)`
+- [x] KPreSpace: `dgtal.KPreSpace(dim)`
+- [x] PreCell: `dgtal.PreCell(dim, point)`, SPreCell: `dgtal.PreCell(dim, point, positive)`
+- [x] KSpace: `dgtal.KSpace(dim)`
+- [x] MetricAdjacency: `dgtal.MetricAdjacency(dim, max_norm)`.
+  Example: `adj26 = dgtal.MetricAdjacency(dim=3, max_norm=3)`
+- [x] DigitalTopology: `dgtal.DigitalTopology(foreground, background, properties)`
+- [x] Object: `dgtal.Object(topology, domain, point_set, connectedness)`
+- [x] ImageContainer: `dgtal.ImageContainer(dtype, domain, data, lower_bound_ijk)`
 
 Dev notes
 ==========
@@ -128,5 +141,3 @@ And then create a file named: `dgtal.pth` in `~/.virtualenvs/dgtal-build/lib/pyt
 Now you can use `workon dgtal-build` from anywhere, and `python -c 'import dgtal'` will work.
 Remember that if you modify and rebuild DGtal wrappings, and you are in a `ipython` session, or `jupyter`, you will need to restart or reload
 the ipython kernel for the changes to be loaded.
-
-
