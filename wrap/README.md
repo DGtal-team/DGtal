@@ -141,3 +141,48 @@ And then create a file named: `dgtal.pth` in `~/.virtualenvs/dgtal-build/lib/pyt
 Now you can use `workon dgtal-build` from anywhere, and `python -c 'import dgtal'` will work.
 Remember that if you modify and rebuild DGtal wrappings, and you are in a `ipython` session, or `jupyter`, you will need to restart or reload
 the ipython kernel for the changes to be loaded.
+
+Releasing to pypi
+=================
+## Setup
+It is recommended that you setup a virtual environment for deploy, so `azure-cli` and `twine` do not have to be installed in the system python.
+```
+workon dgtal-build
+```
+
+### For azure download
+- Setup a personal access token for DGtal azure-pipelines in: https://dev.azure.com/davidcoeurjolly .
+  Read [this](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate) for how-to.
+- `pip install azure-cli` for azure commands.
+### For pypi upload
+- Setup a personal access token in pypi (or know the password!).
+- `pip install twine` for easy upload.
+
+## Download the wheels from Azure (Linux/MacOS only)
+First, login into azure if you haven't already, using your PersonalAccessToken.
+```
+az devops login --organization https://dev.azure.com/davidcoeurjolly
+
+Token:
+```
+
+Then, go to the pipeline [PythonDeploy](https://dev.azure.com/davidcoeurjolly/DGtal/_build?definitionId=1), and select the commit from where you want the wheels.
+In the URL `https://dev.azure.com/davidcoeurjolly/DGtal/_build/results?buildId=246&view=results`, grab the `buildId` number, in this case: `246`.
+
+With that id, use the script [download_azure_artifacts.sh](./deploy/download_azure_artifacts.sh) located in `dgtal-src/wrap/deploy/download_azure_artifacts.sh`.
+```
+/path/download_azure_artifacts.sh 246
+```
+
+All the wheels for all platforms and all python versions will be downloaded to `/tmp/dist`.
+
+
+## Upload to pypi
+```
+ python -m twine upload /tmp/dist/* --verbose 
+```
+
+For testing that the package complies with all requisites, you might want to first upload to [test.pypi](https://test.pypi.org/).
+```
+python -m twine upload --repository-url https://test.pypi.org/legacy/ /tmp/dist/* --verbose 
+```
