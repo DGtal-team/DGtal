@@ -23,14 +23,14 @@ namespace DGtal {
 
 Part of the \ref packageGeometry.
 
-This part of the manual describes what are plane-probing estimators and how to define and use them
+This part of the manual describes what are plane-probing estimators, how to define and use them
 to estimate normals on digital surfaces.
 
 [TOC]
 
 The following programs are related to this documentation:
-geometry/surfaces/examplePlaneProbingParallelepipedEstimator.cpp,
 geometry/surfaces/examplePlaneProbingTetrahedronEstimator.cpp,
+geometry/surfaces/examplePlaneProbingParallelepipedEstimator.cpp,
 geometry/surfaces/examplePlaneProbingSurfaceLocalEstimator.cpp,
 testDigitalPlanePredicate.cpp,
 testPlaneProbingTetrahedronEstimator.cpp,
@@ -38,13 +38,12 @@ testPlaneProbingParallelepipedEstimator.cpp.
 
 \section sectPlaneProbing1 Introduction to plane-probing algorithms
 
-A plane-probing algorithm @cite LPRJMIV2017 @cite RLDGCI2019 @cite LMRJMIV2020
+A plane-probing algorithm (see @cite LPRJMIV2017, @cite RLDGCI2019 and @cite LMRJMIV2020)
 computes the normal vector of a set of digital points
-from a starting point and a predicate "Is a point x in the set of digital points?" that
-we will denote \b InPlane.
+from a starting point and a predicate \b InPlane: "Is a point x in the set of digital points?".
 This predicate is used to probe the set as locally as possible
 and decide on-the-fly the next points to consider,
-in order to deform a specific set, which is tangent by
+in order to deform a particular set of points, which is tangent by
 construction. The growth direction is given by both arithmetic and
 geometric properties. The main characteristics of these
 algorithms is that \e no \e parameter is required for the analysis
@@ -52,25 +51,72 @@ of the local geometry of digital surfaces. Furthermore, they present
 theoretical guarantees, most notably they extract the exact normal
 vector of any digital plane.
 
-@image html plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing"
-@image latex plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing" width=7cm
+@image html plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing."
+@image latex plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing." width=8cm
 
 \subsection subsectPlaneProbing11 Tetrahedron-based probing methods (H, R, R1)
 
-The first kind of plane-probing algorithms is based on a deformation of a tetrahedron, tangent to the digital set.
+The first kind of plane-probing algorithms is based on the deformation of a
+tetrahedron. The objective of the algorithm is to iteratively update one vertex
+of this tetrahedron until one of its faces is parallel to the digital set.  The
+update procedure will consist in selecting a point inside a \e candidate \e
+set. Multiple candidate sets have been proposed but we will start by describing
+the simplest one, the so-called \e H-neighorhood.  We will start by
+illustrating its behavior when the digital set is a digital plane segment. The
+next image shows the initial state of the estimator. We will denote by \f$
+(v_k)_{0 \leq k \leq 2 } \f$ the three vertices of the base triangle, \f$ q \f$
+the \e fixed point outside the set at the top of the tetrahedron. Points that
+are \e inside the digital set will be denote by disks while points that are \e
+outside by circles.
 
-The main drawback of this kind is the fact that they return the correct on a digital plane only when starting from a reentrant corner. In all other cases, the estimated normal is only an approximation.
-In the next section, we will present another kind of estimator that can be initialized on \e any \e surfel of a digital surface and which returns the correct normal on every surfel of a digital plane.
+@image html plane-probing-start-frame.png "Left: the base triangle at the beginning. Right: the base frame at the begining."
+@image latex plane-probing-start-frame.png "Left: the base triangle at the beginning. Right: the base frame at the begining." width=8cm
+
+We now describe the update procedure in more details, see the next figure.
+
+@image html plane-probing-update-H.png "From left to right: before the update, H-neighborhood in red, filtering through \b InPlane, closest criterion, after the update"
+@image latex plane-probing-update-H.png "From left to right: before the update, H-neighborhood in red, filtering through \b InPlane, closest criterion, after the update" width=8cm
+
+The update step is composed of the following substeps:
+1. computing the candidate set,
+2. filtering through the \b InPlane predicate,
+3. selecting the \e closest \e one according to some criterion (here a simple \e Delaunay/InSphere one),
+4. updating one vertex of the base triangle.
+
+The algorithm stops whether one of the following criteria is verified:
+1. the candidate set does not contain point inside the digital set,
+2. the current configuration of the H-neighborhood is \e non-convex,
+3. the current configuration of the H-neighborhood is \e non-planar.
+For the last two, see @cite LPRJMIV2017 or the enum PlaneProbingNeighborhood::HexagonState for more details.
+
+Other candidate sets were proposed namely the \e R-neighborhood @cite
+LPRJMIV2017 and an optimization that we call \e R1-neighborhood @cite
+LMRJMIV2020. The main difference is that instead of considering 6 points, they
+consider 6 rays.  This allows to reduce the number of steps and to obtain a
+reduced basis at the end, this is the neighborhood we recommend.
+
+The main drawback of this category of algorithms is the fact that they return
+the correct on a digital plane only when starting from a reentrant corner. In
+all other cases, the estimated normal is only an approximation.  In the next
+section, we will present another kind of estimator that can be initialized on
+\e any \e surfel of a digital surface and which returns the correct normal on
+every surfel of a digital plane.
 
 \subsection subsectPlaneProbing12 Parallelpiped-based probing methods (PH, PR, PR1)
 
-The second kind of plane-probing algorithms is based on the deformation of a pair of tetrahedra i.e. a parallelepiped introduced in @cite LMRJMIV2020. The parallelepiped is ensured to always be separating (the base point and the 'fixed' point \f$ q \f$ are inside/outside or
-outside/inside the digital set). This approach allows to start the algorithm on any surfel (at least 4 points inside the digital set).
+The second kind of plane-probing algorithms is based on the deformation of a
+pair of tetrahedra i.e. a parallelepiped introduced in @cite LMRJMIV2020. The
+parallelepiped is ensured to always be separating (the base point and the
+'fixed' point \f$ q \f$ are inside/outside or outside/inside the digital set).
+This approach allows to start the algorithm on any surfel (at least 4 points
+inside the digital set).
 
-This approach is internally based on a generalization of the predicate \b InPlane that we call \b NotAbove.
+This approach is internally based on a generalization of the predicate \b
+InPlane that we call \b NotAbove that is able to tell whether a digital point
+\f$ x \f$ has a height that is smaller or greater than the one of \f$ q \f$.
 See @cite LMRJMIV2020 for more details.
 
-\subsection subsectPlaneProbing13 Summary
+\subsection subsectPlaneProbing13 Summary of the different variants
 
 | Algorithm |           Principle           |    Initialization    |     Candidate Set     |
 |:---------:|:-----------------------------:|:--------------------:|:---------------------:|
@@ -83,10 +129,11 @@ See @cite LMRJMIV2020 for more details.
 
 \subsection subsectPlaneProbing21 General form
 
-In DGtal, both categories of plane-probing estimators are implemented, see \ref PlaneProbingTetrahedronEstimator and \ref PlaneProbingParallelepipedEstimator.
-In the following, PlaneProbingEstimator will be one of these two types.
+In DGtal, both categories of plane-probing estimators are implemented, see \ref
+PlaneProbingTetrahedronEstimator for the first category and \ref PlaneProbingParallelepipedEstimator for the second one.
+In the following, \e PlaneProbingEstimator will denote one of these two types.
 
-The general way of instantiating and using a plane-probing estimator is the folllowing
+The general way of instantiating a plane-probing estimator is the folllowing:
 \code
 using namespace DGtal;
 
@@ -101,11 +148,21 @@ using ProbingEstimator = PlaneProbingEstimator<Predicate, ProbingMode>;
 ProbingEstimator estimator(startingPoint, initialFrame, predicate);
 \endcode
 
+And to use it:
+\code
+while (estimator.advance()) {}
+Point n = estimator.getNormal();
+auto basis = estimator.getBasis();
+
+Point n = estimator.compute();
+\endcode
+
 The common services are as follows:
-- PlaneProbingEstimator::m returns the three vectors defining the tetrahedron.
-- PlaneProbingEstimator::q returns the fixed point.
-- PlaneProbingEstimator::getOrigin returns the base point of the frame.
-- PlaneProbingEstimator::vertices returns the three vertices \f$ (q - m_k)_{0 \leq k \leq 2} \f$.
+- PlaneProbingEstimator::m returns the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ defining the tetrahedron.
+- PlaneProbingEstimator::q returns the fixed point \f$ q \f$.
+- PlaneProbingEstimator::getOrigin returns the base point of the frame \f$ q - (m_0 + m_1 + m_2) \f$.
+- PlaneProbingEstimator::vertices returns the three vertices \f$ (v_k = q - m_k)_{0 \leq k \leq 2} \f$.
+- PlaneProbingEstimator::hexagonState returns the current configuration of the H-neighborhood.
 
 Probing services:
 - PlaneProbingEstimator::advance does one step of the estimation.

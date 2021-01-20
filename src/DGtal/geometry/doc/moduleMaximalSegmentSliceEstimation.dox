@@ -31,11 +31,14 @@ on digital surface slices.
 The following program is related to this documentation:
 geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp.
 
-\section sectMaximalSegmentSliceEstimation1 Introduction to plane-probing algorithms
+\section sectMaximalSegmentSliceEstimation1 Introduction
+
+In this section, we will introduce another normal estimator on a digital surface that is based on the computation of maximal segments on slices.
+This estimator is interesting since it has \e no \e parameter, is fast and can be used as an initial estimation (see PlaneProbingDigitalSurfaceLocalEstimator for instance).
 
 \subsection subsectMaximalSegmentSliceEstimation11 Subsection 1.1
 
-\subsection subsectMaximalSegmentSliceEstimation12 Subsection 1?2
+\subsection subsectMaximalSegmentSliceEstimation12 Subsection 1.2
 
 \section sectMaximalSegmentSliceEstimation2 Implementation details
 

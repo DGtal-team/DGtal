@@ -22,7 +22,7 @@
  *
  * @date 2020/12/03
  *
- * Functions for testing class testDigitalPlanePredicate.
+ * Functions for testing class DGtal::DigitalPlanePredicate.
  *
  * This file is part of the DGtal library.
  */

@@ -238,6 +238,11 @@ namespace DGtal
     Quantity compute ();
 
     /**
+     * @return the current local configuration, see HexagonState.
+     */
+    HexagonState hexagonState () const;
+
+    /**
      * @return the current estimated normal.
      */
     Point getNormal() const;

@@ -22,7 +22,7 @@
  *
  * @date 2020/12/09
  *
- * An example file named examplePlaneProbingTetrahedronEstimator.
+ * An example file that shows how to construct and use a DGtal::PlaneProbingParallelepipedEstimator on an analytical digital plane.
  *
  * This file is part of the DGtal library.
  */

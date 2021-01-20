@@ -22,7 +22,7 @@
  *
  * @date 2020/12/09
  *
- * Functions for testing class PlaneProbingTetrahedronEstimator.
+ * Functions for testing class DGtal::PlaneProbingTetrahedronEstimator.
  *
  * This file is part of the DGtal library.
  */

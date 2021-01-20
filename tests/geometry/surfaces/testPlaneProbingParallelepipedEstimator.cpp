@@ -22,7 +22,7 @@
  *
  * @date 2020/12/09
  *
- * Functions for testing class PlaneProbingTetrahedronEstimator.
+ * Functions for testing class DGtal::PlaneProbingParallelepipedEstimator.
  *
  * This file is part of the DGtal library.
  */
@@ -43,7 +43,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class PlaneProbingTetrahedronEstimator.
+// Functions for testing class PlaneProbingParallelepipedEstimator.
 ///////////////////////////////////////////////////////////////////////////////
 
 static const Z3i::Vector NORMALS[100] = {

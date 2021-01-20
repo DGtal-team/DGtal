@@ -22,7 +22,7 @@
  *
  * @date 2020/12/07
  *
- * An example file named examplePlaneProbingSurfaceLocalEstimator.
+ * An example file that shows how to construct and use a PlaneProbingDigitalSurfaceLocalEstimator.
  *
  * This file is part of the DGtal library.
  */

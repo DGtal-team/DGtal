@@ -322,6 +322,15 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Neighborhood::HexagonState
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::hexagonState () const
+{
+    return myTetrahedronEstimator.hexagonState();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 {

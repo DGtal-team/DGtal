@@ -57,6 +57,8 @@ namespace DGtal
    * \brief Aim:
    *
    * @tparam TSurface the digital surface type.
+   *
+   * \b Models: A PlaneProbingDigitalSurfaceLocalEstimator is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
   template <typename TSurface>
   class MaximalSegmentSliceEstimation
@@ -136,15 +138,39 @@ namespace DGtal
 
     // ----------------- model of CSurfelLocalEstimator -----------------------
   public:
+    /**
+     * Initializes the estimator (in this case, do nothing apart from storing the gridstep).
+     *
+     * @param h the grdstep.
+     * @param itb an iterator on the start of the range of surfels.
+     * @param ite a past-the-end iterator of the range of surfels.
+     */
     template < typename SurfelConstIterator >
     void init (Scalar const& h, SurfelConstIterator itb, SurfelConstIterator ite);
 
+    /**
+     * Estimates the quantity on a surfel.
+     *
+     * @param it an iterator whose value type is Surfel.
+     * @return the estimated quantity.
+     */
     template < typename SurfelConstIterator >
     Quantity eval (SurfelConstIterator it);
 
+    /**
+     * Estimates the quantity on a range of surfels.
+     *
+     * @param itb an iterator on the start of the range of surfels.
+     * @param ite a past-the-end iterator of the range of surfels.
+     * @pram out an output iterator to store the results.
+     * @return the modified output iterator.
+     */
     template < typename SurfelConstIterator, typename OutputIterator >
     OutputIterator eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out);
 
+    /**
+     * @return the gridstep.
+     */
     Scalar h () const;
 
     // --------------- model of CDigitalSurfaceLocalEstimator ------------------
@@ -241,10 +267,8 @@ namespace DGtal
     std::pair<Point2, Point2> getExtremalPoints (Container const& aPoints) const;
 
     /**
-     * Computes the trivial normal of a surfel.
-     *
      * @param aSurfel a surfel.
-     * @return the trivial normal.
+     * @return the trivial normal of a surfel.
      */
     Point trivialNormal (Surfel const& aSurfel) const;
   }; // end of class MaximalSegmentSliceEstimation

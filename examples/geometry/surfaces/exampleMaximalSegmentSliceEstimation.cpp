@@ -22,7 +22,7 @@
  *
  * @date 2020/12/15
  *
- * An example file named exampleMaximalSegmentSliceEstimation.
+ * An example file that shows how to construct and use a DGtal::MaximalSegmentSliceEstimation on a digital surface.
  *
  * This file is part of the DGtal library.
  */
