@@ -186,3 +186,22 @@ For testing that the package complies with all requisites, you might want to fir
 ```
 python -m twine upload --repository-url https://test.pypi.org/legacy/ /tmp/dist/* --verbose 
 ```
+
+## Increase version in dgtalVersion.py
+After manual deployment to pypi, don't forget to increase the version in [wrap/deploy/dgtalVersion.py](./deploy/dgtalVersion.py).
+
+A package with the same version cannot be uploaded to pypi (i.e. cannot override).
+
+The provided python script [increase_version.py](./deploy/increase_version.py) can increment the version automatically:
+```
+./wrap/deploy/increase_version.py --no-write
+
+incrementing version component: patch | version_index: 2
+current_version:  0.0.1
+final_version:  0.0.2
+Not writing to any file, remove -n or --no-write argument if wanted.
+```
+
+By default the script increase the `patch` version. You can increment bigger components with `-c minor` or `-c major`. Use `--help` for other options.
+
+Remove the `--no-write` option to commit the new version to the file `dgtalVersion.py`.
