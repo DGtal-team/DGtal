@@ -98,24 +98,11 @@ namespace DGtal
     DigitalSurfacePredicate ( const DigitalSurfacePredicate & other );
 
     /**
-     * Move constructor.
-     * @param other the object to move.
-     */
-    DigitalSurfacePredicate ( DigitalSurfacePredicate && other );
-
-    /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     DigitalSurfacePredicate & operator= ( const DigitalSurfacePredicate & other );
-
-    /**
-     * Move assignment operator.
-     * @param other the object to move.
-     * @return a reference on 'this'.
-     */
-    DigitalSurfacePredicate & operator= ( DigitalSurfacePredicate && other );
 
     //-------------------- model of concepts::CPointPredicate -----------------------------
   public:

@@ -76,6 +76,7 @@ namespace DGtal
       using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
       using Quantity             = typename TetrahedronEstimator::Quantity;
       using UpdateOperation      = typename TetrahedronEstimator::UpdateOperation;
+      using HexagonState         = typename TetrahedronEstimator::HexagonState;
 
       class NotAbovePredicate
       {

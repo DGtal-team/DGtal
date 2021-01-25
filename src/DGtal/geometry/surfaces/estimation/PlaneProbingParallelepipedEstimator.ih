@@ -192,7 +192,6 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (Updat
         myIsInReverseState = !myIsInReverseState;
         myTetrahedronEstimator.translateQ(translation);
 
-        // TODO: use isSeparating as a stopping criterion instead of an assertion (digital surfaces)
         ASSERT(isSeparating());
     }
 }
@@ -322,7 +321,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Neighborhood::HexagonState
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::HexagonState
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::hexagonState () const
 {
     return myTetrahedronEstimator.hexagonState();

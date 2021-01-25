@@ -66,16 +66,6 @@ MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other )
 // ------------------------------------------------------------------------
 template < typename TSurface >
 inline
-DGtal::MaximalSegmentSliceEstimation<TSurface>::
-MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other )
-    : mySurface(other.mySurface), myH(other.myH)
-{
-    // TODO: invalidate other.mySurface?
-}
-
-// ------------------------------------------------------------------------
-template < typename TSurface >
-inline
 DGtal::MaximalSegmentSliceEstimation<TSurface>&
 DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegmentSliceEstimation & other )
 {
@@ -84,20 +74,6 @@ DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegment
         mySurface = other.mySurface;
         myH = other.myH;
     }
-
-    return *this;
-}
-
-// ------------------------------------------------------------------------
-template < typename TSurface >
-inline
-DGtal::MaximalSegmentSliceEstimation<TSurface>&
-DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( MaximalSegmentSliceEstimation && other )
-{
-    mySurface = other.mySurface;
-    // TODO: invalidate other.mySurface?
-    // other.mySurface = nullptr;
-    myH = other.myH;
 
     return *this;
 }

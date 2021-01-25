@@ -50,12 +50,6 @@ using SH3              = Shortcuts<KSpace>;
 using SHG3             = ShortcutsGeometry<KSpace>;
 using Surface          = SH3::DigitalSurface;
 using Surfel           = SH3::Surfel;
-using SurfacePredicate = DigitalSurfacePredicate<Surface>;
-using ProbingAlgorithm = PlaneProbingTetrahedronEstimator<SurfacePredicate, ProbingMode::R1>;
-// using ProbingAlgorithm = PlaneProbingParallelepipedEstimator<SurfacePredicate, ProbingMode::R1>;
-using Estimator        = PlaneProbingDigitalSurfaceLocalEstimator<Surface, ProbingAlgorithm>;
-using ProbingFactory   = Estimator::ProbingFactory;
-using Quantity         = Estimator::Quantity;
 using Point            = SH3::Point;
 using RealPoint        = SH3::RealPoint;
 using Integer          = Point::Coordinate;
@@ -94,17 +88,23 @@ int main( int argc, char** argv )
     viewer << SetMode3D(Surfel().className(), "Basic");
     viewer.show();
 
-    // Parameters
-    ProbingFactory probingFactory = [&bound](const Estimator::ProbingFrame& frame, const SurfacePredicate& surfacePredicate) {
-        // Tetrahedron-based estimator
-        return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, surfacePredicate);
+    //! [PlaneProbingDigitalSurfaceLocalEstimatorConstruction]
+    using SurfacePredicate = DigitalSurfacePredicate<Surface>;
+    using ProbingAlgorithm = PlaneProbingParallelepipedEstimator<SurfacePredicate, ProbingMode::R1>;
+    // The general form is PlaneProbingDigitalSurfaceLocalEstimator<SurfaceType, ProbingAlgorithm>
+    using Estimator        = PlaneProbingDigitalSurfaceLocalEstimator<Surface, ProbingAlgorithm>;
 
-        // Parallelepiped-based estimator
-        // return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, surfacePredicate, bound);
+    // Parameters of the estimator:
+    // - the probing factory
+    Estimator::ProbingFactory probingFactory = [&bound](const Estimator::ProbingFrame& frame, const SurfacePredicate& surfacePredicate) {
+        // If the base estimator is a PlaneProbingTetrahedronEstimator
+        // return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, surfacePredicate);
+
+        // For a PlaneProbingParallelepipedEstimator
+        return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, surfacePredicate, bound);
     };
 
-    bool verbose = true;
-
+    // - an optional hashmap of pre-estimations
     std::unordered_map<Surfel, RealPoint> preEstimations;
     // The user can provide the pre-estimation
     // auto preEstimationsVector = SHG3::getCTrivialNormalVectors(surface, surfels, params);
@@ -112,20 +112,30 @@ int main( int argc, char** argv )
     // {
     //     preEstimations[surfels[i]] = preEstimationsVector[i];
     // }
-    // Or it can implicitly be done inside the Estimator::eval function (using a MaximalSegmentSliceEstimation estimator)
+    // Or if it is not given, it is implicitly done inside the Estimator::eval function (using the MaximalSegmentSliceEstimation estimator)
+
+    // - a verbosity flag
+    bool verbose = true;
 
     Estimator estimator(surface, probingFactory, preEstimations, verbose);
     estimator.init(gridstep, surfels.begin(), surfels.end());
+    //! [PlaneProbingDigitalSurfaceLocalEstimatorConstruction]
 
-    std::vector<Quantity> quantities;
+    //! [PlaneProbingDigitalSurfaceLocalEstimatorUsage]
+    // Evaluation on a range of surfels
+    std::vector<Estimator::Quantity> quantities;
     estimator.eval(surfels.begin(), surfels.end(), std::back_inserter(quantities));
+
+    // Or on one surfel 's'
+    // Estimator::Quantity q = estiamtor.eval(s);
+    //! [PlaneProbingDigitalSurfaceLocalEstimatorUsage]
 
     Color fillColor = viewer.getFillColor();
 
     for (std::size_t i = 0; i < surfels.size(); ++i)
     {
         const Surfel& s = surfels[i];
-        const Quantity& n = quantities[i];
+        const Estimator::Quantity& n = quantities[i];
 
         RealPoint origin = centerSurfel(K, s);
 

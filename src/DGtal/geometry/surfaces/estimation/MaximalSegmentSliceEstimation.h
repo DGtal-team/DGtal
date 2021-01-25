@@ -117,24 +117,11 @@ namespace DGtal
     MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other );
 
     /**
-     * Move constructor.
-     * @param other the object to move.
-     */
-    MaximalSegmentSliceEstimation ( MaximalSegmentSliceEstimation && other );
-
-    /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     MaximalSegmentSliceEstimation & operator= ( const MaximalSegmentSliceEstimation & other );
-
-    /**
-     * Move assignment operator.
-     * @param other the object to move.
-     * @return a reference on 'this'.
-     */
-    MaximalSegmentSliceEstimation & operator= ( MaximalSegmentSliceEstimation && other );
 
     // ----------------- model of CSurfelLocalEstimator -----------------------
   public:

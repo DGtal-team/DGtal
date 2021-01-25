@@ -40,26 +40,38 @@ using namespace std;
 using namespace DGtal;
 
 using Integer = int;
-using Space = SpaceND<3, Integer>;
-using DigitalPlane = DigitalPlanePredicate<Space>;
-using Point = DigitalPlane::Vector;
-using Vector = DigitalPlane::Point;
-using Estimator = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;
+using Space   = SpaceND<3, Integer>;
+using Point   = Space::Vector;
+using Vector  = Space::Point;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main(void)
 {
+  //! [PlaneProbingTetrahedronEstimatorConstruction]
+  // The general form is ProbingEstimator<Predicate, mode> where
+  // - Predicate is a model of concepts::PointPredicate, see DigitalPlanePredicate or DigitalSurfacePredicate for instance,
+  // - mode specifies the candidate set, it is one of { ProbingMode::H, ProbingMode::R, ProbingMode::R1 }.
+  using DigitalPlane = DigitalPlanePredicate<Space>;
+  using Estimator    = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;
+
+  // We start by constructing the predicate, here a standard digital plane of normal (2, 6, 15)
   Vector n(2, 6, 15);
   DigitalPlane plane(n, 0, n.norm1());
+
+  // Instantiation: estimator(startingPoint, initialFrame, predicate) where
+  // (startingPoint, initialFrame) describes the initial tetrahedron.
   Point o(0, 0, 0);
   std::array<Point, 3> m = { Point(1, 0, 0), Point(0, 1, 0), Point(0, 0, 1) };
   Estimator estimator(o, m, plane);
+  //! [PlaneProbingTetrahedronEstimatorConstruction]
 
+  //! [PlaneProbingTetrahedronEstimatorUsage]
   int it = 0;
   while (estimator.advance().first) {
       it++;
 
+      // You can examine the current configuration of the H-neighborhood, using PlaneProbingTetrahedronEstimator::hexagonState
       auto state = estimator.hexagonState();
       if (state == Estimator::Neighborhood::HexagonState::Planar) {
           std::cout << "Planar" << std::endl;
@@ -71,10 +83,17 @@ int main(void)
           std::cout << "NonConvex" << std::endl;
       }
 
+      // Here, we display the current frame (the vectors m_k) and the current estimation
       std::clog << "it = " << it << " "
           << estimator.m(0) << " " << estimator.m(1) << " " << estimator.m(2) << " "
           << estimator.getNormal() << std::endl;
   }
+
+  // This loop can also be reduced to:
+  // Point n = estimator.compute()
+  //! [PlaneProbingTetrahedronEstimatorUsage]
+
+  ASSERT(estimator.getNormal() == n);
 
   return 0;
 }

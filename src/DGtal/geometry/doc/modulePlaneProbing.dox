@@ -51,9 +51,6 @@ of the local geometry of digital surfaces. Furthermore, they present
 theoretical guarantees, most notably they extract the exact normal
 vector of any digital plane.
 
-@image html plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing."
-@image latex plane-probing-illustration.png "Left: a digital plane segment. Right: Estimated normal vectors in blue using plane probing." width=8cm
-
 \subsection subsectPlaneProbing11 Tetrahedron-based probing methods (H, R, R1)
 
 The first kind of plane-probing algorithms is based on the deformation of a
@@ -114,7 +111,7 @@ inside the digital set).
 This approach is internally based on a generalization of the predicate \b
 InPlane that we call \b NotAbove that is able to tell whether a digital point
 \f$ x \f$ has a height that is smaller or greater than the one of \f$ q \f$.
-See @cite LMRJMIV2020 for more details.
+See @cite LMRJMIV2020 or <a href="https://perso.liris.cnrs.fr/tristan.roussillon/pres/2019GDMM.pdf">this presentation</a> (in French) for more details.
 
 \subsection subsectPlaneProbing13 Summary of the different variants
 
@@ -131,47 +128,29 @@ See @cite LMRJMIV2020 for more details.
 
 In DGtal, both categories of plane-probing estimators are implemented, see \ref
 PlaneProbingTetrahedronEstimator for the first category and \ref PlaneProbingParallelepipedEstimator for the second one.
-In the following, \e PlaneProbingEstimator will denote one of these two types.
+In the following, we explain the API for \ref PlaneProbingTetrahedronEstimator.
 
 The general way of instantiating a plane-probing estimator is the folllowing:
-\code
-using namespace DGtal;
-
-// To define the type of the estimator, we need the following types:
-// - Predicate: it is a model of concepts::PointPredicate, see DigitalPlanePredicate or DigitalSurfacePredicate,
-// - ProbingMode: it is one of { ProbingMode::H, ProbingMode::R, ProbingMode::R1 }.
-using ProbingEstimator = PlaneProbingEstimator<Predicate, ProbingMode>;
-
-// To instantiate it:
-// - (startingPoint, initialFrame) is a point and a triplet of vectors representing the initial tetrahedron,
-// - predicate describes the digital set you want to probe.
-ProbingEstimator estimator(startingPoint, initialFrame, predicate);
-\endcode
+@snippet geometry/surfaces/examplePlaneProbingTetrahedronEstimator.cpp PlaneProbingTetrahedronEstimatorConstruction
 
 And to use it:
-\code
-while (estimator.advance()) {}
-Point n = estimator.getNormal();
-auto basis = estimator.getBasis();
+@snippet geometry/surfaces/examplePlaneProbingTetrahedronEstimator.cpp PlaneProbingTetrahedronEstimatorUsage
 
-Point n = estimator.compute();
-\endcode
-
-The common services are as follows:
-- PlaneProbingEstimator::m returns the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ defining the tetrahedron.
-- PlaneProbingEstimator::q returns the fixed point \f$ q \f$.
-- PlaneProbingEstimator::getOrigin returns the base point of the frame \f$ q - (m_0 + m_1 + m_2) \f$.
-- PlaneProbingEstimator::vertices returns the three vertices \f$ (v_k = q - m_k)_{0 \leq k \leq 2} \f$.
-- PlaneProbingEstimator::hexagonState returns the current configuration of the H-neighborhood.
+The common services shared by plane-probing estimators are the following:
+- PlaneProbingTetrahedronEstimator::m returns the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ defining the tetrahedron.
+- PlaneProbingTetrahedronEstimator::q returns the fixed point \f$ q \f$.
+- PlaneProbingTetrahedronEstimator::getOrigin returns the base point of the frame \f$ q - (m_0 + m_1 + m_2) \f$.
+- PlaneProbingTetrahedronEstimator::vertices returns the three vertices \f$ (q - m_k)_{0 \leq k \leq 2} \f$.
+- PlaneProbingTetrahedronEstimator::hexagonState returns the current configuration of the H-neighborhood.
 
 Probing services:
-- PlaneProbingEstimator::advance does one step of the estimation.
-- PlaneProbingEstimator::compute repeatedly calls advance until a final configuration is found.
-- PlaneProbingEstimator::getBasis returns the two shortest edges of the base triangte.
-- PlaneProbingEstimator::isReduced tells whether the vectors returned by getBasis form a reduced basis or not.
-- PlaneProbingEstimator::getNormal returns the current normal vector.
+- PlaneProbingTetrahedronEstimator::advance does one step of the estimation.
+- PlaneProbingTetrahedronEstimator::compute repeatedly calls advance until a final configuration is found.
+- PlaneProbingTetrahedronEstimator::getBasis returns the two shortest edges of the base triangte.
+- PlaneProbingTetrahedronEstimator::isReduced tells whether the vectors returned by getBasis form a reduced basis or not.
+- PlaneProbingTetrahedronEstimator::getNormal returns the current normal vector.
 
-Specific to PlaneProbingParallelepipedEstimator:
+Services specific to \ref PlaneProbingParallelepipedEstimator :
 - PlaneProbingParallelepipedEstimator::getState returns the number of points that are inside the digital set according to \b InPlane.
 - PlaneProbingParallelepipedEstimator::isSeparating returns a boolean testing whether the current parallelpiped is separating or not.
 - PlaneProbingParallelepipedEstimator::isInReverseState returns a boolean saying whether the current parallelpiped is in a reverse state or not.
@@ -181,51 +160,35 @@ Specific to PlaneProbingParallelepipedEstimator:
 The PlaneProbingDigitalSurfaceLocalEstimator adapter can use any plane-probing estimator class to estimate normals on a digital surface. It is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
 
 The definition and instantiation is done as follows:
-\code
-// Definition
-using ProbingAlgorithm = PlaneProbingEstimator<Predicate, ProbingMode>;
-using Estimator        = PlaneProbingDigitalSurfaceLocalEstimator<Surface, ProbingAlgorithm>;
+@snippet geometry/surfaces/examplePlaneProbingSurfaceLocalEstimator.cpp PlaneProbingDigitalSurfaceLocalEstimatorConstruction
 
-// Instantiation
-Integer bound = 60; // The bound appearing in the NotAbove predicate
-
-// We define a factory function that returns a pointer to a plane-probing estimator for a given frame
-// It is called for every surfel
-Estimator::ProbingFactory probingFactory = [&bound](const Estimator::ProbingFrame& frame, const Predicate& predicate) {
-    return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, predicate); // for PlaneProbingTetrahedronEstimator
-    return new ProbingAlgorithm(frame.p, { frame.b1, frame.b2, frame.normal }, predicate, bound); // for PlaneProbingParallelepipedEstimator
-};
-
-Estimator estimator(  surface        // the digital surface
-                    , probingFactory // the factory function
-                    , preEstimations // a std::unordered_map of pre-estimations (empty by default), see the details below
-                    , verbose);
-
-// Usage: 's' is a surfel
-Estimator::Quantity quantity = estimator.eval(s);
-\endcode
+And to use it:
+@snippet geometry/surfaces/examplePlaneProbingSurfaceLocalEstimator.cpp PlaneProbingDigitalSurfaceLocalEstimatorUsage
 
 @note Due to its nature, PlaneProbingTetrahedronEstimator only returns an \e approximation of the normal vector on every surfel that is not a reentrant corner. If you want to have a correct estimation on every surfel, use a PlaneProbingParallelepipedEstimator as the base.
 
-Model of CSurfelLocalEstimator:
-- PlaneProbingDigitalSurfaceLocalEstimator::init(h)
-- PlaneProbingDigitalSurfaceLocalEstimator::h()
-- PlaneProbingDigitalSurfaceLocalEstimator::eval(it)
-- PlaneProbingDigitalSurfaceLocalEstimator::eval(itb, ite, out)
+The parameters that are specific to this estimator are the following:
+- the \e probing \e factory is a function that takes as input a \e frame (a base point and three vectors) and a reference to the predicate. Its goal is to construct a plane-probing estimator from these inputs.
+- \e pre-estimations. Due to its nature, a plane-probing algorithm only works in one octant determined by the initial frame. If this octant is not correct, then the estimated normal will also be incorrect. That is why we use so-called pre-estimations that must be normal vectors that are cheap to evaluate and are only used to select the correct octant. The user can provide such initial estimations, otherwise it is automatically done internally using a MaximalSegmentSliceEstimation estimator.
 
-Model of CDigitalSurfaceLocalEstimator:
-- PlaneProbingDigitalSurfaceLocalEstimator::attach(s)
-- PlaneProbingDigitalSurfaceLocalEstimator::setParams(probingFactory, preEstimations, verbose)
+Model of \ref concepts::CSurfelLocalEstimator :
+- PlaneProbingDigitalSurfaceLocalEstimator::init() initializes the estimator.
+- PlaneProbingDigitalSurfaceLocalEstimator::eval() runs the estimator either on a surfel or on a range of surfels.
+- PlaneProbingDigitalSurfaceLocalEstimator::h() returns the gridstep.
+
+Model of \ref concepts::CDigitalSurfaceLocalEstimator :
+- PlaneProbingDigitalSurfaceLocalEstimator::attach() attaches a digital surface to the estimator.
+- PlaneProbingDigitalSurfaceLocalEstimator::setParams() sets the parameters of the estimator.
 
 \section sectPlaneProbing3 Further notes
 
 \subsection subsectPlaneProbing31 Implementing your own candidate set
 
 To implement your own candidate set, you need to do the following steps:
-- Make a new class, that is a subclass of PlaneProbingNeighborhood,
-- Overload the PlaneProbingNeighborhood::hexagonState and if necessary PlaneProbingNeighborhood::getOperation,
-- Add a corresponding ProbingMode in PlaneProbingTetrahedronEstimator.h,
-- Add a selector function in PlaneProbingTetrahedronEstimator.ih.
+1. Make a new class, that is a subclass of PlaneProbingNeighborhood,
+2. Overload the PlaneProbingNeighborhood::hexagonState and if necessary PlaneProbingNeighborhood::getOperation,
+3. Add a corresponding \ref ProbingMode in PlaneProbingTetrahedronEstimator.h,
+4. Add a selector function in PlaneProbingTetrahedronEstimator.ih.
 
 */
 

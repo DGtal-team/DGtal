@@ -68,17 +68,6 @@ DigitalSurfacePredicate (const DigitalSurfacePredicate<TSurface>& other)
 //-----------------------------------------------------------------------------
 template <typename TSurface>
 inline
-DGtal::DigitalSurfacePredicate<TSurface>::
-DigitalSurfacePredicate (DigitalSurfacePredicate<TSurface>&& other)
-    : mySurface(other.mySurface)
-{
-    // TODO: invalidate other.mySurface?
-    buildPointSet();
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSurface>
-inline
 DGtal::DigitalSurfacePredicate<TSurface>&
 DGtal::DigitalSurfacePredicate<TSurface>::operator= (const DigitalSurfacePredicate<TSurface>& other)
 {
@@ -88,18 +77,6 @@ DGtal::DigitalSurfacePredicate<TSurface>::operator= (const DigitalSurfacePredica
         buildPointSet();
     }
 
-    return *this;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSurface>
-inline
-DGtal::DigitalSurfacePredicate<TSurface>&
-DGtal::DigitalSurfacePredicate<TSurface>::operator= (DigitalSurfacePredicate<TSurface>&& other)
-{
-    // TODO: invalidate other.mySurface?
-    mySurface = other.mySurface;
-    buildPointSet();
     return *this;
 }
 

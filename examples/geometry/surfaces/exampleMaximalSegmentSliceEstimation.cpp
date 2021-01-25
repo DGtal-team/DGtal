@@ -97,10 +97,6 @@ int main(int argc, char** argv)
         const Surfel& s = surfels[i];
         const Quantity& normal = quantities[i];
 
-        // TODO: check why sometimes the estimated normal is zero
-        if (normal == Point::zero)
-            continue;
-
         const RealPoint& n = normal.getNormalized();
         RealPoint origin = centerSurfel(K, s);
 
