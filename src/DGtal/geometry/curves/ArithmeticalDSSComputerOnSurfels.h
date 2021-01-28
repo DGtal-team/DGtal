@@ -406,9 +406,10 @@ namespace DGtal
     /**
      * @param aSurfel1 the first unsigned surfel.
      * @param aSurfel2 the second unsigned surfel.
-     * @return the common unsigned linel between the two surfels.
+     * @parap aLinel the common unsigned linel if it exists.
+     * @return 'true' if we found a common linel, 'false' otherwise.
      */
-    Cell commonLinel (Cell const& aSurfel1, Cell const& aSurfel2);
+    bool commonLinel (Cell const& aSurfel1, Cell const& aSurfel2, Cell& aLinel);
 
     /**
      * @param aPoint a digital 3D point.
@@ -425,9 +426,10 @@ namespace DGtal
     /**
      * @param aSCell a surfel.
      * @param aUpdatePrevious a boolean that indicates whether to update myPreviousSurfel or not.
+     * @param aIsFront a boolean indicating we want to update in the front or in the back direction.
      * @return the 2D point of aSCell that is not common to myPreviousSurfel
      */
-    Point getOtherPointFromSurfel (SCell const& aSCell, bool aUpdatePrevious);
+    Point getOtherPointFromSurfel (SCell const& aSCell, bool aIsFront, bool aUpdatePrevious);
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -453,10 +455,16 @@ namespace DGtal
     Point3 myProjectionNormal;
 
     /**
-     * We remember the previous surfel to compute the common linel.
+     * We remember the previous surfel in the front direction to compute the common linel.
      * Used in getOtherPointFromSurfel.
      */
-    SCell myPreviousSurfel;
+    SCell myPreviousSurfelFront;
+
+    /**
+     * We remember the previous surfel in the back direction to compute the common linel.
+     * Used in getOtherPointFromSurfel.
+     */
+    SCell myPreviousSurfelBack;
 
     /**
     * DSS representation
