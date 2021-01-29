@@ -72,6 +72,7 @@ namespace DGtal
     typedef typename Space::Point           Point;
     typedef typename Space::Vector          Vector;
     typedef typename Space::RealPoint       RealPoint;
+    typedef typename Space::RealVector      RealVector;
     typedef std::size_t                     Size;
     typedef std::size_t                     Index;
     typedef std::vector< Index >            IndexRange;
@@ -114,6 +115,8 @@ namespace DGtal
     /// Computes a surface mesh representation of the boundary of the
     /// convex hull of the given lattice points.
     ///
+    /// @note Since it builds a surface, this method is thus 3D.
+    ///
     /// @tparam TSurfaceMesh any model of surface that can be
     /// initialized with a range of input positions (cast as real
     /// coordinates) and a range of index ranges giving for each face
@@ -139,6 +142,8 @@ namespace DGtal
 
     /// Computes a polygonal surface representation of the boundary of the
     /// convex hull of the given lattice points.
+    ///
+    /// @note Since it builds a surface, this method is thus 3D.
     ///
     /// @param[out] polysurf the output polygonal surface that
     /// represents the boundary of the convex hull of the given range

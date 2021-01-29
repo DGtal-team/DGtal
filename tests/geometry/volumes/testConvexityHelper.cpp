@@ -34,6 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/volumes/ConvexityHelper.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -87,10 +88,15 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
 ///////////////////////////////////////////////////////////////////////////////
 
 SCENARIO( "ConvexityHelper< 3 > unit tests",
-          "[convexity_helper][lattice_polytope][3d]" )
+          "[convexity_helper][3d]" )
 {
   typedef ConvexityHelper< 3 >    Helper;
   typedef Helper::Point           Point;
+  typedef Helper::RealPoint       RealPoint;
+  typedef Helper::RealVector      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector > SMesh;
+  typedef PolygonalSurface< Point > LatticePolySurf;
+  typedef ConvexCellComplex< Point > CvxCellComplex;
   GIVEN( "Given an octahedron star { (0,0,0), (-2,0,0), (2,0,0), (0,-2,0), (0,2,0), (0,0,-2), (0,0,2) } " ) {
     std::vector<Point> V
       = { Point(0,0,0), Point(-2,0,0), Point(2,0,0), Point(0,-2,0), Point(0,2,0),
@@ -121,6 +127,50 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
       THEN( "The boundary of the polytope contains 18 points" ) {
         REQUIRE( P.countBoundary() == 18 );
+      }
+    }
+    WHEN( "Computing the boundary of its convex hull as a SurfaceMesh" ){
+      SMesh smesh;
+      bool ok = Helper::computeConvexHullBoundary( smesh, V, false );
+      CAPTURE( smesh );
+      THEN( "The surface mesh is valid and has 6 vertices, 12 edges and 8 faces" ) {
+        REQUIRE( ok );
+        REQUIRE( smesh.nbVertices() == 6 );
+        REQUIRE( smesh.nbEdges() == 12 );
+        REQUIRE( smesh.nbFaces() == 8 );
+      }
+      THEN( "The surface mesh has the topology of a sphere" ) {
+        REQUIRE( smesh.Euler() == 2 );
+        REQUIRE( smesh.computeManifoldBoundaryEdges().size() == 0 );
+        REQUIRE( smesh.computeNonManifoldEdges().size() == 0 );
+      }
+    }
+    WHEN( "Computing the boundary of its convex hull as a lattice PolygonalSurface" ){
+      LatticePolySurf lpsurf;
+      bool ok = Helper::computeConvexHullBoundary( lpsurf, V, false );
+      CAPTURE( lpsurf );
+      THEN( "The polygonal surface is valid and has 6 vertices, 12 edges and 8 faces" ) {
+        REQUIRE( ok );
+        REQUIRE( lpsurf.nbVertices() == 6 );
+        REQUIRE( lpsurf.nbEdges() == 12 );
+        REQUIRE( lpsurf.nbFaces() == 8 );
+        REQUIRE( lpsurf.nbArcs() == 24 );
+      }
+      THEN( "The polygonal surface has the topology of a sphere and no boundary" ) {
+        REQUIRE( lpsurf.Euler() == 2 );
+        REQUIRE( lpsurf.allBoundaryArcs().size() == 0 );
+        REQUIRE( lpsurf.allBoundaryVertices().size() == 0 );
+      }
+    }
+    WHEN( "Computing its convex hull as a ConvexCellComplex" ){
+      CvxCellComplex complex;
+      bool ok = Helper::computeConvexHullCellComplex( complex, V, false );
+      CAPTURE( complex );
+      THEN( "The convex cell complex is valid and has 6 vertices, 8 faces and 1 finite cell" ) {
+        REQUIRE( ok );
+        REQUIRE( complex.nbVertices() == 6 );
+        REQUIRE( complex.nbFaces() == 8 );
+        REQUIRE( complex.nbCells() == 1 );
       }
     }
   }

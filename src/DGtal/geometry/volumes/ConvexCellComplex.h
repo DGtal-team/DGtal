@@ -125,7 +125,7 @@ namespace DGtal
       true_face_intercept.clear();
     }
     
-    /// @return the number of maximal dimension cells
+    /// @return the number of finite cells with maximal dimension
     Size nbCells() const
     { return cell_faces.size(); }
     /// @return the number of cells of codimension 1

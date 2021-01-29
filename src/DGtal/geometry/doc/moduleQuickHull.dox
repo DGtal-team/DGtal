@@ -324,7 +324,7 @@ meaningfull after a convex hull computation:
 - QuickHull::v2p the map giving for each vertex index its index in the
   range of processed points.
 
-To sum up, the maps are as follows and gives indices in respective arrays:
+To sum up, the maps are as follows and give indices in respective arrays:
 
 \verbatim
               input2comp                        p2v
@@ -337,7 +337,7 @@ input points <------------ processed points <---------- convex hull vertices
 
 \endverbatim
 
-QuikHull:timings stores also the respective times taken by each step
+QuickHull:timings stores also the respective times taken by each step
 of the computation (see examples).
 
 */
