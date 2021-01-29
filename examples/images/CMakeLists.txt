@@ -1,22 +1,13 @@
-
-
-
 set(QGLVIEWER_EXAMPLES_SRC
    extract2DImagesFrom3DandVisu
   )
 
 if (  WITH_VISU3D_QGLVIEWER )
-
-  foreach(FILE ${QGLVIEWER_EXAMPLES_SRC}) 
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})   
+  foreach(FILE ${QGLVIEWER_EXAMPLES_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal)
   endforeach()
-
 endif()
-
-
-
 
 set(DGTAL_EXAMPLES_SRC
   exampleConstImageAdapter
@@ -31,12 +22,12 @@ set(DGTAL_EXAMPLES_SRC
 )
 
 if( WITH_HDF5 )
-  set(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC} 
+  set(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC}
   raw2HDF5
   exampleImageFactoryFromHDF5)
 endif()
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  )
+  target_link_libraries (${FILE} DGtal)
 endforeach()

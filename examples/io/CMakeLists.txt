@@ -15,13 +15,12 @@ if (  WITH_VISU3D_QGLVIEWER )
     meshFromOFF
     viewDualSurface
     )
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-      ${DGtalLibDependencies})   
+    target_link_libraries (${FILE} DGtal)
   endforeach()
-  
-add_subdirectory(viewers)
+
+  add_subdirectory(viewers)
 endif()
 
 add_subdirectory(boards)

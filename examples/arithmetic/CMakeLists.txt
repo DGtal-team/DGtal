@@ -8,20 +8,17 @@ set(DGTAL_EXAMPLES_SRC
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries ( ${FILE} DGtal 
-                          ${DGtalLibDependencies})
-
+  target_link_libraries ( ${FILE} DGtal)
 endforeach()
 
 if ( WITH_GMP )
-   set( DGTAL_EXAMPLES_GMP_SRC
-        convergents-biginteger
-        extended-euclid
-   )
+  set(DGTAL_EXAMPLES_GMP_SRC
+      convergents-biginteger
+      extended-euclid
+  )
   foreach(FILE ${DGTAL_EXAMPLES_GMP_SRC})
-   add_executable(${FILE} ${FILE})
-   target_link_libraries ( ${FILE} DGtal 
-                           ${DGtalLibDependencies})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal)
   endforeach()
 
 endif()
