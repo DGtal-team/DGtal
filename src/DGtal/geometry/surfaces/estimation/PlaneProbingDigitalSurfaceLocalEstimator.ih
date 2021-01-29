@@ -114,16 +114,7 @@ eval (SurfelConstIterator it)
     Surfel s = *it;
 
     // If no pre-estimation is given, we make one using maximal segments
-    RealPoint preEstimation;
-    if (myPreEstimations.count(s))
-    {
-        preEstimation = myPreEstimations[s];
-    }
-    else
-    {
-        preEstimation = myPreEstimationEstimator.eval(it);
-        myPreEstimations[s] = preEstimation; // cache the value for future calls
-    }
+    RealPoint preEstimation = getPreEstimation(s);
 
     // Compute an initial frame using the pre-estimation
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
@@ -160,8 +151,8 @@ eval (SurfelConstIterator it)
     else if (zeros.size() == 2)
     {
         // TODO: check
-        // normal = frame.normal;
-        normal = myProbingAlgorithm->compute();
+        normal = frame.normal;
+        // normal = myProbingAlgorithm->compute();
     }
 
     delete myProbingAlgorithm;
@@ -333,12 +324,23 @@ DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::is
 
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TProbingAlgorithm >
+template < typename SurfelConstIterator >
 typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::RealPoint
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
-getPreEstimation (Surfel const& s) const
+getPreEstimation (SurfelConstIterator it) const
 {
-    ASSERT(myPreEstimations.count(s));
-    return myPreEstimations.at(s);
+    Surfel const& s = *it;
+
+    if (myPreEstimations.count(s))
+    {
+        return myPreEstimations.at(s);
+    }
+    else
+    {
+        RealPoint preEstimation = myPreEstimationEstimator.eval(it);
+        myPreEstimations[s] = preEstimation; // cache the value for future calls
+        return preEstimation;
+    }
 }
 
 

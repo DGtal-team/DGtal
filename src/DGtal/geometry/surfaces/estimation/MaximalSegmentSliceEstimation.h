@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputerOnSurfels.h"
 #include "DGtal/topology/DigitalSurface2DSlice.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -87,9 +87,9 @@ namespace DGtal
   private:
       using Point2      = PointVector<2, Integer>;
       using RealPoint2  = PointVector<2, double>;
-      using Container   = std::vector<Point2>;
+      using Container   = std::deque<SCell>;
       using Iterator    = typename Container::const_iterator;
-      using DSSComputer = StandardDSS4Computer<Circulator<Iterator>>;
+      using DSSComputer = ArithmeticalDSSComputerOnSurfels<KSpace, Circulator<Iterator>, Integer, 4>;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -138,11 +138,11 @@ namespace DGtal
     /**
      * Estimates the quantity on a surfel.
      *
-     * @param it an iterator whose value type is Surfel.
+     * @param it an iterator whose value type is a Surfel.
      * @return the estimated quantity.
      */
     template < typename SurfelConstIterator >
-    Quantity eval (SurfelConstIterator it);
+    Quantity eval (SurfelConstIterator it) const;
 
     /**
      * Estimates the quantity on a range of surfels.
@@ -153,7 +153,7 @@ namespace DGtal
      * @return the modified output iterator.
      */
     template < typename SurfelConstIterator, typename OutputIterator >
-    OutputIterator eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out);
+    OutputIterator eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out) const;
 
     /**
      * @return the gridstep.
@@ -200,58 +200,15 @@ namespace DGtal
     KSpace const& space () const;
 
     /**
-     * Computes the center point of a given surfel.
-     *
-     * @param aSurfel a surfel.
-     * @return the center point.
-     */
-    RealPoint centerSurfel (Surfel const& aSurfel) const;
-
-    /**
-     * Returns the two points of the surfel 'aSurfel' located on the linel on direction (aOtherDir, +).
-     *
-     * @param aSurfel a surfel.
-     * @param aOtherDir the direction in which we want to look at.
-     * @return the two points on the linel in this direction.
-     */
-    std::pair<Point, Point> trackingPointsSurfel (Surfel const& aSurfel, Dimension const& aOtherDir) const;
-
-    /**
-     * Returns the 2D coordinates of a 3D point in the plane defined by two directions and an origin point.
-     *
-     * @param aDir1 a direction.
-     * @param aDir2 an other direction.
-     * @param aDirOrth the orthogonal direction.
-     * @param aOrigin a point on the plane.
-     * @param aPoint the point to project.
-     * @return the projected 2D point.
-     */
-    RealPoint2 projectInPlane (Dimension const& aDir1, Dimension const& aDir2,
-                               Dimension const& aDirOrth, Point const& aOrigin,
-                               Point const& aPoint) const;
-
-    /**
-     * Computes the set of points contained on the slice starting from surfel aSurfel
-     * in direction aSliceDir, projected on the plane of the surfel.
-     *
-     * @param aSurfel a surfel.
-     * @param aSliceDir the direction of the slice.
-     * @param aOtherDir the other direction.
-     * @param aOrthDir the direction orthogonal to aSliceDir and aOtherDir.
-     * @return the set of 2D digital points.
-     */
-    Container slicePoints (Surfel const& aSurfel,
-                           Dimension const& aSliceDir,
-                           Dimension const& aOtherDir,
-                           Dimension const& aOrthDir) const;
-
-    /**
      * Computes the extremal points of a set of 2D digital points using maximal segments.
      *
-     * @param aPoints a set of 2D digital points.
+     * @param aSlice a slice of the digital surface.
+     * @param aProjectDir1 the first direction of projection.
+     * @param aProjectDir2 the second direction of projection.
      * @return the two extremities of the maximal segment on the left and on the right.
      */
-    std::pair<Point2, Point2> getExtremalPoints (Container const& aPoints) const;
+    std::pair<Point2, Point2> getExtremalPoints (SurfaceSlice const& aSlice,
+                                                 Dimension const& aProjectDir1, Dimension const& aProjectDir2) const;
 
     /**
      * @param aSurfel a surfel.

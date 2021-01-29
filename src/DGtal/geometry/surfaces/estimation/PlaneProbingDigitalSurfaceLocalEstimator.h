@@ -268,7 +268,8 @@ namespace DGtal
      * @param aSurfel a surfel.
      * @return the pre-estimation vector on a given normal.
      */
-    RealPoint getPreEstimation (Surfel const& s) const;
+    template < typename SurfelConstIterator >
+    RealPoint getPreEstimation (SurfelConstIterator it) const;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -281,7 +282,7 @@ namespace DGtal
     Predicate myPredicate; /**< The InPlane predicate. */
     PreEstimation myPreEstimationEstimator; /**< An estimator to compute a pre-estimation if is not given. */
     ProbingFactory myProbingFactory; /**< A factory function to build plane-probing estimators from a frame, used in eval. */
-    std::unordered_map<Surfel, RealPoint> myPreEstimations; /**< A hashmap of pre-estimation vectors */
+    mutable std::unordered_map<Surfel, RealPoint> myPreEstimations; /**< A hashmap of pre-estimation vectors */
     bool myVerbose; /**< Verbosity flag. */
 
     // ------------------------- Hidden services ------------------------------
