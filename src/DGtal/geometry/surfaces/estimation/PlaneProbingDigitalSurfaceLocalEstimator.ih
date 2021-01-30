@@ -111,12 +111,11 @@ eval (SurfelConstIterator it)
     ASSERT(mySurface != nullptr);
     ASSERT(myProbingFactory);
 
-    Surfel s = *it;
-
     // If no pre-estimation is given, we make one using maximal segments
-    RealPoint preEstimation = getPreEstimation(s);
+    RealPoint preEstimation = getPreEstimation(it);
 
     // Compute an initial frame using the pre-estimation
+    Surfel s = *it;
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
     ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
 
@@ -144,15 +143,14 @@ eval (SurfelConstIterator it)
     }
     else if (zeros.size() == 1)
     {
+        // TODO: check this section
         int index = zeros[0];
-        myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
-        normal = getNormalOneFlatDirection(index);
+        normal = myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
+        // normal = getNormalOneFlatDirection(index);
     }
     else if (zeros.size() == 2)
     {
-        // TODO: check
         normal = frame.normal;
-        // normal = myProbingAlgorithm->compute();
     }
 
     delete myProbingAlgorithm;
@@ -256,7 +254,7 @@ probingFrameFromSurfel (Surfel const& aSurfel) const
     }
 
     Point myNormal = myB1.crossProduct(myB2);
-    assert(myNormal.dot(n_interior) < 0);
+    ASSERT(myNormal.dot(n_interior) < 0);
 
     return { myP, myB1, myB2, myNormal };
 }

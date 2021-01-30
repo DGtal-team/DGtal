@@ -240,7 +240,8 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<
     {
         UpdateOperation op = myNeighborhood->closestCandidate();
         update(op);
-        assert(isValid());
+        // TODO: check whether it should/can be done "after" the update in the parallelepiped estimator
+        // ASSERT(isValid());
         return { true, op };
     }
 

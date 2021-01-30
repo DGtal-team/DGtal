@@ -183,7 +183,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState (
 
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
-void
+bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (UpdateOperation const& aOp)
 {
     if (getState() < 4)
@@ -191,9 +191,16 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (Updat
         Point translation = aOp.coeffs[1] * m(aOp.sigma[1]) + aOp.coeffs[2] * m(aOp.sigma[2]);
         myIsInReverseState = !myIsInReverseState;
         myTetrahedronEstimator.translateQ(translation);
-
-        ASSERT(isSeparating());
     }
+
+    // We also test for separability and stop if the current parallelepiped is not separable:
+    // for analytical digital planes it is impossible but it can happen on digital surfaces.
+    if (! isSeparating())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 // ------------------------------------------------------------------------
@@ -277,13 +284,26 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
             for (const auto& iterOp: operations)
             {
                 myTetrahedronEstimator.applyOperation(iterOp);
-                translateIf(iterOp);
+                if (! translateIf(iterOp))
+                {
+                    return false;
+                }
             }
         }
         else
         {
-            translateIf(op);
+            if (! translateIf(op))
+            {
+                return false;
+            }
         }
+    }
+
+    // TODO: isValid should probably be done after the advance not inside
+    // ASSERT(isValid());
+    if (! isValid())
+    {
+        return false;
     }
 
     return flag;

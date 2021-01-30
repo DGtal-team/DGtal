@@ -132,9 +132,10 @@ int main( int argc, char** argv )
 
     Color fillColor = viewer.getFillColor();
 
-    for (std::size_t i = 0; i < surfels.size(); ++i)
+    int i = 0;
+    for (auto it = surfels.begin(); it != surfels.end(); ++it, ++i)
     {
-        const Surfel& s = surfels[i];
+        const Surfel& s = *it;
         const Estimator::Quantity& n = quantities[i];
 
         RealPoint origin = centerSurfel(K, s);
@@ -143,7 +144,7 @@ int main( int argc, char** argv )
         viewer << s;
 
         // Pre-estimation in red
-        RealPoint const& preEstimation = estimator.getPreEstimation(s);
+        RealPoint const& preEstimation = estimator.getPreEstimation(it);
         viewer.setLineColor(Color::Red);
         viewer.addLine(origin, origin + 1.5 * preEstimation.getNormalized(), 0.3);
 

@@ -305,8 +305,9 @@ namespace DGtal
      * Translates (reverses) the current parallelepiped if needed (depending on the state).
      *
      * @param aOp the operation to apply.
+     * @return 'true' if the parallelepiped is still separating, 'false' otherwise.
      */
-    void translateIf (UpdateOperation const& aOp);
+    bool translateIf (UpdateOperation const& aOp);
   }; // end of class PlaneProbingParallelepipedEstimator
 
 

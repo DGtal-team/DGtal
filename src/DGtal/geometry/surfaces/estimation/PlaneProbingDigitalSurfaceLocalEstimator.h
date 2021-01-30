@@ -354,7 +354,7 @@ namespace DGtal
         }
         else
         {
-            assert(aIndex == 2);
+            ASSERT(aIndex == 2);
             return { ProbingRay({ 1, 0, 2 }), ProbingRay({ 0, 1, 2 }) };
         }
     }
