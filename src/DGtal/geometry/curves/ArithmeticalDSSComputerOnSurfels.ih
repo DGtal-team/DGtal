@@ -97,8 +97,6 @@ init(const ConstIterator& it)
   auto initialPoints = projectSurfel(s);
   myPreviousSurfelFront = s;
   myPreviousSurfelBack = s;
-  // std::cout << initialPoints.first << std::endl;
-  // std::cout << initialPoints.second << std::endl;
 
   myDSS = DSS(initialPoints.first);
   ASSERT(myDSS.isExtendableFront(initialPoints.second));
@@ -204,16 +202,13 @@ bool
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::extendFront()
 {
     Point p = getOtherPointFromSurfel(*myEnd, true, true);
-    // std::cout << "extendFront: p=" << p << std::endl;
   if (myDSS.extendFront(p))
     {
-        // std::cout << "extending" << std::endl;
       ++myEnd;
       return true;
     }
   else
   {
-      // std::cout << "end" << std::endl;
     return false;
   }
 }
@@ -227,16 +222,13 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::e
   ConstIterator it = myBegin;
   --it;
   Point p = getOtherPointFromSurfel(*it, false, true);
-    // std::cout << "extendBack: p=" << p << std::endl;
   if (myDSS.extendBack(p))
     {
-        // std::cout << "extending" << std::endl;
       myBegin = it;
       return true;
     }
   else
   {
-      // std::cout << "end" << std::endl;
     return false;
   }
 }
@@ -540,11 +532,10 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::g
 
     // Find the common unsigned linel between aSCell and myPreviousSurfel
     Cell linel;
-    // std::cout << "common between " << myKSpace.sKCoords(aSCell) << " and " << myKSpace.sKCoords(previousSurfel) << std::endl;
-    if (! commonLinel(myKSpace.unsigns(aSCell), myKSpace.unsigns(previousSurfel), linel)) {
+    if (! commonLinel(myKSpace.unsigns(aSCell), myKSpace.unsigns(previousSurfel), linel))
+    {
         // TODO: check and clean it up
         // No update is possible, we return any point
-        // ASSERT(false);
         return p1;
     }
 

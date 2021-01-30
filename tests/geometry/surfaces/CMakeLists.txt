@@ -1,4 +1,5 @@
 set(TESTS_SRC
+  testArithmeticalDSSComputerOnSurfels
   testChordGenericStandardPlaneComputer
   testDigitalPlanePredicate
   testPlaneProbingTetrahedronEstimator
