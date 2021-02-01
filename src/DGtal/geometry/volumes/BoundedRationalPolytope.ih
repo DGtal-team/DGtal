@@ -138,7 +138,7 @@ init( Integer denom,
   if ( check_duplicate_constraints )
     {
       // Add other halfplanes
-      for ( auto it = itB; itB != itE; ++it )
+      for ( auto it = itB; it != itE; ++it )
         {
           // Checks that is not inside.
           const auto a = it->N;
