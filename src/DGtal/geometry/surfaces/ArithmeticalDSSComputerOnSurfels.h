@@ -124,7 +124,6 @@ namespace DGtal
      * Type of coordinate
      */
     typedef typename Point::Coordinate Coordinate;
-    // typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate;
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
@@ -167,13 +166,6 @@ namespace DGtal
      * @param aKSpace a khalimsky space
      */
     ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2);
-
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2D points
-     * @see init
-     */
-    ArithmeticalDSSComputerOnSurfels(const ConstIterator& it);
 
     /**
      * Initialisation.
@@ -400,6 +392,11 @@ namespace DGtal
      */
     bool isInDSS(const ConstIterator & it) const;
 
+    /**
+     * @param aSCell a surfel.
+     * @return the pair of 2D points projected on the plane defined by myProjection1, myProjection2
+     */
+    std::pair<Point, Point> projectSurfel(SCell const& aSCell) const;
 
     // ------------------------- Hidden services ------------------------------
   private:
@@ -419,12 +416,6 @@ namespace DGtal
 
     /**
      * @param aSCell a surfel.
-     * @return the pair of 2D points projected on the plane defined by myProjection1, myProjection2
-     */
-    std::pair<Point, Point> projectSurfel(SCell const& aSCell) const;
-
-    /**
-     * @param aSCell a surfel.
      * @param aUpdatePrevious a boolean that indicates whether to update myPreviousSurfel or not.
      * @param aIsFront a boolean indicating we want to update in the front or in the back direction.
      * @return the 2D point of aSCell that is not common to myPreviousSurfel
@@ -437,7 +428,17 @@ namespace DGtal
     /**
      * Khalimsky space
      */
-    const KSpace& myKSpace;
+    const KSpace* myKSpace;
+
+    /**
+     * The first projection dimension.
+     */
+    Dimension myDim1;
+
+    /**
+     * The second projection dimension.
+     */
+    Dimension myDim2;
 
     /**
      * The first projection direction.

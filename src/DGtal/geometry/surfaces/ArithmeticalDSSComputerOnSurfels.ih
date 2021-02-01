@@ -51,7 +51,7 @@ template <typename TKSpace, typename TIterator, typename TInteger, unsigned shor
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputerOnSurfels()
-  : myDSS( Point(0,0) ), myBegin(), myEnd()
+  : myKSpace(nullptr), myDSS( Point(0,0) ), myBegin(), myEnd()
 {
 }
 
@@ -60,14 +60,14 @@ template <typename TKSpace, typename TIterator, typename TInteger, unsigned shor
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2)
-  : myKSpace(aKSpace), myDSS( Point(0,0) ), myBegin(), myEnd()
+  : myKSpace(&aKSpace), myDim1(aDim1), myDim2(aDim2), myDSS( Point(0,0) ), myBegin(), myEnd()
 {
     // Initialize projection vectors
     myProjection1 = Point3::zero;
     myProjection2 = Point3::zero;
 
-    myProjection1[aDim1] = 1;
-    myProjection2[aDim2] = 1;
+    myProjection1[myDim1] = 1;
+    myProjection2[myDim2] = 1;
 
     myProjectionNormal = myProjection1.crossProduct(myProjection2);
 }
@@ -76,19 +76,11 @@ ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimensi
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
-ArithmeticalDSSComputerOnSurfels(const ConstIterator& it)
-  : myDSS( *it ), myBegin(it), myEnd(it)
-{
-  ++myEnd;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
-inline
 void DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
 init(const ConstIterator& it)
 {
+  ASSERT(myKSpace != nullptr);
+
   myBegin = it;
   myEnd = it;
   ++myEnd;
@@ -108,7 +100,9 @@ template <typename TKSpace, typename TIterator, typename TInteger, unsigned shor
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputerOnSurfels ( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency> & other )
-  : myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
+  : myKSpace(other.myKSpace), myDim1(other.myDim1), myDim2(other.myDim2),
+    myProjection1(other.myProjection1), myProjection2(other.myProjection2),
+    myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
 {
 }
 
@@ -121,6 +115,11 @@ operator=( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adj
 {
   if ( this != &other )
     {
+      myKSpace = other.myKSpace;
+      myDim1 = other.myDim1;
+      myDim2 = other.myDim2;
+      myProjection1 = other.myProjection1;
+      myProjection2 = other.myProjection2;
       myDSS = other.myDSS;
       myBegin = other.myBegin;
       myEnd = other.myEnd;
@@ -135,7 +134,7 @@ typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adja
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>
 ::getReverse() const
 {
-  return Reverse();
+  return Reverse(*myKSpace, myDim1, myDim2);
 }
 
 //-----------------------------------------------------------------------------
@@ -145,7 +144,7 @@ typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adja
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>
 ::getSelf() const
 {
-  return Self();
+  return Self(*myKSpace, myDim1, myDim2);
 }
 
 //-----------------------------------------------------------------------------
@@ -483,24 +482,27 @@ inline
 bool
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::commonLinel (Cell const& aSurfel1,
                                                                                             Cell const& aSurfel2,
-                                                                                            Cell& aLinel) {
-    typename KSpace::DirIterator q1_1 = myKSpace.uDirs(aSurfel1), q1_2 = q1_1;
+                                                                                            Cell& aLinel)
+{
+    ASSERT(myKSpace != nullptr);
+
+    typename KSpace::DirIterator q1_1 = myKSpace->uDirs(aSurfel1), q1_2 = q1_1;
     ++q1_2;
-    typename KSpace::DirIterator q2_1 = myKSpace.uDirs(aSurfel2), q2_2 = q2_1;
+    typename KSpace::DirIterator q2_1 = myKSpace->uDirs(aSurfel2), q2_2 = q2_1;
     ++q2_2;
 
     std::set<Cell> linels1 = {
-        myKSpace.uIncident(aSurfel1, *q1_1, true),
-        myKSpace.uIncident(aSurfel1, *q1_1, false),
-        myKSpace.uIncident(aSurfel1, *q1_2, true),
-        myKSpace.uIncident(aSurfel1, *q1_2, false),
+        myKSpace->uIncident(aSurfel1, *q1_1, true),
+        myKSpace->uIncident(aSurfel1, *q1_1, false),
+        myKSpace->uIncident(aSurfel1, *q1_2, true),
+        myKSpace->uIncident(aSurfel1, *q1_2, false),
     };
 
     std::set<Cell> linels2 = {
-        myKSpace.uIncident(aSurfel2, *q2_1, true),
-        myKSpace.uIncident(aSurfel2, *q2_1, false),
-        myKSpace.uIncident(aSurfel2, *q2_2, true),
-        myKSpace.uIncident(aSurfel2, *q2_2, false),
+        myKSpace->uIncident(aSurfel2, *q2_1, true),
+        myKSpace->uIncident(aSurfel2, *q2_1, false),
+        myKSpace->uIncident(aSurfel2, *q2_2, true),
+        myKSpace->uIncident(aSurfel2, *q2_2, false),
     };
 
     std::vector<Cell> inter;
@@ -525,6 +527,8 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::g
                                                                                                        bool aIsFront,
                                                                                                        bool aUpdatePrevious)
 {
+    ASSERT(myKSpace != nullptr);
+
     Point p1, p2;
     std::tie(p1, p2) = projectSurfel(aSCell);
 
@@ -532,7 +536,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::g
 
     // Find the common unsigned linel between aSCell and myPreviousSurfel
     Cell linel;
-    if (! commonLinel(myKSpace.unsigns(aSCell), myKSpace.unsigns(previousSurfel), linel))
+    if (! commonLinel(myKSpace->unsigns(aSCell), myKSpace->unsigns(previousSurfel), linel))
     {
         // TODO: check and clean it up
         // No update is possible, we return any point
@@ -541,9 +545,9 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::g
 
     // For the next point, choose the point that is not common to the linel
     Point other;
-    typename KSpace::DirIterator q_linel = myKSpace.uDirs(linel);
-    Point linel1 = projectInPlane(myKSpace.uCoords(myKSpace.uIncident(linel, *q_linel, true)));
-    Point linel2 = projectInPlane(myKSpace.uCoords(myKSpace.uIncident(linel, *q_linel, false)));
+    typename KSpace::DirIterator q_linel = myKSpace->uDirs(linel);
+    Point linel1 = projectInPlane(myKSpace->uCoords(myKSpace->uIncident(linel, *q_linel, true)));
+    Point linel2 = projectInPlane(myKSpace->uCoords(myKSpace->uIncident(linel, *q_linel, false)));
 
     if (p1 == linel1)
     {
@@ -597,18 +601,20 @@ std::pair<typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TIn
           typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::Point>
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::projectSurfel(SCell const& aSCell) const
 {
-    typename KSpace::DirIterator q1 = myKSpace.sDirs(aSCell), q2 = q1;
+    ASSERT(myKSpace != nullptr);
+
+    typename KSpace::DirIterator q1 = myKSpace->sDirs(aSCell), q2 = q1;
     ++q2;
 
     // We pick 2 linels of the surfel
-    SCell linel1 = myKSpace.sIncident(aSCell, *q1, true), linel2 = myKSpace.sIncident(aSCell, *q1, false);
-    myKSpace.sDirectIncident(aSCell, *q1);
+    SCell linel1 = myKSpace->sIncident(aSCell, *q1, true), linel2 = myKSpace->sIncident(aSCell, *q1, false);
+    myKSpace->sDirectIncident(aSCell, *q1);
 
     // 4 points of the surfel
-    Point3 p1_1 = myKSpace.sCoords(myKSpace.sIncident(linel1, *q2, false)),
-           p1_2 = myKSpace.sCoords(myKSpace.sIncident(linel1, *q2, true)),
-           p2_1 = myKSpace.sCoords(myKSpace.sIncident(linel2, *q2, false)),
-           p2_2 = myKSpace.sCoords(myKSpace.sIncident(linel2, *q2, true));
+    Point3 p1_1 = myKSpace->sCoords(myKSpace->sIncident(linel1, *q2, false)),
+           p1_2 = myKSpace->sCoords(myKSpace->sIncident(linel1, *q2, true)),
+           p2_1 = myKSpace->sCoords(myKSpace->sIncident(linel2, *q2, false)),
+           p2_2 = myKSpace->sCoords(myKSpace->sIncident(linel2, *q2, true));
 
     std::set<Point> points;
     points.insert(projectInPlane(p1_1));
