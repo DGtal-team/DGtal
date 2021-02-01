@@ -403,7 +403,7 @@ template <typename TPredicate, DGtal::ProbingMode mode>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const PlaneProbingTetrahedronEstimator<TPredicate, mode> & object )
+                    const PlaneProbingTetrahedronEstimator<TPredicate, mode> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -313,9 +313,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingTetrahedronEstimator' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPredicate, ProbingMode mode>
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingTetrahedronEstimator<T> & object );
+  operator<< ( std::ostream & out, const PlaneProbingTetrahedronEstimator<TPredicate, mode> & object );
 } // namespace DGtal
 
 
