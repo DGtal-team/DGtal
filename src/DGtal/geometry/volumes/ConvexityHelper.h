@@ -47,6 +47,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+#include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
 #include "DGtal/geometry/volumes/ConvexCellComplex.h"
 #include "DGtal/shapes/PolygonalSurface.h"
 
@@ -67,20 +68,21 @@ namespace DGtal
     BOOST_STATIC_ASSERT( dim > 1 );
     static const Dimension dimension = dim;
 
-    typedef TInteger                        Integer;
-    typedef SpaceND< dim, Integer >         Space;
-    typedef typename Space::Point           Point;
-    typedef typename Space::Vector          Vector;
-    typedef typename Space::RealPoint       RealPoint;
-    typedef typename Space::RealVector      RealVector;
-    typedef std::size_t                     Size;
-    typedef std::size_t                     Index;
-    typedef std::vector< Index >            IndexRange;
-    typedef ConvexHullIntegralKernel< dim > LatticeConvexHullKernel;
-    typedef ConvexHullRationalKernel< dim > RealConvexHullKernel;
-    typedef DelaunayIntegralKernel< dim >   LatticeDelaunayKernel;
-    typedef DelaunayRationalKernel< dim >   RealDelaunayKernel;
-    typedef BoundedLatticePolytope< Space > LatticePolytope;
+    typedef TInteger                         Integer;
+    typedef SpaceND< dim, Integer >          Space;
+    typedef typename Space::Point            Point;
+    typedef typename Space::Vector           Vector;
+    typedef typename Space::RealPoint        RealPoint;
+    typedef typename Space::RealVector       RealVector;
+    typedef std::size_t                      Size;
+    typedef std::size_t                      Index;
+    typedef std::vector< Index >             IndexRange;
+    typedef ConvexHullIntegralKernel< dim >  LatticeConvexHullKernel;
+    typedef ConvexHullRationalKernel< dim >  RealConvexHullKernel;
+    typedef DelaunayIntegralKernel< dim >    LatticeDelaunayKernel;
+    typedef DelaunayRationalKernel< dim >    RealDelaunayKernel;
+    typedef BoundedLatticePolytope< Space >  LatticePolytope;
+    typedef BoundedRationalPolytope< Space > RationalPolytope;
 
     // ----------------- lattice convex hull services -------------------------
   public:
@@ -161,7 +163,7 @@ namespace DGtal
     bool
     computeConvexHullBoundary( PolygonalSurface< Point >&  polysurf,
                                const std::vector< Point >& input_points,
-                               bool remove_duplicates );
+                               bool remove_duplicates = true );
 
     /// Computes a cell complex representing the convex hull of the
     /// given lattice points, formed of one maximal dimension cell and
@@ -213,6 +215,41 @@ namespace DGtal
                                 const std::vector< Point >& input_points,
                                 bool remove_duplicates = true );
     
+    /// @}
+
+    // ----------------- rational convex hull services -------------------------
+  public:
+    /// @name Rational convex hull services
+    /// @{
+    
+    /// Computes and returns a halfspace representation of the tightiest rational
+    /// polytope enclosing all the given input real points.
+    ///
+    /// @param[in] input_points the range of input real points.
+    ///
+    /// @param[in] denominator the denominator used in all rational
+    /// approximations of points with real value coordinates, the
+    /// higher the more precise.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful for checking full convexity (see
+    /// moduleDigitalConvexity).
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if the given range of points was not full
+    /// dimensional.
+    static
+    RationalPolytope
+    computeRationalPolytope( const std::vector< RealPoint >& input_points,
+                             Integer denominator, 
+                             bool remove_duplicates = true,
+                             bool make_minkowski_summable = false );
+
     /// @}
     
     // ----------------- utility services -------------------------

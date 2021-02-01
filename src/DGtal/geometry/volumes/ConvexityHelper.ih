@@ -288,7 +288,118 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
   del.getVertexPositions( cell_complex.vertex_position );
   return true;
 }
-    
+
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger >
+typename DGtal::ConvexityHelper< dim, TInteger>::RationalPolytope
+DGtal::ConvexityHelper< dim, TInteger>::computeRationalPolytope
+( const std::vector< RealPoint >& input_points,
+  Integer denominator, 
+  bool remove_duplicates,
+  bool make_minkowski_summable )
+{
+  if ( denominator < 1 )
+    trace.error() << "Invalid denominator " << denominator
+                  << ". Should be greater or equal to 1." << std::endl;
+  typedef typename RationalPolytope::Domain     Domain;
+  typedef typename RationalPolytope::HalfSpace  PolytopeHalfSpace;
+  typedef QuickHull< RealConvexHullKernel >     ConvexHull;
+  typedef typename ConvexHull::HalfSpace        ConvexHullHalfSpace;
+  typedef typename ConvexHull::Ridge            Ridge;
+  if ( input_points.empty() ) return RationalPolytope();
+  // Compute convex hull
+  ConvexHull hull( denominator );
+  hull.setInput( input_points, remove_duplicates );
+  const auto target = ( make_minkowski_summable && dimension == 3 )
+    ? ConvexHull::Status::VerticesCompleted
+    : ConvexHull::Status::FacetsCompleted;
+  bool ok = hull.computeConvexHull( target );
+  if ( ! ok ) return RationalPolytope();
+  // Compute domain (as a lattice domain)
+  auto l = hull.points[ 0 ];
+  auto u = hull.points[ 0 ];
+  for ( const auto& p : hull.points ) {
+    l = l.inf( p );
+    u = u.sup( p );
+  }
+  Domain domain( l, u );
+  trace.info() << "Domain l=" << l << " u=" << u << std::endl;
+  // Initialize polytope
+  std::vector< ConvexHullHalfSpace > HS;
+  std::vector< PolytopeHalfSpace >   PHS;
+  hull.getFacetHalfSpaces( HS );
+  PHS.reserve( HS.size() );
+  for ( auto& H : HS ) {
+    Vector  N;
+    Integer nu;
+    for ( Dimension i = 0; i < dim; ++i )
+      N[ i ] = (Integer) H.internalNormal()[ i ];
+    nu = (Integer) H.internalIntercept();
+    PHS.emplace_back( N, nu );
+  }
+  if ( make_minkowski_summable && dimension >= 4 )
+    trace.warning() << "[ConvexityHelper::computeRationalPolytope]"
+                    << " Not implemented starting from dimension 4."
+                    << std::endl;
+  if ( make_minkowski_summable && dimension == 3 )
+    {
+      // Compute ridge vertices to add edge constraints.
+      std::vector< Point > positions;
+      std::vector< IndexRange > facet_vertices; 
+      std::vector< IndexRange > ridge_vertices; 
+      std::map< Ridge, Index > ridge2index;
+      hull.getVertexPositions( positions );
+      computeFacetAndRidgeVertices( hull, facet_vertices,
+                                    ridge2index, ridge_vertices );
+      for ( auto p : ridge2index ) {
+        const auto   r = p.first;
+        // Copy by value since PHS may be reallocated  during the iteration.
+        const auto   U = PHS[ r.first  ].N; // normal of facet 1
+        const auto   V = PHS[ r.second ].N; // normal of facet 2
+        const auto&  S = ridge_vertices[ p.second ]; // vertices along facets 1, 2
+        ASSERT( S.size() == 2 && "Invalid ridge" );
+        const auto& P0 = positions[ S[ 0 ] ];
+        const auto& P1 = positions[ S[ 1 ] ];
+        auto         E = P1 - P0; // edge 1, 2
+        const auto UxV =
+          detail::BoundedRationalPolytopeSpecializer< dimension, Integer>
+          ::crossProduct( U, V ); // parallel to E
+        ASSERT( E.dot( UxV ) != 0 && "Invalid E / UxV" );
+        if ( E.dot( UxV ) <= 0 ) E = -E; // force correct orientation
+        const auto  E1 = 
+          detail::BoundedRationalPolytopeSpecializer< dimension, Integer>
+          ::crossProduct( U, E ); // edge on facet 1
+        const auto  E2 = 
+          detail::BoundedRationalPolytopeSpecializer< dimension, Integer>
+          ::crossProduct( E, V ); // edge on facet 2
+        ASSERT( E1.dot( U ) == 0 && "Invalid E1 / U" );
+        ASSERT( E1.dot( V ) <  0 && "Invalid E1 / V" );
+        ASSERT( E2.dot( V ) == 0 && "Invalid E1 / V" );
+        ASSERT( E2.dot( U ) <  0 && "Invalid E1 / U" );
+        for ( Dimension k = 0; k < dimension; ++k ) {
+          const auto W = U[ k ] * V - V[ k ] * U;
+          const auto nn1 = W.dot( E1 ); 
+          const auto nn2 = W.dot( E2 ); 
+          if ( nn1 > 0 && nn2 > 0 ) {
+            PHS.emplace_back( -W, -W.dot( P0 ) );
+            ASSERT( E1.dot(-W ) < 0 && "Invalid E1 /-W" );
+            ASSERT( E2.dot(-W ) < 0 && "Invalid E2 /-W" );
+          }
+          else if ( nn1 < 0 && nn2 < 0 ) {
+            PHS.emplace_back( W, W.dot( P0 ) );
+            ASSERT( E1.dot( W ) < 0 && "Invalid E1 / W" );
+            ASSERT( E2.dot( W ) < 0 && "Invalid E2 / W" );
+          }
+        }
+      }
+    }
+  return RationalPolytope( denominator, domain, PHS.cbegin(), PHS.cend(),
+                           make_minkowski_summable && ( dimension <= 3 ), true );
+}
+
+
+
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger >
 template < typename QHull >
