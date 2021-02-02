@@ -15,6 +15,8 @@
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
   - Fix doxygen errors in DigitalConvexity, SurfaceMesh
     (Pablo Hernandez-Cerdan [#1534](https://github.com/DGtal-team/DGtal/pull/1534))
+  - Fix CSS errors in doxygen
+    (Jérémy Levallois, [#1546](https://github.com/DGtal-team/DGtal/pull/1546))
 
 - *General*
   - Only set CMAKE_CXX_STANDARD if not defined already

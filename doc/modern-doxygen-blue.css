@@ -15,26 +15,26 @@ div.fragment{
     padding: 10px;
 }
 
-.tabs,.tabs2,.tabs3,.tablist li,.tablist li.current a,.tablist a,.tablist a:hover,.ui-resizable-e,div.header,#nav-tree .selected,#nav-tree,.memproto,dl.reflist dt,.memdoc,dl.reflist dd, div.ah {
+#main-menu,.tabs,.tabs2,.tabs3,#main-menu li,#main-menu li.current a,#main-menu a,#main-menu a:hover,.ui-resizable-e,div.header,#nav-tree .selected,#nav-tree,.memproto,dl.reflist dt,.memdoc,dl.reflist dd, div.ah {
     background-image: none;
 }
 
-.tablist li.current a,.tablist a,.tablist a:hover,#nav-tree .selected {
+#main-menu li.current a,#main-menu a,#main-menu a:hover,#nav-tree .selected {
     color: #2980b9;
     text-shadow: none;
 }
 
-.tablist a:hover {
+#main-menu a:hover {
     color: #FFF;
     background-color: #9A9B9A;
 }
 
-.tablist li.current a {
+#main-menu li.current a {
     color: #FFF;
     background-color: #9A9B9A;
 }
 
-.tabs,.tabs2,.tabs3 {
+#main-menu a,.tabs,.tabs2,.tabs3 {
     font-size: 15px;
 }
 
@@ -63,8 +63,14 @@ div.header {
     clear: both;
 }
 
-#navrow1 {
-    width: 80%;
+#main-nav {
+    width: 100%;
+}
+
+#main-menu > li:last-child {
+    float: none;
+    right: 0px;
+    position: absolute;
 }
 
 #navrow2 {
@@ -87,7 +93,7 @@ div.navpath {
     display: none;
 }
 
-.tablist {
+#main-menu {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -116,7 +122,7 @@ div.navpath {
 }
 
 table.doxtable th {
-  background-color: #2980b9;
+    background-color: #2980b9;
 }
 
 .directory table {
@@ -145,11 +151,11 @@ div.directory {
 }
 
 div.toc {
-  border-radius: 0px;
+    border-radius: 0px;
 }
 
 div.toc h3 {
-  color: #414040;
+    color: #414040;
 }
 
 h2.groupheader {
@@ -168,19 +174,19 @@ div.qindex,div.navtab {
 }
 
 div.ah {
-	box-shadow: none;
-	-webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 .icon {
-	background-color: #4478A6;
-	color: white;
+    background-color: #4478A6;
+    color: white;
 }
 
-#navrow1 > .tablist > .current > a {
-	background-color: #4478A6;
+#main-nav > #main-menu > .current > a {
+    background-color: #4478A6;
 }
 
 .directory .levels span {
-	color: #4478A6;
+    color: #4478A6;
 }
