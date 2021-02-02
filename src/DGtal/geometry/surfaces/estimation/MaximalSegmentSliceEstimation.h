@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/ArithmeticalDSSComputerOnSurfels.h"
+#include "DGtal/geometry/surfaces/ArithmeticalDSSComputerOnSurfels.h"
 #include "DGtal/topology/DigitalSurface2DSlice.h"
 //////////////////////////////////////////////////////////////////////////////
 

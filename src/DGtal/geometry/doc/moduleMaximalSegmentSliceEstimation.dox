@@ -28,8 +28,9 @@ on digital surface slices.
 
 [TOC]
 
-The following program is related to this documentation:
-geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp.
+The following programs are related to this documentation:
+geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp,
+testArithmeticalDSSComputerOnSurfels.cpp.
 
 \section sectMaximalSegmentSliceEstimation1 Introduction
 
