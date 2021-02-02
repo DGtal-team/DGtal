@@ -66,14 +66,14 @@ namespace DGtal
    * @tparam TIterator type of iterator on 3d surfels,
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
-   * which is a model of CInteger.
+   * which is a model of concepts::CInteger.
    * @tparam adjacency an unsigned integer equal to 4 for standard
    * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer.
+   * This class is a model of concepts::CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
    *
-   * @see ArithmeticalDSS NaiveDSS StandardDSS
+   * @see ArithmeticalDSS NaiveDSS8 StandardDSS4
    */
   template <typename TKSpace, typename TIterator,
     typename TInteger = typename TKSpace::Space::Integer,
@@ -163,7 +163,9 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aKSpace a khalimsky space
+     * @param aKSpace a Khalimsky space
+     * @param aDim1 the first direction to project
+     * @param aDim2 the second direction to project
      */
     ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2);
 
@@ -398,7 +400,7 @@ namespace DGtal
 
     /**
      * @param aSCell a surfel.
-     * @return the pair of 2D points projected on the plane defined by myProjection1, myProjection2
+     * @return the pair of 2D points projected on the plane defined by \ref myProjection1, \ref myProjection2.
      */
     std::pair<Point, Point> projectSurfel(SCell const& aSCell) const;
 
@@ -407,14 +409,14 @@ namespace DGtal
     /**
      * @param aSurfel1 the first unsigned surfel.
      * @param aSurfel2 the second unsigned surfel.
-     * @parap aLinel the common unsigned linel if it exists.
+     * @param aLinel the common unsigned linel if it exists.
      * @return 'true' if we found a common linel, 'false' otherwise.
      */
     bool commonLinel (Cell const& aSurfel1, Cell const& aSurfel2, Cell& aLinel);
 
     /**
      * @param aPoint a digital 3D point.
-     * @return the 2D orthogonal projection on the plane defined by myProjection1, myProjection2
+     * @return the 2D orthogonal projection on the plane defined by \ref myProjection1, \ref myProjection2
      */
     Point projectInPlane (Point3 const& aPoint) const;
 

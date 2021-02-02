@@ -219,7 +219,7 @@ namespace DGtal
      *
      * @param itb an iterator on the start of the range of surfels.
      * @param ite a past-the-end iterator of the range of surfels.
-     * @pram out an output iterator to store the results.
+     * @param out an output iterator to store the results.
      * @return the modified output iterator.
      */
     template < typename SurfelConstIterator, typename OutputIterator >
@@ -265,7 +265,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * @param aSurfel a surfel.
+     * @param it an iterator whose value type is a surfel.
      * @return the pre-estimation vector on a given normal.
      */
     template < typename SurfelConstIterator >

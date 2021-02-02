@@ -149,7 +149,7 @@ namespace DGtal
      *
      * @param itb an iterator on the start of the range of surfels.
      * @param ite a past-the-end iterator of the range of surfels.
-     * @pram out an output iterator to store the results.
+     * @param out an output iterator to store the results.
      * @return the modified output iterator.
      */
     template < typename SurfelConstIterator, typename OutputIterator >

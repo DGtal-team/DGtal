@@ -142,7 +142,7 @@ namespace DGtal
      * @param aPoint the base point of the initial frame.
      * @param aM the three vectors of the initial frame.
      * @param aPredicate the probing predicate.
-     * @parama aBound the bound used in the NotAbove predicate.
+     * @param aBound the bound used in the NotAbove predicate.
      */
     PlaneProbingParallelepipedEstimator(Point const& aPoint, Triangle const& aM,
                                         Predicate const& aPredicate, Integer const& aBound);

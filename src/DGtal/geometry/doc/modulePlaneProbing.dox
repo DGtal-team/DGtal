@@ -86,11 +86,7 @@ The algorithm stops whether one of the following criteria is verified:
 3. the current configuration of the H-neighborhood is \e non-planar.
 For the last two, see @cite LPRJMIV2017 or the enum PlaneProbingNeighborhood::HexagonState for more details.
 
-Other candidate sets were proposed namely the \e R-neighborhood @cite
-LPRJMIV2017 and an optimization that we call \e R1-neighborhood @cite
-LMRJMIV2020. The main difference is that instead of considering 6 points of an hexagon, they
-consider 6 rays. This allows to reduce the number of steps and to obtain a
-reduced basis at the end. We recommend to use the \e R1-neighborhood.
+Other candidate sets were proposed namely the \e R-neighborhood @cite LPRJMIV2017 and an optimization that we call \e R1-neighborhood @cite LMRJMIV2020. The main difference is that instead of considering 6 points of an hexagon, they consider 6 rays. This allows to reduce the number of steps and to obtain a reduced basis at the end. We recommend to use the \e R1-neighborhood.
 
 The main drawback of this category of algorithms is the fact that they return
 the correct normal vector on a digital plane only when starting from specific points (precisely reentrant corners of low height). In
