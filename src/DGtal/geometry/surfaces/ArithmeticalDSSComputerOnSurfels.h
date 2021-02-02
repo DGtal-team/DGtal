@@ -336,7 +336,8 @@ namespace DGtal
      * @param it an iterator on points
      * @return the remainder of @a *it.
      */
-    Integer remainder(const ConstIterator & it) const;
+    template < typename PointConstIterator >
+    Integer remainder(const PointConstIterator & it) const;
 
     /**
      * Computes the remainder of a point
@@ -352,7 +353,8 @@ namespace DGtal
      * @param it an iterator on points
      * @return the position of @a *it.
      */
-    Integer position(const ConstIterator & it) const;
+    template < typename PointConstIterator >
+    Integer position(const PointConstIterator & it) const;
 
     /**
      * Computes the position of a point
@@ -376,7 +378,8 @@ namespace DGtal
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
-    bool isInDSL(const ConstIterator & it) const;
+    template < typename PointConstIterator >
+    bool isInDSL(const PointConstIterator & it) const;
 
     /**
      * Checks whether a point belongs to the DSS or not
@@ -390,7 +393,8 @@ namespace DGtal
      * @param it an iterator on the point to be checked
      * @return 'true' if yes, 'false' otherwise
      */
-    bool isInDSS(const ConstIterator & it) const;
+    template < typename PointConstIterator >
+    bool isInDSS(const PointConstIterator & it) const;
 
     /**
      * @param aSCell a surfel.

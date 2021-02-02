@@ -101,7 +101,8 @@ inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputerOnSurfels ( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency> & other )
   : myKSpace(other.myKSpace), myDim1(other.myDim1), myDim2(other.myDim2),
-    myProjection1(other.myProjection1), myProjection2(other.myProjection2),
+    myProjection1(other.myProjection1), myProjection2(other.myProjection2), myProjectionNormal(other.myProjectionNormal),
+    myPreviousSurfelFront(other.myPreviousSurfelFront), myPreviousSurfelBack(other.myPreviousSurfelBack),
     myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
 {
 }
@@ -120,6 +121,9 @@ operator=( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adj
       myDim2 = other.myDim2;
       myProjection1 = other.myProjection1;
       myProjection2 = other.myProjection2;
+      myProjectionNormal = other.myProjectionNormal;
+      myPreviousSurfelFront = other.myPreviousSurfelFront;
+      myPreviousSurfelBack = other.myPreviousSurfelBack;
       myDSS = other.myDSS;
       myBegin = other.myBegin;
       myEnd = other.myEnd;
@@ -285,12 +289,12 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::r
 
 //-------------------------------------------------------------------------
 template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
+template < typename PointConstIterator >
 inline
 TInteger
-DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::remainder(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::remainder(const PointConstIterator & it) const
 {
-    // TODO: isFront?
-  return remainder(getOtherPointFromSurfel(*it, true, false));
+  return remainder(*it);
 }
 
 //-------------------------------------------------------------------------
@@ -304,12 +308,12 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::p
 
 //-------------------------------------------------------------------------
 template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
+template < typename PointConstIterator >
 inline
 TInteger
-DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::position(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::position(const PointConstIterator & it) const
 {
-    // TODO: isFront?
-  return position(getOtherPointFromSurfel(*it, true, false));
+  return position(*it);
 }
 
 //-------------------------------------------------------------------------
@@ -323,12 +327,12 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::i
 
 //-------------------------------------------------------------------------
 template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
+template < typename PointConstIterator >
 inline
 bool
-DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::isInDSL(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::isInDSL(const PointConstIterator & it) const
 {
-    // TODO: isFront?
-  return isInDSL(getOtherPointFromSurfel(*it, true, false));
+  return isInDSL(*it);
 }
 
 //-------------------------------------------------------------------------
@@ -342,12 +346,12 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::i
 
 //-------------------------------------------------------------------------
 template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
+template < typename PointConstIterator >
 inline
 bool
-DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::isInDSS(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::isInDSS(const PointConstIterator & it) const
 {
-    // TODO: isFront?
-  return isInDSS(getOtherPointFromSurfel(*it, true, false));
+  return isInDSS(*it);
 }
 
 //-------------------------------------------------------------------------
