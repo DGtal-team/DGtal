@@ -44,8 +44,6 @@ using KSpace    = Z3i::KSpace;
 using SH3       = Shortcuts<KSpace>;
 using Surface   = SH3::DigitalSurface;
 using Surfel    = Surface::Surfel;
-using Estimator = MaximalSegmentSliceEstimation<Surface>;
-using Quantity  = Estimator::Quantity;
 using RealPoint = SH3::RealPoint;
 using Point     = SH3::Point;
 
@@ -83,19 +81,24 @@ int main(int argc, char** argv)
     viewer << SetMode3D(Surfel().className(), "Basic");
     viewer.show();
 
+    //! [MaximalSegmentSliceEstimationConstructionUsage]
+    // Instantiation
+    using Estimator = MaximalSegmentSliceEstimation<Surface>;
     Estimator estimator;
     estimator.init(gridstep, surfels.begin(), surfels.end());
     estimator.attach(surface);
 
-    std::vector<Quantity> quantities;
+    // Usage
+    std::vector<Estimator::Quantity> quantities;
     estimator.eval(surfels.begin(), surfels.end(), std::back_inserter(quantities));
+    //! [MaximalSegmentSliceEstimationConstructionUsage]
 
     Color fillColor = viewer.getFillColor();
 
     for (std::size_t i = 0; i < surfels.size(); ++i)
     {
         const Surfel& s = surfels[i];
-        const Quantity& normal = quantities[i];
+        const Estimator::Quantity& normal = quantities[i];
 
         const RealPoint& n = normal.getNormalized();
         RealPoint origin = centerSurfel(K, s);

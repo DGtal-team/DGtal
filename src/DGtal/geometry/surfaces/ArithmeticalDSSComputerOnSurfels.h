@@ -329,75 +329,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-
-    // ------------------ Useful tools -----------------------------------
-
-    /**
-     * Computes the remainder of a point
-     * (that does not necessarily belong to the DSS)
-     * @param it an iterator on points
-     * @return the remainder of @a *it.
-     */
-    template < typename PointConstIterator >
-    Integer remainder(const PointConstIterator & it) const;
-
-    /**
-     * Computes the remainder of a point
-     * (that does not necessarily belong to the DSS)
-     * @param aPoint the point whose remainder is returned
-     * @return the remainder
-     */
-    Integer remainder( const Point& aPoint ) const;
-
-    /**
-     * Computes the position of a point
-     * (that does not necessarily belong to the DSS)
-     * @param it an iterator on points
-     * @return the position of @a *it.
-     */
-    template < typename PointConstIterator >
-    Integer position(const PointConstIterator & it) const;
-
-    /**
-     * Computes the position of a point
-     * (that does not necessarily belong to the DSS)
-     * @param aPoint the point whose position is returned
-     * @return the position of @a aPoint.
-     */
-    Integer position( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point is in the bounding DSL
-     * of minimal parameters
-     * @param aPoint the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSL( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point is in the bounding DSL
-     * of minimal parameters
-     * @param it an iterator on the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    template < typename PointConstIterator >
-    bool isInDSL(const PointConstIterator & it) const;
-
-    /**
-     * Checks whether a point belongs to the DSS or not
-     * @param aPoint the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    bool isInDSS( const Point& aPoint ) const;
-
-    /**
-     * Checks whether a point belongs to the DSS or not
-     * @param it an iterator on the point to be checked
-     * @return 'true' if yes, 'false' otherwise
-     */
-    template < typename PointConstIterator >
-    bool isInDSS(const PointConstIterator & it) const;
-
     /**
      * @param aSCell a surfel.
      * @return the pair of 2D points projected on the plane defined by \ref myProjection1, \ref myProjection2.
@@ -421,12 +352,13 @@ namespace DGtal
     Point projectInPlane (Point3 const& aPoint) const;
 
     /**
-     * @param aSCell a surfel.
+     * @param it an iterator on a surfel.
+     * @param aPoint the new 2D point of 'it' that is not common to the previous surfel (if the update is possible).
      * @param aUpdatePrevious a boolean that indicates whether to update myPreviousSurfel or not.
      * @param aIsFront a boolean indicating we want to update in the front or in the back direction.
-     * @return the 2D point of aSCell that is not common to myPreviousSurfel
+     * @return 'true' if the update is possible, 'false' otherwise.
      */
-    Point getOtherPointFromSurfel (SCell const& aSCell, bool aIsFront, bool aUpdatePrevious);
+    bool getOtherPointFromSurfel (ConstIterator const& it, Point& aPoint, bool aIsFront, bool aUpdatePrevious);
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -457,21 +389,21 @@ namespace DGtal
     Point3 myProjection2;
 
     /**
-     * The second projection direction.
+     * The direction that is orthogonal to the two projection directions.
      */
     Point3 myProjectionNormal;
 
     /**
-     * We remember the previous surfel in the front direction to compute the common linel.
-     * Used in getOtherPointFromSurfel.
+     * We store the previous surfel in the 'front' direction to compute the common linel.
+     * Used in \ref getOtherPointFromSurfel.
      */
-    SCell myPreviousSurfelFront;
+    ConstIterator myPreviousSurfelFront;
 
     /**
-     * We remember the previous surfel in the back direction to compute the common linel.
-     * Used in getOtherPointFromSurfel.
+     * We store the previous surfel in the 'back' direction to compute the common linel.
+     * Used in \ref getOtherPointFromSurfel.
      */
-    SCell myPreviousSurfelBack;
+    ConstIterator myPreviousSurfelBack;
 
     /**
     * DSS representation
