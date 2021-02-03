@@ -107,10 +107,10 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   std::copy(myOriginalPositions.begin(), myOriginalPositions.end(), myRegularizedPositions.begin());
   
   //Allocating Gradient vector
+  myGradient.clear();
+  myGradientAlign.clear();
   myGradient.resize(myOriginalPositions.size());
-  myGradient.clear();
   myGradientAlign.resize(myOriginalPositions.size());
-  myGradient.clear();
   
   /////
   ///Cacheing some topological information
