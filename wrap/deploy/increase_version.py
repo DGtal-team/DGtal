@@ -55,6 +55,11 @@ print("final_version: ", final_version_str)
 if not final_version_str:
     raise Exception(final_version_str)
 
+print()
+print("Commit message header:")
+print()
+print("Python: Increase version ({}) to {}.".format(args.version_component, final_version_str))
+
 if args.no_write:
     print("Not writing to any file, remove -n or --no-write argument if wanted.")
     sys.exit()
@@ -70,7 +75,7 @@ with open(version_file, 'w') as fp:
 
 
 if not args.modify_cmake:
-    print("Not modifying top project CMakeLists, add -m or --modify-cmake argument if wanted.")
+    # print("Not modifying top project CMakeLists, add -m or --modify-cmake argument if wanted.")
     sys.exit()
 
 cmake_file = os.path.join(this_dir, '../../CMakeLists.txt')
@@ -97,5 +102,3 @@ with open(cmake_file, 'w') as fp:
         else:
             fp.write(line)
 
-print("\nCommit message:")
-print("Update version to {}\n\nFrom {}.".format(final_version_str, current_version_str))
