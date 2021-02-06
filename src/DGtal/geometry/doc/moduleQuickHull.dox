@@ -434,6 +434,8 @@ hull of a set of 3D real points. The precision is given as a scale
 factor that transforms real coordinates before rounding them at the
 nearest integer.
 
+@see exampleQuickHull3D.cpp
+
 @note In opposition with ConvexityHelper::computeRationalPolytope the
 precision might be any double value, but it acts similarly. This is
 the build object is a V-representation of a polytope, with

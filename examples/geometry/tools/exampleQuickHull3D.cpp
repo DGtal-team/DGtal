@@ -73,17 +73,24 @@ int main( int argc, char* argv[] )
     }
   trace.info() << "Read " << points.size() << " 3D points." << std::endl;
 
+  // Build rational polytope
+  typedef ConvexityHelper< 3 > Helper;
   const auto polytope
-    = ConvexityHelper< 3 >::computeRationalPolytope( points, precision );
+    = Helper::computeRationalPolytope( points, precision );
   trace.info() << polytope << std::endl;
-    // "Polytope has " << polytope.nbHalfSpaces() << " linear constraints."
+
+  // Build the boundary of the convex hull as a surface mesh
   SurfaceMesh< RealPoint, RealVector > mesh;
-  bool ok = ConvexityHelper< 3 >::computeConvexHullBoundary( mesh, points, precision );
+  bool ok = Helper::computeConvexHullBoundary( mesh, points, precision );
   trace.info() << mesh << std::endl;
-  
-  std::ofstream out( "qhull.obj" );
+  std::ofstream out( "qhull-mesh.obj" );
   SurfaceMeshWriter< RealPoint, RealVector >::writeOBJ( out, mesh );
   out.close();
+
+  // Build the boundary of the convex hull as a polygonal surface
+  PolygonalSurface< RealPoint > polysurf;
+  bool ok2 = Helper::computeConvexHullBoundary( polysurf, points, precision );
+  trace.info() << polysurf << std::endl;
   
   return 0;
 } 

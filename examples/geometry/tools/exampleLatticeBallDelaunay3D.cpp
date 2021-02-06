@@ -35,7 +35,14 @@
 \endverbatim
 outputs
 \verbatim
+Compute convex hull in higher dimension
+assign ridges/faces to cell and conversely
+takes care of vertex positions
+[ConvexCellComplex<3> #C=466 #F=976 #V=100 hasFaceGeometry ]
 \endverbatim
+
+\image html qhull-delaunay3d-ball-10.jpg "Delaunay cell decomposition of randomly chosen points in a 3D lattice ball with radius 10"
+
 
 @see \ref moduleQuickHull
 

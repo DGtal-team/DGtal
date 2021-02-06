@@ -283,6 +283,33 @@ namespace DGtal
                                const std::vector< RealPoint >& input_points,
                                double precision = 1024.0,
                                bool remove_duplicates = true );
+
+    /// Computes a polygonal surface representation of the boundary of the
+    /// rational polytope that approximates the convex hull of the given real points.
+    ///
+    /// @note Since it builds a surface, this method is thus 3D.
+    ///
+    /// @param[out] polysurf the output polygonal surface mesh that represents the
+    /// boundary of the convex hull of the given range of points.
+    ///
+    /// @param[in] input_points the range of input real points.
+    ///
+    /// @param[in] precision the scaling factor that is used to
+    /// multiply each real coordinate before rounding it to an
+    /// integer, a kind of common denominator if you think of the
+    /// result as a rational number.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return 'true' if the input points were full dimensional and
+    /// the output mesh is correct, otherwise return 'false'.
+    static
+    bool
+    computeConvexHullBoundary( PolygonalSurface< RealPoint > & polysurf,
+                               const std::vector< RealPoint >& input_points,
+                               double precision = 1024.0,
+                               bool remove_duplicates = true );
     
     /// @}
     

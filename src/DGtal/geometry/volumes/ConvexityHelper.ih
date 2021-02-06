@@ -426,6 +426,33 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
 }
 
 
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger >
+bool
+DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+( PolygonalSurface< RealPoint >&  polysurf,
+  const std::vector< RealPoint >& input_points,
+  double precision,
+  bool remove_duplicates )
+{
+  typedef QuickHull< RealConvexHullKernel >    ConvexHull;
+  typedef typename ConvexHull::IndexRange      IndexRange;
+  ConvexHull hull( precision );
+  hull.setInput( input_points, remove_duplicates );
+  bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  if ( !ok ) return false;
+  std::vector< RealPoint > positions;
+  hull.getVertexPositions( positions );
+  std::vector< IndexRange > faces;
+  hull.getFacetVertices( faces );
+  // build polygonal surface
+  polysurf.clear();
+  for ( auto p : positions ) polysurf.addVertex( p );
+  for ( auto f : faces )     polysurf.addPolygonalFace( f );
+  return polysurf.build();
+}
+
+
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger >
