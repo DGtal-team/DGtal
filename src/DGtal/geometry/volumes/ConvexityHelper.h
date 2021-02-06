@@ -250,6 +250,40 @@ namespace DGtal
                              bool remove_duplicates = true,
                              bool make_minkowski_summable = false );
 
+    /// Computes a surface mesh representation of the boundary of the
+    /// rational polytope that approximates the convex hull of the given real points.
+    ///
+    /// @note Since it builds a surface, this method is thus 3D.
+    ///
+    /// @tparam TSurfaceMesh any model of surface that can be
+    /// initialized with a range of input positions (cast as real
+    /// coordinates) and a range of index ranges giving for each face
+    /// its range of incident vertices. For instance, you may use
+    /// class SurfaceMesh.
+    ///
+    /// @param[out] mesh the output surface mesh that represents the
+    /// boundary of the convex hull of the given range of points.
+    ///
+    /// @param[in] input_points the range of input real points.
+    ///
+    /// @param[in] precision the scaling factor that is used to
+    /// multiply each real coordinate before rounding it to an
+    /// integer, a kind of common denominator if you think of the
+    /// result as a rational number.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return 'true' if the input points were full dimensional and
+    /// the output mesh is correct, otherwise return 'false'.
+    template < typename TSurfaceMesh >
+    static
+    bool
+    computeConvexHullBoundary( TSurfaceMesh&               mesh,
+                               const std::vector< RealPoint >& input_points,
+                               double precision = 1024.0,
+                               bool remove_duplicates = true );
+    
     /// @}
     
     // ----------------- utility services -------------------------

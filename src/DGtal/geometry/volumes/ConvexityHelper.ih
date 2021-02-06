@@ -399,6 +399,33 @@ DGtal::ConvexityHelper< dim, TInteger>::computeRationalPolytope
 }
 
 
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger >
+template < typename TSurfaceMesh >
+bool
+DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+( TSurfaceMesh&               mesh,
+  const std::vector< RealPoint >& input_points,
+  double precision,
+  bool remove_duplicates )
+{
+  typedef TSurfaceMesh                         SurfaceMesh;
+  typedef QuickHull< RealConvexHullKernel >    ConvexHull;
+  typedef typename ConvexHull::IndexRange      IndexRange;
+  ConvexHull hull( precision );
+  hull.setInput( input_points, remove_duplicates );
+  bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  if ( !ok ) return false;
+  std::vector< RealPoint > positions;
+  hull.getVertexPositions( positions );
+  std::vector< IndexRange > faces;
+  hull.getFacetVertices( faces );
+  mesh = SurfaceMesh( positions.cbegin(), positions.cend(),
+                      faces.cbegin(), faces.cend() );
+  return true;
+}
+
+
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger >

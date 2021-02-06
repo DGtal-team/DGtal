@@ -23,9 +23,10 @@ decompositions.
 
 
 The following programs are related to this documentation:
-testQuickHull.cpp , exampleLatticeBallQuickHull3D.cpp ,
-exampleLatticeBallDelaunay2D.cpp , exampleRationalBallQuickHull3D.cpp
-
+exampleLatticeBallQuickHull3D.cpp ,
+exampleLatticeBallDelaunay2D.cpp , exampleRationalBallQuickHull3D.cpp ,
+exampleQuickHull3D.cpp ,
+testQuickHull.cpp , testConvexityHelper.cpp
 
 @section dgtal_quickhull_sec1 The QuickHull convex hull algorithm
 
@@ -339,6 +340,68 @@ input points <------------ processed points <---------- convex hull vertices
 
 QuickHull:timings stores also the respective times taken by each step
 of the computation (see examples).
+
+@section dgtal_quickhull_sec3 Using ConvexityHelper for convex hull and Delaunay services
+
+Class ConvexityHelper offers several functions that makes easier the
+computation of convex hull or Delaunay complex (of course with a
+little bit less flexibility than using QuickHull directly).
+
+@subsection dgtal_quickhull_sec31 Building a lattice polytope in arbitrary dimension
+
+Builind a lattice polytope in nD just require a call to
+ConvexityHelper::computeLatticePolytope.
+
+\code
+std::vector<Z2i::Point> V = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
+const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
+\endcode
+
+@note For dimension up to 3D, you may precise if you wish your lattice
+polytope to be Minkowski summable by a cubical grid cell (see
+ConvexityHelper::computeLatticePolytope reference doc).
+
+@subsection dgtal_quickhull_sec32 Building the boundary of a 3D convex hull as a surface mesh or a polygonal surface
+
+You may simply use one of the two static methods
+ConvexityHelper::computeConvexHullBoundary to build either a
+SurfaceMesh or a PolygonalSurface that represents the boundary convex
+hull of a set of 3D lattice points.
+
+@subsection dgtal_quickhull_sec33 Building the convex hull cell complex in arbitrary dimension
+
+You can use ConvexityHelper::computeConvexHullCellComplex to build a
+cell complex that represents the convex hull of the given lattice
+points. This complex has exactly 1 full dimension cell, as many
+codimension 1 facets as the number of polytope faces, and as many
+vertices than the points lying on the convex hull boundary.
+
+\code
+typedef ConvexityHelper< 3 > Helper;
+typedef Helper::Point        Point;
+std::vector<Point> V
+= { Point(0,0,0), Point(-2,0,0), Point(2,0,0), Point(0,-2,0), Point(0,2,0),
+      Point(0,0,-2), Point(0,0,2) };
+ConvexCellComplex< Point > complex;
+bool ok = Helper::computeConvexHullCellComplex( complex, V );
+\endcode
+
+@subsection dgtal_quickhull_sec34 Building the Delaunay cell complex in arbitrary dimension
+
+You may use ConvexityHelper::computeDelaunayCellComplex to compute the
+Delaunay cell complex of a range of lattice points.
+
+\code
+typedef ConvexityHelper< 3 > Helper;
+typedef Helper::Point        Point;
+std::vector<Point> V
+= { Point(0,0,0), Point(-2,0,0), Point(2,0,0), Point(0,-2,0), Point(0,2,0),
+      Point(0,0,-2), Point(0,0,2) };
+ConvexCellComplex< Point > complex;
+bool ok = Helper::computeDelaunayCellComplex( complex, V );
+\endcode
+
+You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, with a post-processing a blowning up the 3D cells.
 
 */
 

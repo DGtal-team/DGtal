@@ -75,9 +75,16 @@ int main( int argc, char* argv[] )
 
   const auto polytope
     = ConvexityHelper< 3 >::computeRationalPolytope( points, precision );
-
-  trace.info() << "Polytope has " << polytope.nbHalfSpaces() << " linear constraints."
-               << std::endl;
+  trace.info() << polytope << std::endl;
+    // "Polytope has " << polytope.nbHalfSpaces() << " linear constraints."
+  SurfaceMesh< RealPoint, RealVector > mesh;
+  bool ok = ConvexityHelper< 3 >::computeConvexHullBoundary( mesh, points, precision );
+  trace.info() << mesh << std::endl;
+  
+  std::ofstream out( "qhull.obj" );
+  SurfaceMeshWriter< RealPoint, RealVector >::writeOBJ( out, mesh );
+  out.close();
+  
   return 0;
 } 
   
