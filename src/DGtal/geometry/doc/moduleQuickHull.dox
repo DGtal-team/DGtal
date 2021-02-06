@@ -349,7 +349,7 @@ little bit less flexibility than using QuickHull directly).
 
 @subsection dgtal_quickhull_sec31 Building a lattice polytope in arbitrary dimension
 
-Builind a lattice polytope in nD just require a call to
+Building a lattice polytope in nD just requires a call to
 ConvexityHelper::computeLatticePolytope.
 
 \code
@@ -361,7 +361,7 @@ const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
 polytope to be Minkowski summable by a cubical grid cell (see
 ConvexityHelper::computeLatticePolytope reference doc).
 
-@subsection dgtal_quickhull_sec32 Building the boundary of a 3D convex hull as a surface mesh or a polygonal surface
+@subsection dgtal_quickhull_sec32 Building the boundary of a lattice 3D convex hull as a surface mesh or a polygonal surface
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
@@ -401,7 +401,46 @@ ConvexCellComplex< Point > complex;
 bool ok = Helper::computeDelaunayCellComplex( complex, V );
 \endcode
 
-You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, with a post-processing a blowning up the 3D cells.
+You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, with a post-processing that blowns up the 3D cells for visualization.
+
+<table>
+<tr>
+<td> 
+\image html qhull-delaunay3d-ball-5.jpg "Delaunay cell decomposition of randomly chosen points in a 3D lattice ball with radius 5"
+</td><td> 
+\image html qhull-delaunay3d-ball-10.jpg "Delaunay cell decomposition of randomly chosen points in a 3D lattice ball with radius 10"
+</td>
+</tr>
+</table>
+
+@subsection dgtal_quickhull_sec35 Building a rational polytope in arbitrary dimension
+
+Building a rational polytope in nD that approximately encloses the
+given range of real points just requires a call to
+ConvexityHelper::computeRationalPolytope. You specify the precision as
+the denominator used in all rational numbers approximating the real
+point coordinates.
+
+@see exampleQuickHull3D.cpp
+
+@note In opposition with ConvexityHelper::computeConvexHullBoundary the precision must be an integer (no smaller than one), but it acts similarly. This is because the built polytope must be a rational polytope (i.e. constraints are rational).
+
+@subsection dgtal_quickhull_sec36 Building the boundary of a rational 3D convex hull as a surface mesh or a polygonal surface
+
+You may simply use one of the two static methods
+ConvexityHelper::computeConvexHullBoundary to build either a
+SurfaceMesh or a PolygonalSurface that represents the boundary convex
+hull of a set of 3D real points. The precision is given as a scale
+factor that transforms real coordinates before rounding them at the
+nearest integer.
+
+@note In opposition with ConvexityHelper::computeRationalPolytope the
+precision might be any double value, but it acts similarly. This is
+the build object is a V-representation of a polytope, with
+floating-point point coordinates.
+
+\image html exampleQuickHull3D-bunny.jpg "Convex hull of Stanford bunny dataset with a precision 100"
+
 
 */
 

@@ -1,3 +1,47 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file geometry/tools/exampleLatticeBallDelaunay3D.cpp
+ * @ingroup Examples
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2021/02/06
+ *
+ * An example file named exampleLatticeBallDelaunay3D.
+ *
+ * This file is part of the DGtal library.
+ */
+
+/**
+   Computation of the Delaunay complex of a set of lattice points in 3D by Quick Hull algorithm.
+
+\verbatim
+./examples/geometry/tools/exampleLatticeBallDelaunay3D
+\endverbatim
+outputs
+\verbatim
+\endverbatim
+
+@see \ref moduleQuickHull
+
+\example geometry/tools/exampleLatticeBallDelaunay3D.cpp
+*/
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/shapes/SurfaceMesh.h"
