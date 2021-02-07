@@ -310,6 +310,33 @@ namespace DGtal
                                const std::vector< RealPoint >& input_points,
                                double precision = 1024.0,
                                bool remove_duplicates = true );
+
+    /// Computes a cell complex representing the convex hull of the
+    /// given real points, formed of one maximal dimension cell and
+    /// as many cells of codimension 1 as the number of facets of the
+    /// convex hull.
+    ///
+    /// @param[out] cell_complex the output cell complex that
+    /// represents the convex hull of the given real points.
+    ///
+    /// @param[in] input_points the range of input real points.
+    ///
+    /// @param[in] precision the scaling factor that is used to
+    /// multiply each real coordinate before rounding it to an
+    /// integer, a kind of common denominator if you think of the
+    /// result as a rational number.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return 'true' if the input points were full dimensional and
+    /// the output complex is correct, otherwise return 'false'.
+    static
+    bool
+    computeConvexHullCellComplex( ConvexCellComplex< RealPoint >& cell_complex,
+                                  const std::vector< RealPoint >& input_points,
+                                  double precision = 1024.0,
+                                  bool remove_duplicates = true );
     
     /// @}
     

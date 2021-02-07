@@ -280,17 +280,6 @@ namespace DGtal
       return x;
     }
 
-    /// @param[in] p any point
-    /// @param[in] factor the dilation applied to point \a p before integer conversion
-    /// @return its embedding in the real Euclidean space.
-    template < typename LatticePoint >
-    LatticePoint toLattice( const Point p, double factor = 1.0 ) const
-    {
-      LatticePoint x;
-      for ( Dimension k = 0; k < dimension; ++k )
-        x[ k ] = (typename LatticePoint::Coordinate) round( p[ k ] * factor );
-      return x;
-    }
     
     /// @param[in] c any valid cell
     /// @return the cell barycenter.

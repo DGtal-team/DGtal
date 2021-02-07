@@ -452,6 +452,46 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
   return polysurf.build();
 }
 
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger >
+bool
+DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
+( ConvexCellComplex< RealPoint >& cell_complex,
+  const std::vector< RealPoint >& input_points,
+  double precision,
+  bool remove_duplicates )
+{
+  typedef QuickHull< RealConvexHullKernel >    ConvexHull;
+  typedef typename ConvexHull::IndexRange      IndexRange;
+  typedef typename ConvexCellComplex< RealPoint >::FaceRange FaceRange;
+  ConvexHull hull( precision );
+  hull.setInput( input_points, remove_duplicates );
+  bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  cell_complex.clear();
+  if ( ! ok ) return false;
+  // Build complex, only 1 finite cell and as many faces as convex hull facets.
+  // Taking care of faces for each cell (here one cell borders all faces).
+  std::vector< IndexRange > faces;
+  hull.getFacetVertices( faces );
+  FaceRange all_faces;
+  for ( Index i = 0; i < faces.size(); i++ )
+    all_faces.push_back( { i, true } );
+  cell_complex.cell_faces.push_back( all_faces );
+  // Vertices of this unique cell will be computed lazily on request.
+  // Taking care of each face.
+  for ( const auto& vtcs : faces )
+    {
+      // every inner face borders cell 0
+      cell_complex.true_face_cell.push_back( 0 );
+      // every outer face borders the infinite cell
+      cell_complex.false_face_cell.push_back( cell_complex.infiniteCell() );
+    }
+  // Taking care of vertices (in consistent order) of every face
+  cell_complex.true_face_vertices.swap( faces );
+  // Taking care of vertex positions
+  hull.getVertexPositions( cell_complex.vertex_position );
+  return true;
+}
 
 
 //-----------------------------------------------------------------------------

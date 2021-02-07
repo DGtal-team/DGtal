@@ -347,7 +347,7 @@ Class ConvexityHelper offers several functions that makes easier the
 computation of convex hull or Delaunay complex (of course with a
 little bit less flexibility than using QuickHull directly).
 
-@subsection dgtal_quickhull_sec31 Building a lattice polytope in arbitrary dimension
+@subsection dgtal_quickhull_sec31 Building a lattice polytope (nD)
 
 Building a lattice polytope in nD just requires a call to
 ConvexityHelper::computeLatticePolytope.
@@ -361,21 +361,21 @@ const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
 polytope to be Minkowski summable by a cubical grid cell (see
 ConvexityHelper::computeLatticePolytope reference doc).
 
-@subsection dgtal_quickhull_sec32 Building the boundary of a lattice 3D convex hull as a surface mesh or a polygonal surface
+@subsection dgtal_quickhull_sec32 Building the boundary of a lattice convex hull as a surface (3D) 
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
 SurfaceMesh or a PolygonalSurface that represents the boundary convex
 hull of a set of 3D lattice points.
 
-@subsection dgtal_quickhull_sec33 Building the convex hull cell complex in arbitrary dimension
+@subsection dgtal_quickhull_sec33 Building the convex hull cell complex of lattice points (nD)
 
 You can use ConvexityHelper::computeConvexHullCellComplex to build a
 cell complex that represents the convex hull of the given lattice
 points. This complex has exactly 1 full dimension cell, as many
 codimension 1 facets as the number of polytope faces, and as many
 vertices than the points lying on the convex hull boundary.
-
+w
 \code
 typedef ConvexityHelper< 3 > Helper;
 typedef Helper::Point        Point;
@@ -386,7 +386,7 @@ ConvexCellComplex< Point > complex;
 bool ok = Helper::computeConvexHullCellComplex( complex, V );
 \endcode
 
-@subsection dgtal_quickhull_sec34 Building the Delaunay cell complex in arbitrary dimension
+@subsection dgtal_quickhull_sec34 Building the Delaunay cell complex of lattice points (nD)
 
 You may use ConvexityHelper::computeDelaunayCellComplex to compute the
 Delaunay cell complex of a range of lattice points.
@@ -413,7 +413,7 @@ You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, 
 </tr>
 </table>
 
-@subsection dgtal_quickhull_sec35 Building a rational polytope in arbitrary dimension
+@subsection dgtal_quickhull_sec35 Building a rational polytope (nD)
 
 Building a rational polytope in nD that approximately encloses the
 given range of real points just requires a call to
@@ -425,7 +425,7 @@ point coordinates.
 
 @note In opposition with ConvexityHelper::computeConvexHullBoundary the precision must be an integer (no smaller than one), but it acts similarly. This is because the built polytope must be a rational polytope (i.e. constraints are rational).
 
-@subsection dgtal_quickhull_sec36 Building the boundary of a rational 3D convex hull as a surface mesh or a polygonal surface
+@subsection dgtal_quickhull_sec36 Building the boundary of a rational convex hull as a surface (3D)
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
@@ -438,11 +438,29 @@ nearest integer.
 
 @note In opposition with ConvexityHelper::computeRationalPolytope the
 precision might be any double value, but it acts similarly. This is
-the build object is a V-representation of a polytope, with
+because the build object is a V-representation of a polytope, with
 floating-point point coordinates.
 
-\image html exampleQuickHull3D-bunny.jpg "Convex hull of Stanford bunny dataset with a precision 100"
+<table>
+<tr>
+<td> 
+\image html exampleQuickHull3D-bunny-input.jpg "Coarse model of Stanford bunny"
+</td><td>
+\image html exampleQuickHull3D-bunny-both.jpg "Its convex hull with a precision 100"
+</td>
+</tr>
+</table>
 
+@subsection dgtal_quickhull_sec37 Building the convex hull cell complex of real points (nD)
+
+
+You can use ConvexityHelper::computeConvexHullCellComplex to build a
+cell complex that represents the convex hull of the given real
+points. This complex has exactly 1 full dimension cell, as many
+codimension 1 facets as the number of polytope faces, and as many
+vertices than the points lying on the convex hull boundary.
+
+@see exampleQuickHull3D.cpp
 
 */
 

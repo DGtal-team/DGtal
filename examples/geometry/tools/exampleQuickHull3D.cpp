@@ -36,7 +36,36 @@
 \endverbatim
 outputs
 \verbatim
+Read 13230 3D points.
+Domain l=[PointVector] {-95, -135, -68} u=[PointVector] {6114, 4743, 6186}
+[BoundedRationalPolytope<3> A.rows=2104 valid_edge_constraints=0 denom=100]
+  [ 100 0 0 ] . x <= 6114
+  [ -100 0 0 ] . x <= 95
+  [ 0 100 0 ] . x <= 4743
+  [ 0 -100 0 ] . x <= 135
+  [ 0 0 100 ] . x <= 6186
+  [ 0 0 -100 ] . x <= 68
+  [ -92731200 -234892700 -352348000 ] . x <= 264145202
+  [ -200106200 -500176600 -423177500 ] . x <= -1778463203
+  [ 1155400 -144600 -10046900 ] . x <= 43312434
+...
+  [ 346800 558800 229200 ] . x <= 43326624
+  [ 1457700 2361700 949200 ] . x <= 181949097
+
+[SurfaceMesh (OK) #V=1051 #VN=0 #E=3147 #F=2098 #FN=0 E[IF]=3 E[IV]=5.98858 E[IFE]=2]
+[PolygonalSurface #V=1051 #E=3147 #F=2098 Chi=2]
+[ConvexCellComplex<3> #C=1 #F=2098 #V=1051 ]
 \endverbatim
+
+<table>
+<tr>
+<td> 
+\image html exampleQuickHull3D-bunny-input.jpg "Coarse model of Stanford bunny"
+</td><td>
+\image html exampleQuickHull3D-bunny-both.jpg "Its convex hull with a precision 100"
+</td>
+</tr>
+</table>
 
 @see \ref moduleQuickHull
 
@@ -91,6 +120,11 @@ int main( int argc, char* argv[] )
   PolygonalSurface< RealPoint > polysurf;
   bool ok2 = Helper::computeConvexHullBoundary( polysurf, points, precision );
   trace.info() << polysurf << std::endl;
+
+  // Build the convex hull as a convex cell complex.
+  ConvexCellComplex< RealPoint > cvx_complex;
+  bool ok3 = Helper::computeConvexHullCellComplex( cvx_complex, points, precision );
+  trace.info() << cvx_complex << std::endl;
   
   return 0;
 } 
