@@ -245,7 +245,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
   typedef typename Delaunay::Ridge             Ridge;
   typedef typename ConvexCellComplex< Point >::FaceRange FaceRange;
   
-  std::cout << "Compute convex hull in higher dimension" << std::endl;
   Delaunay del;
   del.setInput( input_points, remove_duplicates );
   bool ok = del.computeConvexHull( Delaunay::Status::VerticesCompleted );
@@ -263,7 +262,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
                                 cell_complex.true_face_vertices );
   // (2) assign ridges/faces to cell and conversely
   const Index  nb_r = r2f.size();
-  std::cout << "assign ridges/faces to cell and conversely" << std::endl;
   cell_complex.true_face_cell .resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.false_face_cell.resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.true_face_vertices.resize( nb_r );
@@ -284,7 +282,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
     cell_complex.cell_faces.push_back( current_faces );
   }
   // (3) Takes care of vertex positions
-  std::cout << "takes care of vertex positions" << std::endl;
   del.getVertexPositions( cell_complex.vertex_position );
   return true;
 }
@@ -507,7 +504,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
   typedef typename Delaunay::Ridge             Ridge;
   typedef typename ConvexCellComplex< RealPoint >::FaceRange FaceRange;
   
-  std::cout << "Compute convex hull in higher dimension" << std::endl;
   Delaunay del( precision );
   del.setInput( input_points, remove_duplicates );
   bool ok = del.computeConvexHull( Delaunay::Status::VerticesCompleted );
@@ -525,7 +521,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
                                 cell_complex.true_face_vertices );
   // (2) assign ridges/faces to cell and conversely
   const Index  nb_r = r2f.size();
-  std::cout << "assign ridges/faces to cell and conversely" << std::endl;
   cell_complex.true_face_cell .resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.false_face_cell.resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.true_face_vertices.resize( nb_r );
@@ -546,7 +541,6 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
     cell_complex.cell_faces.push_back( current_faces );
   }
   // (3) Takes care of vertex positions
-  std::cout << "takes care of vertex positions" << std::endl;
   del.getVertexPositions( cell_complex.vertex_position );
   return true;
 }
