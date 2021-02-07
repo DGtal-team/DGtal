@@ -51,6 +51,7 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
 {
   typedef ConvexityHelper< 2 >    Helper;
   typedef Helper::Point           Point;
+  typedef ConvexCellComplex< Point > CvxCellComplex;
   GIVEN( "Given a star { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
@@ -78,6 +79,42 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
       }
       THEN( "The boundary of the polytope contains 5 points" ) {
         REQUIRE( P.countBoundary() == 5 );
+      }
+    }
+  }
+  GIVEN( "Given a square with an additional outside vertex " ) {
+    std::vector<Point> V
+      = { Point(-10,-10), Point(10,-10), Point(-10,10), Point(10,10),
+      Point(0,18) };
+    WHEN( "Computing its Delaunay cell complex" ){
+      CvxCellComplex complex;
+      bool ok = Helper::computeDelaunayCellComplex( complex, V, false );
+      CAPTURE( complex );
+      THEN( "The complex has 2 cells, 6 faces, 5 vertices" ) {
+        REQUIRE( ok );
+        REQUIRE( complex.nbCells() == 2 );
+        REQUIRE( complex.nbFaces() == 6 );
+        REQUIRE( complex.nbVertices() == 5 );
+      }
+      THEN( "The faces of cells are finite" ) {
+        bool ok_finite = true;
+        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+          const auto faces = complex.cellFaces( c );
+          for ( auto f : faces )
+            ok_finite = ok_finite && ! complex.isInfinite( complex.faceCell( f ) );
+        }
+        REQUIRE( ok_finite );
+      }
+      THEN( "The opposite of faces of cells are infinite except two" ) {
+        int  nb_finite   = 0;
+        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+          const auto faces = complex.cellFaces( c );
+          for ( auto f : faces ) {
+            const auto opp_f = complex.opposite( f );
+            nb_finite += complex.isInfinite( complex.faceCell( opp_f ) ) ? 0 : 1;
+          }
+        }
+        REQUIRE( nb_finite == 2 );
       }
     }
   }
