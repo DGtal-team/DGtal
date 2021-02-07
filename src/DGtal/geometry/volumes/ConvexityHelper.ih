@@ -496,6 +496,64 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger >
+bool
+DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
+( ConvexCellComplex< RealPoint >& cell_complex,
+  const std::vector< RealPoint >& input_points,
+  double precision,
+  bool remove_duplicates )
+{
+  typedef QuickHull< RealDelaunayKernel >      Delaunay;
+  typedef typename Delaunay::Ridge             Ridge;
+  typedef typename ConvexCellComplex< RealPoint >::FaceRange FaceRange;
+  
+  std::cout << "Compute convex hull in higher dimension" << std::endl;
+  Delaunay del( precision );
+  del.setInput( input_points, remove_duplicates );
+  bool ok = del.computeConvexHull( Delaunay::Status::VerticesCompleted );
+  cell_complex.clear();
+  if ( ! ok ) return false;
+  
+  // Build complex, as many maximal cells as convex hull facets.
+  // convex hull facet -> cell of complex
+  // convex hull ridge -> face of complex
+  // (1) Get cell vertices, count ridges/faces and compute their vertices
+  std::map< Ridge, Index > r2f;
+  computeFacetAndRidgeVertices( del,
+                                cell_complex.cell_vertices,
+                                r2f,
+                                cell_complex.true_face_vertices );
+  // (2) assign ridges/faces to cell and conversely
+  const Index  nb_r = r2f.size();
+  std::cout << "assign ridges/faces to cell and conversely" << std::endl;
+  cell_complex.true_face_cell .resize( nb_r, cell_complex.infiniteCell() );
+  cell_complex.false_face_cell.resize( nb_r, cell_complex.infiniteCell() );
+  cell_complex.true_face_vertices.resize( nb_r );
+  for ( Index cur_f = 0; cur_f < del.nbFiniteFacets(); ++cur_f ) { 
+    const auto& facet = del.facets[ cur_f ];
+    FaceRange current_faces;
+    for ( auto neigh_f : facet.neighbors ) {
+      const Ridge r { std::min( cur_f, neigh_f ), std::max( cur_f, neigh_f ) };
+      const bool pos = cur_f < neigh_f;
+      const Index cur_r = r2f[ r ];
+      cell_complex.true_face_cell [ cur_r ] = r.first;
+      if ( r.second >= del.nbFiniteFacets() )
+        cell_complex.false_face_cell[ cur_r ] = cell_complex.infiniteCell();
+      else
+        cell_complex.false_face_cell[ cur_r ] = r.second;
+      current_faces.emplace_back( cur_r, pos );
+    }
+    cell_complex.cell_faces.push_back( current_faces );
+  }
+  // (3) Takes care of vertex positions
+  std::cout << "takes care of vertex positions" << std::endl;
+  del.getVertexPositions( cell_complex.vertex_position );
+  return true;
+}
+
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger >
 template < typename QHull >
 void
 DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices

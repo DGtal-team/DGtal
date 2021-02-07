@@ -339,6 +339,42 @@ namespace DGtal
                                   bool remove_duplicates = true );
     
     /// @}
+
+
+    // ----------------- real Delaunay services -------------------------
+  public:
+    /// @name Real Delaunay services
+    /// @{
+
+    /// Computes the Delaunay cell complex associated to the given
+    /// range of input real points.
+    ///
+    /// @param[out] cell_complex the output cell complex that
+    /// represents the Delaunay complex of the given lattice points.
+    ///
+    /// @param[in] input_points the range of input real points.
+    ///
+    /// @param[in] precision the scaling factor that is used to
+    /// multiply each real coordinate before rounding it to an
+    /// integer, a kind of common denominator if you think of the
+    /// result as a rational number.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return 'true' if the input points were full dimensional and
+    /// the output complex is correct, otherwise return 'false'.
+    ///
+    /// @note The Delaunay cell complex may not be simplicial if some
+    /// points are cospherical.
+    static
+    bool
+    computeDelaunayCellComplex( ConvexCellComplex< RealPoint >& cell_complex,
+                                const std::vector< RealPoint >& input_points,
+                                double precision = 1024.0,
+                                bool remove_duplicates = true );
+    
+    /// @}
     
     // ----------------- utility services -------------------------
   public:

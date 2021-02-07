@@ -24,7 +24,9 @@ decompositions.
 
 The following programs are related to this documentation:
 exampleLatticeBallQuickHull3D.cpp ,
-exampleLatticeBallDelaunay2D.cpp , exampleRationalBallQuickHull3D.cpp ,
+exampleLatticeBallDelaunay2D.cpp , 
+exampleRationalBallQuickHull3D.cpp ,
+exampleRationalBallDelaunay3D.cpp ,
 exampleQuickHull3D.cpp ,
 testQuickHull.cpp , testConvexityHelper.cpp
 
@@ -461,6 +463,28 @@ codimension 1 facets as the number of polytope faces, and as many
 vertices than the points lying on the convex hull boundary.
 
 @see exampleQuickHull3D.cpp
+
+
+
+@subsection dgtal_quickhull_sec38 Building the Delaunay cell complex of real points (nD)
+
+You may use ConvexityHelper::computeDelaunayCellComplex to approximate the
+Delaunay cell complex of a range of real points, by specifying a precision.
+
+\code
+typedef ConvexityHelper< 3 > Helper;
+typedef Helper::RealPoint    RealPoint;
+std::vector<RealPoint> V
+= { RealPoint(0,0,0), RealPoint(-2.77,0,0), RealPoint(2.77,0,0), 
+    RealPoint(0,-2.77,0), RealPoint(0,2.77,0),
+    RealPoint(0,0,-2.77), RealPoint(0,0,2.77) };
+ConvexCellComplex< RealPoint > complex;
+bool ok = Helper::computeDelaunayCellComplex( complex, V, 100.0 );
+\endcode
+
+You can have a look at exampleRationalBallDelaunay3D.cpp for a complete example, with a post-processing that blowns up the 3D cells for visualization.
+
+\image html exampleRationalBallDelaunay3D-100.jpg "Delaunay cell decomposition of 100 randomly chosen points in a 3D ball with radius 10, with precision 100 and retraction 0.25"
 
 */
 
