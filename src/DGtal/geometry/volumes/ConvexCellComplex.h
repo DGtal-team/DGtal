@@ -128,7 +128,7 @@ namespace DGtal
     /// @return the number of finite cells with maximal dimension
     Size nbCells() const
     { return cell_faces.size(); }
-    /// @return the number of cells of codimension 1
+    /// @return the number of unoriented cells of codimension 1 
     Size nbFaces() const
     { return true_face_cell.size(); }
     /// @return the number of vertices

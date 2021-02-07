@@ -126,7 +126,7 @@ You may check computation times with (QuickHull::timings)
 
 \snippet geometry/tools/exampleLatticeBallQuickHull3D.cpp QuickHull3D-Timings
 
-You can easily retrieves the vertex positions with
+You can easily retrieve the vertex positions with
 QuickHull::getVertexPositions (you can put them in a vector of real or
 lattice points), and retrieves the consistently oriented vertices for
 each face with QuickHull::getFacetVertices. Below we show how to build
