@@ -178,7 +178,10 @@ eval (SurfelConstIterator it) const
         n[d] = NumberTraits<Integer>::ZERO;
     }
 
-    ASSERT(n != RealPoint::zero);
+    if (n == RealPoint::zero)
+    {
+        return trivial;
+    }
 
     return n;
 }

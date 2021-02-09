@@ -299,8 +299,6 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
         }
     }
 
-    // TODO: isValid should probably be done after the advance not inside
-    // ASSERT(isValid());
     if (! isValid())
     {
         return false;

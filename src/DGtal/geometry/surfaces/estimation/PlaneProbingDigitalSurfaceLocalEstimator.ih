@@ -143,14 +143,15 @@ eval (SurfelConstIterator it)
     }
     else if (zeros.size() == 1)
     {
-        // TODO: check this section
+        // TODO: recompute flat directions at each step?
         int index = zeros[0];
         normal = myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
         // normal = getNormalOneFlatDirection(index);
     }
     else if (zeros.size() == 2)
     {
-        normal = frame.normal;
+        // normal = frame.normal;
+        normal = myProbingAlgorithm->compute();
     }
 
     delete myProbingAlgorithm;
