@@ -62,7 +62,9 @@
     (Jacques-Olivier Lachaud,[#1538](https://github.com/DGtal-team/DGtal/pull/1538))
   - Fix BoundedLatticePolytope::init when using half-spaces initialization
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
-    
+  - Fix an issue in DigitalSurfaceRegularization about bad buffer init
+    (David Coeurjolly, [#1548](https://github.com/DGtal-team/DGtal/pull/1548))
+
 - *Shapes package*
   - Fix the use of uninitialized variable in NGon2D.
    (Daniel Antunes,[#1540](https://github.com/DGtal-team/DGtal/issues/1540))
