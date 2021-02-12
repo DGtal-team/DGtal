@@ -1,3 +1,32 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @ingroup Tests
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/02/12
+ *
+ * Functions for testing class DGtal::ArithmeticalDSSComputerOnSurfels.
+ *
+ * This file is part of the DGtal library.
+ */
+
 #include <iostream>
 #include <string>
 #include <iterator>
@@ -6,13 +35,12 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/topology/DigitalSurface2DSlice.h"
+#include "ConfigTest.h"
+#include "DGtalCatch.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/surfaces/ArithmeticalDSSComputerOnSurfels.h"
-#include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
-
-#include "DGtal/io/boards/Board2D.h"
 
 using namespace std;
 using namespace DGtal;
@@ -22,12 +50,10 @@ using SH3    = Shortcuts<KSpace>;
 using Surfel = KSpace::SCell;
 
 using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, std::vector<Surfel>::const_iterator, int, 4>;
-using SegmentationSurfels      = GreedySegmentation<SegmentComputerOnSurfels>;
-// using SegmentationSurfels   = SaturatedSegmentation<SegmentComputerOnSurfels>;
-//
+using SegmentationSurfels   = SaturatedSegmentation<SegmentComputerOnSurfels>;
+
 using SegmentComputer = ArithmeticalDSSComputer<std::vector<Z2i::Point>::const_iterator, int, 4>;
-using Segmentation    = GreedySegmentation<SegmentComputer>;
-// using Segmentation = SaturatedSegmentation<SegmentComputer>;
+using Segmentation = SaturatedSegmentation<SegmentComputer>;
 
 struct Slice
 {
@@ -110,35 +136,8 @@ std::vector<Z2i::Point> extractPoints (SegmentComputerOnSurfels const& sc, Slice
     return points;
 }
 
-template < typename Segmentation >
-void displaySegmentation (Segmentation const& segmentation,
-                          std::vector<Z2i::Point> const& points,
-                          std::string const& filename)
-{
-    Board2D board;
-
-    // Initial points (starting surfel)
-    board << CustomStyle("PointVector", new CustomColors(Color::Red, Color::None)) << points[0] << points[1];
-
-    // All the projected points
-    for (const auto& p: points)
-    {
-        board << SetMode("PointVector", "Grid") << p;
-    }
-
-    // The segmentations
-    board << SetMode( "ArithmeticalDSS", "BoundingBox" );
-    for (auto sit = segmentation.begin(); sit != segmentation.end(); ++sit)
-    {
-        auto s = *sit;
-        board << CustomStyle("ArithmeticalDSS/BoundingBox", new CustomPenColor(Color::Red)) << s.primitive();
-    }
-
-    board.saveSVG(filename.c_str());
-}
-
 //////////////////////////////////////////////////////////////
-int main(void)
+TEST_CASE("Testing ArithmeticalDSSComputerOnSurfels")
 {
     // Construct and extract a slice of a digital surface
     KSpace kspace;
@@ -156,13 +155,18 @@ int main(void)
     SegmentComputer recognitionAlgorithm;
     Segmentation segmentation(points.begin(), points.end(), recognitionAlgorithm);
 
-    // TODO: the two segmentations must be the same
+    // The two segmentations must be the same
+    bool allEqual = true;
+    auto segIt = segmentation.begin();
+    auto segSurfelIt = segmentationSurfels.begin();
+    while (segIt != segmentation.end() && segSurfelIt != segmentationSurfels.end()) {
+        allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
 
-#if 0
-    // Display some stuff
-    displaySegmentation(segmentationSurfels, points, "recoSurfels.svg");
-    displaySegmentation(segmentation, points, "reco.svg");
-#endif
+        ++segIt;
+        ++segSurfelIt;
+    }
 
-    return 0;
+    REQUIRE(allEqual);
 }
+
+/** @ingroup Tests **/

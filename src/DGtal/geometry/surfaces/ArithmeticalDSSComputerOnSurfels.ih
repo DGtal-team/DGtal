@@ -88,11 +88,31 @@ init(const ConstIterator& it)
   auto initialPoints = projectSurfel(s);
   myPreviousSurfelFront = it;
   myPreviousSurfelBack = it;
-  std::cout << "init, s=" << s << ", p1=" << initialPoints.first << ", p2=" << initialPoints.second << std::endl;
 
-  myDSS = DSS(initialPoints.first);
-  ASSERT(myDSS.isExtendableFront(initialPoints.second));
-  myDSS.extendFront(initialPoints.second);
+  // We ensure that the first two points are inserted in the correct order
+  Point firstPoint = initialPoints.first, secondPoint = initialPoints.second;
+  if (myKSpace->sIsValid(*myEnd)) {
+      auto nextPoints = projectSurfel(*myEnd);
+      if (nextPoints.first == initialPoints.first) {
+          secondPoint = initialPoints.first;
+          firstPoint = initialPoints.second;
+      } else if (nextPoints.first == initialPoints.second) {
+          secondPoint = initialPoints.second;
+          firstPoint = initialPoints.first;
+      } else if (nextPoints.second == initialPoints.first) {
+          secondPoint = initialPoints.first;
+          firstPoint = initialPoints.second;
+      } else if (nextPoints.second == initialPoints.second) {
+          secondPoint = initialPoints.second;
+          firstPoint = initialPoints.first;
+      } else {
+          ASSERT(false);
+      }
+  }
+
+  myDSS = DSS(firstPoint);
+  ASSERT(myDSS.isExtendableFront(secondPoint));
+  myDSS.extendFront(secondPoint);
 }
 
 //-----------------------------------------------------------------------------
@@ -453,7 +473,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::c
         return true;
     }
 
-    // The surfels doesn't intersect or are the same
+    // The surfels don't intersect or are the same
     return false;
 }
 
