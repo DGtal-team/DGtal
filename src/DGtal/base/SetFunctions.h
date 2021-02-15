@@ -484,7 +484,7 @@ namespace DGtal
                 itE = S1.end(); it != itE; )
           {
             typename Container::iterator itNext = it; ++itNext;
-            if ( S2.find( *it ) == S2.end() )
+            if ( S2.find( CompAdapter::key( *it ) ) == S2.end() )
               S1.erase( CompAdapter::key( *it ) );
             it = itNext;
           }

@@ -1,0 +1,45 @@
+FROM dockcross/manylinux2014-x64
+LABEL MAINTAINER="Pablo Hernandez Cerdan <pablo.hernandez.cerdan@outlook.com>"
+
+# RUN gosu root yum install boost
+#### Global Variables
+ENV BUILD_PATH /work
+
+############# BOOST ##############
+ENV BOOST_VERSION_MAJOR=1
+ENV BOOST_VERSION_MINOR=72
+ENV BOOST_VERSION_PATCH=0
+ENV BOOST_VERSION ${BOOST_VERSION_MAJOR}_${BOOST_VERSION_MINOR}_${BOOST_VERSION_PATCH}
+ENV BOOST_VERSION_DOTS ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.${BOOST_VERSION_PATCH}
+ENV BOOST_SRC_FOLDER_NAME boost-src
+ENV BOOST_SRC_DIR ${BUILD_PATH}/${BOOST_SRC_FOLDER_NAME}
+ENV BOOST_BUILD_DIR ${BUILD_PATH}/boost-build
+ENV BOOST_CMAKE_CONFIG_FOLDER ${BOOST_BUILD_DIR}/lib/cmake/Boost-${BOOST_VERSION_DOTS}
+ENV BOOST_GIT_REPOSITORY https://github.com/boostorg/boost
+ENV BOOST_GIT_TAG boost-${BOOST_VERSION_DOTS}
+ENV BOOST_URL "https://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION_DOTS}/boost_${BOOST_VERSION}.tar.gz/download"
+WORKDIR $BUILD_PATH
+RUN wget ${BOOST_URL} -O boost_${BOOST_VERSION}.tar.gz && \
+    mkdir ${BOOST_SRC_DIR} && \
+    tar --strip-components=1 -xzf boost_${BOOST_VERSION}.tar.gz -C ${BOOST_SRC_DIR} && \
+    rm boost_${BOOST_VERSION}.tar.gz && \
+    cd ${BOOST_SRC_DIR} && \
+    ./bootstrap.sh --prefix=${BOOST_BUILD_DIR} && \
+    ./b2 -j 4 variant=release --without-python install && \
+    rm -rf ${BOOST_SRC_DIR}
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG IMAGE=dgtal-linux-dependencies
+ARG VERSION=latest
+ARG VCS_REF
+ARG VCS_URL
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name=$IMAGE \
+      org.label-schema.version=$VERSION \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url=$VCS_URL \
+      org.label-schema.schema-version="1.0" \
+      build_command="\
+      docker build -f ./wrap/deploy/Dockerfile-dockcross-manylinux2014-dependencies . -t phcerdan/dgtal-linux-dependencies; \
+      docker cp $(docker create phcerdan/dgtal-linux-dependencies:latest):/work/dist /tmp"

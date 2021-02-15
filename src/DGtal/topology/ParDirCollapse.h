@@ -213,6 +213,9 @@ private:
     const KSpace& K;
     /// Pointer to complex.
     CC * complex;
+    // ------------------------- Public Datas --------------------------------
+public:
+    bool verbose = true;
 
 }; // end of class ParDirCollapse
 
