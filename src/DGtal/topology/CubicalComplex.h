@@ -553,7 +553,8 @@ namespace DGtal
     CubicalComplex ( const CubicalComplex & other );
 
     /**
-    * Constructor a complex from a digital set.
+    * Construct a complex from a digital set.
+    * @tparam TDigitalSet either kind of DigitalSet
     * @param set - a digital set from which to create a complex.
     * Set has to be of the same dimension as a Khalimsky space.
     */
@@ -843,6 +844,10 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( const Cell& aCell ) const;
+    /**
+    * @param aCell any pre-cell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
     bool belongs( const PreCell& aCell ) const;
 
     /**
@@ -851,6 +856,11 @@ namespace DGtal
     * @return 'true' if and only if \a aCell belongs to this complex.
     */
     bool belongs( Dimension d, const Cell& aCell ) const;
+    /**
+    * @param d the dimension of cell \a aCell.
+    * @param aCell any precell valid in the Khalimsky space associated to the complex.
+    * @return 'true' if and only if \a aCell belongs to this complex.
+    */
     bool belongs( Dimension d, const PreCell& aCell ) const;
 
     /**

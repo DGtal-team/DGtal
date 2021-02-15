@@ -119,6 +119,24 @@ DGtal::Color::operator<( const Color & aColor ) const
   return false;
 }
 
+bool
+DGtal::Color::operator>( const Color & aColor ) const
+{
+  return !this->operator<(aColor);
+}
+
+bool
+DGtal::Color::operator<=( const Color & aColor ) const
+{
+  return this->operator<(aColor) || this->operator==(aColor);
+}
+
+bool
+DGtal::Color::operator>=( const Color & aColor ) const
+{
+  return this->operator>(aColor) || this->operator==(aColor);
+}
+
 
 void
 DGtal::Color::flushPostscript( std::ostream & stream ) const
@@ -177,16 +195,6 @@ DGtal::Color::tikz() const
   secured_sprintf( buffer, 255, "{rgb,255:red,%d;green,%d;blue,%d}", myRed, myGreen, myBlue );
   return buffer;
 }
-
-
-
-/**
- * Destructor.
- */
-DGtal::Color::~Color()
-{
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
