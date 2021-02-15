@@ -231,7 +231,7 @@ namespace DGtal
     /**
      * @return the domain extension of the image.
      */
-    Vector extent() const;
+    const Vector &extent() const;
 
     /**
      * Translate the underlying domain by @a aShift

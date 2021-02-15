@@ -690,6 +690,15 @@ isAnyDimensionPeriodic() const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Closure
+DGtal::KhalimskySpaceND< dim, TInteger>::
+getClosure(Dimension k) const
+{
+  return myClosure[k];
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uCell( const PreCell & c ) const

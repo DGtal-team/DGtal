@@ -16,10 +16,14 @@ then
     # 2) "warning: argument 'surface' of command @param is not found in the argument list of DGtal::ShortcutsGeometry< TKSpace >::getKSpace(typename TDigitalSurfaceContainer)"
     #    at src/DGtal/helpers/Shortcuts.h 386 & 397
     #    Probably a bug (e.g. removing the template parameter solves the warning)
+    # 3) warning: argument 'set' of command @param is not found in the argument list of DGtal::VoxelComplex< TKSpace, TCellContainer >::construct(typename TDigitalSet)
+    #     Might be related to: Inheritance with different names of template parameter:
+    #       https://github.com/doxygen/doxygen/issues/8181
     rm -f /tmp/doxygen.*.log
     awk '\
             /unexpected token TK_EOF as the argument of ref/ \
         ||  /argument .surface. of command @param is not found in the argument list/ \
+        ||  /argument .set. of command @param is not found in the argument list/ \
                 {print $0 > "/tmp/doxygen.ignored.log"; next} \
                 {print $0 > "/tmp/doxygen.kept.log"} \
         ' "$DOXYGENLOG"

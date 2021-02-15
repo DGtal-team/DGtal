@@ -9,6 +9,8 @@
     (Pablo Hernandez-Cerdan, David Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/pull/1524))
   - Modernize CMake: Prefer use targets rather than directories and libraries
     (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1543))
+  - Add python wrappings using pybind11. Check wrap/README.md for details.
+    (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528))
 
 - *Documentation*
   - Fix some small errors : includes, variable names, code example
