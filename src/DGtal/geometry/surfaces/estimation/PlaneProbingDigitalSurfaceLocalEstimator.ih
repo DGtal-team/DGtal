@@ -150,8 +150,7 @@ eval (SurfelConstIterator it)
     }
     else if (zeros.size() == 2)
     {
-        // normal = frame.normal;
-        normal = myProbingAlgorithm->compute();
+        normal = frame.normal;
     }
 
     delete myProbingAlgorithm;

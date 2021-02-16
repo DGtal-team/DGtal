@@ -58,7 +58,7 @@ tetrahedron. The objective of the algorithm is to iteratively update one vertex
 of this tetrahedron until one of its faces is parallel to the digital set.  The
 update procedure will consist in selecting a point inside a \e candidate \e
 set. Multiple candidate sets have been proposed but we will start by describing
-the simplest one, the so-called \e H-neighorhood.  We start by
+the simplest one, the so-called \e H-neighborhood.  We start by
 illustrating its behavior when the digital set is a digital plane segment. The
 next image shows the initial state of the estimator. We will denote by \f$
 (v_k)_{0 \leq k \leq 2 } \f$ the three vertices of the base triangle (the blue disks on the left), \f$ q \f$
@@ -117,12 +117,12 @@ We will denote by PH, PR and PR1 the three variations of the parallelepiped esti
 
 \subsection subsectPlaneProbing13 Summary of the different variants
 
-| Algorithm |           Principle           |    Initialization    |     Candidate Set     |
-|:---------:|:-----------------------------:|:--------------------:|:---------------------:|
-|     H     | Downward oriented tetrahedron | Any reentrant corner | 6 points in a hexagon |
-|   R, R1   | Downward oriented tetrahedron | Any reentrant corner | 6 points + 6 rays     |
-|     PH    | Separating parallelpiped      | Any point            | 6 points in a hexagon |
-|  PR, PR1  | Separating parallelpiped      | Any point            | 6 points + 6 rays     |
+| Algorithm |           Principle            |    Initialization    |     Candidate Set     |
+|:---------:|:------------------------------:|:--------------------:|:---------------------:|
+|     H     | Downward oriented tetrahedron  | Any reentrant corner | 6 points in a hexagon |
+|   R, R1   | Downward oriented tetrahedron  | Any reentrant corner | 6 points + 6 rays     |
+|     PH    | Separating parallelepiped      | Any point            | 6 points in a hexagon |
+|  PR, PR1  | Separating parallelepiped      | Any point            | 6 points + 6 rays     |
 
 \section sectPlaneProbing2 Constructing and using a plane-probing estimator
 
@@ -132,7 +132,7 @@ In DGtal, both categories of plane-probing estimators are implemented, see \ref
 PlaneProbingTetrahedronEstimator for the first category and \ref PlaneProbingParallelepipedEstimator for the second one.
 In the following, we explain the API for \ref PlaneProbingTetrahedronEstimator.
 
-The general way of instantiating a plane-probing estimator is the folllowing:
+The general way of instantiating a plane-probing estimator is the following:
 @snippet geometry/surfaces/examplePlaneProbingTetrahedronEstimator.cpp PlaneProbingTetrahedronEstimatorConstruction
 
 And to use it:
@@ -148,14 +148,14 @@ The common services shared by plane-probing estimators are the following:
 Probing services:
 - PlaneProbingTetrahedronEstimator::advance does one step of the estimation.
 - PlaneProbingTetrahedronEstimator::compute repeatedly calls advance until a final configuration is found.
-- PlaneProbingTetrahedronEstimator::getBasis returns the two shortest edges of the base triangte.
+- PlaneProbingTetrahedronEstimator::getBasis returns the two shortest edges of the base triangle.
 - PlaneProbingTetrahedronEstimator::isReduced tells whether the vectors returned by getBasis form a reduced basis or not.
 - PlaneProbingTetrahedronEstimator::getNormal returns the current normal vector.
 
 Services specific to \ref PlaneProbingParallelepipedEstimator :
 - PlaneProbingParallelepipedEstimator::getState returns the number of points that are inside the digital set according to \b InPlane.
-- PlaneProbingParallelepipedEstimator::isSeparating returns a boolean testing whether the current parallelpiped is separating or not.
-- PlaneProbingParallelepipedEstimator::isInReverseState returns a boolean saying whether the current parallelpiped is in a reverse state or not.
+- PlaneProbingParallelepipedEstimator::isSeparating returns a boolean testing whether the current parallelepiped is separating or not.
+- PlaneProbingParallelepipedEstimator::isInReverseState returns a boolean saying whether the current parallelepiped is in a reverse state or not.
 
 \subsection subsectPlaneProbing22 On a digital surface
 
@@ -171,7 +171,7 @@ And to use it:
 
 The parameters that are specific to this estimator are the following:
 - the \e probing \e factory is a function that takes as input a \e frame (a base point and three vectors) and a reference to the predicate. It should return a plane-probing estimator from these inputs.
-- \e pre-estimations. Due to its nature, a plane-probing algorithm only works correcetly in the octant determined by the initial frame. If this octant is not correct, then the estimated normal will also be incorrect. That is why we use so-called pre-estimations that must be normal vectors that are cheap to evaluate and that are used to construct a good initial frame. The user can provide such estimations via the third parameter, otherwise it is automatically computed internally using a MaximalSegmentSliceEstimation estimator.
+- \e pre-estimations. Due to its nature, a plane-probing algorithm only works correctly in the octant determined by the initial frame. If this octant is not correct, then the estimated normal will also be incorrect. That is why we use so-called pre-estimations that must be normal vectors that are cheap to evaluate and that are used to construct a good initial frame. The user can provide such estimations via the third parameter, otherwise it is automatically computed internally using a MaximalSegmentSliceEstimation estimator.
 
 Model of \ref concepts::CSurfelLocalEstimator :
 - PlaneProbingDigitalSurfaceLocalEstimator::init() initializes the estimator.
