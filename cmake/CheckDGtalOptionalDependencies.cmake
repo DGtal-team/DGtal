@@ -406,7 +406,7 @@ if(WITH_CGAL)
     message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must activate  WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
   endif()
 
-  find_package(CGAL COMPONENTS Core Eigen3 BLAS LAPACK)
+  find_package(CGAL COMPONENTS Core)
   if(CGAL_FOUND)
     include( ${CGAL_USE_FILE} )
     set(CGAL_FOUND_DGTAL 1)
