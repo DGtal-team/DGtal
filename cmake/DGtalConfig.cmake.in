@@ -101,7 +101,7 @@ endif()
 
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
-  find_dependency(CGAL COMPONENTS Core Eigen3
+  find_dependency(CGAL COMPONENTS Core 
     @CGAL_HINTS@
     )
   set(WITH_CGAL 1)
