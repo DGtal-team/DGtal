@@ -64,7 +64,10 @@
   - We now use cmake *Fetch_Content* to download the stable release of
     Catch2 (used in our unit-tests) when building the project (David
     Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
-
+  - Fixing the required components for CGAL (David Coeurjolly,
+    [#1550](https://github.com/DGtal-team/DGtal/issues/1550))
+  
+  
 # DGtal 1.1
 
 ## New Features / Critical Changes
