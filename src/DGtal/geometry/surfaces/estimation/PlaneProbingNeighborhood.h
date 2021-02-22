@@ -70,8 +70,9 @@ namespace DGtal
   public:
       using Predicate  = TPredicate;
       using Point      = typename Predicate::Point;
+      using Vector     = Point;
       using Integer    = typename Point::Coordinate;
-      using Triangle   = std::array<Point, 3>;
+      using Triangle   = std::array<Vector, 3>;
       using ProbingRay = detail::ProbingRay<Integer>;
 
       /**

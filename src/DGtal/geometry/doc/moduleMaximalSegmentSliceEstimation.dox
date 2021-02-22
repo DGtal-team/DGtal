@@ -24,7 +24,7 @@ namespace DGtal {
 Part of the \ref packageGeometry.
 
 This part of the manual describes the normal estimation algorithm based on the computation of maximal segment
-on slices of a digital surface.
+on slices of a digital surface (see @cite Lachaud03c and @cite lenoir1996fast).
 
 [TOC]
 

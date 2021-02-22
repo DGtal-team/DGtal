@@ -148,7 +148,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) const
 {
     return myTetrahedronEstimator.m(aIndex);
@@ -348,7 +348,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::hexagonState () co
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
+typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 {
     return myTetrahedronEstimator.getNormal();
@@ -357,8 +357,8 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-std::pair<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point,
-          typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point>
+std::pair<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector,
+          typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector>
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
 {
     return myTetrahedronEstimator.getBasis();

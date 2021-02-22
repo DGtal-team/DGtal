@@ -107,9 +107,8 @@ inside the digital set) and is more general than the previous one.
 @image html plane-probing-illustration-cube.png "The two tetrahedra are displayed in red and blue. The points p and q are the \e bases of the two tetrahedra."
 @image latex plane-probing-illustration-cube.png "The two tetrahedra are displayed in red and blue. The points p and q are the \e bases of the two tetrahedra." width=5cm
 
-This approach is internally based on a generalization of the predicate \b
-InPlane that we call \b NotAbove that is able to tell whether a digital point
-\f$ x \f$ has a height that is smaller or greater than the one of \f$ q \f$. It naturally increased the number
+This approach is internally based on a new predicate \b NotAbove that is able to tell whether a digital point
+\f$ x \f$ has a height that is smaller or greater than the one of \f$ q \f$. It is easy to see that it can be implemented using ray-casting and the \b InPlane predicate. It naturally increases the number
 of calls to \b InPlane but has several advantages.
 See @cite LMRJMIV2020 or <a href="https://perso.liris.cnrs.fr/tristan.roussillon/pres/2019GDMM.pdf">this presentation</a> (in French) for more details.
 
@@ -126,7 +125,7 @@ We will denote by PH, PR and PR1 the three variations of the parallelepiped esti
 
 \section sectPlaneProbing2 Constructing and using a plane-probing estimator
 
-\subsection subsectPlaneProbing21 General form
+\subsection subsectPlaneProbing21 General method
 
 In DGtal, both categories of plane-probing estimators are implemented, see \ref
 PlaneProbingTetrahedronEstimator for the first category and \ref PlaneProbingParallelepipedEstimator for the second one.
@@ -170,7 +169,7 @@ And to use it:
 @warning Due to its nature, PlaneProbingTetrahedronEstimator only returns an \e approximation of the normal vector on every surfel that is not a reentrant corner. If you want to have a correct estimation on every surfel, use a PlaneProbingParallelepipedEstimator instead as the base.
 
 The parameters that are specific to this estimator are the following:
-- the \e probing \e factory is a function that takes as input a \e frame (a base point and three vectors) and a reference to the predicate. It should return a plane-probing estimator from these inputs.
+- the \e probing \e factory is a function that takes as input a \e frame (a base point and three vectors) and a reference to the predicate. It should return a dynamically allocated plane-probing estimator from these inputs.
 - \e pre-estimations. Due to its nature, a plane-probing algorithm only works correctly in the octant determined by the initial frame. If this octant is not correct, then the estimated normal will also be incorrect. That is why we use so-called pre-estimations that must be normal vectors that are cheap to evaluate and that are used to construct a good initial frame. The user can provide such estimations via the third parameter, otherwise it is automatically computed internally using a MaximalSegmentSliceEstimation estimator.
 
 Model of \ref concepts::CSurfelLocalEstimator :

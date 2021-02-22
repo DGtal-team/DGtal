@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/ArithmeticalDSSComputerOnSurfels.h"
 #include "DGtal/topology/DigitalSurface2DSlice.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,11 +59,13 @@ namespace DGtal
    *
    * @tparam TSurface the digital surface type.
    *
-   * \b Models: A PlaneProbingDigitalSurfaceLocalEstimator is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
+   * \b Models: A MaximalSegmentSliceEstimation is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
   template <typename TSurface>
   class MaximalSegmentSliceEstimation
   {
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer> ));
+
     // ----------------------- Public types ------------------------------
   public:
       using Surface      = TSurface;
@@ -71,17 +74,19 @@ namespace DGtal
       using Scalar       = double;
 
       // -------------------------------------- other types ----------------------------
-      using KSpace    = typename Surface::KSpace;
-      using SCell     = typename KSpace::SCell;
-      using Cell      = typename KSpace::Cell;
-      using Point     = typename Surface::Point;
-      using Integer   = typename Point::Coordinate;
-      using Space     = typename KSpace::Space;
-      using RealPoint = typename Space::RealPoint;
+      using KSpace     = typename Surface::KSpace;
+      using SCell      = typename KSpace::SCell;
+      using Cell       = typename KSpace::Cell;
+      using Point      = typename Surface::Point;
+      using Vector     = Point;
+      using Integer    = typename Point::Coordinate;
+      using Space      = typename KSpace::Space;
+      using RealPoint  = typename Space::RealPoint;
+      using RealVector = RealPoint;
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
-      using Quantity = RealPoint;
+      using Quantity = RealVector;
 
     // ----------------------- Private types ------------------------------
   private:
@@ -212,9 +217,9 @@ namespace DGtal
 
     /**
      * @param aSurfel a surfel.
-     * @return the trivial normal of a surfel.
+     * @return the trivial normal vector of a surfel.
      */
-    Point trivialNormal (Surfel const& aSurfel) const;
+    Vector trivialNormal (Surfel const& aSurfel) const;
   }; // end of class MaximalSegmentSliceEstimation
 
 

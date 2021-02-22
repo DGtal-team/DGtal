@@ -55,7 +55,7 @@ namespace DGtal
    * \brief Aim: Representing digital planes, which are digitizations of Euclidean planes,
    * as point predicates.
    *
-   * A digital plane is a digitization of an Euclidean plane, it can
+   * A digital plane is a digitization of a Euclidean plane, it can
    * be seen as the set of digital points comprised between two parallel Euclidean planes.
    *
    * If N is a normal vector, \f$ \mu \f$ the lower bound and \f$ \nu \f$ the thickness then the corresponding

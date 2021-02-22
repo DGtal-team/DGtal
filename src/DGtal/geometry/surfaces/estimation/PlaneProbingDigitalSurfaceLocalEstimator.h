@@ -46,6 +46,7 @@
 #include "DGtal/geometry/surfaces/DigitalSurfacePredicate.h"
 #include "DGtal/geometry/surfaces/estimation/MaximalSegmentSliceEstimation.h"
 #include "DGtal/topology/KhalimskyCellHashFunctions.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -68,6 +69,8 @@ namespace DGtal
   template <typename TSurface, typename TProbingAlgorithm>
   class PlaneProbingDigitalSurfaceLocalEstimator
   {
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer> ));
+
     // ----------------------- Public types ------------------------------
   public:
       using Surface          = TSurface;

@@ -50,6 +50,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -80,6 +81,8 @@ namespace DGtal
     unsigned short adjacency = 8>
   class ArithmeticalDSSComputerOnSurfels
   {
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
+    BOOST_STATIC_ASSERT(( TKSpace::dimension == 3 ));
 
     // ----------------------- inner types ------------------------------
   public:
@@ -115,10 +118,7 @@ namespace DGtal
     /**
      * Type of 2d digital point
      */
-    typedef typename KhalimskySpaceND<2, TInteger>::Space::Point Point;
-    // typedef typename KSpace::Space::Point Point;
-    // typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point;
-    BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
+    typedef PointVector<2, TInteger> Point;
 
     /**
      * Type of coordinate

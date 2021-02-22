@@ -130,7 +130,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point const&
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Vector const&
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::m (int aIndex) const
 {
     assert(aIndex == 0 || aIndex == 1 || aIndex == 2);
@@ -167,38 +167,40 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::vertices () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-std::pair<typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point,
-          typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point>
+std::pair<typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Vector,
+          typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Vector>
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getBasis () const
 {
-    Point u = myM[1] - myM[0],
-    v = myM[2] - myM[1],
-    w = myM[0] - myM[2];
-    assert(w == -u - v);
+    using DGtal::detail::squaredNorm;
 
-    if (DGtal::detail::squaredNorm(u) < DGtal::detail::squaredNorm(v)) {
-        if (DGtal::detail::squaredNorm(u) < DGtal::detail::squaredNorm(w)) {
-            if (DGtal::detail::squaredNorm(-w) < DGtal::detail::squaredNorm(v)) {
+    Vector u = myM[1] - myM[0],
+           v = myM[2] - myM[1],
+           w = myM[0] - myM[2];
+    ASSERT(w == -u - v);
+
+    if (squaredNorm(u) < squaredNorm(v)) {
+        if (squaredNorm(u) < squaredNorm(w)) {
+            if (squaredNorm(-w) < squaredNorm(v)) {
                 return std::make_pair(u, -w);
             } else {
                 return std::make_pair(u, v);
             }
         } else {
-            if (DGtal::detail::squaredNorm(-v) < DGtal::detail::squaredNorm(u)) {
+            if (squaredNorm(-v) < squaredNorm(u)) {
                 return std::make_pair(w, -v);
             } else {
                 return std::make_pair(w, u);
             }
         }
     } else {
-        if (DGtal::detail::squaredNorm(v) < DGtal::detail::squaredNorm(w)) {
-            if (DGtal::detail::squaredNorm(-u) < DGtal::detail::squaredNorm(w)) {
+        if (squaredNorm(v) < squaredNorm(w)) {
+            if (squaredNorm(-u) < squaredNorm(w)) {
                 return std::make_pair(v, -u);
             } else {
                 return std::make_pair(v, w);
             }
         } else {
-            if (DGtal::detail::squaredNorm(-v) < DGtal::detail::squaredNorm(u)) {
+            if (squaredNorm(-v) < squaredNorm(u)) {
                 return std::make_pair(w, -v);
             } else {
                 return std::make_pair(w, u);
@@ -220,7 +222,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isReduced () const
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Point
+typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Vector
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
 {
     auto basis = getBasis();
@@ -289,7 +291,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::hexagonState () const
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ (Point const& aTranslation)
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ (Vector const& aTranslation)
 {
     myQ += aTranslation;
 }

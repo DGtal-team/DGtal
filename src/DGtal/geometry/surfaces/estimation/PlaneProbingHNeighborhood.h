@@ -120,7 +120,7 @@ namespace DGtal
 
     // ----------------------- Plane Probing services ------------------------------
   public:
-    HexagonState hexagonState ();
+    virtual HexagonState hexagonState () override;
 
     // ----------------------- Interface --------------------------------------
   public:

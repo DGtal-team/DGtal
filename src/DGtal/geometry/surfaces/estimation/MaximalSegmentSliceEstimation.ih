@@ -167,7 +167,7 @@ eval (SurfelConstIterator it) const
     n2_3d[q] = n2[1];
 
     // Orient it according to the trivial normal of the surfel
-    RealPoint n = n1_3d.crossProduct(n2_3d);
+    RealVector n = n1_3d.crossProduct(n2_3d);
     Point trivial = trivialNormal(s);
     if (trivial.dot(n) < 0)
     {
@@ -180,7 +180,7 @@ eval (SurfelConstIterator it) const
         n[d] = NumberTraits<Integer>::ZERO;
     }
 
-    if (n == RealPoint::zero)
+    if (n == RealVector::zero)
     {
         return trivial;
     }
@@ -293,7 +293,7 @@ getExtremalPoints (SurfaceSlice const& aSlice, Dimension const& aProjectDir1, Di
 // ------------------------------------------------------------------------
 template < typename TSurface >
 inline
-typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point
+typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Vector
 DGtal::MaximalSegmentSliceEstimation<TSurface>::
 trivialNormal (Surfel const& aSurfel) const
 {
@@ -302,7 +302,7 @@ trivialNormal (Surfel const& aSurfel) const
     DGtal::Dimension q = K.sOrthDir(aSurfel);
     bool direct = K.sDirect(aSurfel, q);
 
-    Point trivial_normal = Point::zero;
+    Vector trivial_normal = Vector::zero;
     trivial_normal[q] = direct ? -1 : 1;
 
     return trivial_normal;

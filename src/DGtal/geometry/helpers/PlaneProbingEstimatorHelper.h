@@ -71,7 +71,7 @@ namespace DGtal
         /**
          * Computes the distance of a point to a sphere passing through 4 given points.
          *
-         * @param aPoints 5 points where the fist 4 define the sphere and the last one is the point to which we want to compute the distance.
+         * @param aPoints 5 points where the first 4 define the sphere and the last one is the point to which we want to compute the distance.
          * @return the distance of the last point to the sphere defined by the first 4 points.
         */
         template < typename Point >
@@ -95,9 +95,9 @@ namespace DGtal
          * Description of template class 'ProbingRay' <p>
          * A ray consists of a permutation \f$ \sigma \f$ and an integer index \f$ \lambda \f$ (position on the ray).
          * For a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ and a point \f$ q \f$, a point on the ray is defined as:
-         * \f$ q - m_{\sigma(0)} + m_{\sigma(1)} + \lambda m_{\sigma(2)} \f$.
+         * \f$ q - m_{\sigma(0)} + m_{\sigma(1)} + \lambda m_{\sigma(2)} \f$. \f$ q - m_{\sigma(0)} + m_{\sigma(1)} \f$ is called the \e base point.
          *
-         * This class is used to represent rays for a plane-probing estimator, so in practice the point \f$ q \f$ is the fixed point
+         * This class is used to represent points on rays for a plane-probing estimator, so in practice the point \f$ q \f$ is the fixed point
          * and the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ are the vectors defining the current probing frame.
          *
          * @tparam Integer the integer type.
@@ -124,7 +124,7 @@ namespace DGtal
                 ProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0));
 
                 /**
-                 * @return the first point on the ray (with index 0).
+                 * @return the base point of the ray (with index 0).
                  */
                 ProbingRay getBase () const;
 
@@ -145,7 +145,8 @@ namespace DGtal
                 Integer const& index () const;
 
                 /**
-                 * Equality test between two rays.
+                 * Equality test between two rays: the internal permutations and
+                 * indices must be the same.
                  *
                  * @param aRay an other ray.
                  * @return true if the two rays are the same, false otherwise.
@@ -161,7 +162,9 @@ namespace DGtal
                 bool operator!= (ProbingRay const& aRay) const;
 
                 /**
-                 * Comparison operator between two rays (lexicographic order on the indices).
+                 * Comparison operator between two rays: one ray is less than another if they have
+                 * the same internal permutation and the first one has a smaller index than the second
+                 * one.
                  *
                  * @param aRay an other ray.
                  * @return true if *this <= aRay, false otherwise.
