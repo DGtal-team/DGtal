@@ -66,6 +66,8 @@
     Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
   - Fixing the required components for CGAL (David Coeurjolly,
     [#1550](https://github.com/DGtal-team/DGtal/issues/1550))
+  - Speedup of the compilation of the tests that rely on Catch2
+    (Roland Denis [#1551](https://github.com/DGtal-team/DGtal/pull/1551))
   
   
 # DGtal 1.1
