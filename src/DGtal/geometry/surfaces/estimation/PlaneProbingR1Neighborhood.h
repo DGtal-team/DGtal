@@ -66,12 +66,12 @@ namespace DGtal
 
     // ----------------------- Public types ------------------------------
   public:
-      using Predicate    = TPredicate;
-      using Point        = typename TPredicate::Point;
-      using Triangle     = typename PlaneProbingRNeighborhood<TPredicate>::Triangle;
-      using ProbingRay   = typename PlaneProbingRNeighborhood<TPredicate>::ProbingRay;
-      using Integer      = typename Point::Coordinate;
-      using HexagonState = typename PlaneProbingRNeighborhood<TPredicate>::HexagonState;
+      using Predicate           = TPredicate;
+      using Point               = typename TPredicate::Point;
+      using Triangle            = typename PlaneProbingRNeighborhood<TPredicate>::Triangle;
+      using PointOnProbingRay   = typename PlaneProbingRNeighborhood<TPredicate>::PointOnProbingRay;
+      using Integer             = typename Point::Coordinate;
+      using HexagonState        = typename PlaneProbingRNeighborhood<TPredicate>::HexagonState;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -160,14 +160,14 @@ namespace DGtal
      * @param index an integer between 0 and 2.
      * @return a pair of a point on a ray and a ray.
      */
-    std::pair<ProbingRay, ProbingRay> candidateRay (int index) const;
+    std::pair<PointOnProbingRay, PointOnProbingRay> candidateRay (int index) const;
 
     /**
      * @param aPoint a point on a ray.
      * @param aRay a ray.
      * @return extremal points of aRay included in the sphere passing through aPoint and the current triangle.
      */
-    std::vector<ProbingRay> intersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay) const;
+    std::vector<PointOnProbingRay> intersectSphereRay (PointOnProbingRay const& aPoint, PointOnProbingRay const& aRay) const;
 
     /**
      * Sanity check for point returned by intersectSphereRay.
@@ -177,26 +177,26 @@ namespace DGtal
      * @param aLst a list of points on a ray.
      * @return 'true' if the points of aLst are indeed in the sphere passing through aPoint and the current triangle, 'false' otherwise.
      */
-    bool isValidIntersectSphereRay (ProbingRay const& aPoint, ProbingRay const& aRay,
-                                    std::vector<ProbingRay> const& aLst) const;
+    bool isValidIntersectSphereRay (PointOnProbingRay const& aPoint, PointOnProbingRay const& aRay,
+                                    std::vector<PointOnProbingRay> const& aLst) const;
 
     /**
      * @param aRay a ray.
      * @return the closest point on a ray using \cite RLDGCI2019 Algorithm 4.
      */
-    ProbingRay closestPointOnRayConstant (ProbingRay const& aRay) const;
+    PointOnProbingRay closestPointOnRayConstant (PointOnProbingRay const& aRay) const;
 
     /**
      * @param aRay a ray.
      * @return the closest point on the ray using a linear search.
      */
-    ProbingRay closestPointOnRayLinear (ProbingRay const& aRay) const;
+    PointOnProbingRay closestPointOnRayLinear (PointOnProbingRay const& aRay) const;
 
     /**
      * @param aRayPoint a pair describing a ray and a point on a ray.
      * @return the closest point among the points of a ray and a point on another ray.
      */
-    ProbingRay closestRayPoint (std::pair<ProbingRay, ProbingRay> const& aRayPoint) const;
+    PointOnProbingRay closestRayPoint (std::pair<PointOnProbingRay, PointOnProbingRay> const& aRayPoint) const;
 
   }; // end of class PlaneProbingR1Neighborhood
 

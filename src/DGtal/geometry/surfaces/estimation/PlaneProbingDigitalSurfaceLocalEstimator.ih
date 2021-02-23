@@ -39,26 +39,26 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator ()
 {
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator (ConstAlias<Surface> aSurface)
     : mySurface(aSurface), myPredicate(mySurface), myPreEstimationEstimator(mySurface)
 {
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator(ProbingFactory const& aProbingFactory,
                                          std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
                                          bool aVerbose)
@@ -67,9 +67,9 @@ PlaneProbingDigitalSurfaceLocalEstimator(ProbingFactory const& aProbingFactory,
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 PlaneProbingDigitalSurfaceLocalEstimator(ConstAlias<Surface> aSurface,
                                          ProbingFactory const& aProbingFactory,
                                          std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
@@ -80,9 +80,9 @@ PlaneProbingDigitalSurfaceLocalEstimator(ConstAlias<Surface> aSurface,
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 ~PlaneProbingDigitalSurfaceLocalEstimator ()
 {
     myProbingAlgorithm = nullptr;
@@ -91,21 +91,21 @@ DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
 // ----------------- model of CSurfelLocalEstimator -----------------------
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 template < typename SurfelConstIterator >
 inline
-void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */)
 {
     myH = h;
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 template < typename SurfelConstIterator >
 inline
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Quantity
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::Quantity
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 eval (SurfelConstIterator it)
 {
     ASSERT(mySurface != nullptr);
@@ -143,7 +143,6 @@ eval (SurfelConstIterator it)
     }
     else if (zeros.size() == 1)
     {
-        // TODO: recompute flat directions at each step?
         int index = zeros[0];
         normal = myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
         // normal = getNormalOneFlatDirection(index);
@@ -160,11 +159,11 @@ eval (SurfelConstIterator it)
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 template < typename SurfelConstIterator, typename OutputIterator >
 inline
 OutputIterator
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
 {
     for (auto it = itb; it != ite; ++it)
@@ -176,10 +175,10 @@ eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out)
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::Scalar
+template < typename TSurface, typename TInternalProbingAlgorithm >
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::Scalar
 inline
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 h () const
 {
     return myH;
@@ -188,9 +187,9 @@ h () const
 // --------------- model of CDigitalSurfaceLocalEstimator ------------------
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 attach (ConstAlias<Surface> aSurface)
 {
     mySurface = aSurface;
@@ -199,9 +198,9 @@ attach (ConstAlias<Surface> aSurface)
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+void DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 setParams (ProbingFactory const& aProbingFactory,
            std::unordered_map<Surfel, RealPoint> const& aPreEstimations,
            bool aVerbose)
@@ -214,10 +213,10 @@ setParams (ProbingFactory const& aProbingFactory,
 // ------------------------- Internals ------------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::ProbingFrame
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 probingFrameFromSurfel (Surfel const& aSurfel) const
 {
     ASSERT(mySurface != nullptr);
@@ -260,10 +259,10 @@ probingFrameFromSurfel (Surfel const& aSurfel) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::ProbingFrame
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::ProbingFrame
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const
 {
     ProbingFrame frame = aInitialFrame;
@@ -300,10 +299,10 @@ probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint cons
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
 void
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::selfDisplay ( std::ostream & out ) const
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PlaneProbingDigitalSurfaceLocalEstimator]";
 }
@@ -312,19 +311,19 @@ DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::se
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
 bool
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::isValid() const
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::isValid() const
 {
     return true;
 }
 
 // ------------------------------------------------------------------------
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 template < typename SurfelConstIterator >
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::RealPoint
-DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm>::
+typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::RealPoint
+DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 getPreEstimation (SurfelConstIterator it) const
 {
     Surfel const& s = *it;
@@ -345,11 +344,11 @@ getPreEstimation (SurfelConstIterator it) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template < typename TSurface, typename TProbingAlgorithm >
+template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm> & object )
+                  const PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm> & object )
 {
   object.selfDisplay( out );
   return out;

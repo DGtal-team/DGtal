@@ -65,12 +65,12 @@ namespace DGtal
 
     // ----------------------- Public types ------------------------------
   public:
-      using Predicate    = TPredicate;
-      using Point        = typename TPredicate::Point;
-      using Triangle     = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
-      using Integer      = typename PlaneProbingNeighborhood<TPredicate>::Integer;
-      using ProbingRay   = typename PlaneProbingNeighborhood<TPredicate>::ProbingRay;
-      using HexagonState = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
+      using Predicate           = TPredicate;
+      using Point               = typename TPredicate::Point;
+      using Triangle            = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
+      using Integer             = typename PlaneProbingNeighborhood<TPredicate>::Integer;
+      using PointOnProbingRay   = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
+      using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -152,7 +152,7 @@ namespace DGtal
      * @param aRay a ray.
      * @return the closest point on the ray.
      */
-    ProbingRay closestPointOnRayLogWithPredicate (ProbingRay const& aRay) const;
+    PointOnProbingRay closestPointOnRayLogWithPredicate (PointOnProbingRay const& aRay) const;
 
     /**
      * Finds the closest point on a given ray using a linear search.
@@ -160,7 +160,7 @@ namespace DGtal
      * @param aRay a ray.
      * @return the closest point on the ray.
      */
-    ProbingRay closestPointOnRayLinearWithPredicate (ProbingRay const& aRay) const;
+    PointOnProbingRay closestPointOnRayLinearWithPredicate (PointOnProbingRay const& aRay) const;
 
     // ------------------------- Internals ------------------------------------
   private:

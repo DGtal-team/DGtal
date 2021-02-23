@@ -99,6 +99,8 @@ namespace DGtal
    *
    * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    * @tparam mode the probing mode, see DGtal::ProbingMode.
+   *
+   * @todo Add PlaneProbingAlgorithm concept.
    */
   template <typename TPredicate, ProbingMode mode = ProbingMode::H>
   class PlaneProbingTetrahedronEstimator
@@ -107,18 +109,18 @@ namespace DGtal
 
     // ----------------------- Public types ------------------------------
   public:
-      using Self            = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
-      using Predicate       = TPredicate;
-      using Point           = typename Predicate::Point;
-      using Vector          = Point;
-      using Neighborhood    = PlaneProbingNeighborhood<TPredicate>;
-      using Triangle        = typename Neighborhood::Triangle;
-      using Integer         = typename Point::Coordinate;
-      using ProbingRay      = typename Neighborhood::ProbingRay;
-      using Permutation     = typename ProbingRay::Permutation;
-      using Quantity        = Vector;
-      using HexagonState    = typename Neighborhood::HexagonState;
-      using UpdateOperation = typename Neighborhood::UpdateOperation;
+      using Self                   = PlaneProbingTetrahedronEstimator<TPredicate, mode>;
+      using Predicate              = TPredicate;
+      using Point                  = typename Predicate::Point;
+      using Vector                 = Point;
+      using Neighborhood           = PlaneProbingNeighborhood<TPredicate>;
+      using Triangle               = typename Neighborhood::Triangle;
+      using Integer                = typename Point::Coordinate;
+      using PointOnProbingRay      = typename Neighborhood::PointOnProbingRay;
+      using Permutation            = typename PointOnProbingRay::Permutation;
+      using Quantity               = Vector;
+      using HexagonState           = typename Neighborhood::HexagonState;
+      using UpdateOperation        = typename Neighborhood::UpdateOperation;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -214,7 +216,7 @@ namespace DGtal
      * @return a pair (op, b) where b = false if the algorithm has terminated, true otherwise; and op is the
      * operation used to update the current tetrahedron.
      */
-    std::pair<bool, UpdateOperation> advance (std::vector<ProbingRay> const& aNeighbors);
+    std::pair<bool, UpdateOperation> advance (std::vector<PointOnProbingRay> const& aNeighbors);
 
     /**
      * Do one step of the estimation.
@@ -229,7 +231,7 @@ namespace DGtal
      * @param aNeighbors the list of candidates ray to consider.
      * @return the estimated normal.
      */
-    Quantity compute (std::vector<ProbingRay> const& aNeighbors);
+    Quantity compute (std::vector<PointOnProbingRay> const& aNeighbors);
 
     /**
      * Estimate the normal using a plane-probing approach, calls \a advance repeatedly.

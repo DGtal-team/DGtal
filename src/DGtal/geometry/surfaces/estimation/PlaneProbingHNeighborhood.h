@@ -65,11 +65,11 @@ namespace DGtal
 
     // ----------------------- Public types ------------------------------
   public:
-      using Predicate    = TPredicate;
-      using Point        = typename TPredicate::Point;
-      using Triangle     = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
-      using ProbingRay   = typename PlaneProbingNeighborhood<TPredicate>::ProbingRay;
-      using HexagonState = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
+      using Predicate           = TPredicate;
+      using Point               = typename TPredicate::Point;
+      using Triangle            = typename PlaneProbingNeighborhood<TPredicate>::Triangle;
+      using PointOnProbingRay   = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
+      using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
 
     // ----------------------- Standard services ------------------------------
   public:

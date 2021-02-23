@@ -258,7 +258,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::geometricalDecompo
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 bool
-DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<PointOnProbingRay> const& aNeighbors)
 {
     bool flag;
     UpdateOperation op;
@@ -320,7 +320,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
-DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute (std::vector<ProbingRay> const& aNeighbors)
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute (std::vector<PointOnProbingRay> const& aNeighbors)
 {
     while (advance(aNeighbors)) {}
 

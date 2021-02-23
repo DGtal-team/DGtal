@@ -123,8 +123,8 @@ DGtal::detail::isBasisReduced (Point const& aU, Point const& aV)
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
-DGtal::detail::ProbingRay<Integer>::
-ProbingRay (Permutation const& aSigma, Integer const& aIndex)
+DGtal::detail::PointOnProbingRay<Integer>::
+PointOnProbingRay (Permutation const& aSigma, Integer const& aIndex)
     : mySigma(aSigma), myIndex(aIndex)
 {
 }
@@ -133,17 +133,17 @@ ProbingRay (Permutation const& aSigma, Integer const& aIndex)
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
-DGtal::detail::ProbingRay<Integer>
-DGtal::detail::ProbingRay<Integer>::getBase () const
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::getBase () const
 {
-    return ProbingRay(mySigma, 0);
+    return PointOnProbingRay(mySigma, 0);
 }
 
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
-typename DGtal::detail::ProbingRay<Integer>::Permutation const&
-DGtal::detail::ProbingRay<Integer>::sigma () const
+typename DGtal::detail::PointOnProbingRay<Integer>::Permutation const&
+DGtal::detail::PointOnProbingRay<Integer>::sigma () const
 {
     return mySigma;
 }
@@ -152,7 +152,7 @@ DGtal::detail::ProbingRay<Integer>::sigma () const
 template < typename Integer >
 inline
 int
-DGtal::detail::ProbingRay<Integer>::sigma (int aIndex) const
+DGtal::detail::PointOnProbingRay<Integer>::sigma (int aIndex) const
 {
     assert(aIndex >= 0 && aIndex <= 2);
     return mySigma[aIndex];
@@ -162,7 +162,7 @@ DGtal::detail::ProbingRay<Integer>::sigma (int aIndex) const
 template < typename Integer >
 inline
 Integer const&
-DGtal::detail::ProbingRay<Integer>::index () const
+DGtal::detail::PointOnProbingRay<Integer>::index () const
 {
     return myIndex;
 }
@@ -171,7 +171,7 @@ DGtal::detail::ProbingRay<Integer>::index () const
 template < typename Integer >
 inline
 bool
-DGtal::detail::ProbingRay<Integer>::operator== (ProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<Integer>::operator== (PointOnProbingRay const& aRay) const
 {
     return (mySigma == aRay.mySigma) && (myIndex == aRay.index());
 }
@@ -181,7 +181,7 @@ DGtal::detail::ProbingRay<Integer>::operator== (ProbingRay const& aRay) const
 template < typename Integer >
 inline
 bool
-DGtal::detail::ProbingRay<Integer>::operator!= (ProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<Integer>::operator!= (PointOnProbingRay const& aRay) const
 {
     return !(*this == aRay);
 }
@@ -190,7 +190,7 @@ DGtal::detail::ProbingRay<Integer>::operator!= (ProbingRay const& aRay) const
 template < typename Integer >
 inline
 bool
-DGtal::detail::ProbingRay<Integer>::operator<= (ProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<Integer>::operator<= (PointOnProbingRay const& aRay) const
 {
     return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
 }
@@ -198,26 +198,26 @@ DGtal::detail::ProbingRay<Integer>::operator<= (ProbingRay const& aRay) const
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
-DGtal::detail::ProbingRay<Integer>
-DGtal::detail::ProbingRay<Integer>::next (Integer const& aInc) const
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::next (Integer const& aInc) const
 {
-    return ProbingRay(mySigma, myIndex + aInc);
+    return PointOnProbingRay(mySigma, myIndex + aInc);
 }
 
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
-DGtal::detail::ProbingRay<Integer>
-DGtal::detail::ProbingRay<Integer>::previous (Integer const& aDec) const
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::previous (Integer const& aDec) const
 {
-    return ProbingRay(mySigma, myIndex - aDec);
+    return PointOnProbingRay(mySigma, myIndex - aDec);
 }
 
 // ------------------------------------------------------------------------
 template < typename Integer >
 inline
 std::ostream&
-DGtal::detail::operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay)
+DGtal::detail::operator<< (std::ostream& aOs, PointOnProbingRay<Integer> const& aRay)
 {
     aOs << "sigma=(" <<
         aRay.sigma(0) << ", " <<

@@ -37,11 +37,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 template < typename TPredicate >
-const typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
+const typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
 {
-    ProbingRay({0, 1, 2}), ProbingRay({0, 2, 1}),
-    ProbingRay({1, 2, 0}), ProbingRay({1, 0, 2}),
-    ProbingRay({2, 0, 1}), ProbingRay({2, 1, 0}),
+    PointOnProbingRay({0, 1, 2}), PointOnProbingRay({0, 2, 1}),
+    PointOnProbingRay({1, 2, 0}), PointOnProbingRay({1, 0, 2}),
+    PointOnProbingRay({2, 0, 1}), PointOnProbingRay({2, 1, 0}),
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,15 +71,15 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
-typename DGtal::PlaneProbingNeighborhood<TPredicate>::ProbingRay
-DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<ProbingRay> const& aPoints) const
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay
+DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const
 {
     int N = aPoints.size();
     if (N == 1) {
         return aPoints[0];
     }
 
-    ProbingRay minPoint = aPoints[N-1];
+    PointOnProbingRay minPoint = aPoints[N-1];
     for (int k = 0; k < N-1; ++k) {
         if (isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
             minPoint = aPoints[k];
@@ -147,7 +147,7 @@ template < typename TPredicate >
 inline
 void
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-setNeighbors (std::vector<ProbingRay> const& aNeighbors)
+setNeighbors (std::vector<PointOnProbingRay> const& aNeighbors)
 {
     myNeighbors = aNeighbors;
 }
@@ -163,7 +163,7 @@ closestCandidate ()
     // to ensure that there is at least one point in the plane in the H-neighbhorhood
     ASSERT(! myCandidates.empty());
 
-    ProbingRay closest = closestPointInList(myCandidates);
+    PointOnProbingRay closest = closestPointInList(myCandidates);
 
     return getOperation(closest);
 }
@@ -173,7 +173,7 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-getOperation (ProbingRay const& aClosest) const
+getOperation (PointOnProbingRay const& aClosest) const
 {
     return  {
         aClosest.sigma(),
@@ -185,7 +185,7 @@ getOperation (ProbingRay const& aClosest) const
 template < typename TPredicate >
 inline
 bool
-DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (ProbingRay const& r) const
+DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (PointOnProbingRay const& r) const
 {
     if (myNeighbors.empty())
     {
@@ -227,7 +227,7 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-relativePoint (ProbingRay const& aRay) const
+relativePoint (PointOnProbingRay const& aRay) const
 {
     return -myM[aRay.sigma(0)] + myM[aRay.sigma(1)] + myM[aRay.sigma(2)] * aRay.index();
 }
@@ -237,7 +237,7 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-absolutePoint (ProbingRay const& aRay) const
+absolutePoint (PointOnProbingRay const& aRay) const
 {
     return myQ + relativePoint(aRay);
 }

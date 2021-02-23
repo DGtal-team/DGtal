@@ -62,21 +62,21 @@ namespace DGtal
    * normal vectors on a digital surface per surfel.
    *
    * @tparam TSurface the digital surface type.
-   * @tparam TProbingAlgorithm the probing algorithm (see \ref PlaneProbingTetrahedronEstimator or PlaneProbingParallelepipedEstimator).
+   * @tparam TInternalProbingAlgorithm the probing algorithm (see \ref PlaneProbingTetrahedronEstimator or PlaneProbingParallelepipedEstimator).
    *
    * \b Models: A PlaneProbingDigitalSurfaceLocalEstimator is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
-  template <typename TSurface, typename TProbingAlgorithm>
+  template <typename TSurface, typename TInternalProbingAlgorithm>
   class PlaneProbingDigitalSurfaceLocalEstimator
   {
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer> ));
 
     // ----------------------- Public types ------------------------------
   public:
-      using Surface          = TSurface;
-      using ProbingAlgorithm = TProbingAlgorithm;
-      using Point            = typename ProbingAlgorithm::Point;
-      using Scalar           = double;
+      using Surface                  = TSurface;
+      using InternalProbingAlgorithm = TInternalProbingAlgorithm;
+      using Point                    = typename InternalProbingAlgorithm::Point;
+      using Scalar                   = double;
 
       /**
        * A probing frame represents a 3D orthogonal frame, that is internally used
@@ -111,14 +111,14 @@ namespace DGtal
           }
       };
 
-      using Predicate        = DigitalSurfacePredicate<Surface>;
-      using ProbingFactory   = std::function<ProbingAlgorithm*(const ProbingFrame&, Predicate const&)>;
-      using PreEstimation    = MaximalSegmentSliceEstimation<Surface>;
-      using ProbingRay       = typename ProbingAlgorithm::ProbingRay;
+      using Predicate               = DigitalSurfacePredicate<Surface>;
+      using ProbingFactory          = std::function<InternalProbingAlgorithm*(const ProbingFrame&, Predicate const&)>;
+      using PreEstimation           = MaximalSegmentSliceEstimation<Surface>;
+      using PointOnProbingRay       = typename InternalProbingAlgorithm::PointOnProbingRay;
 
       // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
       using Surfel   = typename Surface::Surfel;
-      using Quantity = typename ProbingAlgorithm::Quantity;
+      using Quantity = typename InternalProbingAlgorithm::Quantity;
 
       // -------------------------------------- other types ----------------------------
       using KSpace    = typename Surface::KSpace;
@@ -213,6 +213,8 @@ namespace DGtal
      *
      * @param it an iterator whose value type is Surfel.
      * @return the estimated quantity.
+     *
+     * @todo Recompute directions corresponding to locally flat zones at each step.
      */
     template < typename SurfelConstIterator >
     Quantity eval (SurfelConstIterator it);
@@ -279,7 +281,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    ProbingAlgorithm* myProbingAlgorithm = nullptr; /**< A pointer on the probing algorithm, instantiated in eval. */
+    InternalProbingAlgorithm* myProbingAlgorithm = nullptr; /**< A pointer on the probing algorithm, instantiated in eval. */
     Scalar myH; /**< The gridstep. */
     CountedConstPtrOrConstPtr<Surface> mySurface; /**< A constant pointer on the digital surface. */
     Predicate myPredicate; /**< The InPlane predicate. */
@@ -345,20 +347,20 @@ namespace DGtal
      * @param aIndex an integer between 0 and 2.
      * @return the array of candidates.
      */
-    static std::vector<ProbingRay> getProbingRaysOneFlatDirection (int aIndex)
+    static std::vector<PointOnProbingRay> getProbingRaysOneFlatDirection (int aIndex)
     {
         if (aIndex == 0)
         {
-            return { ProbingRay({ 2, 1, 0 }), ProbingRay({ 1, 2, 0 }) };
+            return { PointOnProbingRay({ 2, 1, 0 }), PointOnProbingRay({ 1, 2, 0 }) };
         }
         else if (aIndex == 1)
         {
-            return { ProbingRay({ 0, 2, 1 }), ProbingRay({ 2, 0, 1 }) };
+            return { PointOnProbingRay({ 0, 2, 1 }), PointOnProbingRay({ 2, 0, 1 }) };
         }
         else
         {
             ASSERT(aIndex == 2);
-            return { ProbingRay({ 1, 0, 2 }), ProbingRay({ 0, 1, 2 }) };
+            return { PointOnProbingRay({ 1, 0, 2 }), PointOnProbingRay({ 0, 1, 2 }) };
         }
     }
 
@@ -385,9 +387,9 @@ namespace DGtal
    * @param object the object of class 'PlaneProbingDigitalSurfaceLocalEstimator' to write.
    * @return the output stream after the writing.
    */
-  template < typename TSurface, typename TProbingAlgorithm >
+  template < typename TSurface, typename TInternalProbingAlgorithm >
   std::ostream&
-  operator<< ( std::ostream & out, const PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TProbingAlgorithm> & object );
+  operator<< ( std::ostream & out, const PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm> & object );
 
 } // namespace DGtal
 

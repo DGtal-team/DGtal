@@ -67,17 +67,17 @@ namespace DGtal
   public:
       class NotAbovePredicate;
 
-      using Self                 = PlaneProbingParallelepipedEstimator<TPredicate, mode>;
-      using Predicate            = TPredicate;
-      using Point                = typename Predicate::Point;
-      using Vector               = Point;
-      using Integer              = typename Predicate::Integer;
-      using TetrahedronEstimator = PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode>;
-      using Triangle             = typename TetrahedronEstimator::Triangle;
-      using ProbingRay           = typename TetrahedronEstimator::ProbingRay;
-      using Quantity             = typename TetrahedronEstimator::Quantity;
-      using UpdateOperation      = typename TetrahedronEstimator::UpdateOperation;
-      using HexagonState         = typename TetrahedronEstimator::HexagonState;
+      using Self                        = PlaneProbingParallelepipedEstimator<TPredicate, mode>;
+      using Predicate                   = TPredicate;
+      using Point                       = typename Predicate::Point;
+      using Vector                      = Point;
+      using Integer                     = typename Predicate::Integer;
+      using TetrahedronEstimator        = PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode>;
+      using Triangle                    = typename TetrahedronEstimator::Triangle;
+      using PointOnProbingRay           = typename TetrahedronEstimator::PointOnProbingRay;
+      using Quantity                    = typename TetrahedronEstimator::Quantity;
+      using UpdateOperation             = typename TetrahedronEstimator::UpdateOperation;
+      using HexagonState                = typename TetrahedronEstimator::HexagonState;
 
       class NotAbovePredicate
       {
@@ -215,7 +215,7 @@ namespace DGtal
      * @param aNeighbors the list of candidates ray to consider.
      * @return false if the algorithm has terminated, true otherwise.
      */
-    bool advance (std::vector<ProbingRay> const& aNeighbors);
+    bool advance (std::vector<PointOnProbingRay> const& aNeighbors);
 
     /**
      * Do one step of the estimation.
@@ -230,7 +230,7 @@ namespace DGtal
      * @param aNeighbors the list of candidates ray to consider.
      * @return the estimated normal.
      */
-    Quantity compute (std::vector<ProbingRay> const& aNeighbors);
+    Quantity compute (std::vector<PointOnProbingRay> const& aNeighbors);
 
     /**
      * Estimate the normal using a plane-probing approach, calls \a advance repeatedly.
@@ -260,7 +260,7 @@ namespace DGtal
     bool isReduced () const;
 
     /**
-     * @return whether we are in a reversd state or not.
+     * @return whether we are in a reversed state or not (strictly less than 4 points of the parallelepiped satisfy the predicate).
      */
     bool isInReverseState () const;
 

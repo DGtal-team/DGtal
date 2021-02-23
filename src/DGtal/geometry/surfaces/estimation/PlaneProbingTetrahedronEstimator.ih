@@ -107,11 +107,6 @@ PlaneProbingTetrahedronEstimator (Point const& aPoint, Triangle const& aM, Predi
     : myM(aM), myPredicate(aPredicate), myS(aM[0] + aM[1] + aM[2]), myQ(aPoint + myS)
 {
     myNeighborhood = DGtal::detail::PlaneProbingNeighborhoodSelector<TPredicate, mode>::select(myPredicate, myQ, myM);
-
-    if (! isValid())
-    {
-        throw std::runtime_error("Invalid frame passed in PlaneProbingTetrahedronEstimator constructor");
-    }
 }
 
 // ------------------------------------------------------------------------
@@ -233,7 +228,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::getNormal () const
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 std::pair<bool, typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::UpdateOperation>
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<ProbingRay> const& aNeighbors)
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance (std::vector<PointOnProbingRay> const& aNeighbors)
 {
     myNeighborhood->setNeighbors(aNeighbors);
     HexagonState state = hexagonState();
@@ -262,7 +257,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::advance ()
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::Quantity
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute (std::vector<ProbingRay> const& aNeighbors)
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::compute (std::vector<PointOnProbingRay> const& aNeighbors)
 {
     while (advance(aNeighbors).first) {}
 

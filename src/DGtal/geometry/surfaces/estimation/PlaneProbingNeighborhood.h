@@ -68,12 +68,12 @@ namespace DGtal
 
     // ----------------------- Public types ------------------------------
   public:
-      using Predicate  = TPredicate;
-      using Point      = typename Predicate::Point;
-      using Vector     = Point;
-      using Integer    = typename Point::Coordinate;
-      using Triangle   = std::array<Vector, 3>;
-      using ProbingRay = detail::ProbingRay<Integer>;
+      using Predicate         = TPredicate;
+      using Point             = typename Predicate::Point;
+      using Vector            = Point;
+      using Integer           = typename Point::Coordinate;
+      using Triangle          = std::array<Vector, 3>;
+      using PointOnProbingRay = detail::PointOnProbingRay<Integer>;
 
       /**
        * Represents a configuration of the H-neighborhood.
@@ -151,7 +151,7 @@ namespace DGtal
     /*
      * @param aNeighbors a list of rays to filter the candidates (if empty, there is no filtering).
      */
-    void setNeighbors (std::vector<ProbingRay> const& aNeighbors);
+    void setNeighbors (std::vector<PointOnProbingRay> const& aNeighbors);
 
     /**
      * Computes the current state of the neighborhood.
@@ -174,7 +174,7 @@ namespace DGtal
      * @param aClosest the closest candidate point.
      * @return the update operation.
      */
-    virtual UpdateOperation getOperation (ProbingRay const& aClosest) const;
+    virtual UpdateOperation getOperation (PointOnProbingRay const& aClosest) const;
 
     /**
      * Classify the state of the H-neighborhood encoded as an array of 6 booleans.
@@ -204,10 +204,10 @@ namespace DGtal
     Predicate const& myPredicate; /**< A reference on the probing predicate. */
     Point const& myQ; /**< A reference on the fixed point. */
     Triangle const& myM; /**< A reference on the frame. */
-    std::vector<ProbingRay> myCandidates; /**< Will contain the candidates at one step. */
+    std::vector<PointOnProbingRay> myCandidates; /**< Will contain the candidates at one step. */
 
-    static const ProbingRay myNeighborhood[6]; /**< The six rays defining the H-neighborhood. */
-    std::vector<ProbingRay> myNeighbors; /**< An array of rays to filter the neighborhood. */
+    static const PointOnProbingRay myNeighborhood[6]; /**< The six rays defining the H-neighborhood. */
+    std::vector<PointOnProbingRay> myNeighbors; /**< An array of rays to filter the neighborhood. */
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -220,7 +220,7 @@ namespace DGtal
      * @param aPoints the list of points.
      * @return the closest point.
      */
-    ProbingRay closestPointInList (std::vector<ProbingRay> const& aPoints) const;
+    PointOnProbingRay closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const;
 
     /**
      * Tests whether a ray should be probed or not, according to the current
@@ -229,7 +229,7 @@ namespace DGtal
      * @param aRay the ray point to test.
      * @return 'true' if aRay should be considered, 'false' otherwise.
      */
-    bool isNeighbor (ProbingRay const& aRay) const;
+    bool isNeighbor (PointOnProbingRay const& aRay) const;
 
     /**
      * Computes the relative position of a point with respect to a sphere passing through 4 points
@@ -247,7 +247,7 @@ namespace DGtal
      * @param aRay a point on a ray.
      * @return the vector from the fixed point 'q' to the current point on the ray.
      */
-    Point relativePoint (ProbingRay const& aRay) const;
+    Point relativePoint (PointOnProbingRay const& aRay) const;
 
     /**
      * Returns the current point on the ray.
@@ -255,7 +255,7 @@ namespace DGtal
      * @param aRay a point on a ray.
      * @return the current point on the ray.
      */
-    Point absolutePoint (ProbingRay const& aRay) const;
+    Point absolutePoint (PointOnProbingRay const& aRay) const;
 
     // ------------------------- Internals ------------------------------------
   private:

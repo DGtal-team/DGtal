@@ -44,6 +44,7 @@
 #include <cassert>
 #include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,9 +91,9 @@ namespace DGtal
         bool isBasisReduced (Point const& aU, Point const& aV);
 
         /////////////////////////////////////////////////////////////////////////////
-        // template class ProbingRay
+        // template class PointOnProbingRay
         /**
-         * Description of template class 'ProbingRay' <p>
+         * Description of template class 'PointOnProbingRay' <p>
          * A ray consists of a permutation \f$ \sigma \f$ and an integer index \f$ \lambda \f$ (position on the ray).
          * For a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ and a point \f$ q \f$, a point on the ray is defined as:
          * \f$ q - m_{\sigma(0)} + m_{\sigma(1)} + \lambda m_{\sigma(2)} \f$. \f$ q - m_{\sigma(0)} + m_{\sigma(1)} \f$ is called the \e base point.
@@ -100,11 +101,13 @@ namespace DGtal
          * This class is used to represent points on rays for a plane-probing estimator, so in practice the point \f$ q \f$ is the fixed point
          * and the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ are the vectors defining the current probing frame.
          *
-         * @tparam Integer the integer type.
+         * @tparam Integer the integer type, model of concepts::CInteger.
          */
         template < typename Integer = int >
-        class ProbingRay
+        class PointOnProbingRay
         {
+            BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
+
             // ----------------------- Public types ------------------------------
             public:
                 using Permutation = std::array<int, 3>;
@@ -113,7 +116,7 @@ namespace DGtal
                 /**
                  * Default constructor.
                  */
-                ProbingRay () = default;
+                PointOnProbingRay () = default;
 
                 /**
                  * Constructs a ray with a permutation and an index.
@@ -121,12 +124,12 @@ namespace DGtal
                  * @param aSigma a permutation.
                  * @param aIndex an index.
                  */
-                ProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0));
+                PointOnProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0));
 
                 /**
                  * @return the base point of the ray (with index 0).
                  */
-                ProbingRay getBase () const;
+                PointOnProbingRay getBase () const;
 
                 /**
                  * @return the permutation that defines the ray.
@@ -151,7 +154,7 @@ namespace DGtal
                  * @param aRay an other ray.
                  * @return true if the two rays are the same, false otherwise.
                  */
-                bool operator== (ProbingRay const& aRay) const;
+                bool operator== (PointOnProbingRay const& aRay) const;
 
                 /**
                  * Inequality test between two rays.
@@ -159,7 +162,7 @@ namespace DGtal
                  * @param aRay an other ray.
                  * @return true if the two rays are different, false otherwise.
                  */
-                bool operator!= (ProbingRay const& aRay) const;
+                bool operator!= (PointOnProbingRay const& aRay) const;
 
                 /**
                  * Comparison operator between two rays: one ray is less than another if they have
@@ -170,24 +173,24 @@ namespace DGtal
                  * @return true if *this <= aRay, false otherwise.
                  *
                  */
-                bool operator<= (ProbingRay const& aRay) const;
+                bool operator<= (PointOnProbingRay const& aRay) const;
 
                 /**
                  * @param aInc an increment.
                  * @return a new point on a ray, with index the current index incremented by aInc.
                  */
-                ProbingRay next (Integer const& aInc) const;
+                PointOnProbingRay next (Integer const& aInc) const;
 
                 /**
                  * @param aDec a decrement.
                  * @return a new point on a ray, with index the current index decremented by aInc.
                  */
-                ProbingRay previous (Integer const& aDec) const;
+                PointOnProbingRay previous (Integer const& aDec) const;
 
             private:
                 Permutation mySigma; /**< The permutation. */
                 Integer myIndex; /**< The index. */
-        }; // end of class ProbingRay
+        }; // end of class PointOnProbingRay
 
         /**
          * Display a probing ray on the standard output.
@@ -197,7 +200,7 @@ namespace DGtal
          * @return the output stream after the writing.
          */
         template < typename Integer >
-        std::ostream& operator<< (std::ostream& aOs, ProbingRay<Integer> const& aRay);
+        std::ostream& operator<< (std::ostream& aOs, PointOnProbingRay<Integer> const& aRay);
     } // namespace detail
 } // namespace DGtal
 
