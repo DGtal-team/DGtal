@@ -44,6 +44,7 @@
 #include <deque>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
+#include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 

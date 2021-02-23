@@ -1,5 +1,16 @@
 # DGtal 1.2 (dev)
 
+## New Features / Critical Changes
+
+- *Geometry Package*
+  - New normal vector estimation using plane-probing approaches.
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - New normal vector estimation using slices of digital surfaces
+    and maximal segment computation
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+
 ## Changes
 
 - *Project*

@@ -1,0 +1,190 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/03
+ *
+ * Implementation of inline methods defined in DigitalPlanePredicate.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::DigitalPlanePredicate<TSpace>::
+DigitalPlanePredicate (Vector const& aNormal, Integer const& aMu, Integer const& aNu)
+    : myNormal(aNormal), myMu(aMu), myNu(aNu)
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::DigitalPlanePredicate<TSpace>::
+DigitalPlanePredicate (const DGtal::DigitalPlanePredicate<TSpace> & other)
+    : myNormal(other.normal()), myMu(other.mu()), myNu(other.nu())
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::DigitalPlanePredicate<TSpace>::
+DigitalPlanePredicate (DGtal::DigitalPlanePredicate<TSpace> && other)
+    : myNormal(other.normal()), myMu(other.mu()), myNu(other.nu())
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::DigitalPlanePredicate<TSpace>&
+DGtal::DigitalPlanePredicate<TSpace>::operator= (const DGtal::DigitalPlanePredicate<TSpace> & other)
+{
+    if (this != &other)
+    {
+        myNormal = other.normal();
+        myMu = other.mu();
+        myNu = other.nu();
+    }
+
+    return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::DigitalPlanePredicate<TSpace>&
+DGtal::DigitalPlanePredicate<TSpace>::operator= (DGtal::DigitalPlanePredicate<TSpace> && other)
+{
+    myNormal = other.normal();
+    myMu = other.mu();
+    myNu = other.nu();
+
+    return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//-------------------- plane services -----------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::DigitalPlanePredicate<TSpace>::Vector const&
+DGtal::DigitalPlanePredicate<TSpace>::normal () const
+{
+    return myNormal;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::DigitalPlanePredicate<TSpace>::Integer
+DGtal::DigitalPlanePredicate<TSpace>::mu () const
+{
+    return myMu;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::DigitalPlanePredicate<TSpace>::Integer
+DGtal::DigitalPlanePredicate<TSpace>::nu () const
+{
+    return myNu;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//-------------------- model of concepts::CPointPredicate -----------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+bool DGtal::DigitalPlanePredicate<TSpace>::
+operator() (Point const& aPoint) const
+{
+    Integer height = aPoint.dot(myNormal);
+    return (height >= mu() && height < mu() + nu());
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace>
+inline
+void
+DGtal::DigitalPlanePredicate<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[DigitalPlanePredicate ";
+  out << mu() << " <= ";
+  out << "(" << myNormal[0];
+  for (Dimension i = 1; i < TSpace::dimension; ++i) {
+      out << ", " << myNormal[i];
+  }
+  out << ").X";
+  out << " < " << (mu() + nu());
+  out << " ]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace>
+inline
+bool
+DGtal::DigitalPlanePredicate<TSpace>::isValid() const
+{
+    return normal().norm1() > NumberTraits<Integer>::ZERO;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const DigitalPlanePredicate<TSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,0 +1,327 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/15
+ *
+ * Implementation of inline methods defined in MaximalSegmentSliceEstimation.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+MaximalSegmentSliceEstimation ()
+{}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+MaximalSegmentSliceEstimation (ConstAlias<Surface> aSurface)
+    : mySurface(aSurface)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+MaximalSegmentSliceEstimation ( const MaximalSegmentSliceEstimation & other )
+    : mySurface(other.mySurface), myH(other.myH)
+{
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+DGtal::MaximalSegmentSliceEstimation<TSurface>&
+DGtal::MaximalSegmentSliceEstimation<TSurface>::operator= ( const MaximalSegmentSliceEstimation & other )
+{
+    if (this != &other)
+    {
+        mySurface = other.mySurface;
+        myH = other.myH;
+    }
+
+    return *this;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+~MaximalSegmentSliceEstimation ()
+{}
+
+// ----------------- model of CSurfelLocalEstimator -----------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+template < typename SurfelConstIterator >
+inline
+void DGtal::MaximalSegmentSliceEstimation<TSurface>::
+init (Scalar const& h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */)
+{
+    myH = h;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+template < typename SurfelConstIterator >
+inline
+typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Quantity
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+eval (SurfelConstIterator it) const
+{
+    ASSERT(mySurface != nullptr);
+
+    KSpace const& K = space();
+    Surfel s = *it;
+
+    // q = orthogonal direction
+    // q1, q2 = directions that span the plane of the surfel
+    Dimension q = K.sOrthDir(s);
+    typename KSpace::DirIterator q1 = K.sDirs(s), q2 = q1;
+    ++q2;
+
+    // Plane (q1, q)
+    Tracker *tracker1 = mySurface->container().newTracker(s);
+    SurfaceSlice slice1(tracker1, *q1);
+    delete tracker1;
+
+    Point2 n_left1, n_right1;
+    std::tie(n_left1, n_right1) = getExtremalPoints(slice1, *q1, q);
+
+    // Plane (q2, q)
+    Tracker *tracker2 = mySurface->container().newTracker(s);
+    SurfaceSlice slice2(tracker2, *q2);
+    delete tracker2;
+
+    Point2 n_left2, n_right2;
+    std::tie(n_left2, n_right2) = getExtremalPoints(slice2, *q2, q);
+
+    // Find the components whose normals are in different quadrants => flat direction
+    auto signComponent = [](double x) -> int {
+        return (x >= 0) ? 1 : -1;
+    };
+
+    auto differentQuadrant = [&signComponent](Point2 const& u, Point2 const& v) -> bool {
+        int sxu = signComponent(u[0]), syu = signComponent(u[1]);
+        int sxv = signComponent(v[0]), syv = signComponent(v[1]);
+        return (sxu != sxv) || (syu != syv);
+    };
+
+    std::vector<int> flatDirections;
+    if (differentQuadrant(n_right1, n_left1))
+    {
+        flatDirections.push_back(*q1);
+    }
+
+    if (differentQuadrant(n_right2, n_left2))
+    {
+        flatDirections.push_back(*q2);
+    }
+
+    // Project the normal in the correct plane
+    RealPoint2 n1 = 0.5 * (n_right1 + n_left1);
+    RealPoint2 n2 = 0.5 * (n_right2 + n_left2);
+
+    RealPoint n1_3d = RealPoint::zero, n2_3d = RealPoint::zero;
+
+    n1_3d[*q1] = n1[0];
+    n1_3d[q] = n1[1];
+
+    n2_3d[*q2] = n2[0];
+    n2_3d[q] = n2[1];
+
+    // Orient it according to the trivial normal of the surfel
+    RealVector n = n1_3d.crossProduct(n2_3d);
+    Point trivial = trivialNormal(s);
+    if (trivial.dot(n) < 0)
+    {
+        n = -n;
+    }
+
+    // Set to zero the flat directions
+    for (const auto& d: flatDirections)
+    {
+        n[d] = NumberTraits<Integer>::ZERO;
+    }
+
+    if (n == RealVector::zero)
+    {
+        return trivial;
+    }
+
+    return n;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+template < typename SurfelConstIterator, typename OutputIterator >
+inline
+OutputIterator
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+eval (SurfelConstIterator itb, SurfelConstIterator ite, OutputIterator out) const
+{
+    for (auto it = itb; it != ite; ++it)
+    {
+        *out++ = eval(it);
+    }
+
+    return out;
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Scalar
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+h () const
+{
+    return myH;
+}
+
+// --------------- model of CDigitalSurfaceLocalEstimator ------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+void DGtal::MaximalSegmentSliceEstimation<TSurface>::
+attach (ConstAlias<Surface> aSurface)
+{
+    mySurface = aSurface;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSurface>
+inline
+void
+DGtal::MaximalSegmentSliceEstimation<TSurface>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[MaximalSegmentSliceEstimation]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSurface>
+inline
+bool
+DGtal::MaximalSegmentSliceEstimation<TSurface>::isValid() const
+{
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ------------------------- Internals ------------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+typename DGtal::MaximalSegmentSliceEstimation<TSurface>::KSpace const&
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+space () const
+{
+    return mySurface->container().space();
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+std::pair<typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point2,
+          typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Point2>
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+getExtremalPoints (SurfaceSlice const& aSlice, Dimension const& aProjectDir1, Dimension const& aProjectDir2) const
+{
+    KSpace const& K = space();
+
+    DSSComputer computer_left(K, aProjectDir1, aProjectDir2);
+    computer_left.init(aSlice.c());
+    while (computer_left.extendBack()) {}
+    while (computer_left.extendFront()) {}
+    Point2 n_left(computer_left.primitive().dsl().b(), computer_left.primitive().dsl().a());
+
+    DSSComputer computer_right(K, aProjectDir1, aProjectDir2);
+    computer_right.init(aSlice.c());
+    while (computer_right.extendFront()) {}
+    while (computer_right.extendBack()) {}
+    Point2 n_right(computer_right.primitive().dsl().b(), computer_right.primitive().dsl().a());
+
+    return { n_left, n_right };
+}
+
+// ------------------------------------------------------------------------
+template < typename TSurface >
+inline
+typename DGtal::MaximalSegmentSliceEstimation<TSurface>::Vector
+DGtal::MaximalSegmentSliceEstimation<TSurface>::
+trivialNormal (Surfel const& aSurfel) const
+{
+    const KSpace& K = space();
+
+    DGtal::Dimension q = K.sOrthDir(aSurfel);
+    bool direct = K.sDirect(aSurfel, q);
+
+    Vector trivial_normal = Vector::zero;
+    trivial_normal[q] = direct ? -1 : 1;
+
+    return trivial_normal;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSurface>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const MaximalSegmentSliceEstimation<TSurface> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
