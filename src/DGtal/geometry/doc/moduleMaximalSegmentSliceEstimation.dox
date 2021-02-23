@@ -1,0 +1,85 @@
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/14/01
+ *
+ * Documentation file for feature MaximalSegmentSliceEstimation
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleMaximalSegmentSliceEstimation Maximal segments and slices of digital surface based normal estimator
+@writers Jocelyn Meyron, Tristan Roussillon
+
+@since 1.2
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes the normal estimation algorithm based on the computation of maximal segment
+on slices of a digital surface (see @cite Lachaud03c and @cite lenoir1996fast).
+
+[TOC]
+
+The following programs are related to this documentation:
+geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp,
+testArithmeticalDSSComputerOnSurfels.cpp.
+
+\section sectMaximalSegmentSliceEstimation1 Introduction
+
+Most of the estimators need some kind of parameters to control the neighborhood in which some averaging process is done. On the contrary,
+this estimator is interesting since it has \e no \e parameter. It is also fast and can be used as an input to other estimators (see PlaneProbingDigitalSurfaceLocalEstimator for instance).
+The idea is the following (for a surfel \f$ s \f$):
+
+1. We compute the two 2-dimensional slices of the digital surface for the two directions of the surfel (using the \ref DigitalSurface2DSlice class).
+2. For each slice, we project every surfel on a plane that is orthogonal to the initial surfel. This gives us two sets of 2D points.
+3. On each one of these sets, we use a recognition algorithm like the ones presented in \ref moduleArithDSSReco-DSSRec to compute the leftmost and rightmost maximal segments. This gives us two 2D normal vectors that we average.
+4. We finally take the cross product of the two 2D normal vectors.
+
+@image html maximalseg-ellipsoid-slices.png "Two slices on the digitization of an ellipsoid"
+@image latex maximalseg-ellipsoid-slices.png "Two slices on the digitization of an ellipsoid" width=8cm
+
+\section sectMaximalSegmentSliceEstimation2 Usage
+
+The estimation is implemented in the class \ref MaximalSegmentSliceEstimation. It is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator, so it has the following methods:
+
+- MaximalSegmentSliceEstimation::init() initializes the estimator.
+- MaximalSegmentSliceEstimation::eval() runs the estimator either on a surfel or on a range of surfels.
+- MaximalSegmentSliceEstimation::h() returns the gridstep.
+- MaximalSegmentSliceEstimation::attach() attaches a digital surface to the estimator.
+
+It can be instantiated and used as follows:
+@snippet geometry/surfaces/exampleMaximalSegmentSliceEstimation.cpp MaximalSegmentSliceEstimationConstructionUsage
+
+\section sectMaximalSegmentSliceEstimation3 Implementation details
+
+The class is essentially a wrapper of the class \ref ArithmeticalDSSComputerOnSurfels which is an adaptation of \ref ArithmeticalDSSComputer to recognize 2D digital segments on projections of 3D surfels. It can be instantiated as follows:
+
+@code
+// Defining the type
+using KSpace    = Z3i::KSpace;
+using Surfel    = KSpace::SCell;
+using Container = std::vector<Surfel>;
+using Integer   = int;
+short adjacency = 4;
+using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, Container::const_iterator, Integer, adjacency>;
+
+// Instantiation
+SegmentComputerOnSurfels computer(kspace, // A 3D Khalimsky space
+                                  dim1,   // The first dimension to project onto
+                                  dim2    // The second dimension to project onto
+                                  );
+@endcode
+
+See the page \ref moduleArithDSSReco for more details on how to use it.
+
+*/
+
+}

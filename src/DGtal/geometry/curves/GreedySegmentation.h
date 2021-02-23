@@ -61,7 +61,7 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer at least a model of CForwardSegmentComputer
+   * @tparam TSegmentComputer at least a model of concepts::CForwardSegmentComputer
    * (an online algorithm for the recognition of a given class of segments). 
    *
    * In the short example below, a digital curve stored in a STL vector
@@ -104,12 +104,12 @@ namespace DGtal
    * If you want to get the DSSs segmentation of the digital curve
    * when it is scanned in the reverse way, you can use the reverse
    * iterator of the STL vector:   
-   * @code 
-...
+   * @code
+   *
   typedef Range::const_reverse_iterator ConstReverseIterator;
-...
+
   Segmentation theSegmentation(curve.rbegin(), curve.rend(), recognitionAlgorithm);
-...
+
    * @endcode
    *
    * If you want to get the DSSs segmentation of a part of the 
