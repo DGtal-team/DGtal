@@ -24,3 +24,10 @@ add_subdirectory(images)
 add_subdirectory(helpers)
 add_subdirectory(shapes)
 add_subdirectory(dec)
+
+# To speedup compilation time
+# See https://github.com/catchorg/Catch2/blob/devel/docs/slow-compiles.md
+# and https://stackoverflow.com/a/1388969
+add_library(DGtalCatch STATIC DGtalCatch.cpp)
+target_link_libraries(DGtalCatch PRIVATE Catch2::Catch2)
+
