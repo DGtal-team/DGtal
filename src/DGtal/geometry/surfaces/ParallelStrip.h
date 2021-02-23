@@ -57,7 +57,7 @@ namespace DGtal
 
      If N is the unit normal to one of the half-plane, the set of
      point \a X that is included in the strip satisfies some: \f$ \mu
-     \le N \dot X \le \mu + \nu \f$, where inequalities can be large
+     \le N \cdot X \le \mu + \nu \f$, where inequalities can be large
      or strict.
 
      The \b normal to the strip is the vector \a N. The \b width of
@@ -79,12 +79,12 @@ namespace DGtal
      @tparam TSpace any digital space, i.e., a model of CSpace.
 
      @tparam muIncluded when 'true', the first inequality is large,
-     i.e. \f$ \mu \le N \dot X \f$, otherwise it is strict, i.e. \f$
-     \mu < N \dot X \f$
+     i.e. \f$ \mu \le N \cdot X \f$, otherwise it is strict, i.e. \f$
+     \mu < N \cdot X \f$
 
      @tparam muPlusNuIncluded when 'true', the second inequality is
-     large, i.e. \f$ N \dot X \le \mu + \nu\f$, otherwise it is
-     strict, i.e. \f$ N \dot X < \mu + \nu\f$
+     large, i.e. \f$ N \cdot X \le \mu + \nu\f$, otherwise it is
+     strict, i.e. \f$ N \cdot X < \mu + \nu\f$
    */
   template <typename TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
   class ParallelStrip

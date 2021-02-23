@@ -1,5 +1,16 @@
 # DGtal 1.2 (dev)
 
+## New Features / Critical Changes
+
+- *Geometry Package*
+  - New normal vector estimation using plane-probing approaches.
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - New normal vector estimation using slices of digital surfaces
+    and maximal segment computation
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+
 ## Changes
 
 - *Project*
@@ -71,7 +82,12 @@
   - We now use cmake *Fetch_Content* to download the stable release of
     Catch2 (used in our unit-tests) when building the project (David
     Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
-
+  - Fixing the required components for CGAL (David Coeurjolly,
+    [#1550](https://github.com/DGtal-team/DGtal/issues/1550))
+  - Speedup of the compilation of the tests that rely on Catch2
+    (Roland Denis [#1551](https://github.com/DGtal-team/DGtal/pull/1551))
+  
+  
 # DGtal 1.1
 
 ## New Features / Critical Changes

@@ -1,0 +1,178 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/07
+ *
+ * Implementation of inline methods defined in DigitalSurfacePredicate.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+DGtal::DigitalSurfacePredicate<TSurface>::
+DigitalSurfacePredicate ()
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+DGtal::DigitalSurfacePredicate<TSurface>::
+DigitalSurfacePredicate (ConstAlias<Surface> aSurface)
+    : mySurface(aSurface)
+{
+    buildPointSet();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+DGtal::DigitalSurfacePredicate<TSurface>::
+DigitalSurfacePredicate (const DigitalSurfacePredicate<TSurface>& other)
+    : mySurface(other.mySurface)
+{
+    buildPointSet();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+DGtal::DigitalSurfacePredicate<TSurface>&
+DGtal::DigitalSurfacePredicate<TSurface>::operator= (const DigitalSurfacePredicate<TSurface>& other)
+{
+    if (this != &other)
+    {
+        mySurface = other.mySurface;
+        buildPointSet();
+    }
+
+    return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+DGtal::DigitalSurfacePredicate<TSurface>::
+~DigitalSurfacePredicate ()
+{}
+
+//-------------------- model of concepts::CPointPredicate -----------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+bool DGtal::DigitalSurfacePredicate<TSurface>::
+operator() (Point const& aPoint) const
+{
+    return myPointSet.count(aPoint) > 0;
+}
+
+// ------------------------- Internals ------------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+typename DGtal::DigitalSurfacePredicate<TSurface>::KSpace const&
+DGtal::DigitalSurfacePredicate<TSurface>::space () const
+{
+    return mySurface->container().space();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSurface>
+inline
+void
+DGtal::DigitalSurfacePredicate<TSurface>::buildPointSet ()
+{
+    myPointSet.clear();
+
+    // Extract all the pointels of the digital surface
+    KSpace const& K = space();
+    for (const auto& f: *mySurface) {
+        typename KSpace::Cells faces = K.uFaces(K.unsigns(f));
+
+        for (const auto& c: faces) {
+            if (K.uDim(c) == 0) {
+                myPointSet.insert(K.uCoords(c));
+            }
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSurface>
+inline
+void
+DGtal::DigitalSurfacePredicate<TSurface>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[DigitalSurfacePredicate]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSurface>
+inline
+bool
+DGtal::DigitalSurfacePredicate<TSurface>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSurface>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const DigitalSurfacePredicate<TSurface> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
