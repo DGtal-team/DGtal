@@ -86,13 +86,15 @@ struct TestPlaneProbingParallelepipedEstimator
 
 TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
 {
+    static const int MAX_HEIGHT = 10;
+
     SECTION("H-algorithm should return the correct normal")
     {
         int nbNormals = 0;
         int nbOk = 0;
 
         for (const auto& n: NORMALS) {
-            for (int height = 0; height < int(n.normInfinity()); ++height) {
+            for (int height = 0; height < min(int(n.normInfinity()), MAX_HEIGHT); ++height) {
                 ++nbNormals;
 
                 TestPlaneProbingParallelepipedEstimator<int, ProbingMode::H>::compute
@@ -118,7 +120,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
         int nbOk = 0;
 
         for (const auto& n: NORMALS) {
-            for (int height = 0; height < int(n.normInfinity()); ++height) {
+            for (int height = 0; height < min(int(n.normInfinity()), MAX_HEIGHT); ++height) {
                 ++nbNormals;
 
                 TestPlaneProbingParallelepipedEstimator<int, ProbingMode::R1>::compute
@@ -143,7 +145,6 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
     {
         int nbNormals = 0;
         int nbOk = 0;
-        const int MAX_HEIGHT = 10;
 
         for (const auto& n: NORMALS_BIG) {
             for (int height = 0; height < MAX_HEIGHT; ++height) {
