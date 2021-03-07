@@ -73,6 +73,9 @@
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
   - Fix an issue in DigitalSurfaceRegularization about bad buffer init
     (David Coeurjolly, [#1548](https://github.com/DGtal-team/DGtal/pull/1548))
+  - Fix issue [#1552](https://github.com/DGtal-team/DGtal/issues/1552) about a
+    plane-probing unit test taking too long
+    (Jocelyn Meyron, [#1553](https://github.com/DGtal-team/DGtal/pull/1553))
 
 - *Shapes package*
   - Fix the use of uninitialized variable in NGon2D.
