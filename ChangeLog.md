@@ -49,6 +49,10 @@
 
 ## Bug fixes
 
+- *General*
+  - Comply with cmake Policy CMP0115 "Source file extensions must be
+  explicit". (David Coeurjolly, [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+
 - *Documentation*
   - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
