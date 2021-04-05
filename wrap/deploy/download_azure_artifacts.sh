@@ -1,3 +1,4 @@
+#!/bin/bash
 # Download all the wheels (artifacts) from the PythonDeploy pipeline.
 # The wheels are downloaded into /tmp/dist
 # They can be uploaded to pypi after that:
