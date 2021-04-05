@@ -9,7 +9,7 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
-        add_executable(${FILE} ${FILE})
+        add_executable(${FILE} ${FILE}.cpp)
         target_link_libraries (${FILE} DGtal)
     endforeach()
 
@@ -22,7 +22,7 @@ if (WITH_EIGEN)
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC2_DEC})
-        add_executable(${FILE} ${FILE})
+        add_executable(${FILE} ${FILE}.cpp)
         target_link_libraries (${FILE} DGtal)
     endforeach()
 endif()

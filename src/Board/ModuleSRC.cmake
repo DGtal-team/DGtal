@@ -1,10 +1,10 @@
 
 set(BOARD_SRC ${BOARD_SRC}
-  Board/Board
-  Board/Path
-  Board/PSFonts
-  Board/Rect
-  Board/ShapeList
-  Board/Shapes
-  Board/Tools
-  Board/Transforms)
+  Board/Board.cpp
+  Board/Path.cpp
+  Board/PSFonts.cpp
+  Board/Rect.cpp
+  Board/ShapeList.cpp
+  Board/Shapes.cpp
+  Board/Tools.cpp
+  Board/Transforms.cpp)
