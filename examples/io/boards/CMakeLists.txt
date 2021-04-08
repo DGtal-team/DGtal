@@ -29,7 +29,7 @@ endif()
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal )
 endforeach()
 

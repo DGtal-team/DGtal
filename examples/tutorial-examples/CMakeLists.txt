@@ -17,7 +17,7 @@ foreach(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
     set_source_files_properties( ${FILE} PROPERTIES COMPILE_FLAGS "/bigobj" )
   endif()
 
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal  )
 endforeach()
 
@@ -28,7 +28,7 @@ if (WITH_VISU3D_QGLVIEWER)
     polyhedralizer
   )
   foreach(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC})
-    add_executable(${FILE} ${FILE})
+    add_executable(${FILE} ${FILE}.cpp)
     target_link_libraries ( ${FILE} DGtal)
   endforeach()
 

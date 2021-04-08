@@ -11,7 +11,7 @@ if( WITH_VISU3D_QGLVIEWER  )
      )
 
 foreach(FILE ${DGTAL_DOC_EX_SRC_QGL})
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE}  DGtal)
 endforeach()
 
@@ -19,7 +19,7 @@ endif()
 
 
 foreach(FILE ${DGTAL_DOC_EX_SRC})
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal )
 endforeach()
 
