@@ -47,7 +47,7 @@ inside the current hull, or it is associated to only one facet.
 Points \b on each facet and \b neighbors of facets are computed (easy
 for a simplex) and all the facets are then queued.
 
-2. While the queue of facet is not empty, the front facet \a f is popped.
+2. While the queue of facets is not empty, the front facet \a f is popped.
    - ignore it if contains no "above" point(s)
    - otherwise pick the furthest above point \a p
    - find by neighbor adjacencies from \a f all the facets visible from \a p (i.e. \a p is above them)
