@@ -105,7 +105,12 @@ namespace DGtal
     /// Allows seamless conversion of integral types and lattice
     /// points, while checking for errors when going from a more
     /// precise to a less precise type.
+    ///
     /// Generic version allowing only the identity cast.
+    ///
+    /// @tparam dim static constant of type DGtal::Dimension that
+    /// specifies the static  dimension of the space and thus the number
+    /// of elements  of the Point or Vector.
     ///
     /// @tparam TInteger an integral type, a model of concepts::CInteger
     template < DGtal::Dimension dim,
@@ -113,6 +118,7 @@ namespace DGtal
     struct IntegerConverter {
       BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
       typedef TInteger Integer;
+
       /// @param i any integer
       /// @return the same integer
       static Integer cast( Integer i ) 
@@ -122,13 +128,11 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
-      PointVector< dim, Integer > cast( PointVector< dim, Integer > p )
+      PointVector< dim, Integer >
+      cast( PointVector< dim, Integer > p )
       {
         return p;
       }
@@ -137,12 +141,16 @@ namespace DGtal
     /// Allows seamless conversion of integral types and lattice
     /// points, while checking for errors when going from a more
     /// precise to a less precise type.
+    ///
     /// Specialized version for int32_t.
     ///
-    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    /// @tparam dim static constant of type DGtal::Dimension that
+    /// specifies the static  dimension of the space and thus the number
+    /// of elements  of the Point or Vector.
     template < DGtal::Dimension dim >
     struct IntegerConverter< dim, DGtal::int32_t > {
       typedef DGtal::int32_t Integer;
+
       /// @param i any integer
       /// @return the same integer
       static DGtal::int32_t cast( DGtal::int32_t i ) 
@@ -152,9 +160,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -177,9 +182,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -206,9 +208,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -228,12 +227,16 @@ namespace DGtal
     /// Allows seamless conversion of integral types and lattice
     /// points, while checking for errors when going from a more
     /// precise to a less precise type.
+    ///
     /// Specialized version for int64_t.
     ///
-    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    /// @tparam dim static constant of type DGtal::Dimension that
+    /// specifies the static  dimension of the space and thus the number
+    /// of elements  of the Point or Vector.
     template < DGtal::Dimension dim >
     struct IntegerConverter< dim, DGtal::int64_t > {
       typedef DGtal::int64_t Integer;
+
       /// @param i any integer
       /// @return the same integer
       static DGtal::int64_t cast( DGtal::int32_t i ) 
@@ -243,13 +246,11 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
-      PointVector< dim, DGtal::int64_t > cast( PointVector< dim, DGtal::int32_t > p )
+      PointVector< dim, DGtal::int64_t >
+      cast( PointVector< dim, DGtal::int32_t > p )
       {
         PointVector< dim, DGtal::int64_t > q;
         for ( DGtal::Dimension i = 0; i < dim; i++ )
@@ -266,9 +267,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -294,9 +292,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -317,9 +312,12 @@ namespace DGtal
     /// Allows seamless conversion of integral types and lattice
     /// points, while checking for errors when going from a more
     /// precise to a less precise type.
+    ///
     /// Specialized version for BigInteger
     ///
-    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    /// @tparam dim static constant of type DGtal::Dimension that
+    /// specifies the static  dimension of the space and thus the number
+    /// of elements  of the Point or Vector.
     template < DGtal::Dimension dim >
     struct IntegerConverter< dim, DGtal::BigInteger > {
       typedef DGtal::BigInteger Integer;
@@ -333,9 +331,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -359,9 +354,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
@@ -383,9 +375,6 @@ namespace DGtal
 
       /// Conversion of a lattice point.
       ///
-      /// @tparam dim static constant of type DGtal::Dimension that
-      /// specifies the static  dimension of the space and thus the number
-      /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
       static
