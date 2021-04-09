@@ -87,6 +87,8 @@
     [#1550](https://github.com/DGtal-team/DGtal/issues/1550))
   - Speedup of the compilation of the tests that rely on Catch2
     (Roland Denis [#1551](https://github.com/DGtal-team/DGtal/pull/1551))
+  - Comply with cmake Policy CMP0115 "Source file extensions must be
+    explicit". (David Coeurjolly, [#1557](https://github.com/DGtal-team/DGtal/pull/1557))
   
   
 # DGtal 1.1

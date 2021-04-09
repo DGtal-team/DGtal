@@ -17,7 +17,7 @@ set(DGTAL_EXAMPLES_TOPO_SRC
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal)
 endforeach()
 
@@ -39,7 +39,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      digitalSurfaceSlice
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
-    add_executable(${FILE} ${FILE})
+    add_executable(${FILE} ${FILE}.cpp)
     target_link_libraries (${FILE} DGtal)
   endforeach()
 

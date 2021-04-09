@@ -23,7 +23,7 @@ set(DGTAL_EXAMPLES_SRC
 
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal)
 endforeach()
 
@@ -34,7 +34,7 @@ if(MAGICK++_FOUND)
     freemanChainDisplay
     )
   foreach(FILE ${DGTALE_EXAMPLES_IO_Magick})
-    add_executable(${FILE} ${FILE})
+    add_executable(${FILE} ${FILE}.cpp)
     target_link_libraries (${FILE} DGtal)
   endforeach()
 endif()
@@ -52,7 +52,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      )
 
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC} )
-   add_executable(${FILE} ${FILE})
+   add_executable(${FILE} ${FILE}.cpp)
     target_link_libraries (${FILE} DGtal)
   endforeach()
 
