@@ -10,6 +10,11 @@
     and maximal segment computation
     (Jocelyn Meyron, Tristan Roussillon,
     [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - Add an implementation of the Quick Hull convex hull algorithm. It
+    works in arbitrary dimension. It provides several kernels to deal
+    with lattice or rational points, and also to compute the Delaunay
+    cell complex.
+    (Jacques-Olivier Lachaud,[#1539](https://github.com/DGtal-team/DGtal/pull/1539))
 
 ## Changes
 
@@ -36,13 +41,6 @@
     (Pablo Hernandez-Cerdan [#1526](https://github.com/DGtal-team/DGtal/pull/1526))
   - Add `container()` member function to DigitalSets and ImageContainers
     (Pablo Hernandez-Cerdan [#1532](https://github.com/DGtal-team/DGtal/pull/1532))
-
-- *Geometry*
-  - Add an implementation of the Quick Hull convex hull algorithm. It
-    works in arbitrary dimension. It provides several kernels to deal
-    with lattice or rational points, and also to compute the Delaunay
-    cell complex.
-    (Jacques-Olivier Lachaud,[#1539](https://github.com/DGtal-team/DGtal/pull/1539))
 
 - *Arithmetic*
   - Add default constructor to ClosedIntegerHalfSpace

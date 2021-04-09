@@ -68,7 +68,6 @@ int main( int argc, char* argv[] )
   // (1) create range of random points in ball
   std::vector< RealPoint > V;
   const auto R2 = dR * dR;
-  const int  R  = ceil( dR );
   for ( int i = 0; i < nb; ) {
     RealPoint p( ( rand() / (double) RAND_MAX * 2.0 - 1.0 ) * dR,
                  ( rand() / (double) RAND_MAX * 2.0 - 1.0 ) * dR,
@@ -77,7 +76,8 @@ int main( int argc, char* argv[] )
   }
   // (2) compute convex hull
   bool ok =
-    ConvexityHelper< 3 >::computeDelaunayCellComplex( dcomplex, V, true );
+    ConvexityHelper< 3 >::computeDelaunayCellComplex( dcomplex, V,
+                                                      precision, true );
   if ( ! ok )
     {
       trace.error() << "Input set of points is not full dimensional." << std::endl;

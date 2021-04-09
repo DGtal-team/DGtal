@@ -44,6 +44,7 @@
 #include <string>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
@@ -62,10 +63,17 @@ namespace DGtal
      complex representing a Delaunay complex.
 
      @tparam dim the dimension of the space where points and further objects live.
+     
+     @tparam TInteger the integral type used to define the digital
+     space, a model of concepts::CInteger. It sets the coordinate type
+     of input lattice points as well as output integral convex hulls
+     and lattice polytopes.
   */
   template < int dim, typename TInteger = DGtal::int32_t >
   struct ConvexityHelper {
     BOOST_STATIC_ASSERT( dim > 1 );
+    // Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     static const Dimension dimension = dim;
 
     typedef TInteger                         Integer;

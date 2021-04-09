@@ -126,6 +126,6 @@ int main( int argc, char* argv[] )
   bool ok3 = Helper::computeConvexHullCellComplex( cvx_complex, points, precision );
   trace.info() << cvx_complex << std::endl;
   
-  return 0;
+  return ( ok && ok2 && ok3 ) ? 0 : 1;
 } 
   
