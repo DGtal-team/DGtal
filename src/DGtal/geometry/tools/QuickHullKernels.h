@@ -322,6 +322,8 @@ namespace DGtal
      \brief Aim: a geometric kernel to compute the convex hull of
      digital points with integer-only arithmetic.
 
+     @see moduleQuickHull
+
      @tparam dim the dimension of the space of processed points.
   */
   template < Dimension dim >
@@ -434,6 +436,8 @@ namespace DGtal
      point into a higher dimensional space and computes its convex
      hull. Facets pointing toward the bottom form the simplices of the
      Delaunay triangulation.
+
+     @see moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -555,6 +559,18 @@ namespace DGtal
      approximated with rational points with fixed precision (a given
      number of bits). All remaining computations are exact, as long as
      there is no overflow.
+     
+     Each floating point input coordinate `x` is converted to an integer
+     through the following formula `(Integer) round( x * precision )`,
+     where `precision` is the floating point value given at
+     instanciation of the kernel.
+
+     Each output floating point coordinate is built from integer
+     coordinates `a` through the formula `( (double) a ) / precision`,
+     where `precision` is the floating point value given at
+     instanciation of the kernel.
+
+     @see moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -636,6 +652,11 @@ namespace DGtal
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
+    ///
+    /// @note Each floating point input coordinate `x` is converted to an integer
+    /// through the following formula `(Integer) round( x * precision )`,
+    /// where `precision` is the floating point value given at
+    /// instanciation of the kernel.
     template < typename InputPoint>
     void makeInput( std::vector< Point >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
@@ -654,8 +675,22 @@ namespace DGtal
                                 F, remove_duplicates );
     }
 
+    /// Converts an integral point (as represented internally for
+    /// QuickHull computations) to its corresponding output point
+    /// representation.
+    ///
     /// @tparam OutputPoint a model of point such that processing type
     /// Point is convertible to it.
+    ///
+    /// @param[in] p an integral point (as represented internally for
+    /// QuickHull computations)
+    ///
+    /// @param[out] out_p its corresponding output point representation.
+    ///
+    /// @note Each output floating point coordinate is built from integer
+    /// coordinates `a` through the formula `( (double) a ) / precision`,
+    /// where `precision` is the floating point value given at
+    /// instanciation of the kernel.
     template < typename OutputPoint>
     void convertPointTo( const Point& p, OutputPoint& out_p ) const
     {
@@ -675,8 +710,22 @@ namespace DGtal
      a range of floating points with integer-only arithmetic. Floating
      points are approximated with rational points with fixed precision
      (a given number of bits), which are cast in a higher dimensional
-     space. All remaining computations are exact, as long as there is
-     no overflow.
+     space and lifted onto the "norm" paraboloid, as classically done
+     when computing a Delaunay triangulation from a convex hull. All
+     remaining computations are exact, as long as there is no
+     overflow.
+
+     Each floating point input coordinate `x` is converted to an integer
+     through the following formula `(Integer) round( x * precision )`,
+     where `precision` is the floating point value given at
+     instanciation of the kernel.
+
+     Each output floating point coordinate is built from integer
+     coordinates `a` through the formula `( (double) a ) / precision`,
+     where `precision` is the floating point value given at
+     instanciation of the kernel.
+
+     @see moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -761,6 +810,12 @@ namespace DGtal
     /// duplicates in \a input_points and \a processed_points may thus
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
+    ///
+    /// @note Each floating point input coordinate `x` is converted to
+    /// an integer through the following formula `(Integer) round( x *
+    /// precision )`, where `precision` is the floating point value
+    /// given at instanciation of the kernel. A new coordinate is
+    /// added so that the point is lifted onto the "norm" paraboloid.
     template < typename InputPoint>
     void makeInput( std::vector< Point >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
@@ -784,8 +839,25 @@ namespace DGtal
                                 F, remove_duplicates );
     }
 
+    /// Converts an integral point (as represented internally for
+    /// QuickHull computations) to its corresponding output point
+    /// representation.
+    ///
     /// @tparam OutputPoint a model of point such that processing type
     /// Point is convertible to it.
+    ///
+    /// @param[in] p an integral point (as represented internally for
+    /// QuickHull computations)
+    ///
+    /// @param[out] out_p its corresponding output point representation.
+    ///
+    /// @note Each output floating point coordinate is built from
+    /// integer coordinates `a` through the formula `( (double) a ) /
+    /// precision`, where `precision` is the floating point value
+    /// given at instanciation of the kernel. The last coordinate is
+    /// not used since it was just related to the lifting of the point
+    /// onto the "norm" paraboloid, as classically done when computing
+    /// the Delaunay triangulation from a convex hull.
     template < typename OutputPoint>
     void convertPointTo( const Point& p, OutputPoint& out_p ) const
     {
