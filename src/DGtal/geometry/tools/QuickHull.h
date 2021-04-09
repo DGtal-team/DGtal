@@ -67,55 +67,55 @@ namespace DGtal
   /// (using kernels DelaunayIntegralKernel and
   /// DelaunayRationalKernel).
   ///
-  /// @see moduleQuickHull
+  /// @see \ref moduleQuickHull
   ///
   /// Below is a complete example that computes the convex hull of
   /// points randomly defined in a ball, builds a 3D mesh out of it and
   /// output it as an OBJ file.
   ///
   /// @code
-#include "DGtal/base/Common.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/shapes/SurfaceMesh.h"
-#include "DGtal/io/writers/SurfaceMeshWriter.h"
-#include "QuickHull.h"
-
-using namespace DGtal::Z3i;
-int main( int argc, char* argv[] )
-{
-  int nb = argc > 1 ? atoi( argv[ 1 ] ) : 100; // nb points
-  int R  = argc > 2 ? atoi( argv[ 2 ] ) : 10;  // x-radius of ellipsoid
-  // (0) typedefs
-  typedef DGtal::ConvexHullIntegralKernel< 3 > Kernel3D;
-  typedef DGtal::QuickHull< Kernel3D >         QuickHull3D;
-  // (1) create range of random points in ball
-  std::vector< Point > V;
-  const auto R2 = R/// R;
-  for ( int i = 0; i < nb; ) {
-    Point p( rand() % (2*R+1) - R, rand() % (2*R+1) - R, rand() % (2*R+1) - R );
-    if ( p.squaredNorm() < R2 ) { V.push_back( p ); i++; }
-  }
-  // (2) compute convex hull
-  QuickHull3D hull;
-  hull.setInput( V );
-  hull.computeConvexHull();
-  std::cout << "#points=" << hull.nbPoints()
-            << " #vertices=" << hull.nbVertices()
-            << " #facets=" << hull.nbFacets() << std::endl;
-  // (3) build mesh
-  std::vector< RealPoint > positions;
-  hull.getVertexPositions( positions );
-  std::vector< std::vector< std::size_t > > facets;
-  hull.getFacetVertices( facets );
-  typedef DGtal::SurfaceMesh< RealPoint, RealVector> SMesh;
-  SMesh mesh( positions.cbegin(), positions.cend(), facets.cbegin(), facets.cend() );
-  // (4) output result as OBJ file
-  std::ofstream out( "qhull.obj" );
-  DGtal::SurfaceMeshWriter< Space::RealPoint, Space::RealVector >
-    ::writeOBJ( out, mesh );
-  out.close();
-  return 0;
-} 
+  /// #include "DGtal/base/Common.h"
+  /// #include "DGtal/kernel/PointVector.h"
+  /// #include "DGtal/shapes/SurfaceMesh.h"
+  /// #include "DGtal/io/writers/SurfaceMeshWriter.h"
+  /// #include "QuickHull.h"
+  /// 
+  /// using namespace DGtal::Z3i;
+  /// int main( int argc, char* argv[] )
+  /// {
+  ///   int nb = argc > 1 ? atoi( argv[ 1 ] ) : 100; // nb points
+  ///   int R  = argc > 2 ? atoi( argv[ 2 ] ) : 10;  // x-radius of ellipsoid
+  ///   // (0) typedefs
+  ///   typedef DGtal::ConvexHullIntegralKernel< 3 > Kernel3D;
+  ///   typedef DGtal::QuickHull< Kernel3D >         QuickHull3D;
+  ///   // (1) create range of random points in ball
+  ///   std::vector< Point > V;
+  ///   const auto R2 = R/// R;
+  ///   for ( int i = 0; i < nb; ) {
+  ///     Point p( rand() % (2*R+1) - R, rand() % (2*R+1) - R, rand() % (2*R+1) - R );
+  ///     if ( p.squaredNorm() < R2 ) { V.push_back( p ); i++; }
+  ///   }
+  ///   // (2) compute convex hull
+  ///   QuickHull3D hull;
+  ///   hull.setInput( V );
+  ///   hull.computeConvexHull();
+  ///   std::cout << "#points=" << hull.nbPoints()
+  ///             << " #vertices=" << hull.nbVertices()
+  ///             << " #facets=" << hull.nbFacets() << std::endl;
+  ///   // (3) build mesh
+  ///   std::vector< RealPoint > positions;
+  ///   hull.getVertexPositions( positions );
+  ///   std::vector< std::vector< std::size_t > > facets;
+  ///   hull.getFacetVertices( facets );
+  ///   typedef DGtal::SurfaceMesh< RealPoint, RealVector> SMesh;
+  ///   SMesh mesh( positions.cbegin(), positions.cend(), facets.cbegin(), facets.cend() );
+  ///   // (4) output result as OBJ file
+  ///   std::ofstream out( "qhull.obj" );
+  ///   DGtal::SurfaceMeshWriter< Space::RealPoint, Space::RealVector >
+  ///     ::writeOBJ( out, mesh );
+  ///   out.close();
+  ///   return 0;
+  /// } 
   /// @endcode
   ///
   /// @note In opposition with the usual QuickHull implementation, this

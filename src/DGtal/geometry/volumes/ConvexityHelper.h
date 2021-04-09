@@ -68,12 +68,15 @@ namespace DGtal
      space, a model of concepts::CInteger. It sets the coordinate type
      of input lattice points as well as output integral convex hulls
      and lattice polytopes.
+     
+     @see \ref moduleQuickHull
   */
   template < int dim, typename TInteger = DGtal::int32_t >
   struct ConvexityHelper {
     BOOST_STATIC_ASSERT( dim > 1 );
     // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
+    
     static const Dimension dimension = dim;
 
     typedef TInteger                         Integer;

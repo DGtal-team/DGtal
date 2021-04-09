@@ -322,7 +322,7 @@ namespace DGtal
      \brief Aim: a geometric kernel to compute the convex hull of
      digital points with integer-only arithmetic.
 
-     @see moduleQuickHull
+     @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -437,7 +437,7 @@ namespace DGtal
      hull. Facets pointing toward the bottom form the simplices of the
      Delaunay triangulation.
 
-     @see moduleQuickHull
+     @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -570,7 +570,7 @@ namespace DGtal
      where `precision` is the floating point value given at
      instanciation of the kernel.
 
-     @see moduleQuickHull
+     @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
@@ -725,7 +725,7 @@ namespace DGtal
      where `precision` is the floating point value given at
      instanciation of the kernel.
 
-     @see moduleQuickHull
+     @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
   */
