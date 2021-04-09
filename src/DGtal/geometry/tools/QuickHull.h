@@ -55,8 +55,8 @@ namespace DGtal
   // template class QuickHull
 
   /// Description of template class 'QuickHull' <p> \brief Aim:
-  /// Implements the quickhull algorithm by Barber et al. \cite
-  /// barber1996, a famous arbitrary dimensional convex hull
+  /// Implements the quickhull algorithm by Barber et al. \cite barber1996,
+  /// a famous arbitrary dimensional convex hull
   /// computation algorithm. It relies on dedicated geometric kernels
   /// for computing and comparing facet geometries.
   ///

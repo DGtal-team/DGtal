@@ -45,12 +45,366 @@
 #include <vector>
 #include <array>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
 
 namespace DGtal
 {
   namespace detail {
+
+#ifdef WITH_BIGINTEGER
+    /// ------------- GMP SPECIALIZED SERVICES ----------------------------
+    
+    /// @param[inout] n the (initialized) big integer to set
+    /// @param[in] ull a signed long long integer to assign to \a n.
+    static void mpz_set_sll(mpz_t n, long long sll)
+    {
+      mpz_set_si(n, (int)(sll >> 32));     /* n = (int)sll >> 32 */
+      mpz_mul_2exp(n, n, 32 );             /* n <<= 32 */
+      mpz_add_ui(n, n, (unsigned int)sll); /* n += (unsigned int)sll */
+    }
+    
+    /// @param[inout] n the (initialized) big integer to set
+    /// @param[in] ull an unsigned long long integer to assign to \a n.
+    static void mpz_set_ull(mpz_t n, unsigned long long ull)
+    {
+      mpz_set_ui(n, (unsigned int)(ull >> 32)); /* n = (unsigned int)(ull >> 32) */
+      mpz_mul_2exp(n, n, 32);                   /* n <<= 32 */
+      mpz_add_ui(n, n, (unsigned int)ull);      /* n += (unsigned int)ull */
+    }      
+
+    /// Conversion to uint64 is tricky and not native for GMP.
+    /// @param n any number
+    /// @return its uint64 representation.
+    static unsigned long long mpz_get_ull(mpz_t n)
+    {
+      unsigned int lo, hi;
+      mpz_t tmp;
+      mpz_init( tmp );
+      mpz_mod_2exp( tmp, n, 64 );   /* tmp = (lower 64 bits of n) */
+      lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */ 
+      mpz_div_2exp( tmp, tmp, 32 ); /* tmp >>= 32 */
+      hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
+      mpz_clear( tmp );
+      return (((unsigned long long)hi) << 32) + lo;
+    }
+    
+    /// Conversion to int64 is tricky and not native for GMP.
+    /// @param n any number
+    /// @return its int64 representation.
+    static long long mpz_get_sll(mpz_t n)
+    {
+      return (long long)mpz_get_ull(n); /* just use unsigned version */
+    }
+#endif
+    
+    /// ------------- INTEGER/POINT CONVERSION SERVICES --------------------
+    
+    /// Allows seamless conversion of integral types and lattice
+    /// points, while checking for errors when going from a more
+    /// precise to a less precise type.
+    /// Generic version allowing only the identity cast.
+    ///
+    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    template < typename TInteger >
+    struct IntegerConverter {
+      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
+      typedef TInteger Integer;
+      /// @param i any integer
+      /// @return the same integer
+      static Integer cast( Integer i ) 
+      {
+        return i;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, Integer > cast( PointVector< dim, Integer > p )
+      {
+        return p;
+      }
+    };
+
+    /// Allows seamless conversion of integral types and lattice
+    /// points, while checking for errors when going from a more
+    /// precise to a less precise type.
+    /// Specialized version for int32_t.
+    ///
+    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    template <>
+    struct IntegerConverter< DGtal::int32_t > {
+      typedef DGtal::int32_t Integer;
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int32_t cast( DGtal::int32_t i ) 
+      {
+        return i;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int32_t > cast( PointVector< dim, DGtal::int32_t > p )
+      {
+        return p;
+      }
+
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int32_t cast( DGtal::int64_t i ) 
+      {
+        DGtal::int32_t r = DGtal::int32_t( i );
+        if ( DGtal::int64_t( r ) != i )
+          trace.warning() << "Bad integer conversion: " << i << " -> " << r
+                          << std::endl;
+        return r;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int32_t > cast( PointVector< dim, DGtal::int64_t > p )
+      {
+        PointVector< dim, DGtal::int32_t > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+      
+#ifdef WITH_BIGINTEGER
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int32_t cast( DGtal::BigInteger i ) 
+      {
+        DGtal::int32_t r = i.get_si();
+        if ( DGtal::BigInteger( r ) != i )
+          trace.warning() << "Bad integer conversion: " << i << " -> " << r
+                          << std::endl;
+        return r;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int32_t >
+      cast( PointVector< dim, DGtal::BigInteger > p )
+      {
+        PointVector< dim, DGtal::int32_t > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+
+#endif
+    };
+    
+
+    /// Allows seamless conversion of integral types and lattice
+    /// points, while checking for errors when going from a more
+    /// precise to a less precise type.
+    /// Specialized version for int64_t.
+    ///
+    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    template <>
+    struct IntegerConverter< DGtal::int64_t > {
+      typedef DGtal::int64_t Integer;
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int64_t cast( DGtal::int32_t i ) 
+      {
+        return i;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int64_t > cast( PointVector< dim, DGtal::int32_t > p )
+      {
+        PointVector< dim, DGtal::int64_t > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int64_t cast( DGtal::int64_t i ) 
+      {
+        return i;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int64_t > cast( PointVector< dim, DGtal::int64_t > p )
+      {
+        return p;
+      }
+      
+#ifdef WITH_BIGINTEGER
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::int64_t cast( DGtal::BigInteger i ) 
+      {
+        DGtal::int64_t r = mpz_get_sll( i.get_mpz_t() );
+        DGtal::BigInteger tmp;
+        mpz_set_sll( tmp.get_mpz_t(), r );
+        if ( tmp != i )
+          trace.warning() << "Bad integer conversion: " << i << " -> " << r
+                          << std::endl;
+        return r;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::int64_t >
+      cast( PointVector< dim, DGtal::BigInteger > p )
+      {
+        PointVector< dim, DGtal::int64_t > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+      
+#endif
+    };
+    
+
+#ifdef WITH_BIGINTEGER
+    /// Allows seamless conversion of integral types and lattice
+    /// points, while checking for errors when going from a more
+    /// precise to a less precise type.
+    /// Specialized version for BigInteger
+    ///
+    /// @tparam TInteger an integral type, a model of concepts::CInteger
+    template <>
+    struct IntegerConverter< DGtal::BigInteger > {
+      typedef DGtal::BigInteger Integer;
+
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::BigInteger cast( DGtal::int32_t i ) 
+      {
+        return DGtal::BigInteger( i );
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::BigInteger >
+      cast( PointVector< dim, DGtal::int32_t > p )
+      {
+        PointVector< dim, DGtal::BigInteger > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::BigInteger cast( DGtal::int64_t i ) 
+      {
+        DGtal::BigInteger tmp;
+        mpz_set_sll( tmp.get_mpz_t(), i );
+        return tmp;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::BigInteger >
+      cast( PointVector< dim, DGtal::int64_t > p )
+      {
+        PointVector< dim, DGtal::BigInteger > q;
+        for ( DGtal::Dimension i = 0; i < dim; i++ )
+          q[ i ] = cast( p[ i ] );
+        return q;
+      }
+      
+      /// @param i any integer
+      /// @return the same integer
+      static DGtal::BigInteger cast( DGtal::BigInteger i ) 
+      {
+        return i;
+      }
+
+      /// Conversion of a lattice point.
+      ///
+      /// @tparam dim static constant of type DGtal::Dimension that
+      /// specifies the static  dimension of the space and thus the number
+      /// of elements  of the Point or Vector.
+      /// @param p any point
+      /// @return the same point
+      template < DGtal::Dimension dim >
+      static
+      PointVector< dim, DGtal::BigInteger >
+      cast( PointVector< dim, DGtal::BigInteger > p )
+      {
+        return p;
+      }
+      
+    };
+#endif
+    
+    // ------------------------ OTHER SERVICES -----------------------
     
     /// Compute the center of the bounding box containing the given points.
     /// @tparam Point any type of points
@@ -158,12 +512,28 @@ namespace DGtal
      @tparam dim the dimension of the space that is used for computing
      the convex hull (either the same as input points for convex hull,
      or one more than input points for Delaunay triangulation)
+
+     @tparam TCoordinateInteger the integer type that represents
+     coordinates of lattice points, a model of concepts::CInteger.
+
+     @tparam TInternalInteger the integer type that is used for
+     internal computations of above/below plane tests, a model of
+     concepts::CInteger. Must be at least as precise as
+     TCoordinateInteger.
   */
-  template < Dimension dim >
+  template < Dimension dim,
+             typename TCoordinateInteger  = DGtal::int64_t,
+             typename TInternalInteger = DGtal::int64_t >
   struct ConvexHullCommonKernel {
-    typedef DGtal::PointVector< dim, DGtal::int64_t > Point;
-    typedef DGtal::PointVector< dim, DGtal::int64_t > Vector;
-    typedef int64_t                    Scalar;
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TCoordinateInteger> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
+    typedef TCoordinateInteger         CoordinateInteger;
+    typedef TInternalInteger           InternalInteger;
+    typedef CoordinateInteger          Scalar;
+    typedef InternalInteger            InternalScalar;
+    typedef DGtal::PointVector< dim, CoordinateInteger > Point;
+    typedef DGtal::PointVector< dim, CoordinateInteger > Vector;
+    typedef DGtal::PointVector< dim, InternalInteger >   InternalVector;
     typedef std::size_t                Size;
     typedef Size                       Index;
     typedef std::vector< Index >       IndexRange;
