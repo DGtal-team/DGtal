@@ -108,7 +108,8 @@ namespace DGtal
     /// Generic version allowing only the identity cast.
     ///
     /// @tparam TInteger an integral type, a model of concepts::CInteger
-    template < typename TInteger >
+    template < DGtal::Dimension dim,
+               typename TInteger >
     struct IntegerConverter {
       BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
       typedef TInteger Integer;
@@ -126,7 +127,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, Integer > cast( PointVector< dim, Integer > p )
       {
@@ -140,8 +140,8 @@ namespace DGtal
     /// Specialized version for int32_t.
     ///
     /// @tparam TInteger an integral type, a model of concepts::CInteger
-    template <>
-    struct IntegerConverter< DGtal::int32_t > {
+    template < DGtal::Dimension dim >
+    struct IntegerConverter< dim, DGtal::int32_t > {
       typedef DGtal::int32_t Integer;
       /// @param i any integer
       /// @return the same integer
@@ -157,9 +157,9 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
-      PointVector< dim, DGtal::int32_t > cast( PointVector< dim, DGtal::int32_t > p )
+      PointVector< dim, DGtal::int32_t >
+      cast( PointVector< dim, DGtal::int32_t > p )
       {
         return p;
       }
@@ -182,9 +182,9 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
-      PointVector< dim, DGtal::int32_t > cast( PointVector< dim, DGtal::int64_t > p )
+      PointVector< dim, DGtal::int32_t >
+      cast( PointVector< dim, DGtal::int64_t > p )
       {
         PointVector< dim, DGtal::int32_t > q;
         for ( DGtal::Dimension i = 0; i < dim; i++ )
@@ -211,7 +211,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::int32_t >
       cast( PointVector< dim, DGtal::BigInteger > p )
@@ -232,8 +231,8 @@ namespace DGtal
     /// Specialized version for int64_t.
     ///
     /// @tparam TInteger an integral type, a model of concepts::CInteger
-    template <>
-    struct IntegerConverter< DGtal::int64_t > {
+    template < DGtal::Dimension dim >
+    struct IntegerConverter< dim, DGtal::int64_t > {
       typedef DGtal::int64_t Integer;
       /// @param i any integer
       /// @return the same integer
@@ -249,7 +248,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::int64_t > cast( PointVector< dim, DGtal::int32_t > p )
       {
@@ -273,9 +271,9 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
-      PointVector< dim, DGtal::int64_t > cast( PointVector< dim, DGtal::int64_t > p )
+      PointVector< dim, DGtal::int64_t >
+      cast( PointVector< dim, DGtal::int64_t > p )
       {
         return p;
       }
@@ -301,7 +299,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::int64_t >
       cast( PointVector< dim, DGtal::BigInteger > p )
@@ -323,8 +320,8 @@ namespace DGtal
     /// Specialized version for BigInteger
     ///
     /// @tparam TInteger an integral type, a model of concepts::CInteger
-    template <>
-    struct IntegerConverter< DGtal::BigInteger > {
+    template < DGtal::Dimension dim >
+    struct IntegerConverter< dim, DGtal::BigInteger > {
       typedef DGtal::BigInteger Integer;
 
       /// @param i any integer
@@ -341,7 +338,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::BigInteger >
       cast( PointVector< dim, DGtal::int32_t > p )
@@ -368,7 +364,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::BigInteger >
       cast( PointVector< dim, DGtal::int64_t > p )
@@ -393,7 +388,6 @@ namespace DGtal
       /// of elements  of the Point or Vector.
       /// @param p any point
       /// @return the same point
-      template < DGtal::Dimension dim >
       static
       PointVector< dim, DGtal::BigInteger >
       cast( PointVector< dim, DGtal::BigInteger > p )
@@ -529,10 +523,14 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
     typedef TCoordinateInteger         CoordinateInteger;
     typedef TInternalInteger           InternalInteger;
-    typedef CoordinateInteger          Scalar;
+    //typedef CoordinateInteger          Scalar;
+    typedef CoordinateInteger          CoordinateScalar;
     typedef InternalInteger            InternalScalar;
-    typedef DGtal::PointVector< dim, CoordinateInteger > Point;
-    typedef DGtal::PointVector< dim, CoordinateInteger > Vector;
+    //typedef DGtal::PointVector< dim, CoordinateInteger > Point;
+    //typedef DGtal::PointVector< dim, CoordinateInteger > Vector;
+    typedef DGtal::PointVector< dim, CoordinateInteger > CoordinatePoint;
+    typedef DGtal::PointVector< dim, CoordinateInteger > CoordinateVector;
+    typedef DGtal::PointVector< dim, InternalInteger >   InternalPoint;
     typedef DGtal::PointVector< dim, InternalInteger >   InternalVector;
     typedef std::size_t                Size;
     typedef Size                       Index;
@@ -540,16 +538,21 @@ namespace DGtal
     typedef std::array< Index, dim >   CombinatorialPlaneSimplex;
     static const Dimension dimension = dim;
 
+    /// Converter to outer coordinate integers or lattice points / vector
+    typedef detail::IntegerConverter< dim, CoordinateInteger > Outer; 
+    /// Converter to inner internal integers or lattice points / vector
+    typedef detail::IntegerConverter< dim, InternalInteger >   Inner;
+    
     class HalfSpace {
       friend class ConvexHullCommonKernel< dim >;
-      Vector N; ///< the normal vector
-      Scalar c; ///< the intercept
-      HalfSpace( const Vector& aN, const Scalar aC )
+      InternalVector N; ///< the normal vector
+      InternalScalar c; ///< the intercept
+      HalfSpace( const InternalVector& aN, const InternalScalar aC )
         : N( aN ), c( aC ) {}
     public:
       HalfSpace() = default;
-      const Vector& internalNormal() const    { return N; }
-      Scalar internalIntercept() const { return c; }
+      const InternalVector& internalNormal() const    { return N; }
+      InternalScalar internalIntercept() const { return c; }
     };
     
     /// Default constructor.
@@ -567,14 +570,16 @@ namespace DGtal
     /// @return the corresponding halfspace (has null normal vector if
     /// simplex was not full dimensional)
     HalfSpace
-    compute( const std::vector< Point >& vpoints,
+    compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex,
              Index idx_below )
     {
       HalfSpace hs = compute( vpoints, simplex );
-      if ( hs.N != Vector::zero ) 
+      if ( hs.N != InternalVector::zero ) 
         {
-          const Scalar nu = hs.N.dot( vpoints[ idx_below ] );
+          const InternalPoint  ip = Inner::cast( vpoints[ idx_below ] );
+          const InternalScalar nu = hs.N.dot( ip );
+          //const Scalar nu = hs.N.dot( vpoints[ idx_below ] );
           if ( nu > hs.c ) { hs.N = -hs.N; hs.c = -hs.c; }
         }
       return hs;
@@ -592,36 +597,37 @@ namespace DGtal
     /// @return the corresponding halfspace (has null normal vector if
     /// simplex was not full dimensional)
     HalfSpace
-    compute( const std::vector< Point >& vpoints,
+    compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex )
     {
-      typedef DGtal::SimpleMatrix< Scalar, dimension, dimension > Matrix;
+      typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
       Matrix A;
-      Vector N;
-      Scalar c;
+      InternalVector N;
+      InternalScalar c;
       for ( Dimension i = 1; i < dimension; i++ )
         for ( Dimension j = 0; j < dimension; j++ )
           A.setComponent( i-1, j,
-                          vpoints[ simplex[ i ] ][ j ]
-                          - vpoints[ simplex[ 0 ] ][ j ] );
+                          Inner::cast( vpoints[ simplex[ i ] ][ j ]
+                                       - vpoints[ simplex[ 0 ] ][ j ] ) );
       for ( Dimension j = 0; j < dimension; j++ )
         N[ j ] = A.cofactor( dimension-1, j );
-      c = N.dot( vpoints[ simplex[ 0 ] ] );
-      return HalfSpace { N, c };
+      const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
+      // c = N.dot( vpoints[ simplex[ 0 ] ] );
+      return HalfSpace { N, N.dot( ip ) };
     }
     
     /// @param H the half-space
     /// @return the normal to this facet.
-    Vector normal( const HalfSpace& H ) const
+    CoordinateVector normal( const HalfSpace& H ) const
     {
-      return H.N;
+      return Outer::cast( H.N );
     }
 
     /// @param H the half-space
     /// @return the intercept of this facet.
-    Scalar intercept( const HalfSpace& H ) const
+    CoordinateScalar intercept( const HalfSpace& H ) const
     {
-      return H.c;
+      return Outer::cast( H.c );
     }
     
     /// Equivalent of the dot product of the normals of the half-spaces.
@@ -632,7 +638,7 @@ namespace DGtal
     /// @return a positive scalar if both half-spaces points to to the
     /// same hemisphere, a negative scalar if they point to opposite
     /// hemispheres, and zero if they are orthogonal.
-    Scalar dot( const HalfSpace& H1, const HalfSpace& H2 ) const
+    InternalScalar dot( const HalfSpace& H1, const HalfSpace& H2 ) const
     {
       return H1.N.dot( H2.N );
     }
@@ -653,31 +659,34 @@ namespace DGtal
     /// @param H the half-space
     /// @param p any point
     /// @return the (signed) height of \a p wrt this plane.
-    Scalar height( const HalfSpace& H, const Point& p ) const
-    { return H.N.dot( p ) - H.c; }
+    InternalScalar height( const HalfSpace& H, const CoordinatePoint& p ) const
+    { return H.N.dot( Inner::cast( p ) ) - H.c; }
 
     /// @param H the half-space
     /// @param p any point
     /// @return the volume of the vectors spanned by the simplex and this point.
-    Scalar volume( const HalfSpace& H, const Point& p ) const
-    { Scalar v = height( H, p ); return v < 0 ? -v : v; }
+    InternalScalar volume( const HalfSpace& H, const CoordinatePoint& p ) const
+    {
+      InternalScalar v = height( H, p );
+      return v < InternalScalar( 0 ) ? -v : v;
+    }
 
     /// @param H the half-space
     /// @param p any point
     /// @return 'true' iff p is strictly above this plane (so in direction N ).
-    bool above( const HalfSpace& H, const Point& p ) const
+    bool above( const HalfSpace& H, const CoordinatePoint& p ) const
     { return height( H, p ) > 0; }
 
     /// @param H the half-space
     /// @param p any point
     /// @return 'true' iff p is above or lies on this plane (so in direction N ).
-    bool aboveOrOn( const HalfSpace& H, const Point& p ) const
+    bool aboveOrOn( const HalfSpace& H, const CoordinatePoint& p ) const
     { return height( H, p ) >= 0; }
 
     /// @param H the half-space
     /// @param p any point
     /// @return 'true' iff p lies on this plane.
-    bool on( const HalfSpace& H, const Point& p ) const
+    bool on( const HalfSpace& H, const CoordinatePoint& p ) const
     { return height( H, p ) == 0; } 
     
     
@@ -701,9 +710,15 @@ namespace DGtal
   {
     typedef ConvexHullCommonKernel< dim > Base;
     // inheriting types
-    using typename Base::Point;
-    using typename Base::Vector;
-    using typename Base::Scalar;
+    // using typename Base::Point;
+    // using typename Base::Vector;
+    // using typename Base::Scalar;
+    using typename Base::CoordinatePoint;
+    using typename Base::CoordinateVector;
+    using typename Base::CoordinateScalar;
+    using typename Base::InternalPoint;
+    using typename Base::InternalVector;
+    using typename Base::InternalScalar;
     using typename Base::Size;
     using typename Base::Index;
     using typename Base::IndexRange;
@@ -768,16 +783,16 @@ namespace DGtal
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
     template < typename InputPoint>
-    void makeInput( std::vector< Point >& processed_points,
+    void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
                     const std::vector< InputPoint >& input_points,
                     bool remove_duplicates )
     {
-      const auto F = [&] ( InputPoint input ) -> Point
+      const auto F = [&] ( InputPoint input ) -> CoordinatePoint
         {
-          Point p;
+          CoordinatePoint p;
           for ( Dimension i = 0; i < dimension; i++ )
-            p[ i ] = static_cast< Scalar >( input[ i ] );
+            p[ i ] = CoordinateScalar( input[ i ] );
           return p;
         };
       DGtal::detail::transform( processed_points, input2comp, comp2input,
@@ -788,7 +803,7 @@ namespace DGtal
     /// @tparam OutputPoint a model of point such that processing type
     /// Point is convertible to it.
     template < typename OutputPoint>
-    void convertPointTo( const Point& p, OutputPoint& out_p ) const
+    void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
       for ( Dimension k = 0; k < dimension; k++ )
         out_p[ k ] = p[ k ];
@@ -816,9 +831,15 @@ namespace DGtal
   {
     typedef ConvexHullCommonKernel< dim+1 > Base;
     // inheriting types
-    using typename Base::Point;
-    using typename Base::Vector;
-    using typename Base::Scalar;
+    // using typename Base::Point;
+    // using typename Base::Vector;
+    // using typename Base::Scalar;
+    using typename Base::CoordinatePoint;
+    using typename Base::CoordinateVector;
+    using typename Base::CoordinateScalar;
+    using typename Base::InternalPoint;
+    using typename Base::InternalVector;
+    using typename Base::InternalScalar;
     using typename Base::Size;
     using typename Base::Index;
     using typename Base::IndexRange;
@@ -853,7 +874,7 @@ namespace DGtal
     /// correspond to an infinite facet.
     bool isHalfSpaceFacetInfinite( const HalfSpace& hs ) const
     {
-      return hs.internalNormal()[ dimension - 1 ] >= 0;
+      return hs.internalNormal()[ dimension - 1 ] >= InternalScalar( 0 );
     }
     
     /// Transforms a range \a input_points of input points to a range
@@ -886,17 +907,17 @@ namespace DGtal
     /// be of smaller size, otherwise, when 'false', it means that
     /// there are no duplicates in \a input_points.
     template < typename InputPoint>
-    void makeInput( std::vector< Point >& processed_points,
+    void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
                     const std::vector< InputPoint >& input_points,
                     bool remove_duplicates )
     {
-      const auto F = [&] ( InputPoint input ) -> Point
+      const auto F = [&] ( InputPoint input ) -> CoordinatePoint
         {
-          Point p;
-          Scalar z = 0;
+          CoordinatePoint p;
+          CoordinateScalar z = 0;
           for ( Dimension i = 0; i < dimension-1; i++ ) {
-            const Scalar x = static_cast< Scalar >( input[ i ] );
+            const CoordinateScalar x = CoordinateScalar( input[ i ] );
             p[ i ]   = x;
             z       += x*x;
           }
@@ -911,7 +932,7 @@ namespace DGtal
     /// @tparam OutputPoint a model of point such that processing type
     /// Point is convertible to it.
     template < typename OutputPoint>
-    void convertPointTo( const Point& p, OutputPoint& out_p ) const
+    void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
       for ( Dimension k = 0; k < dimension-1; k++ )
         out_p[ k ] = p[ k ];
@@ -949,9 +970,15 @@ namespace DGtal
   {
     typedef ConvexHullCommonKernel< dim > Base;
     // inheriting types
-    using typename Base::Point;
-    using typename Base::Vector;
-    using typename Base::Scalar;
+    // using typename Base::Point;
+    // using typename Base::Vector;
+    // using typename Base::Scalar;
+    using typename Base::CoordinatePoint;
+    using typename Base::CoordinateVector;
+    using typename Base::CoordinateScalar;
+    using typename Base::InternalPoint;
+    using typename Base::InternalVector;
+    using typename Base::InternalScalar;
     using typename Base::Size;
     using typename Base::Index;
     using typename Base::IndexRange;
@@ -1028,16 +1055,16 @@ namespace DGtal
     /// where `precision` is the floating point value given at
     /// instanciation of the kernel.
     template < typename InputPoint>
-    void makeInput( std::vector< Point >& processed_points,
+    void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
                     const std::vector< InputPoint >& input_points,
                     bool remove_duplicates )
     {
-      const auto F = [&] ( InputPoint input ) -> Point
+      const auto F = [&] ( InputPoint input ) -> CoordinatePoint
         {
-          Point p;
+          CoordinatePoint p;
           for ( Dimension i = 0; i < dimension; i++ )
-            p[ i ] = static_cast< Scalar >( round( input[ i ] * precision ) );
+            p[ i ] = CoordinateScalar( round( input[ i ] * precision ) );
           return p;
         };
       DGtal::detail::transform( processed_points, input2comp, comp2input,
@@ -1062,7 +1089,7 @@ namespace DGtal
     /// where `precision` is the floating point value given at
     /// instanciation of the kernel.
     template < typename OutputPoint>
-    void convertPointTo( const Point& p, OutputPoint& out_p ) const
+    void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
       for ( Dimension k = 0; k < dimension; k++ )
         out_p[ k ] = ( (double) p[ k ] ) / precision;
@@ -1104,9 +1131,15 @@ namespace DGtal
   {
     typedef ConvexHullCommonKernel< dim+1 > Base;
     // inheriting types
-    using typename Base::Point;
-    using typename Base::Vector;
-    using typename Base::Scalar;
+    // using typename Base::Point;
+    // using typename Base::Vector;
+    // using typename Base::Scalar;
+    using typename Base::CoordinatePoint;
+    using typename Base::CoordinateVector;
+    using typename Base::CoordinateScalar;
+    using typename Base::InternalPoint;
+    using typename Base::InternalVector;
+    using typename Base::InternalScalar;
     using typename Base::Size;
     using typename Base::Index;
     using typename Base::IndexRange;
@@ -1148,7 +1181,7 @@ namespace DGtal
     /// correspond to an infinite facet.
     bool isHalfSpaceFacetInfinite( const HalfSpace& hs ) const
     {
-      return hs.internalNormal()[ dimension - 1 ] >= 0;
+      return hs.internalNormal()[ dimension - 1 ] >= InternalScalar( 0 );
     }
 
     /// Transforms a range \a input_points of input points to a range
@@ -1187,19 +1220,20 @@ namespace DGtal
     /// given at instanciation of the kernel. A new coordinate is
     /// added so that the point is lifted onto the "norm" paraboloid.
     template < typename InputPoint>
-    void makeInput( std::vector< Point >& processed_points,
+    void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
                     const std::vector< InputPoint >& input_points,
                     bool remove_duplicates )
     {
-      const auto F = [&] ( InputPoint input ) -> Point
+      const auto F = [&] ( InputPoint input ) -> CoordinatePoint
         {
-          Point p;
-          Scalar z = 0;
+          CoordinatePoint p;
+          CoordinateScalar z = 0;
           for ( Dimension i = 0; i < dimension - 1; i++ ) {
-            const Scalar x = static_cast< Scalar >( round( input[ i ] * precision ) );
+            const CoordinateScalar x
+              = CoordinateScalar( round( input[ i ] * precision ) );
             p[ i ] = x;
-            z       += x*x;
+            z     += x*x;
           }
           p[ dimension-1 ] = z;
           return p;
@@ -1229,7 +1263,7 @@ namespace DGtal
     /// onto the "norm" paraboloid, as classically done when computing
     /// the Delaunay triangulation from a convex hull.
     template < typename OutputPoint>
-    void convertPointTo( const Point& p, OutputPoint& out_p ) const
+    void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
       for ( Dimension k = 0; k < dimension - 1; k++ )
         out_p[ k ] = ( (double) p[ k ] ) / precision;

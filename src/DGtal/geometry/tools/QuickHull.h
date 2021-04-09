@@ -139,9 +139,9 @@ namespace DGtal
   struct QuickHull
   {
     typedef TKernel                    Kernel;
-    typedef typename Kernel::Point     Point;
-    typedef typename Kernel::Vector    Vector;
-    typedef typename Kernel::Scalar    Scalar;
+    typedef typename Kernel::CoordinatePoint     Point;
+    typedef typename Kernel::CoordinateVector    Vector;
+    typedef typename Kernel::CoordinateScalar    Scalar;
     typedef std::size_t                Index;
     typedef std::size_t                Size;
     BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
