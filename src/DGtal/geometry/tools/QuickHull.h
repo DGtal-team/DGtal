@@ -53,21 +53,27 @@ namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
   // template class QuickHull
-  /**
-   * Description of template class 'QuickHull' <p> \brief Aim:
-   * Implements the quickhull algorithm by Barber et al. \cite
-   * barber1996, a famous arbitrary dimensional convex hull
-   * computation algorithm. It relies on dedicated geometric kernels
-   * for computing and comparing facet geometries.
-   *
-   * You can use it to build convex hulls of points with integral
-   * coordinate (using kernel ConvexHullIntegralKernel) or to build
-   * Delaunay triangulations.
-   *
-   * Below is a complete example that computes the convex hull of
-   * points randomly defined in a ball, builds a 3D mesh out of it and
-   * output it as an OBJ file.
-   * @code
+
+  /// Description of template class 'QuickHull' <p> \brief Aim:
+  /// Implements the quickhull algorithm by Barber et al. \cite
+  /// barber1996, a famous arbitrary dimensional convex hull
+  /// computation algorithm. It relies on dedicated geometric kernels
+  /// for computing and comparing facet geometries.
+  ///
+  /// You can use it to build convex hulls of points with integral
+  /// coordinate (using kernel ConvexHullIntegralKernel), convex hulls
+  /// with rational coordinates (using kernel
+  /// ConvexHullRationalKernel) or to build Delaunay triangulations
+  /// (using kernels DelaunayIntegralKernel and
+  /// DelaunayRationalKernel).
+  ///
+  /// @see moduleQuickHull
+  ///
+  /// Below is a complete example that computes the convex hull of
+  /// points randomly defined in a ball, builds a 3D mesh out of it and
+  /// output it as an OBJ file.
+  ///
+  /// @code
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/shapes/SurfaceMesh.h"
@@ -84,7 +90,7 @@ int main( int argc, char* argv[] )
   typedef DGtal::QuickHull< Kernel3D >         QuickHull3D;
   // (1) create range of random points in ball
   std::vector< Point > V;
-  const auto R2 = R * R;
+  const auto R2 = R/// R;
   for ( int i = 0; i < nb; ) {
     Point p( rand() % (2*R+1) - R, rand() % (2*R+1) - R, rand() % (2*R+1) - R );
     if ( p.squaredNorm() < R2 ) { V.push_back( p ); i++; }
@@ -110,26 +116,25 @@ int main( int argc, char* argv[] )
   out.close();
   return 0;
 } 
-   * @endcode
-   *
-   * @note In opposition with the usual QuickHull implementation, this
-   * class uses a kernel that can be chosen in order to provide exact
-   * computations. This is the case for lattice points.
-   *
-   * @note In opposition with CGAL `3D convex hull` package, or with
-   * the arbitrary dimensional `dD Triangulation` package, this
-   * algorithm does not build a simplicial convex hull. Facets may not
-   * be trangles or simplices in higher dimensions.
-   *
-   * @note This version is generally more than twice faster than CGAL
-   * convex_hull_3 for the usual CGAL kernels Cartesian and
-   * Exact_predicates_inexact_constructions_kernel.
-   *
-   * @note However this implementation is not tailored for incremental
-   * dynamic convex hull computations.
-   *
-   * @tparam TKernel any type of QuickHull kernel, like ConvexHullIntegralKernel.
-   */
+  /// @endcode
+  ///
+  /// @note In opposition with the usual QuickHull implementation, this
+  /// class uses a kernel that can be chosen in order to provide exact
+  /// computations. This is the case for lattice points.
+  ///
+  /// @note In opposition with CGAL `3D convex hull` package, or with
+  /// the arbitrary dimensional `dD Triangulation` package, this
+  /// algorithm does not build a simplicial convex hull. Facets may not
+  /// be trangles or simplices in higher dimensions.
+  ///
+  /// @note This version is generally more than twice faster than CGAL
+  /// convex_hull_3 for the usual CGAL kernels Cartesian and
+  /// Exact_predicates_inexact_constructions_kernel.
+  ///
+  /// @note However this implementation is not tailored for incremental
+  /// dynamic convex hull computations.
+  ///
+  /// @tparam TKernel any type of QuickHull kernel, like ConvexHullIntegralKernel.
   template < typename TKernel >
   struct QuickHull
   {
@@ -145,9 +150,7 @@ int main( int argc, char* argv[] )
     typedef typename Kernel::CombinatorialPlaneSimplex CombinatorialPlaneSimplex;
     static const Size  dimension  = Point::dimension;
 
-    // BOOST_STATIC_CONSTANT( Index, UNASSIGNED = (Index) -1 );
-    // static constexpr Index UNASSIGNED = (Index) -1;
-    // static const Index UNASSIGNED = (Index) -1;
+    /// Label for points that are not assigned to any facet.
     enum { UNASSIGNED = (Index) -1 };
 
     /// A facet is d-1 dimensional convex cell lying on the boundary
@@ -189,8 +192,6 @@ int main( int argc, char* argv[] )
         out << ") c=" << H.internalIntercept() << " b=" << below << " n={";
         for ( auto&& n : neighbors ) out << " " << n;
         out << " } #out=" << outside_set.size();
-        // out << " } out={";
-        // for ( auto&& n : outside_set ) out << " " << n;
         out << " on={";
         for ( auto&& n : on_set ) out << " " << n;
         out << " }]" << std::endl;
@@ -693,8 +694,6 @@ int main( int argc, char* argv[] )
       facet_halfspaces.reserve( nbFacets() );
       for ( Index f = 0; f < nbFacets(); ++f )  {
         facet_halfspaces.push_back( facets[ f ].H );
-          // kernel.normal(  ),
-          // kernel.intercept( facets[ f ].H ) );
       }
       return true;
     }
@@ -1211,16 +1210,6 @@ int main( int argc, char* argv[] )
       const Index f = facets.size();
       facets.push_back( Facet() );
       return f;
-      // if ( ! deleted_facets.empty() ) {
-      //   auto       it = deleted_facets.begin();
-      //   const Index f = *it;
-      //   deleted_facets.erase( it );
-      //   return f;
-      // } else {
-      //   const Index f = facets.size();
-      //   facets.push_back( Facet() );
-      //   return f;
-      // }
     }
 
     /// Deletes the given facet \a f.
@@ -1289,9 +1278,6 @@ int main( int argc, char* argv[] )
       // Need to check if one N is a multiple of the other.
       for ( auto&& v : f1.on_set )
         if ( ! on( f2, points[ v ] ) ) return false;
-      // No need to double check.
-      // for ( auto&& v : f2.on_set )
-      //   if ( ! on( f1, points[ v ] ) ) return false;
       return true;
     }
   
@@ -1346,15 +1332,6 @@ int main( int argc, char* argv[] )
       std::set_intersection( f1.on_set.cbegin(), f1.on_set.cend(),
                              f2.on_set.cbegin(), f2.on_set.cend(),
                              std::back_inserter( result ) );
-      // if ( f1.on_set.size() <= f2.on_set.size() ) {
-      //   for ( auto& v : f1.on_set )
-      //     if ( on( f2, points[ v ] ) )
-      //       result.push_back( v );
-      // } else {
-      //   for ( auto& v : f2.on_set )
-      //     if ( on( f1, points[ v ] ) )
-      //       result.push_back( v );
-      // }
       return result;
     }
 
