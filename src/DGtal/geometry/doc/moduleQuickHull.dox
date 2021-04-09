@@ -34,8 +34,8 @@ testQuickHull.cpp , testConvexityHelper.cpp
 
 The objective of the QuickHull algorithm is to compute the convex hull
 of a set of points \a V lying in a space of arbitrary dimension \a d (here
-\a d is greater than one). This algorithm has the limitation to
-process only full dimensional convex hulls, because of the way it is
+\a d is greater than one). This algorithm has the limitation to only
+process full dimensional convex hulls, because of the way it is
 initialized. It maintains and updates a list of facets (which defines
 the faces of the current polytope) by following these steps:
 
@@ -61,12 +61,12 @@ for a simplex) and all the facets are then queued.
 4. Optionnaly extract vertices of the convex hull polytopes by
 determining the "on" points that belong to at least \a d facets.
 
-@note In opposition with the usual `qhull` implementation, this
+@note In opposition to the usual `qhull` implementation, this
 class uses a kernel that can be chosen in order to provide exact
 computations. This is the case for lattice points, but also rational
 points. Computation times are very similar.
 
-@note In opposition with `CGAL 3D convex hull` package, or with the
+@note In opposition to `CGAL 3D convex hull` package, or with the
 arbitrary dimensional `CGAL dD Triangulation` package, this algorithm does
 not build a simplicial convex hull. Facets may not be triangles or
 simplices in higher dimensions. This happens frequently for lattice
@@ -128,7 +128,7 @@ You may check computation times with (QuickHull::timings)
 
 You can easily retrieve the vertex positions with
 QuickHull::getVertexPositions (you can put them in a vector of real or
-lattice points), and retrieves the consistently oriented vertices for
+lattice points), and get the consistently oriented vertices for
 each face with QuickHull::getFacetVertices. Below we show how to build
 a SurfaceMesh that represents the convex hull boundary and save it as
 OBJ file.
@@ -197,11 +197,11 @@ You may check computation times with (QuickHull::timings)
 
 \snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-Timings
 
-You can easily retrieves the rational vertex positions with
-QuickHull::getVertexPositions (you can put them in a vector of real points), and retrieves the consistently oriented vertices for
-each face with QuickHull::getFacetVertices. Below we show how to build
-a SurfaceMesh that represents the convex hull boundary and save it as
-OBJ file.
+You can easily retrieve the rational vertex positions with
+QuickHull::getVertexPositions (you can put them in a vector of real
+points), and get the consistently oriented vertices for each face with
+QuickHull::getFacetVertices. Below we show how to build a SurfaceMesh
+that represents the convex hull boundary and save it as OBJ file.
 
 \snippet geometry/tools/exampleRationalBallQuickHull3D.cpp QuickHull3D-BuildMesh
 
@@ -264,9 +264,9 @@ hull (facets and vertices) with (QuickHull::setInput and QuickHull::computeConve
 
 \snippet geometry/tools/exampleLatticeBallDelaunay2D.cpp Delaunay2D-Computation
 
-You can easily retrieves the vertex positions with
+You can easily retrieve the vertex positions with
 QuickHull::getVertexPositions (you can put them in a vector of real or
-lattice points), and retrieves the consistently oriented vertices for
+lattice points), and get the consistently oriented vertices for
 each \b cell with QuickHull::getFacetVertices.
 
 In opposition with convex hull computation, facets here designate the
@@ -359,7 +359,7 @@ std::vector<Z2i::Point> V = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3),
 const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
 \endcode
 
-@note For dimension up to 3D, you may precise if you wish your lattice
+@note For dimension up to 3D, you may indicate if you wish your lattice
 polytope to be Minkowski summable by a cubical grid cell (see
 ConvexityHelper::computeLatticePolytope reference doc).
 

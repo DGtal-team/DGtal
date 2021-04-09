@@ -54,21 +54,20 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class QuickHull
   /**
-     Description of template class 'QuickHull' <p> \brief Aim:
-     Implements the quickhull algorithm, a famous arbitrary
-     dimensional convex hull computation algorithm. It relies on
-     dedicated geometric kernels for computing and comparing facet
-     geometries. 
-
-     You can use it to build convex hulls of points with integral
-     coordinate (using kernel ConvexHullIntegralKernel) or to build
-     Delaunay triangulations.
-
-     Below is a complete example that computes the convex hull of
-     points randomly defined in a ball, builds a 3D mesh out of it and
-     output it as an OBJ file.
-
-@code
+   * Description of template class 'QuickHull' <p> \brief Aim:
+   * Implements the quickhull algorithm by Barber et al. \cite
+   * barber1996, a famous arbitrary dimensional convex hull
+   * computation algorithm. It relies on dedicated geometric kernels
+   * for computing and comparing facet geometries.
+   *
+   * You can use it to build convex hulls of points with integral
+   * coordinate (using kernel ConvexHullIntegralKernel) or to build
+   * Delaunay triangulations.
+   *
+   * Below is a complete example that computes the convex hull of
+   * points randomly defined in a ball, builds a 3D mesh out of it and
+   * output it as an OBJ file.
+   * @code
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/shapes/SurfaceMesh.h"
@@ -111,26 +110,26 @@ int main( int argc, char* argv[] )
   out.close();
   return 0;
 } 
-@endcode
-
-     @note In opposition with the usual QuickHull implementation, this
-     class uses a kernel that can be chosen in order to provide exact
-     computations. This is the case for lattice points.
-
-     @note In opposition with CGAL `3D convex hull` package, or with
-     the arbitrary dimensional `dD Triangulation` package, this
-     algorithm does not build a simplicial convex hull. Facets may not
-     be trangles or simplices in higher dimensions.
-
-     @note This version is generally more than twice faster than CGAL
-     convex_hull_3 for the usual CGAL kernels Cartesian and
-     Exact_predicates_inexact_constructions_kernel.
-
-     @note However this implementation is not tailored for incremental
-     dynamic convex hull computations.
-
-     @tparam TKernel any type of QuickHull kernel, like ConvexHullIntegralKernel.
-  */
+   * @endcode
+   *
+   * @note In opposition with the usual QuickHull implementation, this
+   * class uses a kernel that can be chosen in order to provide exact
+   * computations. This is the case for lattice points.
+   *
+   * @note In opposition with CGAL `3D convex hull` package, or with
+   * the arbitrary dimensional `dD Triangulation` package, this
+   * algorithm does not build a simplicial convex hull. Facets may not
+   * be trangles or simplices in higher dimensions.
+   *
+   * @note This version is generally more than twice faster than CGAL
+   * convex_hull_3 for the usual CGAL kernels Cartesian and
+   * Exact_predicates_inexact_constructions_kernel.
+   *
+   * @note However this implementation is not tailored for incremental
+   * dynamic convex hull computations.
+   *
+   * @tparam TKernel any type of QuickHull kernel, like ConvexHullIntegralKernel.
+   */
   template < typename TKernel >
   struct QuickHull
   {
