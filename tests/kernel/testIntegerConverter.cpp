@@ -72,6 +72,13 @@ SCENARIO( "IntegerConverter< 1, int32 >", "[integer_conversions]" )
       REQUIRE( a == c );
     }
   }
+  WHEN( "Converting medium integers" ) {
+    DGtal::int64_t medium_int64  = 0x123456789ABCDEFL;
+    DGtal::int32_t a = Converter::cast( medium_int64 );
+    THEN( "The value is lost with a warning" ) {
+      REQUIRE( DGtal::int64_t( a ) != medium_int64 );
+    }
+  }
 }
 
 SCENARIO( "IntegerConverter< 1, int64 >", "[integer_conversions]" )
