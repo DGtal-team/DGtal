@@ -52,6 +52,8 @@
 - *Documentation*
   - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+  - Fixing the homebrew command for building on macOS (Jérémy Levallois,
+    [#1560](https://github.com/DGtal-team/DGtal/pull/1560))
 
 - *IO*
   - Removing the default grey background and raising an error if CAIRO has not between
