@@ -105,6 +105,37 @@ specific to your objective. For now, the available kernels are:
   Delaunay cell complex of a range of rational points in arbitrary
   dimension. The user fixes the precision at kernel instantiation.
 
+@note All kernels are parametrized by the dimension of input points,
+the integer type `CoordinateInteger` used for representing lattice
+points, and the integer type `InternalInteger` used internally in
+facet and normal computations, as well as above predicates. Depending
+on your input (amplitude of coordinates and number of dimensions), you
+must choose consistently in order to get correct results. Default
+parameters are DGtal::int64_t for both.
+
+As a rule of the thumb, determinant computations raise integers to the
+power of the dimension, hence the choice of DGtal::BigInteger
+(requires WITH_GMP) for `InternalInteger` is compulsory when \f$ N^d
+\ge 4.10^{18} \f$, for \f$ N \f$ the maximum norm of input points and
+\f$ d \f$ the dimension. When `CoordinateInteger` is DGtal::int64_t,
+then the following table sums up these rules.
+
+| \f$ d \f$ dimension | max \f$ N \f$ for DGtal::int64_t | max \f$ N \f$ for DGtal::BigInteger |
+|--------|-----------------------|---------------------------|
+| 2      | \f$ \approx 2e9 \f$   | \f$ \approx 4e18 \f$      |
+| 3      | \f$ \approx 1.5e6 \f$ | \f$ \approx 4e18 \f$      |
+| 4      | \f$ \approx 4e4 \f$   | \f$ \approx 4e18 \f$      |
+| 5      | \f$ \approx 5e3 \f$   | \f$ \approx 4e18 \f$      |
+| 6      | \f$ \approx 1.2e3 \f$ | \f$ \approx 4e18 \f$      |
+
+If you use rational kernels with a given precision \f$ p \f$, you
+should divide the above values by \f$ p \f$.
+
+@note With respect to the choice DGtal::int64_t for both
+`CoordinateInteger` and `InternalInteger`, expect a 25 times slow-down
+factor if you use DGtal::BigInteger for `InternalInteger`, and a 35
+times slow-down factor if you use DGtal::BigInteger for both
+`CoordinateInteger` and `InternalInteger`.
 
 @subsection dgtal_quickhull_sec21 Convex hull of lattice points
 
@@ -247,9 +278,8 @@ points. If you know that your range of points does not contain
 duplicates, you can specify it to QuickHull::setInput.
 
 @note If you choose a too big precision, integer computations required
-by convex hull computations might overflow. With this kernel, the
-internal type for integers is 64 bits precision. Hence the higher the
-dimension, the less should be the precision.
+by convex hull computations might overflow. You may consider using
+DGtal::BigInteger at least for the internal integer representation.
 
 
 @subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D example)
