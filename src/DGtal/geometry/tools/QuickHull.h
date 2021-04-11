@@ -142,6 +142,7 @@ namespace DGtal
     typedef typename Kernel::CoordinatePoint     Point;
     typedef typename Kernel::CoordinateVector    Vector;
     typedef typename Kernel::CoordinateScalar    Scalar;
+    typedef typename Kernel::InternalScalar      InternalScalar;
     typedef std::size_t                Index;
     typedef std::size_t                Size;
     BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
@@ -186,7 +187,7 @@ namespace DGtal
       }
       void display( std::ostream& out ) const
       {
-        const Vector N = H.internalNormal(); 
+        const auto N = H.internalNormal(); 
         out << "[Facet iN=(" << N[0];
         for ( Dimension i = 1; i < N.dimension; i++ ) out << "," << N[ i ];
         out << ") c=" << H.internalIntercept() << " b=" << below << " n={";
@@ -846,7 +847,7 @@ namespace DGtal
     /// @param F any valid facet
     /// @param p any point
     /// @return the height of p wrt F (0: on, >0: above ).
-    Scalar height( const Facet& F, const Point& p ) const
+    InternalScalar height( const Facet& F, const Point& p ) const
     { return kernel.height( F.H, p ); }
 
     /// @param F any valid facet
@@ -998,9 +999,9 @@ namespace DGtal
       if ( facet.outside_set.empty() ) return true;
       // Selects furthest vertex
       Index  furthest_v = facet.outside_set[ 0 ];
-      Scalar furthest_h = height( facet, points[ furthest_v ] );
+      auto   furthest_h = height( facet, points[ furthest_v ] );
       for ( Index v = 1; v < facet.outside_set.size(); v++ ) {
-        Scalar h = height( facet, points[ facet.outside_set[ v ] ] );
+        auto h = height( facet, points[ facet.outside_set[ v ] ] );
         if ( h > furthest_h ) {
           furthest_h = h;
           furthest_v = facet.outside_set[ v ];
@@ -1401,7 +1402,7 @@ namespace DGtal
       CombinatorialPlaneSimplex splx;
       for ( Index j = 0; j < dimension; ++j ) splx[ j ] = best[ j ];
       const auto     first_H = kernel.compute( points, splx, best.back() );
-      Scalar     best_volume = kernel.volume ( first_H, points[ best.back() ] );
+      auto       best_volume = kernel.volume ( first_H, points[ best.back() ] );
       const Size     nbtries = std::min( (Size) 10, 1 + nb / 10 );
       const Size max_nbtries = std::max( (Size) 10, 2 * nb );
       for ( Size i = 0; i < max_nbtries; i++ )
@@ -1409,7 +1410,7 @@ namespace DGtal
           IndexRange tmp = pickIntegers( dimension + 1, nb );
           for ( Index j = 0; j < dimension; ++j ) splx[ j ] = tmp[ j ];
           const auto        tmp_H = kernel.compute( points, splx, tmp.back() );
-          const Scalar tmp_volume = kernel.volume ( tmp_H, points[ tmp.back() ] );
+          const auto   tmp_volume = kernel.volume ( tmp_H, points[ tmp.back() ] );
           if ( best_volume < tmp_volume ) {
             if ( debug_level >= 1 ) {
               trace.info() << "(" << i << ")"

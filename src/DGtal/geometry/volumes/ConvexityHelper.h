@@ -68,18 +68,28 @@ namespace DGtal
      space, a model of concepts::CInteger. It sets the coordinate type
      of input lattice points as well as output integral convex hulls
      and lattice polytopes.
+
+     @tparam TInternalInteger the integer type that is used for
+     internal computations of above/below plane tests, a model of
+     concepts::CInteger. Must be at least as precise as
+     TCoordinateInteger.
      
      @see \ref moduleQuickHull
   */
-  template < int dim, typename TInteger = DGtal::int32_t >
+  template < int dim,
+             typename TInteger = DGtal::int32_t,
+             typename TInternalInteger = DGtal::int64_t >
   struct ConvexityHelper {
     BOOST_STATIC_ASSERT( dim > 1 );
     // Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
+    // Integer must be a model of the concept CInteger.
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
     
     static const Dimension dimension = dim;
 
     typedef TInteger                         Integer;
+    typedef TInternalInteger                 InternalInteger;
     typedef SpaceND< dim, Integer >          Space;
     typedef typename Space::Point            Point;
     typedef typename Space::Vector           Vector;
@@ -88,10 +98,14 @@ namespace DGtal
     typedef std::size_t                      Size;
     typedef std::size_t                      Index;
     typedef std::vector< Index >             IndexRange;
-    typedef ConvexHullIntegralKernel< dim >  LatticeConvexHullKernel;
-    typedef ConvexHullRationalKernel< dim >  RealConvexHullKernel;
-    typedef DelaunayIntegralKernel< dim >    LatticeDelaunayKernel;
-    typedef DelaunayRationalKernel< dim >    RealDelaunayKernel;
+    typedef ConvexHullIntegralKernel< dim, Integer, InternalInteger >
+    LatticeConvexHullKernel;
+    typedef ConvexHullRationalKernel< dim, Integer, InternalInteger >
+    RealConvexHullKernel;
+    typedef DelaunayIntegralKernel< dim, Integer, InternalInteger >
+    LatticeDelaunayKernel;
+    typedef DelaunayRationalKernel< dim, Integer, InternalInteger >
+    RealDelaunayKernel;
     typedef BoundedLatticePolytope< Space >  LatticePolytope;
     typedef BoundedRationalPolytope< Space > RationalPolytope;
 

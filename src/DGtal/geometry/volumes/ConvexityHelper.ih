@@ -41,9 +41,9 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
-typename DGtal::ConvexityHelper< dim, TInteger>::LatticePolytope
-DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeLatticePolytope
 ( const std::vector< Point >& input_points,
   bool remove_duplicates,
   bool make_minkowski_summable )
@@ -144,10 +144,10 @@ DGtal::ConvexityHelper< dim, TInteger>::computeLatticePolytope
 }
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 template < typename TSurfaceMesh >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( TSurfaceMesh&               mesh,
   const std::vector< Point >& input_points,
   bool remove_duplicates )
@@ -169,9 +169,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
 }
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( PolygonalSurface< Point >&  polysurf,
   const std::vector< Point >& input_points,
   bool remove_duplicates )
@@ -194,9 +194,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
 }
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellComplex
 ( ConvexCellComplex< Point >& cell_complex,
   const std::vector< Point >& input_points,
   bool remove_duplicates )
@@ -234,9 +234,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
 }
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellComplex
 ( ConvexCellComplex< Point >& cell_complex,
   const std::vector< Point >& input_points,
   bool remove_duplicates )
@@ -288,9 +288,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
 
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
-typename DGtal::ConvexityHelper< dim, TInteger>::RationalPolytope
-DGtal::ConvexityHelper< dim, TInteger>::computeRationalPolytope
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::RationalPolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytope
 ( const std::vector< RealPoint >& input_points,
   Integer denominator, 
   bool remove_duplicates,
@@ -397,10 +397,10 @@ DGtal::ConvexityHelper< dim, TInteger>::computeRationalPolytope
 
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 template < typename TSurfaceMesh >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( TSurfaceMesh&               mesh,
   const std::vector< RealPoint >& input_points,
   double precision,
@@ -424,9 +424,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
 
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( PolygonalSurface< RealPoint >&  polysurf,
   const std::vector< RealPoint >& input_points,
   double precision,
@@ -450,9 +450,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullBoundary
 }
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellComplex
 ( ConvexCellComplex< RealPoint >& cell_complex,
   const std::vector< RealPoint >& input_points,
   double precision,
@@ -492,9 +492,9 @@ DGtal::ConvexityHelper< dim, TInteger>::computeConvexHullCellComplex
 
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 bool
-DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellComplex
 ( ConvexCellComplex< RealPoint >& cell_complex,
   const std::vector< RealPoint >& input_points,
   double precision,
@@ -547,10 +547,10 @@ DGtal::ConvexityHelper< dim, TInteger>::computeDelaunayCellComplex
 
 
 //-----------------------------------------------------------------------------
-template < int dim, typename TInteger >
+template < int dim, typename TInteger, typename TInternalInteger >
 template < typename QHull >
 void
-DGtal::ConvexityHelper< dim, TInteger>::computeFacetAndRidgeVertices
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeFacetAndRidgeVertices
 ( const QHull& hull,
   std::vector< IndexRange >& cell_vertices,
   std::map< typename QHull::Ridge, Index >& r2f,
