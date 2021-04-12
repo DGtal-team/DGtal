@@ -15,39 +15,47 @@
  **/
 
 /**
- * @file geometry/tools/exampleLatticeBallQuickHull3D.cpp
+ * @file geometry/tools/checkLatticeBallQuickHull.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/01/01
  *
- * An example file named exampleLatticeBallQuickHull3D.
+ * An example file named checkLatticeBallQuickHull.
  *
  * This file is part of the DGtal library.
  */
 
 /**
-   Computation of the convex hull of a set of lattice points in 3D by Quick Hull algorithm.
+   Computation of the convex hull of a set of lattice points in
+   arbitrary dimension by Quick Hull algorithm, for arbitrary integer
+   types, and check of the output. This example is used to evaluate
+   the overflow risk when using limited integers for computing the
+   convex hull.
+
+   You specify integer types with 4th parameter in `int64`, `bigint`, or `allbigint`.
 
 \verbatim
-# 1000000 points in digital ball of radius 1000
-./examples/geometry/tools/exampleLatticeBallQuickHull3D 1000000 1000
+# 1000 5D points in digital ball of radius 1e8, using int64 for lattice points 
+# and BigInteger for internal computations
+./examples/geometry/tools/checkLatticeBallQuickHull 5 1000 1e8 bigint
 \endverbatim
 outputs
 \verbatim
-#points=999908 #vertices=4480 #facets=8947
-purge duplicates= 281 ms.
-init simplex    = 24 ms.
-quickhull core  = 336 ms.
-compute vertices= 24 ms.
-total time      = 665 ms.
+#points=1000 #vertices=486 #facets=10610
+purge duplicates= 1 ms.
+init simplex    = 9 ms.
+quickhull core  = 17557 ms.
+compute vertices= 7 ms.
+total time      = 17574 ms.
+Checking hull ...
+ ... in 18.0777s => OK
 \endverbatim
 
 @see \ref moduleQuickHull
 
-
-\example geometry/tools/exampleLatticeBallQuickHull3D.cpp
+\example geometry/tools/checkLatticeBallQuickHull.cpp
 */
 
 #include <cstdlib>
