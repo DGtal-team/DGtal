@@ -49,8 +49,8 @@ A set \f$ \mathcal{S}_f \f$ of consecutive points (\f$ \mathcal{S}_f
 \geq 2 \f$) of an 8-connected curve is a blurred segment with order
 \f$ d \f$ if there exists a discrete line \f$ \mathcal{D}(a,b, \mu,
 \omega) \f$ such that all points of \f$ \mathcal{S}_f \f$ belong to
-\f$ \mathcal{D} \f$ and \f$ \frac{\omega}{max(|a|,|b|) \leq d
-} \f$. The line \f$ D \f$ is said bounding for \f$ \mathcal{S}_f \f$.
+\f$ \mathcal{D} \f$ and \f$ \frac{\omega}{max(|a|,|b|)} \leq d
+ \f$. The line \f$ D \f$ is said bounding for \f$ \mathcal{S}_f \f$.
 
 
 Following this definition, the authors also propose an incremental
