@@ -138,13 +138,13 @@ init( Integer denom,
   if ( check_duplicate_constraints )
     {
       // Add other halfplanes
-      const auto itAE = A.begin()+2*d;
-      for ( auto it = itB; itB != itE; ++it )
+      for ( auto it = itB; it != itE; ++it )
         {
           // Checks that is not inside.
           const auto a = it->N;
           const auto b = it->c;
-          const auto itF = std::find( A.begin(), itAE, a );
+          const auto itAE = A.begin()+2*d;
+          const auto itF  = std::find( A.begin(), itAE, a );
           if ( itF == itAE )
             {
               A.push_back( q * a );

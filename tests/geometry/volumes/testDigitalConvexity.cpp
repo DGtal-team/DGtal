@@ -51,8 +51,6 @@ SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
@@ -116,8 +114,6 @@ SCENARIO( "DigitalConvexity< Z2 > fully convex triangles", "[convex_simplices][2
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
@@ -198,8 +194,6 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
@@ -244,7 +238,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     }
   }
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 200;
+    const unsigned int nb = 100;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -296,15 +290,12 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 400;
+    const unsigned int nb = 100;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -362,15 +353,12 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -1, -1 ), Point( 10, 10 ) );
   WHEN( "Computing many triangle in domain (0,0)-(9,9)." ) {
-    const unsigned int nb = 400;
+    const unsigned int nb = 100;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -378,10 +366,6 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
     unsigned int nb01_not2 = 0;
     unsigned int nbf      = 0;
     unsigned int nb012    = 0;
-    unsigned int nb1_notlat = 0;
-    unsigned int nb2_notlat = 0;
-    unsigned int nb3_notlat = 0;
-    unsigned int nbf_notlat = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
         Point a( 2*(rand() % 10),    rand() % 20  );
@@ -425,8 +409,6 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
@@ -435,11 +417,11 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
   DConvexity dconv( Point( -6, -6, -6 ), Point( 6, 6, 6 ) );
 
   WHEN( "Computing many tetrahedra" ) {
-    const unsigned int nb   = 400;
+    const unsigned int nb   = 100;
     unsigned int nb_fulldim = 0;
     unsigned int nb_ok_seg  = 0;
     unsigned int nb_ok_tri  = 0;
-    for ( unsigned int i = 0; i < nb; ++i )
+    for ( unsigned int l = 0; l < nb; ++l )
       {
         const Point a { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
         const Point b { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };

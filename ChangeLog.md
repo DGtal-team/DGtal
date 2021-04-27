@@ -10,6 +10,11 @@
     and maximal segment computation
     (Jocelyn Meyron, Tristan Roussillon,
     [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - Add an implementation of the Quick Hull convex hull algorithm. It
+    works in arbitrary dimension. It provides several kernels to deal
+    with lattice or rational points, and also to compute the Delaunay
+    cell complex.
+    (Jacques-Olivier Lachaud,[#1539](https://github.com/DGtal-team/DGtal/pull/1539))
 
 ## Changes
 
