@@ -55,7 +55,7 @@ namespace DGtal
 {
   namespace detail {
     
-    // ------------------------ OTHER SERVICES -----------------------
+    // ------------------------ POINT RELATED SERVICES -----------------------
     
     /// Compute the center of the bounding box containing the given points.
     /// @tparam Point any type of points
