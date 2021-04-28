@@ -29,6 +29,8 @@
     (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528))
 
 - *Documentation*
+  - - Fix typos in blurred segment equation (Phuc Ngo,
+    [#1561](https://github.com/DGtal-team/DGtal/pull/1561))
   - Fix some small errors : includes, variable names, code example
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
   - Fix doxygen errors in DigitalConvexity, SurfaceMesh
