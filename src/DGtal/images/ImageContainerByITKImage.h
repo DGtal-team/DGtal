@@ -115,6 +115,8 @@ namespace DGtal
       typedef RealPoint PhysicalPoint;
 
       typedef typename itk::Image< TValue, dimension> ITKImage;
+      typedef typename itk::ImageBase<dimension>::SpacingValueType ITKSpacingValueType;
+      typedef RealPoint ImageSpacing;
       typedef typename ITKImage::Pointer ITKImagePointer;
       typedef typename ITKImage::PixelContainer Container;
       typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
@@ -392,6 +394,16 @@ namespace DGtal
        */
       inline PhysicalPoint getLowerBoundAsPhysicalPoint() const;
       inline PhysicalPoint getUpperBoundAsPhysicalPoint() const;
+      /**
+       * Get the image spacing specific to the ITK Image.
+       * @return spacing values for each dimension of the image.
+       */
+      inline ImageSpacing getImageSpacing() const;
+      /**
+       * Set the image spacing specific to the ITK Image.
+       * @param s an image spacing point representing the spacing values of each dimension of the space.
+       */
+      inline void setImageSpacing(const ImageSpacing& s) const;
 
       // ------------------------- Private Datas --------------------------------
     private:

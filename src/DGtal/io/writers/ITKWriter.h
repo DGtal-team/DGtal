@@ -39,6 +39,7 @@
 #define ITKWriter_h
 
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/images/ImageContainerByITKImage.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -82,6 +83,28 @@ namespace DGtal
     static bool exportITK(const std::string & filename, const Image &aImage,
         const Functor & aFunctor = Functor());
   };
+
+
+
+  /**
+   * ITKWriter
+   * Template partial specialisation for ImageContainerByITKImage. This specialisation is usefull to export image including image spacing.
+   **/
+template <typename TDomain, typename TValue, typename TFunctor >
+struct ITKWriter<ImageContainerByITKImage<TDomain, TValue>, TFunctor >
+{
+  typedef ImageContainerByITKImage<TDomain, TValue> Image;
+  typedef TValue Value;
+  typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
+  typedef TFunctor Functor;
+
+  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
+  BOOST_STATIC_ASSERT(( (Image::Domain::dimension == 3) || (Image::Domain::dimension == 2) ));
+
+  static bool exportITK(const std::string & filename, const Image &aImage,
+      const Functor & aFunctor = Functor());
+};
+
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -295,7 +295,29 @@ namespace DGtal
     {
       return getPhysicalPointFromDomainPoint(myDomain.upperBound());
     }
-
+    
+    template<typename TDomain, typename TValue>
+    inline
+    typename ImageContainerByITKImage<TDomain, TValue>::ImageSpacing
+    ImageContainerByITKImage<TDomain, TValue>::getImageSpacing() const
+    {
+      ImageSpacing r;
+      auto s = myITKImagePointer->GetSpacing();
+      for (Dimension k = 0; k < dimension; k++)
+        r[k] = s[k];
+      return r;
+    }
+    template<typename TDomain, typename TValue>
+    inline
+    void
+    ImageContainerByITKImage<TDomain, TValue>::setImageSpacing(const ImageContainerByITKImage<TDomain, TValue>::ImageSpacing &s) const
+    {
+      ITKSpacingValueType is [dimension];
+      for (Dimension k = 0; k < dimension; k++)
+         is[k] = s[k];
+      myITKImagePointer->SetSpacing(is);
+    }
+    
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
 
