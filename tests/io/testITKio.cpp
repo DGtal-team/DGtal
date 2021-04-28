@@ -112,9 +112,25 @@ testITKSpacingIO()
   ITKWriter<Image3DITK>::exportITK("image_3d_intSpace0.2.mha", copy);
   Image3DITK check = ITKReader<Image3DITK>::importITK("image_3d_intSpace0.2.mha");
   s = copy.getImageSpacing();
-  trace.info() << "reading image space after write (should be 0.2, 0.3, 0.4)" << std::endl;
+  trace.info() << "reading image spacing after write (should be 0.2, 0.3, 0.4)" << std::endl;
   trace.info() << "spacing: " << s[0] << " " << s[1] << " " << s[2]  << std::endl;
-  return s[0]==0.2 && s[1] == 0.3 && s[2] == 0.4;
+
+  typedef ImageContainerByITKImage<Z2i::Domain, int> Image2DITK;
+  Image2DITK input2 = ITKReader<Image2DITK>::importITK("image_2d_int.mha");
+  Image2DITK copy2(input2.domain());
+  Image2DITK::ImageSpacing s2 (0.2, 0.3);
+  trace.info() << "setting image spacing to 0.2, 0.3" << std::endl;
+  copy2.setImageSpacing(s2);
+  for (auto p: input2.domain() ) {copy2.setValue(p, input2(p));}
+  ITKWriter<Image2DITK>::exportITK("image_2d_intSpace0.2.mha", copy2);
+  Image2DITK check2 = ITKReader<Image2DITK>::importITK("image_2d_intSpace0.2.mha");
+  s2 = copy2.getImageSpacing();
+  trace.info() << "reading image spacing after write (should be 0.2, 0.3)" << std::endl;
+  trace.info() << "spacing: " << s2[0] << " " << s2[1]  << std::endl;
+
+  return s[0]==0.2 && s[1] == 0.3 && s[2] == 0.4 &&
+         s2[0]==0.2 && s2[1] == 0.3;
+
 }
 
 
