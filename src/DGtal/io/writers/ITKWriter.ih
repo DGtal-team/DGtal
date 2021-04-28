@@ -96,10 +96,6 @@ namespace DGtal {
     typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
     typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
     typename ITKImageWriter::Pointer writer = ITKImageWriter::New();
-    typedef typename itk::ImageBase<Image::Domain::dimension>::SpacingValueType ITKSpacingValueType;
-    typedef typename ImageContainerByITKImage<TDomain, TValue>::RealPoint Spacing;
-    Spacing s = aImage.getImageSpacing();
-    ITKSpacingValueType space [Image::Domain::dimension];
     try
     {
       writer->SetFileName(filename);
