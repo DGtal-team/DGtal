@@ -99,6 +99,25 @@ test_image(const string& filename)
     return true;
 }
 
+bool
+testITKSpacingIO()
+{
+  typedef ImageContainerByITKImage<Z3i::Domain, int> Image3DITK;
+  Image3DITK input = ITKReader<Image3DITK>::importITK("image_3d_int.mha");
+  Image3DITK copy(input.domain());
+  Image3DITK::ImageSpacing s (0.2, 0.3, 0.4);
+  trace.info() << "setting image spacing to 0.2, 0.3, 0.4" << std::endl;
+  copy.setImageSpacing(s);
+  for (auto p: input.domain() ) {copy.setValue(p, input(p));}
+  ITKWriter<Image3DITK>::exportITK("image_3d_intSpace0.2.mha", copy);
+  Image3DITK check = ITKReader<Image3DITK>::importITK("image_3d_intSpace0.2.mha");
+  s = copy.getImageSpacing();
+  trace.info() << "reading image space after write (should be 0.2, 0.3, 0.4)" << std::endl;
+  trace.info() << "spacing: " << s[0] << " " << s[1] << " " << s[2]  << std::endl;
+  return s[0]==0.2 && s[1] == 0.3 && s[2] == 0.4;
+}
+
+
 bool testITKio()
 {
   unsigned int nbok = 0;
@@ -136,7 +155,10 @@ bool testITKio()
   trace.endBlock();
 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-
+  nb += 1;
+  trace.beginBlock ( "Testing 3D ITK image with spacing ..." );
+  nbok += testITKSpacingIO();
+  trace.endBlock();  
   return nbok == nb;
 }
 
