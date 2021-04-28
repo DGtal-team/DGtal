@@ -50,7 +50,6 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
   typedef SpaceND<2,int>                   Space;
   typedef Space::Point                     Point;
   typedef Space::Vector                    Vector;
-  typedef Space::Integer                   Integer;
   typedef BoundedLatticePolytope< Space >  Polytope;
 
   GIVEN( "A triangle P at (0,0), (5,0), (0,7)" ) {

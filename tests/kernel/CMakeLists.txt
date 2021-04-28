@@ -13,6 +13,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testPointFunctorHolder
    testNumberTraits
    testUnorderedSetByBlock
+   testIntegerConverter
    )
 
 

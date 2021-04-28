@@ -793,9 +793,9 @@ namespace DGtal
 	for ( int s = 0; s < 2; s++ )
 	  for ( Dimension k = 0; k < dimension; ++k )
 	    {
-	      Vector  n = ab.crossProduct( Point::base( k, (s == 0) ? 1 : -1 ) );
-	      Integer b = n.dot( pts[ i ] );
-	      int nb_in = 0;
+	      Vector   n = ab.crossProduct( Point::base( k, (s == 0) ? 1 : -1 ) );
+	      Integer  b = n.dot( pts[ i ] );
+              std::size_t nb_in = 0;
 	      for ( auto p : pts ) {
 		Integer v = n.dot( p );
 		if ( v < b )  nb_in++;
