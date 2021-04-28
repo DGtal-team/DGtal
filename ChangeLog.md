@@ -51,6 +51,9 @@
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
   - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+  - Adding spacing in ImageContainerByITKImage and the possibility to export it through ITKWriter.
+    (Bertrand Kerautret [#1563](https://github.com/DGtal-team/DGtal/pull/#1563))
+    
 
 ## Bug fixes
 
