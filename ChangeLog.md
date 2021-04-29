@@ -29,6 +29,8 @@
     (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528))
 
 - *Documentation*
+  - Fix typos in blurred segment equation (Phuc Ngo,
+    [#1561](https://github.com/DGtal-team/DGtal/pull/1561))
   - Fix some small errors : includes, variable names, code example
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
   - Fix doxygen errors in DigitalConvexity, SurfaceMesh
@@ -79,6 +81,10 @@
   - Fix issue [#1552](https://github.com/DGtal-team/DGtal/issues/1552) about a
     plane-probing unit test taking too long
     (Jocelyn Meyron, [#1553](https://github.com/DGtal-team/DGtal/pull/1553))
+  - Fix issue
+    [#1566](https://github.com/DGtal-team/DGtal/issues/1566): do not
+    compile example checkLatticeBallQuickHull if WITH_GMP is not set
+    (Jacques-Olivier Lachaud,[#1567](https://github.com/DGtal-team/DGtal/pull/1567))
 
 - *Shapes package*
   - Fix the use of uninitialized variable in NGon2D.
