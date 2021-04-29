@@ -10,7 +10,6 @@ set(DGTAL_EXAMPLES_SRC
   exampleQuickHull3D
   exampleLatticeBallDelaunay3D
   exampleRationalBallDelaunay3D
-  checkLatticeBallQuickHull
 )
 
 
@@ -19,5 +18,13 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
   target_link_libraries (${FILE} DGtal  )
 endforeach()
 
-
+if ( WITH_GMP )
+  set(DGTAL_EXAMPLES_GMP_SRC
+    checkLatticeBallQuickHull
+  )
+  foreach(FILE ${DGTAL_EXAMPLES_GMP_SRC})
+    add_executable(${FILE} ${FILE}.cpp)
+    target_link_libraries (${FILE} DGtal)
+  endforeach()
+endif()
 
