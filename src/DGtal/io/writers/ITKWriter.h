@@ -83,13 +83,21 @@ namespace DGtal
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor functor used to cast image values
-     * @param anImgSpacing
      * @return true if no errors occur.
      */
     static bool exportITK(const std::string & filename, const Image &aImage,
                           const Functor & aFunctor = Functor() );
+    /**
+     * Export an Image with a format supported by ITK.
+     *
+     * @param filename name of the output file
+     * @param aImage the image to export
+     * @param anImgSpacing the custom spacing represented by a point.
+     * @param aFunctor functor used to cast image values
+     * @return true if no errors occur.
+     */
     static bool exportITK(const std::string & filename, const Image &aImage,
-                          const  SpacingType &anImgSpacing, const Functor & aFunctor = Functor() );
+                          const SpacingType &anImgSpacing, const Functor & aFunctor = Functor() );
   };
 
 
@@ -108,7 +116,14 @@ struct ITKWriter<ImageContainerByITKImage<TDomain, TValue>, TFunctor >
 
   BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
   BOOST_STATIC_ASSERT(( (Image::Domain::dimension == 3) || (Image::Domain::dimension == 2) ));
-
+  /**
+   * Export an ImageContainerByITKImage with a format supported by ITK.
+   * Thanks to this specialized class, the specific ITK image parameters can be exported (like in particular the image spacing).
+   * @param filename name of the output file
+   * @param aImage the image to export
+   * @param aFunctor functor used to cast image values
+   * @return true if no errors occur.
+   */
   static bool exportITK(const std::string & filename, const Image &aImage,
       const Functor & aFunctor = Functor());
 };
