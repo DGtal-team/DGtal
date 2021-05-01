@@ -63,14 +63,19 @@ namespace DGtal
   template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
   struct ITKWriter
   {
+    static const typename TImage::Domain::Dimension dimension = TImage::Domain::dimension;
+
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
+    typedef typename itk::ImageBase<TImage::Domain::dimension>::SpacingValueType ITKSpacingType;
+    typedef PointVector<dimension, double> SpacingType;
+
     typedef TFunctor Functor;
 
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
-    BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
+    BOOST_STATIC_ASSERT(( (dimension == 3) || (dimension == 2) ));
 
     /**
      * Export an Image with a format supported by ITK.
@@ -78,10 +83,13 @@ namespace DGtal
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor functor used to cast image values
+     * @param anImgSpacing
      * @return true if no errors occur.
      */
     static bool exportITK(const std::string & filename, const Image &aImage,
-        const Functor & aFunctor = Functor());
+                          const Functor & aFunctor = Functor() );
+    static bool exportITK(const std::string & filename, const Image &aImage,
+                          const  SpacingType &anImgSpacing, const Functor & aFunctor = Functor() );
   };
 
 
