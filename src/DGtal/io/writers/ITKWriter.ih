@@ -50,9 +50,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal {
+  
   template<typename I,typename F>
   bool
   ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const Functor& aFunctor)
+  {
+    return ITKWriter<I,F>::exportITK(filename, aImage, SpacingType::diagonal(1), aFunctor);
+  }
+  
+  template<typename I,typename F>
+  bool
+  ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const SpacingType &anImgSpacing,
+                            const Functor& aFunctor)
   {
     typedef typename Image::Domain Domain;
     const Domain& domain = aImage.domain();
@@ -65,12 +74,12 @@ namespace DGtal {
     DGtalITKImage itk_image(aImage.domain());
 
     std::copy(adapted.constRange().begin(), adapted.constRange().end(), itk_image.range().outputIterator());
-
+    
     typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
     typename ITKImageWriter::Pointer writer = ITKImageWriter::New();
-
     try
     {
+      itk_image.setImageSpacing(anImgSpacing);
       writer->SetFileName(filename);
       writer->SetInput(itk_image.getITKImagePointer());
       writer->Update();
@@ -81,8 +90,37 @@ namespace DGtal {
       throw IOException();
       return false;
     }
-
     return true;
   }
+  
+  template <typename TDomain, typename TValue,  typename TFunctor>
+  bool
+  ITKWriter< ImageContainerByITKImage<TDomain, TValue>, TFunctor >::exportITK(const std::string& filename,
+                                                          const ImageContainerByITKImage<TDomain, TValue>& aImage, const TFunctor& aFunctor)
+  {
+    typedef typename Image::Domain Domain;
+    const Domain& domain = aImage.domain();
+
+    typedef ConstImageAdapter<Image, Domain, functors::Identity, ValueOut, Functor> AdaptedImage;
+    const functors::Identity identityFunctor{};
+    typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
+    typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
+    typename ITKImageWriter::Pointer writer = ITKImageWriter::New();
+    try
+    {
+      writer->SetFileName(filename);
+      writer->SetInput(aImage.getITKImagePointer());
+      writer->Update();
+    }
+    catch (itk::ExceptionObject &e)
+    {
+      trace.error() << e;
+      throw IOException();
+      return false;
+    }
+    return true;
+  }
+  
 
 }//namespace
+
