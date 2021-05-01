@@ -99,6 +99,50 @@ test_image(const string& filename)
     return true;
 }
 
+bool
+testITKSpacingIO()
+{
+  typedef ImageContainerBySTLVector<Z3i::Domain, int> Image3D;
+  typedef ImageContainerByITKImage<Z3i::Domain, int> Image3DITK;
+  Image3DITK input = ITKReader<Image3DITK>::importITK("image_3d_int.mha");
+  Image3DITK copy(input.domain());
+  Image3DITK::ImageSpacing s (0.2, 0.3, 0.4);
+  trace.info() << "setting image spacing to 0.2, 0.3, 0.4" << std::endl;
+  copy.setImageSpacing(s);
+  for (auto p: input.domain() ) {copy.setValue(p, input(p));}
+  ITKWriter<Image3DITK>::exportITK("image_3d_intSpace0.2.mha", copy);
+  Image3DITK check = ITKReader<Image3DITK>::importITK("image_3d_intSpace0.2.mha");
+  s = check.getImageSpacing();
+  trace.info() << "reading image spacing after write (should be 0.2, 0.3, 0.4)" << std::endl;
+  trace.info() << "spacing: " << s[0] << " " << s[1] << " " << s[2]  << std::endl;
+  Image3D img (input.domain());
+  functors::Identity f;
+  ITKWriter<Image3D>::exportITK("imageVect_3d_intSpace0.8.mha", img, Z3i::RealPoint(0.8, 0.9, 1.0));
+  Image3DITK check3 = ITKReader<Image3DITK>::importITK("imageVect_3d_intSpace0.8.mha");
+  auto s3 = check3.getImageSpacing();
+  trace.info() << "reading image spacing after export with spacing mention (should be 0.8, 0.9, 1.0)" << std::endl;
+  trace.info() << "spacing: " << s3[0] << " " << s3[1]  << " " << s3[2] <<  std::endl;
+
+  typedef ImageContainerByITKImage<Z2i::Domain, int> Image2DITK;
+  Image2DITK input2 = ITKReader<Image2DITK>::importITK("image_2d_int.mha");
+  Image2DITK copy2(input2.domain());
+  Image2DITK::ImageSpacing s2 (0.2, 0.3);
+  trace.info() << "setting image spacing to 0.2, 0.3" << std::endl;
+  copy2.setImageSpacing(s2);
+  for (auto p: input2.domain() ) {copy2.setValue(p, input2(p));}
+  ITKWriter<Image2DITK>::exportITK("image_2d_intSpace0.2.mha", copy2);
+  Image2DITK check2 = ITKReader<Image2DITK>::importITK("image_2d_intSpace0.2.mha");
+  s2 = check2.getImageSpacing();
+  trace.info() << "reading image spacing after write (should be 0.2, 0.3)" << std::endl;
+  trace.info() << "spacing: " << s2[0] << " " << s2[1]  << std::endl;
+
+  
+  return s[0] == 0.2 && s[1] == 0.3 && s[2] == 0.4 &&
+         s2[0] == 0.2 && s2[1] == 0.3 &&
+         s3[0] == 0.8 && s3[1] == 0.9 && s3[2] == 1.0;
+}
+
+
 bool testITKio()
 {
   unsigned int nbok = 0;
@@ -136,7 +180,10 @@ bool testITKio()
   trace.endBlock();
 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-
+  nb += 1;
+  trace.beginBlock ( "Testing 3D ITK image with spacing ..." );
+  nbok += testITKSpacingIO();
+  trace.endBlock();  
   return nbok == nb;
 }
 
