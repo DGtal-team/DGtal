@@ -82,10 +82,6 @@ namespace DGtal
       class NotAbovePredicate
       {
       public:
-          using Point   = PlaneProbingParallelepipedEstimator::Point;
-          using Integer = PlaneProbingParallelepipedEstimator::Integer;
-
-      public:
           /**
            * Constructs the NotAbove predicate.
            *
