@@ -64,7 +64,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 {
     this->myCandidates.clear();
 
-    std::array<bool, 6> state({ false, false, false, false, false, false });
+    std::array< bool, 6> state({ false, false, false, false, false, false });
     for (int i = 0; i < 6; ++i)
     {
         PointOnProbingRay r = this->myNeighborhood[i].getBase();
