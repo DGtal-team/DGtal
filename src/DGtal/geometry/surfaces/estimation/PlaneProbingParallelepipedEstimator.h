@@ -67,21 +67,25 @@ namespace DGtal
   public:
       class NotAbovePredicate;
 
-      using Self                        = PlaneProbingParallelepipedEstimator<TPredicate, mode>;
-      using Predicate                   = TPredicate;
-      using Point                       = typename Predicate::Point;
-      using Vector                      = Point;
-      using Integer                     = typename Predicate::Integer;
-      using TetrahedronEstimator        = PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode>;
-      using Triangle                    = typename TetrahedronEstimator::Triangle;
-      using PointOnProbingRay           = typename TetrahedronEstimator::PointOnProbingRay;
-      using Quantity                    = typename TetrahedronEstimator::Quantity;
-      using UpdateOperation             = typename TetrahedronEstimator::UpdateOperation;
-      using HexagonState                = typename TetrahedronEstimator::HexagonState;
+      typedef PlaneProbingParallelepipedEstimator<TPredicate, mode> Self;
+      typedef TPredicate Predicate;
+      typedef typename Predicate::Point Point;
+      typedef Point Vector;
+      typedef typename Predicate::Integer Integer;
+      typedef PlaneProbingTetrahedronEstimator<NotAbovePredicate, mode> TetrahedronEstimator;
+      typedef typename TetrahedronEstimator::Triangle Triangle;
+      typedef typename TetrahedronEstimator::PointOnProbingRay PointOnProbingRay;
+      typedef typename TetrahedronEstimator::Quantity Quantity;
+      typedef typename TetrahedronEstimator::UpdateOperation UpdateOperation;
+      typedef typename TetrahedronEstimator::HexagonState HexagonState;
 
       class NotAbovePredicate
       {
       public:
+        
+          typedef  Self::Point Point;
+          typedef  Self::Integer Integer ;
+
           /**
            * Constructs the NotAbove predicate.
            *
