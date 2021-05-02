@@ -83,8 +83,8 @@ namespace DGtal
       {
       public:
         
-          typedef  Self::Point Point;
-          typedef  Self::Integer Integer ;
+          typedef typename Self::Point Point;
+          typedef typename Self::Integer Integer;
 
           /**
            * Constructs the NotAbove predicate.
