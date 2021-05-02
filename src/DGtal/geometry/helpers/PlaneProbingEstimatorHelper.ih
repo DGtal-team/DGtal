@@ -86,7 +86,7 @@ DGtal::detail::distToSphere (std::array<Point, 5> const& aPoints)
                          { aPoints[2][0], aPoints[2][1], aPoints[2][2], one },
                          { aPoints[3][0], aPoints[3][1], aPoints[3][2], one } };
 
-    if (determinant(M0) == zero)
+    if (DGtal::detail::determinant(M0) == zero)
     {
         throw std::runtime_error("4 coplanar points in distToSphere");
     }
@@ -97,7 +97,7 @@ DGtal::detail::distToSphere (std::array<Point, 5> const& aPoints)
                         { aPoints[3][0], aPoints[3][1], aPoints[3][2], squaredNorm(aPoints[3]), one },
                         { aPoints[4][0], aPoints[4][1], aPoints[4][2], squaredNorm(aPoints[4]), one } };
 
-    return determinant(M);
+    return DGtal::detail::determinant(M);
 }
 
 // ------------------------------------------------------------------------
