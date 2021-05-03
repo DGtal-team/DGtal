@@ -66,7 +66,6 @@ namespace DGtal
     // ----------------------- Public types ------------------------------
   public:
       class NotAbovePredicate;
-
       using Self                        = PlaneProbingParallelepipedEstimator<TPredicate, mode>;
       using Predicate                   = TPredicate;
       using Point                       = typename Predicate::Point;
@@ -82,10 +81,10 @@ namespace DGtal
       class NotAbovePredicate
       {
       public:
-          using Point   = Self::Point;
-          using Integer = Self::Integer;
 
-      public:
+      using Point   = typename Self::Point;
+      using Integer = typename Self::Integer;
+
           /**
            * Constructs the NotAbove predicate.
            *
