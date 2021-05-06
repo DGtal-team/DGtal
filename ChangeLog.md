@@ -5,7 +5,7 @@
 - *New Feature*
   - DGtal now has a python binding `pip install dgtal`! For all
     details on the list of classes available in python, you can have a
-    loo to: Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528) 
+    look to: Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528) 
 
 - *Geometry Package*
   - New normal vector estimation using plane-probing approaches.
