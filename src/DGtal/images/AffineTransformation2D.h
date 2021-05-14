@@ -90,7 +90,7 @@ public:
     /**
        * Constructor.
        * @param aOrigin  the center of rotation.
-       * @param angle  the angle given in radians.
+       * @param aMatrix  the affine matrix.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
     ForwardAffineTransformation2D ( const RealPoint & aOrigin, const RealMatrix & aMatrix, const RealVector & aTranslate )
@@ -100,6 +100,12 @@ public:
         this->transform_matrix = aMatrix;
         this->translation = aTranslate;
     }
+
+    /**
+       * Constructor.
+       * @param a11, a12, a21, a22  the values of affine matrix.
+       * @param aTranslate  the 2D dimensional vector which represents translation.
+       */
     ForwardAffineTransformation2D ( const double a11, const double a12, const double a21, const double a22, const RealVector & aTranslate )
     {
         BOOST_ASSERT((a11*a22!=a12*a21));
@@ -149,7 +155,7 @@ public:
     /**
        * Constructor.
        * @param aOrigin  the center of rotation.
-       * @param angle  the angle given in radians.
+       * @param aMatrix  the affine matrix.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
     BackwardAffineTransformation2D ( const RealPoint& aOrigin, const RealMatrix & aMatrix, const RealVector & aTranslate )
@@ -159,6 +165,12 @@ public:
         this->transform_matrix = aMatrix;
         this->translation = aTranslate;
     }
+
+    /**
+       * Constructor.
+       * @param a11, a12, a21, a22  the values of affine matrix.
+       * @param aTranslate  the 2D dimensional vector which represents translation.
+       */
     BackwardAffineTransformation2D ( const double a11, const double a12, const double a21, const double a22, const RealVector & aTranslate )
     {
         BOOST_ASSERT((a11*a22!=a12*a21));
