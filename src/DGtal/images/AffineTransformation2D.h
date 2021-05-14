@@ -154,7 +154,7 @@ public:
 public:
     /**
        * Constructor.
-       * @param aOrigin  the center of rotation.
+       * @param aOrigin  the center of affine transform.
        * @param aMatrix  the affine matrix.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
