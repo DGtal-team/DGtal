@@ -25,7 +25,6 @@ if (WITH_VISU3D_QGLVIEWER)
   set(DGTAL_TUTO_EXAMPLES_QGL_SRC
     shapeDTViewer
     volDTGranulo
-    volDTGranulo-template
     polyhedralizer
   )
   foreach(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC})
