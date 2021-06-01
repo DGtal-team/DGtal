@@ -108,6 +108,8 @@
     (Roland Denis [#1551](https://github.com/DGtal-team/DGtal/pull/1551))
   - Comply with cmake Policy CMP0115 "Source file extensions must be
     explicit". (David Coeurjolly, [#1557](https://github.com/DGtal-team/DGtal/pull/1557))
+  - Fix AppVeyor issue using new zlib URL.
+    (Bertrand Kerautret, [#1571](https://github.com/DGtal-team/DGtal/pull/1571))
   
   
 # DGtal 1.1
