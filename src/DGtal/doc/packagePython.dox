@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file packageIntroduction.dox
+ * @file packagePython.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -61,6 +61,48 @@ image, topology classes). For a complete review of the available
 tools, have a look to this
 [Pull-Request](https://github.com/DGtal-team/DGtal/pull/1528).
 
+Just a quick example (Euler characteristics and simple point detection on random sets):
+
+@code
+import dgtal
+import random
+
+Point  = dgtal.kernel.Point3D
+Domain = dgtal.kernel.DomainZ3i
+Set    = dgtal._dgtal.kernel.DigitalSetZ3i
+
+dom    = Domain( Point(0,0,0), Point(10,10,10))
+mySet  = Set(dom)
+
+# Random set
+for i in range(50*50):
+  mySet.insert(Point(random.randint(0,10),random.randint(0,10),random.randint(0,10)))
+
+print("set done")
+# Digital Object (with topology)
+Object = dgtal.topology.Object26_6
+Topo   = Object.TDigitalTopology
+FAdj   = Topo.TForegroundAdjacency
+BAdj   = Topo.TBackgroundAdjacency
+fadj   = FAdj()
+badj   = BAdj()
+topo   = Topo(fadj, badj)
+obj    = Object(topo,mySet)
+
+#Counting the simple points
+cptSimple=0
+for p in mySet:
+    if obj.isSimple(p):
+        cptSimple += 1
+print("Number of simple points: "+str(cptSimple)+ " / " + str(mySet.size()))
+
+# Cubical Complex
+kspace   = dgtal.topology.KSpace3D()
+ccomplex = dgtal.topology.CubicalComplex3D(kspace)
+ccomplex.construct(mySet)
+
+print("Euler characteristic: "+str(ccomplex.euler()))
+@
 
 
 */
