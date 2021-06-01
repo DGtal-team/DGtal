@@ -19,10 +19,6 @@ results and potential efficiency of the proposed work.
 Quick Install
 =============
 
-* Linux: 
-    * [Arch, CentOS, Fedora, openSUSE, RHEL, SL](http://software.opensuse.org//download.html?project=home%3Acopyme%3ADGtal&package=libDGtal) 
-    * [Debian, Ubuntu, etc.](http://software.opensuse.org//download.html?project=home%3Acopyme%3ADGtal&package=dgtal) 
-
 * MacOS (using [homebrew](http://brew.sh)):
 
        brew tap DGtal-team/DGtal
@@ -31,7 +27,7 @@ Quick Install
 
 (```brew options dgtal``` to enable optional features)
 
-* Windows: no binary package, please compile the library.
+* Linux and windows: no binary package, please compile the library.
 
 
 Additional instructions are available in the
