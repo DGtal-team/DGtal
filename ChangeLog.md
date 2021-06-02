@@ -1,3 +1,6 @@
+# DGtal 1.3(beta)
+
+
 # DGtal 1.2
 
 ## New Features / Critical Changes
