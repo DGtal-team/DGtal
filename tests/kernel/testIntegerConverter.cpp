@@ -95,7 +95,7 @@ SCENARIO( "IntegerConverter< 1, int64 >", "[integer_conversions]" )
  #ifdef WITH_BIGINTEGER
  DGtal::BigInteger medium_bigint = 0x123456789ABCDEFL;
  #endif
- WHEN( "Converting 64bits integers" ) {
+  WHEN( "Converting 64bits integers" ) {
     DGtal::int64_t a = Converter::cast( medium_int32 );
     DGtal::int64_t b = Converter::cast( medium_int64 );
  #ifdef WITH_BIGINTEGER
