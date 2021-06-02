@@ -3,8 +3,14 @@ set(DGTAL_DOC_EX_SRC
   kernelDomain
   range
   labelledMapBestParameters
-  exampleCatch
   )
+
+
+if (BUILD_TESTING)
+  add_executable(exampleCatch exampleCatch.cpp)
+  target_link_libraries (exampleCatch DGtal)
+endif()
+
 
 if( WITH_VISU3D_QGLVIEWER  )
   set(DGTAL_DOC_EX_SRC_QGL

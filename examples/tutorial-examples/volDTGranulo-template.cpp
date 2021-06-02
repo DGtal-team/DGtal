@@ -43,14 +43,13 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/VolWriter.h"
 
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
 //! [volGranulo-basicIncludes]
 
 //! [volGranulo-viewerIncludes]
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 //! [volGranulo-viewerIncludes]

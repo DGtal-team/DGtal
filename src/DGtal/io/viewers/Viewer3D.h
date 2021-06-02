@@ -48,7 +48,10 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+
 #ifdef APPLE
+/* Defined before OpenGL and GLUT includes to avoid deprecation messages */
+#define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #else

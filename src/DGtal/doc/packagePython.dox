@@ -1,0 +1,109 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file packagePython.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/06/01
+ *
+ * Documentation file for feature Introduction
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page packagePython DGtal python binding
+   
+
+@managers Pablo Hernandez-Cerdan, David Coeurjolly
+@since 1.2
+
+
+@b Package @b Overview
+
+Since release 1.2, DGtal has a partial python binding using
+[pybind11](https://github.com/pybind/pybind11). To install the python
+package, just use:
+@code
+pip install dgtal
+@endcode
+
+Then, you can import the module in python:
+
+@code
+import dgtal
+....
+@endcode
+
+At this point, only a partial support is available (some base, kernel,
+image, topology classes). For a complete review of the available
+tools, have a look to this
+[Pull-Request](https://github.com/DGtal-team/DGtal/pull/1528).
+
+Just a quick example (Euler characteristics and simple point detection on random sets):
+
+@code
+import dgtal
+import random
+
+Point  = dgtal.kernel.Point3D
+Domain = dgtal.kernel.DomainZ3i
+Set    = dgtal._dgtal.kernel.DigitalSetZ3i
+
+dom    = Domain( Point(0,0,0), Point(10,10,10))
+mySet  = Set(dom)
+
+# Random set
+for i in range(50*50):
+  mySet.insert(Point(random.randint(0,10),random.randint(0,10),random.randint(0,10)))
+
+# Digital Object (with topology)
+Object = dgtal.topology.Object26_6
+Topo   = Object.TDigitalTopology
+FAdj   = Topo.TForegroundAdjacency
+BAdj   = Topo.TBackgroundAdjacency
+fadj   = FAdj()
+badj   = BAdj()
+topo   = Topo(fadj, badj)
+obj    = Object(topo,mySet)
+
+#Counting the simple points
+cptSimple=0
+for p in mySet:
+    if obj.isSimple(p):
+        cptSimple += 1
+print("Number of simple points: "+str(cptSimple)+ " / " + str(mySet.size()))
+
+# Cubical Complex
+kspace   = dgtal.topology.KSpace3D()
+ccomplex = dgtal.topology.CubicalComplex3D(kspace)
+ccomplex.construct(mySet)
+
+print("Euler characteristic: "+str(ccomplex.euler()))
+@endcode
+
+
+*/
+
+}
