@@ -43,6 +43,10 @@
 // Inclusions
 
 #ifdef WITH_VISU3D_QGLVIEWER
+#ifdef APPLE
+/* Defined before OpenGL and GLUT includes to avoid deprecation messages */
+#define GL_SILENCE_DEPRECATION
+#endif
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma clang diagnostic push

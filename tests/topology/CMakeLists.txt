@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
    testAdjacency
    testKhalimskySpaceND
    testCubicalComplex
@@ -19,24 +19,21 @@ SET(DGTAL_TESTS_SRC
    testSplitFunctions
 )
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
-SET(DGTAL_BENCH_SRC
+set(DGTAL_BENCH_SRC
    testObject-benchmark
    testImplicitDigitalSurface-benchmark
    testLightImplicitDigitalSurface-benchmark
 )
 
 #Benchmark target
-IF (BUILD_BENCHMARKS)
-  FOREACH(FILE ${DGTAL_BENCH_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal)
+if (BUILD_BENCHMARKS)
+  foreach(FILE ${DGTAL_BENCH_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
     add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
-  ENDFOREACH(FILE)
-ENDIF(BUILD_BENCHMARKS)
+    add_dependencies(benchmark ${FILE}-benchmark)
+  endforeach()
+endif()

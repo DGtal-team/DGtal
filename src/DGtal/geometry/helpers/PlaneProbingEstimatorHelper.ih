@@ -1,0 +1,225 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/09/15
+ *
+ * Implementation of inline methods defined in PlaneProbingEstimatorHelper.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline functions.
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------------------------------------------------------
+template < typename Point >
+inline
+typename Point::Coordinate
+DGtal::detail::squaredNorm (Point const& aPoint)
+{
+    using Integer = typename Point::Coordinate;
+    Integer res = DGtal::NumberTraits<Integer>::ZERO;
+
+    for (typename Point::Dimension i = 0; i < aPoint.size(); ++i)
+    {
+        res += aPoint[i] * aPoint[i];
+    }
+
+    return res;
+}
+
+// ------------------------------------------------------------------------
+template < int N, typename T >
+inline
+T
+DGtal::detail::determinant (const T aMatrix[N][N])
+{
+    DGtal::SimpleMatrix<T, N, N> m;
+
+    for (int i = 0; i < N; ++i)
+    {
+        for (int j = 0; j < N; ++j)
+        {
+            m.setComponent(i, j, aMatrix[i][j]);
+        }
+    }
+
+    return m.determinant();
+}
+
+// ------------------------------------------------------------------------
+template < typename Point >
+inline
+typename Point::Coordinate
+DGtal::detail::distToSphere (std::array<Point, 5> const& aPoints)
+{
+    using Integer = typename Point::Coordinate;
+    Integer one = DGtal::NumberTraits<Integer>::ONE,
+            zero = DGtal::NumberTraits<Integer>::ZERO;
+
+    Integer M0[4][4] = { { aPoints[0][0], aPoints[0][1], aPoints[0][2], one },
+                         { aPoints[1][0], aPoints[1][1], aPoints[1][2], one },
+                         { aPoints[2][0], aPoints[2][1], aPoints[2][2], one },
+                         { aPoints[3][0], aPoints[3][1], aPoints[3][2], one } };
+
+    if ( DGtal::detail::determinant<4, Integer>(M0) == zero)
+    {
+        throw std::runtime_error("4 coplanar points in distToSphere");
+    }
+    Integer M[5][5] = { { aPoints[0][0], aPoints[0][1], aPoints[0][2], squaredNorm(aPoints[0]), one },
+                        { aPoints[1][0], aPoints[1][1], aPoints[1][2], squaredNorm(aPoints[1]), one },
+                        { aPoints[2][0], aPoints[2][1], aPoints[2][2], squaredNorm(aPoints[2]), one },
+                        { aPoints[3][0], aPoints[3][1], aPoints[3][2], squaredNorm(aPoints[3]), one },
+                        { aPoints[4][0], aPoints[4][1], aPoints[4][2], squaredNorm(aPoints[4]), one } };
+    return DGtal::detail::determinant<5, Integer>(M);
+}
+
+// ------------------------------------------------------------------------
+template < typename Point >
+inline
+bool
+DGtal::detail::isBasisReduced (Point const& aU, Point const& aV)
+{
+    Point w = aU + aV, x = aU - aV;
+    return (squaredNorm(aU) <= squaredNorm(w)) &&
+           (squaredNorm(aU) <= squaredNorm(x)) &&
+           (squaredNorm(aV) <= squaredNorm(w)) &&
+           (squaredNorm(aV) <= squaredNorm(x));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+DGtal::detail::PointOnProbingRay<Integer>::
+PointOnProbingRay (Permutation const& aSigma, Integer const& aIndex)
+    : mySigma(aSigma), myIndex(aIndex)
+{
+}
+
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::getBase () const
+{
+    return PointOnProbingRay(mySigma, 0);
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+typename DGtal::detail::PointOnProbingRay<Integer>::Permutation const&
+DGtal::detail::PointOnProbingRay<Integer>::sigma () const
+{
+    return mySigma;
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+int
+DGtal::detail::PointOnProbingRay<Integer>::sigma (int aIndex) const
+{
+    assert(aIndex >= 0 && aIndex <= 2);
+    return mySigma[aIndex];
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+Integer const&
+DGtal::detail::PointOnProbingRay<Integer>::index () const
+{
+    return myIndex;
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+bool
+DGtal::detail::PointOnProbingRay<Integer>::operator== (PointOnProbingRay const& aRay) const
+{
+    return (mySigma == aRay.mySigma) && (myIndex == aRay.index());
+}
+
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+bool
+DGtal::detail::PointOnProbingRay<Integer>::operator!= (PointOnProbingRay const& aRay) const
+{
+    return !(*this == aRay);
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+bool
+DGtal::detail::PointOnProbingRay<Integer>::operator<= (PointOnProbingRay const& aRay) const
+{
+    return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::next (Integer const& aInc) const
+{
+    return PointOnProbingRay(mySigma, myIndex + aInc);
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+DGtal::detail::PointOnProbingRay<Integer>
+DGtal::detail::PointOnProbingRay<Integer>::previous (Integer const& aDec) const
+{
+    return PointOnProbingRay(mySigma, myIndex - aDec);
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer >
+inline
+std::ostream&
+DGtal::detail::operator<< (std::ostream& aOs, PointOnProbingRay<Integer> const& aRay)
+{
+    aOs << "sigma=(" <<
+        aRay.sigma(0) << ", " <<
+        aRay.sigma(1) << ", " <<
+        aRay.sigma(2) << "); i=" << aRay.index();
+    return aOs;
+}

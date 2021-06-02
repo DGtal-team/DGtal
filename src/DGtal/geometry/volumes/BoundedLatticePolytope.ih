@@ -77,10 +77,12 @@ template <typename HalfSpaceIterator>
 DGtal::BoundedLatticePolytope<TSpace>::
 BoundedLatticePolytope( const Domain& domain,
 			HalfSpaceIterator itB, HalfSpaceIterator itE,
-                        bool valid_edge_constraints )
+                        bool valid_edge_constraints,
+                        bool check_duplicate_constraints )
   : myValidEdgeConstraints( valid_edge_constraints )
 {
-  init( domain, itB, itE );
+  init( domain, itB, itE,
+        valid_edge_constraints, check_duplicate_constraints );
 }
 
 //-----------------------------------------------------------------------------
@@ -90,7 +92,8 @@ void
 DGtal::BoundedLatticePolytope<TSpace>::
 init( const Domain& domain,
       HalfSpaceIterator itB, HalfSpaceIterator itE,
-      bool valid_edge_constraints )
+      bool valid_edge_constraints,
+      bool check_duplicate_constraints )
 {
   clear();
   myValidEdgeConstraints = valid_edge_constraints;
@@ -109,25 +112,40 @@ init( const Domain& domain,
       A.push_back( z );
       B.push_back( -lo[ s ] );
     }
-  // Add other halfplanes
-  Integer nb_hp = 0;
-  for ( auto it = itB; it != itE; ++it, ++nb_hp ) {
-    // Checks that is not inside.
-    auto a = it->N;
-    auto b = it->c;
-    auto itF = std::find( A.begin(), A.begin()+2*d, a );
-    if ( itF == A.begin()+2*d )
-      {
-	A.push_back( a );
-	B.push_back( b );
-      }
-    else
-      {
-	auto k = itF - A.begin();
-	B[ k ] = std::min( B[ k ], b );
-      }
-  }
-  I = std::vector<bool>( 2 * d + nb_hp, true ); // inequalities are large
+  Integer nb_hp = 2*d;
+  if ( check_duplicate_constraints )
+    {
+      // Add other halfplanes
+      for ( auto it = itB; it != itE; ++it )
+        {
+          // Checks that is not inside.
+          const auto a = it->N;
+          const auto b = it->c;
+          const auto itAE = A.begin()+2*d;
+          const auto itF  = std::find( A.begin(), itAE , a );
+          if ( itF == itAE )
+            {
+              A.push_back( a );
+              B.push_back( b );
+              ++nb_hp;
+            }
+          else
+            {
+              const auto k = itF - A.begin();
+              B[ k ] = std::min( B[ k ], b );
+            }
+        }
+    }
+  else
+    { // Add other halfplanes
+      for ( auto it = itB; it != itE; ++it )
+        { 
+          A.push_back( it->N );
+          B.push_back( it->c );
+          ++nb_hp;
+        }
+    }
+  I = std::vector<bool>( nb_hp, true ); // inequalities are large
 }
 
 //-----------------------------------------------------------------------------

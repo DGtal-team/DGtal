@@ -1,28 +1,27 @@
-SET(DGTAL_EXAMPLES_SRC
+set(DGTAL_EXAMPLES_SRC
   exampleEuclideanShapesDecorator
   exampleMeshVoxelizer
 )
 
-FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE})
+foreach(FILE ${DGTAL_EXAMPLES_SRC})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal  )
-ENDFOREACH(FILE)
+endforeach()
 
 ### with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
-  SET(DGTAL_SHAPES_EXAMPLES_QGL_SRC
+  set(DGTAL_SHAPES_EXAMPLES_QGL_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
      viewPolygonalMarchingCubes
      exampleSurfaceMesh
   )
-  FOREACH(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC}) 
-    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-      ${DGtalLibDependencies})   
-  ENDFOREACH(FILE)
-  
-endif ( WITH_VISU3D_QGLVIEWER   )
+  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC})
+    add_executable(${FILE} ${FILE}.cpp)
+    target_link_libraries (${FILE} DGtal)
+  endforeach()
+
+endif()
 
 if (WITH_EIGEN AND WITH_QGLVIEWER)
 
@@ -31,8 +30,8 @@ if (WITH_EIGEN AND WITH_QGLVIEWER)
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
-        add_executable(${FILE} ${FILE})
+        add_executable(${FILE} ${FILE}.cpp)
         target_link_libraries (${FILE} DGtal )
-    endforeach(FILE)
+    endforeach()
 
-endif(WITH_EIGEN AND WITH_QGLVIEWER)
+endif()

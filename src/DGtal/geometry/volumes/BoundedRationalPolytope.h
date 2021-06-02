@@ -202,6 +202,12 @@ namespace DGtal
      * lying between two faces (n-1 cells) pointing to different
      * orthants.
      *
+     * @param check_duplicate_constraints when 'true', the
+     * initialization checks if the given range of half-spaces
+     * contains axis-aligned half-space constraints already defined by
+     * the domain and if so it merges the duplicated constraints,
+     * otherwise it accepts and stores the constraints as is.
+     *
      * @note Asumme your real domain is `{ (-2.25,-1), (3.75, 4.25) }`
      * and real halfspaces are `{ (1.5*x+2.5*y <= 3), (0.5*x-1.25*y <=
      * 2.5) }. Then for denominator 'd = 4', you must pass `domain={
@@ -212,7 +218,8 @@ namespace DGtal
     BoundedRationalPolytope( Integer d,
 			     const Domain& domain,
 			     HalfSpaceIterator itB, HalfSpaceIterator itE,
-			     bool valid_edge_constraints = false );
+			     bool valid_edge_constraints = false,
+                             bool check_duplicate_constraints = false );
 
     /**
      * Initializes a polytope from a domain and a vector of half-spaces.
@@ -228,6 +235,12 @@ namespace DGtal
      * lying between two faces (n-1 cells) pointing to different
      * orthants.
      *
+     * @param check_duplicate_constraints when 'true', the
+     * initialization checks if the given range of half-spaces
+     * contains axis-aligned half-space constraints already defined by
+     * the domain and if so it merges the duplicated constraints,
+     * otherwise it accepts and stores the constraints as is.
+     *
      * @note Asumme your real domain is `{ (-2.25,-1), (3.75, 4.25) }`
      * and real halfspaces are `{ (1.5*x+2.5*y <= 3), (0.5*x-1.25*y <=
      * 2.5) }. Then for denominator 'd = 4', you must pass `domain={
@@ -237,8 +250,8 @@ namespace DGtal
     template <typename HalfSpaceIterator>
     void init( Integer d, const Domain& domain,
 	       HalfSpaceIterator itB, HalfSpaceIterator itE,
-               bool valid_edge_constraints = false );
-
+               bool valid_edge_constraints = false,
+               bool check_duplicate_constraints = false );
     
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
@@ -758,7 +771,7 @@ namespace DGtal
 	    {
 	      Vector  n = ab.crossProduct( Point::base( k, (s == 0) ? 1 : -1 ) );
 	      Integer b = n.dot( pts[ i ] );
-	      int nb_in = 0;
+              std::size_t nb_in = 0;
 	      for ( auto p : pts ) {
 		Integer v = n.dot( p );
 		if ( v < b )  nb_in++;

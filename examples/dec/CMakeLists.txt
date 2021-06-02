@@ -9,20 +9,20 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
-        add_executable(${FILE} ${FILE})
-        target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    endforeach(FILE)
+        add_executable(${FILE} ${FILE}.cpp)
+        target_link_libraries (${FILE} DGtal)
+    endforeach()
 
-endif(WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
+endif()
 
 if (WITH_EIGEN)
-	set(DGTAL_EXAMPLES_SRC2_DEC
+    set(DGTAL_EXAMPLES_SRC2_DEC
         examplePropagation
-	exampleSurfaceATNormals
+        exampleSurfaceATNormals
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC2_DEC})
-        add_executable(${FILE} ${FILE})
-        target_link_libraries (${FILE} DGtal ${DGtalLibDependencies})
-    endforeach(FILE)
+        add_executable(${FILE} ${FILE}.cpp)
+        target_link_libraries (${FILE} DGtal)
+    endforeach()
 endif()

@@ -1,14 +1,47 @@
-# DGtal 1.2 (dev)
+# DGtal 1.2
+
+## New Features / Critical Changes
+
+- *New Feature*
+  - DGtal now has a python binding `pip install dgtal`! For all
+    details on the list of classes available in python, you can have a
+    look to: Pablo Hernandez-Cerdan [#1528](https://github.com/DGtal-team/DGtal/pull/1528) 
+
+- *Geometry Package*
+  - New normal vector estimation using plane-probing approaches.
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - New normal vector estimation using slices of digital surfaces
+    and maximal segment computation
+    (Jocelyn Meyron, Tristan Roussillon,
+    [#1547](https://github.com/DGtal-team/DGtal/pull/1547))
+  - Add an implementation of the Quick Hull convex hull algorithm. It
+    works in arbitrary dimension. It provides several kernels to deal
+    with lattice or rational points, and also to compute the Delaunay
+    cell complex.
+    (Jacques-Olivier Lachaud,[#1539](https://github.com/DGtal-team/DGtal/pull/1539))
+
+## Changes
 
 - *Project*
   - Add azure-pipelines in `wrap` folder to kickstart python wrappings
     (Pablo Hernandez-Cerdan [#1529](https://github.com/DGtal-team/DGtal/pull/1529))
+  - Modernize CMake: Avoid global includes and links, use `target_` commands instead
+    (Pablo Hernandez-Cerdan, David Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/pull/1524))
+  - Modernize CMake: Prefer use targets rather than directories and libraries
+    (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1543))
+  - Add python wrappings using pybind11. Check wrap/README.md for details.
+    (Pablo Hernandez-Cerdan [#1543](https://github.com/DGtal-team/DGtal/pull/1528))
 
 - *Documentation*
+  - Fix typos in blurred segment equation (Phuc Ngo,
+    [#1561](https://github.com/DGtal-team/DGtal/pull/1561))
   - Fix some small errors : includes, variable names, code example
     (adrien Krähenbühl, [#1525](https://github.com/DGtal-team/DGtal/pull/1525))
   - Fix doxygen errors in DigitalConvexity, SurfaceMesh
     (Pablo Hernandez-Cerdan [#1534](https://github.com/DGtal-team/DGtal/pull/1534))
+  - Fix CSS errors in doxygen
+    (Jérémy Levallois, [#1546](https://github.com/DGtal-team/DGtal/pull/1546))
 
 - *General*
   - Only set CMAKE_CXX_STANDARD if not defined already
@@ -20,28 +53,65 @@
   - Add default constructor to ClosedIntegerHalfSpace
     (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
 
-- *Geometry*
-  - Fix BoundedLatticePolytope::init when using half-spaces initialization
-    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
-
 - *IO*
   - Fix Color::getRGBA
     (Pablo Hernandez-Cerdan [#1535](https://github.com/DGtal-team/DGtal/pull/1535))
   - Adding Quad exports in Board3DTo2D  (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+  - Adding spacing in ImageContainerByITKImage and the possibility to export it
+    through ITKWriter.
+    (Bertrand Kerautret [#1563](https://github.com/DGtal-team/DGtal/pull/#1563))
+    
 
 ## Bug fixes
 
 - *Documentation*
   - Removing collaboration graphs in doxygen. Fixing doxygen warnings (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
+  - Fixing the homebrew command for building on macOS (Jérémy Levallois,
+    [#1560](https://github.com/DGtal-team/DGtal/pull/1560))
 
 - *IO*
   - Removing the default grey background and raising an error if CAIRO has not between
     set for the Board3DTo2D export (David Coeurjolly,
     [#1537](https://github.com/DGtal-team/DGtal/pull/1537))
 
+- *Geometry*
+  - Small fixes and updates in BoundedLatticePolytope and BoundedRationalPolytope
+    initialization when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1538](https://github.com/DGtal-team/DGtal/pull/1538))
+  - Fix BoundedLatticePolytope::init when using half-spaces initialization
+    (Jacques-Olivier Lachaud,[#1531](https://github.com/DGtal-team/DGtal/pull/1531))
+  - Fix an issue in DigitalSurfaceRegularization about bad buffer init
+    (David Coeurjolly, [#1548](https://github.com/DGtal-team/DGtal/pull/1548))
+  - Fix issue [#1552](https://github.com/DGtal-team/DGtal/issues/1552) about a
+    plane-probing unit test taking too long
+    (Jocelyn Meyron, [#1553](https://github.com/DGtal-team/DGtal/pull/1553))
+  - Fix issue
+    [#1566](https://github.com/DGtal-team/DGtal/issues/1566): do not
+    compile example checkLatticeBallQuickHull if WITH_GMP is not set
+    (Jacques-Olivier Lachaud,[#1567](https://github.com/DGtal-team/DGtal/pull/1567))
+  - Fix AppVeyor issue on PlaneProbingParallelepipedEstimator and PlaneProbingRNeighborhood
+    (Bertrand Kerautret, [#1568](https://github.com/DGtal-team/DGtal/pull/1568))
 
+- *Shapes package*
+  - Fix the use of uninitialized variable in NGon2D.
+   (Daniel Antunes,[#1540](https://github.com/DGtal-team/DGtal/issues/1540))
+
+- *Build*
+  - We now use cmake *Fetch_Content* to download the stable release of
+    Catch2 (used in our unit-tests) when building the project (David
+    Coeurjolly [#1524](https://github.com/DGtal-team/DGtal/issues/1524))
+  - Fixing the required components for CGAL (David Coeurjolly,
+    [#1550](https://github.com/DGtal-team/DGtal/issues/1550))
+  - Speedup of the compilation of the tests that rely on Catch2
+    (Roland Denis [#1551](https://github.com/DGtal-team/DGtal/pull/1551))
+  - Comply with cmake Policy CMP0115 "Source file extensions must be
+    explicit". (David Coeurjolly, [#1557](https://github.com/DGtal-team/DGtal/pull/1557))
+  - Fix AppVeyor issue using new zlib URL.
+    (Bertrand Kerautret, [#1571](https://github.com/DGtal-team/DGtal/pull/1571))
+  
+  
 # DGtal 1.1
 
 ## New Features / Critical Changes

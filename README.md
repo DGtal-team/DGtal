@@ -19,10 +19,6 @@ results and potential efficiency of the proposed work.
 Quick Install
 =============
 
-* Linux: 
-    * [Arch, CentOS, Fedora, openSUSE, RHEL, SL](http://software.opensuse.org//download.html?project=home%3Acopyme%3ADGtal&package=libDGtal) 
-    * [Debian, Ubuntu, etc.](http://software.opensuse.org//download.html?project=home%3Acopyme%3ADGtal&package=dgtal) 
-
 * MacOS (using [homebrew](http://brew.sh)):
 
        brew tap DGtal-team/DGtal
@@ -31,7 +27,7 @@ Quick Install
 
 (```brew options dgtal``` to enable optional features)
 
-* Windows: no binary package, please compile the library.
+* Linux and windows: no binary package, please compile the library.
 
 
 Additional instructions are available in the
@@ -59,6 +55,7 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 1.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4892404.svg)](https://doi.org/10.5281/zenodo.4892404)
 * Release 1.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075246.svg)](https://doi.org/10.5281/zenodo.4075246) 
 * Release 1.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2611275.svg)](https://doi.org/10.5281/zenodo.2611275)
 * Release 0.9.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1203577.svg)](https://doi.org/10.5281/zenodo.1203577)
@@ -68,5 +65,5 @@ More Information
 * Release 0.9 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.31884.svg)](http://dx.doi.org/10.5281/zenodo.31884)
 * Release 0.8 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11586.svg)](https://doi.org/10.5281/zenodo.11586)
 * Continuous Integration (Linux/MacOS) [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
-*  Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
+* Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
 

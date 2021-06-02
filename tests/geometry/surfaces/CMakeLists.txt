@@ -1,14 +1,16 @@
-SET(TESTS_SRC
+set(TESTS_SRC
+  testArithmeticalDSSComputerOnSurfels
   testChordGenericStandardPlaneComputer
+  testDigitalPlanePredicate
+  testPlaneProbingTetrahedronEstimator
+  testPlaneProbingParallelepipedEstimator
   )
 
-FOREACH(FILE ${TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
-SET(TESTS_SURFACES_SRC
+set(TESTS_SURFACES_SRC
   testIntegralInvariantShortcuts
   testNormalVectorEstimatorEmbedder
   testIntegralInvariantVolumeEstimator
@@ -22,65 +24,56 @@ SET(TESTS_SURFACES_SRC
   testShroudsRegularization
   )
 
-FOREACH(FILE ${TESTS_SURFACES_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${TESTS_SURFACES_SRC})
+  DGtal_add_test(${FILE})
+endforeach()
 
 
 if (  WITH_CGAL )
-  SET(CGAL_TESTS_SRC
+  set(CGAL_TESTS_SRC
     testMonge )
-  FOREACH(FILE ${CGAL_TESTS_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
-endif ( WITH_CGAL )
+  foreach(FILE ${CGAL_TESTS_SRC})
+    DGtal_add_test(${FILE})
+  endforeach()
+endif()
 
 
 if (  WITH_VISU3D_QGLVIEWER )
-  SET(QGLVIEWER_TESTS_SRC
+  set(QGLVIEWER_TESTS_SRC
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)
 
-  FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
-endif ( WITH_VISU3D_QGLVIEWER   )
+  foreach(FILE ${QGLVIEWER_TESTS_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  endforeach()
+endif()
 
 
 
 if ( WITH_PATATE )
-    SET(PATATE_TESTS_SRC
+    set(PATATE_TESTS_SRC
       testSphereFitting )
-    FOREACH(FILE ${PATATE_TESTS_SRC})
-      add_executable(${FILE} ${FILE})
-      target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-      add_test(${FILE} ${FILE})
-    ENDFOREACH(FILE)
+    foreach(FILE ${PATATE_TESTS_SRC})
+      DGtal_add_test(${FILE})
+    endforeach()
 endif()
 
 #-----------------------
 #GMP based tests
 #----------------------
-SET(DGTAL_TESTS_GMP_SRC
+set(DGTAL_TESTS_GMP_SRC
   testCOBANaivePlaneComputer
   testCOBAGenericStandardPlaneComputer
   testChordNaivePlaneComputer
   )
 
-IF(GMP_FOUND)
-  FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} DGtal  ${DGtalLibDependencies})
-    add_test(${FILE} ${FILE})
-  ENDFOREACH(FILE)
-ENDIF(GMP_FOUND)
+if(GMP_FOUND)
+  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
+    DGtal_add_test(${FILE})
+  endforeach()
+endif()
 
-SET(DGTAL_BENCH_GMP_SRC
+set(DGTAL_BENCH_GMP_SRC
   testCOBANaivePlaneComputer-benchmark
   testCOBAGenericNaivePlaneComputer-benchmark
   testChordNaivePlaneComputer-benchmark
@@ -88,13 +81,12 @@ SET(DGTAL_BENCH_GMP_SRC
 
 
 #Benchmark target
-IF(BUILD_BENCHMARKS)
-  IF(GMP_FOUND)
-    FOREACH(FILE ${DGTAL_BENCH_GMP_SRC})
-      add_executable(${FILE} ${FILE})
-      target_link_libraries (${FILE} DGtal )
+if(BUILD_BENCHMARKS)
+  if(GMP_FOUND)
+    foreach(FILE ${DGTAL_BENCH_GMP_SRC})
+      DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
       add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
-      ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
-    ENDFOREACH(FILE)
-  ENDIF(GMP_FOUND)
-ENDIF()
+      add_dependencies(benchmark ${FILE}-benchmark)
+    endforeach()
+  endif()
+endif()

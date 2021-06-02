@@ -1,0 +1,289 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2020/12/04
+ *
+ * Implementation of inline methods defined in PlaneProbingNeighborhood.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// INITIALIZATION of static data.
+///////////////////////////////////////////////////////////////////////////////
+
+template < typename TPredicate >
+const typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
+{
+    PointOnProbingRay({0, 1, 2}), PointOnProbingRay({0, 2, 1}),
+    PointOnProbingRay({1, 2, 0}), PointOnProbingRay({1, 0, 2}),
+    PointOnProbingRay({2, 0, 1}), PointOnProbingRay({2, 1, 0}),
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
+    : myPredicate(aPredicate), myQ(aQ), myM(aM)
+{}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
+{}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane Probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay
+DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const
+{
+    int N = aPoints.size();
+    if (N == 1) {
+        return aPoints[0];
+    }
+
+    PointOnProbingRay minPoint = aPoints[N-1];
+    for (int k = 0; k < N-1; ++k) {
+        if (isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
+            minPoint = aPoints[k];
+        }
+    }
+
+    return minPoint;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const& aState) const
+{
+    int inside = 0;
+    for (int i = 0; i < 6; ++i)
+    {
+        if (aState[i])
+        {
+            inside++;
+        }
+    }
+
+    if (inside == 0)
+    {
+        // All the points are not in the plane => algorithm stops
+        return HexagonState::Empty;
+    }
+    else if (inside == 1)
+    {
+        // Only one point in the plane => algorithm continues
+        return HexagonState::Planar;
+    }
+    else if (inside == 2 || inside == 3)
+    {
+        // two points aligned with q in the plane => algorithm stops
+        for (int i = 0; i < 3; ++i)
+        {
+            if (aState[i] && aState[(i + 3) % 6])
+            {
+                return HexagonState::NonConvex;
+            }
+        }
+
+        // three consecutive points where the two extremities are in the plane but not the middle one => algorithm stops
+        // otherwise => algorithm continues
+        for (int i = 0; i < 6; ++i)
+        {
+            if (aState[i] && !aState[(i + 1) % 6] && aState[(i + 2) % 6])
+            {
+                return HexagonState::NonPlanar;
+            }
+        }
+
+        return HexagonState::Planar;
+    }
+
+    // Strictly more than 3 points in the plane => algorithm stops
+    return HexagonState::NonConvex;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+void
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+setNeighbors (std::vector<PointOnProbingRay> const& aNeighbors)
+{
+    myNeighbors = aNeighbors;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+closestCandidate ()
+{
+    // One should call hexagonState before closestCandidate, and check the return value
+    // to ensure that there is at least one point in the plane in the H-neighbhorhood
+    ASSERT(! myCandidates.empty());
+
+    PointOnProbingRay closest = closestPointInList(myCandidates);
+
+    return getOperation(closest);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+getOperation (PointOnProbingRay const& aClosest) const
+{
+    return  {
+        aClosest.sigma(),
+        { 1, -1, -aClosest.index() },
+    };
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+bool
+DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (PointOnProbingRay const& r) const
+{
+    if (myNeighbors.empty())
+    {
+        return true;
+    }
+
+    return std::find(myNeighbors.begin(), myNeighbors.end(), r) != myNeighbors.end();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+bool
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+isSmallest (Point const& aX, Point const& aY) const
+{
+    Integer zero = DGtal::NumberTraits<Integer>::ZERO;
+
+    std::array<Point, 5> ps;
+    for (int i = 0; i < 3; ++i)
+    {
+        ps[i] = -myM[i];
+    }
+    ps[3] = aX;
+    ps[4] = aY;
+
+    Integer res = DGtal::detail::distToSphere(ps);
+    if (res == zero) {
+        return aY < aX;
+    } else if (res < zero) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+relativePoint (PointOnProbingRay const& aRay) const
+{
+    return -myM[aRay.sigma(0)] + myM[aRay.sigma(1)] + myM[aRay.sigma(2)] * aRay.index();
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
+DGtal::PlaneProbingNeighborhood<TPredicate>::
+absolutePoint (PointOnProbingRay const& aRay) const
+{
+    return myQ + relativePoint(aRay);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TPredicate>
+inline
+void
+DGtal::PlaneProbingNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingNeighborhood]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TPredicate>
+inline bool DGtal::PlaneProbingNeighborhood<TPredicate>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TPredicate>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                  const PlaneProbingNeighborhood<TPredicate> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

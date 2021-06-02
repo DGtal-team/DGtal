@@ -62,7 +62,7 @@ namespace DGtal
    *
    * This class is a model of CSegmentation.
    * 
-   * @tparam TSegmentComputer at least a model of CForwardSegmentComputer
+   * @tparam TSegmentComputer at least a model of concepts::CForwardSegmentComputer
    * (an online algorithm for the recognition of a given class of segments). 
    *
    * In the short example below, a digital curve stored in a STL vector

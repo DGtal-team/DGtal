@@ -109,8 +109,8 @@ isSimplexFullDimensional( PointIterator itB, PointIterator itE )
   if ( k != d+1 ) return false;
   Matrix M;
   for ( Dimension i = 0; i < d; ++i )
-    for ( Dimension k = 0; k < d; ++k )
-      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+    for ( Dimension j = 0; j < d; ++j )
+      M.setComponent( i, j, pts[ i ][ j ] - pts[ d ][ j ] );
   // A simplex has its vectors linearly independent.
   return M.determinant() != 0;
 }
@@ -140,8 +140,8 @@ simplexType( PointIterator itB, PointIterator itE )
   if ( k != d+1 ) return SimplexType::INVALID;
   Matrix M;
   for ( Dimension i = 0; i < d; ++i )
-    for ( Dimension k = 0; k < d; ++k )
-      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+    for ( Dimension j = 0; j < d; ++j )
+      M.setComponent( i, j, pts[ i ][ j ] - pts[ d ][ j ] );
   // A simplex has its vectors linearly independent.
   auto V = M.determinant();
   return (V == 0) ? SimplexType::DEGENERATED

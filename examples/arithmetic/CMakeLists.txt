@@ -1,4 +1,4 @@
-SET(DGTAL_EXAMPLES_SRC
+set(DGTAL_EXAMPLES_SRC
         approximation
         convergents
         fraction
@@ -6,22 +6,19 @@ SET(DGTAL_EXAMPLES_SRC
         lower-integer-convex-hull
 )
 
-FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries ( ${FILE} DGtal 
-                          ${DGtalLibDependencies})
-
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_EXAMPLES_SRC})
+  add_executable(${FILE} ${FILE}.cpp)
+  target_link_libraries ( ${FILE} DGtal)
+endforeach()
 
 if ( WITH_GMP )
-   SET( DGTAL_EXAMPLES_GMP_SRC
-        convergents-biginteger
-        extended-euclid
-   )
-  FOREACH(FILE ${DGTAL_EXAMPLES_GMP_SRC})
-   add_executable(${FILE} ${FILE})
-   target_link_libraries ( ${FILE} DGtal 
-                           ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
+  set(DGTAL_EXAMPLES_GMP_SRC
+      convergents-biginteger
+      extended-euclid
+  )
+  foreach(FILE ${DGTAL_EXAMPLES_GMP_SRC})
+    add_executable(${FILE} ${FILE}.cpp)
+    target_link_libraries (${FILE} DGtal)
+  endforeach()
 
-endif ( WITH_GMP )
+endif()

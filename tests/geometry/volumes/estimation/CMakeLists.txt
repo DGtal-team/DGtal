@@ -1,10 +1,8 @@
-SET(DGTAL_TESTS_SRC
+set(DGTAL_TESTS_SRC
   testMeasureSet
   testVoronoiCovarianceMeasure
   )
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
-  add_test(${FILE} ${FILE})
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_TESTS_SRC})
+  DGtal_add_test(${FILE})
+endforeach()

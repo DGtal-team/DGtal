@@ -1,9 +1,9 @@
-SET(DGTAL_EXAMPLES_SRC
+set(DGTAL_EXAMPLES_SRC
   exampleIteratorCompletion
   exampleFunctorHolder
 )
 
-FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE})
+foreach(FILE ${DGTAL_EXAMPLES_SRC})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal  )
-ENDFOREACH(FILE)
+endforeach()

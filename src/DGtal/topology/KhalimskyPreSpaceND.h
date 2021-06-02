@@ -647,13 +647,13 @@ namespace DGtal
 
     /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any unsigned pre-cell.
-     * @param kp the new Khalimsky coordinates for [c].
+     * @param kp the new digital coordinates for [c].
      */
     static void uSetCoords( Cell & c, const Point & kp );
 
     /** @brief Sets the digital coordinates of [c] to [kp].
      * @param c any signed pre-cell.
-     * @param kp the new Khalimsky coordinates for [c].
+     * @param kp the new digital coordinates for [c].
      */
     static void sSetCoords( SCell & c, const Point & kp );
 

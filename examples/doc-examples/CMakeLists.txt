@@ -1,25 +1,31 @@
-SET(DGTAL_DOC_EX_SRC
+set(DGTAL_DOC_EX_SRC
   demo-kernel-1
   kernelDomain
   range
   labelledMapBestParameters
-  exampleCatch
   )
 
+
+if (BUILD_TESTING)
+  add_executable(exampleCatch exampleCatch.cpp)
+  target_link_libraries (exampleCatch DGtal)
+endif()
+
+
 if( WITH_VISU3D_QGLVIEWER  )
-  SET(DGTAL_DOC_EX_SRC_QGL
+  set(DGTAL_DOC_EX_SRC_QGL
      )
 
-FOREACH(FILE ${DGTAL_DOC_EX_SRC_QGL})
-  add_executable(${FILE} ${FILE})
+foreach(FILE ${DGTAL_DOC_EX_SRC_QGL})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE}  DGtal)
-ENDFOREACH(FILE)
+endforeach()
 
-endif ( WITH_VISU3D_QGLVIEWER )
+endif()
 
 
-FOREACH(FILE ${DGTAL_DOC_EX_SRC})
-  add_executable(${FILE} ${FILE})
+foreach(FILE ${DGTAL_DOC_EX_SRC})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal )
-ENDFOREACH(FILE)
+endforeach()
 

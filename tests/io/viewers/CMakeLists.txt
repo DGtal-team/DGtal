@@ -1,7 +1,7 @@
 
 ### Visu QGLViewer
 
-SET(QGLVIEWER_TESTS_SRC
+set(QGLVIEWER_TESTS_SRC
   testViewer3D
   testViewerQuad
   testBallQuadViewer
@@ -14,11 +14,8 @@ SET(QGLVIEWER_TESTS_SRC
   )
 
 if (  WITH_VISU3D_QGLVIEWER )
+  foreach(FILE ${QGLVIEWER_TESTS_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  endforeach()
 
-  FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
-
-endif ( WITH_VISU3D_QGLVIEWER   )
+endif()

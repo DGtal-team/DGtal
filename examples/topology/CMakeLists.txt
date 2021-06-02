@@ -1,10 +1,10 @@
-SET(DGTAL_EXAMPLES_TOPO_SRC
+set(DGTAL_EXAMPLES_TOPO_SRC
   ctopo-1
   ctopo-2
   ctopo-fillContours
   khalimskySpaceScanner
   volMarchingCubes
-  volToOFF  
+  volToOFF
   trackImplicitPolynomialSurfaceToOFF
   generateSimplicityTables2D
   generateSimplicityTables3D
@@ -16,15 +16,14 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   area-estimation-with-indexed-digital-surface
 )
 
-FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
-  add_executable(${FILE} ${FILE})
-  target_link_libraries ( ${FILE}  DGtal
-    ${DGtalLibDependencies})   
-ENDFOREACH(FILE)
+foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
+  add_executable(${FILE} ${FILE}.cpp)
+  target_link_libraries (${FILE} DGtal)
+endforeach()
 
 
 if (  WITH_VISU3D_QGLVIEWER )
-   SET(DGTAL_EXAMPLES_QGL_SRC
+   set(DGTAL_EXAMPLES_QGL_SRC
      cubical-complex-collapse
      homotopicThinning3D
      3dBorderExtraction
@@ -39,11 +38,10 @@ if (  WITH_VISU3D_QGLVIEWER )
      frontierAndBoundary
      digitalSurfaceSlice
    )
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE}  DGtal
-                            ${DGtalLibDependencies})   
-  ENDFOREACH(FILE)
+  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+    add_executable(${FILE} ${FILE}.cpp)
+    target_link_libraries (${FILE} DGtal)
+  endforeach()
 
-endif ( WITH_VISU3D_QGLVIEWER   )
+endif()
 

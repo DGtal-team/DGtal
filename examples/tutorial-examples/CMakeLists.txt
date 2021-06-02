@@ -1,5 +1,5 @@
 
-SET(DGTAL_TUTO_EXAMPLES_SRC
+set(DGTAL_TUTO_EXAMPLES_SRC
   imageSetDT
   fileGridCurveRanges
   imageGridCurveEstimator
@@ -12,29 +12,25 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
 )
 
 
-FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
+foreach(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
   if(MSVC)
     set_source_files_properties( ${FILE} PROPERTIES COMPILE_FLAGS "/bigobj" )
-  endif(MSVC)
+  endif()
 
-  add_executable(${FILE} ${FILE})
+  add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal  )
-ENDFOREACH(FILE)
+endforeach()
 
+if (WITH_VISU3D_QGLVIEWER)
+  set(DGTAL_TUTO_EXAMPLES_QGL_SRC
+    shapeDTViewer
+    volDTGranulo
+    polyhedralizer
+  )
+  foreach(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC})
+    add_executable(${FILE} ${FILE}.cpp)
+    target_link_libraries ( ${FILE} DGtal)
+  endforeach()
 
-
-
-if (  WITH_VISU3D_QGLVIEWER )
-   SET(DGTAL_TUTO_EXAMPLES_QGL_SRC
-   shapeDTViewer
-   volDTGranulo
-   polyhedralizer
-   )
-  FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC}) 
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtal 
-                            ${DGtalLibDependencies})   
-  ENDFOREACH(FILE)
-
-endif ( WITH_VISU3D_QGLVIEWER   )
+endif()
 

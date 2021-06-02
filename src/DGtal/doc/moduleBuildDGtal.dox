@@ -98,9 +98,10 @@ Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based
 instructions from source code archive.
 
-If you use  <a href="http://mxcl.github.com/homebrew/">Homebrew</a>
-package manager on Mac, DGtal is available in the package repository:
+If you use  <a href="https://brew.sh">Homebrew</a> package manager on Mac,
+DGtal is available in the package repository:
 @code
+brew tap DGtal-team/DGtal
 brew install dgtal
 @endcode
 and to get build options:
