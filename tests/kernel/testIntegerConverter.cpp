@@ -61,15 +61,21 @@ SCENARIO( "IntegerConverter< 1, int32 >", "[integer_conversions]" )
   typedef IntegerConverter< 1, DGtal::int32_t > Converter;
   DGtal::int32_t    small_int32   = 0x12345678;
   DGtal::int64_t    small_int64   = 0x12345678L;
+#ifdef WITH_BIGINTEGER
   DGtal::BigInteger small_bigint  = 0x12345678;
+#endif
   WHEN( "Converting small integers" ) {
     DGtal::int32_t a = Converter::cast( small_int32 );
     DGtal::int32_t b = Converter::cast( small_int64 );
+#ifdef WITH_BIGINTEGER
     DGtal::int32_t c = Converter::cast( small_bigint );
+#endif
     THEN( "Their values are all identical" ) {
       REQUIRE( a == small_int32 );
       REQUIRE( a == b );
+#ifdef WITH_BIGINTEGER
       REQUIRE( a == c );
+#endif
     }
   }
   WHEN( "Converting medium integers" ) {
@@ -86,28 +92,40 @@ SCENARIO( "IntegerConverter< 1, int64 >", "[integer_conversions]" )
   typedef IntegerConverter< 1, DGtal::int64_t > Converter;
   DGtal::int32_t    medium_int32  = DGtal::int32_t( 0x123456789ABCDEFL );
   DGtal::int64_t    medium_int64  = 0x123456789ABCDEFL;
-  DGtal::BigInteger medium_bigint = 0x123456789ABCDEFL;
+ #ifdef WITH_BIGINTEGER
+ DGtal::BigInteger medium_bigint = 0x123456789ABCDEFL;
+ #endif
   WHEN( "Converting 64bits integers" ) {
     DGtal::int64_t a = Converter::cast( medium_int32 );
     DGtal::int64_t b = Converter::cast( medium_int64 );
-    DGtal::int64_t c = Converter::cast( medium_bigint );
-    THEN( "Only bigger integers are identical" ) {
+ #ifdef WITH_BIGINTEGER
+   DGtal::int64_t c = Converter::cast( medium_bigint );
+ #endif
+   THEN( "Only bigger integers are identical" ) {
       REQUIRE( a == medium_int32 );
       REQUIRE( a != b );
       REQUIRE( b == medium_int64 );
-      REQUIRE( b == c );
-    }
+#ifdef WITH_BIGINTEGER
+    REQUIRE( b == c );
+ #endif
+   }
     THEN( "It gives the same results with NumberTraits" ) {
       DGtal::int64_t ap = NumberTraits<DGtal::int32_t>::castToInt64_t( medium_int32 );
       DGtal::int64_t bp = NumberTraits<DGtal::int64_t>::castToInt64_t( medium_int64 );
+#ifdef WITH_BIGINTEGER
       DGtal::int64_t cp = NumberTraits<DGtal::BigInteger>::castToInt64_t( medium_bigint );
+#endif
       REQUIRE( a == ap );
       REQUIRE( b == bp );
+#ifdef WITH_BIGINTEGER
       REQUIRE( c == cp );
+#endif
     }
   }
 }
 
+
+#ifdef WITH_BIGINTEGER
 SCENARIO( "IntegerConverter< 1, BigInteger >", "[integer_conversions]" )
 {
   typedef IntegerConverter< 1, DGtal::BigInteger > Converter;
@@ -132,3 +150,4 @@ SCENARIO( "IntegerConverter< 1, BigInteger >", "[integer_conversions]" )
     }
   }
 }
+#endif

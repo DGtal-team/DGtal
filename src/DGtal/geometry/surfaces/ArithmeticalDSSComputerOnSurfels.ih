@@ -512,7 +512,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency>::g
     }
     else if (p1 == linel2)
     {
-        aPoint == p2;
+        aPoint = p2;
     }
     else if (p2 == linel1)
     {
