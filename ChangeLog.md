@@ -1,5 +1,10 @@
 # DGtal 1.3(beta)
 
+## Bug fixes
+
+- *General*
+  - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
+    (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
 
 # DGtal 1.2
 
