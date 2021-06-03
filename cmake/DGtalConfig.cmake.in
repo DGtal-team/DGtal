@@ -85,6 +85,20 @@ if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
 endif (@QT5_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
+  if(APPLE)
+    message("-- Setting OpenMP flags on MacOs. Assuming `brew install libomp`")
+    if(CMAKE_C_COMPILER_ID MATCHES "Clang\$")
+      set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
+      set(OpenMP_C_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+      set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+    endif()
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang\$")
+      set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
+      set(OpenMP_CXX_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+      set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+    endif()
+  endif()
   find_dependency(OpenMP REQUIRED
     @OpenMP_HINTS@
     )
