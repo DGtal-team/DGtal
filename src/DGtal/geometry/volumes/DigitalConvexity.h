@@ -62,7 +62,9 @@ namespace DGtal
   /**
      Description of template class 'DigitalConvexity' <p> \brief Aim:
      A helper class to build polytopes from digital sets and to check
-     digital k-convexity.
+     digital k-convexity and full convexity.
+
+     @see moduleDigitalConvexity
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable.
@@ -87,6 +89,7 @@ namespace DGtal
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     typedef DGtal::CellGeometry< KSpace >   CellGeometry;
     typedef std::vector<Point>              PointRange;
+    typedef std::unordered_set<Point>       PointSet;
 
     static const Dimension dimension = KSpace::dimension;
 
@@ -344,8 +347,32 @@ namespace DGtal
                                 Dimension k = KSpace::dimension ) const;
     /// @}
 
+    // ----------------------- Morphological services -----------------------------------
+  public:
+    /// @name Morphological services
+    /// @{
 
-    // ----------------------- Convexity services -----------------------------------
+    /// Performs the digital Minkowski sum of \a X along direction \a i
+    /// @param i any valid dimension
+    /// @param X any \b sorted range of digital points
+    ///
+    /// @return the \b sorted range of digital points X union the
+    /// translation of X of one along direction \a i.
+    PointRange U( Dimension i, const PointRange& X ) const;
+    
+    /// Tells if a given point range \a X is fully digitally
+    /// convex. The test uses the morphological characterization of
+    /// full convexity. It is slightly slower than testing full
+    /// convexity on simplices, but it works for arbitrary set of
+    /// points in arbitrary dimenion.
+
+    /// @param X any \b sorted range of points
+    /// @return 'true' iff \a X is fully digitally convex.
+    bool isFullyConvex( const PointRange& X ) const;
+    
+    /// @}
+    
+    // ----------------------- Convexity services for lattice polytopes -----------------
   public:
     /// @name Convexity services for lattice polytopes
     /// @{
@@ -407,7 +434,7 @@ namespace DGtal
 
     /// @}
 
-    // ----------------------- Convexity services -----------------------------------
+    // ----------------------- Convexity services for rational polytopes ----------------
   public:
     /// @name Convexity services for rational polytopes
     /// @{

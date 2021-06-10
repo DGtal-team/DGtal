@@ -287,6 +287,29 @@ makeCellCover( const RationalPolytope& P,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+U( Dimension i, const PointRange& X ) const
+{
+  PointRange Y( X );
+  PointRange Z;
+  Z.reserve( X.size() );
+  auto add_one = [&i] ( const Point & p ) { p[ i ] += 1; };
+  std::for_each( Y.begin(), Y.end(), add_one );
+  std::set_union( X.cbegin(), X.cend(), Y.cbegin(), Y.cend(),
+                  std::back_inserter( Z ) );
+  return  Z;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyConvex( const PointRange& X ) const
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const LatticePolytope& P, const Dimension k ) const

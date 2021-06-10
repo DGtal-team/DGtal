@@ -211,6 +211,52 @@ namespace DGtal
                                   const std::vector< Point >& input_points,
                                   bool remove_duplicates = true );
 
+    /// Computes the lattice polytope enclosing a range of at most
+    /// dimension+1 distinct points.
+    ///
+    /// @note Called internally by ConvexityHelper::computeLatticePolytope.
+    ///
+    /// @note This function works for arbitrary full dimensional
+    /// simplex. If the set of points is not full dimensional, it is
+    /// able to build a non full dimensional simplex for dimensions <=
+    /// 3.
+    ///
+    /// @param input_points a range of points, with at most
+    /// dimension+1 distinct points.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if the given range of points was not full
+    /// dimensional and dimension was greater than 3.
+    static
+    LatticePolytope
+    computeSimplex( const std::vector< Point >& input_points,
+                    bool remove_duplicates = true );
+
+    /// Computes the lattice polytope enclosing a range of distinct
+    /// points, arranged such that they do not form a full dimensional
+    /// polytope.
+    ///
+    /// @note Called internally by
+    /// ConvexityHelper::computeLatticePolytope and
+    /// ConvexityHelper::computeSimplex.
+    ///
+    /// @note This function works for dimension no greater than 3.
+    ///
+    /// @param input_points a range of distinct points.
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if the given range of points was not full
+    /// dimensional and dimension was greater than 3.
+    static
+    LatticePolytope
+    computeDegeneratedLatticePolytope( std::vector< Point > input_points );
+
+    
     /// @}
     
     // ----------------- lattice Delaunay services -------------------------
