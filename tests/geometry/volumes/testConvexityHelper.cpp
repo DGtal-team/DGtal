@@ -118,7 +118,41 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
       }
     }
   }
-} 
+  GIVEN( "Given a degenerated polytope { (0,0), (3,-1), (9,-3), (-6,2) } " ) {
+    std::vector<Point> V
+      = { Point(0,0), Point(3,-1), Point(9,-3), Point(-6,2) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 2 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 4 == 2 );
+      }
+      THEN( "The polytope contains 6 points" ) {
+        REQUIRE( P.count() == 6 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
+      }
+    }
+  }
+  GIVEN( "Given a degenerated simplex { (4,0), (7,2), (-5,-6) } " ) {
+    std::vector<Point> V
+      = { Point(4,0), Point(7,2), Point(-5,-6) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 2 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 4 == 2 );
+      }
+      THEN( "The polytope contains 5 points" ) {
+        REQUIRE( P.count() == 5 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
+      }
+    }
+  }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ConvexityHelper in 3D.
@@ -245,6 +279,74 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
           }
         }
         REQUIRE( nb_finite == 2 );
+      }
+    }
+  }
+  GIVEN( "Given a degenerated 1d polytope { (0,0,1), (3,-1,2), (9,-3,4), (-6,2,-1) } " ) {
+    std::vector<Point> V
+      = { Point(0,0,1), Point(3,-1,2), Point(9,-3,4), Point(-6,2,-1) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 6 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 6 == 6 );
+      }
+      THEN( "The polytope contains 6 points" ) {
+        REQUIRE( P.count() == 6 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
+      }
+    }
+  }
+  GIVEN( "Given a degenerated 1d simplex { (1,0,-1), Point(4,-1,-2), Point(10,-3,-4) } " ) {
+    std::vector<Point> V
+      = { Point(1,0,-1), Point(4,-1,-2), Point(10,-3,-4) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has 6 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 6 == 6 );
+      }
+      THEN( "The polytope contains 4 points" ) {
+        REQUIRE( P.count() == 4 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
+      }
+    }
+  }
+  GIVEN( "Given a degenerated 2d polytope { (2,1,0), (1,0,1), (1,2,1), (0,1,2), (0,3,2) } " ) {
+    std::vector<Point> V
+      = { Point(2,1,0), Point(1,0,1), Point(1,2,1), Point(0,1,2), Point(0,3,2) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has more than 6 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 6 == 6 );
+      }
+      THEN( "The polytope contains 7 points" ) {
+        REQUIRE( P.count() == 7 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
+      }
+    }
+  }
+  GIVEN( "Given a degenerated 2d simplex { (2,1,0), (1,0,1), (1,5,1), (0,3,2) } " ) {
+    std::vector<Point> V
+      = { Point(2,1,0), Point(1,0,1), Point(1,5,1), Point(0,3,2) };
+    WHEN( "Computing its lattice polytope" ){
+      const auto P = Helper::computeLatticePolytope( V, false, true );
+      CAPTURE( P );
+      THEN( "The polytope is valid and has more than 6 non trivial facets" ) {
+        REQUIRE( P.nbHalfSpaces() - 6 == 6 );
+      }
+      THEN( "The polytope contains 8 points" ) {
+        REQUIRE( P.count() == 8 );
+      }
+      THEN( "The polytope contains no interior points" ) {
+        REQUIRE( P.countInterior() == 0 );
       }
     }
   }
