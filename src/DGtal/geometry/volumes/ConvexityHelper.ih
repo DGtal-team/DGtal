@@ -47,7 +47,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeSimplex
 ( const std::vector< Point >& input_points,
   bool remove_duplicates )
 {
-  std::cout << "[ConvexityHelper::computeSimplex]" << std::endl;
   std::vector< Point > X;
   if ( remove_duplicates )
     {
@@ -70,7 +69,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedLatticePolytope
 ( std::vector< Point > input_points )
 {
-  std::cout << "[ConvexityHelper::computeDegeneratedLatticePolytope]" << std::endl;
   typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
