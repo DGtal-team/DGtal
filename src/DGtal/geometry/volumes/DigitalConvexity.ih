@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/geometry/volumes/ConvexityHelper.h"
 //////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
@@ -305,9 +306,61 @@ U( Dimension i, const PointRange& X ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isFullyConvex( const PointRange& X ) const
+is0Convex( const PointRange& X, bool safe ) const
 {
+  if ( X.empty() ) return true;
+  if ( safe )
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
+        InternalInteger;
+      const auto P = ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+      return P.count() == X.size();
+    }
+  else
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
+        InternalInteger;
+      const auto P = ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+      return P.count() == X.size();
+    }
 }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyConvex( const PointRange& Z, bool safe ) const
+{
+  ASSERT( dimension <= 64 );
+  typedef DGtal::int64_t Direction;
+  typedef std::vector< Direction > Directions;
+  std::array< Directions, dimension > C;
+  if ( ! is0Convex( Z, safe ) ) return false;
+  C[ 0 ].push_back( (Direction) 0 );
+  std::map< Direction, PointRange > X;
+  X[ 0 ] = Z;
+  for ( Dimension k = 1; k < dimension; k++ )
+    {
+      for ( const auto beta : C[ k-1 ] )
+        {
+          for ( Dimension j = 0; j < dimension; j++ )
+            {
+              const Direction dir_j = Direction(1) << j;
+              if ( beta < dir_j )
+                {
+                  const Direction alpha = beta | dir_j;
+                  C[ k ].push_back( alpha );
+                  X[ alpha ] = U( j, X[ beta ] );
+                  if ( ! is0Convex( X[ alpha ] ) ) return false;
+                }
+            }
+        }
+    }
+  return true;
+}
+
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 bool

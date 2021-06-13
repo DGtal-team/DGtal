@@ -54,6 +54,88 @@
 
 namespace DGtal
 {
+
+    namespace detail {
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// @tparam TIntegerCoordinate the integral type of each point
+    /// coordinate.
+    ///
+    /// @tparam safe when 'true' chooses the safest type for
+    /// computations, otherwise it privileges speed.
+    template < typename TIntegerCoordinate, bool safe >
+    struct ConvexityHelperInternalInteger {
+      typedef TIntegerCoordinate Type;
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int32_t and safe computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int32_t, true > {
+#ifdef WITH_BIGINTEGER
+      typedef DGtal::BigInteger Type;
+#else
+      typedef DGtal::int64_t Type;
+#endif
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int32_t and fast computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int32_t, false > {
+      typedef DGtal::int64_t Type;
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int64_t and safe computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int64_t, true > {
+#ifdef WITH_BIGINTEGER
+      typedef DGtal::BigInteger Type;
+#else
+      typedef DGtal::int64_t Type;
+#endif
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int64_t and fast computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int64_t, false > {
+      typedef DGtal::int64_t Type;
+    };
+
+#ifdef WITH_BIGINTEGER
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate BigInteger.
+    ///
+    /// @tparam safe when 'true' chooses the safest type for
+    /// computations, otherwise it privileges speed.
+    template < bool safe >
+    struct ConvexityHelperInternalInteger< DGtal::BigInteger, safe > {
+      typedef DGtal::BigInteger Type;
+    };
+#endif
+
+    }  // namespace detail
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class ConvexityHelper
   /**

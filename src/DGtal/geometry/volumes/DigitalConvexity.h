@@ -359,16 +359,34 @@ namespace DGtal
     /// @return the \b sorted range of digital points X union the
     /// translation of X of one along direction \a i.
     PointRange U( Dimension i, const PointRange& X ) const;
+
+    /// Tells if a given point range \a X is digitally 0-convex,
+    /// i.e. \f$ \mathrm{Cvxh}(X) \cap \mathbb{Z}^d = X \f$. It works
+    /// for arbitrary set of points in arbitrary dimenion.
+    /// 
+    /// @param X any \b sorted range of \b pairwise \b distinct points
+    ///
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
+    /// @return 'true' iff \a X is fully digitally convex.
+    bool is0Convex( const PointRange& X, bool safe = false ) const;
     
     /// Tells if a given point range \a X is fully digitally
     /// convex. The test uses the morphological characterization of
     /// full convexity. It is slightly slower than testing full
     /// convexity on simplices, but it works for arbitrary set of
     /// points in arbitrary dimenion.
-
-    /// @param X any \b sorted range of points
+    /// 
+    /// @param X any \b sorted range of \b pairwise \b distinct points
+    /// 
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool isFullyConvex( const PointRange& X ) const;
+    bool isFullyConvex( const PointRange& X, bool safe = false ) const;
     
     /// @}
     
