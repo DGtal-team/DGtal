@@ -47,27 +47,6 @@ using namespace DGtal;
 // Functions for testing class DigitalConvexity.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "DigitalConvexity< Z2 > full convexity tests", "[digital_convexity][2d][full_convexity]" )
-{
-  typedef KhalimskySpaceND<2,int>          KSpace;
-  typedef KSpace::Point                    Point;
-  typedef DigitalConvexity< KSpace >       DConvexity;
-
-  DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
-
-  std::vector<Point> V1 = { Point(0,0), Point(-1,0), Point(1,0), Point(0,1) };
-  REQUIRE( dconv.isFullyConvex( V1 ) );
-  std::vector<Point> V2 = { Point(-1,0), Point(1,0), Point(0,1) };
-  REQUIRE( ! dconv.isFullyConvex( V2 ) );
-  std::vector<Point> V3 = { Point(0,0), Point(-1,0), Point(1,0) };
-  REQUIRE( dconv.isFullyConvex( V3 ) );
-  std::vector<Point> V4 = { Point(0,0), Point(-1,0), Point(1,0), Point(0,1),
-    Point(0,-1) };
-  REQUIRE( dconv.isFullyConvex( V4 ) );
-  std::vector<Point> V5 = { Point(-1,0), Point(1,0), Point(0,1), Point(0,-1) };
-  REQUIRE( ! dconv.isFullyConvex( V5 ) );
-}
-
 SCENARIO( "DigitalConvexity< Z2 > unit tests", "[digital_convexity][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;

@@ -345,8 +345,7 @@ isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
   typedef DGtal::int64_t Direction;
   typedef std::vector< Direction > Directions;
   std::array< Directions, dimension > C;
-  bool cvx0 = convex0 ? true : is0Convex( Z, safe );
-  std::cout << "Z is {}-convex: " << cvx0 << std::endl;
+  const bool cvx0 = convex0 ? true : is0Convex( Z, safe );
   if ( ! cvx0 ) return false;
   C[ 0 ].push_back( (Direction) 0 );
   std::map< Direction, PointRange > X;
@@ -364,9 +363,7 @@ isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
                   const Direction alpha = beta | dir_j;
                   C[ k ].push_back( alpha );
                   X[ alpha ] = U( j, X[ beta ] );
-                  bool cvx = is0Convex( X[ alpha ] );
-                  std::cout << "Z is " << alpha << "-convex: " << cvx << std::endl;
-                  if ( ! cvx ) return false;
+                  if ( ! is0Convex( X[ alpha ] ) ) return false;
                 }
             }
         }
