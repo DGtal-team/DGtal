@@ -352,6 +352,19 @@ namespace DGtal
     /// @name Morphological services
     /// @{
 
+    /// Given a range of distinct points \a X, computes the tightiest
+    /// polytope that enclosed it. Note that this polytope may contain
+    /// more lattice points than the given input points.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
+    /// @return the corresponding lattice polytope.
+    LatticePolytope makePolytope( const PointRange& X, bool safe = false ) const;
+    
     /// Performs the digital Minkowski sum of \a X along direction \a i
     /// @param i any valid dimension
     /// @param X any \b sorted range of digital points
@@ -380,13 +393,17 @@ namespace DGtal
     /// points in arbitrary dimenion.
     /// 
     /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @param convex0 when 'true' indicates that \a X is known to be
+    /// digitally 0-convex, otherwise the method will check it also.
     /// 
     /// @param safe when 'true' performs computations with arbitrary
     /// precision integer (if available), otherwise chooses a
     /// compromise between speed and precision (int64_t).
     ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool isFullyConvex( const PointRange& X, bool safe = false ) const;
+    bool isFullyConvex( const PointRange& X, bool convex0 = false,
+                        bool safe = false ) const;
     
     /// @}
     

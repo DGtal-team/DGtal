@@ -276,14 +276,15 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         Point c( rand() % 5, rand() % 5, rand() % 5 );
         Point d( rand() % 5, rand() % 5, rand() % 5 );
         if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
-        std::vector< Point > X { a, b, c, d };
         auto tetra = dconv.makeSimplex( { a, b, c, d } );
+        std::vector< Point > X;
+        tetra.getPoints( X );
         bool cvx0     = dconv.isKConvex( tetra, 0 );
         bool cvx1     = dconv.isKConvex( tetra, 1 );
         bool cvx2     = dconv.isKConvex( tetra, 2 );
         bool cvx3     = dconv.isKConvex( tetra, 3 );
         bool cvxf     = dconv.isFullyConvex( tetra );
-        bool cvxfg    = dconv.isFullyConvex( X );
+        bool cvxfg    = dconv.isFullyConvex( X, false );
         if ( cvxf != cvxfg ) {
           std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
                     << "[" << cvxf << "] [" << cvxfg << "]"

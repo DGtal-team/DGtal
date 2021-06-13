@@ -288,6 +288,28 @@ makeCellCover( const RationalPolytope& P,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
+DGtal::DigitalConvexity<TKSpace>::
+makePolytope( const PointRange& X, bool safe ) const
+{
+  if ( safe )
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+    }
+  else
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 U( Dimension i, const PointRange& X ) const
@@ -309,35 +331,23 @@ DGtal::DigitalConvexity<TKSpace>::
 is0Convex( const PointRange& X, bool safe ) const
 {
   if ( X.empty() ) return true;
-  if ( safe )
-    {
-      typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
-        InternalInteger;
-      const auto P = ConvexityHelper< dimension, Integer, InternalInteger >::
-        computeLatticePolytope( X, false, false );
-      return P.count() == X.size();
-    }
-  else
-    {
-      typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
-        InternalInteger;
-      const auto P = ConvexityHelper< dimension, Integer, InternalInteger >::
-        computeLatticePolytope( X, false, false );
-      return P.count() == X.size();
-    }
+  const auto P = makePolytope( X, safe );
+  return P.count() == X.size();
 }
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isFullyConvex( const PointRange& Z, bool safe ) const
+isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
 {
   ASSERT( dimension <= 64 );
   typedef DGtal::int64_t Direction;
   typedef std::vector< Direction > Directions;
   std::array< Directions, dimension > C;
-  if ( ! is0Convex( Z, safe ) ) return false;
+  bool cvx0 = convex0 ? true : is0Convex( Z, safe );
+  std::cout << "Z is {}-convex: " << cvx0 << std::endl;
+  if ( ! cvx0 ) return false;
   C[ 0 ].push_back( (Direction) 0 );
   std::map< Direction, PointRange > X;
   X[ 0 ] = Z;
@@ -354,7 +364,9 @@ isFullyConvex( const PointRange& Z, bool safe ) const
                   const Direction alpha = beta | dir_j;
                   C[ k ].push_back( alpha );
                   X[ alpha ] = U( j, X[ beta ] );
-                  if ( ! is0Convex( X[ alpha ] ) ) return false;
+                  bool cvx = is0Convex( X[ alpha ] );
+                  std::cout << "Z is " << alpha << "-convex: " << cvx << std::endl;
+                  if ( ! cvx ) return false;
                 }
             }
         }
@@ -370,13 +382,13 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
   auto S = insidePoints( P );
-  std::cout << "Inside points: ";
-  for ( auto p : S ) std::cout << p;
+  // std::cout << "Inside points: ";
+  // for ( auto p : S ) std::cout << p;
+  // std::cout << std::endl;
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
-  std::cout << std::endl;
-  std::cout << "Touched cells:     " << touched_cells << std::endl;
+  // std::cout << "Touched cells:     " << touched_cells << std::endl;
   auto intersected_cells = makeCellCover( P, k, k );
-  std::cout << "Intersected cells: " << intersected_cells << std::endl;
+  // std::cout << "Intersected cells: " << intersected_cells << std::endl;
   return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }
