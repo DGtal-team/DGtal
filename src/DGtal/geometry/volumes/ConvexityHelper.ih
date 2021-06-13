@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include "DGtal/kernel/IntegerConverter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -172,8 +173,8 @@ computeDegeneratedLatticePolytope
     Vector  N;
     Integer nu;
     for ( Dimension i = 0; i < dim; ++i )
-      N[ i ] = (Integer) H.internalNormal()[ i ];
-    nu = (Integer) H.internalIntercept();
+      N[ i ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ i ] );
+    nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
     PHS.emplace_back( N, nu );
   }
   // Add top constraint.
@@ -226,8 +227,8 @@ computeLatticePolytope
     Vector  N;
     Integer nu;
     for ( Dimension i = 0; i < dim; ++i )
-      N[ i ] = (Integer) H.internalNormal()[ i ];
-    nu = (Integer) H.internalIntercept();
+      N[ i ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ i ] );
+    nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
     PHS.emplace_back( N, nu );
   }
   if ( make_minkowski_summable && dimension >= 4 )

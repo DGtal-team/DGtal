@@ -9,6 +9,7 @@ set(DGTAL_TESTS_VOLUMES_SRC
   testCellGeometry
   testDigitalConvexity
   testConvexityHelper
+  testFullConvexity
 )
 
 foreach(FILE ${DGTAL_TESTS_VOLUMES_SRC})

@@ -364,7 +364,7 @@ namespace DGtal
     /// i.e. \f$ \mathrm{Cvxh}(X) \cap \mathbb{Z}^d = X \f$. It works
     /// for arbitrary set of points in arbitrary dimenion.
     /// 
-    /// @param X any \b sorted range of \b pairwise \b distinct points
+    /// @param X any range of \b pairwise \b distinct points
     ///
     /// @param safe when 'true' performs computations with arbitrary
     /// precision integer (if available), otherwise chooses a
@@ -379,7 +379,7 @@ namespace DGtal
     /// convexity on simplices, but it works for arbitrary set of
     /// points in arbitrary dimenion.
     /// 
-    /// @param X any \b sorted range of \b pairwise \b distinct points
+    /// @param X any range of \b pairwise \b distinct points
     /// 
     /// @param safe when 'true' performs computations with arbitrary
     /// precision integer (if available), otherwise chooses a

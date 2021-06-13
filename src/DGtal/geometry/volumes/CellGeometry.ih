@@ -101,7 +101,8 @@ addCellsTouchingPoints( PointIterator itB, PointIterator itE )
       {
         auto pointel = myK.uPointel( *it );
         auto cofaces = myK.uCoFaces( pointel );
-        myKPoints.emplace( myK.uKCoords( pointel ) );
+        if ( myMinCellDim <= 0 )
+          myKPoints.emplace( myK.uKCoords( pointel ) );
         for ( auto&& f : cofaces ) {
           Dimension d = myK.uDim( f );
           if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
@@ -132,7 +133,8 @@ addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
       {
         auto pointel = *it;
         auto cofaces = myK.uCoFaces( pointel );
-        myKPoints.emplace( myK.uKCoords( pointel ) );
+        if ( myMinCellDim <= 0 )
+          myKPoints.emplace( myK.uKCoords( pointel ) );
         for ( auto&& f : cofaces ) {
           Dimension d = myK.uDim( f );
           if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
@@ -641,7 +643,17 @@ inline
 void
 DGtal::CellGeometry<TKSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CellGeometry]";
+  out << "[CellGeometry] ";
+  std::vector< Point > X;
+  for ( auto && c : myKPoints ) X.push_back( c );
+  std::sort( X.begin(), X.end() );
+  for ( auto p : X )
+    {
+      out << "(" << p[ 0 ];
+      for ( Dimension k = 1; k < TKSpace::dimension; ++k )
+        out << "," << p[ k ];
+      out << ") ";
+    }
 }
 
 /**

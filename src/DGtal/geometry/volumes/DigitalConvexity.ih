@@ -295,7 +295,7 @@ U( Dimension i, const PointRange& X ) const
   PointRange Y( X );
   PointRange Z;
   Z.reserve( X.size() );
-  auto add_one = [&i] ( const Point & p ) { p[ i ] += 1; };
+  auto add_one = [&i] ( Point & p ) { p[ i ] += 1; };
   std::for_each( Y.begin(), Y.end(), add_one );
   std::set_union( X.cbegin(), X.cend(), Y.cbegin(), Y.cend(),
                   std::back_inserter( Z ) );
@@ -341,6 +341,7 @@ isFullyConvex( const PointRange& Z, bool safe ) const
   C[ 0 ].push_back( (Direction) 0 );
   std::map< Direction, PointRange > X;
   X[ 0 ] = Z;
+  std::sort( X[ 0 ].begin(), X[ 0 ].end() );
   for ( Dimension k = 1; k < dimension; k++ )
     {
       for ( const auto beta : C[ k-1 ] )
@@ -369,8 +370,13 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
   auto S = insidePoints( P );
+  std::cout << "Inside points: ";
+  for ( auto p : S ) std::cout << p;
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
+  std::cout << std::endl;
+  std::cout << "Touched cells:     " << touched_cells << std::endl;
   auto intersected_cells = makeCellCover( P, k, k );
+  std::cout << "Intersected cells: " << intersected_cells << std::endl;
   return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }
