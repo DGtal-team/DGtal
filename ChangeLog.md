@@ -1,4 +1,8 @@
 # DGtal 1.3(beta)
+- *Docker File*
+   - A Dockerfile is added to create a Docker image with the purpose of having a base
+     to start a development using the DGtal library.
+	
 
 
 # DGtal 1.2
