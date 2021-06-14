@@ -52,9 +52,10 @@ DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or n
 
 Docker
 ======
-A Docker file is included in the repository in order to allow the users to build a docker images with the Dgtal library installed. Inside the docker container the Dgtal library is installed so the user can start developing with outh the need to install the DGtal library.
 
-To build the Docker image, Docker should be installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute 
+A Docker file is included in the repository in order to allow the users to build a docker image with the Dgtal library installed. Inside the docker container, the Dgtal library is installed so the user can start developing without the need to install the DGtal library on the system.
+                                                                                                                                                                                                                        
+To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
 ```shell
 docker build -t dgtal:lastest .
