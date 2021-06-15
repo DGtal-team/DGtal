@@ -3,8 +3,7 @@
 
 ## Changes
 - *IO*
-  - Fix purple color.
-    (Bertrand Kerautret and Phuc Ngo
+  - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
 
 
