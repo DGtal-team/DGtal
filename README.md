@@ -53,7 +53,7 @@ DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or n
 Docker
 ======
 
-A Docker file is included in the repository in order to allow the users to build a docker image with the Dgtal library installed. Inside the docker container, the Dgtal library is installed so the user can start developing without the need to install the DGtal library on the system.
+A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many dependencies so the user can start developing without the need to install DGtal on the system.
                                                                                                                                                                                                                         
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
@@ -83,4 +83,3 @@ More Information
 * Release 0.8 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11586.svg)](https://doi.org/10.5281/zenodo.11586)
 * Continuous Integration (Linux/MacOS) [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
 * Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
-
