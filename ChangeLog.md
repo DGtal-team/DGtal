@@ -6,6 +6,12 @@
   - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
     (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
 
+## Changes
+- *IO*
+  - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
+    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+
+
 # DGtal 1.2
 
 ## New Features / Critical Changes

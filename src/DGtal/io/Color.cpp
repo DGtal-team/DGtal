@@ -189,7 +189,7 @@ DGtal::Color::tikz() const
 //  if ( *this == DGtal::Color::Magenta ) return "magenta";
 //  if ( *this == DGtal::Color::Yellow ) return "yellow";
   if ( *this == DGtal::Color::Silver ) return "white!75!black";
-  if ( *this == DGtal::Color::Purple ) return "gray"; // ???: Is Color::Purple meant to be equal to Color::Gray?
+  if ( *this == DGtal::Color::Purple ) return "purple"; 
   if ( *this == DGtal::Color::Navy ) return "blue!50!black";
 //  if ( *this == DGtal::Color::Aqua ) return "cyan"; // ???: Is Color::Aqua meant to be equal to Color::Cyan?
   secured_sprintf( buffer, 255, "{rgb,255:red,%d;green,%d;blue,%d}", myRed, myGreen, myBlue );
@@ -212,7 +212,7 @@ const DGtal::Color DGtal::Color::Cyan((unsigned char)0,(unsigned char)255,(unsig
 const DGtal::Color DGtal::Color::Magenta((unsigned char)255,(unsigned char)0,(unsigned char)255);
 const DGtal::Color DGtal::Color::Yellow((unsigned char)255,(unsigned char)255,(unsigned char)0);
 const DGtal::Color DGtal::Color::Silver((unsigned char)190,(unsigned char)190,(unsigned char)190);
-const DGtal::Color DGtal::Color::Purple((unsigned char)128,(unsigned char)128,(unsigned char)128);
+const DGtal::Color DGtal::Color::Purple((unsigned char)128,(unsigned char)0,(unsigned char)128);
 const DGtal::Color DGtal::Color::Navy((unsigned char)0,(unsigned char)0,(unsigned char)128);
 const DGtal::Color DGtal::Color::Aqua((unsigned char)0,(unsigned char)255,(unsigned char)255);
 
