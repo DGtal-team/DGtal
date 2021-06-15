@@ -3,7 +3,7 @@
 ## New features / critical changes
 - *Docker File*
   - A Dockerfile is added to create a Docker image to have a base to start development
-    using the DGtal library.
+    using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
 	
 
 
