@@ -1,0 +1,67 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file NeighborhoodConvexityAnalyzer.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2021/06/16
+ *
+ * Implementation of inline methods defined in NeighborhoodConvexityAnalyzer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+template < typename PointPredicate >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+setCenter( Point c, const PointPredicate& X )
+{
+  ASSERT( myDomain.isInside( c ) );
+  myCenter = c;
+  myLocalX.clear();
+  myLocalCompX.clear();
+  myComputations = 0;
+  myResults      = 0;
+  Domain local_domain( c - Point::diagonal( size() ),
+                       c + Point::diagonal( size() ) );
+  for ( auto q : local_domain )
+    {
+      if ( q == c )
+        myCenterInX = X( q );
+      else if ( myDomain.isInside( q ) )
+        {
+          if ( X( q ) ) myLocalX.push_back( q );
+          else          myLocalCompX.push_back( q );
+        }
+    }
+}
+  
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
