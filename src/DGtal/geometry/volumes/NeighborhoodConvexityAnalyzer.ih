@@ -44,20 +44,162 @@ setCenter( Point c, const PointPredicate& X )
   myLocalCompX.clear();
   myComputations = 0;
   myResults      = 0;
-  Domain local_domain( c - Point::diagonal( size() ),
-                       c + Point::diagonal( size() ) );
+  Domain local_domain( c - Point::diagonal( radius() ),
+                       c + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  myCfgX.reset();
   for ( auto q : local_domain )
     {
       if ( q == c )
-        myCenterInX = X( q );
+        {
+          myCenterInX = X( q );
+        }
       else if ( myDomain.isInside( q ) )
         {
-          if ( X( q ) ) myLocalX.push_back( q );
-          else          myLocalCompX.push_back( q );
+          if ( X( q ) )
+            {
+              myLocalX.push_back( q );
+              myCfgX.set( bit );
+            }
+          else
+            myLocalCompX.push_back( q );
         }
+      bit += 1;
+    }
+  myBasicCfgX.clear();
+  computeBasicConfigurations( myCfgX, myBasicCfgX );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+bool 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+checkBasicConfigurationsFullConvexity
+( bool compX, bool with_center ) const
+{
+  if ( ! compX )
+    { // shape X
+      // trace.info() << "checkBasicConfigurationsFullConvexity X" << std::endl;
+      const Size mask_center = with_center ? 0x10 : 0;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasicFullConvexityTable[ cfg.to_ulong() | mask_center ] )
+          return false;
+    }
+  else 
+    { // complementary of shape X
+      // trace.info() << "checkBasicConfigurationsFullConvexity compX" << std::endl;
+      const Size mask_center = with_center ? 0x1ff : 0x1ef;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasicFullConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
+          return false;
+    }
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+bool 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+checkBasicConfigurations0Convexity
+( bool compX, bool with_center ) const
+{
+  if ( ! compX )
+    { // shape X
+      // trace.info() << "checkBasicConfigurationsFullConvexity X" << std::endl;
+      const Size mask_center = with_center ? 0x10 : 0;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasic0ConvexityTable[ cfg.to_ulong() | mask_center ] )
+          return false;
+    }
+  else 
+    { // complementary of shape X
+      // trace.info() << "checkBasicConfigurationsFullConvexity compX" << std::endl;
+      const Size mask_center = with_center ? 0x1ff : 0x1ef;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasic0ConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
+          return false;
+    }
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeBasicConfigurations
+( Configuration cfg, std::vector< BasicConfiguration > & result ) const
+{
+  if ( dimension == 2 ) result.push_back( cfg.to_ulong() );
+  else
+    {
+      for ( Dimension i = 0; i < dimension; i++ )
+        for ( Dimension j = i+1; j < dimension; j++ )
+          result.push_back( computeCentralBasicConfiguration( cfg, i, j ) );
     }
 }
-  
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+typename DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::BasicConfiguration
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeCentralBasicConfiguration
+( Configuration cfg, Dimension i, Dimension j ) const
+{
+  //  std::cout << "computeCentralBasicConfiguration " << cfg << std::endl;
+  Size pos = middle;
+  Size incr_i = 1;
+  Size incr_j = 1;
+  for ( Dimension d = 0; d < i; ++d ) { incr_i *= 2*K+1; }
+  for ( Dimension d = 0; d < j; ++d ) { incr_j *= 2*K+1; }
+  BasicConfiguration basic;
+  basic[ 0 ] = cfg[ pos - incr_i - incr_j ];
+  basic[ 1 ] = cfg[ pos          - incr_j ];
+  basic[ 2 ] = cfg[ pos + incr_i - incr_j ];
+  basic[ 3 ] = cfg[ pos - incr_i          ];
+  basic[ 4 ] = cfg[ pos                   ];
+  basic[ 5 ] = cfg[ pos + incr_i          ];
+  basic[ 6 ] = cfg[ pos - incr_i + incr_j ];
+  basic[ 7 ] = cfg[ pos          + incr_j ];
+  basic[ 8 ] = cfg[ pos + incr_i + incr_j ];
+  // std::cout << " basic( " << i << "," << j << ")=" << basic << std::endl;
+  return basic;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeBasicFullConvexityTable()
+{
+  typedef KhalimskySpaceND< 2, int > K2;
+  typedef K2::Point                  Point2;
+  typedef K2::Space                  Z2;
+  typedef DigitalConvexity< K2 >     DigConv2;
+  typedef HyperRectDomain< Z2 >      Domain2;
+  DigConv2 dconv2( Point2::diagonal( -2 ), Point2::diagonal( 2 ) );
+  Point2 p1 = Point2::diagonal( -1 );
+  Point2 p2 = Point2::diagonal(  1 );
+  Point2 c =  Point2::diagonal( 0 );
+  Domain2 domain( p1, p2 );
+  Size nb_fcvx = 0;
+  Size nb_0cvx = 0;
+  for ( unsigned int cfg = 0; cfg < 512; cfg++ )
+    {
+      // Building a configuration.
+      std::vector< Point2 > X;
+      unsigned int mask = 1;
+      for ( auto it = domain.begin(); it != domain.end(); ++it )
+        {
+          const Point2 p = *it;
+          if ( cfg & mask ) X.push_back( p );
+          mask <<= 1;
+        }
+      myBasicFullConvexityTable[ cfg ] = dconv2.isFullyConvex( X );
+      myBasic0ConvexityTable   [ cfg ] = dconv2.is0Convex    ( X );
+      nb_fcvx += myBasicFullConvexityTable[ cfg ] ? 1 : 0;
+      nb_0cvx += myBasic0ConvexityTable   [ cfg ] ? 1 : 0;
+    }
+  std::cout << "#f-cvx="  << nb_fcvx << "/512"
+            << " #0-cvx=" << nb_0cvx << "/512" << std::endl;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

@@ -44,6 +44,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <bitset>
 #include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clone.h"
@@ -56,7 +57,21 @@
 
 namespace DGtal
 {
+  namespace detail {
+    
+    template< typename T >
+    constexpr T const_pow(T base, unsigned int exponent) {
+      return exponent == 0 ? T(1) : base * const_pow(base, exponent - 1);
+    }
 
+    template< typename T >
+    constexpr T const_middle(T K, unsigned int exponent) {
+      return exponent <= 1
+        ? T(K)
+        : K * const_pow( 2*K+1, exponent-1 ) + const_middle( K, exponent - 1 );
+    }
+  } // namespace detail
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class NeighborhoodConvexityAnalyzer
   /**
@@ -88,9 +103,15 @@ namespace DGtal
     typedef typename KSpace::Cell           Cell;
     typedef std::vector<Point>              PointRange;
     typedef HyperRectDomain<Space>          Domain;
+    typedef std::size_t                     Size;
+    
+    static const Dimension dimension  = KSpace::dimension;
+    static const Size      neigh_size = detail::const_pow( 2*K+1, dimension ); 
+    static const Size      middle     = detail::const_middle( K, dimension );
 
-    static const Dimension dimension = KSpace::dimension;
-
+    typedef std::bitset< detail::const_pow( 2*K+1, dimension ) > Configuration;
+    typedef std::bitset< 9 > BasicConfiguration;
+    
     // ------------------------- Standard services --------------------------------
   public:
     /// @name Standard services (construction, initialization, assignment)
@@ -102,10 +123,10 @@ namespace DGtal
     ~NeighborhoodConvexityAnalyzer() = default;
 
     /**
-     * Constructor.
+     * Constructor. Invalid object.
      */
     NeighborhoodConvexityAnalyzer() = default;
-
+    
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -122,6 +143,7 @@ namespace DGtal
       myDomain       = Domain( aKSpace.lowerBound(), aKSpace.upperBound() );
       myComputations = 0;
       myResults      = 0;
+      computeBasicFullConvexityTable();
     }
 
     /**
@@ -134,6 +156,7 @@ namespace DGtal
     {
       myComputations = 0;
       myResults      = 0;
+      computeBasicFullConvexityTable();
     }
 
     /**
@@ -156,8 +179,13 @@ namespace DGtal
     }
 
     /// @return the fixed parameter K of the neighborhood, which determines its size.
-    static int size()
+    static int radius()
     { return K; }
+
+    /// @return the size of the neighborhood, that is all the point
+    /// within the neighborhood except its center.
+    static Size size()
+    { return neigh_size; }
     
     /// @}
 
@@ -204,6 +232,19 @@ namespace DGtal
           && isComplementaryFullyConvex( false );
     }
     
+    /// @return 'true' iff the center is locally 0-convex collapsible.
+    bool is0ConvexCollapsible()
+    {
+      if ( isCenterInX() )
+        return ( ! myLocalX.empty() )
+          && is0Convex( true )
+          && is0Convex( false );
+      else
+        return ( ! myLocalCompX.empty() )
+          && isComplementary0Convex( true )
+          && isComplementary0Convex( false );
+    }
+    
     /// Tells if the shape X is locally fully convex.
     /// @param with_center if 'true' add the center to the digital set.
     ///
@@ -214,9 +255,14 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_X_with_center : FullConvexity_X_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      if ( with_center ) myLocalX.push_back( center() );
-      bool ok = myDigConv.isFullyConvex( myLocalX );
-      if ( with_center ) myLocalX.pop_back();
+      // Need to compute full convexity property
+      bool ok = checkBasicConfigurationsFullConvexity( false, with_center );
+      if ( ok && dimension > 2 )
+        { // need to do the true computation.
+          if ( with_center ) myLocalX.push_back( center() );
+          ok = myDigConv.isFullyConvex( myLocalX );
+          if ( with_center ) myLocalX.pop_back();
+        }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
@@ -232,9 +278,14 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_CompX_with_center : FullConvexity_CompX_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      if ( with_center ) myLocalCompX.push_back( center() );
-      bool ok = myDigConv.isFullyConvex( myLocalCompX );
-      if ( with_center ) myLocalCompX.pop_back();
+      // Need to compute full convexity property
+      bool ok = checkBasicConfigurationsFullConvexity( true, with_center );
+      if ( ok && dimension > 2 )
+        { // need to do the true computation.
+          if ( with_center ) myLocalCompX.push_back( center() );
+          ok = myDigConv.isFullyConvex( myLocalCompX );
+          if ( with_center ) myLocalCompX.pop_back();
+        }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
@@ -250,9 +301,14 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_X_with_center : FullConvexity_X_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      if ( with_center ) myLocalX.push_back( center() );
-      bool ok = myDigConv.is0Convex( myLocalX );
-      if ( with_center ) myLocalX.pop_back();
+      // Need to compute full convexity property
+      bool ok = checkBasicConfigurations0Convexity( false, with_center );
+      if ( ok && dimension > 2 )
+        { // need to do the true computation.
+          if ( with_center ) myLocalX.push_back( center() );
+          ok = myDigConv.is0Convex( myLocalX );
+          if ( with_center ) myLocalX.pop_back();
+        }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
@@ -268,9 +324,14 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_CompX_with_center : FullConvexity_CompX_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      if ( with_center ) myLocalCompX.push_back( center() );
-      bool ok = myDigConv.is0Convex( myLocalCompX );
-      if ( with_center ) myLocalCompX.pop_back();
+      // Need to compute full convexity property
+      bool ok = checkBasicConfigurations0Convexity( true, with_center );
+      if ( ok && dimension > 2 )
+        { // need to do the true computation.
+          if ( with_center ) myLocalCompX.push_back( center() );
+          ok = myDigConv.is0Convex( myLocalCompX );
+          if ( with_center ) myLocalCompX.pop_back();
+        }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
@@ -292,6 +353,16 @@ namespace DGtal
     PointRange myLocalCompX;
     /// tells if the center belongs to X
     bool myCenterInX;
+
+    /// Stores the local configuration for X (without the center)
+    Configuration myCfgX;
+    /// Stores the basic local configurations associated to myCfgX, for speed-up
+    std::vector< BasicConfiguration > myBasicCfgX;
+
+    /// Stores the full convexity property of the basic 3x3 neighborhood configurations
+    std::bitset< 512 > myBasicFullConvexityTable;
+    /// Stores the 0-convexity property of the basic 3x3 neighborhood configurations
+    std::bitset< 512 > myBasic0ConvexityTable;
     
     /// Enum types indicating the possible type of local computations.
     enum Computation {
@@ -314,7 +385,22 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    /// Precomputes the table storing for each basic configuration if
+    /// it is fully convex.
+    void computeBasicFullConvexityTable();
 
+    bool checkBasicConfigurationsFullConvexity
+    ( bool compX, bool with_center ) const;
+
+    bool checkBasicConfigurations0Convexity
+    ( bool compX, bool with_center ) const;
+
+    void computeBasicConfigurations
+    ( Configuration cfg, std::vector< BasicConfiguration > & result ) const;
+
+    BasicConfiguration computeCentralBasicConfiguration
+    ( Configuration cfg, Dimension i, Dimension j ) const;
+    
   }; // end of class NeighborhoodConvexityAnalyzer
 
 
