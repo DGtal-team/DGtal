@@ -13,6 +13,7 @@ endforeach()
 if (  WITH_VISU3D_QGLVIEWER )
    set(DGTAL_EXAMPLES_QGL_SRC
       geometricThinning3D
+      geometricAnalysis3D
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
     add_executable(${FILE} ${FILE}.cpp)

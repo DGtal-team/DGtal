@@ -48,6 +48,7 @@
 #include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/base/TimeStampMemoizer.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
@@ -108,9 +109,11 @@ namespace DGtal
     static const Dimension dimension  = KSpace::dimension;
     static const Size      neigh_size = detail::const_pow( 2*K+1, dimension ); 
     static const Size      middle     = detail::const_middle( K, dimension );
+    static const bool  false_positive = ( dimension > 2 ) || ( K > 1 );
 
     typedef std::bitset< detail::const_pow( 2*K+1, dimension ) > Configuration;
     typedef std::bitset< 9 > BasicConfiguration;
+
     
     // ------------------------- Standard services --------------------------------
   public:
@@ -136,9 +139,12 @@ namespace DGtal
     /**
      * Constructor from cellular space.
      * @param aKSpace any cellular grid space.
+     *
+     * @param memoizer_size if 0, no memoizer is used (useless in 2D),
+     * otherwise it is the maximal number of memoized elements.
      */
-    NeighborhoodConvexityAnalyzer( Clone<KSpace> aKSpace )
-      : myDigConv( aKSpace )
+    NeighborhoodConvexityAnalyzer( Clone<KSpace> aKSpace, Size memoizer_size = 0 )
+      : myDigConv( aKSpace ), myMemoizer( memoizer_size )
     {
       myDomain       = Domain( aKSpace.lowerBound(), aKSpace.upperBound() );
       myComputations = 0;
@@ -150,9 +156,13 @@ namespace DGtal
      * Constructor from lower and upper points.
      * @param lo the lowest point of the domain (bounding box for computations).
      * @param hi the highest point of the domain (bounding box for computations).
+     *
+     * @param memoizer_size if 0, no memoizer is used (useless in 2D),
+     * otherwise it is the maximal number of memoized elements.
      */
-    NeighborhoodConvexityAnalyzer( Point lo, Point hi )
-      : myDomain( lo, hi ), myDigConv( lo, hi )
+    NeighborhoodConvexityAnalyzer( Point lo, Point hi,
+                                   Size memoizer_size = 0 )
+      : myDomain( lo, hi ), myDigConv( lo, hi ), myMemoizer( memoizer_size )
     {
       myComputations = 0;
       myResults      = 0;
@@ -223,26 +233,58 @@ namespace DGtal
     bool isFullyConvexCollapsible()
     {
       if ( isCenterInX() )
-        return ( ! myLocalX.empty() )
+        return ( myNbInX >= 1 ) // ( ! myLocalX.empty() )
           && isFullyConvex( true )
           && isFullyConvex( false );
       else
-        return ( ! myLocalCompX.empty() )
+        return ( size() - myNbInX >= 2 ) // ( ! myLocalCompX.empty() )
           && isComplementaryFullyConvex( true )
           && isComplementaryFullyConvex( false );
+    }
+
+    /// @return 'true' iff the center is locally fully convex collapsible.
+    bool isLikelyNoise()
+    {
+      if ( isCenterInX() )
+        return ( myNbInX >= 1 ) // ( ! myLocalX.empty() )
+          && ! isFullyConvex( true )
+          && isFullyConvex( false )
+          && isComplementaryFullyConvex( true );
+      else
+        return ( size() - myNbInX >= 2 ) // ( ! myLocalCompX.empty() )
+          && ! isComplementaryFullyConvex( true )
+          && isComplementaryFullyConvex( false )
+          && isFullyConvex( true );
     }
     
     /// @return 'true' iff the center is locally 0-convex collapsible.
     bool is0ConvexCollapsible()
     {
       if ( isCenterInX() )
-        return ( ! myLocalX.empty() )
+        return ( myNbInX >= 1 ) // ( ! myLocalX.empty() )
           && is0Convex( true )
           && is0Convex( false );
       else
-        return ( ! myLocalCompX.empty() )
+        return ( size() - myNbInX >= 2 ) // ( ! myLocalCompX.empty() )
           && isComplementary0Convex( true )
           && isComplementary0Convex( false );
+    }
+
+    /// @param current any configuration (with empty middle bit)
+    ///
+    static Configuration makeConfiguration( Configuration current,
+                                            bool complement, bool with_center )
+    {
+      if ( complement )
+        {
+          current = ~current;
+          if ( ! with_center ) current.reset( middle );
+        }
+      else
+        {
+          if ( with_center ) current.set( middle );
+        }
+      return current;
     }
     
     /// Tells if the shape X is locally fully convex.
@@ -255,13 +297,30 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_X_with_center : FullConvexity_X_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      // Need to compute full convexity property
-      bool ok = checkBasicConfigurationsFullConvexity( false, with_center );
-      if ( ok && dimension > 2 )
-        { // need to do the true computation.
-          if ( with_center ) myLocalX.push_back( center() );
-          ok = myDigConv.isFullyConvex( myLocalX );
-          if ( with_center ) myLocalX.pop_back();
+      bool ok;
+      bool memoized = false;
+      auto cfg = makeConfiguration( myCfgX, false, with_center );
+      // Check memoizer
+      if ( myMemoizer.isValid() )
+        {
+          auto   p = myMemoizer.get( cfg );
+          ok       = p.first; // may not be correct
+          memoized = p.second;
+        }
+      if ( ! memoized )
+        {
+          // Need to compute full convexity property
+          ok = checkBasicConfigurationsFullConvexity( false, with_center );
+          if ( ok && false_positive )
+            { // need to do the true computation.
+              std::vector< Point > localX;
+              getLocalX( localX, with_center );
+              // if ( with_center ) myLocalX.push_back( center() );
+              ok = myDigConv.isFullyConvex( localX );
+              // if ( with_center ) myLocalX.pop_back();
+            }
+          if ( myMemoizer.isValid() )
+            myMemoizer.set( cfg, ok );
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
@@ -278,13 +337,30 @@ namespace DGtal
       int mask = with_center
         ? FullConvexity_CompX_with_center : FullConvexity_CompX_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
-      // Need to compute full convexity property
-      bool ok = checkBasicConfigurationsFullConvexity( true, with_center );
-      if ( ok && dimension > 2 )
-        { // need to do the true computation.
-          if ( with_center ) myLocalCompX.push_back( center() );
-          ok = myDigConv.isFullyConvex( myLocalCompX );
-          if ( with_center ) myLocalCompX.pop_back();
+      bool ok;
+      bool memoized = false;
+      auto cfg = makeConfiguration( myCfgX, true, with_center );
+      // Check memoizer
+      if ( myMemoizer.isValid() )
+        {
+          auto   p = myMemoizer.get( cfg );
+          ok       = p.first; // may not be correct
+          memoized = p.second;
+        }
+      if ( ! memoized )
+        {
+          // Need to compute full convexity property
+          ok = checkBasicConfigurationsFullConvexity( true, with_center );
+          if ( ok && false_positive )
+            { // need to do the true computation.
+              std::vector< Point > localCompX;
+              getLocalCompX( localCompX, with_center );
+              // if ( with_center ) myLocalCompX.push_back( center() );
+              ok = myDigConv.isFullyConvex( localCompX );
+              // if ( with_center ) myLocalCompX.pop_back();
+            }
+          if ( myMemoizer.isValid() )
+            myMemoizer.set( cfg, ok );
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
@@ -303,11 +379,13 @@ namespace DGtal
       if ( myComputations & mask ) return bool( myResults & mask );
       // Need to compute full convexity property
       bool ok = checkBasicConfigurations0Convexity( false, with_center );
-      if ( ok && dimension > 2 )
+      if ( ok && false_positive )
         { // need to do the true computation.
-          if ( with_center ) myLocalX.push_back( center() );
-          ok = myDigConv.is0Convex( myLocalX );
-          if ( with_center ) myLocalX.pop_back();
+          std::vector< Point > localX;
+          getLocalX( localX, with_center );
+          // if ( with_center ) myLocalX.push_back( center() );
+          ok = myDigConv.is0Convex( localX );
+          // if ( with_center ) myLocalX.pop_back();
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
@@ -326,17 +404,31 @@ namespace DGtal
       if ( myComputations & mask ) return bool( myResults & mask );
       // Need to compute full convexity property
       bool ok = checkBasicConfigurations0Convexity( true, with_center );
-      if ( ok && dimension > 2 )
+      if ( ok && false_positive )
         { // need to do the true computation.
-          if ( with_center ) myLocalCompX.push_back( center() );
-          ok = myDigConv.is0Convex( myLocalCompX );
-          if ( with_center ) myLocalCompX.pop_back();
+          std::vector< Point > localCompX;
+          getLocalCompX( localCompX, with_center );
+          // if ( with_center ) myLocalCompX.push_back( center() );
+          ok = myDigConv.is0Convex( localCompX );
+          // if ( with_center ) myLocalCompX.pop_back();
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
     }
 
+    /// @param[inout] localX as output, the set of points of the
+    /// neighborhood belonging to the shape
+    ///
+    /// @param[in] with_center if 'true' adds the center point.
+    void getLocalX( std::vector< Point >& localX, bool with_center ) const;
+
+    /// @param[inout] localCompX as output, the set of points of the
+    /// neighborhood not belonging to the shape
+    ///
+    /// @param[in] with_center if 'true' adds the center point.
+    void getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const;
+    
     /// @}
     
     // ------------------------- Protected Datas ------------------------------
@@ -347,13 +439,16 @@ namespace DGtal
     DigitalConvexity<KSpace> myDigConv;
     /// The current center of the neighborhood
     Point myCenter;
+    /// The memoizer.
+    TimeStampMemoizer< Configuration, bool > myMemoizer;
     /// the part of X belonging to this neighborhood.
-    PointRange myLocalX;
+    // PointRange myLocalX;
     /// the part of the neighborhood that is not in X.
-    PointRange myLocalCompX;
+    // PointRange myLocalCompX;
     /// tells if the center belongs to X
     bool myCenterInX;
-
+    /// The number of points of the neighborhood that belongs to X (center omitted).
+    Size myNbInX;
     /// Stores the local configuration for X (without the center)
     Configuration myCfgX;
     /// Stores the basic local configurations associated to myCfgX, for speed-up
@@ -400,6 +495,7 @@ namespace DGtal
 
     BasicConfiguration computeCentralBasicConfiguration
     ( Configuration cfg, Dimension i, Dimension j ) const;
+
     
   }; // end of class NeighborhoodConvexityAnalyzer
 

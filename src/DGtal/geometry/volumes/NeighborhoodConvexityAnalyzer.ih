@@ -40,8 +40,9 @@ setCenter( Point c, const PointPredicate& X )
 {
   ASSERT( myDomain.isInside( c ) );
   myCenter = c;
-  myLocalX.clear();
-  myLocalCompX.clear();
+  // myLocalX.clear();
+  // myLocalCompX.clear();
+  myNbInX        = 0;
   myComputations = 0;
   myResults      = 0;
   Domain local_domain( c - Point::diagonal( radius() ),
@@ -58,16 +59,64 @@ setCenter( Point c, const PointPredicate& X )
         {
           if ( X( q ) )
             {
-              myLocalX.push_back( q );
+              // myLocalX.push_back( q );
               myCfgX.set( bit );
+              ++myNbInX;
             }
-          else
-            myLocalCompX.push_back( q );
+          // else
+          //   myLocalCompX.push_back( q );
         }
       bit += 1;
     }
   myBasicCfgX.clear();
   computeBasicConfigurations( myCfgX, myBasicCfgX );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+getLocalX( std::vector< Point >& localX, bool with_center ) const
+{
+  Domain local_domain( myCenter - Point::diagonal( radius() ),
+                       myCenter + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  for ( auto q : local_domain )
+    {
+      if ( q == myCenter )
+        {
+          if ( with_center ) localX.push_back( myCenter );
+        }
+      else if ( myDomain.isInside( q ) )
+        {
+          if ( myCfgX[ bit ] )
+            localX.push_back( q );
+        }
+      ++bit;
+    }
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
+{
+  Domain local_domain( myCenter - Point::diagonal( radius() ),
+                       myCenter + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  for ( auto q : local_domain )
+    {
+      if ( q == myCenter )
+        {
+          if ( with_center ) localCompX.push_back( myCenter );
+        }
+      else if ( myDomain.isInside( q ) )
+        {
+          if ( ! myCfgX[ bit ] )
+            localCompX.push_back( q );
+        }
+      ++bit;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -144,21 +193,20 @@ computeCentralBasicConfiguration
 ( Configuration cfg, Dimension i, Dimension j ) const
 {
   //  std::cout << "computeCentralBasicConfiguration " << cfg << std::endl;
-  Size pos = middle;
   Size incr_i = 1;
   Size incr_j = 1;
   for ( Dimension d = 0; d < i; ++d ) { incr_i *= 2*K+1; }
   for ( Dimension d = 0; d < j; ++d ) { incr_j *= 2*K+1; }
   BasicConfiguration basic;
-  basic[ 0 ] = cfg[ pos - incr_i - incr_j ];
-  basic[ 1 ] = cfg[ pos          - incr_j ];
-  basic[ 2 ] = cfg[ pos + incr_i - incr_j ];
-  basic[ 3 ] = cfg[ pos - incr_i          ];
-  basic[ 4 ] = cfg[ pos                   ];
-  basic[ 5 ] = cfg[ pos + incr_i          ];
-  basic[ 6 ] = cfg[ pos - incr_i + incr_j ];
-  basic[ 7 ] = cfg[ pos          + incr_j ];
-  basic[ 8 ] = cfg[ pos + incr_i + incr_j ];
+  basic[ 0 ] = cfg[ middle - incr_i - incr_j ];
+  basic[ 1 ] = cfg[ middle          - incr_j ];
+  basic[ 2 ] = cfg[ middle + incr_i - incr_j ];
+  basic[ 3 ] = cfg[ middle - incr_i          ];
+  basic[ 4 ] = cfg[ middle                   ];
+  basic[ 5 ] = cfg[ middle + incr_i          ];
+  basic[ 6 ] = cfg[ middle - incr_i + incr_j ];
+  basic[ 7 ] = cfg[ middle          + incr_j ];
+  basic[ 8 ] = cfg[ middle + incr_i + incr_j ];
   // std::cout << " basic( " << i << "," << j << ")=" << basic << std::endl;
   return basic;
 }
