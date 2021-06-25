@@ -1,5 +1,4 @@
 # DGtal 1.3(beta)
-# Pour pull request
 
 ## Bug fixes
 
