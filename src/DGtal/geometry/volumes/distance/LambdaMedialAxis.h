@@ -110,6 +110,7 @@ namespace DGtal
     typedef TDistanceTransformation DT;
     typedef VoronoiMap<typename TSet::Space, SmallSet, typename DT::SeparableMetric> VMap;
     typedef PowerMap<TImageContainer, TPowerSeparableMetric> PMap;
+    typedef typename TSet::Point Point;
     //typedef ImplicitBall<typename TSet::Space> ImplicitBall;
 
     /**
@@ -132,7 +133,12 @@ namespace DGtal
       }
       TImageContainer *computedMA = new TImageContainer( smallSet.domain() );
       TImageContainer *squaredDT = new TImageContainer( smallSet.domain() );
-      Z2i::SmallObject8_4 setSmallObject(Z2i::dt8_4, smallSet);
+
+      Z3i::SmallObject18_6 setSmallObject(Z3i::dt18_6, smallSet);
+      //Z2i::SmallObject8_4 setSmallObject(Z2i::dt8_4, smallSet);
+      /*if (TSet::Space::dimension == 3) {
+        Z3i::SmallObject18_6 setSmallObject(Z3i::dt18_6, smallSet);
+      }*/
       VMap vmap(smallSet.domain(), smallSet, metric);
       DT dt(smallSet.domain(), smallSet, metric);
       for (typename DT::Domain::ConstIterator it = dt.domain().begin(); it != dt.domain().end(); it++) {
@@ -148,12 +154,12 @@ namespace DGtal
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
                       < NumberTraits<typename PMap::PowerSeparableMetric::Value>::ZERO ) {
             
-            Z2i::Point vmapPoint(vmap(*it));
+            Point vmapPoint(vmap(*it));
             double vMapDistance = pow(vmapPoint[0] - (*it)[0], 2) + pow(vmapPoint[1] - (*it)[1], 2);
-            std::vector<Z2i::Point> setForPotential;
+            std::vector<Point> setForPotential;
             SmallSet neighborhood(setSmallObject.neighborhood(*it).pointSet());
             for (auto itbis : neighborhood) {
-              Z2i::Point vMapDuVoisin(vmap(itbis));
+              Point vMapDuVoisin(vmap(itbis));
               double distanceAuVmapDuVoisin = pow(vMapDuVoisin[0] - (*it)[0], 2) + pow(vMapDuVoisin[1] - (*it)[1], 2);
               if (distanceAuVmapDuVoisin == vMapDistance) {
                 setForPotential.push_back(vMapDuVoisin);

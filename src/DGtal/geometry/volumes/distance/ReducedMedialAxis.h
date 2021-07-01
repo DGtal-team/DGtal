@@ -116,12 +116,15 @@ namespace DGtal
       for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
              itend = aPowerMap.domain().end(); it != itend; ++it)
         {
+          
           const auto v  = aPowerMap( *it );
           const auto pv = aPowerMap.projectPoint( v );
-
+          
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
-                      < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO )
+                      < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO ) 
+
             computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
+          
         }
 
       return Type( computedMA );
