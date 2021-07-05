@@ -65,11 +65,11 @@ namespace DGtal
   // template class LambdaMedialAxis
   /**
    * Description of template class 'LambdaMedialAxis' <p>
-   * \brief Aim: Implementation of the separable medial axis
+   * \brief Aim: Implementation of the separable lambda medial axis
    * extraction.
    *
-   * This utility struct extract medial axis balls from a
-   * PowerMap. Basically, each (weighted) site of the PowerMap defines
+   * This utility struct extract lambda medial axis balls from a
+   * Set. Basically, each (weighted) site of the PowerMap defines
    * a digital maximal ball if its digital power cell restricted to
    * the input shape is not empty @cite dcoeurjo_pami_RDMA .
    *
@@ -87,35 +87,58 @@ namespace DGtal
    * @note Following ReverseDistanceTransformation, the input shape is
    * defined as points with negative power distance.
    *
-   * @tparam TPowerMap any specialized PowerMap type @tparam
-   * TImageContainer any model of CImage to store the medial axis
+   * @tparam TSet any set type (to be generalized as PointPredicate)
+   * @tparam TDistanceTransformation any DistanceTransformation type
+   * that has SmallSet as its PointPredicate
+   * @tparam TPowerMap any specialized PowerMap type 
+   * @tparam TSmallObject a SmallObject type in dimension 2 or 3
+   * @tparam TTopology a topology type that match the SmallObject
+   * @tparam TImageContainer any model of CImage to store the medial axis
    * points (default: ImageContainerBySTLVector).
    *
-   * @see testReducedMedialAxis.cpp
+   * @see testLambdaReducedMedialAxis.cpp //TODO
    */
 
   
-
   template <typename TSet,
             typename TDistanceTransformation,
-            typename TPowerSeparableMetric,
-            typename TImageContainer =  ImageContainerBySTLMap<typename TDistanceTransformation::Domain, double> >
+            typename TPowerMap,
+            typename TSmallObject,
+            typename TTopology,
+            typename TImageContainer =  ImageContainerBySTLMap<typename TSet::Domain, double> >
   struct LambdaMedialAxis
   {
     //MA Container
     typedef
-      typename DigitalSetSelector < typename TDistanceTransformation::Domain,
+      typename DigitalSetSelector < typename TSet::Domain,
 	       SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
     typedef Image<TImageContainer> Type;
+    
     typedef TDistanceTransformation DT;
-    typedef VoronoiMap<typename TSet::Space, SmallSet, typename DT::SeparableMetric> VMap;
-    typedef PowerMap<TImageContainer, TPowerSeparableMetric> PMap;
+
+    typedef TPowerMap PMap;
+
+    typedef TTopology Topology;
+
+    typedef typename DT::SeparableMetric SeparableMetric;
+
+    typedef typename PMap::PowerSeparableMetric PowerSeparableMetric;
+
+    typedef typename TSet::Space Space;
+
     typedef typename TSet::Point Point;
-    //typedef ImplicitBall<typename TSet::Space> ImplicitBall;
+
+    typedef VoronoiMap<Space, SmallSet, SeparableMetric> VMap;
+
+    typedef TSmallObject SmallObject;
+
+    BOOST_STATIC_ASSERT((boost::is_same< typename DT::PointPredicate, SmallSet>::value));
+    BOOST_STATIC_ASSERT((boost::is_same< typename SmallObject::DigitalTopology, Topology>::value));
+    BOOST_STATIC_ASSERT((boost::is_same< Topology, Z2i::DT8_4>::value
+                      || boost::is_same< Topology, Z3i::DT18_6>::value));
 
     /**
-     * Extract reduced medial axis from a power map.
-     * This methods is in @f$ O(|powerMap|)@f$.
+     * Detail on algorithm
      *
      * @param aPowerMap the input powerMap
      *
@@ -123,7 +146,11 @@ namespace DGtal
      * template arguments.
      */
     static
-    Type getLambdaMedialAxis(TSet & set, typename DT::SeparableMetric & metric, double lambda) {
+    Type getLambdaMedialAxis(TSet & set,
+                             SeparableMetric metric,
+                             PowerSeparableMetric powerMetric,
+                             Topology topology,
+                             double lambda) {
 
       SmallSet smallSet(set.domain());
       for (auto it : set) {
@@ -134,17 +161,14 @@ namespace DGtal
       TImageContainer *computedMA = new TImageContainer( smallSet.domain() );
       TImageContainer *squaredDT = new TImageContainer( smallSet.domain() );
 
-      Z3i::SmallObject18_6 setSmallObject(Z3i::dt18_6, smallSet);
-      //Z2i::SmallObject8_4 setSmallObject(Z2i::dt8_4, smallSet);
-      /*if (TSet::Space::dimension == 3) {
-        Z3i::SmallObject18_6 setSmallObject(Z3i::dt18_6, smallSet);
-      }*/
+      SmallObject setSmallObject(topology, smallSet);
+
       VMap vmap(smallSet.domain(), smallSet, metric);
       DT dt(smallSet.domain(), smallSet, metric);
       for (typename DT::Domain::ConstIterator it = dt.domain().begin(); it != dt.domain().end(); it++) {
         squaredDT->setValue((*it), pow(dt(*it), 2));
       }
-      PMap aPowerMap(squaredDT->domain(), squaredDT, Z2i::l2PowerMetric);
+      PMap aPowerMap(squaredDT->domain(), squaredDT, powerMetric);
       for (typename PMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
               itend = aPowerMap.domain().end(); it != itend; ++it)
         {
@@ -152,21 +176,21 @@ namespace DGtal
           const auto pv = aPowerMap.projectPoint( v );
           
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
-                      < NumberTraits<typename PMap::PowerSeparableMetric::Value>::ZERO ) {
+                      < NumberTraits<typename PowerSeparableMetric::Value>::ZERO ) {
             
             Point vmapPoint(vmap(*it));
-            double vMapDistance = pow(vmapPoint[0] - (*it)[0], 2) + pow(vmapPoint[1] - (*it)[1], 2);
+            double vMapDistance = (vmapPoint - *it).norm();
             std::vector<Point> setForPotential;
             SmallSet neighborhood(setSmallObject.neighborhood(*it).pointSet());
             for (auto itbis : neighborhood) {
               Point vMapDuVoisin(vmap(itbis));
-              double distanceAuVmapDuVoisin = pow(vMapDuVoisin[0] - (*it)[0], 2) + pow(vMapDuVoisin[1] - (*it)[1], 2);
+              double distanceAuVmapDuVoisin = (vMapDuVoisin - *it).norm();
               if (distanceAuVmapDuVoisin == vMapDistance) {
                 setForPotential.push_back(vMapDuVoisin);
               }
             }
             SmallSet R(set.domain());
-            ImplicitBall<typename TSet::Space> enclosing(smallestEuclideanEnclosingBall(setForPotential, R));
+            ImplicitBall<Space> enclosing(smallestEuclideanEnclosingBall(setForPotential, R));
             if (enclosing.radius() > lambda) {
               computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
             }
