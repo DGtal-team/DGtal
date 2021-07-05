@@ -161,7 +161,7 @@ addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
 {
   std::vector< Point > points;
   polytope.getPoints( points );
-  addCellsTouchingPoints( points.begin(), points.end() );
+  addCellsTouchingPoints( points.cbegin(), points.cend() );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -172,8 +172,7 @@ addCellsTouchingPolytope( const LatticePolytope& polytope )
   for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
     {
       auto kpoints = getIntersectedKPoints( polytope, i );
-      for ( auto&& c : kpoints )
-        myKPoints.insert( c );
+      myKPoints.insert( kpoints.cbegin(), kpoints.cend() );
     }
 }
 //-----------------------------------------------------------------------------
@@ -185,8 +184,7 @@ addCellsTouchingPolytope( const RationalPolytope& polytope )
   for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
     {
       auto kpoints = getIntersectedKPoints( polytope, i );
-      for ( auto&& c : kpoints )
-        myKPoints.insert( c );
+      myKPoints.insert( kpoints.cbegin(), kpoints.cend() );
     }
 }
 //-----------------------------------------------------------------------------
@@ -197,8 +195,7 @@ operator+=( const CellGeometry& other )
 {
   if ( this != &other )
     {
-      for ( auto&& c : other.myKPoints )
-        myKPoints.insert( c );
+      myKPoints.insert( other.myKPoints.cbegin(), other.myKPoints.cend() );
       myMinCellDim = std::min( myMinCellDim, other.myMinCellDim );
       myMaxCellDim = std::max( myMaxCellDim, other.myMaxCellDim );
     }
