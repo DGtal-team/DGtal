@@ -44,6 +44,9 @@
 
 #include "DGtalCatch.h"
 
+using namespace std;
+using namespace DGtal;
+
 TEST_CASE( "Testing ImplicitBallTools functions" ) {
 
   typedef ImplicitBall<SpaceND<2> > ImplicitBall2D;
@@ -55,6 +58,7 @@ TEST_CASE( "Testing ImplicitBallTools functions" ) {
   typedef Z3i::RealPoint RealPoint3D;
 
   SECTION( "Ball From 2 Points Dimension 2 and 3" ) {
+    // Dimension 2
     ImplicitBall2D ball = ballFrom2Points(Point2D(0, 0), Point2D(5, 5));
     CHECK(ball.center() == RealPoint2D(2.5, 2.5));
 
@@ -63,7 +67,7 @@ TEST_CASE( "Testing ImplicitBallTools functions" ) {
 
     ImplicitBall2D ball = ballFrom2Points(Point2D(2, 2), Point2D(2, 2));
     CHECK(ball.center() == RealPoint2D(2, 2));
-
+    // Dimension 3
     ImplicitBall3D ball = ballFrom2Points(Point3D(0, 0, 0), Point3D(5, 5, 5));
     CHECK(ball.center() == RealPoint3D(2.5, 2.5, 2.5));
 
@@ -72,6 +76,21 @@ TEST_CASE( "Testing ImplicitBallTools functions" ) {
 
     ImplicitBall3D ball = ballFrom2Points(Point3D(2, 2, 2), Point3D(2, 2, 2));
     CHECK(ball.center() == RealPoint3D(2, 2, 2));
+    
+    // Arbitrary Dimension
+    int dimension = rand()%200;
+    SpaceND<dimension>::Point point_1;
+    SpaceND<dimension>::Point point_2;
+    SpaceND<dimension>::RealPoint center;
+    for (int i = 0; i < dimension; i++) {
+      point_1[dimension] = rand();
+      point_2[dimension] = rand();
+      center[dimension] = (point_1[dimension] + point_2[dimension]) / 2;
+    }
+    
+    ImplicitBall<SpaceND<dimension> > ball = ballFrom2Points(point_1, point_2);
+    CHECK(ball.center() == center);
+
   }
 
   SECTION( "Ball From 3 Points Dimension 2 and 3" ) {
@@ -85,6 +104,9 @@ TEST_CASE( "Testing ImplicitBallTools functions" ) {
   SECTION( "Ball From 4 Points") {
     ImplicitBall2D ball = ballFrom4Points(Point3D(0, 0, 0), Point3D(1, 1, 1), Point3D(1, 0, 0), Point3D(0, 1, 0));
     CHECK(ball.center() == RealPoint3D(0.5, 0.5, 0.5));
+
+    ImplicitBall2D ball = ballFrom4Points(Point3D(0, 0, 0), Point3D(1, 0, 0), Point3D(1, 1, 0), Point3D(0, 1, 0));
+    CHECK(ball.center() == RealPoint3D(0.5, 0.5, 0));
   }
 
   SECTION( "Trivial Circle" ) {
