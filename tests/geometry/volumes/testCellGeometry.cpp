@@ -46,6 +46,33 @@ using namespace DGtal;
 // Functions for testing class CellGeometry.
 ///////////////////////////////////////////////////////////////////////////////
 
+SCENARIO( "CellGeometry< Z2 > segment tests", "[cell_geometry][2d][segment]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef CellGeometry< KSpace >           CGeometry;
+
+  KSpace K;
+  K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+  GIVEN( "two points (1,1), Point(3,-2)" ) {
+    CGeometry geometry( K, 0, 2, false );
+    geometry.addCellsTouchingSegment( Point(1,1), Point(3,-2) );
+    THEN( "Its cell geometry contains 2 0-cells, 11 1-cells, 10 2-cells" ) {
+      auto C0 = geometry.getKPoints( 0 );
+      auto C1 = geometry.getKPoints( 1 );
+      auto C2 = geometry.getKPoints( 2 );
+      CAPTURE( C0 );
+      CAPTURE( C1 );
+      CAPTURE( C2 );
+      REQUIRE( C0.size() == 2 );
+      REQUIRE( C1.size() == 11 );
+      REQUIRE( C2.size() == 10 );
+    }
+  } 
+}
+
 SCENARIO( "CellGeometry< Z2 > unit tests", "[cell_geometry][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;

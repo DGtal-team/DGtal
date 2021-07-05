@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <algorithm>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,6 +79,94 @@ init( const KSpace & K,
   myMinCellDim       = min_cell_dim;
   myMaxCellDim       = max_cell_dim;
   myVerbose          = verbose;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPoint( const Point& p )
+{
+  addCellsTouchingPointel( myK.uPointel( p ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingPointel( const Cell& pointel )
+{
+  auto cofaces = myK.uCoFaces( pointel );
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
+    myKPoints.emplace( myK.uKCoords( pointel ) );
+    for ( auto && c : cofaces )
+      myKPoints.emplace( myK.uKCoords( c ) );
+  } else {
+    if ( myMinCellDim <= 0 )
+      myKPoints.emplace( myK.uKCoords( pointel ) );
+    for ( auto&& f : cofaces ) {
+      Dimension d = myK.uDim( f );
+      if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+        myKPoints.emplace( myK.uKCoords( f ) );
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingCell( const Cell& c )
+{
+  const Dimension dc = myK.uDim( c );
+  if ( myMinCellDim <= dc && dc <= myMaxCellDim )
+    myKPoints.emplace( myK.uKCoords( c ) );
+  if ( myMaxCellDim <= dc ) return;
+  const auto cofaces = myK.uCoFaces( c );
+  for ( auto&& f : cofaces ) {
+    Dimension d = myK.uDim( f );
+    if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+      myKPoints.emplace( myK.uKCoords( f ) );
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::CellGeometry<TKSpace>::
+addCellsTouchingSegment( const Point& a, const Point& b )
+{
+  const auto    V = b - a;
+  const auto    p = std::minmax_element( V.begin(), V.end() );
+  // find greatest component in absolute value
+  const auto    k = -(*p.first) > (*p.second)
+    ? p.first - V.begin() : p.second - V.begin();
+  const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;
+  const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
+  Point       pkc = 2 * a;
+  addCellsTouchingPoint( a );
+  for ( Integer i = 1; i <= n; i++ )
+    {
+      Point kc;
+      for ( Dimension j = 0; j < dimension; j++ )
+        {
+          if ( j == k ) kc[ k ] = 2 * ( a[ k ] + d * i );
+          else
+            {
+              const auto v = V[ j ];
+              const bool s = v >= 0;
+              const auto q = ( v * i ) / n;
+              const auto r = ( v * i ) % n; // might be negative
+              kc[ j ] = 2 * ( a[ j ] + q );
+              if ( r < 0 )      kc[ j ] -= 1;
+              else if ( r > 0 ) kc[ j ] += 1;
+            }
+        }
+      pkc += kc; pkc /= 2;
+      addCellsTouchingCell( myK.uCell( pkc ) );
+      addCellsTouchingCell( myK.uCell( kc ) );
+      pkc = kc;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -221,6 +310,19 @@ computeNbCells( const Dimension k ) const
   for ( auto&& c : myKPoints )
     nb += ( dim( c ) == k ) ? 1 : 0;
   return nb;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
+DGtal::CellGeometry<TKSpace>::
+getKPoints( const Dimension k ) const
+{
+  std::vector< Point > R;
+  if ( k < minCellDim() || k > maxCellDim() ) return R;
+  for ( auto&& c : myKPoints )
+    if ( dim( c ) == k ) R.push_back( c );
+  return R;
 }
 
 //-----------------------------------------------------------------------------
