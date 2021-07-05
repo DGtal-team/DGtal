@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file topology/homotopicThinning3D.cpp
+ * @file geometry/volumes/geometricAnalysis3D.cpp
  * @ingroup Examples
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2011/01/04
+ * @date 2021/06/20
  *
- * An example file named qglViewer.
+ * An example file named geometricAnalysis3D
  *
  * This file is part of the DGtal library.
  */
@@ -72,15 +72,24 @@ struct Analyzer {
   std::vector<int>
   run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
-    NCA nca( aK.lowerBound(), aK.upperBound(), 10000 );
+    NCA nca( aK.lowerBound(), aK.upperBound(),
+             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension );
     auto& image = *bimage;
     std::vector<int> result;
+    std::map< Point, int > computed;
+    int geom;
     for ( auto p : pts )
       {
-        nca.setCenter( p, image );
-        bool  cvx = nca.isFullyConvex( true );
-        bool ccvx = nca.isComplementaryFullyConvex( false );
-        int  geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
+        auto it = computed.find( p );
+        if ( it == computed.end() )
+          {
+            nca.setCenter( p, image );
+            bool  cvx = nca.isFullyConvex( true );
+            bool ccvx = nca.isComplementaryFullyConvex( false );
+            geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
+            computed[ p ] = geom;
+          }
+        else geom = it->second;
         result.push_back( geom );
       }
     return result;    
@@ -92,19 +101,28 @@ struct Analyzer {
   run( std::vector<int> & to_update,
        const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
-    NCA nca( aK.lowerBound(), aK.upperBound(), 10000 );
+    NCA nca( aK.lowerBound(), aK.upperBound(), 
+             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension );
     auto& image = *bimage;
+    std::map< Point, int > computed;
+    int geom;
     int i = 0;
     for ( auto p : pts )
       {
-        nca.setCenter( p, image );
-        bool  cvx = ( to_update[ i ] & 0x1 )
-          ? nca.isFullyConvex( true )
-          : false;
-        bool ccvx = ( to_update[ i ] & 0x2 )
-          ? nca.isComplementaryFullyConvex( false )
-          : false;
-        int  geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
+        auto it = computed.find( p );
+        if ( it == computed.end() )
+          {
+            nca.setCenter( p, image );
+            bool  cvx = ( to_update[ i ] & 0x1 )
+              ? nca.isFullyConvex( true )
+              : false;
+            bool ccvx = ( to_update[ i ] & 0x2 )
+              ? nca.isComplementaryFullyConvex( false )
+              : false;
+            geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
+            computed[ p ] = geom;
+          }
+        else geom = it->second;
         to_update[ i++ ] = geom;
       }
   }
@@ -232,10 +250,11 @@ int main( int argc, char** argv )
     {
       auto geometry =
         MultiScaleAnalyzer< KSpace, 5 >::multiscale_run(  K, points, bimage );
-      Color colors_planar[ 5 ] =
+      Color colors_planar[ 6 ] =
         { Color( 0, 255, 255, 255),
           Color( 50, 255, 255, 255), Color( 100, 255, 255, 255),
-          Color( 150, 255, 255, 255), Color( 200, 255, 255, 255 ) };
+          Color( 150, 255, 255, 255), Color( 200, 255, 255, 255 ),
+          Color( 255, 255, 255, 255 ) };
       Color color_atypical( 255, 0, 0, 255 ); 
       Color colors_cvx[ 5 ] =
         { Color( 0, 255, 0, 255 ), Color( 50, 255, 50, 255 ),
@@ -251,11 +270,11 @@ int main( int argc, char** argv )
         int m0 = std::min( geometry[ i ].first, geometry[ i ].second );
         int m1 = std::max( geometry[ i ].first, geometry[ i ].second );
         if ( m1 == 0 ) all_colors[ i ] = color_atypical;
-        else if ( m0 == m1 ) all_colors[ i ] = colors_planar[ m0 - 1 ];
+        else if ( m0 == m1 ) all_colors[ i ] = colors_planar[ 5 ];
         else if ( geometry[ i ].first > geometry[ i ].second )
-          all_colors[ i ] = colors_cvx[ geometry[ i ].first  - 1 ];
+          all_colors[ i ] = colors_cvx[ 5 - abs( m0 - m1 ) ];
         else
-          all_colors[ i ] = colors_ccv[ geometry[ i ].second - 1 ];
+          all_colors[ i ] = colors_ccv[ 5 - abs( m0 - m1 ) ];
       }
       bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), all_colors,
                               "geom-scale-cvx.obj" );

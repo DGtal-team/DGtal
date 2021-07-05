@@ -15,27 +15,24 @@
  **/
 
 /**
- * @file topology/homotopicThinning3D.cpp
+ * @file geometry/volumes/geometricThinning3D.cpp
  * @ingroup Examples
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2011/01/04
+ * @date 2021/06/16
  *
- * An example file named qglViewer.
+ * An example file named geometricThinning3D
  *
  * This file is part of the DGtal library.
  */
 
 
 /**
- * A geometric thinning is an iterative removal of simple points from
+ * A geometric thinning is an iterative removal of fully convex collapsible points from
  * a given digital object.
  *
- * @see \ref dgtal_topology_sec3_5
- *
- *
- * \example topology/geometricThinning3D.cpp
+ * \example geometry/volumes/geometricThinning3D.cpp
  */
 
 
@@ -147,7 +144,8 @@ int main( int argc, char** argv )
           if ( ! image( p ) ) continue; // already removed
           nca.setCenter( p, image );
           if ( full_cvx
-               ? ( nca.isFullyConvexCollapsible() || nca.isLikelyNoise() )
+               ? nca.isFullyConvexCollapsible2()
+               // ? ( nca.isFullyConvexCollapsible() || nca.isLikelyNoise() )
                : nca.is0ConvexCollapsible() )
             {
               std::vector< Point > neighbors;

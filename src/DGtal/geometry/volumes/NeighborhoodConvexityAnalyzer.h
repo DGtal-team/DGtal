@@ -243,6 +243,19 @@ namespace DGtal
     }
 
     /// @return 'true' iff the center is locally fully convex collapsible.
+    bool isFullyConvexCollapsible2()
+    {
+      if ( isCenterInX() )
+        return ( myNbInX >= 1 ) // ( ! myLocalX.empty() )
+          && isFullyConvex( false )
+          && ( isFullyConvex( true )
+               || ( ( size() - myNbInX >= 1 )
+                    && isComplementaryFullyConvex( false )
+                    && isComplementaryFullyConvex( true ) ) );
+      else return false;
+    }
+
+    /// @return 'true' iff the center is locally fully convex collapsible.
     bool isLikelyNoise()
     {
       if ( isCenterInX() )
