@@ -467,6 +467,39 @@ namespace DGtal
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
 
+    /// Tells if a given segment from \a a to \a b is digitally
+    /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
+    /// digital 0-subconvexity is the usual property \f$ Conv( P \cap
+    /// Z^d ) \subset C \cap Z^d) \f$. Otherwise the property asks
+    /// that the k-cells intersected by the convex hull of the segment
+    /// is a subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    ///
+    /// @return 'true' iff the segment is a digitally \a k-subconvex
+    /// of C, i.e. the two points are k-cotangent.
+    bool isKSubconvex( const Point& a, const Point& b,
+                       const CellGeometry& C, const Dimension k ) const;
+
+    /// Tells if a given segment from \a a to \a b is digitally fully
+    /// subconvex (i.e. tangent) to some cell cover \a C. The digital
+    /// 0-subconvexity is the usual property \f$ Conv( P \cap Z^d )
+    /// \subset C \cap Z^d) \f$. Otherwise the property asks that the
+    /// k-cells intersected by the convex hull of the segment is a
+    /// subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    ///
+    /// @return 'true' iff the segment is a digitally fully subconvex
+    /// of C, i.e. the two points are cotangent.
+    bool isFullySubconvex( const Point& a, const Point& b,
+                           const CellGeometry& C ) const;
+    
     /// @}
 
     // ----------------------- Convexity services for rational polytopes ----------------

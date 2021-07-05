@@ -431,6 +431,30 @@ isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
+isKSubconvex( const Point& a, const Point& b,
+              const CellGeometry& C, const Dimension k ) const
+{
+  CellGeometry cgeom( myK, k, k, false );
+  cgeom.addCellsTouchingSegment( a, b );
+  return cgeom.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const Point& a, const Point& b,
+                  const CellGeometry& C ) const
+{
+  CellGeometry cgeom( myK, C.minCellDim(), C.maxCellDim(), false );
+  cgeom.addCellsTouchingSegment( a, b );
+  return cgeom.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const RationalPolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
