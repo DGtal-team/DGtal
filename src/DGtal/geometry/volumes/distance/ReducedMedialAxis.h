@@ -97,7 +97,8 @@ namespace DGtal
   struct ReducedMedialAxis
   {
     //MA Container
-    typedef Image<TImageContainer> Type;
+    typedef std::pair<typename TPowerMap::Point, double> Ball;
+    typedef typename TPowerMap::Point Point;
 
     /**
      * Extract reduced medial axis from a power map.
@@ -109,9 +110,12 @@ namespace DGtal
      * template arguments.
      */
     static
-    Type getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap)
+    std::vector<Ball>
+    getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap)
     {
       TImageContainer *computedMA = new TImageContainer( aPowerMap.domain() );
+      std::vector<Ball> medialAxis;
+      medialAxis.push_back(Ball(*(aPowerMap.domain().begin()), 0)); //To have a non empty vector for the loop
 
       for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
              itend = aPowerMap.domain().end(); it != itend; ++it)
@@ -121,13 +125,20 @@ namespace DGtal
           const auto pv = aPowerMap.projectPoint( v );
           
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
-                      < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO ) 
-
-            computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
-          
+                      < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO ) {
+            //computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
+            Ball ball(v, aPowerMap.weightImagePtr()->operator()( pv ) );
+            if (std::find(medialAxis.begin(), medialAxis.end(), ball) == medialAxis.end()) {
+              medialAxis.push_back(ball);
+            }
+          }
         }
 
-      return Type( computedMA );
+      medialAxis.erase(medialAxis.begin());
+      for (auto & ball_ptr : medialAxis) {
+        std::cout << ball_ptr << std::endl;
+      }
+      return medialAxis;
     }
   }; // end of class ReducedMedialAxis
 
