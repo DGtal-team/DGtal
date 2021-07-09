@@ -152,7 +152,6 @@ addCellsTouchingSegment( const Point& a, const Point& b )
               else
                 {
                   const auto v = V[ j ];
-                  const bool s = v >= 0;
                   const auto q = ( v * i ) / n;
                   const auto r = ( v * i ) % n; // might be negative
                   kc[ j ] = 2 * ( a[ j ] + q );
