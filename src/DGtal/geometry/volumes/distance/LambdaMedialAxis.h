@@ -96,79 +96,73 @@ namespace DGtal
    * @tparam TImageContainer any model of CImage to store the medial axis
    * points (default: ImageContainerBySTLVector).
    *
-   * @see testLambdaReducedMedialAxis.cpp //TODO
+   * @see testLambdaMedialAxis.cpp //TODO
    */
 
   
-  template <typename TSet,
-            typename TDistanceTransformation,
-            typename TPowerMap,
-            typename TSmallObject,
-            typename TTopology,
-            typename TImageContainer =  ImageContainerBySTLMap<typename TSet::Domain, double> >
+  template <typename TSpace,
+            typename TImageContainer =  ImageContainerBySTLMap<HyperRectDomain<TSpace>, double> > 
   struct LambdaMedialAxis
   {
-    //MA Container
-    typedef
-      typename DigitalSetSelector < typename TSet::Domain,
-	       SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+    typedef TSpace Space;
+
+    typedef DGtal::int32_t Integer;
+
+    typedef typename Space::Point Point;
+
+    typedef typename Space::RealPoint RealPoint;
+
+    typedef HyperRectDomain<Space> Domain;
+
+    typedef ExactPredicateLpSeparableMetric<Space, 2> L2Metric;
+
+    typedef ExactPredicateLpPowerSeparableMetric<Space, 2> L2PowerMetric;
+
+    typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+
+    typedef typename DigitalSetSelector < Domain, SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+    
     typedef Image<TImageContainer> Type;
     
-    typedef TDistanceTransformation DT;
+    typedef DistanceTransformation<Space, DigitalSet, L2Metric> DT;
 
-    typedef TPowerMap PMap;
+    typedef PowerMap<TImageContainer, L2PowerMetric> PMap;
 
-    typedef TTopology Topology;
+    typedef VoronoiMap<Space, DigitalSet, L2Metric> VMap;
 
-    typedef typename DT::SeparableMetric SeparableMetric;
+    typedef ReverseDistanceTransformation<TImageContainer, L2PowerMetric> RDT;
 
-    typedef typename PMap::PowerSeparableMetric PowerSeparableMetric;
-
-    typedef typename TSet::Space Space;
-
-    typedef typename TSet::Point Point;
-
-    typedef VoronoiMap<Space, SmallSet, SeparableMetric> VMap;
-
-    typedef TSmallObject SmallObject;
-
-    BOOST_STATIC_ASSERT((boost::is_same< typename DT::PointPredicate, SmallSet>::value));
-    BOOST_STATIC_ASSERT((boost::is_same< typename SmallObject::DigitalTopology, Topology>::value));
-    BOOST_STATIC_ASSERT((boost::is_same< Topology, Z2i::DT8_4>::value
-                      || boost::is_same< Topology, Z3i::DT18_6>::value));
+    typedef std::pair<Point, double> Ball;
 
     /**
      * Detail on algorithm
-     *
-     * @param aPowerMap the input powerMap
-     *
+     * 
+     * @param set a set of points
+     * @param lambda the minimal radius to accept a ball in the lambda medial axis
+     * 
      * @return a lightweight proxy to the ImageContainer specified in
-     * template arguments.
+     * template arguments. (soon to be a vector<pair<Point, double> > instead)
      */
     static
-    Type getLambdaMedialAxis(TSet & set,
-                             SeparableMetric metric,
-                             PowerSeparableMetric powerMetric,
-                             Topology topology,
-                             double lambda) {
-
-      SmallSet smallSet(set.domain());
-      for (auto it : set) {
-        if (set(it)) {
-          smallSet.insert(it);
-        }
-      }
-      TImageContainer *computedMA = new TImageContainer( smallSet.domain() );
-      TImageContainer *squaredDT = new TImageContainer( smallSet.domain() );
-
-      SmallObject setSmallObject(topology, smallSet);
-
-      VMap vmap(smallSet.domain(), smallSet, metric);
-      DT dt(smallSet.domain(), smallSet, metric);
+    std::vector<Ball> computeLambdaAxisFromSet(DigitalSet & set, double lambda) {
+      // Initialize metrics and topology
+      L2Metric l2Metric;
+      L2PowerMetric l2PowerMetric;
+       
+      std::vector<Ball> medialAxis;
+      
+      TImageContainer *computedMA = new TImageContainer( set.domain() );
+      TImageContainer *squaredDT = new TImageContainer( set.domain() );
+      
+      // Building the VoronoiMap, DistanceTransformation,
+      // SquaredDistanceTransformation and PowerMap for the next steps
+      VMap vmap(set.domain(), set, l2Metric);
+      DT dt(set.domain(), set, l2Metric);
       for (typename DT::Domain::ConstIterator it = dt.domain().begin(); it != dt.domain().end(); it++) {
         squaredDT->setValue((*it), pow(dt(*it), 2));
       }
-      PMap aPowerMap(squaredDT->domain(), squaredDT, powerMetric);
+      PMap aPowerMap(squaredDT->domain(), squaredDT, l2PowerMetric);
+      
       for (typename PMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
               itend = aPowerMap.domain().end(); it != itend; ++it)
         {
@@ -176,29 +170,105 @@ namespace DGtal
           const auto pv = aPowerMap.projectPoint( v );
           
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
-                      < NumberTraits<typename PowerSeparableMetric::Value>::ZERO ) {
+                      < NumberTraits<typename L2PowerMetric::Value>::ZERO ) {
             
-            Point vmapPoint(vmap(*it));
-            double vMapDistance = (vmapPoint - *it).norm();
-            std::vector<Point> setForPotential;
-            SmallSet neighborhood(setSmallObject.neighborhood(*it).pointSet());
-            for (auto itbis : neighborhood) {
-              Point vMapDuVoisin(vmap(itbis));
-              double distanceAuVmapDuVoisin = (vMapDuVoisin - *it).norm();
-              if (distanceAuVmapDuVoisin == vMapDistance) {
-                setForPotential.push_back(vMapDuVoisin);
+            //Lambda Medial Axis filter
+            Point voronoiPoint(vmap(*it));
+            double voronoiDistance = (voronoiPoint - *it).norm(); //Squared Distance to its Voronoi map point
+            std::vector<Point> otherVoronoiPoints;
+            DigitalSet box(set.domain());
+            Point center = *it;
+            subBox(center, 2, set, box); // point neighborhood
+            for (auto neighbor : box) {
+              Point neighborVoronoiPoint(vmap(neighbor)); // Voronoi point of the neighbor
+              double distanceToTest = (neighborVoronoiPoint - *it).norm(); // Distance between the point, and the neighbor voronoi point
+              if (distanceToTest == voronoiDistance) {
+                otherVoronoiPoints.push_back(neighborVoronoiPoint);
               }
             }
             SmallSet R(set.domain());
-            ImplicitBall<Space> enclosing(smallestEuclideanEnclosingBall(setForPotential, R));
+            ImplicitBall<Space> enclosing(smallestEuclideanEnclosingBall(otherVoronoiPoints, R));
             if (enclosing.radius() > lambda) {
-              computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
+              Ball ball(v, aPowerMap.weightImagePtr()->operator()( pv ) );
+              if (std::find(medialAxis.begin(), medialAxis.end(), ball) == medialAxis.end()) {
+                medialAxis.push_back(ball);
+              }
             }
+            // End of filter
           
         }
       }
-      return Type( computedMA );
+      
+      return medialAxis;
     }
+
+    static std::vector<Ball> computeLambdaAxisFromVector(std::vector<Ball> & ballSet, Domain & domain, double lambda) {
+
+      L2Metric l2Metric;
+      L2PowerMetric l2PowerMetric;
+      
+      //Reconstruction of the shape
+      TImageContainer *weightedMap = new TImageContainer( domain );
+      for (Ball ball : ballSet) {
+        weightedMap->setValue(ball.first, ball.second);
+      }
+      
+      RDT rdt(domain, *weightedMap, l2PowerMetric);
+      DigitalSet set(domain);
+      for (typename RDT::Domain::ConstIterator it = rdt.domain().begin(); it != rdt.domain().end(); it++) {
+        if (rdt(*it) < 0) {
+          set.insert(*it);
+        }
+      }
+
+      std::vector<Ball> medialAxis;
+
+      medialAxis = computeLambdaAxisFromSet(set, lambda);
+      
+      return medialAxis;
+    }
+
+
+    /**
+     * @param center
+     * @param size the box goes from -size to +size in all dimensions
+     * @param set the set we want a subBox of
+     * 
+     * @return a subset of type DigitalSet that contains the box
+     * 
+     */
+    static void subBox(Point & center,
+                             Integer size, 
+                             DigitalSet & set,
+                             DigitalSet & box, 
+                             Integer currentDimension = 0, 
+                             std::vector<Integer> indexes = std::vector<Integer>()) {
+      Integer dimension = Point::dimension;
+      if (indexes.size() == 0) {
+        for (Integer i = 0; i < dimension; i++) {
+          indexes.push_back(-size);
+        }
+      }
+      Point point;
+      for (Integer i = 0; i < dimension; i++) {
+        point[i] = indexes[i];
+      }
+
+      while(indexes[currentDimension] <= size) {
+        if (currentDimension == dimension - 1) {
+          if (set(center + point)) {
+            box.insert(center + point);
+          }
+        } else {
+          subBox(center, size, set, box, currentDimension+1, indexes);
+        }
+        indexes[currentDimension] += 1;
+        point[currentDimension] += 1;
+      }
+
+      return;
+    }
+
   }; // end of class LambdaMedialAxis
 
 } // namespace DGtal

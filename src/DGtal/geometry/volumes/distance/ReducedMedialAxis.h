@@ -113,7 +113,6 @@ namespace DGtal
     std::vector<Ball>
     getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap)
     {
-      TImageContainer *computedMA = new TImageContainer( aPowerMap.domain() );
       std::vector<Ball> medialAxis;
       medialAxis.push_back(Ball(*(aPowerMap.domain().begin()), 0)); //To have a non empty vector for the loop
 
@@ -123,10 +122,10 @@ namespace DGtal
           
           const auto v  = aPowerMap( *it );
           const auto pv = aPowerMap.projectPoint( v );
-          
+
           if ( aPowerMap.metricPtr()->powerDistance( *it, v, aPowerMap.weightImagePtr()->operator()( pv ) )
                       < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO ) {
-            //computedMA->setValue( v, aPowerMap.weightImagePtr()->operator()( pv ) );
+
             Ball ball(v, aPowerMap.weightImagePtr()->operator()( pv ) );
             if (std::find(medialAxis.begin(), medialAxis.end(), ball) == medialAxis.end()) {
               medialAxis.push_back(ball);
@@ -135,11 +134,9 @@ namespace DGtal
         }
 
       medialAxis.erase(medialAxis.begin());
-      for (auto & ball_ptr : medialAxis) {
-        std::cout << ball_ptr << std::endl;
-      }
       return medialAxis;
     }
+
   }; // end of class ReducedMedialAxis
 
 

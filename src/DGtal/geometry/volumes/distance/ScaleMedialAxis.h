@@ -51,6 +51,7 @@
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/ReverseDistanceTransformation.h"
 #include "DGtal/geometry/volumes/distance/ReducedMedialAxis.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -95,14 +96,30 @@ namespace DGtal
    *
    * @see testReducedMedialAxis.cpp
    */ 
-  template <typename TDistanceTransformation,
-            typename TPowerSeparableMetric,
-            typename TImageContainer =  ImageContainerBySTLMap<typename TDistanceTransformation::Domain, double> >
-  struct ScaledMedialAxis
+  template <typename TSpace,
+            typename TImageContainer =  ImageContainerBySTLMap<HyperRectDomain<TSpace>, double> >
+  struct ScaleMedialAxis
   {
     //MA Container
-    typedef Image<TImageContainer> Type;
-    typedef TDistanceTransformation DT;
+    typedef TSpace Space;
+
+    typedef typename Space::Point Point;
+
+    typedef typename Space::RealPoint RealPoint;
+
+    typedef HyperRectDomain<Space> Domain;
+
+    typedef ExactPredicateLpSeparableMetric<Space, 2> L2Metric;
+
+    typedef ExactPredicateLpPowerSeparableMetric<Space, 2> L2PowerMetric;
+
+    typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+
+    typedef DistanceTransformation<Space, DigitalSet, L2Metric> DT;
+
+    typedef ReverseDistanceTransformation<TImageContainer, L2PowerMetric> RDT;
+
+    typedef std::pair<Point, double> Ball;
 
     /**
      * Extract the scaled medial axis from a distance transformation.
@@ -115,34 +132,73 @@ namespace DGtal
      * template arguments.
      */
     
-    static Type getScaleAxisFromWeightedMap(DT & dt, double alpha, TPowerSeparableMetric powerSeparableMetric) {
+    static std::vector<Ball> computeScaleAxisFromDT(DT & dt, double alpha) 
+    {
+      std::vector<Ball> medialAxis;
+      L2PowerMetric l2PowerMetric;
 
-      TImageContainer *computedMA = new TImageContainer( dt.domain() );
+      // SquaredDT construction, there might be a better way to skip this step
+      // All balls get alpha times bigger
       TImageContainer *bigdt = new TImageContainer( dt.domain() );
-  
-      for (typename DT::Domain::ConstIterator it = dt.domain().begin(); it != dt.domain().end(); it++) {
-        bigdt->setValue((*it), pow(dt(*it), 2)*alpha);
+      for (auto it : dt.domain()) {
+        bigdt->setValue(it, pow(dt(it), 2) * alpha);
+      }
+
+      // Medial Axis Extraction
+      PowerMap<TImageContainer, L2PowerMetric> power(bigdt->domain(), bigdt, l2PowerMetric);
+      std::vector<Ball> BigRdma = ReducedMedialAxis<PowerMap<TImageContainer, L2PowerMetric>, TImageContainer >::getReducedMedialAxisFromPowerMap(power);
+      
+      // alpha time reduction of all balls size 
+      for (Ball ball : BigRdma) {
+        const auto v = ball.second; // Value of distance in BigRdma
+        const auto compressedValue = v/alpha;
+        Ball compressedBall(ball.first, compressedValue);
+
+        if (std::find(medialAxis.begin(), medialAxis.end(), compressedBall) == medialAxis.end()) {
+          medialAxis.push_back(compressedBall);
+        }
+      }
+      return medialAxis;
+    }
+
+    /**
+     * Extract the scaled medial axis from a distance transformation.
+     * This methods is in @f$ O(|distanceTransformation|)@f$.
+     *
+     * @param ballSet the input std::vector<std::pair<Point, double> > set of balls
+     * @param alpha the double ratio we use to expand and compress the RDMA
+     *
+     * @return a lightweight proxy to the ImageContainer specified in
+     * template arguments.
+     */
+    
+    static std::vector<Ball> computeScaleAxisFromVector(std::vector<Ball> & ballSet, Domain & domain, double alpha) {
+
+      L2Metric l2Metric;
+      L2PowerMetric l2PowerMetric;
+      
+      //Reconstruction of the shape
+      TImageContainer *weightedMap = new TImageContainer( domain );
+      for (Ball ball : ballSet) {
+        weightedMap->setValue(ball.first, ball.second);
       }
       
-      PowerMap<TImageContainer, TPowerSeparableMetric> power(bigdt->domain(), bigdt, powerSeparableMetric);
-
-      Type BigRdma = ReducedMedialAxis<PowerMap<TImageContainer, TPowerSeparableMetric>, TImageContainer >::getReducedMedialAxisFromPowerMap(power);
-
-      for (typename Type::Domain::ConstIterator it = BigRdma.domain().begin(); it != BigRdma.domain().end(); it++) {
-        const auto v = BigRdma(*it); // Value of distance in BigRdma
-        //std::cout << v << std::endl;
-        const auto compressedValue = v/alpha;
-        computedMA->setValue((*it), compressedValue);
-
+      RDT rdt(domain, *weightedMap, l2PowerMetric);
+      DigitalSet set(domain);
+      for (typename RDT::Domain::ConstIterator it = rdt.domain().begin(); it != rdt.domain().end(); it++) {
+        if (rdt(*it) < 0) {
+          set.insert(*it);
+        }
       }
-      /*
-      for (typename Type::Domain::ConstIterator it = computedMA->domain().begin(); it != computedMA->domain().end(); it++) {
-        const auto x = (*computedMA)(*it);
-        std::cout << x << std::endl;
-      }
-      */
-      return Type( computedMA );
+      DT dt(domain, set, l2Metric);
+
+      std::vector<Ball> medialAxis;
+
+      medialAxis = computeScaleAxisFromDT(dt, alpha);
+      
+      return medialAxis;
     }
+
   }; // end of class ScaledMedialAxis
 
 } // namespace DGtal
