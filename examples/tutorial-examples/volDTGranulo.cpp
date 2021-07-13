@@ -181,6 +181,6 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer3 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer3  launched..."<<std::endl;
- return application3.exec();
+ return res && application3.exec();
 
 }
