@@ -51,6 +51,8 @@ RUN apt -y install libgmp-dev
 
 RUN  apt -y install libeigen3-dev
 
+RUN apt -y libfftw3-dev
+
 #### User to install 
 RUN groupadd -g 1000 digital
 RUN useradd -d /home/digital -s /bin/bash -m digital -u 1000 -g 1000
@@ -68,6 +70,6 @@ RUN mkdir /home/digital/git/DGtal
 RUN git clone https://github.com/DGtal-team/DGtal.git /home/digital/git/DGtal
 
 RUN mkdir /home/digital/git/DGtal/build 
-RUN cd /home/digital/git/DGtal/build &&  cmake .. -DWITH_GMP=true -DWITH_EIGEN=true -DWITH_CGAL=true -DWITH_ITK=true -DWITH_OPENMP=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true && make install
+RUN cd /home/digital/git/DGtal/build &&  cmake .. -DWITH_GMP=true -DWITH_EIGEN=true -DWITH_FFTW3=true -DWITH_CGAL=true -DWITH_ITK=true -DWITH_OPENMP=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true && make install
 
 
