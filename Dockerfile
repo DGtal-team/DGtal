@@ -51,7 +51,7 @@ RUN apt -y install libgmp-dev
 
 RUN  apt -y install libeigen3-dev
 
-RUN apt -y libfftw3-dev
+RUN  apt -y install libfftw3-dev
 
 #### User to install 
 RUN groupadd -g 1000 digital
