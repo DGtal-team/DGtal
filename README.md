@@ -66,6 +66,8 @@ docker run -it --user=digital dgtal:lastest bash
 cd /home/digital/git/DGtal/build/examples
 ```
 
+To enable Viewer3D/QGLViewer features, please check [this discussion](https://github.com/DGtal-team/DGtal/pull/1580).
+
 More Information
 ================
 
