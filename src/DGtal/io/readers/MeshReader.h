@@ -127,8 +127,23 @@ public:
   static  bool  importOFSFile(const std::string & filename, 
 			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0);
   
+  /// Reads an input file as an OBJ file format and outputs the
+  /// corresponding surface mesh.
+  ///
+  /// @param[in,out] input the input stream where the OBJ file is read.
+  /// @param[out] aMesh the output  mesh.
+  ///
+  /// @return 'true' if both reading the input stream was ok and the
+  /// created mesh is ok.
+  static
+  bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh );
+
   
-  
+  /// Checks that every index in \a indices are different from the others.
+  /// @param indices a vector of integer indices
+  /// @return 'true' iff the integer indices are all pairwise different.
+  static
+  bool verifyIndicesUniqueness( const std::vector< unsigned int > &indices );
 
 
 

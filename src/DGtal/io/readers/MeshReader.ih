@@ -37,8 +37,8 @@
 #include <fstream>
 #include <sstream>
 //////////////////////////////////////////////////////////////////////////////
-
-
+#include "DGtal/io/readers/SurfaceMeshReader.h"
+#include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -274,16 +274,125 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
    
 }
 
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+inline
+bool
+DGtal::MeshReader<TPoint>::
+importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
+{
+  typedef typename SurfaceMeshReader<TPoint, Z3i::RealVector >::Index IndexSMesh;
+  typedef unsigned int Index;
+
+  std::vector<TPoint>  vertices;
+  std::vector<DGtal::Color> colors;
+  std::vector< std::vector< Index > > faces;
+  std::map<std::string, DGtal::Color> material;
+  std::string linestr;
+  std::string keyword;
+  std::string indices;
+  bool useMtllib = false;
+  DGtal::Color currentMtlCol = DGtal::Color::White;
+  TPoint  p;
+  std::ifstream input;
+  DGtal::IOException dgtalio;
+  try
+    {
+      input.open (filename.c_str(), std::ifstream::in);
+    }
+  catch( ... )
+    {
+      trace.error() << "MeshReader : can't open " << filename << std::endl;
+      throw dgtalio;
+    }
+  std::getline( input, linestr );
+  Index l = 0;
+  for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )
+    {
+      if ( linestr.empty() ) continue; // skip empty line
+      if ( linestr[0] == '#' ) continue; // skip comment line
+      std::istringstream lineinput( linestr );
+      std::operator>>( lineinput, keyword ); // lineinput >> keyword;
+      if ( keyword == "v" ) {
+        lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
+        vertices.push_back( p );
+      } else if ( keyword == "f" ) {
+        std::vector< unsigned int > face;
+        while ( ! lineinput.eof() ) {
+          std::operator>>( lineinput, indices ); // lineinput >> indices;
+          if ( indices.empty() ) break;
+          auto vtxinfo = SurfaceMeshReader<TPoint, Z3i::RealVector >::split( indices, '/' );
+          if ( vtxinfo.size() == 0 ) break;
+          Index v  = std::stoi( vtxinfo[ 0 ] );
+          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
+          face.push_back( v - 1 );
+          indices = "";
+        }
+        if ( ! face.empty() && verifyIndicesUniqueness( face ) )
+          {
+            faces.push_back( face );
+            if (useMtllib)
+            {
+              colors.push_back(currentMtlCol );
+            }
+          }
+        
+      } else if (keyword == "mtllib")
+      {
+        std::string name;
+        lineinput >> name;
+        std::string base = name.substr(0,name.find_last_of("."));
+        std::string path = filename.substr(0, filename.find_last_of(base)-base.size()-3);
+        std::stringstream matPathName ;
+        matPathName << path << name;
+        std::ifstream is (matPathName.str());
+        material = SurfaceMeshReader<TPoint, Z3i::RealVector >::readMaterial(is);
+        useMtllib = true;
+      }else if (keyword ==  "usemtl") {
+        std::string name;
+        lineinput >> name;
+        if (material.count(name) !=0 ){
+          currentMtlCol = material[name];
+        }
+      }
+      // Weird: necessary to clear them.
+      keyword = ""; linestr = "";
+    }
+  // Creating Mesh
+  trace.info() << "[MeshReader::readOBJ] Read"
+               << " #lines=" << l
+               << " #V=" << vertices.size()
+               << " #F=" << faces.size() << std::endl;
+  if ( input.bad() )
+    trace.warning() << "[MeshReader::readOBJ] Some I/O error occured."
+                    << " Proceeding but the mesh may be damaged." << std::endl;
+  for (auto const &s : vertices) {
+    mesh.addVertex(s);
+  }
+  for (auto const &f : faces){
+    mesh.addFace(f);
+  }
+
+  if (!colors.empty()){
+    for (unsigned int i = 0; i < colors.size(); i++){
+      mesh.setFaceColor(i, colors[i]);
+    }
+  }
+  return ( ! input.bad() );
+}
 
   template <typename TPoint>
   bool
   DGtal::operator<< (   Mesh<TPoint> & mesh, const std::string &filename ){
     std::string extension = filename.substr(filename.find_last_of(".") + 1);
     if(extension== "off") {
-      DGtal::MeshReader<TPoint>::importOFFFile(filename, mesh);
+      DGtal::MeshReader< TPoint >::importOFFFile(filename, mesh);
       return true;
     }else if(extension== "ofs") {
-      DGtal::MeshReader< TPoint>::importOFSFile(filename, mesh);
+      DGtal::MeshReader< TPoint >::importOFSFile(filename, mesh);
+      return true;
+    }else if(extension== "obj") {
+      DGtal::MeshReader< TPoint >::importOBJFile(filename, mesh);
       return true;
     }
     
@@ -292,6 +401,15 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
 
 
 
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+bool
+DGtal::MeshReader<TPoint>::
+verifyIndicesUniqueness( const std::vector< unsigned int > &indices )
+{
+  std::set<unsigned int> sindices( indices.begin(), indices.end() );
+  return sindices.size() == indices.size();
+}
 
 
 

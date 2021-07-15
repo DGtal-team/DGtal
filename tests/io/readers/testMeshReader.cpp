@@ -116,6 +116,17 @@ bool testMeshReader()
   nbok += importOK2 ? 1 : 0;
 
   nb++;
+  std::string filenameOBJ = testPath + "samples/testObj.obj";
+  Mesh<Point> a3DMesh3;
+  bool importOK3=  a3DMesh3 << filenameOBJ;
+  nbok += importOK3 ? 1 : 0;
+
+  nb++;
+  bool importOK4 = a3DMesh3.getFaceColor(0) == DGtal::Color::Red &&
+                   a3DMesh3.getFaceColor(5) == DGtal::Color::Purple;
+  nbok += importOK4 ? 1 : 0;
+
+  nb++;
   Mesh<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
   bool isWellImported2 = (a3DMesh2.nbVertex()==32) &&  (a3DMesh2.nbFaces()==60) && (aFace2.size()==3) && (aFace2.at(0)==0);
   nbok+=isWellImported2? 1: 0;
