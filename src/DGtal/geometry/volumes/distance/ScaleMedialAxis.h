@@ -71,10 +71,11 @@ namespace DGtal
    * \brief Aim: Implementation of the separable medial axis
    * extraction.
    *
-   * This utility struct extract medial axis balls from a
-   * PowerMap. Basically, each (weighted) site of the PowerMap defines
-   * a digital maximal ball if its digital power cell restricted to
-   * the input shape is not empty @cite dcoeurjo_pami_RDMA .
+   * This utility struct extract scale medial axis balls from a
+   * DistanceTransformation. Basically, each (weighted) site of the 
+   * DistanceTransformation defines a digital ball, we make it
+   * alpha-bigger, extract the medial axis, and then make it 
+   * alpha-smaller.
    *
    *        Optimal Separable Algorithms to Compute the Reverse
    *        Euclidean Distance Transformation and Discrete Medial Axis in
@@ -90,11 +91,11 @@ namespace DGtal
    * @note Following ReverseDistanceTransformation, the input shape is
    * defined as points with negative power distance.
    *
-   * @tparam TPowerMap any specialized PowerMap type @tparam
-   * TImageContainer any model of CImage to store the medial axis
+   * @tparam TSpace any Space (usually SpaceND<dimension, Integer>)
+   * @tparam TImageContainer any model of CImage to store the medial axis
    * points (default: ImageContainerBySTLVector).
    *
-   * @see testReducedMedialAxis.cpp
+   * @see testScaleMedialAxis.cpp
    */ 
   template <typename TSpace,
             typename TImageContainer =  ImageContainerBySTLMap<HyperRectDomain<TSpace>, double> >
@@ -128,8 +129,8 @@ namespace DGtal
      * @param dt the input DistanceTransformation
      * @param alpha the double ratio we use to expand and compress the RDMA
      *
-     * @return a lightweight proxy to the ImageContainer specified in
-     * template arguments.
+     * @return a std::vector<pair<Point, double> > that contains centers and
+     * radius of the Scale Medial Axis balls.
      */
     
     static std::vector<Ball> computeScaleAxisFromDT(DT & dt, double alpha) 

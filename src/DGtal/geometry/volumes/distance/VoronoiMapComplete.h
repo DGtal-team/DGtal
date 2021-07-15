@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file VoronoiMap.h
+ * @file VoronoiMapComplete.h
  * @brief Linear in time distance transformation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -31,15 +31,15 @@
  * @see testVoronoiMap.cpp
  */
 
-#if defined(VoronoiMap_RECURSES)
-#error Recursive header files inclusion detected in VoronoiMap.h
-#else // defined(VoronoiMap_RECURSES)
+#if defined(VoronoiMapComplete_RECURSES)
+#error Recursive header files inclusion detected in VoronoiMapComplete.h
+#else // defined(VoronoiMapComplete_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define VoronoiMap_RECURSES
+#define VoronoiMapComplete_RECURSES
 
-#if !defined VoronoiMap_h
+#if !defined VoronoiMapComplete_h
 /** Prevents repeated inclusion of headers. */
-#define VoronoiMap_h
+#define VoronoiMapComplete_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -123,7 +123,7 @@ namespace DGtal
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
                                        std::vector<typename TSpace::Vector> >
              >
-  class VoronoiMap
+  class VoronoiMapComplete
   {
 
   public:
@@ -179,7 +179,7 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap< TSpace, TPointPredicate,
+    typedef VoronoiMapComplete< TSpace, TPointPredicate,
                         TSeparableMetric,TImageContainer > Self;
 
 
@@ -205,7 +205,7 @@ namespace DGtal
      *
      * @param aMetric a pointer to the separable metric instance.
      */
-    VoronoiMap(ConstAlias<Domain> aDomain,
+    VoronoiMapComplete(ConstAlias<Domain> aDomain,
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric);
 
@@ -233,19 +233,19 @@ namespace DGtal
      *        where the i-th value is \c true if the i-th dimension of the
      *        space is periodic, \c false otherwise.
      */
-    VoronoiMap(ConstAlias<Domain> aDomain,
+    VoronoiMapComplete(ConstAlias<Domain> aDomain,
                ConstAlias<PointPredicate> predicate,
                ConstAlias<SeparableMetric> aMetric,
                PeriodicitySpec const & aPeriodicitySpec);
     /**
      * Default destructor
      */
-    ~VoronoiMap() = default;
+    ~VoronoiMapComplete() = default;
 
     /**
      * Disabling default constructor.
      */
-     VoronoiMap() = delete;
+     VoronoiMapComplete() = delete;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -282,7 +282,7 @@ namespace DGtal
      *
      * @param aPoint the point to probe.
      */
-    Value operator()(const Point &aPoint) const
+    std::vector<Point> operator()(const Point &aPoint) const
     {
       return myImagePtr->operator()(aPoint);
     }
@@ -411,7 +411,7 @@ namespace DGtal
     /// Periodicity along each dimension.
     PeriodicitySpec myPeriodicitySpec;
 
-  }; // end of class VoronoiMap
+  }; // end of class VoronoiMapComplete
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpSeparableMetric'.
@@ -422,7 +422,7 @@ namespace DGtal
   template <typename S, typename P,
             typename Sep, typename TI>
   std::ostream&
-  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep,TI> & object );
+  operator<< ( std::ostream & out, const VoronoiMapComplete<S,P,Sep,TI> & object );
 
 
 } // namespace DGtal
@@ -430,12 +430,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/distance/VoronoiMap.ih"
+#include "DGtal/geometry/volumes/distance/VoronoiMapComplete.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined VoronoiMap_h
 
-#undef VoronoiMap_RECURSES
-#endif // else defined(VoronoiMap_RECURSES)
+#undef VoronoiMapComplete_RECURSES
+#endif // else defined(VoronoiMapComplete_RECURSES)

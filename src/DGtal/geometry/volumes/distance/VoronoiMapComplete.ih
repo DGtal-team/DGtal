@@ -48,7 +48,7 @@
 template <typename S, typename P, typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
+DGtal::VoronoiMapComplete<S,P, TSep, TImage>::compute( )
 {
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
@@ -59,26 +59,29 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
     coord = DGtal::NumberTraits< typename Point::Coordinate >::max();
 
   //Init
-  std::vector<Point> myVectorInfinity;
-  myVectorInfinity.push_back(myInfinity);
-  std::vector<Point> external_point;
   for ( auto const & pt : *myDomainPtr )
-    if ( (*myPointPredicatePtr)( pt ))
+    if ( (*myPointPredicatePtr)( pt )) {
+      std::vector<Point> myVectorInfinity;
+      myVectorInfinity.push_back(myInfinity); 
       myImagePtr->setValue ( pt, myVectorInfinity );
-    else
+    } else {
+      std::vector<Point> external_point;
       external_point.push_back(pt);
       myImagePtr->setValue ( pt, external_point );
       external_point.pop_back();
+    }
+  
 
   //We process the remaining dimensions
-  for ( Dimension dim = 0;  dim< S::dimension ; dim++ )
+  for ( Dimension dim = 0;  dim< S::dimension ; dim++ ) {
     computeOtherSteps ( dim );
+  }
 }
 
 template <typename S, typename P,typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
+DGtal::VoronoiMapComplete<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
 #ifdef VERBOSE
   std::string title = "VoronoiMap dimension " +  boost::lexical_cast<std::string>( dim ) ;
@@ -123,7 +126,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
 // ////////////////////////// Other Phases
 template <typename S,typename P, typename TSep, typename TImage>
 void
-DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
+DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
                                                   const Dimension dim) const
 {
   ASSERT(dim < S::dimension);
@@ -133,6 +136,9 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
   Point endPoint   = startingPoint;
   startPoint[dim]  = myLowerBoundCopy[dim];
   endPoint[dim]    = myUpperBoundCopy[dim];
+
+  std::vector<Point> myVectorInfinity;
+  myVectorInfinity.push_back(myInfinity);
 
   // Extent along current dimension.
   const auto extent = myUpperBoundCopy[dim] - myLowerBoundCopy[dim] + 1;
@@ -149,14 +155,18 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
   // that defines the start point.
   if ( dim == 0 )
     {
+      std::cout << "dim 0" << std::endl;
       // For dim = 0, no sites are hidden.
       for ( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
         {
           const std::vector<Point> psite = myImagePtr->operator()( point );
-          if ( psite != myVectorInfinity )
-            Sites.push_back( psite );
+          if ( psite != myVectorInfinity ) {
+            for (Point voronoiPoint : psite) {
+              Sites.push_back( voronoiPoint );
+            }
+          }
         }
-
+     
       // If no sites are found, then there is nothing to do.
       if ( Sites.size() == 0 )
         return;
@@ -174,6 +184,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     }
   else
     {
+      std::cout << "dim 1" << std::endl;
       // In the periodic case, the cycle depends on break index
       if ( isPeriodic(dim) )
         {
@@ -212,9 +223,11 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
               for (Point site : psite) {
                 while (( Sites.size() >= 2 ) &&
                       ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
-                                              site, startingPoint, endPoint, dim) ))
+                                              site, startingPoint, endPoint, dim) )) {
+                
                   Sites.pop_back();
-
+                }
+                
                 Sites.push_back( site );
               }
             }
@@ -227,7 +240,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
           point[dim] = myLowerBoundCopy[dim];
           for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
             {
-              std::vector<Point> psite = myImagePtr->operator()(point);
+              const std::vector<Point> psite = myImagePtr->operator()(point);
 
               if ( psite != myVectorInfinity )
                 {
@@ -248,21 +261,70 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     }
 
   // No sites found
-  if ( Sites.size() == 0 )
+  if ( Sites.size() == 0 )   
     return;
+  
 
   // Rewriting for both periodic and non-periodic cases.
   std::size_t siteId = 0;
   auto point = startPoint;
-
+  std::cout << "Sites :" << std::endl;
+  for (Point site : Sites) {
+    std::cout << site << std::endl;
+  }
+  std::cout << std::endl;
+      
   for ( ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
     {
-      while ( ( siteId < Sites.size()-1 ) && // Enlever la seconde condition, et ajouter dans le while : if (seconde condition), alors on ajoute le site au vecteur associé au point
-             ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
-              != DGtal::ClosestFIRST ))
-        siteId++;
-
-      myImagePtr->setValue(point, Sites[siteId]); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
+      std::cout << point << " " << point[dim] << " " << dim << std::endl;
+      std::vector<Point> voronoiSites;
+      for (Point pointSite : myImagePtr->operator()(point)) {
+        voronoiSites.push_back(pointSite);
+      }
+      siteId = 0;
+      while ( ( siteId < Sites.size()-1 ) &&
+                 ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
+                  == DGtal::ClosestSECOND )) {
+          siteId++;
+      }
+      if (myMetricPtr->rawDistance(Sites[siteId], point) < myMetricPtr->rawDistance(voronoiSites[0], point)) {
+        std::cout << "EMPTY : " << point << " "<< myMetricPtr->rawDistance(Sites[siteId], point) << " " << myMetricPtr->rawDistance(voronoiSites[0], point) << std::endl;
+        while(!voronoiSites.empty()){
+          voronoiSites.pop_back();
+        }
+        if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestBOTH ) {
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId]);
+            std::cout << "Set : " << Sites[siteId] << std::endl;
+          }
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId+1]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId+1]);
+            std::cout << "Set : " << Sites[siteId+1] << std::endl;
+          }
+        } else {
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId]);  
+            std::cout << "Set : " << Sites[siteId] << std::endl;
+          }
+        }
+      } else if(myMetricPtr->rawDistance(Sites[siteId], point) == myMetricPtr->rawDistance(voronoiSites[0], point)) {
+        if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestBOTH ) {
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId]);
+          }
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId+1]);
+            std::cout << "Set : " << Sites[siteId] << " " << Sites[siteId+1] << std::endl;
+          }
+        } else {
+          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
+            voronoiSites.push_back(Sites[siteId]);
+            std::cout << "Set : " << Sites[siteId] << std::endl;
+          }
+        }
+      }
+      
+      myImagePtr->setValue(point, voronoiSites); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
     }
 
   // Continuing rewriting in the periodic case.
@@ -270,12 +332,16 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
     {
       for ( ; point[dim] <= endPoint[dim] ; ++point[dim] )
         {
-          while ( ( siteId < Sites.size()-1 ) && // Idem ici en prenant en compte la périodicité
-                 ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
-                  != DGtal::ClosestFIRST ))
-            siteId++;
+          std::vector<Point> voronoiSites;
+          siteId = 0;
 
-          myImagePtr->setValue(point - Point::base(dim, extent), Sites[siteId] - Point::base(dim, extent) );
+          while ( siteId < Sites.size()-1 ) {// Idem ici en prenant en compte la périodicité
+            if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestFIRST ) {
+              voronoiSites.push_back(Sites[siteId] - Point::base(dim, extent));
+            }
+            siteId++;
+          }
+          myImagePtr->setValue(point - Point::base(dim, extent), voronoiSites );
         }
     }
 
@@ -287,7 +353,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
  */
 template <typename S,typename P,typename TSep, typename TImage>
 inline
-DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
+DGtal::VoronoiMapComplete<S,P, TSep, TImage>::VoronoiMapComplete( ConstAlias<Domain> aDomain,
                                           ConstAlias<PointPredicate> aPredicate,
                                           ConstAlias<SeparableMetric> aMetric )
      : myDomainPtr(&aDomain)
@@ -302,7 +368,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
 
 template <typename S,typename P,typename TSep, typename TImage>
 inline
-DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
+DGtal::VoronoiMapComplete<S,P, TSep, TImage>::VoronoiMapComplete( ConstAlias<Domain> aDomain,
                                           ConstAlias<PointPredicate> aPredicate,
                                           ConstAlias<SeparableMetric> aMetric,
                                           PeriodicitySpec const & aPeriodicitySpec )
@@ -323,8 +389,8 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
 
 template <typename S,typename P,typename TSep, typename TImage>
 inline
-typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point
-DGtal::VoronoiMap<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
+typename DGtal::VoronoiMapComplete<S, P, TSep, TImage>::Point
+DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
 {
   for ( auto const & dim : myPeriodicityIndex )
     aPoint[ dim ] = projectCoordinate( aPoint[ dim ], dim );
@@ -334,8 +400,8 @@ DGtal::VoronoiMap<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
 
 template <typename S,typename P,typename TSep, typename TImage>
 inline
-typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point::Coordinate
-DGtal::VoronoiMap<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
+typename DGtal::VoronoiMapComplete<S, P, TSep, TImage>::Point::Coordinate
+DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
 {
   ASSERT( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] >= 0 );
   return ( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] ) % myDomainExtent[aDim] + myDomainPtr->lowerBound()[aDim];
@@ -344,7 +410,7 @@ DGtal::VoronoiMap<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordi
 template <typename S,typename P,typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
+DGtal::VoronoiMapComplete<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
 {
   out << "[VoronoiMap] separable metric=" << *myMetricPtr ;
 }
@@ -357,7 +423,7 @@ template <typename S,typename P,typename TSep, typename TImage>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const VoronoiMap<S,P,TSep, TImage> & object )
+                    const VoronoiMapComplete<S,P,TSep, TImage> & object )
 {
   object.selfDisplay( out );
   return out;
