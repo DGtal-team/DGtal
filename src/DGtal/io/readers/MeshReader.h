@@ -146,6 +146,17 @@ public:
   bool verifyIndicesUniqueness( const std::vector< unsigned int > &indices );
 
 
+   
+  /// Reads an input material file associated ot an OBJ file format and outputs the
+  /// corresponding materials as a map assiating name and diffuse color.
+  ///
+  /// @param[in,out] input the input stream where the OBJ file is read.
+  ///
+  /// @return 'true' if both reading the input stream was ok and the
+  /// created mesh is ok.
+  static
+  std::map<std::string, DGtal::Color> readMaterial( std::istream & input);
+    
 
 
 }; // end of class MeshReader

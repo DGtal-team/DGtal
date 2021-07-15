@@ -37,8 +37,9 @@
 #include <fstream>
 #include <sstream>
 //////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/readers/SurfaceMeshReader.h"
+
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/readers/SurfaceMeshReader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -281,7 +282,6 @@ bool
 DGtal::MeshReader<TPoint>::
 importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
 {
-  typedef typename SurfaceMeshReader<TPoint, Z3i::RealVector >::Index IndexSMesh;
   typedef unsigned int Index;
 
   std::vector<TPoint>  vertices;
@@ -346,7 +346,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         std::stringstream matPathName ;
         matPathName << path << name;
         std::ifstream is (matPathName.str());
-        material = SurfaceMeshReader<TPoint, Z3i::RealVector >::readMaterial(is);
+        material = MeshReader<TPoint>::readMaterial(is);
         useMtllib = true;
       }else if (keyword ==  "usemtl") {
         std::string name;
@@ -411,6 +411,42 @@ verifyIndicesUniqueness( const std::vector< unsigned int > &indices )
   return sindices.size() == indices.size();
 }
 
+//-----------------------------------------------------------------------------
+template <typename TPoint>
+std::map<std::string, DGtal::Color>
+DGtal::MeshReader<TPoint>::readMaterial( std::istream & input)
+{
+  typedef unsigned int Index;
+  std::string linestr;
+  std::string keyword;
+  std::map<std::string, DGtal::Color> resultMap;
+  std::getline( input, linestr );
+  double r, g, b;
+  Index l = 0;
+  std::string currentMtlName="";
+  for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )
+    {
+      if ( linestr.empty() ) continue; // skip empty line
+      if ( linestr[0] == '#' ) continue; // skip comment line
+      std::istringstream lineinput( linestr );
+      std::operator>>( lineinput, keyword ); // lineinput >> keyword;
+      if ( keyword == "newmtl" ) {
+        std::string nameMtl;
+        lineinput >> nameMtl;
+        if (nameMtl != ""){
+          currentMtlName = nameMtl;
+        }
+      } else if (keyword == "Kd" && currentMtlName != "" ){
+        lineinput >> r >> g >> b;
+        DGtal::Color c (static_cast<unsigned char>(r*255.0),
+                        static_cast<unsigned char>(g*255),
+                        static_cast<unsigned char>(b*255));
+        resultMap[currentMtlName] = c;
+        currentMtlName = "";
+      }
+    }
+  return resultMap;
+}
 
 
 
