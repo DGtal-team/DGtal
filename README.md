@@ -49,6 +49,25 @@ Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), 
 
 DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
 
+
+Docker
+======
+
+A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (gmp, eigen, cgal, itk, cairo, qglviewer, imagemagick, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
+                                                                                                                                                                                                                        
+To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
+
+```shell
+docker build -t dgtal:lastest .
+```
+To run an interactive terminal inside the docker container and see the examples 
+```shell
+docker run -it --user=digital dgtal:lastest bash
+cd /home/digital/git/DGtal/build/examples
+```
+
+To enable Viewer3D/QGLViewer features, please check [this discussion](https://github.com/DGtal-team/DGtal/pull/1580).
+
 More Information
 ================
 
@@ -66,4 +85,3 @@ More Information
 * Release 0.8 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11586.svg)](https://doi.org/10.5281/zenodo.11586)
 * Continuous Integration (Linux/MacOS) [![Build Status](https://travis-ci.org/DGtal-team/DGtal.svg?branch=master)](https://travis-ci.org/DGtal-team/DGtal)
 * Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
-
