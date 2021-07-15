@@ -37,12 +37,13 @@ contains exactly these digital points and no other.
 Although handy and easy to check, this definition lacks many
 properties related to (continuous) convexity in the Euclidean plane.
 
-We extend this definition as follows. Let \f$ C^d \f$ be the usual
-regular cubical complex induced by the lattice \f$ \mathbb{Z}^d \f$,
-and let \f$ C^d_k \f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We
-have that the 0-cells of \f$ C^d_0 \f$ are exactly the lattice points,
-the 1-cells of \f$ C^d_1 \f$ are the open unit segment joining 2
-neighboring lattice points, etc.
+We extend this definition as follows (see \cite
+lachaud_dgmm_2021). Let \f$ C^d \f$ be the usual regular cubical
+complex induced by the lattice \f$ \mathbb{Z}^d \f$, and let \f$ C^d_k
+\f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We have that the
+0-cells of \f$ C^d_0 \f$ are exactly the lattice points, the 1-cells
+of \f$ C^d_1 \f$ are the open unit segment joining 2 neighboring
+lattice points, etc.
 
 Finally, for an arbitrary subset \f$ Y \subset \mathbb{R}^d \f$, we
 denote by \f$ C^d_k \lbrack Y \rbrack \f$ the set of k-cells of \f$
@@ -65,7 +66,7 @@ digitally 0-convexity is the usual digital convexity.
 
 @image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
 
-A last useful notion is the \e subconvexity. Let \f$ X \subset
+A last useful notion is the \e subconvexity, or \e tangency. Let \f$ X \subset
 \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
 S \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
 subconvex to \f$ X \f$ whenever \f$ C^d_k \lbrack \mathrm{Conv}(S)
@@ -77,7 +78,7 @@ Subconvexity is a useful for notion for digital contour and surface
 analysis. It tells which subsets of these digital sets are \e tangent
 to them.
 
-@section dgtal_dconvexity_sec2  Checking digital convexity
+@section dgtal_dconvexity_sec2  Classes and functions related to digital convexity
 
 Three classes help to check digital convexity.
 
@@ -193,6 +194,10 @@ object.
 - CellGeometry::addCellsTouchingPolytope: Updates the cell cover with
   all the cells touching the polytope (all cells whose closure have a
   non empty intersection with the polytope).
+- CellGeometry::addCellsTouchingSegment: Updates the cell cover with
+  all the cells touching the Euclidean straight segment between the
+  two given lattice points (specialized version of
+  CellGeometry::addCellsTouchingPolytope).
 - CellGeometry::operator+=( const CellGeometry& other ): Adds the
   cells of dimension k of object \a other, for `minCellDim() <= k <=
   maxCellDim()`, to this cell geometry.
@@ -202,14 +207,17 @@ CellGeometry::addCellsTouchingPolytope is very important since it
 allows to compute \f$ C^d_k \lbrack P \rbrack \f$ for an arbitrary
 polytope \f$ P \f$ and for any \f$ k \f$.
 
-@subsection dgtal_dconvexity_sec23 Checking digital (sub-)convexity
+@subsection dgtal_dconvexity_sec23 Checking digital convexity
 
 Class DigitalConvexity is a helper class to build polytopes from
 digital sets and to check digital k-convexity. It provides methods for
 checking if a simplex is full dimensional, building the corresponding
 polytope, methods for getting the lattice points in a polytope,
 computing the cells touching lattice points or touching a polytope,
-and a set of methods to check k-convexity or k-subconvexity.
+and a set of methods to check k-convexity or k-subconvexity (i.e. tangency).
+
+Here are two ways for checking full convexity. The first is the
+simplest (but hides some details):
 
 \code
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
@@ -219,19 +227,39 @@ using namespace DGtal::Z3i;
 typedef DigitalConvexity< KSpace >       DConvexity;
 // Create DigitalConvexity object with a domain.
 DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
-// Create a (fat) simplex within the domain
+// Specify the vertices of the simplex.
 std::vector<Point> V = { Point(0,0), Point(4,-1), Point(2,5) };
+// Create the (fat) simplex with all its inner points.
 auto fat_simplex   = dconv.makeSimplex  ( V.begin(), V.end() );
-// Get all the points in the simplex
-auto inside_pts    = dconv.insidePoints ( fat_simplex );
-// Get the lattice cells intersected by the simplex
-auto simplex_cover = dconv.makeCellCover( fat_simplex );
-// Get the lattice cells intersected by the lattice points in the simplex
-auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
-// They are the same here since this simplex is fully convex.
-bool ok  = simplex_cover.subset( point_cover ); // one way to do it
-bool ok2 = dconv.isFullyConvex ( fat_simplex ); // the other way to do it
+// it is indeed a fully convex set
+bool ok = dconv.isFullyConvex ( fat_simplex ); // true
 \endcode
+
+Second way to do it, where we see the intermediate computations of points and cells.
+
+\code
+#include "DGtal/geometry/volumes/DigitalConvexity.h"
+...
+using namespace DGtal;
+using namespace DGtal::Z3i;
+typedef DigitalConvexity< KSpace >       DConvexity;
+// Create DigitalConvexity object with a domain.
+DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
+// Specify the vertices of the simplex.
+std::vector<Point> V = { Point(0,0), Point(4,-1), Point(2,5) };
+// Create the (fat) simplex
+auto fat_simplex   = dconv.makeSimplex  ( V.begin(), V.end() );
+// Get all the points in the simplex, i.e. creates the digital set Z.
+auto inside_pts    = dconv.insidePoints ( fat_simplex );
+// Get the lattice cells intersected by the simplex i.e. C^d[ Conv(Z) ]
+auto simplex_cover = dconv.makeCellCover( fat_simplex );
+// Get the lattice cells intersected by the lattice points in the simplex  i.e. C^d[ Z ]
+auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
+// Checks that C^d[ Conv(Z) ] is a subset of C^d[ Z ], i.e. Z is fully convex.
+bool ok  = simplex_cover.subset( point_cover ); // true
+\endcode
+
+@subsection dgtal_dconvexity_sec24 Other convexity services, like digital subconvexity (or tangency)
 
 Simplex services:
 - DigitalConvexity::makeSimplex builds a simplex from lattice point iterators or initializer list
@@ -249,8 +277,11 @@ Lattice cell geometry services:
 Convexity services:
 - DigitalConvexity::isKConvex tells if a given polytope is k-convex
 - DigitalConvexity::isFullyConvex tells if a given polytope is fully convex
-- DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover
+- DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover (i.e. k-tangent)
+- DigitalConvexity::isKSubconvex( const Point&, const Point&, const CellGeometry&, const Dimension ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is k-subconvex (i.e. k-tangent) to the given cell cover.
 - DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
+- DigitalConvexity::isFullySubconvex( const Point&, const Point&, const CellGeometry& ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
+
 
 @section dgtal_dconvexity_sec3 Rational polytopes
 

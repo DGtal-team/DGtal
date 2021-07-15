@@ -481,6 +481,9 @@ namespace DGtal
     ///
     /// @return 'true' iff the segment is a digitally \a k-subconvex
     /// of C, i.e. the two points are k-cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
     bool isKSubconvex( const Point& a, const Point& b,
                        const CellGeometry& C, const Dimension k ) const;
 
@@ -497,6 +500,9 @@ namespace DGtal
     ///
     /// @return 'true' iff the segment is a digitally fully subconvex
     /// of C, i.e. the two points are cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
     bool isFullySubconvex( const Point& a, const Point& b,
                            const CellGeometry& C ) const;
     

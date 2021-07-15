@@ -166,7 +166,7 @@ namespace DGtal
     /// @param pointel any pointel
     void addCellsTouchingPointel( const Cell& pointel );
 
-    /// Updates the cell cover with the cells whise boundary covers
+    /// Updates the cell cover with the cells whose boundary covers
     /// cell \a c (so \a c itself and its up-incident cells).
     ///
     /// @param c any any cell
@@ -178,6 +178,9 @@ namespace DGtal
     ///
     /// @param a any point
     /// @param b any point
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then calling addCellsTouchingPolytope.
     void addCellsTouchingSegment( const Point& a, const Point& b );
     
     /// Updates the cell cover with the cells touching a range of
