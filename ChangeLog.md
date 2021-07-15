@@ -1,3 +1,21 @@
+# DGtal 1.3(beta)
+
+## New features / critical changes
+- *Docker File*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
+## Bug fixes
+
+- *General*
+  - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
+    (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
+
+## Changes
+- *IO*
+  - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
+    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+
+
 # DGtal 1.2
 
 ## New Features / Critical Changes
