@@ -73,13 +73,16 @@ struct Analyzer {
   run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound(),
-             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension );
+             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
     auto& image = *bimage;
     std::vector<int> result;
     std::map< Point, int > computed;
     int geom;
+    int i  = 0;
+    int nb = pts.size();
     for ( auto p : pts )
       {
+        if ( i % 100 == 0 ) trace.progressBar( i, nb );
         auto it = computed.find( p );
         if ( it == computed.end() )
           {
@@ -91,6 +94,7 @@ struct Analyzer {
           }
         else geom = it->second;
         result.push_back( geom );
+        i++; 
       }
     return result;    
   }
@@ -102,13 +106,15 @@ struct Analyzer {
        const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound(), 
-             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension );
+             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
     auto& image = *bimage;
     std::map< Point, int > computed;
     int geom;
-    int i = 0;
+    int i  = 0;
+    int nb = pts.size();
     for ( auto p : pts )
       {
+        if ( i % 100 == 0 ) trace.progressBar( i, nb );
         auto it = computed.find( p );
         if ( it == computed.end() )
           {
@@ -143,6 +149,7 @@ struct MultiScaleAnalyzer {
   {
     auto prev_geometry
       = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( aK, pts, bimage );
+    trace.info() << "------- Analyzing scale " << N << " --------" << std::endl;
     std::vector< int > geom( prev_geometry.size() );
     for ( int i = 0; i < geom.size(); i++ )
       geom[ i ] = ( prev_geometry[ i ].first == N-1 ? 0x1 : 0x0 )
@@ -178,10 +185,15 @@ int main( int argc, char** argv )
   if ( argc <= 2 )
     {
       trace.info() << "Usage: " << argv[ 0 ] << " <K> <input.vol> <m> <M>" << std::endl;
+      trace.info() << "\tAnalyze the  shape with local full convexity" << std::endl;
+      trace.info() << "\t- 1 <= K <= 5: analysis at scale K" << std::endl;
+      trace.info() << "\t- K == 0: multiscale analysis (using scales 1-5)" << std::endl;
+      trace.info() << "\t- input.vol: choose your favorite shape" << std::endl;
+      trace.info() << "\t- m [==0], M [==255]: used to threshold input vol image" << std::endl;
       return 1;
     }
   int         N = argc > 1 ? atoi( argv[ 1 ] ) : 1;
-  std::string fn= argc > 2 ? argv[ 2 ] : "";
+  std::string fn= argc > 2 ? argv[ 2 ]         : "";
   int         m = argc > 3 ? atoi( argv[ 3 ] ) : 0;
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
 
@@ -216,17 +228,18 @@ int main( int argc, char** argv )
       Point p     = K.sCoords( voxel );
       points.push_back( p );
     } 
-
-  trace.beginBlock ( "Analyzing" );
-  std::vector< int > result;
-  if ( N == 1 ) result = Analyzer< KSpace, 1 >::run( K, points, bimage );
-  if ( N == 2 ) result = Analyzer< KSpace, 2 >::run( K, points, bimage );
-  if ( N == 3 ) result = Analyzer< KSpace, 3 >::run( K, points, bimage );
-  if ( N == 4 ) result = Analyzer< KSpace, 4 >::run( K, points, bimage );
-  if ( N == 5 ) result = Analyzer< KSpace, 5 >::run( K, points, bimage );
-
+  trace.info() << "Shape has " << point.size() << " interior boundary points"
+               << std::endl;
   if ( N != 0 )
     {
+      std::vector< int > result;
+      trace.beginBlock ( "Analyzing" );
+      if ( N == 1 ) result = Analyzer< KSpace, 1 >::run( K, points, bimage );
+      if ( N == 2 ) result = Analyzer< KSpace, 2 >::run( K, points, bimage );
+      if ( N == 3 ) result = Analyzer< KSpace, 3 >::run( K, points, bimage );
+      if ( N == 4 ) result = Analyzer< KSpace, 4 >::run( K, points, bimage );
+      if ( N == 5 ) result = Analyzer< KSpace, 5 >::run( K, points, bimage );
+      trace.endBlock();
       SCell dummy;
       Color colors[ 4 ] =
         { Color( 255, 0, 0, 255 ), Color( 0, 255, 0, 255 ),
@@ -248,8 +261,10 @@ int main( int argc, char** argv )
     }
   else
     {
+      trace.beginBlock ( "Analyzing" );
       auto geometry =
-        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run(  K, points, bimage );
+        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( K, points, bimage );
+      trace.endBlock();
       Color colors_planar[ 6 ] =
         { Color( 0, 255, 255, 255),
           Color( 50, 255, 255, 255), Color( 100, 255, 255, 255),

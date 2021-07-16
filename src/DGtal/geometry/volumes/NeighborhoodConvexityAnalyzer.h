@@ -88,6 +88,19 @@ namespace DGtal
      @tparam K the parameter that determines the size of the
      neighborhood along all dimensions (spans 2K+1 points in each
      direction, hence the neighborhood cardinal is \f$ (2K+1)^d \f$).
+
+     @note This quite a heavy class since it tries to optimize
+     computations in several ways:
+     - it builds look-up tables for 0-convexity and full convexity for
+       the 2D 3x3 neighborhood case, and uses them afterwards.
+     - it memorizes convexity computations (w/o center, w/o
+       complement) while you stay at the same center point;
+     - it checks full convexity on small 3x3 2D slices before checking
+       global nD full convexity.
+     - it memoizes the full convexity result, so frequent
+       configurations are not recomputed.
+     - you can switch on/off the memoizer at object construction
+       (e.g. it is useless in 2D).
   */
   template < typename TKSpace, int K >
   class NeighborhoodConvexityAnalyzer
@@ -199,9 +212,9 @@ namespace DGtal
     
     /// @}
 
-    // ------------------------- Neighborhood services --------------------------------
+    // -------------------- Neighborhood and convexity  services -----------------------
   public:
-    /// @name Neighborhood services
+    /// @name Neighborhood and convexity services
     /// @{
 
     /// Place the center of the neighborhood at point \a c on shape \a X
@@ -242,20 +255,7 @@ namespace DGtal
           && isComplementaryFullyConvex( false );
     }
 
-    /// @return 'true' iff the center is locally fully convex collapsible.
-    bool isFullyConvexCollapsible2()
-    {
-      if ( isCenterInX() )
-        return ( myNbInX >= 1 ) // ( ! myLocalX.empty() )
-          && isFullyConvex( false )
-          && ( isFullyConvex( true )
-               || ( ( size() - myNbInX >= 1 )
-                    && isComplementaryFullyConvex( false )
-                    && isComplementaryFullyConvex( true ) ) );
-      else return false;
-    }
-
-    /// @return 'true' iff the center is locally fully convex collapsible.
+    /// @return 'true' iff the center point is likely noise.
     bool isLikelyNoise()
     {
       if ( isCenterInX() )
@@ -283,23 +283,6 @@ namespace DGtal
           && isComplementary0Convex( false );
     }
 
-    /// @param current any configuration (with empty middle bit)
-    ///
-    static Configuration makeConfiguration( Configuration current,
-                                            bool complement, bool with_center )
-    {
-      if ( complement )
-        {
-          current = ~current;
-          if ( ! with_center ) current.reset( middle );
-        }
-      else
-        {
-          if ( with_center ) current.set( middle );
-        }
-      return current;
-    }
-    
     /// Tells if the shape X is locally fully convex.
     /// @param with_center if 'true' add the center to the digital set.
     ///
@@ -430,6 +413,29 @@ namespace DGtal
       return ok;
     }
 
+    /// Builds the final configuration from the configuration \a
+    /// current, by complementing it according to \a complement, and
+    /// by adding its center point according to \a with_center.
+    ///
+    /// @param current any configuration (with empty center/middle bit)
+    /// @param complement when 'true', complements the configuration.
+    /// @param with_center when 'true', makes the center point part of the configuration
+    /// @return the corresponding configuration
+    static Configuration makeConfiguration( Configuration current,
+                                            bool complement, bool with_center )
+    {
+      if ( complement )
+        {
+          current = ~current;
+          if ( ! with_center ) current.reset( middle );
+        }
+      else
+        {
+          if ( with_center ) current.set( middle );
+        }
+      return current;
+    }
+    
     /// @param[inout] localX as output, the set of points of the
     /// neighborhood belonging to the shape
     ///
@@ -454,10 +460,6 @@ namespace DGtal
     Point myCenter;
     /// The memoizer.
     TimeStampMemoizer< Configuration, bool > myMemoizer;
-    /// the part of X belonging to this neighborhood.
-    // PointRange myLocalX;
-    /// the part of the neighborhood that is not in X.
-    // PointRange myLocalCompX;
     /// tells if the center belongs to X
     bool myCenterInX;
     /// The number of points of the neighborhood that belongs to X (center omitted).
@@ -497,15 +499,45 @@ namespace DGtal
     /// it is fully convex.
     void computeBasicFullConvexityTable();
 
+    /// For the current configuration, checks if all the 2D slices of
+    /// the configuration are fully convex (for speed-up). They must be
+    /// all true for the global nD configuration to be fully convex.
+    ///
+    /// @param compX when 'true', complements the configuration.
+    /// @param with_center when 'true', makes the center point part of the configuration
+    /// @return 'true' if they are all fully convex.
     bool checkBasicConfigurationsFullConvexity
     ( bool compX, bool with_center ) const;
 
+    /// For the current configuration, checks if all the 2D slices of
+    /// the configuration are 0-convex (for speed-up). They must be
+    /// all true for the global nD configuration to be 0-convex.
+    ///
+    /// @param compX when 'true', complements the configuration.
+    /// @param with_center when 'true', makes the center point part of the configuration
+    /// @return 'true' if they are all 0-convex.
     bool checkBasicConfigurations0Convexity
     ( bool compX, bool with_center ) const;
 
+    /// Given a configuration \a cfg, outputs all the 2D slice
+    /// configurations in \a result.
+    ///
+    /// @param[in] cfg any configuration in nD
+    ///
+    /// @param[out] result the vector of all basic configurations (i.e. 3x3)
+    /// within each possible 2D local slice.
     void computeBasicConfigurations
     ( Configuration cfg, std::vector< BasicConfiguration > & result ) const;
 
+    /// Given a configuration \a cfg, returns the central 3x3
+    /// configuration of the 2D slice along coordinates \a i and \a j.
+    ///
+    /// @param[in] cfg any configuration in nD
+    /// @param[in] i any dimension
+    /// @param[in] j any other dimension
+    ///
+    /// @return the central 3x3 configuration of the 2D slice along
+    /// coordinates \a i and \a j.
     BasicConfiguration computeCentralBasicConfiguration
     ( Configuration cfg, Dimension i, Dimension j ) const;
 

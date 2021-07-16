@@ -40,8 +40,6 @@ setCenter( Point c, const PointPredicate& X )
 {
   ASSERT( myDomain.isInside( c ) );
   myCenter = c;
-  // myLocalX.clear();
-  // myLocalCompX.clear();
   myNbInX        = 0;
   myComputations = 0;
   myResults      = 0;
@@ -83,10 +81,8 @@ getLocalX( std::vector< Point >& localX, bool with_center ) const
   Size bit       = 0;
   for ( auto q : local_domain )
     {
-      if ( q == myCenter )
-        {
-          if ( with_center ) localX.push_back( myCenter );
-        }
+      if ( ( q == myCenter ) && with_center )
+        localX.push_back( myCenter );
       else if ( myDomain.isInside( q ) )
         {
           if ( myCfgX[ bit ] )
@@ -106,10 +102,8 @@ getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
   Size bit       = 0;
   for ( auto q : local_domain )
     {
-      if ( q == myCenter )
-        {
-          if ( with_center ) localCompX.push_back( myCenter );
-        }
+      if ( ( q == myCenter ) && with_center )
+        localCompX.push_back( myCenter );
       else if ( myDomain.isInside( q ) )
         {
           if ( ! myCfgX[ bit ] )
@@ -128,7 +122,6 @@ checkBasicConfigurationsFullConvexity
 {
   if ( ! compX )
     { // shape X
-      // trace.info() << "checkBasicConfigurationsFullConvexity X" << std::endl;
       const Size mask_center = with_center ? 0x10 : 0;
       for ( auto cfg : myBasicCfgX )
         if ( ! myBasicFullConvexityTable[ cfg.to_ulong() | mask_center ] )
@@ -136,7 +129,6 @@ checkBasicConfigurationsFullConvexity
     }
   else 
     { // complementary of shape X
-      // trace.info() << "checkBasicConfigurationsFullConvexity compX" << std::endl;
       const Size mask_center = with_center ? 0x1ff : 0x1ef;
       for ( auto cfg : myBasicCfgX )
         if ( ! myBasicFullConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
@@ -153,7 +145,6 @@ checkBasicConfigurations0Convexity
 {
   if ( ! compX )
     { // shape X
-      // trace.info() << "checkBasicConfigurationsFullConvexity X" << std::endl;
       const Size mask_center = with_center ? 0x10 : 0;
       for ( auto cfg : myBasicCfgX )
         if ( ! myBasic0ConvexityTable[ cfg.to_ulong() | mask_center ] )
@@ -161,7 +152,6 @@ checkBasicConfigurations0Convexity
     }
   else 
     { // complementary of shape X
-      // trace.info() << "checkBasicConfigurationsFullConvexity compX" << std::endl;
       const Size mask_center = with_center ? 0x1ff : 0x1ef;
       for ( auto cfg : myBasicCfgX )
         if ( ! myBasic0ConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
@@ -192,7 +182,6 @@ DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeCentralBasicConfiguration
 ( Configuration cfg, Dimension i, Dimension j ) const
 {
-  //  std::cout << "computeCentralBasicConfiguration " << cfg << std::endl;
   Size incr_i = 1;
   Size incr_j = 1;
   for ( Dimension d = 0; d < i; ++d ) { incr_i *= 2*K+1; }
@@ -207,7 +196,6 @@ computeCentralBasicConfiguration
   basic[ 6 ] = cfg[ middle - incr_i + incr_j ];
   basic[ 7 ] = cfg[ middle          + incr_j ];
   basic[ 8 ] = cfg[ middle + incr_i + incr_j ];
-  // std::cout << " basic( " << i << "," << j << ")=" << basic << std::endl;
   return basic;
 }
 
@@ -227,8 +215,6 @@ computeBasicFullConvexityTable()
   Point2 p2 = Point2::diagonal(  1 );
   Point2 c =  Point2::diagonal( 0 );
   Domain2 domain( p1, p2 );
-  Size nb_fcvx = 0;
-  Size nb_0cvx = 0;
   for ( unsigned int cfg = 0; cfg < 512; cfg++ )
     {
       // Building a configuration.
@@ -242,11 +228,7 @@ computeBasicFullConvexityTable()
         }
       myBasicFullConvexityTable[ cfg ] = dconv2.isFullyConvex( X );
       myBasic0ConvexityTable   [ cfg ] = dconv2.is0Convex    ( X );
-      nb_fcvx += myBasicFullConvexityTable[ cfg ] ? 1 : 0;
-      nb_0cvx += myBasic0ConvexityTable   [ cfg ] ? 1 : 0;
     }
-  std::cout << "#f-cvx="  << nb_fcvx << "/512"
-            << " #0-cvx=" << nb_0cvx << "/512" << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
