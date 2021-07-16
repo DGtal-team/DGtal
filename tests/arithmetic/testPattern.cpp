@@ -109,8 +109,8 @@ testPatterns()
 
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      unsigned int p = std::rand() % 999+1;
-      unsigned int q = std::rand() % 999+1;
+      unsigned int p = 1 + std::rand() % 999;
+      unsigned int q = 1 + std::rand() % 999;
       unsigned int g = ic.gcd( p, q );
       p /= g; q /= g;
       std::cerr << "*- p / q = " << p << "/" << q << std::endl;
