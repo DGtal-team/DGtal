@@ -283,7 +283,6 @@ DGtal::MeshReader<TPoint>::
 importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
 {
   typedef unsigned int Index;
-
   std::vector<TPoint>  vertices;
   std::vector<DGtal::Color> colors;
   std::vector< std::vector< Index > > faces;
@@ -317,15 +316,17 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
         vertices.push_back( p );
       } else if ( keyword == "f" ) {
-        std::vector< unsigned int > face;
+        std::vector< Index > face;
         while ( ! lineinput.eof() ) {
           std::operator>>( lineinput, indices ); // lineinput >> indices;
           if ( indices.empty() ) break;
           auto vtxinfo = SurfaceMeshReader<TPoint, Z3i::RealVector >::split( indices, '/' );
           if ( vtxinfo.size() == 0 ) break;
-          Index v  = std::stoi( vtxinfo[ 0 ] );
-          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
-          face.push_back( v - 1 );
+          int  v  = std::stoi( vtxinfo[ 0 ] )-1;
+          if (v < 0 ){ // special case of relative indices (ie negative index);
+            v = vertices.size() + v+1; 
+          }
+          face.push_back( v);
           indices = "";
         }
         if ( ! face.empty() && verifyIndicesUniqueness( face ) )
@@ -374,7 +375,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
   }
 
   if (!colors.empty()){
-    for (unsigned int i = 0; i < colors.size(); i++){
+    for (Index i = 0; i < colors.size(); i++){
       mesh.setFaceColor(i, colors[i]);
     }
   }
