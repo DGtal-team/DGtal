@@ -14,8 +14,15 @@ namespace DGtal {
 
 Part of the \ref packageGeometry.
   
-This part of the manual describes how to define and check digital convexity, 
-in such a way that digital convex set are digitally connected.
+This part of the manual describes tools associated to a new definition
+of digital convexity, called full convexity \cite
+lachaud_dgmm_2021. This new definition solves many problems related to
+the usual definition of digital convexity, like possible non
+connectedness or non simple connectedness, while encompassing its
+desirable features. Fully convex sets are digitally convex, but are
+also connected and simply connected. They have a morphological
+characterisation, which induces a simple convexity test
+algorithm. Arithmetic planes are fully convex too.
 
 [TOC]
 
@@ -26,7 +33,7 @@ geometry/curves/exampleRationalConvexity.cpp,
 testBoundedLatticePolytope.cpp, testCellGeometry.cpp,
 testDigitalConvexity.cpp
 
-@section dgtal_dconvexity_sec1  Introduction to digital convexity
+@section dgtal_dconvexity_sec1  Introduction to full digital convexity
 
 The usual definition for \b digital \b convexity is as follows. For some
 digital set \f$ S \subset \mathbb{Z}^d \f$, \f$ S \f$ is said to be \e

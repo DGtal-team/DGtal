@@ -29,13 +29,13 @@
 
 
 /**
- * A geometric thinning is an iterative removal of simple points from
- * a given digital object.
+ * This example shows how to analyze the local geometry of 3D digital
+ * sets with full convexity over cubical neighborhoods.
  *
  * @see \ref dgtal_topology_sec3_5
  *
  *
- * \example topology/geometricThinning3D.cpp
+ * \example geometry/volumes/geometricAnalysis3D.cpp
  */
 
 
