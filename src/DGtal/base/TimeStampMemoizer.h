@@ -53,7 +53,7 @@ namespace DGtal
   /**
    * Description of template class 'TimeStampMemoizer' <p> \brief Aim:
    * A generic class to store costly computations. A computation is an
-   * association betweena key and a value, together they form an item
+   * association between a key and a value, together they form an item
    * to be memorized. A maximal number of memoized items is
    * given. Each time a query is made, if the item was memoized, the
    * result is returned while the timestamp of the item is
@@ -70,21 +70,31 @@ namespace DGtal
   class TimeStampMemoizer
   {
   public:
-    typedef TKey   Key;
-    typedef TValue Value;
-    typedef std::size_t     Size;
-    typedef DGtal::uint32_t TimeStamp;
-    typedef std::pair< Value, TimeStamp > StoredValue;
+    typedef TKey                              Key;
+    typedef TValue                            Value;
+    typedef TimeStampMemoizer< TKey, TValue > Self;
+    typedef std::size_t                       Size;
+    typedef DGtal::uint32_t                   TimeStamp;
+    typedef std::pair< Value, TimeStamp >     StoredValue;
     
     // ----------------------- Standard services ------------------------------
   public:
     
     /**
        Constructor.
+
+       @param max_size the maximum number of items that the memoizer will store.
+
+       @param ratio is the real number between 0 and 1: when the
+       maximum number is reached, at least the oldest \a ratio
+       fraction of items are deleted from the memoizer.
+
+       @param verbose if 'true', traces some informations.
      */
-    TimeStampMemoizer( Size max_size = 0, double ratio = 0.5 )
+    TimeStampMemoizer( Size max_size = 0, double ratio = 0.5,
+                       bool verbose = false )
       : myMaxSize( max_size ), myRatio( ratio ), myTimeStamp( 0 ),
-        myMap( max_size ), myHits( 0 )
+        myMap( max_size ), myHits( 0 ), myVerbose( verbose )
     {}
 
     /**
@@ -92,16 +102,19 @@ namespace DGtal
      * @param other the object to clone.
      */
     TimeStampMemoizer( const TimeStampMemoizer & other ) = default;
+
     /**
      * Move constructor.
      * @param other the object to clone.
      */
     TimeStampMemoizer( TimeStampMemoizer && other ) = default;
+
     /**
      * Assignment.
      * @param other the object to copy.
      */
     TimeStampMemoizer& operator=( const TimeStampMemoizer & other ) = default;
+
     /**
      * Move assignment.
      * @param other the object to copy.
@@ -116,8 +129,43 @@ namespace DGtal
     // ----------------------- Memoization services -----------------------------
   public:
 
+    /// @return the current number of memoized items.
+    Size size() const
+    {
+      return myMap.size();
+    }
+
+    /// @return the maximum number of items that can be memoized.
+    Size maxSize() const
+    {
+      return myMaxSize;
+    }
+
+    /// @return the number of successful hits in the memoizer
+    Size hits() const
+    {
+      return myHits;
+    }
+
+    /// @return the current time stamp.
+    Size timeStamp() const
+    {
+      return myTimeStamp;
+    }
+
+    /// @return a const reference to the map memoizing items.
+    const std::unordered_map< Key, StoredValue > & map() const
+    {
+      return myMap;
+    }
+    
     /// Given a \a key, return the associated pair <value, true> if it
     /// is found, or return <dummy, false> where dummy is an arbitrary value.
+    ///
+    /// @param key any key.
+    ///
+    /// @return the associated pair <value, true> if the \a key is found, or
+    /// return <dummy, false> where dummy is an arbitrary value.
     std::pair< Value, bool > get( const Key& key )
     {
       auto it = myMap.find( key );
@@ -129,6 +177,12 @@ namespace DGtal
     }
     
     /// Memoizes (or update) a pair \a key and \a value.
+    ///
+    /// @param key any key.
+    /// @param value any value.
+    ///
+    /// @note if the maximum number of memoized items is reached,
+    /// forces a clean-up of a the memoizer.
     void set( const Key& key, const Value& value )
     {
       if ( myMap.size() >= myMaxSize ) cleanUp();
@@ -138,7 +192,7 @@ namespace DGtal
     /// Clean-up the memoizer by removing a fraction of its oldest elements.
     void cleanUp()
     {
-      selfDisplay( std::cout );
+      if ( myVerbose ) selfDisplay( trace.info() );
       Size nb = 0;
       TimeStamp threshold =
         std::max( (Size) myTimeStamp
@@ -152,7 +206,7 @@ namespace DGtal
           }
         else
           ++it;
-      std::cout << " " << nb << " erased." << std::endl;
+      if ( myVerbose) trace.info() << " " << nb << " erased." << std::endl;
       myHits   = 0;
     }
     
@@ -191,9 +245,9 @@ namespace DGtal
     /// The map memoizing computations.
     std::unordered_map< Key, StoredValue > myMap;
     /// The number of hits up to the last clean-up.
-    Size myHits;
-    /// The number of misses up to the last clean-up.
-    Size myMisses;
+    Size      myHits;
+    /// when 'true', traces some information.
+    bool      myVerbose;
 
     // ------------------------- Private Datas --------------------------------
   private:
