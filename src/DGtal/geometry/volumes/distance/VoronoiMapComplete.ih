@@ -155,7 +155,6 @@ DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
   // that defines the start point.
   if ( dim == 0 )
     {
-      std::cout << "dim 0" << std::endl;
       // For dim = 0, no sites are hidden.
       for ( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
         {
@@ -184,7 +183,6 @@ DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
     }
   else
     {
-      std::cout << "dim 1" << std::endl;
       // In the periodic case, the cycle depends on break index
       if ( isPeriodic(dim) )
         {
@@ -266,67 +264,33 @@ DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
   
 
   // Rewriting for both periodic and non-periodic cases.
-  std::size_t siteId = 0;
+  size_t siteId = 0;
   auto point = startPoint;
-  std::cout << "Sites :" << std::endl;
-  for (Point site : Sites) {
-    std::cout << site << std::endl;
-  }
-  std::cout << std::endl;
-      
+  uint64_t minimal_distance;
+  
   for ( ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
     {
-      std::cout << point << " " << point[dim] << " " << dim << std::endl;
-      std::vector<Point> voronoiSites;
-      for (Point pointSite : myImagePtr->operator()(point)) {
-        voronoiSites.push_back(pointSite);
-      }
-      siteId = 0;
-      while ( ( siteId < Sites.size()-1 ) &&
-                 ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1])
-                  == DGtal::ClosestSECOND )) {
-          siteId++;
-      }
-      if (myMetricPtr->rawDistance(Sites[siteId], point) < myMetricPtr->rawDistance(voronoiSites[0], point)) {
-        std::cout << "EMPTY : " << point << " "<< myMetricPtr->rawDistance(Sites[siteId], point) << " " << myMetricPtr->rawDistance(voronoiSites[0], point) << std::endl;
-        while(!voronoiSites.empty()){
-          voronoiSites.pop_back();
-        }
-        if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestBOTH ) {
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId]);
-            std::cout << "Set : " << Sites[siteId] << std::endl;
-          }
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId+1]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId+1]);
-            std::cout << "Set : " << Sites[siteId+1] << std::endl;
-          }
-        } else {
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId]);  
-            std::cout << "Set : " << Sites[siteId] << std::endl;
-          }
-        }
-      } else if(myMetricPtr->rawDistance(Sites[siteId], point) == myMetricPtr->rawDistance(voronoiSites[0], point)) {
-        if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestBOTH ) {
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId]);
-          }
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId+1]);
-            std::cout << "Set : " << Sites[siteId] << " " << Sites[siteId+1] << std::endl;
-          }
-        } else {
-          if (std::find(voronoiSites.begin(), voronoiSites.end(), Sites[siteId]) == voronoiSites.end()) {
-            voronoiSites.push_back(Sites[siteId]);
-            std::cout << "Set : " << Sites[siteId] << std::endl;
-          }
-        }
-      }
-      
-      myImagePtr->setValue(point, voronoiSites); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
-    }
 
+      std::vector<Point> voronoiSites = myImagePtr->operator()(point);    
+      minimal_distance = myMetricPtr->rawDistance(voronoiSites[0], point);
+  
+      for (Point site : Sites) 
+        {
+          if (myMetricPtr->rawDistance(site, point) < minimal_distance) {
+            while(!voronoiSites.empty()){
+              voronoiSites.pop_back();
+            }
+            voronoiSites.push_back(site);
+            minimal_distance = myMetricPtr->rawDistance(site, point);
+              
+          } else if((myMetricPtr->rawDistance(site, point) == minimal_distance) 
+                  && (std::find(voronoiSites.begin(), voronoiSites.end(), site) == voronoiSites.end())) {
+                voronoiSites.push_back(site);
+          } 
+        }
+        myImagePtr->setValue(point, voronoiSites); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
+      }
+  
   // Continuing rewriting in the periodic case.
   if ( isPeriodic(dim) )
     {
