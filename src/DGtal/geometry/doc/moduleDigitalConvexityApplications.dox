@@ -1,0 +1,31 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleDigitalConvexityApplications Applications of full digital convexity
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.2
+
+Part of the \ref packageGeometry.
+  
+This part of the manual describes some applications of a new
+definition of digital convexity, called full convexity \cite
+lachaud_dgmm_2021. See \ref moduleDigitalConvexity for further detais
+on full convexity.
+
+[TOC]
+
+The following programs are related to this documentation:
+geometry/volumes/geometricAnalysis3D.cpp,
+
+@section dgtal_dconvexityapp_sec1  Introduction to full digital convexity
+
+
+*/
+}

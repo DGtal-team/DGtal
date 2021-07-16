@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
    
-@page moduleDigitalConvexity Digital convexity
+@page moduleDigitalConvexity Digital convexity and full digital convexity
 
 @writers Jacques-Olivier Lachaud
 
