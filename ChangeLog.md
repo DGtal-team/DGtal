@@ -21,6 +21,7 @@
   - Various warnings / deprecated functions (David Coeurjolly,
     [#1583](https://github.com/DGtal-team/DGtal/pull/1583)
   
+  
 
 # DGtal 1.2
 
