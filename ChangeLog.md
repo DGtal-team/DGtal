@@ -14,7 +14,8 @@
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
-  - Add Obj format in MeshReader including colors.
+  - Add Obj format in MeshReader including colors and fixing obj format read
+    with relative face position.
     (Bertrand Kerautret, [#1584](https://github.com/DGtal-team/DGtal/pull/1584))
 
 # DGtal 1.2
