@@ -29,13 +29,41 @@
 
 
 /**
- * This example shows how to analyze the local geometry of 3D digital
- * sets with full convexity over cubical neighborhoods.
- *
- * @see \ref dgtal_topology_sec3_5
- *
- *
- * \example geometry/volumes/geometricAnalysis3D.cpp
+   This example shows how to analyze the local geometry of 3D digital
+   sets with full convexity over cubical neighborhoods.
+   
+   @see \ref dgtal_dconvexityapp_sec1
+   
+   For instance, you may call it to analyse image Al.100.vol at scale 2 as
+
+\verbatim
+geometricAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
+\endverbatim
+
+   Results are displayed, then saved in 'geom-cvx.obj'. You may also
+   analyse the same shape in multiscale fashion with
+
+\verbatim
+geometricAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
+\endverbatim
+ 
+   The result is saved in 'geom-scale-cvx.obj'. You will obtain images
+   like below, where green means convex, blue means concave, white is
+   planar and red is atypical (see \cite lachaud_dgmm_2021 for details).
+
+<table>
+<tr><td>
+\image html al100-analysis-1.jpg "Full convexity analysis at scale 1" width=100%
+</td><td>
+\image html al100-analysis-2.jpg "Full convexity analysis at scale 2" width=100%
+</td><td>
+\image html al100-analysis-3.jpg "Full convexity analysis at scale 3" width=100%
+</td><td>
+\image html al100-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=100%
+</td></tr>
+</table>
+
+ \example geometry/volumes/geometricAnalysis3D.cpp
  */
 
 

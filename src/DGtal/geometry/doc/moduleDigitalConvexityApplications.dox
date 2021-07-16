@@ -10,22 +10,98 @@ namespace DGtal {
 
 @writers Jacques-Olivier Lachaud
 
-@since 1.2
+@since 1.3
 
 Part of the \ref packageGeometry.
   
 This part of the manual describes some applications of a new
-definition of digital convexity, called full convexity \cite
-lachaud_dgmm_2021. See \ref moduleDigitalConvexity for further detais
-on full convexity.
+definition of digital convexity, called full convexity \cite lachaud_dgmm_2021 .
+See \ref moduleDigitalConvexity for further details on full convexity.
 
 [TOC]
 
 The following programs are related to this documentation:
 geometry/volumes/geometricAnalysis3D.cpp,
 
-@section dgtal_dconvexityapp_sec1  Introduction to full digital convexity
+@section dgtal_dconvexityapp_sec1 Local convexity analysis
 
+Full convexity is stable by intersection with an half-space with
+axis-aligned normal vector and integer intercept. Hence if \f$ X \f$
+is fully convex, and \f$ N_k(x) \f$ is a \f$ (2k+1)^d \f$ neighborhood
+around point \a x, then \f$ X \cap N_k(x) \f$ is also fully convex.
+
+This shows that a fully convex set is locally fully convex everywhere.
+Reciprocally local analysis with full convexity gives information on
+the local geometry:
+- \f$ X \f$ is \a k-\a convex at \a x, whenever \f$ X \cap N_k(x) \f$ is fully convex;
+- \f$ X \f$ is \a k-\a concave at \a x, whenever \f$ (\mathbb{Z}^d \setminus X) \cap N_k(x) \f$ is fully convex;
+- \f$ X \f$ is \a k-\a planar at \a x, whenever it is both \a k-\a convex and \a k-\a concave at \a x;
+- otherwise \f$ X \f$ is \a k-\a atypical at \a x.
+
+Due to the stability properties of full convexity, one may observe
+that \f$ k+1 \f$-convexity at \a x implies \f$ k \f$-convexity at \a
+x, the same holds for concavity and planarity. Taking the
+contraposition indicates that \f$ k \f$-atypicality implies \f$ k+1
+\f$-atypicality.
+
+Class NeighborhoodConvexityAnalyzer offers many services to check
+these properties in an efficient way. It stores look-up tables to
+perform these services efficiently in 2D for 3x3 neighborhood, and
+also uses memoization to speed-up computations (useful in dimension
+greater than 2 and/or when the neighborhood is larger).
+
+The following snippet shows how you can use it.
+\code
+#include "DGtal/geometry/volumes/NeighborhoodConvexityAnalyzer.h"
+...
+using namespace Z3i;
+auto params = SH3::defaultParameters();
+auto bimage = SH3::makeBinaryImage( "Al.100.vol", params );
+auto K      = SH3::getKSpace( bimage );
+
+// Set up a memoizer of up to 50000 configurations.
+NeighborhoodConvexityAnalyzer< KSpace, 1 > NCA( K, 50000 );
+
+// Compute all immediate interior points (inner boundary).
+auto surface = SH3::makeDigitalSurface( bimage, K, params );
+std::vector< Point > points;
+for ( auto s : (*surface) )
+  {
+    Dimension k = K.sOrthDir( s );
+    auto voxel  = K.sIncident( s, k, K.sDirect( s, k ) );
+    Point p     = K.sCoords( voxel );
+    points.push_back( p );
+  }
+// Analyse inner boundary points
+for ( auto x : points )
+  {
+    nca.setCenter( x, *bimage );                         // center neighborhood on point x
+    bool  cvx = nca.isFullyConvex( true );               // check 1-convexity
+    bool ccvx = nca.isComplementaryFullyConvex( false ); // check 1-concavity
+    ...
+  }
+\endcode
+
+You may have a look at geometricAnalysis3D.cpp to have a more complete example.
+
+<table>
+<tr><td>
+\image html cps-analysis-1.jpg "Full convexity analysis at scale 1" width=90%
+</td><td>
+\image html cps-analysis-2.jpg "Full convexity analysis at scale 2" width=90%
+</td><td>
+\image html cps-analysis-3.jpg "Full convexity analysis at scale 3" width=90%
+</td><td>
+\image html cps-analysis-4.jpg "Full convexity analysis at scale 4" width=90%
+</td></tr>
+</table>
+<table>
+<tr><td>
+\image html cps-analysis-1-5.jpg "Full convexity multiscale analysis (scales 1-5)" width=90%
+</td><td>
+\image html cps-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td></tr>
+</table>
 
 */
 }
