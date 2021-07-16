@@ -17,15 +17,25 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleMedialAxis nD Volumetric Analysis using Separable Processes
+@page moduleMedialAxis Discrete Medial Axis and its filtration
 
 [TOC]
 
-@author David Coeurjolly, Roland Denis
+@author Robin Lamy, David Coeurjolly, Isabelle Sivignon
 
 This part of the manual describes the DGtal Medial Axis module. We
-focus here on describing the Reduced Medial Axis Extraction from a Power Map,
-and on describing some variant algorithm such as Scale Medial Axis Extraction.
+detail how to extract a discrete medial axis @f$ MA(X)@f$ (set of
+Euclidean balls) of a given binary object @f$ X @f$. There are many
+definitions of such strucutre, both in continuous and discrete
+settings, please refer to @cite TODO and @cite TODO for an overview.
+
+
+In our discrete setting, the discrete medial axis will be defined such that @f[
+X = \cup_{b\in MA(X)} b\cap \mathbb{Z}^d\,.@f] Furthermore, all balls
+in @f$ MA(X)@f$ are @e maximal @e in the sense that for all @f$ b\in
+MA(X)@f$ there is no @f$ b'\in MA(X) @f$ such that @f$ b\subset b@f$.
+
+
 
 
 \section Medial Axis Introduction
