@@ -1,0 +1,299 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file TangencyComputer.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2021/07/16
+ *
+ * Implementation of inline methods defined in TangencyComputer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+DGtal::TangencyComputer<TKSpace>::
+TangencyComputer( Clone<KSpace> K )
+  : myK( K ), myDConv( myK )
+{
+  setUp();
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+template < typename PointIterator >
+void
+DGtal::TangencyComputer<TKSpace>::
+init( PointIterator itB, PointIterator itE )
+{
+  myX = std::vector< Point >( itB, itE );
+  myCellCover =
+    myDConv.makeCellCover( myX.cbegin(), myX.cend(), 1, KSpace::dimension - 1 );    
+  for ( Size i = 0; i < myX.size(); ++i )
+    myPt2Index[ myX[ i ] ] = i;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+bool
+DGtal::TangencyComputer<TKSpace>::
+arePointsCotangent( const Point& a, const Point& b ) const
+{
+  return myDConv.isFullySubconvex( a, b, myCellCover );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
+DGtal::TangencyComputer<TKSpace>::
+getCotangentPoints( const Point& a ) const
+{
+  // Breadth-first traversal from a
+  std::vector< Index > R; // result
+  std::set   < Index > V; // visited or in queue
+  std::queue < Index > Q; // queue for breadth-first traversal
+  ASSERT( myPt2Index.find( a ) != myPt2Index.cend() );
+  const auto idx_a = myPt2Index.find( a )->second;
+  Q.push  ( idx_a );
+  V.insert( idx_a );
+  while ( ! Q.empty() )
+    {
+      const auto j = Q.front();
+      const auto p = myX[ j ];
+      Q.pop();
+      bool  a_eq_p = a == p;
+      if ( ! a_eq_p ) R.push_back( j );
+      if ( a_eq_p || arePointsCotangent( a, p ) )
+        {
+          for ( auto && v : myN ) {
+            const Point q = p + v;
+            const auto it = myPt2Index.find( p );
+            if ( it == myPt2Index.cend() ) continue; // not in X
+            const auto next = it->second;
+            if ( V.count( next ) ) continue; // already visited
+            V.insert( next );
+            Q.push  ( next );
+          }
+        }
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
+DGtal::TangencyComputer<TKSpace>::
+getCotangentPoints( const Point& a,
+                    const std::vector< bool > & to_avoid ) const
+{
+  // Breadth-first traversal from a
+  std::vector< Index > R; // result
+  std::set   < Index > V; // visited or in queue
+  std::queue < Index > Q; // queue for breadth-first traversal
+  ASSERT( myPt2Index.find( a ) != myPt2Index.cend() );
+  const auto idx_a = myPt2Index.find( a )->second;
+  Q.push  ( idx_a );
+  V.insert( idx_a );
+  while ( ! Q.empty() )
+    {
+      const auto  j = Q.front();
+      const auto  p = myX[ j ];
+      const auto ap = p - a;
+      Q.pop();
+      bool  a_eq_p = ap == Point::zero;
+      if ( ! a_eq_p ) R.push_back( j );
+      if ( a_eq_p || arePointsCotangent( a, p ) )
+        {
+          for ( auto && v : myN ) {
+            if ( ap.dot( v ) < 0.0 ) continue;
+            const Point q = p + v;
+            const auto it = myPt2Index.find( q );
+            if ( it == myPt2Index.cend() ) continue; // not in X
+            const auto next = it->second;
+            if ( to_avoid[ next ] ) continue; // to avoid
+            if ( V.count( next ) ) continue; // already visited
+            V.insert( next );
+            Q.push  ( next );
+          }
+        }
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
+DGtal::TangencyComputer<TKSpace>::
+getCotangentPoints( const Point& a,
+                    const std::vector< bool > & to_avoid,
+                    const std::vector< double >& distance,
+                    double dmax ) const
+{
+  bool use_dmax = dmax <= sqrt( KSpace::dimension );
+  dmax = std::max( 0.0, dmax ); 
+  // Breadth-first traversal from a
+  std::vector< Index > R; // result
+  std::set   < Index > V; // visited or in queue
+  std::queue < Index > Q; // queue for breadth-first traversal
+  ASSERT( myPt2Index.find( a ) != myPt2Index.cend() );
+  const auto idx_a = myPt2Index.find( a )->second;
+  Q.push  ( idx_a );
+  V.insert( idx_a );
+  while ( ! Q.empty() )
+    {
+      const auto  j = Q.front();
+      const auto  p = myX[ j ];
+      const auto ap = p - a;
+      Q.pop();
+      bool  a_eq_p = ap == Point::zero;
+      if ( ! a_eq_p ) R.push_back( j );
+      if ( a_eq_p || arePointsCotangent( a, p ) )
+        {
+          for ( int i = 0; i < myN.size(); i++ ) {
+            const auto & v = myN[ i ];
+            if ( ap.dot( v ) < 0 ) continue; // going backward
+            const Point q = p + v;
+            const auto it = myPt2Index.find( q );
+            if ( it == myPt2Index.cend() ) continue; // not in X
+            const auto next = it->second;
+            if ( to_avoid[ next ] ) continue; // to avoid
+            if ( V.count ( next ) ) continue; // already visited
+            const auto d_a = distance[ idx_a ] + ( q - a ).norm();
+            if ( d_a >= ( distance[ next ] + ( use_dmax ? dmax : myDN[ i ] )  ) )
+              continue; // only if distance is better.
+            V.insert( next );
+            Q.push  ( next );
+          }
+        }
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+double
+DGtal::TangencyComputer<TKSpace>::
+shortestPaths( std::vector< Index >&  ancestor,
+               std::vector< double >& distance,
+               Index source,
+               double max_distance,
+               double secure,
+               bool verbose ) const
+{
+  typedef std::tuple< Index, Index, double > Node;
+  struct Comparator {
+    bool operator()  ( const Node& p1,
+                       const Node& p2 ) const
+    {
+      return std::get<2>( p1 ) > std::get<2>( p2 );
+    }
+  };
+  auto eucl_d = [] ( const Point& p, const Point& q )
+  { return ( p - q ).norm(); };
+
+  const int nb = myX.size();
+  ancestor = std::vector< Index > ( nb, nb );
+  distance = std::vector< double >( nb, std::numeric_limits<double>::infinity() );
+  std::vector< bool > visited ( nb, false );
+  
+  if ( verbose ) trace.beginBlock("Computing geodesics.");
+
+  std::priority_queue< Node, std::vector< Node >, Comparator > Q;
+  Q.push( std::make_tuple( source, source, 0.0 ) );
+  double previous_d = 0.0;
+  Index i = 0;
+  double size_ltp = 0.0;
+  // True Dijkstra algorithm
+  while ( ! Q.empty() )  {
+    const auto elem = Q.top();
+    Q.pop();
+    const Index current = std::get<0>( elem );
+    const Index father  = std::get<1>( elem );
+    const Point  q = myX[ current ];
+    const Point  r = myX[ father ];
+    const double d = std::get<2>( elem );
+    if ( d > distance[ current ] ) continue; // already processed
+    if ( d > max_distance ) break;           // bound is reached
+    if ( verbose && ( i % 10 == 0 ) ) trace.progressBar( i, nb );
+    i++;
+    ancestor[ current ] = father;
+    distance[ current ] = d;
+    visited [ current ] = true;
+    if ( d < previous_d )
+      trace.warning() << "Bad distance " << d << " prev=" << previous_d << std::endl;
+    previous_d = d;
+    std::vector< Index > N = getCotangentPoints( q, visited, distance, secure );
+    size_ltp += (double) N.size();
+    for ( auto next : N )
+      {
+        const Point p = myX[ next ];
+        double next_d = d + eucl_d( q, p );
+        if ( next_d < distance[ next ] )
+          {
+            distance[ next ] = next_d;
+            Q.push( std::make_tuple( next, current, next_d ) );
+          }
+      }
+  }
+  if ( verbose ) trace.endBlock();
+  return previous_d;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::TangencyComputer<TKSpace>::
+setUp()
+{
+  myN.clear();
+  myDN.clear();
+  const Point zero = Point::zero;
+  Domain neighborhood( Point::diagonal( -1 ), Point::diagonal( 1 ) );
+  for ( auto&& v : neighborhood )
+    {
+      if ( v != zero )
+        {
+          myN .push_back( v );
+          myDN.push_back( v.norm() );
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                    const TangencyComputer<TKSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
