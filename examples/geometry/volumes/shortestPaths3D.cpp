@@ -85,10 +85,13 @@ shortestPaths3D 2 ${DGTAL}/examples/samples/Al.100.vol
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
+typedef Z3i::Space          Space;
+typedef Z3i::KSpace         KSpace;
+typedef Z3i::Domain         Domain;
+typedef Z3i::SCell          SCell;
 typedef Shortcuts< KSpace > SH3;
-
-///////////////////////////////////////////////////////////////////////////////
+typedef Space::Point        Point;
+typedef Space::Vector       Vector;
 
 // Called when an user clicks on a surfel.
 int reaction( void* viewer, int32_t name, void* data )
@@ -133,6 +136,8 @@ int main( int argc, char** argv )
   
   // Compute surface
   auto surface = SH3::makeDigitalSurface( bimage, K, params );
+
+  
   // Compute interior boundary points
   // They are less immediate interior points than surfels.
   std::vector< Point >   points;
@@ -219,6 +224,7 @@ int main( int argc, char** argv )
     viewerCore << MViewer3D::updateDisplay;
     application.exec();
   }
+
   return 0;
 }
 //                                                                           //
