@@ -3,6 +3,7 @@ add_subdirectory(distance)
 set(DGTAL_EXAMPLES_SRC
         dvcm-2d
         simpleness-convexity-2d
+        lutFullConvexity2D
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
@@ -16,6 +17,7 @@ if (  WITH_VISU3D_QGLVIEWER )
       geometricAnalysis3D
       geometricRepairing3D
       geometricSurfaceAnalysis3D
+      shortestPaths3D
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
     add_executable(${FILE} ${FILE}.cpp)

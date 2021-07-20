@@ -159,10 +159,12 @@ namespace DGtal
     NeighborhoodConvexityAnalyzer( Clone<KSpace> aKSpace, Size memoizer_size = 0 )
       : myDigConv( aKSpace ), myMemoizer( memoizer_size )
     {
-      myDomain       = Domain( aKSpace.lowerBound(), aKSpace.upperBound() );
+      myDomain       = Domain( myDigConv.space().lowerBound(),
+                               myDigConv.space().upperBound() );
       myComputations = 0;
       myResults      = 0;
       computeBasicFullConvexityTable();
+      trace.info() << "Size=" << size() << " middle=" << middle << std::endl;
     }
 
     /**
@@ -180,6 +182,7 @@ namespace DGtal
       myComputations = 0;
       myResults      = 0;
       computeBasicFullConvexityTable();
+      trace.info() << "Size=" << size() << " middle=" << middle << std::endl;
     }
 
     /**
@@ -234,6 +237,12 @@ namespace DGtal
     Point center() const
     {
       return myCenter;
+    }
+    
+    /// @return the current configuration.
+    Configuration configuration() const
+    {
+      return myCfgX;
     }
 
     /// Tells if the current center belongs to the shape X
@@ -311,9 +320,7 @@ namespace DGtal
             { // need to do the true computation.
               std::vector< Point > localX;
               getLocalX( localX, with_center );
-              // if ( with_center ) myLocalX.push_back( center() );
               ok = myDigConv.isFullyConvex( localX );
-              // if ( with_center ) myLocalX.pop_back();
             }
           if ( myMemoizer.isValid() )
             myMemoizer.set( cfg, ok );
@@ -351,9 +358,7 @@ namespace DGtal
             { // need to do the true computation.
               std::vector< Point > localCompX;
               getLocalCompX( localCompX, with_center );
-              // if ( with_center ) myLocalCompX.push_back( center() );
               ok = myDigConv.isFullyConvex( localCompX );
-              // if ( with_center ) myLocalCompX.pop_back();
             }
           if ( myMemoizer.isValid() )
             myMemoizer.set( cfg, ok );
@@ -379,9 +384,7 @@ namespace DGtal
         { // need to do the true computation.
           std::vector< Point > localX;
           getLocalX( localX, with_center );
-          // if ( with_center ) myLocalX.push_back( center() );
           ok = myDigConv.is0Convex( localX );
-          // if ( with_center ) myLocalX.pop_back();
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
@@ -404,9 +407,7 @@ namespace DGtal
         { // need to do the true computation.
           std::vector< Point > localCompX;
           getLocalCompX( localCompX, with_center );
-          // if ( with_center ) myLocalCompX.push_back( center() );
           ok = myDigConv.is0Convex( localCompX );
-          // if ( with_center ) myLocalCompX.pop_back();
         }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
@@ -426,8 +427,9 @@ namespace DGtal
     {
       if ( complement )
         {
-          current = ~current;
+          current.flip(); // current = ~current;
           if ( ! with_center ) current.reset( middle );
+          else current.set( middle );
         }
       else
         {

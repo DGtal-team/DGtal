@@ -97,6 +97,31 @@ struct Analyzer {
 
   template < typename ImagePtr >
   static
+  std::vector<Point>
+  debug_one( const KSpace& aK, Point p, ImagePtr bimage )
+  {
+    NCA nca( aK.lowerBound(), aK.upperBound(),
+             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
+    auto& image = *bimage;
+    int    geom = 0;
+    nca.setCenter( p, image );
+    bool  cvx = nca.isFullyConvex( true );
+    bool ccvx = nca.isComplementaryFullyConvex( false );
+    auto cfg  = nca.makeConfiguration( nca.configuration(), true, false );
+    std::vector< Point > localCompX;
+    nca.getLocalCompX( localCompX, false );
+    std::cout << "InC=" << nca.configuration() << std::endl;
+    std::cout << "Cfg=" << cfg << std::endl;
+    for ( auto q : localCompX ) std::cout << q;
+    std::cout << std::endl;
+    geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
+    std::cout << "cvx=" << cvx << " ccvx=" << ccvx << std::endl;
+    std::cout << "geom=" << geom << std::endl;
+    return localCompX;
+  }
+
+  template < typename ImagePtr >
+  static
   std::vector<int>
   run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
@@ -108,6 +133,8 @@ struct Analyzer {
     int geom;
     int i  = 0;
     int nb = pts.size();
+    int  nb_cvx = 0;
+    int nb_ccvx = 0;
     for ( auto p : pts )
       {
         if ( i % 100 == 0 ) trace.progressBar( i, nb );
@@ -117,6 +144,8 @@ struct Analyzer {
             nca.setCenter( p, image );
             bool  cvx = nca.isFullyConvex( true );
             bool ccvx = nca.isComplementaryFullyConvex( false );
+            if ( cvx  ) nb_cvx  += 1;
+            if ( ccvx ) nb_ccvx += 1;
             geom = ( cvx ? 0x1 : 0x0 ) | ( ccvx ? 0x2 : 0x0 );
             computed[ p ] = geom;
           }
@@ -124,6 +153,7 @@ struct Analyzer {
         result.push_back( geom );
         i++; 
       }
+    trace.info() << "nb_cvx=" << nb_cvx << " nb_ccvx=" << nb_ccvx << std::endl;
     return result;    
   }
 
@@ -208,6 +238,14 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   }
 };
 
+int reaction( void* viewer, int32_t name, void* data )
+{
+  int32_t* selected = (int32_t*) data;
+  *selected = name;
+  std::cout << "Selected surfel=" << *selected << std::endl;
+  return 0;
+}
+
 int main( int argc, char** argv )
 {
   if ( argc <= 2 )
@@ -226,9 +264,6 @@ int main( int argc, char** argv )
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
 
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.setWindowTitle("simpleExample3DViewer");
-  viewer.show();  
 
   auto   params  = SH3::defaultParameters();
   
@@ -247,21 +282,32 @@ int main( int argc, char** argv )
   params( "surfaceComponents" , "All" );
   auto surface = SH3::makeDigitalSurface( bimage, K, params );
   // Compute interior boundary points
-  std::vector< Point > points;
+  std::vector< Point >   points;
+  std::map< SCell, int > surfel2idx;
+  std::map< Point, int > point2idx;
+  int idx = 0;
   for ( auto s : (*surface) )
     {
       // get inside point on the border of the shape.
       Dimension k = K.sOrthDir( s );
       auto voxel  = K.sIncident( s, k, K.sDirect( s, k ) );
       Point p     = K.sCoords( voxel );
-      points.push_back( p );
+      auto it     = point2idx.find( p );
+      if ( it == point2idx.end() )
+        {
+          points.push_back( p );
+          surfel2idx[ s ] = idx;
+          point2idx [ p ] = idx++;
+        }
+      else
+        surfel2idx[ s ] = it->second;
     } 
-  trace.info() << "Shape has " << point.size() << " interior boundary points"
+  trace.info() << "Shape has " << points.size() << " interior boundary points"
                << std::endl;
   if ( N != 0 )
     {
       std::vector< int > result;
-      trace.beginBlock ( "Analyzing" );
+      trace.beginBlock ( "Single scale analysis" );
       if ( N == 1 ) result = Analyzer< KSpace, 1 >::run( K, points, bimage );
       if ( N == 2 ) result = Analyzer< KSpace, 2 >::run( K, points, bimage );
       if ( N == 3 ) result = Analyzer< KSpace, 3 >::run( K, points, bimage );
@@ -275,9 +321,15 @@ int main( int argc, char** argv )
       auto surfels   = SH3::getSurfelRange( surface, params );
       SH3::Colors all_colors( surfels.size() );
       for ( int i = 0; i < surfels.size(); i++ )
-        all_colors[ i ] = colors[ result[ i ] ];
+        {
+          const auto    j = surfel2idx[ surfels[ i ] ];
+          all_colors[ i ] = colors[ result[ j ] ];
+        }
       bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), all_colors,
                               "geom-cvx.obj" );
+      Viewer3D<> viewer;
+      viewer.setWindowTitle("geometricAnalysis3D");
+      viewer.show();  
       int i = 0;
       viewer << SetMode3D( dummy.className(), "Basic" );
       for ( auto s : (*surface) )
@@ -286,10 +338,52 @@ int main( int argc, char** argv )
                  << s;
           i++;
         }
+      viewer<< Viewer3D<>::updateDisplay;
+      application.exec();
+
+      // DEBUG
+      // while ( true )
+      //   {
+      //     Viewer3D<> viewer;
+      //     viewer.setWindowTitle("geometricAnalysis3D");
+      //     viewer.show();  
+      //     int i = 0;
+      //     viewer << SetMode3D( dummy.className(), "Basic" );
+      //     int32_t name = 0;
+      //     for ( auto s : (*surface) )
+      //       {
+      //         viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
+      //                << SetName3D( name++ )
+      //                << s;
+      //         i++;
+      //       }
+      //     int32_t selected_surfel = 0;
+      //     viewer << SetSelectCallback3D( reaction, &selected_surfel,
+      //                                    0, surfels.size() - 1 );
+      //     viewer << Viewer3D<>::updateDisplay;
+      //     application.exec();
+      //     const auto    j = surfel2idx[ surfels[ selected_surfel ] ];
+      //     const Point   q = points[ j ];
+      //     trace.info() << "----------------------------------------------" << std::endl;
+      //     trace.info() << "Point = " << q << std::endl;
+      //     std::vector<Point> dbg;
+      //     if ( N == 1 ) dbg = Analyzer< KSpace, 1 >::one( K, q, bimage );
+      //     if ( N == 2 ) dbg = Analyzer< KSpace, 2 >::one( K, q, bimage );
+      //     if ( N == 3 ) dbg = Analyzer< KSpace, 3 >::one( K, q, bimage );
+      //     if ( N == 4 ) dbg = Analyzer< KSpace, 4 >::one( K, q, bimage );
+      //     if ( N == 5 ) dbg = Analyzer< KSpace, 5 >::one( K, q, bimage );
+      //     Viewer3D<> viewer_dbg;
+      //     viewer_dbg.setWindowTitle("Debug");
+      //     viewer_dbg.show();
+      //     for ( auto p : dbg ) viewer_dbg << p;
+      //     viewer_dbg << Viewer3D<>::updateDisplay;
+      //     application.exec();
+      //   }
+      
     }
   else
     {
-      trace.beginBlock ( "Analyzing" );
+      trace.beginBlock ( "Multiscale analysis" );
       auto geometry =
         MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( K, points, bimage );
       trace.endBlock();
@@ -310,11 +404,12 @@ int main( int argc, char** argv )
       auto surfels   = SH3::getSurfelRange( surface, params );
       SH3::Colors all_colors( surfels.size() );
       for ( int i = 0; i < surfels.size(); i++ ) {
-        int m0 = std::min( geometry[ i ].first, geometry[ i ].second );
-        int m1 = std::max( geometry[ i ].first, geometry[ i ].second );
+        const auto j = surfel2idx[ surfels[ i ] ];
+        int m0 = std::min( geometry[ j ].first, geometry[ j ].second );
+        int m1 = std::max( geometry[ j ].first, geometry[ j ].second );
         if ( m1 == 0 ) all_colors[ i ] = color_atypical;
         else if ( m0 == m1 ) all_colors[ i ] = colors_planar[ 5 ];
-        else if ( geometry[ i ].first > geometry[ i ].second )
+        else if ( geometry[ j ].first > geometry[ j ].second )
           all_colors[ i ] = colors_cvx[ 5 - abs( m0 - m1 ) ];
         else
           all_colors[ i ] = colors_ccv[ 5 - abs( m0 - m1 ) ];
@@ -323,6 +418,9 @@ int main( int argc, char** argv )
                               "geom-scale-cvx.obj" );
       SCell dummy;
       int i = 0;
+      Viewer3D<> viewer;
+      viewer.setWindowTitle("geometricAnalysis3D");
+      viewer.show();  
       viewer << SetMode3D( dummy.className(), "Basic" );
       for ( auto s : (*surface) )
         {
@@ -330,9 +428,10 @@ int main( int argc, char** argv )
                  << s;
           i++;
         }
+      viewer<< Viewer3D<>::updateDisplay;
+      application.exec();
     }      
-  viewer<< Viewer3D<>::updateDisplay;
-  return application.exec();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

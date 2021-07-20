@@ -103,5 +103,28 @@ You may have a look at geometricAnalysis3D.cpp to have a more complete example.
 </td></tr>
 </table>
 
+@section dgtal_dconvexityapp_sec2 Tangency and shortest paths
+
+Tangency or subconvexity is a derived concept from full convexity.
+Let \f$ X \subset \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
+A \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
+subconvex to \f$ X \f$ whenever \f$ C^d_k \lbrack \mathrm{Conv}(A)
+\rbrack \subset C^d_k \lbrack X \rbrack \f$. And \f$ A \f$ is said to
+be \b fully (digitally) \b subconvex to \f$ X \f$ whenever it is
+digitally \a k- subconvex to \f$ X \f$ for \f$ 0 \le k \le d \f$.
+
+We also say that \f$ A \f$ is \b tangent to \f$ X \f$. The elements of
+\f$ A \f$ are said to be \b cotangent (in \f$ X \f$). Note that
+necessarily \f$ A \subset X \f$.
+
+A \a path \f$ \gamma \f$ from \a a to \a b in \f$ X \f$ is then a
+sequence a points \f$ \gamma=(x_i)_{i=0,\ldots,n} \f$, such that \f$
+x_0 = a \f$, \f$ x_n = b \f$, and for all \f$ i \in \{ 0, \ldots, n-1
+\} \f$, it holds that \f$ \{ x_i, x_{i+1} \} \f$ is tangent to \f$ X \f$. 
+
+We can embed in the Euclidean space the path \f$ \gamma \f$ simply by
+joining its consecutive points by Euclidean straight line
+segments. Its \a length is then just the Euclidean length of its embedding.
+
 */
 }

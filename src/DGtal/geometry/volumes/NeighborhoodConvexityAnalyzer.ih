@@ -57,12 +57,9 @@ setCenter( Point c, const PointPredicate& X )
         {
           if ( X( q ) )
             {
-              // myLocalX.push_back( q );
               myCfgX.set( bit );
               ++myNbInX;
             }
-          // else
-          //   myLocalCompX.push_back( q );
         }
       bit += 1;
     }
@@ -81,13 +78,13 @@ getLocalX( std::vector< Point >& localX, bool with_center ) const
   Size bit       = 0;
   for ( auto q : local_domain )
     {
-      if ( ( q == myCenter ) && with_center )
-        localX.push_back( myCenter );
-      else if ( myDomain.isInside( q ) )
-        {
-          if ( myCfgX[ bit ] )
-            localX.push_back( q );
-        }
+      if ( q == myCenter ) {
+        if ( with_center )
+          localX.push_back( myCenter );
+      } else if ( myDomain.isInside( q ) ) {
+        if ( myCfgX.test( bit ) )
+          localX.push_back( q );
+      }
       ++bit;
     }
 }
@@ -102,13 +99,13 @@ getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
   Size bit       = 0;
   for ( auto q : local_domain )
     {
-      if ( ( q == myCenter ) && with_center )
-        localCompX.push_back( myCenter );
-      else if ( myDomain.isInside( q ) )
-        {
-          if ( ! myCfgX[ bit ] )
-            localCompX.push_back( q );
-        }
+      if ( q == myCenter ) {
+        if ( with_center )
+          localCompX.push_back( myCenter );
+      } else if ( myDomain.isInside( q ) ) {
+        if ( ! myCfgX.test( bit ) )
+          localCompX.push_back( q );
+      }
       ++bit;
     }
 }
