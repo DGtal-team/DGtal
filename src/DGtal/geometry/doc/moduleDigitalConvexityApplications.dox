@@ -102,6 +102,13 @@ You may have a look at geometricAnalysis3D.cpp to have a more complete example.
 \image html cps-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
 </td></tr>
 </table>
+<table>
+<tr><td>
+\image html ssphere-257-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td><td>
+\image html rc250-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td></tr>
+</table>
 
 @section dgtal_dconvexityapp_sec2 Tangency and shortest paths
 
