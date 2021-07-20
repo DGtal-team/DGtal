@@ -125,8 +125,8 @@ struct Analyzer {
   std::vector<int>
   run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
-    NCA nca( aK.lowerBound(), aK.upperBound(),
-             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
+    NCA nca( aK.lowerBound(), aK.upperBound(), 0 );
+    // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
     auto& image = *bimage;
     std::vector<int> result;
     std::map< Point, int > computed;
@@ -163,8 +163,8 @@ struct Analyzer {
   run( std::vector<int> & to_update,
        const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
   {
-    NCA nca( aK.lowerBound(), aK.upperBound(), 
-             KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
+    NCA nca( aK.lowerBound(), aK.upperBound() );
+    // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
     auto& image = *bimage;
     std::map< Point, int > computed;
     int geom;
@@ -238,6 +238,7 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   }
 };
 
+// Called when an user clicks on a surfel.
 int reaction( void* viewer, int32_t name, void* data )
 {
   int32_t* selected = (int32_t*) data;
@@ -281,7 +282,9 @@ int main( int argc, char** argv )
   // Compute surface
   params( "surfaceComponents" , "All" );
   auto surface = SH3::makeDigitalSurface( bimage, K, params );
+
   // Compute interior boundary points
+  // They are less immediate interior points than surfels.
   std::vector< Point >   points;
   std::map< SCell, int > surfel2idx;
   std::map< Point, int > point2idx;

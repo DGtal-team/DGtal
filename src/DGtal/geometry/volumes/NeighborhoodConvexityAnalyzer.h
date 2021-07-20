@@ -303,18 +303,28 @@ namespace DGtal
         ? FullConvexity_X_with_center : FullConvexity_X_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
       bool ok;
-      bool memoized = false;
-      auto cfg = makeConfiguration( myCfgX, false, with_center );
       // Check memoizer
       if ( myMemoizer.isValid() )
         {
+          auto cfg = makeConfiguration( myCfgX, false, with_center );
           auto   p = myMemoizer.get( cfg );
           ok       = p.first; // may not be correct
-          memoized = p.second;
+          bool memoized = p.second;
+          if ( ! memoized )
+            {
+              // Need to compute full convexity property
+              ok = checkBasicConfigurationsFullConvexity( false, with_center );
+              if ( ok && false_positive )
+                { // need to do the true computation.
+                  std::vector< Point > localX;
+                  getLocalX( localX, with_center );
+                  ok = myDigConv.isFullyConvex( localX );
+                }
+              myMemoizer.set( cfg, ok );
+            }
         }
-      if ( ! memoized )
+      else
         {
-          // Need to compute full convexity property
           ok = checkBasicConfigurationsFullConvexity( false, with_center );
           if ( ok && false_positive )
             { // need to do the true computation.
@@ -322,9 +332,28 @@ namespace DGtal
               getLocalX( localX, with_center );
               ok = myDigConv.isFullyConvex( localX );
             }
-          if ( myMemoizer.isValid() )
-            myMemoizer.set( cfg, ok );
         }
+      // auto cfg = makeConfiguration( myCfgX, false, with_center );
+      // // Check memoizer
+      // if ( myMemoizer.isValid() )
+      //   {
+      //     auto   p = myMemoizer.get( cfg );
+      //     ok       = p.first; // may not be correct
+      //     memoized = p.second;
+      //   }
+      // if ( ! memoized )
+      //   {
+      //     // Need to compute full convexity property
+      //     ok = checkBasicConfigurationsFullConvexity( false, with_center );
+      //     if ( ok && false_positive )
+      //       { // need to do the true computation.
+      //         std::vector< Point > localX;
+      //         getLocalX( localX, with_center );
+      //         ok = myDigConv.isFullyConvex( localX );
+      //       }
+      //     if ( myMemoizer.isValid() )
+      //       myMemoizer.set( cfg, ok );
+      //   }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;
@@ -341,16 +370,27 @@ namespace DGtal
         ? FullConvexity_CompX_with_center : FullConvexity_CompX_without_center;
       if ( myComputations & mask ) return bool( myResults & mask );
       bool ok;
-      bool memoized = false;
-      auto cfg = makeConfiguration( myCfgX, true, with_center );
       // Check memoizer
       if ( myMemoizer.isValid() )
         {
+          auto cfg = makeConfiguration( myCfgX, true, with_center );
           auto   p = myMemoizer.get( cfg );
           ok       = p.first; // may not be correct
-          memoized = p.second;
+          bool memoized = p.second;
+          if ( ! memoized )
+            {
+              // Need to compute full convexity property
+              ok = checkBasicConfigurationsFullConvexity( true, with_center );
+              if ( ok && false_positive )
+                { // need to do the true computation.
+                  std::vector< Point > localCompX;
+                  getLocalCompX( localCompX, with_center );
+                  ok = myDigConv.isFullyConvex( localCompX );
+                }
+              myMemoizer.set( cfg, ok );
+            }
         }
-      if ( ! memoized )
+      else
         {
           // Need to compute full convexity property
           ok = checkBasicConfigurationsFullConvexity( true, with_center );
@@ -360,9 +400,29 @@ namespace DGtal
               getLocalCompX( localCompX, with_center );
               ok = myDigConv.isFullyConvex( localCompX );
             }
-          if ( myMemoizer.isValid() )
-            myMemoizer.set( cfg, ok );
         }
+      // bool memoized = false;
+      // auto cfg = makeConfiguration( myCfgX, true, with_center );
+      // // Check memoizer
+      // if ( myMemoizer.isValid() )
+      //   {
+      //     auto   p = myMemoizer.get( cfg );
+      //     ok       = p.first; // may not be correct
+      //     memoized = p.second;
+      //   }
+      // if ( ! memoized )
+      //   {
+      //     // Need to compute full convexity property
+      //     ok = checkBasicConfigurationsFullConvexity( true, with_center );
+      //     if ( ok && false_positive )
+      //       { // need to do the true computation.
+      //         std::vector< Point > localCompX;
+      //         getLocalCompX( localCompX, with_center );
+      //         ok = myDigConv.isFullyConvex( localCompX );
+      //       }
+      //     if ( myMemoizer.isValid() )
+      //       myMemoizer.set( cfg, ok );
+      //   }
       myComputations |= mask;
       if ( ok ) myResults |= mask;
       return ok;

@@ -144,7 +144,7 @@ int main( int argc, char** argv )
           if ( ! image( p ) ) continue; // already removed
           nca.setCenter( p, image );
           if ( full_cvx
-               ? nca.isFullyConvexCollapsible2()
+               ? nca.isFullyConvexCollapsible()
                // ? ( nca.isFullyConvexCollapsible() || nca.isLikelyNoise() )
                : nca.is0ConvexCollapsible() )
             {
