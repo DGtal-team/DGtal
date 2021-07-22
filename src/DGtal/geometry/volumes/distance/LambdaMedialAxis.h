@@ -140,8 +140,8 @@ namespace DGtal
      * @param set a set of points
      * @param lambda the minimal radius to accept a ball in the lambda medial axis
      * 
-     * @return a lightweight proxy to the ImageContainer specified in
-     * template arguments. (soon to be a vector<pair<Point, double> > instead)
+     * @return a std::vector< pair <Point, double> > that contains the balls
+     * computed by the lambda medial axis
      */
     static
     std::vector<Ball> computeLambdaAxisFromSet(DigitalSet & set, double lambda) {
@@ -151,7 +151,6 @@ namespace DGtal
        
       std::vector<Ball> medialAxis;
       
-      TImageContainer *computedMA = new TImageContainer( set.domain() );
       TImageContainer *squaredDT = new TImageContainer( set.domain() );
       
       // Building the VoronoiMap, DistanceTransformation,
@@ -178,7 +177,7 @@ namespace DGtal
             std::vector<Point> otherVoronoiPoints;
             DigitalSet box(set.domain());
             Point center = *it;
-            subBox(center, 2, set, box); // point neighborhood
+            subBox(center, 1, set, box); // point neighborhood
             for (auto neighbor : box) {
               Point neighborVoronoiPoint(vmap(neighbor)); // Voronoi point of the neighbor
               double distanceToTest = (neighborVoronoiPoint - *it).norm(); // Distance between the point, and the neighbor voronoi point

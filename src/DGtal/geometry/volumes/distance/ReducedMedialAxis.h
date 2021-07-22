@@ -92,7 +92,7 @@ namespace DGtal
    * @see testReducedMedialAxis.cpp
    */
   template <typename TPowerMap,
-            typename TImageContainer =  ImageContainerBySTLMap<typename TPowerMap::Domain,
+            typename TImageContainer =  ImageContainerBySTLMap<typename TPowerMap::Domain, // template parameter to remove
                                                                typename TPowerMap::PowerSeparableMetric::Value> >
   struct ReducedMedialAxis
   {
@@ -114,7 +114,6 @@ namespace DGtal
     getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap)
     {
       std::vector<Ball> medialAxis;
-      medialAxis.push_back(Ball(*(aPowerMap.domain().begin()), 0)); //To have a non empty vector for the loop
 
       for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(),
              itend = aPowerMap.domain().end(); it != itend; ++it)
@@ -133,7 +132,6 @@ namespace DGtal
           }
         }
 
-      medialAxis.erase(medialAxis.begin());
       return medialAxis;
     }
 
