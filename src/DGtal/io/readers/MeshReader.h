@@ -145,7 +145,6 @@ public:
   static
   bool verifyIndicesUniqueness( const std::vector< unsigned int > &indices );
 
-
    
   /// Reads an input material file associated ot an OBJ file format and outputs the
   /// corresponding materials as a map assiating name and diffuse color.
