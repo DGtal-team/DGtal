@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <random>
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -91,6 +92,9 @@ bool checkChordGenericStandardPlaneComputer
   Domain domain( Point( -diameter, -diameter, -diameter ),
                  Point(  diameter,  diameter,  diameter ) );
   Integer a, b, c, mu;
+  std::random_device rd;
+  std::mt19937 g(rd());
+  
   for ( unsigned int p = 0; p < nbplanes; ++p )
     {
       do {
@@ -110,7 +114,7 @@ bool checkChordGenericStandardPlaneComputer
                    << mu << " <= " << a << "*x+" << b << "*y+" << c << "*z+"
                    << " < " << (mu+a+b+c) << std::endl;
       computer.init( 1, 1 );
-      std::random_shuffle( pts.begin(), pts.end() );
+      std::shuffle( pts.begin(), pts.end(), g );
       ++nb;
       nbok += computer.extend( pts.begin(), pts.end() ) ? 1 : 0;
       trace.info() << "Primitive=" << computer.primitive() << std::endl;
