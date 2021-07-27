@@ -109,7 +109,7 @@ include(BuildExamples)
 # -----------------------------------------------------------------------------
 # Randomized build 2/2.
 # -----------------------------------------------------------------------------
-if (BUILD_EXAMPLES OR ENABLE_TESTING)
+if (BUILD_EXAMPLES OR BUILD_TESTING)
  message(STATUS "Randomized examples/testing")
  if (THRESHOLD_RANDOM_TESTING EQUAL "100")
   message(STATUS "All examples or unit-tests will be compiled (cmake variable THRESHOLD_RANDOM_TESTING)")
