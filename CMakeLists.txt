@@ -88,15 +88,36 @@ include(OSDependentSettings)
 # -----------------------------------------------------------------------------
 include(CheckDGtalDependencies)
 
-# -----------------------------------------------------------------------------
-# Check Optional Dependencies
-# -----------------------------------------------------------------------------
 include(CheckDGtalOptionalDependencies)
 
+
 # -----------------------------------------------------------------------------
-# Debug, Cpack and Ctest settings
+# Randomized build 1/2.
+# -----------------------------------------------------------------------------
+SET(THRESHOLD_RANDOM_TESTING "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
+
+# -----------------------------------------------------------------------------
+# Unit-testing, Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 include(CpackCtest)
+
+#------------------------------------------------------------------------------
+# Examples
+#------------------------------------------------------------------------------
+include(BuildExamples)
+
+# -----------------------------------------------------------------------------
+# Randomized build 2/2.
+# -----------------------------------------------------------------------------
+if (BUILD_EXAMPLES OR ENABLE_TESTING)
+ message(STATUS "Randomized examples/testing")
+ if (THRESHOLD_RANDOM_TESTING EQUAL "100")
+  message(STATUS "All examples or unit-tests will be compiled (cmake variable THRESHOLD_RANDOM_TESTING)")
+ else()
+  message(STATUS "Only ~${THRESHOLD_RANDOM_TESTING}% of the (randomly selected) examples/tests will be  compiled/run (cmake variable THRESHOLD_RANDOM_TESTING)")
+endif()
+message(STATUS "-------------------------------------------------------------------------------")
+endif()
 
 # -----------------------------------------------------------------------------
 # Code coverage
@@ -107,11 +128,6 @@ include(CheckCoverage)
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
 include(GeneratorSpecific)
-
-#------------------------------------------------------------------------------
-# Examples
-#------------------------------------------------------------------------------
-include(BuildExamples)
 
 # -----------------------------------------------------------------------------
 # Install settings

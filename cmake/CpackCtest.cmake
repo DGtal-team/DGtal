@@ -37,10 +37,8 @@ INCLUDE(CPack)
 # -----------------------------------------------------------------------------
 # CTest/Debug options
 # -----------------------------------------------------------------------------
-SET(THRESHOLD_RANDOM_TESTING "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
 if (BUILD_TESTING)
   message(STATUS "Build test files ENABLED")
-  message(STATUS "~${THRESHOLD_RANDOM_TESTING}% of the (randomly selected) tests will be compiled/run (variable THRESHOLD_RANDOM_TESTING)")
   ENABLE_TESTING()
   include(CTest)
   if (CMAKE_COMPILER_IS_GNUCXX)

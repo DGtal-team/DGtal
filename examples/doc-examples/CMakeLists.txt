@@ -7,8 +7,7 @@ set(DGTAL_DOC_EX_SRC
 
 
 if (BUILD_TESTING)
-  add_executable(exampleCatch exampleCatch.cpp)
-  target_link_libraries (exampleCatch DGtal)
+     DGtal_add_example(exampleCatch)
 endif()
 
 
@@ -17,15 +16,13 @@ if( WITH_VISU3D_QGLVIEWER  )
      )
 
 foreach(FILE ${DGTAL_DOC_EX_SRC_QGL})
-  add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries (${FILE}  DGtal)
+   DGtal_add_example(${FILE})
 endforeach()
 
 endif()
 
 
 foreach(FILE ${DGTAL_DOC_EX_SRC})
-  add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries (${FILE} DGtal )
+   DGtal_add_example(${FILE})
 endforeach()
 
