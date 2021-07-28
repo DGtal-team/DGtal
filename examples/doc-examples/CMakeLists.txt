@@ -5,6 +5,8 @@ set(DGTAL_DOC_EX_SRC
   labelledMapBestParameters
   )
 
+# # Make sure the compiler can find include files.
+# include_directories (${PROJECT_SOURCE_DIR}/tests/)
 
 if (BUILD_TESTING)
   add_executable(exampleCatch exampleCatch.cpp)
