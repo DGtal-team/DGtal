@@ -8,7 +8,7 @@ export DEPS_DIR="$SRC_DIR/deps"
 # Options send to the set command.
 # e to exit immediately if a command fails
 # v to print each input lines as they are read (useful for debugging)
-export SET_OPTIONS=e
+export SET_OPTIONS=v
 
 # Commands at script begin and end
 export SCRIPT_BEGIN="set -$SET_OPTIONS"
