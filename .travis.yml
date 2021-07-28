@@ -4,7 +4,7 @@ dist: xenial
 # Reducing the depth when cloning using git
 # https://docs.travis-ci.com/user/customizing-the-build/#git-clone-depth
 git:
-  depth: 3
+  depth: 5
 
 compiler:
   - gcc
