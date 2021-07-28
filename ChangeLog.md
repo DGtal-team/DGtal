@@ -13,7 +13,7 @@
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
 
 - *Build*
-  - New cmake option (THRESHOLD_RANDOM_TESTING) to set the
+  - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
 

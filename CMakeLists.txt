@@ -94,7 +94,8 @@ include(CheckDGtalOptionalDependencies)
 # -----------------------------------------------------------------------------
 # Randomized build 1/2.
 # -----------------------------------------------------------------------------
-SET(THRESHOLD_RANDOM_TESTING "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
+SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
+SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
 
 # -----------------------------------------------------------------------------
 # Unit-testing, Cpack and Ctest settings
@@ -111,10 +112,12 @@ include(BuildExamples)
 # -----------------------------------------------------------------------------
 if (BUILD_EXAMPLES OR BUILD_TESTING)
  message(STATUS "Randomized examples/testing")
- if (THRESHOLD_RANDOM_TESTING EQUAL "100")
-  message(STATUS "All examples or unit-tests will be compiled (cmake variable THRESHOLD_RANDOM_TESTING)")
+ if (DGTAL_RANDOMIZED_TESTING_THRESHOLD EQUAL "100")
+  message(STATUS "All examples or unit-tests will be compiled (cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
  else()
-  message(STATUS "Only ~${THRESHOLD_RANDOM_TESTING}% of the (randomly selected) examples/tests will be  compiled/run (cmake variable THRESHOLD_RANDOM_TESTING)")
+  message(STATUS "Only ~${DGTAL_RANDOMIZED_TESTING_THRESHOLD}% of the (randomly selected) examples/tests will be  compiled/run")
+  message(STATUS "  (you can adjust this with the cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
+  message(STATUS " Whitelist: ${DGTAL_RANDOMIZED_TESTING_WHITELIST}")
 endif()
 message(STATUS "-------------------------------------------------------------------------------")
 endif()
