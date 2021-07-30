@@ -28,4 +28,3 @@ foreach(FILE ${DGTAL_DOC_EX_SRC})
   add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal )
 endforeach()
-
