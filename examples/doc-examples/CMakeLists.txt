@@ -9,7 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/tests/)
 
 if (BUILD_TESTING)
   add_executable(exampleCatch exampleCatch.cpp)
-  target_link_libraries (exampleCatch DGtal DGtalCatch)
+  target_link_libraries (exampleCatch DGtal Catch2::Catch2 DGtalCatch)
 endif()
 
 
