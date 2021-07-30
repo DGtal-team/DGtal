@@ -5,7 +5,6 @@ set(DGTAL_DOC_EX_SRC
   labelledMapBestParameters
   )
 
-# # Make sure the compiler can find include files.
 # include_directories (${PROJECT_SOURCE_DIR}/tests/)
 
 if (BUILD_TESTING)
@@ -30,4 +29,3 @@ foreach(FILE ${DGTAL_DOC_EX_SRC})
   add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries (${FILE} DGtal )
 endforeach()
-
