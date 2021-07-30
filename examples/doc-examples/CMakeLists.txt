@@ -5,10 +5,11 @@ set(DGTAL_DOC_EX_SRC
   labelledMapBestParameters
   )
 
+include_directories(${PROJECT_SOURCE_DIR}/tests/)
 
 if (BUILD_TESTING)
   add_executable(exampleCatch exampleCatch.cpp)
-  target_link_libraries (exampleCatch DGtal)
+  target_link_libraries (exampleCatch DGtal DGtalCatch)
 endif()
 
 
