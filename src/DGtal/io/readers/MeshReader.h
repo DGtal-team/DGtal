@@ -130,7 +130,7 @@ public:
   /// Reads an input file as an OBJ file format and outputs the
   /// corresponding surface mesh.
   ///
-  /// @param[in,out] input the input stream where the OBJ file is read.
+  /// @param[in] filename the input filename of the OBJ file to be read.
   /// @param[out] aMesh the output  mesh.
   ///
   /// @return 'true' if both reading the input stream was ok and the
