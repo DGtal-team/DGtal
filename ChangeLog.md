@@ -24,7 +24,9 @@
     (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
   - Various warnings / deprecated functions (David Coeurjolly,
     [#1583](https://github.com/DGtal-team/DGtal/pull/1583)
-  
+ - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
+   [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
+ 
 
 # DGtal 1.2
 
