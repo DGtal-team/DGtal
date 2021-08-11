@@ -12,6 +12,10 @@
   - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
 
+- *Build*
+  - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
+    (approximated) % of unit-tests to build and run for randomized
+    testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
 
 ## Bug fixes
 
