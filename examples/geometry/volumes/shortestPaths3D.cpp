@@ -74,6 +74,7 @@ shortestPaths3D 2 ${DGTAL}/examples/samples/Al.100.vol
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/colormaps/SimpleDistanceColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
@@ -91,6 +92,7 @@ typedef Z3i::Domain         Domain;
 typedef Z3i::SCell          SCell;
 typedef Shortcuts< KSpace > SH3;
 typedef Space::Point        Point;
+typedef Space::RealPoint    RealPoint;
 typedef Space::Vector       Vector;
 
 // Called when an user clicks on a surfel.
@@ -182,45 +184,70 @@ int main( int argc, char** argv )
     application.exec();
   }
   
-  // Use Tangency to compute shortest paths
-  typedef TangencyComputer< KSpace >::Index Index;
-  TangencyComputer< KSpace > TC( K );
-  TC.init( points.cbegin(), points.cend() );
-
   // Get selected surfel/point
   const auto s = surfels[ selected_surfel ];
   Dimension  k = K.sOrthDir( s );
   auto   voxel = K.sIncident( s, k, K.sDirect( s, k ) );
   Point      p = K.sCoords( voxel );
-  Index   start = point2idx[ p ];
-  
+  auto   start = point2idx[ p ];
+  std::cout << "Start index is " << start << std::endl;
 
-  std::cout << "Start index is " << start << std::endl; 
-  std::vector< Index >  ancestor;
-  std::vector< double > distance;
-  double last_distance = TC.shortestPaths( ancestor, distance, start,
-                                           std::numeric_limits<double>::infinity(),
-                                           opt, true );
+  // Use Tangency to compute shortest paths
+  typedef TangencyComputer< KSpace >::Index Index;
+  TangencyComputer< KSpace > TC( K );
+  TC.init( points.cbegin(), points.cend() );
+  auto SP = TC.makeShortestPaths( opt );
+  SP.init( start ); //< set source
+  double last_distance = 0.0;
+  while ( ! SP.finished() )
+    {
+      last_distance = std::get<2>( SP.current() );
+      SP.expand();
+    }
+  // std::vector< Index >  ancestor;
+  // std::vector< double > distance;
+  // double last_distance = TC.shortestPaths( ancestor, distance, start,
+  //                                          std::numeric_limits<double>::infinity(),
+  //                                          opt, true );
   std::cout << "Max distance is " << last_distance << std::endl;
 
+  const int nb_repetitions = 10;
+  const double      period = last_distance / nb_repetitions;
+  SimpleDistanceColorMap< double > cmap( 0.0, period, false );
   {
     MViewer3D viewerCore;
     viewerCore.show();
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
-    
-    auto surfels = SH3::getSurfelRange ( surface );
-    viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
-    viewerCore.setFillColor( colSurfel );
-    for ( auto && s : surfels ) viewerCore << s;
-    viewerCore.setFillColor( colStart );
-    viewerCore.setLineColor( colStart );
-    viewerCore << s;
-    for ( Index i = 0; i < TC.points().size(); i++ ) {
-      Point p1 = TC.points()[ i ];
-      Point p2 = TC.points()[ ancestor[ i ] ];
-      viewerCore.addLine( p1, p2, 1.0 );
-    }
+
+    // viewerCore.setUseGLPointForBalls(true);
+
+    for ( auto i = 0; i < points.size(); ++i )
+      {
+        const double d_s = SP.distance( i );
+        Color c_s        = cmap( fmod( d_s, period ) );
+        viewerCore.setFillColor( c_s );
+        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+                                       points[ i ][ 1 ],
+                                       points[ i ][ 2 ] ) );
+      }
+    // auto surfels = SH3::getSurfelRange ( surface );
+    // viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
+    // for ( auto && s : surfels )
+    //   {
+    //     const double d_s = SP.distance( surfel2idx[ s ] );
+    //     Color c_s        = cmap( fmod( d_s, period ) );
+    //     viewerCore.setFillColor( c_s );
+    //     viewerCore << s;
+    //   }
+    // viewerCore.setFillColor( colStart );
+    viewerCore.setLineColor( Color::Green );
+    // viewerCore << s;
+    // for ( Index i = 0; i < SP.size(); i++ ) {
+    //   Point p1 = SP.point( i );
+    //   Point p2 = SP.point( SP.ancestor( i ) );
+    //   viewerCore.addLine( p1, p2, 1.0 );
+    // }
     viewerCore << MViewer3D::updateDisplay;
     application.exec();
   }

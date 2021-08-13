@@ -83,6 +83,208 @@ namespace DGtal
     typedef std::size_t                 Index;
     typedef std::size_t                 Size;
 
+    // ------------------------- Shortest path services --------------------------------
+  public:
+
+    /// This structure is a state machine that computes shortest paths in a digital
+    /// set. Internally, it references a TangencyComputer.
+    struct ShortestPaths {
+      /// Type used for Dijkstra's algorithm queue.
+      typedef std::tuple< Index, Index, double > Node;
+
+      /// Allows to compare two nodes (closest is popped first).
+      struct Comparator {
+        bool operator()  ( const Node& p1,
+                           const Node& p2 ) const
+        {
+          return std::get<2>( p1 ) > std::get<2>( p2 );
+        }
+      };
+
+      /// Default constructor. The object is not valid.
+      ShortestPaths()
+        : myTgcyComputer( nullptr ), mySecure( 0.0 )
+      {}
+
+      /// Copy constructor
+      /// @param other the object to clone.
+      ShortestPaths( const ShortestPaths& other ) = default;
+      /// Move constructor
+      /// @param other the object to clone.
+      ShortestPaths( ShortestPaths&& other ) = default;
+      /// Assignment
+      /// @param other the object to clone.
+      /// @return a reference to 'this'
+      ShortestPaths& operator=( const ShortestPaths& other ) = default;
+      /// Move assignment
+      /// @param other the object to clone.
+      /// @return a reference to 'this'
+      ShortestPaths& operator=( ShortestPaths&& other ) = default;
+      
+      /// Constructs a ShorthestPaths object and references the given
+      /// TangencyComputer \a tgcy_computer. It initialized the object
+      /// so that it can start a new computation.
+      ///
+      /// @param[in] tgcy_computer the tangency computer where
+      /// shortest paths are computed.
+      ///
+      /// @param[in] secure This value is used to prune vertices in
+      /// the bft. If it is greater or equal to \f$ \sqrt{d} \f$ where
+      /// \a d is the dimension, the shortest path algorithm is
+      /// guaranteed to output the correct result. If the value is
+      /// smaller (down to 0.0), the algorithm is much faster but a
+      /// few shortest path may be missed.
+      ///
+      /// @note Takes O(n) time complexity, where n is the number of
+      /// points in the TangencyComputer object.
+      ShortestPaths( ConstAlias< TangencyComputer > tgcy_computer,
+                     double secure = sqrt( KSpace::dimension ) )
+        : myTgcyComputer( &tgcy_computer ),
+          mySecure( std::max( secure, 0.0 ) )
+      {
+        clear();
+      }
+
+      /// @return a pointer on the tangency computer.
+      const TangencyComputer* tangencyComputerPtr() const
+      {
+        return myTgcyComputer;
+      }
+      
+      /// @return the number of points in the associated tangency computer
+      Index size() const
+      {
+        return myTgcyComputer->size();
+      }
+      
+      /// Clears the object and prepares it for a shortest path
+      /// computation.
+      void clear()
+      {
+        const int nb = size();
+        myAncestor = std::vector< Index > ( nb, nb );
+        myDistance = std::vector< double >( nb, std::numeric_limits<double>::infinity() );
+        myVisited  = std::vector< bool >  ( nb, false );
+        myQ        = std::priority_queue< Node, std::vector< Node >, Comparator >();
+  }
+
+      /// Adds the point with index \a i as a source point
+      /// @param[in] i any valid index
+      /// @note Must be done before starting computations.
+      void init( Index i )
+      {
+        ASSERT( 0 <= i && i < size() );
+        myQ.push( std::make_tuple( i, i, 0.0 ) );
+      }
+                     
+      /// Adds a range of indices as source points
+      ///
+      /// @param[in] it,itE a range of valid indices, which are the
+      /// indices of source points.
+      ///
+      /// @note Must be done before starting computations.
+      template < typename IndexFwdIterator >
+      void init( IndexFwdIterator it, IndexFwdIterator itE )
+      {
+        for ( ; it != itE; ++it )
+          {
+            const auto i = *it;
+            ASSERT( 0 <= i && i < size() );
+            myQ.push( std::make_tuple( i, i, 0.0 ) );
+          }
+      }
+
+      /// @return 'true' if the traversal is finished, i.e. when the
+      /// queue is empty.
+      bool finished() const
+      {
+        return myQ.empty();
+      }
+
+      /// @return a const reference to the current node, a triplet
+      /// '(i,a,d)' where \a i is the index of the point, \a a is the
+      /// index of its ancestor, \a d is the distance of \a i to the
+      /// closest source.
+      /// @pre valid only if not 'finished()'.
+      const Node& current() const
+      {
+        ASSERT( ! myQ.empty() );
+        return myQ.top();
+      }
+
+      /// Computes the shortest path to the next point in the
+      /// queue. Also determines the future visited vertices.
+      ///
+      /// @pre valid only if not 'finished()'.
+      /// @note The core of shortest paths algorithm.
+      void expand();
+      
+      /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
+      bool isValid() const
+      {
+        return myTgcyComputer != nullptr;
+      }
+
+      /// @param[in] i any valid index
+      /// @return the point with index \a i.
+      const Point& point( Index i ) const
+      {
+        ASSERT( 0 <= i && i < size() );
+        return myTgcyComputer->point( i );
+      }
+
+      /// @param[in] i any valid index
+      /// @return the index of an ancestor to \a i.
+      Index ancestor( Index i ) const
+      {
+        ASSERT( 0 <= i && i < size() );
+        return myAncestor[ i ];
+      }
+
+      /// @param[in] i any valid index
+      /// @return the distance of point \a i to the closest source.
+      double distance( Index i ) const
+      {
+        ASSERT( 0 <= i && i < size() );
+        return myDistance[ i ];
+      }
+      
+    protected:
+      /// A pointer toward the tangency computer.
+      const TangencyComputer* myTgcyComputer;
+      /// This value is used to prune vertices in the bft. If it is
+      /// greater or equal to \f$ \sqrt{d} \f$ where \a d is the
+      /// dimension, the shortest path algorithm is guaranteed to
+      /// output the correct result. If the value is smaller (down to
+      /// 0.0), the algorithm is much faster but a few shortest path
+      /// may be missed.
+      double                  mySecure;
+      /// Stores for each point its ancestor in the shortest path, or
+      /// itself if it was a source.
+      std::vector< Index >    myAncestor;
+      /// Stores for each point its distance to the closest source.
+      std::vector< double >   myDistance;
+      /// Remembers for each point if it is already visited.
+      std::vector< bool >     myVisited;
+      /// The queue of points being currently processed.
+      std::priority_queue< Node, std::vector< Node >, Comparator > myQ;
+
+    protected:
+
+      /// Extracts a subset of cotangent points by a breadth-first
+      /// traversal. Used to update the queue when computing shortest paths.
+      ///
+      /// @param[in] i the index of a point
+      ///
+      /// @return the indices of the other points of the shape that are cotangent to \a a.
+      std::vector< Index >
+      getCotangentPoints( Index i ) const;
+
+    };
+
+    /// ShortestPaths may access to datas of TangencyComputer.
+    friend class ShortestPaths;
+    
     // ------------------------- Standard services --------------------------------
   public:
     /// @name Standard services (construction, initialization, assignment)
@@ -133,9 +335,27 @@ namespace DGtal
     const KSpace& space() const
     { return myK; }
 
+    /// @return the number of points in the digital set.
+    Size size() const
+    { return myX.size(); }
+    
     /// @return a const reference to the points defining the digital set.
     const std::vector< Point >& points() const
-    { return myX; }
+      { return myX; }
+      
+    /// @param i any valid point index (between 0 included and 'size()' excluded)
+    /// @return a const reference to the corresponding point.
+    const Point& point( Index i ) const
+    { return myX[ i ]; }
+      
+    /// @param p any point
+    /// @return its index or `size()` if the point is not in the object
+    /// @note Time complexity is amortized constant.
+    Size index( const Point& a ) const
+    {
+      const auto p = myPt2Index.find( a );
+      return p == myPt2Index.cend() ? size() : p->second;
+    }
       
     /// @return a const reference to the cell geometry of the current digital set.
     const CellGeometry< KSpace >& cellCover() const
@@ -170,31 +390,6 @@ namespace DGtal
     std::vector< Index >
     getCotangentPoints( const Point& a,
                         const std::vector< bool > & to_avoid ) const;
-
-    /// Extracts a subset of cotangent points by a breadth-first
-    /// traversal. Used for computing shortest paths.
-    ///
-    /// @param[in] a any point
-    /// @param[in] to_avoid if 'to_avoid[ i ]' is true, then the point
-    /// of index \a i is not visited by the bft.
-    ///
-    /// @param[in] distance an array storing for each point index its
-    /// current distance to some source (used to prune points that
-    /// won't induce shortest paths)
-    ///
-    /// @param[in] dmax this value is used to prune vertices in the
-    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
-    /// is the dimension, the shortest path algorithm is guaranteed to
-    /// output the correct result. If the value is smaller (down to
-    /// 0.0), the algorithm is much faster but a few shortest path may
-    /// be missed.
-    ///
-    /// @return the indices of the other points of the shape that are cotangent to \a a.
-    std::vector< Index >
-    getCotangentPoints( const Point& a,
-                        const std::vector< bool > & to_avoid,
-                        const std::vector< double >& distance,
-                        double dmax = std::numeric_limits<double>::infinity() ) const;
   
     /// @}
 
@@ -203,6 +398,41 @@ namespace DGtal
     /// @name Shortest paths services
     /// @{
 
+    /// @param secure This value is used to prune vertices in the
+    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
+    /// is the dimension, the shortest path algorithm is guaranteed to
+    /// output the correct result. If the value is smaller (down to
+    /// 0.0), the algorithm is much faster but a few shortest path may
+    /// be missed.
+    ///
+    /// @return a ShortestPaths object that allows shortest path computations.
+    ShortestPaths
+    makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
+
+    /// This function can be used to compute directly shortest paths
+    /// to one source (without using a ShortestPaths object.
+    ///
+    /// @param[out] ancestor an array of size `size()` that is used to
+    /// store the ancestor of each point (in the tree of shortest paths).
+    ///
+    /// @param[out] distance an array of size `size()` that is used to store the distance of each point to the source.
+    ///
+    /// @param[in] source the index of the source point.
+    ///
+    /// @param[in] max_distance the maximal computed distance (the
+    /// computation stops after the distance).
+    ///
+    /// @param secure This value is used to prune vertices in the
+    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
+    /// is the dimension, the shortest path algorithm is guaranteed to
+    /// output the correct result. If the value is smaller (down to
+    /// 0.0), the algorithm is much faster but a few shortest path may
+    /// be missed.
+    ///
+    /// @param[in] verbose when 'true' some information are displayed
+    /// during computation.
+    ///
+    /// @return the furthest computed distance.
     double
     shortestPaths( std::vector< Index >&  ancestor,
                    std::vector< double >& distance,
