@@ -2,11 +2,6 @@ name: Building and deploying the documentation
 
 on: [push]
 
-
-env:
-  BUILD_DIR: ${{runner.workspace}}/build
-  SRC_DIR: ${{runner.workspace}}/
-  
 #on:
 #  push:
 #    branches: [ master ]
@@ -37,6 +32,8 @@ jobs:
     - name: Checking doc
       run: |
           cd build
+          export BUILD_DIR=${{runner.workspace}}/build
+          export SRC_DIR=${{runner.workspace}}/
           ../.travis/checkDoxygenDocumentation.sh && ../.travis/check_src_file_tag.sh
 
 #    - name: Deploy to GitHub Pages
