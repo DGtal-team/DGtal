@@ -24,11 +24,11 @@ jobs:
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
-       run: sudo apt-get install libboost-dev ninja
+       run: sudo apt-get install libboost-dev ninja-build
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost-build
+       run: brew install boost ninja
 
      - name: Create Build Environment
        # Some projects don't allow in-source building, so create a separate build directory
