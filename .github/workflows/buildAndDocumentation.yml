@@ -5,8 +5,9 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE:   Release
-  CONFIG_LINUX: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=2  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false  -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true  -DWARNING_AS_ERROR=OFF
-  CONFIG_MAC:   -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=2 -DWITH_EIGEN=true -DWITH_GMP=tue
+  CONFIG_GLOBAL: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=2
+  CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
+  CONFIG_MAC:    -DWITH_EIGEN=true -DWITH_GMP=tue
 
 #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
@@ -36,13 +37,13 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_LINUX -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_LINUX -G Ninja
 
      - name: Configure CMake (macOS)
        if: matrix.os == 'macOS-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_MAC -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -G Ninja
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
