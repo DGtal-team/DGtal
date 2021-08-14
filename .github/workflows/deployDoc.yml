@@ -2,6 +2,11 @@ name: Building and deploying the documentation
 
 on: [push]
 
+
+env:
+  BUILD_DIR: ${{runner.workspace}}/build
+  SRC_DIR: ${{runner.workspace}}/
+  
 #on:
 #  push:
 #    branches: [ master ]
