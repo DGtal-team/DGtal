@@ -5,6 +5,8 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  CONFIG_LINUX: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false  -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true  -DWARNING_AS_ERROR=OFF
+  CONFIG_MAC: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3
 
 #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
@@ -39,13 +41,13 @@ jobs:
      - name: Configure CMake (linux)
        # Use a bash shell so we can use the same syntax for environment variable
        # access regardless of the host operating system
-       if: matrix.os == 'linux-latest'
+       if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
        # Note the current convention is to use the -S and -B options here to specify source
        # and build directories, but this is only available with CMake 3.13 and higher.
        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false  -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true  -DWARNING_AS_ERROR=OFF -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_LINUX -G Ninja
 
      - name: Configure CMake (macOS)
        # Use a bash shell so we can use the same syntax for environment variable
@@ -56,7 +58,7 @@ jobs:
        # Note the current convention is to use the -S and -B options here to specify source
        # and build directories, but this is only available with CMake 3.13 and higher.
        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3 -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_MAC -G Ninja
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
