@@ -5,14 +5,14 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  CONFIG: "-DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DBUILD_EXAMPLES=false -DBUILD_TESTING=true\
+  CONFIG: -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DBUILD_EXAMPLES=false -DBUILD_TESTING=true\
           -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=33 \
         #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
           -DWITH_MAGICK=true -DWITH_GMP=true\
           -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug \
           -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true \
           -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true \
-          -DWARNING_AS_ERROR=OFF"
+          -DWARNING_AS_ERROR=OFF
 
 jobs:
   build:
