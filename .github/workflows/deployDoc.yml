@@ -27,7 +27,8 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         make doc > buildDoc.log
+         ls -l
+         #make doc > buildDoc.log
 
     - name: Checking doc
       run: |
