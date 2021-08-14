@@ -1,4 +1,4 @@
-name: Simple Build on linux
+name: Continuous Integration (linux/macOS)
 
 on: [push]
 
@@ -11,15 +11,23 @@ jobs:
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
-    # See: https://docs.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
-    runs-on: ubuntu-latest
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Boost
-      run: sudo apt-get install libboost-dev ninja-build
-  
+    - name: Install linux deps
+      runs-on: ubuntu-latest
+      run: sudo apt-get install libboost-dev ninja
+
+    - name: Install macOS deps
+      runs-on: macOS-latest
+      run: brew install boost-build
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
@@ -31,8 +39,8 @@ jobs:
       # access regardless of the host operating system
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      # Note the current convention is to use the -S and -B options here to specify source 
-      # and build directories, but this is only available with CMake 3.13 and higher.  
+      # Note the current convention is to use the -S and -B options here to specify source
+      # and build directories, but this is only available with CMake 3.13 and higher.
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G Ninja
 
@@ -45,6 +53,6 @@ jobs:
     - name: Test
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      # Execute tests defined by the CMake configuration.  
+      # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C $BUILD_TYPE
