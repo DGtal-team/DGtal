@@ -28,10 +28,14 @@ jobs:
          cd build
          cmake ..
          ls -l
+         echo "OK"
+         ls -l ..
+         pwd
          #make doc > buildDoc.log
 
     - name: Checking doc
       run: |
+          pwd
           cd build
           export BUILD_DIR=${{runner.workspace}}/build
           export SRC_DIR=${{runner.workspace}}/
