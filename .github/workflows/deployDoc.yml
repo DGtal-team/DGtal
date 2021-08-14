@@ -27,18 +27,14 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         ls -l
-         echo "OK"
-         ls -l ..
-         pwd
-         #make doc > buildDoc.log
+         make doc > buildDoc.log
 
     - name: Checking doc
       run: |
           pwd
           cd build
-          export BUILD_DIR=${{runner.workspace}}/build
-          export SRC_DIR=${{runner.workspace}}/
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build
+          export SRC_DIR=${{runner.workspace}}/DGtal/
           ../.travis/checkDoxygenDocumentation.sh && ../.travis/check_src_file_tag.sh
 
 #    - name: Deploy to GitHub Pages
