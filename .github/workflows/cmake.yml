@@ -25,7 +25,7 @@ jobs:
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
-       run: sudo apt-get install libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgdcm2-dev libgraphicsmagick++1-dev libqglviewer-dev libinsighttoolkit3-dev libfftw3-dev doxygen graphviz texlive
+       run: sudo apt-get install libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libqglviewer-dev libinsighttoolkit3-dev libfftw3-dev doxygen graphviz texlive
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
