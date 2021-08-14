@@ -5,7 +5,8 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  CONFIG: -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DBUILD_EXAMPLES=false -DBUILD_TESTING=true      -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=33           -DWITH_MAGICK=true -DWITH_GMP=true          -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug           -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false           -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true           -DWARNING_AS_ERROR=OFF
+  CONFIG-LINUX:   -DBUILD_EXAMPLES=false -DBUILD_TESTING=true      -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3           -DWITH_MAGICK=true -DWITH_GMP=true          -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug           -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false           -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true           -DWARNING_AS_ERROR=OFF
+  CONFIG-MAC:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true      -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3
         #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
 jobs:
@@ -36,15 +37,27 @@ jobs:
        # We'll use this as our working directory for all subsequent commands
        run: cmake -E make_directory ${{runner.workspace}}/build
 
-     - name: Configure CMake
+     - name: Configure CMake (linux)
        # Use a bash shell so we can use the same syntax for environment variable
        # access regardless of the host operating system
+       if: matrix.os == 'linux-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
        # Note the current convention is to use the -S and -B options here to specify source
        # and build directories, but this is only available with CMake 3.13 and higher.
        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG-LINUX -G Ninja
+
+     - name: Configure CMake (macOS)
+       # Use a bash shell so we can use the same syntax for environment variable
+       # access regardless of the host operating system
+       if: matrix.os == 'macOS-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       # Note the current convention is to use the -S and -B options here to specify source
+       # and build directories, but this is only available with CMake 3.13 and higher.
+       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG-MAC -G Ninja
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
