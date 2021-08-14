@@ -27,7 +27,7 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         wget --no-check-certificate -O "$BUILD_DIR/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
          make doc > buildDoc.log
 
     - name: Checking doc
