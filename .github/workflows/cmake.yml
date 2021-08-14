@@ -5,7 +5,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  CONFIG: -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DBUILD_EXAMPLES=false -DBUILD_TESTING=true      -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=33           -DWITH_MAGICK=true -DWITH_GMP=true          -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug           -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true           -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true           -DWARNING_AS_ERROR=OFF
+  CONFIG: -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=3  -DBUILD_EXAMPLES=false -DBUILD_TESTING=true      -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=33           -DWITH_MAGICK=true -DWITH_GMP=true          -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug           -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=false           -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true           -DWARNING_AS_ERROR=OFF
         #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
-       run: sudo apt-get install libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libqglviewer-dev libinsighttoolkit3-dev libfftw3-dev doxygen graphviz texlive
+       run: sudo apt-get install libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libfftw3-dev doxygen graphviz texlive
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
