@@ -35,16 +35,17 @@ jobs:
           pwd
           export BUILD_DIR=${{runner.workspace}}/DGtal/build
           export SRC_DIR=${{runner.workspace}}/DGtal/
-          .travis/checkDoxygenDocumentation.sh 
-          
+          .travis/checkDoxygenDocumentation.sh
+
 #&& .travis/check_src_file_tag.sh
 
-#    - name: Deploy to GitHub Pages
-#      uses: JamesIves/github-pages-deploy-action@3.4.6
-#      with:
-#        # This is the branch you wish to deploy to, for example gh-pages or docs.
-#        ACCESS_TOKEN: ${{ secrets.deploytoken }}
-#        BRANCH: gh-pages
-#        FOLDER: tmp
-#        SINGLE_COMMIT: true
-#        CLEAN: true
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        # This is the branch you wish to deploy to, for example gh-pages or docs.
+        token: ${{ secrets.DEPLOYTOKEN }}
+        branch: master
+        repository-name: DGtal-team/doc-nightly
+        folder: build/html
+        single_comit: true
+        clean: true
