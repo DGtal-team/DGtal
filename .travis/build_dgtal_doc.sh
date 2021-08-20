@@ -4,7 +4,7 @@ $SCRIPT_BEGIN
 # OS dependent deps
 source "$SRC_DIR/.travis/install_eigen.sh"
 
-BTYPE="$BTYPE -DBUILD_EXAMPLES=true -DBUILD_TESTING=false"
+BTYPE="$BTYPE -DBUILD_EXAMPLES=false -DBUILD_TESTING=false"
 BTYPE="$BTYPE -DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true\
                      -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug \
                      -DWITH_HDF5=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_EIGEN=true\
