@@ -27,7 +27,7 @@
  - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
    [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
  - Fix cmake IN_LIST use policy. (Bertrand Kerautret,
-   [#1590](https://github.com/DGtal-team/DGtal/pull/1591))
+   [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
 
 # DGtal 1.2
 
