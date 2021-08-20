@@ -89,11 +89,17 @@ namespace DGtal
     /// This structure is a state machine that computes shortest paths in a digital
     /// set. Internally, it references a TangencyComputer.
     struct ShortestPaths {
-      /// Type used for Dijkstra's algorithm queue.
+      /// Type used for Dijkstra's algorithm queue (point, ancestor, distance).
       typedef std::tuple< Index, Index, double > Node;
 
-      /// Allows to compare two nodes (closest is popped first).
+      /// Allows to compare two nodes (closest is popped first) by
+      /// modeling a `greater than` relation (which is the relation
+      /// used for `std::priority_queue` when you wish to have the
+      /// smallest one outputed first).
       struct Comparator {
+        /// @param p1 the first node
+        /// @param p2 the second node
+        /// @return 'true' iff node \a p1 is further away than node \a p2.
         bool operator()  ( const Node& p1,
                            const Node& p2 ) const
         {
@@ -235,6 +241,10 @@ namespace DGtal
 
       /// @param[in] i any valid index
       /// @return the index of an ancestor to \a i.
+      ///
+      /// @pre The ancestor is valid only when `isVisited(i)` is true,
+      /// so after it was a `current()` node and `expand()` has been
+      /// called.
       Index ancestor( Index i ) const
       {
         ASSERT( 0 <= i && i < size() );
@@ -243,10 +253,30 @@ namespace DGtal
 
       /// @param[in] i any valid index
       /// @return the distance of point \a i to the closest source.
+      ///
+      /// @pre The distance is correct only when `isVisited(i)` is true,
+      /// so after it was a `current()` node and `expand()` has been
+      /// called.
       double distance( Index i ) const
       {
         ASSERT( 0 <= i && i < size() );
         return myDistance[ i ];
+      }
+
+      /// @param[in] i any valid index
+      ///
+      /// @return 'true' iff point is already visited by the bft,
+      /// i.e. after it was a `current()` node and `expand()` has been
+      /// called.
+      bool isVisited( Index i ) const
+      {
+        return ancestor( i ) < size();
+      }
+
+      /// @return the infinity distance (point is not computed or unreachable)
+      static double infinity()
+      {
+        return std::numeric_limits<double>::infinity();
       }
       
     protected:
@@ -398,6 +428,14 @@ namespace DGtal
     /// @name Shortest paths services
     /// @{
 
+    /// Returns a ShortestPaths object that gives a lot of control
+    /// when computing shortest paths. You should use it instead of
+    /// TangencyComputer::shortestPaths when (1) you wish to compute
+    /// distances to several sources, (2) you wish to compute shortest
+    /// paths between two points, (3) you wish to store the result for
+    /// further use, (4) and more generally if you wish to have more
+    /// control on distance computations.
+    ///
     /// @param secure This value is used to prune vertices in the
     /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
     /// is the dimension, the shortest path algorithm is guaranteed to

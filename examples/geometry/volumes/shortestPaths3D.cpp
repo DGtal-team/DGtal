@@ -131,9 +131,9 @@ int main( int argc, char** argv )
   KSpace K;
   auto bimage = SH3::makeBinaryImage( fn, params );
   K = SH3::getKSpace( bimage );
-  Point p1 = K.lowerBound();
-  Point p2 = K.upperBound();
-  Domain domain = Domain( p1, p2 );
+  Point lo = K.lowerBound();
+  Point hi = K.upperBound();
+  Domain domain = Domain( lo, hi );
   trace.info() << "  [Done]" << std::endl;
   
   // Compute surface
@@ -167,37 +167,44 @@ int main( int argc, char** argv )
 
   // Select a starting point.
   typedef Viewer3D<> MViewer3D;
-  int32_t selected_surfel = 0;
+  int32_t selected_surfels[ 2 ] = { 0, 0 };
   auto surfels = SH3::getSurfelRange ( surface );
-  {
-    MViewer3D viewerCore( K );
-    viewerCore.show();
-    Color colSurfel( 200, 200, 255, 255 );
-    Color colStart( 255, 0, 0, 255 );
-    int32_t name = 0;
-    viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
-    viewerCore.setFillColor( colSurfel );
-    for ( auto && s : surfels ) viewerCore << SetName3D( name++ ) << s;
-    viewerCore << SetSelectCallback3D( reaction, &selected_surfel,
-                                       0, surfels.size() - 1 );
-    viewerCore << MViewer3D::updateDisplay;
-    application.exec();
-  }
+  for ( int i = 0;  i < 2; i++ )
+    {
+      MViewer3D viewerCore( K );
+      viewerCore.show();
+      Color colSurfel( 200, 200, 255, 255 );
+      Color colStart( 255, 0, 0, 255 );
+      int32_t name = 0;
+      viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
+      viewerCore.setFillColor( colSurfel );
+      for ( auto && s : surfels ) viewerCore << SetName3D( name++ ) << s;
+      viewerCore << SetSelectCallback3D( reaction, &selected_surfels[ i ],
+                                         0, surfels.size() - 1 );
+      viewerCore << MViewer3D::updateDisplay;
+      application.exec();
+    }
   
   // Get selected surfel/point
-  const auto s = surfels[ selected_surfel ];
-  Dimension  k = K.sOrthDir( s );
-  auto   voxel = K.sIncident( s, k, K.sDirect( s, k ) );
-  Point      p = K.sCoords( voxel );
-  auto   start = point2idx[ p ];
-  std::cout << "Start index is " << start << std::endl;
+  const auto s0 = surfels[ selected_surfels[ 0 ] ];
+  Dimension  k0 = K.sOrthDir( s0 );
+  auto   voxel0 = K.sIncident( s0, k0, K.sDirect( s0, k0 ) );
+  Point      p0 = K.sCoords( voxel0 );
+  auto   start0 = point2idx[ p0 ];
+  std::cout << "Start0 index is " << start0 << std::endl;
+  const auto s1 = surfels[ selected_surfels[ 1 ] ];
+  Dimension  k1 = K.sOrthDir( s1 );
+  auto   voxel1 = K.sIncident( s1, k1, K.sDirect( s1, k1 ) );
+  Point      p1 = K.sCoords( voxel1 );
+  auto   start1 = point2idx[ p1 ];
+  std::cout << "Start1 index is " << start1 << std::endl;
 
   // Use Tangency to compute shortest paths
   typedef TangencyComputer< KSpace >::Index Index;
   TangencyComputer< KSpace > TC( K );
   TC.init( points.cbegin(), points.cend() );
   auto SP = TC.makeShortestPaths( opt );
-  SP.init( start ); //< set source
+  SP.init( start0 ); //< set source
   double last_distance = 0.0;
   while ( ! SP.finished() )
     {
@@ -211,10 +218,10 @@ int main( int argc, char** argv )
   //                                          opt, true );
   std::cout << "Max distance is " << last_distance << std::endl;
 
-  const int nb_repetitions = 10;
-  const double      period = last_distance / nb_repetitions;
-  SimpleDistanceColorMap< double > cmap( 0.0, period, false );
   {
+    const int nb_repetitions = 10;
+    const double      period = last_distance / nb_repetitions;
+    SimpleDistanceColorMap< double > cmap( 0.0, period, false );
     MViewer3D viewerCore;
     viewerCore.show();
     Color colSurfel( 200, 200, 255, 128 );
@@ -252,6 +259,104 @@ int main( int argc, char** argv )
     application.exec();
   }
 
+  auto SP0 = TC.makeShortestPaths( opt );
+  auto SP1 = TC.makeShortestPaths( opt );
+  SP0.init( start0 ); //< set source
+  SP1.init( start1 ); //< set source
+  last_distance = 0.0;
+  std::deque< Index > Q;
+  while ( ! SP0.finished() && ! SP1.finished() )
+    {
+      auto n0 = SP0.current();
+      auto n1 = SP1.current();
+      auto p0 = std::get<0>( n0 );
+      auto p1 = std::get<0>( n1 );
+      SP0.expand();
+      SP1.expand();
+      if ( SP0.isVisited( p1 ) )
+        {
+          auto p = p1; 
+          Q.push_front( p );
+          while ( SP0.ancestor( p ) != p )
+            {
+              p = SP0.ancestor( p );
+              Q.push_front( p );
+            }
+          p = p1;
+          while ( SP1.ancestor( p ) != p )
+            {
+              p = SP1.ancestor( p );
+              Q.push_back( p );
+            }
+          break;
+        }
+      // else if ( SP1.isVisited( p0 ) )
+      //   {
+      //     auto p = p0; 
+      //     Q.push_front( p );
+      //     while ( SP0.ancestor( p ) != p )
+      //       {
+      //         p = SP0.ancestor( p );
+      //         Q.push_front( p );
+      //       }
+      //     p = p0;
+      //     while ( SP1.ancestor( p ) != p )
+      //       {
+      //         p = SP1.ancestor( p );
+      //         Q.push_back( p );
+      //       }
+      //     break;
+      //   }
+      last_distance = std::get<2>( n0 ) + std::get<2>( n1 );
+      std::cout << p0 << " " << p1 << " last_d=" << last_distance << std::endl;
+    }
+  
+  std::cout << "Max distance is " << last_distance << std::endl;
+
+  {
+    const int nb_repetitions = 10;
+    const double      period = last_distance / nb_repetitions;
+    SimpleDistanceColorMap< double > cmap( 0.0, period, false );
+    MViewer3D viewerCore;
+    viewerCore.show();
+    Color colSurfel( 200, 200, 255, 128 );
+    Color colStart( 255, 0, 0, 128 );
+    viewerCore.setUseGLPointForBalls(true);
+    for ( auto i = 0; i < points.size(); ++i )
+      {
+        const double d_s0 = SP0.isVisited( i ) ? SP0.distance( i ) : SP0.infinity();
+        const double d_s1 = SP1.isVisited( i ) ? SP1.distance( i ) : SP1.infinity();
+        const double d_s  = std::min( d_s0, d_s1 );
+        Color c_s        = ( d_s != SP0.infinity() )
+          ? cmap( fmod( d_s, period ) )
+          : Color::Black;
+        viewerCore.setFillColor( c_s );
+        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+                                       points[ i ][ 1 ],
+                                       points[ i ][ 2 ] ), 12 );
+      }
+    viewerCore.setLineColor( Color::Green );
+    bool first = true;
+    Index prev = 0;
+    for ( auto p : Q )
+      {
+        if ( first )
+          {
+            first = false;
+            prev  = p;
+          }
+        else
+          {
+            Point p1 = SP0.point( prev );
+            Point p2 = SP0.point( p );
+            viewerCore.addLine( p1, p2, 18.0 );
+            prev = p;
+          }
+      }
+    viewerCore << MViewer3D::updateDisplay;
+    application.exec();
+  }
+  
   return 0;
 }
 //                                                                           //
