@@ -211,11 +211,6 @@ int main( int argc, char** argv )
       last_distance = std::get<2>( SP.current() );
       SP.expand();
     }
-  // std::vector< Index >  ancestor;
-  // std::vector< double > distance;
-  // double last_distance = TC.shortestPaths( ancestor, distance, start,
-  //                                          std::numeric_limits<double>::infinity(),
-  //                                          opt, true );
   std::cout << "Max distance is " << last_distance << std::endl;
 
   {
@@ -227,8 +222,7 @@ int main( int argc, char** argv )
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
 
-    // viewerCore.setUseGLPointForBalls(true);
-
+    viewerCore.setUseGLPointForBalls(true);
     for ( auto i = 0; i < points.size(); ++i )
       {
         const double d_s = SP.distance( i );
@@ -236,7 +230,7 @@ int main( int argc, char** argv )
         viewerCore.setFillColor( c_s );
         viewerCore.addBall( RealPoint( points[ i ][ 0 ],
                                        points[ i ][ 1 ],
-                                       points[ i ][ 2 ] ) );
+                                       points[ i ][ 2 ] ), 12.0 );
       }
     // auto surfels = SH3::getSurfelRange ( surface );
     // viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
@@ -248,7 +242,7 @@ int main( int argc, char** argv )
     //     viewerCore << s;
     //   }
     // viewerCore.setFillColor( colStart );
-    viewerCore.setLineColor( Color::Green );
+    // viewerCore.setLineColor( Color::Green );
     // viewerCore << s;
     // for ( Index i = 0; i < SP.size(); i++ ) {
     //   Point p1 = SP.point( i );
@@ -259,12 +253,13 @@ int main( int argc, char** argv )
     application.exec();
   }
 
+  // Extracts a shortest path between two points.
   auto SP0 = TC.makeShortestPaths( opt );
   auto SP1 = TC.makeShortestPaths( opt );
-  SP0.init( start0 ); //< set source
-  SP1.init( start1 ); //< set source
+  SP0.init( start0 ); 
+  SP1.init( start1 ); 
   last_distance = 0.0;
-  std::deque< Index > Q;
+  std::vector< Index > Q;
   while ( ! SP0.finished() && ! SP1.finished() )
     {
       auto n0 = SP0.current();
@@ -275,38 +270,13 @@ int main( int argc, char** argv )
       SP1.expand();
       if ( SP0.isVisited( p1 ) )
         {
-          auto p = p1; 
-          Q.push_front( p );
-          while ( SP0.ancestor( p ) != p )
-            {
-              p = SP0.ancestor( p );
-              Q.push_front( p );
-            }
-          p = p1;
-          while ( SP1.ancestor( p ) != p )
-            {
-              p = SP1.ancestor( p );
-              Q.push_back( p );
-            }
+          auto c0 = SP0.pathToSource( p1 );
+          auto c1 = SP1.pathToSource( p1 );
+          std::copy(c0.rbegin(), c0.rend(), std::back_inserter(Q));
+          Q.pop_back();
+          std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
           break;
         }
-      // else if ( SP1.isVisited( p0 ) )
-      //   {
-      //     auto p = p0; 
-      //     Q.push_front( p );
-      //     while ( SP0.ancestor( p ) != p )
-      //       {
-      //         p = SP0.ancestor( p );
-      //         Q.push_front( p );
-      //       }
-      //     p = p0;
-      //     while ( SP1.ancestor( p ) != p )
-      //       {
-      //         p = SP1.ancestor( p );
-      //         Q.push_back( p );
-      //       }
-      //     break;
-      //   }
       last_distance = std::get<2>( n0 ) + std::get<2>( n1 );
       std::cout << p0 << " " << p1 << " last_d=" << last_distance << std::endl;
     }

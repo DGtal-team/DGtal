@@ -82,6 +82,7 @@ namespace DGtal
     typedef HyperRectDomain< Space >    Domain;
     typedef std::size_t                 Index;
     typedef std::size_t                 Size;
+    typedef std::vector< Index >        Path;
 
     // ------------------------- Shortest path services --------------------------------
   public:
@@ -207,22 +208,24 @@ namespace DGtal
         return myQ.empty();
       }
 
-      /// @return a const reference to the current node, a triplet
-      /// '(i,a,d)' where \a i is the index of the point, \a a is the
-      /// index of its ancestor, \a d is the distance of \a i to the
-      /// closest source.
+      /// @return a const reference to the current node on top of the
+      /// queue of bft, a triplet '(i,a,d)' where \a i is the index of
+      /// the point, \a a is the index of its ancestor, \a d is the
+      /// distance of \a i to the closest source.
+      ///
       /// @pre valid only if not 'finished()'.
       const Node& current() const
       {
-        ASSERT( ! myQ.empty() );
+        ASSERT( ! finished() );
         return myQ.top();
       }
 
-      /// Computes the shortest path to the next point in the
-      /// queue. Also determines the future visited vertices.
+      /// Computes the shortest path to the `current()` node in the
+      /// queue. Also determines the future visited vertices and
+      /// updates the queue for bft.
       ///
       /// @pre valid only if not 'finished()'.
-      /// @note The core of shortest paths algorithm.
+      /// @note The core method of shortest paths algorithm.
       void expand();
       
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
@@ -277,6 +280,24 @@ namespace DGtal
       static double infinity()
       {
         return std::numeric_limits<double>::infinity();
+      }
+
+      /// @param[in] i any valid point index
+      ///
+      /// @return the path from this point to its closest source, or
+      /// an empty path if it cannot be computed (for instance, the
+      /// point was not visited yet).
+      Path pathToSource( Index i ) const
+      {
+        Path P;
+        if ( ! isVisited( i ) ) return P;
+        P.push_back( i );
+        while ( ancestor( i ) != i )
+          {
+            i = ancestor( i );
+            P.push_back( i );
+          }
+        return P;
       }
       
     protected:
@@ -430,11 +451,11 @@ namespace DGtal
 
     /// Returns a ShortestPaths object that gives a lot of control
     /// when computing shortest paths. You should use it instead of
-    /// TangencyComputer::shortestPaths when (1) you wish to compute
-    /// distances to several sources, (2) you wish to compute shortest
-    /// paths between two points, (3) you wish to store the result for
-    /// further use, (4) and more generally if you wish to have more
-    /// control on distance computations.
+    /// TangencyComputer::shortestPaths or
+    /// TangencyComputer::shortestPath when (1) you wish to compute
+    /// distances to several sources, (2) you wish to store the result
+    /// for further use, (4) and more generally if you wish to have
+    /// more control on distance computations.
     ///
     /// @param secure This value is used to prune vertices in the
     /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
@@ -448,12 +469,13 @@ namespace DGtal
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
 
     /// This function can be used to compute directly shortest paths
-    /// to one source (without using a ShortestPaths object.
+    /// to one source (without using a ShortestPaths object).
     ///
     /// @param[out] ancestor an array of size `size()` that is used to
     /// store the ancestor of each point (in the tree of shortest paths).
     ///
-    /// @param[out] distance an array of size `size()` that is used to store the distance of each point to the source.
+    /// @param[out] distance an array of size `size()` that is used to
+    /// store the distance of each point to the source.
     ///
     /// @param[in] source the index of the source point.
     ///
@@ -478,7 +500,37 @@ namespace DGtal
                    double max_distance = std::numeric_limits<double>::infinity(),
                    double secure = sqrt( KSpace::dimension ),
                    bool verbose = false ) const;
-    
+
+    /// This function can be used to compute directly a shortest path
+    /// from a source to a destination, returned as a sequence of
+    /// point indices, where the first is the source and the last is
+    /// the destination. It returns an empty sequence if there is no
+    /// path between them.
+    ///
+    /// @param[in] source the index of the source point.
+    /// @param[in] destination the index of the destination point.
+    ///
+    /// @param secure This value is used to prune vertices in the
+    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
+    /// is the dimension, the shortest path algorithm is guaranteed to
+    /// output the correct result. If the value is smaller (down to
+    /// 0.0), the algorithm is much faster but a few shortest path may
+    /// be missed.
+    ///
+    /// @param[in] verbose when 'true' some information are displayed
+    /// during computation.
+    ///
+    /// @return the sequence of point indices from \a source to \a
+    /// destination, i.e. `[source, ..., destination|`, which form a
+    /// valid path in the object.
+    ///
+    /// @note Builds two ShortestPaths objects and stops when they
+    /// meet.
+    Path
+    shortestPath( Index source, Index destination,
+                  double secure = sqrt( KSpace::dimension ),
+                  bool verbose = false ) const;
+                  
     /// @}
     
     // ------------------------- Protected Datas ------------------------------

@@ -269,6 +269,43 @@ shortestPaths( std::vector< Index >&  ancestor,
   return previous_d;
 }
 
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+typename DGtal::TangencyComputer<TKSpace>::Path
+DGtal::TangencyComputer<TKSpace>::
+shortestPath( Index source, Index destination,
+              double secure, bool verbose ) const
+{
+  auto SP0 = makeShortestPaths( secure );
+  auto SP1 = makeShortestPaths( secure );
+  SP0.init( source ); 
+  SP1.init( destination );
+  Path Q;
+  while ( ! SP0.finished() && ! SP1.finished() )
+    {
+      auto n0 = SP0.current();
+      auto n1 = SP1.current();
+      auto p0 = std::get<0>( n0 );
+      auto p1 = std::get<0>( n1 );
+      SP0.expand();
+      SP1.expand();
+      if ( SP0.isVisited( p1 ) )
+        {
+          auto c0 = SP0.pathToSource( p1 );
+          auto c1 = SP1.pathToSource( p1 );
+          std::copy(c0.rbegin(), c0.rend(), std::back_inserter(Q));
+          Q.pop_back();
+          std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
+          break;
+        }
+      if ( verbose )
+        {
+          double last_distance = std::get<2>( n0 ) + std::get<2>( n1 );
+          trace.info() << p0 << " " << p1 << " last_d=" << last_distance << std::endl;
+        }
+    }
+  return Q;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -316,7 +353,6 @@ expand()
   myDistance[ current ] = d;
   myVisited [ current ] = true;
   std::vector< Index > N = getCotangentPoints( current );
-  //    myTgcyComputer->getCotangentPoints( q, myVisited, myDistance, mySecure );
   for ( auto next : N )
     {
       const Point p = myTgcyComputer->point( next );
