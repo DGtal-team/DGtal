@@ -412,6 +412,18 @@ namespace DGtal
     const CellGeometry< KSpace >& cellCover() const
     { return myCellCover; }
 
+    /// @param[in] path a sequence of point indices describing a valid path.
+    /// @return its Euclidean length.
+    double length( const Path& path ) const
+    {
+      auto eucl_d = [] ( const Point& p, const Point& q )
+      { return ( p - q ).norm(); };
+      double l = 0.0;
+      for ( auto i = 1; i < path.size(); i++ )
+        l += eucl_d( point( path[ i-1 ] ), point( path[ i ] ) );
+      return l;
+    }
+    
     /// @}
 
     // ------------------------- Tangency services --------------------------------
@@ -430,7 +442,7 @@ namespace DGtal
     /// @return the indices of the other points of the shape that are cotangent to \a a.
     std::vector< Index >
     getCotangentPoints( const Point& a ) const;
-
+    
     /// Extracts a subset of cotangent points by a breadth-first traversal.
     ///
     /// @param[in] a any point
@@ -441,14 +453,14 @@ namespace DGtal
     std::vector< Index >
     getCotangentPoints( const Point& a,
                         const std::vector< bool > & to_avoid ) const;
-  
+    
     /// @}
-
+    
     // ------------------------- Shortest paths services --------------------------------
   public:
     /// @name Shortest paths services
     /// @{
-
+    
     /// Returns a ShortestPaths object that gives a lot of control
     /// when computing shortest paths. You should use it instead of
     /// TangencyComputer::shortestPaths or
@@ -467,7 +479,7 @@ namespace DGtal
     /// @return a ShortestPaths object that allows shortest path computations.
     ShortestPaths
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
-
+    
     /// This function can be used to compute directly shortest paths
     /// to one source (without using a ShortestPaths object).
     ///
@@ -500,7 +512,37 @@ namespace DGtal
                    double max_distance = std::numeric_limits<double>::infinity(),
                    double secure = sqrt( KSpace::dimension ),
                    bool verbose = false ) const;
-
+    
+    /// This function can be used to compute directly several shortest
+    /// paths from given sources to a set of destinations. Each
+    /// returned path starts from the source and ends at the closest
+    /// destination. The path is empty if there is no path between
+    /// them.
+    ///
+    /// @param[in] sources the indices of the `n` source points.
+    /// @param[in] destination the indices of the possible destination points.
+    ///
+    /// @param secure This value is used to prune vertices in the
+    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
+    /// is the dimension, the shortest path algorithm is guaranteed to
+    /// output the correct result. If the value is smaller (down to
+    /// 0.0), the algorithm is much faster but a few shortest path may
+    /// be missed.
+    ///
+    /// @param[in] verbose when 'true' some information are displayed
+    /// during computation.
+    ///
+    /// @return the `n` shortest paths from each source point to the
+    /// closest destination point.
+    ///
+    /// @note Builds one ShortestPaths object and stops when the bft
+    /// is finished.
+    std::vector< Path >
+    shortestPaths( const std::vector< Index >& sources,
+                   const std::vector< Index >& destinations,
+                   double secure = sqrt( KSpace::dimension ),
+                   bool verbose = false ) const;
+    
     /// This function can be used to compute directly a shortest path
     /// from a source to a destination, returned as a sequence of
     /// point indices, where the first is the source and the last is
@@ -521,7 +563,7 @@ namespace DGtal
     /// during computation.
     ///
     /// @return the sequence of point indices from \a source to \a
-    /// destination, i.e. `[source, ..., destination|`, which form a
+    /// destination, i.e. `[source, ..., destination]`, which form a
     /// valid path in the object.
     ///
     /// @note Builds two ShortestPaths objects and stops when they
@@ -530,7 +572,7 @@ namespace DGtal
     shortestPath( Index source, Index destination,
                   double secure = sqrt( KSpace::dimension ),
                   bool verbose = false ) const;
-                  
+    
     /// @}
     
     // ------------------------- Protected Datas ------------------------------

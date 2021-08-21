@@ -326,6 +326,42 @@ int main( int argc, char** argv )
     viewerCore << MViewer3D::updateDisplay;
     application.exec();
   }
+
+  std::vector< Index > sources;
+  std::vector< Index > dests;
+  for ( int i = 0; i < 20; i++ )
+    sources.push_back( rand() % TC.size() );
+  dests.push_back( start0 );
+  dests.push_back( start1 );
+  auto paths = TC.shortestPaths( sources, dests, opt );
+
+  {
+    MViewer3D viewerCore;
+    viewerCore.show();
+    Color colSurfel( 200, 200, 255, 128 );
+    Color colStart( 255, 0, 0, 128 );
+    viewerCore.setUseGLPointForBalls(true);
+    for ( auto i = 0; i < points.size(); ++i )
+      {
+        viewerCore.setFillColor( Color( 150, 150, 150, 255 ) );
+        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+                                       points[ i ][ 1 ],
+                                       points[ i ][ 2 ] ), 12 );
+      }
+    viewerCore.setLineColor( Color::Green );
+    for ( auto path : paths )
+      {
+        for ( auto i = 1; i < path.size(); i++ )
+          {
+            Point p1 = TC.point( path[ i-1 ] );
+            Point p2 = TC.point( path[ i   ] );
+            viewerCore.addLine( p1, p2, 18.0 );
+          }
+        trace.info() << "length=" << TC.length( path ) << std::endl;
+      }
+    viewerCore << MViewer3D::updateDisplay;
+    application.exec();
+  }
   
   return 0;
 }
