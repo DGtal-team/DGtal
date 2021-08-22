@@ -205,7 +205,7 @@ double
 DGtal::TangencyComputer<TKSpace>::
 shortestPaths( std::vector< Index >&  ancestor,
                std::vector< double >& distance,
-               Index source,
+               Index target,
                double max_distance,
                double secure,
                bool verbose ) const
@@ -229,7 +229,7 @@ shortestPaths( std::vector< Index >&  ancestor,
   if ( verbose ) trace.beginBlock("Computing geodesics.");
 
   std::priority_queue< Node, std::vector< Node >, Comparator > Q;
-  Q.push( std::make_tuple( source, source, 0.0 ) );
+  Q.push( std::make_tuple( target, target, 0.0 ) );
   double previous_d = 0.0;
   Index i = 0;
   double size_ltp = 0.0;
@@ -274,11 +274,11 @@ template < typename TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Path >
 DGtal::TangencyComputer<TKSpace>::
 shortestPaths( const std::vector< Index >& sources,
-               const std::vector< Index >& destinations,
+               const std::vector< Index >& targets,
                double secure, bool verbose ) const
 {
   auto SP = makeShortestPaths( secure );
-  SP.init( destinations.cbegin(), destinations.cend() );
+  SP.init( targets.cbegin(), targets.cend() );
   std::vector< Path > paths( sources.size() );
   while ( ! SP.finished() )
     {
@@ -297,13 +297,13 @@ shortestPaths( const std::vector< Index >& sources,
 template < typename TKSpace >
 typename DGtal::TangencyComputer<TKSpace>::Path
 DGtal::TangencyComputer<TKSpace>::
-shortestPath( Index source, Index destination,
+shortestPath( Index source, Index target,
               double secure, bool verbose ) const
 {
   auto SP0 = makeShortestPaths( secure );
   auto SP1 = makeShortestPaths( secure );
   SP0.init( source ); 
-  SP1.init( destination );
+  SP1.init( target );
   Path Q;
   while ( ! SP0.finished() && ! SP1.finished() )
     {

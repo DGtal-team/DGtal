@@ -79,7 +79,9 @@ shortestPaths3D 2 ${DGTAL}/examples/samples/Al.100.vol
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+//! [Tangency3D-includes]
 #include "DGtal/geometry/volumes/TangencyComputer.h"
+//! [Tangency3D-includes]
 #include "ConfigExamples.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,7 +141,6 @@ int main( int argc, char** argv )
   // Compute surface
   auto surface = SH3::makeDigitalSurface( bimage, K, params );
 
-  
   // Compute interior boundary points
   // They are less immediate interior points than surfels.
   std::vector< Point >   points;
@@ -199,8 +200,10 @@ int main( int argc, char** argv )
   auto   start1 = point2idx[ p1 ];
   std::cout << "Start1 index is " << start1 << std::endl;
 
-  // Use Tangency to compute shortest paths
+  // (I) Extracts shortest paths to a target
+
   typedef TangencyComputer< KSpace >::Index Index;
+  //! [Tangency3D-shortest-paths]
   TangencyComputer< KSpace > TC( K );
   TC.init( points.cbegin(), points.cend() );
   auto SP = TC.makeShortestPaths( opt );
@@ -212,6 +215,7 @@ int main( int argc, char** argv )
       SP.expand();
     }
   std::cout << "Max distance is " << last_distance << std::endl;
+  //! [Tangency3D-shortest-paths]
 
   {
     const int nb_repetitions = 10;
@@ -232,6 +236,9 @@ int main( int argc, char** argv )
                                        points[ i ][ 1 ],
                                        points[ i ][ 2 ] ), 12.0 );
       }
+
+    // JOL: Left if you wish to display it as a surface, and to display paths.
+    
     // auto surfels = SH3::getSurfelRange ( surface );
     // viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
     // for ( auto && s : surfels )
@@ -253,13 +260,14 @@ int main( int argc, char** argv )
     application.exec();
   }
 
-  // Extracts a shortest path between two points.
+  // (II) Extracts a shortest path between two points.
+
+  //! [Tangency3D-shortest-path]
   auto SP0 = TC.makeShortestPaths( opt );
   auto SP1 = TC.makeShortestPaths( opt );
-  SP0.init( start0 ); 
-  SP1.init( start1 ); 
-  last_distance = 0.0;
-  std::vector< Index > Q;
+  SP0.init( start0 );     //< source point
+  SP1.init( start1 );     //< target point
+  std::vector< Index > Q; //< the output shortest path
   while ( ! SP0.finished() && ! SP1.finished() )
     {
       auto n0 = SP0.current();
@@ -277,12 +285,11 @@ int main( int argc, char** argv )
           std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
           break;
         }
-      last_distance = std::get<2>( n0 ) + std::get<2>( n1 );
-      std::cout << p0 << " " << p1 << " last_d=" << last_distance << std::endl;
     }
-  
-  std::cout << "Max distance is " << last_distance << std::endl;
+  // Q is empty if there is no path.
+  //! [Tangency3D-shortest-path]
 
+  // Display computed distances and shortest path
   {
     const int nb_repetitions = 10;
     const double      period = last_distance / nb_repetitions;
@@ -306,26 +313,17 @@ int main( int argc, char** argv )
                                        points[ i ][ 2 ] ), 12 );
       }
     viewerCore.setLineColor( Color::Green );
-    bool first = true;
-    Index prev = 0;
-    for ( auto p : Q )
+    for ( auto i = 1; i < Q.size(); i++ )
       {
-        if ( first )
-          {
-            first = false;
-            prev  = p;
-          }
-        else
-          {
-            Point p1 = SP0.point( prev );
-            Point p2 = SP0.point( p );
-            viewerCore.addLine( p1, p2, 18.0 );
-            prev = p;
-          }
+        Point p1 = TC.point( Q[ i-1 ] );
+        Point p2 = TC.point( Q[ i   ] );
+        viewerCore.addLine( p1, p2, 18.0 );
       }
     viewerCore << MViewer3D::updateDisplay;
     application.exec();
   }
+
+  // (III) Extracts multiple shortest paths between many sources and two targets.
 
   std::vector< Index > sources;
   std::vector< Index > dests;
@@ -335,6 +333,7 @@ int main( int argc, char** argv )
   dests.push_back( start1 );
   auto paths = TC.shortestPaths( sources, dests, opt );
 
+  // Display them.
   {
     MViewer3D viewerCore;
     viewerCore.show();

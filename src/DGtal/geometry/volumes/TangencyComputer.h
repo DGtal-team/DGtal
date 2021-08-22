@@ -481,15 +481,15 @@ namespace DGtal
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
     
     /// This function can be used to compute directly shortest paths
-    /// to one source (without using a ShortestPaths object).
+    /// to one target (without using a ShortestPaths object).
     ///
     /// @param[out] ancestor an array of size `size()` that is used to
     /// store the ancestor of each point (in the tree of shortest paths).
     ///
     /// @param[out] distance an array of size `size()` that is used to
-    /// store the distance of each point to the source.
+    /// store the distance of each point to the target.
     ///
-    /// @param[in] source the index of the source point.
+    /// @param[in] target the index of the target point.
     ///
     /// @param[in] max_distance the maximal computed distance (the
     /// computation stops after the distance).
@@ -508,19 +508,19 @@ namespace DGtal
     double
     shortestPaths( std::vector< Index >&  ancestor,
                    std::vector< double >& distance,
-                   Index source,
+                   Index target,
                    double max_distance = std::numeric_limits<double>::infinity(),
                    double secure = sqrt( KSpace::dimension ),
                    bool verbose = false ) const;
     
     /// This function can be used to compute directly several shortest
-    /// paths from given sources to a set of destinations. Each
+    /// paths from given sources to a set of targets. Each
     /// returned path starts from the source and ends at the closest
-    /// destination. The path is empty if there is no path between
+    /// target. The path is empty if there is no path between
     /// them.
     ///
     /// @param[in] sources the indices of the `n` source points.
-    /// @param[in] destination the indices of the possible destination points.
+    /// @param[in] targets the indices of the possible target points.
     ///
     /// @param secure This value is used to prune vertices in the
     /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
@@ -533,24 +533,24 @@ namespace DGtal
     /// during computation.
     ///
     /// @return the `n` shortest paths from each source point to the
-    /// closest destination point.
+    /// closest target point.
     ///
     /// @note Builds one ShortestPaths object and stops when the bft
     /// is finished.
     std::vector< Path >
     shortestPaths( const std::vector< Index >& sources,
-                   const std::vector< Index >& destinations,
+                   const std::vector< Index >& targets,
                    double secure = sqrt( KSpace::dimension ),
                    bool verbose = false ) const;
     
     /// This function can be used to compute directly a shortest path
-    /// from a source to a destination, returned as a sequence of
+    /// from a source to a target, returned as a sequence of
     /// point indices, where the first is the source and the last is
-    /// the destination. It returns an empty sequence if there is no
+    /// the target. It returns an empty sequence if there is no
     /// path between them.
     ///
     /// @param[in] source the index of the source point.
-    /// @param[in] destination the index of the destination point.
+    /// @param[in] target the index of the target point.
     ///
     /// @param secure This value is used to prune vertices in the
     /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
@@ -563,13 +563,13 @@ namespace DGtal
     /// during computation.
     ///
     /// @return the sequence of point indices from \a source to \a
-    /// destination, i.e. `[source, ..., destination]`, which form a
+    /// target, i.e. `[source, ..., target]`, which form a
     /// valid path in the object.
     ///
     /// @note Builds two ShortestPaths objects and stops when they
     /// meet.
     Path
-    shortestPath( Index source, Index destination,
+    shortestPath( Index source, Index target,
                   double secure = sqrt( KSpace::dimension ),
                   bool verbose = false ) const;
     

@@ -112,6 +112,8 @@ You may have a look at geometricAnalysis3D.cpp to have a more complete example.
 
 @section dgtal_dconvexityapp_sec2 Tangency and shortest paths
 
+@subsection dgtal_dconvexityapp_sec21 Definition of tangency and shortest paths
+
 Tangency or subconvexity is a derived concept from full convexity.
 Let \f$ X \subset \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
 A \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
@@ -138,22 +140,67 @@ weighted by the length of the Euclidean segments joining cotangent
 points. Shortest paths on this graph are of course \a path in the
 sense above. 
 
+@subsection dgtal_dconvexityapp_sec22 Implementation with TangencyComputer class
+
 The class TangencyComputer offers some services to check tangency and
 to compute shortest paths:
 - TangencyComputer::TangencyComputer requires a cellular grid space big enough to include the future digital object
 - TangencyComputer::init defines the points of the digital object
-- several accessors are provided to get the space, the points (which are indexed in the same order as initialization) and the cell cover 
+- several accessors are provided to get the space, the points (which are indexed in the same order as initialization), their indices and the cell cover 
 - TangencyComputer::arePointsCotangent checks if two points are cotangent
-- TangencyComputer::getCotangentPoints returns all the indices of the cotangent points to a given point.
+- TangencyComputer::getCotangentPoints returns all the indices of the cotangent points to a given point
+- TangencyComputer::shortestPath builds the shortest path between a source and a destination
+- TangencyComputer::shortestPaths builds all shortest paths to a given source, or builds shortest paths between sources and a set of possible destinations
+- TangencyComputer::makeShortestPaths returns a ShortestPaths object, which allows you to compute shortest paths efficiently
 
+To use it, you should include the following headers
+
+@snippet shortestPaths3D.cpp Tangency3D-includes
+  
+
+@subsection dgtal_dconvexityapp_sec23 Shortest paths to a source
+
+We use here a TangencyComputer::ShortestPaths object to compute and
+store all shortest paths to a given target point.
+
+@snippet shortestPaths3D.cpp Tangency3D-shortest-paths
+
+The object stores for each point:
+- its ancestor in the breadth first traversal (following the sequence of ancestors gives you the shortest path to the target(s))
+- its distance to the (closest) target.
+
+Example shortestPaths3D.cpp illustrates that kind of computations, giving the distance of each object point to the specified target.
 
 <table>
 <tr><td>
-\image html cps-geodesics-1.jpg "Geodesic distances and geodesics on cube+sphere shape" width=90%
+\image html cps-geodesics-1.jpg "Geodesic distances and geodesics on cube+sphere shape" width=500
 </td><td>
-\image html cps-geodesics-2.jpg "Geodesic distances on cube+sphere shape" width=90%
+\image html cps-geodesics-2.jpg "Geodesic distances on cube+sphere shape" width=500
 </td></tr>
 </table>
+
+You may obtain nicer views by exporting your result to an OBJ format and then render it.
+
+<table>
+<tr><td>
+\image html dragon256-geodesics-1.jpg "Geodesic distances on dragon digital surface" width=500
+</td><td>
+\image html butterfly-geodesics-1.jpg "Geodesic distances on butterfly digital surface" width=500
+</td></tr>
+</table>
+
+@subsection dgtal_dconvexityapp_sec24 Shortest path between a source and a target
+
+If you wish to compute only one path, generally it is faster to use
+breadth first traversal from both the source and the target and stop
+at first collision. This is already implemented in
+TangencyComputer::shortestPath, using two
+TangencyComputer::ShortestPaths objects. The snippet below shows you
+how it is computed internally:
+
+@snippet shortestPaths3D.cpp Tangency3D-shortest-path
+
+\image html cps-shortest-path.jpg "Shortest path between two points" width=500
 
 */
 }
