@@ -11,6 +11,9 @@
 - *IO*
   - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+  - Move static private HSVtoRGB function in Color (public).
+    (Bertrand Kerautret and Phuc Ngo
+    [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
 - *Build*
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the

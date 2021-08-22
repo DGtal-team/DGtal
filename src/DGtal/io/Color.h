@@ -403,6 +403,7 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
+
     // ------------------------- Private Datas --------------------------------
   private:
     unsigned char myRed;      /**< The red component. */
@@ -426,6 +427,23 @@ namespace DGtal
     {
       return static_cast<unsigned char>(std::max( std::min(value, 255.0), 0.0));
     }
+    
+
+    // ----------------------- Static methods ---------------------------------
+  public: 
+    /** 
+     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB
+     * space.
+     * 
+     * @param r The red component (out).
+     * @param g The green component (out).
+     * @param b The blue component (out).
+     * @param h The hue of the color in [0..360)
+     * @param s The saturation of the color in [0..1].
+     * @param v The value of the color in [0..1].
+     */
+    static void HSVtoRGB(double &r, double &g, double &b,
+       double h, const double s, const double v);
 
 
 
