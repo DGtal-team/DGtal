@@ -29,37 +29,26 @@
 
 
 /**
-   This example shows how to analyze the local geometry of 3D digital
-   sets with full convexity over cubical neighborhoods.
+   This example shows how to use tangency to compute shortest paths on 3D digital objects
    
-   @see \ref dgtal_dconvexityapp_sec1
+   @see \ref dgtal_dconvexityapp_sec2
    
-   For instance, you may call it to analyse image Al.100.vol at scale 2 as
+   For instance, you may call it on object "cube+sphere" as
 
 \verbatim
-shortestPaths3D 2 ${DGTAL}/examples/samples/Al.100.vol
+shortestPaths3D cps.vol 0 255 0.0
 \endverbatim
 
-   Results are displayed, then saved in 'geom-cvx.obj'. You may also
-   analyse the same shape in multiscale fashion with
-
-\verbatim
-shortestPaths3D 2 ${DGTAL}/examples/samples/Al.100.vol
-\endverbatim
- 
-   The result is saved in 'geom-scale-cvx.obj'. You will obtain images
-   like below, where green means convex, blue means concave, white is
-   planar and red is atypical (see \cite lachaud_dgmm_2021 for details).
+   The user selects two surfels (with shift + left click), and then
+   shortest paths are computed and displayed.
 
 <table>
 <tr><td>
-\image html al100-analysis-1.jpg "Full convexity analysis at scale 1" width=100%
+\image html cps-geodesics-1.jpg "Geodesic distances and geodesics on cube+sphere shape" width=90%
 </td><td>
-\image html al100-analysis-2.jpg "Full convexity analysis at scale 2" width=100%
+\image html cps-geodesics-2.jpg "Geodesic distances on cube+sphere shape" width=90%
 </td><td>
-\image html al100-analysis-3.jpg "Full convexity analysis at scale 3" width=100%
-</td><td>
-\image html al100-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=100%
+\image html cps-shortest-path.jpg "Shortest path between two points" width=90%
 </td></tr>
 </table>
 
@@ -114,10 +103,11 @@ int main( int argc, char** argv )
   trace.info() << "\t- m [==0], M [==255]: used to threshold input vol image" << std::endl;
   trace.info() << "\t- opt >= sqrt(3): secure shortest paths, 0: fast" << std::endl;
   string inputFilename = examplesPath + "samples/Al.100.vol";
-  std::string fn= argc > 1 ? argv[ 1 ]         : inputFilename;
-  int         m = argc > 2 ? atoi( argv[ 2 ] ) : 0;
-  int         M = argc > 3 ? atoi( argv[ 3 ] ) : 255;
-  double    opt = argc > 4 ? atof( argv[ 4 ] ) : sqrt(3.0);
+  std::string fn= argc > 1 ? argv[ 1 ]         : inputFilename; // vol filename
+  int         m = argc > 2 ? atoi( argv[ 2 ] ) : 0;   //< low for thresholding
+  int         M = argc > 3 ? atoi( argv[ 3 ] ) : 255; //< up for thresholding
+  double    opt = argc > 4 ? atof( argv[ 4 ] ) : sqrt(3.0); //< exact (sqrt(3)) or inexact (0) computations
+
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.setWindowTitle("shortestPaths3D");

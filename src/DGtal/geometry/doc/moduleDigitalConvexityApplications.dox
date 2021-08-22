@@ -21,7 +21,8 @@ See \ref moduleDigitalConvexity for further details on full convexity.
 [TOC]
 
 The following programs are related to this documentation:
-geometry/volumes/geometricAnalysis3D.cpp,
+geometry/volumes/geometricAnalysis3D.cpp ,
+geometry/volumes/shortestPaths3D.cpp .
 
 @section dgtal_dconvexityapp_sec1 Local convexity analysis
 
