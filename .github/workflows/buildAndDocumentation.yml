@@ -76,7 +76,7 @@ jobs:
            mkdir buildDGtalTools
            cd buildDGtalTools
            echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
-           cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
+           cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -G Ninja
            ninja
 
      - name: Setup tmate session
