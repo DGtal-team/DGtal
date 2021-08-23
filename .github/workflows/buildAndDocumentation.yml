@@ -61,13 +61,14 @@ jobs:
      - name: DGtalTools (linux only)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
-       working-directory: ${{runner.workspace}}
+       working-directory: ${{runner.workspace}}/build
        run: |
+           echo $GITHUB_WORKSPACE
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
-           mkdir build
-           cd build
-           cmake .. -DDGTAL_DIR=${{runner.workspace}}/DGtal/build  -G Ninja
+           mkdir buildDGtalTools
+           cd buildDGtalTools
+           cmake .. -DDGTAL_DIR=$GITHUB_WORKSPACE  -G Ninja
            ninja
 
 
