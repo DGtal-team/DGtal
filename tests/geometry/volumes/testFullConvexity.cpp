@@ -90,5 +90,6 @@ SCENARIO( "FullConvexity< Z3 > full convexity tests", "[full_convexity][3d]" )
   bool cvxf = dconv.isFullyConvex( tetra );
   bool cvxg = dconv.isFullyConvex( X, false );
   REQUIRE( cvxf == cvxg );
+  REQUIRE( ( cvx0 && cvx1 && cvx2 && cvx3 ) == cvxf );
 }
   
