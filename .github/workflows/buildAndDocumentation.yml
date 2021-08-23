@@ -24,7 +24,9 @@ jobs:
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
-       run: sudo apt-get install libqglviewer-dev-qt5 libboost-dev libeigen3-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libfftw3-dev
+       run: | 
+           sudo apt-get update
+           sudo apt-get install libqglviewer-dev-qt5 libboost-dev libeigen3-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libfftw3-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
