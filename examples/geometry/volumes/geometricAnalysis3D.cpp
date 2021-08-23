@@ -259,8 +259,8 @@ int main( int argc, char** argv )
       trace.info() << "\t- m [==0], M [==255]: used to threshold input vol image" << std::endl;
       return 1;
     }
-  int         N = argc > 1 ? atoi( argv[ 1 ] ) : 1;
-  std::string fn= argc > 2 ? argv[ 2 ]         : "";
+  int         N = atoi( argv[ 1 ] );
+  std::string fn= argv[ 2 ];
   int         m = argc > 3 ? atoi( argv[ 3 ] ) : 0;
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
 
@@ -277,7 +277,6 @@ int main( int argc, char** argv )
   K = SH3::getKSpace( bimage );
   Point p1 = K.lowerBound();
   Point p2 = K.upperBound();
-  Domain domain = Domain( p1, p2 );
   trace.info() << "  [Done]" << std::endl;
   // Compute surface
   params( "surfaceComponents" , "All" );
@@ -328,8 +327,7 @@ int main( int argc, char** argv )
           const auto    j = surfel2idx[ surfels[ i ] ];
           all_colors[ i ] = colors[ result[ j ] ];
         }
-      bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), all_colors,
-                              "geom-cvx.obj" );
+      SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-cvx.obj" );
       Viewer3D<> viewer;
       viewer.setWindowTitle("geometricAnalysis3D");
       viewer.show();  
@@ -343,46 +341,6 @@ int main( int argc, char** argv )
         }
       viewer<< Viewer3D<>::updateDisplay;
       application.exec();
-
-      // DEBUG
-      // while ( true )
-      //   {
-      //     Viewer3D<> viewer;
-      //     viewer.setWindowTitle("geometricAnalysis3D");
-      //     viewer.show();  
-      //     int i = 0;
-      //     viewer << SetMode3D( dummy.className(), "Basic" );
-      //     int32_t name = 0;
-      //     for ( auto s : (*surface) )
-      //       {
-      //         viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
-      //                << SetName3D( name++ )
-      //                << s;
-      //         i++;
-      //       }
-      //     int32_t selected_surfel = 0;
-      //     viewer << SetSelectCallback3D( reaction, &selected_surfel,
-      //                                    0, surfels.size() - 1 );
-      //     viewer << Viewer3D<>::updateDisplay;
-      //     application.exec();
-      //     const auto    j = surfel2idx[ surfels[ selected_surfel ] ];
-      //     const Point   q = points[ j ];
-      //     trace.info() << "----------------------------------------------" << std::endl;
-      //     trace.info() << "Point = " << q << std::endl;
-      //     std::vector<Point> dbg;
-      //     if ( N == 1 ) dbg = Analyzer< KSpace, 1 >::one( K, q, bimage );
-      //     if ( N == 2 ) dbg = Analyzer< KSpace, 2 >::one( K, q, bimage );
-      //     if ( N == 3 ) dbg = Analyzer< KSpace, 3 >::one( K, q, bimage );
-      //     if ( N == 4 ) dbg = Analyzer< KSpace, 4 >::one( K, q, bimage );
-      //     if ( N == 5 ) dbg = Analyzer< KSpace, 5 >::one( K, q, bimage );
-      //     Viewer3D<> viewer_dbg;
-      //     viewer_dbg.setWindowTitle("Debug");
-      //     viewer_dbg.show();
-      //     for ( auto p : dbg ) viewer_dbg << p;
-      //     viewer_dbg << Viewer3D<>::updateDisplay;
-      //     application.exec();
-      //   }
-      
     }
   else
     {
@@ -417,8 +375,7 @@ int main( int argc, char** argv )
         else
           all_colors[ i ] = colors_ccv[ 5 - abs( m0 - m1 ) ];
       }
-      bool ok = SH3::saveOBJ( surface, SH3::RealVectors(), all_colors,
-                              "geom-scale-cvx.obj" );
+      SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-scale-cvx.obj" );
       SCell dummy;
       int i = 0;
       Viewer3D<> viewer;
