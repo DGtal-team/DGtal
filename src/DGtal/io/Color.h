@@ -445,6 +445,20 @@ namespace DGtal
     static void HSVtoRGB(double &r, double &g, double &b,
        double h, const double s, const double v);
 
+    /** 
+     * Converts a color from the RGB space to the HSV (Hue,Saturation,Value) space.
+     * 
+     * @param h (out) The hue of the color in [0..360)
+     * @param s (out) The saturation of the color in [0..1].
+     * @param v (out) The value of the color in [0..1].
+     * @param r The red component.
+     * @param g The green component.
+     * @param b The blue component.
+     */
+    static void RGBtoHSV( double & h, double & s, double & v,
+        const unsigned char r,
+        const unsigned char g,
+        const unsigned char b );
 
 
     // ------------------------- Internals ------------------------------------
