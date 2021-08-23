@@ -64,6 +64,9 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        run: |
            echo $GITHUB_WORKSPACE
+           echo "=====" 
+           pwd
+           echo "====="
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
            mkdir buildDGtalTools
