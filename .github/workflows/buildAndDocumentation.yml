@@ -95,8 +95,8 @@ jobs:
           pwd
           export BUILD_DIR=${{runner.workspace}}/DGtal/build
           export SRC_DIR=${{runner.workspace}}/DGtal/
-          .travis/checkDoxygenDocumentation.sh
-      #&& .travis/check_src_file_tag.sh
+          .github/workflow//checkDoxygenDocumentation.sh
+      #&& .github/workflow/check_src_file_tag.sh
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
