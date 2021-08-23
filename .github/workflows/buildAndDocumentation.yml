@@ -63,14 +63,6 @@ jobs:
        shell: bash
        working-directory: ${{runner.workspace}}/build
        run: |
-           echo $GITHUB_WORKSPACE
-           echo "=====" 
-           pwd
-           echo "====="
-           ls -l .
-           echo "====="
-           ls -l ${{runner.workspace}}/build 
-
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
            mkdir buildDGtalTools
@@ -78,11 +70,7 @@ jobs:
            echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
            cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -G Ninja
            ninja
-
-     - name: Setup tmate session
-       uses: mxschmitt/action-tmate@v3
   
-
   # Documentatin (build, check and deploy)
   Documentation:
     runs-on: ubuntu-latest
