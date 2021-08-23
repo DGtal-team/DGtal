@@ -34,7 +34,7 @@ testDigitalConvexity.cpp
 
 This module relies on module \ref moduleQuickHull for convex hull
 computations in arbitrary dimensions. You may also look at
-moduleDigitalConvexityApplications to see some applications of full
+\ref moduleDigitalConvexityApplications to see some applications of full
 convexity.
 
 @section dgtal_dconvexity_sec1  Introduction to full digital convexity
@@ -149,7 +149,7 @@ now limited to polytopes built as simplices in 2D and 3D.
 
 Point check services:
 - BoundedLatticePolytope::isInside checks if some point belongs to the polytope.
-- BoundedLatticePolytope::isDomainPointInside checks if some point within the polyyope bounding box belongs to the polytope.
+- BoundedLatticePolytope::isDomainPointInside checks if some point within the polytope bounding box belongs to the polytope.
 - BoundedLatticePolytope::isInterior checks if some point is strictly inside the polytope.
 - BoundedLatticePolytope::isBoundary checks if some point is lying on the polytope boundary.
 
@@ -227,6 +227,10 @@ polytope, methods for getting the lattice points in a polytope,
 computing the cells touching lattice points or touching a polytope,
 and a set of methods to check k-convexity or k-subconvexity (i.e. tangency).
 
+@note Since 1.3, it can check full convexity of an \b  arbitrary \b digital \b set in
+\b arbitrary \b dimension, using its morphological characterization and a
+generic convex hull algorithm (\ref moduleQuickHull).
+
 Here are two ways for checking full convexity. The first is the
 simplest (but hides some details):
 
@@ -271,6 +275,21 @@ bool ok  = simplex_cover.subset( point_cover ); // true
 \endcode
 
 @subsection dgtal_dconvexity_sec24 Other convexity services, like digital subconvexity (or tangency)
+
+Morphological services (since 1.3):
+- DigitalConvexity::makePolytope( const PointRange& X, bool safe ) const builds the tightiest polytope enclosing the digital set \a X
+- DigitalConvexity::isFullyConvex( const PointRange& X, bool convex0, bool safe ) const checks the full convexity of the digital set \a X
+- DigitalConvexity::is0Convex( const PointRange& X, bool safe ) const checks the usual digital convexity (H-convexity or 0-convexity) of the digital set \a X
+- DigitalConvexity::U( Dimension i, const PointRange& X ) const performs the digital Minkowski sum of \a X along direction \a i
+
+The following snippet shows that a 4D ball is indeed fully convex.
+
+@snippet testDigitalConvexity.cpp nD-full-convexity
+
+
+@note This method for checking full convexity is slightly slower than
+the method using Minkowski sum on the polytope contraints, but it
+works in arbitrary dimension and for arbitrary digital set.
 
 Simplex services:
 - DigitalConvexity::makeSimplex builds a simplex from lattice point iterators or initializer list
