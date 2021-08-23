@@ -58,7 +58,10 @@ jobs:
        shell: bash
        run: ctest -C $BUILD_TYPE --output-on-failure
 
-     - name: DGtalTools (linux only)
+     - name: Setup tmate session
+       uses: mxschmitt/action-tmate@v3
+  
+     - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
@@ -67,6 +70,7 @@ jobs:
            echo "=====" 
            pwd
            echo "====="
+           
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
            mkdir buildDGtalTools
@@ -74,7 +78,9 @@ jobs:
            cmake .. -DDGTAL_DIR=$GITHUB_WORKSPACE  -G Ninja
            ninja
 
-
+     - name: Setup tmate session
+       uses: mxschmitt/action-tmate@v3
+  
 
   # Documentatin (build, check and deploy)
   Documentation:
