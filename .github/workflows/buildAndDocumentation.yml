@@ -58,9 +58,6 @@ jobs:
        shell: bash
        run: ctest -C $BUILD_TYPE --output-on-failure
 
-     - name: Setup tmate session
-       uses: mxschmitt/action-tmate@v3
-  
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
@@ -75,7 +72,7 @@ jobs:
            cd DGtalTools
            mkdir buildDGtalTools
            cd buildDGtalTools
-           cmake .. -DDGTAL_DIR=$GITHUB_WORKSPACE  -G Ninja
+           cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
            ninja
 
      - name: Setup tmate session
