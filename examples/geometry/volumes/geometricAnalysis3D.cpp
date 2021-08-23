@@ -275,8 +275,6 @@ int main( int argc, char** argv )
   params( "thresholdMax", M );
   auto bimage = SH3::makeBinaryImage( fn, params );
   K = SH3::getKSpace( bimage );
-  Point p1 = K.lowerBound();
-  Point p2 = K.upperBound();
   trace.info() << "  [Done]" << std::endl;
   // Compute surface
   params( "surfaceComponents" , "All" );

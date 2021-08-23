@@ -123,8 +123,6 @@ int main( int argc, char** argv )
   KSpace K;
   auto bimage = SH3::makeBinaryImage( fn, params );
   K = SH3::getKSpace( bimage );
-  Point lo = K.lowerBound();
-  Point hi = K.upperBound();
   trace.info() << "  [Done]" << std::endl;
   
   // Compute surface
