@@ -60,8 +60,8 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}
-       run:| 
-           git clone -èdepth 1 https://github.com/DGtal-team/DGtalTools.git
+       run: |
+           git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
            mkdir build
            cd build
