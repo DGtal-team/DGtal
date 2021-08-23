@@ -145,7 +145,6 @@ int main( int argc, char** argv )
           nca.setCenter( p, image );
           if ( full_cvx
                ? nca.isFullyConvexCollapsible()
-               // ? ( nca.isFullyConvexCollapsible() || nca.isLikelyNoise() )
                : nca.is0ConvexCollapsible() )
             {
               std::vector< Point > neighbors;
@@ -166,7 +165,7 @@ int main( int argc, char** argv )
   {
     params( "surfaceComponents" , "All" );
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
-    bool ok      = SH3::saveOBJ( surface, "geom-thinned.obj" );
+    SH3::saveOBJ( surface, "geom-thinned.obj" );
   }
     
   // Display by using two different list to manage OpenGL transparency.
