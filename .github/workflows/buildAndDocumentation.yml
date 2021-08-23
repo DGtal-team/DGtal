@@ -67,7 +67,7 @@ jobs:
            cd DGtalTools
            mkdir build
            cd build
-           cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
+           cmake .. -DDGTAL_DIR=${{runner.workspace}}/DGtal/build  -G Ninja
            ninja
 
 
