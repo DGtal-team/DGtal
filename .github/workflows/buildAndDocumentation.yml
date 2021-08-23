@@ -56,6 +56,19 @@ jobs:
        shell: bash
        run: ctest -C $BUILD_TYPE --output-on-failure
 
+     - name: DGtalTools (linux only)
+       if: matrix.os == 'ubuntu-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}
+       run:| 
+           git clone -èdepth 1 https://github.com/DGtal-team/DGtalTools.git
+           cd DGtalTools
+           mkdir build
+           cd build
+           cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -G Ninja
+           ninja
+
+
 
   # Documentatin (build, check and deploy)
   Documentation:
