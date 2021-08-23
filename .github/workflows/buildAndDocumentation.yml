@@ -67,7 +67,10 @@ jobs:
            echo "=====" 
            pwd
            echo "====="
-           
+           ls -l .
+           echo "====="
+           ls -l ${{runner.workspace}}/build 
+
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
            mkdir buildDGtalTools
