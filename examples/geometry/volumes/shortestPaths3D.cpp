@@ -125,7 +125,6 @@ int main( int argc, char** argv )
   K = SH3::getKSpace( bimage );
   Point lo = K.lowerBound();
   Point hi = K.upperBound();
-  Domain domain = Domain( lo, hi );
   trace.info() << "  [Done]" << std::endl;
   
   // Compute surface
