@@ -33,9 +33,12 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -92,4 +95,87 @@ SCENARIO( "FullConvexity< Z3 > full convexity tests", "[full_convexity][3d]" )
   REQUIRE( cvxf == cvxg );
   REQUIRE( ( cvx0 && cvx1 && cvx2 && cvx3 ) == cvxf );
 }
-  
+
+SCENARIO( "DigitalConvexity< Z2 > ball tests", "[digital_convexity][2d]" )
+{
+  GIVEN( "Given a 2D digital ball of radius 5 " ) {
+    typedef KhalimskySpaceND<2,int>          KSpace;
+    typedef KSpace::Point                    Point;
+    typedef KSpace::Space                    Space;
+    typedef DigitalConvexity< KSpace >       DConvexity;
+    typedef HyperRectDomain< Space >         Domain;
+    typedef DigitalSetBySTLSet< Domain >     DigitalSet;
+    
+    Point      lo = Point::diagonal( -7 );
+    Point      hi = Point::diagonal(  7 );
+    Point      c  = Point::zero;
+    Domain     domain( lo, hi );
+    DConvexity dconv ( lo, hi );
+    DigitalSet ball  ( domain );
+    Shapes< Domain >::addNorm2Ball( ball, c, 5 );
+    std::vector<Point> V( ball.begin(), ball.end() );
+    bool cvx0 = dconv.is0Convex( V );
+    bool fcvx = dconv.isFullyConvex( V );
+    THEN( "It is a 0-convex and fully convex set by morphological characterization" ) {
+      REQUIRE( cvx0 );
+      REQUIRE( fcvx );
+    }
+  }
+}
+
+SCENARIO( "DigitalConvexity< Z3 > ball tests", "[digital_convexity][3d]" )
+{
+  GIVEN( "Given a 3D digital ball of radius 5 " ) {
+    typedef KhalimskySpaceND<3,int>          KSpace;
+    typedef KSpace::Point                    Point;
+    typedef KSpace::Space                    Space;
+    typedef DigitalConvexity< KSpace >       DConvexity;
+    typedef HyperRectDomain< Space >         Domain;
+    typedef DigitalSetBySTLSet< Domain >     DigitalSet;
+    
+    Point      lo = Point::diagonal( -7 );
+    Point      hi = Point::diagonal(  7 );
+    Point      c  = Point::zero;
+    Domain     domain( lo, hi );
+    DConvexity dconv ( lo, hi );
+    DigitalSet ball  ( domain );
+    Shapes< Domain >::addNorm2Ball( ball, c, 5 );
+    std::vector<Point> V( ball.begin(), ball.end() );
+    bool cvx0 = dconv.is0Convex( V );
+    bool fcvx = dconv.isFullyConvex( V );
+    THEN( "It is a 0-convex and fully convex set by morphological characterization" ) {
+      REQUIRE( cvx0 );
+      REQUIRE( fcvx );
+    }
+  }
+}
+
+SCENARIO( "DigitalConvexity< Z4 > ball tests", "[digital_convexity][4d]" )
+{
+  GIVEN( "Given a 4D digital ball of radius 5 " ) {
+    //! [nD-full-convexity]
+    typedef KhalimskySpaceND<4,int>          KSpace;
+    typedef KSpace::Point                    Point;
+    typedef KSpace::Space                    Space;
+    typedef DigitalConvexity< KSpace >       DConvexity;
+    typedef HyperRectDomain< Space >         Domain;
+    typedef DigitalSetBySTLSet< Domain >     DigitalSet;
+    
+    Point      lo = Point::diagonal( -7 );
+    Point      hi = Point::diagonal(  7 );
+    Point      c  = Point::zero;
+    Domain     domain( lo, hi );
+    DConvexity dconv ( lo, hi );
+    DigitalSet ball  ( domain );
+    Shapes< Domain >::addNorm2Ball( ball, c, 5 );
+    std::vector<Point> V( ball.begin(), ball.end() );
+    bool cvx0 = dconv.is0Convex( V );     // checks digital 0-convexity
+    bool fcvx = dconv.isFullyConvex( V ); // checks full convexity
+    //! [nD-full-convexity]
+    THEN( "It is a 0-convex and fully convex set by morphological characterization" ) {
+      REQUIRE( cvx0 );
+      REQUIRE( fcvx );
+    }
+  }
+}
+
