@@ -1,5 +1,32 @@
-# DGtal 1.3(beta)
+# DGtal 1.3 (beta)
 
+## New features / critical changes
+
+- *General*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
+
+## Changes
+
+- *IO*
+  - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
+    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+
+- *Build*
+  - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
+    (approximated) % of unit-tests to build and run for randomized
+    testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
+
+## Bug fixes
+
+- *General*
+  - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
+    (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
+  - Various warnings / deprecated functions (David Coeurjolly,
+    [#1583](https://github.com/DGtal-team/DGtal/pull/1583)
+ - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
+   [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
+ 
 
 # DGtal 1.2
 

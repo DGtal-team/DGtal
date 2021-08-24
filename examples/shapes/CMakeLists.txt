@@ -4,8 +4,7 @@ set(DGTAL_EXAMPLES_SRC
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries (${FILE} DGtal  )
+     DGtal_add_example(${FILE})
 endforeach()
 
 ### with QGLViewer
@@ -17,8 +16,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      exampleSurfaceMesh
   )
   foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC})
-    add_executable(${FILE} ${FILE}.cpp)
-    target_link_libraries (${FILE} DGtal)
+     DGtal_add_example(${FILE})
   endforeach()
 
 endif()
@@ -30,8 +28,7 @@ if (WITH_EIGEN AND WITH_QGLVIEWER)
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
-        add_executable(${FILE} ${FILE}.cpp)
-        target_link_libraries (${FILE} DGtal )
-    endforeach()
+      DGtal_add_example(${FILE})
+   endforeach()
 
 endif()

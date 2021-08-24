@@ -123,9 +123,11 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sequences)", "[set_funct
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AorB;
-
-  std::random_shuffle( A.begin(), A.end() );
-  std::random_shuffle( B.begin(), B.end() );
+  std::random_device rd;
+  std::mt19937 g(rd());
+  
+  std::shuffle( A.begin(), A.end(), g);
+  std::shuffle( B.begin(), B.end(), g);
 
   SECTION( "  - benchmark set operators |" )
     {
@@ -172,9 +174,11 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator & (sequences)", "[set_funct
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AandB;
-
-  std::random_shuffle( A.begin(), A.end() );
-  std::random_shuffle( B.begin(), B.end() );
+  std::random_device rd;
+  std::mt19937 g(rd());
+  
+  std::shuffle( A.begin(), A.end(), g );
+  std::shuffle( B.begin(), B.end(), g );
 
   SECTION( "  - benchmark set operators &" )
     {
@@ -222,9 +226,11 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sequences)", "[set_funct
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AminusB;
-
-  std::random_shuffle( A.begin(), A.end() );
-  std::random_shuffle( B.begin(), B.end() );
+  std::random_device rd;
+  std::mt19937 g(rd());
+  
+  std::shuffle( A.begin(), A.end(), g );
+  std::shuffle( B.begin(), B.end(), g );
 
   SECTION( "  - benchmark set operators -" )
     {
@@ -274,9 +280,11 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sequences)", "[set_funct
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AxorB;
-
-  std::random_shuffle( A.begin(), A.end() );
-  std::random_shuffle( B.begin(), B.end() );
+  std::random_device rd;
+  std::mt19937 g(rd());
+  
+  std::shuffle( A.begin(), A.end(), g );
+  std::shuffle( B.begin(), B.end(), g );
 
   SECTION( "  - benchmark set operators ^" )
     {
