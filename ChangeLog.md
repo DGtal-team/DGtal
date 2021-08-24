@@ -31,10 +31,12 @@
     (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578))
   - Various warnings / deprecated functions (David Coeurjolly,
     [#1583](https://github.com/DGtal-team/DGtal/pull/1583)
- - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
-   [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
- - Fix cmake IN_LIST use policy. (Bertrand Kerautret,
-   [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
+  - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
+    [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
+  - Fix cmake IN_LIST use policy. (Bertrand Kerautret,
+    [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
+  - Adding a explicit list of tests to exclude from Github Actions
+    (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
 
 # DGtal 1.2
 
