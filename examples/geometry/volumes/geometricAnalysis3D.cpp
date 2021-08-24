@@ -238,15 +238,6 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   }
 };
 
-// Called when an user clicks on a surfel.
-int reaction( void* viewer, int32_t name, void* data )
-{
-  int32_t* selected = (int32_t*) data;
-  *selected = name;
-  std::cout << "Selected surfel=" << *selected << std::endl;
-  return 0;
-}
-
 int main( int argc, char** argv )
 {
   if ( argc <= 2 )

@@ -87,9 +87,9 @@ typedef Space::RealPoint    RealPoint;
 typedef Space::Vector       Vector;
 
 // Called when an user clicks on a surfel.
-int reaction( void* viewer, int32_t name, void* data )
+int reaction( void* viewer, DGtal::int32_t name, void* data )
 {
-  int32_t* selected = (int32_t*) data;
+  DGtal::int32_t* selected = (DGtal::int32_t*) data;
   *selected = name;
   std::cout << "Selected surfel=" << *selected << std::endl;
   return 0;
@@ -155,7 +155,7 @@ int main( int argc, char** argv )
 
   // Select a starting point.
   typedef Viewer3D<> MViewer3D;
-  int32_t selected_surfels[ 2 ] = { 0, 0 };
+  DGtal::int32_t selected_surfels[ 2 ] = { 0, 0 };
   auto surfels = SH3::getSurfelRange ( surface );
   for ( int i = 0;  i < 2; i++ )
     {
@@ -163,7 +163,7 @@ int main( int argc, char** argv )
       viewerCore.show();
       Color colSurfel( 200, 200, 255, 255 );
       Color colStart( 255, 0, 0, 255 );
-      int32_t name = 0;
+      DGtal::int32_t name = 0;
       viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
       viewerCore.setFillColor( colSurfel );
       for ( auto && s : surfels ) viewerCore << SetName3D( name++ ) << s;
