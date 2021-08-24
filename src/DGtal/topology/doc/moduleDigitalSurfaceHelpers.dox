@@ -59,14 +59,16 @@ namespace DGtal {
 
     
     Then you can extract the sequence of consecutive surfels:
-    @code 
+@code 
      std::vector<Z2i::SCell> vectBdrySCell;
      SurfelAdjacency<2> SAdj( true );
      Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
 	   				     ks, SAdj, set2d, aCell );
-    @endcode
+@endcode
+  
     and display it:
-    @code
+
+@code
      GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
      cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
      cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
@@ -80,7 +82,8 @@ namespace DGtal {
 				                cmap_grad( d )))<< *it;
           d++;
     }
-   @endcode	
+@endcode	
+   
    You will obtain the following ordered sequence of surfels: 
 
    @image html ctopo2b.png "Tracking of a closed 2D contour."
