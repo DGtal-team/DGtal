@@ -59,7 +59,7 @@ jobs:
      - name: Test
        working-directory: ${{runner.workspace}}/build
        shell: bash
-       run: ctest -C $BUILD_TYPE --output-on-failure -E testLinearStructure $EXCLUDE_TESTS
+       run: ctest -C $BUILD_TYPE --output-on-failure $EXCLUDE_TESTS
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
