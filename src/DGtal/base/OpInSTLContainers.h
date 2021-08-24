@@ -60,14 +60,16 @@ namespace DGtal
    * \brief Aim: Implementation of an adapter for erase and insert 
    * methods of STL containers so that they not only 
    * work for the iterator type, but also for the reverse_iterator type.  
-   * @code
+   * 
+@code
 //      anIterator = aContainer.erase(anIterator);
 //does not compile if anIterator has type 'std::reverse_iterator'
 //erase only takes parameter of type 'std::iterator'
         anIterator = 
         DGtal::OpInSTLContainers<Container,Iterator>
              ::erase(aContainer, anIterator);
-   * @endcode
+@endcode
+
    * @see Preimage2D.ih
    */
 

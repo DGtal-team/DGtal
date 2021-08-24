@@ -173,13 +173,13 @@ f.normalize() afterwards if one accessed f[i] for non-const f to
 ensure that degree and leading coefficients will be computed
 correctly afterwards.
  
-    @code
+@code
   std::cout << "         Q[0]         = " << Q[ 0 ] << std::endl;
   std::cout << "         Q[1]         = " << Q[ 1 ] << std::endl;
   std::cout << "         Q[2]         = " << Q[ 2 ] << std::endl;
   std::cout << "         Q[3]         = " << Q[ 3 ] << std::endl;
   std::cout << "         Q[4]         = " << Q[ 4 ] << std::endl;
-    @endcode
+@endcode
 
   You may notice that Q[i] are n-1-variate polynomials, i.e., x,y
 stands for the former y,z variables.

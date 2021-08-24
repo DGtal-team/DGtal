@@ -16,6 +16,10 @@ link_directories (${PROJECT_BINARY_DIR})
 configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in 
   ${PROJECT_BINARY_DIR}/examples/ConfigExamples.h)
 
+# For DGtal_add_example function
+include(ExampleFunctions.cmake)
+
+
 #------Examples subdirectories ------
 
 add_subdirectory(images)
