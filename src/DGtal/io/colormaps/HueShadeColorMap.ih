@@ -158,7 +158,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
   const double scale = ( value - min ) / static_cast<double>( max - min );
   const double hue = 360 * ( scale * cycles - floor(scale * cycles));
   double red, green, blue;
-  HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
+  DGtal::Color::HSVtoRGB( red, green, blue, hue, 0.9, 1.0 );
   return Color( static_cast<unsigned char>( red * 255),
                 static_cast<unsigned char>( green * 255),
                 static_cast<unsigned char>( blue * 255) );
@@ -184,44 +184,5 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
 
-template <typename Value, int DefaultCycles>
-inline
-void
-DGtal::HueShadeColorMap<Value,DefaultCycles>::HSVtoRGB
-( double & r, double & g, double & b,
-  const double h, const double s, const double v)
-{
-  int i;
-  double f, p, q, t;
-  if( s == 0 ) {                     // achromatic (gray)
-    r = g = b = v;
-    return;
-  }
-  i = static_cast<int>( floor( h / 60 ) );
-  f = ( h / 60 ) - i;                        // factorial part of h
-  p = v * ( 1.0 - s );
-  q = v * ( 1.0 - s * f );
-  t = v * ( 1.0 - s * ( 1.0 - f ) );
-  switch( i ) {
-  case 0:
-    r = v; g = t; b = p;
-    break;
-  case 1:
-    r = q; g = v; b = p;
-    break;
-  case 2:
-    r = p; g = v; b = t;
-    break;
-   case 3:
-     r = p; g = q; b = v;
-     break;
-  case 4:
-    r = t;  g = p; b = v;
-    break;
-  default:    // case 5:
-    r = v; g = p; b = q;
-    break;
-  }
-}
 
 
