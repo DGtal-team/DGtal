@@ -8,6 +8,15 @@
 
 ## Changes
 
+- *Geometry Package*
+
+- Completes the digital convexity module with new functions
+  related to full convexity: check of full convexity for arbitrary
+  digital sets in nD, and helper classes for using full convexity in
+  practice (local geometric analysis, tangency and shortest paths)
+  (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
+
 - *IO*
   - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
