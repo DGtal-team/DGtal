@@ -9,12 +9,15 @@
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
 
-
 ## Changes
 
 - *IO*
   - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+  - Move static private HSVtoRGB and RGBtoHSV functions in Color class (public) and
+    new setters/getters from/to HSV (Python binding updated)
+    (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
+    [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
 - *Build*
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
@@ -25,12 +28,12 @@
 
 - *General*
   - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
-    (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578)) 
+    (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578))
   - Various warnings / deprecated functions (David Coeurjolly,
     [#1583](https://github.com/DGtal-team/DGtal/pull/1583)
  - Removing old snapshot of catch.hpp. Now DGtal compiles on Apple M1 (David Coeurjolly,
    [#1590](https://github.com/DGtal-team/DGtal/pull/1590)
- 
+
 
 # DGtal 1.2
 
@@ -39,7 +42,7 @@
 - *New Feature*
   - DGtal now has a python binding `pip install dgtal`! For all
     details on the list of classes available in python, you can have a
-    look to: Pablo Hernandez-Cerdan [#1528](https://github.com/DGtal-team/DGtal/pull/1528) 
+    look to: Pablo Hernandez-Cerdan [#1528](https://github.com/DGtal-team/DGtal/pull/1528)
 
 - *Geometry Package*
   - New normal vector estimation using plane-probing approaches.
@@ -95,7 +98,7 @@
   - Adding spacing in ImageContainerByITKImage and the possibility to export it
     through ITKWriter.
     (Bertrand Kerautret [#1563](https://github.com/DGtal-team/DGtal/pull/#1563))
-    
+
 
 ## Bug fixes
 
@@ -144,8 +147,8 @@
     explicit". (David Coeurjolly, [#1557](https://github.com/DGtal-team/DGtal/pull/1557))
   - Fix AppVeyor issue using new zlib URL.
     (Bertrand Kerautret, [#1571](https://github.com/DGtal-team/DGtal/pull/1571))
-  
-  
+
+
 # DGtal 1.1
 
 ## New Features / Critical Changes
