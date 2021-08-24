@@ -7,8 +7,7 @@ set(DGTAL_EXAMPLES_SRC
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
-  add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries ( ${FILE} DGtal)
+     DGtal_add_example(${FILE})
 endforeach()
 
 if ( WITH_GMP )
@@ -17,8 +16,7 @@ if ( WITH_GMP )
       extended-euclid
   )
   foreach(FILE ${DGTAL_EXAMPLES_GMP_SRC})
-    add_executable(${FILE} ${FILE}.cpp)
-    target_link_libraries (${FILE} DGtal)
-  endforeach()
+      DGtal_add_example(${FILE})
+ endforeach()
 
 endif()

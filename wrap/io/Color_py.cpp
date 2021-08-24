@@ -89,6 +89,12 @@ void init_Color(py::module & m) {
             "Set the color using floats [0-1.0] coding each channel",
             py::arg("red"), py::arg("green"), py::arg("blue"), py::arg("alpha")=1.0);
 
+    py_class.def("setFromHSV", &TT::setFromHSV,
+               "Set the color using HSV values (floats [0-1.0])",
+               py::arg("hue"), py::arg("saturation"), py::arg("value"));
+    py_class.def("getHSV", &TT::getHSV,
+                "Return the float HSV values of a color");
+
 
     py_class.def("tikz", &TT::tikz,
             R"(Return a string representation of the color usable in TikZ commands.)");
