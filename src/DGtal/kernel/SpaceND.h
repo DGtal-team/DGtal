@@ -70,8 +70,8 @@ namespace DGtal
    * a model of concepts::CInteger and concepts::CSignedInteger concepts.  
    * 
    * Example of use:
-   *@code
-   
+   *
+@code
 #include <DGtal/kernel/SpaceND.h>
 
 //...
@@ -86,7 +86,7 @@ typedef Space4::Point Point4Int;
 
 //and we use it (see PointVector documentation).
 Point4Int a= {2, 3 , -5 , 6};
-   @endcode
+@endcode
    *
    **/
 

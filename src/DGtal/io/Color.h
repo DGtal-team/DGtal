@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include <boost/lexical_cast.hpp>
 #include <algorithm>
+#include <array>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -131,22 +132,6 @@ namespace DGtal
     {
     }
 
-    Color& setRGBi( const unsigned char aRedValue,
-		    const unsigned char aGreenValue,
-		    const unsigned char aBlueValue,
-		    const unsigned char aAlphaValue = 255);
-
-    /**
-     * Set the color parameter from an unsigned integer coding each canal.
-     *
-     * @param aRGBA an unsigned integer on 32 bits(DGtal::unit32_t)
-     * representing the color coded with 4 bits on each components R, G, B
-     * and Alpha value.
-     * @return a reference on the itself.
-     *
-     */
-
-    Color& setRGBA( DGtal::uint32_t aRGBA );
 
     void red( const unsigned char aRedValue );
 
@@ -174,6 +159,43 @@ namespace DGtal
     double a() const ;
 
 
+    Color& setRGBi( const unsigned char aRedValue,
+                   const unsigned char aGreenValue,
+                   const unsigned char aBlueValue,
+                   const unsigned char aAlphaValue = 255);
+    
+    /**
+     * Set the color parameter from an unsigned integer coding each canal.
+     *
+     * @param aRGBA an unsigned integer on 32 bits(DGtal::unit32_t)
+     * representing the color coded with 4 bits on each components R, G, B
+     * and Alpha value.
+     * @return a reference on the itself.
+     *
+     */
+    Color& setRGBA( DGtal::uint32_t aRGBA );
+    
+    
+    /// Set the color from HSV values
+    /// @param h hue
+    /// @param s saturation
+    /// @param v value
+    /// @return the color
+    Color& setFromHSV( const double h, const double s, const double v)
+    {
+      double r,g,b;
+      Color::HSVtoRGB(r,g,b,h,s,v);
+      return this->setRGBf((float)r,(float)g,(float)b);
+    }
+    /// @return the HSV values of a DGtal::Color (array of three doubles).
+    ///
+    std::array<double, 3> getHSV() const
+    {
+      double h,s,v;
+      Color::RGBtoHSV(h,s,v, this->r(), this->g(), this->b());
+      return {h,s,v};
+    }
+    
     /**
      * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B canal on 8 bits starting from least significant bit.
@@ -188,6 +210,8 @@ namespace DGtal
 
     DGtal::uint32_t getRGBA() const;
 
+    
+    
 
     bool valid() const;
 
@@ -403,6 +427,7 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
+
     // ------------------------- Private Datas --------------------------------
   private:
     unsigned char myRed;      /**< The red component. */
@@ -426,7 +451,38 @@ namespace DGtal
     {
       return static_cast<unsigned char>(std::max( std::min(value, 255.0), 0.0));
     }
+    
 
+    // ----------------------- Static methods ---------------------------------
+  public: 
+    /** 
+     * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB
+     * space.
+     * 
+     * @param r The red component (out).
+     * @param g The green component (out).
+     * @param b The blue component (out).
+     * @param h The hue of the color in [0..360)
+     * @param s The saturation of the color in [0..1].
+     * @param v The value of the color in [0..1].
+     */
+    static void HSVtoRGB(double &r, double &g, double &b,
+       double h, const double s, const double v);
+
+    /** 
+     * Converts a color from the RGB space to the HSV (Hue,Saturation,Value) space.
+     * 
+     * @param h (out) The hue of the color in [0..360)
+     * @param s (out) The saturation of the color in [0..1].
+     * @param v (out) The value of the color in [0..1].
+     * @param r The red component.
+     * @param g The green component.
+     * @param b The blue component.
+     */
+    static void RGBtoHSV( double & h, double & s, double & v,
+        const unsigned char r,
+        const unsigned char g,
+        const unsigned char b );
 
 
     // ------------------------- Internals ------------------------------------

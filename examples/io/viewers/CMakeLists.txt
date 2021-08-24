@@ -22,14 +22,12 @@ set(DGTAL_TESTS_GMP_SRC
 )
 
 foreach(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries (${FILE} DGtal)
+     DGtal_add_example(${FILE})
 endforeach()
 
 if(GMP_FOUND)
   foreach(FILE ${DGTAL_TESTS_GMP_SRC})
-    add_executable(${FILE} ${FILE}.cpp)
-    target_link_libraries (${FILE} DGtal)
+     DGtal_add_example(${FILE})
   endforeach()
 endif()
 

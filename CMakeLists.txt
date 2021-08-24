@@ -88,15 +88,39 @@ include(OSDependentSettings)
 # -----------------------------------------------------------------------------
 include(CheckDGtalDependencies)
 
-# -----------------------------------------------------------------------------
-# Check Optional Dependencies
-# -----------------------------------------------------------------------------
 include(CheckDGtalOptionalDependencies)
 
+
 # -----------------------------------------------------------------------------
-# Debug, Cpack and Ctest settings
+# Randomized build 1/2.
+# -----------------------------------------------------------------------------
+SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
+SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
+
+# -----------------------------------------------------------------------------
+# Unit-testing, Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 include(CpackCtest)
+
+#------------------------------------------------------------------------------
+# Examples
+#------------------------------------------------------------------------------
+include(BuildExamples)
+
+# -----------------------------------------------------------------------------
+# Randomized build 2/2.
+# -----------------------------------------------------------------------------
+if (BUILD_EXAMPLES OR BUILD_TESTING)
+ message(STATUS "Randomized examples/testing")
+ if (DGTAL_RANDOMIZED_TESTING_THRESHOLD EQUAL "100")
+  message(STATUS "All examples or unit-tests will be compiled (cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
+ else()
+  message(STATUS "Only ~${DGTAL_RANDOMIZED_TESTING_THRESHOLD}% of the (randomly selected) examples/tests will be  compiled/run")
+  message(STATUS "  (you can adjust this with the cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
+  message(STATUS " Whitelist: ${DGTAL_RANDOMIZED_TESTING_WHITELIST}")
+endif()
+message(STATUS "-------------------------------------------------------------------------------")
+endif()
 
 # -----------------------------------------------------------------------------
 # Code coverage
@@ -107,11 +131,6 @@ include(CheckCoverage)
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
 include(GeneratorSpecific)
-
-#------------------------------------------------------------------------------
-# Examples
-#------------------------------------------------------------------------------
-include(BuildExamples)
 
 # -----------------------------------------------------------------------------
 # Install settings
