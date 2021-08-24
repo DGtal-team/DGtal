@@ -55,7 +55,7 @@ fi
 
 ## We check src code consistency
 cd "$SRC_DIR/src"
-"$SRC_DIR/.travis/check_src_file_tag.sh"
+"$SRC_DIR/.github/workflows/check_src_file_tag.sh"
 if [[ $? == 0 ]]
 then
     echo "@file tag OK"
