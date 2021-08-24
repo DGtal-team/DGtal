@@ -22,7 +22,7 @@
  *
  * @date 2020/02/01
  *
- * Functions for testing class CellGeometry.
+ * Functions for testing class DigitalConvexity.
  *
  * This file is part of the DGtal library.
  */
