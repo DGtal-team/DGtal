@@ -59,7 +59,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     LInterp L1( X );    
     CAPTURE( L1 );
     THEN( "Its Lagrange polynomial is itself" ) {
-      auto Lag1 = L1.LagrangePolynomial( Y );
+      auto Lag1 = L1.polynomial( Y );
       REQUIRE( Lag1 == P1 * L1.denominator() );
     }
   }
@@ -72,7 +72,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     LInterp L2( X );    
     CAPTURE( L2 );
     THEN( "Its Lagrange polynomial is itself" ) {
-      auto Lag2 = L2.LagrangePolynomial( Y );
+      auto Lag2 = L2.polynomial( Y );
       REQUIRE( Lag2 == P2 * L2.denominator() );
     }
   }
@@ -83,7 +83,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     LInterp L3( X );    
     CAPTURE( L3 );
     THEN( "Its Lagrange polynomial is 1/2*(2+3x+x^2)" ) {
-      auto Lag3 = L3.LagrangePolynomial( Y );
+      auto Lag3 = L3.polynomial( Y );
       Polynomial Exp3 = mmonomial<Ring>( 2 ) + 3 * mmonomial<Ring>( 1 ) + 2;
       REQUIRE( Lag3 == Exp3 );
     }
@@ -95,7 +95,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     LInterp L4( X );    
     CAPTURE( L4 );
     THEN( "Its Lagrange polynomial is 1/2*(2+5x+7x^2)" ) {
-      auto Lag4 = L4.LagrangePolynomial( Y );
+      auto Lag4 = L4.polynomial( Y );
       Polynomial Exp4 = 7 * mmonomial<Ring>( 2 ) + 5 * mmonomial<Ring>( 1 ) + 2;
       REQUIRE( Lag4 == Exp4 );
     }

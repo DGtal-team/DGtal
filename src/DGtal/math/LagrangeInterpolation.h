@@ -45,7 +45,6 @@
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
-#include <utility>
 #include <vector>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -179,7 +178,7 @@ namespace DGtal
     ///
     /// @note if \a yvalues has not the correct size, then the zero
     /// polynomial is returned.
-    Polynomial LagrangePolynomial( const std::vector< Ring >& yvalues )
+    Polynomial polynomial( const std::vector< Ring >& yvalues )
     {
       Polynomial P;
       if ( yvalues.size() != size() ) return P;
