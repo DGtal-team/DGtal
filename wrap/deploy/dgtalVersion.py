@@ -1,4 +1,4 @@
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 
 def get_versions():
     """Returns versions for the DGtal Python package.
