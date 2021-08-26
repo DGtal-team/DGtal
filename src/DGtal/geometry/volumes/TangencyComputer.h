@@ -399,7 +399,7 @@ namespace DGtal
     const Point& point( Index i ) const
     { return myX[ i ]; }
       
-    /// @param p any point
+    /// @param a any point
     /// @return its index or `size()` if the point is not in the object
     /// @note Time complexity is amortized constant.
     Size index( const Point& a ) const

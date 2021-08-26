@@ -284,7 +284,7 @@ Morphological services (since 1.3):
 
 The following snippet shows that a 4D ball is indeed fully convex.
 
-@snippet testDigitalConvexity.cpp nD-full-convexity
+@snippet testFullConvexity.cpp nD-full-convexity
 
 
 @note This method for checking full convexity is slightly slower than
