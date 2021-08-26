@@ -30,7 +30,7 @@ The following programs are related to this documentation:
 geometry/curves/exampleDigitalConvexity.cpp,
 geometry/curves/exampleRationalConvexity.cpp,
 testBoundedLatticePolytope.cpp, testCellGeometry.cpp,
-testDigitalConvexity.cpp
+testDigitalConvexity.cpp, testEhrhartPolynomial.cpp .
 
 This module relies on module \ref moduleQuickHull for convex hull
 computations in arbitrary dimensions. You may also look at
@@ -312,6 +312,62 @@ Convexity services:
 - DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
 - DigitalConvexity::isFullySubconvex( const Point&, const Point&, const CellGeometry& ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
 
+@subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
+
+Any lattice polytope has a unique Ehrhart polynomial that encodes the
+relationship between the volume of a polytope and the number of
+integer points the polytope contains. It is a kind of extension of 2D
+Pick's theorem. More precisely, if \f$ P \f$ is a (bounded) polytope
+in \f$ \mathbb{R}^d \f$ with vertices lying in \f$ \mathbb{Z}^d \f$,
+and for any positive integer \f$ t \f$, let \f$ tP \f$ denotes the
+dilation of \f$ P \f$ by a factor \f$ t \f$.
+
+We denote \f$ L(P,t) := \#( tP \cap \mathbb{Z}^d ) \f$, i.e. the number of
+lattice points included in the dilation of this polytope.
+
+Then \f$ L(P,t) \f$ is a polynomial in \f$ t \f$ of degree \f$ f
+\f$. Its monomial coefficients \f$ L_k(P) \f$ are rational numbers,
+and some coefficients have a clear geometric meaning, e.g.:
+
+- \f$ L_0(P) \f$ is the Euler characteristic of the polytope, which is 1.
+- \f$ L_d(P) \f$ is the volume of the polytope.
+
+Note also that, by Ehrhart-MacDonald reciprocity, the polynomial \f$
+(-1)^d L(P,-t) \f$ counts the number of interior lattice points to \f$
+tP \f$.
+
+Class EhrhartPolynomial provides an elementary method to determine the
+Ehrhart polynomial of any bounded lattice polytope.
+
+- EhrhartPolynomial::init initializes the object with a polytope \f$ P \f$ (BoundedLatticePolytope object)
+- EhrhartPolynomial::numerator gives you the integral numerator of the Ehrhart polynomial of the polytope \f$ P \f$
+- EhrhartPolynomial::denominator gives you the integral denominator of Ehrhart polynomial of the polytope \f$ P \f$
+- EhrhartPolynomial::count counts the number of lattice points in \f$ tP \f$
+- EhrhartPolynomial::countInterior counts the number of lattice points in the interior of \f$ tP \f$
+
+See testEhrhartPolynomial.cpp for examples.
+
+\code
+#include "DGtal/geometry/volumes/EhrhartPolynomial.h"
+...
+using namespace Z2i;
+std::vector< Point > T = { Point(0,0), Point(1,0), Point(2,1) };
+DigitalConvexity< KSpace > dconv( Point::diagonal( -100 ), Point::diagonal( 100 ) );
+auto P = dconv.makeSimplex( T.cbegin(), T.cend() );
+EhrhartPolynomial< Space, int64_t > E( P );
+// Its Ehrhart polynomial is 1/2( 2 + 3t + t^2 )
+auto expP = mmonomial<Integer>( 2 ) + 3 * mmonomial<Integer>( 1 ) + 2;
+REQUIRE( E.numerator()   == expP );
+REQUIRE( E.denominator() == 2 );
+// number of lattice points of its 4-fold dilated version 
+auto P4 = 4 * P;
+auto n4 = E.count( 4 );
+REQUIRE( P4.count() == n4 );
+// number of interior lattice points of its 4-fold dilated version 
+auto P4 = 4 * P;
+auto n4 = E.countInterior( 4 );
+REQUIRE( P4.countInterior() == n4 );
+\endcode
 
 @section dgtal_dconvexity_sec3 Rational polytopes
 
