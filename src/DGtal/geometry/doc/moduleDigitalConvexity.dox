@@ -369,6 +369,16 @@ auto n4 = E.countInterior( 4 );
 REQUIRE( P4.countInterior() == n4 );
 \endcode
 
+@note The Ehrhart polynomial is determined by taking a series of
+dilation of the polytope `(1,2,...,d)` and counting by brute-force the
+number of lattice points within these dilated polytopes. We then
+compute the Lagrange interpolating polynomial (using class
+LagrangeInterpolation) and we know that this must be the Ehrhart
+polynomial. There exists faster ways to compute it, which are however
+much more complex. See for instance LattE software:
+https://www.math.ucdavis.edu/~latte .
+
+
 @section dgtal_dconvexity_sec3 Rational polytopes
 
 You can also create bounded rational polytopes, i.e. polytopes with
