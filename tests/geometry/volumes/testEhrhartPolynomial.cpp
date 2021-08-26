@@ -93,3 +93,98 @@ SCENARIO( "EhrhartPolynomial< Z2 > unit tests", "[ehrhart_polynomial][2d]" )
     }
   }
 }
+
+SCENARIO( "EhrhartPolynomial< Z3 > unit tests", "[ehrhart_polynomial][3d]" )
+{
+  typedef SpaceND< 3, int >          Space;
+  typedef KhalimskySpaceND< 3, int > KSpace;
+  typedef Space::Point               Point;
+  typedef DGtal::int64_t             Integer;
+  typedef EhrhartPolynomial< Space, Integer > Ehrhart;
+
+  GIVEN( "A convex polytope" ) {
+    std::vector< Point > T = { Point(0,0,0), Point(1,0,1), Point(2,1,0), Point(0,0,2),
+      Point(0,3,1) };
+    DigitalConvexity< KSpace > dconv( Point::diagonal( -100 ), Point::diagonal( 100 ) );
+    auto P = dconv.makePolytope( T );
+    Ehrhart E( P );
+    CAPTURE( E.numerator() );
+    CAPTURE( E.denominator() );
+    THEN( "Its Ehrhart polynomial counts lattice points" ) {
+      auto P0 = 0 * P;
+      auto n0 = E.count( 0 );
+      REQUIRE( P0.count() == n0 );
+      auto P1 = 1 * P;
+      auto n1 = E.count( 1 );
+      REQUIRE( P1.count() == n1 );
+      auto P2 = 2 * P;
+      auto n2 = E.count( 2 );
+      REQUIRE( P2.count() == n2 );
+      auto P3 = 3 * P;
+      auto n3 = E.count( 3 );
+      REQUIRE( P3.count() == n3 );
+    }
+    THEN( "Its Ehrhart polynomial counts interior lattice points" ) {
+      auto P1 = 1 * P;
+      auto n1 = E.countInterior( 1 );
+      REQUIRE( P1.countInterior() == n1 );
+      auto P2 = 2 * P;
+      auto n2 = E.countInterior( 2 );
+      REQUIRE( P2.countInterior() == n2 );
+      auto P3 = 3 * P;
+      auto n3 = E.countInterior( 3 );
+      REQUIRE( P3.countInterior() == n3 );
+      auto P4 = 4 * P;
+      auto n4 = E.countInterior( 4 );
+      REQUIRE( P4.countInterior() == n4 );
+    }
+  }
+}
+
+
+SCENARIO( "EhrhartPolynomial< Z4 > unit tests", "[ehrhart_polynomial][4d]" )
+{
+  typedef SpaceND< 4, int >          Space;
+  typedef KhalimskySpaceND< 4, int > KSpace;
+  typedef Space::Point               Point;
+  typedef DGtal::int64_t             Integer;
+  typedef EhrhartPolynomial< Space, Integer > Ehrhart;
+
+  GIVEN( "A convex polytope" ) {
+    std::vector< Point > T = { Point(0,0,0,0), Point(1,0,1,-1), Point(2,1,0,2),
+      Point(0,0,2,0), Point(0,4,1,3), Point(3,0,-1,1) };
+    DigitalConvexity< KSpace > dconv( Point::diagonal( -100 ), Point::diagonal( 100 ) );
+    auto P = dconv.makePolytope( T );
+    Ehrhart E( P );
+    CAPTURE( E.numerator() );
+    CAPTURE( E.denominator() );
+    THEN( "Its Ehrhart polynomial counts lattice points" ) {
+      auto P0 = 0 * P;
+      auto n0 = E.count( 0 );
+      REQUIRE( P0.count() == n0 );
+      auto P1 = 1 * P;
+      auto n1 = E.count( 1 );
+      REQUIRE( P1.count() == n1 );
+      auto P2 = 2 * P;
+      auto n2 = E.count( 2 );
+      REQUIRE( P2.count() == n2 );
+      auto P3 = 3 * P;
+      auto n3 = E.count( 3 );
+      REQUIRE( P3.count() == n3 );
+    }
+    THEN( "Its Ehrhart polynomial counts interior lattice points" ) {
+      auto P1 = 1 * P;
+      auto n1 = E.countInterior( 1 );
+      REQUIRE( P1.countInterior() == n1 );
+      auto P2 = 2 * P;
+      auto n2 = E.countInterior( 2 );
+      REQUIRE( P2.countInterior() == n2 );
+      auto P3 = 3 * P;
+      auto n3 = E.countInterior( 3 );
+      REQUIRE( P3.countInterior() == n3 );
+      auto P4 = 4 * P;
+      auto n4 = E.countInterior( 4 );
+      REQUIRE( P4.countInterior() == n4 );
+    }
+  }
+}
