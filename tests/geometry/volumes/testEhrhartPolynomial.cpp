@@ -188,3 +188,84 @@ SCENARIO( "EhrhartPolynomial< Z4 > unit tests", "[ehrhart_polynomial][4d]" )
     }
   }
 }
+
+SCENARIO( "EhrhartPolynomial< Z2 > triangle tests", "[ehrhart_polynomial][2d]" )
+{
+  typedef SpaceND< 2, int >          Space;
+  typedef HyperRectDomain< Space >   Domain;
+  typedef KhalimskySpaceND< 2, int > KSpace;
+  typedef Space::Point               Point;
+  typedef DGtal::int64_t             Integer;
+  typedef EhrhartPolynomial< Space, Integer > Ehrhart;
+  typedef Ehrhart::LatticePolytope   Polytope;
+  typedef Polytope::UnitSegment      UnitSegment;
+
+  Domain     domain( Point( 0, 0 ), Point( 4, 4 ) );
+  DigitalConvexity<KSpace> dconv( Point( -1, -1 ), Point( 5, 5 ) );
+  
+  WHEN( "Computing all triangles in domain (0,0)-(4,4)." ) {
+    unsigned int nbsimplex = 0;
+    unsigned int nb0_ok = 0;
+    unsigned int nb1_ok = 0;
+    unsigned int nb_cvx_ok = 0;
+    unsigned int nb_not_cvx_ok = 0;
+    for ( auto a : domain )
+      for ( auto b : domain )
+        for ( auto c : domain )
+          {
+            if ( ! ( ( a < b ) && ( b < c ) ) ) continue;
+            if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
+            const auto    P = dconv.makeSimplex( { a, b, c } );
+            const bool fcvx = dconv.isFullyConvex( P );
+            const auto   P0 = P + UnitSegment( 0 );
+            const auto   P1 = P + UnitSegment( 1 );
+            const auto    D = P.getDomain();
+            const auto    W = D.upperBound() - D.lowerBound();
+            const auto  E_P = Ehrhart( P  ); 
+            const auto E_P0 = Ehrhart( P0 ); 
+            const auto E_P1 = Ehrhart( P1 );
+            const auto   LP = E_P.numerator();
+            const auto  LP0 = E_P0.numerator();
+            const auto  LP1 = E_P1.numerator();
+            const auto   LD = E_P.denominator();
+            const auto  LD0 = E_P0.denominator();
+            const auto  LD1 = E_P1.denominator(); 
+            const bool c2_0 = ( LP[ 2 ] + Integer( W[ 1 ] ) * LD ) == LP0[ 2 ];
+            const bool c1_0 = ( LP[ 1 ] + Integer( 1 ) * LD ) == LP0[ 1 ];
+            const bool c0_0 = LP[ 0 ] == LP0[ 0 ];
+            const bool  d_0 = LD == LD0;
+            const bool c2_1 = ( LP[ 2 ] + Integer( W[ 0 ] ) * LD ) == LP1[ 2 ];
+            const bool c1_1 = ( LP[ 1 ] + Integer( 1 ) * LD ) == LP1[ 1 ];
+            const bool c0_1 = LP[ 0 ] == LP1[ 0 ];
+            const bool  d_1 = LD == LD1;
+            nb0_ok += ( c2_0 && c1_0 && c0_0 && d_0 ) ? 1 : 0;
+            nb1_ok += ( c2_1 && c1_1 && c0_1 && d_1 ) ? 1 : 0;
+            nbsimplex += 1;
+            nb_cvx_ok += fcvx ? 1 : 0;
+            if ( ! ( c2_0 && c1_0 && c0_0 && d_0 ) ){
+              trace.info() << "------------------------------------" << std::endl;
+              trace.info() << ( fcvx ? "FULLCVX" : "NOTFULLCVX" ) << a << b << c << std::endl;
+              trace.info() << "W[0] = " << W[ 0 ] << "W[1] = " << W[ 1 ] << std::endl;
+              trace.info() << "LP = (" << LP << ")/" << E_P.denominator() << std::endl;
+              trace.info() << "LP0= (" << LP0 << ")/" << E_P0.denominator() << std::endl;
+              break;
+            }
+            if ( ! ( c2_1 && c1_1 && c0_1 && d_1 ) ){
+              trace.info() << "------------------------------------" << std::endl;
+              trace.info() << ( fcvx ? "FULLCVX" : "NOTFULLCVX" ) << a << b << c << std::endl;
+              trace.info() << "W[0] = " << W[ 0 ] << "W[1] = " << W[ 1 ] << std::endl;
+              trace.info() << "LP = (" << LP << ")/" << E_P.denominator() << std::endl;
+              trace.info() << "LP1= (" << LP1 << ")/" << E_P1.denominator() << std::endl;
+              break;
+            }
+          }
+    THEN( "Not all triangles are fully convex." ) {
+      REQUIRE( nb_cvx_ok < nbsimplex );
+    }
+    THEN( "Ehrhart polynomials are predictable." ) {
+      CAPTURE( nb_cvx_ok );
+      REQUIRE( nb0_ok == nbsimplex );
+      REQUIRE( nb1_ok == nbsimplex );
+    }
+  }
+}
