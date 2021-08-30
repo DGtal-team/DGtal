@@ -39,7 +39,7 @@ jobs:
 
      - name: Get white list of tests
        run : |
-          echo "::set-output name=WHITE_LIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
+            echo "::set-output name=WHITE_LIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
        id: whitelist
 
      - name: Create Build Environment
@@ -49,13 +49,13 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_LINUX -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITE_LIST }}" -G Ninja
 
      - name: Configure CMake (macOS)
        if: matrix.os == 'macOS-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITE_LIST }}"  -G Ninja
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
