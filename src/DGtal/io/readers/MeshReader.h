@@ -139,7 +139,7 @@ public:
   bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh );
 
   
-  /// Checks that every index in \a indices are different from the others.
+  /// Checks that each index in \a indices is unique.
   /// @param indices a vector of integer indices
   /// @return 'true' iff the integer indices are all pairwise different.
   static
