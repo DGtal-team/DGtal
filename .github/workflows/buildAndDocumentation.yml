@@ -13,7 +13,6 @@ env:
   CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
   CONFIG_MAC:    -DWITH_EIGEN=true -DWITH_GMP=tue
   # List of tests to exclude from Ctest. For example -E "(test1|test2)..."
-  EXCLUDE_TESTS: -E '(testLinearStructure|testPointVector)'
 
 #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
@@ -63,8 +62,8 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        shell: bash
        run: |
-           echo ctest -C $BUILD_TYPE --output-on-failure $EXCLUDE_TESTS
-           ctest -C $BUILD_TYPE --output-on-failure $EXCLUDE_TESTS
+           echo ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)" 
+           ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)"
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
