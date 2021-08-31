@@ -37,6 +37,10 @@
     [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
   - Adding a explicit list of tests to exclude from Github Actions
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
+  - Fixing bugs in the exclude list for CI
+    (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
+
+
 
 # DGtal 1.2
 

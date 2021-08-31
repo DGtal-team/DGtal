@@ -12,8 +12,8 @@ env:
   CONFIG_GLOBAL: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=100
   CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
   CONFIG_MAC:    -DWITH_EIGEN=true -DWITH_GMP=tue
-  # List of tests to exclude from Ctest. For example -E "(test1)|(test2)..."
-  EXCLUDE_TESTS: -E "(testLinearStructure)|(testPointVector)" 
+  # List of tests to exclude from Ctest. For example -E "(test1|test2)..."
+  EXCLUDE_TESTS: -E '(testLinearStructure|testPointVector)'
 
 #  -DDGTAL_RANDOMIZED_TESTING_WHITELIST=$(../.travis/create_whitelist.sh)"\
 
