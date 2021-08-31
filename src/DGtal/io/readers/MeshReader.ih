@@ -446,7 +446,7 @@ bool
 DGtal::MeshReader<TPoint>::
 verifyIndicesUniqueness( const std::vector< unsigned int > &indices )
 {
-  std::set<unsigned int> sindices( indices.begin(), indices.end() );
+  std::unordered_set<unsigned int> sindices( indices.begin(), indices.end() );
   return sindices.size() == indices.size();
 }
 
