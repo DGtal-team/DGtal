@@ -2,6 +2,8 @@
 
 ## New features / critical changes
 
+(TODO)
+
 - *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar
