@@ -201,6 +201,93 @@ public:
     return v;
   }
   
+  /// Operator of edge vectors per face
+  /// @param f the face
+  /// @return degree x 3 matrix
+  DenseMatrix E(const Face f) const
+  {
+    return D(f)*X(f);
+  }
+  
+  /// co-Gradient operator of the face
+  /// @param f the face
+  /// @param a 3 x degree matrix
+  DenseMatrix coGradient(const Face f) const
+  {
+    return  E(f).transpose() * A(f);
+  }
+  
+  /// Gradient operator of the face
+  /// @param f the face
+  /// @return 3 x degree matrix
+  DenseMatrix Gradient(const Face f) const
+  {
+    return -1.0/areaFace(f) * bracket( normalFace(f) ) * coG(f);
+  }
+  
+  //Flat
+  /// Flat operator for the face
+  /// @param f the face
+  /// @return a degree x 3 matrix
+  DenseMatrix  V(const Face f) const
+  {
+    auto n = correctedFaceNormal(f);
+    return E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
+  }
+  
+  //Edge midPoints
+  /// Edge mid-point operator of the face
+  /// @param f the face
+  /// @return a degree x 3 matrix
+  DenseMatrix B(const Face f) const
+  {
+    return A(f) * X(f);
+  }
+  
+  /// @returns the centroid of the face
+  /// @param f the face
+  Vector centroid(const Face f) const
+  {
+    auto nf = myFaceDegree[f];
+    return 1/(double)nf * X(f).transpose() * DenseMatrix::Ones(nf);
+  }
+  
+  /// Sharp operator for the face
+  /// @param f the face
+  /// @return a 3 x degree matrix
+  DenseMatrix U(const Face f) const
+  {
+    auto nf = myFaceDegree[f];
+    return 1/correctedFaceArea(f) * bracket(correctedFaceNormal(f)) * ( B(f).transpose() - centroid(f)* DenseMatrix::Ones(nf).transpose() );
+  }
+  
+  /// Projection operator for the face
+  /// @param f the face
+  /// @return a degree x degree matrix
+  DenseMatrix P(const Face f) const
+  {
+    auto nf = myFaceDegree[f];
+    return DenseMatrix::Identity(nf,nf) - V(f)*U(f);
+  }
+  
+  /// Mass operator associated with the face
+  /// @param f the face
+  /// @param lambda the regularization parameter
+  /// @return a degree x degree matrix
+  DenseMatrix M(const Face f, const double lambda=1.0) const
+  {
+    return correctedFaceArea(f) * U(f).transpose()*U(f) + lambda * P(f).transpose()*P(f);
+  }
+  
+  /// (weak) Laplace-Beltrami operator for the face
+  /// @param f the face
+  /// @param lambda the regularization parameter
+  /// @return a degree x degree matrix
+  DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
+  {
+    return D(f).transpose() * M(f,lambda) * D(f);
+  }
+  
   // ----------------------- Common --------------------------------------
 public:
   
