@@ -3,6 +3,7 @@ set(DGTAL_TESTS_SRC
     testLinearStructure
     testEmbedding
     testHeatLaplace
+    testPolygonalCalculus
     )
 
 # add_test is disabled for the following sources

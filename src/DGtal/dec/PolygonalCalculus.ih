@@ -1,0 +1,168 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/09/02
+ *
+ * Implementation of inline methods defined in PolygonalCalculus.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+///////////////////////////////////////////////////////////////////////////////
+template<typename T>
+inline
+typename DGtal::PolygonalCalculus<T>::DenseMatrix
+DGtal::PolygonalCalculus<T>::X(const DGtal::PolygonalCalculus<T>::Face f) const
+{
+  auto vertices = mySurfaceMesh->incidentVertices(f);
+  auto nf = myFaceDegree[f];
+  DenseMatrix Xt(nf,3);
+  size_t cpt=0;
+  for(auto v: vertices)
+  {
+    Xt(cpt,0) = myEmbedder(f,v)[0];
+    Xt(cpt,1) = myEmbedder(f,v)[1];
+    Xt(cpt,2) = myEmbedder(f,v)[2];
+    ++cpt;
+  }
+  return  Xt;
+}
+//////////////////////////////////////////////////////////////////////////////
+//d0 per face
+template<typename T>
+inline
+typename DGtal::PolygonalCalculus<T>::DenseMatrix
+DGtal::PolygonalCalculus<T>::D(const Face f) const
+{
+  auto nf = myFaceDegree[f];
+  Eigen::MatrixXd d = Eigen::MatrixXd::Zero(nf ,nf);
+  for(auto i=0; i < nf; ++i)
+  {
+    d(i,i) = -1.;
+    d(i, (i+1)%nf) = 1.;
+  }
+  return d;
+}
+//////////////////////////////////////////////////////////////////////////////
+//Average operator on edges
+template<typename T>
+inline
+typename DGtal::PolygonalCalculus<T>::DenseMatrix
+DGtal::PolygonalCalculus<T>::A(const Face f) const
+{
+  auto nf = myFaceDegree[f];
+  DenseMatrix a = DenseMatrix::Zero(nf ,nf);
+  for(auto i=0; i < nf; ++i)
+  {
+    a(i, (i+1)%nf) = 0.5;
+    a(i,i) = 0.5;
+  }
+  return a;
+}
+//////////////////////////////////////////////////////////////////////////////
+//Vector area per face
+template<typename T>
+inline
+typename DGtal::PolygonalCalculus<T>::Vector
+DGtal::PolygonalCalculus<T>::vectorArea(const Face f) const
+{
+  RealPoint af(0.0,0.0,0.0);
+  auto vertices = mySurfaceMesh->incidentVertices(f);
+  auto it     = vertices.begin();
+  auto itnext = vertices.begin();
+  ++itnext;
+  while (it != vertices.end())
+  {
+    auto xi  = myEmbedder(f,*it);
+    auto xip = myEmbedder(f,*itnext);
+    af += xi.crossProduct(xip);
+    ++it;
+    ++itnext;
+    if (itnext == vertices.end())
+      itnext =vertices.begin();
+  }
+  Eigen::Vector3d output = {af[0],af[1],af[2]};
+  return 0.5*output;
+}
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::PolygonalCalculus<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PolygonalCalculus]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::PolygonalCalculus<T>::isValid() const
+{
+  return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                   const PolygonalCalculus<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
