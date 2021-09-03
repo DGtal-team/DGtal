@@ -119,13 +119,14 @@ TEST_CASE( "Testing PolygonalCalculus" )
         auto n = box.faceNormal(f);
         REQUIRE(  cn == n  );
       }
+      
+      RealPoint c = boxCalculus.centroidAsDGtalPoint(f);
+      RealPoint expected(0.5,0.5,0.0);
+      REQUIRE(c == expected);
     }
   
   SECTION("Derivatives")
   {
-    PolygonalCalculus<Mesh> boxCalculus(box);
-    REQUIRE( boxCalculus.isValid() );
-    
     PolygonalCalculus<Mesh>::Face f = 0;
     auto d = boxCalculus.D(f);
     
@@ -136,6 +137,15 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto dphi = d*phi;  // n_f x 1 matrix
     REQUIRE(dphi == expected);
     
+  }
+  
+  SECTION("Structural propertes")
+  {
+    PolygonalCalculus<Mesh>::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+    PolygonalCalculus<Mesh>::Vector phi(nf);
+    phi << 1.0, 3.0, 2.0, 6.0;
+    
     auto G = boxCalculus.gradient(f);
     auto gphi = G*phi;
     auto coG = boxCalculus.coGradient(f);
@@ -143,7 +153,33 @@ TEST_CASE( "Testing PolygonalCalculus" )
     
     // grad . cograd == 0
     REQUIRE( gphi.dot(cogphi) == 0.0);
+        
+    //    Gf = Uf Df
+    REQUIRE( G == boxCalculus.U(f)*boxCalculus.D(f));
     
+    //    UV = I - nn^t (lemma4)
+    PolygonalCalculus<Mesh>::Vector n = boxCalculus.correctedFaceNormal(f);
+    REQUIRE( boxCalculus.U(f)*boxCalculus.V(f) == PolygonalCalculus<Mesh>::DenseMatrix::Identity(3,3) - n*n.transpose() );
+    
+    //    P^2 = P (lemma6)
+    auto P = boxCalculus.P(f);
+    REQUIRE( P*P == P);
+    
+    //    PV=0 (lemma5)
+    REQUIRE( (P*boxCalculus.V(f)).norm() == 0.0);
+  }
+  
+  SECTION("Local Laplace-Beltrami")
+  {
+    PolygonalCalculus<Mesh>::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+    
+    auto L = boxCalculus.LaplaceBeltrami(f);
+    PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
+    phi << 1.0, 1.0, 1.0, 1.0;
+    expected << 0,0,0,0;
+    auto lphi = L*phi;
+    REQUIRE( lphi == expected);
   }
 }
 

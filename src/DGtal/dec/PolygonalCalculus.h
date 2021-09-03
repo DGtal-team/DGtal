@@ -268,8 +268,17 @@ public:
   Vector centroid(const Face f) const
   {
     auto nf = myFaceDegree[f];
-    return 1/(double)nf * X(f).transpose() * DenseMatrix::Ones(nf);
+    return 1.0/(double)nf * X(f).transpose() * Vector::Ones(nf);
   }
+  
+  /// @returns the centroid of the face as a DGtal RealPoint
+  /// @param f the face
+  RealPoint centroidAsDGtalPoint(const Face f) const
+  {
+    Vector c = centroid(f);
+    return {c(0),c(1),c(2)};
+  }
+  
   
   /// Sharp operator for the face
   /// @param f the face
@@ -277,7 +286,7 @@ public:
   DenseMatrix U(const Face f) const
   {
     auto nf = myFaceDegree[f];
-    return 1/correctedFaceArea(f) * bracket(correctedFaceNormal(f)) * ( B(f).transpose() - centroid(f)* DenseMatrix::Ones(nf).transpose() );
+    return 1.0/correctedFaceArea(f) * bracket(correctedFaceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
   }
   
   /// Projection operator for the face
