@@ -16,7 +16,8 @@ endif()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 set(DGtal_VERSION_MAJOR 1)
 set(DGtal_VERSION_MINOR 3)
 set(DGtal_VERSION_PATCH beta)
@@ -84,13 +85,6 @@ include(DevelopmentOptions)
 # -----------------------------------------------------------------------------
 include(OSDependentSettings)
 
-# -----------------------------------------------------------------------------
-# Check Mandatory Dependencies
-# -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
-
-include(CheckDGtalOptionalDependencies)
-
 
 # -----------------------------------------------------------------------------
 # Randomized build 1/2.
@@ -98,15 +92,23 @@ include(CheckDGtalOptionalDependencies)
 SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
 SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
 
-# -----------------------------------------------------------------------------
-# Unit-testing, Cpack and Ctest settings
-# -----------------------------------------------------------------------------
-include(CpackCtest)
 
 #------------------------------------------------------------------------------
 # Examples
 #------------------------------------------------------------------------------
 include(BuildExamples)
+
+
+# -----------------------------------------------------------------------------
+# Check mandatory and optional dependencies
+# -----------------------------------------------------------------------------
+include(CheckDGtalDependencies)
+include(CheckDGtalOptionalDependencies)
+
+# -----------------------------------------------------------------------------
+# Unit-testing, Cpack and Ctest settings
+# -----------------------------------------------------------------------------
+include(CpackCtest)
 
 # -----------------------------------------------------------------------------
 # Randomized build 2/2.

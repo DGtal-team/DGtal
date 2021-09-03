@@ -76,9 +76,10 @@ TEST_CASE( "Testing PolygonalCalculus" )
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
   
+  PolygonalCalculus<Mesh> boxCalculus(box);
+  
   SECTION("Construction and basic operators")
     {
-      PolygonalCalculus<Mesh> boxCalculus(box);
       REQUIRE( boxCalculus.isValid() );
       
       PolygonalCalculus<Mesh>::Face f = 0;
@@ -107,11 +108,35 @@ TEST_CASE( "Testing PolygonalCalculus" )
       
       auto vectorArea = boxCalculus.vectorArea(f);
       
+      //Without correction, this should match
       for(auto f=0; f<6; ++f)
         REQUIRE( boxCalculus.correctedFaceArea(f) == box.faceArea(f) );
+      for(auto f=0; f<6; ++f)
+        REQUIRE( boxCalculus.correctedFaceNormal(f) == box.faceNormal(f) );
       
     }
   
+  SECTION("Derivatives")
+  {
+    PolygonalCalculus<Mesh> boxCalculus(box);
+    REQUIRE( boxCalculus.isValid() );
+    
+    PolygonalCalculus<Mesh>::Face f = 0;
+    auto d = boxCalculus.D(f);
+    
+    auto nf = box.incidentVertices(f).size();
+    PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
+    phi << 1.0, 3.0, 2.0, 6.0;
+    expected= {2,-1,4,-5};
+    auto dphi = d*phi;
+    REQUIRE( dphi == expected);
+    
+    auto G = boxCalculus.gradient(f);
+    auto gphi = G*phi;
+    
+    
+    
+  }
 }
 
 /** @ingroup Tests **/

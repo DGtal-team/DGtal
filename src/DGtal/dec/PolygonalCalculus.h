@@ -211,7 +211,7 @@ public:
   
   /// co-Gradient operator of the face
   /// @param f the face
-  /// @param a 3 x degree matrix
+  /// @return a 3 x degree matrix
   DenseMatrix coGradient(const Face f) const
   {
     return  E(f).transpose() * A(f);
@@ -220,7 +220,7 @@ public:
   /// Gradient operator of the face
   /// @param f the face
   /// @return 3 x degree matrix
-  DenseMatrix Gradient(const Face f) const
+  DenseMatrix gradient(const Face f) const
   {
     return -1.0/areaFace(f) * bracket( normalFace(f) ) * coG(f);
   }
@@ -297,7 +297,6 @@ public:
   {
     updateFaceDegree();
   }
-  
   
   /**
    * Writes/Displays the object on an output stream.

@@ -17,16 +17,19 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
 # Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
-  FetchContent_Declare(
-    Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG        v2.13.6
-    )
-
-  message(STATUS "    Catch2 (v2.13.6)")
-  FetchContent_MakeAvailable(Catch2)
+  message(STATUS "    Catch2 (v2.13.7)")
+  include(catch2)
   
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
   include(Catch)
+endif()
+
+
+# -----------------------------------------------------------------------------
+# Fetching polyscope (only if the WITH_POLYSCOPE_EXAMPLES Variable has been set to true)
+# -----------------------------------------------------------------------------
+if (BUILD_POLYSCOPE_EXAMPLES)
+  message(STATUS "    polyscope (v1.2.0)")
+  include(polyscope)
 endif()
