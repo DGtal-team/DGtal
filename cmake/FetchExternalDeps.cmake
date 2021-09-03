@@ -18,8 +18,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
   message(STATUS "    Catch2 (v2.13.7)")
-  include(catch2)
-  
+  include(catch2) 
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
   include(Catch)
