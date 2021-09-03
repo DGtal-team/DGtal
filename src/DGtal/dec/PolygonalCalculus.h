@@ -193,12 +193,21 @@ public:
   
   /// Corrected normal vector of a face.
   /// @param f the face
-  /// @return a vector
+  /// @return a vector (Eigen vector)
   Vector correctedFaceNormal(const Face f) const
   {
     Vector v = vectorArea(f);
     v.normalize();
     return v;
+  }
+  
+  /// Corrected normal vector of a face.
+  /// @param f the face
+  /// @return a vector (DGtal RealVector/RealPoint)
+  RealPoint correctedFaceNormalAsDGtalVector(const Face f) const
+  {
+    Vector v = correctedFaceNormal(f);
+    return {v(0),v(1),v(2)};
   }
   
   /// Operator of edge vectors per face
@@ -217,15 +226,25 @@ public:
     return  E(f).transpose() * A(f);
   }
   
+  ///Return [n] as the 3x3 operator such that [n]q = n x q
+  ///@param a vector
+  DenseMatrix bracket(const Vector &n) const
+  {
+    Eigen::Matrix3d brack;
+    brack << 0.0 , -n(2), n(1),
+             n(2), 0.0 , -n(0),
+            -n(1) , n(0),0.0 ;
+    return brack;
+  }
+  
   /// Gradient operator of the face
   /// @param f the face
   /// @return 3 x degree matrix
   DenseMatrix gradient(const Face f) const
   {
-    return -1.0/areaFace(f) * bracket( normalFace(f) ) * coG(f);
+    return -1.0/correctedFaceArea(f) * bracket( correctedFaceNormal(f) ) * coGradient(f);
   }
   
-  //Flat
   /// Flat operator for the face
   /// @param f the face
   /// @return a degree x 3 matrix

@@ -111,9 +111,14 @@ TEST_CASE( "Testing PolygonalCalculus" )
       //Without correction, this should match
       for(auto f=0; f<6; ++f)
         REQUIRE( boxCalculus.correctedFaceArea(f) == box.faceArea(f) );
+     
+      box.computeFaceNormalsFromPositions();
       for(auto f=0; f<6; ++f)
-        REQUIRE( boxCalculus.correctedFaceNormal(f) == box.faceNormal(f) );
-      
+      {
+        auto cn = boxCalculus.correctedFaceNormalAsDGtalVector(f);
+        auto n = box.faceNormal(f);
+        REQUIRE(  cn == n  );
+      }
     }
   
   SECTION("Derivatives")
@@ -127,14 +132,17 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto nf = box.incidentVertices(f).size();
     PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
-    expected= {2,-1,4,-5};
-    auto dphi = d*phi;
-    REQUIRE( dphi == expected);
+    expected << 2,-1,4,-5;
+    auto dphi = d*phi;  // n_f x 1 matrix
+    REQUIRE(dphi == expected);
     
     auto G = boxCalculus.gradient(f);
     auto gphi = G*phi;
+    auto coG = boxCalculus.coGradient(f);
+    auto cogphi = coG*phi;
     
-    
+    // grad . cograd == 0
+    REQUIRE( gphi.dot(cogphi) == 0.0);
     
   }
 }
