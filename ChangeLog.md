@@ -23,7 +23,7 @@
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
-  - Fix missing white list for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
 
 ## Bug fixes
