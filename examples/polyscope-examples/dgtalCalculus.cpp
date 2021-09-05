@@ -36,8 +36,6 @@ polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 
 
-
-
 void myCallback()
 {
   ImGui::SliderFloat("dt", &dt, 0.1, 10.0);
@@ -78,8 +76,12 @@ int main()
                       faces.end());
   
   
+  PolygonalCalculus<SurfMesh> calculus(surfmesh);
+  
   // Initialize polyscope
   polyscope::init();
+  
+  polyscope::registerSurfaceMesh("digital surface", positions, faces);
   
   // Set the callback function
   polyscope::state::userCallback = myCallback;
