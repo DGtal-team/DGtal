@@ -134,7 +134,7 @@ Beside these options, user can also specify these options:
 debug messages are traced out.
 
 
-- \e  BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows
+- \e  BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
 
 
 

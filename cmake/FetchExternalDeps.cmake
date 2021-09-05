@@ -12,23 +12,14 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
     endmacro()
   endif()
 
-  
+
 # -----------------------------------------------------------------------------
 # Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
   message(STATUS "    Catch2 (v2.13.7)")
-  include(catch2) 
+  include(catch2)
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
   include(Catch)
-endif()
-
-
-# -----------------------------------------------------------------------------
-# Fetching polyscope (only if the WITH_POLYSCOPE_EXAMPLES Variable has been set to true)
-# -----------------------------------------------------------------------------
-if (BUILD_POLYSCOPE_EXAMPLES)
-  message(STATUS "    polyscope (v1.2.0)")
-  include(polyscope)
 endif()

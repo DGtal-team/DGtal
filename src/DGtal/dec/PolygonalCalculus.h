@@ -27,17 +27,6 @@
  *
  * This file is part of the DGtal library.
  */
-
-#if defined(PolygonalCalculus_RECURSES)
-#error Recursive header files inclusion detected in PolygonalCalculus.h
-#else // defined(PolygonalCalculus_RECURSES)
-/** Prevents recursive inclusion of headers. */
-#define PolygonalCalculus_RECURSES
-
-#if !defined PolygonalCalculus_h
-/** Prevents repeated inclusion of headers. */
-#define PolygonalCalculus_h
-
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
@@ -227,7 +216,7 @@ public:
   }
   
   ///Return [n] as the 3x3 operator such that [n]q = n x q
-  ///@param a vector
+  ///@param n a vector
   DenseMatrix bracket(const Vector &n) const
   {
     Eigen::Matrix3d brack;
@@ -388,8 +377,3 @@ operator<< ( std::ostream & out, const PolygonalCalculus<T> & object );
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-#endif // !defined PolygonalCalculus_h
-
-#undef PolygonalCalculus_RECURSES
-#endif // else defined(PolygonalCalculus_RECURSES)

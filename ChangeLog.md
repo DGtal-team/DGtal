@@ -9,6 +9,12 @@
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
 
+- *Examples*
+  - We can now have examples using [polyscope](https://polyscope.run)
+    as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
+    Coeurjolly,
+    [#1603](https://github.com/DGtal-team/DGtal/pull/1603))
+
 ## Changes
 
 - *IO*
@@ -18,6 +24,7 @@
     new setters/getters from/to HSV (Python binding updated)
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
+
 
 - *Build*
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
