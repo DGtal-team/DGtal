@@ -79,7 +79,8 @@ void initQuantities()
     auto ph = phi(f);
     auto grad = calculus.gradient(f) * ph;
     gradients.push_back( grad );
-    cogradients.push_back( calculus.coGradient(f)*phi );
+    auto cograd =  calculus.coGradient(f) * phi;
+    cogradients.push_back( cograd );
     normals.push_back(calculus.correctedFaceNormalAsDGtalVector(f));
   }
   psMesh->addFaceVectorQuantity("Gradient", gradients);
