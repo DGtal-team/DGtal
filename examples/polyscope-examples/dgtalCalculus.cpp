@@ -34,11 +34,71 @@ float dt=2.0;
 // Polyscope visualization handle, to quickly add data to the surface
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
+std::vector<double> phiV;
+float scale = 0.1;
+
+//Restriction of a scalar function to vertices
+double phiVertex(const Vertex v)
+{
+  return  cos(scale*(surfmesh.position(v)[0]))*sin(scale*surfmesh.position(v)[1]);
+}
+
+//Restriction of a scalar function to vertices
+PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
+{
+  auto vertices = surfmesh.incidentVertices(f);
+  auto nf = vertices.size();
+  Eigen::VectorXd ph(nf);
+  size_t cpt=0;
+  for(auto v: vertices)
+  {
+    ph(cpt) =  phiVertex(v);
+    ++cpt;
+  }
+  return  ph;
+}
+
+
+void initPhi()
+{
+  phiV.clear();
+  for(auto i = 0; i < surfmesh.nbVertices(); ++i)
+    phiV.push_back(phiVertex(i));
+  psMesh->addVertexScalarQuantity("Phi", phiV);
+}
+
+void initQuantities()
+{
+  PolygonalCalculus<SurfMesh> calculus(surfmesh);
+
+  std::vector<PolygonalCalculus<SurfMesh>::Vector> gradients;
+  std::vector<PolygonalCalculus<SurfMesh>::Vector> cogradients;
+  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
+  for(auto f=0; f < surfmesh.nbFaces(); ++f)
+  {
+    auto ph = phi(f);
+    auto grad = calculus.gradient(f) * ph;
+    gradients.push_back( grad );
+    cogradients.push_back( calculus.coGradient(f)*phi );
+    normals.push_back(calculus.correctedFaceNormalAsDGtalVector(f));
+  }
+  psMesh->addFaceVectorQuantity("Gradient", gradients);
+  psMesh->addFaceVectorQuantity("co-Gradient", cogradients);
+  psMesh->addFaceVectorQuantity("Normals", normals);
+}
 
 
 void myCallback()
 {
-  ImGui::SliderFloat("dt", &dt, 0.1, 10.0);
+  ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
+  if (ImGui::Button("Init phi"))
+  {
+    initPhi();
+  }
+  
+  if (ImGui::Button("Compute quantities"))
+    initQuantities();
+  
 }
 
 int main()
@@ -76,12 +136,11 @@ int main()
                       faces.end());
   
   
-  PolygonalCalculus<SurfMesh> calculus(surfmesh);
   
   // Initialize polyscope
   polyscope::init();
   
-  polyscope::registerSurfaceMesh("digital surface", positions, faces);
+  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
   
   // Set the callback function
   polyscope::state::userCallback = myCallback;
