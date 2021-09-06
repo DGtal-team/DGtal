@@ -31,6 +31,7 @@
 // Inclusions
 #include <iostream>
 #include <functional>
+#include <vector>
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/EigenSupport.h"
@@ -304,6 +305,58 @@ public:
   {
     return D(f).transpose() * M(f,lambda) * D(f);
   }
+  
+  
+  // ----------------------- Cache mechanism --------------------------------------
+  
+  /// Generic method to compute all the per face DenseMatrices and store them in an
+  /// indexed container.
+  ///
+  /// Usage example:
+  /// @code
+  ///auto opM = [&](const PolygonalCalculus<Mesh>::Face f){ return calculus.M(f);};
+  ///auto cacheM = boxCalculus.getOperatorCacheMatrix(opM);
+  ///...
+  /////Now you have access to the cached values and mixed them with un-cached ones
+  ///  Face f = ...;
+  ///  auto res = cacheM[f] * calculus.D(f) * phi;
+  /// ...
+  ///@endcode
+  ///
+  /// @param perFaceOperator the per face operator
+  /// @return an indexed container of all DenseMatrix operators (indexed per Face).
+  std::vector<DenseMatrix> getOperatorCacheMatrix(const std::function<DenseMatrix(Face)> &perFaceOperator) const
+  {
+    std::vector<DenseMatrix> cache;
+    for(auto f=0; f < mySurfaceMesh->nbFaces(); ++f)
+      cache.push_back(perFaceOperator(f));
+    return cache;
+  }
+  
+  /// Generic method to compute all the per face Vector and store them in an
+  /// indexed container.
+  ///
+  /// Usage example:
+  /// @code
+  ///auto opCentroid = [&](const PolygonalCalculus<Mesh>::Face f){ return calculus.centroid(f);};
+  ///auto cacheCentroid = boxCalculus.getOperatorCacheVector(opCentroid);
+  ///...
+  /////Now you have access to the cached values and mixed them with un-cached ones
+  ///  Face f = ...;
+  ///  auto res = calculus.P(f) * cacheCentroid[f] ;
+  /// ...
+  ///@endcode
+  ///
+  /// @param perFaceOperator the per face operator
+  /// @return an indexed container of all Vector quantities (indexed per Face).
+  std::vector<Vector> getOperatorCacheVector(const std::function<Vector(Face)> &perFaceVectorOperator) const
+  {
+    std::vector<Vector> cache;
+    for(auto f=0; f < mySurfaceMesh->nbFaces(); ++f)
+      cache.push_back(perFaceVectorOperator(f));
+    return cache;
+  }
+
   
   // ----------------------- Common --------------------------------------
 public:

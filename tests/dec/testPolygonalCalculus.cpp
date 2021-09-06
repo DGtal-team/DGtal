@@ -181,6 +181,23 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
   }
+  
+  SECTION("Checking cache")
+  {
+    auto opU = [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);};
+    auto cacheU = boxCalculus.getOperatorCacheMatrix(opU);
+
+    //First value
+    std::cout<< cacheU[0]<<std::endl;
+    REQUIRE( cacheU.size() == 6 );
+    
+    auto opC = [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);};
+    auto cacheC = boxCalculus.getOperatorCacheVector(opC);
+    
+    //First value
+    std::cout<< cacheC[0]<<std::endl;
+    REQUIRE( cacheC.size() == 6 );
+  }
 }
 
 /** @ingroup Tests **/

@@ -30,8 +30,6 @@ typedef SurfMesh::Vertex                  Vertex;
 
 
 //Polyscope global
-float dt=2.0;
-// Polyscope visualization handle, to quickly add data to the surface
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 std::vector<double> phiV;
@@ -93,9 +91,7 @@ void myCallback()
 {
   ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
   if (ImGui::Button("Init phi"))
-  {
     initPhi();
-  }
   
   if (ImGui::Button("Compute quantities"))
     initQuantities();
