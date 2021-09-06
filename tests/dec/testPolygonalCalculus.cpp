@@ -188,7 +188,6 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto cacheU = boxCalculus.getOperatorCacheMatrix(opU);
 
     //First value
-    std::cout<< cacheU[0]<<std::endl;
     REQUIRE( cacheU.size() == 6 );
     
     auto opC = [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);};

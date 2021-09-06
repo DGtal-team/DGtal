@@ -72,6 +72,12 @@ void initQuantities()
   std::vector<PolygonalCalculus<SurfMesh>::Vector> gradients;
   std::vector<PolygonalCalculus<SurfMesh>::Vector> cogradients;
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
+  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> vectorArea;
+  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
+
+  std::vector<double> faceArea;
+  std::vector<double> d0(surfmesh.nbEdges());
+
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
     auto ph = phi(f);
@@ -79,11 +85,24 @@ void initQuantities()
     gradients.push_back( grad );
     auto cograd =  calculus.coGradient(f) * ph;
     cogradients.push_back( cograd );
-    normals.push_back(calculus.correctedFaceNormalAsDGtalVector(f));
+    normals.push_back(calculus.correctedF aceNormalAsDGtalVector(f));
+    
+    auto vA = calculus.vectorArea(f);
+    vectorArea.push_back({vA(0) , vA(1), vA(2)});
+    
+    faceArea.push_back( calculus.correctedFaceArea(f));
+    
+    centroids.push_back( calculus.centroidAsDGtalPoint(f) );
   }
+  
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
+  psMesh->addFaceScalarQuantity("Face area", faceArea);
+  psMesh->addFaceVectorQuantity("Vector area", vectorArea);
+  psMesh->addEdgeScalarQuantity("d0*phi", d0);
+  
+  polyscope::registerPointCloud("Centroids", centroids);
 }
 
 

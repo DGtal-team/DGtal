@@ -79,7 +79,9 @@ public:
   typedef LinAlg::DenseMatrix DenseMatrix;
   ///Type of sparse matrix
   typedef LinAlg::SparseMatrix SparseMatrix;
-  
+  ///Type of sparse matrix triplet
+  typedef LinAlg::Triplet Triplet;
+
 
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
@@ -151,7 +153,7 @@ public:
   
   // ----------------------- Per face operators --------------------------------------
   
-  /// Return the vertex position matrix degree x 3 of a face
+  /// Return the vertex position matrix degree x 3 of the face.
   /// @param f a face
   /// @return the n_f x 3 position matrix
   DenseMatrix X(const Face f) const;
@@ -168,12 +170,12 @@ public:
   DenseMatrix A(const Face f) const;
   
   
-  /// Vector area per face
+  /// Polygonal vector area.
   /// @param f the face
   /// @return a vector
   Vector vectorArea(const Face f) const;
   
-  /// Area of a face from the vector area
+  /// Area of a face from the vector area.
   /// @param f the face
   /// @return the corrected area of the face
   double correctedFaceArea(const Face f) const
@@ -200,7 +202,7 @@ public:
     return {v(0),v(1),v(2)};
   }
   
-  /// Operator of edge vectors per face
+  /// Edge vector operator per face.
   /// @param f the face
   /// @return degree x 3 matrix
   DenseMatrix E(const Face f) const
@@ -227,7 +229,7 @@ public:
     return brack;
   }
   
-  /// Gradient operator of the face
+  /// Gradient operator of the face.
   /// @param f the face
   /// @return 3 x degree matrix
   DenseMatrix gradient(const Face f) const
@@ -235,7 +237,7 @@ public:
     return -1.0/correctedFaceArea(f) * bracket( correctedFaceNormal(f) ) * coGradient(f);
   }
   
-  /// Flat operator for the face
+  /// Flat operator for the face.
   /// @param f the face
   /// @return a degree x 3 matrix
   DenseMatrix  V(const Face f) const
@@ -244,8 +246,7 @@ public:
     return E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
   }
   
-  //Edge midPoints
-  /// Edge mid-point operator of the face
+  /// Edge mid-point operator of the face.
   /// @param f the face
   /// @return a degree x 3 matrix
   DenseMatrix B(const Face f) const
@@ -270,7 +271,7 @@ public:
   }
   
   
-  /// Sharp operator for the face
+  /// Sharp operator for the face.
   /// @param f the face
   /// @return a 3 x degree matrix
   DenseMatrix U(const Face f) const
@@ -279,7 +280,7 @@ public:
     return 1.0/correctedFaceArea(f) * bracket(correctedFaceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
   }
   
-  /// Projection operator for the face
+  /// Projection operator for the face.
   /// @param f the face
   /// @return a degree x degree matrix
   DenseMatrix P(const Face f) const
@@ -288,7 +289,7 @@ public:
     return DenseMatrix::Identity(nf,nf) - V(f)*U(f);
   }
   
-  /// Mass operator associated with the face
+  /// Mass operator associated with the face (inner products on 1-form).
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
@@ -297,13 +298,57 @@ public:
     return correctedFaceArea(f) * U(f).transpose()*U(f) + lambda * P(f).transpose()*P(f);
   }
   
-  /// (weak) Laplace-Beltrami operator for the face
+  /// (weak) Laplace-Beltrami operator for the face.
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
   DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
   {
     return D(f).transpose() * M(f,lambda) * D(f);
+  }
+
+  // ----------------------- Global operators --------------------------------------
+  
+  
+  /// Computes the global Laplace-Beltrami operator by accumulating the
+  /// per face operators.
+  ///
+  /// @param lambla the regualrization parameter for the local Laplace-Beltrami operators
+  /// @return a sparse nbVertices x nbVertices matrix
+  SparseMatrix globalLaplaceBeltrami(const double lambda=1.0) const
+  {
+    SparseMatrix lapGlobal(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
+    SparseMatrix local(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
+    std::vector<Triplet> triplets;
+    std::vector<size_t> reorder;
+    for(auto f = 0; f <  mySurfaceMesh->nbFaces(); ++f)
+    {
+      auto nf  = myFaceDegree[f];
+      reorder.resize(nf);
+      auto vertices = mySurfaceMesh->incidentVertices(f);
+      auto Lap = this->LaplaceBeltrami(f,lambda);
+      auto cpt=0;
+      for(auto v: vertices )
+      {
+        reorder[ cpt ]= v;
+        ++cpt;
+      }
+      
+      for(auto i=0; i < nf; ++i)
+        for(auto j=0; j < nf; ++j)
+        {
+          auto v = Lap(i,j);
+          if (v!= 0.0)
+            triplets.push_back(Triplet(reorder[i],reorder[j],Lap(i,j)));
+        }
+      
+      local.setFromTriplets(triplets.begin(), triplets.end());
+      lapGlobal += local;
+      
+      triplets.clear();
+      local.setZero();
+    }
+    return lapGlobal;
   }
   
   
@@ -393,6 +438,12 @@ protected:
       auto nf = vertices.size();
       myFaceDegree[f] = nf;
     }
+  }
+  
+  
+  std::vector<Triplet> accumulateTriplets(const std::vector<Triplet> &triplets)
+  {
+    
   }
   
   // ------------------------- Internals ------------------------------------
