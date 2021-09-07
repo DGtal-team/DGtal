@@ -270,7 +270,6 @@ public:
     return {c(0),c(1),c(2)};
   }
   
-  
   /// Sharp operator for the face.
   /// @param f the face
   /// @return a 3 x degree matrix
