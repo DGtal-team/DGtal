@@ -116,7 +116,7 @@ gradient | co-gradient | corrected normal
 
 
 
-\subsubsection subderiv Flat/Sharp and Projection operators
+\subsubsection subdflatFlat/Sharp and Projection operators
 
 Operator  | Output | Description
 ------------- | ------------- | ----
@@ -126,7 +126,7 @@ Operator  | Output | Description
 
 
 
-\subsubsection subderiv Norms and Laplace-Beltrami operators
+\subsubsection sublap Norms and Laplace-Beltrami operators
 
 Operator  | Output | Description
 ------------- | ------------- | ----
