@@ -106,16 +106,16 @@ TEST_CASE( "Testing PolygonalCalculus" )
       REQUIRE( a(0,1) == 0.5 );
       REQUIRE( a(0,2) == 0 );
       
-      auto vectorArea = boxCalculus.correctedVectorArea(f);
+      auto vectorArea = boxCalculus.vectorArea(f);
       
       //Without correction, this should match
       for(auto f=0; f<6; ++f)
-        REQUIRE( boxCalculus.correctedFaceArea(f) == box.faceArea(f) );
+        REQUIRE( boxCalculus.faceArea(f) == box.faceArea(f) );
      
       box.computeFaceNormalsFromPositions();
       for(auto f=0; f<6; ++f)
       {
-        auto cn = boxCalculus.correctedFaceNormalAsDGtalVector(f);
+        auto cn = boxCalculus.faceNormalAsDGtalVector(f);
         auto n = box.faceNormal(f);
         REQUIRE(  cn == n  );
       }
@@ -158,7 +158,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( G == boxCalculus.U(f)*boxCalculus.D(f));
     
     //    UV = I - nn^t (lemma4)
-    PolygonalCalculus<Mesh>::Vector n = boxCalculus.correctedFaceNormal(f);
+    PolygonalCalculus<Mesh>::Vector n = boxCalculus.faceNormal(f);
     REQUIRE( boxCalculus.U(f)*boxCalculus.V(f) == PolygonalCalculus<Mesh>::DenseMatrix::Identity(3,3) - n*n.transpose() );
     
     //    P^2 = P (lemma6)

@@ -85,12 +85,12 @@ void initQuantities()
     gradients.push_back( grad );
     auto cograd =  calculus.coGradient(f) * ph;
     cogradients.push_back( cograd );
-    normals.push_back(calculus.correctedFaceNormalAsDGtalVector(f));
+    normals.push_back(calculus.faceNormalAsDGtalVector(f));
     
-    auto vA = calculus.correctedVectorArea(f);
+    auto vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
     
-    faceArea.push_back( calculus.correctedFaceArea(f));
+    faceArea.push_back( calculus.faceArea(f));
     
     centroids.push_back( calculus.centroidAsDGtalPoint(f) );
   }

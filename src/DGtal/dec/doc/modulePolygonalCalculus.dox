@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file modulePolygonalCalculus.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -34,32 +34,67 @@ to define global ones.
 This module documents operators defined in \cite degoes2020discrete.
 
 
+
+@note for
+
+- related examples: \ref dgtalCalculus.cpp, dgtalCalculus-single.cpp
+
+
 \section sectPolygonalCalculus1 Preliminaries
 
-\subsection sectPolygonalCalculus2 Operators on scalar fields
+\section sectPolygonalCalculus2 Operators on scalar fields
+
+Let us consider a single (non-planar, non-convex) face example. Using
 
 @code
 using SurfMesh = SurfaceMesh<Z3i::RealPoint,Z3i::RealVector>;
-SurfaceMesh aMesj(....);
-PolygonalCalculus<SurfMesh> calculus(aMesh);
+using namespace Z3i;
 
-Face f = ... some face index ...
-auto nf = calculus.faceDegree(f);
+//Vertices
+std::vector<RealPoint> positions={ {0,0,0},{20,0,0},{20,10,0},{10,8,5}, {0,15,1} };
+//Single face
+std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4 }};
+
+mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
+  
+PolygonalCalculus<SurfMesh> calculus(mesh);
+@endcode
+we obtain a single SurfaceMesh instance and its associated PolygonalCalculus object.
+
+ Example| Example 
+--|--
+@image html images/poly/face.png | @image html images/poly/face_rot.png
+
+Let us add a scalar function on vertices. For instance, using Eigen syntax, we can use;
+
+@code
+PolygonalCalculus<SurfMesh>::Vector phi(5); //5 vertices
+phi << 1.0, 2.0, 0.0, 5.0 ,1.5;
 @endcode
 
-\subsubsection Basic operators
+@note As the face is nonconvex / nonplanar, the vertex  scalar quantity  interpolation and the rendering in polyscope may be a bit odd.
+
+Phi| Interpolated phi
+--|--
+@image html images/poly/face_phi.png | @image html images/poly/face_phi_interp.png
+
+
+\subsubsection susub1 Basic operators
 
 Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.X(f)`  | \f$ n_f\times 3\f$ | position of the face vertices
 `calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face
 `calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that average some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
-`calculus.correctedVectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
-`calculus.correctedFaceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
-`calculus.correctedFaceNormalVector(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected (unitary) normal vector of the face  (uses the embedder)
-`calculus.correctedFaceNormalAsDGtalVeector(f)`| RealVector | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-point operator of the face
+`calculus.vectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
+`calculus.faceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
+`calculus.faceNormalVector(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.faceNormalAsDGtalVector(f)`| RealVector | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.centroid(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected centroid of the face
+`calculus.centroidAsDGtalVector(f)`| RealVector | the corrected centroid of the face
 
-\subsubsection Derivatives
+\subsubsection subderiv Derivatives
 
 Operator  | Output | Description
 ------------- | ------------- | ----
@@ -68,16 +103,39 @@ Operator  | Output | Description
 `calculus.coGradient(f)`|  \f$ 3 \times n_f\f$  | the co-gradient operator for vertex valued scalar functions of the face f
 
 
+A*phi | D*phi
+--| --
+@image html images/poly/A_phi.png | @image html images/poly/D_phi.png
+
+
+gradient | co-gradient | corrected normal
+--| -- | --
+@image html images/poly/gradient.png | @image html images/poly/cogradient.png | @image html images/poly/normal.png
 
 
 
 
 
+\subsubsection subderiv Flat/Sharp and Projection operators
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.V(f)`  | \f$ n_f\times 3\f$ | Flat operator that maps an ambient vector to an 1-form 
+`calculus.U(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a 1-form to a ambient vector
+`calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator
+
+
+
+\subsubsection subderiv Norms and Laplace-Beltrami operators
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Norm on 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.LaplaceBeltrami(f,lambda)`|  \f$ 3 \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete)
 
  
 
-
-\Subsection sectPolygonalCalculus2 Operators on vector fields
+\section sectPolygonalCalculus2 Operators on vector fields
 
 
 */

@@ -10,7 +10,7 @@
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
 #include <polyscope/point_cloud.h>
-
+#include <polyscope/curve_network.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -31,38 +31,20 @@ typedef SurfMesh::Vertex                  Vertex;
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
+polyscope::PointCloud *psVertices;
+polyscope::CurveNetwork *psBoundary;
+
 SurfMesh surfmesh;
-std::vector<double> phiV;
-float scale = 0.1;
-
-//Restriction of a scalar function to vertices
-double phiVertex(const Vertex v)
-{
-  return  cos(scale*(surfmesh.position(v)[0]))*sin(scale*surfmesh.position(v)[1]);
-}
-
-//Restriction of a scalar function to vertices
-PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
-{
-  auto vertices = surfmesh.incidentVertices(f);
-  auto nf = vertices.size();
-  Eigen::VectorXd ph(nf);
-  size_t cpt=0;
-  for(auto v: vertices)
-  {
-    ph(cpt) =  phiVertex(v);
-    ++cpt;
-  }
-  return  ph;
-}
+PolygonalCalculus<SurfMesh>::Vector phiEigen;
 
 
 void initPhi()
 {
-  phiV.clear();
-  for(auto i = 0; i < surfmesh.nbVertices(); ++i)
-    phiV.push_back(phiVertex(i));
-  psMesh->addVertexScalarQuantity("Phi", phiV);
+  phiEigen.resize(5);
+  phiEigen << 1.0, 2.0, 0.0, 5.0 ,1.5;
+  
+  psMesh->addVertexScalarQuantity("Phi", phiEigen);
+  psVertices->addScalarQuantity("Phi", phiEigen);
 }
 
 void initQuantities()
@@ -76,46 +58,38 @@ void initQuantities()
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
 
   std::vector<double> faceArea;
-  std::vector<double> d0(surfmesh.nbEdges());
 
-  for(auto f=0; f < surfmesh.nbFaces(); ++f)
-  {
-    auto ph = phi(f);
-    auto grad = calculus.gradient(f) * ph;
-    gradients.push_back( grad );
-    auto cograd =  calculus.coGradient(f) * ph;
-    cogradients.push_back( cograd );
-    normals.push_back(calculus.correctedFaceNormalAsDGtalVector(f));
-    
-    auto vA = calculus.correctedVectorArea(f);
-    vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
-    faceArea.push_back( calculus.correctedFaceArea(f));
-    
-    centroids.push_back( calculus.centroidAsDGtalPoint(f) );
-  }
+  PolygonalCalculus<SurfMesh>::Face f = 0; //Id of the face
+ 
+  auto grad = calculus.gradient(f) * phiEigen;
+  gradients.push_back( grad );
+
+  auto cograd =  calculus.coGradient(f) * phiEigen;
+  cogradients.push_back( cograd );
+
+  normals.push_back(calculus.faceNormalAsDGtalVector(f));
+  
+  auto vA = calculus.vectorArea(f);
+  vectorArea.push_back({vA(0) , vA(1), vA(2)});
+  
+  faceArea.push_back( calculus.faceArea(f));
+  centroids.push_back( calculus.centroidAsDGtalPoint(f) );
+  
+  PolygonalCalculus<SurfMesh>::Vector dPhi = calculus.D(f)*phiEigen;
+  PolygonalCalculus<SurfMesh>::Vector av = calculus.A(f)*phiEigen;
   
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
   psMesh->addFaceScalarQuantity("Face area", faceArea);
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
-  psMesh->addEdgeScalarQuantity("d0*phi", d0);
+  
+  psBoundary->addEdgeScalarQuantity("d0*phi", dPhi);
+  psBoundary->addEdgeScalarQuantity("A*phi", av);
   
   polyscope::registerPointCloud("Centroids", centroids);
 }
 
-
-void myCallback()
-{
-  ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
-  if (ImGui::Button("Init phi"))
-    initPhi();
-  
-  if (ImGui::Button("Compute quantities"))
-    initQuantities();
-  
-}
 
 int main()
 {
@@ -127,14 +101,19 @@ int main()
                       faces.begin(),
                       faces.end());
   
+  psVertices = polyscope::registerPointCloud("Vertices", positions);
     
+  std::vector<std::array<size_t,2>> edges={{0,1},{1,2},{2,3},{3,4},{4,0} };
+  psBoundary = polyscope::registerCurveNetwork("Edges", positions, edges);
+  
   // Initialize polyscope
   polyscope::init();
   
   psMesh = polyscope::registerSurfaceMesh("Single face", positions, faces);
 
-  // Set the callback function
-  polyscope::state::userCallback = myCallback;
+  initPhi();
+  initQuantities();
+  
   polyscope::show();
   return EXIT_SUCCESS;
   

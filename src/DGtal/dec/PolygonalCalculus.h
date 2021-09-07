@@ -181,22 +181,22 @@ public:
   /// Polygonal (corrected) vector area.
   /// @param f the face
   /// @return a vector
-  Vector correctedVectorArea(const Face f) const;
+  Vector vectorArea(const Face f) const;
   
   /// Area of a face from the vector area.
   /// @param f the face
   /// @return the corrected area of the face
-  double correctedFaceArea(const Face f) const
+  double faceArea(const Face f) const
   {
-    return correctedVectorArea(f).norm();
+    return vectorArea(f).norm();
   }
   
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (Eigen vector)
-  Vector correctedFaceNormal(const Face f) const
+  Vector faceNormal(const Face f) const
   {
-    Vector v = correctedVectorArea(f);
+    Vector v = vectorArea(f);
     v.normalize();
     return v;
   }
@@ -204,9 +204,9 @@ public:
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (DGtal RealVector/RealPoint)
-  RealPoint correctedFaceNormalAsDGtalVector(const Face f) const
+  RealPoint faceNormalAsDGtalVector(const Face f) const
   {
-    Vector v = correctedFaceNormal(f);
+    Vector v = faceNormal(f);
     return {v(0),v(1),v(2)};
   }
   
@@ -234,7 +234,7 @@ public:
   /// @return 3 x degree matrix
   DenseMatrix gradient(const Face f) const
   {
-    return -1.0/correctedFaceArea(f) * bracket( correctedFaceNormal(f) ) * coGradient(f);
+    return -1.0/faceArea(f) * bracket( faceNormal(f) ) * coGradient(f);
   }
   
   /// Flat operator for the face.
@@ -242,7 +242,7 @@ public:
   /// @return a degree x 3 matrix
   DenseMatrix  V(const Face f) const
   {
-    auto n = correctedFaceNormal(f);
+    auto n = faceNormal(f);
     return E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
   }
   
@@ -277,7 +277,7 @@ public:
   DenseMatrix U(const Face f) const
   {
     auto nf = myFaceDegree[f];
-    return 1.0/correctedFaceArea(f) * bracket(correctedFaceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
+    return 1.0/faceArea(f) * bracket(faceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
   }
   
   /// Projection operator for the face.
@@ -295,7 +295,7 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix M(const Face f, const double lambda=1.0) const
   {
-    return correctedFaceArea(f) * U(f).transpose()*U(f) + lambda * P(f).transpose()*P(f);
+    return faceArea(f) * U(f).transpose()*U(f) + lambda * P(f).transpose()*P(f);
   }
   
   /// (weak) Laplace-Beltrami operator for the face.
@@ -414,7 +414,7 @@ public:
   /// Helper to retreive the degree of the face
   /// @param f the face
   /// @return the number of vertices of the face.
-  size_t faceDegree(Face f)
+  size_t faceDegree(Face f) const
   {
     return myFaceDegree[f];
   }
@@ -444,13 +444,6 @@ protected:
       myFaceDegree[f] = nf;
     }
   }
-  
-  
-  std::vector<Triplet> accumulateTriplets(const std::vector<Triplet> &triplets)
-  {
-    
-  }
-  
   // ------------------------- Internals ------------------------------------
 private:
   
