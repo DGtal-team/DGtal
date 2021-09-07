@@ -1,0 +1,85 @@
+/**
+ * @file
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/09/07
+ *
+ * Documentation file for feature PolygonalCalculus
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page modulePolygonalCalculus Discretre differential calculus on polyongal surfaces
+@writers David Coeurjolly
+
+[TOC]
+
+In this documentation page, we detail the operators and tools allowing
+to perform differential calculus computations on generic polygonal surfaces
+(PolygonalCalculus class).  Such polygonal surfaces could be generic
+meshes (with non planar, non convex faces), or DigitalSurface models.
+
+The main principle, compared to the \ref moduleDECIntroduction
+approach, is to define per face operators which can be later combined
+to define global ones.
+
+This module documents operators defined in \cite degoes2020discrete.
+
+
+\section sectPolygonalCalculus1 Preliminaries
+
+\subsection sectPolygonalCalculus2 Operators on scalar fields
+
+@code
+using SurfMesh = SurfaceMesh<Z3i::RealPoint,Z3i::RealVector>;
+SurfaceMesh aMesj(....);
+PolygonalCalculus<SurfMesh> calculus(aMesh);
+
+Face f = ... some face index ...
+auto nf = calculus.faceDegree(f);
+@endcode
+
+\subsubsection Basic operators
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.X(f)`  | \f$ n_f\times 3\f$ | position of the face vertices
+`calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face
+`calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that average some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
+`calculus.correctedVectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
+`calculus.correctedFaceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
+`calculus.correctedFaceNormalVector(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.correctedFaceNormalAsDGtalVeector(f)`| RealVector | the corrected (unitary) normal vector of the face  (uses the embedder)
+
+\subsubsection Derivatives
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.D(f)`  | \f$ n_f\times n_f\f$ | derivative operator (d0 in DEC) mapping scalar values on vertices to values on edges
+`calculus.gradient(f)`|  \f$ 3 \times n_f\f$  | the gradient operator for vertex valued scalar functions of the face f
+`calculus.coGradient(f)`|  \f$ 3 \times n_f\f$  | the co-gradient operator for vertex valued scalar functions of the face f
+
+
+
+
+
+
+
+
+ 
+
+
+\Subsection sectPolygonalCalculus2 Operators on vector fields
+
+
+*/
+
+}

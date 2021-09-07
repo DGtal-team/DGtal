@@ -164,23 +164,31 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix D(const Face f) const;
   
+  /// Edge vector operator per face.
+  /// @param f the face
+  /// @return degree x 3 matrix
+  DenseMatrix E(const Face f) const
+  {
+    return D(f)*X(f);
+  }
+  
   /// Average operator to average, per edge, its vertex values.
   /// @param f the face
   /// @return a degree x degree matrix
   DenseMatrix A(const Face f) const;
   
   
-  /// Polygonal vector area.
+  /// Polygonal (corrected) vector area.
   /// @param f the face
   /// @return a vector
-  Vector vectorArea(const Face f) const;
+  Vector correctedVectorArea(const Face f) const;
   
   /// Area of a face from the vector area.
   /// @param f the face
   /// @return the corrected area of the face
   double correctedFaceArea(const Face f) const
   {
-    return vectorArea(f).norm();
+    return correctedVectorArea(f).norm();
   }
   
   /// Corrected normal vector of a face.
@@ -188,7 +196,7 @@ public:
   /// @return a vector (Eigen vector)
   Vector correctedFaceNormal(const Face f) const
   {
-    Vector v = vectorArea(f);
+    Vector v = correctedVectorArea(f);
     v.normalize();
     return v;
   }
@@ -200,14 +208,6 @@ public:
   {
     Vector v = correctedFaceNormal(f);
     return {v(0),v(1),v(2)};
-  }
-  
-  /// Edge vector operator per face.
-  /// @param f the face
-  /// @return degree x 3 matrix
-  DenseMatrix E(const Face f) const
-  {
-    return D(f)*X(f);
   }
   
   /// co-Gradient operator of the face
@@ -313,7 +313,7 @@ public:
   /// Computes the global Laplace-Beltrami operator by accumulating the
   /// per face operators.
   ///
-  /// @param lambla the regualrization parameter for the local Laplace-Beltrami operators
+  /// @param lambda the regualrization parameter for the local Laplace-Beltrami operators
   /// @return a sparse nbVertices x nbVertices matrix
   SparseMatrix globalLaplaceBeltrami(const double lambda=1.0) const
   {
@@ -350,8 +350,6 @@ public:
     }
     return lapGlobal;
   }
-  
-  
   // ----------------------- Cache mechanism --------------------------------------
   
   /// Generic method to compute all the per face DenseMatrices and store them in an
@@ -392,7 +390,7 @@ public:
   /// ...
   ///@endcode
   ///
-  /// @param perFaceOperator the per face operator
+  /// @param perFaceVectorOperator the per face operator
   /// @return an indexed container of all Vector quantities (indexed per Face).
   std::vector<Vector> getOperatorCacheVector(const std::function<Vector(Face)> &perFaceVectorOperator) const
   {
@@ -413,6 +411,13 @@ public:
     updateFaceDegree();
   }
   
+  /// Helper to retreive the degree of the face
+  /// @param f the face
+  /// @return the number of vertices of the face.
+  size_t faceDegree(Face f)
+  {
+    return myFaceDegree[f];
+  }
   /**
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.

@@ -106,7 +106,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
       REQUIRE( a(0,1) == 0.5 );
       REQUIRE( a(0,2) == 0 );
       
-      auto vectorArea = boxCalculus.vectorArea(f);
+      auto vectorArea = boxCalculus.correctedVectorArea(f);
       
       //Without correction, this should match
       for(auto f=0; f<6; ++f)
@@ -130,7 +130,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus<Mesh>::Face f = 0;
     auto d = boxCalculus.D(f);
     
-    auto nf = box.incidentVertices(f).size();
+    auto nf = boxCalculus.faceDegree(f);
     PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
     expected << 2,-1,4,-5;
@@ -142,7 +142,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
   SECTION("Structural propertes")
   {
     PolygonalCalculus<Mesh>::Face f = 0;
-    auto nf = box.incidentVertices(f).size();
+    auto nf =  boxCalculus.faceDegree(f);
     PolygonalCalculus<Mesh>::Vector phi(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
     

@@ -8,6 +8,12 @@ if (BUILD_POLYSCOPE_EXAMPLES)
   include(polyscope)
 endif()
 
+set(POLYSCOPE_SRCS
+  dgtalCalculus
+  dgtalCalculus-single
+)
 
-add_executable(dgtalCalculus dgtalCalculus.cpp)
-target_link_libraries(dgtalCalculus DGtal ${DGTAL_LIBRARIES} polyscope)
+foreach(FILE ${POLYSCOPE_SRCS})
+  add_executable(${FILE} ${FILE}.cpp)
+  target_link_libraries(${FILE} DGtal ${DGTAL_LIBRARIES} polyscope)
+endforeach()
