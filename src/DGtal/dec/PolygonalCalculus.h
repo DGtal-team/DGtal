@@ -288,7 +288,7 @@ public:
     return DenseMatrix::Identity(nf,nf) - V(f)*U(f);
   }
   
-  /// Mass operator associated with the face (inner products on 1-form).
+  /// Inner product on 1-forms associated with the face
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix

@@ -9,6 +9,12 @@
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
 
+- *DEC*
+  - New discrete differential operators on polygonal meshes have been
+    added. They can be used to process generic polygonal meshes (with
+    non-planar, non-convex faces) or digital surfaces. (David
+    Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
+
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
     as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David

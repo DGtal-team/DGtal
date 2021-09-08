@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page modulePolygonalCalculus Discretre differential calculus on polyongal surfaces
+@page modulePolygonalCalculus Discrete differential calculus on polygonal surfaces
 @writers David Coeurjolly
 
 [TOC]
@@ -27,15 +27,15 @@ namespace DGtal {
   Part of package \ref packageDEC.
 
 In this documentation page, we detail the operators and tools allowing
-to perform differential calculus computations on generic polygonal surfaces
+performing differential calculus computations on generic polygonal surfaces
 (PolygonalCalculus class).  Such polygonal surfaces could be generic
-meshes (with non planar, non convex faces), or DigitalSurface models.
+meshes (with non-planar, non-convex faces), or DigitalSurface models.
 
 The overall idea, compared to the \ref moduleDECIntroduction
 approach, is to define per face operators which can be later combined
 to define global ones.
 
-This module documents operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use-cases of these operators for geometry processing on digital surfaces will be added.
+This module documents the operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use cases of these operators for geometry processing on digital surfaces will be added.
 
 
 
@@ -48,7 +48,7 @@ The main idea of \cite degoes2020discrete is to define discrete
 operators per face, which can be combined to obtain a global operator
 acting on meshes. For vertex valued scalar or vector fields, this
 class implements elementary differential operators (gradient,
-derivative, sharp/flat, Laplace-Beltrami...) which can be combined to
+derivatives, sharp/flat, Laplace-Beltrami...) which can be combined to
 define more complex ones, or to be used when solving variational
 geometry processing problems on meshes or digital surfaces.
 
@@ -154,7 +154,7 @@ gradient | co-gradient | corrected normal
 
 
 
-\subsubsection subdflat Flat/sharp and projection operators
+\subsubsection subdflat Flat/Sharp and Projection Operators
 
 
 Operator  | Output | Description
@@ -163,7 +163,7 @@ Operator  | Output | Description
 `calculus.U(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
 `calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form and remove the associated non-tangential part of the vector reconstructed using the sharp operator
 
-Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator represent a ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order on 1-forms does not hold (due to rank deficiencies of the matrices). 
+Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order of operators and applied to 1-forms does not hold (due to rank deficiencies of the matrices). 
 This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (U_f V_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
 
 
@@ -177,10 +177,10 @@ a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form)
 
 
 
-\subsection sublap Inner product and Laplace-Beltrami operators
+\subsection sublap Inner Product and Laplace-Beltrami Operators
 
 
-For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner-product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator). 
+For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator). 
 
 Operator  | Output | Description
 ------------- | ------------- | ----
