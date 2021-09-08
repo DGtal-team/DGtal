@@ -128,9 +128,7 @@ int main()
   auto K               = SH3::getKSpace( params );
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
-  auto embedder        = SH3::getCellEmbedder( K );
   SH3::Cell2Index c2i;
-  auto surfels         = SH3::getSurfelRange( surface, params );
   auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
   
   // Convert faces to appropriate indexed format

@@ -145,11 +145,11 @@ This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discr
 
 a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form) | Sharp of the flat | Sharp and normal vector
 --| -- | -- | -- | --
-@image html images/poly/face_vec.png ""  | @image html images/poly/face_vec1.png ""  | @image html images/poly/face_flat.png ""  | @image html images/poly/face_sharp.png ""   | @image html images/poly/face_sharpnorm.png ""
+@image html images/poly/face_vec.png ""  | @image html images/poly/face_vec1.png ""  | @image html images/poly/face_flat1form.png ""  | @image html images/poly/face_sharp.png ""   | @image html images/poly/face_sharpnorm.png ""
 
 
 
-\subsubsection sublap Inner product and Laplace-Beltrami operators
+\subsection sublap Inner product and Laplace-Beltrami operators
 
 Operator  | Output | Description
 ------------- | ------------- | ----

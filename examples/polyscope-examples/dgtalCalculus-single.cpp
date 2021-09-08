@@ -102,7 +102,6 @@ void initQuantities()
   PolygonalCalculus<SurfMesh>::Vector sharp = calculus.U(f)*flat;
   std::vector<PolygonalCalculus<SurfMesh>::Vector> sharpRes={sharp};
   psMesh->addFaceVectorQuantity("Sharp", sharpRes);
-
 }
 
 
