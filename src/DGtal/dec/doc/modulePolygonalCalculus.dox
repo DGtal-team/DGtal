@@ -1,5 +1,5 @@
 /**
- * @file modulePolygonalCalculus.dox
+ * @file 
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -136,7 +136,7 @@ Operator  | Output | Description
 `calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form and remove the associated non-tangential part of the vector reconstructed using the sharp operator
 
 Discrete flat and sharp operators match with the DEC operators (see @moduleDECIntroduction). For short, the flat operator represent a ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order on 1-forms does not hold (due to rank deficiencies of the matrices). 
-This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (U_fV_f s)=0\quad \forall s@f\in$\mathbb{R}^3$...).
+This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (U_f V_f s)=0\quad \forall s\in$\mathbb{R}^3$...).
 
 
 
