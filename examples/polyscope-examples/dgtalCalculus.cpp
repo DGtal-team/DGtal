@@ -142,13 +142,10 @@ int main()
   for(auto i=0; i < primalSurface->nbVertices(); ++i)
     positions[i] = pos(i);
   
-  
-  
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  
   
   
   // Initialize polyscope

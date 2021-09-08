@@ -44,9 +44,17 @@ This module documents operators defined in \cite degoes2020discrete. An addition
 
 \section sectPolygonalCalculusIntro Introduction
 
-The main idea of \cite degoes2020discrete is to define discrete operators per face, which can be combined to obtain a global operator acting on meshes. For vertex valued scalar or vector fields, this class implements elementary differential operators. 
+The main idea of \cite degoes2020discrete is to define discrete
+operators per face, which can be combined to obtain a global operator
+acting on meshes. For vertex valued scalar or vector fields, this
+class implements elementary differential operators (gradient,
+derivative, sharp/flat, Laplace-Beltrami...) which can be combined to
+define more complex ones, or to be used when solving variational
+geometry processing problems on meshes or digital surfaces.
 
-
+The operators detailed @cite degoes2020discrete extend Mimetic Finite
+Difference and Virtual Element Method operators to arbitrary 3d
+polygons and discrete surfaces.
 
 
 \section sectPolygonalCalculus2 Per face operators
@@ -183,7 +191,7 @@ Operator  | Output | Description
 
 \section sectPolygonalCalculusGlo Global calculus
 
-Given a scalar function defined on a generic surface mesh vertices, all previously mentioned operators can be applied to obtain consistent quantities on the overall mesh. For instance:
+Given a scalar function defined on a generic surface mesh vertices, all previously mentioned operators can be applied to obtain consistent quantities on the overall mesh. For instance, from the  \ref dgtalCalculus.cpp example using Shortcuts and ShortcutsGeometry to set up the surface:
 
 
 Surface  | Phi | Gradient | Gradient+co-gradient 
