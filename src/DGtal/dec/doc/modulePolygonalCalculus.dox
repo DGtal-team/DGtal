@@ -22,6 +22,10 @@ namespace DGtal {
 
 [TOC]
 
+@since 1.2
+
+  Part of package \ref packageDEC.
+
 In this documentation page, we detail the operators and tools allowing
 to perform differential calculus computations on generic polygonal surfaces
 (PolygonalCalculus class).  Such polygonal surfaces could be generic
@@ -35,12 +39,13 @@ This module documents operators defined in \cite degoes2020discrete.
 
 
 
-@note for
-
-- related examples: \ref dgtalCalculus.cpp, dgtalCalculus-single.cpp
+@note All illustrations below have been obtained using the DGtal+[polyscope](https://polyscope.run) examples \ref dgtalCalculus.cpp and dgtalCalculus-single.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
 
 
 \section sectPolygonalCalculus1 Preliminaries
+
+
+
 
 \section sectPolygonalCalculus2 Operators on scalar fields
 
@@ -98,7 +103,7 @@ Operator  | Output | Description
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.D(f)`  | \f$ n_f\times n_f\f$ | derivative operator (d0 in DEC) mapping scalar values on vertices to values on edges
+`calculus.D(f)`  | \f$ n_f\times n_f\f$ | derivative operator (d0 in DEC) mapping scalar values on vertices to values on edges (vertex scalars to a  1-form)
 `calculus.gradient(f)`|  \f$ 3 \times n_f\f$  | the gradient operator for vertex valued scalar functions of the face f
 `calculus.coGradient(f)`|  \f$ 3 \times n_f\f$  | the co-gradient operator for vertex valued scalar functions of the face f
 
@@ -130,7 +135,7 @@ Operator  | Output | Description
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Norm on 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Norm operator on 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
 `calculus.LaplaceBeltrami(f,lambda)`|  \f$ 3 \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete)
 
  
