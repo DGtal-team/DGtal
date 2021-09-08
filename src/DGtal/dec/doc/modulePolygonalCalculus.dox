@@ -31,11 +31,11 @@ to perform differential calculus computations on generic polygonal surfaces
 (PolygonalCalculus class).  Such polygonal surfaces could be generic
 meshes (with non planar, non convex faces), or DigitalSurface models.
 
-The main principle, compared to the \ref moduleDECIntroduction
+The overall idea, compared to the \ref moduleDECIntroduction
 approach, is to define per face operators which can be later combined
 to define global ones.
 
-This module documents operators defined in \cite degoes2020discrete.
+This module documents operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use-cases of these operators for geometry processing on digital surfaces will be added.
 
 
 
@@ -67,7 +67,7 @@ mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
 PolygonalCalculus<SurfMesh> calculus(mesh);
 @endcode
 
-we obtain a single SurfaceMesh instance and its associated PolygonalCalculus object.
+we obtain a  SurfaceMesh instance with a unique face and its associated PolygonalCalculus object.
 
  Example| Example 
 --|--
@@ -87,16 +87,33 @@ Phi| Interpolated phi
 @image html images/poly/face_phi.png "" | @image html images/poly/face_phi_interp.png  ""
 
 
-\subsubsection susub1 Basic operators
+When constructing a PolygonalCalculus<SurfMesh> instance, you can
+provide an external function to embed the vertex positions. By
+default, the positions of the surface mesh vertices (@a positions @a in the
+previous example) is used. If you want to update the embedding (could
+be useful on digital surfaces), the user can specify the mapping
+`(Face,Vertex)->RealPoint`. Please refer to
+PolygonalCalculus<SurfMesh>::setEmbedder for an example. 
 
-We first describe the standard operators. 
+@note As the Face id is a parameter of the embedder, a given vertex
+can have different embeddings for all its incident faces.
+
+
+\subsection susub1 Basic quantities
+
+We first describe some standard per face quantities. Note that for all
+extrinsic operators that require the vertex position in @f$
+\mathbb{R}^3 @f$, the embedder is used.  For these quantities,
+vector/point are encoded as Eigen 3x1 vectors and collections of n
+points as an @f$ n\times 3@f$ matrix.
+
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.X(f)`  | \f$ n_f\times 3\f$ | position of the face vertices
-`calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face
+`calculus.X(f)`  | \f$ n_f\times 3\f$ | positions of the face vertices (n_f points in @f$ \mathbb{R}^3 @f$)
+`calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face (n_f vectors in @f$ \mathbb{R}^3 @f$)
 `calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that average some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
-`calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-point operator of the face
+`calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-points of the face (n_f points in @f$ \mathbb{R}^3 @f$)
 `calculus.vectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
 `calculus.faceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
 `calculus.faceNormalVector(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected (unitary) normal vector of the face  (uses the embedder)
@@ -104,7 +121,10 @@ Operator  | Output | Description
 `calculus.centroid(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected centroid of the face
 `calculus.centroidAsDGtalVector(f)`| RealVector | the corrected centroid of the face
 
-\subsubsection subderiv Derivatives
+\subsubsection subderiv Derivative operators
+
+Derivative operators act on a scalar field defined on the vertex of the face. 
+
 
 Operator  | Output | Description
 ------------- | ------------- | ----
@@ -135,21 +155,24 @@ Operator  | Output | Description
 `calculus.U(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
 `calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form and remove the associated non-tangential part of the vector reconstructed using the sharp operator
 
-Discrete flat and sharp operators match with the DEC operators (see @moduleDECIntroduction). For short, the flat operator represent a ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order on 1-forms does not hold (due to rank deficiencies of the matrices). 
+Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator represent a ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order on 1-forms does not hold (due to rank deficiencies of the matrices). 
 This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (U_f V_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
 
 
+For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators are the classical DEC or FEM ones.
 
 
 
-
-a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form) | Sharp of the flat | Sharp and normal vector
+a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form) | Sharp of the flat (green vector) | Sharp and normal vector (orange vector)
 --| -- | -- | -- | --
 @image html images/poly/face_vec.png ""  | @image html images/poly/face_vec1.png ""  | @image html images/poly/face_flat1form.png ""  | @image html images/poly/face_sharp.png ""   | @image html images/poly/face_sharpnorm.png ""
 
 
 
 \subsection sublap Inner product and Laplace-Beltrami operators
+
+
+For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner-product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator). 
 
 Operator  | Output | Description
 ------------- | ------------- | ----
