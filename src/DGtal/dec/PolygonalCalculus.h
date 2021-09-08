@@ -294,7 +294,9 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix M(const Face f, const double lambda=1.0) const
   {
-    return faceArea(f) * U(f).transpose()*U(f) + lambda * P(f).transpose()*P(f);
+    auto Uf=U(f);
+    auto Pf=P(f);
+    return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
   }
   
   /// (weak) Laplace-Beltrami operator for the face.
@@ -303,7 +305,8 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
   {
-    return D(f).transpose() * M(f,lambda) * D(f);
+    auto Df = D(f);
+    return Df.transpose() * M(f,lambda) * Df;
   }
 
   // ----------------------- Global operators --------------------------------------

@@ -88,6 +88,21 @@ void initQuantities()
   psBoundary->addEdgeScalarQuantity("A*phi", av);
   
   polyscope::registerPointCloud("Centroids", centroids);
+  
+  
+  //Flat Sharp
+  PolygonalCalculus<SurfMesh>::Vector v(3);
+  v << 50,-50,-100;
+  std::vector<PolygonalCalculus<SurfMesh>::Vector> someV={v};
+  psMesh->addFaceVectorQuantity("A vector", someV);
+
+  PolygonalCalculus<SurfMesh>::Vector flat = calculus.V(f)*v;
+  psBoundary->addEdgeScalarQuantity("flat (1-form)", flat);
+  
+  PolygonalCalculus<SurfMesh>::Vector sharp = calculus.U(f)*flat;
+  std::vector<PolygonalCalculus<SurfMesh>::Vector> sharpRes={sharp};
+  psMesh->addFaceVectorQuantity("Sharp", sharpRes);
+
 }
 
 

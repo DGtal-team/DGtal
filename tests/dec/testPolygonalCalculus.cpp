@@ -184,17 +184,10 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Checking cache")
   {
-    auto opU = [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);};
-    auto cacheU = boxCalculus.getOperatorCacheMatrix(opU);
-
-    //First value
+    auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);} );
     REQUIRE( cacheU.size() == 6 );
     
-    auto opC = [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);};
-    auto cacheC = boxCalculus.getOperatorCacheVector(opC);
-    
-    //First value
-    std::cout<< cacheC[0]<<std::endl;
+    auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);} );
     REQUIRE( cacheC.size() == 6 );
   }
 }
