@@ -1,0 +1,29 @@
+#  OBJ format
+# DGtal::SurfaceMeshWriter::writeOBJ
+o anObject
+mtllib testObj.mtl
+v 0 0 0
+v 1 0 0
+v 0 1 0
+v 1 1 0
+v 0 0 1
+v 1 0 1
+v 0 1 1
+v 1 1 1
+v 1 0 2
+v 0 0 2
+# 10 vertices
+usemtl material_0
+f 2 1 3 4
+usemtl material_1
+f 1 2 6 5
+usemtl material_1
+f 2 4 8 6
+usemtl material_1
+f 4 3 7 8
+usemtl material_1
+f 3 1 5 7
+usemtl material_2
+f 5 6 9 10
+# 6 faces
+
