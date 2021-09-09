@@ -93,7 +93,8 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
   
   DigitalSet set(domain);
   int point_setup_index = 0;
-  int x, y;
+  int x;
+  int y;
   
   while (point_setup_index < 400)
   {
@@ -180,7 +181,8 @@ TEST_CASE( "Testing Timings" )
   
   DigitalSet set(domain);
   int point_setup_index = 0;
-  int x, y;
+  int x;
+  int y;
   
   while (point_setup_index < 10000)
   {
