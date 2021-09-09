@@ -46,6 +46,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -81,10 +82,11 @@ namespace DGtal
    * that point (contrary to the class VoronoiMap that will only keep one of them).
    * This implies a computational overhead:
    *    - if @f$ f @f$ is the max number of co-cyclic points per grid point, we
-   * have an extra @f$ O(f) @f$ factor to the computational cost (cf below)
-   *    - As we have to use a specific container to store the per pixel equi-distant points
+   * have an extra @f$ O(f) @f$ factor to the computational cost (cf below), plus the cost
+   * of insertion/removal in the container (amortized 0(1) with std::unordered_set).
+   *    - as we have to use a specific container to store the per pixel equi-distant points
    * we obviously have a memory overhead when there are equi-distant points, but a slight computational
-   * one too to access sites from the container (std::vector<Point> per grid point).
+   * one too to access sites from the container (std::unordered_set<Point> per grid point).
    *
    * By default, the domain is considered non-periodic but per-dimension
    * periodicity can be specified in the constructor.
@@ -127,7 +129,7 @@ namespace DGtal
              typename TSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
-                                       std::vector<typename TSpace::Vector> >
+                                       std::unordered_set<typename TSpace::Vector> >
              >
   class VoronoiMapComplete
   {
@@ -145,9 +147,9 @@ namespace DGtal
     //ImageContainer::Domain::Space must match with TSpace
     BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
                           typename TImageContainer::Domain::Space >::value ));
-
+    
     //ImageContainer value type must be  std::vector<TSpace::Vector>
-    BOOST_STATIC_ASSERT ((boost::is_same< std::vector<typename TSpace::Vector>,
+    BOOST_STATIC_ASSERT ((boost::is_same< std::unordered_set<typename TSpace::Vector>,
                           typename TImageContainer::Value >::value ));
 
     //ImageContainer domain type must be  HyperRectangular
@@ -179,7 +181,7 @@ namespace DGtal
     typedef TImageContainer OutputImage;
 
     ///Definition of the image value type.
-    typedef typename TImageContainer::Value Value;
+    typedef typename OutputImage::Value Value;
 
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;

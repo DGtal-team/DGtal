@@ -16,7 +16,7 @@
 
 /**
  * @file
- * @ingroup Tests 
+ * @ingroup Tests
  * @author Robin Lamy
  *
  * @date 2021/07/20
@@ -34,6 +34,7 @@
 #include "DGtalCatch.h"
 
 #include "DGtal/geometry/volumes/distance/VoronoiMapComplete.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -44,6 +45,7 @@ typedef Z2i::Point Point;
 typedef Z2i::Domain Domain;
 
 typedef VoronoiMapComplete<Z2i::Space, DigitalSet, Z2i::L2Metric> CompleteVMap;
+typedef VoronoiMap<Z2i::Space, DigitalSet, Z2i::L2Metric> VMap;
 typedef ImageContainerBySTLVector<HyperRectDomain<Z2i::Space>, std::unordered_set<Z2i::Point> > TImageContainer;
 
 TImageContainer * brut_force_voronoi_map_complete(DigitalSet & set) {
@@ -58,9 +60,9 @@ TImageContainer * brut_force_voronoi_map_complete(DigitalSet & set) {
     }
   }
   std::cout << std::endl;
-
+  
   for (Point point : set.domain()) {
-
+    
     std::unordered_set<Point> voronoi_points;
     double voronoi_distance = std::numeric_limits<int>::max(); // maximum int value
     for (Point site : Sites) {
@@ -72,7 +74,7 @@ TImageContainer * brut_force_voronoi_map_complete(DigitalSet & set) {
         voronoi_points.insert(site);
       }
     }
-
+    
     voronoi_map->setValue(point, voronoi_points);
   }
   return voronoi_map;
@@ -91,9 +93,10 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
   
   DigitalSet set(domain);
   int point_setup_index = 0;
-  int x, y; 
-
-  while (point_setup_index < 400) {
+  int x, y;
+  
+  while (point_setup_index < 400)
+  {
     x = rand()%32;
     y = rand()%32;
     if (!set(Point(x, y))) {
@@ -101,34 +104,34 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
       point_setup_index++;
     }
   }
-
+  
   /**
    * Voronoi Map Complete from class generation
    */
   CompleteVMap vmap(set.domain(), set, Z2i::l2Metric);
-
+  
   /**
    * Voronoi Map Complete from brut force generation
    */
   TImageContainer * brut_force_vmap = brut_force_voronoi_map_complete(set);
-
+  
   SECTION("Testing that VoronoiMapComplete class gives the right voronoi sites sets")
-    {
-      for (Point point : set) {
-        std::unordered_set<Point> brut_force_set = brut_force_vmap->operator()(point);
-        CompleteVMap::Value class_set = vmap(point);
-
-        // Cheking that all voronoi sites from the brut force set are in the algorithm set
-        for (Point voronoi_point : brut_force_set) {
-          REQUIRE(std::find(class_set.begin(), class_set.end(), voronoi_point) != class_set.end());
-        }
-        
-        // Cheking that all voronoi sites from the algorithm set are in the brut force set
-        for (Point voronoi_point : class_set) {
-          REQUIRE(std::find(brut_force_set.begin(), brut_force_set.end(), voronoi_point) != brut_force_set.end());
-        } 
+  {
+    for (Point point : set) {
+      std::unordered_set<Point> brut_force_set = brut_force_vmap->operator()(point);
+      CompleteVMap::Value class_set = vmap(point);
+      
+      // Cheking that all voronoi sites from the brut force set are in the algorithm set
+      for (Point voronoi_point : brut_force_set) {
+        REQUIRE(std::find(class_set.begin(), class_set.end(), voronoi_point) != class_set.end());
+      }
+      
+      // Cheking that all voronoi sites from the algorithm set are in the brut force set
+      for (Point voronoi_point : class_set) {
+        REQUIRE(std::find(brut_force_set.begin(), brut_force_set.end(), voronoi_point) != brut_force_set.end());
       }
     }
+  }
   
   SECTION("Testing Complete Voronoi Map from Discrete Bisector Function paper") {
     Point lowerBound(0, 0), upperBound(6, 7);
@@ -138,32 +141,68 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
       if (point != Point(1, 0) &&
           point != Point(5, 0) &&
           point != Point(2, 2) &&
-          point != Point(4, 4) && 
+          point != Point(4, 4) &&
           point != Point(0, 6) &&
-          point != Point(6, 6) && 
+          point != Point(6, 6) &&
           point != Point(3, 7))
-          {
-            set.insert(point);
-          }
+      {
+        set.insert(point);
+      }
     }
-
+    
     TImageContainer * brutForceVoronoiMap = brut_force_voronoi_map_complete(set);
     CompleteVMap vmap(set.domain(), set, Z2i::l2Metric);
-
+    
     for (Point point : set) {
-        std::unordered_set<Point> brut_force_set = brutForceVoronoiMap->operator()(point);
-        CompleteVMap::Value class_set = vmap(point);
-
-        // Cheking that all voronoi sites from the brut force set are in the algorithm set
-        for (Point voronoi_point : brut_force_set) {
-          REQUIRE(std::find(class_set.begin(), class_set.end(), voronoi_point) != class_set.end());
-        }
-        
-        // Cheking that all voronoi sites from the algorithm set are in the brut force set
-        for (Point voronoi_point : class_set) {
-          REQUIRE(std::find(brut_force_set.begin(), brut_force_set.end(), voronoi_point) != brut_force_set.end());
-        } 
+      std::unordered_set<Point> brut_force_set = brutForceVoronoiMap->operator()(point);
+      CompleteVMap::Value class_set = vmap(point);
+      
+      // Cheking that all voronoi sites from the brut force set are in the algorithm set
+      for (Point voronoi_point : brut_force_set) {
+        REQUIRE(std::find(class_set.begin(), class_set.end(), voronoi_point) != class_set.end());
       }
-
-  }  
+      
+      // Cheking that all voronoi sites from the algorithm set are in the brut force set
+      for (Point voronoi_point : class_set) {
+        REQUIRE(std::find(brut_force_set.begin(), brut_force_set.end(), voronoi_point) != brut_force_set.end());
+      }
+    }
+    
+  }
+}
+TEST_CASE( "Testing Timings" )
+{
+  /**
+   * Random set generation
+   */
+  Point lowerBound(0, 0), upperBound(128, 128);
+  Domain domain(lowerBound, upperBound);
+  
+  DigitalSet set(domain);
+  int point_setup_index = 0;
+  int x, y;
+  
+  while (point_setup_index < 10000)
+  {
+    x = rand()%128;
+    y = rand()%128;
+    if (!set(Point(x, y))) {
+      set.insert(Point(x, y));
+      point_setup_index++;
+    }
+  }
+  
+  trace.beginBlock("Complete Map");
+  CompleteVMap vmap(set.domain(), set, Z2i::l2Metric);
+  trace.endBlock();
+  
+  size_t maxsize=0;
+  for(auto &v: vmap.constRange())
+    maxsize = std::max(maxsize, v.size());
+  trace.info() << "Max number of co-cyclic points = "<<maxsize<<std::endl;
+  
+  trace.beginBlock("Partial Map");
+  VMap partialmap(set.domain(), set, Z2i::l2Metric);
+  trace.endBlock();
+  
 }

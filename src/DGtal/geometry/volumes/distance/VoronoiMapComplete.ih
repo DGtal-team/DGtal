@@ -56,25 +56,24 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::compute( )
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
   myUpperBoundCopy = myDomainPtr->upperBound();
-
+  
   //Point outside the domain
   for ( auto & coord : myInfinity )
     coord = DGtal::NumberTraits< typename Point::Coordinate >::max();
-
+  
   //Init
   for ( auto const & pt : *myDomainPtr )
     if ( (*myPointPredicatePtr)( pt )) {
-      std::vector<Point> myVectorInfinity;
-      myVectorInfinity.push_back(myInfinity); 
+      Value myVectorInfinity;
+      myVectorInfinity.insert(myInfinity);
       myImagePtr->setValue ( pt, myVectorInfinity );
     } else {
-      std::vector<Point> external_point;
-      external_point.push_back(pt);
+      Value external_point;
+      external_point.insert(pt);
       myImagePtr->setValue ( pt, external_point );
-      external_point.pop_back();
     }
   
-
+  
   //We process the remaining dimensions
   for ( Dimension dim = 0;  dim< S::dimension ; dim++ ) {
     computeOtherSteps ( dim );
@@ -90,7 +89,7 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::computeOtherSteps ( const Dimensio
   std::string title = "VoronoiMap dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 #endif
-
+  
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension).
@@ -99,27 +98,27 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::computeOtherSteps ( const Dimensio
   for ( int k = 0; k < (int)S::dimension ; k++)
     if ( static_cast<Dimension>(((int)S::dimension - 1 - k)) != dim)
       subdomain.push_back( (int)S::dimension - 1 - k );
-
+  
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-
+  
 #ifdef WITH_OPENMP
   //Parallel loop
   std::vector<Point> subRangePoints;
   //Starting point precomputation
   for ( auto const & pt : localDomain.subRange( subdomain ) )
     subRangePoints.push_back( pt );
-
+  
   //We run the 1D problems in //
 #pragma omp parallel for schedule(dynamic)
   for (size_t i = 0; i < subRangePoints.size(); ++i)
     computeOtherStep1D ( subRangePoints[i], dim);
-
+  
 #else
   //We solve the 1D problems sequentially
   for ( auto const & pt : localDomain.subRange( subdomain ) )
     computeOtherStep1D ( pt, dim);
 #endif
-
+  
 #ifdef VERBOSE
   trace.endBlock();
 #endif
@@ -130,188 +129,189 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::computeOtherSteps ( const Dimensio
 template <typename S,typename P, typename TSep, typename TImage>
 void
 DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
-                                                  const Dimension dim) const
+                                                                 const Dimension dim) const
 {
   ASSERT(dim < S::dimension);
-
+  
   // Default starting and ending point for a cycle
   Point startPoint = startingPoint;
   Point endPoint   = startingPoint;
   startPoint[dim]  = myLowerBoundCopy[dim];
   endPoint[dim]    = myUpperBoundCopy[dim];
-
-  std::vector<Point> myVectorInfinity;
-  myVectorInfinity.push_back(myInfinity);
-
+  
+  Value myVectorInfinity;
+  myVectorInfinity.emplace(myInfinity);
+  
   // Extent along current dimension.
   const auto extent = myUpperBoundCopy[dim] - myLowerBoundCopy[dim] + 1;
-
+  
   // Site storage.
   std::vector<Point> Sites;
-
+  
   // Reserve sites storage.
   // +1 along periodic dimension in order to store two times the site that is on break index.
   Sites.reserve( extent + ( isPeriodic(dim) ? 1 : 0 ) );
-
+  
   // Pruning the list of sites and defining cycle bounds.
   // In the periodic case, the cycle bounds depend on the so-called break index
   // that defines the start point.
   if ( dim == 0 )
+  {
+    // For dim = 0, no sites are hidden.
+    for ( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
     {
-      // For dim = 0, no sites are hidden.
-      for ( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
+      const Value psite = myImagePtr->operator()( point );
+      if ( psite != myVectorInfinity ) {
+        for (Point voronoiPoint : psite) {
+          Sites.push_back( voronoiPoint );
+        }
+      }
+    }
+    
+    // If no sites are found, then there is nothing to do.
+    if ( Sites.size() == 0 )
+      return;
+    
+    // In the periodic case and along the first dimension, the break index
+    // is at the first site found.
+    if ( isPeriodic(dim) )
+    {
+      startPoint[dim] = Sites[0][dim];
+      endPoint[dim]   = startPoint[dim] + extent - 1;
+      
+      // The first site is also the last site (with appropriate shift).
+      Sites.push_back( Sites[0] + Point::base(dim, extent) );
+    }
+  }
+  else
+  {
+    // In the periodic case, the cycle depends on break index
+    if ( isPeriodic(dim) )
+    {
+      // Along other than the first dimension, the break index is at the lowest site found.
+      auto minRawDist = DGtal::NumberTraits< typename SeparableMetric::RawValue >::max();
+      
+      for ( auto point = startPoint; point[dim] <= myUpperBoundCopy[dim]; ++point[dim] )
+      {
+        const Value psite = myImagePtr->operator()( point );
+        
+        if ( psite != myVectorInfinity )
         {
-          const Value psite = myImagePtr->operator()( point );
-          if ( psite != myVectorInfinity ) {
-            for (Point voronoiPoint : psite) {
-              Sites.push_back( voronoiPoint );
-            }
+          const auto rawDist = myMetricPtr->rawDistance( point, *(psite.begin()) ); // All distances to Voronoi sites are equal, we take the first one
+          if ( rawDist < minRawDist )
+          {
+            minRawDist = rawDist;
+            startPoint[dim] = point[dim];
           }
         }
-     
+      }
+      
       // If no sites are found, then there is nothing to do.
-      if ( Sites.size() == 0 )
+      if ( minRawDist == DGtal::NumberTraits< typename SeparableMetric::RawValue >::max() )
         return;
-
-      // In the periodic case and along the first dimension, the break index
-      // is at the first site found.
-      if ( isPeriodic(dim) )
-        {
-          startPoint[dim] = Sites[0][dim];
-          endPoint[dim]   = startPoint[dim] + extent - 1;
-
-          // The first site is also the last site (with appropriate shift).
-          Sites.push_back( Sites[0] + Point::base(dim, extent) );
-        }
+      
+      endPoint[dim] = startPoint[dim] + extent - 1;
     }
-  else
+    
+    // Pruning the list of sites for both periodic and non-periodic cases.
+    for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
     {
-      // In the periodic case, the cycle depends on break index
-      if ( isPeriodic(dim) )
-        {
-          // Along other than the first dimension, the break index is at the lowest site found.
-          auto minRawDist = DGtal::NumberTraits< typename SeparableMetric::RawValue >::max();
-
-          for ( auto point = startPoint; point[dim] <= myUpperBoundCopy[dim]; ++point[dim] )
-            {
-              const Value psite = myImagePtr->operator()( point );
-
-              if ( psite != myVectorInfinity )
-                {
-                  const auto rawDist = myMetricPtr->rawDistance( point, psite[0] ); // All distances to Voronoi sites are equal, we take the first one
-                  if ( rawDist < minRawDist )
-                    {
-                      minRawDist = rawDist;
-                      startPoint[dim] = point[dim];
-                    }
-                }
-            }
-
-          // If no sites are found, then there is nothing to do.
-          if ( minRawDist == DGtal::NumberTraits< typename SeparableMetric::RawValue >::max() )
-            return;
-
-          endPoint[dim] = startPoint[dim] + extent - 1;
+      const Value psite = myImagePtr->operator()(point);
+      
+      if ( psite != myVectorInfinity )
+      {
+        for (Point site : psite) {
+          while (( Sites.size() >= 2 ) &&
+                 ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
+                                         site, startingPoint, endPoint, dim) )) {
+            
+            Sites.pop_back();
+          }
+          
+          Sites.push_back( site );
         }
-
-      // Pruning the list of sites for both periodic and non-periodic cases.
-      for( auto point = startPoint ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
-        {
-          const Value psite = myImagePtr->operator()(point);
-
-          if ( psite != myVectorInfinity )
-            {
-              for (Point site : psite) {
-                while (( Sites.size() >= 2 ) &&
-                      ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
-                                              site, startingPoint, endPoint, dim) )) {
-                
-                  Sites.pop_back();
-                }
-                
-                Sites.push_back( site );
-              }
-            }
-        }
-
-      // Pruning the remaining list of sites in the periodic case.
-      if ( isPeriodic(dim) )
-        {
-          auto point = startPoint;
-          point[dim] = myLowerBoundCopy[dim];
-          for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
-            {
-              const Value psite = myImagePtr->operator()(point);
-
-              if ( psite != myVectorInfinity )
-                {
-                  for (Point site : psite) {
-                    // Site coordinates must be between startPoint and endPoint.
-                    site[dim] += extent;
-
-                    while (( Sites.size() >= 2 ) &&
-                          ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
-                                                  site, startingPoint, endPoint, dim) ))
-                      Sites.pop_back();
-
-                    Sites.push_back( site );
-                  }
-                }
-            }
-        }
+      }
     }
-
+    
+    // Pruning the remaining list of sites in the periodic case.
+    if ( isPeriodic(dim) )
+    {
+      auto point = startPoint;
+      point[dim] = myLowerBoundCopy[dim];
+      for ( ; point[dim] <= endPoint[dim] - extent + 1; ++point[dim] ) // +1 in order to add the break-index site at the cycle's end.
+      {
+        const Value psite = myImagePtr->operator()(point);
+        
+        if ( psite != myVectorInfinity )
+        {
+          for (Point site : psite) {
+            // Site coordinates must be between startPoint and endPoint.
+            site[dim] += extent;
+            
+            while (( Sites.size() >= 2 ) &&
+                   ( myMetricPtr->hiddenBy(Sites[Sites.size()-2], Sites[Sites.size()-1] ,
+                                           site, startingPoint, endPoint, dim) ))
+              Sites.pop_back();
+            
+            Sites.push_back( site );
+          }
+        }
+      }
+    }
+  }
+  
   // No sites found
-  if ( Sites.size() == 0 )   
+  if ( Sites.size() == 0 )
     return;
   
-
+  
   // Rewriting for both periodic and non-periodic cases.
   size_t siteId = 0;
   auto point = startPoint;
   uint64_t minimal_distance;
   
   for ( ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
+  {
+    Value voronoiSites = myImagePtr->operator()(point);
+    minimal_distance = myMetricPtr->rawDistance( *(voronoiSites.begin()), point);
+    
+    for (Point site : Sites)
     {
-
-      Value voronoiSites = myImagePtr->operator()(point);
-      minimal_distance = myMetricPtr->rawDistance(voronoiSites[0], point);
-  
-      for (Point site : Sites) 
-        {
-          if (myMetricPtr->rawDistance(site, point) < minimal_distance) {
-            while(!voronoiSites.empty()){
-              voronoiSites.pop_back();
-            }
-            voronoiSites.push_back(site);
-            minimal_distance = myMetricPtr->rawDistance(site, point);
-              
-          } else if((myMetricPtr->rawDistance(site, point) == minimal_distance) 
-                  && (std::find(voronoiSites.begin(), voronoiSites.end(), site) == voronoiSites.end())) {
-                voronoiSites.push_back(site);
-          } 
-        }
-        myImagePtr->setValue(point, voronoiSites); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
+      if (myMetricPtr->rawDistance(site, point) < minimal_distance)
+      {
+        voronoiSites.clear();
+        voronoiSites.emplace(site);
+        minimal_distance = myMetricPtr->rawDistance(site, point);
       }
+      else
+        if((myMetricPtr->rawDistance(site, point) == minimal_distance)
+           && (std::find(voronoiSites.begin(), voronoiSites.end(), site) == voronoiSites.end()))
+        {
+          voronoiSites.emplace(site);
+        }
+    }
+    myImagePtr->setValue(point, voronoiSites); // On set le vecteur de site associé au point et non pas uniquement le premier site le plus proche qu'on a rencontré
+  }
   
   // Continuing rewriting in the periodic case.
   if ( isPeriodic(dim) )
+  {
+    for ( ; point[dim] <= endPoint[dim] ; ++point[dim] )
     {
-      for ( ; point[dim] <= endPoint[dim] ; ++point[dim] )
+      Value voronoiSites;
+      siteId = 0;
+      
+      while ( siteId < Sites.size()-1 )
+      {// Idem ici en prenant en compte la périodicité
+        if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestFIRST )
         {
-          std::vector<Point> voronoiSites;
-          siteId = 0;
-
-          while ( siteId < Sites.size()-1 ) {// Idem ici en prenant en compte la périodicité
-            if ( myMetricPtr->closest(point, Sites[siteId], Sites[siteId+1]) == DGtal::ClosestFIRST ) {
-              voronoiSites.push_back(Sites[siteId] - Point::base(dim, extent));
-            }
-            siteId++;
-          }
-          myImagePtr->setValue(point - Point::base(dim, extent), voronoiSites );
+          voronoiSites.insert(Sites[siteId] - Point::base(dim, extent));
         }
+        siteId++;
+      }
+      myImagePtr->setValue(point - Point::base(dim, extent), voronoiSites );
     }
-
+  }
 }
 
 
@@ -321,12 +321,12 @@ DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
 template <typename S,typename P,typename TSep, typename TImage>
 inline
 DGtal::VoronoiMapComplete<S,P, TSep, TImage>::VoronoiMapComplete( ConstAlias<Domain> aDomain,
-                                          ConstAlias<PointPredicate> aPredicate,
-                                          ConstAlias<SeparableMetric> aMetric )
-     : myDomainPtr(&aDomain)
-     , myPointPredicatePtr(&aPredicate)
-     , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
-     , myMetricPtr(&aMetric)
+                                                                 ConstAlias<PointPredicate> aPredicate,
+                                                                 ConstAlias<SeparableMetric> aMetric )
+: myDomainPtr(&aDomain)
+, myPointPredicatePtr(&aPredicate)
+, myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
+, myMetricPtr(&aMetric)
 {
   myPeriodicitySpec.fill( false );
   myImagePtr = CountedPtr<OutputImage>( new OutputImage(aDomain) );
@@ -336,20 +336,20 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::VoronoiMapComplete( ConstAlias<Dom
 template <typename S,typename P,typename TSep, typename TImage>
 inline
 DGtal::VoronoiMapComplete<S,P, TSep, TImage>::VoronoiMapComplete( ConstAlias<Domain> aDomain,
-                                          ConstAlias<PointPredicate> aPredicate,
-                                          ConstAlias<SeparableMetric> aMetric,
-                                          PeriodicitySpec const & aPeriodicitySpec )
-     : myDomainPtr(&aDomain)
-     , myPointPredicatePtr(&aPredicate)
-     , myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
-     , myMetricPtr(&aMetric)
-     , myPeriodicitySpec(aPeriodicitySpec)
+                                                                 ConstAlias<PointPredicate> aPredicate,
+                                                                 ConstAlias<SeparableMetric> aMetric,
+                                                                 PeriodicitySpec const & aPeriodicitySpec )
+: myDomainPtr(&aDomain)
+, myPointPredicatePtr(&aPredicate)
+, myDomainExtent( aDomain->upperBound() - aDomain->lowerBound() + Point::diagonal(1) )
+, myMetricPtr(&aMetric)
+, myPeriodicitySpec(aPeriodicitySpec)
 {
   // Finding periodic dimension index.
   for ( Dimension i = 0; i < Space::dimension; ++i )
     if ( isPeriodic(i) )
       myPeriodicityIndex.push_back( i );
-
+  
   myImagePtr = CountedPtr<OutputImage>( new OutputImage(aDomain) );
   compute();
 }
@@ -361,7 +361,7 @@ DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectPoint( Point aPoint  ) con
 {
   for ( auto const & dim : myPeriodicityIndex )
     aPoint[ dim ] = projectCoordinate( aPoint[ dim ], dim );
-
+  
   return aPoint;
 }
 
@@ -390,7 +390,7 @@ template <typename S,typename P,typename TSep, typename TImage>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const VoronoiMapComplete<S,P,TSep, TImage> & object )
+                   const VoronoiMapComplete<S,P,TSep, TImage> & object )
 {
   object.selfDisplay( out );
   return out;
