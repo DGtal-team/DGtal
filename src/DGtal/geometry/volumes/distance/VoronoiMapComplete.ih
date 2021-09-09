@@ -15,12 +15,15 @@
  **/
 
 /**
- * @file VoronoiMap.ih
+ * @file
+ *
+ * @author Robin Lamy
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/08/14
- *
+ * initial 2012/08/14
+ * @date 2021/07/20
+ 
  * Implementation of inline methods defined in VoronoiMap.h
  *
  * This file is part of the DGtal library.
