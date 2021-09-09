@@ -36,8 +36,6 @@
 #include "DGtal/geometry/volumes/distance/VoronoiMapComplete.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 ///////////////////////////////////////////////////////////////////////////////
-
-
 using namespace DGtal;
 
 typedef Z2i::DigitalSet DigitalSet;
@@ -74,7 +72,6 @@ TImageContainer * brut_force_voronoi_map_complete(DigitalSet & set) {
         voronoi_points.insert(site);
       }
     }
-    
     voronoi_map->setValue(point, voronoi_points);
   }
   return voronoi_map;
@@ -171,6 +168,7 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
     
   }
 }
+
 TEST_CASE( "Testing Timings" )
 {
   /**
