@@ -14,6 +14,7 @@ set(DGTAL_TESTS_SRC
   testChamferVoro
   testDigitalMetricAdapter
   testLpMetric
+  testVoronoiMapComplete
   )
 
 
