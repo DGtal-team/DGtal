@@ -1,7 +1,11 @@
 # DGtal 1.3 (beta)
 
 ## New features / critical changes
+- *Docker File*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
 
+## Bug fixes
 - *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar
@@ -12,8 +16,11 @@
 ## Changes
 
 - *IO*
-  - Fix purple color.  (Bertrand Kerautret and Phuc Ngo
+  - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+  - Add Obj format in MeshReader including colors and fixing obj format read
+    with relative face position.
+    (Bertrand Kerautret, [#1584](https://github.com/DGtal-team/DGtal/pull/1584))
   - Move static private HSVtoRGB and RGBtoHSV functions in Color class (public) and
     new setters/getters from/to HSV (Python binding updated)
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
