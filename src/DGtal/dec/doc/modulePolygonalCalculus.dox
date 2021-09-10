@@ -201,7 +201,7 @@ Surface  | Phi | Gradient | Gradient+co-gradient
 @image html images/poly/init.png "" | @image html images/poly/goursat_phi.png "" | @image html images/poly/goursat_grad.png "" | @image html images/poly/goursat_gradcograd.png ""
 
 
-To solve some global PDE (e.g. Poisson problems on the mesh @f$ \Delta u = f @f$), one can combine the local operators into a global one, gathering the contributions of each face. 
+To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can combine the local operators into a global one, gathering the contributions of each face. 
 
 For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can latter be used for diffusion.
 
