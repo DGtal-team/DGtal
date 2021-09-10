@@ -23,104 +23,56 @@ typedef Shortcuts<Z3i::KSpace>         SH3;
 typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 // The following typedefs are useful
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
-typedef SurfMesh::Vertices                    Vertices;
-typedef SurfMesh::RealPoint                   RealPoint;
-typedef SurfMesh::Face                   Face;
-typedef SurfMesh::Vertex                  Vertex;
-
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
-std::vector<double> phiV;
 float scale = 0.1;
 
-//Restriction of a scalar function to vertices
-double phiVertex(const Vertex v)
+void computeLaplace()
 {
-  return  cos(scale*(surfmesh.position(v)[0]))*sin(scale*surfmesh.position(v)[1]);
-}
 
-//Restriction of a scalar function to vertices
-PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
-{
-  auto vertices = surfmesh.incidentVertices(f);
-  auto nf = vertices.size();
-  Eigen::VectorXd ph(nf);
-  size_t cpt=0;
-  for(auto v: vertices)
-  {
-    ph(cpt) =  phiVertex(v);
-    ++cpt;
-  }
-  return  ph;
-}
-
-
-void initPhi()
-{
-  phiV.clear();
-  for(auto i = 0; i < surfmesh.nbVertices(); ++i)
-    phiV.push_back(phiVertex(i));
-  psMesh->addVertexScalarQuantity("Phi", phiV);
-}
-
-void initQuantities()
-{
+  //! [PolyDEC-init]
   PolygonalCalculus<SurfMesh> calculus(surfmesh);
-
-  std::vector<PolygonalCalculus<SurfMesh>::Vector> gradients;
-  std::vector<PolygonalCalculus<SurfMesh>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> vectorArea;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
-
-  std::vector<double> faceArea;
-
-  for(auto f=0; f < surfmesh.nbFaces(); ++f)
+  PolygonalCalculus<SurfMesh>::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  PolygonalCalculus<SurfMesh>::Vector g = PolygonalCalculus<SurfMesh>::Vector::Zero(surfmesh.nbVertices());
+  
+  //We set values on the boundary
+  auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
+  std::cout<< "Number of boundary edges= "<<boundaryEdges.size()<<std::endl;
+  for(auto &e: boundaryEdges)
   {
-    auto ph = phi(f);
-    auto grad = calculus.gradient(f) * ph;
-    gradients.push_back( grad );
-    auto cograd =  calculus.coGradient(f) * ph;
-    cogradients.push_back( cograd );
-    normals.push_back(calculus.faceNormalAsDGtalVector(f));
-    
-    auto vA = calculus.vectorArea(f);
-    vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
-    faceArea.push_back( calculus.faceArea(f));
-    
-    centroids.push_back( calculus.centroidAsDGtalPoint(f) );
+    auto adjVertices = surfmesh.edgeVertices(e);
+    g(adjVertices.first)  =  cos(scale*(surfmesh.position(adjVertices.first)[0]))*(scale*surfmesh.position(adjVertices.first)[1]);
+    g(adjVertices.second) =  cos(scale*(surfmesh.position(adjVertices.second)[0]))*(scale*surfmesh.position(adjVertices.second )[1]);
   }
   
-  psMesh->addFaceVectorQuantity("Gradients", gradients);
-  psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
-  psMesh->addFaceVectorQuantity("Normals", normals);
-  psMesh->addFaceScalarQuantity("Face area", faceArea);
-  psMesh->addFaceVectorQuantity("Vector area", vectorArea);
+  //Solve Δu=0 with g as boundary conditions
+  PolygonalCalculus<SurfMesh>::Solver solver;
+  solver.compute(L);
+  ASSERT(solver.info()==Eigen::Success);
   
-  polyscope::registerPointCloud("Centroids", centroids);
-}
+  PolygonalCalculus<SurfMesh>::Vector u = solver.solve(g);
+  ASSERT(solver.info()==Eigen::Success);
+  //! [PolyDEC-init]
 
+  psMesh->addVertexScalarQuantity("g", g);
+  psMesh->addVertexScalarQuantity("u", u);
+}
 
 void myCallback()
 {
   ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
-  if (ImGui::Button("Init phi"))
-    initPhi();
-  
-  if (ImGui::Button("Compute quantities"))
-    initQuantities();
-  
+  if(ImGui::Button("Compute Laplace problem"))
+    computeLaplace();
 }
 
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   
-  auto h=.3 ; //gridstep
-  params( "polynomial", "goursat" )( "gridstep", h );
+  auto h=.5   ; //gridstep
+  params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", h );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
@@ -145,7 +97,6 @@ int main()
                       faces.begin(),
                       faces.end());
   
-  
   // Initialize polyscope
   polyscope::init();
   
@@ -155,5 +106,4 @@ int main()
   polyscope::state::userCallback = myCallback;
   polyscope::show();
   return EXIT_SUCCESS;
-  
 }
