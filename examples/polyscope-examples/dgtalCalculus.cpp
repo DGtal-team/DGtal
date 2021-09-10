@@ -100,7 +100,6 @@ void initQuantities()
   psMesh->addFaceVectorQuantity("Normals", normals);
   psMesh->addFaceScalarQuantity("Face area", faceArea);
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
-  psMesh->addEdgeScalarQuantity("d0*phi", d0);
   
   polyscope::registerPointCloud("Centroids", centroids);
 }

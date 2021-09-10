@@ -82,6 +82,8 @@ public:
   ///Type of sparse matrix triplet
   typedef LinAlg::Triplet Triplet;
 
+  ///Type of a sparse matrix solver
+  typedef LinAlg::SolverSimplicialLDLT Solver;
 
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.

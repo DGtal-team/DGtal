@@ -11,6 +11,7 @@ endif()
 set(POLYSCOPE_SRCS
   dgtalCalculus
   dgtalCalculus-single
+  dgtalCalculus-poisson
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})

@@ -39,7 +39,9 @@ This module documents the operators defined in \cite degoes2020discrete. An addi
 
 
 
-@note All illustrations below have been obtained using the DGtal+[polyscope](https://polyscope.run) examples \ref dgtalCalculus.cpp and dgtalCalculus-single.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
+@note All illustrations below have been obtained using the
+DGtal+[polyscope](https://polyscope.run) examples \ref
+dgtalCalculus.cpp, \ref dgtalCalculus-single.cpp and \ref dgtalCalculus-poisson.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
 
 
 \section sectPolygonalCalculusIntro Introduction
@@ -204,7 +206,38 @@ To solve some global PDE (e.g. Poisson problems on the mesh @f$ \Delta u = f @f$
 For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can latter be used for diffusion.
 
 
-\section sectPolygonalCalculusHP Cache mechanisms and high performance computing
+\section secLap Example: Solving a Laplace problem
+
+Let suppose we want to solve the following Laplace problem for data interpolation:
+\f{eqnarray*}{
+        \Delta_\Omega u& = 0  \\ 
+        & s.t. u = g \text{ on } \partial\Omega
+\f}
+
+We want to solve that problem on a polygonal mesh @f$\Omega@f$
+(digital surface here) with a boundary and some scalar values attached
+to boundary vertices. 
+
+Furthermore, the discrete version of the Laplace problem boils down to
+a simple linear problem using on the discrete Laplace-Beltrami sparse
+matrix.
+
+The overall code is:
+\snippet dgtalCalculus-poisson.cpp PolyDEC-init
+
+Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
+
+
+Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
+--|--|--
+@image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png "" 
+
+
+
+
+\section sectMisc Miscellaneous
+
+\subsection sectPolygonalCalculusHP Cache mechanisms and high performance computing
 
 For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
 @code
