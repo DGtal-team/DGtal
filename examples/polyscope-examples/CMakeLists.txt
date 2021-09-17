@@ -8,13 +8,17 @@ if (BUILD_POLYSCOPE_EXAMPLES)
   include(polyscope)
 endif()
 
+include_directories (${PROJECT_BINARY_DIR}/examples/)
+
 set(POLYSCOPE_SRCS
   dgtalCalculus
   dgtalCalculus-single
   dgtalCalculus-poisson
+  dgtalCalculus-bunny
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})
+  #DGtal_add_example(${FILE} polyscope)
   add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries(${FILE} DGtal ${DGTAL_LIBRARIES} polyscope)
 endforeach()
