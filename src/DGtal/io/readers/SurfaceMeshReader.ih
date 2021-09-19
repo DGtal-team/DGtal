@@ -96,9 +96,12 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
           if ( indices.empty() ) break;
           auto vtxinfo = split( indices, '/' );
           if ( vtxinfo.size() == 0 ) break;
-          Index v  = std::stoi( vtxinfo[ 0 ] );
-          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v;
-          face.push_back( v - 1 );
+          int  v  = std::stoi( vtxinfo[ 0 ] )-1;
+          if (v < 0 ){ // special case of relative indices (ie negative index);
+            v = vertices.size() + v+1; 
+          }
+          face.push_back(v);
+          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v-1;
           face_normals.push_back( vn - 1 );
           indices = "";
         }
