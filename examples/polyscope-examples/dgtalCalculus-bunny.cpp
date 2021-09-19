@@ -151,7 +151,7 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
 
-  auto h=1.; //gridstep
+
   params("surfaceComponents", "All");
 
   std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
@@ -162,7 +162,7 @@ int main()
   auto surfels      = SH3::getSurfelRange( surface, params );
   auto embedder     = SH3::getCellEmbedder( K );
   SH3::Cell2Index c2i;
-  auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
+  //auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
   
   //Need to convert the faces
   std::vector<std::vector<unsigned int>> faces;
