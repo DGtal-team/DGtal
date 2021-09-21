@@ -163,7 +163,7 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
 
-  auto h=1.; //gridstep
+
   params("surfaceComponents", "All");
 
   std::string filename = examplesPath + std::string("/samples/cat10b.vol");
@@ -172,7 +172,6 @@ int main()
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
-
   auto primalSurface   = SH3::makePrimalPolygonalSurface(surface);
   
   //Need to convert the faces
