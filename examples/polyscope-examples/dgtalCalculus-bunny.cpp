@@ -81,15 +81,15 @@ void initQuantities()
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
     
-    auto grad = calculus.gradient(f) * phi(f);
+    PolygonalCalculus<SurfMesh>::Vector grad = calculus.gradient(f) * phi(f);
     gradients.push_back( grad );
     
-    auto cograd =  calculus.coGradient(f) * phi(f);
+    PolygonalCalculus<SurfMesh>::Vector cograd =  calculus.coGradient(f) * phi(f);
     cogradients.push_back( cograd );
     
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
     
-    auto vA = calculus.vectorArea(f);
+    PolygonalCalculus<SurfMesh>::Vector vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
     
     faceArea.push_back( calculus.faceArea(f));
@@ -101,7 +101,6 @@ void initQuantities()
   psMesh->addFaceVectorQuantity("Normals", normals);
   psMesh->addFaceScalarQuantity("Face area", faceArea);
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
-  
 }
 
 
@@ -111,26 +110,39 @@ void computeLaplace()
   PolygonalCalculus<SurfMesh>::SparseMatrix L = calculus.globalLaplaceBeltrami();
   PolygonalCalculus<SurfMesh>::Vector g = PolygonalCalculus<SurfMesh>::Vector::Zero(surfmesh.nbVertices());
 
-  for(auto v=0;v<surfmesh.nbVertices();++v)
-  {
-    
-   if (surfmesh.position(v)[2] > 50)
-     g( v )  =  10.0;
-   else
-     if (surfmesh.position(v)[2] < 25)
-       g( v )  =  -10.0;
-     else
-       g(v)=0.0;
-  }
+  g( rand() % surfmesh.nbVertices()) = -50.0;
+  g( rand() % surfmesh.nbVertices()) = 50.0;
+  g( rand() % surfmesh.nbVertices()) = -50.0;
+  g( rand() % surfmesh.nbVertices()) = 50.0;
+  g( rand() % surfmesh.nbVertices()) = -50.0;
+  g( rand() % surfmesh.nbVertices()) = 50.0;
+  g( rand() % surfmesh.nbVertices()) = -50.0;
+  g( rand() % surfmesh.nbVertices()) = 50.0;
+  g( rand() % surfmesh.nbVertices()) = -50.0;
+  g( rand() % surfmesh.nbVertices()) = 50.0;
+  g( rand() % surfmesh.nbVertices()) = -20.0;
+  g( rand() % surfmesh.nbVertices()) = 20.0;
+  g( rand() % surfmesh.nbVertices()) = 1.0;
 
   //Solve Δu=0 with g as boundary conditions
-  PolygonalCalculus<SurfMesh>::Solver solver;
-  solver.compute(L);
+  PolygonalCalculus<SurfMesh>::LinAlg::SolverConjugateGradient solver;
+  PolygonalCalculus<SurfMesh>::SparseMatrix I(surfmesh.nbVertices(),surfmesh.nbVertices());
+  I.setIdentity();
+  solver.compute(L + 0.001*I);  //regularization needed for closed surface.
   ASSERT(solver.info()==Eigen::Success);
 
   PolygonalCalculus<SurfMesh>::Vector u = solver.solve(g);
   ASSERT(solver.info()==Eigen::Success);
 
+  //std::cout << A.determinant() << std::endl;
+
+  std::cout << solver.info() << std::endl;
+  std::cout << g.maxCoeff()<< std::endl;
+  std::cout << g.minCoeff() << std::endl;
+  std::cout << u.maxCoeff()<< std::endl;
+  std::cout << u.minCoeff() << std::endl;
+  
+  
   psMesh->addVertexScalarQuantity("g", g);
   psMesh->addVertexScalarQuantity("u", u);
 }
@@ -154,46 +166,36 @@ int main()
   auto h=1.; //gridstep
   params("surfaceComponents", "All");
 
-  std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
+  std::string filename = examplesPath + std::string("/samples/cat10b.vol");
   
   auto binary_image = SH3::makeBinaryImage(filename, params );
-  auto K            = SH3::getKSpace( binary_image );
-  auto surface      = SH3::makeDigitalSurface( binary_image, K, params );
-  auto surfels      = SH3::getSurfelRange( surface, params );
-  auto embedder     = SH3::getCellEmbedder( K );
+  auto K               = SH3::getKSpace( binary_image, params );
+  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
-  auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
+
+  auto primalSurface   = SH3::makePrimalPolygonalSurface(surface);
   
   //Need to convert the faces
-  std::vector<std::vector<unsigned int>> faces;
-
+  std::vector<std::vector<unsigned long>> faces;
   std::vector<RealPoint> positions;
-  unsigned int cpt=0;
-  for(auto &surfel: surfels)
-  {
-    auto verts = SH3::getPrimalVertices(K, surfel, false );
-    for(auto &v: verts)
-      positions.push_back(embedder(v));
-
-    std::vector<unsigned int> face={cpt, cpt+1, cpt+2,cpt+3};
-    cpt+=4;
-    faces.push_back(face);
-  }
-
-/*  std::vector<std::vector<unsigned long>> faces;
+  
+  //std::vector<std::vector<unsigned long>> faces;
   for(auto &face: primalSurface->allFaces())
     faces.push_back(primalSurface->verticesAroundFace( face ));
-
+  
+  //Recasting to vector of vertices
   auto pos = primalSurface->positions();
-  std::vector<RealPoint> positions(primalSurface->nbVertices());
+  positions.resize(primalSurface->nbVertices());
   for(auto i=0; i < primalSurface->nbVertices(); ++i)
     positions[i] = pos(i);
-  */
+ 
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
 
+  std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
+  
   // Initialize polyscope
   polyscope::init();
 

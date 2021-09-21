@@ -232,6 +232,12 @@ Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
 --|--|--
 @image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png "" 
 
+Same calculus on the digital surface, and the dual of a digital surface:
+
+Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
+--|--|--
+@image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png "" 
+@image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png "" 
 
 
 

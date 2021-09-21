@@ -330,7 +330,7 @@ public:
       auto nf  = myFaceDegree[f];
       reorder.resize(nf);
       auto vertices = mySurfaceMesh->incidentVertices(f);
-      auto Lap = this->LaplaceBeltrami(f,lambda);
+      DenseMatrix Lap = this->LaplaceBeltrami(f,lambda);
       auto cpt=0;
       for(auto v: vertices )
       {

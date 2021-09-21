@@ -79,10 +79,10 @@ void initQuantities()
 
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
-    auto ph = phi(f);
-    auto grad = calculus.gradient(f) * ph;
+    PolygonalCalculus<SurfMesh>::Vector ph = phi(f);
+    PolygonalCalculus<SurfMesh>::Vector grad = calculus.gradient(f) * ph;
     gradients.push_back( grad );
-    auto cograd =  calculus.coGradient(f) * ph;
+    PolygonalCalculus<SurfMesh>::Vector cograd =  calculus.coGradient(f) * ph;
     cogradients.push_back( cograd );
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
     
