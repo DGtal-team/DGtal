@@ -81,7 +81,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
   SECTION("Construction and basic operators")
     {
       REQUIRE( boxCalculus.isValid() );
-      
+      REQUIRE( boxCalculus.nbVertices() == positions.size() );
+
       PolygonalCalculus<Mesh>::Face f = 0;
       auto x = boxCalculus.X(f);
       auto d = boxCalculus.D(f);
@@ -181,13 +182,25 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
   }
+  SECTION("Check lumped mass matrix")
+  {
+    PolygonalCalculus<Mesh>::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
+    double a=0.0;
+    for(auto v=0; v < box.nbVertices(); ++v )
+      a += M.coeffRef(v,v);
+    
+    double fa=0.0;
+    for(auto f=0; f < box.nbFaces(); ++f )
+      fa += box.faceArea(f);
+    REQUIRE( a == fa );
+  }
   
   SECTION("Checking cache")
   {
     auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);} );
     REQUIRE( cacheU.size() == 6 );
     
-    auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);} );
+    auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);} );
     REQUIRE( cacheC.size() == 6 );
   }
 }

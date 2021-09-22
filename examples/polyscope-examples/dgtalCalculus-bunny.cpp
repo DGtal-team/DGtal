@@ -125,7 +125,7 @@ void computeLaplace()
   g( rand() % surfmesh.nbVertices()) = 1.0;
 
   //Solve Δu=0 with g as boundary conditions
-  PolygonalCalculus<SurfMesh>::LinAlg::SolverConjugateGradient solver;
+  PolygonalCalculus<SurfMesh>::Solver solver;
   PolygonalCalculus<SurfMesh>::SparseMatrix I(surfmesh.nbVertices(),surfmesh.nbVertices());
   I.setIdentity();
   solver.compute(L + 0.001*I);  //regularization needed for closed surface.

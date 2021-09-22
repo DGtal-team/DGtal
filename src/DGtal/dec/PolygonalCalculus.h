@@ -343,7 +343,7 @@ public:
         {
           auto v = Lap(i,j);
           if (v!= 0.0)
-            triplets.push_back(Triplet(reorder[i],reorder[j],Lap(i,j)));
+            triplets.emplace_back(Triplet(reorder[i],reorder[j],Lap(i,j)));
         }
       
       local.setFromTriplets(triplets.begin(), triplets.end());
@@ -354,6 +354,28 @@ public:
     }
     return lapGlobal;
   }
+  
+  /// Compute and returns the global lumped mass matrix
+  /// (diagonal matrix with Max's weights for each vertex).
+  ///    M(i,i) =   ∑_{adjface f} faceArea(f)/degree(f) ;
+  ///
+  /// @return the global lumped mass matrix.
+  SparseMatrix globalLumpedMassMatrix() const
+  {
+    SparseMatrix M(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
+    std::vector<Triplet> triplets;
+    for(auto v=0; v < mySurfaceMesh->nbVertices(); ++v)
+    {
+      auto faces = mySurfaceMesh->incidentFaces(v);
+      auto varea = 0.0;
+      for(auto f: faces)
+        varea += faceArea(f) /(double)myFaceDegree[f];
+      triplets.emplace_back(Triplet(v,v,varea));
+    }
+    M.setFromTriplets(triplets.begin(),triplets.end());
+    return M;
+  }
+  
   // ----------------------- Cache mechanism --------------------------------------
   
   /// Generic method to compute all the per face DenseMatrices and store them in an
@@ -422,6 +444,31 @@ public:
   {
     return myFaceDegree[f];
   }
+  
+  /// @return the number of vertices of the underlying surface mesh.
+  size_t nbVertices() const
+  {
+    return mySurfaceMesh->nbVertices();
+  }
+  
+  /// @return the number of faces of the underlying surface mesh.
+  size_t nbFaces() const
+  {
+    return mySurfaceMesh->nbFaces();
+  }
+  
+  /// @returns the degree of the face f (number of vertices)
+  /// @param f the face
+  size_t degree(const Face f) const
+  {
+    return myFaceDegree[f];
+  }
+  
+  ConstAlias<SurfaceMesh> getSurfaceMeshAlias() const
+  {
+    return mySurfaceMesh;
+  }
+  
   /**
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
@@ -433,6 +480,8 @@ public:
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   bool isValid() const;
+  
+  
   
   // ------------------------- Protected Datas ------------------------------
 protected:
@@ -452,7 +501,7 @@ protected:
 private:
   
   ///Underlying SurfaceMesh
-  const TSurfaceMesh *mySurfaceMesh;
+  const SurfaceMesh *mySurfaceMesh;
   
   ///Embedding function (face,vertex)->R^3 for the vertex position wrt. the face.
   std::function<RealPoint( Face, Vertex)> myEmbedder;

@@ -4,7 +4,8 @@ set(DGTAL_TESTS_SRC
     testEmbedding
     testHeatLaplace
     testPolygonalCalculus
-    )
+    testGeodesicInHeat
+  )
 
 # add_test is disabled for the following sources
 set(DGTAL_TESTS_SRC_NOTEST
