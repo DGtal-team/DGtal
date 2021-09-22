@@ -184,6 +184,7 @@ namespace DGtal
       typedef ::DGtal::Mesh<RealPoint>                            Mesh;
       typedef ::DGtal::TriangulatedSurface<RealPoint>             TriangulatedSurface;
       typedef ::DGtal::PolygonalSurface<RealPoint>                PolygonalSurface;
+      typedef ::DGtal::SurfaceMesh<RealPoint,RealPoint>           SurfaceMesh;
       typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
       typedef std::map<Cell,   IdxVertex>                         Cell2Index;
 
@@ -2358,6 +2359,54 @@ namespace DGtal
           Cell2Index c2i;
           return makePrimalPolygonalSurface( c2i, dsurf );
         }
+
+      /// Builds the primal polygonal surface mesh associated to the given
+      /// digital surface.
+      ///
+      /// @tparam TContainer the digital surface container
+      /// @param[out] c2i the map Cell -> Vertex index in the polygonal surface.
+      /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
+      /// @return a smart pointer on the built polygonal surface mesh
+      template < typename TContainer >
+      static CountedPtr< SurfaceMesh >
+      makePrimalSurfaceMesh( Cell2Index& c2i,
+                                 CountedPtr< ::DGtal::DigitalSurface<TContainer> > aSurface )
+      {
+        BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
+        auto embedder = getCellEmbedder( aSurface );
+        auto pPolySurf = CountedPtr<SurfaceMesh>( new SurfaceMesh ); // acquired
+        bool ok = MeshHelpers::digitalSurface2PrimalSurfaceMesh( *aSurface, embedder, *pPolySurf, c2i );
+        return ok ? pPolySurf : CountedPtr< SurfaceMesh >( nullptr );
+      }
+      
+      /// Builds the primal polygonal surface associated to the given
+      /// digital surface.
+      ///
+      /// @tparam TContainer the digital surface container
+      /// @param[in] aSurface any digital surface (e.g. DigitalSurface or LightDigitalSurface)
+      /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+      template < typename TContainer >
+      static CountedPtr< SurfaceMesh >
+      makePrimalSurfaceMesh( CountedPtr< ::DGtal::DigitalSurface<TContainer> > aSurface )
+      {
+        Cell2Index c2i;
+        return makePrimalSurfaceMesh( c2i, aSurface );
+      }
+      
+      /// Builds the primal polygonal surface associated to the given
+      /// indexed digital surface.
+      ///
+      /// @tparam TContainer the digital surface container
+      /// @param[in] aSurface any indexed digital surface (e.g. IdxDigitalSurface)
+      /// @return a smart pointer on the built polygonal surface or 0 if it fails because aSurface is not a combinatorial 2-manifold.
+      template < typename TContainer >
+      static CountedPtr< SurfaceMesh >
+      makePrimalSurfaceMesh( CountedPtr< ::DGtal::IndexedDigitalSurface<TContainer> > aSurface )
+      {
+        auto dsurf = makeDigitalSurface( aSurface );
+        Cell2Index c2i;
+        return makePrimalSurfaceMesh( c2i, dsurf );
+      }
 
       /// Outputs a polygonal surface as an OBJ file (with its topology).
       ///

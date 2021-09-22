@@ -15,6 +15,7 @@ set(POLYSCOPE_SRCS
   dgtalCalculus-single
   dgtalCalculus-poisson
   dgtalCalculus-bunny
+  dgtalCalculus-geodesic
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})

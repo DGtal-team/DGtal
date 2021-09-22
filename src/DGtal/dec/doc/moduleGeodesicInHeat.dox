@@ -1,0 +1,53 @@
+/**
+ * @file 
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/09/07
+ *
+ * Documentation file for feature PolygonalCalculus
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleGeodesicInHeat Geodesic In Heat using discrete polygonal calculus
+@writers David Coeurjolly
+
+[TOC]
+
+@since 1.3
+
+  Part of package \ref packageDEC.
+
+In this documentation page, we focus on an implementation of the
+"Geodesic In Heat method" (\cite Crane2013) using operators from \ref
+modulePolygonalCalculus.
+
+Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
+
+
+\section sectGeodesicIntro Introduction
+
+
+
+
+\section sectGeodesic2 Interface
+
+
+
+Input  | Single source | Geodesic in heat | geodesic in heat with multiple sources
+--|--|--|--
+@image html images/poly/bunny-128.png "" | @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
+
+
+
+*/
+
+}

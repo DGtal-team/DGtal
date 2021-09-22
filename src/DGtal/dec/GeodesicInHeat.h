@@ -145,6 +145,7 @@ namespace DGtal
     /// @return the source point vector.
     Vector source() const
     {
+      FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
       return mySource;
     }
     
@@ -158,6 +159,8 @@ namespace DGtal
       Vector heatDiffusion = myHeatSolver.solve(mySource);
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
+      
+      //return heatDiffusion;
       
       auto surfmesh = myCalculus->getSurfaceMeshAlias();
       
