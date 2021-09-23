@@ -22,7 +22,7 @@
  *
  * @date 2021/09/21
  *
- * Functions for testing class GeodesicInHeat.
+ * Functions for testing class GeodesicsInHeat.
  *
  * This file is part of the DGtal library.
  */
@@ -35,7 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/dec/PolygonalCalculus.h"
-#include "DGtal/dec/GeodesicInHeat.h"
+#include "DGtal/dec/GeodesicsInHeat.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/MeshHelpers.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-TEST_CASE( "Testing GeodesicInHeat" )
+TEST_CASE( "Testing GeodesicsInHeat" )
 {
   typedef SurfaceMesh< RealPoint,RealPoint > Mesh;
   std::vector<RealPoint> positions = { RealPoint( 0, 0, 0 ) ,
@@ -72,7 +72,7 @@ TEST_CASE( "Testing GeodesicInHeat" )
   
   SECTION("Construction and basic operators")
   {
-    GeodesicInHeat<PolygonalCalculus<Mesh>> heat(boxCalculus);
+    GeodesicsInHeat<PolygonalCalculus<Mesh>> heat(boxCalculus);
     REQUIRE( heat.isValid() == false );
     
     trace.beginBlock("init solvers");
@@ -81,7 +81,7 @@ TEST_CASE( "Testing GeodesicInHeat" )
     REQUIRE( heat.isValid()  );
     
     heat.addSource(0);
-    GeodesicInHeat<PolygonalCalculus<Mesh>>::Vector d = heat.compute();
+    GeodesicsInHeat<PolygonalCalculus<Mesh>>::Vector d = heat.compute();
     REQUIRE( d.size() == positions.size() );
 
     std::cout<<d<<std::endl;

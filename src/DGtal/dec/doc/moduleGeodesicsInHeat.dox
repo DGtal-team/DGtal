@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleGeodesicInHeat Geodesic In Heat using discrete polygonal calculus
+@page moduleGeodesicsInHeat Geodesics In Heat using discrete polygonal calculus
 @writers David Coeurjolly
 
 [TOC]
@@ -27,22 +27,22 @@ namespace DGtal {
   Part of package \ref packageDEC.
 
 In this documentation page, we focus on an implementation of the
-"Geodesic In Heat method" (\cite Crane2013) using operators from \ref
+"Geodesics In Heat method" (\cite Crane2013) using operators from \ref
 modulePolygonalCalculus.
 
 Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
 
 
-\section sectGeodesicIntro Introduction
+\section sectGeodesicsIntro Introduction
 
 
 
 
-\section sectGeodesic2 Interface
+\section sectGeodesics2 Interface
 
 
 
-Input  | Single source | Geodesic in heat | geodesic in heat with multiple sources
+Input  | Single source | Geodesics in heat | geodesic in heat with multiple sources
 --|--|--|--
 @image html images/poly/bunny-128.png "" | @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
 

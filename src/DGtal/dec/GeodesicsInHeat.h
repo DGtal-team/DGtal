@@ -23,20 +23,20 @@
  *
  * @date 2021/09/21
  *
- * Header file for module GeodesicInHeat.cpp
+ * Header file for module GeodesicsInHeat.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GeodesicInHeat_RECURSES)
-#error Recursive header files inclusion detected in GeodesicInHeat.h
-#else // defined(GeodesicInHeat_RECURSES)
+#if defined(GeodesicsInHeat_RECURSES)
+#error Recursive header files inclusion detected in GeodesicsInHeat.h
+#else // defined(GeodesicsInHeat_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GeodesicInHeat_RECURSES
+#define GeodesicsInHeat_RECURSES
 
-#if !defined GeodesicInHeat_h
+#if !defined GeodesicsInHeat_h
 /** Prevents repeated inclusion of headers. */
-#define GeodesicInHeat_h
+#define GeodesicsInHeat_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -47,15 +47,19 @@
 
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
-  // template class GeodesicInHeat
+  // template class GeodesicsInHeat
   /**
-   * Description of template class 'GeodesicInHeat' <p>
+   * Description of template class 'GeodesicsInHeat' <p>
    * \brief Aim:
+   * This class implements @cite Crane13 on polygonal surfaces  (using @ref modulePolygonalCalculus).
+   *
+   * see @ref moduleGeodesicsInHeat for details and examples.
+   *
+   * @tparam a model of PolygonalCalculus.
    */
   template <typename TPolygonalCalculus>
-  class GeodesicInHeat
+  class GeodesicsInHeat
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -70,11 +74,11 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    GeodesicInHeat() = delete;
+    GeodesicsInHeat() = delete;
     
     /// Constructor from an existing polygonal calculus. T
     /// @param calculus a instance of PolygonalCalculus
-    GeodesicInHeat(ConstAlias<PolygonalCalculus> calculus): myCalculus(&calculus)
+    GeodesicsInHeat(ConstAlias<PolygonalCalculus> calculus): myCalculus(&calculus)
     {
       myIsInit=false;
     }
@@ -82,33 +86,33 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GeodesicInHeat() = default;
+    ~GeodesicsInHeat() = default;
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    GeodesicInHeat ( const GeodesicInHeat & other ) = delete;
+    GeodesicsInHeat ( const GeodesicsInHeat & other ) = delete;
 
     /**
      * Move constructor.
      * @param other the object to move.
      */
-    GeodesicInHeat ( GeodesicInHeat && other ) = delete;
+    GeodesicsInHeat ( GeodesicsInHeat && other ) = delete;
 
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    GeodesicInHeat & operator= ( const GeodesicInHeat & other ) = delete;
+    GeodesicsInHeat & operator= ( const GeodesicsInHeat & other ) = delete;
 
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
-    GeodesicInHeat & operator= ( GeodesicInHeat && other ) = delete;
+    GeodesicsInHeat & operator= ( GeodesicsInHeat && other ) = delete;
 
 
     
@@ -214,13 +218,13 @@ namespace DGtal
     
     bool myIsInit;
     
-  }; // end of class GeodesicInHeat
+  }; // end of class GeodesicsInHeat
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GeodesicInHeat_h
+#endif // !defined GeodesicsInHeat_h
 
-#undef GeodesicInHeat_RECURSES
-#endif // else defined(GeodesicInHeat_RECURSES)
+#undef GeodesicsInHeat_RECURSES
+#endif // else defined(GeodesicsInHeat_RECURSES)

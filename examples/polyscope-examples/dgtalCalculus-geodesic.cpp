@@ -8,7 +8,7 @@
 #include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 
 #include <DGtal/dec/PolygonalCalculus.h>
-#include <DGtal/dec/GeodesicInHeat.h>
+#include <DGtal/dec/GeodesicsInHeat.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -35,13 +35,13 @@ polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 float dt = 2.0;
 
-GeodesicInHeat<PolygonalCalculus<SurfMesh>> *heat;
+GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heat;
 PolygonalCalculus<SurfMesh> *calculus;
 
 void precompute()
 {
   calculus = new PolygonalCalculus<SurfMesh>(surfmesh);
-  heat = new GeodesicInHeat<PolygonalCalculus<SurfMesh>>(calculus);
+  heat = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculus);
   
   trace.beginBlock("Init solvers");
   heat->init(dt);
@@ -53,14 +53,14 @@ void addsource()
 {
   heat->addSource( 52889 );
   heat->addSource( rand() % surfmesh.nbVertices());
-  GeodesicInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heat->source();
+  GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
 
 }
 
 void computeGeodisc()
 {
-  GeodesicInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
+  GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
 }
 
