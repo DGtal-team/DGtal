@@ -51,7 +51,7 @@ namespace DGtal
 // template class GeodesicsInHeat
 /**
  * Description of template class 'GeodesicsInHeat' <p>
- * \brief This class implements @cite Crane13 on polygonal surfaces  (using @ref modulePolygonalCalculus).
+ * \brief This class implements @cite Crane2013 on polygonal surfaces  (using @ref modulePolygonalCalculus).
  *
  * see @ref moduleGeodesicsInHeat for details and examples.
  *
