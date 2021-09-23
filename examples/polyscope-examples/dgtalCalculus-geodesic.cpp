@@ -96,16 +96,12 @@ int main()
   std::vector<std::vector<unsigned long>> faces;
   std::vector<RealPoint> positions;
   
-  //std::vector<std::vector<unsigned long>> faces;
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-/*  positions.resize(primalSurface->nbVertices());
-  for(auto i=0; i < primalSurface->nbVertices(); ++i)
-    positions[i] = pos[i];
- */
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
