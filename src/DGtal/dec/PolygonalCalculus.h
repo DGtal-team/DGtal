@@ -44,14 +44,12 @@ namespace DGtal
 // template class PolygonalCalculus
 /**
  * Description of template class 'PolygonalCalculus' <p>
- * \brief Aim: Implements differential operators on polygonal surfaces.
+ * \brief Implements differential operators on polygonal surfaces from
+ * @cite degoes2020discrete
  *
- *
+ * See @ref modulePolygonalCalculus for details.
  *  E.g.
  *
- *  PolygonalCalculus polydec(mesh);
- *  auto Grad = polydec.gradient();
- *  auto Grad_f  = polydec.gradient(face)
  */
 template <typename TSurfaceMesh>
 class PolygonalCalculus

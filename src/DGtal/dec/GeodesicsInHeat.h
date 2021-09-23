@@ -47,20 +47,19 @@
 
 namespace DGtal
 {
-  /////////////////////////////////////////////////////////////////////////////
-  // template class GeodesicsInHeat
-  /**
-   * Description of template class 'GeodesicsInHeat' <p>
-   * \brief Aim:
-   * This class implements @cite Crane13 on polygonal surfaces  (using @ref modulePolygonalCalculus).
-   *
-   * see @ref moduleGeodesicsInHeat for details and examples.
-   *
-   * @tparam a model of PolygonalCalculus.
-   */
-  template <typename TPolygonalCalculus>
-  class GeodesicsInHeat
-  {
+/////////////////////////////////////////////////////////////////////////////
+// template class GeodesicsInHeat
+/**
+ * Description of template class 'GeodesicsInHeat' <p>
+ * \brief This class implements @cite Crane13 on polygonal surfaces  (using @ref modulePolygonalCalculus).
+ *
+ * see @ref moduleGeodesicsInHeat for details and examples.
+ *
+ * @tparam a model of PolygonalCalculus.
+ */
+template <typename TPolygonalCalculus>
+class GeodesicsInHeat
+{
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -137,16 +136,19 @@ namespace DGtal
       mySource    = Vector::Zero(myCalculus->nbVertices());
     }
     
-    /// Adds a source point at a vertex @e aV
-    /// @param aV the Vertex
-    /// @param dirac the value (def=1.0).
+    /** Adds a source point at a vertex @e aV
+    * @param aV the Vertex
+    * @param dirac the value (def=1.0).
+     **/
     void addSource(const Vertex aV, double dirac=1.0)
     {
       ASSERT_MSG(aV < myCalculus->nbVertices(), "Vertex not in the surface mesh vertex range");
       mySource( aV ) = dirac;
     }
     
-    /// @return the source point vector.
+    /**
+     * @returns the source point vector.
+     **/
     Vector source() const
     {
       FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
