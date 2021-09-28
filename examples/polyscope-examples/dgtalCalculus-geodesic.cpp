@@ -32,19 +32,34 @@ typedef SurfMesh::Vertex                  Vertex;
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
+polyscope::SurfaceMesh *psMeshReg;
 SurfMesh surfmesh;
+SurfMesh surfmeshReg;
 float dt = 2.0;
 
 GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heat;
 PolygonalCalculus<SurfMesh> *calculus;
+
+GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heatReg;
+PolygonalCalculus<SurfMesh> *calculusReg;
+
+bool skipReg = true;
 
 void precompute()
 {
   calculus = new PolygonalCalculus<SurfMesh>(surfmesh);
   heat = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculus);
   
+  if (!skipReg)
+  {
+    calculusReg = new PolygonalCalculus<SurfMesh>(surfmeshReg);
+    heatReg = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculusReg);
+  }
+  
   trace.beginBlock("Init solvers");
   heat->init(dt);
+  if (!skipReg)
+    heatReg->init(dt);
   trace.endBlock();
 }
 
@@ -56,17 +71,33 @@ void addsource()
   GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
 
+  if (!skipReg)
+  {
+    heatReg->addSource( 52889 );
+    heatReg->addSource( rand() % surfmesh.nbVertices());
+    GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heatReg->source();
+    psMeshReg->addVertexScalarQuantity("source", source);
+  }
 }
 
 void computeGeodisc()
 {
   GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
+
+  if (!skipReg)
+  {
+    GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heatReg->compute();
+    psMeshReg->addVertexDistanceQuantity("geodesic", dist);
+  }
 }
+
+
 
 void myCallback()
 {
   ImGui::SliderFloat("dt", &dt, 0.,4.);
+  ImGui::Checkbox("Skip regularization", &skipReg);
   if(ImGui::Button("Precomputation (required if you change the dt)"))
     precompute();
   
@@ -106,13 +137,27 @@ int main()
                       positions.end(),
                       faces.begin(),
                       faces.end());
-
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
+  
+  
+  //Construction of a regularized surface
+  DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
+  regul.init();
+  regul.attachConvolvedTrivialNormalVectors(params);
+  auto finalenergy = regul.regularize();
+  auto regularizedPosition = regul.getRegularizedPositions();
+
+  surfmeshReg = SurfMesh(regularizedPosition.begin(),
+                      regularizedPosition.end(),
+                      faces.begin(),
+                      faces.end());
+  
   
   // Initialize polyscope
   polyscope::init();
 
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
+  psMeshReg = polyscope::registerSurfaceMesh("regularized surface", regularizedPosition, faces);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;

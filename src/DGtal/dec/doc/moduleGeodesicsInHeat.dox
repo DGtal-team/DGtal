@@ -27,26 +27,74 @@ namespace DGtal {
   Part of package \ref packageDEC.
 
 In this documentation page, we focus on an implementation of the
-"Geodesics In Heat method" (\cite Crane2013) using operators from \ref
-modulePolygonalCalculus.
+"Geodesics In Heat method" (\cite Crane2013). The main objective is to
+highlight the use of  differential operators from \ref
+modulePolygonalCalculus to solve elementary PDEs.
 
 Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
 
 
-\section sectGeodesicsIntro Introduction
+\section sectGeodesicsIntro The main algorithm
+
+The algorithm consists in three steps (see @cite Crane2013 for details): 
+- Given  heat sources @f$ g @f$ at a mesh vertices, we first solve a heat
+diffusion problem: Integrate the heat flow @f$ u @f$ such that @f$\Delta
+u = \dot{u}@f$ using a single step backward Euler step: @f$(Id -
+t\Delta) u_t = g@f$
+- Evaluate the normalized field @f$ X = - \nabla u_t / \| \nabla u_t\|@f$
+- Solve the Poisson problem @f$\Delta \phi = \nabla \cdot X@f$ 
+
+The computation involves discrete differential operator definitions
+(Laplace-Beltrami, gradient, divergence...) as well as linear solvers
+on sparse matrices. 
 
 
 
+\section sectGeodesics2 The interface
 
-\section sectGeodesics2 Interface
+The class GeodesicsInHeat contains the implementation of the Geodesics
+in Heat method. It relies on the PolygonalCalculus class for the
+differential operators (@ref modulePolygonalCalculus).  
 
+First, we need to instantiate the GeodesicsInHeat class from an
+instance of  PolygonalCalculus:
 
+@code
+typedef PolygonalCalculus<SurfaceMesh<RealPoint,RealPoint>> Calculus;
+Calculus aCalculus( mesh );
+GeodesicsInHeat<Calculus> heat( aCalculus );
+@endcode
 
-Input  | Single source | Geodesics in heat | geodesic in heat with multiple sources
---|--|--|--
-@image html images/poly/bunny-128.png "" | @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
+Then, we can prefactorized the solvers for a given a timestep @f$
+dt@f$:
 
+@code
+heat.init(dt);
+@endcode
 
+Once prefactorized, we can add as many sources as we want using the
+`heat.addSource( aVertexIndex )` method. 
+
+@note the vertex index corresponds to  the indexing system of the
+underlying SurfaceMesh instance.
+
+The resulting geodesics diffusion is obtained by:
+@code
+auto u = heat.compute();
+@endcode
+
+@note Once the `init()` has been called, you can iterate over
+`addSource()` and `compute()` for fast computations. If you want to
+change the timestep, you would need to call again the `init()` method.
+
+\section sectGeodesics3 Example
+
+From \ref dgtalCalculus-geodesic.cpp code: 
+
+Input   | Geodesics in heat | geodesic in heat with multiple sources
+--|--|--
+ @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
+ @image html images/poly/bunnyReg-128-source.png "" | @image html images/poly/bunnyReg-128-geodesic.png "" | @image html images/poly/bunnyReg-128-geodesic-multi.png ""
 
 */
 
