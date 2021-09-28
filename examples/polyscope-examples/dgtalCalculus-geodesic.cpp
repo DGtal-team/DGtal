@@ -55,7 +55,6 @@ void precompute()
     calculusReg = new PolygonalCalculus<SurfMesh>(surfmeshReg);
     heatReg = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculusReg);
   }
-  
   trace.beginBlock("Init solvers");
   heat->init(dt);
   if (!skipReg)
@@ -92,8 +91,6 @@ void computeGeodisc()
   }
 }
 
-
-
 void myCallback()
 {
   ImGui::SliderFloat("dt", &dt, 0.,4.);
@@ -111,10 +108,7 @@ void myCallback()
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-
-
   params("surfaceComponents", "All");
-
   std::string filename = examplesPath + std::string("/samples/bunny-128.vol");
   
   auto binary_image = SH3::makeBinaryImage(filename, params );
@@ -139,7 +133,6 @@ int main()
                       faces.end());
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
   
-  
   //Construction of a regularized surface
   DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
   regul.init();
@@ -151,7 +144,6 @@ int main()
                       regularizedPosition.end(),
                       faces.begin(),
                       faces.end());
-  
   
   // Initialize polyscope
   polyscope::init();
