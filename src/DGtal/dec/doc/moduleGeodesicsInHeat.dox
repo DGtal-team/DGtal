@@ -87,9 +87,10 @@ auto u = heat.compute();
 `addSource()` and `compute()` for fast computations. If you want to
 change the timestep, you would need to call again the `init()` method.
 
-\section sectGeodesics3 Example
+\section sectGeodesics3 Examples
 
-From \ref dgtalCalculus-geodesic.cpp code: 
+From \ref dgtalCalculus-geodesic.cpp code on a digital surface and a
+regularization of the digital surface (see @ref moduleRegularization). 
 
 Input   | Geodesics in heat | geodesic in heat with multiple sources
 --|--|--

@@ -122,7 +122,7 @@ Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.X(f)`  | \f$ n_f\times 3\f$ | positions of the face vertices (n_f points in @f$ \mathbb{R}^3 @f$)
 `calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face (n_f vectors in @f$ \mathbb{R}^3 @f$)
-`calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that average some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
+`calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that averages some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
 `calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-points of the face (n_f points in @f$ \mathbb{R}^3 @f$)
 `calculus.vectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
 `calculus.faceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
@@ -203,7 +203,7 @@ Surface  | Phi | Gradient | Gradient+co-gradient
 
 To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can combine the local operators into a global one, gathering the contributions of each face. 
 
-For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can latter be used for diffusion.
+For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can later be used for diffusion.
 
 
 \section secLap Example: Solving a Laplace problem
@@ -238,7 +238,7 @@ Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
 
 \section sectMisc Miscellaneous
 
-\subsection sectPolygonalCalculusHP Cache mechanisms and high performance computing
+\subsection sectPolygonalCalculusHP Cache mechanisms and high-performance computing
 
 For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
 @code
@@ -253,14 +253,14 @@ which could be time consuming as the internal operators may be computed several 
 
 For high performance computations, we provide a generic cache mechanism to explicitly store all per face operators of a surface mesh (stored in a random access container).
 
-A Typical usages is 
+A typical usage is 
 @code
 auto cacheU        = getOperatorCacheMatrix( [&](Face f){ return(calculus.U(f);} );
 auto cachefaceArea = getOperatorCacheMatrix( [&](Face f){ return(calculus.faceArea(f);} );
 auto cacheP        = getOperatorCacheMatrix( [&](Face f){ return(calculus.P(f);} );
 @endcode
 
-Then, cached operators can be access and combined:
+Then, cached operators can be accessed and combined:
 @code
 auto Mf =   cachefaceArea[f] * cacheU[f].transpose()*cacheU[f] + lambda * cacheP[f].transpose() * cacheP[f];
 @endcode 
