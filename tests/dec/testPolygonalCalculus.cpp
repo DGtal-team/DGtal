@@ -175,7 +175,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus<Mesh>::Face f = 0;
     auto curl = boxCalculus.curl(f);
     //Not a great test BTW
-    REQUIRE(curl.norm() == 1.0);
+    REQUIRE(curl.norm() == 2.0);
   }
   
   SECTION("Local Laplace-Beltrami")
