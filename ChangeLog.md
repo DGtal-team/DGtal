@@ -5,26 +5,16 @@
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
 
-## Bug fixes
-- *General*
-  - A Dockerfile is added to create a Docker image to have a base to start development
-    using the DGtal library.(J. Miguel Salazar
-    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
-  - Continuous integration does not use Travis anymore but Github
-    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
-
 - *DEC*
   - New discrete differential operators on polygonal meshes have been
     added. They can be used to process generic polygonal meshes (with
     non-planar, non-convex faces) or digital surfaces. (David
     Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
-
-- *Examples*
-  - We can now have examples using [polyscope](https://polyscope.run)
-    as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
-    Coeurjolly,
-    [#1603](https://github.com/DGtal-team/DGtal/pull/1603))
-
+  - New class to compute geodesics on polygonal surfaces using the
+    Geodesics in Heat approach and the new differential operators on
+    polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
+    Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
+  
 ## Changes
 
 - *IO*
@@ -38,17 +28,22 @@
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
-
 - *Build*
+  - Continuous integration does not use Travis anymore but Github
+    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
 
+
 ## Bug fixes
 
 - *General*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar
+    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
   - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
     (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578))
   - Various warnings / deprecated functions (David Coeurjolly,
@@ -62,7 +57,11 @@
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
 
-
+- *Examples*
+  - We can now have examples using [polyscope](https://polyscope.run)
+    as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
+    Coeurjolly,
+    [#1603](https://github.com/DGtal-team/DGtal/pull/1603))
 
 # DGtal 1.2
 
