@@ -173,8 +173,6 @@ TEST_CASE( "Testing PolygonalCalculus" )
   SECTION("Div / Curl")
   {
     PolygonalCalculus<Mesh>::Face f = 0;
-    auto nf =  boxCalculus.faceDegree(f);
-    auto div = boxCalculus.divergence(f);
     auto curl = boxCalculus.curl(f);
     //Not a great test BTW
     REQUIRE(curl.norm() == 1.0);
