@@ -124,7 +124,11 @@ class GeodesicsInHeat
     {
       myIsInit=true;
       
-      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami();
+      //As the LB is PSD, the identity matrix shouldn't be necessary. However, some solvers
+      //may have issues with positive semi-definite matrix.
+      SparseMatrix I(myCalculus->nbVertices(),myCalculus->nbVertices());
+      I.setIdentity();
+      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami() + 1e-6 * I;
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
       SparseMatrix heatOpe   = mass + dt*laplacian;
       
@@ -138,12 +142,12 @@ class GeodesicsInHeat
     
     /** Adds a source point at a vertex @e aV
     * @param aV the Vertex
-    * @param dirac the value (def=1.0).
      **/
-    void addSource(const Vertex aV, double dirac=1.0)
+    void addSource(const Vertex aV)
     {
       ASSERT_MSG(aV < myCalculus->nbVertices(), "Vertex not in the surface mesh vertex range");
-      mySource( aV ) = dirac;
+      myLastSourceIndex = aV;
+      mySource( aV ) = 1.0;
     }
     
     /**
@@ -181,13 +185,13 @@ class GeodesicsInHeat
           faceHeat(cpt) = heatDiffusion( v );
           ++cpt;
         }
-        // ∇ heat / ∣∣∇ heat∣∣
-        Vector grad = myCalculus->gradient(f) * faceHeat;
+        // ∇heat / ∣∣∇heat∣∣
+        Vector grad = -myCalculus->gradient(f) * faceHeat;
         grad.normalize();
       
         // div
         DenseMatrix oneForm = myCalculus->V(f)*grad;
-        Vector divergenceFace = myCalculus->D(f).transpose()*myCalculus->M(f)*oneForm;
+        Vector divergenceFace = myCalculus->divergence(f) * oneForm;
         cpt=0;
         for(auto v: vertices)
         {
@@ -197,8 +201,13 @@ class GeodesicsInHeat
       }
       
       // Last Poisson solve
-      Vector distVec = Vector::Ones(myCalculus->nbVertices()) + myPoissonSolver.solve(divergence);
-      return distVec;
+      Vector distVec = myPoissonSolver.solve(divergence);
+
+      //Source val
+      auto sourceval = distVec(myLastSourceIndex);
+      
+      //shifting the distances to get 0 at sources
+      return distVec - sourceval*Vector::Ones(myCalculus->nbVertices());
     }
     
     
@@ -212,12 +221,22 @@ class GeodesicsInHeat
 
   private:
     
+    ///The underlying PolygonalCalculus instance
     const PolygonalCalculus *myCalculus;
 
+    ///Poisson solver
     Solver myPoissonSolver;
+
+    ///Heat solver
     Solver myHeatSolver;
+
+    ///Source vector
     Vector mySource;
-    
+
+    ///Vertex index to the last source point (to shift the distances)
+    Vertex myLastSourceIndex;
+  
+    ///Validitate flag
     bool myIsInit;
     
   }; // end of class GeodesicsInHeat

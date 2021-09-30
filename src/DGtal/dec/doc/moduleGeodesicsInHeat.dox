@@ -42,12 +42,13 @@ diffusion problem: Integrate the heat flow @f$ u @f$ such that @f$\Delta
 u = \dot{u}@f$ using a single step backward Euler step: @f$(Id -
 t\Delta) u_t = g@f$
 - Evaluate the normalized field @f$ X = - \nabla u_t / \| \nabla u_t\|@f$
-- Solve the Poisson problem @f$\Delta \phi = \nabla \cdot X@f$ 
+- Solve the Poisson problem from the divergence of the normalized
+gradient field @f$\Delta \phi = \nabla \cdot X@f$ 
 
 The computation involves discrete differential operator definitions
 (Laplace-Beltrami, gradient, divergence...) as well as linear solvers
-on sparse matrices. 
-
+on sparse matrices. We do not go into the details of the
+discretization, please have a look to the paper if intersted. 
 
 
 \section sectGeodesics2 The interface
@@ -72,8 +73,12 @@ dt@f$:
 heat.init(dt);
 @endcode
 
-Once prefactorized, we can add as many sources as we want using the
-`heat.addSource( aVertexIndex )` method. 
+Once prefactorized, we can add as many sources as we want using the method:
+@code
+heat.addSource( aVertexIndex )
+heat.addSource( anotherVertexIndex )
+...
+@endcode
 
 @note the vertex index corresponds to  the indexing system of the
 underlying SurfaceMesh instance.
@@ -92,7 +97,7 @@ change the timestep, you would need to call again the `init()` method.
 From \ref dgtalCalculus-geodesic.cpp code on a digital surface and a
 regularization of the digital surface (see @ref moduleRegularization). 
 
-Input   | Geodesics in heat | geodesic in heat with multiple sources
+Input   | Geodesics in heat | Geodesics with multiple (random) sources
 --|--|--
  @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
  @image html images/poly/bunnyReg-128-source.png "" | @image html images/poly/bunnyReg-128-geodesic.png "" | @image html images/poly/bunnyReg-128-geodesic-multi.png ""

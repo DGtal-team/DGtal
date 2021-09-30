@@ -299,6 +299,24 @@ public:
     return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
   }
   
+  /// Divergence operator of a one-form.
+  /// @param f the face
+  /// @param lambda the regularization parameter
+  /// @return a degree x degree matrix
+  DenseMatrix divergence(const Face f, const double lambda=1.0) const
+  {
+    return D(f).transpose() * M(f);
+  }
+  
+  /// Curl operator of a one-form (identity matrix).
+  /// @param f the face
+  /// @return a degree x degree matrix
+  DenseMatrix curl(const Face f) const
+  {
+    return DenseMatrix::Identity(myFaceDegree[f],myFaceDegree[f]);
+  }
+  
+  
   /// (weak) Laplace-Beltrami operator for the face.
   /// @param f the face
   /// @param lambda the regularization parameter

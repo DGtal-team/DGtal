@@ -62,30 +62,32 @@ void precompute()
   trace.endBlock();
 }
 
-
 void addsource()
 {
-  heat->addSource( 52889 );
-  heat->addSource( rand() % surfmesh.nbVertices());
+  auto pos =rand() % surfmesh.nbVertices();
+  heat->addSource( pos );
   GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
 
   if (!skipReg)
   {
-    heatReg->addSource( 52889 );
-    heatReg->addSource( rand() % surfmesh.nbVertices());
+    heatReg->addSource( pos );
     GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heatReg->source();
     psMeshReg->addVertexScalarQuantity("source", source);
   }
 }
 
-void computeGeodisc()
+void computeGeodesics()
 {
+
+  heat->addSource( 52889 ); //Forcing one seed (for screenshots)
   GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
+  psMesh->addVertexScalarQuantity("geodesic2", dist);
 
   if (!skipReg)
   {
+    heatReg->addSource( 52889 ); //Forcing one seed (for screenshots)
     GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
@@ -102,7 +104,7 @@ void myCallback()
     addsource();
   
   if(ImGui::Button("Compute geodesic"))
-    computeGeodisc();
+    computeGeodesics();
 }
 
 int main()
