@@ -139,7 +139,7 @@ int main()
   DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
   regul.init();
   regul.attachConvolvedTrivialNormalVectors(params);
-  auto finalenergy = regul.regularize();
+  regul.regularize();
   auto regularizedPosition = regul.getRegularizedPositions();
 
   surfmeshReg = SurfMesh(regularizedPosition.begin(),
