@@ -13,6 +13,10 @@
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
 
+- *Geometry package*
+  - Bug fix in ExamplePlaneProbingSurfaceLocalEstimato.
+    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+
 ## Changes
 
 - *IO*
