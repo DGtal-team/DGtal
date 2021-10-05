@@ -241,7 +241,7 @@ in logarithmic time for `std::set`).
 @note Beside the extra computational cost due to the processing of
 co-cyclic sites, the VoronoiMapComplete class as a bigger constant
 factor due to the construction of the container. Indeed, as
-illustrated in @ref testVoronoiMapComplete, creating a VoronoiMap on a
+illustrated in testVoronoiMapComplete, creating a VoronoiMap on a
 256x256 image without any site 4ms, whereas the same size
 VoronoiMapComplete (still no sites) takes 118ms (on a MacPro). To be
 complete, when adding 5000 random sites, VoronoiMap takes 6.2ms in
