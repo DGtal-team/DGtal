@@ -219,8 +219,8 @@ TEST_CASE( "Testing Timings" )
 
   while ( point_setup_index < 5000 )
   {
-    x = rand() % 128;
-    y = rand() % 128;
+    x = rand() % 256;
+    y = rand() % 256;
     set.insert( Point( x, y ) );
     point_setup_index++;
   }
