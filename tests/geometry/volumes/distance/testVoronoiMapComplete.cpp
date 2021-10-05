@@ -169,12 +169,13 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
   }
 }
 
-TEST_CASE( "Testing Timings" )
+
+TEST_CASE( "No sites" )
 {
   /**
    * Random set generation
    */
-  Point lowerBound(0, 0), upperBound(128, 128);
+  Point lowerBound(0, 0), upperBound(255, 255);
   Domain domain(lowerBound, upperBound);
   
   DigitalSet set(domain);
@@ -182,16 +183,35 @@ TEST_CASE( "Testing Timings" )
   int x;
   int y;
   
-  while (point_setup_index < 10000)
+  trace.beginBlock("Complete Map (no site)");
+  CompleteVMap vmap(set.domain(), set, Z2i::l2Metric);
+  trace.endBlock();
+  trace.beginBlock("Partial Map (no site)");
+  VMap partialmap(set.domain(), set, Z2i::l2Metric);
+  trace.endBlock();
+}
+
+TEST_CASE( "Testing Timings" )
+{
+  /**
+   * Random set generation
+   */
+  Point lowerBound(0, 0), upperBound(255, 255);
+  Domain domain(lowerBound, upperBound);
+  
+  DigitalSet set(domain);
+  int point_setup_index = 0;
+  int x;
+  int y;
+  
+  while (point_setup_index < 5000)
   {
     x = rand()%128;
     y = rand()%128;
-    if (!set(Point(x, y))) {
-      set.insert(Point(x, y));
-      point_setup_index++;
-    }
+    set.insert(Point(x, y));
+    point_setup_index++;
   }
-  
+  std::cout<<std::endl;
   trace.beginBlock("Complete Map");
   CompleteVMap vmap(set.domain(), set, Z2i::l2Metric);
   trace.endBlock();
@@ -204,5 +224,4 @@ TEST_CASE( "Testing Timings" )
   trace.beginBlock("Partial Map");
   VMap partialmap(set.domain(), set, Z2i::l2Metric);
   trace.endBlock();
-  
 }

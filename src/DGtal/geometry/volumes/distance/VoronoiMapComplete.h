@@ -127,7 +127,7 @@ namespace DGtal
              typename TSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
-                                       std::unordered_set<typename TSpace::Vector> >
+                                       std::set<typename TSpace::Vector> >
              >
   class VoronoiMapComplete
   {
@@ -147,7 +147,7 @@ namespace DGtal
                           typename TImageContainer::Domain::Space >::value ));
     
     //ImageContainer value type must be  std::vector<TSpace::Vector>
-    BOOST_STATIC_ASSERT ((boost::is_same< std::unordered_set<typename TSpace::Vector>,
+    BOOST_STATIC_ASSERT ((boost::is_same< std::set<typename TSpace::Vector>,
                           typename TImageContainer::Value >::value ));
 
     //ImageContainer domain type must be  HyperRectangular
