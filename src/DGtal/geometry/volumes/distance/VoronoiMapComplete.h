@@ -82,8 +82,8 @@ namespace DGtal
    * that point (contrary to the class VoronoiMap that will only keep one of them).
    * This implies a computational overhead:
    *    - if @f$ f @f$ is the max number of co-cyclic points per grid point, we
-   * have an extra @f$ O(f) @f$ factor to the computational cost (cf below), plus the cost
-   * of insertion/removal in the container (amortized 0(1) with std::unordered_set).
+   * have an extra @f$ O(f log f) @f$ factor to the computational cost (cf below), plus the cost
+   * of insertion/removal in the container (O(log f) with std::set).
    *    - as we have to use a specific container to store the per pixel equi-distant points
    * we obviously have a memory overhead when there are equi-distant points, but a slight computational
    * one too to access sites from the container (std::set<Point> per grid point).
