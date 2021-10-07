@@ -146,14 +146,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   nameMTL << noExt << ".mtl";
   
   outOBJ.open(nameOBJ.str().c_str());
-  outOBJ << "#  OBJ format"<< std::endl;
-  outOBJ << "# generated from Board3D from the DGtal library"<< std::endl;
-  outOBJ << "mtllib " <<  nameMTL.str() << std::endl;
-  outOBJ << std::endl;
+  outOBJ << "#  OBJ format"<< "\n";
+  outOBJ << "# generated from Board3D from the DGtal library"<< "\n";
+  outOBJ << "mtllib " <<  nameMTL.str() << "\n";
+  outOBJ << "\n";
   
   outMTL.open(nameMTL.str().c_str());
-  outMTL << "#  MTL format"<< std::endl;
-  outMTL << "# generated from Board3D from the DGtal library"<< std::endl;
+  outMTL << "#  MTL format"<< "\n";
+  outMTL << "# generated from Board3D from the DGtal library"<< "\n";
   
   
   //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -191,7 +191,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
       if ((tmpwidth != 0.0) && (scale  > 1.0/tmpwidth))
         scale = 1.0/tmpwidth;
     }
-    outOBJ << "# Normalization was used. Scale= "<< scale << " and Shift= "<<shift<< std::endl;
+    outOBJ << "# Normalization was used. Scale= "<< scale << " and Shift= "<<shift<< "\n";
   }
   
   // Draw the shapes -----------------------------------------------------------------------
@@ -240,20 +240,20 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
               double theta0 =  i * thetaStep;
               double theta1 =  (i+1) * thetaStep;
               tmpStream << "v " << xCenter+cos(phi0)*cos(theta0)*radius
-              << " "  << yCenter+ cos(phi0)*sin(theta0)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;
+              << " "  << yCenter+ cos(phi0)*sin(theta0)*radius << " " << zCenter+ sin(phi0)*radius << "\n";
               tmpStream << "v " << xCenter+cos(phi0)*cos(theta1)*radius
-              << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;
+              << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << "\n";
               tmpStream << "v " << xCenter+cos(phi1)*cos(theta0)*radius << " "
-              << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;
-              tmpStream << "f " << "-1" << " " << "-2" << " " << "-3"<< std::endl;
+              << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << "\n";
+              tmpStream << "f " << "-1" << " " << "-2" << " " << "-3"<< "\n";
               
               tmpStream << "v " << xCenter+cos(phi0)*cos(theta1)*radius
-              << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << std::endl;
+              << " " << yCenter+ cos(phi0)*sin(theta1)*radius << " " << zCenter+ sin(phi0)*radius << "\n";
               tmpStream << "v " << xCenter+cos(phi1)*cos(theta0)*radius << " "
-              << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;
+              << yCenter+ cos(phi1)*sin(theta0)*radius << " " <<zCenter+ sin(phi1)*radius << "\n";
               tmpStream << "v " << xCenter+cos(phi1)*cos(theta1)*radius << " "
-              << yCenter+ cos(phi1)*sin(theta1)*radius << " " <<zCenter+ sin(phi1)*radius << std::endl;
-              tmpStream << "f " << "-3" << " " << "-2" << " " << "-1"<< std::endl;
+              << yCenter+ cos(phi1)*sin(theta1)*radius << " " <<zCenter+ sin(phi1)*radius << "\n";
+              tmpStream << "f " << "-3" << " " << "-2" << " " << "-1"<< "\n";
             }
           }
         }
@@ -272,8 +272,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         unsigned int matid = getMaterialIndex(itBegin->color);
         std::stringstream matName;
         matName <<  "Mat_" << matid;
-        outOBJ << "o  " << name.str() << std::endl;
-        outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << "o  " << name.str() << "\n";
+        outOBJ << "usemtl " << matName.str() << "\n";
         outOBJ << tmpStream.str();
       }
       k++;
@@ -330,25 +330,25 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           
           apoint1 = ((s_it->point1) - shift)*scale;
           apoint2 = ((s_it->point2) - shift)*scale;
-          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] -width << std::endl;
-          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] +width << std::endl;
-          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] -width << std::endl;
-          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] +width<< std::endl;
+          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] -width << "\n";
+          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] +width << "\n";
+          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] -width << "\n";
+          tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] +width<< "\n";
 
-          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] -width << std::endl;
-          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] +width << std::endl;
-          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] -width << std::endl;
-          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] +width<< std::endl;
+          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] -width << "\n";
+          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] +width << "\n";
+          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] -width << "\n";
+          tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] +width<< "\n";
          
-          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "1" << std::endl;//up
-          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "-1" << std::endl;//back
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "1" << "\n";//up
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "-1" << "\n";//back
    
-          tmpStream  << "f " << "-7//" << " " << "-8//" << " " << "-4//"<< " " << "-3//" << std::endl;//left
-          tmpStream << "f " << "-5//" << " " << "-7//" << " " << "-3//"<< " " << "-1//"<< std::endl;//front
-          tmpStream << "f " << "-3//-2" << " " << "-4//-2" << " " << "-2//-2"<< " " << "-1//-2"<< std::endl;//up
-          tmpStream << "f " << "-8//-1" << " " << "-7//-1" << " " << "-5//-1"<< " " << "-6//-1"<< std::endl;//back
-          tmpStream << "f " << "-2//" << " " << "-4//" << " " << "-8//"<< " " << "-6//"<< std::endl;//down
-          tmpStream << "f " << "-1//" << " " << "-2//" << " " << "-6//"<< " " << "-5//"<< std::endl;//right
+          tmpStream  << "f " << "-7//" << " " << "-8//" << " " << "-4//"<< " " << "-3//" << "\n";//left
+          tmpStream << "f " << "-5//" << " " << "-7//" << " " << "-3//"<< " " << "-1//"<< "\n";//front
+          tmpStream << "f " << "-3//-2" << " " << "-4//-2" << " " << "-2//-2"<< " " << "-1//-2"<< "\n";//up
+          tmpStream << "f " << "-8//-1" << " " << "-7//-1" << " " << "-5//-1"<< " " << "-6//-1"<< "\n";//back
+          tmpStream << "f " << "-2//" << " " << "-4//" << " " << "-8//"<< " " << "-6//"<< "\n";//down
+          tmpStream << "f " << "-1//" << " " << "-2//" << " " << "-6//"<< " " << "-5//"<< "\n";//right
           
           j++;
         }
@@ -366,8 +366,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         unsigned int matid = getMaterialIndex(itBegin->color);
         std::stringstream matName;
         matName <<  "Mat_" << matid;
-        outOBJ << "o  " << name.str() << std::endl;
-        outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << "o  " << name.str() << "\n";
+        outOBJ << "usemtl " << matName.str() << "\n";
         outOBJ << tmpStream.str();
       }
       
@@ -389,7 +389,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         std::ostringstream tmpStream;
 
         name << "myCubeSetList_" << it->first ;
-        outOBJ << "o  " << name.str() << std::endl;
+        outOBJ << "o  " << name.str() << "\n";
       
       
       //For each list, we force the cube color to be set in the OBJ file
@@ -405,7 +405,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         {
           std::stringstream matName;
           matName <<  "Mat_" << matid;
-          outOBJ << "usemtl " << matName.str() << std::endl;
+          outOBJ << "usemtl " << matName.str() << "\n";
           prevMaterialIndex = matid;
         }
         
@@ -463,21 +463,21 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           y2 = (y2-shift[1])*scale;
           z2 = (z2-shift[2])*scale;
           
-          outOBJ  << "v " << x1   << " " << y1 << " " << z1 << std::endl;
-          outOBJ  << "v " << x1   << " " << y2 << " " << z1 << std::endl;
-          outOBJ  << "v " << x2   << " " << y2 << " " << z1 << std::endl;
-          outOBJ  << "v " << x2   << " " << y1 << " " << z1 << std::endl;
-          outOBJ  << "v " << x1   << " " << y1 << " " << z2 << std::endl;
-          outOBJ  << "v " << x1   << " " << y2 << " " << z2 << std::endl;
-          outOBJ  << "v " << x2   << " " << y2 << " " << z2 << std::endl;
-          outOBJ  << "v " << x2   << " " << y1 << " " << z2 << std::endl;
+          outOBJ  << "v " << x1   << " " << y1 << " " << z1 << "\n";
+          outOBJ  << "v " << x1   << " " << y2 << " " << z1 << "\n";
+          outOBJ  << "v " << x2   << " " << y2 << " " << z1 << "\n";
+          outOBJ  << "v " << x2   << " " << y1 << " " << z1 << "\n";
+          outOBJ  << "v " << x1   << " " << y1 << " " << z2 << "\n";
+          outOBJ  << "v " << x1   << " " << y2 << " " << z2 << "\n";
+          outOBJ  << "v " << x2   << " " << y2 << " " << z2 << "\n";
+          outOBJ  << "v " << x2   << " " << y1 << " " << z2 << "\n";
        
-          outOBJ << "f " << "-8" << " " << "-7" << " " <<"-6" << " " <<"-5" << std::endl;//bottom
-          outOBJ << "f " << "-8" << " " << "-4" << " " <<"-3" << " " <<"-7" << std::endl;//back
-          outOBJ << "f " << "-2" << " " << "-1" << " " <<"-5" << " " <<"-6" << std::endl;//front
-          outOBJ << "f " << "-7" << " " << "-3" << " " <<"-2" << " " <<"-6" << std::endl;//right
-          outOBJ << "f " << "-8" << " " << "-5" << " " <<"-1" << " " <<"-4" << std::endl;//left
-          outOBJ << "f " << "-4" << " " << "-1" << " " <<"-2" << " " <<"-3" << std::endl;//top
+          outOBJ << "f " << "-8" << " " << "-7" << " " <<"-6" << " " <<"-5" << "\n";//bottom
+          outOBJ << "f " << "-8" << " " << "-4" << " " <<"-3" << " " <<"-7" << "\n";//back
+          outOBJ << "f " << "-2" << " " << "-1" << " " <<"-5" << " " <<"-6" << "\n";//front
+          outOBJ << "f " << "-7" << " " << "-3" << " " <<"-2" << " " <<"-6" << "\n";//right
+          outOBJ << "f " << "-8" << " " << "-5" << " " <<"-1" << " " <<"-4" << "\n";//left
+          outOBJ << "f " << "-4" << " " << "-1" << " " <<"-2" << " " <<"-3" << "\n";//top
 
           
        
@@ -509,10 +509,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
          it != Board3D<Space, KSpace>::myQuadsMap.end(); it++)
     {
       
-      outOBJ << "o  myQuadSetList_" << it->first <<std::endl;
+      outOBJ << "o  myQuadSetList_" << it->first <<"\n";
       //For each list, we force the material
       unsigned int matid = getMaterialIndex(previousCol);
-      outOBJ << "usemtl Mat_" << matid << std::endl;
+      outOBJ << "usemtl Mat_" << matid << "\n";
       
       
       //We scan the quads of the list
@@ -524,7 +524,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           previousCol = aQuad->color;
           
           matid = getMaterialIndex(previousCol);
-          outOBJ << "usemtl Mat_" << matid << std::endl;
+          outOBJ << "usemtl Mat_" << matid << "\n";
         }
         
         apoint1 = (aQuad->point1 -shift)*scale;
@@ -532,12 +532,12 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         apoint3 = (aQuad->point3 -shift)*scale;
         apoint4 = (aQuad->point4 -shift)*scale;
         
-        outOBJ << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
-        outOBJ << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
-        outOBJ << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
-        outOBJ << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
-        outOBJ << "vn " << aQuad->nx     << " " << aQuad->ny      << " " << aQuad->nz << std::endl;
-        outOBJ << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
+        outOBJ << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << "\n";
+        outOBJ << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << "\n";
+        outOBJ << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << "\n";
+        outOBJ << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << "\n";
+        outOBJ << "vn " << aQuad->nx     << " " << aQuad->ny      << " " << aQuad->nz << "\n";
+        outOBJ << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< "\n";
       }
       
     }
@@ -582,13 +582,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
           apoint3 = (s_it->point3 - shift)*scale;
           
           
-          tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
-          tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
-          tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
+          tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << "\n";
+          tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << "\n";
+          tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << "\n";
           
-          tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
+          tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << "\n";
           
-          tmpStream << "f " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
+          tmpStream << "f " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< "\n";
         }
       }
       
@@ -604,8 +604,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         unsigned int matid = getMaterialIndex(itBegin->color);
         std::stringstream matName;
         matName <<  "Mat_" << matid;
-        outOBJ << "o  " << name.str() << std::endl;
-        outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << "o  " << name.str() << "\n";
+        outOBJ << "usemtl " << matName.str() << "\n";
         outOBJ << tmpStream.str();
       }
       k++;
@@ -653,14 +653,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         apoint3 = (s_it->point3 -shift)*scale;
         apoint4 = (s_it->point4 -shift)*scale;
         
-        tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
-        tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
-        tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
-        tmpStream << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
+        tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << "\n";
+        tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << "\n";
+        tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << "\n";
+        tmpStream << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << "\n";
         
-        tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
+        tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << "\n";
         
-        tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1" << std::endl;
+        tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1" << "\n";
         
         j++;
         
@@ -674,8 +674,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::myPrismList.begin();
         unsigned int matid = getMaterialIndex(itBegin->color);
         matName <<  "Mat_" << matid;
-        outOBJ << "o  " << name.str() << std::endl;
-        outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << "o  " << name.str() << "\n";
+        outOBJ << "usemtl " << matName.str() << "\n";
         outOBJ << tmpStream.str();
       }
     }
@@ -743,12 +743,12 @@ DGtal::Board3D<Space, KSpace>::getMaterialIndex(const DGtal::Color &aColor)
   myMaterialMap.insert( std::pair<DGtal::Color,unsigned int>(aColor,myMaterialIndex) );
   std::stringstream matName ;
   matName << "Mat_" <<myMaterialIndex;
-  myMTLBuffer << "newmtl " << matName.str()  <<std::endl;
-  myMTLBuffer << "Ka " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << std::endl;
-  myMTLBuffer << "Kd " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << std::endl;
-  myMTLBuffer << "Ks 0 0 0" << std::endl;
-  myMTLBuffer << "d " << aColor.alpha()/255.0 << std::endl;
-  myMTLBuffer << "illum 2" << std::endl << std::endl;
+  myMTLBuffer << "newmtl " << matName.str()  <<"\n";
+  myMTLBuffer << "Ka " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << "\n";
+  myMTLBuffer << "Kd " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << "\n";
+  myMTLBuffer << "Ks 0 0 0" << "\n";
+  myMTLBuffer << "d " << aColor.alpha()/255.0 << "\n";
+  myMTLBuffer << "illum 2" << std::endl << "\n";
   
   myMaterialIndex++;
   return (myMaterialIndex - 1);
