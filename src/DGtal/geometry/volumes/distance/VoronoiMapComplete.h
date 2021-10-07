@@ -22,13 +22,13 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/08/14
+ * @date 2021/09/30
  *
- * Header file for module VoronoiMap.cpp
+ * Header file for module VoronoiMapComplete.cpp
  *
  * This file is part of the DGtal library.
  *
- * @see testVoronoiMap.cpp
+ * @see testVoronoiMapComplete.cpp
  */
 
 #if defined(VoronoiMapComplete_RECURSES)
