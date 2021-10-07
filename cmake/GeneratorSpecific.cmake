@@ -8,6 +8,13 @@
 #/implementation, ...)
 #
 #------------------------------------------------------------------------------
+FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.dox)
+add_custom_target(doxygen SOURCES ${DGTAL_MYHEADERS})
+FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.md)
+add_custom_target(markdown SOURCES ${DGTAL_MYHEADERS})
+FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.cmake)
+add_custom_target(cmake SOURCES ${DGTAL_MYHEADERS})
+
 FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/DGtal//base/*h)
 add_custom_target(_base SOURCES ${DGTAL_MYHEADERS})
 set(DGTAL_MYHEADERS "")
