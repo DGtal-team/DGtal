@@ -15,9 +15,13 @@
 
 - *Geometry package*
   - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
-    - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead to a valid initialization or not. The method `eval` now uses this boolean value and returns the trivial normal vector if it has been set to 'False'.
-    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the delegate, but only checks the relevant parts (which have been pushed in to separate methods).
-  (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+    - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
+      returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead 
+      to a valid initialization or not. The method `eval` now uses this boolean value and returns the 
+      trivial normal vector if it has been set to 'False'.
+    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
+      delegate, but only checks the relevant parts (which have been pushed in to separate methods).
+    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
 
 ## Changes
 
