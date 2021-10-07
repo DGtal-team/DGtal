@@ -30,7 +30,6 @@
  *
  * @see testVoronoiMapComplete.cpp
  */
-
 #if defined(VoronoiMapComplete_RECURSES)
 #error Recursive header files inclusion detected in VoronoiMapComplete.h
 #else // defined(VoronoiMapComplete_RECURSES)
