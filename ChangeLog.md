@@ -63,6 +63,10 @@
     Coeurjolly,
     [#1603](https://github.com/DGtal-team/DGtal/pull/1603))
 
+- *IO*
+  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
+
+
 # DGtal 1.2
 
 ## New Features / Critical Changes
