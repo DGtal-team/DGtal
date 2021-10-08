@@ -15,6 +15,9 @@
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
     [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
 
+- *IO*
+  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
+
 ## Changes
 
 - *IO*
