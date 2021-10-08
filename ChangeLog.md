@@ -22,6 +22,8 @@
     - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
       delegate, but only checks the relevant parts (which have been pushed in to separate methods).
     (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+- *IO*
+  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
 
 ## Changes
 
@@ -58,6 +60,8 @@
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
+  - Fixing bugs in writing Longvol from GenerucWriter and tests.
+    (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
 
 
 
