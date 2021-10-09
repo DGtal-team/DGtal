@@ -48,7 +48,8 @@
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
-
+  - Fix compilation issue in MeshReasder
+    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
 
 
 # DGtal 1.2
