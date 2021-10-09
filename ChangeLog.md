@@ -12,6 +12,11 @@
     [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
+    [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
+
+- *IO*
+  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
 
 ## Changes
 
@@ -48,7 +53,9 @@
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
-  - Fix compilation issue in MeshReasder
+  - Fixing bugs in writing Longvol from GenericWriter and tests.
+    (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
+  - Fix compilation issue in MeshReader compilation. 
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
 
 

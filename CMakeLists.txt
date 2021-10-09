@@ -85,10 +85,9 @@ include(DevelopmentOptions)
 include(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
-# Check Mandatory Dependencies
+# Check dependencies
 # -----------------------------------------------------------------------------
 include(CheckDGtalDependencies)
-
 include(CheckDGtalOptionalDependencies)
 
 
