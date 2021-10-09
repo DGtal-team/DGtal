@@ -15,16 +15,15 @@
  **/
 
 /**
- * @file topology/generateSimplicityTables2D.cpp
+ * @file geometry/volumes/fullConvexityLUT2D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/06/22
  *
- * An example file named generateSimplicityTables2D. Creates precomputed
- * tables for determining whether some point is simple within an
- * object.
+ * An example file named fullConvexityLUT2D. Creates precomputed
+ * tables for determining whether some 3x3 neighborhood of a point is fully convex.
  *
  * This file is part of the DGtal library.
  */

@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file geometry/volumes/geometricAnalysis3D.cpp
+ * @file geometry/volumes/fullConvexityAnalysis3D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/06/20
  *
- * An example file named geometricAnalysis3D
+ * An example file named fullConvexityAnalysis3D
  *
  * This file is part of the DGtal library.
  */
@@ -37,14 +37,14 @@
    For instance, you may call it to analyse image Al.100.vol at scale 2 as
 
 \verbatim
-geometricAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
+fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 \endverbatim
 
    Results are displayed, then saved in 'geom-cvx.obj'. You may also
    analyse the same shape in multiscale fashion with
 
 \verbatim
-geometricAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
+fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 \endverbatim
  
    The result is saved in 'geom-scale-cvx.obj'. You will obtain images
@@ -63,7 +63,7 @@ geometricAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 </td></tr>
 </table>
 
- \example geometry/volumes/geometricAnalysis3D.cpp
+ \example geometry/volumes/fullConvexityAnalysis3D.cpp
  */
 
 
@@ -318,7 +318,7 @@ int main( int argc, char** argv )
         }
       SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-cvx.obj" );
       Viewer3D<> viewer;
-      viewer.setWindowTitle("geometricAnalysis3D");
+      viewer.setWindowTitle("fullConvexityAnalysis3D");
       viewer.show();  
       int i = 0;
       viewer << SetMode3D( dummy.className(), "Basic" );
@@ -368,7 +368,7 @@ int main( int argc, char** argv )
       SCell dummy;
       int i = 0;
       Viewer3D<> viewer;
-      viewer.setWindowTitle("geometricAnalysis3D");
+      viewer.setWindowTitle("fullConvexityAnalysis3D");
       viewer.show();  
       viewer << SetMode3D( dummy.className(), "Basic" );
       for ( auto s : (*surface) )

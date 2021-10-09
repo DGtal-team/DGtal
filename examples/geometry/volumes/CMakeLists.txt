@@ -1,9 +1,9 @@
 add_subdirectory(distance)
 
-set(DGTAL_EXAMPLES_SRC
+set( DGTAL_EXAMPLES_SRC
         dvcm-2d
-        simpleness-convexity-2d
-        lutFullConvexity2D
+        fullConvexitySimplicity2D
+        fullConvexityLUT2D
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
@@ -11,14 +11,13 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 if (  WITH_VISU3D_QGLVIEWER )
-   set(DGTAL_EXAMPLES_QGL_SRC
-      geometricThinning3D
-      geometricAnalysis3D
+   set( DGTAL_EXAMPLES_QGL_SRC
+      fullConvexityAnalysis3D
+      fullConvexityThinning3D
       shortestPaths3D
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
-    add_executable(${FILE} ${FILE}.cpp)
-    target_link_libraries (${FILE} DGtal)
+      DGtal_add_example(${FILE})
   endforeach()
 
 endif()

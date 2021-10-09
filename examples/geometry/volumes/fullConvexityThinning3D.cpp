@@ -15,24 +15,23 @@
  **/
 
 /**
- * @file geometry/volumes/geometricThinning3D.cpp
+ * @file geometry/volumes/fullConvexityThinning3D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/06/16
  *
- * An example file named geometricThinning3D
+ * An example file named fullConvexityThinning3D
  *
  * This file is part of the DGtal library.
  */
 
 
 /**
- * A geometric thinning is an iterative removal of fully convex collapsible points from
- * a given digital object.
+ * A full convexity thinning is an iterative removal of fully convex collapsible points from a given digital object. This is an experimental test.
  *
- * \example geometry/volumes/geometricThinning3D.cpp
+ * \example geometry/volumes/fullConvexityThinning3D.cpp
  */
 
 
@@ -70,11 +69,11 @@ int main( int argc, char** argv )
   std::string fn= argc > 3 ? argv[ 3 ] : "";
   int         m = argc > 4 ? atoi( argv[ 4 ] ) : 0;
   int         M = argc > 5 ? atoi( argv[ 5 ] ) : 255;
-  trace.beginBlock ( "Example simple example of 3DViewer" );
+  trace.beginBlock ( "Example of 3D shape thinning with full convexity properties" );
   
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.setWindowTitle("simpleExample3DViewer");
+  viewer.setWindowTitle("fullConvexityThinning3D");
   viewer.show();  
 
   auto   params  = SH3::defaultParameters();
