@@ -51,6 +51,25 @@ typedef Shortcuts<KSpace> SH2;
 typedef NeighborhoodConvexityAnalyzer<KSpace,1> NCA1;
 
 ///////////////////////////////////////////////////////////////////////////////
+/**
+   Output simplicity configuration table as a C array.
+*/
+void
+outputTableAsArray( ostream & out,
+		    const ConfigMap & map,
+		    const string & tableName )
+{
+  typedef typename Map::const_iterator MapConstIterator;
+  out << "const bool " << tableName << "[ " << map.size() << " ] = { ";
+  for ( MapConstIterator it = map.begin(), it_end = map.end();
+	it != it_end; )
+    {
+      out << *it;
+      ++it;
+      if ( it != it_end ) out << ", ";
+    }
+  out << " };" << std::endl;
+}
 
 void
 displaySimplicityTable( Board2D & board,
@@ -125,7 +144,7 @@ int main( int argc, char** argv )
 {
   DConv dconv( Point::diagonal( -5 ), Point::diagonal( 5 ) );
   
-  trace.beginBlock ( "Generate 2d table" );
+  trace.beginBlock ( "Generate 2d tables" );
   ConfigMap table_with    ( 256, false );
   ConfigMap table_without ( 256, false );
   ConfigMap table_cwith   ( 256, false );
@@ -158,7 +177,6 @@ int main( int argc, char** argv )
 	  }
         // Checking full convexity.
         LCA.setCenter( c, image );
-        // for ( auto p : Xwith ) std::cout << p;
         bool full_with     = LCA.isFullyConvex( true );
         bool full_without  = LCA.isFullyConvex( false );
         bool full_cwith    = LCA.isComplementaryFullyConvex( true );
@@ -174,24 +192,35 @@ int main( int argc, char** argv )
   {
     Board2D board;
     displaySimplicityTable( board, table_with, false, true );
-    board.saveEPS( "table-with.eps" );
+    board.saveEPS( "table-fcvx-with-center.eps" );
   }
   {
     Board2D board;
     displaySimplicityTable( board, table_without, false, false );
-    board.saveEPS( "table-without.eps" );
+    board.saveEPS( "table-fcvx-without-center.eps" );
   }
   {
     Board2D board;
     displaySimplicityTable( board, table_cwith, true, true );
-    board.saveEPS( "table-cwith.eps" );
+    board.saveEPS( "table-complementary-fcvx-with-center.eps" );
   }
   {
     Board2D board;
     displaySimplicityTable( board, table_cwithout, true, false );
-    board.saveEPS( "table-cwithout.eps" );
+    board.saveEPS( "table-complementary-fcvx-without-center.eps" );
   }
   trace.endBlock();
-
+  trace.beginBlock ( "Output 2d tables as C arrays" );
+  ofstream out( "table-fcvx.cpp" );
+  outputTableAsArray( out, "table-fcvx-with-center",
+                      table_with );
+  outputTableAsArray( out, "table-fcvx-without-center",
+                      table_without );
+  outputTableAsArray( out, "table-complementary-fcvx-with-center",
+                      table_cwith );
+  outputTableAsArray( out, "table-complementary-fcvx-without-center",
+                      table_cwithout );
+  out.close();
+  trace.endBlock();
   return 0;
 }
