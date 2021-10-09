@@ -363,7 +363,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       } else if (keyword == "mtllib")
       {
         std::string name;
-        lineinput >> name;
+        std::operator>>( lineinput, name );
         std::string base = name.substr(0,name.find_last_of("."));
         int iSep = filename.find_last_of('/');
         if (iSep == -1)
@@ -380,7 +380,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       else if (keyword ==  "usemtl")
       {
         std::string name;
-        lineinput >> name;
+        std::operator>>( lineinput, name );
         if (material.count(name) !=0 )
         {
           currentMtlCol = material[name];
@@ -472,7 +472,7 @@ DGtal::MeshReader<TPoint>::readMaterial( std::istream & input)
       if ( keyword == "newmtl" )
       {
         std::string nameMtl;
-        lineinput >> nameMtl;
+        std::operator>>( lineinput, nameMtl );
         if (nameMtl != "")
         {
           currentMtlName = nameMtl;
