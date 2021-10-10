@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file geometry/volumes/shortestPaths3D.cpp
+ * @file geometry/volumes/fullConvexityShortestPaths3D.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/06/20
  *
- * An example file named shortestPaths3D
+ * An example file named fullConvexityShortestPaths3D
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
    For instance, you may call it on object "cube+sphere" as
 
 \verbatim
-shortestPaths3D cps.vol 0 255 0.0
+fullConvexityShortestPaths3D cps.vol 0 255 0.0
 \endverbatim
 
    The user selects two surfels (with shift + left click), and then
@@ -52,7 +52,7 @@ shortestPaths3D cps.vol 0 255 0.0
 </td></tr>
 </table>
 
- \example geometry/volumes/shortestPaths3D.cpp
+ \example geometry/volumes/fullConvexityShortestPaths3D.cpp
  */
 
 
@@ -103,14 +103,14 @@ int main( int argc, char** argv )
   trace.info() << "\t- m [==0], M [==255]: used to threshold input vol image" << std::endl;
   trace.info() << "\t- opt >= sqrt(3): secure shortest paths, 0: fast" << std::endl;
   string inputFilename = examplesPath + "samples/Al.100.vol";
-  std::string fn= argc > 1 ? argv[ 1 ]         : inputFilename; // vol filename
+  std::string fn= argc > 1 ? argv[ 1 ]         : inputFilename; //< vol filename
   int         m = argc > 2 ? atoi( argv[ 2 ] ) : 0;   //< low for thresholding
   int         M = argc > 3 ? atoi( argv[ 3 ] ) : 255; //< up for thresholding
   double    opt = argc > 4 ? atof( argv[ 4 ] ) : sqrt(3.0); //< exact (sqrt(3)) or inexact (0) computations
 
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.setWindowTitle("shortestPaths3D");
+  viewer.setWindowTitle("fullConvexityShortestPaths3D");
   viewer.show();  
 
   // Set up shortcuts parameters.

@@ -25,7 +25,7 @@ geometry/volumes/fullConvexityAnalysis3D.cpp ,
 geometry/volumes/fullConvexityThinning3D.cpp ,
 geometry/volumes/fullConvexityLUT2D.cpp ,
 geometry/volumes/fullConvexityCollapsiblePoints2D.cpp ,
-geometry/volumes/shortestPaths3D.cpp .
+geometry/volumes/fullConvexityShortestPaths3D.cpp .
 
 @section dgtal_dconvexityapp_sec1 Local convexity analysis
 
@@ -159,7 +159,7 @@ to compute shortest paths:
 
 To use it, you should include the following headers
 
-@snippet shortestPaths3D.cpp Tangency3D-includes
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-includes
   
 
 @subsection dgtal_dconvexityapp_sec23 Shortest paths to a source
@@ -167,13 +167,13 @@ To use it, you should include the following headers
 We use here a TangencyComputer::ShortestPaths object to compute and
 store all shortest paths to a given target point.
 
-@snippet shortestPaths3D.cpp Tangency3D-shortest-paths
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-shortest-paths
 
 The object stores for each point:
 - its ancestor in the breadth first traversal (following the sequence of ancestors gives you the shortest path to the target(s))
 - its distance to the (closest) target.
 
-Example shortestPaths3D.cpp illustrates that kind of computations, giving the distance of each object point to the specified target.
+Example fullConvexityShortestPaths3D.cpp illustrates that kind of computations, giving the distance of each object point to the specified target.
 
 <table>
 <tr><td>
@@ -202,7 +202,7 @@ TangencyComputer::shortestPath, using two
 TangencyComputer::ShortestPaths objects. The snippet below shows you
 how it is computed internally:
 
-@snippet shortestPaths3D.cpp Tangency3D-shortest-path
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-shortest-path
 
 \image html cps-shortest-path.jpg "Shortest path between two points" width=500
 
