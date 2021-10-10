@@ -21,7 +21,10 @@ See \ref moduleDigitalConvexity for further details on full convexity.
 [TOC]
 
 The following programs are related to this documentation:
-geometry/volumes/geometricAnalysis3D.cpp ,
+geometry/volumes/fullConvexityAnalysis3D.cpp ,
+geometry/volumes/fullConvexityThinning3D.cpp ,
+geometry/volumes/fullConvexityLUT2D.cpp ,
+geometry/volumes/fullConvexityCollapsiblePoints2D.cpp ,
 geometry/volumes/shortestPaths3D.cpp .
 
 @section dgtal_dconvexityapp_sec1 Local convexity analysis
@@ -139,7 +142,7 @@ segments. Its \a length is then just the Euclidean length of its embedding.
 The cotangency relations define a graph on \f$ X \f$, which can be
 weighted by the length of the Euclidean segments joining cotangent
 points. Shortest paths on this graph are of course \a path in the
-sense above. 
+above mentioned sense. 
 
 @subsection dgtal_dconvexityapp_sec22 Implementation with TangencyComputer class
 
