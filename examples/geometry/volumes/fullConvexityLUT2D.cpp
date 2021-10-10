@@ -23,13 +23,33 @@
  * @date 2012/06/22
  *
  * An example file named fullConvexityLUT2D. Creates precomputed
- * tables for determining whether some 3x3 neighborhood of a point is fully convex.
+ * tables for determining whether some 3x3 neighborhood of a point is
+ * fully convex. More precisely it produces the following tables, if
+ * the neighbor points are the possible 8 points around the point of
+ * interest.
+ *
+ * - table-fcvx-with-center : 'true' iff the center point and its
+ *   neighbor points are fully convex ;
+ * - table-fcvx-without-center" : 'true' iff the neighbor points 
+ *   without the center point are fully convex ;
+ * - table-complementary-fcvx-with-center : 'true' iff the center point 
+ *   and the complementary points of its neighbor points are fully convex ;
+ * - table-complementary-fcvx-without-center : 'true' iff the complementary
+ *   points of the neighbor points are full convex ;
+ * - table-fcvx-regular : 'true' if the point is \b regular, meaning that 
+ *   the center point and its neighbor points are fully convex, while the
+ *   complementary points of the neighbor points are fully convex ;
+ * - table-fcvx-collapsible : 'true' if the point is \b collapsible,
+ *   meaning that the center and its neighbor points are fully convex,
+ *   the neighbor points without the center point are also fully convex,
+ *   and the center point is not isolated.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <vector>
+#include <fstream>
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -56,15 +76,14 @@ typedef NeighborhoodConvexityAnalyzer<KSpace,1> NCA1;
 */
 void
 outputTableAsArray( ostream & out,
-		    const ConfigMap & map,
-		    const string & tableName )
+		    const string & tableName,
+		    const ConfigMap & map )
 {
-  typedef typename Map::const_iterator MapConstIterator;
   out << "const bool " << tableName << "[ " << map.size() << " ] = { ";
-  for ( MapConstIterator it = map.begin(), it_end = map.end();
+  for ( auto  it = map.cbegin(), it_end = map.cend();
 	it != it_end; )
     {
-      out << *it;
+      out << (int) *it;
       ++it;
       if ( it != it_end ) out << ", ";
     }
@@ -188,6 +207,15 @@ int main( int argc, char** argv )
         cfg += 1;
       }
   trace.endBlock();
+  trace.beginBlock ( "Computing topology-related tables" );
+  ConfigMap table_regular   ( 256, false );
+  for ( cfg = 0; cfg < 256; cfg++ )
+    table_regular[ cfg ] = table_with[ cfg ] && table_without[ 255 - cfg ];
+  ConfigMap table_collapsible( 256, false );
+  for ( cfg = 0; cfg < 256; cfg++ )
+    table_collapsible[ cfg ] = table_with[ cfg ] && table_without[ cfg ]
+      && ( cfg != 0 );
+  trace.endBlock();
   trace.beginBlock ( "Display 2d tables" );
   {
     Board2D board;
@@ -209,6 +237,16 @@ int main( int argc, char** argv )
     displaySimplicityTable( board, table_cwithout, true, false );
     board.saveEPS( "table-complementary-fcvx-without-center.eps" );
   }
+  {
+    Board2D board;
+    displaySimplicityTable( board, table_regular, false, true );
+    board.saveEPS( "table-fcvx-regular.eps" );
+  }
+  {
+    Board2D board;
+    displaySimplicityTable( board, table_collapsible, false, true );
+    board.saveEPS( "table-fcvx-collapsible.eps" );
+  }
   trace.endBlock();
   trace.beginBlock ( "Output 2d tables as C arrays" );
   ofstream out( "table-fcvx.cpp" );
@@ -220,6 +258,10 @@ int main( int argc, char** argv )
                       table_cwith );
   outputTableAsArray( out, "table-complementary-fcvx-without-center",
                       table_cwithout );
+  outputTableAsArray( out, "table-fcvx-regular",
+                      table_regular );
+  outputTableAsArray( out, "table-fcvx-collapsible",
+                      table_collapsible );
   out.close();
   trace.endBlock();
   return 0;
