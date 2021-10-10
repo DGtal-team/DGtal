@@ -15,14 +15,14 @@ namespace DGtal {
 Part of the \ref packageGeometry.
   
 This part of the manual describes tools associated to a new definition
-of digital convexity, called full convexity
+of digital convexity, called the full convexity
 \cite lachaud_dgmm_2021 . This new definition solves many problems
 related to the usual definition of digital convexity, like possible
 non connectedness or non simple connectedness, while encompassing its
 desirable features. Fully convex sets are digitally convex, but are
 also connected and simply connected. They have a morphological
 characterisation, which induces a simple convexity test
-algorithm. Arithmetic planes are fully convex too.
+algorithm. As an important example, arithmetic planes are fully convex too.
 
 [TOC]
 
@@ -277,7 +277,7 @@ bool ok  = simplex_cover.subset( point_cover ); // true
 @subsection dgtal_dconvexity_sec24 Other convexity services, like digital subconvexity (or tangency)
 
 Morphological services (since 1.3):
-- DigitalConvexity::makePolytope( const PointRange& X, bool safe ) const builds the tightiest polytope enclosing the digital set \a X
+- DigitalConvexity::makePolytope( const PointRange& X, bool safe ) const builds the tightest polytope enclosing the digital set \a X
 - DigitalConvexity::isFullyConvex( const PointRange& X, bool convex0, bool safe ) const checks the full convexity of the digital set \a X
 - DigitalConvexity::is0Convex( const PointRange& X, bool safe ) const checks the usual digital convexity (H-convexity or 0-convexity) of the digital set \a X
 - DigitalConvexity::U( Dimension i, const PointRange& X ) const performs the digital Minkowski sum of \a X along direction \a i
@@ -288,7 +288,7 @@ The following snippet shows that a 4D ball is indeed fully convex.
 
 
 @note This method for checking full convexity is slightly slower than
-the method using Minkowski sum on the polytope contraints, but it
+the method using the Minkowski sum on the polytope contraints, but it
 works in arbitrary dimension and for arbitrary digital set.
 
 Simplex services:
@@ -315,7 +315,7 @@ Convexity services:
 @subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
 
 Any lattice polytope has a unique Ehrhart polynomial that encodes the
-relationship between the volume of a polytope and the number of
+relationship between the volume of the polytope and the number of
 integer points the polytope contains. It is a kind of extension of 2D
 Pick's theorem. More precisely, if \f$ P \f$ is a (bounded) polytope
 in \f$ \mathbb{R}^d \f$ with vertices lying in \f$ \mathbb{Z}^d \f$,

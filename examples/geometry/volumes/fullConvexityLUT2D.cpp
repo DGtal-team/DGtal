@@ -20,13 +20,13 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2012/06/22
+ * @date 2021/06/22
  *
  * An example file named fullConvexityLUT2D. Creates precomputed
  * tables for determining whether some 3x3 neighborhood of a point is
- * fully convex. More precisely it produces the following tables, if
- * the neighbor points are the possible 8 points around the point of
- * interest.
+ * fully convex, collapsible, etc. More precisely it produces the
+ * following tables, if the neighbor points are the possible 8 points
+ * around the point of interest.
  *
  * - table-fcvx-with-center : 'true' iff the center point and its
  *   neighbor points are fully convex ;
