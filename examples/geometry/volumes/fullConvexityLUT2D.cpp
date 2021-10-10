@@ -22,7 +22,13 @@
  *
  * @date 2021/06/22
  *
- * An example file named fullConvexityLUT2D. Creates precomputed
+ * An example file named fullConvexityLUT2D. 
+ *
+ * This file is part of the DGtal library.
+ */
+
+/** 
+ * This example creates precomputed
  * tables for determining whether some 3x3 neighborhood of a point is
  * fully convex, collapsible, etc. More precisely it produces the
  * following tables, if the neighbor points are the possible 8 points
@@ -44,7 +50,9 @@
  *   the neighbor points without the center point are also fully convex,
  *   and the center point is not isolated.
  *
- * This file is part of the DGtal library.
+ * @see \ref moduleDigitalConvexityApplications
+ *
+ * \example geometry/volumes/fullConvexityLUT2D.cpp
  */
 
 ///////////////////////////////////////////////////////////////////////////////

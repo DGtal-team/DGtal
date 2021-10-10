@@ -22,13 +22,20 @@
  *
  * @date 2021/06/22
  *
- * An example file named fullConvexityCollapsiblePoints2D. Displays fully
- * convex collapsible points in the given image. All these points can
- * be safely flipped without changing the topology of the image.
+ * An example file named fullConvexityCollapsiblePoints2D. 
  *
  * This file is part of the DGtal library.
  */
 
+/**
+ * Displays fully convex collapsible points in the given image. All
+ * these points can be safely flipped without changing the topology of
+ * the image.
+ *
+ * @see \ref moduleDigitalConvexityApplications
+ *
+ * \example geometry/volumes/fullConvexityCollapsiblePoints2D.cpp
+ */
 ///////////////////////////////////////////////////////////////////////////////
 #include <vector>
 #include "DGtal/shapes/Shapes.h"
