@@ -62,9 +62,10 @@
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
-  - Fixing bugs in writing Longvol from GenerucWriter and tests.
+  - Fixing bugs in writing Longvol from GenericWriter and tests.
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
-
+  - Fix compilation issue in MeshReader compilation. 
+    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
 
 
 # DGtal 1.2
