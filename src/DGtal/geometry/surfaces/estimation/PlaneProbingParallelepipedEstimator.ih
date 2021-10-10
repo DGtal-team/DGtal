@@ -89,7 +89,7 @@ template < typename TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
-InPlane (Point const& aPoint) const
+inPlane (Point const& aPoint) const
 {
     return (*myPredicate)(aPoint);
 }
@@ -103,18 +103,18 @@ operator() (Point const& aPoint) const
 {
     Point u = aPoint - q(), s = q();
 
-    ASSERT(! InPlane(s));
+    ASSERT(! inPlane(s));
 
     Integer l = DGtal::NumberTraits<Integer>::ONE;
 
     while (l < myBound)
     {
-        if (InPlane(s + u * l))
+        if (inPlane(s + u * l))
         {
             return true;
         }
 
-        if (InPlane(s - u * l))
+        if (inPlane(s - u * l))
         {
             return false;
         }
@@ -169,7 +169,7 @@ inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () const
 {
-    return myNotAbovePredicate.InPlane(getOrigin()) != myNotAbovePredicate.InPlane(q());
+    return myNotAbovePredicate.inPlane(getOrigin()) != myNotAbovePredicate.inPlane(q());
 }
 
 // ------------------------------------------------------------------------
@@ -387,13 +387,22 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getState () const
 
     for (int i = 0; i < 8; ++i)
     {
-        if (myNotAbovePredicate.InPlane(parallelepiped[i]))
+        if (inPlane(parallelepiped[i]))
         {
             ++inside;
         }
     }
 
     return inside;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+bool
+DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::inPlane (const Point& aPoint) const
+{
+  return myNotAbovePredicate.inPlane(aPoint); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -420,7 +429,10 @@ inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isValid() const
 {
-    return myTetrahedronEstimator.isValid();
+  return ( ( ! inPlane( myTetrahedronEstimator.q() ) )
+	   && inPlane( myTetrahedronEstimator.getOrigin() )
+	   && myTetrahedronEstimator.isUnimodular()
+	   && myTetrahedronEstimator.isProjectedInside() );
 }
 
 
