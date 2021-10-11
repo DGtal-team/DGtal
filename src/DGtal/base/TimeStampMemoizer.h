@@ -52,14 +52,18 @@ namespace DGtal
   // template class TimeStampMemoizer
   /**
    * Description of template class 'TimeStampMemoizer' <p> \brief Aim:
-   * A generic class to store costly computations. A computation is an
-   * association between a key and a value, together they form an item
-   * to be memorized. A maximal number of memoized items is
-   * given. Each time a query is made, if the item was memoized, the
-   * result is returned while the timestamp of the item is
-   * updated. User can also add/update a value in the memoizer. When
-   * the maximal number of items is reached, at least the oldest half
-   * (or a fraction) of the items are deleted.
+   * A generic class to store a given maximum number of pairs (key,
+   * value). The class tends to memorize pairs which are accessed more
+   * frequently than others. It is thus a memoizer, which is used to
+   * memorize the result of costly computations. The memoization
+   * principle is simple: a timestamp is attached to a pair
+   * (key,value). Each time a query is made, if the item was memoized,
+   * the result is returned while the timestamp of the item is
+   * updated. User can also add or update a value in the memoizer,
+   * which updates also its timestamp. After adding a pair
+   * (key,value), if the maximal number of items is reached, at least
+   * the oldest half (or a fraction) of the items are deleted, leaving
+   * space for storing new pairs (key,value).
    *
    * @tparam TKey the type used for keys, must be hashable.
    *
@@ -142,6 +146,8 @@ namespace DGtal
     }
 
     /// @return the number of successful hits in the memoizer
+    /// (i.e. the number of times where a `get( key )` succeeded and returned
+    /// a pair (value, true)).
     Size hits() const
     {
       return myHits;
@@ -244,7 +250,7 @@ namespace DGtal
     TimeStamp myTimeStamp;
     /// The map memoizing computations.
     std::unordered_map< Key, StoredValue > myMap;
-    /// The number of hits up to the last clean-up.
+    /// The number of hits since the last clean-up.
     Size      myHits;
     /// when 'true', traces some information.
     bool      myVerbose;
