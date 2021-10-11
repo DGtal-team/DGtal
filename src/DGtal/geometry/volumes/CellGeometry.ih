@@ -163,38 +163,6 @@ addCellsTouchingSegment( const Point& a, const Point& b )
         }
     }
   if ( a != b ) addCellsTouchingPoint( b );
-  // Put too many cells in some cases.
-  // const auto    V = b - a;
-  // const auto    p = std::minmax_element( V.begin(), V.end() );
-  // // find greatest component in absolute value
-  // const auto    k = -(*p.first) > (*p.second)
-  //   ? p.first - V.begin() : p.second - V.begin();
-  // const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;
-  // const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
-  // Point       pkc = 2 * a;
-  // addCellsTouchingPoint( a );
-  // for ( Integer i = 1; i <= n; i++ )
-  //   {
-  //     Point kc;
-  //     for ( Dimension j = 0; j < dimension; j++ )
-  //       {
-  //         if ( j == k ) kc[ k ] = 2 * ( a[ k ] + d * i );
-  //         else
-  //           {
-  //             const auto v = V[ j ];
-  //             const bool s = v >= 0;
-  //             const auto q = ( v * i ) / n;
-  //             const auto r = ( v * i ) % n; // might be negative
-  //             kc[ j ] = 2 * ( a[ j ] + q );
-  //             if ( r < 0 )      kc[ j ] -= 1;
-  //             else if ( r > 0 ) kc[ j ] += 1;
-  //           }
-  //       }
-  //     pkc += kc; pkc /= 2;
-  //     addCellsTouchingCell( myK.uCell( pkc ) );
-  //     addCellsTouchingCell( myK.uCell( kc ) );
-  //     pkc = kc;
-  //   }
 }
 
 //-----------------------------------------------------------------------------
