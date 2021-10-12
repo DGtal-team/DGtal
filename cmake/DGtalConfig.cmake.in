@@ -40,6 +40,7 @@ if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   find_dependency(ITK REQUIRED
     @ITK_HINTS@
     )
+    include(${ITK_USE_FILE})
 endif()
 
 if(@CAIRO_FOUND_DGTAL@) #if CAIRO_FOUND_DGTAL
