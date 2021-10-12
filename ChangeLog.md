@@ -46,6 +46,8 @@
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
+  - Fix cmake related ITK usage in other projects (issue #1612). 
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
 
 ## Bug fixes
 
