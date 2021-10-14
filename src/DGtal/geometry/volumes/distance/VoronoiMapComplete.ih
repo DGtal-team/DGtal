@@ -63,7 +63,8 @@ DGtal::VoronoiMapComplete<S,P, TSep, TImage>::compute( )
   
   //Init
   for ( auto const & pt : *myDomainPtr )
-    if ( (*myPointPredicatePtr)( pt )) {
+    if ( (*myPointPredicatePtr)( pt )) 
+    {
       Value myVectorInfinity;
       myVectorInfinity.insert(myInfinity);
       myImagePtr->setValue ( pt, myVectorInfinity );
@@ -86,7 +87,7 @@ void
 DGtal::VoronoiMapComplete<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
 #ifdef VERBOSE
-  std::string title = "VoronoiMap dimension " +  boost::lexical_cast<std::string>( dim ) ;
+  std::string title = "VoronoiMapComplete dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 #endif
   
@@ -268,7 +269,7 @@ DGtal::VoronoiMapComplete<S,P,TSep, TImage>::computeOtherStep1D ( const Point &s
   // Rewriting for both periodic and non-periodic cases.
   size_t siteId = 0;
   auto point = startPoint;
-  uint64_t minimal_distance;
+IntegerLong minimal_distance;
   
   for ( ; point[dim] <= myUpperBoundCopy[dim] ; ++point[dim] )
   {
@@ -379,7 +380,7 @@ inline
 void
 DGtal::VoronoiMapComplete<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[VoronoiMap] separable metric=" << *myMetricPtr ;
+  out << "[VoronoiMapComplete] separable metric=" << *myMetricPtr ;
 }
 
 

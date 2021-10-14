@@ -217,7 +217,7 @@ new Voronoi map:
 In this section, we describe the VoronoiMapComplete class that implements
 the complete Voronoi map with all co-cyclic points. More precisely if
 a grid point is equidistant to two sites, the two sites are reported
-in the VoronoiComplete map 
+in the VoronoiComplete map .
 
 This extension of the separable approach has been described in @cite Couprie2007 
 
@@ -242,7 +242,7 @@ in logarithmic time for `std::set`).
 co-cyclic sites, the VoronoiMapComplete class as a bigger constant
 factor due to the construction of the container. Indeed, as
 illustrated in testVoronoiMapComplete, creating a VoronoiMap on a
-256x256 image without any site 4ms, whereas the same size
+256x256 image without any site takes 4ms, whereas the same size
 VoronoiMapComplete (still no sites) takes 118ms (on a MacPro). To be
 complete, when adding 5000 random sites, VoronoiMap takes 6.2ms in
 total, and 162ms for the VoronoiMapComplete (maximum number of
