@@ -309,6 +309,76 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::translateQ ()
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::applyOperation (UpdateOperation const& aOp)
+{
+    myM[aOp.sigma[0]] = aOp.coeffs[0] * myM[aOp.sigma[0]] + aOp.coeffs[1] * myM[aOp.sigma[1]] + aOp.coeffs[2] * myM[aOp.sigma[2]];
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
+{
+    applyOperation(aOp);
+    myOperations.push_back(aOp);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+// ------------------------------------------------------------------------
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+void
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingTetrahedronEstimator]";
+}
+
+// ------------------------------------------------------------------------
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isValid() const
+{
+  return ( isUnimodular() && isProjectedInside() );
+}
+
+// ------------------------------------------------------------------------
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isInside() const
+{
+    Triangle v = vertices();
+    for (int i = 0; i < 3; ++i) {
+        if (! myPredicate(v[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// ------------------------------------------------------------------------
+template <typename TPredicate, DGtal::ProbingMode mode>
+inline
+bool
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isUnimodular() const
+{
+    Point nest = getNormal();
+    for (int i = 0; i < 3; ++i) {
+        if (myM[i].dot(nest) != 1) {
+            return false;
+        }
+    }
+    return true; 
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate, DGtal::ProbingMode mode >
+inline
 bool
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Triangle const& aTriangle) const
 {
@@ -331,66 +401,12 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside (Tr
 // ------------------------------------------------------------------------
 template < typename TPredicate, DGtal::ProbingMode mode >
 inline
-void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::applyOperation (UpdateOperation const& aOp)
-{
-    myM[aOp.sigma[0]] = aOp.coeffs[0] * myM[aOp.sigma[0]] + aOp.coeffs[1] * myM[aOp.sigma[1]] + aOp.coeffs[2] * myM[aOp.sigma[2]];
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
-inline
-void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::update (UpdateOperation const& aOp)
-{
-    applyOperation(aOp);
-    myOperations.push_back(aOp);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename TPredicate, DGtal::ProbingMode mode>
-inline
-void
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[PlaneProbingTetrahedronEstimator]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename TPredicate, DGtal::ProbingMode mode>
-inline
 bool
-DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isValid() const
+DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside () const
 {
-    Triangle v = vertices();
-    for (int i = 0; i < 3; ++i) {
-        if (! myPredicate(v[i])) {
-            return false;
-        }
-    }
-
-    Point nest = getNormal();
-    for (int i = 0; i < 3; ++i) {
-        if (myM[i].dot(nest) != 1) {
-            return false;
-        }
-    }
-
-    if (! isProjectedInside(v)) {
-        return false;
-    }
-
-    return true;
+  return isProjectedInside(vertices()); 
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
