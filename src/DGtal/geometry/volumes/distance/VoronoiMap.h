@@ -73,8 +73,8 @@ namespace DGtal
    *
    * Given a domain and a point predicate, an instance returns, for
    * each point in the domain, the closest point for which the
-   * predicate if false. Following Computational Geometry
-   * terminoliogy, points for which the predicate is false are "sites"
+   * predicate is false. Following Computational Geometry
+   * terminology, points for which the predicate is false are "sites"
    * for the Voronoi map construction. If a point is equi-distant to
    * two sites (e.g. if the digital point belong to a Voronoi cell
    * boundary in the Euclidean space), this Voronoi map construction
