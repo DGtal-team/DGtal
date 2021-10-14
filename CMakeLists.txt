@@ -85,13 +85,11 @@ include(DevelopmentOptions)
 # -----------------------------------------------------------------------------
 include(OSDependentSettings)
 
-
 # -----------------------------------------------------------------------------
 # Randomized build 1/2.
 # -----------------------------------------------------------------------------
 SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
 SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
-
 
 # -----------------------------------------------------------------------------
 # Check mandatory and optional dependencies

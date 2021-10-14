@@ -114,48 +114,46 @@ eval (SurfelConstIterator it)
     // If no pre-estimation is given, we make one using maximal segments
     RealPoint preEstimation = getPreEstimation(it);
 
-    // Compute an initial frame using the pre-estimation
+    // Compute an initial frame from the surfel
     Surfel s = *it;
     ProbingFrame initialFrame = probingFrameFromSurfel(s);
-    ProbingFrame frame = probingFrameWithPreEstimation(initialFrame, preEstimation);
+    // Compute a frame from the initial one using the pre-estimation
+    std::pair<bool, ProbingFrame> res =
+      probingFrameWithPreEstimation(initialFrame, preEstimation);
 
-    // If the constructor of the probing estimator throws, we return the normal of the frame
-    // (this happens for instance when using a tetrahedron estimator on a digital surface,
-    // the initial frame will be considered invalid since not all the points of the upper
-    // triangle belong to the surface)
-    try
-    {
-        myProbingAlgorithm = myProbingFactory(frame, myPredicate);
-    }
-    catch (std::runtime_error const& e)
-    {
-        return frame.normal;
-    }
+    if (res.first) {
+      //If we have found a frame, we initialize the plane-probing algorithm
+      myProbingAlgorithm = myProbingFactory(res.second, myPredicate);
 
-    // We use slightly different versions depending on the number of zeros
-    // in the pre-estimation vector.
-    const auto zeros = findZeros(preEstimation);
+      // We use slightly different versions depending on the number of zeros
+      // in the pre-estimation vector.
+      const auto zeros = findZeros(preEstimation);
 
-    Point normal;
-    if (zeros.size() == 0)
-    {
-        normal = myProbingAlgorithm->compute();
-    }
-    else if (zeros.size() == 1)
-    {
-        int index = zeros[0];
-        normal = myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
-        // normal = getNormalOneFlatDirection(index);
-    }
-    else if (zeros.size() == 2)
-    {
-        normal = frame.normal;
-    }
+      Point normal;
+      if (zeros.size() == 0)
+	{
+	  normal = myProbingAlgorithm->compute();
+	}
+      else if (zeros.size() == 1)
+	{
+	  int index = zeros[0];
+	  normal = myProbingAlgorithm->compute(getProbingRaysOneFlatDirection(index));
+	}
+      else if (zeros.size() == 2)
+	{
+	  normal = res.second.normal;
+	}
 
-    delete myProbingAlgorithm;
-    myProbingAlgorithm = nullptr;
+      delete myProbingAlgorithm;
+      myProbingAlgorithm = nullptr;
 
-    return normal;
+      return normal;
+      
+    } else {
+      // If we have found no way to properly initialize the plane-probing estimator,
+      // we return the initial frame normal, i.e. the trivial normal of the surfel.  
+      return initialFrame.normal;
+    }
 }
 
 // ------------------------------------------------------------------------
@@ -261,20 +259,19 @@ probingFrameFromSurfel (Surfel const& aSurfel) const
 // ------------------------------------------------------------------------
 template < typename TSurface, typename TInternalProbingAlgorithm >
 inline
-typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::ProbingFrame
+std::pair<bool, typename DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::ProbingFrame >
 DGtal::PlaneProbingDigitalSurfaceLocalEstimator<TSurface, TInternalProbingAlgorithm>::
 probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const
 {
     ProbingFrame frame = aInitialFrame;
-    ProbingFrame frameQExt;
 
     for (int i = 0; i < 4; ++i)
     {
         Point shift = frame.shift();
+	// We search for a frame whose shift point is outside...
         if (! myPredicate(frame.p + shift))
         {
-            frameQExt = frame;
-
+	    //... and that matches the pre-estimation
             int signs = 0;
             signs += int(signComponent(shift[0]) == signComponent(aPreEstimation[0]));
             signs += int(signComponent(shift[1]) == signComponent(aPreEstimation[1]));
@@ -282,14 +279,15 @@ probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint cons
 
             if (signs == 3)
             {
-                return frame;
+	        return std::make_pair(true, frame);
             }
         }
 
         frame = frame.rotatedCopy();
     }
 
-    return frameQExt;
+    // No frame that matches the pre-estimation found,
+    return std::make_pair(false, aInitialFrame); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////

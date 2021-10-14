@@ -32,6 +32,7 @@
 #ifdef WITH_HDF5
 #include "DGtal/io/writers/HDF5Writer.h"
 #endif
+#include "DGtal/io/writers/LongvolWriter.h"
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/writers/PGMWriter.h"
@@ -140,7 +141,7 @@ exportFile( const std::string & filename,
 
   if ( extension == "longvol" )
     {
-      return VolWriter<TContainer, TFunctor>::exportLongvol( filename, anImage , aFunctor );
+      return LongvolWriter<TContainer, TFunctor>::exportLongvol( filename, anImage );
     }
   else if ( extension == "raw" )
     {

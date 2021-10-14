@@ -15,6 +15,26 @@
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
   
+## Bug fixes
+- *General*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar
+    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
+  - Continuous integration does not use Travis anymore but Github
+    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
+    [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
+
+- *Geometry package*
+  - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
+    - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
+      returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead 
+      to a valid initialization or not. The method `eval` now uses this boolean value and returns the 
+      trivial normal vector if it has been set to 'False'.
+    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
+      delegate, but only checks the relevant parts (which have been pushed in to separate methods).
+    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+
 ## Changes
 
 - *IO*
@@ -36,6 +56,8 @@
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
+  - Fix cmake related ITK usage in other projects (issue #1612). 
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
 
 
 ## Bug fixes
@@ -65,6 +87,10 @@
 
 - *IO*
   - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
+  - Fixing bugs in writing Longvol from GenericWriter and tests.
+    (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
+  - Fix compilation issue in MeshReader compilation. 
+    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
 
 
 # DGtal 1.2
