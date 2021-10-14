@@ -309,9 +309,10 @@ namespace DGtal
      *
      * @param aInitialFrame an initial probing frame.
      * @param aPreEstimation a pre-estimation vector.
-     * @return aInitialFrame if no frame were found, the new frame otherwise.
+     * @return a pair (false, aInitialFrame) if no frame was found, 
+     * a pair (true, newFrame) if a frame 'newFrame' was found. 
      */
-    ProbingFrame probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const;
+    std::pair<bool, ProbingFrame> probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const;
 
     /**
      * @param x a scalar.
