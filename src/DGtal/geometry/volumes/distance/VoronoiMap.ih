@@ -29,11 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-
-#ifdef VERBOSE
-#include <boost/lexical_cast.hpp>
-#endif
-
 #include "DGtal/kernel/NumberTraits.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -76,7 +71,7 @@ void
 DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
 #ifdef VERBOSE
-  std::string title = "VoronoiMap dimension " +  boost::lexical_cast<std::string>( dim ) ;
+  std::string title = "VoronoiMap dimension " +  std::to_string( dim ) ;
   trace.beginBlock ( title );
 #endif
 

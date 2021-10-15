@@ -45,7 +45,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <unordered_set>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
