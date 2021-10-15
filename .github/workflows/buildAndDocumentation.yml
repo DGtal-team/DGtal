@@ -5,7 +5,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-    
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE:   Release
@@ -67,7 +67,7 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        shell: bash
        run: |
-           echo ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)" 
+           echo ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)"
            ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)"
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
@@ -119,3 +119,13 @@ jobs:
         folder: build/html
         single-comit: true
         clean: true
+
+  FirstPR:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/first-interaction@v1
+         with:
+           repo-token: ${{ secrets.GITHUB_TOKEN }}
+           #issue-message: '# Message with markdown.\nThis is the message that will be displayed on users' first issue.'
+           pr-message: 'This is your first pull-request on DGtal :tada:. Thanks for your contribtuions. Please do not forget to add a new entry to the `AUTHORS` file.'
