@@ -21,6 +21,7 @@
  * @brief Linear in time distance transformation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Robin Lamy
  *
  * @date 2021/09/30
  *
