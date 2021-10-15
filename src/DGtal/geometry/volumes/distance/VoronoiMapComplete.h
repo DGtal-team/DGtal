@@ -76,7 +76,7 @@ namespace DGtal
    * Given a domain and a point predicate, an instance returns, for
    * each point in the domain, the collection of closest points for which the
    * predicate if false. Following Computational Geometry
-   * terminoliogy, points for which the predicate is false are "sites"
+   * terminology, points for which the predicate is false are "sites"
    * for the Voronoi map construction.
    *
    * If a point is equi-distant to several sites, all sites will be attached to
