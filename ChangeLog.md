@@ -40,6 +40,12 @@
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
+- *Geometry*
+  - New VoronoiMapComplete class to store the full Voronoi map (with
+    all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
+    Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+    
+
 - *Build*
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
