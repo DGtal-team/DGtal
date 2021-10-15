@@ -62,7 +62,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class VoronoiMap
+  // template class VoronoiMapComplete
   /**
    * Description of template class 'VoronoiMap' <p>
    * \brief Aim: Implementation of the linear in time Voronoi map
