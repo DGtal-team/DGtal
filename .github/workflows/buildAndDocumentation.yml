@@ -35,7 +35,10 @@ jobs:
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja eigen gmp itk
+       run: |
+            brew install boost ninja eigen gmp
+            brew tap homebrew/homebrew-science
+            brew install insighttoolkit
 
      - name: Get white list of tests
        run: |
