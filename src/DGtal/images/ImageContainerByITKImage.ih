@@ -252,7 +252,7 @@ namespace DGtal
       // The index would be different than the domain point if myDomainShift is not zero.
       const auto itk_index = getItkIndexFromDomainPoint(domainPoint);
       // ITK performs the transform between index and physical spaces.
-      const typename ITKImage::PointType itk_point;
+      typename ITKImage::PointType itk_point;
       myITKImagePointer->template TransformIndexToPhysicalPoint<typename RealPoint::Component>(itk_index, itk_point);
 
       // Transform itk physical point to dgtal
@@ -274,7 +274,7 @@ namespace DGtal
         itk_point[k] = physicalPoint[k];
 
       // ITK performs the transform between index and physical spaces.
-      const typename ITKImage::IndexType itk_index;
+      typename ITKImage::IndexType itk_index;
       myITKImagePointer->TransformPhysicalPointToIndex(itk_point, itk_index);
 
       return getDomainPointFromItkIndex(itk_index);
