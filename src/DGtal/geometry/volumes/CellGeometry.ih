@@ -97,19 +97,23 @@ DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPointel( const Cell& pointel )
 {
   auto cofaces = myK.uCoFaces( pointel );
-  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
-    myKPoints.emplace( myK.uKCoords( pointel ) );
-    for ( auto && c : cofaces )
-      myKPoints.emplace( myK.uKCoords( c ) );
-  } else {
-    if ( myMinCellDim <= 0 )
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) )
+    {
       myKPoints.emplace( myK.uKCoords( pointel ) );
-    for ( auto&& f : cofaces ) {
-      Dimension d = myK.uDim( f );
-      if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
-        myKPoints.emplace( myK.uKCoords( f ) );
+      for ( auto && c : cofaces )
+        myKPoints.emplace( myK.uKCoords( c ) );
     }
-  }
+  else
+    {
+      if ( myMinCellDim <= 0 )
+        myKPoints.emplace( myK.uKCoords( pointel ) );
+      for ( auto&& f : cofaces )
+        {
+          Dimension d = myK.uDim( f );
+          if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+            myKPoints.emplace( myK.uKCoords( f ) );
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -123,11 +127,12 @@ addCellsTouchingCell( const Cell& c )
     myKPoints.emplace( myK.uKCoords( c ) );
   if ( myMaxCellDim <= dc ) return;
   const auto cofaces = myK.uCoFaces( c );
-  for ( auto&& f : cofaces ) {
-    Dimension d = myK.uDim( f );
-    if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
-      myKPoints.emplace( myK.uKCoords( f ) );
-  }
+  for ( auto&& f : cofaces )
+    {
+      Dimension d = myK.uDim( f );
+      if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+        myKPoints.emplace( myK.uKCoords( f ) );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -172,29 +177,33 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPoints( PointIterator itB, PointIterator itE )
 {
-  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
-    for ( auto it = itB; it != itE; ++it )
-      {
-        auto pointel = myK.uPointel( *it );
-        auto cofaces = myK.uCoFaces( pointel );
-        myKPoints.emplace( myK.uKCoords( pointel ) );
-        for ( auto && c : cofaces )
-          myKPoints.emplace( myK.uKCoords( c ) );
-      }
-  } else {
-    for ( auto it = itB; it != itE; ++it )
-      {
-        auto pointel = myK.uPointel( *it );
-        auto cofaces = myK.uCoFaces( pointel );
-        if ( myMinCellDim <= 0 )
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) )
+    {
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto pointel = myK.uPointel( *it );
+          auto cofaces = myK.uCoFaces( pointel );
           myKPoints.emplace( myK.uKCoords( pointel ) );
-        for ( auto&& f : cofaces ) {
-          Dimension d = myK.uDim( f );
-          if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
-            myKPoints.emplace( myK.uKCoords( f ) );
+          for ( auto && c : cofaces )
+            myKPoints.emplace( myK.uKCoords( c ) );
         }
-      }
-  }
+    }
+  else
+    {
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto pointel = myK.uPointel( *it );
+          auto cofaces = myK.uCoFaces( pointel );
+          if ( myMinCellDim <= 0 )
+            myKPoints.emplace( myK.uKCoords( pointel ) );
+          for ( auto&& f : cofaces )
+            {
+              Dimension d = myK.uDim( f );
+              if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+                myKPoints.emplace( myK.uKCoords( f ) );
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -204,29 +213,33 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
 {
-  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) ) {
-    for ( auto it = itB; it != itE; ++it )
-      {
-        auto pointel = *it;
-        auto cofaces = myK.uCoFaces( pointel );
-        myKPoints.emplace( myK.uKCoords( pointel ) );
-        for ( auto && c : cofaces )
-          myKPoints.emplace( myK.uKCoords( c ) );
-      }
-  } else {
-    for ( auto it = itB; it != itE; ++it )
-      {
-        auto pointel = *it;
-        auto cofaces = myK.uCoFaces( pointel );
-        if ( myMinCellDim <= 0 )
+  if ( ( myMinCellDim == 0 ) && ( myMaxCellDim == KSpace::dimension ) )
+    {
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto pointel = *it;
+          auto cofaces = myK.uCoFaces( pointel );
           myKPoints.emplace( myK.uKCoords( pointel ) );
-        for ( auto&& f : cofaces ) {
-          Dimension d = myK.uDim( f );
-          if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
-            myKPoints.emplace( myK.uKCoords( f ) );
+          for ( auto && c : cofaces )
+            myKPoints.emplace( myK.uKCoords( c ) );
         }
-      }
-  }
+    }
+  else
+    {
+      for ( auto it = itB; it != itE; ++it )
+        {
+          auto pointel = *it;
+          auto cofaces = myK.uCoFaces( pointel );
+          if ( myMinCellDim <= 0 )
+            myKPoints.emplace( myK.uKCoords( pointel ) );
+          for ( auto&& f : cofaces )
+            {
+              Dimension d = myK.uDim( f );
+              if ( ( myMinCellDim <= d ) && ( d <= myMaxCellDim ) )
+                myKPoints.emplace( myK.uKCoords( f ) );
+            }
+        }
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -361,10 +374,6 @@ DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other ) const
 {
   return other.myKPoints.includes( myKPoints );
-  // for ( auto&& c : myKPoints )
-  //   if ( other.myKPoints.count( c ) == 0 )
-  //     return false;
-  // return true;
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -393,18 +402,22 @@ includes( RandomIterator it1, RandomIterator itE1,
       if (it1 == itE1 || *it2 < *it1) return false;
       // exponential march
       for ( k = 1; ( it1 < itE1 ) && ( *it1 < *it2 ); k *= 2 ) it1 += k;
-      if ( it1 < itE1 ) {
-        if ( *it2 == *it1 ) ++it2; //equality
-        else {
-          it1 = lower_bound( it1 - k/2, it1, *it2 );
-          if ( *it2 != *it1 ) return false;
+      if ( it1 < itE1 )
+        {
+          if ( *it2 == *it1 ) ++it2; //equality
+          else
+            {
+              it1 = lower_bound( it1 - k/2, it1, *it2 );
+              if ( *it2 != *it1 ) return false;
+              ++it2;
+            }
+        }
+      else
+        {
+          it1 = lower_bound( it1 - k/2, itE1, *it2 );
+          if ( it1 == itE1 || *it2 != *it1 ) return false;
           ++it2;
         }
-      } else {
-        it1 = lower_bound( it1 - k/2, itE1, *it2 );
-        if ( it1 == itE1 || *it2 != *it1 ) return false;
-        ++it2;
-      }
     }
   return true;
 }
@@ -419,7 +432,8 @@ getIntersectedKPoints( const LatticePolytope& polytope,
   ASSERT( polytope.canBeSummed() );
   if ( ! polytope.canBeSummed() )
     trace.warning() << "[CellGeometryFunctions::getIntersectedKPoints]"
-                    << " LatticePolytope is not valid for Minkowski sums. " << std::endl;
+                    << " LatticePolytope is not valid for Minkowski sums. "
+                    << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Point >     result;
   std::vector< Point >     points;
@@ -428,7 +442,8 @@ getIntersectedKPoints( const LatticePolytope& polytope,
   for ( Dimension k = 1; k < extensions.size(); ++k )
     {
       extensions[ k ] = k - 1;
-      polytopes [ k ] = polytopes[ k - 1 ] + typename LatticePolytope::UnitSegment( k - 1 );
+      polytopes [ k ] = polytopes[ k - 1 ]
+        + typename LatticePolytope::UnitSegment( k - 1 );
     }
   // We have to build several dilated polytopes which corresponds
   // to the binom(d,i) possible cell types.
@@ -447,13 +462,14 @@ getIntersectedKPoints( const LatticePolytope& polytope,
       // Intersected cells are bijective to points in a dilated polytope.
       polytopes.back().getPoints( points );
       // For each point, build its Khalimsky points and push it into result.
-      for ( auto p : points ) {
-        auto kp   = myK.uKCoords( myK.uPointel( p ) );
-        for ( Dimension k = 1; k < extensions.size(); ++k )
-           // decrease Khalimsky coordinate to get incident cell
-          kp[ extensions[ k ] ] -= 1;
-        result.push_back( kp );
-      }
+      for ( auto p : points )
+        {
+          auto kp   = myK.uKCoords( myK.uPointel( p ) );
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            // decrease Khalimsky coordinate to get incident cell
+            kp[ extensions[ k ] ] -= 1;
+          result.push_back( kp );
+        }
       // Go to next type of cell
       Dimension   k    = i;
       extensions[ k ] += 1;
@@ -480,7 +496,8 @@ getIntersectedCells( const LatticePolytope& polytope,
   ASSERT( polytope.canBeSummed() );
   if ( ! polytope.canBeSummed() )
     trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
-                    << " LatticePolytope is not valid for Minkowski sums. " << std::endl;
+                    << " LatticePolytope is not valid for Minkowski sums. "
+                    << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Cell >      result;
   std::vector< Point >     points;
@@ -489,7 +506,8 @@ getIntersectedCells( const LatticePolytope& polytope,
   for ( Dimension k = 1; k < extensions.size(); ++k )
     {
       extensions[ k ] = k - 1;
-      polytopes [ k ] = polytopes[ k - 1 ] + typename LatticePolytope::UnitSegment( k - 1 );
+      polytopes [ k ] = polytopes[ k - 1 ]
+        + typename LatticePolytope::UnitSegment( k - 1 );
     }
   // We have to build several dilated polytopes which corresponds
   // to the binom(d,i) possible cell types.
@@ -508,12 +526,13 @@ getIntersectedCells( const LatticePolytope& polytope,
       // Intersected cells are bijective to points in a dilated polytope.
       polytopes.back().getPoints( points );
       // For each point, build its cell and push it into result.
-      for ( auto p : points ) {
-        auto cell = myK.uPointel( p );
-        for ( Dimension k = 1; k < extensions.size(); ++k )
-          cell = myK.uIncident( cell, extensions[ k ], false );
-        result.push_back( cell );
-      }
+      for ( auto p : points )
+        {
+          auto cell = myK.uPointel( p );
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            cell = myK.uIncident( cell, extensions[ k ], false );
+          result.push_back( cell );
+        }
       // Go to next type of cell
       Dimension   k    = i;
       extensions[ k ] += 1;
@@ -540,7 +559,8 @@ getIntersectedCells( const RationalPolytope& polytope,
   ASSERT( polytope.canBeSummed() );
   if ( ! polytope.canBeSummed() )
     trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
-                    << " RationalPolytope is not valid for Minkowski sums. " << std::endl;
+                    << " RationalPolytope is not valid for Minkowski sums. "
+                    << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Cell >      result;
   std::vector< Point >     points;
@@ -569,12 +589,13 @@ getIntersectedCells( const RationalPolytope& polytope,
       // Intersected cells are bijective to points in a dilated polytope.
       polytopes.back().getPoints( points );
       // For each point, build its cell and push it into result.
-      for ( auto p : points ) {
-        auto cell = myK.uPointel( p );
-        for ( Dimension k = 1; k < extensions.size(); ++k )
-          cell = myK.uIncident( cell, extensions[ k ], false );
-        result.push_back( cell );
-      }
+      for ( auto p : points )
+        {
+          auto cell = myK.uPointel( p );
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            cell = myK.uIncident( cell, extensions[ k ], false );
+          result.push_back( cell );
+        }
       // Go to next type of cell
       Dimension   k    = i;
       extensions[ k ] += 1;
@@ -601,7 +622,8 @@ getIntersectedKPoints( const RationalPolytope& polytope,
   ASSERT( polytope.canBeSummed() );
   if ( ! polytope.canBeSummed() )
     trace.warning() << "[CellGeometryFunctions::getIntersectedKPoints]"
-                    << " RationalPolytope is not valid for Minkowski sums. " << std::endl;
+                    << " RationalPolytope is not valid for Minkowski sums. "
+                    << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Point >     result;
   std::vector< Point >     points;
@@ -630,13 +652,14 @@ getIntersectedKPoints( const RationalPolytope& polytope,
       // Intersected cells are bijective to points in a dilated polytope.
       polytopes.back().getPoints( points );
       // For each point, build its Khalimsky points and push it into result.
-      for ( auto p : points ) {
-        auto kp   = myK.uKCoords( myK.uPointel( p ) );
-        for ( Dimension k = 1; k < extensions.size(); ++k )
-           // decrease Khalimsky coordinate to get incident cell
-          kp[ extensions[ k ] ] -= 1;
-        result.push_back( kp );
-      }
+      for ( auto p : points )
+        {
+          auto kp   = myK.uKCoords( myK.uPointel( p ) );
+          for ( Dimension k = 1; k < extensions.size(); ++k )
+            // decrease Khalimsky coordinate to get incident cell
+            kp[ extensions[ k ] ] -= 1;
+          result.push_back( kp );
+        }
       // Go to next type of cell
       Dimension   k    = i;
       extensions[ k ] += 1;
