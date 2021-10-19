@@ -49,12 +49,20 @@
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
+- *Geometry*
+  - New VoronoiMapComplete class to store the full Voronoi map (with
+    all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
+    Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+    
+
 - *Build*
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
+  - Fix cmake related ITK usage in other projects (issue #1612). 
+    (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
 
 ## Bug fixes
 

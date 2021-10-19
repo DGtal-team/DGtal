@@ -21,7 +21,7 @@ namespace DGtal {
 
 [TOC]
 
-@author David Coeurjolly, Roland Denis
+@author David Coeurjolly, Roland Denis, Robin Lamy (VoronoiComplete)
 
 This part of the manual describes the DGtal volumetric module. We
 focus here on separable process based volumetric analysis such as
@@ -102,7 +102,9 @@ similarly.
 output of the result is the intersection between the Voronoi diagram
 of exterior points with @f$ \mathbb{Z}^d @f$. Furthermore, along
 Voronoi faces (@e e.i. when two sites are equidistant), only one sites
-is considered when intersection with  @f$ \mathbb{Z}^d @f$.
+is considered when intersection with  @f$ \mathbb{Z}^d @f$. If you
+want the complete Voronoi map (i.e. h @f$ \mathcal{V}\cap\mathbb{Z}^d
+@f$, have a look to @ref vorocomplete.
 
 
 In DGtal, the class VoronoiMap implements such digital Vornoi map
@@ -210,6 +212,50 @@ new Voronoi map:
 @image html voronoimap-vorol8.png "Voronoi map for the l_8 metric."
 @image latex voronoimap-vorol8.png "Voronoi map for the l_8 metric."
 
+@section vorocomplete Complete Discrete Voronoi Map
+
+In this section, we describe the VoronoiMapComplete class that implements
+the complete Voronoi map with all co-cyclic points. More precisely if
+a grid point is equidistant to two sites, the two sites are reported
+in the VoronoiComplete map .
+
+This extension of the separable approach has been described in @cite Couprie2007 
+
+The overall algorithm is roughly the same
+(separable decomposition, each grid point is processed a constant
+amount of time), the only difference is that per grid point, we need
+to iterate over all co-cyclic sites obtained from the partial Voronoi
+map of the preceding dimensions. If the domain has no co-cycling
+sites, the asymptotic computational cost is exactly the same as
+VoronoiMap, if not, there is an extra factor that is a function of the
+number of co-cyclic points.
+
+The interface is exactly the same as the VoronoiMap, except that the
+output image is an image of `std::set<Point>` instead of an image of
+`Point`. As we rely on `std::set` as a per pixel container, and if
+@f$f@f$ denotes the number of co-cyclic sites at a point, the extra
+factor is in @f$ O(f \log f) @f$ (as insertion is expected to be done
+in logarithmic time for `std::set`). 
+
+
+@note Beside the extra computational cost due to the processing of
+co-cyclic sites, the VoronoiMapComplete class as a bigger constant
+factor due to the construction of the container. Indeed, as
+illustrated in testVoronoiMapComplete, creating a VoronoiMap on a
+256x256 image without any site takes 4ms, whereas the same size
+VoronoiMapComplete (still no sites) takes 118ms (on a MacPro). To be
+complete, when adding 5000 random sites, VoronoiMap takes 6.2ms in
+total, and 162ms for the VoronoiMapComplete (maximum number of
+co-cyclic sites = 4). The construction time should be amortized on
+larger domains.
+
+@note Associative containers with O(1) amortized insertion like
+`std::unordered_set` lead to higher construction time without a clear
+improvment on the overall performances.
+
+The VoronoiMapComplete class can also be applied on toroidal domains
+(see @ref toricVol).
+
 @section DTsec Distance Transformation
 
 As discussed earlier, the distance transformation is given by
@@ -301,13 +347,13 @@ ExactPredicateLpPowerSeparableMetric, see @ref moduleMetrics
 
 In some specific applications, toric domains and volumetric analysis
 of shapes in toric domains are crucial. Thanks to the separability
-property of VoronoiMap, PowerMap (and their associated wrappers
+property of VoronoiMap, VoronoiMapComplete, PowerMap (and their associated wrappers
 DistanceTransformation and ReverseDistanceTransformation), one can
 easily consider volumetric transformation in arbitrary dimension on
 toric domains @cite Coeurjo2008. Note that changing the periodicity
 property of the domain has no impact on the computational cost.
 
-More precisely, VoronoiMap and DistanceTransformation classes have
+More precisely, VoronoiMap, VoronoiMapComplete and DistanceTransformation classes have
 constructors allowing to specify periodicity information. In dimension
 @e d, such periodicity information is an array with @e d boolean flags
 where the i-th value is \c true if the i-th dimension of the space is
