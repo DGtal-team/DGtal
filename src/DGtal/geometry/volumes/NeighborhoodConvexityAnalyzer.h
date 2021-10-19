@@ -77,7 +77,7 @@ namespace DGtal
   // template class NeighborhoodConvexityAnalyzer
   /**
      Description of template class 'NeighborhoodConvexityAnalyzer' <p>
-     \brief Aim: A class that model a \f$ (2k+1)^d \f$ neighborhood and
+     \brief Aim: A class that models a \f$ (2k+1)^d \f$ neighborhood and
      that provides services to analyse the convexity properties of a
      digital set within this neighborhood.
 
