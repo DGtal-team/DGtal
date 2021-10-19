@@ -678,13 +678,13 @@ namespace DGtal
     }
 
     /**
-     *  @brief Attempts to insert a range of element into the set.
+     *  @brief Inserts a range of element into the set.
      *
      *  @tparam InputIterator any model of input iterator 
      *  @param[in]  first an iterator pointing on the first element of the range
      *  @param[in]  last an iterator pointing after the last element of the range
      *
-     *  This function attempts to insert a range of elements into the set.  A set
+     *  This function inserts a range of elements into the set.  A set
      *  relies on unique keys and thus an element is only inserted if it is
      *  not already present in the set.
      *
