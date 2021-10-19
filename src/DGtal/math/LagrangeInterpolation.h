@@ -51,7 +51,8 @@
 namespace DGtal
 {
   /**
-    Description of class 'LagrangeInterpolation' <p> \brief Aim: This class implements Lagrange basis functions and Lagrange interpolation.
+    Description of class 'LagrangeInterpolation' 
+    <p> \brief Aim: This class implements Lagrange basis functions and Lagrange interpolation.
     
     @see testLagrangeInterpolation.cpp
 
