@@ -379,13 +379,8 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
   auto S = insidePoints( P );
-  // std::cout << "Inside points: ";
-  // for ( auto p : S ) std::cout << p;
-  // std::cout << std::endl;
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
-  // std::cout << "Touched cells:     " << touched_cells << std::endl;
   auto intersected_cells = makeCellCover( P, k, k );
-  // std::cout << "Intersected cells: " << intersected_cells << std::endl;
   return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }

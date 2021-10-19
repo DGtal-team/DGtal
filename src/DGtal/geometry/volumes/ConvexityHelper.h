@@ -336,7 +336,7 @@ namespace DGtal
     /// dimensional and dimension was greater than 3.
     static
     LatticePolytope
-    computeDegeneratedLatticePolytope( std::vector< Point > input_points );
+    computeDegeneratedLatticePolytope( const std::vector< Point > & input_points );
 
     
     /// @}

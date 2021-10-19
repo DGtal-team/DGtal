@@ -68,7 +68,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedLatticePolytope
-( std::vector< Point > input_points )
+( const std::vector< Point >& input_points )
 {
   typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
