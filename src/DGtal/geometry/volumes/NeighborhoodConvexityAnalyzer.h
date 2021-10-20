@@ -70,7 +70,6 @@ namespace DGtal
     /// @endcode
     template< typename T >
     constexpr T const_pow( T b, unsigned int e) {
-      BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< T > ));
       return e == 0 ? T(1) : b * const_pow( b, e - 1 );
     }
 
@@ -86,7 +85,6 @@ namespace DGtal
     /// @endcode
     template< typename T >
     constexpr T const_middle( T K, unsigned int e ) {
-      BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< T > ));
       return e <= 1
         ? T( K )
         : K * const_pow( 2 * K + 1, e - 1 ) + const_middle( K, e - 1 );
