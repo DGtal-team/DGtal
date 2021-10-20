@@ -50,6 +50,7 @@
 #include "DGtal/base/Clone.h"
 #include "DGtal/base/TimeStampMemoizer.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/kernel/CBoundedNumber.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -59,7 +60,7 @@
 namespace DGtal
 {
   namespace detail {
-    /// @tparam T any model of number.
+    /// @tparam T any model of bounded number.
     /// @param b a number
     /// @param e a non negative integer
     /// @return the constant expression \f$ b^e \f$, computed at compile time.
@@ -68,11 +69,12 @@ namespace DGtal
     /// auto v = detail::const_pow( 5, 3 ); // 5^3
     /// @endcode
     template< typename T >
-    constexpr T const_pow(T base, unsigned int exponent) {
-      return exponent == 0 ? T(1) : base * const_pow(base, exponent - 1);
+    constexpr T const_pow( T b, unsigned int e) {
+      BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< T > ));
+      return e == 0 ? T(1) : b * const_pow( b, e - 1 );
     }
 
-    /// @tparam T any model of number.
+    /// @tparam T any model of bounded number.
     /// @param K a non negative number
     /// @param e a non negative integer
     /// @return the index of the middle element in the `e`-dimensional array of width \f$ 2K+1 \f$, computed at compile time.
@@ -83,10 +85,11 @@ namespace DGtal
     /// auto m3 = detail::const_middle( 1, 3 ); // 13, dans le tableau 3x3x3
     /// @endcode
     template< typename T >
-    constexpr T const_middle(T K, unsigned int exponent) {
-      return exponent <= 1
-        ? T(K)
-        : K * const_pow( 2*K+1, exponent-1 ) + const_middle( K, exponent - 1 );
+    constexpr T const_middle( T K, unsigned int e ) {
+      BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< T > ));
+      return e <= 1
+        ? T( K )
+        : K * const_pow( 2 * K + 1, e - 1 ) + const_middle( K, e - 1 );
     }
   } // namespace detail
   
