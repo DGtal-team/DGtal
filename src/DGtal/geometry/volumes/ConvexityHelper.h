@@ -328,15 +328,18 @@ namespace DGtal
     ///
     /// @note This function works for dimension no greater than 3.
     ///
-    /// @param input_points a range of distinct points.
+    /// @param[in] input_points a range of distinct points.
     ///
     /// @return the tightiest bounded lattice polytope
     /// (i.e. H-representation) including the given range of points,
     /// or an empty polytope if the given range of points was not full
     /// dimensional and dimension was greater than 3.
+    ///
+    /// @note The points are passed by value since this set of points
+    /// is transformed in the function for convex hull computation purposes.
     static
     LatticePolytope
-    computeDegeneratedLatticePolytope( const std::vector< Point > & input_points );
+    computeDegeneratedLatticePolytope( std::vector< Point > input_points );
 
     
     /// @}
