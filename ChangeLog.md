@@ -54,6 +54,9 @@
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
   - Fix cmake related ITK usage in other projects (issue #1612). 
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
+  - Adding ITK in Github Actions CI on linux distribution.
+    (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
+
 
 ## Bug fixes
 
