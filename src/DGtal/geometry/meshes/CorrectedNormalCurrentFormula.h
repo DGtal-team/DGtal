@@ -196,13 +196,14 @@ namespace DGtal
     /// @name Formulas for mu1 measure
     /// @{
 
-    /// Computes mu1 measure (mean curvature) of triangle abc given a constant
-    /// corrected normal vector \a u.
+    /// Computes mu1 measure (twice the mean curvature) of triangle
+    /// abc given a constant corrected normal vector \a u.
+    ///
     /// @param a any point
     /// @param b any point
     /// @param c any point
     /// @param u the constant corrected normal vector to triangle abc
-    /// @return the mu1-measure of triangle abc, i.e. its mean curvature, always 0.0.
+    /// @return the mu1-measure of triangle abc, i.e. twice its mean curvature, always 0.0.
     static
     Scalar mu1ConstantU
     ( const RealPoint& /* a */, const RealPoint& /* b */, const RealPoint& /* c */,
@@ -211,8 +212,10 @@ namespace DGtal
       return 0.0;
     }
 
-    /// Computes mu1 measure (mean curvature) of triangle abc given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// Computes mu1 measure (twice the mean curvature) of triangle
+    /// abc given an interpolated corrected normal vector \a ua, \a
+    /// \ub, \a uc.
+    ///
     /// @param a any point
     /// @param b any point
     /// @param c any point
@@ -222,7 +225,7 @@ namespace DGtal
     /// @param unit_u when 'true' considers that interpolated
     /// corrected normals should be made unitary, otherwise
     /// interpolated corrected normals may have smaller norms.
-    /// @return the mu1-measure of triangle abc, i.e. its mean curvature.
+    /// @return the mu1-measure of triangle abc, i.e. twice its mean curvature.
     static
     Scalar mu1InterpolatedU
     ( const RealPoint& a, const RealPoint& b, const RealPoint& c,
@@ -232,17 +235,17 @@ namespace DGtal
       // MU1=1/2( | uM u_C-u_B A | + | uM u_A-u_C B | + | uM u_B-u_A C |
       RealVector uM = ( ua+ub+uc ) / 3.0;
       if ( unit_u ) uM /= uM.norm();
-      // JOL: if I put 0.5, we obtain twice the mean curvature.
-      return 0.25 * ( uM.crossProduct( uc - ub ).dot( a )
+      return 0.5 * ( uM.crossProduct( uc - ub ).dot( a )
 		     + uM.crossProduct( ua - uc ).dot( b )
 		     + uM.crossProduct( ub - ua ).dot( c ) );
     }
     
-    /// Computes mu1 measure (mean curvature) of polygonal face \a pts given a
-    /// constant corrected normal vector \a u.
+    /// Computes mu1 measure (twice the mean curvature) of polygonal
+    /// face \a pts given a constant corrected normal vector \a u.
+    ///
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
     /// @param u the constant corrected normal vector to this polygonal face.
-    /// @return the mu1-measure of the given polygonal face, i.e. its mean curvature, always 0.0.
+    /// @return the mu1-measure of the given polygonal face, i.e. twice its mean curvature, always 0.0.
     static
     Scalar mu1ConstantU( const RealPoints& pts, const RealVector& u )
     {
