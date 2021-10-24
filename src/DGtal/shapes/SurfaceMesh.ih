@@ -458,7 +458,7 @@ faceArea( Index f ) const
 template <typename TRealPoint, typename TRealVector>
 typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
-computeFacesInclusionsInBall( Scalar r, Index f ) const
+computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const
 {
   WeightedFaces result;
   if ( r < 0.000001 )
@@ -466,7 +466,6 @@ computeFacesInclusionsInBall( Scalar r, Index f ) const
       result.push_back( std::make_pair( f, 0.000001 ) );
       return result;
     }
-  RealPoint p = faceCentroid( f );
   std::unordered_set< Index > marked;
   std::queue< Index > active;
   active.push( f );
@@ -498,7 +497,7 @@ std::tuple
   typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
   typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
-computeCellsInclusionsInBall( Scalar r, Index f ) const
+computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const
 {
   Vertices      result_v;
   std::set<Vertex> set_v;
@@ -509,7 +508,6 @@ computeCellsInclusionsInBall( Scalar r, Index f ) const
       result_f.push_back( std::make_pair( f, 0.000001 ) );
       return std::make_tuple( result_v, result_e, result_f );
     }
-  RealPoint p = faceCentroid( f );
   std::set< Index > marked;
   std::queue< Index > active;
   active.push( f );
