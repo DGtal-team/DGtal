@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testCellGeometry.cpp
+ * @file testCorrectedNormalCurrentComputer.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2019/01/04
+ * @date 2021/10/24
  *
- * Functions for testing class CellGeometry.
+ * Functions for testing class CorrectedNormalCurrentComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -44,7 +44,7 @@ using namespace DGtal;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class CellGeometry.
+// Functions for testing class CorrectedNormalCurrentComputer.
 ///////////////////////////////////////////////////////////////////////////////
 
 SCENARIO( "CorrectedNormalCurrentComputer sphere tests", "[cnc][sphere]" )
