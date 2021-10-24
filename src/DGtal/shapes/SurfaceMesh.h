@@ -617,16 +617,14 @@ namespace DGtal
     /// @note Used in computeVertexNormalsFromFaceNormalsWithMaxWeights, see \cite max1999weights
     Scalars getMaxWeights( Index v ) const;
     
-    /// Given a ball of radius \a r centered on a point \a p belonging
-    /// to face \a f, return the faces having a non empty intersection
-    /// with this ball, each one weighted by its ratio of inclusion
-    /// (in the range [0,1] where 0 is empty intersection and 1 is
-    /// completely included).
+    /// Given a ball of radius \a r centered on the centroid of face
+    /// \a f, return the faces having a non empty intersection with
+    /// this ball, each one weighted by its ratio of inclusion (in the
+    /// range [0,1] where 0 is empty intersection and 1 is completely
+    /// included).
     ///
     /// @param r the radius of the ball.
     /// @param f the face where the ball is centered.
-    /// @param p the position on the face where the ball is centered,
-    /// by default its centroid.
     ///
     /// @return the range of faces having an non empty intersection
     /// with this ball, each one weighted by its ratio of inclusion
@@ -639,19 +637,39 @@ namespace DGtal
     /// vertices and face barycenter to the ball center and by linear
     /// interpolation of the results.
     WeightedFaces
-    computeFacesInclusionsInBall( Scalar r, Index f,
-                                  RealPoint p = faceCentroid( f ) ) const;
+    computeFacesInclusionsInBall( Scalar r, Index f ) const;
     
     /// Given a ball of radius \a r centered on a point \a p belonging
-    /// to face \a f, return the vertices/edges/faces having an non
-    /// empty intersection with this ball, each edge/face weighted by
-    /// its ratio of inclusion (in the range [0,1] where 0 is empty
+    /// to face \a f, return the faces having a non empty intersection
+    /// with this ball, each one weighted by its ratio of inclusion
+    /// (in the range [0,1] where 0 is empty intersection and 1 is
+    /// completely included).
+    ///
+    /// @param r the radius of the ball.
+    /// @param f the face where the ball is centered.
+    /// @param p the position on the face where the ball is centered.
+    ///
+    /// @return the range of faces having an non empty intersection
+    /// with this ball, each one weighted by its ratio of inclusion
+    /// (in the range [0,1] where 0 is empty intersection and 1 is
+    /// completely included).
+    ///
+    /// @note For faces, the ratio is the @e approximated @e area of
+    /// the face part inside the ball and the face area. The
+    /// approximation is estimated by computing the distance of face
+    /// vertices and face barycenter to the ball center and by linear
+    /// interpolation of the results.
+    WeightedFaces
+    computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const;
+    
+    /// Given a ball of radius \a r centered on the centroid of face
+    /// \a f, return the vertices/edges/faces having an non empty
+    /// intersection with this ball, each edge/face weighted by its
+    /// ratio of inclusion (in the range [0,1] where 0 is empty
     /// intersection and 1 is completely included).
     ///
     /// @param r the radius of the ball.
     /// @param f the face where the ball is centered.
-    /// @param p the position on the face where the ball is centered,
-    /// by default its centroid.
     ///
     /// @return the range of vertices/edges/faces having an non empty
     /// intersection with this ball, each edge/face weighted by its
@@ -660,8 +678,26 @@ namespace DGtal
     ///
     /// @note a vertex is either included or not, so no weight is necessary.
     std::tuple< Vertices, WeightedEdges, WeightedFaces >
-    computeCellsInclusionsInBall( Scalar r, Index f,
-                                  RealPoint p = faceCentroid( f ) ) const;
+    computeCellsInclusionsInBall( Scalar r, Index f ) const;
+
+    /// Given a ball of radius \a r centered on a point \a p belonging
+    /// to face \a f, return the vertices/edges/faces having an non
+    /// empty intersection with this ball, each edge/face weighted by
+    /// its ratio of inclusion (in the range [0,1] where 0 is empty
+    /// intersection and 1 is completely included).
+    ///
+    /// @param r the radius of the ball.
+    /// @param f the face where the ball is centered.
+    /// @param p the position on the face where the ball is centered.
+    ///
+    /// @return the range of vertices/edges/faces having an non empty
+    /// intersection with this ball, each edge/face weighted by its
+    /// ratio of inclusion (in the range [0,1] where 0 is empty
+    /// intersection and 1 is completely included).
+    ///
+    /// @note a vertex is either included or not, so no weight is necessary.
+    std::tuple< Vertices, WeightedEdges, WeightedFaces >
+    computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const;
     
     /// Computes an approximation of the inclusion ratio of a given
     /// face \a f with a ball of radius \a r and center \a p.

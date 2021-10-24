@@ -61,11 +61,10 @@ namespace DGtal
     // ------------------------- Public Types ------------------------------
   public:
     
-    static const Dimension dimension = RealPoint::dimension;
     typedef TRealPoint                     RealPoint;
     typedef TRealVector                    RealVector;
     typedef TValue                         Value;
-    typedef SurfaceMeshMeasure< RealPoint, RealVector > Self;
+    typedef SurfaceMeshMeasure< RealPoint, RealVector, Value > Self;
     BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing< Value > ));
     typedef DGtal::SurfaceMesh< RealPoint, RealVector > SurfaceMesh;
     typedef typename SurfaceMesh::Index    Index;
@@ -84,9 +83,10 @@ namespace DGtal
     typedef std::vector< Edge >            Edges;
     /// The type that defines a range of faces
     typedef std::vector< Face >            Faces;
-    typedef std::vector< WeightedVertices> WeightedVertices;
+    typedef std::vector< WeightedVertex >  WeightedVertices;
     typedef std::vector< WeightedEdge >    WeightedEdges;
     typedef std::vector< WeightedFace >    WeightedFaces;
+    static const Dimension dimension = RealPoint::dimension;
 
     // ------------------------- Standard services ------------------------------
   public:
@@ -97,7 +97,7 @@ namespace DGtal
     /// @param aMesh any simplified mesh that is referenced in this object.
     SurfaceMeshMeasure( ConstAlias< SurfaceMesh > aMesh = nullptr,
                         Value zero_value = Value() )
-      : myMeshPtr( aMesh ), myZero( zero_value ) {}
+      : myMeshPtr( &aMesh ), myZero( zero_value ) {}
 
     /// @return a pointer to the associated mesh or nullptr if the
     /// measure is not valid.
@@ -130,6 +130,15 @@ namespace DGtal
     /// @name Measure services
     /// @{
 
+    /// @return the total measure (i.e. onto the whole space).
+    Value measure() const
+    {
+      Value m = myZero;
+      for ( auto&& lm : vertex_measures ) m += lm;
+      for ( auto&& lm : face_measures   ) m += lm;
+      for ( auto&& lm : edge_measures   ) m += lm;
+      return m;
+    }
     /// Computes the total measure on the ball of center \a x and
     /// radius \r. The center \a x must lie on or close to the face \a
     /// f (as a hint to compute cells in the given ball).
@@ -249,9 +258,11 @@ namespace DGtal
     Values face_measures;
 
     // ------------------------- Protected Datas ------------------------------
-  public:
+  protected:
     /// A pointer to the mesh over which computations are done.
     const SurfaceMesh* myMeshPtr;
+    /// Zero value for the given type.
+    Value myZero;
   };
 
   

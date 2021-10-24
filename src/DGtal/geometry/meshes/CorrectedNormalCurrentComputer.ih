@@ -41,44 +41,29 @@
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh )
-  : myMesh( aMesh )
+CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh,
+                                bool unit_u )
+  : myMesh( aMesh ), myUnitU( unit_u )
 {}
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-computeInterpolatedMeasures( Measure mu, bool unit_u )
+computeMu0() const
 {
-  if ( myMesh.vertexNormals().empty() )
-    {
-      trace.warning() << "[CorrectedNormalCurrentComputer::computeInterpolatedMeasures]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
-    }
-  if ( mu == Measure::ALL_MU || mu == Measure::MU0  ) computeInterpolatedMu0 ( unit_u );
-  if ( mu == Measure::ALL_MU || mu == Measure::MU1  ) computeInterpolatedMu1 ( unit_u );
-  if ( mu == Measure::ALL_MU || mu == Measure::MU2  ) computeInterpolatedMu2 ( unit_u );
-  if ( mu == Measure::ALL_MU || mu == Measure::MUXY ) computeInterpolatedMuXY( unit_u );
-  return true;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-bool
-DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-computeInterpolatedMu0( bool unit_u )
-{
+  ScalarMeasure mu0( &myMesh, 0.0 );
   if ( myMesh.vertexNormals().empty() )
     {
       trace.warning() << "[CorrectedNormalCurrentComputer::computeInterpolatedMu0]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
+                      << " Unable to compute measures without vertex normals."
+                      << std::endl;
+      return mu0;
     }
-  mu0.resize( myMesh.nbFaces() );
+  auto& face_mu0 = mu0.kMeasures( 2 );
+  face_mu0.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.incidentVertices() )
+  for ( auto f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -87,26 +72,29 @@ computeInterpolatedMu0( bool unit_u )
           p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
           u[ idx_v ] = myMesh.vertexNormals()[ f[ idx_v ] ];
         }
-      mu0[ idx_f++ ] = Formula::mu0InterpolatedU( p, u, unit_u );
+      face_mu0[ idx_f++ ] = Formula::mu0InterpolatedU( p, u, myUnitU );
     }
-  return true;
+  return mu0;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-computeInterpolatedMu1( bool unit_u )
+computeMu1() const
 {
+  ScalarMeasure mu1( &myMesh, 0.0 );
   if ( myMesh.vertexNormals().empty() )
     {
-      trace.warning() << "[CorrectedNormalCurrentComputer::computeInterpolatedMu1]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
+      trace.warning() << "[CorrectedNormalCurrentComputer::computeMu1]"
+                      << " Unable to compute measures without vertex normals."
+                      << std::endl;
+      return mu1;
     }
-  mu1.resize( myMesh.nbFaces() );
+  auto& face_mu1 = mu1.kMeasures( 2 );
+  face_mu1.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.incidentVertices() )
+  for ( auto f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -115,26 +103,29 @@ computeInterpolatedMu1( bool unit_u )
           p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
           u[ idx_v ] = myMesh.vertexNormals()[ f[ idx_v ] ];
         }
-      mu1[ idx_f++ ] = Formula::mu1InterpolatedU( p, u, unit_u );
+      face_mu1[ idx_f++ ] = Formula::mu1InterpolatedU( p, u, myUnitU );
     }
-  return true;
+  return mu1;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-computeInterpolatedMu2( bool unit_u )
+computeMu2() const
 {
+  ScalarMeasure mu2( &myMesh, 0.0 );
   if ( myMesh.vertexNormals().empty() )
     {
-      trace.warning() << "[CorrectedNormalCurrentComputer::computeInterpolatedMu2]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
+      trace.warning() << "[CorrectedNormalCurrentComputer::computeMu2]"
+                      << " Unable to compute measures without vertex normals."
+                      << std::endl;
+      return mu2;
     }
-  mu2.resize( myMesh.nbFaces() );
+  auto& face_mu2 = mu2.kMeasures( 2 );
+  face_mu2.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.incidentVertices() )
+  for ( auto f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -143,35 +134,30 @@ computeInterpolatedMu2( bool unit_u )
           p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
           u[ idx_v ] = myMesh.vertexNormals()[ f[ idx_v ] ];
         }
-      mu2[ idx_f ] = Formula::mu2InterpolatedU( p, u, unit_u );
-      // if ( isnan( mu2[ idx_f ] ) )
-      //   {
-      //     trace.warning() << "At face " << idx_f
-      //                     << ", with " << f.size() << " inc. vtx,"
-      //                     << " mu2 not a number." << std::endl;
-      //     for ( auto x : p ) trace.warning() << "x=" << x << std::endl;
-      //     for ( auto n : u ) trace.warning() << "n=" << n << std::endl;
-      //   }
-      idx_f++;
+      face_mu2[ idx_f++ ] = Formula::mu2InterpolatedU( p, u, myUnitU );
     }
-  return true;
+  return mu2;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::TensorMeasure
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-computeInterpolatedMuXY( bool unit_u )
+computeMuXY() const
 {
+  const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  TensorMeasure muXY( &myMesh, zeroT );
   if ( myMesh.vertexNormals().empty() )
     {
-      trace.warning() << "[CorrectedNormalCurrentComputer::computeInterpolatedMuXY]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
+      trace.warning() << "[CorrectedNormalCurrentComputer::computeMuXY]"
+                      << " Unable to compute measures without vertex normals."
+                      << std::endl;
+      return muXY;
     }
-  muXY.resize( myMesh.nbFaces() );
+  auto& face_muXY = muXY.kMeasures( 2 );
+  face_muXY.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.incidentVertices() )
+  for ( auto f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -180,54 +166,12 @@ computeInterpolatedMuXY( bool unit_u )
           p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
           u[ idx_v ] = myMesh.vertexNormals()[ f[ idx_v ] ];
         }
-      muXY[ idx_f++ ] = Formula::muXYInterpolatedU( p, u, unit_u );
+      face_muXY[ idx_f++ ] = Formula::muXYInterpolatedU( p, u, myUnitU );
     }
-  return true;
+  return muXY;
 }
 
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::Scalar
-DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-interpolatedMu0 ( const WeightedFaces& wfaces ) const
-{
-  Scalar m = 0.0;
-  for ( auto wf : wfaces )  m += wf.second * mu0[ wf.first ];
-  return m;
-}
 
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::Scalar
-DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-interpolatedMu1 ( const WeightedFaces& wfaces ) const
-{
-  Scalar m = 0.0;
-  for ( auto wf : wfaces )  m += wf.second * mu1[ wf.first ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::Scalar
-DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-interpolatedMu2 ( const WeightedFaces& wfaces ) const
-{
-  Scalar m = 0.0;
-  for ( auto wf : wfaces )  m += wf.second * mu2[ wf.first ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::RealTensor
-DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-interpolatedMuXY( const WeightedFaces& wfaces ) const
-{
-  RealTensor m = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-  for ( auto wf : wfaces )  m += wf.second * muXY[ wf.first ];
-  return m;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

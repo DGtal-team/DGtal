@@ -458,6 +458,15 @@ faceArea( Index f ) const
 template <typename TRealPoint, typename TRealVector>
 typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFacesInclusionsInBall( Scalar r, Index f ) const
+{
+  return computeFacesInclusionsInBall( r, f, faceCentroid( f ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const
 {
   WeightedFaces result;
@@ -488,6 +497,18 @@ computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const
         }
     }
   return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::tuple
+< typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Vertices,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeCellsInclusionsInBall( Scalar r, Index f ) const
+{
+  return computeCellsInclusionsInBall( r, f, faceCentroid( f ) );
 }
 
 //-----------------------------------------------------------------------------

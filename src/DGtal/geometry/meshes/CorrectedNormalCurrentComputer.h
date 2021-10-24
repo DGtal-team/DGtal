@@ -45,7 +45,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/meshes/CurvatureMeasures.h"
+#include "DGtal/geometry/meshes/SurfaceMeshMeasure.h"
 #include "DGtal/geometry/meshes/CorrectedNormalCurrentFormula.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 
@@ -67,82 +67,65 @@ namespace DGtal
   template < typename TRealPoint, typename TRealVector >
   struct CorrectedNormalCurrentComputer
   {
-    typedef TRealPoint                              RealPoint;
-    typedef TRealVector                             RealVector;
+    typedef TRealPoint                                   RealPoint;
+    typedef TRealVector                                  RealVector;
     typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > Self;
     static const Dimension dimension = RealPoint::dimension;
     BOOST_STATIC_ASSERT( ( dimension == 3 ) );
-
-    typedef DGtal::SurfaceMesh< RealPoint, RealVector > SurfaceMesh;
-    typedef ScalarCurvatureMeasures< RealPoint, RealVector >  ScalarMeasure;
-    typedef TensorCurvatureMeasures< RealPoint, RealVector >  TensorMeasure;
-    typedef typename ScalarMeasure::Scalar     Scalar;
-    typedef typename TensorMeasure::RealTensor RealTensor;
-    typedef std::vector< Scalar >              Scalars;
-    typedef std::vector< RealPoint >           RealPoints;
-    typedef std::vector< RealVector >          RealVectors;
+    typedef DGtal::SurfaceMesh< RealPoint, RealVector >  SurfaceMesh;
+    typedef typename RealVector::Component               Scalar;
+    typedef SimpleMatrix< Scalar, dimension, dimension > RealTensor;
     typedef CorrectedNormalCurrentFormula< RealPoint, RealVector > Formula;
-    typedef std::vector< RealTensor >          RealTensors;
+    typedef SurfaceMeshMeasure< RealPoint, RealVector, Scalar >     ScalarMeasure;
+    typedef SurfaceMeshMeasure< RealPoint, RealVector, RealTensor > TensorMeasure;
+    typedef std::vector< Scalar >                        Scalars;
+    typedef std::vector< RealPoint >                     RealPoints;
+    typedef std::vector< RealVector >                    RealVectors;
+    typedef std::vector< RealTensor >                    RealTensors;
     
     /// The type for counting elements.
-    typedef SurfaceMesh::Size                  Size;
+    typedef typename SurfaceMesh::Size                  Size;
     /// The type used for numbering vertices
-    typedef SurfaceMesh::Size                  Index;
-    typedef SurfaceMesh::Vertex                Vertex;
-    typedef SurfaceMesh::Face                  Face;
-    typedef std::pair< Face, Scalar >          WeightedFace;
-    typedef std::pair< Vertex, Scalar >        WeightedVertex;
-    /// The type that defines a range of vertices
-    typedef std::vector< Vertex >              Vertices;
-    /// The type that defines a range of faces
-    typedef std::vector< Face >                Faces;
-    typedef std::vector< WeightedFace >        WeightedFaces;
+    typedef typename SurfaceMesh::Size                  Index;
+    typedef typename SurfaceMesh::Vertex                Vertex;
+    typedef typename SurfaceMesh::Face                  Face;
 
 
     /// Constructor from mesh.
     /// @param aMesh any simplified mesh that is referenced in this object.
-    CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh );
+    CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh,
+                                    bool unit_u = false );
 
-    bool computeInterpolatedMeasures( Measure mu, bool unit_u = false );
-    bool computeInterpolatedMu0     ( bool unit_u = false );
-    bool computeInterpolatedMu1     ( bool unit_u = false );
-    bool computeInterpolatedMu2     ( bool unit_u = false );
-    bool computeInterpolatedMuXY    ( bool unit_u = false );
-
-    /// Given weighted faces, returns its interpolated mu0 measure.
-    Scalar     interpolatedMu0 ( const WeightedFaces& wfaces ) const;
-    /// Given weighted faces, returns its interpolated mu1 measure.
-    Scalar     interpolatedMu1 ( const WeightedFaces& wfaces ) const;
-    /// Given weighted faces, returns its interpolated mu2 measure.
-    Scalar     interpolatedMu2 ( const WeightedFaces& wfaces ) const;
-    /// Given weighted faces, returns its interpolated muXY measure.
-    RealTensor interpolatedMuXY( const WeightedFaces& wfaces ) const;
+    /// @return the \f$ \mu_0 \f$ corrected curvature measure, i.e. the area measure.
+    ScalarMeasure computeMu0() const;
+    /// @return the \f$ \mu_1 \f$ corrected curvature measure,
+    /// i.e. twice the mean curvature measure.
+    ScalarMeasure computeMu1() const;
+    /// @return the \f$ \mu_2 \f$ corrected curvature measure,
+    /// i.e. the Gaussian curvature measure.
+    ScalarMeasure computeMu2() const;
+    /// @return the \f$ \mu^{X,Y} \f$ corrected curvature measure,
+    /// i.e. the anisotropic tensor curvature measure.
+    TensorMeasure computeMuXY() const;
 
     // ------------------------- Public Datas ------------------------------
   public:
-    /// Per-face mu0 measure (area).
-    Scalars     mu0;
-    /// Per-face mu1 measure (mean curvature).
-    Scalars     mu1;
-    /// Per-face mu2 measure (Gaussian curvature).
-    Scalars     mu2;
-    /// Per-face muXY measure (2nd fundamental form).
-    RealTensors muXY;
     
     // ------------------------- Protected Datas ------------------------------
   protected:
     
     /// A reference to the mesh over which computations are done.
     const SurfaceMesh& myMesh;
+    /// Tells if we should use a normalized unit vector or not for
+    /// interpolated curvature measures.
+    bool myUnitU;
     
     // ------------------------- Private Datas --------------------------------
   private:
 
-
     // ------------------------- Internals ------------------------------------
   private:
-    
-    
+        
   }; // end of class CorrectedNormalCurrentComputer
     
 } // namespace DGtal

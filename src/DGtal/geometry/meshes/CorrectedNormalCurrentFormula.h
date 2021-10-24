@@ -44,7 +44,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
-#include "SphericalTriangle.h"
+#include "DGtal/geometry/tools/SphericalTriangle.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
