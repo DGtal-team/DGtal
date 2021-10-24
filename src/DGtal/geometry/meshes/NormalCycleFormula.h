@@ -112,7 +112,7 @@ namespace DGtal
       const Scalar n = std::min( 1.0, std::max( diedre.norm(), 0.0 ) );
       const Scalar angle = ( diedre.dot( b - a) < 0.0 )
 	? asin( n ) : - asin( n );
-      return 0.5 * ( b - a ).norm() * angle;
+      return ( b - a ).norm() * angle;
     }
 
     /// Computes the Gaussian curvature at point \a a with incident

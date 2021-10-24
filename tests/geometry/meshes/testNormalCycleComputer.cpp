@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testCorrectedNormalCurrentComputer.cpp
+ * @file testNormalCycleComputer.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/10/24
  *
- * Functions for testing class CorrectedNormalCurrentComputer.
+ * Functions for testing class NormalCycleComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -35,7 +35,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/SurfaceMeshHelper.h"
-#include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
+#include "DGtal/geometry/meshes/NormalCycleComputer.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -44,101 +44,80 @@ using namespace DGtal;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class CorrectedNormalCurrentComputer.
+// Functions for testing class NormalCycleComputer.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "CorrectedNormalCurrentComputer sphere tests", "[cnc][sphere]" )
+SCENARIO( "NormalCycleComputer sphere tests", "[nc][sphere]" )
 {
   using namespace Z3i;
   typedef SurfaceMesh< RealPoint, RealVector >       SM;
   typedef SurfaceMeshHelper< RealPoint, RealVector > SMH;
-  typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNCComputer;
+  typedef NormalCycleComputer< RealPoint, RealVector > NCComputer;
 
   SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20,
                                SMH::NormalsType::VERTEX_NORMALS );
-  CNCComputer cnc_computer ( sphere, false );
-  CNCComputer cncu_computer( sphere, true );
+  NCComputer nc_computer ( sphere );
   GIVEN( "A discretized sphere of radius 1 with 20x20x2 triangles" ) {
     THEN( "Its total mu0 measure is close to 4*pi (area)" ) {
-      auto mu0   = cnc_computer .computeMu0();
-      auto mu0_u = cncu_computer.computeMu0();
+      auto mu0   = nc_computer .computeMu0();
       double total_area   = mu0.measure();
-      double total_area_u = mu0_u.measure();
       Approx sphere_area  = Approx( 4.0 * M_PI ).epsilon(0.05);
       REQUIRE( total_area   == sphere_area );
-      REQUIRE( total_area_u == sphere_area );
     }
     THEN( "Its total mu1 measure is close to 8*pi (twice mean curvature)" ) {
-      auto mu1   = cnc_computer .computeMu1();
-      auto mu1_u = cncu_computer.computeMu1();
+      auto mu1   = nc_computer .computeMu1();
       double total_mu1    = mu1.measure();
-      double total_mu1_u  = mu1_u.measure();
       Approx twice_mean_c = Approx( 8.0 * M_PI ).epsilon(0.05);
       REQUIRE( total_mu1   == twice_mean_c );
-      REQUIRE( total_mu1_u == twice_mean_c );
     }
     THEN( "Its total mu2 measure is close to 4*pi (Gaussian curvature)" ) {
-      auto mu2   = cnc_computer .computeMu2();
-      auto mu2_u = cncu_computer.computeMu2();
+      auto mu2   = nc_computer .computeMu2();
       double total_mu2    = mu2.measure();
-      double total_mu2_u  = mu2_u.measure();
       Approx gaussian_c   = Approx( 4.0 * M_PI ).epsilon(0.05);
       REQUIRE( total_mu2   == gaussian_c );
-      Approx exact_gaussian_c = Approx( 4.0 * M_PI ).epsilon(0.000005);
-      REQUIRE( total_mu2_u == exact_gaussian_c );
     }
   }
 }
 
-SCENARIO( "CorrectedNormalCurrentComputer Schwarz lantern tests", "[cnc][lantern]" )
+SCENARIO( "NormalCycleComputer Schwarz lantern tests", "[nc][lantern]" )
 {
   using namespace Z3i;
   typedef SurfaceMesh< RealPoint, RealVector >       SM;
   typedef SurfaceMeshHelper< RealPoint, RealVector > SMH;
-  typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNCComputer;
+  typedef NormalCycleComputer< RealPoint, RealVector > NCComputer;
 
   SM lantern = SMH::makeLantern( 1.0, 1.0, RealPoint { 0.0, 0.0, 0.0 }, 30, 12,
                                  SMH::NormalsType::VERTEX_NORMALS );
-  CNCComputer cnc_computer ( lantern, false );
-  CNCComputer cncu_computer( lantern, true );
+  NCComputer nc_computer ( lantern );
   GIVEN( "A discretized lantern of radius 1 with 30x12x2 triangles" ) {
     THEN( "Its total mu0 measure is close to 2*pi (area)" ) {
-      auto mu0   = cnc_computer .computeMu0();
-      auto mu0_u = cncu_computer.computeMu0();
+      auto mu0   = nc_computer .computeMu0();
       double total_area   = mu0.measure();
-      double total_area_u = mu0_u.measure();
       Approx lantern_area  = Approx( 2.0 * M_PI ).epsilon(0.05);
-      REQUIRE( total_area   == lantern_area );
-      REQUIRE( total_area_u == lantern_area );
+      REQUIRE( total_area   != lantern_area );
     }
-    THEN( "Its total mu1 measure is close to 2*pi (twice mean curvature)" ) {
-      auto mu1   = cnc_computer .computeMu1();
-      auto mu1_u = cncu_computer.computeMu1();
+    THEN( "Its total mu1 measure is not close to 2*pi (twice mean curvature)" ) {
+      auto mu1   = nc_computer .computeMu1();
       double total_mu1    = mu1.measure();
-      double total_mu1_u  = mu1_u.measure();
       Approx twice_mean_c = Approx( 2.0 * M_PI ).epsilon(0.05);
-      REQUIRE( total_mu1   == twice_mean_c );
-      REQUIRE( total_mu1_u == twice_mean_c );
+      REQUIRE( total_mu1   != twice_mean_c );
     }
-    THEN( "Its total mu2 measure is close to 0 (Gaussian curvature)" ) {
-      auto mu2   = cnc_computer .computeMu2();
-      auto mu2_u = cncu_computer.computeMu2();
+    THEN( "Its total mu2 measure not close to 0 (Gaussian curvature)" ) {
+      auto mu2   = nc_computer .computeMu2();
       double total_mu2    = mu2.measure();
-      double total_mu2_u  = mu2_u.measure();
-      Approx exact_gaussian_c = Approx( 0.0 ).epsilon(0.000005);
-      REQUIRE( total_mu2   == exact_gaussian_c );
-      REQUIRE( total_mu2_u == exact_gaussian_c );
+      Approx gaussian_c   = Approx( 0.0 ).epsilon(0.05);
+      REQUIRE( total_mu2   != gaussian_c );
     }
   }
 }
 
 
-SCENARIO( "CorrectedNormalCurrentComputer convergence tests", "[cnc][convergence]" )
+SCENARIO( "NormalCycleComputer convergence tests", "[nc][convergence]" )
 {
   using namespace Z3i;
   typedef SurfaceMesh< RealPoint, RealVector >       SM;
   typedef SurfaceMeshHelper< RealPoint, RealVector > SMH;
-  typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNCComputer;
+  typedef NormalCycleComputer< RealPoint, RealVector > NCComputer;
 
   GIVEN( "A sphere of radius 1 discretized finer and finer" ) {
     THEN( "The total mu0 measure tends toward the sphere area" ) {
@@ -147,8 +126,8 @@ SCENARIO( "CorrectedNormalCurrentComputer convergence tests", "[cnc][convergence
         {
           SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, n, n,
                                        SMH::NormalsType::VERTEX_NORMALS );
-          CNCComputer cnc_computer ( sphere, false );
-          auto mu0   = cnc_computer .computeMu0();
+          NCComputer nc_computer ( sphere );
+          auto mu0   = nc_computer .computeMu0();
           errors.push_back( mu0.measure() );
         }
       double sphere_area = 4.0 * M_PI;

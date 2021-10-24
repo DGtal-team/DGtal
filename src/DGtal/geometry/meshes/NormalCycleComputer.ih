@@ -78,19 +78,19 @@ computeMu1() const
   Index idx_e = 0;
   for ( const auto& e : myMesh.allEdgeVertices() )
     {
-      const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
-      const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
 	edge_mu1[ idx_e ] = 0.0;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
-	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
 	  const RealVector right_n = Formula::normal( a, right, b );
 	  const RealVector  left_n = Formula::normal( a, b, left  );
-	  edge_mu1[ idx_e ] = Formula::meanCurvature( a, b, right_n, left_n );
+	  edge_mu1[ idx_e ] = Formula::twiceMeanCurvature( a, b, right_n, left_n );
 	}
       idx_e++;
     }
@@ -141,16 +141,16 @@ computeMuXY() const
   Index idx_e = 0;
   for ( auto e : myMesh.edgeVertices() )
     {
-      const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
-      const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
 	edge_muXY[ idx_e ] = zeroT;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
-	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
 	  const RealVector right_n = Formula::normal( a, right, b );
 	  const RealVector  left_n = Formula::normal( a, b, left  );
 	  edge_muXY[ idx_e ] =
@@ -169,21 +169,21 @@ computeMuXYs() const
 {
   const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
   TensorMeasure muXYs( &myMesh, zeroT );
-  auto& edge_muXYs = muXY.kMeasures( 1 );
+  auto& edge_muXYs = muXYs.kMeasures( 1 );
   edge_muXYs.resize( myMesh.nbEdges() );
   Index idx_e = 0;
   for ( auto e : myMesh.edgeVertices() )
     {
-      const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
-      const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
 	edge_muXYs[ idx_e ] = zeroT;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
-	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
 	  const RealVector right_n = Formula::normal( a, right, b );
 	  const RealVector  left_n = Formula::normal( a, b, left  );
 	  edge_muXYs[ idx_e ] =
