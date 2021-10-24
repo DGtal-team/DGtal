@@ -1,0 +1,245 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file SurfaceMeshMeasure.h
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2021/10/23
+ *
+ * Header file for module SurfaceMeshMeasure.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(SurfaceMeshMeasure_RECURSES)
+#error Recursive header files inclusion detected in SurfaceMeshMeasure.h
+#else // defined(SurfaceMeshMeasure_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define SurfaceMeshMeasure_RECURSES
+
+#if !defined SurfaceMeshMeasure_h
+/** Prevents repeated inclusion of headers. */
+#define SurfaceMeshMeasure_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
+#include <vector>
+#include "DGtal/kernel/CCommutativeRing.h"
+#include "DGtal/shapes/SurfaceMesh.h"
+
+namespace DGtal
+{
+  /**
+     Description of template class 'SurfaceMeshMeasure'
+     <p> \brief Aim: stores an arbitrary measure on a SurfaceMesh object.
+     The measure can be spread onto its vertices, edges, or faces.
+     
+     @tparam TRealPoint an arbitrary model of RealPoint.
+     @tparam TRealVector an arbitrary model of RealVector.
+     @tparam TValue an arbitrary model of CCommutativeRing
+   */
+  template < typename TRealPoint, typename TRealVector, typename TValue >
+  struct SurfaceMeshMeasure 
+  {
+    // ------------------------- Public Types ------------------------------
+  public:
+    
+    static const Dimension dimension = RealPoint::dimension;
+    typedef TRealPoint                     RealPoint;
+    typedef TRealVector                    RealVector;
+    typedef TValue                         Value;
+    typedef SurfaceMeshMeasure< RealPoint, RealVector > Self;
+    BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing< Value > ));
+    typedef DGtal::SurfaceMesh< RealPoint, RealVector > SurfaceMesh;
+    typedef typename SurfaceMesh::Index    Index;
+    typedef typename SurfaceMesh::Size     Size;
+    typedef typename SurfaceMesh::Vertex   Vertex;
+    typedef typename SurfaceMesh::Edge     Edge;
+    typedef typename SurfaceMesh::Face     Face;
+    typedef std::vector< Value >           Values;
+    typedef std::pair< Face, Scalar >      WeightedFace;
+    typedef std::pair< Edge, Scalar >      WeightedEdge;
+    typedef std::pair< Vertex, Scalar >    WeightedVertex;
+    /// The type that defines a range of vertices
+    typedef std::vector< Vertex >          Vertices;
+    /// The type that defines a range of edges
+    typedef std::vector< Edge >            Edges;
+    /// The type that defines a range of faces
+    typedef std::vector< Face >            Faces;
+    typedef std::vector< WeightedVertices> WeightedVertices;
+    typedef std::vector< WeightedEdge >    WeightedEdges;
+    typedef std::vector< WeightedFace >    WeightedFaces;
+
+    // ------------------------- Standard services ------------------------------
+  public:
+    /// @name Standard services (construction, initialization, assignment)
+    /// @{
+
+    /// Constructor from mesh.
+    /// @param aMesh any simplified mesh that is referenced in this object.
+    SurfaceMeshMeasure( ConstAlias< SurfaceMesh > aMesh = nullptr,
+                        Value zero_value = Value() )
+      : myMeshPtr( aMesh ), myZero( zero_value ) {}
+
+    /// @return a pointer to the associated mesh or nullptr if the
+    /// measure is not valid.
+    const SurfaceMesh* meshPtr() const
+    {
+      return myMeshPtr;
+    }
+
+    /// @param dim the dimension of the cells where the measures are
+    /// defined, among 0: vertex, 1: edges, 2: faces.
+    /// @return a const reference to the `dim`-measures.
+    const Values& kMeasures( Dimension dim ) const
+    {
+      return ( dim == 0 ) ? vertex_measures
+        : ( (dim == 1 ) ? edge_measures : face_measures );
+    }
+    /// @param dim the dimension of the cells where the measures are
+    /// defined, among 0: vertex, 1: edges, 2: faces.
+    /// @return a reference to the `dim`-measures.
+    Values& kMeasures( Dimension dim )
+    {
+      return ( dim == 0 ) ? vertex_measures
+        : ( (dim == 1 ) ? edge_measures : face_measures );
+    }
+    
+    /// @}
+    
+    // ------------------------- Measure services ------------------------------
+  public:
+    /// @name Measure services
+    /// @{
+
+    /// @param r the radius of the ball.
+    /// @param f the face where the ball is centered.
+    Value measure( );
+      
+    /// @param v any vertex index.
+    /// @return its measure.
+    Value vertexMeasure( Vertex v ) const
+    {
+      return v < vertex_measures.size() ? vertex_measures[ v ] : Value();
+    }
+    
+    /// @param vertices any range of (valid) vertex indices.
+    /// @return its measure.
+    Value vertexMeasure( const Vertices& vertices ) const
+    {
+      Value m = myZero;
+      if ( vertex_measures.empty() ) return m;
+      for ( auto&& v : vertices )  m += vertex_measures[ v ];
+      return m;
+    }
+
+    /// @param wvertices any range of weighted (valid) vertex indices.
+    /// @return its measure.
+    Value vertexMeasure( const WeightedVertices& wvertices ) const
+    {
+      Value m = myZero;
+      if ( vertex_measures.empty() ) return m;
+      for ( auto&& v : wvertices )  m += v.first * vertex_measures[ v.second ];
+      return m;
+    }
+    
+    /// @param e any edge index.
+    /// @return its measure.
+    Value edgeMeasure( Edge e ) const
+    {
+      return e < edge_measures.size() ? edge_measures[ e ] : Value();
+    }
+
+    /// @param edges any range of (valid) edge indices.
+    /// @return its measure.
+    Value edgeMeasure( const Edges& edges ) const
+    {
+      Value m = myZero;
+      if ( edge_measures.empty() ) return m;
+      for ( auto&& v : edges )  m += edge_measures[ v ];
+      return m;
+    }
+
+    /// @param wedges any range of weighted (valid) edge indices.
+    /// @return its measure.
+    Value edgeMeasure( const WeightedEdges& wedges ) const
+    {
+      Value m = myZero;
+      if ( edge_measures.empty() ) return m;
+      for ( auto&& v : wedges )  m += v.first * edge_measures[ v.second ];
+      return m;
+    }
+    
+    /// @param f any face index.
+    /// @return its measure.
+    Value faceMeasure( Face f ) const
+    {
+      return f < face_measures.size() ? face_measures[ f ] : Value();
+    }
+
+    /// @param faces any range of (valid) face indices.
+    /// @return its measure.
+    Value faceMeasure( const Faces& faces ) const
+    {
+      Value m = myZero;
+      if ( face_measures.empty() ) return m;
+      for ( auto&& v : faces )  m += face_measures[ v ];
+      return m;
+    }
+
+    /// @param wfaces any range of weighted (valid) face indices.
+    /// @return its measure.
+    Value faceMeasure( const WeightedFaces& wfaces ) const
+    {
+      Value m = myZero;
+      if ( face_measures.empty() ) return m;
+      for ( auto&& v : wfaces )  m += v.first * face_measures[ v.second ];
+      return m;
+    }
+    
+    /// @}
+    
+    // ------------------------- Public Datas ------------------------------
+  public:
+    /// Stores the scalar curvature measure per indexed vertex element.
+    Values vertex_measures;
+    /// Stores the scalar curvature measure per indexed edge element.
+    Values edge_measures;
+    /// Stores the scalar curvature measure per indexed face element.
+    Values face_measures;
+
+    // ------------------------- Protected Datas ------------------------------
+  public:
+    /// A pointer to the mesh over which computations are done.
+    const SurfaceMesh* myMeshPtr;
+  };
+
+  
+} // namespace DGtal
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined SurfaceMeshMeasure_h
+
+#undef SurfaceMeshMeasure_RECURSES
+#endif // else defined(SurfaceMeshMeasure_RECURSES)

@@ -43,12 +43,11 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-// always include EigenSupport.h before any other Eigen headers
-// #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "SimplifiedMesh.h"
-#include "CorrectedNormalCurrentFormula.h"
+#include "DGtal/geometry/meshes/CurvatureMeasures.h"
+#include "DGtal/geometry/meshes/CorrectedNormalCurrentFormula.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 
 
 namespace DGtal
@@ -57,8 +56,10 @@ namespace DGtal
   // template class CorrectedNormalCurrentComputer
   /**
      Description of template class 'CorrectedNormalCurrentComputer'
-     <p> \brief Aim: Utility class to compute corrected normal current
-     over a simplified mesh.
+     <p> \brief Aim: Utility class to compute curvature measures
+     induced by (1) a corrected normal current defined by a surface
+     mesh with prescribed normals and (2) the standard
+     Lipschitz-Killing invariant forms of area and curvatures.
 
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
@@ -72,34 +73,35 @@ namespace DGtal
     static const Dimension dimension = RealPoint::dimension;
     BOOST_STATIC_ASSERT( ( dimension == 3 ) );
 
-    typedef DGtal::SimplifiedMesh< RealPoint, RealVector > SimplifiedMesh;
-    typedef typename RealVector::Component Scalar;
-    typedef std::vector< Scalar >          Scalars;
-    typedef std::vector< RealPoint >       RealPoints;
-    typedef std::vector< RealVector >      RealVectors;
+    typedef DGtal::SurfaceMesh< RealPoint, RealVector > SurfaceMesh;
+    typedef ScalarCurvatureMeasures< RealPoint, RealVector >  ScalarMeasure;
+    typedef TensorCurvatureMeasures< RealPoint, RealVector >  TensorMeasure;
+    typedef typename ScalarMeasure::Scalar     Scalar;
+    typedef typename TensorMeasure::RealTensor RealTensor;
+    typedef std::vector< Scalar >              Scalars;
+    typedef std::vector< RealPoint >           RealPoints;
+    typedef std::vector< RealVector >          RealVectors;
     typedef CorrectedNormalCurrentFormula< RealPoint, RealVector > Formula;
-    typedef typename Formula::RealTensor   RealTensor;
-    typedef std::vector< RealTensor >      RealTensors;
+    typedef std::vector< RealTensor >          RealTensors;
     
     /// The type for counting elements.
-    typedef std::size_t                             Size;
+    typedef SurfaceMesh::Size                  Size;
     /// The type used for numbering vertices
-    typedef std::size_t                             Index;
-    typedef Index                                   Face;
-    typedef std::pair< Face, Scalar >               WeightedFace;
-    typedef Index                                   Vertex;
-    typedef std::pair< Vertex, Scalar >             WeightedVertex;
+    typedef SurfaceMesh::Size                  Index;
+    typedef SurfaceMesh::Vertex                Vertex;
+    typedef SurfaceMesh::Face                  Face;
+    typedef std::pair< Face, Scalar >          WeightedFace;
+    typedef std::pair< Vertex, Scalar >        WeightedVertex;
     /// The type that defines a range of vertices
-    typedef std::vector< Vertex >                   Vertices;
+    typedef std::vector< Vertex >              Vertices;
     /// The type that defines a range of faces
-    typedef std::vector< Face >                     Faces;
-    typedef std::vector< WeightedFace >             WeightedFaces;
+    typedef std::vector< Face >                Faces;
+    typedef std::vector< WeightedFace >        WeightedFaces;
 
-    enum class Measure { MU0, MU1, MU2, MUXY, ALL_MU };
 
     /// Constructor from mesh.
     /// @param aMesh any simplified mesh that is referenced in this object.
-    CorrectedNormalCurrentComputer( ConstAlias< SimplifiedMesh > aMesh );
+    CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh );
 
     bool computeInterpolatedMeasures( Measure mu, bool unit_u = false );
     bool computeInterpolatedMu0     ( bool unit_u = false );
@@ -131,7 +133,7 @@ namespace DGtal
   protected:
     
     /// A reference to the mesh over which computations are done.
-    const SimplifiedMesh& myMesh;
+    const SurfaceMesh& myMesh;
     
     // ------------------------- Private Datas --------------------------------
   private:

@@ -41,7 +41,7 @@
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
 DGtal::CorrectedNormalCurrentComputer<TRealPoint, TRealVector>::
-CorrectedNormalCurrentComputer( ConstAlias< SimplifiedMesh > aMesh )
+CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh )
   : myMesh( aMesh )
 {}
 
