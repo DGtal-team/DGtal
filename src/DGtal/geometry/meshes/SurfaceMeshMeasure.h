@@ -74,6 +74,7 @@ namespace DGtal
     typedef typename SurfaceMesh::Edge     Edge;
     typedef typename SurfaceMesh::Face     Face;
     typedef std::vector< Value >           Values;
+    typedef typename RealVector::Component Scalar;
     typedef std::pair< Face, Scalar >      WeightedFace;
     typedef std::pair< Edge, Scalar >      WeightedEdge;
     typedef std::pair< Vertex, Scalar >    WeightedVertex;
@@ -129,9 +130,31 @@ namespace DGtal
     /// @name Measure services
     /// @{
 
+    /// Computes the total measure on the ball of center \a x and
+    /// radius \r. The center \a x must lie on or close to the face \a
+    /// f (as a hint to compute cells in the given ball).
+    ///
+    /// @param x the position where the ball is centered.
     /// @param r the radius of the ball.
-    /// @param f the face where the ball is centered.
-    Value measure( );
+    /// @param f the face where center point \a x lies.
+    Value measure( const RealPoint& x, Scalar r, Face f  ) const
+    {
+      if ( vertex_measures.empty() && edge_measures.empty() )
+        {
+          WeightedFaces
+            faces = myMeshPtr->computeFacesInclusionsInBall( r, f, x );
+          return faceMeasure( faces );
+        }
+      else
+        {
+          std::tuple< Vertices, WeightedEdges, WeightedFaces >
+            wcells = myMeshPtr->computeCellsInclusionsInBall( r, f, x );
+          Value m = vertexMeasure( std::get< 0 >( wcells ) );
+          m      += edgeMeasure  ( std::get< 1 >( wcells ) );
+          m      += faceMeasure  ( std::get< 2 >( wcells ) );
+          return m;
+        }
+    }
       
     /// @param v any vertex index.
     /// @return its measure.
