@@ -63,7 +63,7 @@ computeMu0() const
   auto& face_mu0 = mu0.kMeasures( 2 );
   face_mu0.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.allIncidentVertices() )
+  for ( const auto& f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -94,7 +94,7 @@ computeMu1() const
   auto& face_mu1 = mu1.kMeasures( 2 );
   face_mu1.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.allIncidentVertices() )
+  for ( const auto& f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -125,7 +125,7 @@ computeMu2() const
   auto& face_mu2 = mu2.kMeasures( 2 );
   face_mu2.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.allIncidentVertices() )
+  for ( const auto& f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );
@@ -157,7 +157,7 @@ computeMuXY() const
   auto& face_muXY = muXY.kMeasures( 2 );
   face_muXY.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.allIncidentVertices() )
+  for ( const auto& f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       RealVectors u( f.size() );

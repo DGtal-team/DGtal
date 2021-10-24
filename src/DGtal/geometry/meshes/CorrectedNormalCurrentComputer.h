@@ -40,11 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
-#include <sstream>
-#include <string>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/meshes/SurfaceMeshMeasure.h"
 #include "DGtal/geometry/meshes/CorrectedNormalCurrentFormula.h"
 #include "DGtal/shapes/SurfaceMesh.h"
@@ -82,13 +78,10 @@ namespace DGtal
     typedef std::vector< RealPoint >                     RealPoints;
     typedef std::vector< RealVector >                    RealVectors;
     typedef std::vector< RealTensor >                    RealTensors;
-    
-    /// The type for counting elements.
-    typedef typename SurfaceMesh::Size                  Size;
-    /// The type used for numbering vertices
-    typedef typename SurfaceMesh::Size                  Index;
-    typedef typename SurfaceMesh::Vertex                Vertex;
-    typedef typename SurfaceMesh::Face                  Face;
+    typedef typename SurfaceMesh::Size                   Size; 
+    typedef typename SurfaceMesh::Index                  Index;
+    typedef typename SurfaceMesh::Vertex                 Vertex;
+    typedef typename SurfaceMesh::Face                   Face;
 
 
     /// Constructor from mesh.

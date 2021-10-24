@@ -115,7 +115,8 @@ namespace DGtal
       return 0.5 * ( b - a ).norm() * angle;
     }
 
-    /// Computes the Gaussian curvature at point \a a with incident vertices \a vtcs.
+    /// Computes the Gaussian curvature at point \a a with incident
+    /// vertices \a vtcs.
     ///
     /// @param a any point
     /// @param vtcs a range of points
@@ -131,10 +132,12 @@ namespace DGtal
       return 2.0 * M_PI - angle_sum;
     }
 
-    /// Computes the Gaussian curvature at point \a a with incident pairs of points \a pairs.
+    /// Computes the Gaussian curvature at point \a a with incident
+    /// pairs of points \a pairs.
     ///
     /// @param a any point
-    /// @param pairs a range of points [x_0, y_0, x_1, y_1, etc] such that (a,x_i,y_i) is an incident face to a. 
+    /// @param pairs a range of points [x_0, y_0, x_1, y_1, etc] such
+    /// that (a,x_i,y_i) is an incident face to a.
     /// @return the Gaussian curvature according to Normal Cycle formula.
     static
     Scalar gaussianCurvatureWithPairs

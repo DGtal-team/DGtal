@@ -41,101 +41,79 @@
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-NormalCycleComputer( ConstAlias< SimplifiedMesh > aMesh )
+NormalCycleComputer( ConstAlias< SurfaceMesh > aMesh )
   : myMesh( aMesh )
 {}
 
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-bool
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMeasures( Measure mu )
-{
-  if ( myMesh.vertexNormals().empty() )
-    {
-      trace.warning() << "[NormalCycleComputer::computeMeasures]"
-                      << " Unable to compute measures without vertex normals." << std::endl;
-      return false;
-    }
-  if ( mu == Measure::ALL_MU || mu == Measure::MU0   ) computeMu0 ();
-  if ( mu == Measure::ALL_MU || mu == Measure::MU1   ) computeMu1 ();
-  if ( mu == Measure::ALL_MU || mu == Measure::MU2   ) computeMu2 ();
-  if ( mu == Measure::ALL_MU || mu == Measure::MUXY1 ) computeMuXY1();
-  if ( mu == Measure::ALL_MU || mu == Measure::MUXY2 ) computeMuXY2();
-  if ( mu == Measure::ALL_MU || mu == Measure::MUXY  )
-    {
-      computeMuXY1();
-      computeMuXY2();
-    } 
-  return true;
-}
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMu0()
+computeMu0() const
 {
-  localMu0.resize( myMesh.nbFaces() );
+  ScalarMeasure mu0( &myMesh, 0.0 );
+  auto& face_mu0 = mu0.kMeasures( 2 );
+  face_mu0.resize( myMesh.nbFaces() );
   Index idx_f = 0;
-  for ( auto f : myMesh.incidentVertices() )
+  for ( const auto& f : myMesh.allIncidentVertices() )
     {
       RealPoints  p( f.size() );
       for ( Index idx_v = 0; idx_v < f.size(); ++idx_v )
 	p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
-      localMu0[ idx_f++ ] = Formula::area( p );
+      face_mu0[ idx_f++ ] = Formula::area( p );
     }
-  return true;
+  return mu0;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMu1()
+computeMu1() const
 {
-  if ( myMesh.faceNormals().empty() )
-    {
-      trace.warning() << "[NormalCycleComputer::computeMu1]"
-                      << " Unable to compute measures without face normals." << std::endl;
-      return false;
-    }
-  localMu1.resize( myMesh.nbEdges() );
+  ScalarMeasure mu1( &myMesh, 0.0 );
+  auto& edge_mu1 = mu1.kMeasures( 1 );
+  edge_mu1.resize( myMesh.nbEdges() );
   Index idx_e = 0;
-  for ( auto e : myMesh.edgeVertices() )
+  for ( const auto& e : myMesh.allEdgeVertices() )
     {
       const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
-	localMu1[ idx_e ] = 0.0;
+	edge_mu1[ idx_e ] = 0.0;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealVector right_n = myMesh.faceNormals()[ right_faces[ 0 ] ];
-	  const RealVector  left_n = myMesh.faceNormals()[ left_faces [ 0 ] ];
-	  localMu1[ idx_e ] = Formula::meanCurvature( a, b, right_n, left_n );
+	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_mu1[ idx_e ] = Formula::meanCurvature( a, b, right_n, left_n );
 	}
       idx_e++;
     }
-  return true;
+  return mu1;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMu2()
+computeMu2() const
 {
-  localMu2.resize( myMesh.nbFaces() );
+  ScalarMeasure mu2( &myMesh, 0.0 );
+  auto& vertex_mu2 = mu2.kMeasures( 0 );
+  vertex_mu2.resize( myMesh.nbVertices() );
   Index idx_v = 0;
-  for ( auto faces_v : myMesh.incidentFaces() )
+  for ( const auto& faces_v : myMesh.allIncidentFaces() )
     {
       const RealPoint a = myMesh.positions()[ idx_v ];
       RealPoints pairs;
       for ( auto f : faces_v )
 	{
-	  const auto & vtcs = myMesh.incidentVertices()[ f ];
+	  const auto & vtcs = myMesh.allIncidentVertices()[ f ];
 	  Index j = std::find( vtcs.cbegin(), vtcs.cend(), idx_v ) - vtcs.cbegin();
 	  if ( j != vtcs.size() )
 	    {
@@ -145,135 +123,77 @@ computeMu2()
 	      pairs.push_back( myMesh.positions()[ vtcs[ prev ] ] );
 	    }
 	}
-      localMu2[ idx_v++ ] = Formula::gaussianCurvatureWithPairs( a, pairs );
+      vertex_mu2[ idx_v++ ] = Formula::gaussianCurvatureWithPairs( a, pairs );
     }
-  return true;
+  return mu2;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::TensorMeasure
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMuXY1()
+computeMuXY() const
 {
-  if ( myMesh.faceNormals().empty() )
-    {
-      trace.warning() << "[NormalCycleComputer::computeMuXY1]"
-                      << " Unable to compute measures without face normals." << std::endl;
-      return false;
-    }
-  localMuXY1.resize( myMesh.nbEdges() );
   const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  TensorMeasure muXY( &myMesh, zeroT );
+  auto& edge_muXY = muXY.kMeasures( 1 );
+  edge_muXY.resize( myMesh.nbEdges() );
   Index idx_e = 0;
   for ( auto e : myMesh.edgeVertices() )
     {
       const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
-	localMuXY1[ idx_e ] = zeroT;
+	edge_muXY[ idx_e ] = zeroT;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealVector right_n = myMesh.faceNormals()[ right_faces[ 0 ] ];
-	  const RealVector  left_n = myMesh.faceNormals()[ left_faces [ 0 ] ];
-	  localMuXY1[ idx_e ] =
+	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_muXY[ idx_e ] =
 	    Formula::anisotropicCurvatureH1( a, b, right_n, left_n );
 	}
       idx_e++;
     }
-  return true;
+  return muXY;
 }
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-bool
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::TensorMeasure
 DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-computeMuXY2()
+computeMuXYs() const
 {
-  if ( myMesh.faceNormals().empty() )
-    {
-      trace.warning() << "[NormalCycleComputer::computeMuXY2]"
-                      << " Unable to compute measures without face normals." << std::endl;
-      return false;
-    }
-  localMuXY2.resize( myMesh.nbEdges() );
   const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  TensorMeasure muXYs( &myMesh, zeroT );
+  auto& edge_muXYs = muXY.kMeasures( 1 );
+  edge_muXYs.resize( myMesh.nbEdges() );
   Index idx_e = 0;
   for ( auto e : myMesh.edgeVertices() )
     {
       const auto & right_faces = myMesh.edgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.edgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
-	localMuXY2[ idx_e ] = zeroT;
+	edge_muXYs[ idx_e ] = zeroT;
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];
 	  const RealPoint        b = myMesh.positions()[ e.second ];
-	  const RealVector right_n = myMesh.faceNormals()[ right_faces[ 0 ] ];
-	  const RealVector  left_n = myMesh.faceNormals()[ left_faces [ 0 ] ];
-	  localMuXY2[ idx_e ] =
+	  const RealPoint    right = myMesh.barycenter( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.barycenter( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_muXYs[ idx_e ] =
 	    Formula::anisotropicCurvatureH2( a, b, right_n, left_n );
 	}
       idx_e++;
     }
-  return true;
+  return muXYs;
 }
 
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::Scalar
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-mu0 ( const WeightedFaces& wfaces ) const
-{
-  Scalar m = 0.0;
-  for ( auto wf : wfaces )  m += wf.second * localMu0[ wf.first ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::Scalar
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-mu1 ( const WeightedEdges& wedges ) const
-{
-  Scalar m = 0.0;
-  for ( auto we : wedges )  m += we.second * localMu1[ we.first ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::Scalar
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-mu2 ( const Vertices& vertices ) const
-{
-  Scalar m = 0.0;
-  for ( auto v : vertices )  m += localMu2[ v ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::RealTensor
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-muXY1( const WeightedEdges& wedges ) const
-{
-  RealTensor m = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-  for ( auto we : wedges )  m += we.second * localMuXY1[ we.first ];
-  return m;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TRealPoint, typename TRealVector>
-typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::RealTensor
-DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
-muXY2( const WeightedEdges& wedges ) const
-{
-  RealTensor m = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-  for ( auto we : wedges )  m += we.second * localMuXY2[ we.first ];
-  return m;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
