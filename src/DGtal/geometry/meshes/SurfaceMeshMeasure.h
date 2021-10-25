@@ -188,7 +188,7 @@ namespace DGtal
     {
       Value m = myZero;
       if ( vertex_measures.empty() ) return m;
-      for ( auto&& v : wvertices )  m += v.first * vertex_measures[ v.second ];
+      for ( auto&& v : wvertices )  m += vertex_measures[ v.first ] * v.second;
       return m;
     }
     
@@ -215,7 +215,7 @@ namespace DGtal
     {
       Value m = myZero;
       if ( edge_measures.empty() ) return m;
-      for ( auto&& v : wedges )  m += v.first * edge_measures[ v.second ];
+      for ( auto&& v : wedges )  m += edge_measures[ v.first ] * v.second;
       return m;
     }
     
@@ -242,7 +242,7 @@ namespace DGtal
     {
       Value m = myZero;
       if ( face_measures.empty() ) return m;
-      for ( auto&& v : wfaces )  m += v.first * face_measures[ v.second ];
+      for ( auto&& v : wfaces )  m += face_measures[ v.first ] * v.second;
       return m;
     }
     
