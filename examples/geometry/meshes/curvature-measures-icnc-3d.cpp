@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file geometry/meshes/curvature-measures-3d.cpp
+ * @file geometry/meshes/curvature-measures-icnc-3d.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/10/25
  *
- * An example file named curvature-measures-3d.
+ * An example file named curvature-measures-icnc-3d.
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
    of interpolated corrected normal currents.
 
 \verbatim
-./examples/geometry/meshes/curvature-measures-3d 
+./examples/geometry/meshes/curvature-measures-icnc-3d 
 \endverbatim
 outputs
 \verbatim
@@ -46,10 +46,23 @@ It also produces several OBJ files to display curvature estimation
 results, `example-cnc-H.obj` and `example-cnc-H.obj` as well as the
 associated MTL file.
 
+<table>
+<tr><td>
+\image html torus-cnc-H-True-r0.jpg "Interpolated corrected mean curvature measure, r=0" width=90%
+</td><td>
+\image html torus-cnc-G-True-r0.jpg "Interpolated corrected Gaussian curvature measure, r=0" width=90%
+</td></tr>
+<tr><td>
+\image html torus-cnc-H-True-r0_5.jpg "Interpolated corrected mean curvature measure, r=0.5" width=90%
+</td><td>
+\image html torus-cnc-G-True-r0_5.jpg "Interpolated corrected Gaussian curvature measure, r=0.5" width=90%
+</td></tr>
+</table>
+
 @see \ref moduleCurvatureMeasures
 
 
-\example geometry/meshes/curvature-measures-3d.cpp
+\example geometry/meshes/curvature-measures-icnc-3d.cpp
 */
 
 #include <iostream>
@@ -89,18 +102,25 @@ int main( int argc, char* argv[] )
   int    n = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb longitude points
   double R = argc > 3 ? atof( argv[ 3 ] ) : 0.5; // radius of measuring ball
 
+  //! [curvature-measures-SurfaceMesh]
   const double big_radius   = 3.0;
   const double small_radius = 1.0;
   SM torus = SMH::makeTorus( big_radius, small_radius, RealPoint { 0.0, 0.0, 0.0 },
                              m, n, 0,
                              SMH::NormalsType::VERTEX_NORMALS );
+  //! [curvature-measures-SurfaceMesh]
+
+  //! [curvature-measures-CNC]
   // builds a CorrectedNormalCurrentComputer object onto the torus mesh
   CNC cnc( torus );
   // computes area, mean and Gaussian curvature measures
   auto mu0 = cnc.computeMu0();
   auto mu1 = cnc.computeMu1();
   auto mu2 = cnc.computeMu2();
-  // estimates curvatures
+  //! [curvature-measures-CNC]
+
+  //! [curvature-measures-estimations]
+  // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
   std::vector< double > H( torus.nbFaces() );
   std::vector< double > G( torus.nbFaces() );
   for ( auto f = 0; f < torus.nbFaces(); ++f )
@@ -110,6 +130,9 @@ int main( int argc, char* argv[] )
       H[ f ] = mu1.measure( b, R, f ) / ( 2.0 * area );
       G[ f ] = mu2.measure( b, R, f ) / area;
     }
+  //! [curvature-measures-estimations]
+
+  //! [curvature-measures-check]
   auto H_min_max = std::minmax_element( H.cbegin(), H.cend() );
   auto G_min_max = std::minmax_element( G.cbegin(), G.cend() );
   std::cout << "Expected mean curvatures:"
@@ -128,7 +151,9 @@ int main( int argc, char* argv[] )
             << " min=" << *G_min_max.first
             << " max=" << *G_min_max.second
             << std::endl;
+  //! [curvature-measures-check]
 
+  //! [curvature-measures-output]
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
   const auto colormapH = makeColorMap( -0.625, 0.625 );
   const auto colormapG = makeColorMap( -0.625, 0.625 );
@@ -141,5 +166,6 @@ int main( int argc, char* argv[] )
     }
   SMW::writeOBJ( "example-cnc-H", torus, colorsH );
   SMW::writeOBJ( "example-cnc-G", torus, colorsG );
+  //! [curvature-measures-output]
   return 0;
 }
