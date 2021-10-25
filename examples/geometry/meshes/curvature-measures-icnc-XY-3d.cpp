@@ -86,7 +86,6 @@ associated MTL file.
 #include "DGtal/shapes/SurfaceMeshHelper.h"
 //! [curvature-measures-Includes]
 #include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
-#include "DGtal/geometry/meshes/NormalCycleComputer.h"
 //! [curvature-measures-Includes]
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
