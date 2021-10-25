@@ -121,19 +121,56 @@ SCENARIO( "NormalCycleComputer convergence tests", "[nc][convergence]" )
 
   GIVEN( "A sphere of radius 1 discretized finer and finer" ) {
     THEN( "The total mu0 measure tends toward the sphere area" ) {
-      std::vector< double > errors;
+      std::vector< double > errors_mu0;
       for ( unsigned int n = 10; n < 50; n += 10 )
         {
           SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, n, n,
                                        SMH::NormalsType::VERTEX_NORMALS );
           NCComputer nc_computer ( sphere );
           auto mu0   = nc_computer .computeMu0();
-          errors.push_back( mu0.measure() );
+          errors_mu0.push_back( mu0.measure() );
         }
-      double sphere_area = 4.0 * M_PI;
-      for ( auto & v : errors ) v = fabs( v - sphere_area ) / sphere_area;
-      for ( auto i = 0; i < errors.size()-1; i++ )
-        REQUIRE( errors[ i+1 ] < errors[ i ] );
+      double sphere_area     = 4.0 * M_PI;
+      for ( auto & v : errors_mu0 ) v = fabs( v - sphere_area ) / sphere_area;
+      for ( auto i = 0; i < errors_mu0.size()-1; i++ ) {
+        REQUIRE( errors_mu0[ i+1 ] < errors_mu0[ i ] );
+      }
+    }
+  }
+  GIVEN( "A sphere of radius 1 discretized finer and finer" ) {
+    THEN( "The total mu1 measure tends toward twice the sphere area" ) {
+      std::vector< double > errors_mu1;
+      for ( unsigned int n = 10; n < 50; n += 10 )
+        {
+          SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, n, n,
+                                       SMH::NormalsType::VERTEX_NORMALS );
+          NCComputer nc_computer ( sphere );
+          auto mu1   = nc_computer .computeMu1();
+          errors_mu1.push_back( mu1.measure() );
+        }
+      double sphere_twice_mc = 8.0 * M_PI;
+      for ( auto & v : errors_mu1 ) v = fabs( v - sphere_twice_mc ) / sphere_twice_mc;
+      for ( auto i = 0; i < errors_mu1.size()-1; i++ ) {
+        REQUIRE( errors_mu1[ i+1 ] < errors_mu1[ i ] );
+      }
+    }
+  }
+  GIVEN( "A sphere of radius 1 discretized finer and finer" ) {
+    THEN( "The total mu2 measure is the sphere area" ) {
+      std::vector< double > errors_mu2;
+      for ( unsigned int n = 10; n < 50; n += 10 )
+        {
+          SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, n, n,
+                                       SMH::NormalsType::VERTEX_NORMALS );
+          NCComputer nc_computer ( sphere  );
+          auto mu2   = nc_computer .computeMu2();
+          errors_mu2.push_back( mu2.measure() );
+        }
+      double sphere_gauss_c  = 4.0 * M_PI;
+      for ( auto & v : errors_mu2 ) v = fabs( v - sphere_gauss_c ) / sphere_gauss_c;
+      for ( auto i = 0; i < errors_mu2.size(); i++ ) {
+        REQUIRE( errors_mu2[ i ] == Approx( 0.0 ).margin( 1e-8 ) );
+      }
     }
   }
 }
