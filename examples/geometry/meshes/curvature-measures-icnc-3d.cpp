@@ -28,8 +28,9 @@
  */
 
 /**
-   Computation of curvature measures on a torus mesh, using the theory
-   of interpolated corrected normal currents.
+   Computation of curvatures on a torus mesh, using interpolated
+   corrected curvature measures (based on the theory of corrected
+   normal currents).
 
 \verbatim
 ./examples/geometry/meshes/curvature-measures-icnc-3d 
