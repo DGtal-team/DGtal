@@ -76,9 +76,8 @@ makeSphere( const Scalar radius, const RealPoint& center,
     for ( Size j = 0; j < n; ++j )
       {
         faces.push_back( std::vector< Size >
-                         { fv( i, j ), fv( i, (j+1) % n ), fv( i+1, (j+1) % n ) } );
-        faces.push_back( std::vector< Size >
-                         { fv( i, j ), fv( i+1, (j+1) % n ), fv( i+1, j ) } );
+                         { fv( i, j ), fv( i, (j+1) % n ),
+                           fv( i+1, (j+1) % n ), fv( i+1, j ) } );
       }
   for ( Size j = 0; j < n; ++j )
     faces.push_back( std::vector< Size > { fv( m-1, j ), fv( m-1, (j+1) % n ), m*n+(Size)1 } );
