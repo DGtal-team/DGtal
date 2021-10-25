@@ -82,6 +82,7 @@ associated MTL file.
 #include <iostream>
 #include <algorithm>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/SurfaceMeshHelper.h"
 //! [curvature-measures-Includes]

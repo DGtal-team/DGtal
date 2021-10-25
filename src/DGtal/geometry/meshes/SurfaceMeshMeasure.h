@@ -138,8 +138,8 @@ namespace DGtal
     {
       Value m = myZero;
       for ( auto&& lm : vertex_measures ) m += lm;
-      for ( auto&& lm : face_measures   ) m += lm;
       for ( auto&& lm : edge_measures   ) m += lm;
+      for ( auto&& lm : face_measures   ) m += lm;
       return m;
     }
     /// Computes the total measure on the ball of center \a x and
@@ -208,7 +208,7 @@ namespace DGtal
     {
       Value m = myZero;
       if ( edge_measures.empty() ) return m;
-      for ( auto&& v : edges )  m += edge_measures[ v ];
+      for ( auto&& e : edges )  m += edge_measures[ e ];
       return m;
     }
 
@@ -218,7 +218,7 @@ namespace DGtal
     {
       Value m = myZero;
       if ( edge_measures.empty() ) return m;
-      for ( auto&& v : wedges )  m += edge_measures[ v.first ] * v.second;
+      for ( auto&& e : wedges )  m += edge_measures[ e.first ] * e.second;
       return m;
     }
     

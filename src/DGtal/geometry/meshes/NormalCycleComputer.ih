@@ -81,7 +81,12 @@ computeMu1() const
       const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
       if ( right_faces.size() != 1 || left_faces.size() != 1 )
-	edge_mu1[ idx_e ] = 0.0;
+        {
+          // std::cout << "edge " << e << " is not manifold." << std::endl;
+          // std::cout << "#right faces=" << right_faces.size() << std::endl;
+          // std::cout << "#left faces=" << left_faces.size() << std::endl;
+          edge_mu1[ idx_e ] = 0.0;
+        }
       else
 	{
 	  const RealPoint        a = myMesh.positions()[ e.first  ];

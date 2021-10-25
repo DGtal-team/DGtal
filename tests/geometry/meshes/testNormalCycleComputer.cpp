@@ -54,10 +54,10 @@ SCENARIO( "NormalCycleComputer sphere tests", "[nc][sphere]" )
   typedef SurfaceMeshHelper< RealPoint, RealVector > SMH;
   typedef NormalCycleComputer< RealPoint, RealVector > NCComputer;
 
-  SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20,
-                               SMH::NormalsType::VERTEX_NORMALS );
+  SM sphere = SMH::makeSphere( 1.0, RealPoint { 0.0, 0.0, 0.0 }, 10, 10,
+                               SMH::NormalsType::FACE_NORMALS );
   NCComputer nc_computer ( sphere );
-  GIVEN( "A discretized sphere of radius 1 with 20x20x2 triangles" ) {
+  GIVEN( "A discretized sphere of radius 1 with 10x10 quadrangles and triangles" ) {
     THEN( "Its total mu0 measure is close to 4*pi (area)" ) {
       auto mu0   = nc_computer .computeMu0();
       double total_area   = mu0.measure();

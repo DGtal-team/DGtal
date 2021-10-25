@@ -557,6 +557,7 @@ computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const
               const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
               if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
                 set_v.insert( vi );
+              if ( vn < vi ) continue; // edges are ordered pairs 
               const Edge e_ij = makeEdge( vi, vn );
               if ( e_ij >= nbEdges() ) {
                 trace.error() << "bad edge " << vi << " " << vn << std::endl;

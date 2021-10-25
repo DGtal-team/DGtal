@@ -44,7 +44,6 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
-#include "DGtal/math/linalg/EigenDecomposition.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
