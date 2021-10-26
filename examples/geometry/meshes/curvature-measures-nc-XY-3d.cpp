@@ -38,6 +38,10 @@
 \endverbatim
 outputs
 \verbatim
+Expected k1 curvatures: min=-0.5 max=0.25
+Computed k1 curvatures: min=-0.581281 max=0.441977
+Expected k2 curvatures: min=1 max=1
+Computed k2 curvatures: min=0.904081 max=1.06404
 \endverbatim
 
 
@@ -127,7 +131,7 @@ int main( int argc, char* argv[] )
       const auto N    = torus.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
       auto M          = muXY.measure( b, R, f );
-      std::cout << f << " " << b << " " << N << " " << area << " " << M << std::endl;
+      // std::cout << f << " " << b << " " << N << " " << area << " " << M << std::endl;
       M += M.transpose();
       M *= 0.5;
       const double   coef_N = 1000.0 * area;
@@ -136,14 +140,13 @@ int main( int argc, char* argv[] )
         for ( int k = 0; k < 3; k++ )
           M( j, k ) += coef_N * N[ j ] * N[ k ];
       auto V = M;
-      std::cout << M << std::endl;
       RealVector L;
       EigenDecomposition< 3, double>::getEigenDecomposition( M, V, L );
-      std::cout << M.rows() << " " << M.cols() << " "
-                << V.rows() << " " << V.cols() << " "
-                << L.size() << std::endl;
-      std::cout << -L[ 1 ] / area << " " << V.column( 1 ) << std::endl
-                << -L[ 0 ] / area << " " << V.column( 0 ) << std::endl;
+      // std::cout << M.rows() << " " << M.cols() << " "
+      //           << V.rows() << " " << V.cols() << " "
+      //           << L.size() << std::endl;
+      // std::cout << -L[ 1 ] / area << " " << V.column( 1 ) << std::endl
+      //           << -L[ 0 ] / area << " " << V.column( 0 ) << std::endl;
                 
       D1[ f ] = V.column( 1 );
       D2[ f ] = V.column( 0 );
