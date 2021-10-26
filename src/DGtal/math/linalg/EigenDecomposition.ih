@@ -232,7 +232,6 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
                 d[ i ] -= h;
               f = f + h;
 
-              if ( m >= dimension ) std::cout << "bad m" << std::endl;
               // Implicit QL transformation.
               p = d[ m ];
               Quantity c = Quantity( 1.0 );
@@ -274,7 +273,6 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
       d[ l ] = d[ l ] + f;
       e[ l ] = Quantity( 0.0 );
     }
-  std::cout << "Sort eigenvalues and corresponding vectors." << std::endl;
   // Sort eigenvalues and corresponding vectors.
   for ( Dimension i = 0; i < dimensionMinusOne; ++i )
     {
@@ -311,9 +309,7 @@ getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigen
   Vector e;              // Default constructor sets to zero vector;
   eigenVectors = matrix; // copy matrix
   eigenValues = e;       // Sets to zero vector
-  std::cout << "tridiagonalize( eigenVectors, eigenValues, e )" << std::endl;
   tridiagonalize( eigenVectors, eigenValues, e );
-  std::cout << "decomposeQL( eigenVectors, eigenValues, e )" << std::endl;
   decomposeQL( eigenVectors, eigenValues, e );
 }
 
