@@ -164,8 +164,12 @@ namespace DGtal
       const Scalar     length = std::max( 0.0, std::min( 1.0, diedre.norm() ) );
       const Scalar      angle = ( diedre.dot( b - a) > 0.0 )
 	? asin( length ) : - asin( length );
-      const RealVector e_p  = ( right + left ).getNormalized();
-      const RealVector e_m  = ( right - left ).getNormalized();
+      RealVector          e_p = right + left;
+      RealVector          e_m = right - left;
+      const Scalar norm_e_p   = e_p.norm();
+      const Scalar norm_e_m   = e_m.norm();
+      e_p = norm_e_p > 1e-10 ? e_p / norm_e_p : RealVector::zero;
+      e_m = norm_e_m > 1e-10 ? e_m / norm_e_m : RealVector::zero;
       const RealTensor T_p  =
 	{ e_p[ 0 ] * e_p[ 0 ], e_p[ 0 ] * e_p[ 1 ], e_p[ 0 ] * e_p[ 2 ],
 	  e_p[ 1 ] * e_p[ 0 ], e_p[ 1 ] * e_p[ 1 ], e_p[ 1 ] * e_p[ 2 ],

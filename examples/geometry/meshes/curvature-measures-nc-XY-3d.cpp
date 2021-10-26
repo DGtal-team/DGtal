@@ -139,6 +139,9 @@ int main( int argc, char* argv[] )
       std::cout << M << std::endl;
       RealVector L;
       EigenDecomposition< 3, double>::getEigenDecomposition( M, V, L );
+      std::cout << M.rows() << " " << M.cols() << " "
+                << V.rows() << " " << V.cols() << " "
+                << L.size() << std::endl;
       std::cout << -L[ 1 ] / area << " " << V.column( 1 ) << std::endl
                 << -L[ 0 ] / area << " " << V.column( 0 ) << std::endl;
                 
