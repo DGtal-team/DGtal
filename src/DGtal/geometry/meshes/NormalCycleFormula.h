@@ -161,10 +161,11 @@ namespace DGtal
       const RealVector& right, const RealVector& left )
     {
       const RealVector diedre = right.crossProduct( left );
-      const Scalar angle = ( diedre.dot( b - a) > 0.0 )
-	? asin( diedre.norm() ) : - asin( diedre.norm() );
+      const Scalar     length = std::max( 0.0, std::min( 1.0, diedre.norm() ) );
+      const Scalar      angle = ( diedre.dot( b - a) > 0.0 )
+	? asin( length ) : - asin( length );
       const RealVector e_p  = ( right + left ).getNormalized();
-      const RealVector e_m = ( right - left ).getNormalized();
+      const RealVector e_m  = ( right - left ).getNormalized();
       const RealTensor T_p  =
 	{ e_p[ 0 ] * e_p[ 0 ], e_p[ 0 ] * e_p[ 1 ], e_p[ 0 ] * e_p[ 2 ],
 	  e_p[ 1 ] * e_p[ 0 ], e_p[ 1 ] * e_p[ 1 ], e_p[ 1 ] * e_p[ 2 ],
@@ -189,11 +190,11 @@ namespace DGtal
       const RealVector& right, const RealVector& left )
     {
       const RealVector diedre = right.crossProduct( left );
-      const Scalar angle = ( diedre.dot( b - a) > 0.0 )
-	?   asin( std::min( diedre.norm(), 1.0 ) )
-	: - asin( std::min( diedre.norm(), 1.0 ) );
+      const Scalar     length = std::max( 0.0, std::min( 1.0, diedre.norm() ) );
+      const Scalar      angle = ( diedre.dot( b - a) > 0.0 )
+	? asin( length ) : - asin( length );
       const Scalar norm_ab = (b - a).norm();
-      const RealVector   e = norm_ab > 1e-10 ? (b - a) /  norm_ab : RealVector::zero;
+      const RealVector   e = norm_ab > 1e-10 ? (b - a) / norm_ab : RealVector::zero;
       const RealTensor   T =
 	{ e[ 0 ] * e[ 0 ], e[ 0 ] * e[ 1 ], e[ 0 ] * e[ 2 ],
 	  e[ 1 ] * e[ 0 ], e[ 1 ] * e[ 1 ], e[ 1 ] * e[ 2 ],

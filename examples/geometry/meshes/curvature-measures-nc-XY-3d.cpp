@@ -15,69 +15,49 @@
  **/
 
 /**
- * @file geometry/meshes/curvature-measures-icnc-XY-3d.cpp
+ * @file geometry/meshes/curvature-measures-nc-XY-3d.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/10/25
  *
- * An example file named curvature-measures-icnc-XY-3d.
+ * An example file named curvature-measures-nc-XY-3d.
  *
  * This file is part of the DGtal library.
  */
 
 /**
    Computation of principal curvatures and directions on a torus mesh,
-   using interpolated corrected curvature measures (based on the
-   theory of corrected normal currents).
+   using Normal cycle curvature measures (based on the theory of
+   Normal cycle).
 
 \verbatim
-# a 20x20 discretized torus with a radius for measures of 0
-./examples/geometry/meshes/curvature-measures-icnc-XY-3d 20 20 0
+# a 20x20 discretized torus with a radius 0.5 for measures
+./examples/geometry/meshes/curvature-measures-nc-XY-3d 20 20 0.5
 \endverbatim
 outputs
 \verbatim
-Expected k1 curvatures: min=-0.5 max=0.25
-Computed k1 curvatures: min=-0.500225 max=0.249888
-Expected k2 curvatures: min=1 max=1
-Computed k2 curvatures: min=1.00011 max=1.00678
 \endverbatim
 
-\verbatim
-# a 20x20 discretized torus with a radius for measures of 0.5
-./examples/geometry/meshes/curvature-measures-icnc-XY-3d 20 20 0.5
-\endverbatim
-outputs
-\verbatim
-Expected k1 curvatures: min=-0.5 max=0.25
-Computed k1 curvatures: min=-0.454026 max=0.242436
-Expected k2 curvatures: min=1 max=1
-Computed k2 curvatures: min=0.924283 max=0.95338
-\endverbatim
 
 It also produces several OBJ files to display curvature estimation
-results, `example-cnc-K1.obj`, `example-cnc-D1.obj`,
-`example-cnc-K2.obj`, and `example-cnc-D2.obj` as well as the associated
+results, `example-nc-K1.obj`, `example-nc-D1.obj`,
+`example-nc-K2.obj`, and `example-nc-D2.obj` as well as the associated
 MTL file.
 
 <table>
 <tr><td>
-\image html torus-cnc-K1-D1-True-r0.jpg "Interpolated corrected smallest principal curvature and direction, r=0" width=90%
+\image html torus-nc-K1-D1-True-r0_5.jpg "Normal cycle smallest principal curvature and direction, r=0.5" width=90%
 </td><td>
-\image html torus-cnc-K2-D2-True-r0.jpg "Interpolated corrected greatest principal curvature and direction, r=0" width=90%
-</td></tr>
-<tr><td>
-\image html torus-cnc-K1-D1-True-r0_5.jpg "Interpolated corrected smallest principal curvature and direction, r=0.5" width=90%
-</td><td>
-\image html torus-cnc-K2-D2-True-r0_5.jpg "Interpolated corrected greatest principal curvature and direction, r=0.5" width=90%
+\image html torus-nc-K2-D2-True-r0_5.jpg "Normal cycle greatest principal curvature and direction, r=0.5" width=90%
 </td></tr>
 </table>
 
 @see \ref moduleCurvatureMeasures
 
 
-\example geometry/meshes/curvature-measures-icnc-XY-3d.cpp
+\example geometry/meshes/curvature-measures-nc-XY-3d.cpp
 */
 
 #include <iostream>
@@ -87,7 +67,7 @@ MTL file.
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/SurfaceMeshHelper.h"
 //! [curvature-measures-Includes]
-#include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
+#include "DGtal/geometry/meshes/NormalCycleComputer.h"
 //! [curvature-measures-Includes]
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -110,9 +90,9 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-Typedefs]
   using namespace DGtal;
   using namespace DGtal::Z3i;
-  typedef SurfaceMesh< RealPoint, RealVector >                    SM;
-  typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNC;
-  typedef SurfaceMeshHelper< RealPoint, RealVector >              SMH;
+  typedef SurfaceMesh< RealPoint, RealVector >          SM;
+  typedef NormalCycleComputer< RealPoint, RealVector >  NC;
+  typedef SurfaceMeshHelper< RealPoint, RealVector >    SMH;
   //! [curvature-measures-Typedefs]
   int    m = argc > 1 ? atoi( argv[ 1 ] ) : 20;  // nb latitude points
   int    n = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb longitude points
@@ -123,16 +103,16 @@ int main( int argc, char* argv[] )
   const double small_radius = 1.0;
   SM torus = SMH::makeTorus( big_radius, small_radius, RealPoint { 0.0, 0.0, 0.0 },
                              m, n, 0,
-                             SMH::NormalsType::VERTEX_NORMALS );
+                             SMH::NormalsType::NO_NORMALS );
   //! [curvature-measures-SurfaceMesh]
 
-  //! [curvature-measures-CNC]
-  // builds a CorrectedNormalCurrentComputer object onto the torus mesh
-  CNC cnc( torus );
+  //! [curvature-measures-NC]
+  // builds a NormalCycleComputer object onto the torus mesh
+  NC nc( torus );
   // computes area, anisotropic XY curvature measures
-  auto mu0  = cnc.computeMu0();
-  auto muXY = cnc.computeMuXY();
-  //! [curvature-measures-CNC]
+  auto mu0  = nc.computeMu0();
+  auto muXY = nc.computeMuXY();
+  //! [curvature-measures-NC]
 
   //! [curvature-measures-estimations]
   // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
@@ -147,6 +127,7 @@ int main( int argc, char* argv[] )
       const auto N    = torus.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
       auto M          = muXY.measure( b, R, f );
+      std::cout << f << " " << b << " " << N << " " << area << " " << M << std::endl;
       M += M.transpose();
       M *= 0.5;
       const double   coef_N = 1000.0 * area;
@@ -155,8 +136,12 @@ int main( int argc, char* argv[] )
         for ( int k = 0; k < 3; k++ )
           M( j, k ) += coef_N * N[ j ] * N[ k ];
       auto V = M;
+      std::cout << M << std::endl;
       RealVector L;
       EigenDecomposition< 3, double>::getEigenDecomposition( M, V, L );
+      std::cout << -L[ 1 ] / area << " " << V.column( 1 ) << std::endl
+                << -L[ 0 ] / area << " " << V.column( 0 ) << std::endl;
+                
       D1[ f ] = V.column( 1 );
       D2[ f ] = V.column( 0 );
       K1[ f ] = ( area != 0.0 ) ? -L[ 1 ] / area : 0.0;
@@ -197,8 +182,8 @@ int main( int argc, char* argv[] )
       colorsK1[ i ] = colormapK1( K1[ i ] );
       colorsK2[ i ] = colormapK2( K2[ i ] );
     }
-  SMW::writeOBJ( "example-cnc-K1", torus, colorsK1 );
-  SMW::writeOBJ( "example-cnc-K2", torus, colorsK2 );
+  SMW::writeOBJ( "example-nc-K1", torus, colorsK1 );
+  SMW::writeOBJ( "example-nc-K2", torus, colorsK2 );
   const auto avg_e = torus.averageEdgeLength();
   SH::RealPoints positions( torus.nbFaces() );
   for ( auto f = 0; f < positions.size(); ++f )
@@ -207,7 +192,7 @@ int main( int argc, char* argv[] )
       positions[ f ] = torus.faceCentroid( f ) - 0.5 * D1[ f ];
     }
   SH::saveVectorFieldOBJ( positions, D1, 0.05 * avg_e, SH::Colors(),
-                          "example-cnc-D1",
+                          "example-nc-D1",
                           SH::Color::Black, SH::Color( 0, 128, 0 ) );
   for ( auto f = 0; f < positions.size(); ++f )
     {
@@ -215,7 +200,7 @@ int main( int argc, char* argv[] )
       positions[ f ] = torus.faceCentroid( f ) - 0.5 * D2[ f ];
     }
   SH::saveVectorFieldOBJ( positions, D2, 0.05 * avg_e, SH::Colors(),
-                          "example-cnc-D2",
+                          "example-nc-D2",
                           SH::Color::Black, SH::Color(128, 0,128 ) );
   
   //! [curvature-measures-output]

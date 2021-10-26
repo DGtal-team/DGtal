@@ -144,7 +144,7 @@ computeMuXY() const
   auto& edge_muXY = muXY.kMeasures( 1 );
   edge_muXY.resize( myMesh.nbEdges() );
   Index idx_e = 0;
-  for ( auto e : myMesh.edgeVertices() )
+  for ( auto e : myMesh.allEdgeVertices() )
     {
       const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
@@ -177,7 +177,7 @@ computeMuXYs() const
   auto& edge_muXYs = muXYs.kMeasures( 1 );
   edge_muXYs.resize( myMesh.nbEdges() );
   Index idx_e = 0;
-  for ( auto e : myMesh.edgeVertices() )
+  for ( auto e : myMesh.allEdgeVertices() )
     {
       const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
       const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];

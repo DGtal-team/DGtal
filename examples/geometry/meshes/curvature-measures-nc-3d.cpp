@@ -15,55 +15,51 @@
  **/
 
 /**
- * @file geometry/meshes/curvature-measures-icnc-3d.cpp
+ * @file geometry/meshes/curvature-measures-nc-3d.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/10/25
  *
- * An example file named curvature-measures-icnc-3d.
+ * An example file named curvature-measures-nc-3d.
  *
  * This file is part of the DGtal library.
  */
 
 /**
-   Computation of curvatures on a torus mesh, using interpolated
-   corrected curvature measures (based on the theory of corrected
-   normal currents).
+   Computation of curvatures on a torus mesh, using Normal cycle
+   curvature measures (based on the theory of Normal cycle)
 
 \verbatim
-./examples/geometry/meshes/curvature-measures-icnc-3d 
+./examples/geometry/meshes/curvature-measures-nc-3d 20 20 0.5 
 \endverbatim
 outputs
 \verbatim
 Expected mean curvatures: min=0.25 max=0.625
-Computed mean curvatures: min=0.264763 max=0.622318
+Computed mean curvatures: min=0.189446 max=0.772277
 Expected Gaussian curvatures: min=-0.5 max=0.25
-Computed Gaussian curvatures: min=-0.470473 max=0.244636
+Computed Gaussian curvatures: min=-0.682996 max=0.547296
 \endverbatim
 
 It also produces several OBJ files to display curvature estimation
-results, `example-cnc-H.obj` and `example-cnc-G.obj` as well as the
+results, `example-nc-H.obj` and `example-nc-G.obj` as well as the
 associated MTL file.
+
+@warning Normal cycle curvature estimation have meaning only for a big enough radius to capture edge/vertex information. This is in opposition with interpolated corrected curvature measures.
 
 <table>
 <tr><td>
-\image html torus-cnc-H-True-r0.jpg "Interpolated corrected mean curvature measure, r=0" width=90%
+\image html torus-nc-H-True-r0_5.jpg "Normal cycle mean curvature measure, r=0.5" width=90%
 </td><td>
-\image html torus-cnc-G-True-r0.jpg "Interpolated corrected Gaussian curvature measure, r=0" width=90%
-</td></tr>
-<tr><td>
-\image html torus-cnc-H-True-r0_5.jpg "Interpolated corrected mean curvature measure, r=0.5" width=90%
-</td><td>
-\image html torus-cnc-G-True-r0_5.jpg "Interpolated corrected Gaussian curvature measure, r=0.5" width=90%
+\image html torus-nc-G-True-r0_5.jpg "Normal cycle Gaussian curvature measure, r=0.5" width=90%
 </td></tr>
 </table>
 
 @see \ref moduleCurvatureMeasures
 
 
-\example geometry/meshes/curvature-measures-icnc-3d.cpp
+\example geometry/meshes/curvature-measures-nc-3d.cpp
 */
 
 #include <iostream>
@@ -72,7 +68,7 @@ associated MTL file.
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/SurfaceMeshHelper.h"
 //! [curvature-measures-Includes]
-#include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
+#include "DGtal/geometry/meshes/NormalCycleComputer.h"
 //! [curvature-measures-Includes]
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -94,9 +90,9 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-Typedefs]
   using namespace DGtal;
   using namespace DGtal::Z3i;
-  typedef SurfaceMesh< RealPoint, RealVector >                    SM;
-  typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNC;
-  typedef SurfaceMeshHelper< RealPoint, RealVector >              SMH;
+  typedef SurfaceMesh< RealPoint, RealVector >         SM;
+  typedef NormalCycleComputer< RealPoint, RealVector > NC;
+  typedef SurfaceMeshHelper< RealPoint, RealVector >   SMH;
   //! [curvature-measures-Typedefs]
   int    m = argc > 1 ? atoi( argv[ 1 ] ) : 20;  // nb latitude points
   int    n = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb longitude points
@@ -107,16 +103,16 @@ int main( int argc, char* argv[] )
   const double small_radius = 1.0;
   SM torus = SMH::makeTorus( big_radius, small_radius, RealPoint { 0.0, 0.0, 0.0 },
                              m, n, 0,
-                             SMH::NormalsType::VERTEX_NORMALS );
+                             SMH::NormalsType::NO_NORMALS );
   //! [curvature-measures-SurfaceMesh]
 
   //! [curvature-measures-CNC]
   // builds a CorrectedNormalCurrentComputer object onto the torus mesh
-  CNC cnc( torus );
+  NC nc( torus );
   // computes area, mean and Gaussian curvature measures
-  auto mu0 = cnc.computeMu0();
-  auto mu1 = cnc.computeMu1();
-  auto mu2 = cnc.computeMu2();
+  auto mu0 = nc.computeMu0();
+  auto mu1 = nc.computeMu1();
+  auto mu2 = nc.computeMu2();
   //! [curvature-measures-CNC]
 
   //! [curvature-measures-estimations]
@@ -164,8 +160,8 @@ int main( int argc, char* argv[] )
       colorsH[ i ] = colormapH( H[ i ] );
       colorsG[ i ] = colormapG( G[ i ] );
     }
-  SMW::writeOBJ( "example-cnc-H", torus, colorsH );
-  SMW::writeOBJ( "example-cnc-G", torus, colorsG );
+  SMW::writeOBJ( "example-nc-H", torus, colorsH );
+  SMW::writeOBJ( "example-nc-G", torus, colorsG );
   //! [curvature-measures-output]
   return 0;
 }
