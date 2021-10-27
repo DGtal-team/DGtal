@@ -33,7 +33,7 @@
    normal currents).
 
 \verbatim
-./examples/geometry/meshes/curvature-measures-icnc-3d 
+./examples/geometry/meshes/curvature-measures-icnc-3d torus 20 20 0.5
 \endverbatim
 outputs
 \verbatim
@@ -59,6 +59,21 @@ associated MTL file.
 \image html torus-cnc-G-True-r0_5.jpg "Interpolated corrected Gaussian curvature measure, r=0.5" width=90%
 </td></tr>
 </table>
+
+@note Interpolated corected curvature measures can provide consistent results even on on bad sampling of smooth surfaces. A well known example is the Schwarz lantern. You may try the following:
+
+\verbatim
+./examples/geometry/meshes/curvature-measures-icnc-3d lantern 20 20 0.5
+\endverbatim
+
+outputs
+
+\verbatim
+Expected mean curvatures: min=0.25 max=0.25
+Computed mean curvatures: min=0.25 max=0.25
+Expected Gaussian curvatures: min=0 max=0
+Computed Gaussian curvatures: min=0 max=0
+\endverbatim
 
 @see \ref moduleCurvatureMeasures
 
@@ -92,14 +107,17 @@ makeColorMap( double min_value, double max_value )
 void usage( int argc, char* argv[] )
 {
   std::cout << "Usage: " << std::endl
-            << "\t argv[ 0 ] <shape> <m> <n> <R>" << std::endl
+            << "\t" << argv[ 0 ] << " <shape> <m> <n> <R>" << std::endl
             << std::endl
             << "Computation of mean and Gaussian curvatures on a shape, " << std::endl
             << "using interpolated corrected curvature measures (based " << std::endl
             << "on the theory of corrected normal currents)."            << std::endl
             << "- builds a <shape> in {torus,lantern,sphere}, with     " << std::endl
             << "  <m> latitude points and <n> longitude points."         << std::endl
-            << "- <R> is the radius of the measuring balls."             << std::endl;
+            << "- <R> is the radius of the measuring balls."             << std::endl
+            << "It produces several OBJ files to display mean and"       << std::endl
+            << "Gaussian curvature estimation results: `example-cnc-H.obj`" << std::endl
+            << "and `example-cnc-G.obj` as well as the associated MTL file." << std::endl;
 }
 
 int main( int argc, char* argv[] )

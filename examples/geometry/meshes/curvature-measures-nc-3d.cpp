@@ -32,7 +32,7 @@
    curvature measures (based on the theory of Normal cycle)
 
 \verbatim
-./examples/geometry/meshes/curvature-measures-nc-3d 20 20 0.5 
+./examples/geometry/meshes/curvature-measures-nc-3d torus 20 20 0.5 
 \endverbatim
 outputs
 \verbatim
@@ -58,7 +58,22 @@ associated MTL file.
 
 @see \ref moduleCurvatureMeasures
 
+@note Normal cycle theory fails on bad sampling of smooth surfaces. A
+well known example is the Schwarz lantern. You may try the following:
 
+\verbatim
+./examples/geometry/meshes/curvature-measures-nc-3d lantern 20 20 0.5
+\endverbatim
+
+outputs 
+
+\verbatim
+Expected mean curvatures: min=0.25 max=0.25
+Computed mean curvatures: min=0.795695 max=1.41211
+Expected Gaussian curvatures: min=0 max=0
+Computed Gaussian curvatures: min=-6.79045e-14 max=15.0937
+\endverbatim
+  
 \example geometry/meshes/curvature-measures-nc-3d.cpp
 */
 
@@ -85,8 +100,29 @@ makeColorMap( double min_value, double max_value )
   return gradcmap;
 }
 
+void usage( int argc, char* argv[] )
+{
+  std::cout << "Usage: " << std::endl
+            << "\t" << argv[ 0 ] << " <shape> <m> <n> <R>" << std::endl
+            << std::endl
+            << "Computation of mean and Gaussian curvatures on a shape, " << std::endl
+            << "using Normal cycle curvature measures (based on the"     << std::endl
+            << "theory of Normal cycle)"                                 << std::endl
+            << "- builds a <shape> in {torus,lantern,sphere}, with     " << std::endl
+            << "  <m> latitude points and <n> longitude points."         << std::endl
+            << "- <R> is the radius of the measuring balls."             << std::endl
+            << "It produces several OBJ files to display mean and"       << std::endl
+            << "Gaussian curvature estimation results: `example-cnc-H.obj`" << std::endl
+            << "and `example-cnc-G.obj` as well as the associated MTL file." << std::endl;
+}
+
 int main( int argc, char* argv[] )
 {
+  if ( argc <= 1 )
+    {
+      usage( argc, argv );
+      return 0;
+    }
   //! [curvature-measures-Typedefs]
   using namespace DGtal;
   using namespace DGtal::Z3i;
@@ -94,21 +130,54 @@ int main( int argc, char* argv[] )
   typedef NormalCycleComputer< RealPoint, RealVector > NC;
   typedef SurfaceMeshHelper< RealPoint, RealVector >   SMH;
   //! [curvature-measures-Typedefs]
-  int    m = argc > 1 ? atoi( argv[ 1 ] ) : 20;  // nb latitude points
-  int    n = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb longitude points
-  double R = argc > 3 ? atof( argv[ 3 ] ) : 0.5; // radius of measuring ball
+  std::string input = argc > 1 ? argv[ 1 ] : "torus"; 
+  int    m = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb latitude points
+  int    n = argc > 3 ? atoi( argv[ 3 ] ) : 20;  // nb longitude points
+  double R = argc > 4 ? atof( argv[ 4 ] ) : 0.5; // radius of measuring ball
 
   //! [curvature-measures-SurfaceMesh]
-  const double big_radius   = 3.0;
-  const double small_radius = 1.0;
-  SM torus = SMH::makeTorus( big_radius, small_radius, RealPoint { 0.0, 0.0, 0.0 },
-                             m, n, 0,
-                             SMH::NormalsType::NO_NORMALS );
+  SM smesh;
+  double exp_H_min = 0.0;
+  double exp_H_max = 0.0;
+  double exp_G_min = 0.0;
+  double exp_G_max = 0.0;
+  if ( input == "torus" )
+    {
+      const double big_radius   = 3.0;
+      const double small_radius = 1.0;
+      smesh = SMH::makeTorus( big_radius, small_radius,
+                              RealPoint { 0.0, 0.0, 0.0 }, m, n, 0,
+                              SMH::NormalsType::VERTEX_NORMALS );
+      exp_H_min = ( 0.5 / ( small_radius - big_radius ) + 0.5 / small_radius );
+      exp_H_max = ( 0.5 / ( big_radius + small_radius ) + 0.5 / small_radius );
+      exp_G_min = ( 1.0 / ( small_radius - big_radius ) * 1.0 / small_radius );
+      exp_G_max = ( 1.0 / ( big_radius + small_radius ) * 1.0 / small_radius );
+    }
+  else if ( input == "sphere" )
+    {
+      const double radius = 2.0;
+      smesh = SMH::makeSphere( radius, RealPoint { 0.0, 0.0, 0.0 }, m, n,
+                               SMH::NormalsType::VERTEX_NORMALS );
+      exp_H_min = 1.0 / radius;
+      exp_H_max = 1.0 / radius;
+      exp_G_min = 1.0 / ( radius * radius );
+      exp_G_max = 1.0 / ( radius * radius );
+    }
+  else if ( input == "lantern" )
+    {
+      const double radius = 2.0;
+      smesh = SMH::makeLantern( radius, 1.0, RealPoint { 0.0, 0.0, 0.0 }, m, n,
+                                SMH::NormalsType::VERTEX_NORMALS );
+      exp_H_min = 0.5 / radius;
+      exp_H_max = 0.5 / radius;
+      exp_G_min = 0.0;
+      exp_G_max = 0.0;
+    }
   //! [curvature-measures-SurfaceMesh]
 
   //! [curvature-measures-CNC]
-  // builds a CorrectedNormalCurrentComputer object onto the torus mesh
-  NC nc( torus );
+  // builds a NormalCycleComputer object onto the mesh
+  NC nc( smesh );
   // computes area, mean and Gaussian curvature measures
   auto mu0 = nc.computeMu0();
   auto mu1 = nc.computeMu1();
@@ -117,11 +186,11 @@ int main( int argc, char* argv[] )
 
   //! [curvature-measures-estimations]
   // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
-  std::vector< double > H( torus.nbFaces() );
-  std::vector< double > G( torus.nbFaces() );
-  for ( auto f = 0; f < torus.nbFaces(); ++f )
+  std::vector< double > H( smesh.nbFaces() );
+  std::vector< double > G( smesh.nbFaces() );
+  for ( auto f = 0; f < smesh.nbFaces(); ++f )
     {
-      const auto b    = torus.faceCentroid( f );
+      const auto b    = smesh.faceCentroid( f );
       const auto area = mu0.measure( b, R, f );
       H[ f ] = mu1.measure( b, R, f ) / ( 2.0 * area );
       G[ f ] = mu2.measure( b, R, f ) / area;
@@ -132,20 +201,16 @@ int main( int argc, char* argv[] )
   auto H_min_max = std::minmax_element( H.cbegin(), H.cend() );
   auto G_min_max = std::minmax_element( G.cbegin(), G.cend() );
   std::cout << "Expected mean curvatures:"
-            << " min=" << ( 0.5 / ( small_radius - big_radius ) + 0.5 / small_radius )
-            << " max=" << ( 0.5 / ( big_radius + small_radius ) + 0.5 / small_radius )
+            << " min=" << exp_H_min << " max=" << exp_H_max
             << std::endl;
   std::cout << "Computed mean curvatures:"
-            << " min=" << *H_min_max.first
-            << " max=" << *H_min_max.second
+            << " min=" << *H_min_max.first << " max=" << *H_min_max.second
             << std::endl;
   std::cout << "Expected Gaussian curvatures:"
-            << " min=" << ( 1.0 / ( small_radius - big_radius ) * 1.0 / small_radius )
-            << " max=" << ( 1.0 / ( big_radius + small_radius ) * 1.0 / small_radius )
+            << " min=" << exp_G_min << " max=" << exp_G_max
             << std::endl;
   std::cout << "Computed Gaussian curvatures:"
-            << " min=" << *G_min_max.first
-            << " max=" << *G_min_max.second
+            << " min=" << *G_min_max.first << " max=" << *G_min_max.second
             << std::endl;
   //! [curvature-measures-check]
 
@@ -153,15 +218,15 @@ int main( int argc, char* argv[] )
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
   const auto colormapH = makeColorMap( -0.625, 0.625 );
   const auto colormapG = makeColorMap( -0.625, 0.625 );
-  auto colorsH = SMW::Colors( torus.nbFaces() );
-  auto colorsG = SMW::Colors( torus.nbFaces() );
-  for ( auto i = 0; i < torus.nbFaces(); i++ )
+  auto colorsH = SMW::Colors( smesh.nbFaces() );
+  auto colorsG = SMW::Colors( smesh.nbFaces() );
+  for ( auto i = 0; i < smesh.nbFaces(); i++ )
     {
       colorsH[ i ] = colormapH( H[ i ] );
       colorsG[ i ] = colormapG( G[ i ] );
     }
-  SMW::writeOBJ( "example-nc-H", torus, colorsH );
-  SMW::writeOBJ( "example-nc-G", torus, colorsG );
+  SMW::writeOBJ( "example-nc-H", smesh, colorsH );
+  SMW::writeOBJ( "example-nc-G", smesh, colorsG );
   //! [curvature-measures-output]
   return 0;
 }
