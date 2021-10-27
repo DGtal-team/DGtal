@@ -134,7 +134,7 @@ int main( int argc, char* argv[] )
   typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNC;
   typedef SurfaceMeshHelper< RealPoint, RealVector >              SMH;
   //! [curvature-measures-Typedefs]
-  // OBJ file or a shape in "torus|lantern|sphere"
+  // a shape in "torus|lantern|sphere"
   std::string input = argc > 1 ? argv[ 1 ] : "torus"; 
   int    m = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb latitude points
   int    n = argc > 3 ? atoi( argv[ 3 ] ) : 20;  // nb longitude points
