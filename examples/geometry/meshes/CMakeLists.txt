@@ -5,6 +5,8 @@ set(DGTAL_EXAMPLES_SRC
         curvature-measures-nc-XY-3d
         obj-curvature-measures-icnc-3d
         obj-curvature-measures-icnc-XY-3d
+        vol-curvature-measures-icnc-3d
+        vol-curvature-measures-icnc-XY-3d
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
