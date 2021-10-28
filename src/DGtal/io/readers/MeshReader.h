@@ -127,10 +127,35 @@ public:
   static  bool  importOFSFile(const std::string & filename, 
 			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0);
   
-  
-  
+  /// Reads an input file as an OBJ file format and outputs the
+  /// corresponding surface mesh.
+  ///
+  /// @param[in] filename the input filename of the OBJ file to be read.
+  /// @param[out] aMesh the output  mesh.
+  ///
+  /// @return 'true' if both reading the input stream was ok and the
+  /// created mesh is ok.
+  static
+  bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh );
 
+  
+  /// Checks that each index in \a indices is unique.
+  /// @param indices a vector of integer indices
+  /// @return 'true' iff the integer indices are all pairwise different.
+  static
+  bool verifyIndicesUniqueness( const std::vector< unsigned int > &indices );
 
+   
+  /// Reads an input material file associated ot an OBJ file format and outputs the
+  /// corresponding materials as a map assiating name and diffuse color.
+  ///
+  /// @param[in,out] input the input stream where the OBJ file is read.
+  ///
+  /// @return 'true' if both reading the input stream was ok and the
+  /// created mesh is ok.
+  static
+  std::map<std::string, DGtal::Color> readMaterial( std::istream & input);
+    
 
 
 }; // end of class MeshReader

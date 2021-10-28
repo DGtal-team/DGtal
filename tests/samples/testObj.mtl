@@ -1,0 +1,14 @@
+#  MTL format
+# generated from SurfaceMeshWriter from the DGTal library
+newmtl material_0
+Ka 0.12549 0.12549 0.12549
+Kd 1 0 0
+Ks 1 1 1
+newmtl material_1
+Ka 0.12549 0.12549 0.12549
+Kd 0 0 0
+Ks 1 1 1
+newmtl material_2
+Ka 0.12549 0.12549 0.12549
+Kd 0.501961 0 0.501961
+Ks 1 1 1
