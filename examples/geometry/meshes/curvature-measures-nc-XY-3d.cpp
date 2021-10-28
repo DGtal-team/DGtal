@@ -149,7 +149,7 @@ int main( int argc, char* argv[] )
   if ( input == "torus" )
     {
       const double big_radius   = 3.0;
-      const double small_radius = 1.0;
+      const double small_radius = 1.00001; // avoid codacy warnings
       smesh = SMH::makeTorus( big_radius, small_radius,
                               RealPoint { 0.0, 0.0, 0.0 }, m, n, 0,
                               SMH::NormalsType::VERTEX_NORMALS );
