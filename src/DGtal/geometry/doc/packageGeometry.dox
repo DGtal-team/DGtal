@@ -72,6 +72,9 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \ref modulePlaneProbing (Jacques-Olivier Lachaud, Jocelyn Meyron, Tristan Roussillon)
   - \ref moduleMaximalSegmentSliceEstimation (Jocelyn Meyron, Tristan Roussillon)
 
+- Mesh geometric estimators
+  - \ref moduleCurvatureMeasures (Jacques-Olivier Lachaud, Pascal Romon, Boris Thibert, David Coeurjolly)
+
 - Volumetric analysis
   - \ref moduleMetrics (David Coeurjolly)
   - \ref moduleVolumetric (David Coeurjolly, Roland Denis, Robin Lamy (VoronoiComplete))

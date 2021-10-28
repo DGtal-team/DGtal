@@ -144,7 +144,7 @@ namespace DGtal
       return m;
     }
     /// Computes the total measure on the ball of center \a x and
-    /// radius \r. The center \a x must lie on or close to the face \a
+    /// radius \a r. The center \a x must lie on or close to the face \a
     /// f (as a hint to compute cells in the given ball).
     ///
     /// @param x the position where the ball is centered.

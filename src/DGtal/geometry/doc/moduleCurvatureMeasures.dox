@@ -1,0 +1,38 @@
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+
+@page moduleCurvatureMeasures Curvature measures on meshes and digital surfaces
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.3
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes the implementation of several
+curvature measures on quite arbitrary meshes (any instance of
+SurfaceMesh). The classical curvature measures related to the Normal
+Cycle are provided as well as the more general curvature measures
+based on corrected normal currents.
+
+[TOC]
+
+
+The following programs are related to this documentation:
+geometry/meshes/curvature-measures-icnc-3d.cpp,
+geometry/meshes/curvature-measures-icnc-XY-3d.cpp,
+geometry/meshes/curvature-measures-nc-3d.cpp,
+geometry/meshes/curvature-measures-nc-XY-3d.cpp,
+geometry/meshes/obj-curvature-measures-icnc-3d.cpp,
+geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp,
+geometry/meshes/vol-curvature-measures-icnc-3d.cpp,
+geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp,
+
+@section dgtal_curvature_measures_sec1  Introduction to curvature measures
+
+*/
+}
