@@ -248,7 +248,7 @@ namespace DGtal
     }    
 
     /// Given a vector of unit vectors, returns their average unit vector.
-    /// @param pts any vector of vectors.
+    /// @param vecs any vector of vectors.
     /// @return the average unit vector.
     static 
     RealVector averageUnitVector( const RealVectors& vecs )

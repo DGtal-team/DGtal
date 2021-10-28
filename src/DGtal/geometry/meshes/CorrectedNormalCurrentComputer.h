@@ -85,7 +85,14 @@ namespace DGtal
 
 
     /// Constructor from mesh.
-    /// @param aMesh any simplified mesh that is referenced in this object.
+    ///
+    /// @param aMesh any simplified mesh that is referenced in this
+    /// object.
+    ///
+    /// @param unit_u when set to 'true' tells the computer to
+    /// normalize corrected normals in curvature formulae. For
+    /// instance, for the Gaussian curvature, it induces exact
+    /// Gaussian curvature computation with spherical triangles.
     CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh,
                                     bool unit_u = false );
 

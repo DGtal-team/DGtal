@@ -117,7 +117,7 @@ namespace DGtal
     }
 
     /// Computes mu0 measure (area) of triangle abc given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param a any point
     /// @param b any point
     /// @param c any point
@@ -164,7 +164,7 @@ namespace DGtal
     }
 
     /// Computes area of polygonal face \a pts given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
     /// @param u the (ccw ordered) normal vectors at the corresponding vertices in \a pts.
     /// @param unit_u when 'true' considers that interpolated
@@ -206,15 +206,16 @@ namespace DGtal
     /// @return the mu1-measure of triangle abc, i.e. twice its mean curvature, always 0.0.
     static
     Scalar mu1ConstantU
-    ( const RealPoint& /* a */, const RealPoint& /* b */, const RealPoint& /* c */,
-      const RealVector& /* u */ )
+    ( const RealPoint& a, const RealPoint& b, const RealPoint& c,
+      const RealVector& u )
     {
+      (void)a; (void)b; (void)c; (void)u;
       return 0.0;
     }
 
     /// Computes mu1 measure (twice the mean curvature) of triangle
     /// abc given an interpolated corrected normal vector \a ua, \a
-    /// \ub, \a uc.
+    /// ub, \a uc.
     ///
     /// @param a any point
     /// @param b any point
@@ -253,7 +254,7 @@ namespace DGtal
     }
 
     /// Computes mean curvature of polygonal face \a pts given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
     /// @param u the (ccw ordered) normal vectors at the corresponding vertices in \a pts.
     /// @param unit_u when 'true' considers that interpolated
@@ -294,14 +295,17 @@ namespace DGtal
     /// @return the mu2-measure of triangle abc, i.e. its Gaussian curvature, always 0.0.
     static
     Scalar mu2ConstantU
-    ( const RealPoint& /* a */, const RealPoint& /* b */, const RealPoint& /* c */,
-      const RealVector& /* u */ )
+    ( const RealPoint& a, const RealPoint& b, const RealPoint& c,
+      const RealVector& u )
     {
+      (void)a; (void)b; (void)c; (void)u;
       return 0.0;
     }
 
-    /// Computes mu2 measure (Gaussian curvature) of triangle abc given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// Computes mu2 measure (Gaussian curvature) of triangle abc
+    /// given an interpolated corrected normal vector \a ua, \a ub, \a
+    /// uc.
+    ///
     /// @param a any point
     /// @param b any point
     /// @param c any point
@@ -339,11 +343,12 @@ namespace DGtal
     static
     Scalar mu2ConstantU( const RealPoints& pts, const RealVector& u )
     {
+      (void) pts; (void) u;
       return 0.0;
     }
     
     /// Computes Gaussian curvature of polygonal face \a pts given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
     /// @param u the (ccw ordered) normal vectors at the corresponding vertices in \a pts.
     /// @param unit_u when 'true' considers that interpolated
@@ -384,14 +389,15 @@ namespace DGtal
     /// @return the muXY-measure of triangle abc, i.e. its anisotropic curvature, always 0.0.
     static
     RealTensor muXYConstantU
-    ( const RealPoint& /* a */, const RealPoint& /* b */, const RealPoint& /* c */,
-      const RealVector& /* u */ )
+    ( const RealPoint& a, const RealPoint& b, const RealPoint& c,
+      const RealVector& u )
     {
+      (void)a; (void)b; (void)c; (void)u;
       return RealTensor { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
     }
     
     /// Computes muXY measure (anisotropic curvature) of triangle abc given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param a any point
     /// @param b any point
     /// @param c any point
@@ -439,11 +445,12 @@ namespace DGtal
     static
     RealTensor muXYConstantU( const RealPoints& pts, const RealVector& u )
     {
+      (void)pts; (void)u;
       return RealTensor { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
     }
 
     /// Computes anisotropic curvature of polygonal face \a pts given an interpolated
-    /// corrected normal vector \a ua, \a \ub, \a uc.
+    /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
     /// @param u the (ccw ordered) normal vectors at the corresponding vertices in \a pts.
     /// @param unit_u when 'true' considers that interpolated
@@ -488,7 +495,7 @@ namespace DGtal
     }
 
     /// Given a vector of unit vectors, returns their average unit vector.
-    /// @param pts any vector of vectors.
+    /// @param vecs any vector of vectors.
     /// @return the average unit vector.
     static 
     RealVector averageUnitVector( const RealVectors& vecs )

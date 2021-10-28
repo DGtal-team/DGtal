@@ -98,6 +98,7 @@ namespace DGtal
 
     /// Constructor from mesh.
     /// @param aMesh any simplified mesh that is referenced in this object.
+    /// @param zero_value the value 0 for the specified type TValue.
     SurfaceMeshMeasure( ConstAlias< SurfaceMesh > aMesh = nullptr,
                         Value zero_value = Value() )
       : myMeshPtr( &aMesh ), myZero( zero_value ) {}
