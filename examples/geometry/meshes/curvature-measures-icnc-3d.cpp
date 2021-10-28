@@ -135,7 +135,7 @@ int main( int argc, char* argv[] )
   typedef SurfaceMeshHelper< RealPoint, RealVector >              SMH;
   //! [curvature-measures-Typedefs]
   // a shape in "torus|lantern|sphere"
-  std::string input = argc > 1 ? argv[ 1 ] : "torus"; 
+  std::string input = argv[ 1 ];
   int    m = argc > 2 ? atoi( argv[ 2 ] ) : 20;  // nb latitude points
   int    n = argc > 3 ? atoi( argv[ 3 ] ) : 20;  // nb longitude points
   double R = argc > 4 ? atof( argv[ 4 ] ) : 0.5; // radius of measuring ball

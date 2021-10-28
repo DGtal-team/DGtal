@@ -82,7 +82,6 @@ accuracy.
 #include "DGtal/helpers/ShortcutsGeometry.h"
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "ConfigExamples.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -133,7 +132,7 @@ int main( int argc, char* argv[] )
   typedef ShortcutsGeometry< KSpace > SHG;
   //! [curvature-measures-Typedefs]
   // VOL file
-  std::string input = argc > 1 ? argv[ 1 ] : examplesPath + "samples/Al.100.vol";
+  std::string input = argv[ 1 ];
   const double    R = argc > 2 ? atof( argv[ 2 ] ) : 2.0; // radius of measuring ball
   const int       m = argc > 3 ? atoi( argv[ 3 ] ) : 0; // min threshold
   const int       M = argc > 4 ? atoi( argv[ 4 ] ) : 1; // max threshold

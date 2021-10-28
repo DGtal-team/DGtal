@@ -72,7 +72,6 @@ associated MTL file.
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "ConfigExamples.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -120,7 +119,7 @@ int main( int argc, char* argv[] )
   typedef SurfaceMeshReader< RealPoint, RealVector >              SMR;
   //! [curvature-measures-Typedefs]
   // OBJ file
-  std::string input = argc > 1 ? argv[ 1 ] : examplesPath + "samples/spot.obj";
+  std::string input = argv[ 1 ];
   const double    R = argc > 2 ? atof( argv[ 2 ] ) : 0.0; // radius of measuring ball
   const double Hmax = argc > 3 ? atof( argv[ 3 ] ) : 5.0; // range mean curvature colormap
   const double Gmax = argc > 4 ? atof( argv[ 4 ] ) : 0.5*Hmax*Hmax; // range Gaussian curvature colormap
