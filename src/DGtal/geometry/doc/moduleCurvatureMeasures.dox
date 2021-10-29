@@ -23,16 +23,385 @@ based on corrected normal currents.
 
 
 The following programs are related to this documentation:
-geometry/meshes/curvature-measures-icnc-3d.cpp,
-geometry/meshes/curvature-measures-icnc-XY-3d.cpp,
-geometry/meshes/curvature-measures-nc-3d.cpp,
-geometry/meshes/curvature-measures-nc-XY-3d.cpp,
-geometry/meshes/obj-curvature-measures-icnc-3d.cpp,
-geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp,
-geometry/meshes/vol-curvature-measures-icnc-3d.cpp,
-geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp,
+<a href="geometry_2meshes_2curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-3d.cpp</a>,
+<a href="geometry_2meshes_2curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-XY-3d.cpp</a>,
+<a href="geometry_2meshes_2curvature-measures-nc-3d_8cpp-example.html">geometry/meshes/curvature-measures-nc-3d.cpp</a>,
+<a href="geometry_2meshes_2curvature-measures-nc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-nc-XY-3d.cpp</a>,
+<a href="geometry_2meshes_2obj-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-3d.cpp</a>,
+<a href="geometry_2meshes_2obj-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp</a>,
+<a href="geometry_2meshes_2vol-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-3d.cpp</a>,
+<a href="geometry_2meshes_2vol-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp</a>.
 
-@section dgtal_curvature_measures_sec1  Introduction to curvature measures
+@section dgtal_curvature_measures_sec1 Introduction to curvature measures
+
+Curvature is an important geometric information which has the drawback
+of being well defined only on smooth sets. Unfortunately, most
+geometric data are non-smooth (e.g. triangulated or polygonal
+surfaces, point clouds, polyhedra). A lot of works have thus aimed at
+generalizing curvatures to such sets, while guaranteeing that such
+definitions tend (in some sense) towards the classical smooth
+curvatures when working on finer and finer non smooth approximations
+of smooth data.
+
+The seminal paper of Federer \cite federer1959curvature first defined
+\a curvature \a measures on sets with positive reach (which includes
+smooth and convex polyhedra, but not triangulated surfaces in
+general).  Using the notion of Normal Cycle introduced by Wintgen
+\cite wintgen1982normal, this notion was then extended to a wider
+class of objects including triangulations, digitized objects and
+subanalytic sets by Fu \cite fu1994curvature.
+
+The main idea of the \b Normal \b Cycle is to embed the shape into the
+Grassmann bundle, which encodes both positions and the normal
+cones. This embedding is itself piecewise smooth, and curvatures can
+be defined onto it by integration with the \a invariant \a
+differential \a forms (Lipschitz-Killing forms). This approach was
+used for instance by Cohen-Steiner and Morvan \cite cohen2003restricted
+\cite cohen2006second for triangulated surfaces,
+where they show stability of curvature measures for surface sampling
+with convergent normals. Extensions of such works to point clouds
+using offset surfaces were proposed by Chazal, Cohen-Steiner, Lieutier
+and Thibert in \cite chazal2009stability.
+
+However these methods do not provide consistent curvature estimates
+when the normal vector field of the discretization does not tend
+towards the normal vector field of the reference smooth surface. A
+famous example is the <a
+href="https://en.wikipedia.org/wiki/Schwarz_lantern">Schwarz
+lantern</a>. This is also the case of digital surfaces that are
+boundaries of pixel/voxel data in images. For these surfaces, even
+high resolution data implies only 4 (in 2D) or 6 (in 3D) possible
+normal vectors.
+
+This module therefore proposes an implementation of \b corrected \b
+normal \b currents to compute curvature measures onto quite general
+discrete surface data. The key idea is to replace the normal vector
+field of a surface \a S by another vector field \b u which we assume
+to be geometrically more meaningful.  For instance if \a S is a
+digitization of a smooth surface \a X, one may take for \b u a local
+average of the naive normals of \a X.
+
+The general theory was proposed by Lachaud, Romon and Thibert in 
+\cite lachaud:hal-02193774. It deals with piecewise \f$ C^{1,1} \f$
+surfaces, with piecewise \f$ C^1 \f$ corrected normal vector field.  A
+specialized version restricted to polygonal meshes equipped with a
+normal vector field defined by linear interpolation was presented in
+\cite lachaud2020interpolated, and leads to quite simple formulae.
+
+For instance, the \a interpolated \a corrected \a curvature \a measures take the
+  following values on a triangle \f$ \tau_{ijk} \f$, with vertices \a i, \a j, \a k:
+
+\f[
+  \begin{align*}
+  \mu^{(0)}(\tau_{ijk}) = &\frac{1}{2} \langle \bar{\mathbf{u}} \mid (\mathbf{x}_j - \mathbf{x}_i) \times (\mathbf{x}_k - \mathbf{x}_i) \rangle, \\
+  \mu^{(1)}(\tau_{ijk}) = &\frac{1}{2} \langle \bar{\mathbf{u}} \mid (\mathbf{u}_k - \mathbf{u}_j) \times \mathbf{x}_i + (\mathbf{u}_i - \mathbf{u}_k) \times \mathbf{x}_j + (\mathbf{u}_j - \mathbf{u}_i) \times \mathbf{x}_k \rangle, \\
+  \mu^{(2)}(\tau_{ijk}) = &\frac{1}{2} \langle \mathbf{u}_i \mid \mathbf{u}_j \times \mathbf{u}_k \rangle, \\
+  \mu^{\mathbf{X},\mathbf{Y}}(\tau_{ijk}) = & \frac{1}{2} \big\langle \bar{\mathbf{u}} \big| \langle \mathbf{Y} | \mathbf{u}_k -\mathbf{u}_i \rangle \mathbf{X} \times (\mathbf{x}_j - \mathbf{x}_i) \big\rangle
+    -\frac{1}{2} \big\langle \bar{\mathbf{u}} \big| \langle \mathbf{Y} | \mathbf{u}_j -\mathbf{u}_i \rangle \mathbf{X} \times (\mathbf{x}_k - \mathbf{x}_i) \big\rangle,
+  \end{align*}
+\f]
+where \f$ \langle \cdot \mid \cdot \rangle \f$ denotes the usual scalar product,
+\f$ \bar{\mathbf{u}}=\frac{1}{3}( \mathbf{u}_i + \mathbf{u}_j + \mathbf{u}_k )\f$.
+
+The measure \f$ \mu^{(0)} \f$ is the \a corrected \a area \a density of
+the given triangle, \f$ \mu^{(1)} \f$ is twice its \a corrected \a
+mean \a curvature \a density, \f$ \mu^{(2)} \f$ is its \a corrected \a
+Gaussian \a curvature \a density. The (anisotropic) measure \f$
+\mu^{\mathbf{X},\mathbf{Y}} \f$ is the trace of the \a corrected \a
+second \a fundamental \a form along directions \f$ \mathbf{X} \f$ and
+\f$ \mathbf{Y} \f$.  While the smooth second fundamental form is
+naturally a symmetric 2-tensor, there is no easy way to define tangent
+directions at a vertex, so the anisotropic measure depends on two 3D
+vectors; when \f$ \mathbf{X} \f$ and \f$ \mathbf{Y} \f$ are tangent,
+\f$ \mu^{\mathbf{X},\mathbf{Y}} \f$ is close to the second fundamental
+form applied to these vectors, while its value along normal direction
+tends to zero asymptotically.
+
+These measures are naturally extended to an arbitrary subset \a B of
+\f$ \mathbb{R}^3 \f$ by measuring its intersection ratio with each
+triangle \f$ \tau \f$ and by suming over all triangles of the mesh.
+
+\f[
+\mu^{(k)}( B ) = \sum_{\tau : \text{triangle} } \mu^{(k)}( \tau ) \frac{\mathrm{Area}( \tau \cap B )}{\mathrm{Area}(\tau)}.
+\f]
+
+@section dgtal_curvature_measures_sec2 Computing curvature measures on meshes
+
+Curvature measures formula per triangle/edge/vertex are provided in
+class NormalCycleFormula (for the curvatures measures induced by the
+Normal Cycle) and in class CorrectedNormalCurrentFormula (for the
+curvatures measures induced by corrected normal currents with
+interpolated corrected normal vector field). 
+
+However one generally wishes to compute the measures over a mesh in a
+ball of given center and radius.  It is then more convenient to use
+classes NormalCycleComputer and CorrectedNormalCurrentComputer, which
+are dedicated to compute curvature measures over a SurfaceMesh object.
+
+@subsection dgtal_curvature_measures_sec21 Normal Cycle curvature measures
+
+You may proceed as follows (see examples <a
+href="geometry_2meshes_2curvature-measures-nc-3d_8cpp-example.html">geometry/meshes/curvature-measures-nc-3d.cpp</a>
+and <a
+href="geometry_2meshes_2curvature-measures-nc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-nc-XY-3d.cpp</a>).
+
+You need to include header file of class NormalCycleComputer:
+\snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-Includes
+then use some typedefs adapted to your problem.
+\snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-Typedefs
+
+We will compute curvature measures onto a SurfaceMesh object. Here, we
+build a torus of big radius 3 and small radius 1, with a
+discretization of 20x20.
+
+\code 
+SM smesh = SMH::makeTorus( 3.0, 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20, 0,
+                           SMH::NormalsType::NO_NORMALS );
+\endcode
+
+It is not necessary here to equip the mesh with normals, since the
+Normal Cycle infers the normals from the positions of the mesh.  We
+can now compute three measures onto the mesh, `mu0` the area measure,
+`mu1` twice the mean curvature measure, and `mu2` the Gaussian
+curvature measure.  
+
+\snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-CNC
+
+Normal cycle mean and Gaussian curvature measures have meaning only
+around edges and vertices. So it is necessary to measure them into a
+big enough ball that includes at least one edge or vertex, and then to
+normalize the result by dividing by the area measure. Therefore, if we
+wish to estimate mean and Gaussian curvatures at every face centroid
+(say), the following snippet shows how to do it, assuming a measuring
+ball radius of `R`:
+
+\snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-estimations
+
+This is is the result for a measuring ball radius of 0.5 onto the torus shape. 
+\verbatim
+Expected mean curvatures: min=0.25 max=0.625
+Computed mean curvatures: min=0.189446 max=0.772277
+Expected Gaussian curvatures: min=-0.5 max=0.25
+Computed Gaussian curvatures: min=-0.682996 max=0.547296
+\endverbatim
+
+A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, see geometry/meshes/curvature-measures-nc-XY-3d.cpp. This gives you such result for principal curvatures estimations.
+
+\verbatim
+Expected k1 curvatures: min=-0.5 max=0.25
+Computed k1 curvatures: min=-0.581281 max=0.441977
+Expected k2 curvatures: min=1 max=1
+Computed k2 curvatures: min=0.904081 max=1.06404
+\endverbatim
+
+Curvature estimates are displayed with a colormap [-0.625 ... 0
+... 0.625] -> [Blue ... White ... Red].
+
+<table>
+<tr><td>
+\image html torus-nc-H-True-r0_5.jpg "Normal cycle mean curvature measure, r=0.5" width=90%
+</td><td>
+\image html torus-nc-G-True-r0_5.jpg "Normal cycle Gaussian curvature measure, r=0.5" width=90%
+</td><td>
+\image html torus-nc-K1-D1-True-r0_5.jpg "Normal cycle smallest principal curvature and direction, r=0.5" width=90%
+</td><td>
+\image html torus-nc-K2-D2-True-r0_5.jpg "Normal cycle greatest principal curvature and direction, r=0.5" width=90%
+</td></tr>
+</table>
+
+
+@subsection dgtal_curvature_measures_sec22 Interpolated Corrected Normal Current curvature measures
+
+You may proceed as follows (see examples <a
+href="geometry_2meshes_2curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-3d.cpp</a>
+and <a
+href="geometry_2meshes_2curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-XY-3d.cpp</a>).
+
+You need to include header file of class CorrectedNormalCurrentComputer:
+\snippet geometry/meshes/curvature-measures-icnc-3d.cpp curvature-measures-Includes
+then use some typedefs adapted to your problem.
+\snippet geometry/meshes/curvature-measures-icnc-3d.cpp curvature-measures-Typedefs
+
+We will compute curvature measures onto a SurfaceMesh object. Here, we
+build a torus of big radius 3 and small radius 1, with a
+discretization of 20x20.
+
+\code 
+SM smesh = SMH::makeTorus( 3.0, 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20, 0,
+                           SMH::NormalsType::VERTEX_NORMALS );
+\endcode
+
+@warning It is necessary here to equip the mesh with normals, since the
+Corrected NormalCurrent needs a corrected vector field to compute curvatures. 
+
+Here we just provide the corrected normal vector field \f$ \mathbf{u}
+\f$ as a normal vector per vertex, the field is then linearly
+interpolated.  We can now compute three measures onto the mesh, `mu0`
+the area measure, `mu1` twice the mean curvature measure, and `mu2`
+the Gaussian curvature measure.
+
+\snippet geometry/meshes/curvature-measures-icnc-3d.cpp curvature-measures-CNC
+
+A big advantage of (interpolated) Corrected Normal Current over
+Normal Cycle is that the induced mean and Gaussian curvature measures
+have meaning for arbitrary measuring set (even when the area of the
+set tends to zero. Therefore, if we wish to estimate mean and Gaussian
+curvatures at every face centroid (say), the following snippet shows
+how to do it, assuming a measuring ball radius of `R`:
+
+\snippet geometry/meshes/curvature-measures-icnc-3d.cpp curvature-measures-estimations
+
+This is is the result for a measuring ball radius of 0.0 onto the
+torus shape (perfect results !).
+\verbatim
+Expected mean curvatures: min=0.25 max=0.625
+Computed mean curvatures: min=0.25 max=0.625
+Expected Gaussian curvatures: min=-0.5 max=0.25
+Computed Gaussian curvatures: min=-0.5 max=0.25
+\endverbatim
+
+This is is the result for a measuring ball radius of 0.5 onto the torus shape (quite better than Normal cycle).
+\verbatim
+Expected mean curvatures: min=0.25 max=0.625
+Computed mean curvatures: min=0.264763 max=0.622318
+Expected Gaussian curvatures: min=-0.5 max=0.25
+Computed Gaussian curvatures: min=-0.470473 max=0.244636
+\endverbatim
+
+A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, see <a
+href="geometry_2meshes_2curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-XY-3d.cpp</a>. 
+
+This gives you such results for principal curvatures estimations, first for a radius 0:
+\verbatim
+Expected k1 curvatures: min=-0.5 max=0.25
+Computed k1 curvatures: min=-0.500225 max=0.249888
+Expected k2 curvatures: min=1 max=1
+Computed k2 curvatures: min=1.00011 max=1.00678
+\endverbatim
+
+then for a radius of 0.5:
+\verbatim
+Expected k1 curvatures: min=-0.5 max=0.25
+Computed k1 curvatures: min=-0.454026 max=0.242436
+Expected k2 curvatures: min=1 max=1
+Computed k2 curvatures: min=0.924283 max=0.95338
+\endverbatim
+
+Curvature estimates are displayed with a colormap [-0.625 ... 0
+... 0.625] -> [Blue ... White ... Red].
+
+<table>
+<tr><td>
+\image html torus-cnc-H-True-r0.jpg "Corrected Normal Current mean curvature measure, r=0" width=90%
+</td><td>
+\image html torus-cnc-G-True-r0.jpg "Corrected Normal Current Gaussian curvature measure, r=0" width=90%
+</td><td>
+\image html torus-cnc-K1-D1-True-r0.jpg "Corrected Normal Current smallest principal curvature and direction, r=0" width=90%
+</td><td>
+\image html torus-cnc-K2-D2-True-r0.jpg "Corrected Normal Current greatest principal curvature and direction, r=0" width=90%
+</td></tr>
+<tr><td>
+\image html torus-cnc-H-True-r0_5.jpg "Corrected Normal Current mean curvature measure, r=0.5" width=90%
+</td><td>
+\image html torus-cnc-G-True-r0_5.jpg "Corrected Normal Current Gaussian curvature measure, r=0.5" width=90%
+</td><td>
+\image html torus-cnc-K1-D1-True-r0_5.jpg "Corrected Normal Current smallest principal curvature and direction, r=0.5" width=90%
+</td><td>
+\image html torus-cnc-K2-D2-True-r0_5.jpg "Corrected Normal Current greatest principal curvature and direction, r=0.5" width=90%
+</td></tr>
+</table>
+
+@note You  may check that Normal Cycle fails on the Schwarz lantern, while interpolated Corrected Normal Current provides the correct curvature estimation.
+
+<table>
+<tr>
+<td>
+\verbatim
+./examples/geometry/meshes/curvature-measures-nc-3d lantern 20 20 0.5
+\endverbatim
+outputs 
+\verbatim
+Expected mean curvatures: min=0.25 max=0.25
+Computed mean curvatures: min=0.795695 max=1.41211
+Expected Gaussian curvatures: min=0 max=0
+Computed Gaussian curvatures: min=-6.79045e-14 max=15.0937
+\endverbatim
+</td>
+<td>
+\verbatim
+./examples/geometry/meshes/curvature-measures-icnc-3d lantern 20 20 0.5
+\endverbatim
+outputs
+\verbatim
+Expected mean curvatures: min=0.25 max=0.25
+Computed mean curvatures: min=0.25 max=0.25
+Expected Gaussian curvatures: min=0 max=0
+Computed Gaussian curvatures: min=0 max=0
+\endverbatim
+</td>
+</tr>
+</table>
+
+@subsection dgtal_curvature_measures_sec23 More on curvature measures
+
+NormalCycleComputer and CorrectedNormalCurrentComputer provides
+methods that return measures, more precisely as SurfaceMeshMeasure
+objects. The values of measure may be arbitrary scalars, vectors or
+tensors. Here curvature measures are either scalars (like area, mean
+and Gaussian curvature measures) or tensors (anisotropic measures).
+
+A SurfaceMeshMeasure provides several handy methods to evaluate
+measures wrt simple subsets of \f$ \mathbb{R}^3 \f$.
+
+- SurfaceMeshMeasure::measure() const returns the total measure, i.e. \f$
+  \mu(\mathbb{R^3}) \f$.
+
+- SurfaceMeshMeasure::measure( const RealPoint&, Scalar, Face ) const
+  computes the measure \f$ \mu(B_r(x)) \f$, where \f$
+  B_r(x) \f$ is the ball of center \a x and radius \a r. The center \a
+  x must lie on or close to the face \a f.
+
+@note The measures may be associated to 0-, 1-, 2- cells, but
+generally you do not require this knowledge. If you prefer to have
+direct access to these measures, you have several overloaded methods
+to do this: SurfaceMeshMeasure::vertexMeasure,
+SurfaceMeshMeasure::edgeMeasure, SurfaceMeshMeasure::faceMeasure. They
+can accept weighted sum of cells as input.
+
+@subsection dgtal_curvature_measures_sec24 ICNC Curvature computation on OBJ surface
+
+Examples <a href="geometry_2meshes_2obj-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-3d.cpp</a> and
+<a href="geometry_2meshes_2obj-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp</a> show how to compute all curvature information on an arbitrary mesh.
+
+The only difference with examples above is the way the SurfaceMesh object is created. Here we read an OBJ file to create it.
+
+\snippet geometry/meshes/obj-curvature-measures-icnc-3d.cpp curvature-measures-SurfaceMesh
+
+Remember that a SurfaceMesh object may represent a non-manifold polygonal surface. 
+
+Once the mesh is created, you just need to ensure that the SurfaceMesh
+object has a normal vector attached to each of its vertex. This can be
+done as follows (or just provide an OBJ file with vertex normals):
+
+\snippet geometry/meshes/obj-curvature-measures-icnc-3d.cpp curvature-measures-CNC
+
+The rest of the code is identical. The two examples gives the
+following curvature estimates on "spot.obj" file.
+
+<table>
+<tr><td>
+\image html spot-cnc-H-r0_05.jpg "Interpolated corrected mean curvature measure, r=0.05" width=90%
+</td><td>
+\image html spot-cnc-G-r0_05.jpg "Interpolated corrected Gaussian curvature measure, r=0.05" width=90%
+</td><td>
+\image html spot-cnc-K1-D1-r0_05.jpg "Interpolated corrected smallest principal curvature and direction, r=0.05" width=90%
+</td><td>
+\image html spot-cnc-K2-D2-r0_05.jpg "Interpolated corrected greatest principal curvature and direction, r=0.05" width=90%
+</td></tr>
+</table>
+
+
+@section dgtal_curvature_measures_sec3 ICNC Curvature measures on digital surfaces
 
 */
 }
