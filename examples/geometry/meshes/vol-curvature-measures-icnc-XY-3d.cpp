@@ -156,14 +156,6 @@ int main( int argc, char* argv[] )
       return 1;
     }
   auto K      = SH::getKSpace( bimage, params );
-  auto size    = K.upperBound() - K.lowerBound();
-  trace.info() << "- Domain size is " << ( size[ 0 ] + 1 )
-  	       << " x " << ( size[ 1 ] + 1 )
-  	       << " x " << ( size[ 2 ] + 1 ) << std::endl;
-  unsigned int                nb = 0;
-  std::for_each( bimage->cbegin(), bimage->cend(),
-                 [&nb] ( bool v ) { nb += v ? 1 : 0; } );
-  trace.info() << "- digital shape has " << nb << " voxels." << std::endl;
   auto sembedder   = SH::getSCellEmbedder( K );
   auto embedder    = SH::getCellEmbedder( K );
   auto surface     = SH::makeDigitalSurface( bimage, K, params );
