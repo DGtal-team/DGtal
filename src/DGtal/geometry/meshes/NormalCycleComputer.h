@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/geometry/meshes/SurfaceMeshMeasure.h"
 #include "DGtal/geometry/meshes/NormalCycleFormula.h"
 #include "DGtal/shapes/SurfaceMesh.h"

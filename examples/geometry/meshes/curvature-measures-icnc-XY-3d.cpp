@@ -217,9 +217,9 @@ int main( int argc, char* argv[] )
       const auto b    = smesh.faceCentroid( f );
       const auto N    = smesh.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
-      const auto muXY = muXY.measure( b, R, f );
+      const auto M    = muXY.measure( b, R, f );
       std::tie( K1[ f ], K2[ f ], D1[ f ], D2[ f ] )
-        = cnc.principalCurvatures( area, muXY, N );
+        = cnc.principalCurvatures( area, M, N );
     }
   //! [curvature-measures-estimations]
 
