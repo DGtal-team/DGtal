@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/geometry/meshes/SurfaceMeshMeasure.h"
 #include "DGtal/geometry/meshes/CorrectedNormalCurrentFormula.h"
 #include "DGtal/shapes/SurfaceMesh.h"
@@ -108,6 +109,57 @@ namespace DGtal
     /// i.e. the anisotropic tensor curvature measure.
     TensorMeasure computeMuXY() const;
 
+    //-------------------------------------------------------------------------
+  public:
+    /// @name Formulas for estimating curvatures from measures
+    /// @{
+
+    /// @param mu0 the mu0 measure (i.e. area) of some set
+    /// @param mu1 the mu1 measure (i.e. twice the mean curvature measue) of the same set
+    /// @return the estimated mean curvature on this set.
+    static
+    Scalar meanCurvature( Scalar mu0, Scalar mu1 )
+    {
+      return ( mu0 != 0.0 ) ? mu1 / 2.0 * mu0 : 0.0;
+    }
+
+    /// @param mu0 the mu0 measure (i.e. area) of some set
+    /// @param mu2 the mu2 measure (i.e. the Gaussian curvature measue) of the same set
+    /// @return the estimated Gaussian curvature on this set.
+    static
+    Scalar GaussianCurvature( Scalar mu0, Scalar mu2 )
+    {
+      return ( mu0 != 0.0 ) ? mu2 / mu0 : 0.0;
+    }
+
+    /// @param mu0 the mu0 measure (i.e. area) of some set
+    /// @param muXY the anisotropic muXY measure (i.e. the second fundamental form measue) of the same set
+    /// @param N the normal vector at the location of the set
+    ///
+    /// @return a tuple (K1,K2,D1,D2) where K1 and K2 are two
+    /// principal curvatures (K1<=K2) and D1 and D2 are their
+    /// associated principal directions.
+    static
+    std::tuple< Scalar, Scalar, RealVector, RealVector >
+    principalCurvatures( Scalar mu0, RealTensor muXY, const RealVector& N ) 
+    {
+      muXY += muXY.transpose();
+      muXY *= 0.5;
+      const double   coef_N = 1000.0 * mu0;
+      // Trick to force orthogonality to normal vector.
+      for ( int j = 0; j < 3; j++ )
+        for ( int k = 0; k < 3; k++ )
+          muXY( j, k ) += coef_N * N[ j ] * N[ k ];
+      RealTensor V;
+      RealVector L;
+      EigenDecomposition< 3, double>::getEigenDecomposition( muXY, V, L );
+      return std::make_tuple( ( mu0 != 0.0 ) ? -L[ 1 ] / mu0 : 0.0,
+                              ( mu0 != 0.0 ) ? -L[ 0 ] / mu0 : 0.0,
+                              V.column( 1 ),
+                              V.column( 0 ) );
+    }    
+    /// @}
+    
     // ------------------------- Public Datas ------------------------------
   public:
     

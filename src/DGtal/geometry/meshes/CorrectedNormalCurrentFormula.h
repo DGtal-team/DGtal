@@ -61,29 +61,39 @@ namespace DGtal
      @tparam TRealPoint any model of 3D RealPoint.
      @tparam TRealVector any model of 3D RealVector.
 
-     Formula for interpolated measures:
+     Formula for interpolated measures on a triangle with vertices A,
+     B, C, and normal vectors uA, uB, uC:
      
      MU0=-1/6*((uAz + uBz + uCz)*Bx - (uAz + uBz + uCz)*Cx)*Ay + 1/6*((uAz + uBz + uCz)*Ax - (uAz + uBz + uCz)*Cx)*By - 1/6*((uAz + uBz + uCz)*Ax - (uAz + uBz + uCz)*Bx)*Cy + 1/6*((uAy + uBy + uCy)*Bx - (uAy + uBy + uCy)*Cx - (uAx + uBx + uCx)*By + (uAx + uBx + uCx)*Cy)*Az - 1/6*((uAy + uBy + uCy)*Ax - (uAy + uBy + uCy)*Cx - (uAx + uBx + uCx)*Ay + (uAx + uBx + uCx)*Cy)*Bz + 1/6*((uAy + uBy + uCy)*Ax - (uAy + uBy + uCy)*Bx - (uAx + uBx + uCx)*Ay + (uAx + uBx + uCx)*By)*Cz
+
      Let UM=uA+uB+uC.
+
      MU0=-1/6*(uMz*Bx - uMz*Cx)*Ay + 1/6*(uMz*Ax - uMz*Cx)*By - 1/6*(uMz*Ax - uMz*Bx)*Cy + 1/6*(uMy*Bx - uMy*Cx - uMx*By + uMx*Cy)*Az - 1/6*(uMy*Ax - uMy*Cx - uMx*Ay + uMx*Cy)*Bz + 1/6*(uMy*Ax - uMy*Bx - uMx*Ay + uMx*By)*Cz
+
      We see by simple computations that MU0 can be written as (uM = UM/3)
+
      MU0=1/2*det( uM, B-A, C-A )
 
      MU1=1/6*((uBy - uCy)*uAz - (uAy + 2*uCy)*uBz + (uAy + 2*uBy)*uCz)*Ax + 1/6*((uBy + 2*uCy)*uAz - (uAy - uCy)*uBz - (2*uAy + uBy)*uCz)*Bx - 1/6*((2*uBy + uCy)*uAz - (2*uAy + uCy)*uBz - (uAy - uBy)*uCz)*Cx - 1/6*((uBx - uCx)*uAz - (uAx + 2*uCx)*uBz + (uAx + 2*uBx)*uCz)*Ay - 1/6*((uBx + 2*uCx)*uAz - (uAx - uCx)*uBz - (2*uAx + uBx)*uCz)*By + 1/6*((2*uBx + uCx)*uAz - (2*uAx + uCx)*uBz - (uAx - uBx)*uCz)*Cy + 1/6*((uBx - uCx)*uAy - (uAx + 2*uCx)*uBy + (uAx + 2*uBx)*uCy)*Az + 1/6*((uBx + 2*uCx)*uAy - (uAx - uCx)*uBy - (2*uAx + uBx)*uCy)*Bz - 1/6*((2*uBx + uCx)*uAy - (2*uAx + uCx)*uBy - (uAx - uBx)*uCy)*Cz
 
-     This formula can also be written in a clearer form
-     6*MU1 = | u_A+u_B+u_C u_C-u_B A | + | u_A+u_B+u_C u_A-u_C B | + | u_A+u_B+u_C u_B-u_A C |
+     This formula can also be written in a clearer form with determinants:
+
+     6*MU1 = det(u_A+u_B+u_C,u_C-u_B,A) + det(u_A+u_B+u_C,u_A-u_C,B) + det(u_A+u_B+u_C,u_B-u_A,C)
+
      It follows that 
-     MU1=1/2( | uM u_C-u_B A | + | uM u_A-u_C B | + | uM u_B-u_A C |
+     MU1=1/2( det(uM, u_C-u_B, A) + det(uM, u_A-u_C, B) + det(uM, u_B-u_A, C)
 
      Gaussian curvature measure is
+
      MU2=-1/2*uCx*uBy*uAz + 1/2*uBx*uCy*uAz + 1/2*uCx*uAy*uBz - 1/2*uAx*uCy*uBz - 1/2*uBx*uAy*uCz + 1/2*uAx*uBy*uCz
 
      which is simply
      MU2=1/2*det( uA, uB, uC )
 
-     Anisotropic curvature measure is written as
-     MUXY = 1/2 < uM | < Y | uc-ua > X x (b-a) - < Y | ub-ua > X x (c-a) >
+     Anisotropic curvature measure is written as (for X, Y arbitrary
+     vectors, <.|.> the standard Euclidean scalar product).
+
+     MUXY = 1/2 det( uM, < Y | uC-uA > X, (B-A)) - det( uM, < Y | uB-uA > X, (C-A))
   */
   template < typename TRealPoint, typename TRealVector >
   struct CorrectedNormalCurrentFormula
@@ -96,6 +106,7 @@ namespace DGtal
     typedef SimpleMatrix< Scalar, 3, 3 >   RealTensor;
     typedef std::size_t                    Index;
     static const Dimension dimension = RealPoint::dimension;
+
     //-------------------------------------------------------------------------
   public:
     /// @name Formulas for mu0 measure
@@ -477,6 +488,7 @@ namespace DGtal
     
     /// @}
 
+    
     //-------------------------------------------------------------------------
   public:
     /// @name Other geometric services

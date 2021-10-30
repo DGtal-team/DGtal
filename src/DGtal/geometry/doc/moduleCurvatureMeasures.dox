@@ -238,7 +238,10 @@ Here we just provide the corrected normal vector field \f$ \mathbf{u}
 \f$ as a normal vector per vertex, the field is then linearly
 interpolated.  We can now compute three measures onto the mesh, `mu0`
 the area measure, `mu1` twice the mean curvature measure, and `mu2`
-the Gaussian curvature measure.
+the Gaussian curvature measure. You have methods
+CorrectedNormalCurrentComputer::meanCurvature and
+CorrectedNormalCurrentComputer::GaussianCurvature that estimate
+respectively mean and Gaussian curvature from measures.
 
 \snippet geometry/meshes/curvature-measures-icnc-3d.cpp curvature-measures-CNC
 
