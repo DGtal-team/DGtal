@@ -215,21 +215,9 @@ int main( int argc, char* argv[] )
       const auto b    = smesh.faceCentroid( f );
       const auto N    = smesh.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
-      auto M          = muXY.measure( b, R, f );
-      M += M.transpose();
-      M *= 0.5;
-      const double   coef_N = 1000.0 * area;
-      // Trick to force orthogonality to normal vector.
-      for ( int j = 0; j < 3; j++ )
-        for ( int k = 0; k < 3; k++ )
-          M( j, k ) += coef_N * N[ j ] * N[ k ];
-      auto V = M;
-      RealVector L;
-      EigenDecomposition< 3, double>::getEigenDecomposition( M, V, L );
-      D1[ f ] = V.column( 1 );
-      D2[ f ] = V.column( 0 );
-      K1[ f ] = ( area != 0.0 ) ? -L[ 1 ] / area : 0.0;
-      K2[ f ] = ( area != 0.0 ) ? -L[ 0 ] / area : 0.0;
+      const auto M    = muXY.measure( b, R, f );
+      std::tie( K1[ f ], K2[ f ], D1[ f ], D2[ f ] )
+        = cnc.principalCurvatures( area, M, N );
     }
   //! [curvature-measures-estimations]
 
