@@ -204,34 +204,22 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-CNC]
 
   //! [curvature-measures-estimations]
-  // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
+  // Estimates principal curvatures (K1,K2) and directions (D1,D2) by
+  // measure normalization and eigen decomposition.
   std::vector< double > K1( smesh.nbFaces() );
   std::vector< double > K2( smesh.nbFaces() );
   std::vector< RealVector > D1( smesh.nbFaces() );
   std::vector< RealVector > D2( smesh.nbFaces() );
+  // Principal directions computation requires a local face normal
   smesh.computeFaceNormalsFromPositions();
   for ( auto f = 0; f < smesh.nbFaces(); ++f )
     {
       const auto b    = smesh.faceCentroid( f );
       const auto N    = smesh.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
-      auto M          = muXY.measure( b, R, f );
+      const auto muXY = muXY.measure( b, R, f );
       std::tie( K1[ f ], K2[ f ], D1[ f ], D2[ f ] )
-        = cnc.principalCurvatures( area, M, N );
-      // M += M.transpose();
-      // M *= 0.5;
-      // const double   coef_N = 1000.0 * area;
-      // // Trick to force orthogonality to normal vector.
-      // for ( int j = 0; j < 3; j++ )
-      //   for ( int k = 0; k < 3; k++ )
-      //     M( j, k ) += coef_N * N[ j ] * N[ k ];
-      // auto V = M;
-      // RealVector L;
-      // EigenDecomposition< 3, double>::getEigenDecomposition( M, V, L );
-      // D1[ f ] = V.column( 1 );
-      // D2[ f ] = V.column( 0 );
-      // K1[ f ] = ( area != 0.0 ) ? -L[ 1 ] / area : 0.0;
-      // K2[ f ] = ( area != 0.0 ) ? -L[ 0 ] / area : 0.0;
+        = cnc.principalCurvatures( area, muXY, N );
     }
   //! [curvature-measures-estimations]
 

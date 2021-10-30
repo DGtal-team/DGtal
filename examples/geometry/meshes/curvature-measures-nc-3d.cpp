@@ -192,8 +192,8 @@ int main( int argc, char* argv[] )
     {
       const auto b    = smesh.faceCentroid( f );
       const auto area = mu0.measure( b, R, f );
-      H[ f ] = mu1.measure( b, R, f ) / ( 2.0 * area );
-      G[ f ] = mu2.measure( b, R, f ) / area;
+      H[ f ] = nc.meanCurvature    ( area, mu1.measure( b, R, f ) );
+      G[ f ] = nc.GaussianCurvature( area, mu2.measure( b, R, f ) );
     }
   //! [curvature-measures-estimations]
 

@@ -238,7 +238,7 @@ Here we just provide the corrected normal vector field \f$ \mathbf{u}
 \f$ as a normal vector per vertex, the field is then linearly
 interpolated.  We can now compute three measures onto the mesh, `mu0`
 the area measure, `mu1` twice the mean curvature measure, and `mu2`
-the Gaussian curvature measure. You have methods
+the Gaussian curvature measure. You have static methods
 CorrectedNormalCurrentComputer::meanCurvature and
 CorrectedNormalCurrentComputer::GaussianCurvature that estimate
 respectively mean and Gaussian curvature from measures.
@@ -271,8 +271,10 @@ Expected Gaussian curvatures: min=-0.5 max=0.25
 Computed Gaussian curvatures: min=-0.470473 max=0.244636
 \endverbatim
 
-A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, see <a
-href="geometry_2meshes_2curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/curvature-measures-icnc-XY-3d.cpp</a>. 
+A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, by using method CorrectedNormalCurrentComputer::principalCurvatures.
+
+\snippet geometry/meshes/curvature-measures-icnc-XY-3d.cpp curvature-measures-CNC
+\snippet geometry/meshes/curvature-measures-icnc-XY-3d.cpp curvature-measures-estimations
 
 This gives you such results for principal curvatures estimations, first for a radius 0:
 \verbatim
