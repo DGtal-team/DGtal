@@ -191,7 +191,7 @@ Computed Gaussian curvatures: min=-0.682996 max=0.547296
 
 A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, by using method NormalCycleComputer::principalCurvatures.
 
-\snippet geometry/meshes/curvature-measures-nc-XY-3d.cpp curvature-measures-CNC
+\snippet geometry/meshes/curvature-measures-nc-XY-3d.cpp curvature-measures-NC
 \snippet geometry/meshes/curvature-measures-nc-XY-3d.cpp curvature-measures-estimations
 
 \verbatim
