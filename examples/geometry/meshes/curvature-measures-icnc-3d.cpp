@@ -91,6 +91,7 @@ Computed Gaussian curvatures: min=0 max=0
 //! [curvature-measures-Includes]
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/QuantifiedColorMap.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -221,8 +222,8 @@ int main( int argc, char* argv[] )
 
   //! [curvature-measures-output]
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
-  const auto colormapH = makeColorMap( -0.625, 0.625 );
-  const auto colormapG = makeColorMap( -0.625, 0.625 );
+  const auto colormapH = makeQuantifiedColorMap( makeColorMap( -0.625, 0.625 ) );
+  const auto colormapG = makeQuantifiedColorMap( makeColorMap( -0.625, 0.625 ) );
   auto colorsH = SMW::Colors( smesh.nbFaces() );
   auto colorsG = SMW::Colors( smesh.nbFaces() );
   for ( auto i = 0; i < smesh.nbFaces(); i++ )

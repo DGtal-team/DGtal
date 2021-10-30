@@ -104,6 +104,7 @@ Computed k2 curvatures: min=0.48689 max=0.487788
 //! [curvature-measures-Includes]
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/QuantifiedColorMap.h"
 #include "DGtal/helpers/Shortcuts.h"
 
 DGtal::GradientColorMap< double >
@@ -243,8 +244,8 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-output]
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
   typedef Shortcuts< KSpace > SH;
-  const auto colormapK1 = makeColorMap( -0.625, 0.625 );
-  const auto colormapK2 = makeColorMap( -0.625, 0.625 );
+  const auto colormapK1 = makeQuantifiedColorMap( makeColorMap( -0.625, 0.625 ) );
+  const auto colormapK2 = makeQuantifiedColorMap( makeColorMap( -0.625, 0.625 ) );
   auto colorsK1 = SMW::Colors( smesh.nbFaces() );
   auto colorsK2 = SMW::Colors( smesh.nbFaces() );
   for ( auto i = 0; i < smesh.nbFaces(); i++ )

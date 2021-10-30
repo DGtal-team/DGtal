@@ -87,6 +87,7 @@ accuracy.
 #include "DGtal/helpers/ShortcutsGeometry.h"
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/QuantifiedColorMap.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -237,8 +238,8 @@ int main( int argc, char* argv[] )
   smesh.vertexNormals() = SH::RealVectors();
   smesh.faceNormals()   = SH::RealVectors();
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
-  const auto colormapK1 = makeColorMap( -Kmax, Kmax );
-  const auto colormapK2 = makeColorMap( -Kmax, Kmax );
+  const auto colormapK1 = makeQuantifiedColorMap( makeColorMap( -Kmax, Kmax ) );
+  const auto colormapK2 = makeQuantifiedColorMap( makeColorMap( -Kmax, Kmax ) );
   auto colorsK1 = SMW::Colors( smesh.nbFaces() );
   auto colorsK2 = SMW::Colors( smesh.nbFaces() );
   for ( auto i = 0; i < smesh.nbFaces(); i++ )

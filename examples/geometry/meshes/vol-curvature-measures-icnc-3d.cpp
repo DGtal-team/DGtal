@@ -82,6 +82,7 @@ accuracy.
 #include "DGtal/helpers/ShortcutsGeometry.h"
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/QuantifiedColorMap.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -144,7 +145,6 @@ int main( int argc, char* argv[] )
   auto params = SH::defaultParameters() | SHG::defaultParameters();
   params( "thresholdMin", m )( "thresholdMax", M )( "closed", 1);
   params( "t-ring", 3 )( "surfaceTraversal", "Default" );
-  std::cout << params << std::endl;
   auto bimage = SH::makeBinaryImage( input.c_str(), params );
   if ( bimage == nullptr ) 
     {
@@ -152,14 +152,6 @@ int main( int argc, char* argv[] )
       return 1;
     }
   auto K      = SH::getKSpace( bimage, params );
-  // auto size    = K.upperBound() - K.lowerBound();
-  // trace.info() << "- Domain size is " << ( size[ 0 ] + 1 )
-  // 	       << " x " << ( size[ 1 ] + 1 )
-  // 	       << " x " << ( size[ 2 ] + 1 ) << std::endl;
-  // unsigned int                nb = 0;
-  // std::for_each( bimage->cbegin(), bimage->cend(),
-  //                [&nb] ( bool v ) { nb += v ? 1 : 0; } );
-  // trace.info() << "- digital shape has " << nb << " voxels." << std::endl;
   auto sembedder   = SH::getSCellEmbedder( K );
   auto embedder    = SH::getCellEmbedder( K );
   auto surface     = SH::makeDigitalSurface( bimage, K, params );
@@ -231,8 +223,8 @@ int main( int argc, char* argv[] )
   smesh.vertexNormals() = SH::RealVectors();
   smesh.faceNormals()   = SH::RealVectors();
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
-  const auto colormapH = makeColorMap( -Hmax, Hmax );
-  const auto colormapG = makeColorMap( -Gmax, Gmax );
+  const auto colormapH = makeQuantifiedColorMap( makeColorMap( -Hmax, Hmax ) );
+  const auto colormapG = makeQuantifiedColorMap( makeColorMap( -Gmax, Gmax ) );
   auto colorsH = SMW::Colors( smesh.nbFaces() );
   auto colorsG = SMW::Colors( smesh.nbFaces() );
   for ( auto i = 0; i < smesh.nbFaces(); i++ )

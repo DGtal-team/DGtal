@@ -104,6 +104,17 @@ namespace DGtal
     
   };
 
+  /// Template function to simplify the build of QuantifiedColorMap object.
+  /// @tparam TColorMap an arbitrary model of concepts::CColorMap.
+  /// @param[in] colormap the colormap to quantify in \a nb colors.
+  /// @param[in] nb the targeted maximum number of colors (default is 50).
+  template < typename TColorMap >
+  QuantifiedColorMap< TColorMap >
+  makeQuantifiedColorMap( TColorMap colormap, int nb = 50 )
+  {
+    return QuantifiedColorMap< TColorMap >( colormap, nb );
+  }
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
