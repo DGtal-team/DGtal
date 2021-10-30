@@ -72,6 +72,7 @@ associated MTL file.
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/QuantifiedColorMap.h"
 
 DGtal::GradientColorMap< double >
 makeColorMap( double min_value, double max_value )
@@ -83,6 +84,34 @@ makeColorMap( double min_value, double max_value )
   gradcmap.addColor( DGtal::Color( 255, 255, 0 ) );
   gradcmap.addColor( DGtal::Color( 255, 0, 0 ) );
   return gradcmap;
+}
+
+// template < typename ColorMap >
+// struct QuantifiedColorMap
+// {
+//   using Value = typename ColorMap::Value;
+//   QuantifiedColorMap( const ColorMap& colormap, int quanta = 50 )
+//     : myColorMap( colormap ), myQuanta( quanta ) {}
+//   DGtal::Color operator()( const Value & value ) const
+//   {
+//     const Value rel  = ( value - myColorMap.min() )
+//       / ( myColorMap.max() - myColorMap.min() );
+//     const Value qrel = round( myQuanta * rel ) / myQuanta;
+//     const Value outv = qrel * ( myColorMap.max() - myColorMap.min() )
+//       + myColorMap.min();
+//     std::cout << "in=" << value << " out=" << outv << " c=" << myColorMap( outv )
+//               << std::endl;
+//     return myColorMap( outv );
+//   }
+//   ColorMap myColorMap;
+//   int myQuanta;
+// };
+
+DGtal::QuantifiedColorMap< DGtal::GradientColorMap< double > >
+makeQColorMap( double min_value, double max_value, int quanta = 50 )
+{
+  auto colormap = makeColorMap( min_value, max_value );
+  return DGtal::QuantifiedColorMap< DGtal::GradientColorMap< double > >( colormap, quanta );
 }
 
 void usage( int argc, char* argv[] )
@@ -184,8 +213,8 @@ int main( int argc, char* argv[] )
 
   //! [curvature-measures-output]
   typedef SurfaceMeshWriter< RealPoint, RealVector > SMW;
-  const auto colormapH = makeColorMap( -Hmax, Hmax );
-  const auto colormapG = makeColorMap( -Gmax, Gmax );
+  const auto colormapH = makeQColorMap( -Hmax, Hmax );
+  const auto colormapG = makeQColorMap( -Gmax, Gmax );
   auto colorsH = SMW::Colors( smesh.nbFaces() );
   auto colorsG = SMW::Colors( smesh.nbFaces() );
   for ( auto i = 0; i < smesh.nbFaces(); i++ )

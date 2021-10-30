@@ -163,7 +163,11 @@ It is not necessary here to equip the mesh with normals, since the
 Normal Cycle infers the normals from the positions of the mesh.  We
 can now compute three measures onto the mesh, `mu0` the area measure,
 `mu1` twice the mean curvature measure, and `mu2` the Gaussian
-curvature measure.  
+curvature measure. You have static methods
+NormalCycleComputer::meanCurvature and
+NormalCycleComputer::GaussianCurvature that estimate respectively mean
+and Gaussian curvature from measures.
+
 
 \snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-CNC
 
@@ -185,7 +189,10 @@ Expected Gaussian curvatures: min=-0.5 max=0.25
 Computed Gaussian curvatures: min=-0.682996 max=0.547296
 \endverbatim
 
-A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, see geometry/meshes/curvature-measures-nc-XY-3d.cpp. This gives you such result for principal curvatures estimations.
+A quite similar code allows you to compute anisotropic curvature measures (i.e. a kind of second fundamental form). You may extract from the returned tensor measure (using eigenvalues/eigenvectors) principal curvatures and principal directions, by using method NormalCycleComputer::principalCurvatures.
+
+\snippet geometry/meshes/curvature-measures-nc-XY-3d.cpp curvature-measures-CNC
+\snippet geometry/meshes/curvature-measures-nc-XY-3d.cpp curvature-measures-estimations
 
 \verbatim
 Expected k1 curvatures: min=-0.5 max=0.25
@@ -407,6 +414,57 @@ following curvature estimates on "spot.obj" file.
 
 
 @section dgtal_curvature_measures_sec3 ICNC Curvature measures on digital surfaces
+
+It is difficult to estimate curvatures on digital surfaces, since they
+naturally have only very few normal directions. You may have a look at
+module \ref moduleIntegralInvariant to see a method that estimates
+such curvatures when the digital surface is the boundary of a volume
+of voxels.
+
+Corrected Normal Currents are well adapted to digital surface
+geometric analysis. Indeed, we can have good estimates of the normal
+vector field of a digital surface (see \ref ShortcutsGeometry), which
+will be used as the corrected normal vector field associated to
+current. 
+
+Examples <a
+href="geometry_2meshes_2vol-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-3d.cpp</a>
+and <a
+href="geometry_2meshes_2vol-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp</a>
+show how to estimate curvatures on the boundary of a digital object.
+
+We first read the VOL file and extracts the digital surface bounding
+the digital object.
+
+\snippet geometry/meshes/vol-curvature-measures-icnc-3d.cpp curvature-measures-DigitalSurface
+
+We build a SurfaceMesh object that represents exactly the digital surface.
+
+\snippet geometry/meshes/vol-curvature-measures-icnc-3d.cpp curvature-measures-SurfaceMesh
+
+We build the Corrected Normal Current on this mesh, and use a digital
+estimator of normal vector (here convolved trivial normals) to set the
+corrected normal vector at each vertex.
+
+\snippet geometry/meshes/vol-curvature-measures-icnc-3d.cpp curvature-measures-CNC
+
+The remaining of the code to estimate curvatures from measures is identical to above.
+We run the examples on "Al" vol file, which gives the following results.
+
+<table>
+<tr><td>
+\image html al-cnc-H-r2.jpg "Interpolated corrected mean curvature measure, r=2" width=90%
+</td><td>
+\image html al-cnc-G-r2.jpg "Interpolated corrected Gaussian curvature measure, r=2" width=90%
+</td><td>
+\image html al-cnc-K1-D1-r2.jpg "Interpolated corrected smallest principal curvature and direction, r=2" width=90%
+</td><td>
+\image html al-cnc-K2-D2-r2.jpg "Interpolated corrected greatest principal curvature and direction, r=2" width=90%
+</td></tr>
+</table>
+
+
+
 
 */
 }

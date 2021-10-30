@@ -192,9 +192,9 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-SurfaceMesh]
 
   //! [curvature-measures-CNC]
-  // builds a CorrectedNormalCurrentComputer object onto the mesh
+  // Builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
   CNC cnc( smesh );
-  // computes normals if necessary
+  // Estimates normal vectors using Convolved Trivial Normal estimator 
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   smesh.setFaceNormals( face_normals.cbegin(), face_normals.cend() );
   if ( smesh.vertexNormals().empty() )

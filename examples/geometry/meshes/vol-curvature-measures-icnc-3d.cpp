@@ -144,6 +144,7 @@ int main( int argc, char* argv[] )
   auto params = SH::defaultParameters() | SHG::defaultParameters();
   params( "thresholdMin", m )( "thresholdMax", M )( "closed", 1);
   params( "t-ring", 3 )( "surfaceTraversal", "Default" );
+  std::cout << params << std::endl;
   auto bimage = SH::makeBinaryImage( input.c_str(), params );
   if ( bimage == nullptr ) 
     {
@@ -151,14 +152,14 @@ int main( int argc, char* argv[] )
       return 1;
     }
   auto K      = SH::getKSpace( bimage, params );
-  auto size    = K.upperBound() - K.lowerBound();
-  trace.info() << "- Domain size is " << ( size[ 0 ] + 1 )
-  	       << " x " << ( size[ 1 ] + 1 )
-  	       << " x " << ( size[ 2 ] + 1 ) << std::endl;
-  unsigned int                nb = 0;
-  std::for_each( bimage->cbegin(), bimage->cend(),
-                 [&nb] ( bool v ) { nb += v ? 1 : 0; } );
-  trace.info() << "- digital shape has " << nb << " voxels." << std::endl;
+  // auto size    = K.upperBound() - K.lowerBound();
+  // trace.info() << "- Domain size is " << ( size[ 0 ] + 1 )
+  // 	       << " x " << ( size[ 1 ] + 1 )
+  // 	       << " x " << ( size[ 2 ] + 1 ) << std::endl;
+  // unsigned int                nb = 0;
+  // std::for_each( bimage->cbegin(), bimage->cend(),
+  //                [&nb] ( bool v ) { nb += v ? 1 : 0; } );
+  // trace.info() << "- digital shape has " << nb << " voxels." << std::endl;
   auto sembedder   = SH::getSCellEmbedder( K );
   auto embedder    = SH::getCellEmbedder( K );
   auto surface     = SH::makeDigitalSurface( bimage, K, params );
@@ -188,9 +189,9 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-SurfaceMesh]
 
   //! [curvature-measures-CNC]
-  // builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
+  // Builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
   CNC cnc( smesh );
-  // computes normals if necessary
+  // Estimates normal vectors using Convolved Trivial Normal estimator 
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   smesh.setFaceNormals( face_normals.cbegin(), face_normals.cend() );
   if ( smesh.vertexNormals().empty() )

@@ -117,7 +117,7 @@ namespace DGtal
     static
     Scalar meanCurvature( Scalar mu0, Scalar mu1 )
     {
-      return ( mu0 != 0.0 ) ? mu1 / 2.0 * mu0 : 0.0;
+      return ( mu0 != 0.0 ) ? mu1 / ( 2.0 * mu0 ) : 0.0;
     }
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
