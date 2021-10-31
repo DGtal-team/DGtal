@@ -124,7 +124,7 @@ namespace DGtal
     ( const RealPoint& a, const RealPoint& b, const RealPoint& c,
       const RealVector& u )
     {
-      return 0.5 * ( b - a ).crossProduct( c - a ).dotProduct( u );
+      return 0.5 * ( b - a ).crossProduct( c - a ).dot( u );
     }
 
     /// Computes mu0 measure (area) of triangle abc given an interpolated
@@ -206,6 +206,35 @@ namespace DGtal
   public:
     /// @name Formulas for mu1 measure
     /// @{
+
+    /// Computes mu1 measure (twice the mean curvature) at edge ab abc
+    /// given a constant corrected normal vector \a ur to the right of
+    /// ab, and a constant corrected normal vector \a ul to the left
+    /// of ab.
+    ///
+    /// The formula is \f$ int_{ab} \Psi \langle e | e_1 \rangle dH^1
+    /// \f$, where e is the unit vector parallel to ab, and \f$ e_1
+    /// \f$ is the unit vector orthogonal to \a ur and \a ul, and \f$
+    /// \Psi \f$ is the angle between these two vectors.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param ur the constant corrected normal vector to the right of oriented edge ab
+    /// @param ul the constant corrected normal vector to the left of oriented edge ab
+    /// @return the mu1-measure of edge ab, i.e. twice its mean curvature.
+    static
+    Scalar mu1ConstantUAtEdge
+    ( const RealPoint& a, const RealPoint& b, 
+      const RealVector& ur, const RealVector& ul )
+    {
+      RealVector   e  = b - a;
+      RealVector   e1 = ur.crossProduct( ul );
+      const Scalar l1 = std::min( e1.norm(), 1.0 );
+      if ( l1 < 1e-10 ) return 0.0;
+      e1 /= l1;
+      const Scalar Psi = asin( l1 );
+      return -Psi * e.dot( e1 );
+    }
 
     /// Computes mu1 measure (twice the mean curvature) of triangle
     /// abc given a constant corrected normal vector \a u.
@@ -311,6 +340,47 @@ namespace DGtal
     {
       (void)a; (void)b; (void)c; (void)u;
       return 0.0;
+    }
+
+    /// Computes mu2 measure (Gaussian curvature) at given vertex \a
+    /// a, surrounded by faces with constant corrected normal vectors
+    /// \a vu.
+    ///
+    /// @param a any point
+    /// @param vu the vector of constant corrected normal vectors of
+    /// the faces incident to \a a.
+    ///
+    /// @return the mu2-measure at this vertex, i.e. its Gaussian curvature.
+    ///
+    /// @pre the unit normal vectors should lie in the same hemisphere
+    /// of the Gauss sphere.
+    static
+    Scalar mu2ConstantUAtVertex
+    ( const RealPoint& a, const RealVectors& vu )
+    {
+      typedef SpaceND< dimension >     Space;
+      typedef SphericalTriangle<Space> ST;
+      RealVector avg_u;
+      for ( const auto& u : vu ) avg_u += u;
+      const Scalar l = avg_u.norm();
+      if ( l < 1e-10 )
+        {
+          trace.warning() << "[CorrectedNormalCurrentFormula::mu2ConstantUAtVertex]"
+                          << " Invalid surrounding normal vectors at vertex "
+                          << a << "."
+                          << " Unit normal vectors should lie strictly in the same"
+                          << " hemisphere." << std::endl;
+          return 0.0;
+        }
+      avg_u /= l;
+      Scalar mu2 = 0.0;
+      const auto n = vu.size();
+      for ( auto i = 0; i < n; ++i )
+        {
+          ST st( avg_u, vu[ i ], vu[ (i+1) % n ] );
+	  mu2 += st.algebraicArea();
+        }
+      return mu2;
     }
 
     /// Computes mu2 measure (Gaussian curvature) of triangle abc

@@ -58,6 +58,10 @@ namespace DGtal
      mesh with prescribed normals and (2) the standard
      Lipschitz-Killing invariant forms of area and curvatures.
 
+     @note By default it tries to compute interpolated corrected
+     curvature measures, if the mesh has a normal at each vertex,
+     otherwise it computes constant corrected curvature measures.
+
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
    */
@@ -97,7 +101,8 @@ namespace DGtal
     CorrectedNormalCurrentComputer( ConstAlias< SurfaceMesh > aMesh,
                                     bool unit_u = false );
 
-    /// @return the \f$ \mu_0 \f$ corrected curvature measure, i.e. the area measure.
+    /// @return the \f$ \mu_0 \f$ corrected curvature measure,
+    /// i.e. the area measure.
     ScalarMeasure computeMu0() const;
     /// @return the \f$ \mu_1 \f$ corrected curvature measure,
     /// i.e. twice the mean curvature measure.
@@ -159,7 +164,7 @@ namespace DGtal
                               V.column( 0 ) );
     }    
     /// @}
-    
+
     // ------------------------- Public Datas ------------------------------
   public:
     
@@ -176,8 +181,51 @@ namespace DGtal
   private:
 
     // ------------------------- Internals ------------------------------------
-  private:
-        
+  protected:
+
+    /// @return the \f$ \mu_0 \f$ corrected curvature measure,
+    /// i.e. the area measure, when corrected normals are constant per
+    /// face.
+    /// @pre `! myMesh.faceNormals().empty()`
+    ScalarMeasure computeMu0ConstantU() const;
+    /// @return the \f$ \mu_1 \f$ corrected curvature measure,
+    /// i.e. twice the mean curvature measure, when corrected normals
+    /// are constant per face.
+    /// @pre `! myMesh.faceNormals().empty()`
+    ScalarMeasure computeMu1ConstantU() const;
+    /// @return the \f$ \mu_2 \f$ corrected curvature measure,
+    /// i.e. the Gaussian curvature measure, when corrected normals
+    /// are constant per face.
+    /// @pre `! myMesh.faceNormals().empty()`
+    ScalarMeasure computeMu2ConstantU() const;
+    /// @return the \f$ \mu^{X,Y} \f$ corrected curvature measure,
+    /// i.e. the anisotropic tensor curvature measure, when corrected
+    /// normals are constant per face.
+    /// @pre `! myMesh.faceNormals().empty()`
+    TensorMeasure computeMuXYConstantU() const;
+
+    /// @return the \f$ \mu_0 \f$ corrected curvature measure,
+    /// i.e. the area measure, when corrected normals are interpolated per
+    /// face.
+    /// @pre `! myMesh.vertexNormals().empty()`
+    ScalarMeasure computeMu0InterpolatedU() const;
+    /// @return the \f$ \mu_1 \f$ corrected curvature measure,
+    /// i.e. twice the mean curvature measure, when corrected normals
+    /// are interpolated per face.
+    /// @pre `! myMesh.vertexNormals().empty()`
+    ScalarMeasure computeMu1InterpolatedU() const;
+    /// @return the \f$ \mu_2 \f$ corrected curvature measure,
+    /// i.e. the Gaussian curvature measure, when corrected normals
+    /// are interpolated per face.
+    /// @pre `! myMesh.vertexNormals().empty()`
+    ScalarMeasure computeMu2InterpolatedU() const;
+    /// @return the \f$ \mu^{X,Y} \f$ corrected curvature measure,
+    /// i.e. the anisotropic tensor curvature measure, when corrected
+    /// normals are interpolated per face.
+    /// @pre `! myMesh.vertexNormals().empty()`
+    TensorMeasure computeMuXYInterpolatedU() const;
+    
+    
   }; // end of class CorrectedNormalCurrentComputer
     
 } // namespace DGtal

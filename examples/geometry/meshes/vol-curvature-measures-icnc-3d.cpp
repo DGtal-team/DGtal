@@ -186,11 +186,14 @@ int main( int argc, char* argv[] )
   // Estimates normal vectors using Convolved Trivial Normal estimator 
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   smesh.setFaceNormals( face_normals.cbegin(), face_normals.cend() );
-  if ( smesh.vertexNormals().empty() )
-    smesh.computeVertexNormalsFromFaceNormals();
+  // if ( smesh.vertexNormals().empty() )
+  //   smesh.computeVertexNormalsFromFaceNormals();
   // computes area, mean and Gaussian curvature measures
+  std::cout << "Compute mu0" << std::endl;
   auto mu0 = cnc.computeMu0();
+  std::cout << "Compute mu1" << std::endl;
   auto mu1 = cnc.computeMu1();
+  std::cout << "Compute mu2" << std::endl;
   auto mu2 = cnc.computeMu2();
   //! [curvature-measures-CNC]
 
