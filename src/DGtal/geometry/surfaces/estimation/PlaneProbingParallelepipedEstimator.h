@@ -107,7 +107,7 @@ namespace DGtal
            * @param aPoint any digital point.
            * @return true if the point is inside, false otherwise.
            */
-          bool InPlane (Point const& aPoint) const;
+          bool inPlane (Point const& aPoint) const;
 
           /**
            * The NotAbove predicate, see @cite LMRJMIV2020.
@@ -308,6 +308,14 @@ namespace DGtal
      * @return 'true' if the parallelepiped is still separating, 'false' otherwise.
      */
     bool translateIf (UpdateOperation const& aOp);
+
+    /**
+     * A shortcut to the inPlane function of 'myNotAbovePredicate'
+     * @param aPoint any digital point.
+     * @return true if the point is inside, false otherwise.
+     */
+    bool inPlane (Point const& aPoint) const;
+
   }; // end of class PlaneProbingParallelepipedEstimator
 
 
