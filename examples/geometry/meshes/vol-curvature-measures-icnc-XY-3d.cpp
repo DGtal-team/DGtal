@@ -190,8 +190,8 @@ int main( int argc, char* argv[] )
   // Estimates normal vectors using Convolved Trivial Normal estimator 
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   smesh.setFaceNormals( face_normals.cbegin(), face_normals.cend() );
-  // if ( smesh.vertexNormals().empty() )
-  //   smesh.computeVertexNormalsFromFaceNormals();
+  if ( smesh.vertexNormals().empty() )
+    smesh.computeVertexNormalsFromFaceNormals();
   // computes area, anisotropic XY curvature measures
   auto mu0  = cnc.computeMu0();
   auto muXY = cnc.computeMuXY();

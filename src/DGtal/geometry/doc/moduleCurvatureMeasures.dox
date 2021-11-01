@@ -17,7 +17,10 @@ This part of the manual describes the implementation of several
 curvature measures on quite arbitrary meshes (any instance of
 SurfaceMesh). The classical curvature measures related to the Normal
 Cycle are provided as well as the more general curvature measures
-based on corrected normal currents.
+based on corrected normal currents. This module implements the
+research presented in papers \cite lachaud:hal-02193774 and 
+\cite lachaud2020interpolated, and also gives a stand-alone implementation
+of papers \cite cohen2003restricted and \cite cohen2006second.
 
 [TOC]
 
@@ -357,7 +360,49 @@ Computed Gaussian curvatures: min=0 max=0
 </tr>
 </table>
 
-@subsection dgtal_curvature_measures_sec23 More on curvature measures
+@subsection dgtal_curvature_measures_sec23 Vertex-interpolated versus face-constant corrected normal current
+
+The theory of corrected normal currents works for arbitrary piecewise
+smooth corrected normal vector field. Class
+CorrectedNormalCurrentComputer allows you to choose between a constant
+per face corrected normal vector field (called \a Constant \a
+Corrected \a Normal \a Current, CCNC), or a smooth corrected normal
+vector field obtained by linear interpolation of vertex normals per
+face (called \a Interpolated \a Corrected \a Normal \a Current, ICNC).
+
+The choice is made automatically by the CorrectedNormalCurrentComputer
+object according to the user-defined normal vector field of its
+associated SurfaceMesh object:
+
+- if `myMesh.vertexNormals()` is not empty, then the
+  CorrectedNormalCurrentComputer computes ICNC measures,
+- otherwise if `myMesh.faceNormals()` is not empty, then the
+  CorrectedNormalCurrentComputer computes CCNC measures,
+- otherwise the CNC does not work and outputs a warning.
+
+For instance, you may force ICNC on a mesh as follows:
+\code
+  CNC cnc( smesh );
+  // computes normals if necessary
+  if ( smesh.vertexNormals().empty() )
+    {
+      if ( smesh.faceNormals().empty() )
+        smesh.computeFaceNormalsFromPositions();
+      smesh.computeVertexNormalsFromFaceNormals();
+    }
+  ...
+\endcode
+Otherwise, assume you have not set any vertex normals, the following code uses CCNC:
+\code
+  CNC cnc( smesh );
+  // computes normals if necessary
+  if ( smesh.faceNormals().empty() )
+    smesh.computeFaceNormalsFromPositions();
+  ...
+\endcode
+
+
+@subsection dgtal_curvature_measures_sec24 More on curvature measures
 
 NormalCycleComputer and CorrectedNormalCurrentComputer provides
 methods that return measures, more precisely as SurfaceMeshMeasure
@@ -383,7 +428,7 @@ to do this: SurfaceMeshMeasure::vertexMeasure,
 SurfaceMeshMeasure::edgeMeasure, SurfaceMeshMeasure::faceMeasure. They
 can accept weighted sum of cells as input.
 
-@subsection dgtal_curvature_measures_sec24 ICNC Curvature computation on OBJ surface
+@subsection dgtal_curvature_measures_sec25 ICNC Curvature computation on OBJ surface
 
 Examples <a href="geometry_2meshes_2obj-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-3d.cpp</a> and
 <a href="geometry_2meshes_2obj-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp</a> show how to compute all curvature information on an arbitrary mesh.
@@ -416,7 +461,7 @@ following curvature estimates on "spot.obj" file.
 </table>
 
 
-@section dgtal_curvature_measures_sec3 ICNC Curvature measures on digital surfaces
+@section dgtal_curvature_measures_sec3 Corrected curvature measures on digital surfaces
 
 It is difficult to estimate curvatures on digital surfaces, since they
 naturally have only very few normal directions. You may have a look at
@@ -428,7 +473,58 @@ Corrected Normal Currents are well adapted to digital surface
 geometric analysis. Indeed, we can have good estimates of the normal
 vector field of a digital surface (see \ref ShortcutsGeometry), which
 will be used as the corrected normal vector field associated to
-current. 
+the current. 
+
+As examples of digital surfaces, we show how to estimate curvatures on
+a digitization of polynomial surfaces, then on the boundary of a voxel
+object defined in VOL file.
+
+@subsection dgtal_curvature_measures_sec31 CCNC and ICNC curvature measures on polynomial surfaces
+
+Examples <a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp</a> and
+<a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-XY-3d.cpp</a> show how to extract all curvature information from digitized polynomial surfaces.
+
+We first read the polynomial definition and extracts the digital surface approximating the implicit surface at the given resolution.
+
+\snippet geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp curvature-measures-DigitalSurface
+
+We build a SurfaceMesh object that represents exactly the digital surface.
+
+\snippet geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp curvature-measures-SurfaceMesh
+
+We build the Corrected Normal Current on this mesh, and use a digital
+estimator of normal vector (here convolved trivial normals) to set the
+corrected normal vector at each face or vertex, depending on the
+choice of the user.
+
+\snippet geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp curvature-measures-CNC
+
+The remaining of the code to estimate curvatures from measures is identical to above. You can obtain the following results:
+
+<table>
+<tr><td>
+\image html digtorus-h0_5-ccnc-H-CTrivial-r1.jpg "Face-constant corrected mean curvature measure, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-ccnc-G-CTrivial-r1.jpg "Face-constant corrected Gaussian curvature measure, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-ccnc-K1-D1-CTrivial-r1.jpg "Face-constant corrected smallest principal curvature and direction, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-ccnc-K2-D2-CTrivial-r1.jpg "Face-constant corrected greatest principal curvature and direction, r=1" width=90%
+</td></tr>
+<tr><td>
+\image html digtorus-h0_5-icnc-H-CTrivial-r1.jpg "Vertex-interpolated corrected mean curvature measure, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-icnc-G-CTrivial-r1.jpg "Vertex-interpolated corrected Gaussian curvature measure, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-icnc-K1-D1-CTrivial-r1.jpg "Vertex-interpolated corrected smallest principal curvature and direction, r=1" width=90%
+</td><td>
+\image html digtorus-h0_5-icnc-K2-D2-CTrivial-r1.jpg "Vertex-interpolated corrected greatest principal curvature and direction, r=1" width=90%
+</td></tr>
+</table>
+
+
+@subsection dgtal_curvature_measures_sec32 ICNC curvature measures on digital boundaries in VOL file
+
 
 Examples <a
 href="geometry_2meshes_2vol-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-3d.cpp</a>
