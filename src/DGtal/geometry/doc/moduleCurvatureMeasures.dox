@@ -37,6 +37,8 @@ The following programs are related to this documentation:
 <a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp</a>,
 <a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-XY-3d.cpp</a>.
 
+The following tests are related to this documentation:
+testCorrectedNormalCurrentComputer.cpp, testNormalCycleComputer.cpp.
 
 @section dgtal_curvature_measures_sec1 Introduction to curvature measures
 
