@@ -404,7 +404,7 @@ Otherwise, assume you have not set any vertex normals, the following code uses C
 \endcode
 
 @warning As Normal Cycle curvature measures, face-constant CNC
-curvature measures requires a minimum radius for the measuring
+(CCNC) curvature measures require a minimum radius for the measuring
 ball. Indeed, its \f$ \mu^{(1)} \f$ and \f$
 \mu^{(\mathbf{X},\mathbf{Y})} \f$ measures must capture at least one
 edge, while its \f$ \mu^{(2)} \f$ measure must capture at least one
