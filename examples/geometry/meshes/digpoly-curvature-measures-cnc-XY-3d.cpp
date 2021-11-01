@@ -261,7 +261,8 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-CNC]
 
   //! [curvature-measures-estimations]
-  // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
+  // estimates principal curvatures (K1,K2) and directions (D1,D2) by
+  // measure normalization.
   std::vector< double > K1( smesh.nbFaces() );
   std::vector< double > K2( smesh.nbFaces() );
   std::vector< RealVector > D1( smesh.nbFaces() );
