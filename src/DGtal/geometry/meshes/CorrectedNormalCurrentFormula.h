@@ -207,7 +207,7 @@ namespace DGtal
     /// @name Formulas for mu1 measure
     /// @{
 
-    /// Computes mu1 measure (twice the mean curvature) at edge ab abc
+    /// Computes mu1 measure (twice the mean curvature) at edge ab
     /// given a constant corrected normal vector \a ur to the right of
     /// ab, and a constant corrected normal vector \a ul to the left
     /// of ab.
@@ -475,6 +475,50 @@ namespace DGtal
     {
       (void)a; (void)b; (void)c; (void)u;
       return RealTensor { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+    }
+
+    /// Computes muXY measure (anisotropic measure) at edge ab
+    /// given a constant corrected normal vector \a ur to the right of
+    /// ab, and a constant corrected normal vector \a ul to the left
+    /// of ab.
+    ///
+    /// The formula is \f$ int_{ab} \Psi \langle e | e_1 \rangle dH^1
+    /// \f$, where e is the unit vector parallel to ab, and \f$ e_1
+    /// \f$ is the unit vector orthogonal to \a ur and \a ul, and \f$
+    /// \Psi \f$ is the angle between these two vectors.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param ur the constant corrected normal vector to the right of oriented edge ab
+    /// @param ul the constant corrected normal vector to the left of oriented edge ab
+    /// @return the mu1-measure of edge ab, i.e. twice its mean curvature.
+    static
+    RealTensor muXYConstantUAtEdge
+    ( const RealPoint& a, const RealPoint& b, 
+      const RealVector& ur, const RealVector& ul )
+    {
+      RealTensor M { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+      RealVector   e  = b - a;
+      RealVector   e1 = ur.crossProduct( ul );
+      const Scalar l1 = std::min( e1.norm(), 1.0 );
+      if ( l1 < 1e-10 ) return M;
+      e1 /= l1;
+      const Scalar             psi = asin( l1 );
+      const Scalar         sin_psi = sin( psi );
+      const Scalar        sin_2psi = sin( 2.0 * psi );
+      const RealVector      e_x_ur = e. crossProduct( ur );
+      const RealVector     e1_x_ur = e1.crossProduct( ur );
+      const RealVector e_x_e1_x_ur = e. crossProduct( e1_x_ur );
+      for ( Dimension i = 0; i < 3; i++ )
+        for ( Dimension j = 0; j < 3; j++ )
+          {
+            Scalar v = (-psi - 0.5*sin_2psi) * e_x_ur[ i ] * e1_x_ur[ j ]
+              + (sin_psi*sin_psi) * ( e_x_ur[ i ] * ur[ j ]
+                                      - e_x_e1_x_ur[ i ] * e1_x_ur[ j ] )
+              + (psi - 0.5*sin_2psi) * e_x_e1_x_ur[ i ] * ur[ j ];
+            M.setComponent( i, j, -0.5 * v );
+          }
+      return M;
     }
     
     /// Computes muXY measure (anisotropic curvature) of triangle abc given an interpolated

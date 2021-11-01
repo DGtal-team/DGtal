@@ -30,7 +30,9 @@ The following programs are related to this documentation:
 <a href="geometry_2meshes_2obj-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-3d.cpp</a>,
 <a href="geometry_2meshes_2obj-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp</a>,
 <a href="geometry_2meshes_2vol-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-3d.cpp</a>,
-<a href="geometry_2meshes_2vol-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp</a>.
+<a href="geometry_2meshes_2vol-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/vol-curvature-measures-icnc-XY-3d.cpp</a>,
+<a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp</a>.
+
 
 @section dgtal_curvature_measures_sec1 Introduction to curvature measures
 

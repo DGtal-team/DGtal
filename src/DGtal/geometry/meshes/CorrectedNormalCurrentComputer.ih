@@ -323,7 +323,26 @@ computeMuXYConstantU() const
   ASSERT( ! myMesh.faceNormals().empty() );
   const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
   TensorMeasure muXY( &myMesh, zeroT );
-  // TODO
+  ASSERT( ! myMesh.faceNormals().empty() );
+  auto& edge_muXY = muXY.kMeasures( 1 );
+  edge_muXY.resize( myMesh.nbEdges() );
+  
+  for ( Index idx_e = 0; idx_e < myMesh.nbEdges(); ++idx_e )
+    {
+      const auto& right_f = myMesh.edgeRightFaces( idx_e );
+      const auto&  left_f = myMesh.edgeLeftFaces ( idx_e );
+      if ( right_f.size() == 1 && left_f.size() == 1 )
+        {
+          const auto        ab = myMesh.edgeVertices( idx_e );
+          const RealPoint&  xa = myMesh.position( ab.first );
+          const RealPoint&  xb = myMesh.position( ab.second );
+          const RealVector& ur = myMesh.faceNormal( right_f.front() );
+          const RealVector& ul = myMesh.faceNormal( left_f.front() );
+          edge_muXY[ idx_e ] = Formula::muXYConstantUAtEdge( xa, xb, ur, ul );
+        }
+      else
+        edge_muXY[ idx_e ] = zeroT;
+    }
   return muXY;
 }
 
