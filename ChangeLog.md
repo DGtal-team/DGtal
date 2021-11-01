@@ -5,6 +5,13 @@
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
 
+- *Geometry package*
+  - Add curvature measures computation on 3D surface mesh:
+    implements Normal Cycle, face-constant Corrected Normal Current
+    and vertex-interpolated Corrected Normal Current.
+    (Jacques-Olivier Lachaud,[#1617](https://github.com/DGtal-team/DGtal/pull/1617))
+
+
 ## Bug fixes
 - *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
