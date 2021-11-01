@@ -1,5 +1,6 @@
 # DGtal 1.3 (beta)
 
+
 ## New features / critical changes
 - *Docker File*
   - A Dockerfile is added to create a Docker image to have a base to start development

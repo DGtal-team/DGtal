@@ -113,44 +113,17 @@ bool testReducedMedialAxis( std::array<bool, 2> const& aPeriodicity = {{ false, 
   trace.info()<<std::endl;
 
   //Medial Axis extraction
-  ReducedMedialAxis<PowerMap<Image, Z2i::L2PowerMetric> >::Type  rdma = ReducedMedialAxis< PowerMap<Image, Z2i::L2PowerMetric> >::getReducedMedialAxisFromPowerMap(power);
+  auto rdma = ReducedMedialAxis< PowerMap<Image, Z2i::L2PowerMetric> >::getReducedMedialAxisFromPowerMap(power);
 
-  //Reconstruction
-  for(unsigned int i=0; i<11; i++)
-    {
-      for(unsigned int j=0; j<11; j++)
-        {
-          Z2i::Point p(i,j);
-          if (rdma.domain().isInside(p) )
-            trace.info()<< rdma(p);
-          else
-            trace.info()<< " - ";
-
-        }
-      std::cerr<<std::endl;
-    }
-  trace.info()<<std::endl;
-
+  for(auto &ball: rdma)
+    trace.info() <<"Got ball: "<< ball.first<<" r="<< ball.second<<std::endl;
+   
 
   ++nbok;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true == true" << std::endl;
   trace.endBlock();
-
-  bool isEqual = true;
-  for ( auto const & pt : domain )
-    {
-      const Image::Value a = image.domain().isInside(pt) ? image(pt) : 0;
-      const Image::Value b = rdma.domain().isInside(pt) ? rdma(pt) : 0;
-      if ( a != b )
-        {
-          isEqual = false;
-          break;
-        }
-    }
-
-  trace.info() << "Equality ? " << isEqual << std::endl;
 
   return nbok == nb;
 }
