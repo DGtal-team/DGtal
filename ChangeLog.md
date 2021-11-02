@@ -34,6 +34,12 @@
     (Bertrand Kerautret, Phuc Ngo and David Coeurjolly
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
+- *Geometry*
+  - New VoronoiMapComplete class to store the full Voronoi map (with
+    all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
+    Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+    
+
 - *Build*
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
@@ -44,6 +50,9 @@
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
   - Fix cmake related ITK usage in other projects (issue #1612). 
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
+  - Adding ITK in Github Actions CI on linux distribution.
+    (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
+
 
 
 ## Bug fixes

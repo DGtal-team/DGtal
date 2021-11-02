@@ -17,35 +17,36 @@
 #pragma once
 
 /**
- * @file VoronoiMap.h
+ * @file VoronoiMapComplete.h
  * @brief Linear in time distance transformation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Robin Lamy
  *
- * @date 2012/08/14
+ * @date 2021/09/30
  *
- * Header file for module VoronoiMap.cpp
+ * Header file for module VoronoiMapComplete.cpp
  *
  * This file is part of the DGtal library.
  *
- * @see testVoronoiMap.cpp
+ * @see testVoronoiMapComplete.cpp
  */
-
-#if defined(VoronoiMap_RECURSES)
-#error Recursive header files inclusion detected in VoronoiMap.h
-#else // defined(VoronoiMap_RECURSES)
+#if defined(VoronoiMapComplete_RECURSES)
+#error Recursive header files inclusion detected in VoronoiMapComplete.h
+#else // defined(VoronoiMapComplete_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define VoronoiMap_RECURSES
+#define VoronoiMapComplete_RECURSES
 
-#if !defined VoronoiMap_h
+#if !defined VoronoiMapComplete_h
 /** Prevents repeated inclusion of headers. */
-#define VoronoiMap_h
+#define VoronoiMapComplete_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <vector>
 #include <array>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -61,24 +62,34 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class VoronoiMap
+  // template class VoronoiMapComplete
   /**
-   * Description of template class 'VoronoiMap' <p>
+   * Description of template class 'VoronoiMapComplete' <p>
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
    * The algorithm uses a seperable process to construct Voronoi maps
    * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these.
-   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
+   * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008,
+   * and uses the co-cyclic site approach from @cite Couprie2007.
    *
    * Given a domain and a point predicate, an instance returns, for
-   * each point in the domain, the closest point for which the
+   * each point in the domain, the collection of closest points for which the
    * predicate is false. Following Computational Geometry
    * terminology, points for which the predicate is false are "sites"
-   * for the Voronoi map construction. If a point is equi-distant to
-   * two sites (e.g. if the digital point belong to a Voronoi cell
-   * boundary in the Euclidean space), this Voronoi map construction
-   * will only keep one of them.
+   * for the Voronoi map construction.
+   *
+   * If a point is equi-distant to several sites, all sites will be attached to
+   * that point (contrary to the class VoronoiMap that will only keep one of them).
+   * This implies a computational overhead:
+   *    - if @f$ f @f$ is the max number of co-cyclic points per grid point, we
+   * have an extra @f$ O(f log f) @f$ factor to the computational cost (cf below), plus the cost
+   * of insertion/removal in the container (O(log f) with std::set).
+   *    - as we have to use a specific container to store the per pixel equi-distant points
+   * we obviously have a memory overhead when there are equi-distant points, but a slight computational
+   * one too to access sites from the container (std::set<Point> per grid point).
+   *
+   * See @ref moduleVolumetric documnetation page.
    *
    * By default, the domain is considered non-periodic but per-dimension
    * periodicity can be specified in the constructor.
@@ -92,19 +103,17 @@ namespace DGtal
    * instance, any instance of ExactPredicateLpSeparableMetric or
    * InexactPredicateLpSeparableMetric).  If the separable metric has
    * a complexity of O(h) for its "hiddenBy" predicate, the overall
-   * Voronoi construction algorithm is in @f$ O(h.d.n^d)@f$ for @f$
+   * Voronoi construction algorithm is in @f$ O(f.h.d.n^d)@f$ for @f$
    * n^d@f$ domains (see class constructor). For Euclidean the @f$
-   * l_2@f$ metric, the overall computation is in @f$ O(d.n^d)@f$,
+   * l_2@f$ metric, the overall computation is in @f$ O(f.d.n^d)@f$,
    * which is optimal.
    *
    * If DGtal has been built with OpenMP support (WITH_OPENMP flag set
    * to "true"), the computation is done in parallel (multithreaded)
    * in an optimal way: on @a p processors, expected runtime is in
-   * @f$ O(h.d.n^d / p)@f$.
+   * @f$ O(f.h.d.n^d / p)@f$.
    *
    * This class is a model of concepts::CConstImage.
-   *
-   * @see &nbsp; \ref toricVol
    *
    * @tparam TSpace type of Digital Space (model of concepts::CSpace).
    * @tparam TPointPredicate point predicate returning true for points
@@ -113,17 +122,17 @@ namespace DGtal
    * @tparam TImageContainer any model of concepts::CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
-   * container value type must be TSpace::Vector. Lastly, the domain
-   * of the container must be HyperRectDomain.
+   * container value type must be a random access container on TSpace::Vector.
+   * Lastly, the domain of the container must be HyperRectDomain.
    */
   template < typename TSpace,
              typename TPointPredicate,
              typename TSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
-                                       typename TSpace::Vector>
+                                       std::set<typename TSpace::Vector> >
              >
-  class VoronoiMap
+  class VoronoiMapComplete
   {
 
   public:
@@ -139,9 +148,9 @@ namespace DGtal
     //ImageContainer::Domain::Space must match with TSpace
     BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
                           typename TImageContainer::Domain::Space >::value ));
-
-    //ImageContainer value type must be  TSpace::Vector
-    BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Vector,
+    
+    //ImageContainer value type must be  std::vector<TSpace::Vector>
+    BOOST_STATIC_ASSERT ((boost::is_same< std::set<typename TSpace::Vector>,
                           typename TImageContainer::Value >::value ));
 
     //ImageContainer domain type must be  HyperRectangular
@@ -173,13 +182,13 @@ namespace DGtal
     typedef TImageContainer OutputImage;
 
     ///Definition of the image value type.
-    typedef Vector Value;
+    typedef typename OutputImage::Value Value;
 
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap< TSpace, TPointPredicate,
+    typedef VoronoiMapComplete< TSpace, TPointPredicate,
                         TSeparableMetric,TImageContainer > Self;
 
 
@@ -205,9 +214,9 @@ namespace DGtal
      *
      * @param aMetric a pointer to the separable metric instance.
      */
-    VoronoiMap(ConstAlias<Domain> aDomain,
-               ConstAlias<PointPredicate> predicate,
-               ConstAlias<SeparableMetric> aMetric);
+    VoronoiMapComplete(ConstAlias<Domain> aDomain,
+                       ConstAlias<PointPredicate> predicate,
+                       ConstAlias<SeparableMetric> aMetric);
 
     /**
      * Constructor with periodicity specification.
@@ -233,19 +242,19 @@ namespace DGtal
      *        where the i-th value is \c true if the i-th dimension of the
      *        space is periodic, \c false otherwise.
      */
-    VoronoiMap(ConstAlias<Domain> aDomain,
-               ConstAlias<PointPredicate> predicate,
-               ConstAlias<SeparableMetric> aMetric,
-               PeriodicitySpec const & aPeriodicitySpec);
+    VoronoiMapComplete(ConstAlias<Domain> aDomain,
+                       ConstAlias<PointPredicate> predicate,
+                       ConstAlias<SeparableMetric> aMetric,
+                       PeriodicitySpec const & aPeriodicitySpec);
     /**
      * Default destructor
      */
-    ~VoronoiMap() = default;
+    ~VoronoiMapComplete() = default;
 
     /**
      * Disabling default constructor.
      */
-     VoronoiMap() = delete;
+     VoronoiMapComplete() = delete;
 
   public:
     // ------------------- ConstImage model ------------------------
@@ -344,7 +353,6 @@ namespace DGtal
      */
     void compute ( ) ;
 
-
     /**
      *  Compute the other steps of the separable Voronoi map.
      *
@@ -411,7 +419,7 @@ namespace DGtal
     /// Periodicity along each dimension.
     PeriodicitySpec myPeriodicitySpec;
 
-  }; // end of class VoronoiMap
+  }; // end of class VoronoiMapComplete
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpSeparableMetric'.
@@ -422,7 +430,7 @@ namespace DGtal
   template <typename S, typename P,
             typename Sep, typename TI>
   std::ostream&
-  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep,TI> & object );
+  operator<< ( std::ostream & out, const VoronoiMapComplete<S,P,Sep,TI> & object );
 
 
 } // namespace DGtal
@@ -430,12 +438,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/distance/VoronoiMap.ih"
+#include "DGtal/geometry/volumes/distance/VoronoiMapComplete.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined VoronoiMap_h
 
-#undef VoronoiMap_RECURSES
-#endif // else defined(VoronoiMap_RECURSES)
+#undef VoronoiMapComplete_RECURSES
+#endif // else defined(VoronoiMapComplete_RECURSES)
