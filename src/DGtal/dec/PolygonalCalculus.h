@@ -66,8 +66,11 @@ public:
   ///Face type
   typedef typename TSurfaceMesh::Face Face;
   
-  ///Face type
+  ///Position type
   typedef typename TSurfaceMesh::RealPoint RealPoint;
+
+  ///Real vector type
+  typedef typename TSurfaceMesh::RealVector RealVector;
   
   ///Linear Algebra Backend from Eigen
   typedef EigenLinearAlgebraBackend LinAlg;
@@ -204,7 +207,7 @@ public:
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (DGtal RealVector/RealPoint)
-  RealPoint faceNormalAsDGtalVector(const Face f) const
+  RealVector faceNormalAsDGtalVector(const Face f) const
   {
     Vector v = faceNormal(f);
     return {v(0),v(1),v(2)};

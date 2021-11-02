@@ -71,8 +71,8 @@ void initQuantities()
 
   std::vector<PolygonalCalculus<SurfMesh>::Vector> gradients;
   std::vector<PolygonalCalculus<SurfMesh>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> vectorArea;
+  std::vector<PolygonalCalculus<SurfMesh>::RealVector> normals;
+  std::vector<PolygonalCalculus<SurfMesh>::RealVector> vectorArea;
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
 
   std::vector<double> faceArea;
@@ -145,7 +145,6 @@ int main()
                       faces.begin(),
                       faces.end());
   
-  
   // Initialize polyscope
   polyscope::init();
   
@@ -155,5 +154,4 @@ int main()
   polyscope::state::userCallback = myCallback;
   polyscope::show();
   return EXIT_SUCCESS;
-  
 }
