@@ -104,40 +104,56 @@ void addsource()
 void computeGeodesics()
 {
 
-  heat->addSource( 52889 ); //Forcing one seed (for screenshots)
+  heat->addSource( 0 ); //Forcing one seed (for screenshots)
   GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
-  psMesh->addVertexScalarQuantity("geodesic2", dist);
 
   if (!skipReg)
   {
-    heatReg->addSource( 52889 ); //Forcing one seed (for screenshots)
+    heatReg->addSource( 0 ); //Forcing one seed (for screenshots)
     GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
 }
 
+bool isPrecomputed=false;
 void myCallback()
 {
   ImGui::SliderFloat("dt", &dt, 0.,4.);
   ImGui::Checkbox("Skip regularization", &skipReg);
   if(ImGui::Button("Precomputation (required if you change the dt)"))
+  {
     precompute();
-  
+    isPrecomputed=true;
+  }
   if(ImGui::Button("Add random source"))
+  {
+    if (!isPrecomputed)
+    {
+      precompute();
+      isPrecomputed=true;
+    }
     addsource();
+  }
   
   if(ImGui::Button("Compute geodesic"))
+  {
+    if (!isPrecomputed)
+    {
+      precompute();
+      isPrecomputed=true;
+    }
     computeGeodesics();
+  }
 }
 
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All");
-  std::string filename = examplesPath + std::string("/samples/bunny-128.vol");
+  std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
   
-  auto binary_image = SH3::makeBinaryImage(filename, params );
+  auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
