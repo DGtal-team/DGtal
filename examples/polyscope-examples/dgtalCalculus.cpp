@@ -22,7 +22,7 @@
  *
  * This file is part of the DGtal library.
  */
-*#include <iostream>
+#include <iostream>
 #include <DGtal/base/Common.h>
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/helpers/Shortcuts.h>
@@ -59,7 +59,7 @@ SurfMesh surfmesh;
 std::vector<double> phiV;
 float scale = 0.1;
 
-//Restriction of a scalar function to vertices
+//Restriction of an ambient scalar function to vertices
 double phiVertex(const Vertex v)
 {
   return  cos(scale*(surfmesh.position(v)[0]))*sin(scale*surfmesh.position(v)[1]);
