@@ -1,5 +1,3 @@
-
-
 # -----------------------------------------------------------------------------
 # Fetching polyscope (only if the WITH_POLYSCOPE_EXAMPLES Variable has been set to true)
 # -----------------------------------------------------------------------------
@@ -19,7 +17,9 @@ set(POLYSCOPE_SRCS
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})
-  #DGtal_add_example(${FILE} polyscope)
+  #We should be using `DGtal_add_example(${FILE} polyscope)` to
+  #enable the randomized testing but it does not work (polyscope headers are
+  #not found properly).
   add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries(${FILE} DGtal ${DGTAL_LIBRARIES} polyscope)
 endforeach()

@@ -145,7 +145,7 @@ class GeodesicsInHeat
      **/
     void addSource(const Vertex aV)
     {
-      ASSERT_MSG(aV < myCalculus->nbVertices(), "Vertex not in the surface mesh vertex range");
+      ASSERT_MSG(aV < myCalculus->nbVertices(), "Vertex is not in the surface mesh vertex range");
       myLastSourceIndex = aV;
       mySource( aV ) = 1.0;
     }
@@ -161,7 +161,7 @@ class GeodesicsInHeat
     
     
     /// Main computation of the Geodesic In Heat
-    /// @returns the estimated geodesic distance from the sources.
+    /// @returns the estimated geodesic distances from the sources.
     Vector compute() const
     {
       FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
@@ -169,9 +169,6 @@ class GeodesicsInHeat
       Vector heatDiffusion = myHeatSolver.solve(mySource);
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
-      
-      //return heatDiffusion;
-      
       auto surfmesh = myCalculus->getSurfaceMeshAlias();
       
       // Heat, normalization and divergence per face
