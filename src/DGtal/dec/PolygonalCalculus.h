@@ -348,9 +348,9 @@ public:
     {
       auto nf  = myFaceDegree[f];
       reorder.resize(nf);
-      auto vertices = mySurfaceMesh->incidentVertices(f);
       DenseMatrix Lap = this->LaplaceBeltrami(f,lambda);
       auto cpt=0;
+      const auto vertices = mySurfaceMesh->incidentVertices(f);
       for(auto v: vertices )
       {
         reorder[ cpt ]= v;

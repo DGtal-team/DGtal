@@ -151,7 +151,7 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All");
-  std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
+  std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
   
   auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );

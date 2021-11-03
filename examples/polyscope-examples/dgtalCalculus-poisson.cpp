@@ -72,6 +72,7 @@ void computeLaplace()
   }
   
   //Solve Δu=0 with g as boundary conditions
+  //(the operator constructon and its prefactorization could have been factorized)
   PolygonalCalculus<SurfMesh>::Solver solver;
   solver.compute(L);
   ASSERT(solver.info()==Eigen::Success);
@@ -86,7 +87,7 @@ void computeLaplace()
 
 void myCallback()
 {
-  ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
+  ImGui::SliderFloat("Phi scale", &scale, 0., 10.);
   if(ImGui::Button("Compute Laplace problem"))
     computeLaplace();
 }
@@ -95,7 +96,7 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   
-  auto h=.5   ; //gridstep
+  auto h=.7   ; //gridstep
   params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", h );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
