@@ -107,7 +107,7 @@ int main()
   auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
   
   // Convert faces to appropriate indexed format
-  std::vector<std::vector<unsigned long>> faces;
+  std::vector<std::vector<SH3::PolygonalSurface::Vertex>> faces;
   for(auto &face: primalSurface->allFaces())
     faces.push_back(primalSurface->verticesAroundFace( face ));
   

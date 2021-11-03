@@ -131,14 +131,14 @@ void initQuantities()
 
 int main()
 {
-  std::vector<RealPoint> positions={ {0,0,0},{20,0,0},{20,10,0},{10,8,5}, {0,15,1} };
-  std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4}};
+  std::vector<RealPoint> positions={ {0,0,0},{20,0,0}, {20,10,0}, {10,8,5}, {0,15,1} };
+  std::vector<std::vector<size_t>> faces={ {0,1,2,3,4} };
 
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  
+
   psVertices = polyscope::registerPointCloud("Vertices", positions);
     
   std::vector<std::array<size_t,2>> edges={{0,1},{1,2},{2,3},{3,4},{4,0} };

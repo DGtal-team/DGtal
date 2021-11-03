@@ -160,7 +160,7 @@ int main()
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   
   //Need to convert the faces
-  std::vector<std::vector<unsigned long>> faces;
+  std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
   
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
