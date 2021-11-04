@@ -61,7 +61,6 @@ polyscope::CurveNetwork *psBoundary;
 SurfMesh surfmesh;
 PolygonalCalculus<SurfMesh>::Vector phiEigen;
 
-
 void initPhi()
 {
   phiEigen.resize(5);

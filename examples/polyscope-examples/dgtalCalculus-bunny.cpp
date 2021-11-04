@@ -35,11 +35,10 @@
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
 #include <polyscope/point_cloud.h>
-
-#include "ConfigExamples.h"
-
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+
+#include "ConfigExamples.h"
 
 using namespace DGtal;
 using namespace Z3i;
@@ -57,8 +56,6 @@ polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 float scale = 0.1;
 PolygonalCalculus<SurfMesh>::Vector phiEigen;
-
-
 
 //Restriction of a scalar function to vertices
 double phiVertex(const Vertex v)
@@ -80,7 +77,6 @@ PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
   }
   return  ph;
 }
-
 
 void initPhi()
 {
@@ -180,7 +176,7 @@ int main()
   params("surfaceComponents", "All");
 
   std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
-  auto binary_image = SH3::makeBinaryImage(filename, params );
+  auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
@@ -202,12 +198,11 @@ int main()
                       faces.end());
 
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
-  
-  // Initialize polyscope
-  polyscope::init();
-
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
 
+  // Initialize polyscope
+  polyscope::init();
+  
   // Set the callback function
   polyscope::state::userCallback = myCallback;
   polyscope::show();

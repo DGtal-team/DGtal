@@ -67,7 +67,7 @@ PolygonalCalculus<SurfMesh> *calculus;
 GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heatReg;
 PolygonalCalculus<SurfMesh> *calculusReg;
 
-bool skipReg = true;
+bool skipReg = true; //Global flag to enable/disable the regularization example.
 
 void precompute()
 {
@@ -152,11 +152,9 @@ int main()
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All");
   std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
-  
   auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
-  SH3::Cell2Index c2i;
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   
   //Need to convert the faces

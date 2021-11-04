@@ -34,8 +34,6 @@
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
 #include <polyscope/point_cloud.h>
-
-
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
@@ -52,7 +50,6 @@ typedef SurfMesh::RealPoint                   RealPoint;
 typedef SurfMesh::Face                   Face;
 typedef SurfMesh::Vertex                  Vertex;
 
-
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
@@ -65,8 +62,8 @@ double phiVertex(const Vertex v)
   return  cos(scale*(surfmesh.position(v)[0]))*sin(scale*surfmesh.position(v)[1]);
 }
 
-//Restriction of a scalar function to vertices
-PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
+//Restriction of an ambient scalar function to vertices
+PolygonalCalculus<SurfMesh>::Vector phiFace(const Face f)
 {
   auto vertices = surfmesh.incidentVertices(f);
   auto nf = vertices.size();
@@ -80,7 +77,7 @@ PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
   return  ph;
 }
 
-
+//Vertex valued function for polyscope
 void initPhi()
 {
   phiV.clear();
@@ -98,12 +95,11 @@ void initQuantities()
   std::vector<PolygonalCalculus<SurfMesh>::RealVector> normals;
   std::vector<PolygonalCalculus<SurfMesh>::RealVector> vectorArea;
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
-
   std::vector<double> faceArea;
 
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
-    PolygonalCalculus<SurfMesh>::Vector ph = phi(f);
+    PolygonalCalculus<SurfMesh>::Vector ph = phiFace(f);
     PolygonalCalculus<SurfMesh>::Vector grad = calculus.gradient(f) * ph;
     gradients.push_back( grad );
     PolygonalCalculus<SurfMesh>::Vector cograd =  calculus.coGradient(f) * ph;

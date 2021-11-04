@@ -55,7 +55,6 @@ float scale = 0.1;
 
 void computeLaplace()
 {
-
   //! [PolyDEC-init]
   PolygonalCalculus<SurfMesh> calculus(surfmesh);
   PolygonalCalculus<SurfMesh>::SparseMatrix L = calculus.globalLaplaceBeltrami();
@@ -103,29 +102,23 @@ int main()
   auto K               = SH3::getKSpace( params );
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
-  SH3::Cell2Index c2i;
-  auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
+  auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   
-  // Convert faces to appropriate indexed format
-  std::vector<std::vector<SH3::PolygonalSurface::Vertex>> faces;
-  for(auto &face: primalSurface->allFaces())
-    faces.push_back(primalSurface->verticesAroundFace( face ));
+  //Need to convert the faces
+  std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
+  std::vector<RealPoint> positions;
   
-  //Recasting to vector of vertices
-  auto pos = primalSurface->positions();
-  std::vector<RealPoint> positions(primalSurface->nbVertices());
-  for(auto i=0; i < primalSurface->nbVertices(); ++i)
-    positions[i] = pos(i);
+  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+    faces.push_back(primalSurface->incidentVertices( face ));
   
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  
+  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
+
   // Initialize polyscope
   polyscope::init();
-  
-  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;
