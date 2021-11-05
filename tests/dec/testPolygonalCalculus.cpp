@@ -156,18 +156,18 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( gphi.dot(cogphi) == 0.0);
         
     //    Gf = Uf Df
-    REQUIRE( G == boxCalculus.U(f)*boxCalculus.D(f));
+    REQUIRE( G == boxCalculus.sharp(f)*boxCalculus.D(f));
     
     //    UV = I - nn^t (lemma4)
     PolygonalCalculus<Mesh>::Vector n = boxCalculus.faceNormal(f);
-    REQUIRE( boxCalculus.U(f)*boxCalculus.V(f) == PolygonalCalculus<Mesh>::DenseMatrix::Identity(3,3) - n*n.transpose() );
+    REQUIRE( boxCalculus.sharp(f)*boxCalculus.flat(f) == PolygonalCalculus<Mesh>::DenseMatrix::Identity(3,3) - n*n.transpose() );
     
     //    P^2 = P (lemma6)
     auto P = boxCalculus.P(f);
     REQUIRE( P*P == P);
     
     //    PV=0 (lemma5)
-    REQUIRE( (P*boxCalculus.V(f)).norm() == 0.0);
+    REQUIRE( (P*boxCalculus.flat(f)).norm() == 0.0);
   }
   
   SECTION("Div / Curl")
@@ -205,7 +205,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Checking cache")
   {
-    auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.U(f);} );
+    auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.sharp(f);} );
     REQUIRE( cacheU.size() == 6 );
     
     auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);} );

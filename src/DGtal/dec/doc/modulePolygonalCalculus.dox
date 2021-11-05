@@ -164,12 +164,12 @@ gradient | co-gradient | corrected normal
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.V(f)`  | \f$ n_f\times 3\f$ | Flat operator that maps an ambient vector to a local discrete 1-form 
-`calculus.U(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
+`calculus.flat(f)`  | \f$ n_f\times 3\f$ | Flat operator that maps an ambient vector to a local discrete 1-form
+`calculus.sharp(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
 `calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form and remove the associated non-tangential part of the vector reconstructed using the sharp operator
 
-Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ U_f V_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order of operators and applied to 1-forms does not hold (due to rank deficiencies of the matrices). 
-This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (U_f V_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
+Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ sharp_f flat_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order of operators and applied to 1-forms does not hold (due to rank deficiencies of the matrices).
+This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (sharp_f flat_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
 
 
 For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators are the classical DEC or FEM ones.
@@ -247,7 +247,7 @@ For the sake of readability, each operator has been implemented implicitly. For 
 @code
 DenseMatrix M(const Face f, const double lambda=1.0) const
 {
-  auto Uf=U(f);
+  auto Uf=sharp(f);
   auto Pf=P(f);
   return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
 }
@@ -258,7 +258,7 @@ For high performance computations, we provide a generic cache mechanism to expli
 
 A typical usage is 
 @code
-auto cacheU        = getOperatorCacheMatrix( [&](Face f){ return(calculus.U(f);} );
+auto cacheSharp    = getOperatorCacheMatrix( [&](Face f){ return(calculus.sharp(f);} );
 auto cachefaceArea = getOperatorCacheMatrix( [&](Face f){ return(calculus.faceArea(f);} );
 auto cacheP        = getOperatorCacheMatrix( [&](Face f){ return(calculus.P(f);} );
 @endcode

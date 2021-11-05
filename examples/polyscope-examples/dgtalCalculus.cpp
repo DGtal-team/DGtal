@@ -147,19 +147,16 @@ int main()
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
-  auto primalSurface   = SH3::makePrimalPolygonalSurface(c2i, surface);
+  auto primalSurface   = SH3::makePrimalSurfaceMesh(c2i, surface);
   
   // Convert faces to appropriate indexed format
-  std::vector<std::vector<SH3::PolygonalSurface::Vertex>> faces;
-  for(auto &face: primalSurface->allFaces())
-    faces.push_back(primalSurface->verticesAroundFace( face ));
+  std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
+  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+    faces.push_back(primalSurface->incidentVertices( face ));
   
   //Recasting to vector of vertices
-  auto pos = primalSurface->positions();
-  std::vector<RealPoint> positions(primalSurface->nbVertices());
-  for(auto i=0; i < primalSurface->nbVertices(); ++i)
-    positions[i] = pos(i);
-  
+  auto positions = primalSurface->positions();
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),

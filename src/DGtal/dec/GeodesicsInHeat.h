@@ -187,7 +187,7 @@ class GeodesicsInHeat
         grad.normalize();
       
         // div
-        DenseMatrix oneForm = myCalculus->V(f)*grad;
+        DenseMatrix oneForm = myCalculus->flat(f)*grad;
         Vector divergenceFace = myCalculus->divergence(f) * oneForm;
         cpt=0;
         for(auto v: vertices)

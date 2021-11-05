@@ -79,20 +79,19 @@ void initQuantities()
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> vectorArea;
   std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
-
   std::vector<double> faceArea;
 
   PolygonalCalculus<SurfMesh>::Face f = 0; //Id of the face
  
-  auto grad = calculus.gradient(f) * phiEigen;
+  PolygonalCalculus<SurfMesh>::Vector grad = calculus.gradient(f) * phiEigen;
   gradients.push_back( grad );
 
-  auto cograd =  calculus.coGradient(f) * phiEigen;
+  PolygonalCalculus<SurfMesh>::Vector cograd =  calculus.coGradient(f) * phiEigen;
   cogradients.push_back( cograd );
 
   normals.push_back(calculus.faceNormalAsDGtalVector(f));
   
-  auto vA = calculus.vectorArea(f);
+  PolygonalCalculus<SurfMesh>::Vector vA = calculus.vectorArea(f);
   vectorArea.push_back({vA(0) , vA(1), vA(2)});
   
   faceArea.push_back( calculus.faceArea(f));
@@ -110,8 +109,8 @@ void initQuantities()
   psBoundary->addEdgeScalarQuantity("d0*phi", dPhi);
   psBoundary->addEdgeScalarQuantity("A*phi", av);
   
+  //Face centroid
   polyscope::registerPointCloud("Centroids", centroids);
-  
   
   //Flat Sharp
   PolygonalCalculus<SurfMesh>::Vector v(3);
@@ -119,10 +118,10 @@ void initQuantities()
   std::vector<PolygonalCalculus<SurfMesh>::Vector> someV={v};
   psMesh->addFaceVectorQuantity("A vector", someV);
 
-  PolygonalCalculus<SurfMesh>::Vector flat = calculus.V(f)*v;
+  PolygonalCalculus<SurfMesh>::Vector flat = calculus.flat(f)*v;
   psBoundary->addEdgeScalarQuantity("flat (1-form)", flat);
   
-  PolygonalCalculus<SurfMesh>::Vector sharp = calculus.U(f)*flat;
+  PolygonalCalculus<SurfMesh>::Vector sharp = calculus.sharp(f)*flat;
   std::vector<PolygonalCalculus<SurfMesh>::Vector> sharpRes={sharp};
   psMesh->addFaceVectorQuantity("Sharp", sharpRes);
 }

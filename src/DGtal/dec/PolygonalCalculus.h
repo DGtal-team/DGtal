@@ -243,7 +243,7 @@ public:
   /// Flat operator for the face.
   /// @param f the face
   /// @return a degree x 3 matrix
-  DenseMatrix  V(const Face f) const
+  DenseMatrix  flat(const Face f) const
   {
     auto n = faceNormal(f);
     return E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
@@ -276,7 +276,7 @@ public:
   /// Sharp operator for the face.
   /// @param f the face
   /// @return a 3 x degree matrix
-  DenseMatrix U(const Face f) const
+  DenseMatrix sharp(const Face f) const
   {
     auto nf = myFaceDegree[f];
     return 1.0/faceArea(f) * bracket(faceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
@@ -288,7 +288,7 @@ public:
   DenseMatrix P(const Face f) const
   {
     auto nf = myFaceDegree[f];
-    return DenseMatrix::Identity(nf,nf) - V(f)*U(f);
+    return DenseMatrix::Identity(nf,nf) - flat(f)*sharp(f);
   }
   
   /// Inner product on 1-forms associated with the face
@@ -297,7 +297,7 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix M(const Face f, const double lambda=1.0) const
   {
-    auto Uf=U(f);
+    auto Uf=sharp(f);
     auto Pf=P(f);
     return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
   }

@@ -106,8 +106,7 @@ int main()
   
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
-  std::vector<RealPoint> positions;
-  
+  std::vector<RealPoint> positions = primalSurface->positions();
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
