@@ -169,7 +169,7 @@ class GeodesicsInHeat
       Vector heatDiffusion = myHeatSolver.solve(mySource);
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
-      auto surfmesh = myCalculus->getSurfaceMeshAlias();
+      auto surfmesh = myCalculus->getSurfaceMeshPtr();
       
       // Heat, normalization and divergence per face
       for(auto f=0; f< myCalculus->nbFaces(); ++f)

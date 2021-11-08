@@ -483,9 +483,8 @@ public:
     return myFaceDegree[f];
   }
   
-  /// @returns an pointer (ConstAlias) to the underlying
-  /// SurfaceMash instance.
-  ConstAlias<SurfaceMesh> getSurfaceMeshAlias() const
+  /// @returns an pointer to the underlying SurfaceMash object.
+  const SurfaceMesh * getSurfaceMeshPtr() const
   {
     return mySurfaceMesh;
   }

@@ -6,6 +6,13 @@ if (BUILD_POLYSCOPE_EXAMPLES)
   include(polyscope)
 endif()
 
+if(BUILD_SHARED_LIBS)
+  message(FATAL_ERROR "Polyscope examples require static build of the DGtal. Please set BUILD_SHARED_LIBS variable to OFF")
+endif()
+if(NOT WITH_EIGEN)
+  message(FATAL_ERROR "Polyscope Polygonal Calculus examples require Eigen (WITH_EIGEN=true)")
+endif()
+
 include_directories (${PROJECT_BINARY_DIR}/examples/)
 
 set(POLYSCOPE_SRCS
