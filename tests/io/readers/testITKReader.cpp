@@ -44,6 +44,7 @@ using namespace DGtal;
 // Functions for testing class ITKReader.
 ///////////////////////////////////////////////////////////////////////////////
 
+
 /**
    Check that an image loaded via DGtal ITKReader keeps the same spatial 
    information than an image loaded via itk::ImageFileReader.
