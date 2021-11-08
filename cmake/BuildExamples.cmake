@@ -10,7 +10,7 @@ message(STATUS "----------------------------------------------------------------
 
 
 # -----------------------------------------------------------------------------
-# polyscope exampleq
+# polyscope examples
 # -----------------------------------------------------------------------------
 option(BUILD_POLYSCOPE_EXAMPLES "Build polyscope examples." OFF)
 if (BUILD_POLYSCOPE_EXAMPLES )
