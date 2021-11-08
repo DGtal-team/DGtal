@@ -122,7 +122,7 @@ library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) s
 
 Beside these options, user can also specify these options:
 
-- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
+- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
 - \e BUILD_TESTING (ON/OFF): to build the test suite (default: OFF)
 
 - \e VERBOSE (ON/OFF): to define the \e VERBOSE variable

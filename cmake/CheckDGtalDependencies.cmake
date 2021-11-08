@@ -6,13 +6,6 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal required dependencies: ")
 
 # -----------------------------------------------------------------------------
-# Downloading external deps
-# -----------------------------------------------------------------------------
-message(STATUS "Downloading external projects")
-include(FetchExternalDeps)
-message(STATUS "Done.")
-
-# -----------------------------------------------------------------------------
 # Looking for boost
 # -----------------------------------------------------------------------------
 set(Boost_USE_STATIC_LIBS   ON)
@@ -23,14 +16,12 @@ find_package(Boost 1.50.0 REQUIRED)
 target_compile_definitions(DGtal PUBLIC ${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
 # SYSTEM to avoid warnings from boost.
 target_include_directories(DGtal SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
-set(DGtalLibInc ${DGtalLibInc} ${Boost_INCLUDE_DIRS})
 
 # -----------------------------------------------------------------------------
 # Looking for zlib
 # -----------------------------------------------------------------------------
 find_package(ZLIB REQUIRED)
 target_link_libraries(DGtal PUBLIC ZLIB::ZLIB)
-set(DGtalLibInc ${DGtalLibInc} ${ZLIB_INCLUDE_DIRS})
 set(DGtalLibDependencies ${DGtalLibDependencies} ${ZLIB_LIBRARIES})
 
 # -----------------------------------------------------------------------------
@@ -40,3 +31,12 @@ if (UNIX AND NOT APPLE)
   target_link_libraries(DGtal PUBLIC rt)
   set(DGtalLibDependencies ${DGtalLibDependencies} -lrt)
 endif()
+
+# -----------------------------------------------------------------------------
+# Eigen (already fetched)
+# -----------------------------------------------------------------------------
+set(WITH_EIGEN ON)
+set(EIGEN_FOUND_DGTAL 1)
+target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
+set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+target_link_libraries(DGtal PRIVATE Eigen3::Eigen)

@@ -16,7 +16,8 @@ endif()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 set(DGtal_VERSION_MAJOR 1)
 set(DGtal_VERSION_MINOR 3)
 set(DGtal_VERSION_PATCH beta)
@@ -28,10 +29,21 @@ set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 # -----------------------------------------------------------------------------
 include(Common)
 
+# -----------------------------------------------------------------------------
+# Development and debug options
+# -----------------------------------------------------------------------------
+include(DevelopmentOptions)
+
+# -----------------------------------------------------------------------------
+# Downloading external deps
+# -----------------------------------------------------------------------------
+message(STATUS "Downloading external projects")
+include(FetchExternalDeps)
+message(STATUS "Done.")
+
 #------------------------------------------------------------------------------
 # Add DGtal library
 #------------------------------------------------------------------------------
-
 # Include CPP files to add to the library target
 #
 # each subdir can contain a ModuleSRC.txt file
@@ -68,21 +80,6 @@ install(TARGETS DGtal
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
-# Misc
-if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
-  # Add -fPIC
-  set_target_properties(DGtal PROPERTIES POSITION_INDEPENDENT_CODE ON)
-endif()
-
-# -----------------------------------------------------------------------------
-# Development and debug options
-# -----------------------------------------------------------------------------
-include(DevelopmentOptions)
-
-# -----------------------------------------------------------------------------
-# Common build options/settings
-# -----------------------------------------------------------------------------
-include(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Check dependencies
@@ -131,6 +128,11 @@ include(CheckCoverage)
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
 include(GeneratorSpecific)
+
+# -----------------------------------------------------------------------------
+# Common build options/settings
+# -----------------------------------------------------------------------------
+include(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Install settings

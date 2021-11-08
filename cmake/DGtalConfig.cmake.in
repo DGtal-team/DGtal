@@ -108,15 +108,16 @@ endif()
 
 
 if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-  find_dependency(Eigen3 @Eigen3_dgtal_min_version@ REQUIRED CONFIG
-    @Eigen3_HINTS@
-    )
+  include(eigen)
   set(WITH_EIGEN 1)
+  set(EIGEN_FOUND_DGTAL 1)
+  target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
+  target_link_libraries(DGtal INTERFACE Eigen3::Eigen)
 endif()
 
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
-  find_dependency(CGAL COMPONENTS Core 
+  find_dependency(CGAL COMPONENTS Core
     @CGAL_HINTS@
     )
   set(WITH_CGAL 1)

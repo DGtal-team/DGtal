@@ -14,7 +14,6 @@ message(STATUS "")
 
 option(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 option(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
-option(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
 option(WITH_CGAL "With CGAL." OFF)
 option(WITH_MAGICK "With GraphicsMagick++." OFF)
 option(WITH_ITK "With Insight Toolkit ITK." OFF)
@@ -149,7 +148,6 @@ if(WITH_GMP)
     message(STATUS "GMP and GMPXX found." )
     target_compile_definitions(DGtal PUBLIC -DWITH_GMP)
     target_include_directories(DGtal PUBLIC ${GMP_INCLUDE_DIR})
-    set(DGtalLibInc ${DGtalLibInc} ${GMP_INCLUDE_DIR})
   else()
     message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
   endif()
@@ -187,7 +185,6 @@ if(WITH_MAGICK)
     message(STATUS "GraphicsMagick++ found." )
     target_compile_definitions(DGtal PUBLIC -DWITH_MAGICK)
     target_include_directories(DGtal PUBLIC ${MAGICK++_INCLUDE_DIR})
-    set(DGtalLibInc ${DGtalLibInc} ${MAGICK++_INCLUDE_DIR})
     target_link_libraries(DGtal PUBLIC ${MAGICK++_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${MAGICK++_LIBRARIES})
   else()
@@ -214,7 +211,6 @@ if(WITH_ITK)
     set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     target_compile_definitions(DGtal PUBLIC -DWITH_ITK)
     target_include_directories(DGtal PUBLIC ${ITK_INCLUDE_DIRS})
-    set(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
 
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
@@ -245,7 +241,6 @@ if(WITH_CAIRO)
     target_compile_definitions(DGtal PUBLIC -DWITH_CAIRO)
     target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRAIRIES})
-    set(DGtalLibInc ${DGtalLibInc} ${CAIRO_INCLUDE_DIRS})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRAIRIES})
     message(STATUS "cairo found")
     set(CAIRO_FOUND_DGTAL 1)
@@ -268,7 +263,6 @@ if(WITH_HDF5)
     target_compile_definitions(DGtal PUBLIC -DWITH_HDF5)
     target_include_directories(DGtal PUBLIC ${HDF5_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
-    set(DGtalLibInc ${DGtalLibInc} ${HDF5_INCLUDE_DIRS})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
     message(STATUS "HDF5 found")
     set(HDF5_FOUND_DGTAL 1)
@@ -381,20 +375,6 @@ if(WITH_OPENMP)
 endif()
 
 # -----------------------------------------------------------------------------
-# Look for Eigen3
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(EIGEN_FOUND_DGTAL 0)
-if(WITH_EIGEN)
-  set(Eigen3_dgtal_min_version 3.3) # 3.3 is the first version where Eigen3Config.cmake is generated.
-  find_package(Eigen3 ${Eigen3_dgtal_min_version} REQUIRED CONFIG)
-  set(EIGEN_FOUND_DGTAL 1)
-  target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
-  target_link_libraries(DGtal INTERFACE Eigen3::Eigen)
-  message(STATUS "Eigen3 (version ${Eigen3_VERSION}) found.")
-endif()
-
-# -----------------------------------------------------------------------------
 # Look for CGAL
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
@@ -435,7 +415,6 @@ if(WITH_PATATE)
   find_package(Patate)
   if(PATATE_FOUND)
     target_include_directories(DGtal PUBLIC ${PATATE_INCLUDE_DIR})
-    set(DGtalLibInc ${DGtalLibInc} ${PATATE_INCLUDE_DIR})
     set(PATATE_FOUND_DGTAL 1)
     target_compile_definitions(DGtal PUBLIC -DWITH_PATATE)
     target_compile_definitions(DGtal PUBLIC -DWITH_Eigen3)

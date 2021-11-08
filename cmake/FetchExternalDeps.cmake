@@ -12,7 +12,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
     endmacro()
   endif()
 
-  
+
 # -----------------------------------------------------------------------------
 # Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
@@ -25,8 +25,13 @@ if (BUILD_TESTING)
 
   message(STATUS "    Catch2 (v2.13.6)")
   FetchContent_MakeAvailable(Catch2)
-  
+
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
   include(Catch)
 endif()
+
+# -----------------------------------------------------------------------------
+# Fetching Eigen3
+# -----------------------------------------------------------------------------
+include(eigen)
