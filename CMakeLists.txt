@@ -30,16 +30,12 @@ set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 include(Common)
 
 # -----------------------------------------------------------------------------
-# Development and debug options
-# -----------------------------------------------------------------------------
-include(DevelopmentOptions)
-
-# -----------------------------------------------------------------------------
 # Downloading external deps
 # -----------------------------------------------------------------------------
 message(STATUS "Downloading external projects")
 include(FetchExternalDeps)
 message(STATUS "Done.")
+
 
 #------------------------------------------------------------------------------
 # Add DGtal library
@@ -80,6 +76,10 @@ install(TARGETS DGtal
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
+# -----------------------------------------------------------------------------
+# Development and debug options
+# -----------------------------------------------------------------------------
+include(DevelopmentOptions)
 
 # -----------------------------------------------------------------------------
 # Check dependencies
