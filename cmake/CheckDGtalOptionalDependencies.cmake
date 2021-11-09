@@ -19,9 +19,8 @@ option(WITH_MAGICK "With GraphicsMagick++." OFF)
 option(WITH_ITK "With Insight Toolkit ITK." OFF)
 option(WITH_CAIRO "With CairoGraphics." OFF)
 option(WITH_HDF5 "With HDF5." OFF)
-option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required, for Qt4 only disable WITH_QT5)." OFF)
+option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
-option(WITH_QT5 "Using Qt5." ON)
 option(WITH_BENCHMARK "With Google Benchmark." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 
@@ -49,13 +48,6 @@ else()
   message(STATUS "      WITH_GMP           false   (Gnu Multiprecision Library)")
 endif()
 
-if(WITH_EIGEN)
-  set(LIST_OPTION ${LIST_OPTION} [EIGEN]\ )
-  message(STATUS "      WITH_EIGEN         true    (Eigen3)")
-else()
-  message(STATUS "      WITH_EIGEN         false   (Eigen3)")
-endif()
-
 if(WITH_CGAL)
   set(LIST_OPTION ${LIST_OPTION} [CGAL]\ )
   message(STATUS "      WITH_CGAL          true    (cgal)")
@@ -69,7 +61,6 @@ if(WITH_PATATE)
 else()
   message(STATUS "      WITH_PATATE        false   (Patate geometry library)")
 endif()
-
 
 if(WITH_ITK)
   set(LIST_OPTION ${LIST_OPTION} [ITK]\ )
@@ -101,16 +92,9 @@ endif()
 
 if(WITH_QGLVIEWER)
   set(LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
-  message(STATUS "      WITH_QGLVIEWER     true    (QGLViewer based 3D Viewer -- Qt5 by default)")
+  message(STATUS "      WITH_QGLVIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
 else()
-  message(STATUS "      WITH_QGLVIEWER     false   (QGLViewer based 3D Viewer -- Qt5 by default)")
-endif()
-
-if (WITH_QT5)
-  set(LIST_OPTION ${LIST_OPTION} [QT5]\ )
-  message(STATUS "      WITH_QT5           true    (Using of Qt5 instead of Qt4)")
-else (WITH_QT5)
-  message(STATUS "      WITH_QT5           false   (Using of Qt5 instead of Qt4)")
+  message(STATUS "      WITH_QGLVIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
 endif()
 
 if (WITH_FFTW3)
@@ -278,12 +262,9 @@ endif()
 # -----------------------------------------------------------------------------
 # Look for Qt (needed by libqglviewer visualization).
 # -----------------------------------------------------------------------------
-set(QT4_FOUND_DGTAL 0)
 set(QT5_FOUND_DGTAL 0)
 if (WITH_QGLVIEWER)
-  if (WITH_QT5)
     find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
-
     if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
       set(QT5_FOUND_DGTAL 1)
       message(STATUS "Qt5 (Widgets, OpenGL and Xml modules) found (needed by QGLViewer compiled with Qt5).")
@@ -297,32 +278,9 @@ if (WITH_QGLVIEWER)
         ${Qt5Widgets_INCLUDES_DIRS}
         ${Qt5OpenGL_INCLUDES_DIR}
         ${Qt5Xml_INCLUDES_DIR})
-
     else()
       message(STATUS "One of Qt5's modules was not found (needed by QGLViewer).")
     endif()
-
-  else()
-    if (APPLE)
-      message(STATUS "Warning: on recent MacOs Sierra, Qt4 is no longer supported.")
-      message(STATUS "         Please consider switching to Qt5 and define WITH_QT5.")
-      message(STATUS "         Otherwise you may have cmake errors while generating the project.")
-    endif()
-
-    find_package(Qt4 COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
-
-    if (QT4_FOUND)
-      set(QT4_FOUND_DGTAL 1)
-      message(STATUS  "Qt4 found (needed by QGLVIEWER).")
-      set(QT_USE_QTXML 1)
-      target_compile_definitions(DGtal PUBLIC -DWITH_QT4)
-      include(${QT_USE_FILE})
-      target_link_libraries(DGtal PUBLIC ${QT_LIBRARIES})
-      target_include_directories(DGtal PUBLIC ${QT_INCLUDE_DIR})
-    else ()
-      message(FATAL_ERROR "Qt4 not found (needed by QGLVIEWER). Check the cmake variables associated to this package or disable it.")
-    endif()
-  endif()
 endif()
 
 # -----------------------------------------------------------------------------
