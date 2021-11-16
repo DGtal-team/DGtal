@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/geometry/volumes/ConvexityHelper.h"
 //////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
@@ -287,6 +288,91 @@ makeCellCover( const RationalPolytope& P,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
+DGtal::DigitalConvexity<TKSpace>::
+makePolytope( const PointRange& X, bool safe ) const
+{
+  if ( safe )
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+    }
+  else
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytope( X, false, false );
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+U( Dimension i, const PointRange& X ) const
+{
+  PointRange Y( X );
+  PointRange Z;
+  Z.reserve( X.size() );
+  auto add_one = [&i] ( Point & p ) { p[ i ] += 1; };
+  std::for_each( Y.begin(), Y.end(), add_one );
+  std::set_union( X.cbegin(), X.cend(), Y.cbegin(), Y.cend(),
+                  std::back_inserter( Z ) );
+  return  Z;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+is0Convex( const PointRange& X, bool safe ) const
+{
+  if ( X.empty() ) return true;
+  const auto P = makePolytope( X, safe );
+  return P.count() == X.size();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
+{
+  ASSERT( dimension <= 64 );
+  typedef DGtal::int64_t Direction;
+  typedef std::vector< Direction > Directions;
+  std::array< Directions, dimension > C;
+  const bool cvx0 = convex0 ? true : is0Convex( Z, safe );
+  if ( ! cvx0 ) return false;
+  C[ 0 ].push_back( (Direction) 0 );
+  std::map< Direction, PointRange > X;
+  X[ 0 ] = Z;
+  std::sort( X[ 0 ].begin(), X[ 0 ].end() );
+  for ( Dimension k = 1; k < dimension; k++ )
+    {
+      for ( const auto beta : C[ k-1 ] )
+        {
+          for ( Dimension j = 0; j < dimension; j++ )
+            {
+              const Direction dir_j = Direction(1) << j;
+              if ( beta < dir_j )
+                {
+                  const Direction alpha = beta | dir_j;
+                  C[ k ].push_back( alpha );
+                  X[ alpha ] = U( j, X[ beta ] );
+                  if ( ! is0Convex( X[ alpha ] ) ) return false;
+                }
+            }
+        }
+    }
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const LatticePolytope& P, const Dimension k ) const
@@ -334,6 +420,30 @@ isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 {
   auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
   return intersected_cells.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isKSubconvex( const Point& a, const Point& b,
+              const CellGeometry& C, const Dimension k ) const
+{
+  CellGeometry cgeom( myK, k, k, false );
+  cgeom.addCellsTouchingSegment( a, b );
+  return cgeom.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const Point& a, const Point& b,
+                  const CellGeometry& C ) const
+{
+  CellGeometry cgeom( myK, C.minCellDim(), C.maxCellDim(), false );
+  cgeom.addCellsTouchingSegment( a, b );
+  return cgeom.subset( C );
 }
 
 //-----------------------------------------------------------------------------

@@ -158,6 +158,31 @@ namespace DGtal
     /// @name Cells services
     /// @{
 
+    /// Updates the cell cover with the cells touching a point \a p.
+    /// @param p any point
+    void addCellsTouchingPoint( const Point& p );
+
+    /// Updates the cell cover with the cells touching a pointel \a pointel.
+    /// @param pointel any pointel
+    void addCellsTouchingPointel( const Cell& pointel );
+
+    /// Updates the cell cover with the cells whose boundary covers
+    /// cell \a c (so \a c itself and its up-incident cells).
+    ///
+    /// @param c any any cell
+    void addCellsTouchingCell( const Cell& c );
+
+    /// Given two points \a a and \a b, updates the cell cover with
+    /// all the cells intersected by the Euclidean straight segment
+    /// from \a a to \a b.
+    ///
+    /// @param a any point
+    /// @param b any point
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then calling addCellsTouchingPolytope.
+    void addCellsTouchingSegment( const Point& a, const Point& b );
+    
     /// Updates the cell cover with the cells touching a range of
     /// digital points [itB, itE).
     template <typename PointIterator>
@@ -217,6 +242,10 @@ namespace DGtal
     /// @return the highest dimension for which cells are stored in this object.
     Dimension maxCellDim() const;
 
+    /// @param k any non negative integer
+    /// @return the vector of k-cells, represented as points with Khalimsky coordinates.
+    std::vector< Point > getKPoints( const Dimension k ) const;
+    
     /// @}
 
     // ----------------------- Cell services ------------------------------

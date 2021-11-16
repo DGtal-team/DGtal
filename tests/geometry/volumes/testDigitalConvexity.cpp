@@ -22,7 +22,7 @@
  *
  * @date 2020/02/01
  *
- * Functions for testing class CellGeometry.
+ * Functions for testing class DigitalConvexity.
  *
  * This file is part of the DGtal library.
  */
@@ -246,6 +246,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nb3      = 0;
     unsigned int nb012_not3 = 0;
     unsigned int nbf      = 0;
+    unsigned int nbfg     = 0;
     unsigned int nb0123   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
@@ -255,17 +256,26 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         Point d( rand() % 5, rand() % 5, rand() % 5 );
         if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
         auto tetra = dconv.makeSimplex( { a, b, c, d } );
+        std::vector< Point > X;
+        tetra.getPoints( X );
         bool cvx0     = dconv.isKConvex( tetra, 0 );
         bool cvx1     = dconv.isKConvex( tetra, 1 );
         bool cvx2     = dconv.isKConvex( tetra, 2 );
         bool cvx3     = dconv.isKConvex( tetra, 3 );
         bool cvxf     = dconv.isFullyConvex( tetra );
+        bool cvxfg    = dconv.isFullyConvex( X, false );
+        if ( cvxf != cvxfg ) {
+          std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
+                    << "[" << cvxf << "] [" << cvxfg << "]"
+                    << a << b << c << d << std::endl;
+        }
         nbsimplex += 1;
         nb0       += cvx0 ? 1 : 0;
         nb1       += cvx1 ? 1 : 0;
         nb2       += cvx2 ? 1 : 0;
         nb3       += cvx3 ? 1 : 0;
         nbf       += cvxf ? 1 : 0;
+        nbfg      += cvxfg ? 1 : 0;
         nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
         nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
       }
@@ -282,6 +292,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
       REQUIRE( nb2 <= nb3 );
       REQUIRE( nb012_not3 == 0 );
       REQUIRE( nbf == nb0123 );
+    }
+    THEN( "Both methods for computing full convexity agree." ) {
+      REQUIRE( nbf == nbfg );
     }
   }
 }
@@ -487,3 +500,4 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
     }
   }
 }
+

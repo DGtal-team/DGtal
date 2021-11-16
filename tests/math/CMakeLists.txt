@@ -10,6 +10,7 @@ set(DGTAL_TESTS_SRC_MATH
        testMultiStatistics
        testProfile
        testMeaningfulScaleAnalysis
+       testLagrangeInterpolation
        )
 
 if (WITH_FFTW3)

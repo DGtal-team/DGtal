@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
    
-@page moduleDigitalConvexity Digital convexity
+@page moduleDigitalConvexity Digital convexity and full digital convexity
 
 @writers Jacques-Olivier Lachaud
 
@@ -14,19 +14,30 @@ namespace DGtal {
 
 Part of the \ref packageGeometry.
   
-This part of the manual describes how to define and check digital convexity, 
-in such a way that digital convex set are digitally connected.
+This part of the manual describes tools associated to a new definition
+of digital convexity, called the full convexity
+\cite lachaud_dgmm_2021 . This new definition solves many problems
+related to the usual definition of digital convexity, like possible
+non connectedness or non simple connectedness, while encompassing its
+desirable features. Fully convex sets are digitally convex, but are
+also connected and simply connected. They have a morphological
+characterisation, which induces a simple convexity test
+algorithm. As an important example, arithmetic planes are fully convex too.
 
 [TOC]
-
 
 The following programs are related to this documentation:
 geometry/curves/exampleDigitalConvexity.cpp,
 geometry/curves/exampleRationalConvexity.cpp,
 testBoundedLatticePolytope.cpp, testCellGeometry.cpp,
-testDigitalConvexity.cpp
+testDigitalConvexity.cpp, testEhrhartPolynomial.cpp .
 
-@section dgtal_dconvexity_sec1  Introduction to digital convexity
+This module relies on module \ref moduleQuickHull for convex hull
+computations in arbitrary dimensions. You may also look at
+\ref moduleDigitalConvexityApplications to see some applications of full
+convexity.
+
+@section dgtal_dconvexity_sec1  Introduction to full digital convexity
 
 The usual definition for \b digital \b convexity is as follows. For some
 digital set \f$ S \subset \mathbb{Z}^d \f$, \f$ S \f$ is said to be \e
@@ -37,12 +48,13 @@ contains exactly these digital points and no other.
 Although handy and easy to check, this definition lacks many
 properties related to (continuous) convexity in the Euclidean plane.
 
-We extend this definition as follows. Let \f$ C^d \f$ be the usual
-regular cubical complex induced by the lattice \f$ \mathbb{Z}^d \f$,
-and let \f$ C^d_k \f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We
-have that the 0-cells of \f$ C^d_0 \f$ are exactly the lattice points,
-the 1-cells of \f$ C^d_1 \f$ are the open unit segment joining 2
-neighboring lattice points, etc.
+We extend this definition as follows (see \cite lachaud_dgmm_2021 ).
+Let \f$ C^d \f$ be the usual regular cubical
+complex induced by the lattice \f$ \mathbb{Z}^d \f$, and let \f$ C^d_k
+\f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We have that the
+0-cells of \f$ C^d_0 \f$ are exactly the lattice points, the 1-cells
+of \f$ C^d_1 \f$ are the open unit segment joining 2 neighboring
+lattice points, etc.
 
 Finally, for an arbitrary subset \f$ Y \subset \mathbb{R}^d \f$, we
 denote by \f$ C^d_k \lbrack Y \rbrack \f$ the set of k-cells of \f$
@@ -65,7 +77,7 @@ digitally 0-convexity is the usual digital convexity.
 
 @image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
 
-A last useful notion is the \e subconvexity. Let \f$ X \subset
+A last useful notion is the \e subconvexity, or \e tangency. Let \f$ X \subset
 \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
 S \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
 subconvex to \f$ X \f$ whenever \f$ C^d_k \lbrack \mathrm{Conv}(S)
@@ -77,7 +89,7 @@ Subconvexity is a useful for notion for digital contour and surface
 analysis. It tells which subsets of these digital sets are \e tangent
 to them.
 
-@section dgtal_dconvexity_sec2  Checking digital convexity
+@section dgtal_dconvexity_sec2  Classes and functions related to digital convexity
 
 Three classes help to check digital convexity.
 
@@ -137,7 +149,7 @@ now limited to polytopes built as simplices in 2D and 3D.
 
 Point check services:
 - BoundedLatticePolytope::isInside checks if some point belongs to the polytope.
-- BoundedLatticePolytope::isDomainPointInside checks if some point within the polyyope bounding box belongs to the polytope.
+- BoundedLatticePolytope::isDomainPointInside checks if some point within the polytope bounding box belongs to the polytope.
 - BoundedLatticePolytope::isInterior checks if some point is strictly inside the polytope.
 - BoundedLatticePolytope::isBoundary checks if some point is lying on the polytope boundary.
 
@@ -193,6 +205,10 @@ object.
 - CellGeometry::addCellsTouchingPolytope: Updates the cell cover with
   all the cells touching the polytope (all cells whose closure have a
   non empty intersection with the polytope).
+- CellGeometry::addCellsTouchingSegment: Updates the cell cover with
+  all the cells touching the Euclidean straight segment between the
+  two given lattice points (specialized version of
+  CellGeometry::addCellsTouchingPolytope).
 - CellGeometry::operator+=( const CellGeometry& other ): Adds the
   cells of dimension k of object \a other, for `minCellDim() <= k <=
   maxCellDim()`, to this cell geometry.
@@ -202,14 +218,21 @@ CellGeometry::addCellsTouchingPolytope is very important since it
 allows to compute \f$ C^d_k \lbrack P \rbrack \f$ for an arbitrary
 polytope \f$ P \f$ and for any \f$ k \f$.
 
-@subsection dgtal_dconvexity_sec23 Checking digital (sub-)convexity
+@subsection dgtal_dconvexity_sec23 Checking digital convexity
 
 Class DigitalConvexity is a helper class to build polytopes from
 digital sets and to check digital k-convexity. It provides methods for
 checking if a simplex is full dimensional, building the corresponding
 polytope, methods for getting the lattice points in a polytope,
 computing the cells touching lattice points or touching a polytope,
-and a set of methods to check k-convexity or k-subconvexity.
+and a set of methods to check k-convexity or k-subconvexity (i.e. tangency).
+
+@note Since 1.3, it can check full convexity of an \b  arbitrary \b digital \b set in
+\b arbitrary \b dimension, using its morphological characterization and a
+generic convex hull algorithm (\ref moduleQuickHull).
+
+Here are two ways for checking full convexity. The first is the
+simplest (but hides some details):
 
 \code
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
@@ -219,19 +242,54 @@ using namespace DGtal::Z3i;
 typedef DigitalConvexity< KSpace >       DConvexity;
 // Create DigitalConvexity object with a domain.
 DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
-// Create a (fat) simplex within the domain
+// Specify the vertices of the simplex.
 std::vector<Point> V = { Point(0,0), Point(4,-1), Point(2,5) };
+// Create the (fat) simplex with all its inner points.
 auto fat_simplex   = dconv.makeSimplex  ( V.begin(), V.end() );
-// Get all the points in the simplex
-auto inside_pts    = dconv.insidePoints ( fat_simplex );
-// Get the lattice cells intersected by the simplex
-auto simplex_cover = dconv.makeCellCover( fat_simplex );
-// Get the lattice cells intersected by the lattice points in the simplex
-auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
-// They are the same here since this simplex is fully convex.
-bool ok  = simplex_cover.subset( point_cover ); // one way to do it
-bool ok2 = dconv.isFullyConvex ( fat_simplex ); // the other way to do it
+// it is indeed a fully convex set
+bool ok = dconv.isFullyConvex ( fat_simplex ); // true
 \endcode
+
+Second way to do it, where we see the intermediate computations of points and cells.
+
+\code
+#include "DGtal/geometry/volumes/DigitalConvexity.h"
+...
+using namespace DGtal;
+using namespace DGtal::Z3i;
+typedef DigitalConvexity< KSpace >       DConvexity;
+// Create DigitalConvexity object with a domain.
+DConvexity dconv( Point( -5, -5 ), Point( 10, 10 ) );
+// Specify the vertices of the simplex.
+std::vector<Point> V = { Point(0,0), Point(4,-1), Point(2,5) };
+// Create the (fat) simplex
+auto fat_simplex   = dconv.makeSimplex  ( V.begin(), V.end() );
+// Get all the points in the simplex, i.e. creates the digital set Z.
+auto inside_pts    = dconv.insidePoints ( fat_simplex );
+// Get the lattice cells intersected by the simplex i.e. C^d[ Conv(Z) ]
+auto simplex_cover = dconv.makeCellCover( fat_simplex );
+// Get the lattice cells intersected by the lattice points in the simplex  i.e. C^d[ Z ]
+auto point_cover   = dconv.makeCellCover( inside_pts.begin(), inside_pts.end() );
+// Checks that C^d[ Conv(Z) ] is a subset of C^d[ Z ], i.e. Z is fully convex.
+bool ok  = simplex_cover.subset( point_cover ); // true
+\endcode
+
+@subsection dgtal_dconvexity_sec24 Other convexity services, like digital subconvexity (or tangency)
+
+Morphological services (since 1.3):
+- DigitalConvexity::makePolytope( const PointRange& X, bool safe ) const builds the tightest polytope enclosing the digital set \a X
+- DigitalConvexity::isFullyConvex( const PointRange& X, bool convex0, bool safe ) const checks the full convexity of the digital set \a X
+- DigitalConvexity::is0Convex( const PointRange& X, bool safe ) const checks the usual digital convexity (H-convexity or 0-convexity) of the digital set \a X
+- DigitalConvexity::U( Dimension i, const PointRange& X ) const performs the digital Minkowski sum of \a X along direction \a i
+
+The following snippet shows that a 4D ball is indeed fully convex.
+
+@snippet testFullConvexity.cpp nD-full-convexity
+
+
+@note This method for checking full convexity is slightly slower than
+the method using the Minkowski sum on the polytope contraints, but it
+works in arbitrary dimension and for arbitrary digital set.
 
 Simplex services:
 - DigitalConvexity::makeSimplex builds a simplex from lattice point iterators or initializer list
@@ -249,8 +307,77 @@ Lattice cell geometry services:
 Convexity services:
 - DigitalConvexity::isKConvex tells if a given polytope is k-convex
 - DigitalConvexity::isFullyConvex tells if a given polytope is fully convex
-- DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover
+- DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover (i.e. k-tangent)
+- DigitalConvexity::isKSubconvex( const Point&, const Point&, const CellGeometry&, const Dimension ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is k-subconvex (i.e. k-tangent) to the given cell cover.
 - DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
+- DigitalConvexity::isFullySubconvex( const Point&, const Point&, const CellGeometry& ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
+
+@subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
+
+Any lattice polytope has a unique Ehrhart polynomial that encodes the
+relationship between the volume of the polytope and the number of
+integer points the polytope contains. It is a kind of extension of 2D
+Pick's theorem. More precisely, if \f$ P \f$ is a (bounded) polytope
+in \f$ \mathbb{R}^d \f$ with vertices lying in \f$ \mathbb{Z}^d \f$,
+and for any positive integer \f$ t \f$, let \f$ tP \f$ denotes the
+dilation of \f$ P \f$ by a factor \f$ t \f$.
+
+We denote \f$ L(P,t) := \#( tP \cap \mathbb{Z}^d ) \f$, i.e. the number of
+lattice points included in the dilation of this polytope.
+
+Then \f$ L(P,t) \f$ is a polynomial in \f$ t \f$ of degree \f$ f
+\f$. Its monomial coefficients \f$ L_k(P) \f$ are rational numbers,
+and some coefficients have a clear geometric meaning, e.g.:
+
+- \f$ L_0(P) \f$ is the Euler characteristic of the polytope, which is 1.
+- \f$ L_d(P) \f$ is the volume of the polytope.
+
+Note also that, by Ehrhart-MacDonald reciprocity, the polynomial \f$
+(-1)^d L(P,-t) \f$ counts the number of interior lattice points to \f$
+tP \f$.
+
+Class EhrhartPolynomial provides an elementary method to determine the
+Ehrhart polynomial of any bounded lattice polytope.
+
+- EhrhartPolynomial::init initializes the object with a polytope \f$ P \f$ (BoundedLatticePolytope object)
+- EhrhartPolynomial::numerator gives you the integral numerator of the Ehrhart polynomial of the polytope \f$ P \f$
+- EhrhartPolynomial::denominator gives you the integral denominator of Ehrhart polynomial of the polytope \f$ P \f$
+- EhrhartPolynomial::count counts the number of lattice points in \f$ tP \f$
+- EhrhartPolynomial::countInterior counts the number of lattice points in the interior of \f$ tP \f$
+
+See testEhrhartPolynomial.cpp for examples.
+
+\code
+#include "DGtal/geometry/volumes/EhrhartPolynomial.h"
+...
+using namespace Z2i;
+std::vector< Point > T = { Point(0,0), Point(1,0), Point(2,1) };
+DigitalConvexity< KSpace > dconv( Point::diagonal( -100 ), Point::diagonal( 100 ) );
+auto P = dconv.makeSimplex( T.cbegin(), T.cend() );
+EhrhartPolynomial< Space, int64_t > E( P );
+// Its Ehrhart polynomial is 1/2( 2 + 3t + t^2 )
+auto expP = mmonomial<Integer>( 2 ) + 3 * mmonomial<Integer>( 1 ) + 2;
+REQUIRE( E.numerator()   == expP );
+REQUIRE( E.denominator() == 2 );
+// number of lattice points of its 4-fold dilated version 
+auto P4 = 4 * P;
+auto n4 = E.count( 4 );
+REQUIRE( P4.count() == n4 );
+// number of interior lattice points of its 4-fold dilated version 
+auto P4 = 4 * P;
+auto n4 = E.countInterior( 4 );
+REQUIRE( P4.countInterior() == n4 );
+\endcode
+
+@note The Ehrhart polynomial is determined by taking a series of
+dilation of the polytope `(1,2,...,d)` and counting by brute-force the
+number of lattice points within these dilated polytopes. We then
+compute the Lagrange interpolating polynomial (using class
+LagrangeInterpolation) and we know that this must be the Ehrhart
+polynomial. There exists faster ways to compute it, which are however
+much more complex. See for instance LattE software:
+https://www.math.ucdavis.edu/~latte .
+
 
 @section dgtal_dconvexity_sec3 Rational polytopes
 
