@@ -48,6 +48,7 @@
 #include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/base/ConstExpressions.h"
 #include "DGtal/base/TimeStampMemoizer.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/CBoundedNumber.h"
@@ -59,37 +60,6 @@
 
 namespace DGtal
 {
-  namespace detail {
-    /// @tparam T any model of bounded number.
-    /// @param b a number
-    /// @param e a non negative integer
-    /// @return the constant expression \f$ b^e \f$, computed at compile time.
-    ///
-    /// @code
-    /// auto v = detail::const_pow( 5, 3 ); // 5^3
-    /// @endcode
-    template< typename T >
-    constexpr T const_pow( T b, unsigned int e) {
-      return e == 0 ? T(1) : b * const_pow( b, e - 1 );
-    }
-
-    /// @tparam T any model of bounded number.
-    /// @param K a non negative number
-    /// @param e a non negative integer
-    /// @return the index of the middle element in the `e`-dimensional array of width \f$ 2K+1 \f$, computed at compile time.
-    ///
-    /// @code
-    /// auto m1 = detail::const_middle( 1, 2 ); // 4, dans le tableau 3x3
-    /// auto m2 = detail::const_middle( 2, 2 ); // 12, dans le tableau 5x5
-    /// auto m3 = detail::const_middle( 1, 3 ); // 13, dans le tableau 3x3x3
-    /// @endcode
-    template< typename T >
-    constexpr T const_middle( T K, unsigned int e ) {
-      return e <= 1
-        ? T( K )
-        : K * const_pow( 2 * K + 1, e - 1 ) + const_middle( K, e - 1 );
-    }
-  } // namespace detail
   
   /////////////////////////////////////////////////////////////////////////////
   // template class NeighborhoodConvexityAnalyzer
@@ -138,11 +108,11 @@ namespace DGtal
     typedef std::size_t                     Size;
     
     static const Dimension dimension  = KSpace::dimension;
-    static const Size      neigh_size = detail::const_pow( 2*K+1, dimension ); 
-    static const Size      middle     = detail::const_middle( K, dimension );
+    static const Size      neigh_size = functions::const_pow( 2*K+1, dimension ); 
+    static const Size      middle     = functions::const_middle( K, dimension );
     static const bool  false_positive = ( dimension > 2 ) || ( K > 1 );
 
-    typedef std::bitset< detail::const_pow( 2*K+1, dimension ) > Configuration;
+    typedef std::bitset< functions::const_pow( 2*K+1, dimension ) > Configuration;
     typedef std::bitset< 9 > BasicConfiguration;
 
     
