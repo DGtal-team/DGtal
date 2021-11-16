@@ -420,8 +420,8 @@ namespace DGtal
       CombinatorialPlaneSimplex splx;
       for ( Index j = 0; j < dimension; ++j )
         splx[ j ] = full_splx[ j ];
-      const auto  H = kernel.compute( points, splx, full_splx.back() );
-      Scalar volume = kernel.volume( H, points[ full_splx.back() ] );
+      const auto      H = kernel.compute( points, splx, full_splx.back() );
+      const auto volume = kernel.volume( H, points[ full_splx.back() ] );
       if ( volume > 0 )
         return computeSimplexConfiguration( full_splx );
       myStatus = Status::NotFullDimensional;

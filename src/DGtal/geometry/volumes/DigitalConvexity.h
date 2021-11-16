@@ -62,7 +62,9 @@ namespace DGtal
   /**
      Description of template class 'DigitalConvexity' <p> \brief Aim:
      A helper class to build polytopes from digital sets and to check
-     digital k-convexity.
+     digital k-convexity and full convexity.
+
+     @see moduleDigitalConvexity
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable.
@@ -87,6 +89,7 @@ namespace DGtal
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     typedef DGtal::CellGeometry< KSpace >   CellGeometry;
     typedef std::vector<Point>              PointRange;
+    typedef std::unordered_set<Point>       PointSet;
 
     static const Dimension dimension = KSpace::dimension;
 
@@ -344,8 +347,67 @@ namespace DGtal
                                 Dimension k = KSpace::dimension ) const;
     /// @}
 
+    // ----------------------- Morphological services -----------------------------------
+  public:
+    /// @name Morphological services
+    /// @{
 
-    // ----------------------- Convexity services -----------------------------------
+    /// Given a range of distinct points \a X, computes the tightiest
+    /// polytope that enclosed it. Note that this polytope may contain
+    /// more lattice points than the given input points.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
+    /// @return the corresponding lattice polytope.
+    LatticePolytope makePolytope( const PointRange& X, bool safe = false ) const;
+    
+    /// Performs the digital Minkowski sum of \a X along direction \a i
+    /// @param i any valid dimension
+    /// @param X any \b sorted range of digital points
+    ///
+    /// @return the \b sorted range of digital points X union the
+    /// translation of X of one along direction \a i.
+    PointRange U( Dimension i, const PointRange& X ) const;
+
+    /// Tells if a given point range \a X is digitally 0-convex,
+    /// i.e. \f$ \mathrm{Cvxh}(X) \cap \mathbb{Z}^d = X \f$. It works
+    /// for arbitrary set of points in arbitrary dimenion.
+    /// 
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
+    /// @return 'true' iff \a X is fully digitally convex.
+    bool is0Convex( const PointRange& X, bool safe = false ) const;
+    
+    /// Tells if a given point range \a X is fully digitally
+    /// convex. The test uses the morphological characterization of
+    /// full convexity. It is slightly slower than testing full
+    /// convexity on simplices, but it works for arbitrary set of
+    /// points in arbitrary dimenion.
+    /// 
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @param convex0 when 'true' indicates that \a X is known to be
+    /// digitally 0-convex, otherwise the method will check it also.
+    /// 
+    /// @param safe when 'true' performs computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    ///
+    /// @return 'true' iff \a X is fully digitally convex.
+    bool isFullyConvex( const PointRange& X, bool convex0 = false,
+                        bool safe = false ) const;
+    
+    /// @}
+    
+    // ----------------------- Convexity services for lattice polytopes -----------------
   public:
     /// @name Convexity services for lattice polytopes
     /// @{
@@ -405,9 +467,48 @@ namespace DGtal
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
 
+    /// Tells if a given segment from \a a to \a b is digitally
+    /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
+    /// digital 0-subconvexity is the usual property \f$ Conv( P \cap
+    /// Z^d ) \subset C \cap Z^d) \f$. Otherwise the property asks
+    /// that the k-cells intersected by the convex hull of the segment
+    /// is a subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    ///
+    /// @return 'true' iff the segment is a digitally \a k-subconvex
+    /// of C, i.e. the two points are k-cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isKSubconvex( const Point& a, const Point& b,
+                       const CellGeometry& C, const Dimension k ) const;
+
+    /// Tells if a given segment from \a a to \a b is digitally fully
+    /// subconvex (i.e. tangent) to some cell cover \a C. The digital
+    /// 0-subconvexity is the usual property \f$ Conv( P \cap Z^d )
+    /// \subset C \cap Z^d) \f$. Otherwise the property asks that the
+    /// k-cells intersected by the convex hull of the segment is a
+    /// subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    ///
+    /// @return 'true' iff the segment is a digitally fully subconvex
+    /// of C, i.e. the two points are cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isFullySubconvex( const Point& a, const Point& b,
+                           const CellGeometry& C ) const;
+    
     /// @}
 
-    // ----------------------- Convexity services -----------------------------------
+    // ----------------------- Convexity services for rational polytopes ----------------
   public:
     /// @name Convexity services for rational polytopes
     /// @{
