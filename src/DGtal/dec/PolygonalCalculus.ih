@@ -32,17 +32,13 @@
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
 ///////////////////////////////////////////////////////////////////////////////
-template<typename T>
+template<typename TP, typename TV>
 inline
-typename DGtal::PolygonalCalculus<T>::DenseMatrix
-DGtal::PolygonalCalculus<T>::X(const DGtal::PolygonalCalculus<T>::Face f) const
+typename DGtal::PolygonalCalculus<TP,TV>::DenseMatrix
+DGtal::PolygonalCalculus<TP,TV>::X(const DGtal::PolygonalCalculus<TP,TV>::Face f) const
 {
   auto vertices = mySurfaceMesh->incidentVertices(f);
   auto nf = myFaceDegree[f];
@@ -50,22 +46,22 @@ DGtal::PolygonalCalculus<T>::X(const DGtal::PolygonalCalculus<T>::Face f) const
   size_t cpt=0;
   for(auto v: vertices)
   {
-    Xt(cpt,0) = myEmbedder(f,v)[0];
-    Xt(cpt,1) = myEmbedder(f,v)[1];
-    Xt(cpt,2) = myEmbedder(f,v)[2];
+    auto X = myEmbedder(f,v);
+    for ( auto i = 0; i < 3; i++ )
+      Xt(cpt,i) = X[i];
     ++cpt;
   }
   return  Xt;
 }
 //////////////////////////////////////////////////////////////////////////////
 //d0 per face
-template<typename T>
+template<typename TP, typename TV>
 inline
-typename DGtal::PolygonalCalculus<T>::DenseMatrix
-DGtal::PolygonalCalculus<T>::D(const Face f) const
+typename DGtal::PolygonalCalculus<TP,TV>::DenseMatrix
+DGtal::PolygonalCalculus<TP,TV>::D(const Face f) const
 {
   auto nf = myFaceDegree[f];
-  Eigen::MatrixXd d = Eigen::MatrixXd::Zero(nf ,nf);
+  DenseMatrix d = DenseMatrix::Zero(nf ,nf);
   for(auto i=0; i < nf; ++i)
   {
     d(i,i) = -1.;
@@ -75,10 +71,10 @@ DGtal::PolygonalCalculus<T>::D(const Face f) const
 }
 //////////////////////////////////////////////////////////////////////////////
 //Average operator on edges
-template<typename T>
+template<typename TP, typename TV>
 inline
-typename DGtal::PolygonalCalculus<T>::DenseMatrix
-DGtal::PolygonalCalculus<T>::A(const Face f) const
+typename DGtal::PolygonalCalculus<TP,TV>::DenseMatrix
+DGtal::PolygonalCalculus<TP,TV>::A(const Face f) const
 {
   auto nf = myFaceDegree[f];
   DenseMatrix a = DenseMatrix::Zero(nf ,nf);
@@ -91,12 +87,12 @@ DGtal::PolygonalCalculus<T>::A(const Face f) const
 }
 //////////////////////////////////////////////////////////////////////////////
 //Vector area per face
-template<typename T>
+template<typename TP, typename TV>
 inline
-typename DGtal::PolygonalCalculus<T>::Vector
-DGtal::PolygonalCalculus<T>::vectorArea(const Face f) const
+typename DGtal::PolygonalCalculus<TP,TV>::Vector
+DGtal::PolygonalCalculus<TP,TV>::vectorArea(const Face f) const
 {
-  RealPoint af(0.0,0.0,0.0);
+  Real3dPoint af(0.0,0.0,0.0);
   auto vertices = mySurfaceMesh->incidentVertices(f);
   auto it     = vertices.begin();
   auto itnext = vertices.begin();
@@ -121,24 +117,24 @@ DGtal::PolygonalCalculus<T>::vectorArea(const Face f) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template<typename TP, typename TV>
 inline
 void
-DGtal::PolygonalCalculus<T>::selfDisplay ( std::ostream & out ) const
+DGtal::PolygonalCalculus<TP,TV>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[PolygonalCalculus]";
+  out << "[PolygonalCalculus] on "<< *mySurfaceMesh;
 }
 
 /**
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename TP, typename TV>
 inline
 bool
-DGtal::PolygonalCalculus<T>::isValid() const
+DGtal::PolygonalCalculus<TP,TV>::isValid() const
 {
-  return true;
+  return mySurfaceMesh->isValid();
 }
 
 
@@ -146,11 +142,11 @@ DGtal::PolygonalCalculus<T>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template <typename TP, typename TV>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                   const PolygonalCalculus<T> & object )
+                   const PolygonalCalculus<TP,TV> & object )
 {
   object.selfDisplay( out );
   return out;

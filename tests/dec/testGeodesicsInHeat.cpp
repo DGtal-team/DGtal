@@ -67,12 +67,12 @@ TEST_CASE( "Testing GeodesicsInHeat" )
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
   
-  PolygonalCalculus<Mesh> boxCalculus(box);
+  PolygonalCalculus<RealPoint,RealVector> boxCalculus(box);
   
   
   SECTION("Construction and basic operators")
   {
-    GeodesicsInHeat<PolygonalCalculus<Mesh>> heat(boxCalculus);
+    GeodesicsInHeat<PolygonalCalculus<RealPoint,RealVector>> heat(boxCalculus);
     REQUIRE( heat.isValid() == false );
     
     trace.beginBlock("init solvers");
@@ -81,7 +81,7 @@ TEST_CASE( "Testing GeodesicsInHeat" )
     REQUIRE( heat.isValid()  );
     
     heat.addSource(0);
-    GeodesicsInHeat<PolygonalCalculus<Mesh>>::Vector d = heat.compute();
+    GeodesicsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector d = heat.compute();
     REQUIRE( d.size() == positions.size() );
 
     std::cout<<d<<std::endl;

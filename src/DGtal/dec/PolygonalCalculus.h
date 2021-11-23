@@ -35,6 +35,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/EigenSupport.h"
+#include "DGtal/shapes/SurfaceMesh.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -48,29 +49,34 @@ namespace DGtal
  * @cite degoes2020discrete
  *
  * See @ref modulePolygonalCalculus for details.
- *  E.g.
  *
+ * @tparam TRealPoint a model of points R^3 (e.g. PointVector).
+ * @tparam TRealVector a model of vectors in R^3 (e.g. PointVector).
  */
-template <typename TSurfaceMesh>
+template <typename TRealPoint, typename TRealVector>
 class PolygonalCalculus
 {
   // ----------------------- Standard services ------------------------------
 public:
   
+  ///Concept checking
+  static const Dimension dimension = TRealPoint::dimension;
+  BOOST_STATIC_ASSERT( ( dimension == 3 ) );
+  
+  ///Self type
+  typedef PolygonalCalculus<TRealPoint, TRealVector> Self;
+  
   ///Type of SurfaceMesh
-  typedef TSurfaceMesh SurfaceMesh;
-  
+  typedef SurfaceMesh<TRealPoint, TRealVector> MySurfaceMesh;
   ///Vertex type
-  typedef typename TSurfaceMesh::Vertex Vertex;
-  
+  typedef typename MySurfaceMesh::Vertex Vertex;
   ///Face type
-  typedef typename TSurfaceMesh::Face Face;
-  
+  typedef typename MySurfaceMesh::Face Face;
   ///Position type
-  typedef typename TSurfaceMesh::RealPoint RealPoint;
-
+  typedef typename MySurfaceMesh::RealPoint Real3dPoint;
   ///Real vector type
-  typedef typename TSurfaceMesh::RealVector RealVector;
+  typedef typename MySurfaceMesh::RealVector Real3dVector;
+  
   
   ///Linear Algebra Backend from Eigen
   typedef EigenLinearAlgebraBackend LinAlg;
@@ -89,7 +95,7 @@ public:
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
-  PolygonalCalculus(const ConstAlias<TSurfaceMesh> surf): mySurfaceMesh(&surf)
+  PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf): mySurfaceMesh(&surf)
   {
     myEmbedder =[&](Face f,Vertex v){ return mySurfaceMesh->position(v);};
     init();
@@ -100,44 +106,44 @@ public:
   /// which outputs the embedding in R^3 of the vertex w.r.t. to the face.
   /// @param surf an instance of SurfaceMesh
   /// @param embedder an embedder
-  PolygonalCalculus(const ConstAlias<TSurfaceMesh> surf,
-               const std::function<RealPoint(Face,Vertex)> &embedder):
+  PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
+                  const std::function<Real3dPoint(Face,Vertex)> &embedder):
   mySurfaceMesh(&surf), myEmbedder(embedder)
   {
     init();
   };
   
   /**
-   * Default constructor.
+   * Deleted default constructor.
    */
   PolygonalCalculus() = delete;
   
   /**
-   * Destructor.
+   * Destructor (default).
    */
   ~PolygonalCalculus() = default;
   
   /**
-   * Copy constructor.
+   * Deleted copy constructor.
    * @param other the object to clone.
    */
   PolygonalCalculus ( const PolygonalCalculus & other ) = delete;
   
   /**
-   * Move constructor.
+   * Deleted move constructor.
    * @param other the object to move.
    */
   PolygonalCalculus ( PolygonalCalculus && other ) = delete;
   
   /**
-   * Copy assignment operator.
+   * Deleted copy assignment operator.
    * @param other the object to copy.
    * @return a reference on 'this'.
    */
   PolygonalCalculus & operator= ( const PolygonalCalculus & other ) = delete;
   
   /**
-   * Move assignment operator.
+   * Deleted move assignment operator.
    * @param other the object to move.
    * @return a reference on 'this'.
    */
@@ -148,8 +154,7 @@ public:
   
   /// Update the embedding function.
   /// @param externalFunctor a new embedding functor (Face,Vertex)->RealPoint.
-  void setEmbedder(const std::function<PolygonalCalculus<TSurfaceMesh>::RealPoint(PolygonalCalculus<TSurfaceMesh>::Face,
-                                                                                  PolygonalCalculus<TSurfaceMesh>::Vertex)> &externalFunctor)
+  void setEmbedder(const std::function<Real3dPoint(Face,Vertex)> &externalFunctor)
   {
     myEmbedder = externalFunctor;
   }
@@ -207,7 +212,7 @@ public:
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (DGtal RealVector/RealPoint)
-  RealVector faceNormalAsDGtalVector(const Face f) const
+  Real3dVector faceNormalAsDGtalVector(const Face f) const
   {
     Vector v = faceNormal(f);
     return {v(0),v(1),v(2)};
@@ -225,7 +230,7 @@ public:
   ///@param n a vector
   DenseMatrix bracket(const Vector &n) const
   {
-    Eigen::Matrix3d brack;
+    DenseMatrix brack(3,3);
     brack << 0.0 , -n(2), n(1),
              n(2), 0.0 , -n(0),
             -n(1) , n(0),0.0 ;
@@ -267,7 +272,7 @@ public:
   
   /// @returns the centroid of the face as a DGtal RealPoint
   /// @param f the face
-  RealPoint centroidAsDGtalPoint(const Face f) const
+  Real3dPoint centroidAsDGtalPoint(const Face f) const
   {
     Vector c = centroid(f);
     return {c(0),c(1),c(2)};
@@ -279,7 +284,8 @@ public:
   DenseMatrix sharp(const Face f) const
   {
     auto nf = myFaceDegree[f];
-    return 1.0/faceArea(f) * bracket(faceNormal(f)) * ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
+    return 1.0/faceArea(f) * bracket(faceNormal(f)) *
+          ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
   }
   
   /// Projection operator for the face.
@@ -456,7 +462,7 @@ public:
     updateFaceDegree();
   }
   
-  /// Helper to retreive the degree of the face
+  /// Helper to retrieve the degree of the face from the cache.
   /// @param f the face
   /// @return the number of vertices of the face.
   size_t faceDegree(Face f) const
@@ -484,7 +490,7 @@ public:
   }
   
   /// @returns an pointer to the underlying SurfaceMash object.
-  const SurfaceMesh * getSurfaceMeshPtr() const
+  const MySurfaceMesh * getSurfaceMeshPtr() const
   {
     return mySurfaceMesh;
   }
@@ -521,10 +527,10 @@ protected:
 private:
   
   ///Underlying SurfaceMesh
-  const SurfaceMesh *mySurfaceMesh;
+  const MySurfaceMesh *mySurfaceMesh;
   
   ///Embedding function (face,vertex)->R^3 for the vertex position wrt. the face.
-  std::function<RealPoint( Face, Vertex)> myEmbedder;
+  std::function<Real3dPoint(Face, Vertex)> myEmbedder;
   
   ///Cache containing the face degree
   std::vector<size_t> myFaceDegree;
@@ -532,19 +538,17 @@ private:
   
 }; // end of class PolygonalCalculus
 
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'PolygonalCalculus'.
  * @param out the output stream where the object is written.
  * @param object the object of class 'PolygonalCalculus' to write.
  * @return the output stream after the writing.
  */
-template <typename T>
+template <typename TP, typename TV>
 std::ostream&
-operator<< ( std::ostream & out, const PolygonalCalculus<T> & object );
+operator<< ( std::ostream & out, const PolygonalCalculus<TP,TV> & object );
 
 } // namespace DGtal
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.

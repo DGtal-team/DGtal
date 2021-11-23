@@ -55,7 +55,7 @@ typedef SurfMesh::Vertex                  Vertex;
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 float scale = 0.1;
-PolygonalCalculus<SurfMesh>::Vector phiEigen;
+PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector phiEigen;
 
 //Restriction of a scalar function to vertices
 double phiVertex(const Vertex v)
@@ -64,7 +64,7 @@ double phiVertex(const Vertex v)
 }
 
 //Restriction of a scalar function to vertices
-PolygonalCalculus<SurfMesh>::Vector phi(const Face f)
+PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector phi(const Face f)
 {
   auto vertices = surfmesh.incidentVertices(f);
   auto nf = vertices.size();
@@ -88,27 +88,27 @@ void initPhi()
 
 void initQuantities()
 {
-  PolygonalCalculus<SurfMesh> calculus(surfmesh);
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> calculus(surfmesh);
   
-  std::vector<PolygonalCalculus<SurfMesh>::Vector> gradients;
-  std::vector<PolygonalCalculus<SurfMesh>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> normals;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> vectorArea;
-  std::vector<PolygonalCalculus<SurfMesh>::RealPoint> centroids;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> gradients;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> cogradients;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> normals;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> vectorArea;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> centroids;
   
   std::vector<double> faceArea;
   
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
-    PolygonalCalculus<SurfMesh>::Vector grad = calculus.gradient(f) * phi(f);
+    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector grad = calculus.gradient(f) * phi(f);
     gradients.push_back( grad );
     
-    PolygonalCalculus<SurfMesh>::Vector cograd =  calculus.coGradient(f) * phi(f);
+    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector cograd =  calculus.coGradient(f) * phi(f);
     cogradients.push_back( cograd );
     
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
     
-    PolygonalCalculus<SurfMesh>::Vector vA = calculus.vectorArea(f);
+    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
     
     faceArea.push_back( calculus.faceArea(f));
@@ -123,19 +123,19 @@ void initQuantities()
 
 void computeLaplace()
 {
-  PolygonalCalculus<SurfMesh> calculus(surfmesh);
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> calculus(surfmesh);
   trace.beginBlock("Operator construction...");
-  PolygonalCalculus<SurfMesh>::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
   trace.endBlock();
-  PolygonalCalculus<SurfMesh>::Vector g = PolygonalCalculus<SurfMesh>::Vector::Zero(surfmesh.nbVertices());
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector g = PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector::Zero(surfmesh.nbVertices());
 
   //Setting some random sources
   for(auto cpt=0; cpt< 10;++cpt)
     g( rand() % surfmesh.nbVertices()) =  rand() % 100;
   
   //Solve Δu=0 with g as boundary conditions
-  PolygonalCalculus<SurfMesh>::Solver solver;
-  PolygonalCalculus<SurfMesh>::SparseMatrix I(surfmesh.nbVertices(),surfmesh.nbVertices());
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Solver solver;
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::SparseMatrix I(surfmesh.nbVertices(),surfmesh.nbVertices());
   I.setIdentity();
   
   trace.beginBlock("Prefactorization...");
@@ -144,7 +144,7 @@ void computeLaplace()
   trace.endBlock();
   
   trace.beginBlock("Solve...");
-  PolygonalCalculus<SurfMesh>::Vector u = solver.solve(g);
+  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector u = solver.solve(g);
   ASSERT(solver.info()==Eigen::Success);
   trace.endBlock();
   

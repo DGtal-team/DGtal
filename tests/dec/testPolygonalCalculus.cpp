@@ -47,11 +47,10 @@ using namespace Z3i;
 // Functions for testing class PolygonalCalculus.
 ///////////////////////////////////////////////////////////////////////////////
 
-RealPoint vecToRealPoint(PolygonalCalculus<SurfaceMesh<RealPoint,RealPoint > >::Vector &v )
+RealPoint vecToRealPoint(PolygonalCalculus<RealPoint,RealPoint >::Vector &v )
 {
   return RealPoint(v(0),v(1),v(2));
 }
-
 
 TEST_CASE( "Testing PolygonalCalculus" )
 {
@@ -76,20 +75,20 @@ TEST_CASE( "Testing PolygonalCalculus" )
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
   
-  PolygonalCalculus<Mesh> boxCalculus(box);
+  PolygonalCalculus< RealPoint,RealVector > boxCalculus(box);
   
   SECTION("Construction and basic operators")
     {
       REQUIRE( boxCalculus.isValid() );
       REQUIRE( boxCalculus.nbVertices() == positions.size() );
 
-      PolygonalCalculus<Mesh>::Face f = 0;
+      PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
       auto x = boxCalculus.X(f);
       auto d = boxCalculus.D(f);
       auto a = boxCalculus.A(f);
       
       //Checking X
-      PolygonalCalculus<Mesh>::Vector vec = x.row(0);
+      PolygonalCalculus< RealPoint,RealVector >::Vector vec = x.row(0);
       REQUIRE( vecToRealPoint(vec ) == positions[1]);
       vec = x.row(1);
       REQUIRE( vecToRealPoint(vec ) == positions[0]);
@@ -98,6 +97,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
       vec = x.row(3);
       REQUIRE( vecToRealPoint(vec ) == positions[3]);
 
+      trace.info()<< boxCalculus <<std::endl;
+      
       //Some D and A
       REQUIRE( d(1,1) == -1 );
       REQUIRE( d(0,1) == 1 );
@@ -128,11 +129,11 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Derivatives")
   {
-    PolygonalCalculus<Mesh>::Face f = 0;
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto d = boxCalculus.D(f);
     
     auto nf = boxCalculus.faceDegree(f);
-    PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
     expected << 2,-1,4,-5;
     auto dphi = d*phi;  // n_f x 1 matrix
@@ -142,9 +143,9 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Structural propertes")
   {
-    PolygonalCalculus<Mesh>::Face f = 0;
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf =  boxCalculus.faceDegree(f);
-    PolygonalCalculus<Mesh>::Vector phi(nf);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
     
     auto G = boxCalculus.gradient(f);
@@ -159,8 +160,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( G == boxCalculus.sharp(f)*boxCalculus.D(f));
     
     //    UV = I - nn^t (lemma4)
-    PolygonalCalculus<Mesh>::Vector n = boxCalculus.faceNormal(f);
-    REQUIRE( boxCalculus.sharp(f)*boxCalculus.flat(f) == PolygonalCalculus<Mesh>::DenseMatrix::Identity(3,3) - n*n.transpose() );
+    PolygonalCalculus< RealPoint,RealVector >::Vector n = boxCalculus.faceNormal(f);
+    REQUIRE( boxCalculus.sharp(f)*boxCalculus.flat(f) == PolygonalCalculus< RealPoint,RealVector >::DenseMatrix::Identity(3,3) - n*n.transpose() );
     
     //    P^2 = P (lemma6)
     auto P = boxCalculus.P(f);
@@ -172,7 +173,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Div / Curl")
   {
-    PolygonalCalculus<Mesh>::Face f = 0;
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto curl = boxCalculus.curl(f);
     //Not a great test BTW
     REQUIRE(curl.norm() == 2.0);
@@ -180,11 +181,11 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Local Laplace-Beltrami")
   {
-    PolygonalCalculus<Mesh>::Face f = 0;
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
     
     auto L = boxCalculus.LaplaceBeltrami(f);
-    PolygonalCalculus<Mesh>::Vector phi(nf),expected(nf);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 1.0, 1.0, 1.0;
     expected << 0,0,0,0;
     auto lphi = L*phi;
@@ -192,7 +193,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
   }
   SECTION("Check lumped mass matrix")
   {
-    PolygonalCalculus<Mesh>::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
+    PolygonalCalculus< RealPoint,RealVector >::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
     double a=0.0;
     for(auto v=0; v < box.nbVertices(); ++v )
       a += M.coeffRef(v,v);
@@ -205,10 +206,10 @@ TEST_CASE( "Testing PolygonalCalculus" )
   
   SECTION("Checking cache")
   {
-    auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.sharp(f);} );
+    auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus< RealPoint,RealVector >::Face f){ return boxCalculus.sharp(f);} );
     REQUIRE( cacheU.size() == 6 );
     
-    auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus<Mesh>::Face f){ return boxCalculus.centroid(f);} );
+    auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus< RealPoint,RealVector >::Face f){ return boxCalculus.centroid(f);} );
     REQUIRE( cacheC.size() == 6 );
   }
 }

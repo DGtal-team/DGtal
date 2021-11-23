@@ -61,23 +61,23 @@ SurfMesh surfmesh;
 SurfMesh surfmeshReg;
 float dt = 2.0;
 
-GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heat;
-PolygonalCalculus<SurfMesh> *calculus;
+GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>> *heat;
+PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> *calculus;
 
-GeodesicsInHeat<PolygonalCalculus<SurfMesh>> *heatReg;
-PolygonalCalculus<SurfMesh> *calculusReg;
+GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>> *heatReg;
+PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> *calculusReg;
 
 bool skipReg = true; //Global flag to enable/disable the regularization example.
 
 void precompute()
 {
-  calculus = new PolygonalCalculus<SurfMesh>(surfmesh);
-  heat = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculus);
+  calculus = new PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>(surfmesh);
+  heat = new GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>(calculus);
   
   if (!skipReg)
   {
-    calculusReg = new PolygonalCalculus<SurfMesh>(surfmeshReg);
-    heatReg = new GeodesicsInHeat<PolygonalCalculus<SurfMesh>>(calculusReg);
+    calculusReg = new PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>(surfmeshReg);
+    heatReg = new GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>(calculusReg);
   }
   trace.beginBlock("Init solvers");
   heat->init(dt);
@@ -90,13 +90,13 @@ void addsource()
 {
   auto pos =rand() % surfmesh.nbVertices();
   heat->addSource( pos );
-  GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heat->source();
+  GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
 
   if (!skipReg)
   {
     heatReg->addSource( pos );
-    GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector source = heatReg->source();
+    GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>::Vector source = heatReg->source();
     psMeshReg->addVertexScalarQuantity("source", source);
   }
 }
@@ -105,13 +105,13 @@ void computeGeodesics()
 {
 
   heat->addSource( 0 ); //Forcing one seed (for screenshots)
-  GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heat->compute();
+  GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
 
   if (!skipReg)
   {
     heatReg->addSource( 0 ); //Forcing one seed (for screenshots)
-    GeodesicsInHeat<PolygonalCalculus<SurfMesh>>::Vector dist = heatReg->compute();
+    GeodesicsInHeat<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
 }

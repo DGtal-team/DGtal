@@ -56,9 +56,9 @@ float scale = 0.1;
 void computeLaplace()
 {
   //! [PolyDEC-init]
-  PolygonalCalculus<SurfMesh> calculus(surfmesh);
-  PolygonalCalculus<SurfMesh>::SparseMatrix L = calculus.globalLaplaceBeltrami();
-  PolygonalCalculus<SurfMesh>::Vector g = PolygonalCalculus<SurfMesh>::Vector::Zero(surfmesh.nbVertices());
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(surfmesh.nbVertices());
   
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
@@ -72,11 +72,11 @@ void computeLaplace()
   
   //Solve Δu=0 with g as boundary conditions
   //(the operator constructon and its prefactorization could have been factorized)
-  PolygonalCalculus<SurfMesh>::Solver solver;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
   solver.compute(L);
   ASSERT(solver.info()==Eigen::Success);
   
-  PolygonalCalculus<SurfMesh>::Vector u = solver.solve(g);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = solver.solve(g);
   ASSERT(solver.info()==Eigen::Success);
   //! [PolyDEC-init]
 

@@ -77,7 +77,7 @@ std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4 }};
 
 mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
   
-PolygonalCalculus<SurfMesh> calculus(mesh);
+PolygonalCalculus<RealPoint,RealVector> calculus(mesh);
 @endcode
 
 we obtain a  SurfaceMesh instance with a unique face and its associated PolygonalCalculus object.
@@ -89,7 +89,7 @@ we obtain a  SurfaceMesh instance with a unique face and its associated Polygona
 Let us add a scalar function on vertices. For instance, using Eigen syntax, we can use;
 
 @code
-PolygonalCalculus<SurfMesh>::Vector phi(5); //5 vertices
+PolygonalCalculus<RealPoint,RealVector>::Vector phi(5); //5 vertices
 phi << 1.0, 2.0, 0.0, 5.0 ,1.5;
 @endcode
 
@@ -189,8 +189,8 @@ For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ no
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
-`calculus.LaplaceBeltrami(f,lambda)`|  \f$ 3 \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+`calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.LaplaceBeltrami(f,lambda)`|  \f$ n_f\times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
 
  
 
