@@ -92,9 +92,9 @@ void initQuantities()
   
   std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> gradients;
   std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> normals;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> vectorArea;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::RealPoint> centroids;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> normals;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> vectorArea;
+  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> centroids;
   
   std::vector<double> faceArea;
   
