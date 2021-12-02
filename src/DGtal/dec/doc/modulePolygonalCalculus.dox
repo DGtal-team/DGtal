@@ -26,10 +26,10 @@ namespace DGtal {
 
   Part of package \ref packageDEC.
 
-In this documentation page, we detail the operators and tools allowing
-performing differential calculus computations on generic polygonal surfaces
+In this documentation page, we detail the operators and tools for differential
+ calculus computations on generic polygonal surfaces
 (PolygonalCalculus class).  Such polygonal surfaces could be generic
-meshes (with non-planar, non-convex faces), or DigitalSurface models.
+meshes (with non-planar, non-convex faces), or an embeddeing of a digital surface.
 
 The overall idea, compared to the \ref moduleDECIntroduction
 approach, is to define per face operators which can be later combined
@@ -77,7 +77,7 @@ std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4 }};
 
 mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
   
-PolygonalCalculus<RealPoint,RealVector> calculus(mesh);
+PolygonalCalculus<SurfMesh> calculus(mesh);
 @endcode
 
 we obtain a  SurfaceMesh instance with a unique face and its associated PolygonalCalculus object.
@@ -89,7 +89,7 @@ we obtain a  SurfaceMesh instance with a unique face and its associated Polygona
 Let us add a scalar function on vertices. For instance, using Eigen syntax, we can use;
 
 @code
-PolygonalCalculus<RealPoint,RealVector>::Vector phi(5); //5 vertices
+PolygonalCalculus<SurfMesh>::Vector phi(5); //5 vertices
 phi << 1.0, 2.0, 0.0, 5.0 ,1.5;
 @endcode
 
@@ -112,9 +112,9 @@ PolygonalCalculus<SurfMesh>::setEmbedder for an example.
 can have different embeddings for all its incident faces.
 
 
-\subsection susub1 Basic quantities
+\subsection susub1 Basic operators
 
-We first describe some standard per face quantities. Note that for all
+We first describe some standard per face operators. Note that for all
 extrinsic operators that require the vertex position in @f$
 \mathbb{R}^3 @f$, the embedder is used.  For these quantities,
 vector/point are encoded as Eigen 3x1 vectors and collections of n
@@ -124,8 +124,8 @@ points as an @f$ n\times 3@f$ matrix.
 Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.X(f)`  | \f$ n_f\times 3\f$ | positions of the face vertices (n_f points in @f$ \mathbb{R}^3 @f$)
-`calculus.E(f)`  | \f$ n_f\times 3\f$ | returns the edge vectors of the face (n_f vectors in @f$ \mathbb{R}^3 @f$)
-`calculus.A(f)`  | \f$ n_f\times n_f\f$ | average operator that averages some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
+`calculus.E(f)`  | \f$ n_f\times 3\f$ |  the edge vectors of the face (n_f vectors in @f$ \mathbb{R}^3 @f$)
+`calculus.A(f)`  | \f$ n_f\times n_f\f$ | averaging operator that averages some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
 `calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-points of the face (n_f points in @f$ \mathbb{R}^3 @f$)
 `calculus.vectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
 `calculus.faceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
@@ -166,13 +166,13 @@ Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.flat(f)`  | \f$ n_f\times 3\f$ | Flat operator that maps an ambient vector to a local discrete 1-form
 `calculus.sharp(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
-`calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form and remove the associated non-tangential part of the vector reconstructed using the sharp operator
+`calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form that removes the associated non-tangential part of the vector reconstructed using the sharp operator
 
-Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ sharp_f flat_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but the property reversing the order of operators and applied to 1-forms does not hold (due to rank deficiencies of the matrices).
+Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ sharp_f flat_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but  @f$ flat_f sharp_f v = v@f$ for any vector v does not hold  (due to rank deficiencies of the matrices).
 This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (sharp_f flat_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
 
 
-For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators are the classical DEC or FEM ones.
+For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators and the classical DEC or FEM ones.
 
 
 
@@ -189,8 +189,8 @@ For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ no
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
-`calculus.LaplaceBeltrami(f,lambda)`|  \f$ n_f\times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.LaplaceBeltrami(f,lambda)`|  \f$ 3 \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
 
  
 

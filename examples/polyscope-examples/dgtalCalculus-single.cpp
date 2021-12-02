@@ -59,7 +59,7 @@ polyscope::PointCloud *psVertices;
 polyscope::CurveNetwork *psBoundary;
 
 SurfMesh surfmesh;
-PolygonalCalculus<SurfMesh::RealPoint, SurfMesh::RealVector>::Vector phiEigen;
+PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector phiEigen;
 
 void initPhi()
 {
@@ -72,33 +72,33 @@ void initPhi()
 
 void initQuantities()
 {
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> calculus(surfmesh);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
 
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> gradients;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> normals;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> vectorArea;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> centroids;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> normals;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> vectorArea;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
   std::vector<double> faceArea;
 
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Face f = 0; //Id of the face
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Face f = 0; //Id of the face
  
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector grad = calculus.gradient(f) * phiEigen;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * phiEigen;
   gradients.push_back( grad );
 
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector cograd =  calculus.coGradient(f) * phiEigen;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * phiEigen;
   cogradients.push_back( cograd );
 
   normals.push_back(calculus.faceNormalAsDGtalVector(f));
   
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector vA = calculus.vectorArea(f);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector vA = calculus.vectorArea(f);
   vectorArea.push_back({vA(0) , vA(1), vA(2)});
   
   faceArea.push_back( calculus.faceArea(f));
   centroids.push_back( calculus.centroidAsDGtalPoint(f) );
   
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector dPhi = calculus.D(f)*phiEigen;
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector av = calculus.A(f)*phiEigen;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector dPhi = calculus.D(f)*phiEigen;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector av = calculus.A(f)*phiEigen;
   
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
@@ -113,19 +113,18 @@ void initQuantities()
   polyscope::registerPointCloud("Centroids", centroids);
   
   //Flat Sharp
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector v(3);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector v(3);
   v << 50,-50,-100;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> someV={v};
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> someV={v};
   psMesh->addFaceVectorQuantity("A vector", someV);
 
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector flat = calculus.flat(f)*v;
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector flat = calculus.flat(f)*v;
   psBoundary->addEdgeScalarQuantity("flat (1-form)", flat);
   
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector sharp = calculus.sharp(f)*flat;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> sharpRes={sharp};
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector sharp = calculus.sharp(f)*flat;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> sharpRes={sharp};
   psMesh->addFaceVectorQuantity("Sharp", sharpRes);
 }
-
 
 int main()
 {

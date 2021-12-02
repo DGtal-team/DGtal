@@ -63,11 +63,14 @@ void computeLaplace()
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
   std::cout<< "Number of boundary edges= "<<boundaryEdges.size()<<std::endl;
+  
+  auto pihVertex=[&](const SurfMesh::Vertex &v){return  cos(scale*(surfmesh.position(v)[0]))*(scale*surfmesh.position(v)[1]);};
+  
   for(auto &e: boundaryEdges)
   {
     auto adjVertices = surfmesh.edgeVertices(e);
-    g(adjVertices.first)  =  cos(scale*(surfmesh.position(adjVertices.first)[0]))*(scale*surfmesh.position(adjVertices.first)[1]);
-    g(adjVertices.second) =  cos(scale*(surfmesh.position(adjVertices.second)[0]))*(scale*surfmesh.position(adjVertices.second )[1]);
+    g(adjVertices.first)  = pihVertex(adjVertices.first);
+    g(adjVertices.second) = pihVertex(adjVertices.second);
   }
   
   //Solve Δu=0 with g as boundary conditions

@@ -34,8 +34,8 @@
 #include <vector>
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/shapes/SurfaceMesh.h"
+#include "DGtal/math/linalg/EigenSupport.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -164,13 +164,37 @@ public:
   /// Return the vertex position matrix degree x 3 of the face.
   /// @param f a face
   /// @return the n_f x 3 position matrix
-  DenseMatrix X(const Face f) const;
+  DenseMatrix X(const Face f) const
+  {
+    auto vertices = mySurfaceMesh->incidentVertices(f);
+    auto nf = myFaceDegree[f];
+    DenseMatrix Xt(nf,3);
+    size_t cpt=0;
+    for(auto v: vertices)
+    {
+      Xt(cpt,0) = myEmbedder(f,v)[0];
+      Xt(cpt,1) = myEmbedder(f,v)[1];
+      Xt(cpt,2) = myEmbedder(f,v)[2];
+      ++cpt;
+    }
+    return  Xt;
+  }
   
 
   /// Derivative operator (d_0) of a face.
   /// @param f the face
   /// @return a degree x degree matrix
-  DenseMatrix D(const Face f) const;
+  DenseMatrix D(const Face f) const
+  {
+    auto nf = myFaceDegree[f];
+    DenseMatrix d = DenseMatrix::Zero(nf ,nf);
+    for(auto i=0; i < nf; ++i)
+    {
+      d(i,i) = -1.;
+      d(i, (i+1)%nf) = 1.;
+    }
+    return d;
+  }
   
   /// Edge vector operator per face.
   /// @param f the face
@@ -183,13 +207,42 @@ public:
   /// Average operator to average, per edge, its vertex values.
   /// @param f the face
   /// @return a degree x degree matrix
-  DenseMatrix A(const Face f) const;
+  DenseMatrix A(const Face f) const
+  {
+    auto nf = myFaceDegree[f];
+    DenseMatrix a = DenseMatrix::Zero(nf ,nf);
+    for(auto i=0; i < nf; ++i)
+    {
+      a(i, (i+1)%nf) = 0.5;
+      a(i,i) = 0.5;
+    }
+    return a;
+  }
   
   
   /// Polygonal (corrected) vector area.
   /// @param f the face
   /// @return a vector
-  Vector vectorArea(const Face f) const;
+  Vector vectorArea(const Face f) const
+  {
+    Real3dPoint af(0.0,0.0,0.0);
+    auto vertices = mySurfaceMesh->incidentVertices(f);
+    auto it     = vertices.begin();
+    auto itnext = vertices.begin();
+    ++itnext;
+    while (it != vertices.end())
+    {
+      auto xi  = myEmbedder(f,*it);
+      auto xip = myEmbedder(f,*itnext);
+      af += xi.crossProduct(xip);
+      ++it;
+      ++itnext;
+      if (itnext == vertices.end())
+        itnext =vertices.begin();
+    }
+    Eigen::Vector3d output = {af[0],af[1],af[2]};
+    return 0.5*output;
+  }
   
   /// Area of a face from the vector area.
   /// @param f the face
@@ -499,16 +552,20 @@ public:
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
    */
-  void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const
+  {
+    out << "[PolygonalCalculus]";
+  }
   
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
    */
-  bool isValid() const;
-  
-  
-  
+  bool isValid() const
+  {
+    return true;
+  }
+
   // ------------------------- Protected Datas ------------------------------
 protected:
   
@@ -546,13 +603,11 @@ private:
  */
 template <typename TP, typename TV>
 std::ostream&
-operator<< ( std::ostream & out, const PolygonalCalculus<TP,TV> & object );
+operator<< ( std::ostream & out, const PolygonalCalculus<TP,TV> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 } // namespace DGtal
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/dec/PolygonalCalculus.ih"
-
-//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

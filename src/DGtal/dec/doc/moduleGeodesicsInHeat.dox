@@ -34,7 +34,7 @@ modulePolygonalCalculus to solve elementary PDEs.
 Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
 
  
-@warning The implementation heavily relies on implicit operators with many Eigen based small matrice constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
+@warning The implementation heavily relies on implicit operators with many Eigen based small matrix constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
  
 
 \section sectGeodesicsIntro The main algorithm
@@ -42,7 +42,7 @@ Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
 The algorithm consists in three steps (see @cite Crane2013 for details): 
 - Given  heat sources @f$ g @f$ at a mesh vertices, we first solve a heat
 diffusion problem: Integrate the heat flow @f$ u @f$ such that @f$\Delta
-u = \dot{u}@f$ using a single step backward Euler step: @f$(Id -
+u = \frac{\partial u}{\partial t}@f$ using a single step backward Euler step: @f$(Id -
 t\Delta) u_t = g@f$
 - Evaluate the normalized field @f$ X = - \nabla u_t / \| \nabla u_t\|@f$
 - Solve the Poisson problem from the divergence of the normalized
@@ -51,7 +51,7 @@ gradient field @f$\Delta \phi = \nabla \cdot X@f$
 The computation involves discrete differential operator definitions
 (Laplace-Beltrami, gradient, divergence...) as well as linear solvers
 on sparse matrices. We do not go into the details of the
-discretization, please have a look to the paper if intersted. 
+discretization, please have a look to the paper if interested.
 
 
 \section sectGeodesics2 The interface
@@ -76,6 +76,8 @@ dt@f$:
 heat.init(dt);
 @endcode
 
+@note For a discussion on the timestep please refer to @cite Crane2013. For short, the authors suggest a timestep in @f$ dt=m\cdot h^2@f$ for some constant @f$m@f$ and @f$h@f$ being the mean spacing between adjacent vertices.
+ 
 Once prefactorized, we can add as many sources as we want using the method:
 @code
 heat.addSource( aVertexIndex )

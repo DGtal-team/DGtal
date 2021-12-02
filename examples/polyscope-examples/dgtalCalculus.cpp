@@ -63,7 +63,7 @@ double phiVertex(const Vertex v)
 }
 
 //Restriction of an ambient scalar function to vertices
-PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector phiFace(const Face f)
+PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector phiFace(const Face f)
 {
   auto vertices = surfmesh.incidentVertices(f);
   auto nf = vertices.size();
@@ -88,21 +88,21 @@ void initPhi()
 
 void initQuantities()
 {
-  PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector> calculus(surfmesh);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
 
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> gradients;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dVector> normals;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dVector> vectorArea;
-  std::vector<PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Real3dPoint> centroids;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dVector> normals;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dVector> vectorArea;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
   std::vector<double> faceArea;
 
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
-    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector ph = phiFace(f);
-    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector grad = calculus.gradient(f) * ph;
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector ph = phiFace(f);
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * ph;
     gradients.push_back( grad );
-    PolygonalCalculus<SurfMesh::RealPoint,SurfMesh::RealVector>::Vector cograd =  calculus.coGradient(f) * ph;
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * ph;
     cogradients.push_back( cograd );
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
     
