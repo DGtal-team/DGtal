@@ -2,7 +2,20 @@
 
 ## New features / critical changes
 
-  - *General*
+- *Geometry Package*
+
+  - Completes the digital convexity module with new functions
+    related to full convexity: check of full convexity for arbitrary
+    digital sets in nD, and helper classes for using full convexity in
+    practice (local geometric analysis, tangency and shortest paths)
+    (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
+- *Mathematical Package*
+
+   - Add Lagrange polynomials and Lagrange interpolation
+     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
+- *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar
     [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
@@ -58,9 +71,6 @@
 ## Bug fixes
 
 - *General*
-  - A Dockerfile is added to create a Docker image to have a base to start development
-    using the DGtal library.(J. Miguel Salazar
-    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
   - Fixing OpenMP dependency on macOS when using the DGtalConfig.cmake
     (David Coeurjolly, [#1578](https://github.com/DGtal-team/DGtal/pull/1578))
   - Various warnings / deprecated functions (David Coeurjolly,

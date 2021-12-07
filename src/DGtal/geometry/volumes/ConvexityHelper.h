@@ -54,6 +54,88 @@
 
 namespace DGtal
 {
+
+    namespace detail {
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// @tparam TIntegerCoordinate the integral type of each point
+    /// coordinate.
+    ///
+    /// @tparam safe when 'true' chooses the safest type for
+    /// computations, otherwise it privileges speed.
+    template < typename TIntegerCoordinate, bool safe >
+    struct ConvexityHelperInternalInteger {
+      typedef TIntegerCoordinate Type;
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int32_t and safe computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int32_t, true > {
+#ifdef WITH_BIGINTEGER
+      typedef DGtal::BigInteger Type;
+#else
+      typedef DGtal::int64_t Type;
+#endif
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int32_t and fast computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int32_t, false > {
+      typedef DGtal::int64_t Type;
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int64_t and safe computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int64_t, true > {
+#ifdef WITH_BIGINTEGER
+      typedef DGtal::BigInteger Type;
+#else
+      typedef DGtal::int64_t Type;
+#endif
+    };
+
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate int64_t and fast computations.
+    template < >
+    struct ConvexityHelperInternalInteger< DGtal::int64_t, false > {
+      typedef DGtal::int64_t Type;
+    };
+
+#ifdef WITH_BIGINTEGER
+    /// Indicates which integer type should be used by ConvexityHelper,
+    /// depending on the integral type of each point coordinate and if
+    /// computations should be guaranteed or not.
+    ///
+    /// Specialization for integer coordinate BigInteger.
+    ///
+    /// @tparam safe when 'true' chooses the safest type for
+    /// computations, otherwise it privileges speed.
+    template < bool safe >
+    struct ConvexityHelperInternalInteger< DGtal::BigInteger, safe > {
+      typedef DGtal::BigInteger Type;
+    };
+#endif
+
+    }  // namespace detail
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class ConvexityHelper
   /**
@@ -211,6 +293,55 @@ namespace DGtal
                                   const std::vector< Point >& input_points,
                                   bool remove_duplicates = true );
 
+    /// Computes the lattice polytope enclosing a range of at most
+    /// dimension+1 distinct points.
+    ///
+    /// @note Called internally by ConvexityHelper::computeLatticePolytope.
+    ///
+    /// @note This function works for arbitrary full dimensional
+    /// simplex. If the set of points is not full dimensional, it is
+    /// able to build a non full dimensional simplex for dimensions <=
+    /// 3.
+    ///
+    /// @param input_points a range of points, with at most
+    /// dimension+1 distinct points.
+    ///
+    /// @param[in] remove_duplicates should be set to 'true' if the
+    /// input data has duplicates.
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if the given range of points was not full
+    /// dimensional and dimension was greater than 3.
+    static
+    LatticePolytope
+    computeSimplex( const std::vector< Point >& input_points,
+                    bool remove_duplicates = true );
+
+    /// Computes the lattice polytope enclosing a range of distinct
+    /// points, arranged such that they do not form a full dimensional
+    /// polytope.
+    ///
+    /// @note Called internally by
+    /// ConvexityHelper::computeLatticePolytope and
+    /// ConvexityHelper::computeSimplex.
+    ///
+    /// @note This function works for dimension no greater than 3.
+    ///
+    /// @param[inout] input_points a range of distinct points, which
+    /// may be changed by the method. More precisely a point may be
+    /// added (in 3D) to complete the set of points so that it forms a
+    /// full dimensional polytope.
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if the given range of points was not full
+    /// dimensional and dimension was greater than 3.
+    static
+    LatticePolytope
+    computeDegeneratedLatticePolytope( std::vector< Point > & input_points );
+
+    
     /// @}
     
     // ----------------- lattice Delaunay services -------------------------
