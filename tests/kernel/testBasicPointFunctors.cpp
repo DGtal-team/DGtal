@@ -156,6 +156,24 @@ bool testProjector()
   nbok += ( embedder2(pt2_2b) ==  PointVector<3,int>(5,4,3)  ) ? 1 : 0;
   nb++;
 
+ //Point2DEmbedderIn3D (constructor from normal point)
+ //PointVector<3,int> pt2Origin3D(5,5,3);
+ PointVector<3,int> dirXaxis(1,0,0);
+ DGtal::functors::Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder3(domain,
+                                                                          pt2Origin3D,
+                                                                          PointVector<3,int>(0,0,3),
+                                                                          dirXaxis,
+                                                                          4);
+ PointVector<2, int> pt2c(0, 0);
+ PointVector<2, int> pt2_2c(2, 0);
+ trace.info() << "pt " << pt2c << " => " << embedder3(pt2c) << " == " << PointVector<3,int>(3,3,3) << std::endl;
+ nbok += ( embedder3(pt2c) == PointVector<3,int>(3,3,3) ) ? 1 : 0;
+ nb++;
+    
+ trace.info() << "pt " << pt2_2c << " => " << embedder3(pt2_2c) << " == " << PointVector<3,int>(5,3,3) << std::endl;
+ nbok += ( embedder3(pt2_2c) ==  PointVector<3,int>(5,3,3)  ) ? 1 : 0;
+ nb++;
+
  
   //comparison
   PointVector<3,int> res1(5,0,2); 

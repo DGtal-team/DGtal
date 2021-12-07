@@ -464,6 +464,38 @@ namespace functors
     }
 
 
+    /**
+     * Constructor.
+     * Construct the functor from an origin 3D point, an normal vector (normal to the 2D domain), another vector fixing the direction of the the image plane (from the x axis) and a width.
+     * The points of an 2D domain are embedded in 3D by using a normal vector giving the direction of the 2D domain embedded in the 3D space.
+     * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain.
+     * @param anOriginPoint the center point given in the 3D domain.
+     * @param anNormalVector the normal vector to the 2d domain embedded in 3D.
+     * @param orientXaxisVector the vector determining  the 3D orientation of the image plane (from the x axis).
+     * @param anWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length anWidth).
+     * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     *
+     */
+
+    Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg,
+                         const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
+                         const typename Space::RealPoint & orientXaxisVector,
+                         const typename Point::Component  &anWidth,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myDefaultPoint (aDefautPoint)
+    {
+     
+      typename Space::RealPoint uDir1;
+      uDir1 = orientXaxisVector/orientXaxisVector.norm();
+      typename Space::RealPoint uDir2;
+      uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*anNormalVector[1];
+      uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*anNormalVector[2];
+      uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*anNormalVector[0];
+      uDir2/=uDir2.norm();
+      myOriginPointEmbeddedIn3D = anOriginPoint + Point(-uDir1*anWidth/2) + Point(-uDir2*anWidth/2);
+      myFirstAxisEmbeddedDirection = uDir1;
+      mySecondAxisEmbeddedDirection = uDir2;
+    }
 
 
     /**
