@@ -152,6 +152,7 @@ namespace DGtal
       muXY *= 0.5;
       const double   coef_N = 1000.0 * mu0;
       // Trick to force orthogonality to normal vector.
+      // (see @cite lachaud2020interpolated, section 2) 
       for ( int j = 0; j < 3; j++ )
         for ( int k = 0; k < 3; k++ )
           muXY( j, k ) += coef_N * N[ j ] * N[ k ];
