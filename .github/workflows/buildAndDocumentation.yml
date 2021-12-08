@@ -120,5 +120,5 @@ jobs:
         branch: master
         repository-name: DGtal-team/doc-nightly
         folder: build/html
-        single-comit: true
+        single-commit: true
         clean: true
