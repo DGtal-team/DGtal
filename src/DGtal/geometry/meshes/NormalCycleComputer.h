@@ -163,9 +163,6 @@ namespace DGtal
     /// A reference to the mesh over which computations are done.
     const SurfaceMesh& myMesh;
     
-    // ------------------------- Private Datas --------------------------------
-  private:
-
 
     // ------------------------- Internals ------------------------------------
   private:
