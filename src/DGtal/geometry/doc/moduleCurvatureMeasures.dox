@@ -490,7 +490,7 @@ As examples of digital surfaces, we show how to estimate curvatures on
 a digitization of polynomial surfaces, then on the boundary of a voxel
 object defined in VOL file.
 
-@subsection dgtal_curvature_measures_sec31 CCNC and ICNC curvature measures on polynomial surfaces
+@subsection dgtal_curvature_measures_sec31 CCNC and ICNC curvature measures on discretized polynomial surfaces
 
 Examples <a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-3d.cpp</a> and
 <a href="geometry_2meshes_2digpoly-curvature-measures-cnc-3d_8cpp-example.html">geometry/meshes/digpoly-curvature-measures-cnc-XY-3d.cpp</a> show how to extract all curvature information from digitized polynomial surfaces.
