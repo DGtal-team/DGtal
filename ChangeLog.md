@@ -91,7 +91,8 @@
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
   - Fix compilation issue in MeshReader compilation. 
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
-
+  - Fixing issue with the automatic deploy of the "nightly" documentation. 
+    (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
 
 # DGtal 1.2
 
