@@ -113,7 +113,7 @@ jobs:
       #&& .github/workflows/check_src_file_tag.sh
 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@4.1.7
       if: github.event_name == 'pull_request' ##&& github.event.action == 'closed' && github.event.pull_request.merged == true
       with:
         token: ${{ secrets.DEPLOYACTIONS }}
