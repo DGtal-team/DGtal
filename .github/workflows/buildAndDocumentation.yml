@@ -116,7 +116,7 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.7
       if: github.event_name == 'pull_request' ##&& github.event.action == 'closed' && github.event.pull_request.merged == true
       with:
-        token: ${{ secrets.DEPLOYACTIONS }}
+        token: ${{ secrets.DEPLOYACTION }}
         branch: master
         repository-name: DGtal-team/doc-nightly
         folder: build/html
