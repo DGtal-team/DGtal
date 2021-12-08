@@ -553,7 +553,7 @@ We build a SurfaceMesh object that represents exactly the digital surface.
 \snippet geometry/meshes/vol-curvature-measures-icnc-3d.cpp curvature-measures-SurfaceMesh
 
 We build the Corrected Normal Current on this mesh, and use a digital
-estimator of normal vector (here convolved trivial normals) to set the
+estimator of the normal vectors (here convolved trivial normals) to set the
 corrected normal vector at each vertex.
 
 \snippet geometry/meshes/vol-curvature-measures-icnc-3d.cpp curvature-measures-CNC
