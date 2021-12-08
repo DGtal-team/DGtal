@@ -164,9 +164,6 @@ namespace DGtal
     const SurfaceMesh& myMesh;
     
 
-    // ------------------------- Internals ------------------------------------
-  private:
-    
     
   }; // end of class NormalCycleComputer
     
