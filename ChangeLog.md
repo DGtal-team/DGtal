@@ -106,7 +106,8 @@
   - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
     delegate, but only checks the relevant parts (which have been pushed in to separate methods).
   (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
-
+  - Fixing issue with the automatic deploy of the "nightly" documentation. 
+    (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
 
 # DGtal 1.2
 

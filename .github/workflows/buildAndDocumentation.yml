@@ -113,22 +113,12 @@ jobs:
       #&& .github/workflows/check_src_file_tag.sh
 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+      uses: JamesIves/github-pages-deploy-action@4.1.7
+      if: github.event.pull_request.merged == true
       with:
-        token: ${{ secrets.DEPLOYTOKEN }}
+        token: ${{ secrets.DEPLOYACTION }}
         branch: master
         repository-name: DGtal-team/doc-nightly
         folder: build/html
-        single-comit: true
+        single-commit: true
         clean: true
-
-  FirstPR:
-     runs-on: ubuntu-latest
-
-     steps:
-       - uses: actions/first-interaction@v1
-         with:
-           repo-token: ${{ secrets.GITHUB_TOKEN }}
-           #issue-message: '# Message with markdown.\nThis is the message that will be displayed on users' first issue.'
-           pr-message: 'This is your first pull-request on DGtal :tada:. Thanks for your contribtuions. Please do not forget to add a new entry to the `AUTHORS` file.'
