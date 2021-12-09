@@ -44,7 +44,6 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         token: ${{ secrets.DEPLOYACTION }}
-        branch: master
         repository-name: DGtal-team/doc-nightly
         folder: build/html
         single-commit: true
