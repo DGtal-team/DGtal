@@ -1,10 +1,9 @@
 name: Documentation
 
-on: [push]
 
-#on:
-#  push:
-#    branches: [ master ]
+on:
+  push:
+    branches: [ master ]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -22,6 +21,9 @@ jobs:
     - name: Set up
       run:  sudo apt-get install libboost-dev graphviz texlive doxygen
 
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
     - name: Building pages
       run: |
          mkdir build
@@ -35,17 +37,15 @@ jobs:
           pwd
           export BUILD_DIR=${{runner.workspace}}/DGtal/build
           export SRC_DIR=${{runner.workspace}}/DGtal/
-          .travis/checkDoxygenDocumentation.sh
-
-#&& .travis/check_src_file_tag.sh
+          .github/workflows/checkDoxygenDocumentation.sh
+      #&& .github/workflows/check_src_file_tag.sh
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
-        # This is the branch you wish to deploy to, for example gh-pages or docs.
-        token: ${{ secrets.DEPLOYTOKEN }}
+        token: ${{ secrets.DEPLOYACTION }}
         branch: master
         repository-name: DGtal-team/doc-nightly
         folder: build/html
-        single_comit: true
+        single-commit: true
         clean: true
