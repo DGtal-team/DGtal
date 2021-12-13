@@ -13,7 +13,7 @@ env:
   CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
   CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true
 
-  
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -39,7 +39,7 @@ jobs:
        run: brew install boost ninja eigen gmp
 
 
-            
+
      - name: Get white list of tests
        run: |
            echo "::set-output name=WHITELIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
@@ -111,14 +111,3 @@ jobs:
           export SRC_DIR=${{runner.workspace}}/DGtal/
           .github/workflows/checkDoxygenDocumentation.sh
       #&& .github/workflows/check_src_file_tag.sh
-
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.7
-      if: github.event.pull_request.merged == true
-      with:
-        token: ${{ secrets.DEPLOYACTION }}
-        branch: master
-        repository-name: DGtal-team/doc-nightly
-        folder: build/html
-        single-commit: true
-        clean: true
