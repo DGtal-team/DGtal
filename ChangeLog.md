@@ -11,6 +11,17 @@
     and vertex-interpolated Corrected Normal Current.
     (Jacques-Olivier Lachaud,[#1617](https://github.com/DGtal-team/DGtal/pull/1617))
 
+  - Completes the digital convexity module with new functions
+    related to full convexity: check of full convexity for arbitrary
+    digital sets in nD, and helper classes for using full convexity in
+    practice (local geometric analysis, tangency and shortest paths)
+    (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
+- *Mathematical Package*
+
+   - Add Lagrange polynomials and Lagrange interpolation
+     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
 
 ## Bug fixes
 - *General*
@@ -84,7 +95,8 @@
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
   - Fix compilation issue in MeshReader compilation. 
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
-
+  - Fixing issue with the automatic deploy of the "nightly" documentation. 
+    (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
 
 # DGtal 1.2
 
