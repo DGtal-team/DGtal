@@ -212,6 +212,28 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus< RealPoint,RealVector >::Face f){ return boxCalculus.centroid(f);} );
     REQUIRE( cacheC.size() == 6 );
   }
+  
+  SECTION("Internal cache")
+  {
+    PolygonalCalculus< RealPoint,RealVector > boxCalculusCached(box,true);
+    trace.info()<< boxCalculusCached <<std::endl;
+    
+    trace.beginBlock("Without cache");
+    PolygonalCalculus< RealPoint,RealVector >::SparseMatrix L(box.nbVertices(),box.nbVertices());
+    for(auto i=0; i < 1000 ; ++i)
+      L += i*boxCalculus.globalLaplaceBeltrami();
+    auto tps = trace.endBlock();
+    
+    trace.beginBlock("With cache");
+    PolygonalCalculus< RealPoint,RealVector >::SparseMatrix LC(box.nbVertices(),box.nbVertices());
+    for(auto i=0; i < 1000 ; ++i)
+      LC += i*boxCalculusCached.globalLaplaceBeltrami();
+    auto tpsC = trace.endBlock();
+    REQUIRE(tpsC < tps);
+    REQUIRE(L.norm() == Approx(LC.norm()));
+    
+  }
+  
 }
 
 /** @ingroup Tests **/

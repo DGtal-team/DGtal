@@ -331,6 +331,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalSurfaceMesh
   typedef typename Surface::KSpace                     KSpace;
   typedef typename KSpace::Cell                        Cell;
   typedef typename CellEmbedder::Value                 Point;
+  typedef typename SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>::Vertex Vertex;
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
   
   cellmap.clear();
@@ -349,11 +350,11 @@ DGtal::MeshHelpers::digitalSurface2PrimalSurfaceMesh
       }
     }
   }
-  std::vector<std::vector<size_t>> faces;
+  std::vector<std::vector<Vertex>> faces;
   // Outputs all faces
   for ( auto&& s : dsurf ) {
     auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
-    std::vector<size_t> face( primal_vertices.size() );
+    std::vector<Vertex> face( primal_vertices.size() );
     std::transform( primal_vertices.cbegin(), primal_vertices.cend(), face.begin(),
                    [ &cellmap ] ( const Cell& v ) { return cellmap[ v ]; } );
     faces.emplace_back( face );

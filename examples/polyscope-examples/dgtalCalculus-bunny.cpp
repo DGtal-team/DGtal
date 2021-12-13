@@ -88,6 +88,7 @@ void initPhi()
 
 void initQuantities()
 {
+  trace.beginBlock("Basic quantities");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
   
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
@@ -113,7 +114,8 @@ void initQuantities()
     
     faceArea.push_back( calculus.faceArea(f));
   }
-
+  trace.endBlock();
+  
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
@@ -121,12 +123,52 @@ void initQuantities()
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
 }
 
+
+void initQuantitiesCached()
+{
+  trace.beginBlock("Basic quantities (cached)");
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);
+  
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> normals;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> vectorArea;
+  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
+  
+  std::vector<double> faceArea;
+  
+  for(auto f=0; f < surfmesh.nbFaces(); ++f)
+  {
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * phi(f);
+    gradients.push_back( grad );
+    
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * phi(f);
+    cogradients.push_back( cograd );
+    
+    normals.push_back(calculus.faceNormalAsDGtalVector(f));
+    
+    PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector vA = calculus.vectorArea(f);
+    vectorArea.push_back({vA(0) , vA(1), vA(2)});
+    
+    faceArea.push_back( calculus.faceArea(f));
+  }
+  trace.endBlock();
+  
+  psMesh->addFaceVectorQuantity("Gradients", gradients);
+  psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
+  psMesh->addFaceVectorQuantity("Normals", normals);
+  psMesh->addFaceScalarQuantity("Face area", faceArea);
+  psMesh->addFaceVectorQuantity("Vector area", vectorArea);
+}
+
+
 void computeLaplace()
 {
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
   trace.beginBlock("Operator construction...");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
   trace.endBlock();
+   
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(surfmesh.nbVertices());
 
   //Setting some random sources
@@ -159,6 +201,11 @@ void myCallback()
   {
     initPhi();
     initQuantities();
+  }
+  if (ImGui::Button("Phi and basic operators (cached)"))
+  {
+    initPhi();
+    initQuantitiesCached();
   }
   if(ImGui::Button("Compute Laplace problem"))
     computeLaplace();

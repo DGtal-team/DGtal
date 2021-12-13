@@ -32,6 +32,9 @@
 #include <iostream>
 #include <functional>
 #include <vector>
+#include <string>
+#include <map>
+#include <unordered_map>
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/SurfaceMesh.h"
@@ -91,11 +94,13 @@ public:
 
   ///Type of a sparse matrix solver
   typedef LinAlg::SolverSimplicialLDLT Solver;
-
+ 
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
-  PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf): mySurfaceMesh(&surf)
+  PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
+                    bool globalInternalCacheEnabled = false):
+          mySurfaceMesh(&surf),  myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     myEmbedder =[&](Face f,Vertex v){ return mySurfaceMesh->position(v);};
     init();
@@ -106,9 +111,11 @@ public:
   /// which outputs the embedding in R^3 of the vertex w.r.t. to the face.
   /// @param surf an instance of SurfaceMesh
   /// @param embedder an embedder
+  /// @param globalInternalCacheEnabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
-                  const std::function<Real3dPoint(Face,Vertex)> &embedder):
-  mySurfaceMesh(&surf), myEmbedder(embedder)
+                    const std::function<Real3dPoint(Face,Vertex)> &embedder,
+                    bool globalInternalCacheEnabled = false):
+  mySurfaceMesh(&surf), myEmbedder(embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     init();
   };
@@ -166,6 +173,9 @@ public:
   /// @return the n_f x 3 position matrix
   DenseMatrix X(const Face f) const
   {
+    if (checkCache(X_,f))
+      return myGlobalCache[X_][f];
+    
     auto vertices = mySurfaceMesh->incidentVertices(f);
     auto nf = myFaceDegree[f];
     DenseMatrix Xt(nf,3);
@@ -177,6 +187,8 @@ public:
       Xt(cpt,2) = myEmbedder(f,v)[2];
       ++cpt;
     }
+    
+    setInCache(X_,f,Xt);
     return  Xt;
   }
   
@@ -186,6 +198,9 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix D(const Face f) const
   {
+    if (checkCache(D_,f))
+      return myGlobalCache[D_][f];
+    
     auto nf = myFaceDegree[f];
     DenseMatrix d = DenseMatrix::Zero(nf ,nf);
     for(auto i=0; i < nf; ++i)
@@ -193,6 +208,8 @@ public:
       d(i,i) = -1.;
       d(i, (i+1)%nf) = 1.;
     }
+    
+    setInCache(D_,f,d);
     return d;
   }
   
@@ -201,7 +218,13 @@ public:
   /// @return degree x 3 matrix
   DenseMatrix E(const Face f) const
   {
-    return D(f)*X(f);
+    if (checkCache(E_,f))
+      return myGlobalCache[E_][f];
+
+    DenseMatrix op = D(f)*X(f);
+ 
+    setInCache(E_,f,op);
+    return op;
   }
   
   /// Average operator to average, per edge, its vertex values.
@@ -209,6 +232,9 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix A(const Face f) const
   {
+    if (checkCache(A_,f))
+      return myGlobalCache[A_][f];
+    
     auto nf = myFaceDegree[f];
     DenseMatrix a = DenseMatrix::Zero(nf ,nf);
     for(auto i=0; i < nf; ++i)
@@ -216,6 +242,8 @@ public:
       a(i, (i+1)%nf) = 0.5;
       a(i,i) = 0.5;
     }
+
+    setInCache(A_,f,a);
     return a;
   }
   
@@ -276,7 +304,11 @@ public:
   /// @return a 3 x degree matrix
   DenseMatrix coGradient(const Face f) const
   {
-    return  E(f).transpose() * A(f);
+    if (checkCache(COGRAD_,f))
+      return myGlobalCache[COGRAD_][f];
+    DenseMatrix op = E(f).transpose() * A(f);
+    setInCache(COGRAD_, f, op);
+    return op;
   }
   
   ///Return [n] as the 3x3 operator such that [n]q = n x q
@@ -295,7 +327,13 @@ public:
   /// @return 3 x degree matrix
   DenseMatrix gradient(const Face f) const
   {
-    return -1.0/faceArea(f) * bracket( faceNormal(f) ) * coGradient(f);
+    if (checkCache(GRAD_,f))
+      return myGlobalCache[GRAD_][f];
+    
+    DenseMatrix op = -1.0/faceArea(f) * bracket( faceNormal(f) ) * coGradient(f);
+    
+    setInCache(GRAD_,f,op);
+    return op;
   }
   
   /// Flat operator for the face.
@@ -303,8 +341,12 @@ public:
   /// @return a degree x 3 matrix
   DenseMatrix  flat(const Face f) const
   {
+    if (checkCache(FLAT_,f))
+      return myGlobalCache[FLAT_][f];
     auto n = faceNormal(f);
-    return E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
+    DenseMatrix op = E(f)*( DenseMatrix::Identity(3,3) - n*n.transpose());
+    setInCache(FLAT_,f,op);
+    return op;
   }
   
   /// Edge mid-point operator of the face.
@@ -312,7 +354,11 @@ public:
   /// @return a degree x 3 matrix
   DenseMatrix B(const Face f) const
   {
-    return A(f) * X(f);
+    if (checkCache(B_,f))
+      return myGlobalCache[B_][f];
+    DenseMatrix res = A(f) * X(f);
+    setInCache(B_,f,res);
+    return res;
   }
   
   /// @returns the centroid of the face
@@ -336,9 +382,15 @@ public:
   /// @return a 3 x degree matrix
   DenseMatrix sharp(const Face f) const
   {
+    if (checkCache(SHARP_,f))
+      return myGlobalCache[SHARP_][f];
+
     auto nf = myFaceDegree[f];
-    return 1.0/faceArea(f) * bracket(faceNormal(f)) *
+    DenseMatrix op = 1.0/faceArea(f) * bracket(faceNormal(f)) *
           ( B(f).transpose() - centroid(f)* Vector::Ones(nf).transpose() );
+
+    setInCache(SHARP_,f,op);
+    return op;
   }
   
   /// Projection operator for the face.
@@ -346,8 +398,14 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix P(const Face f) const
   {
+    if (checkCache(P_,f))
+      return myGlobalCache[P_][f];
+    
     auto nf = myFaceDegree[f];
-    return DenseMatrix::Identity(nf,nf) - flat(f)*sharp(f);
+    DenseMatrix op = DenseMatrix::Identity(nf,nf) - flat(f)*sharp(f);
+
+    setInCache(P_, f, op);
+    return op;
   }
   
   /// Inner product on 1-forms associated with the face
@@ -356,9 +414,15 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix M(const Face f, const double lambda=1.0) const
   {
+    if (checkCache(M_,f))
+      return myGlobalCache[M_][f];
+    
     auto Uf=sharp(f);
     auto Pf=P(f);
-    return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
+    DenseMatrix op = faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
+    
+    setInCache(M_,f,op);
+    return op;
   }
   
   /// Divergence operator of a one-form.
@@ -367,7 +431,13 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix divergence(const Face f, const double lambda=1.0) const
   {
-    return D(f).transpose() * M(f);
+    if (checkCache(DIVERGENCE_,f))
+      return myGlobalCache[DIVERGENCE_][f];
+ 
+    DenseMatrix op = D(f).transpose() * M(f);
+    setInCache(DIVERGENCE_,f,op);
+    
+    return op;
   }
   
   /// Curl operator of a one-form (identity matrix).
@@ -375,7 +445,13 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix curl(const Face f) const
   {
-    return DenseMatrix::Identity(myFaceDegree[f],myFaceDegree[f]);
+    if (checkCache(CURL_,f))
+      return myGlobalCache[CURL_][f];
+    
+    DenseMatrix op = DenseMatrix::Identity(myFaceDegree[f],myFaceDegree[f]);
+
+    setInCache(CURL_,f,op);
+    return op;
   }
   
   
@@ -385,8 +461,14 @@ public:
   /// @return a degree x degree matrix
   DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
   {
+    if (checkCache(L_,f))
+      return myGlobalCache[L_][f];
+ 
     auto Df = D(f);
-    return Df.transpose() * M(f,lambda) * Df;
+    DenseMatrix op = Df.transpose() * M(f,lambda) * Df;
+    
+    setInCache(L_, f, op);
+    return op;
   }
 
   // ----------------------- Global operators --------------------------------------
@@ -504,7 +586,21 @@ public:
     return cache;
   }
 
+  /// Enable the internal global cache for operators.
+  ///
+  void enableInternalGlobalCache()
+  {
+    myGlobalCacheEnabled = true;
+  }
   
+  /// Disable the internal global cache for operators.
+  /// This method will also clean up the
+  void disableInternalGlobalCache()
+  {
+    myGlobalCacheEnabled = false;
+    myGlobalCache.clear();
+  }
+
   // ----------------------- Common --------------------------------------
 public:
   
@@ -554,7 +650,12 @@ public:
    */
   void selfDisplay ( std::ostream & out ) const
   {
-    out << "[PolygonalCalculus]";
+    out << "[PolygonalCalculus]: ";
+    if (myGlobalCacheEnabled)
+      out<< "internal cache enabled, ";
+    else
+      out<<"internal cache disabled, ";
+    out <<"SurfaceMesh="<<*mySurfaceMesh;
   }
   
   /**
@@ -569,6 +670,9 @@ public:
   // ------------------------- Protected Datas ------------------------------
 protected:
   
+  ///Enum for operators in the internal cache strategy
+  enum OPERATOR { X_, D_, E_, A_, COGRAD_, GRAD_, FLAT_, B_, SHARP_, P_, M_, DIVERGENCE_, CURL_, L_ };
+  
   /// Update the face degree cache
   void updateFaceDegree()
   {
@@ -580,6 +684,31 @@ protected:
       myFaceDegree[f] = nf;
     }
   }
+  
+  /// Check internal cache if enabled.
+  /// @param key the operator name
+  /// @param f the face
+  /// @returns true if the operator "key" for the face f has been computed.
+  bool checkCache(OPERATOR key, const Face f) const
+  {
+    if (myGlobalCacheEnabled)
+      if (myGlobalCache[key].find(f) != myGlobalCache[key].end())
+        return true;
+    return false;
+  }
+
+  /// Set an operator in the internal cache.
+  /// @param key the operator name
+  /// @param f the face
+  /// @param ope the operator to store
+  void setInCache(OPERATOR key, const Face f,
+                  const DenseMatrix &ope) const
+  {
+    if (myGlobalCacheEnabled)
+      myGlobalCache[key][f]  = ope;
+  }
+  
+  
   // ------------------------- Internals ------------------------------------
 private:
   
@@ -592,6 +721,9 @@ private:
   ///Cache containing the face degree
   std::vector<size_t> myFaceDegree;
     
+  ///Global cache
+  bool myGlobalCacheEnabled;
+  mutable std::array<std::unordered_map<Face,DenseMatrix>, 14> myGlobalCache;
   
 }; // end of class PolygonalCalculus
 

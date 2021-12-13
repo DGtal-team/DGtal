@@ -189,8 +189,8 @@ For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ no
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.M(f,lambda)`  | \f$ n_f\times 3\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
-`calculus.LaplaceBeltrami(f,lambda)`|  \f$ 3 \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+`calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.LaplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
 
  
 
@@ -243,7 +243,16 @@ Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
 
 \subsection sectPolygonalCalculusHP Cache mechanisms and high-performance computing
 
-For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
+ The PolygonalCalculus class has two cache mechanisms:
+ 
+- An external cache strategy to store a given operator into a compact container. Typical use case is when the user wants to precompute a given operator, store it and efficiently reuse it while iterating over the faces. We detail this construction below.
+- The second one is a global internal cache strategy that will store @b all per face operators on the fly. In that case, each operator returning a DenseMatrix is stored in a cache the first time the `calculus.operator(f)` is called. Typical use case is when the user wants to use many times a large set of different operators. To enable this strategy, you can use the `calculus.enableInternalGlobalCache()`, or from the last parameter of the class constructor (boolean set to true). E.g.
+   @code
+PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);  //global internal cache enabled.
+   @endcode
+   By default, this behavior is disabled as it is memory expensive (all operators are explicitly stored when used for the first time), and may not have a huge running time impact for some applications. An example is given in the \ref dgtalCalculus-bunny.cpp. Once enabled, the class API remains the same, everything is transperent to the user.
+ 
+We describe here the first external cache strategy. For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
 @code
 DenseMatrix M(const Face f, const double lambda=1.0) const
 {
