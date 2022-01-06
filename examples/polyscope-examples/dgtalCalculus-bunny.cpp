@@ -169,15 +169,16 @@ void computeLaplace()
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
   trace.endBlock();
    
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(surfmesh.nbVertices());
+  const auto nbv = surfmesh.nbVertices();
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(nbv);
 
   //Setting some random sources
   for(auto cpt=0; cpt< 10;++cpt)
-    g( rand() % surfmesh.nbVertices()) =  rand() % 100;
+    g( rand() % nbv) =  rand() % 100;
   
   //Solve Δu=0 with g as boundary conditions
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix I(surfmesh.nbVertices(),surfmesh.nbVertices());
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix I(nbv,nbv);
   I.setIdentity();
   
   trace.beginBlock("Prefactorization...");
