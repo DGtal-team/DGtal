@@ -3,7 +3,6 @@
 ## New features / critical changes
 
 - *Geometry Package*
-
   - Completes the digital convexity module with new functions
     related to full convexity: check of full convexity for arbitrary
     digital sets in nD, and helper classes for using full convexity in
@@ -11,7 +10,6 @@
     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
 
 - *Mathematical Package*
-
    - Add Lagrange polynomials and Lagrange interpolation
      (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
 
@@ -51,7 +49,7 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
-    
+
 
 - *Build*
   - Continuous integration does not use Travis anymore but Github
@@ -61,7 +59,7 @@
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
-  - Fix cmake related ITK usage in other projects (issue #1612). 
+  - Fix cmake related ITK usage in other projects (issue #1612).
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
   - Adding ITK in Github Actions CI on linux distribution.
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
@@ -94,8 +92,8 @@
   - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
   - Fixing bugs in writing Longvol from GenericWriter and tests.
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
-  - Fix compilation issue in MeshReader compilation. 
-    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
+  - Fix compilation issue in MeshReader compilation.
+    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611)
 
 - *Geometry package*
   - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
@@ -106,7 +104,7 @@
   - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
     delegate, but only checks the relevant parts (which have been pushed in to separate methods).
   (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
-  - Fixing issue with the automatic deploy of the "nightly" documentation. 
+  - Fixing issue with the automatic deploy of the "nightly" documentation.
     (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
 
 # DGtal 1.2
