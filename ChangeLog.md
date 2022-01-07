@@ -71,6 +71,11 @@
   - Adding ITK in Github Actions CI on linux distribution.
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
 
+- *Kernel*
+  - New constructor in Point2DEmbedderIn3D to explicitally orient the image plane and
+    new shift method to avoid recomputing orientation plane.
+    (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
+    
 
 ## Bug fixes
 
