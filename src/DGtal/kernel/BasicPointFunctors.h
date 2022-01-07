@@ -509,12 +509,12 @@ namespace functors
     inline
     Point  operator()(const TPoint2D& aPoint, bool checkInsideDomain=true) const
     {
-      Point pt = myOriginPointEmbeddedIn3D;
+      Point pt ;
       for( Dimension i=0; i<pt.size(); i++){
 
-        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
-                                                 *myFirstAxisEmbeddedDirection[i]));
-        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
+        pt[i] = static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
+                                                 *myFirstAxisEmbeddedDirection[i]+myOriginPointEmbeddedIn3D[i]));
+        pt[i] += static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
                                                  *mySecondAxisEmbeddedDirection[i]));
       }
 
@@ -531,11 +531,26 @@ namespace functors
         }
     }
 
+
+    /**
+     * Shift the image plane center of the functor (without modify the the image plane direction). 
+     * 
+     * @param[in] shift direction. 
+     **/
+    inline
+    void shiftOriginPoint(const typename Space::RealPoint& shift)
+      {
+       for( Dimension i=0; i<myOriginPointEmbeddedIn3D.size(); i++){
+         myOriginPointEmbeddedIn3D[i] = myOriginPointEmbeddedIn3D[i] + shift[i];
+       }
+      }
+    
+    
   private:
     TDomain3D myDomain;
 
     // Origin (or lower point) of the 2D image embedded in the 3D domain
-    Point  myOriginPointEmbeddedIn3D;
+    typename Space::RealPoint  myOriginPointEmbeddedIn3D;
 
     Point myDefaultPoint;
 
