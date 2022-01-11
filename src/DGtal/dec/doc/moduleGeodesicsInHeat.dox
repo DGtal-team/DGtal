@@ -1,0 +1,112 @@
+/**
+ * @file 
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/09/07
+ *
+ * Documentation file for feature PolygonalCalculus
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleGeodesicsInHeat Geodesics In Heat using discrete polygonal calculus
+@writers David Coeurjolly
+
+[TOC]
+
+@since 1.3
+
+  Part of package \ref packageDEC.
+
+In this documentation page, we focus on an implementation of the
+"Geodesics In Heat method" (\cite Crane2013). The main objective is to
+highlight the use of  differential operators from \ref
+modulePolygonalCalculus to solve elementary PDEs.
+
+Images are given by the \ref dgtalCalculus-geodesic.cpp example file.
+
+ 
+@warning The implementation heavily relies on implicit operators with many Eigen based small matrix constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
+ 
+
+\section sectGeodesicsIntro The main algorithm
+
+The algorithm consists in three steps (see @cite Crane2013 for details): 
+- Given  heat sources @f$ g @f$ at a mesh vertices, we first solve a heat
+diffusion problem: Integrate the heat flow @f$ u @f$ such that @f$\Delta
+u = \frac{\partial u}{\partial t}@f$ using a single step backward Euler step: @f$(Id -
+t\Delta) u_t = g@f$
+- Evaluate the normalized field @f$ X = - \nabla u_t / \| \nabla u_t\|@f$
+- Solve the Poisson problem from the divergence of the normalized
+gradient field @f$\Delta \phi = \nabla \cdot X@f$ 
+
+The computation involves discrete differential operator definitions
+(Laplace-Beltrami, gradient, divergence...) as well as linear solvers
+on sparse matrices. We do not go into the details of the
+discretization, please have a look to the paper if interested.
+
+
+\section sectGeodesics2 The interface
+
+The class GeodesicsInHeat contains the implementation of the Geodesics
+in Heat method. It relies on the PolygonalCalculus class for the
+differential operators (@ref modulePolygonalCalculus).  
+
+First, we need to instantiate the GeodesicsInHeat class from an
+instance of  PolygonalCalculus:
+
+@code
+typedef PolygonalCalculus<SurfaceMesh<RealPoint,RealPoint>> Calculus;
+Calculus aCalculus( mesh );
+GeodesicsInHeat<Calculus> heat( aCalculus );
+@endcode
+
+Then, we can prefactorized the solvers for a given a timestep @f$
+dt@f$:
+
+@code
+heat.init(dt);
+@endcode
+
+@note For a discussion on the timestep please refer to @cite Crane2013. For short, the authors suggest a timestep in @f$ dt=m\cdot h^2@f$ for some constant @f$m@f$ and @f$h@f$ being the mean spacing between adjacent vertices.
+ 
+Once prefactorized, we can add as many sources as we want using the method:
+@code
+heat.addSource( aVertexIndex )
+heat.addSource( anotherVertexIndex )
+...
+@endcode
+
+@note the vertex index corresponds to  the indexing system of the
+underlying SurfaceMesh instance.
+
+The resulting geodesics diffusion is obtained by:
+@code
+auto u = heat.compute();
+@endcode
+
+@note Once the `init()` has been called, you can iterate over
+`addSource()` and `compute()` for fast computations. If you want to
+change the timestep, you would need to call again the `init()` method.
+
+\section sectGeodesics3 Examples
+
+From \ref dgtalCalculus-geodesic.cpp code on a digital surface and a
+regularization of the digital surface (see @ref moduleRegularization). 
+
+Input   | Geodesics in heat | Geodesics with multiple (random) sources
+--|--|--
+ @image html images/poly/bunny-128-source.png "" | @image html images/poly/bunny-128-geodesic.png "" | @image html images/poly/bunny-128-geodesic-multi.png ""
+ @image html images/poly/bunnyReg-128-source.png "" | @image html images/poly/bunnyReg-128-geodesic.png "" | @image html images/poly/bunnyReg-128-geodesic-multi.png ""
+
+*/
+
+}
