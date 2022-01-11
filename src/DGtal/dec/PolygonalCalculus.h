@@ -98,6 +98,7 @@ public:
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
+  /// @param globalInternalCacheEnabled enable the internal cache for all operators (default: false)
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
                     bool globalInternalCacheEnabled = false):
           mySurfaceMesh(&surf),  myGlobalCacheEnabled(globalInternalCacheEnabled)
