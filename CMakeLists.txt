@@ -81,12 +81,11 @@ install(TARGETS DGtal
 # -----------------------------------------------------------------------------
 include(DevelopmentOptions)
 
-# -----------------------------------------------------------------------------
-# Check dependencies
-# -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
-include(CheckDGtalOptionalDependencies)
 
+
+# Common build options/settings
+# -----------------------------------------------------------------------------
+include(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Randomized build 1/2.
@@ -95,14 +94,20 @@ SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the r
 SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
 
 # -----------------------------------------------------------------------------
-# Unit-testing, Cpack and Ctest settings
+# Check mandatory and optional dependencies
 # -----------------------------------------------------------------------------
-include(CpackCtest)
+include(CheckDGtalDependencies)
+include(CheckDGtalOptionalDependencies)
 
 #------------------------------------------------------------------------------
 # Examples
 #------------------------------------------------------------------------------
 include(BuildExamples)
+
+# -----------------------------------------------------------------------------
+# Unit-testing, Cpack and Ctest settings
+# -----------------------------------------------------------------------------
+include(CpackCtest)
 
 # -----------------------------------------------------------------------------
 # Randomized build 2/2.

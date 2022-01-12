@@ -203,6 +203,30 @@ namespace DGtal
       PolygonalSurface<typename CellEmbedder::Value>& polysurf,
       CellMap& cellmap );
     
+    /// Builds a polygonal surface (class SurfaceMesh) from
+    /// the primal graph of a digital surface in K^3 (class
+    /// DigitalSurface). The digital surface does not need to be
+    /// a combinatorial 2-manifold.
+    ///
+    /// @tparam DigitalSurfaceContainer the container chosen for the digital surface.
+    /// @tparam CellEmbedder the embedder chosen for the digital surface.
+    /// @tparam CellMap the type for encoding the map 0-cell -> Index.
+    ///
+    /// @param[in]  dsurf the input digital surface.
+    /// @param[in]  cembedder the embedder for 0-cells of the digital surface, which are vertices in the output polygonal surface.
+    /// @param[out] polysurf the output polygonal surface mesh.
+    /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
+    /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
+    template < typename DigitalSurfaceContainer,
+    typename CellEmbedder,
+    typename CellMap >
+    static
+    bool digitalSurface2PrimalSurfaceMesh
+    ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+     const CellEmbedder& cembedder,
+     SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>& polysurf,
+     CellMap& cellmap );
+    
     
     /// Builds a mesh (class Mesh) from a triangulated surface (class
     /// TriangulatedSurface). Note that the mesh looses the topology
