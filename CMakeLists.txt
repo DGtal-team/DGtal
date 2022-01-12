@@ -32,7 +32,6 @@ include(Common)
 #------------------------------------------------------------------------------
 # Add DGtal library
 #------------------------------------------------------------------------------
-
 # Include CPP files to add to the library target
 #
 # each subdir can contain a ModuleSRC.txt file
