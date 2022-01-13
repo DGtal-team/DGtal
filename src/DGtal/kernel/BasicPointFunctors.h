@@ -478,7 +478,7 @@ namespace functors
      */
 
     Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg,
-                         const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
+                         const Point &anOriginPoint, const typename Space::RealPoint & aNormalVector,
                          const typename Space::RealPoint & orientXaxisVector,
                          const typename Point::Component  &anWidth,
                          const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
