@@ -488,9 +488,9 @@ namespace functors
       typename Space::RealPoint uDir1;
       uDir1 = orientXaxisVector/orientXaxisVector.norm();
       typename Space::RealPoint uDir2;
-      uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*anNormalVector[1];
-      uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*anNormalVector[2];
-      uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*anNormalVector[0];
+      uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*aNormalVector[1];
+      uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*aNormalVector[2];
+      uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*aNormalVector[0];
       uDir2/=uDir2.norm();
       myOriginPointEmbeddedIn3D = anOriginPoint + Point(-uDir1*anWidth/2) + Point(-uDir2*anWidth/2);
       myFirstAxisEmbeddedDirection = uDir1;
