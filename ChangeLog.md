@@ -22,7 +22,7 @@
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
     [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
   - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
-    (David Coeurjolly, [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
 - *DEC*
   - New discrete differential operators on polygonal meshes have been
