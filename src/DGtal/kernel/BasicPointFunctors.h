@@ -413,38 +413,38 @@ namespace functors
      * The points of an 2D domain are embedded in 3D by using a normal vector giving the direction of the 2D domain embedded in the 3D space.
      * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain.
      * @param anOriginPoint the center point given in the 3D domain.
-     * @param anNormalVector the normal vector to the 2d domain embedded in 3D.
-     * @param anWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length anWidth).
+     * @param aNormalVector the normal vector to the 2d domain embedded in 3D.
+     * @param aWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length aWidth).
      * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      *
      */
 
     Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg,
-                         const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
-                         const typename Point::Component  &anWidth,
+                         const Point &anOriginPoint, const typename Space::RealPoint & aNormalVector,
+                         const typename Point::Component  &aWidth,
                          const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
                                                                     myDefaultPoint (aDefautPoint)
     {
-      double d = -anNormalVector[0]*anOriginPoint[0] - anNormalVector[1]*anOriginPoint[1] - anNormalVector[2]*anOriginPoint[2];
+      double d = -aNormalVector[0]*anOriginPoint[0] - aNormalVector[1]*anOriginPoint[1] - aNormalVector[2]*anOriginPoint[2];
       typename Space::RealPoint pRefOrigin;
-      if(anNormalVector[0]!=0){
-        pRefOrigin [0]= -d/anNormalVector[0];
+      if(aNormalVector[0]!=0){
+        pRefOrigin [0]= -d/aNormalVector[0];
         pRefOrigin [1]= 0.0;
         pRefOrigin [2]= 0.0;
         if(pRefOrigin==anOriginPoint){
           pRefOrigin[1]=-1.0;
         }
-      }else if (anNormalVector[1]!=0){
+      }else if (aNormalVector[1]!=0){
         pRefOrigin [0]= 0.0;
-        pRefOrigin [1]= -d/anNormalVector[1];
+        pRefOrigin [1]= -d/aNormalVector[1];
         pRefOrigin [2]= 0.0;
         if(pRefOrigin==anOriginPoint){
           pRefOrigin[0]=-1.0;
         }
-      }else if (anNormalVector[2]!=0){
+      }else if (aNormalVector[2]!=0){
         pRefOrigin [0]= 0.0;
         pRefOrigin [1]= 0.0;
-        pRefOrigin [2]= -d/anNormalVector[2];
+        pRefOrigin [2]= -d/aNormalVector[2];
         if(pRefOrigin==anOriginPoint){
           pRefOrigin[0]=-1.0;
         }
@@ -452,18 +452,50 @@ namespace functors
       typename Space::RealPoint uDir1;
       uDir1=(pRefOrigin-anOriginPoint)/((pRefOrigin-anOriginPoint).norm());
       typename Space::RealPoint uDir2;
-      uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*anNormalVector[1];
-      uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*anNormalVector[2];
-      uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*anNormalVector[0];
+      uDir2[0] = uDir1[1]*aNormalVector[2]-uDir1[2]*aNormalVector[1];
+      uDir2[1] = uDir1[2]*aNormalVector[0]-uDir1[0]*aNormalVector[2];
+      uDir2[2] = uDir1[0]*aNormalVector[1]-uDir1[1]*aNormalVector[0];
 
       uDir2/=uDir2.norm();
       
-      myOriginPointEmbeddedIn3D = anOriginPoint + Point(uDir1*anWidth/2) + Point(uDir2*anWidth/2);
+      myOriginPointEmbeddedIn3D = anOriginPoint + Point(uDir1*aWidth/2) + Point(uDir2*aWidth/2);
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
     }
 
 
+    /**
+     * Constructor.
+     * Construct the functor from an origin 3D point, an normal vector (normal to the 2D domain), another vector fixing the direction of the the image plane (from the x axis) and a width.
+     * The points of an 2D domain are embedded in 3D by using a normal vector giving the direction of the 2D domain embedded in the 3D space.
+     * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain.
+     * @param anOriginPoint the center point given in the 3D domain.
+     * @param aNormalVector the normal vector to the 2d domain embedded in 3D.
+     * @param orientXaxisVector the vector determining  the 3D orientation of the image plane (from the x axis).
+     * @param aWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length aWidth).
+     * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     *
+     */
+
+    Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg,
+                         const Point &anOriginPoint, const typename Space::RealPoint & aNormalVector,
+                         const typename Space::RealPoint & orientXaxisVector,
+                         const typename Point::Component  &aWidth,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myDefaultPoint (aDefautPoint)
+    {
+     
+      typename Space::RealPoint uDir1;
+      uDir1 = orientXaxisVector/orientXaxisVector.norm();
+      typename Space::RealPoint uDir2;
+      uDir2[0] = uDir1[1]*aNormalVector[2]-uDir1[2]*aNormalVector[1];
+      uDir2[1] = uDir1[2]*aNormalVector[0]-uDir1[0]*aNormalVector[2];
+      uDir2[2] = uDir1[0]*aNormalVector[1]-uDir1[1]*aNormalVector[0];
+      uDir2/=uDir2.norm();
+      myOriginPointEmbeddedIn3D = anOriginPoint + Point(-uDir1*aWidth/2) + Point(-uDir2*aWidth/2);
+      myFirstAxisEmbeddedDirection = uDir1;
+      mySecondAxisEmbeddedDirection = uDir2;
+    }
 
 
     /**
@@ -477,12 +509,12 @@ namespace functors
     inline
     Point  operator()(const TPoint2D& aPoint, bool checkInsideDomain=true) const
     {
-      Point pt = myOriginPointEmbeddedIn3D;
+      Point pt ;
       for( Dimension i=0; i<pt.size(); i++){
 
-        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
-                                                 *myFirstAxisEmbeddedDirection[i]));
-        pt[i] = pt[i]+static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
+        pt[i] = static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[0])
+                                                 *myFirstAxisEmbeddedDirection[i]+myOriginPointEmbeddedIn3D[i]));
+        pt[i] += static_cast<Integer>(floor(NumberTraits<Integer>::castToDouble(aPoint[1])
                                                  *mySecondAxisEmbeddedDirection[i]));
       }
 
@@ -499,11 +531,26 @@ namespace functors
         }
     }
 
+
+    /**
+     * Shift the image plane center of the functor (without modify the the image plane direction). 
+     * 
+     * @param[in] shift direction. 
+     **/
+    inline
+    void shiftOriginPoint(const typename Space::RealPoint& shift)
+      {
+       for( Dimension i=0; i<myOriginPointEmbeddedIn3D.size(); i++){
+         myOriginPointEmbeddedIn3D[i] = myOriginPointEmbeddedIn3D[i] + shift[i];
+       }
+      }
+    
+    
   private:
     TDomain3D myDomain;
 
     // Origin (or lower point) of the 2D image embedded in the 3D domain
-    Point  myOriginPointEmbeddedIn3D;
+    typename Space::RealPoint  myOriginPointEmbeddedIn3D;
 
     Point myDefaultPoint;
 
