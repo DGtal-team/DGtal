@@ -79,9 +79,11 @@ TEST_CASE( "Testing CompressedVolWriter" )
   SECTION("Testing write/read of CompressedVolWriter")
   {
     Image read = VolReader<Image>::importVol("test.vol");
+    trace.info()<<read<<std::endl;
     REQUIRE( (checkImage(image,read) == true)) ;
     
     Image readz = VolReader<Image>::importVol("testz.vol");
+    trace.info()<<readz<<std::endl;
     REQUIRE( (checkImage(image,readz) == true)) ;
   }
 }
