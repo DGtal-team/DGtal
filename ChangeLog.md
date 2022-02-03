@@ -35,7 +35,7 @@
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
     surfel (signed cell of a Khalimksy space). (David Coeurjolly,
-    ²[#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+    [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
 ## Changes
 
