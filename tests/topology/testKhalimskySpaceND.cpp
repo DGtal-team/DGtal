@@ -50,6 +50,9 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
+#include <DGtal/topology/helpers/Surfaces.h>
+#include <DGtal/topology/LightImplicitDigitalSurface.h>
+
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -939,3 +942,29 @@ TEST_CASE( "3D mixed Khalimsky space", "[KSpace][3D][closed][periodic][open]" )
   testCellularGridSpaceNDCoFaces( K );
 }
 
+
+TEST_CASE("3D test interior/exterior voxels to a digital surface")
+{
+  using Point = Z3i::Point;
+  const auto size=10;
+  Z3i::DigitalSet set(Z3i::Domain(Point(0,0,0),Point(size,size,size)));
+  for(auto i=0; i < size*size*size; ++i)
+    set.insertNew(Point(rand() % size, rand()%size, rand()%size));
+  INFO("Inserting " + std::to_string(set.size())+ " voxels") ;
+  REQUIRE(set.isValid());
+  Z3i::KSpace K;
+  Point low( 0, 0, 0 );
+  Point high( 10, 10, 10 );
+  K.init( low, high, true );
+  auto bel = Surfaces<Z3i::KSpace>::findABel(K, set);
+  LightImplicitDigitalSurface<Z3i::KSpace, Z3i::DigitalSet> surface(K,set,true,bel);
+  for(auto &surfel: surface)
+  {
+    auto voxel = K.interiorVoxel(surfel);
+    REQUIRE(set(voxel));
+    auto voxel2 = K.exteriorVoxel(surfel);
+    REQUIRE(!set(voxel2));
+  }
+  
+  
+}

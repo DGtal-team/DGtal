@@ -1355,6 +1355,23 @@ namespace DGtal
     */
     static SCell sIndirectIncident( SCell p, Dimension k );
 
+    
+    /** @brief For a given (n-1)-signed pre-cell, returns its interior voxel
+     * (point in Z^d given by the direct incident n-cell to the given cell).
+     *
+     * @param c any signed pre-cell.
+     * @return the inner voxel.
+     */
+    static Point interiorVoxel( const SCell & c ) ;
+
+    /** @brief For a given (n-1)-signed pre-cell, returns its exterior voxel
+     * (point in Z^d given by the indirect incident n-cell to the given cell).
+     *
+     * @param c any signed pre-cell.
+     * @return the outer voxel.
+     */
+    static Point exteriorVoxel( const SCell & c ) ;
+    
     /// @}
 
 

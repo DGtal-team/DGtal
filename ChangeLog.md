@@ -26,11 +26,16 @@
   - New discrete differential operators on polygonal meshes have been
     added. They can be used to process generic polygonal meshes (with
     non-planar, non-convex faces) or digital surfaces. (David
-    Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
+    Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
   - New class to compute geodesics on polygonal surfaces using the
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
-    Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
+    Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
+
+- *Topology*
+  - New helper methods to retrieve the interior/exterior voxel of a given
+    surfel (signed cell of a Khalimksy space). (David Coeurjolly,
+    ²[#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
 
 ## Changes
 
