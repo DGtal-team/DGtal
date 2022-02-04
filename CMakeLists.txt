@@ -30,11 +30,18 @@ set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 include(Common)
 
 # -----------------------------------------------------------------------------
+# Development and debug options
+# -----------------------------------------------------------------------------
+include(DevelopmentOptions)
+
+# -----------------------------------------------------------------------------
 # Downloading external deps
 # -----------------------------------------------------------------------------
 message(STATUS "Downloading external projects")
 include(FetchExternalDeps)
 message(STATUS "Done.")
+
+
 
 
 #------------------------------------------------------------------------------
@@ -67,6 +74,15 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
   )
 
+# -----------------------------------------------------------------------------
+# Check mandatory and optional dependencies
+# -----------------------------------------------------------------------------
+include(CheckDGtalDependencies)
+include(CheckDGtalOptionalDependencies)
+
+# -----------------------------------------------------------------------------
+# Install
+# -----------------------------------------------------------------------------
 install(TARGETS DGtal
   # IMPORTANT: Add the DGtal library to the "export-set"
   EXPORT DGtalLibraryDepends
@@ -77,12 +93,6 @@ install(TARGETS DGtal
   COMPONENT dev)
 
 # -----------------------------------------------------------------------------
-# Development and debug options
-# -----------------------------------------------------------------------------
-include(DevelopmentOptions)
-
-
-
 # Common build options/settings
 # -----------------------------------------------------------------------------
 include(OSDependentSettings)
@@ -92,12 +102,6 @@ include(OSDependentSettings)
 # -----------------------------------------------------------------------------
 SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
 SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
-
-# -----------------------------------------------------------------------------
-# Check mandatory and optional dependencies
-# -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
-include(CheckDGtalOptionalDependencies)
 
 #------------------------------------------------------------------------------
 # Examples

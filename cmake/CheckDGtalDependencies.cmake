@@ -37,6 +37,6 @@ endif()
 # -----------------------------------------------------------------------------
 set(WITH_EIGEN ON)
 set(EIGEN_FOUND_DGTAL 1)
-target_compile_definitions(DGtal PUBLIC -DWITH_EIGEN)
+target_compile_definitions(DGtal PUBLIC "-DWITH_EIGEN=true")
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
-target_link_libraries(DGtal PRIVATE Eigen3::Eigen)
+#target_link_libraries(DGtal PRIVATE Eigen3::Eigen)
