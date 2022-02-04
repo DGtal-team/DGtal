@@ -41,9 +41,6 @@ message(STATUS "Downloading external projects")
 include(FetchExternalDeps)
 message(STATUS "Done.")
 
-
-
-
 #------------------------------------------------------------------------------
 # Add DGtal library
 #------------------------------------------------------------------------------
