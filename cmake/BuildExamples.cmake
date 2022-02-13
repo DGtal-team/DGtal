@@ -1,4 +1,4 @@
-option(BUILD_EXAMPLES "Build examples." ON)
+option(BUILD_EXAMPLES "Build examples." OFF)
 if (BUILD_EXAMPLES)
   message(STATUS "Build examples ENABLED")
   add_subdirectory (${PROJECT_SOURCE_DIR}/examples)
