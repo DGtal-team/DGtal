@@ -34,7 +34,12 @@
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603]((https://github.com/DGtal-team/DGtal/pull/1603))
 
+  
 ## Changes
+- *Image*
+  - Improved ITK image selection in ImageSelector and add ITK xx.gz support.
+    New option to keep set domain in ImageFromSet. 
+    (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
 
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
