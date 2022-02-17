@@ -46,6 +46,9 @@
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
+#ifdef WITH_ITK
+#include "DGtal/images/ImageContainerByITKImage.h"
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
