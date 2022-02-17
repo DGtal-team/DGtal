@@ -282,7 +282,7 @@ namespace DGtal
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
           }
-          else if ( extension == "nii" || extension == "mha" ||
+          else if ( extension == "nii" || extension == "gz" || extension == "mha" ||
                     extension == "mhd" || extension == "tiff" ||
                     extension == "tif" )
           {

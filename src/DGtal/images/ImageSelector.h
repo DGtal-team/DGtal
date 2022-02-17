@@ -53,7 +53,7 @@ namespace DGtal
 
   enum ImageIterability {  HIGH_ITER_IMAGE = 0 , LOW_ITER_I = 1};
   enum ImageBelongTestability {  HIGH_BEL_I = 0, LOW_BEL_I = 2 };
-  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4 };
+  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4};
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ImageSelector
@@ -72,8 +72,12 @@ namespace DGtal
     /**
      * Adequate digital set representation for the given preferences.
      */
+#ifdef WITH_ITK
+    typedef ImageContainerByITKImage<Domain, Value> Type;
+#else
     typedef ImageContainerBySTLVector<Domain,Value> Type;
-    
+#endif
+
   };
 } // namespace DGtal
 
