@@ -71,6 +71,7 @@ jobs:
            echo ctest -C $BUILD_TYPE --output-on-failure -E ${{TESTBLACKLIST}}
            ctest -C $BUILD_TYPE --output-on-failure -E ${{TESTBLACKLIST}}
 
+
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
