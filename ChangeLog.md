@@ -65,6 +65,8 @@
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
   - Adding ITK in Github Actions CI on linux distribution.
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
+  - New variable in the Github Action script to disable some tests (not working in the bots)
+    (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
 
 - *Kernel*
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
