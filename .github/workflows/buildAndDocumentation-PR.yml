@@ -68,8 +68,8 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        shell: bash
        run: |
-           echo ctest -C $BUILD_TYPE --output-on-failure -E ${{TESTBLACKLIST}}
-           ctest -C $BUILD_TYPE --output-on-failure -E ${{TESTBLACKLIST}}
+           echo ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
+           ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
 
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
