@@ -21,6 +21,8 @@
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
     [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
+  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
+    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
 - *DEC*
   - New discrete differential operators on polygonal meshes have been
@@ -63,7 +65,14 @@
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
   - Adding ITK in Github Actions CI on linux distribution.
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
+  - New variable in the Github Action script to disable some tests (not working in the bots)
+    (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
 
+- *Kernel*
+  - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
+    new shift method to avoid recomputing orientation plane.
+    (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
+    
 
 
 ## Bug fixes
@@ -81,6 +90,8 @@
     (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
   - Fixing bugs in the exclude list for CI
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
+  - Reactivating Github Actions bots
+    (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628)
 
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
