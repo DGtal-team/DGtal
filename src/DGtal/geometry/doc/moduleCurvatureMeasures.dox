@@ -180,7 +180,7 @@ and Gaussian curvature from measures.
 \snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-CNC
 
 Normal cycle mean and Gaussian curvature measures have meaning only
-around edges and vertices. So it is necessary to measure them into a
+around edges and vertices. So it is necessary to measure them in a
 big enough ball that includes at least one edge or vertex, and then to
 normalize the result by dividing by the area measure. Therefore, if we
 wish to estimate mean and Gaussian curvatures at every face centroid
