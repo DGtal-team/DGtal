@@ -365,7 +365,7 @@ Computed Gaussian curvatures: min=0 max=0
 @subsection dgtal_curvature_measures_sec23 Vertex-interpolated versus face-constant corrected normal current
 
 The theory of corrected normal currents works for arbitrary piecewise
-smooth corrected normal vector field. Class
+smooth corrected normal vector fields. Class
 CorrectedNormalCurrentComputer allows you to choose between a constant
 per face corrected normal vector field (called \a Constant \a
 Corrected \a Normal \a Current, CCNC), or a smooth corrected normal
