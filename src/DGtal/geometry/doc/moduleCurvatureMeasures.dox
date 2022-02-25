@@ -42,7 +42,7 @@ testCorrectedNormalCurrentComputer.cpp, testNormalCycleComputer.cpp.
 
 @section dgtal_curvature_measures_sec1 Introduction to curvature measures
 
-Curvature is an important geometric information which has the drawback
+Curvature is an important geometric piece of information which has the drawback
 of being well defined only on smooth sets. Unfortunately, most
 geometric data are non-smooth (e.g. triangulated or polygonal
 surfaces, point clouds, polyhedra). A lot of works have thus aimed at
