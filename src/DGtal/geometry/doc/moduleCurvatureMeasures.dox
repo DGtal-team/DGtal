@@ -55,7 +55,7 @@ The seminal paper of Federer \cite federer1959curvature first defined
 \a curvature \a measures on sets with positive reach (which includes
 smooth and convex polyhedra, but not triangulated surfaces in
 general).  Using the notion of Normal Cycle introduced by Wintgen
-\cite wintgen1982normal, this notion was then extended to a wider
+\cite wintgen1982normal, the curvature measure principle was then extended to a wider
 class of objects including triangulations, digitized objects and
 subanalytic sets by Fu \cite fu1994curvature.
 
