@@ -278,7 +278,7 @@ Expected Gaussian curvatures: min=-0.5 max=0.25
 Computed Gaussian curvatures: min=-0.5 max=0.25
 \endverbatim
 
-This is is the result for a measuring ball radius of 0.5 onto the torus shape (quite better than Normal cycle).
+This is is the result for a measuring ball radius of 0.5 onto the torus shape (better than Normal cycle).
 \verbatim
 Expected mean curvatures: min=0.25 max=0.625
 Computed mean curvatures: min=0.264763 max=0.622318
