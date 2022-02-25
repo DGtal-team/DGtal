@@ -444,7 +444,7 @@ can accept weighted sum of cells as input.
 Examples <a href="geometry_2meshes_2obj-curvature-measures-icnc-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-3d.cpp</a> and
 <a href="geometry_2meshes_2obj-curvature-measures-icnc-XY-3d_8cpp-example.html">geometry/meshes/obj-curvature-measures-icnc-XY-3d.cpp</a> show how to compute all curvature information on an arbitrary mesh.
 
-The only difference with examples above is the way the SurfaceMesh object is created. Here we read an OBJ file to create it.
+The only difference in the above examples is the way the SurfaceMesh object is created. Here we read an OBJ file to create it.
 
 \snippet geometry/meshes/obj-curvature-measures-icnc-3d.cpp curvature-measures-SurfaceMesh
 
