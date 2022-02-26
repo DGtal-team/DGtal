@@ -604,7 +604,7 @@ namespace DGtal
 
     
     //-------------------------------------------------------------------------
-  public:
+  protected:
     /// @name Other geometric services
     /// @{
     
