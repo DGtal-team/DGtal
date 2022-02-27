@@ -124,6 +124,20 @@ bool testGenericWriter()
   trace.info() << "Testing writing raw (bis) ... ";  
   bool ok3bis = DGtal::GenericWriter<Image3D>::exportFile( "testGenericWriter.raw", anImportedImage1);
   trace.info() <<"[done]"  << std::endl;
+  bool okITK= true;
+#ifdef WITH_ITK  
+  for (auto ext: ITK_IO_IMAGE_EXT){
+    trace.info() << "Testing writing ITK (" << ext << ") ... ";  
+    if( ext != std::string("gz") )
+    {
+      okITK &= anImportedImage1 >> (std::string("testGenericWriter.") + ext);
+    }
+    trace.info() <<"[done]"  << std::endl;
+  }
+  trace.info() << "Testing writing ITK (.nii.gz) ... ";  
+  okITK &= anImportedImage1 >> "testGenericWriter.nii.gz";
+  trace.info() <<"[done]"  << std::endl;
+#endif  
 
   std::string filenameImage2 = testPath + "samples/contourS.pgm";    
 
@@ -148,7 +162,7 @@ bool testGenericWriter()
   bool ok9 = true;
 #endif  
 
-  nbok += ((ok1 && okh5 && okh5bis && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9) ? 1 : 0); 
+  nbok += ((ok1 && okh5 && okh5bis && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && okITK) ? 1 : 0); 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;

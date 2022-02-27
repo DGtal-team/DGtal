@@ -37,8 +37,9 @@
   
 ## Changes
 - *Image*
-  - Improved ITK image selection in ImageSelector and add ITK xx.gz support.
-    New option to keep set domain in ImageFromSet. 
+  - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
+    format support. New option to keep set domain or to compute current bounding
+    box of elements of the set in ImageFromSet.
     (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
 
 - *IO*

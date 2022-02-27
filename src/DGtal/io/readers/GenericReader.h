@@ -282,10 +282,8 @@ namespace DGtal
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
           }
-          else if ( extension == "nii" || extension == "gz" || extension == "mha" ||
-                    extension == "mhd" || extension == "tiff" ||
-                    extension == "tif" )
-          {
+        else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
+           {
             return ITKReader<TContainer>::importITK( filename, aFunctor );
           }
 #endif
