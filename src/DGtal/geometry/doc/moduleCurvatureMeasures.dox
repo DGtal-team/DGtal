@@ -18,9 +18,11 @@ curvature measures on quite arbitrary meshes (any instance of
 SurfaceMesh). The classical curvature measures related to the Normal
 Cycle are provided as well as the more general curvature measures
 based on corrected normal currents. This module implements the
-research presented in papers \cite lachaud:hal-02193774 and 
-\cite lachaud2020interpolated, and also gives a stand-alone implementation
-of papers \cite cohen2003restricted and \cite cohen2006second.
+research on corrected normal currents presented in papers \cite
+lachaud:hal-02193774 and \cite lachaud2020interpolated, and also gives
+a stand-alone implementation of the normal cycle method, which was
+presented in papers \cite cohen2003restricted and \cite
+cohen2006second.
 
 [TOC]
 
@@ -573,8 +575,69 @@ We run the examples on "Al" vol file, which gives the following results.
 </td></tr>
 </table>
 
+@subsection dgtal_curvature_measures_sec33 Comparison between integral invariant  and CNC curvature estimates on digital boundaries
+
+We give below a few comparisons (in terms of accuracy and speed)
+between CNC curvature estimations and Integral Invariant (II) method
+(see \ref moduleIntegralInvariant). II method is a curvature
+estimation method specialized (and restricted) to boundaries of
+digital volumes (i.e. set of voxels). Therefore we compare their
+respective performance on digitizations of polynomial surfaces.
+
+@note We use example curvature-comparator-ii-cnc-3d.cpp to do the
+computations.
+
+We run the tests on \b goursat polynomial surface, with digitization
+gridsteps \f$ h \in \{ 1, 0.5, 0.25, 0.125, 0.0625 \} \f$. Parameters are
+set up as follows:
+
+- \b II \b method
+  - integration radius is \f$ R = 3h^{\frac{1}{3}} \f$, which is the
+    standard parametrization,
+  - we test both mean curvature and Gaussian curvature estimations.
+
+- \b CNC \b method
+  - corrected normal vector field is II normal vector estimation with
+    also radius \f$ R = 3h^{\frac{1}{3}} \f$,
+  - measure radius for CNC is \f$ \rho = h^{\frac{1}{2}} \f$,
+  - either constant or interpolated CNC measures are computed,
+  - we test both mean curvature and Gaussian curvature estimations.
+
+We plot below accuracy as a function of the digitization gridstep.
+
+<table>
+<tr><td>
+\image html goursat-ii-ccnc-h-vs-H.jpg "Accuracy comparison between II and constant CNC mean curvature estimates, as a function of the digitization gridstep" width=90%
+</td><td>
+\image html goursat-ii-icnc-h-vs-H.jpg "Accuracy comparison between II and interpolated CNC mean curvature estimates, as a function of the digitization gridstep" width=90%
+</td><td>
+\image html goursat-ii-icnc-h-vs-G.jpg "Accuracy comparison between II and interpolated CNC Gaussian curvature estimates, as a function of the digitization gridstep" width=90%
+</td></tr>
+</table>
+
+We plot below accuracy as a function of the computation time (in ms).
+
+<table>
+<tr><td>
+\image html goursat-ii-icnc-t-vs-H.jpg "Accuracy comparison between II and interpolated CNC mean curvature estimates, as a function of the computation time (in ms)" width=90%
+</td><td>
+\image html goursat-ii-icnc-t-vs-G.jpg "Accuracy comparison between II and interpolated CNC Gaussian curvature estimates, as a function of the computation time (in ms)" width=90%
+</td></tr>
+</table>
 
 
+| curvature estimator | number of surfels | error loo | error l2 | total time (ms) | normal estimation time (ms) |
+|---------------------|-------------------|----------|-----------|-----------------|-----------------------------|
+| II  mean curvature      | 9510   | 0.212016  | 0.0835415 | 148 (mean+Gaussian) |    |
+| ICNC mean curvature     | 9510   | 0.0640707 | 0.0199467 | 450 (mean+Gaussian) | 83 |
+| II  Gaussian curvature  | 9510   | 0.0501252 | 0.0150247 | 148 (mean+Gaussian) |    |
+| ICNC Gaussian curvature | 9510   | 0.0263134 | 0.00686261| 450 (mean+Gaussian) | 83 |
+| II  mean curvature      | 151374 | 0.124552  | 0.0546997 |31635 (mean+Gaussian) |    |
+| ICNC mean curvature     | 151374 | 0.0295432 | 0.00730423|38582 (mean+Gaussian) |19322 |
+| II  Gaussian curvature  | 151374 | 0.0433595 | 0.00983477|31635 (mean+Gaussian) |    |
+| ICNC Gaussian curvature | 151374 | 0.0194384 | 0.00262745|38582 (mean+Gaussian) |19322 |
+
+@note Both CNC curvature estimators are twice to five times more accurate than II curvature estimates. About speed, asymptotically, most of the time taken by CNC is for computing II normal vectors. Finally, as shown by pictures, CNC curvature estimates are much more stable than II curvature estimates, which tend to oscillate around the correct value. 
 
 */
 }
