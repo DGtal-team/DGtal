@@ -18,11 +18,10 @@ curvature measures on quite arbitrary meshes (any instance of
 SurfaceMesh). The classical curvature measures related to the Normal
 Cycle are provided as well as the more general curvature measures
 based on corrected normal currents. This module implements the
-research on corrected normal currents presented in papers \cite
-lachaud:hal-02193774 and \cite lachaud2020interpolated, and also gives
+research on corrected normal currents presented in papers
+\cite lachaud:hal-02193774 and \cite lachaud2020interpolated, and also gives
 a stand-alone implementation of the normal cycle method, which was
-presented in papers \cite cohen2003restricted and \cite
-cohen2006second.
+presented in papers \cite cohen2003restricted and \cite cohen2006second.
 
 [TOC]
 
