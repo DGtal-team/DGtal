@@ -958,7 +958,7 @@ TEST_CASE("3D test interior/exterior voxels to a digital surface")
   K.init( low, high, true );
   auto bel = Surfaces<Z3i::KSpace>::findABel(K, set);
   LightImplicitDigitalSurface<Z3i::KSpace, Z3i::DigitalSet> surface(K,set,true,bel);
-  for(auto &surfel: surface)
+  for(const auto &surfel: surface)
   {
     auto voxel = K.interiorVoxel(surfel);
     REQUIRE(set(voxel));

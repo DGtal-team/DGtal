@@ -150,7 +150,7 @@ geometry. Indeed we need to relate surfels together so as to have a
 topology on the digital surface. The first step is to transform the
 digital surface into a graph.
  
-@note From a properly oriented @f$n-1@f$-cell, one can retreive the coordinates
+@note From a properly oriented @f$n-1@f$-cell (i.e. a surfel), one can retreive the coordinates
  in @f$Z^n@f$ of the associated interior / exterior grid points (voxel in 3d) using the KhalimskySpaceND::interiorVoxel
  and KhalimskySpaceND::exteriorVoxel methods.
 

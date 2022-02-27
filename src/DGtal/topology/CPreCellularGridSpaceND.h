@@ -268,7 +268,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 | Direct incident cell|\e x.sDirectIncident(\e sc,\e k)| |\e SCell     |              | return the signed cell that is the direct incident cell to \e sc along axis \e k | | |
 | Indirect incident cell|\e x.sIndirectIncident(\e sc,\e k)| |\e SCell |              | return the signed cell that is the indirect incident cell to \e sc along axis \e k | | |
 | Interior voxel|\e x.interiorVoxel(\e sc  )| |\e Point |  \e sc must be a (n-1)-scell            | return the interior voxel of a signed surfel| | |
-| Exteriori voxel  |\e x.exteriorVoxel(\e sc)| |\e Point |  \e sc must be a (n-1)-scell            | return the exterior voxel of a signed surfel | | |
+| Exterior voxel  |\e x.exteriorVoxel(\e sc)| |\e Point |  \e sc must be a (n-1)-scell            | return the exterior voxel of a signed surfel | | |
 
 
 # Invariants
