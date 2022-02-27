@@ -1,4 +1,5 @@
 set(DGTAL_EXAMPLES_SRC
+        curvature-comparator-ii-cnc-3d
         curvature-measures-icnc-3d
         curvature-measures-icnc-XY-3d
         curvature-measures-nc-3d
