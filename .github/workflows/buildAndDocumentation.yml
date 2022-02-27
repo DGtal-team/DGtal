@@ -9,6 +9,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE:   Release
+  TESTBLACKLIST: "(testCompressedVolWriter|testLongvol|testLinearStructure)"
   CONFIG_GLOBAL: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=25
   CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_ITK=false -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
   CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true
@@ -27,7 +28,6 @@ jobs:
        with:
           fetch-depth: 10
 
-
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
        run: |
@@ -37,8 +37,6 @@ jobs:
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
        run: brew install boost ninja gmp
-
-
 
      - name: Get white list of tests
        run: |
@@ -70,8 +68,8 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        shell: bash
        run: |
-           echo ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)"
-           ctest -C $BUILD_TYPE --output-on-failure -E "(testLinearStructure|testPointVector)"
+           echo ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
+           ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
