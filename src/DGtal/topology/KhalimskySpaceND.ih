@@ -833,6 +833,26 @@ uCoords( const Cell & c ) const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+interiorVoxel( const SCell & sc ) const
+{
+  ASSERT( sIsValid(sc) );
+  return PreCellularGridSpace::interiorVoxel( sc );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskySpaceND< dim, TInteger>::Point
+DGtal::KhalimskySpaceND< dim, TInteger>::
+exteriorVoxel( const SCell & sc ) const
+{
+  ASSERT( sIsValid(sc) );
+  return PreCellularGridSpace::exteriorVoxel( sc );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger>::Integer
 DGtal::KhalimskySpaceND< dim, TInteger>::
 sKCoord( const SCell & c, DGtal::Dimension k ) const
