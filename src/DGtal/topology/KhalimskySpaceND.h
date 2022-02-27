@@ -2018,6 +2018,24 @@ ose sign is positive).
      */
     SCell sIndirectIncident( const SCell & p, Dimension k ) const;
 
+    
+    
+    /** @brief For a given surfel ((n-1)-signed cell), returns its interior voxel
+     * (point in Z^d given by the direct incident n-cell to the given cell).
+     *
+     * @param c any signed pre-cell.
+     * @return the inner voxel.
+     */
+    Point interiorVoxel( const SCell & c ) const;
+    
+    /** @brief For a given surfel ((n-1)-signed cell), returns its exterior voxel
+     * (point in Z^d given by the indirect incident n-cell to the given cell).
+     *
+     * @param c any signed pre-cell.
+     * @return the outer voxel.
+     */
+    Point exteriorVoxel( const SCell & c ) const;
+    
     /// @}
 
     // ----------------------- Interface --------------------------------------

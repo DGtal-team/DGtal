@@ -1382,7 +1382,30 @@ sIndirectIncident( SCell p, DGtal::Dimension k )
 
   return p;
 }
-
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskyPreSpaceND< dim, TInteger >::Point
+DGtal::KhalimskyPreSpaceND< dim, TInteger >::
+interiorVoxel( const SCell &p) 
+{
+  ASSERT(sDim(p) == (dimension - 1));
+  auto d = sOrthDir( p );
+  auto voxel = sIncident( p, d, sDirect( p, d ) );
+  return sCoords( voxel );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+typename DGtal::KhalimskyPreSpaceND< dim, TInteger >::Point
+DGtal::KhalimskyPreSpaceND< dim, TInteger >::
+exteriorVoxel( const SCell &p)
+{
+  ASSERT(sDim(p) == (dimension - 1));
+  auto d = sOrthDir( p );
+  auto voxel = sIncident( p, d, !sDirect( p, d ) );
+  return sCoords( voxel );
+}
 
 
 
