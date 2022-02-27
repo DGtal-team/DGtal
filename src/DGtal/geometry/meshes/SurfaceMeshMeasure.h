@@ -47,10 +47,33 @@
 namespace DGtal
 {
   /**
-     Description of template class 'SurfaceMeshMeasure'
-     <p> \brief Aim: stores an arbitrary measure on a SurfaceMesh object.
-     The measure can be spread onto its vertices, edges, or faces.
-     
+     Description of template class 'SurfaceMeshMeasure' <p> \brief
+     Aim: stores an arbitrary measure on a SurfaceMesh object.  The
+     measure can be spread onto its vertices, edges, or faces.  This
+     class is notably used by CorrectedNormalCurrentComputer and
+     NormalCycleComputer to store the curvature measures, which may be
+     located on different cells. The measure can be scalar or any
+     other summable type (see template parameter TValue).
+
+     The common workflow to use this object is to access its public
+     array data with a call to SurfaceMeshMeasure::kMeasures, then
+     resize it and fill in its values. Of course, the indices used to
+     number cells in the SurfaceMesh are the same as the indices used
+     to store the measure associated to cells.
+
+     \code
+     ScalarMeasure mu0( &myMesh, 0.0 );
+     auto& face_mu0 = mu0.kMeasures( 2 );
+     face_mu0.resize( myMesh.nbFaces() );
+     ...
+     \endcode
+
+     Afterwards, you can access the global measure of a set of cells
+     specified by their indices through convenient methods like
+     SurfaceMeshMeasure::vertexMeasure,
+     SurfaceMeshMeasure::edgeMeasure, SurfaceMeshMeasure::faceMeasure,
+     with potential weights.
+
      @tparam TRealPoint an arbitrary model of RealPoint.
      @tparam TRealVector an arbitrary model of RealVector.
      @tparam TValue an arbitrary model of CCommutativeRing
