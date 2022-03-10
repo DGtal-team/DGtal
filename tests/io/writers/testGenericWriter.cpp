@@ -102,13 +102,12 @@ bool testGenericWriter()
   trace.info() <<"[done]"  << std::endl;
   
   bool okh5 = true;
-  bool okh5bis = true;
 #ifdef WITH_HDF5
   trace.info() << "Testing writing HDF5 3D ... ";
   okh5 = anImportedImage1 >> "testGenericWriter.h5";
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing HDF5 3D (bis) ... ";  
-  okh5bis = DGtal::GenericWriter<Image3D>::exportFile("testGenericWriter_bis.h5", anImportedImage1, "/UInt8Array3D");
+  okh5 = okh5 && DGtal::GenericWriter<Image3D>::exportFile("testGenericWriter_bis.h5", anImportedImage1, "/UInt8Array3D");
   trace.info() <<"[done]"  << std::endl;
 #endif
   
@@ -162,7 +161,7 @@ bool testGenericWriter()
   bool ok9 = true;
 #endif  
 
-  nbok += ((ok1 && okh5 && okh5bis && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && okITK) ? 1 : 0); 
+  nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && okITK) ? 1 : 0); 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
