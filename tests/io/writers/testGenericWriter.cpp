@@ -148,20 +148,16 @@ bool testGenericWriter()
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing raw ... ";  
   bool ok5 = anImportedImage2 >> "testGenericWriter.raw";
-  trace.info() <<"[done]"  << std::endl;
   bool ok6 = DGtal::GenericWriter<Image3D32bits>::exportFile( "testGenericWriter32bits3D.raw", an32bitsImage3D);
-  trace.info() <<"[done]"  << std::endl;
   bool ok7 = DGtal::GenericWriter<Image2D32bits>::exportFile( "testGenericWriter32bits2D.raw", an32bitsImage2D);
   trace.info() <<"[done]"  << std::endl;
+  trace.info() << "Testing writing color image writer ... ";  
   bool ok8 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.ppm", anColorImage2D);
-  trace.info() <<"[done]"  << std::endl;
 #ifdef WITH_MAGICK
-  bool ok9 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.png", anColorImage2D);
-#else
-  bool ok9 = true;
+  ok8 = ok8  DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.png", anColorImage2D);
 #endif  
-
-  nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && ok9 && okITK) ? 1 : 0); 
+  trace.info() <<"[done]"  << std::endl;
+  nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && okITK) ? 1 : 0); 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
