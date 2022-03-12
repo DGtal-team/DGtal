@@ -434,7 +434,7 @@ measures wrt simple subsets of \f$ \mathbb{R}^3 \f$.
   x must lie on or close to the face \a f.
 
 @note The measures may be associated to 0-, 1-, 2- cells, but
-generally you do not require this knowledge. If you prefer to have
+generally you do not require this level of detail. If you prefer to have
 direct access to these measures, you have several overloaded methods
 to do this: SurfaceMeshMeasure::vertexMeasure,
 SurfaceMeshMeasure::edgeMeasure, SurfaceMeshMeasure::faceMeasure. They
