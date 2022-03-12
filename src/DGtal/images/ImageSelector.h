@@ -46,6 +46,9 @@
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
+#ifdef WITH_ITK
+#include "DGtal/images/ImageContainerByITKImage.h"
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,7 +56,7 @@ namespace DGtal
 
   enum ImageIterability {  HIGH_ITER_IMAGE = 0 , LOW_ITER_I = 1};
   enum ImageBelongTestability {  HIGH_BEL_I = 0, LOW_BEL_I = 2 };
-  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4 };
+  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4, ITKIMAGEDATA_CONTAINER_I = 5};
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ImageSelector
@@ -73,7 +76,7 @@ namespace DGtal
      * Adequate digital set representation for the given preferences.
      */
     typedef ImageContainerBySTLVector<Domain,Value> Type;
-    
+
   };
 } // namespace DGtal
 

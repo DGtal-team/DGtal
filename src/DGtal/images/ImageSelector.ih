@@ -39,7 +39,7 @@
 namespace DGtal {
 
   /**
-   * ImageSelector specializarion when Preferences is LOW_ITER_I+LOW_BEL_I
+   * ImageSelector specialization when Preferences is LOW_ITER_I+LOW_BEL_I
    */
   template <typename Domain,  typename Value>
   struct ImageSelector<Domain,  Value, LOW_ITER_I+LOW_BEL_I>
@@ -50,6 +50,24 @@ namespace DGtal {
     typedef ImageContainerBySTLMap<Domain,Value> Type;
   };
 
+
+  /**
+   * ImageSelector specialization when Preferences is ITKIMAGEDATA_CONTAINER_I
+   */
+  template <typename Domain,  typename Value>
+  struct ImageSelector<Domain,  Value, ITKIMAGEDATA_CONTAINER_I>
+  {
+    /**
+     * Adequate digital set representation for the given preferences.
+     */
+#ifdef WITH_ITK
+    typedef ImageContainerByITKImage<Domain, Value> Type;
+#else
+    typedef ImageContainerBySTLVector<Domain,Value> Type;
+#endif
+  };
+
+  
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
