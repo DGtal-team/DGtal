@@ -273,7 +273,6 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
       d[ l ] = d[ l ] + f;
       e[ l ] = Quantity( 0.0 );
     }
-  
   // Sort eigenvalues and corresponding vectors.
   for ( Dimension i = 0; i < dimensionMinusOne; ++i )
     {

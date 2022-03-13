@@ -108,9 +108,7 @@ exportFile( const std::string & filename,
       return RawWriter<TContainer>::template exportRaw<TValue>( filename, anImage, aFunctor  );
     }
   #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }
@@ -148,9 +146,7 @@ exportFile( const std::string & filename,
       return RawWriter<TContainer>::template exportRaw<DGtal::uint64_t>( filename, anImage, aFunctor );
     }
  #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }
@@ -200,9 +196,7 @@ exportFile( const std::string & filename,
       return RawWriter< TContainer, TFunctor >::exportRaw8( filename, anImage, aFunctor );
     }
  #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }

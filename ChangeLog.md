@@ -2,7 +2,11 @@
 
 ## New features / critical changes
 
-- *Geometry Package*
+- *Geometry package*
+  - Add curvature measures computation on 3D surface mesh:
+    implements Normal Cycle, face-constant Corrected Normal Current
+    and vertex-interpolated Corrected Normal Current.
+    (Jacques-Olivier Lachaud,[#1617](https://github.com/DGtal-team/DGtal/pull/1617))
   - Completes the digital convexity module with new functions
     related to full convexity: check of full convexity for arbitrary
     digital sets in nD, and helper classes for using full convexity in
@@ -39,7 +43,13 @@
     surfel (signed cell of a Khalimksy space). (David Coeurjolly,
     [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
+  
 ## Changes
+- *Image*
+  - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
+    format support. New option to keep set domain or to compute current bounding
+    box of elements of the set in ImageFromSet.
+    (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
 
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
