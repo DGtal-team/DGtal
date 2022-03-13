@@ -2,7 +2,11 @@
 
 ## New features / critical changes
 
-- *Geometry Package*
+- *Geometry package*
+  - Add curvature measures computation on 3D surface mesh:
+    implements Normal Cycle, face-constant Corrected Normal Current
+    and vertex-interpolated Corrected Normal Current.
+    (Jacques-Olivier Lachaud,[#1617](https://github.com/DGtal-team/DGtal/pull/1617))
   - Completes the digital convexity module with new functions
     related to full convexity: check of full convexity for arbitrary
     digital sets in nD, and helper classes for using full convexity in

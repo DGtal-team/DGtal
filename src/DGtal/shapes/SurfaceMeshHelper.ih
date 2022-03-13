@@ -74,8 +74,11 @@ makeSphere( const Scalar radius, const RealPoint& center,
     faces.push_back( std::vector< Size > { 0u, fv( 0, (j+1) % n ), fv( 0, j ) } ); 
   for ( Size i = 0; i < m-1; ++i )
     for ( Size j = 0; j < n; ++j )
-      faces.push_back( std::vector< Size >
-                       { fv( i, j ), fv( i, (j+1) % n ), fv( i+1, (j+1) % n ), fv( i+1, j ) } );
+      {
+        faces.push_back( std::vector< Size >
+                         { fv( i, j ), fv( i, (j+1) % n ),
+                           fv( i+1, (j+1) % n ), fv( i+1, j ) } );
+      }
   for ( Size j = 0; j < n; ++j )
     faces.push_back( std::vector< Size > { fv( m-1, j ), fv( m-1, (j+1) % n ), m*n+(Size)1 } );
   SurfaceMesh smesh( p.cbegin(), p.cend(), faces.cbegin(), faces.cend() );
