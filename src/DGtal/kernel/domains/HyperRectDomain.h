@@ -566,7 +566,7 @@ namespace DGtal
       {
         Size res = 1;
         for(auto i=0; i < Space::dimension; ++i)
-          res *= myUpperBound[i] - myLowerBound[i] + 1;
+          res *= static_cast<Size>(myUpperBound[i] - myLowerBound[i] + 1);
         return res;
       }
 
