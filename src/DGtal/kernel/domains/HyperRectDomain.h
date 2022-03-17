@@ -115,7 +115,7 @@ namespace DGtal
     typedef typename Space::Vector Vector;
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
-    typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
+    typedef typename Point::Coordinate Coordinate;
 
     BOOST_STATIC_CONSTANT(Dimension, dimension = Space::dimension);
 
@@ -566,7 +566,7 @@ namespace DGtal
       {
         Size res = 1;
         for(auto i=0; i < Space::dimension; ++i)
-          res *= static_cast<Size>(myUpperBound[i] - myLowerBound[i] + 1);
+          res *= static_cast<Size>(NumberTraits<Coordinate>::castToUInt64_t(myUpperBound[i] - myLowerBound[i] + 1));
         return res;
       }
 
