@@ -51,8 +51,8 @@ for PYBIN in "${PYBINARIES[@]}"; do
 
     # Remove when scikit-build includes cmake_target PR:
     # https://github.com/scikit-build/scikit-build/pull/477
-    #${PYBIN}/python -m pip uninstall scikit-build -y
-    #${PYBIN}/python -m pip install -r requirements-deploy.txt
+    ${PYBIN}/python -m pip uninstall scikit-build -y
+    ${PYBIN}/python -m pip install -r requirements-deploy.txt
 
     # TODO: Switch BOOST_ROOT to these two when CMake is at least 3.15 and remove Boost_ROOT
     # -DCMAKE_FIND_PACKAGE_PREFER_CONFIG:BOOL=ON \
