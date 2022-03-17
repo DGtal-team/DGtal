@@ -213,7 +213,8 @@ bool testProjector()
     aGridSize.push_back(5);  
     PointVector<2,int> shiftVector(0 ,0);
     DGtal::functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource,
-                                                                                           aGridSize,  shiftVector);
+                                                                                           aGridSize,
+                                                                                           shiftVector);
     trace.info()<< "Subsampling functor on 2D domain " << domainSource <<" with grid size " 
                 << aGridSize[0] << " " << aGridSize[1] << " and shift vector "<< shiftVector <<std::endl ;
     PointVector<2,int> pointTest(1,0);
@@ -247,7 +248,7 @@ bool testProjector()
             (pointInSourceDomain3D2== PointVector<3,int>(0, 1, 0));
 
   // FlipDomainAxis
-    std::vector<unsigned int> vectFlip; 
+    std::vector<HyperRectDomain<SpaceND<3, int> >::Size> vectFlip;
     vectFlip.push_back(1); 
     vectFlip.push_back(2);     
     functors::FlipDomainAxis<HyperRectDomain<SpaceND<3, int> > > flipFunctorAxis12(domainSource3D, vectFlip);
