@@ -565,13 +565,8 @@ namespace DGtal
     Size size() const
       {
         Size res = 1;
-        Point p = Point::diagonal(1);
-        Vector e =  (myUpperBound - myLowerBound) + p;
-        typename Vector::ConstIterator it, itEnd;
-        for ( it = e.begin(), itEnd = e.end(); it != itEnd; ++it)
-          {
-            res *= *it;
-          }
+        for(auto i=0; i < Space::dimension; ++i)
+          res *= myUpperBound[i] - myLowerBound[i] + 1;
         return res;
       }
 
