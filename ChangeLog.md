@@ -69,7 +69,6 @@
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
 
-
 - *Build*
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
