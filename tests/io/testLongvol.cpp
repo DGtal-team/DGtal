@@ -61,7 +61,7 @@ bool testLongvol()
   typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint64_t> Image;
   Image image(Z3i::Domain(a,b));
   
-  image.setValue(c,45693);
+  image.setValue(c,0X8899AABBCCDDEEFFull);
   
   LongvolWriter<Image>::exportLongvol("export-longvol.longvol",image);
  
@@ -71,8 +71,7 @@ bool testLongvol()
   Image::ConstIterator ito = image.begin();
   for(Image::ConstIterator it = image2.begin(), itend=image2.end();
       it != itend; ++it, ++ito)
-    if (((*it) != 0 ) || ((*ito) != 0))
-    allFine &= ( ((*it)*(*ito)) != 0);
+    allFine &= (*it) == (*ito);
       
   nbok += allFine ? 1 : 0; 
   nb++;
