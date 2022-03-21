@@ -47,7 +47,7 @@
 ## Changes
 - *Image*
   - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >1024^3)
-    (David Coeurjolly, [#16XX](https://github.com/DGtal-team/DGtal/pull/16XX))
+    (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
   - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
     format support. New option to keep set domain or to compute current bounding
     box of elements of the set in ImageFromSet.
@@ -68,7 +68,6 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
-
 
 - *Build*
   - Continuous integration does not use Travis anymore but Github
@@ -122,6 +121,8 @@
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
   - Fix compilation issue in MeshReader compilation.
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611)
+  - Minor fixes in VolReader and LongVolReader to be able to load large vol files.
+    (David Coeurjolly, [#1637](https://github.com/DGtal-team/DGtal/pull/1637))
 
 - *Geometry package*
   - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
@@ -131,7 +132,7 @@
       trivial normal vector if it has been set to 'False'.
   - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
     delegate, but only checks the relevant parts (which have been pushed in to separate methods).
-  (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
   - Fixing issue with the automatic deploy of the "nightly" documentation.
     (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
 

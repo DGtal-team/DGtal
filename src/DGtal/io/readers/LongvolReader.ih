@@ -176,12 +176,12 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     {
       T image( domain);
       
-      long count = 0;
+      size_t count = 0;
       DGtal::uint64_t val=0;
       
       typename T::Domain::ConstIterator it = domain.begin();
-      long int total = sx * sy * sz ;
-      long int totalbytes = total * sizeof(val);
+      size_t total = sx * sy * sz ;
+      size_t totalbytes = total * sizeof(val);
       std::stringstream main;
       
       unsigned char c_temp;
@@ -194,7 +194,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
      
       if ( count != totalbytes )
       {
-        trace.error() << "LongvolReader: can't read file (raw data) !\n";
+        trace.error() << "LongvolReader: can't read file (raw data). I read "<<count<<" bytes instead of "<<total<<".\n";
         throw dgtalexception;
       }
     
@@ -207,7 +207,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
         in.push(main);
         boost::iostreams::copy(in, uncompressed);
         //Apply to the image structure
-        for(auto i=0; i < total; ++i)
+        for(size_t i=0; i < total; ++i)
         {
           read_word(uncompressed , val);
           image.setValue(( *it ), aFunctor(val) );
@@ -217,7 +217,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
       else
       {
         //Apply to the image structure
-        for(auto i=0; i < total; ++i)
+        for(size_t i=0; i < total; ++i)
         {
           read_word(main, val);
           image.setValue(( *it ), aFunctor(val) );

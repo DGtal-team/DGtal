@@ -37,7 +37,6 @@
 #include "DGtal/io/readers/LongvolReader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-
 using namespace std;
 using namespace DGtal;
 
