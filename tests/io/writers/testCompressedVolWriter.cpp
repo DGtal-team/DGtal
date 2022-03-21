@@ -39,7 +39,6 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
-
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
