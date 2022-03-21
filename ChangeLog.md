@@ -123,6 +123,9 @@
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611)
   - Minor fixes in VolReader and LongVolReader to be able to load large vol files.
     (David Coeurjolly, [#1637](https://github.com/DGtal-team/DGtal/pull/1637))
+  - Fix LongVolReader that fails to read large values. It was why testLongvol and
+    testCompressedVolWriter were failing on some configurations.
+    (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
 
 - *Geometry package*
   - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
