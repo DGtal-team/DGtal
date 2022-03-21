@@ -122,7 +122,7 @@
   - Fix compilation issue in MeshReader compilation.
     (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611)
   - Minor fixes in VolReader and LongVolReader to be able to load large vol files.
-    (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
+    (David Coeurjolly, [#1637](https://github.com/DGtal-team/DGtal/pull/1637))
 
 - *Geometry package*
   - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
