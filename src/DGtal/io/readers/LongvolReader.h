@@ -130,14 +130,7 @@ namespace DGtal
     static
     std::stringstream& read_word( std::stringstream & fin, Word& aValue )
     {
-      aValue = 0;
-      char c;
-      for (unsigned int size = 0; size < sizeof( Word ); ++size)
-      {
-        fin.get( c ) ;
-        unsigned char cc=static_cast<unsigned char>(c);
-        aValue |= (cc << (8 * size));
-      }
+      fin.get(reinterpret_cast<char*>(&aValue), sizeof(Word) + 1);
       return fin;
     }
     
