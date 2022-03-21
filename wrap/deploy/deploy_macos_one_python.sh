@@ -14,7 +14,6 @@ python -m pip install cmake
 python -m pip install ninja
 python -m pip install delocate
 python -m pip install scikit-build
-#python -m pip install -r $script_dir/requirements-deploy.txt
 
 
 pushd ${script_dir}
