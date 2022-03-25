@@ -43,7 +43,7 @@
     surfel (signed cell of a Khalimksy space). (David Coeurjolly,
     [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
-  
+
 ## Changes
 - *Image*
   - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >1024^3)
@@ -88,7 +88,7 @@
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
     new shift method to avoid recomputing orientation plane.
     (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
-    
+
 
 
 ## Bug fixes
@@ -103,12 +103,12 @@
   - Fix cmake IN_LIST use policy. (Bertrand Kerautret,
     [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
   - Adding a explicit list of tests to exclude from Github Actions
-    (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
+    (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596))
   - Fixing bugs in the exclude list for CI
-    (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
+    (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602))
   - Reactivating Github Actions bots
-    (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628)
-
+    (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
+  - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602))
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
     as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
