@@ -108,7 +108,9 @@
     (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602))
   - Reactivating Github Actions bots
     (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
-  - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602))
+  - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly,
+    [#1641](https://github.com/DGtal-team/DGtal/pull/1641))
+    
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
     as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
