@@ -113,7 +113,9 @@ if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
      endif()
     endif()
   endif()
-  find_dependency(OpenMP REQUIRED @OpenMP_HINTS@   )
+  find_dependency(OpenMP REQUIRED
+         @OpenMP_HINTS@
+         )
   set(WITH_OPENMP 1)
 endif()
 
