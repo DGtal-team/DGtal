@@ -31,6 +31,7 @@
 #include <DGtal/shapes/SurfaceMesh.h>
 #include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 #include <DGtal/dec/PolygonalCalculus.h>
+#include <DGtal/math/linalg/DirichletConditions.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -173,21 +174,32 @@ void computeLaplace()
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(nbv);
 
   //Setting some random sources
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector p = g;
   for(auto cpt=0; cpt< 10;++cpt)
-    g( rand() % nbv) =  rand() % 100;
+    {
+      int idx  = rand() % nbv;
+      g( idx ) = rand() % 100;
+      p( idx ) = 1.0;
+    }
   
   //Solve Δu=0 with g as boundary conditions
+  typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix I(nbv,nbv);
-  I.setIdentity();
+  // PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix I(nbv,nbv);
+  // I.setIdentity();
   
   trace.beginBlock("Prefactorization...");
-  solver.compute(L + 0.0001*I);  //regularization needed for closed surface.
+  DC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, p );
+  solver.compute( L_dirichlet );  
+  // solver.compute(L + 0.0001*I);  //regularization needed for closed surface.
   ASSERT(solver.info()==Eigen::Success);
   trace.endBlock();
   
   trace.beginBlock("Solve...");
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = solver.solve(g);
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g_dirichlet = DC::dirichletVector( L, g, p, g );
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector x_dirichlet = solver.solve( g_dirichlet );
+  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = DC::dirichletSolution( x_dirichlet, p, g );
+  // PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = solver.solve(g);
   ASSERT(solver.info()==Eigen::Success);
   trace.endBlock();
   
