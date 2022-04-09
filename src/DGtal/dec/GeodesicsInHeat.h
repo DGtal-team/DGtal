@@ -128,9 +128,9 @@ class GeodesicsInHeat
       //may have issues with positive semi-definite matrix.
       SparseMatrix I(myCalculus->nbVertices(),myCalculus->nbVertices());
       I.setIdentity();
-      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami() + 1e-6 * I;
+      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami();
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
-      SparseMatrix heatOpe   = mass + dt*laplacian;
+      SparseMatrix heatOpe   = mass - dt*laplacian;
       
       //Prefactorizing
       myPoissonSolver.compute(laplacian);
@@ -187,7 +187,7 @@ class GeodesicsInHeat
         grad.normalize();
       
         // div
-        DenseMatrix oneForm = myCalculus->flat(f)*grad;
+        DenseMatrix   oneForm = myCalculus->flat(f)*grad;
         Vector divergenceFace = myCalculus->divergence(f) * oneForm;
         cpt=0;
         for(auto v: vertices)

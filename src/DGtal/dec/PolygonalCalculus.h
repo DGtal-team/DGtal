@@ -435,7 +435,7 @@ public:
     if (checkCache(DIVERGENCE_,f))
       return myGlobalCache[DIVERGENCE_][f];
  
-    DenseMatrix op = D(f).transpose() * M(f);
+    DenseMatrix op = -1.0 * D(f).transpose() * M(f);
     setInCache(DIVERGENCE_,f,op);
     
     return op;
