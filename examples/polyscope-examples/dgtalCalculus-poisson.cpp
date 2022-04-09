@@ -30,6 +30,7 @@
 #include <DGtal/shapes/SurfaceMesh.h>
 #include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 #include <DGtal/dec/PolygonalCalculus.h>
+#include <DGtal/math/linalg/DirichletConditions.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -57,69 +58,6 @@ polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
 float scale = 0.1;
 
-/// System of the form A x = b, where A is SDP, where you wish to
-/// have Dirichlet boundary conditions u at some places p (`p=1`or `p=0`).
-/// @pre `#row(A) = #col(A) = #col(u)`
-/// @return the linear matrix A' to prefactor.
-SparseMatrix dirichletOperator( const SparseMatrix& A,
-                                  const Form& p )
-{
-  ASSERT( A.cols() == A.rows() );
-  ASSERT( p.rows() == A.rows() );
-  const auto n = p.rows();
-  std::vector< Index > relabeling( n );
-  Index j = 0;
-  for ( Index i = 0; i < p.rows(); i++ )
-    relabeling[ i ] = ( p[ i ] == 0.0 ) ? j++ : n;
-  // Building matrix
-  SparseMatrix Ap( j, j );
-  std::vector< Triplet > triplets;
-  for ( int k = 0; k < A.outerSize(); ++k )
-    for ( typename SparseMatrix::InnerIterator it( A, k ); it; ++it )
-      {
-        if ( ( relabeling[ it.row() ] != n ) && ( relabeling[ it.col() ] != n ) )
-          triplets.push_back( { relabeling[ it.row() ], relabeling[ it.col() ],
-                it.value() } );
-      }
-  Ap.setFromTriplets( triplets.cbegin(), triplets.cend() );
-  return Ap;
-}
-
-/// System of the form A x = b, where A is SDP, where you wish to
-/// have Dirichlet boundary conditions u at some places p != 0.
-/// @pre `#row(A) = #col(A) = #col(u)`
-/// @return the form b' to solve for
-Form dirichletVector( const SparseMatrix& A,
-                      const Form& b,
-                      const Form& p,
-                      const Form& u ) 
-{
-  ASSERT( A.cols() == A.rows() );
-  ASSERT( p.rows() == A.rows() );
-  const auto n = p.rows();
-  Form  up = p.array() * u.array();
-  Form tmp = b.array() - (A * up).array();
-  std::vector< Index > relabeling( n );
-  Index j = 0;
-  for ( Index i = 0; i < p.rows(); i++ )
-    relabeling[ i ] = ( p[ i ] == 0.0 ) ? j++ : n;
-  Form  bp( j );
-  for ( Index i = 0; i < p.rows(); i++ )
-    if ( p[ i ] == 0 ) bp[ relabeling[ i ] ] = tmp[ i ];
-  return bp;
-}
-
-Form dirichletSolution( const Form& xp,
-                        const Form& p,
-                        const Form& u ) 
-{
-  Form  x = Form( p.rows() );
-  Index j = 0;
-  for ( Index i = 0; i < p.rows(); i++ )
-    x[ i ] = ( p[ i ] == 0.0 ) ? xp[ j++ ] : u[ i ];
-  return x;
-}
-
 void computeLaplace()
 {
   //! [PolyDEC-init]
@@ -143,14 +81,15 @@ void computeLaplace()
     b(adjVertices.second) = 1.0;
   }
 
-  //Solve Δu=0 with g as boundary conditions
+  // Solve Δu=0 with g as boundary conditions
+  typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
   PCalculus::Solver solver;
-  SparseMatrix L_dirichlet = dirichletOperator( L, b );
+  SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
   solver.compute( L_dirichlet );
   ASSERT(solver.info()==Eigen::Success);
-  Form g_dirichlet = dirichletVector( L, g, b, g );
+  Form g_dirichlet = DC::dirichletVector( L, g, b, g );
   Form x_dirichlet = solver.solve( g_dirichlet );
-  Form u = dirichletSolution( x_dirichlet, b, g );
+  Form u = DC::dirichletSolution( x_dirichlet, b, g );
 
   // //Solve Δu=0 with g as boundary conditions
   // //(the operator constructon and its prefactorization could have been factorized)
