@@ -15,10 +15,10 @@
  */
 /**
  * @file
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2021/09/02
+ * @date 2022/04/10
  *
  * This file is part of the DGtal library.
  */
@@ -29,14 +29,13 @@
 #include <DGtal/helpers/Shortcuts.h>
 #include <DGtal/helpers/ShortcutsGeometry.h>
 #include <DGtal/shapes/SurfaceMesh.h>
-#include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 
 #include <DGtal/dec/PolygonalCalculus.h>
 #include <DGtal/dec/GeodesicsInHeat.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
-#include <polyscope/point_cloud.h>
+#include <polyscope/pick.h>
 
 #include "ConfigExamples.h"
 
@@ -56,84 +55,90 @@ typedef SurfMesh::Vertex                  Vertex;
 typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PolyCalculus;
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
-polyscope::SurfaceMesh *psMeshReg;
 SurfMesh surfmesh;
-SurfMesh surfmeshReg;
 float dt = 2.0;
-
+float Lambda = 0.05;
+bool Mixed = false;
 GeodesicsInHeat<PolyCalculus> *heat;
 PolyCalculus *calculus;
+int vertex_idx = -1;
+int face_idx   = -1;
+int edge_idx   = -1;
 
-GeodesicsInHeat<PolyCalculus> *heatReg;
-PolyCalculus *calculusReg;
 
-bool skipReg = true; //Global flag to enable/disable the regularization example.
 
 void precompute()
 {
-  calculus = new PolyCalculus(surfmesh);
-  heat = new GeodesicsInHeat<PolyCalculus>(calculus);
-  
-  if (!skipReg)
+  auto projEmbedder = [&]( int f, int v)
   {
-    calculusReg = new PolyCalculus(surfmeshReg);
-    heatReg = new GeodesicsInHeat<PolyCalculus>(calculusReg);
-  }
+    auto nn = surfmesh.faceNormal( f );
+    RealPoint centroid = surfmesh.faceCentroid( f );
+    RealPoint p = surfmesh.position( v );
+    const auto cp = p - centroid;
+    RealPoint q = p - nn.dot(cp)*nn;
+    return q;
+  };
+  calculus = new PolyCalculus(surfmesh);
+  calculus->setEmbedder( projEmbedder );
+  heat = new GeodesicsInHeat<PolyCalculus>(calculus);
   trace.beginBlock("Init solvers");
-  heat->init(dt);
-  if (!skipReg)
-    heatReg->init(dt);
+  heat->init(dt,Lambda,Mixed);
   trace.endBlock();
 }
 
-void addsource()
+void picksource( int v_idx )
 {
-  auto pos =rand() % surfmesh.nbVertices();
-  heat->addSource( pos );
+  heat->addSource( v_idx );
   GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
-
-  if (!skipReg)
-  {
-    heatReg->addSource( pos );
-    GeodesicsInHeat<PolyCalculus>::Vector source = heatReg->source();
-    psMeshReg->addVertexScalarQuantity("source", source);
-  }
 }
 
 void computeGeodesics()
 {
-
-  heat->addSource( 0 ); //Forcing one seed (for screenshots)
+  // heat->addSource( 0 ); //Forcing one seed (for screenshots)
   GeodesicsInHeat<PolyCalculus>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
-
-  if (!skipReg)
-  {
-    heatReg->addSource( 0 ); //Forcing one seed (for screenshots)
-    GeodesicsInHeat<PolyCalculus>::Vector dist = heatReg->compute();
-    psMeshReg->addVertexDistanceQuantity("geodesic", dist);
-  }
 }
 
 bool isPrecomputed=false;
 void myCallback()
 {
+  // Select a vertex with the mouse
+  if (polyscope::pick::haveSelection()) {
+    bool goodSelection = false;
+    auto selection = polyscope::pick::getSelection();
+    auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.first);
+    int idx = selection.second;
+
+    // Only authorize selection on the input surface and the reconstruction
+    auto surf = polyscope::getSurfaceMesh("digital surface");
+    goodSelection = goodSelection || (selectedSurface == surf);
+    const auto nv = selectedSurface->nVertices(); 
+    const auto nf = selectedSurface->nFaces(); 
+    const auto ne = selectedSurface->nEdges(); 
+    // Validate that it its a face index
+    if ( goodSelection && idx < nv )
+      {
+        std::ostringstream otext;
+        otext << "Selected vertex = " << idx;
+        ImGui::Text( "%s", otext.str().c_str() );
+        vertex_idx = idx;
+        if (!isPrecomputed)
+          {
+            precompute();
+            isPrecomputed=true;
+          }
+        picksource( vertex_idx );
+      }
+  }
+  
+  ImGui::SliderFloat("Lambda parameter", &Lambda, 0.0, 1.0);
   ImGui::SliderFloat("dt", &dt, 0.,4.);
-  ImGui::Checkbox("Skip regularization", &skipReg);
+  ImGui::Checkbox("Use mixed Neumann+Dirichlet heat solution", &Mixed);
   if(ImGui::Button("Precomputation (required if you change the dt)"))
   {
     precompute();
     isPrecomputed=true;
-  }
-  if(ImGui::Button("Add random source"))
-  {
-    if (!isPrecomputed)
-    {
-      precompute();
-      isPrecomputed=true;
-    }
-    addsource();
   }
   
   if(ImGui::Button("Compute geodesic"))
@@ -151,11 +156,17 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All");
-  std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
-  auto binary_image    = SH3::makeBinaryImage(filename, params );
-  auto K               = SH3::getKSpace( binary_image, params );
-  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
-  auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
+  params("polynomial", "x^2+(y+1)^2+z^2-1.0")
+    ("minAABB",-1.0)("maxAABB",1.0)("offset",1.0)
+    ("gridstep",0.0625);
+  auto shape        = SH3::makeImplicitShape3D( params );
+  auto dshape       = SH3::makeDigitizedImplicitShape3D( shape, params );
+  auto K            = SH3::getKSpace( params );
+  auto binary_image = SH3::makeBinaryImage( dshape, params );
+  auto surface      = SH3::makeDigitalSurface( binary_image, K, params );
+  auto primalSurface= SH3::makePrimalSurfaceMesh(surface);
+  auto surfels      = SH3::getSurfelRange( surface, params );
+  auto normals      = SHG3::getNormalVectors( shape, K, surfels, params );
   
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
@@ -171,26 +182,14 @@ int main()
                       positions.end(),
                       faces.begin(),
                       faces.end());
+  surfmesh.setFaceNormals( normals.cbegin(), normals.cend() );
   std::cout << surfmesh << std::endl;
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
-  
-  //Construction of a regularized surface
-  DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
-  regul.init();
-  regul.attachConvolvedTrivialNormalVectors(params);
-  regul.regularize();
-  auto regularizedPosition = regul.getRegularizedPositions();
-
-  surfmeshReg = SurfMesh(regularizedPosition.begin(),
-                      regularizedPosition.end(),
-                      faces.begin(),
-                      faces.end());
   
   // Initialize polyscope
   polyscope::init();
 
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
-  psMeshReg = polyscope::registerSurfaceMesh("regularized surface", regularizedPosition, faces);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;
