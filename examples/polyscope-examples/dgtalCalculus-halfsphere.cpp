@@ -114,8 +114,6 @@ void myCallback()
     auto surf = polyscope::getSurfaceMesh("digital surface");
     goodSelection = goodSelection || (selectedSurface == surf);
     const auto nv = selectedSurface->nVertices(); 
-    const auto nf = selectedSurface->nFaces(); 
-    const auto ne = selectedSurface->nEdges(); 
     // Validate that it its a face index
     if ( goodSelection && idx < nv )
       {
