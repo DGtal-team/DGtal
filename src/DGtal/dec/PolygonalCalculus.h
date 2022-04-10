@@ -94,6 +94,8 @@ public:
 
   ///Type of a sparse matrix solver
   typedef LinAlg::SolverSimplicialLDLT Solver;
+  ///Type of a Cholesky \f$ L D L^T \f$ sparse matrix solver
+  typedef LinAlg::SolverSimplicialLDLT LDLTSolver;
  
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
