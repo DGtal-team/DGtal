@@ -117,18 +117,20 @@ class GeodesicsInHeat
     
     // ----------------------- Interface --------------------------------------
    
-    /// Initialize the solvers with @a dt as timestep for the
-    /// heat diffusion
-    /// @param dt timestep
-    void init(double dt)
+    /// Initialize the solvers with @a dt as timestep for the heat
+    /// diffusion and @a lambda parameter for the polygonal calculus,
+    /// which guarantee definiteness for positive @a lambda.
+    ///
+    /// @param dt the timestep
+    /// @param lambda timestep
+  void init( double dt, double lambda = 1.0 )
     {
-      myIsInit=true;
-      
-      //As the LB is PSD, the identity matrix shouldn't be necessary. However, some solvers
-      //may have issues with positive semi-definite matrix.
+      myIsInit = true;
+      myLambda = lambda;
+
       SparseMatrix I(myCalculus->nbVertices(),myCalculus->nbVertices());
       I.setIdentity();
-      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami();
+      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami( lambda );
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
       SparseMatrix heatOpe   = mass - dt*laplacian;
       
@@ -188,7 +190,7 @@ class GeodesicsInHeat
       
         // div
         DenseMatrix   oneForm = myCalculus->flat(f)*grad;
-        Vector divergenceFace = myCalculus->divergence(f) * oneForm;
+        Vector divergenceFace = myCalculus->divergence( f, myLambda ) * oneForm;
         cpt=0;
         for(auto v: vertices)
         {
@@ -235,7 +237,10 @@ class GeodesicsInHeat
   
     ///Validitate flag
     bool myIsInit;
-    
+
+    /// Lambda parameter
+    double myLambda;
+  
   }; // end of class GeodesicsInHeat
 } // namespace DGtal
 
