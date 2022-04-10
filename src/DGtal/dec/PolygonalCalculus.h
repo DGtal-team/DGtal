@@ -485,19 +485,11 @@ public:
   {
     SparseMatrix lapGlobal(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
     std::vector<Triplet> triplets;
-    std::vector<size_t> reorder;
     for( auto f = 0; f < mySurfaceMesh->nbFaces(); ++f )
     {
       auto nf = myFaceDegree[f];
-      // reorder.resize(nf);
       DenseMatrix Lap = this->LaplaceBeltrami(f,lambda);
-      // auto cpt=0;
       const auto vertices = mySurfaceMesh->incidentVertices(f);
-      // for(auto v: vertices )
-      // {
-      //   reorder[ cpt ]= v;
-      //   ++cpt;
-      // }
       for(auto i=0; i < nf; ++i)
         for(auto j=0; j < nf; ++j)
         {
@@ -505,12 +497,7 @@ public:
           if (v!= 0.0)
             triplets.emplace_back( Triplet( vertices[ i ], vertices[ j ],
                                             Lap( i, j ) ) );
-          // triplets.emplace_back(Triplet(reorder[i],reorder[j],Lap(i,j)));
         }
-      //local.setFromTriplets(triplets.begin(), triplets.end());
-      //lapGlobal += local;
-      //triplets.clear();
-      // local.setZero();
     }
     lapGlobal.setFromTriplets(triplets.begin(), triplets.end());
     return lapGlobal;
