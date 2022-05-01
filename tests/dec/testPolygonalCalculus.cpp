@@ -279,7 +279,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
   // Laplace opeartor
   PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
   // value on boundary
-  PolyDEC::Vector g = PolyDEC::Vector::Zero( surfmesh.nbVertices() );
+  PolyDEC::Vector g = calculus.form0();
   // characteristic set of boundary
   PolyDEC::Vector b = g;
 
