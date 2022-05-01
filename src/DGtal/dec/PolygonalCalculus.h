@@ -84,7 +84,9 @@ public:
   ///Linear Algebra Backend from Eigen
   typedef EigenLinearAlgebraBackend LinAlg;
   ///Type of Vector
-    typedef LinAlg::DenseVector Vector;
+  typedef LinAlg::DenseVector Vector;
+  ///Global 0-form, 1-form, 2-form are Vector
+  typedef Vector Form;
   ///Type of dense matrix
   typedef LinAlg::DenseMatrix DenseMatrix;
   ///Type of sparse matrix
@@ -488,6 +490,19 @@ public:
   // ----------------------- Global operators --------------------------------------
   /// @name Global operators
   /// @{
+
+  /// @return a 0-form initialized to zero
+  Form form0() const
+  {
+    return Form::Zero( nbVertices() );
+  }
+  /// @return the identity linear operator for 0-forms
+  SparseMatrix identity0() const
+  {
+    SparseMatrix Id0( nbVertices(), nbVertices() );
+    Id0.setIdentity();
+    return Id0; 
+  }
   
   /// Computes the global Laplace-Beltrami operator by assembling the
   /// per face operators.
