@@ -96,7 +96,10 @@ public:
   typedef LinAlg::SolverSimplicialLDLT Solver;
   ///Type of a Cholesky \f$ L D L^T \f$ sparse matrix solver
   typedef LinAlg::SolverSimplicialLDLT LDLTSolver;
- 
+
+  /// @name Standard services
+  /// @{
+  
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
@@ -158,9 +161,12 @@ public:
    * @return a reference on 'this'.
    */
   PolygonalCalculus & operator= ( PolygonalCalculus && other ) = delete;
+
+  /// @}
   
-  // ----------------------- Interface --------------------------------------
-  
+  // ----------------------- embedding  services  --------------------------
+  /// @name Embedding services
+  /// @{
   
   /// Update the embedding function.
   /// @param externalFunctor a new embedding functor (Face,Vertex)->RealPoint.
@@ -170,6 +176,8 @@ public:
   }
   
   // ----------------------- Per face operators --------------------------------------
+  /// @name Per face operators
+  /// @{
   
   /// Return the vertex position matrix degree x 3 of the face.
   /// @param f a face
@@ -475,8 +483,11 @@ public:
     return op;
   }
 
-  // ----------------------- Global operators --------------------------------------
+  /// @}
   
+  // ----------------------- Global operators --------------------------------------
+  /// @name Global operators
+  /// @{
   
   /// Computes the global Laplace-Beltrami operator by assembling the
   /// per face operators.
@@ -538,8 +549,12 @@ public:
         it.valueRef() = 1.0 / it.value();
     return iM0;
   }
+
+  /// @}
   
   // ----------------------- Cache mechanism --------------------------------------
+  /// @name Cache mechanism
+  /// @{
   
   /// Generic method to compute all the per face DenseMatrices and store them in an
   /// indexed container.
@@ -604,8 +619,12 @@ public:
     myGlobalCache.clear();
   }
 
+  /// @}
+  
   // ----------------------- Common --------------------------------------
 public:
+  /// @name Common services
+  /// @{
   
   /// Update the internal cache structures
   /// (e.g. degree of each face).
@@ -670,8 +689,12 @@ public:
     return true;
   }
 
+  /// @}
+  
   // ------------------------- Protected Datas ------------------------------
 protected:
+  /// @name Protected services and types
+  /// @{
   
   ///Enum for operators in the internal cache strategy
   enum OPERATOR { X_, D_, E_, A_, COGRAD_, GRAD_, FLAT_, B_, SHARP_, P_, M_, DIVERGENCE_, CURL_, L_ };
@@ -711,6 +734,7 @@ protected:
       myGlobalCache[key][f]  = ope;
   }
   
+  /// @}
   
   // ------------------------- Internals ------------------------------------
 private:
