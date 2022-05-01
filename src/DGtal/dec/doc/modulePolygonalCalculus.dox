@@ -208,6 +208,12 @@ To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can com
 
 For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can later be used for diffusion.
 
+You can also retrieve the global mass matrix via
+PolygonalCalculus::globalLumpedMassMatrix, which is used to define an
+inner product for 0-forms (i.e. scalar functions), as well as its
+inverse PolygonalCalculus::globalInverseLumpedMassMatrix(), generally
+used when one solves a weak problem and wishes to get a pointwise
+per-vertex solution.
 
 \section secLap Example: Solving a Laplace problem
 
@@ -224,6 +230,9 @@ to boundary vertices, or sampled on the object surface.
 Furthermore, the discrete version of the Laplace problem boils down to
 a simple linear problem using on the discrete Laplace-Beltrami sparse
 matrix.
+
+We also use class DirichletConditions to enforce Dirichlet boundary
+conditions on the system.
 
 The overall code is:
 \snippet dgtalCalculus-poisson.cpp PolyDEC-init

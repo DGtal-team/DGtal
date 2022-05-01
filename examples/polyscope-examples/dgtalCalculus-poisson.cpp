@@ -61,10 +61,11 @@ float scale = 0.1;
 void computeLaplace()
 {
   //! [PolyDEC-init]
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(surfmesh.nbVertices());
-  Form b = g;
+  typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PolyDEC;
+  PolyDEC calculus(surfmesh);
+  PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  PolyDEC::Form g = calculus.form0();
+  PolyDEC::Form b = g;
   
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
@@ -83,22 +84,13 @@ void computeLaplace()
 
   // Solve Δu=0 with g as boundary conditions
   typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
-  PCalculus::Solver solver;
-  SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
+  PolyDEC::Solver solver;
+  PolyDEC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
   solver.compute( L_dirichlet );
   ASSERT(solver.info()==Eigen::Success);
-  Form g_dirichlet = DC::dirichletVector( L, g, b, g );
-  Form x_dirichlet = solver.solve( g_dirichlet );
-  Form u = DC::dirichletSolution( x_dirichlet, b, g );
-
-  // //Solve Δu=0 with g as boundary conditions
-  // //(the operator constructon and its prefactorization could have been factorized)
-  // PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
-  // solver.compute(L);
-  // ASSERT(solver.info()==Eigen::Success);
-  
-  // PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = solver.solve(g);
-  // ASSERT(solver.info()==Eigen::Success);
+  PolyDEC::Form g_dirichlet = DC::dirichletVector( L, g, b, g );
+  PolyDEC::Form x_dirichlet = solver.solve( g_dirichlet );
+  PolyDEC::Form u = DC::dirichletSolution( x_dirichlet, b, g );
   //! [PolyDEC-init]
 
   psMesh->addVertexScalarQuantity("g", g);
