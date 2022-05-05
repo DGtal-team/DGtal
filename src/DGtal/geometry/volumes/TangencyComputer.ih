@@ -86,20 +86,33 @@ getCotangentPoints( const Point& a ) const
       const auto j = Q.front();
       const auto p = myX[ j ];
       Q.pop();
-      bool  a_eq_p = a == p;
-      if ( ! a_eq_p ) R.push_back( j );
-      if ( a_eq_p || arePointsCotangent( a, p ) )
-        {
-          for ( auto && v : myN ) {
-            const Point q = p + v;
-            const auto it = myPt2Index.find( p );
-            if ( it == myPt2Index.cend() ) continue; // not in X
-            const auto next = it->second;
-            if ( V.count( next ) ) continue; // already visited
+      for ( auto && v : myN ) {
+        const Point q = p + v;
+        const auto it = myPt2Index.find( q );
+        if ( it == myPt2Index.cend() ) continue; // not in X
+        const auto next = it->second;
+        if ( V.count( next ) ) continue; // already visited
+        if ( arePointsCotangent( a, q ) )
+          {
+            R.push_back( next );
             V.insert( next );
             Q.push  ( next );
           }
-        }
+      }
+      // bool  a_eq_p = a == p;
+      // if ( ! a_eq_p ) R.push_back( j );
+      // if ( a_eq_p || arePointsCotangent( a, p ) )
+      //   {
+      //     for ( auto && v : myN ) {
+      //       const Point q = p + v;
+      //       const auto it = myPt2Index.find( q );
+      //       if ( it == myPt2Index.cend() ) continue; // not in X
+      //       const auto next = it->second;
+      //       if ( V.count( next ) ) continue; // already visited
+      //       V.insert( next );
+      //       Q.push  ( next );
+      //     }
+      //   }
     }
   return R;
 }
