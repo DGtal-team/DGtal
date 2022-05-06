@@ -418,7 +418,6 @@ expand()
       if ( ! myVisited[ current ] ) break;
       myQ.pop();
     }
-  // std::cout << "Expand " << nb << " nodes." << std::endl;
   if ( ! finished() )
     {
       myAncestor[ current ] = std::get<1>( elem );
@@ -426,64 +425,6 @@ expand()
       myVisited [ current ] = true;
     }
 }
-// //-----------------------------------------------------------------------------
-// template <typename TKSpace>
-// void
-// DGtal::TangencyComputer<TKSpace>::ShortestPaths::
-// expand()
-// {
-//   auto eucl_d = [] ( const Point& p, const Point& q )
-//   { return ( p - q ).norm(); };
-
-//   ASSERT( ! finished() );
-//   Index current;
-//   double d;
-//   int nb = 0;
-//   auto elem = myQ.top();
-//   myQ.pop();
-//   nb += 1;
-//   while ( true )
-//     {
-//       current = std::get<0>( elem );
-//       d = std::get<2>( elem );
-//       if ( myVisited[ current ] && ( d < myDistance[ current ] ) )
-//         trace.warning() << "Already visited and smaller distance" << std::endl;
-//       if ( ! myVisited[ current ] ) break;
-//       if ( finished() ) return;
-//       elem = myQ.top();
-//       myQ.pop();
-//       nb += 1;
-//     }
-//   std::cout << "Expand " << nb << " nodes." << std::endl;
-//   const Index father  = std::get<1>( elem );
-//   const Point  q = myTgcyComputer->point( current );
-//   const Point  r = myTgcyComputer->point( father  );
-//   // const Index current = std::get<0>( elem );
-//   // const Index father  = std::get<1>( elem );
-//   // const Point  q = myTgcyComputer->point( current );
-//   // const Point  r = myTgcyComputer->point( father  );
-//   // const double d = std::get<2>( elem );
-//   // if ( d > myDistance[ current ] )
-//   //   {
-//   //     if ( ! myVisited[ current ] )
-//   //       trace.warning() << "Not already visited point " << current << std::endl;
-//   //     return; // already processed
-//   //   }
-//   myAncestor[ current ] = father;
-//   myDistance[ current ] = d;
-//   myVisited [ current ] = true;
-//   std::vector< Index > N = getCotangentPoints( current );
-//   for ( auto next : N )
-//     {
-//       const Point p = myTgcyComputer->point( next );
-//       double next_d = d + eucl_d( q, p );
-//       if ( next_d < myDistance[ next ] )
-//         {
-//           myDistance[ next ] = next_d;
-//           myQ.push( std::make_tuple( next, current, next_d ) );
-//         }
-//     }
-// }
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
