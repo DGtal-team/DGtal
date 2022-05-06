@@ -99,20 +99,6 @@ getCotangentPoints( const Point& a ) const
             Q.push  ( next );
           }
       }
-      // bool  a_eq_p = a == p;
-      // if ( ! a_eq_p ) R.push_back( j );
-      // if ( a_eq_p || arePointsCotangent( a, p ) )
-      //   {
-      //     for ( auto && v : myN ) {
-      //       const Point q = p + v;
-      //       const auto it = myPt2Index.find( q );
-      //       if ( it == myPt2Index.cend() ) continue; // not in X
-      //       const auto next = it->second;
-      //       if ( V.count( next ) ) continue; // already visited
-      //       V.insert( next );
-      //       Q.push  ( next );
-      //     }
-      //   }
     }
   return R;
 }
@@ -138,22 +124,37 @@ getCotangentPoints( const Point& a,
       const auto  p = myX[ j ];
       const auto ap = p - a;
       Q.pop();
-      bool  a_eq_p = ap == Point::zero;
-      if ( ! a_eq_p ) R.push_back( j );
-      if ( a_eq_p || arePointsCotangent( a, p ) )
-        {
-          for ( auto && v : myN ) {
-            if ( ap.dot( v ) < 0.0 ) continue;
-            const Point q = p + v;
-            const auto it = myPt2Index.find( q );
-            if ( it == myPt2Index.cend() ) continue; // not in X
-            const auto next = it->second;
-            if ( to_avoid[ next ] ) continue; // to avoid
-            if ( V.count( next ) ) continue; // already visited
+      for ( auto && v : myN ) {
+        if ( ap.dot( v ) < 0.0 ) continue;
+        const Point q = p + v;
+        const auto it = myPt2Index.find( q );
+        if ( it == myPt2Index.cend() ) continue; // not in X
+        const auto next = it->second;
+        if ( to_avoid[ next ] ) continue; // to avoid
+        if ( V.count( next ) )  continue; // already visited
+        if ( arePointsCotangent( a, q ) )
+          {
+            R.push_back( next );
             V.insert( next );
             Q.push  ( next );
           }
-        }
+      }
+      // bool  a_eq_p = ap == Point::zero;
+      // if ( ! a_eq_p ) R.push_back( j );
+      // if ( a_eq_p || arePointsCotangent( a, p ) )
+      //   {
+      //     for ( auto && v : myN ) {
+      //       if ( ap.dot( v ) < 0.0 ) continue;
+      //       const Point q = p + v;
+      //       const auto it = myPt2Index.find( q );
+      //       if ( it == myPt2Index.cend() ) continue; // not in X
+      //       const auto next = it->second;
+      //       if ( to_avoid[ next ] ) continue; // to avoid
+      //       if ( V.count( next ) ) continue; // already visited
+      //       V.insert( next );
+      //       Q.push  ( next );
+      //     }
+      //   }
     }
   return R;
 }
@@ -178,27 +179,47 @@ getCotangentPoints( Index idx_a ) const
       const auto  p = point( j );
       const auto ap = p - a;
       Q.pop();
-      bool  a_eq_p = ap == Point::zero;
-      if ( ! a_eq_p ) R.push_back( j );
-      if ( a_eq_p || myTgcyComputer->arePointsCotangent( a, p ) )
-        {
-          for ( int i = 0; i < myTgcyComputer->myN.size(); i++ ) {
-            const auto & v = myTgcyComputer->myN[ i ];
-            if ( ap.dot( v ) < 0 ) continue; // going backward
-            const Point q = p + v;
-            const auto it = myTgcyComputer->myPt2Index.find( q );
-            if ( it == myTgcyComputer->myPt2Index.cend() ) continue; // not in X
-            const auto next = it->second;
-            if ( myVisited[ next ] ) continue; // to avoid
-            if ( V.count ( next ) ) continue; // already visited
-            const auto d_a = myDistance[ idx_a ] + ( q - a ).norm();
-            if ( d_a >= ( myDistance[ next ]
-                          + ( use_secure ? mySecure : myTgcyComputer->myDN[ i ] )  ) )
-              continue; // only if distance is better.
+      for ( int i = 0; i < myTgcyComputer->myN.size(); i++ ) {
+        const auto & v = myTgcyComputer->myN[ i ];
+        if ( ap.dot( v ) < 0.0 ) continue; // going backward
+        const Point q = p + v;
+        const auto it = myTgcyComputer->myPt2Index.find( q );
+        if ( it == myTgcyComputer->myPt2Index.cend() ) continue; // not in X
+        const auto next = it->second;
+        if ( myVisited[ next ] ) continue; // to avoid
+        if ( V.count( next ) )   continue; // already visited
+        const auto d_a = myDistance[ idx_a ] + ( q - a ).norm();
+        if ( d_a >= ( myDistance[ next ]
+                      + ( use_secure ? mySecure : myTgcyComputer->myDN[ i ] )  ) )
+          continue; // only if distance is better.
+        if ( myTgcyComputer->arePointsCotangent( a, q ) )
+          {
+            R.push_back( next );
             V.insert( next );
             Q.push  ( next );
           }
-        }
+      }
+      // bool  a_eq_p = ap == Point::zero;
+      // if ( ! a_eq_p ) R.push_back( j );
+      // if ( a_eq_p || myTgcyComputer->arePointsCotangent( a, p ) )
+      //   {
+      //     for ( int i = 0; i < myTgcyComputer->myN.size(); i++ ) {
+      //       const auto & v = myTgcyComputer->myN[ i ];
+      //       if ( ap.dot( v ) < 0 ) continue; // going backward
+      //       const Point q = p + v;
+      //       const auto it = myTgcyComputer->myPt2Index.find( q );
+      //       if ( it == myTgcyComputer->myPt2Index.cend() ) continue; // not in X
+      //       const auto next = it->second;
+      //       if ( myVisited[ next ] ) continue; // to avoid
+      //       if ( V.count ( next ) ) continue; // already visited
+      //       const auto d_a = myDistance[ idx_a ] + ( q - a ).norm();
+      //       if ( d_a >= ( myDistance[ next ]
+      //                     + ( use_secure ? mySecure : myTgcyComputer->myDN[ i ] )  ) )
+      //         continue; // only if distance is better.
+      //       V.insert( next );
+      //       Q.push  ( next );
+      //     }
+      //   }
     }
   return R;
 }
@@ -265,7 +286,8 @@ shortestPaths( std::vector< Index >&  ancestor,
     if ( d < previous_d )
       trace.warning() << "Bad distance " << d << " prev=" << previous_d << std::endl;
     previous_d = d;
-    std::vector< Index > N = getCotangentPoints( q, visited, distance, secure );
+    std::vector< Index > N = getCotangentPoints( q, "youpi", visited, distance, "youpi", "truc"
+                                                 );//, secure );
     size_ltp += (double) N.size();
     for ( auto next : N )
       {
@@ -378,29 +400,119 @@ expand()
   { return ( p - q ).norm(); };
 
   ASSERT( ! finished() );
-  const auto elem = myQ.top();
+  auto elem = myQ.top();
   myQ.pop();
-  const Index current = std::get<0>( elem );
-  const Index father  = std::get<1>( elem );
+  propagate( std::get<0>( elem ) );
+  Index current;
+  double d;
+  int nb = 0;
+  while ( ! finished() )
+    {
+      elem = myQ.top();
+      nb += 1;
+      current = std::get<0>( elem );
+      d = std::get<2>( elem );
+      if ( myVisited[ current ] && ( d < myDistance[ current ] ) )
+        trace.warning() << "Already visited node " << current
+                        << " and smaller distance " << d << std::endl;
+      if ( ! myVisited[ current ] ) break;
+      myQ.pop();
+    }
+  // std::cout << "Expand " << nb << " nodes." << std::endl;
+  if ( ! finished() )
+    {
+      myAncestor[ current ] = std::get<1>( elem );
+      myDistance[ current ] = d;
+      myVisited [ current ] = true;
+    }
+}
+// //-----------------------------------------------------------------------------
+// template <typename TKSpace>
+// void
+// DGtal::TangencyComputer<TKSpace>::ShortestPaths::
+// expand()
+// {
+//   auto eucl_d = [] ( const Point& p, const Point& q )
+//   { return ( p - q ).norm(); };
+
+//   ASSERT( ! finished() );
+//   Index current;
+//   double d;
+//   int nb = 0;
+//   auto elem = myQ.top();
+//   myQ.pop();
+//   nb += 1;
+//   while ( true )
+//     {
+//       current = std::get<0>( elem );
+//       d = std::get<2>( elem );
+//       if ( myVisited[ current ] && ( d < myDistance[ current ] ) )
+//         trace.warning() << "Already visited and smaller distance" << std::endl;
+//       if ( ! myVisited[ current ] ) break;
+//       if ( finished() ) return;
+//       elem = myQ.top();
+//       myQ.pop();
+//       nb += 1;
+//     }
+//   std::cout << "Expand " << nb << " nodes." << std::endl;
+//   const Index father  = std::get<1>( elem );
+//   const Point  q = myTgcyComputer->point( current );
+//   const Point  r = myTgcyComputer->point( father  );
+//   // const Index current = std::get<0>( elem );
+//   // const Index father  = std::get<1>( elem );
+//   // const Point  q = myTgcyComputer->point( current );
+//   // const Point  r = myTgcyComputer->point( father  );
+//   // const double d = std::get<2>( elem );
+//   // if ( d > myDistance[ current ] )
+//   //   {
+//   //     if ( ! myVisited[ current ] )
+//   //       trace.warning() << "Not already visited point " << current << std::endl;
+//   //     return; // already processed
+//   //   }
+//   myAncestor[ current ] = father;
+//   myDistance[ current ] = d;
+//   myVisited [ current ] = true;
+//   std::vector< Index > N = getCotangentPoints( current );
+//   for ( auto next : N )
+//     {
+//       const Point p = myTgcyComputer->point( next );
+//       double next_d = d + eucl_d( q, p );
+//       if ( next_d < myDistance[ next ] )
+//         {
+//           myDistance[ next ] = next_d;
+//           myQ.push( std::make_tuple( next, current, next_d ) );
+//         }
+//     }
+// }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void
+DGtal::TangencyComputer<TKSpace>::ShortestPaths::
+propagate( Index current )
+{
+  auto eucl_d = [] ( const Point& p, const Point& q )
+  { return ( p - q ).norm(); };
+
+  if ( ! myVisited[ current ] )
+    trace.warning() << "Propagate from unvisited node " << current << std::endl;
   const Point  q = myTgcyComputer->point( current );
-  const Point  r = myTgcyComputer->point( father  );
-  const double d = std::get<2>( elem );
-  if ( d > myDistance[ current ] ) return; // already processed
-  myAncestor[ current ] = father;
-  myDistance[ current ] = d;
-  myVisited [ current ] = true;
   std::vector< Index > N = getCotangentPoints( current );
   for ( auto next : N )
     {
-      const Point p = myTgcyComputer->point( next );
-      double next_d = d + eucl_d( q, p );
-      if ( next_d < myDistance[ next ] )
+      if ( ! myVisited[ next ] )
         {
-          myDistance[ next ] = next_d;
-          myQ.push( std::make_tuple( next, current, next_d ) );
+          const Point p = myTgcyComputer->point( next );
+          double next_d = myDistance[ current ] + eucl_d( q, p );
+          if ( next_d < myDistance[ next ] )
+            {
+              myDistance[ next ] = next_d;
+              myQ.push( std::make_tuple( next, current, next_d ) );
+            }
         }
     }
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

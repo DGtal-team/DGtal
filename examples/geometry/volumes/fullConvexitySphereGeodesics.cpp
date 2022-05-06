@@ -165,11 +165,25 @@ int main( int argc, char** argv )
   SP.init( lowest ); //< set source
   double last_distance = 0.0;
   Index  last = 0;
+  double prev_distance = 0.0;
+  std::set< Index > V;
+  std::map< Index, double > D;
   while ( ! SP.finished() )
     {
       last = std::get<0>( SP.current() );
       last_distance = std::get<2>( SP.current() );
+      if ( V.count( last ) )
+        trace.warning() << "Already popped: " << last
+                        << " D_before=" << D[ last ]
+                        << " D_now=" << last_distance
+                        << std::endl;
+      V.insert( last );
+      D[ last ] = last_distance;
       SP.expand();
+      if ( last_distance < prev_distance )
+        trace.warning() << "Bad distance " << last_distance
+                        << " prev=" << prev_distance << std::endl;
+      prev_distance = last_distance;
     }
   double time = trace.endBlock();
   std::cout << "Max distance is " << last_distance*h << std::endl;

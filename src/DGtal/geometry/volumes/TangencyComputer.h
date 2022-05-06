@@ -182,6 +182,9 @@ namespace DGtal
       {
         ASSERT( 0 <= i && i < size() );
         myQ.push( std::make_tuple( i, i, 0.0 ) );
+        myAncestor[ i ] = i;
+        myDistance[ i ] = 0.0;
+        myVisited [ i ] = true;
       }
                      
       /// Adds a range of indices as source points
@@ -199,6 +202,11 @@ namespace DGtal
             ASSERT( 0 <= i && i < size() );
             myQ.push( std::make_tuple( i, i, 0.0 ) );
           }
+        const auto elem = myQ.top();
+        const auto i    = std::get<0>( elem );
+        myAncestor[ i ] = i;
+        myDistance[ i ] = 0.0;
+        myVisited [ i ] = true;
       }
 
       /// @return 'true' if the traversal is finished, i.e. when the
@@ -227,6 +235,14 @@ namespace DGtal
       /// @pre valid only if not 'finished()'.
       /// @note The core method of shortest paths algorithm.
       void expand();
+
+      /// Computes the shortest path to the `current()` node in the
+      /// queue. Also determines the future visited vertices and
+      /// updates the queue for bft.
+      ///
+      /// @pre valid only if not 'finished()'.
+      /// @note The core method of shortest paths algorithm.
+      void propagate( Index current );
       
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
       bool isValid() const
