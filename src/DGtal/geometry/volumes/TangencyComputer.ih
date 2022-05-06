@@ -396,9 +396,6 @@ void
 DGtal::TangencyComputer<TKSpace>::ShortestPaths::
 expand()
 {
-  auto eucl_d = [] ( const Point& p, const Point& q )
-  { return ( p - q ).norm(); };
-
   ASSERT( ! finished() );
   auto elem = myQ.top();
   myQ.pop();
@@ -412,9 +409,8 @@ expand()
       nb += 1;
       current = std::get<0>( elem );
       d = std::get<2>( elem );
-      if ( myVisited[ current ] && ( d < myDistance[ current ] ) )
-        trace.warning() << "Already visited node " << current
-                        << " and smaller distance " << d << std::endl;
+      ASSERT( ( ! ( myVisited[ current ] && ( d < myDistance[ current ] ) ) )
+              && "Already visited node and smaller distance" );
       if ( ! myVisited[ current ] ) break;
       myQ.pop();
     }

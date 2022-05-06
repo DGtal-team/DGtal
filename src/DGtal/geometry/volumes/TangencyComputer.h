@@ -236,12 +236,10 @@ namespace DGtal
       /// @note The core method of shortest paths algorithm.
       void expand();
 
-      /// Computes the shortest path to the `current()` node in the
-      /// queue. Also determines the future visited vertices and
-      /// updates the queue for bft.
+      /// Updates the queue with the cotangent points of the point given in parameter.
       ///
-      /// @pre valid only if not 'finished()'.
-      /// @note The core method of shortest paths algorithm.
+      /// @param current the index of the point where we determine its
+      /// adjacent (here cotangent) to update the queue of the bft.
       void propagate( Index current );
       
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
