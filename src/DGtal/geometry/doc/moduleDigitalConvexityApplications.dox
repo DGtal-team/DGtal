@@ -25,7 +25,8 @@ geometry/volumes/fullConvexityAnalysis3D.cpp ,
 geometry/volumes/fullConvexityThinning3D.cpp ,
 geometry/volumes/fullConvexityLUT2D.cpp ,
 geometry/volumes/fullConvexityCollapsiblePoints2D.cpp ,
-geometry/volumes/fullConvexityShortestPaths3D.cpp .
+geometry/volumes/fullConvexityShortestPaths3D.cpp ,
+geometry/volumes/fullConvexitySphereGeodesics.cpp .
 
 @section dgtal_dconvexityapp_sec1 Local convexity analysis
 
@@ -205,6 +206,48 @@ how it is computed internally:
 @snippet fullConvexityShortestPaths3D.cpp Tangency3D-shortest-path
 
 \image html cps-shortest-path.jpg "Shortest path between two points" width=500
+
+@subsection dgtal_dconvexityapp_sec25 Speed-up shortest paths with some approximation
+
+Classes TangencyComputer and TangencyComputer::ShortestPaths offer a
+way to speed up considerably shortest paths computation if one
+tolerates a little bit of approximation. Several methods accept a
+distance parameter \a K. If \a K is greater than \f$
+\sqrt{d} \f$, then shortest paths are exact, but if you give a lower
+value (even 0), you may get shortest path approximations.
+
+The following methods accept this parameter:
+- TangencyComputer::ShortestPaths::ShortestPaths
+- TangencyComputer::makeShortestPaths
+- TangencyComputer::shortestPaths
+
+Running example fullConvexitySphereGeodesics shows the speed-up for
+different choices of \a K parameter, as well as the induced
+approximate distance. In the table below, not surprisingly, the
+maximum observed distance may be greater in case of approximation. We
+also indicate if the furthest point to the source point is correct or
+no.
+
+\b Table \b below: Computation times of shortest paths to a given
+source and maximal error onto a 3D sphere digitized with gridstep \f$
+h \f$. The chosen \f$ K \f$ indicates the chosen distance
+parameter. Choosing $K=\|p-q\|$ or $K=\sqrt{3}$ guarantees the
+correctness of the output. However, decreasing $K$ to $0$ speeds up
+the algorithm, while the maximal relative error in the distance
+estimation stays very low. Each cell of the last four columns displays
+the computation time (in seconds), and between parenthesis: OK if the
+furthest point is the exact antipodal point to the source point on the
+sphere, and the relative error of the measured shortest path in
+percentage.
+
+| gridstep \a h | \f$ \#(X) \f$  | Exp. max distance |\f$ K=\sqrt{3} \f$  | \f$ K=\sqrt{3}/4 \f$ | \f$ K=\sqrt{3}/16 \f$ | \f$ K = 0 \f$     |
+|---------------|----------------|-------------------|---------------------|----------------------|-----------------------|-------------------|
+| 0.25          |   296          | 2.88739           | 0.187 (OK)          | 0.068 (OK,0.000%)    | 0.024 (OK,0.000%)     | 0.013 (OK,0.000%) |
+| 0.125         |  1184          | 2.97166           | 1.480 (OK)          | 0.470 (OK,0.000%)    | 0.177 (OK,0.000%)     | 0.082 (OK,0.226%) |
+| 0.0625        |  4784          | 3.02389           | 11.744 (OK)         | 4.106 (OK,0.000%)    | 1.037 (OK,0.000%)     | 0.340 (OK,0.538%) |
+| 0.03125       | 19256          | 3.08405           | 97.161 (OK)         | 39.993 (OK,0.000%)   | 9.122 (OK,0.005%)     | 2.006 (OK,0.233%) |
+| 0.015625      | 77120          | 3.10879           |1828.890 (OK)         | 385.114 (OK,0.000%)   | 78.363 (OK,0.038%)  | 9.446 (OK,0.289%) |
+
 
 */
 }
