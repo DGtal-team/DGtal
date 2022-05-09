@@ -306,6 +306,22 @@ namespace DGtal
           }
         return P;
       }
+
+      /// @return a const reference to the array storing for each
+      /// point its ancestor in the shortest path, or itself if it was
+      /// a source.
+      const std::vector< Index >& ancestors() const
+      { return myAncestor; }
+      
+      /// @return a const reference to the array storing for each
+      /// point its distance to the closest source.
+      const std::vector< double >& distances() const
+      { return myDistance; }
+      
+      /// @return a const reference to the array storing for each
+      /// point if it is already visited.
+      const std::vector< bool >& visitedPoints() const
+      { return myVisited; }
       
     protected:
       /// A pointer toward the tangency computer.

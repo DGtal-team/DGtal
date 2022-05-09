@@ -221,18 +221,17 @@ The following methods accept this parameter:
 - TangencyComputer::makeShortestPaths
 - TangencyComputer::shortestPaths
 
-Running example fullConvexitySphereGeodesics shows the speed-up for
-different choices of \a K parameter, as well as the induced
-approximate distance. In the table below, not surprisingly, the
-maximum observed distance may be greater in case of approximation. We
-also indicate if the furthest point to the source point is correct or
-no.
+Running example geometry/volumes/fullConvexitySphereGeodesics.cpp
+shows the speed-up for different choices of \a K parameter, as well as
+the induced approximate distance. In the table below, not
+surprisingly, the maximum observed distance may be greater in case of
+approximation. We also indicate if the furthest point to the source
+point is correct or no.
 
 \b Table \b below: Computation times of shortest paths to a given
-source and maximal error onto a 3D sphere digitized with gridstep \f$
-h \f$. The chosen \f$ K \f$ indicates the chosen distance
-parameter. Choosing $K=\|p-q\|$ or $K=\sqrt{3}$ guarantees the
-correctness of the output. However, decreasing $K$ to $0$ speeds up
+source and maximal error onto a 3D sphere digitized with gridstep \f$ h \f$. The chosen \f$ K \f$ indicates the chosen distance
+parameter. Choosing \f$ K=\|p-q\| \f$ or \f$ K=\sqrt{3} \f$ guarantees the
+correctness of the output. However, decreasing \f$ K \f$ to \f$ 0 \f$ speeds up
 the algorithm, while the maximal relative error in the distance
 estimation stays very low. Each cell of the last four columns displays
 the computation time (in seconds), and between parenthesis: OK if the
@@ -240,7 +239,7 @@ furthest point is the exact antipodal point to the source point on the
 sphere, and the relative error of the measured shortest path in
 percentage.
 
-| gridstep \a h | \f$ \#(X) \f$  | Exp. max distance |\f$ K=\sqrt{3} \f$  | \f$ K=\sqrt{3}/4 \f$ | \f$ K=\sqrt{3}/16 \f$ | \f$ K = 0 \f$     |
+| gridstep \a h | \f$ \#(X) \f$  | Max distance |\f$ K=\sqrt{3} \f$  | \f$ K=\sqrt{3}/4 \f$ | \f$ K=\sqrt{3}/16 \f$ | \f$ K = 0 \f$     |
 |---------------|----------------|-------------------|---------------------|----------------------|-----------------------|-------------------|
 | 0.25          |   296          | 2.88739           | 0.187 (OK)          | 0.068 (OK,0.000%)    | 0.024 (OK,0.000%)     | 0.013 (OK,0.000%) |
 | 0.125         |  1184          | 2.97166           | 1.480 (OK)          | 0.470 (OK,0.000%)    | 0.177 (OK,0.000%)     | 0.082 (OK,0.226%) |
