@@ -228,19 +228,12 @@ namespace DGtal
         return myQ.top();
       }
 
-      /// Computes the shortest path to the `current()` node in the
-      /// queue. Also determines the future visited vertices and
-      /// updates the queue for bft.
+      /// Goes to the next point in the bft.
       ///
-      /// @pre valid only if not 'finished()'.
+      /// @pre valid only if not already 'finished()'.
       /// @note The core method of shortest paths algorithm.
       void expand();
 
-      /// Updates the queue with the cotangent points of the point given in parameter.
-      ///
-      /// @param current the index of the point where we determine its
-      /// adjacent (here cotangent) to update the queue of the bft.
-      void propagate( Index current );
       
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
       bool isValid() const
@@ -336,6 +329,12 @@ namespace DGtal
 
     protected:
 
+      /// Updates the queue with the cotangent points of the point given in parameter.
+      ///
+      /// @param current the index of the point where we determine its
+      /// adjacent (here cotangent) to update the queue of the bft.
+      void propagate( Index current );
+      
       /// Extracts a subset of cotangent points by a breadth-first
       /// traversal. Used to update the queue when computing shortest paths.
       ///
