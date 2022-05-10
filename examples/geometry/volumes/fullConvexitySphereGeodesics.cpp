@@ -117,7 +117,7 @@ typedef SurfaceMeshWriter< RealPoint, RealVector > SMeshWriter;
 typedef SMesh::Index        Index;
 typedef SMesh::Vertices     Vertices;
 
-void saveToObj( const std::string output,
+void saveToObj( const std::string& output,
                 const SMesh& surfmesh,
                 const std::vector< double >& vvalues,
                 int nb_isolines_per_unit = 10,
