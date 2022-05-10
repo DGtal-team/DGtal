@@ -508,40 +508,7 @@ namespace DGtal
     /// @return a ShortestPaths object that allows shortest path computations.
     ShortestPaths
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
-    
-    /// This function can be used to compute directly shortest paths
-    /// to one target (without using a ShortestPaths object).
-    ///
-    /// @param[out] ancestor an array of size `size()` that is used to
-    /// store the ancestor of each point (in the tree of shortest paths).
-    ///
-    /// @param[out] distance an array of size `size()` that is used to
-    /// store the distance of each point to the target.
-    ///
-    /// @param[in] target the index of the target point.
-    ///
-    /// @param[in] max_distance the maximal computed distance (the
-    /// computation stops after the distance).
-    ///
-    /// @param secure This value is used to prune vertices in the
-    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
-    /// is the dimension, the shortest path algorithm is guaranteed to
-    /// output the correct result. If the value is smaller (down to
-    /// 0.0), the algorithm is much faster but a few shortest path may
-    /// be missed.
-    ///
-    /// @param[in] verbose when 'true' some information are displayed
-    /// during computation.
-    ///
-    /// @return the furthest computed distance.
-    double
-    shortestPaths( std::vector< Index >&  ancestor,
-                   std::vector< double >& distance,
-                   Index target,
-                   double max_distance = std::numeric_limits<double>::infinity(),
-                   double secure = sqrt( KSpace::dimension ),
-                   bool verbose = false ) const;
-    
+        
     /// This function can be used to compute directly several shortest
     /// paths from given sources to a set of targets. Each
     /// returned path starts from the source and ends at the closest

@@ -139,22 +139,6 @@ getCotangentPoints( const Point& a,
             Q.push  ( next );
           }
       }
-      // bool  a_eq_p = ap == Point::zero;
-      // if ( ! a_eq_p ) R.push_back( j );
-      // if ( a_eq_p || arePointsCotangent( a, p ) )
-      //   {
-      //     for ( auto && v : myN ) {
-      //       if ( ap.dot( v ) < 0.0 ) continue;
-      //       const Point q = p + v;
-      //       const auto it = myPt2Index.find( q );
-      //       if ( it == myPt2Index.cend() ) continue; // not in X
-      //       const auto next = it->second;
-      //       if ( to_avoid[ next ] ) continue; // to avoid
-      //       if ( V.count( next ) ) continue; // already visited
-      //       V.insert( next );
-      //       Q.push  ( next );
-      //     }
-      //   }
     }
   return R;
 }
@@ -199,27 +183,6 @@ getCotangentPoints( Index idx_a ) const
             Q.push  ( next );
           }
       }
-      // bool  a_eq_p = ap == Point::zero;
-      // if ( ! a_eq_p ) R.push_back( j );
-      // if ( a_eq_p || myTgcyComputer->arePointsCotangent( a, p ) )
-      //   {
-      //     for ( int i = 0; i < myTgcyComputer->myN.size(); i++ ) {
-      //       const auto & v = myTgcyComputer->myN[ i ];
-      //       if ( ap.dot( v ) < 0 ) continue; // going backward
-      //       const Point q = p + v;
-      //       const auto it = myTgcyComputer->myPt2Index.find( q );
-      //       if ( it == myTgcyComputer->myPt2Index.cend() ) continue; // not in X
-      //       const auto next = it->second;
-      //       if ( myVisited[ next ] ) continue; // to avoid
-      //       if ( V.count ( next ) ) continue; // already visited
-      //       const auto d_a = myDistance[ idx_a ] + ( q - a ).norm();
-      //       if ( d_a >= ( myDistance[ next ]
-      //                     + ( use_secure ? mySecure : myTgcyComputer->myDN[ i ] )  ) )
-      //         continue; // only if distance is better.
-      //       V.insert( next );
-      //       Q.push  ( next );
-      //     }
-      //   }
     }
   return R;
 }
@@ -233,76 +196,6 @@ makeShortestPaths( double secure ) const
   return ShortestPaths( *this, secure );
 }
 
-//-----------------------------------------------------------------------------
-template < typename TKSpace >
-double
-DGtal::TangencyComputer<TKSpace>::
-shortestPaths( std::vector< Index >&  ancestor,
-               std::vector< double >& distance,
-               Index target,
-               double max_distance,
-               double secure,
-               bool verbose ) const
-{
-  typedef std::tuple< Index, Index, double > Node;
-  struct Comparator {
-    bool operator()  ( const Node& p1,
-                       const Node& p2 ) const
-    {
-      return std::get<2>( p1 ) > std::get<2>( p2 );
-    }
-  };
-  auto eucl_d = [] ( const Point& p, const Point& q )
-  { return ( p - q ).norm(); };
-
-  const int nb = myX.size();
-  ancestor = std::vector< Index > ( nb, nb );
-  distance = std::vector< double >( nb, std::numeric_limits<double>::infinity() );
-  std::vector< bool > visited ( nb, false );
-  
-  if ( verbose ) trace.beginBlock("Computing geodesics.");
-
-  std::priority_queue< Node, std::vector< Node >, Comparator > Q;
-  Q.push( std::make_tuple( target, target, 0.0 ) );
-  double previous_d = 0.0;
-  Index i = 0;
-  double size_ltp = 0.0;
-  // True Dijkstra algorithm
-  while ( ! Q.empty() )  {
-    const auto elem = Q.top();
-    Q.pop();
-    const Index current = std::get<0>( elem );
-    const Index father  = std::get<1>( elem );
-    const Point  q = myX[ current ];
-    const Point  r = myX[ father ];
-    const double d = std::get<2>( elem );
-    if ( d > distance[ current ] ) continue; // already processed
-    if ( d > max_distance ) break;           // bound is reached
-    if ( verbose && ( i % 10 == 0 ) ) trace.progressBar( i, nb );
-    i++;
-    ancestor[ current ] = father;
-    distance[ current ] = d;
-    visited [ current ] = true;
-    if ( d < previous_d )
-      trace.warning() << "Bad distance " << d << " prev=" << previous_d << std::endl;
-    previous_d = d;
-    std::vector< Index > N = getCotangentPoints( q, "youpi", visited, distance, "youpi", "truc"
-                                                 );//, secure );
-    size_ltp += (double) N.size();
-    for ( auto next : N )
-      {
-        const Point p = myX[ next ];
-        double next_d = d + eucl_d( q, p );
-        if ( next_d < distance[ next ] )
-          {
-            distance[ next ] = next_d;
-            Q.push( std::make_tuple( next, current, next_d ) );
-          }
-      }
-  }
-  if ( verbose ) trace.endBlock();
-  return previous_d;
-}
 
 //-----------------------------------------------------------------------------
 template < typename TKSpace >
