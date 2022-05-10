@@ -138,9 +138,7 @@ void saveToObj( const std::string& output,
   for ( Index f = 0; f < fvalues.size(); ++f )
     fcolors[ f ] = cmap( quantify( fvalues[ f ] - minValue, maxDist, 50 ) );
   SMeshWriter::writeOBJ( cobjname, surfmesh, fcolors );
-  double unit = 1.0;
-  while ( unit < 0.01 * maxDist )        unit *= 10.0;
-  while ( unit > 0.10 * maxDist )        unit /= 10.0;
+  double unit = pow( 10.0, floor( log( maxDist ) / log( 10.0 ) ) - 1.0 );
   const int N = 10 * nb_isolines_per_unit;
   std::vector< double > isolines( N );
   std::vector< Color >  isocolors( N );
