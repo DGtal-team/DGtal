@@ -247,6 +247,13 @@ percentage.
 | 0.03125       | 19256          | 3.08405           | 97.161 (OK)         | 39.993 (OK,0.000%)   | 9.122 (OK,0.005%)     | 2.006 (OK,0.233%) |
 | 0.015625      | 77120          | 3.10879           |1828.890 (OK)         | 385.114 (OK,0.000%)   | 78.363 (OK,0.038%)  | 9.446 (OK,0.289%) |
 
+<table>
+<tr><td>
+\image html sphere1-h0_0625-geodesics.jpg "Exact geodesic distances on unit sphere digitized at h=0.0625 (max d=3.02389)" width=90%
+</td><td>
+\image html sphere1-h0_01-geodesics.jpg "Approximate geodesic distances on unit sphere digitized at h=0.01 (max d=3.1269)" width=90%
+</td></tr>
+</table>
 
 */
 }
