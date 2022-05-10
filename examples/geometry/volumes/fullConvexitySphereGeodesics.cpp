@@ -161,7 +161,7 @@ int main( int argc, char** argv )
   trace.info() << "\tComputes shortest paths to a source point on a sphere digitized with gridstep <h>." << std::endl;
   trace.info() << "\t- h [==1.0]: digitization gridstep" << std::endl;
   trace.info() << "\t- opt [==sqrt(3)]: >= sqrt(3): secure shortest paths, 0: fast" << std::endl;
-  double      h = argc > 1 ? atof( argv[ 1 ] ) : 1.0; //< exact (sqrt(3)) or inexact (0) computations
+  double      h = argc > 1 ? atof( argv[ 1 ] ) : 0.0625; //< exact (sqrt(3)) or inexact (0) computations
   double    opt = argc > 2 ? atof( argv[ 2 ] ) : sqrt(3.0); //< exact (sqrt(3)) or inexact (0) computations
 
   // Domain creation from two bounding points.
