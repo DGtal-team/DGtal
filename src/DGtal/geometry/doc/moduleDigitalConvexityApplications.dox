@@ -213,11 +213,13 @@ Classes TangencyComputer and TangencyComputer::ShortestPaths offer a
 way to considerably speed up shortest paths computation if one
 tolerates a little bit of approximation. Several methods accept a
 distance parameter \a K. If \a K is greater than \f$ \sqrt{d} \f$,
-then shortest paths are exact, but if you give a lower value (from \f$
-\sqrt{d} \f$ to 0 included), you obtain shortest path
+then shortest paths are exact (meaning all extracted paths are the
+shortest possible), but if you give a lower value (from \f$ \sqrt{d}
+\f$ to 0 included), you obtain path that may be only shortest path
 approximations. The table below shows you the trade-off between the
 speed-up and the approximation error. As one can see, speed-up of \f$
-50-500 \times \f$ are obtained.
+50-500 \times \f$ are obtained, while approximations error are very
+low or sometimes null.
 
 The following methods accept this parameter:
 - TangencyComputer::ShortestPaths::ShortestPaths
