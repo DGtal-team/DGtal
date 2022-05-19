@@ -214,7 +214,7 @@ way to considerably speed up shortest paths computation if one
 tolerates a little bit of approximation. Several methods accept a
 distance parameter \a K. If \a K is greater than \f$ \sqrt{d} \f$,
 then shortest paths are exact (meaning all extracted paths are the
-shortest possible), but if you give a lower value (from \f$ \sqrt{d}
+shortest possible in the sense of the above mentioned algorithm), but if you give a lower value (from \f$ \sqrt{d}
 \f$ to 0 included), you obtain path that may be only shortest path
 approximations. The table below shows you the trade-off between the
 speed-up and the approximation error. As one can see, speed-up of \f$
