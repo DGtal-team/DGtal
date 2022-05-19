@@ -182,6 +182,9 @@ namespace DGtal
       {
         ASSERT( 0 <= i && i < size() );
         myQ.push( std::make_tuple( i, i, 0.0 ) );
+        myAncestor[ i ] = i;
+        myDistance[ i ] = 0.0;
+        myVisited [ i ] = true;
       }
                      
       /// Adds a range of indices as source points
@@ -199,6 +202,11 @@ namespace DGtal
             ASSERT( 0 <= i && i < size() );
             myQ.push( std::make_tuple( i, i, 0.0 ) );
           }
+        const auto elem = myQ.top();
+        const auto i    = std::get<0>( elem );
+        myAncestor[ i ] = i;
+        myDistance[ i ] = 0.0;
+        myVisited [ i ] = true;
       }
 
       /// @return 'true' if the traversal is finished, i.e. when the
@@ -220,13 +228,12 @@ namespace DGtal
         return myQ.top();
       }
 
-      /// Computes the shortest path to the `current()` node in the
-      /// queue. Also determines the future visited vertices and
-      /// updates the queue for bft.
+      /// Goes to the next point in the bft.
       ///
-      /// @pre valid only if not 'finished()'.
+      /// @pre valid only if not already 'finished()'.
       /// @note The core method of shortest paths algorithm.
       void expand();
+
       
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
       bool isValid() const
@@ -299,6 +306,22 @@ namespace DGtal
           }
         return P;
       }
+
+      /// @return a const reference to the array storing for each
+      /// point its ancestor in the shortest path, or itself if it was
+      /// a source.
+      const std::vector< Index >& ancestors() const
+      { return myAncestor; }
+      
+      /// @return a const reference to the array storing for each
+      /// point its distance to the closest source.
+      const std::vector< double >& distances() const
+      { return myDistance; }
+      
+      /// @return a const reference to the array storing for each
+      /// point if it is already visited.
+      const std::vector< bool >& visitedPoints() const
+      { return myVisited; }
       
     protected:
       /// A pointer toward the tangency computer.
@@ -322,6 +345,12 @@ namespace DGtal
 
     protected:
 
+      /// Updates the queue with the cotangent points of the point given in parameter.
+      ///
+      /// @param current the index of the point where we determine its
+      /// adjacent (here cotangent) to update the queue of the bft.
+      void propagate( Index current );
+      
       /// Extracts a subset of cotangent points by a breadth-first
       /// traversal. Used to update the queue when computing shortest paths.
       ///
@@ -479,40 +508,7 @@ namespace DGtal
     /// @return a ShortestPaths object that allows shortest path computations.
     ShortestPaths
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
-    
-    /// This function can be used to compute directly shortest paths
-    /// to one target (without using a ShortestPaths object).
-    ///
-    /// @param[out] ancestor an array of size `size()` that is used to
-    /// store the ancestor of each point (in the tree of shortest paths).
-    ///
-    /// @param[out] distance an array of size `size()` that is used to
-    /// store the distance of each point to the target.
-    ///
-    /// @param[in] target the index of the target point.
-    ///
-    /// @param[in] max_distance the maximal computed distance (the
-    /// computation stops after the distance).
-    ///
-    /// @param secure This value is used to prune vertices in the
-    /// bft. If it is greater or equal to \f$ \sqrt{d} \f$ where \a d
-    /// is the dimension, the shortest path algorithm is guaranteed to
-    /// output the correct result. If the value is smaller (down to
-    /// 0.0), the algorithm is much faster but a few shortest path may
-    /// be missed.
-    ///
-    /// @param[in] verbose when 'true' some information are displayed
-    /// during computation.
-    ///
-    /// @return the furthest computed distance.
-    double
-    shortestPaths( std::vector< Index >&  ancestor,
-                   std::vector< double >& distance,
-                   Index target,
-                   double max_distance = std::numeric_limits<double>::infinity(),
-                   double secure = sqrt( KSpace::dimension ),
-                   bool verbose = false ) const;
-    
+        
     /// This function can be used to compute directly several shortest
     /// paths from given sources to a set of targets. Each
     /// returned path starts from the source and ends at the closest

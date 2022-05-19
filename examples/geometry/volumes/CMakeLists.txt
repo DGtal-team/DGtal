@@ -3,6 +3,7 @@ add_subdirectory(distance)
 set( DGTAL_EXAMPLES_SRC
         dvcm-2d
         fullConvexityCollapsiblePoints2D
+        fullConvexitySphereGeodesics
         fullConvexityLUT2D
 )
 
