@@ -72,6 +72,9 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+  - Small fix for shortest paths computation, which could sometimes
+    output several times the same node. Add tests and examples.
+    (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
 
 - *Build*
   - Continuous integration does not use Travis anymore but Github
