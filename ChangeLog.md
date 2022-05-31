@@ -37,7 +37,7 @@
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
-  - Updates to PolygonalCalculus: correct sign, fix some Eigen
+  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
