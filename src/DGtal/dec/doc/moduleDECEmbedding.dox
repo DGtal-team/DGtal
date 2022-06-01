@@ -82,8 +82,8 @@ See \ref sectDECPoisson1D for an example.
 
 | @a add_border | boundary condition of primal operators                          | boundary condition of dual operators                            |
 |---------------|-----------------------------------------------------------------|-----------------------------------------------------------------|
-| @a true       | Neumann \f$\Delta f(x) \cdot n(x)=0~\forall x \in \partial M\f$ | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 |
-| @a false      | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 | Neumann \f$\Delta f(x) \cdot n(x)=0~\forall x \in \partial M\f$ |
+| @a true       | Neumann \f$\nabla f(x) \cdot n(x)=0~\forall x \in \partial M\f$ | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 |
+| @a false      | Dirichlet \f$f(x)=0~\forall x \in \partial M\f$                 | Neumann \f$\nabla f(x) \cdot n(x)=0~\forall x \in \partial M\f$ |
 
 \section sectDECEmbeddingExample1D 1D examples
 

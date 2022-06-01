@@ -37,7 +37,7 @@
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
-  - Updates to PolygonalCalculus: correct sign, fix some Eigen
+  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
@@ -72,6 +72,9 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+  - Small fix for shortest paths computation, which could sometimes
+    output several times the same node. Add tests and examples.
+    (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
 
 - *Build*
   - Continuous integration does not use Travis anymore but Github
@@ -114,7 +117,7 @@
     (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
   - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly,
     [#1641](https://github.com/DGtal-team/DGtal/pull/1641))
-    
+
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
     as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
@@ -134,16 +137,20 @@
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
 
 - *Geometry package*
-  - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
+  - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
     - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
       returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead
       to a valid initialization or not. The method `eval` now uses this boolean value and returns the
       trivial normal vector if it has been set to 'False'.
-  - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
-    delegate, but only checks the relevant parts (which have been pushed in to separate methods).
-    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
+     delegate, but only checks the relevant parts (which have been pushed in to separate methods).
+     (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
   - Fixing issue with the automatic deploy of the "nightly" documentation.
-    (Davi Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620)
+    (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
+
+- *DEC*
+  - More DEC examples can be built without QGLViewer (they didn't need it).
+    (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
 
 # DGtal 1.2
 
