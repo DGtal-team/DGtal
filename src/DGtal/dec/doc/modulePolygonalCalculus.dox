@@ -37,7 +37,15 @@ to define global ones.
 
 This module documents the operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use cases of these operators for geometry processing on digital surfaces will be added.
 
-
+@note The sign convention for the divergence and the Laplacian
+operator is opposite to the one of @cite degoes2020discrete. This is
+to match the usual mathematical convention that the Laplacian (and the
+Laplacian-Beltrami) has negative eigenvalues (and is the sum of second
+derivatives in the cartesian grid). It also follows the formal
+adjointness of exterior derivative and opposite of divergence as
+relation \f$ \langle \mathrm{d} u, v \rangle = - \langle u,
+\mathrm{div} v \rangle \f$. See also
+https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
 
 @note All illustrations below have been obtained using the
 DGtal+[polyscope](https://polyscope.run) examples \ref
