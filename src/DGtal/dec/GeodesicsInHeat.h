@@ -72,7 +72,8 @@ namespace DGtal
     typedef typename PolygonalCalculus::Vertex Vertex;
     typedef typename PolygonalCalculus::LinAlg LinAlgBackend;
     typedef DirichletConditions< LinAlgBackend > Conditions;
-
+    typedef typename Conditions::IntegerVector IntegerVector;
+    
     /**
      * Default constructor.
      */
@@ -153,14 +154,14 @@ namespace DGtal
       // Manage boundaries
       myManageBoundary = false;
       if ( ! boundary_with_mixed_solution ) return;
-      myBoundary = mySource;
+      myBoundary = IntegerVector::Zero(myCalculus->nbVertices());
       const auto surfmesh = myCalculus->getSurfaceMeshPtr();
       const auto edges    = surfmesh->computeManifoldBoundaryEdges();
       for ( auto e : edges )
         {
           const auto vtcs = surfmesh->edgeVertices( e );
-          myBoundary[ vtcs.first  ] = 1.0;
-          myBoundary[ vtcs.second ] = 1.0;
+          myBoundary[ vtcs.first  ] = 1;
+          myBoundary[ vtcs.second ] = 1;
         }
       myManageBoundary = ! edges.empty();
       if ( ! myManageBoundary ) return;
@@ -289,7 +290,7 @@ namespace DGtal
     bool myManageBoundary;
 
     /// The boundary characteristic vector
-    Vector myBoundary;
+    IntegerVector myBoundary;
     
     ///Heat solver with Dirichlet boundary conditions.
     Solver myHeatDirichletSolver;

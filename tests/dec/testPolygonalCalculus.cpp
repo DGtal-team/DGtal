@@ -246,6 +246,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
   typedef SurfaceMesh< RealPoint,RealPoint > Mesh;
   typedef Mesh::Index                        Index;
   typedef PolygonalCalculus< RealPoint,RealVector > PolyDEC;
+  typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
 
   // Build a more complex surface.
   auto params = SH3::defaultParameters();
@@ -281,7 +282,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
   // value on boundary
   PolyDEC::Vector g = calculus.form0();
   // characteristic set of boundary
-  PolyDEC::Vector b = g;
+  DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
 
   SECTION("Solve Poisson problem with boundary Dirichlet conditions")
     {
@@ -301,11 +302,10 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
               auto v2 = adjVertices.second;
               g(v1) = phi(v1);
               g(v2) = phi(v2);
-              b(v1) = 1.0;
-              b(v2) = 1.0;
+              b(v1) = 1;
+              b(v2) = 1;
             }
           // Solve Δu=0 with g as boundary conditions
-          typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
           PolyDEC::Solver solver;
           PolyDEC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
           solver.compute( L_dirichlet );

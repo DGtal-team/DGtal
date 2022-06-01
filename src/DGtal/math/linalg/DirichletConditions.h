@@ -55,7 +55,7 @@ namespace DGtal
   // template class DirichletConditions
   /**
      Description of template class 'DirichletConditions' <p> \brief Aim:
-     A helper class to solve system with Dirichlet boundary conditions.
+     A helper class to solve a system with Dirichlet boundary conditions.
 
      Typically you have a system of the form \f$ A x = b \f$, where
      you wish to set up Dirichlet boundary conditions \f$ u \f$ at
@@ -67,17 +67,17 @@ namespace DGtal
 
      \code 
      typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
-     DC::SparseMatrix A = ...; // the matrix of the linear system
-     DC::DenseVector  b = ...; // contains right-hand side and boundary conditions
+     DC::SparseMatrix  A = ...; // the matrix of the linear system
+     DC::DenseVector   b = ...; // contains right-hand side and boundary conditions
      // set up boundary locations and values
-     DC::DenseVector  p = DenseVector::Zero( b.rows() );
-     DC::DenseVector  u = DenseVector::Zero( b.rows() );
+     DC::IntegerVector p = IntegerVector::Zero( b.rows() );
+     DC::DenseVector   u = DenseVector::Zero( b.rows() );
      std::vector<DC::Index>  boundary_nodes  = { 12, 17, 25, 38, ... };
      std::vector<DC::Scalar> boundary_values = { 10.0, 20.0, 15.0, 7.0, ... };
      for ( int i = 0; i < boundary_nodes.size(); i++ )
      { 
         auto j = boundary_nodes[ i ];
-        p[ j ] = 1.0;
+        p[ j ] = 1;
         u[ j ] = boundary_values[ i ];
      }
      DC::SparseMatrix A_d = DC::dirichletOperator( A, p );
@@ -99,12 +99,13 @@ namespace DGtal
   public:
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
 
-    typedef typename LinearAlgebraBackend::DenseVector::Index Index;
+    typedef typename LinearAlgebraBackend::DenseVector::Index  Index;
     typedef typename LinearAlgebraBackend::DenseVector::Scalar Scalar;
-    typedef typename LinearAlgebraBackend::DenseVector DenseVector;
-    typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
-    typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
-    typedef typename LinearAlgebraBackend::Triplet      Triplet;
+    typedef typename LinearAlgebraBackend::DenseVector         DenseVector;
+    typedef typename LinearAlgebraBackend::IntegerVector       IntegerVector;
+    typedef typename LinearAlgebraBackend::DenseMatrix         DenseMatrix;
+    typedef typename LinearAlgebraBackend::SparseMatrix        SparseMatrix;
+    typedef typename LinearAlgebraBackend::Triplet             Triplet;
 
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
@@ -127,7 +128,7 @@ namespace DGtal
     /// @return the (smaller) linear matrix \f$ A_d \f$ to prefactor.
     static 
     SparseMatrix dirichletOperator( const SparseMatrix& A,
-                                    const DenseVector& p )
+                                    const IntegerVector& p )
     {
       ASSERT( A.cols() == A.rows() );
       ASSERT( p.rows() == A.rows() );
@@ -135,7 +136,7 @@ namespace DGtal
       std::vector< Index > relabeling( n );
       Index j = 0;
       for ( Index i = 0; i < p.rows(); i++ )
-        relabeling[ i ] = ( p[ i ] == 0.0 ) ? j++ : n;
+        relabeling[ i ] = ( p[ i ] == 0 ) ? j++ : n;
       // Building matrix
       SparseMatrix Ap( j, j );
       std::vector< Triplet > triplets;
@@ -168,18 +169,18 @@ namespace DGtal
     static
     DenseVector dirichletVector( const SparseMatrix& A,
                                  const DenseVector& b,
-                                 const DenseVector& p,
+                                 const IntegerVector& p,
                                  const DenseVector& u ) 
     {
       ASSERT( A.cols() == A.rows() );
       ASSERT( p.rows() == A.rows() );
       const auto n = p.rows();
-      DenseVector  up = p.array() * u.array();
+      DenseVector  up = p.array().template cast<double>() * u.array();
       DenseVector tmp = b.array() - (A * up).array();
       std::vector< Index > relabeling( n );
       Index j = 0;
       for ( Index i = 0; i < p.rows(); i++ )
-        relabeling[ i ] = ( p[ i ] == 0.0 ) ? j++ : n;
+        relabeling[ i ] = ( p[ i ] == 0 ) ? j++ : n;
       DenseVector  bp( j );
       for ( Index i = 0; i < p.rows(); i++ )
         if ( p[ i ] == 0 ) bp[ relabeling[ i ] ] = tmp[ i ];
@@ -200,16 +201,29 @@ namespace DGtal
     /// @return the solution \f$ x \f$ to the original system \f$ A x = b \f$,
     static
     DenseVector dirichletSolution( const DenseVector& xd,
-                                   const DenseVector& p,
+                                   const IntegerVector& p,
                                    const DenseVector& u ) 
     {
       DenseVector  x( p.rows() );
       Index j = 0;
       for ( Index i = 0; i < p.rows(); i++ )
-        x[ i ] = ( p[ i ] == 0.0 ) ? xd[ j++ ] : u[ i ];
+        x[ i ] = ( p[ i ] == 0 ) ? xd[ j++ ] : u[ i ];
       return x;
     }
-    
+
+    /// Utility method to build a null vector that will be useful to
+    /// define the boundary characteristic set for Dirichlet
+    /// conditions.
+    ///
+    /// @param b any vector of the size of your problem (e.g., \f$ b
+    /// \f$ in your problem \f$ Ax = b \f$)
+    ///
+    /// @return an integer vector of same size as \a b with zero everywhere.
+    static
+    IntegerVector nullBoundaryVector( const DenseVector& u )
+    {
+      return IntegerVector::Zero( u.rows() );
+    }
   };
 
 } // namespace DGtal

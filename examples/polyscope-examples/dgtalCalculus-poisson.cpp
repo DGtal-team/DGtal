@@ -58,10 +58,11 @@ void computeLaplace()
 {
   //! [PolyDEC-init]
   typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PolyDEC;
+  typedef DirichletConditions< EigenLinearAlgebraBackend >  DC;
   PolyDEC calculus(surfmesh);
   PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
   PolyDEC::Form g = calculus.form0();
-  PolyDEC::Form b = g;
+  DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
   
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
@@ -74,12 +75,11 @@ void computeLaplace()
     auto adjVertices = surfmesh.edgeVertices(e);
     g(adjVertices.first)  = pihVertex(adjVertices.first);
     g(adjVertices.second) = pihVertex(adjVertices.second);
-    b(adjVertices.first)  = 1.0;
-    b(adjVertices.second) = 1.0;
+    b(adjVertices.first)  = 1;
+    b(adjVertices.second) = 1;
   }
 
   // Solve Δu=0 with g as boundary conditions
-  typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
   PolyDEC::Solver solver;
   PolyDEC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
   solver.compute( L_dirichlet );

@@ -174,7 +174,8 @@ void computeLaplace()
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(nbv);
 
   //Setting some random sources
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector p = g;
+  typedef DirichletConditions< EigenLinearAlgebraBackend >  DC;
+  DC::IntegerVector p = DC::nullBoundaryVector( g );
   for(auto cpt=0; cpt< 10;++cpt)
     {
       int idx  = rand() % nbv;
@@ -183,7 +184,6 @@ void computeLaplace()
     }
   
   //Solve Δu=0 with g as boundary conditions
-  typedef DirichletConditions< EigenLinearAlgebraBackend >  DC;
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
   
   trace.beginBlock("Prefactorization...");
