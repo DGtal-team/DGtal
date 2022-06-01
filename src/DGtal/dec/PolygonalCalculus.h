@@ -53,6 +53,16 @@ namespace DGtal
  *
  * See @ref modulePolygonalCalculus for details.
  *
+ * @note The sign convention for the divergence and the Laplacian
+ * operator is opposite to the one of @cite degoes2020discrete. This
+ * is to match the usual mathematical convention that the Laplacian
+ * (and the Laplacian-Beltrami) has negative eigenvalues (and is the
+ * sum of second derivatives in the cartesian grid). It also follows
+ * the formal adjointness of exterior derivative and opposite of
+ * divergence as relation \f$ \langle \mathrm{d} u, v \rangle = -
+ * \langle u, \mathrm{div} v \rangle \f$. See also
+ * https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
+ *
  * @tparam TRealPoint a model of points R^3 (e.g. PointVector).
  * @tparam TRealVector a model of vectors in R^3 (e.g. PointVector).
  */
@@ -440,6 +450,17 @@ public:
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
+  ///
+  /// @note The sign convention for the divergence and the Laplacian
+  /// operator is opposite to the one of @cite
+  /// degoes2020discrete. This is to match the usual mathematical
+  /// convention that the Laplacian (and the Laplacian-Beltrami) has
+  /// negative eigenvalues (and is the sum of second derivatives in
+  /// the cartesian grid). It also follows the formal adjointness of
+  /// exterior derivative and opposite of divergence as relation \f$
+  /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
+  /// \rangle \f$. See also
+  /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   DenseMatrix divergence(const Face f, const double lambda=1.0) const
   {
     if (checkCache(DIVERGENCE_,f))
@@ -470,6 +491,16 @@ public:
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
+  ///
+  /// @note The sign convention for the divergence and the Laplacian
+  /// operator is opposite to the one of @cite
+  /// degoes2020discrete. This is to match the usual mathematical
+  /// convention that the Laplacian (and the Laplacian-Beltrami) has
+  /// negative eigenvalues (and is the sum of second derivatives in
+  /// the cartesian grid). It also follows the formal adjointness of
+  /// exterior derivative and opposite of divergence as relation \f$
+  /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
+  /// \rangle \f$. See also https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
   {
     if (checkCache(L_,f))
@@ -507,6 +538,16 @@ public:
   ///
   /// @param lambda the regularization parameter for the local Laplace-Beltrami operators
   /// @return a sparse nbVertices x nbVertices matrix
+  ///
+  /// @note The sign convention for the divergence is opposite to the
+  /// one of @cite degoes2020discrete. This is also true for the
+  /// Laplacian operator. This is to match the usual mathematical
+  /// convention that the Laplacian (and the Laplacian-Beltrami) has
+  /// negative eigenvalues (and is the sum of second derivatives in
+  /// the cartesian grid). It also follows the formal adjointness of
+  /// exterior derivative and opposite of divergence as relation \f$
+  /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
+  /// \rangle \f$. See also https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   SparseMatrix globalLaplaceBeltrami(const double lambda=1.0) const
   {
     SparseMatrix lapGlobal(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
