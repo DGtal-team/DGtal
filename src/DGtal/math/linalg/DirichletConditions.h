@@ -220,9 +220,9 @@ namespace DGtal
     ///
     /// @return an integer vector of same size as \a b with zero everywhere.
     static
-    IntegerVector nullBoundaryVector( const DenseVector& u )
+    IntegerVector nullBoundaryVector( const DenseVector& b )
     {
-      return IntegerVector::Zero( u.rows() );
+      return IntegerVector::Zero( b.rows() );
     }
   };
 

@@ -452,8 +452,8 @@ public:
   /// @return a degree x degree matrix
   ///
   /// @note The sign convention for the divergence and the Laplacian
-  /// operator is opposite to the one of @cite
-  /// degoes2020discrete. This is to match the usual mathematical
+  /// operator is opposite to the one of @cite degoes2020discrete .
+  /// This is to match the usual mathematical
   /// convention that the Laplacian (and the Laplacian-Beltrami) has
   /// negative eigenvalues (and is the sum of second derivatives in
   /// the cartesian grid). It also follows the formal adjointness of
@@ -493,8 +493,8 @@ public:
   /// @return a degree x degree matrix
   ///
   /// @note The sign convention for the divergence and the Laplacian
-  /// operator is opposite to the one of @cite
-  /// degoes2020discrete. This is to match the usual mathematical
+  /// operator is opposite to the one of @cite degoes2020discrete .
+  /// This is to match the usual mathematical
   /// convention that the Laplacian (and the Laplacian-Beltrami) has
   /// negative eigenvalues (and is the sum of second derivatives in
   /// the cartesian grid). It also follows the formal adjointness of
