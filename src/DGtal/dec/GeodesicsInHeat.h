@@ -67,7 +67,7 @@ namespace DGtal
     typedef TPolygonalCalculus PolygonalCalculus;
     typedef typename PolygonalCalculus::SparseMatrix SparseMatrix;
     typedef typename PolygonalCalculus::DenseMatrix DenseMatrix;
-    typedef typename PolygonalCalculus::LDLTSolver Solver;
+    typedef typename PolygonalCalculus::Solver Solver;
     typedef typename PolygonalCalculus::Vector Vector;
     typedef typename PolygonalCalculus::Vertex Vertex;
     typedef typename PolygonalCalculus::LinAlg LinAlgBackend;
