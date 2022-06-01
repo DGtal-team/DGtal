@@ -48,10 +48,6 @@ typedef Shortcuts<Z3i::KSpace>         SH3;
 typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 // The following typedefs are useful
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
-typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PCalculus;
-typedef PCalculus::SparseMatrix SparseMatrix;
-typedef PCalculus::Vector       Form;
-typedef PCalculus::Triplet      Triplet;
 typedef std::size_t             Index;
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
