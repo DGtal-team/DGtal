@@ -44,33 +44,34 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // template class PolygonalCalculus
-  /**
-   * Description of template class 'PolygonalCalculus' <p>
-   * \brief Implements differential operators on polygonal surfaces from
-   * @cite degoes2020discrete
-   *
-   * See @ref modulePolygonalCalculus for details.
-   *
-   * @note The sign convention for the divergence and the Laplacian
-   * operator is opposite to the one of @cite degoes2020discrete. This
-   * is to match the usual mathematical convention that the Laplacian
-   * (and the Laplacian-Beltrami) has negative eigenvalues (and is the
-   * sum of second derivatives in the cartesian grid). It also follows
-   * the formal adjointness of exterior derivative and opposite of
-   * divergence as relation \f$ \langle \mathrm{d} u, v \rangle = -
-   * \langle u, \mathrm{div} v \rangle \f$. See also
-   * https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
-   *
-   * @tparam TRealPoint a model of points R^3 (e.g. PointVector).
-   * @tparam TRealVector a model of vectors in R^3 (e.g. PointVector).
-   */
+/////////////////////////////////////////////////////////////////////////////
+// template class PolygonalCalculus
+/**
+ * Description of template class 'PolygonalCalculus' <p>
+ * \brief Implements differential operators on polygonal surfaces from
+ * @cite degoes2020discrete
+ *
+ * See @ref modulePolygonalCalculus for details.
+ *
+ * @note The sign convention for the divergence and the Laplacian
+ * operator is opposite to the one of @cite degoes2020discrete. This
+ * is to match the usual mathematical convention that the Laplacian
+ * (and the Laplacian-Beltrami) has negative eigenvalues (and is the
+ * sum of second derivatives in the cartesian grid). It also follows
+ * the formal adjointness of exterior derivative and opposite of
+ * divergence as relation \f$ \langle \mathrm{d} u, v \rangle = -
+ * \langle u, \mathrm{div} v \rangle \f$. See also
+ * https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
+ *
+ * @tparam TRealPoint a model of points R^3 (e.g. PointVector).
+ * @tparam TRealVector a model of vectors in R^3 (e.g. PointVector).
+ */
 template <typename TRealPoint, typename TRealVector>
 class PolygonalCalculus
 {
   // ----------------------- Standard services ------------------------------
-  public:
+public:
+
   /// Concept checking
   static const Dimension dimension = TRealPoint::dimension;
   BOOST_STATIC_ASSERT((dimension == 3));
@@ -111,34 +112,28 @@ class PolygonalCalculus
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
-  /// @param globalInternalCacheEnabled enable the internal cache for all
-  /// operators (default: false)
+  /// @param globalInternalCacheEnabled enable the internal cache for all operators (default: false)
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
                      bool globalInternalCacheEnabled = false):
       mySurfaceMesh(&surf), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myEmbedder = [ & ](Face f, Vertex v)
-    { return mySurfaceMesh->position(v); };
-    myVertexNormalEmbedder = [ & ](Vertex v)
-    { return computeVertexNormal(v); };
-
+    myEmbedder = [&](Face f,Vertex v){ return mySurfaceMesh->position(v); };
+    myVertexNormalEmbedder = [&](Vertex v){ return computeVertexNormal(v); };
     init();
   };
 
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
-  /// and an embedder for the vertex position: function with two parameters, a
-  /// face and a vertex which outputs the embedding in R^3 of the vertex
-  /// w.r.t. to the face.
+  /// and an embedder for the vertex position: function with two parameters, a face and a vertex 
+  /// which outputs the embedding in R^3 of the vertex w.r.t. to the face.
   /// @param surf an instance of SurfaceMesh
   /// @param embedder an embedder
   /// @param globalInternalCacheEnabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
-                    const std::function<Real3dPoint(Face, Vertex)> & embedder,
+                    const std::function<Real3dPoint(Face,Vertex)> & embedder,
                     bool globalInternalCacheEnabled = false):
   mySurfaceMesh(&surf), myEmbedder(embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myVertexNormalEmbedder = [ & ](Vertex v)
-    { return computeVertexNormal(v); };
+    myVertexNormalEmbedder = [&](Vertex v){ return computeVertexNormal(v); };
     init();
   };
 
@@ -149,12 +144,11 @@ class PolygonalCalculus
   /// @param embedder an embedder
   /// @param globalInternalCacheEnabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
-                     const std::function<Vector(Vertex)> & embedder,
-                     bool globalInternalCacheEnabled = false):
+                    const std::function<Vector(Vertex)> & embedder,
+                    bool globalInternalCacheEnabled = false):
       mySurfaceMesh(&surf), myVertexNormalEmbedder(embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myEmbedder = [ & ](Face f, Vertex v)
-    { return mySurfaceMesh->position(v); };
+    myEmbedder = [&](Face f,Vertex v){ return mySurfaceMesh->position(v); };
     init();
   };
 
@@ -168,11 +162,10 @@ class PolygonalCalculus
   /// @param pos_embedder an embedder for the position
   /// @param normal_embedder an embedder for the position
   /// @param globalInternalCacheEnabled
-  PolygonalCalculus(
-  const ConstAlias<MySurfaceMesh> surf,
-  const std::function<Real3dPoint(Face, Vertex)> & pos_embedder,
-  const std::function<Vector(Vertex)> & normal_embedder,
-  bool globalInternalCacheEnabled = false) :
+  PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
+                    const std::function<Real3dPoint(Face,Vertex)> & pos_embedder,
+                    const std::function<Vector(Vertex)> & normal_embedder,
+                    bool globalInternalCacheEnabled = false) :
   mySurfaceMesh(&surf), myEmbedder(pos_embedder), myVertexNormalEmbedder(normal_embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     init();
@@ -222,15 +215,13 @@ class PolygonalCalculus
 
   /// Update the embedding function.
   /// @param externalFunctor a new embedding functor (Face,Vertex)->RealPoint.
-  void setEmbedder(
-  const std::function<Real3dPoint(Face, Vertex)> & externalFunctor)
+  void setEmbedder(const std::function<Real3dPoint(Face,Vertex)> & externalFunctor)
   {
     myEmbedder = externalFunctor;
   }
   /// @}
 
   // ----------------------- Per face operators ------------------------------
-
   /// @name Per face operators
   /// @{
 
@@ -239,22 +230,22 @@ class PolygonalCalculus
   /// @return the n_f x 3 position matrix
   DenseMatrix X(const Face f) const
   {
-    if (checkCache(X_, f))
-      return myGlobalCache[ X_ ][ f ];
+    if (checkCache(X_,f))
+      return myGlobalCache[X_][f];
 
     auto vertices = mySurfaceMesh->incidentVertices(f);
-    auto nf       = myFaceDegree[ f ];
-    DenseMatrix Xt(nf, 3);
+    auto nf = myFaceDegree[f];
+    DenseMatrix Xt(nf,3);
     size_t cpt = 0;
     for (auto v : vertices)
     {
-      Xt(cpt, 0) = myEmbedder(f, v)[ 0 ];
-      Xt(cpt, 1) = myEmbedder(f, v)[ 1 ];
-      Xt(cpt, 2) = myEmbedder(f, v)[ 2 ];
+      Xt(cpt,0) = myEmbedder(f,v)[0];
+      Xt(cpt,1) = myEmbedder(f,v)[1];
+      Xt(cpt,2) = myEmbedder(f,v)[2];
       ++cpt;
     }
 
-    setInCache(X_, f, Xt);
+    setInCache(X_,f,Xt);
     return Xt;
   }
 
@@ -263,18 +254,18 @@ class PolygonalCalculus
   /// @return a degree x degree matrix
   DenseMatrix D(const Face f) const
   {
-    if (checkCache(D_, f))
-      return myGlobalCache[ D_ ][ f ];
+    if (checkCache(D_,f))
+      return myGlobalCache[D_][f];
 
-    auto nf       = myFaceDegree[ f ];
-    DenseMatrix d = DenseMatrix::Zero(nf, nf);
+    auto nf       = myFaceDegree[f];
+    DenseMatrix d = DenseMatrix::Zero(nf,nf);
     for (auto i = 0; i < nf; ++i)
     {
-      d(i, i)              = -1.;
-      d(i, (i + 1) % nf) = 1.;
+      d(i,i)              = -1.;
+      d(i,(i + 1) % nf) = 1.;
     }
 
-    setInCache(D_, f, d);
+    setInCache(D_,f,d);
     return d;
   }
 
@@ -283,12 +274,12 @@ class PolygonalCalculus
   /// @return degree x 3 matrix
   DenseMatrix E(const Face f) const
   {
-    if (checkCache(E_, f))
-      return myGlobalCache[ E_ ][ f ];
+    if (checkCache(E_,f))
+      return myGlobalCache[E_][f];
 
     DenseMatrix op = D(f) * X(f);
 
-    setInCache(E_, f, op);
+    setInCache(E_,f,op);
     return op;
   }
 
@@ -297,18 +288,18 @@ class PolygonalCalculus
   /// @return a degree x degree matrix
   DenseMatrix A(const Face f) const
   {
-    if (checkCache(A_, f))
-      return myGlobalCache[ A_ ][ f ];
+    if (checkCache(A_,f))
+      return myGlobalCache[A_][f];
 
-    auto nf       = myFaceDegree[ f ];
-    DenseMatrix a = DenseMatrix::Zero(nf, nf);
+    auto nf       = myFaceDegree[f];
+    DenseMatrix a = DenseMatrix::Zero(nf,nf);
     for (auto i = 0; i < nf; ++i)
     {
-      a(i, (i + 1) % nf) = 0.5;
-      a(i, i)              = 0.5;
+      a(i,(i + 1) % nf) = 0.5;
+      a(i,i)              = 0.5;
     }
 
-    setInCache(A_, f, a);
+    setInCache(A_,f,a);
     return a;
   }
 
@@ -317,22 +308,22 @@ class PolygonalCalculus
   /// @return a vector
   virtual Vector vectorArea(const Face f) const
   {
-    Real3dPoint af(0.0, 0.0, 0.0);
+    Real3dPoint af(0.0,0.0,0.0);
     auto vertices = mySurfaceMesh->incidentVertices(f);
     auto it       = vertices.begin();
     auto itnext   = vertices.begin();
     ++itnext;
     while (it != vertices.end())
     {
-      auto xi  = myEmbedder(f, *it);
-      auto xip = myEmbedder(f, *itnext);
+      auto xi  = myEmbedder(f,*it);
+      auto xip = myEmbedder(f,*itnext);
       af += xi.crossProduct(xip);
       ++it;
       ++itnext;
       if (itnext == vertices.end())
         itnext = vertices.begin();
     }
-    Eigen::Vector3d output = { af[ 0 ], af[ 1 ], af[ 2 ] };
+    Eigen::Vector3d output = { af[0],af[1],af[2] };
     return 0.5 * output;
   }
 
@@ -360,7 +351,7 @@ class PolygonalCalculus
   Real3dVector faceNormalAsDGtalVector(const Face f) const
   {
     Vector v = faceNormal(f);
-    return { v(0), v(1), v(2) };
+    return { v(0),v(1),v(2) };
   }
 
   /// co-Gradient operator of the face
@@ -368,10 +359,10 @@ class PolygonalCalculus
   /// @return a 3 x degree matrix
   virtual DenseMatrix coGradient(const Face f) const
   {
-    if (checkCache(COGRAD_, f))
-      return myGlobalCache[ COGRAD_ ][ f ];
+    if (checkCache(COGRAD_,f))
+      return myGlobalCache[COGRAD_][f];
     DenseMatrix op = E(f).transpose() * A(f);
-    setInCache(COGRAD_, f, op);
+    setInCache(COGRAD_,f,op);
     return op;
   }
 
@@ -379,8 +370,10 @@ class PolygonalCalculus
   ///@param n a vector
   DenseMatrix bracket(const Vector & n) const
   {
-    DenseMatrix brack(3, 3);
-    brack << 0.0, -n(2), n(1), n(2), 0.0, -n(0), -n(1), n(0), 0.0;
+    DenseMatrix brack(3,3);
+    brack << 0.0, -n(2), n(1),
+             n(2), 0.0, -n(0),
+            -n(1), n(0), 0.0;
     return brack;
   }
 
@@ -389,12 +382,12 @@ class PolygonalCalculus
   /// @return 3 x degree matrix
   DenseMatrix gradient(const Face f) const
   {
-    if (checkCache(GRAD_, f))
-      return myGlobalCache[ GRAD_ ][ f ];
+    if (checkCache(GRAD_,f))
+      return myGlobalCache[GRAD_][f];
 
-    DenseMatrix op =-1.0 / faceArea(f) * bracket(faceNormal(f)) * coGradient(f);
+    DenseMatrix op =-1.0 / faceArea(f) * bracket( faceNormal(f) ) * coGradient(f);
 
-    setInCache(GRAD_, f, op);
+    setInCache(GRAD_,f,op);
     return op;
   }
 
@@ -403,11 +396,11 @@ class PolygonalCalculus
   /// @return a degree x 3 matrix
   DenseMatrix flat(const Face f) const
   {
-    if (checkCache(FLAT_, f))
-      return myGlobalCache[ FLAT_ ][ f ];
+    if (checkCache(FLAT_,f))
+      return myGlobalCache[FLAT_][f];
     auto n = faceNormal(f);
-    DenseMatrix op = E(f) * (DenseMatrix::Identity(3, 3) - n * n.transpose());
-    setInCache(FLAT_, f, op);
+    DenseMatrix op = E(f) * (DenseMatrix::Identity(3,3) - n * n.transpose());
+    setInCache(FLAT_,f,op);
     return op;
   }
 
@@ -416,10 +409,10 @@ class PolygonalCalculus
   /// @return a degree x 3 matrix
   virtual DenseMatrix B(const Face f) const
   {
-    if (checkCache(B_, f))
-      return myGlobalCache[ B_ ][ f ];
+    if (checkCache(B_,f))
+      return myGlobalCache[B_][f];
     DenseMatrix res = A(f) * X(f);
-    setInCache(B_, f, res);
+    setInCache(B_,f,res);
     return res;
   }
 
@@ -427,7 +420,7 @@ class PolygonalCalculus
   /// @param f the face
   virtual Vector centroid(const Face f) const
   {
-    auto nf = myFaceDegree[ f ];
+    auto nf = myFaceDegree[f];
     return 1.0 / (double)nf * X(f).transpose() * Vector::Ones(nf);
   }
 
@@ -436,7 +429,7 @@ class PolygonalCalculus
   Real3dPoint centroidAsDGtalPoint(const Face f) const
   {
     Vector c = centroid(f);
-    return { c(0), c(1), c(2) };
+    return { c(0),c(1),c(2) };
   }
 
   /// Sharp operator for the face.
@@ -444,15 +437,15 @@ class PolygonalCalculus
   /// @return a 3 x degree matrix
   DenseMatrix sharp(const Face f) const
   {
-    if (checkCache(SHARP_, f))
-      return myGlobalCache[ SHARP_ ][ f ];
+    if (checkCache(SHARP_,f))
+      return myGlobalCache[SHARP_][f];
 
-    auto nf = myFaceDegree[ f ];
+    auto nf = myFaceDegree[f];
     DenseMatrix op =
     1.0 / faceArea(f) * bracket(faceNormal(f)) *
     (B(f).transpose() - centroid(f) * Vector::Ones(nf).transpose());
 
-    setInCache(SHARP_, f, op);
+    setInCache(SHARP_,f,op);
     return op;
   }
 
@@ -461,13 +454,13 @@ class PolygonalCalculus
   /// @return a degree x degree matrix
   DenseMatrix P(const Face f) const
   {
-    if (checkCache(P_, f))
-      return myGlobalCache[ P_ ][ f ];
+    if (checkCache(P_,f))
+      return myGlobalCache[P_][f];
 
-    auto nf        = myFaceDegree[ f ];
-    DenseMatrix op = DenseMatrix::Identity(nf, nf) - flat(f) * sharp(f);
+    auto nf        = myFaceDegree[f];
+    DenseMatrix op = DenseMatrix::Identity(nf,nf) - flat(f) * sharp(f);
 
-    setInCache(P_, f, op);
+    setInCache(P_,f,op);
     return op;
   }
 
@@ -475,17 +468,17 @@ class PolygonalCalculus
   /// @param f the face
   /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
-  virtual DenseMatrix M(const Face f, const double lambda = 1.0) const
+  virtual DenseMatrix M(const Face f,const double lambda = 1.0) const
   {
-    if (checkCache(M_, f))
-      return myGlobalCache[ M_ ][ f ];
+    if (checkCache(M_,f))
+      return myGlobalCache[M_][f];
 
     DenseMatrix Uf = sharp(f);
     DenseMatrix Pf = P(f);
     DenseMatrix op =
     faceArea(f) * Uf.transpose() * Uf + lambda * Pf.transpose() * Pf;
 
-    setInCache(M_, f, op);
+    setInCache(M_,f,op);
     return op;
   }
 
@@ -506,11 +499,11 @@ class PolygonalCalculus
   /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   DenseMatrix divergence(const Face f, const double lambda = 1.0) const
   {
-    if (checkCache(DIVERGENCE_, f))
-      return myGlobalCache[ DIVERGENCE_ ][ f ];
+    if (checkCache(DIVERGENCE_,f))
+      return myGlobalCache[DIVERGENCE_][f];
 
     DenseMatrix op = -1.0 * D(f).transpose() * M(f);
-    setInCache(DIVERGENCE_, f, op);
+    setInCache(DIVERGENCE_,f,op);
 
     return op;
   }
@@ -520,10 +513,10 @@ class PolygonalCalculus
   /// @return a degree x degree matrix
   DenseMatrix curl(const Face f) const
   {
-    if (checkCache(CURL_, f))
-      return myGlobalCache[ CURL_ ][ f ];
+    if (checkCache(CURL_,f))
+      return myGlobalCache[CURL_][f];
 
-    DenseMatrix op =DenseMatrix::Identity(myFaceDegree[ f ], myFaceDegree[ f ]);
+    DenseMatrix op =DenseMatrix::Identity(myFaceDegree[f],myFaceDegree[f]);
 
     setInCache(CURL_, f, op);
     return op;
@@ -546,14 +539,14 @@ class PolygonalCalculus
   /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   DenseMatrix LaplaceBeltrami(const Face f, const double lambda = 1.0) const
   {
-    if (checkCache(L_, f))
-      return myGlobalCache[ L_ ][ f ];
+    if (checkCache(L_,f))
+      return myGlobalCache[L_][f];
 
     DenseMatrix Df = D(f);
     // Laplacian is a negative operator.
-    DenseMatrix op = -1.0 * Df.transpose() * M(f, lambda) * Df;
+    DenseMatrix op = -1.0 * Df.transpose() * M(f,lambda) * Df;
 
-    setInCache(L_, f, op);
+    setInCache(L_,f,op);
     return op;
   }
 
@@ -576,7 +569,7 @@ class PolygonalCalculus
 
   static Eigen::Vector3d toVec3(const Real3dPoint & x)
   {
-    return Eigen::Vector3d(x(0), x(1), x(2));
+    return Eigen::Vector3d(x(0),x(1),x(2));
   }
 
   /// \param v the vertex to compute the normal from
@@ -611,10 +604,10 @@ class PolygonalCalculus
     Real3dPoint tangentVector = getSurfaceMeshPtr()->position(v) -
                                 getSurfaceMeshPtr()->position(neighbor);
     Eigen::Vector3d w  = toVec3(tangentVector);
-    Eigen::Vector3d uu = proj(w, nv).normalized();
+    Eigen::Vector3d uu = proj(w,nv).normalized();
     Eigen::Vector3d vv = nv.cross(uu);
 
-    DenseMatrix tanB(3, 2);
+    DenseMatrix tanB(3,2);
     tanB.col(0) = uu;
     tanB.col(1) = vv;
     return tanB;
@@ -632,10 +625,10 @@ class PolygonalCalculus
     Real3dPoint tangentVector =
     getSurfaceMeshPtr()->position(v2) - getSurfaceMeshPtr()->position(v1);
     Eigen::Vector3d w  = toVec3(tangentVector);
-    Eigen::Vector3d uu = proj(w, nf).normalized();
+    Eigen::Vector3d uu = proj(w,nf).normalized();
     Eigen::Vector3d vv = nf.cross(uu);
 
-    DenseMatrix tanB(3, 2);
+    DenseMatrix tanB(3,2);
     tanB.col(0) = uu;
     tanB.col(1) = vv;
     return tanB;
@@ -658,7 +651,7 @@ class PolygonalCalculus
   {
     std::vector<Vector> ext(mySurfaceMesh->nbVertices());
     for (auto v = 0; v < mySurfaceMesh->nbVertices(); v++)
-      ext[ v ] = toExtrinsicVector(v, I[ v ]);
+      ext[v] = toExtrinsicVector(v,I[v]);
     return ext;
   }
 
@@ -680,17 +673,17 @@ class PolygonalCalculus
   ///tangent space (2x2 rotation matrix)
   DenseMatrix Rvf(const Vertex & v, const Face & f) const
   {
-    return Tf(f).transpose() * Qvf(v, f) * Tv(v);
+    return Tf(f).transpose() * Qvf(v,f) * Tv(v);
   }
 
   ///@return Shape Operator at face f
   DenseMatrix shape(const Face f)
   {
-    DenseMatrix N(myFaceDegree[ f ], 3);
+    DenseMatrix N(myFaceDegree[f],3);
     uint cpt = 0;
     for (Vertex v : mySurfaceMesh->incidentVertices(f))
     {
-      N.block(cpt, 0, 3, 1) = n_v(v).transpose();
+      N.block(cpt,0,3,1) = n_v(v).transpose();
       cpt++;
     }
     DenseMatrix GN = gradient(f) * N, Tf = T_f(f);
@@ -703,12 +696,12 @@ private: //Covariant operators routines
   DenseMatrix BlockConnection(const Face & f) const
   {
     auto nf           = degree(f);
-    DenseMatrix RU_fO = DenseMatrix::Zero(nf * 2, nf * 2);
+    DenseMatrix RU_fO = DenseMatrix::Zero(nf * 2,nf * 2);
     size_t cpt        = 0;
     for (auto v : getSurfaceMeshPtr()->incidentVertices(f))
     {
-      auto Rv                               = Rvf(v, f);
-      RU_fO.block<2, 2>(2 * cpt, 2 * cpt) = Rv;
+      auto Rv                               = Rvf(v,f);
+      RU_fO.block<2,2>(2 * cpt,2 * cpt) = Rv;
       ++cpt;
     }
     return RU_fO;
@@ -719,7 +712,7 @@ private: //Covariant operators routines
   {
     size_t h       = M.rows();
     size_t w       = M.cols();
-    DenseMatrix MK = DenseMatrix::Zero(h * 2, w * 2);
+    DenseMatrix MK = DenseMatrix::Zero(h * 2,w * 2);
     for (size_t j = 0; j < h; j++)
       for (size_t i = 0; i < w; i++)
       {
@@ -758,12 +751,12 @@ private: //Covariant operators routines
   /// the vector field to the face,
   DenseMatrix TransportAndFormatVectorField(const Face f, const Vector & uf)
   {
-    DenseMatrix uf_nabla(myFaceDegree[ f ], 2);
+    DenseMatrix uf_nabla(myFaceDegree[f], 2);
     size_t cpt = 0;
     for (auto v : mySurfaceMesh->incidentVertices(f))
     {
-      uf_nabla.block(cpt, 0, 1, 2) =
-      (Rvf(v, f) * uf.block(2 * cpt, 0, 2, 1)).transpose();
+      uf_nabla.block(cpt,0,1,2) =
+      (Rvf(v,f) * uf.block(2 * cpt,0,2,1)).transpose();
       ++cpt;
     }
     return uf_nabla;
@@ -806,13 +799,13 @@ public:
   /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
   DenseMatrix CovL(const Face & f, double lambda = 1.0) const
   {
-    if (checkCache(COV_L_, f))
-      return myGlobalCache[ COV_L_ ][ f ];
+    if (checkCache(COV_L_,f))
+      return myGlobalCache[COV_L_][f];
     auto G = EnergyCovG_f(f);
     auto P = EnergyCovP_f(f);
     auto L = -(faceArea(f) * G.transpose() * G +
               lambda * P.transpose() * P);
-    setInCache(COV_L_, f, L);
+    setInCache(COV_L_,f,L);
     return L;
   }
   /// @}
@@ -858,16 +851,16 @@ public:
     std::vector<Triplet> triplets;
     for (auto f = 0; f < mySurfaceMesh->nbFaces(); ++f)
     {
-      auto nf             = myFaceDegree[ f ];
-      DenseMatrix Lap     = this->LaplaceBeltrami(f, lambda);
+      auto nf = myFaceDegree[f];
+      DenseMatrix Lap = this->LaplaceBeltrami(f,lambda);
       const auto vertices = mySurfaceMesh->incidentVertices(f);
       for (auto i = 0; i < nf; ++i)
         for (auto j = 0; j < nf; ++j)
         {
-          auto v = Lap(i, j);
-          if (v != 0.0)
-            triplets.emplace_back(
-            Triplet(vertices[ i ], vertices[ j ], Lap(i, j)));
+          auto v = Lap(i,j);
+          if (v!= 0.0)
+            triplets.emplace_back( Triplet( vertices[i], vertices[j],
+                                            Lap( i, j ) ) );
         }
     }
     lapGlobal.setFromTriplets(triplets.begin(), triplets.end());
@@ -881,17 +874,16 @@ public:
   /// @return the global lumped mass matrix.
   SparseMatrix globalLumpedMassMatrix() const
   {
-    SparseMatrix M(mySurfaceMesh->nbVertices(),
-                    mySurfaceMesh->nbVertices());
+    SparseMatrix M(mySurfaceMesh->nbVertices(),mySurfaceMesh->nbVertices());
     std::vector<Triplet> triplets;
     for (auto v = 0; v < mySurfaceMesh->nbVertices(); ++v)
-    {
-      auto faces = mySurfaceMesh->incidentFaces(v);
-      auto varea = 0.0;
-      for (auto f : faces)
-        varea += faceArea(f) / (double)myFaceDegree[ f ];
-      triplets.emplace_back(Triplet(v, v, varea));
-    }
+      {
+        auto faces = mySurfaceMesh->incidentFaces(v);
+        auto varea = 0.0;
+        for (auto f : faces)
+          varea += faceArea(f) / (double)myFaceDegree[f];
+        triplets.emplace_back(Triplet(v, v, varea));
+      }
     M.setFromTriplets(triplets.begin(), triplets.end());
     return M;
   }
@@ -924,7 +916,7 @@ public:
     for (auto f = 0; f < mySurfaceMesh->nbFaces(); f++)
     {
       auto nf             = degree(f);
-      DenseMatrix Lap     = CovL(f, lambda);
+      DenseMatrix Lap     = CovL(f,lambda);
       const auto vertices = mySurfaceMesh->incidentVertices(f);
       for (auto i = 0u; i < nf; ++i)
         for (auto j = 0u; j < nf; ++j)
@@ -933,8 +925,8 @@ public:
             {
               auto v = Lap(2 * i + k1, 2 * j + k2);
               if (v != 0.0)
-                triplets.emplace_back(Triplet(2 * vertices[ i ] + k1,
-                                                2 * vertices[ j ] + k2, v));
+                triplets.emplace_back(Triplet(2 * vertices[i] + k1,
+                                                2 * vertices[j] + k2, v));
             }
     }
     lapGlobal.setFromTriplets(triplets.begin(), triplets.end());
@@ -957,7 +949,7 @@ public:
       auto faces = mySurfaceMesh->incidentFaces(v);
       auto varea = 0.0;
       for (auto f : faces)
-        varea += faceArea(f) / (double)myFaceDegree[ f ];
+        varea += faceArea(f) / (double)myFaceDegree[f];
       triplets.emplace_back(Triplet(2 * v, 2 * v, varea));
       triplets.emplace_back(Triplet(2 * v + 1, 2 * v + 1, varea));
     }
@@ -1058,7 +1050,7 @@ public:
   /// @return the number of vertices of the face.
   size_t faceDegree(Face f) const
   {
-    return myFaceDegree[ f ];
+    return myFaceDegree[f];
   }
 
   /// @return the number of vertices of the underlying surface mesh.
@@ -1077,7 +1069,7 @@ public:
   /// @param f the face
   size_t degree(const Face f) const
   {
-    return myFaceDegree[ f ];
+    return myFaceDegree[f];
   }
 
   /// @returns an pointer to the underlying SurfaceMesh object.
@@ -1090,7 +1082,7 @@ public:
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
    */
-  void selfDisplay(std::ostream & out) const
+  void selfDisplay( std::ostream & out ) const
   {
     out << "[PolygonalCalculus]: ";
     if (myGlobalCacheEnabled)
@@ -1125,7 +1117,7 @@ public:
     {
       auto vertices     = mySurfaceMesh->incidentVertices(f);
       auto nf           = vertices.size();
-      myFaceDegree[ f ] = nf;
+      myFaceDegree[f] = nf;
     }
   }
 
@@ -1136,7 +1128,7 @@ public:
   bool checkCache(OPERATOR key, const Face f) const
   {
     if (myGlobalCacheEnabled)
-      if (myGlobalCache[ key ].find(f) != myGlobalCache[ key ].end())
+      if (myGlobalCache[key].find(f) != myGlobalCache[key].end())
         return true;
     return false;
   }
@@ -1148,7 +1140,7 @@ public:
   void setInCache(OPERATOR key, const Face f, const DenseMatrix & ope) const
   {
     if (myGlobalCacheEnabled)
-      myGlobalCache[ key ][ f ] = ope;
+      myGlobalCache[key][f] = ope;
   }
 
   // ------------------------- Internals ------------------------------------
@@ -1168,7 +1160,7 @@ public:
 
   /// Global cache
   bool myGlobalCacheEnabled;
-  mutable std::array<std::unordered_map<Face, DenseMatrix>, 15> myGlobalCache;
+  mutable std::array<std::unordered_map<Face,DenseMatrix>,15> myGlobalCache;
 
   }; // end of class PolygonalCalculus
 
@@ -1179,7 +1171,7 @@ public:
  * @return the output stream after the writing.
  */
 template <typename TP, typename TV>
-std::ostream & operator<<(std::ostream & out,const PolygonalCalculus<TP, TV> & object)
+std::ostream & operator<<(std::ostream & out,const PolygonalCalculus<TP,TV> & object)
 {
   object.selfDisplay(out);
   return out;
