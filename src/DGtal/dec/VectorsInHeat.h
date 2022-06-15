@@ -70,6 +70,7 @@ public:
     typedef typename PolygonalCalculus::Solver Solver;
     typedef typename PolygonalCalculus::Vector Vector;
     typedef typename PolygonalCalculus::Vertex Vertex;
+    typedef typename PolygonalCalculus::LinAlg LinAlgBackend;
     typedef DirichletConditions< LinAlgBackend > Conditions;
     typedef typename Conditions::IntegerVector IntegerVector;
 
