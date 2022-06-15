@@ -146,8 +146,8 @@ public:
         myVectorHeatOpe   =  mass2 - dt*connectionLaplacian;
 
         //Prefactorizing
-        myScalarHeatSolver.compute(scalarHeatOpe);
-        myVectorHeatSolver.compute(vectorHeatOpe);
+        myScalarHeatSolver.compute(myScalarHeatOpe);
+        myVectorHeatSolver.compute(myVectorHeatOpe);
 
         //empty sources
         myVectorSource     	= Vector::Zero(2*myCalculus->nbVertices());
