@@ -18,7 +18,7 @@
  * @author Baptiste GENEST (\c baptistegenest@gmail.com )
  * intership at Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2021/09/02
+ * @date 2022/06/15
  *
  * This file is part of the DGtal library.
  */
