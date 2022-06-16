@@ -126,7 +126,6 @@ int main(int, char **argv)
     auto K               = SH3::getKSpace( binary_image, params );
     auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
     auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-    auto surfels 		 = SH3::getSurfelRange(surface,params);
 
     //Need to convert the faces
     for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)

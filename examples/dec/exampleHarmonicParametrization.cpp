@@ -147,8 +147,7 @@ std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1){
         Vertex current = first;
 
         size_t nb_iter = 0;
-        bool end_loop = false;
-        while (nb_iter < MBE.size()*2 && !end_loop){
+        while (nb_iter < MBE.size()*2){
             bool ok = false;
             for (auto other : adjacent[current])
                 if (!visited[other]){
@@ -319,7 +318,6 @@ int main(int, char **argv)
 
     auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
     auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-    auto surfels 		 = SH3::getSurfelRange(surface,params);
 
 
     //Need to convert the faces
