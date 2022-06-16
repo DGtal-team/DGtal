@@ -195,6 +195,21 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
   }
+  SECTION("Local Connection-Laplace-Beltrami")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    auto L = boxCalculus.CovL(f);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    //since connection laplacian transports the phi vectors to the face,
+    //it's not expected to have 0 since these vectors aren't actually the same
+    auto lphi = L*phi;
+    //but we can still check that L is semi-definite
+    REQUIRE( L.determinant() == 0);
+    REQUIRE( lphi[2] == -3.68301);
+  }
   SECTION("Check lumped mass matrix")
   {
     PolygonalCalculus< RealPoint,RealVector >::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
