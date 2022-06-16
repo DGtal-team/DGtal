@@ -772,7 +772,7 @@ public:
   DenseMatrix CovariantGradient(const Face f, const Vector & uf)
   {
     return Tf(f).transpose() * gradient(f) *
-           TransportAndFormatVectorField(uf);
+           TransportAndFormatVectorField(f,uf);
   }
 
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
@@ -785,7 +785,7 @@ public:
   /// the vector field to the face
   DenseMatrix CovariantProjection(const Face f, const Vector & uf)
   {
-    return P(f) * D(f) * TransportAndFormatVectorField(uf);
+    return P(f) * D(f) * TransportAndFormatVectorField(f,uf);
   }
 
   /// L∇ := -(afG∇tG∇+λP∇tP∇)
