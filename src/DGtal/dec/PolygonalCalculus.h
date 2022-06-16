@@ -762,6 +762,8 @@ private: //Covariant operators routines
   }
 
 public:
+  /// @param uf list of all intrinsic vectors per vertex concatenated in a
+  /// column vector
   /// @return the covariant gradient of the given vector field uf (expressed
   /// in corresponding vertex tangent frames), wrt face f
   /// @note Unlike the rest of the per face operators, the
@@ -769,10 +771,12 @@ public:
   /// the vector field to the face,
   DenseMatrix CovariantGradient(const Face f, const Vector & uf)
   {
-    return T_f(f).transpose() * gradient(f) *
+    return Tf(f).transpose() * gradient(f) *
            TransportAndFormatVectorField(uf);
   }
 
+  /// @param uf list of all intrinsic vectors per vertex concatenated in a
+  /// column vector
   /// @return the covariant projection of the given vector field uf (
   /// restricted to face f and expressed in corresponding vertex tangent
   /// frames)
