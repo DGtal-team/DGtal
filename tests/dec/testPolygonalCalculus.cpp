@@ -210,6 +210,25 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( L.determinant() == 0);
     REQUIRE( lphi[2] == -3.68301);
   }
+  SECTION("Covariant Operators")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    auto CG = boxCalculus.CovariantGradient(f,phi);
+    auto CP = boxCalculus.CovariantProjection(f,phi);
+
+    //check sizes
+    REQUIRE( CG.rows() == 2);
+    REQUIRE( CG.cols() == 2);
+    REQUIRE( CP.rows() == faces[f].size());
+    REQUIRE( CP.cols() == 2);
+
+    REQUIRE( CG(0,0) == 0.707107);
+    REQUIRE( CP(0,0) == 1.22474);
+  }
   SECTION("Check lumped mass matrix")
   {
     PolygonalCalculus< RealPoint,RealVector >::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
