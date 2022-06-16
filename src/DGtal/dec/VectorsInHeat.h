@@ -52,7 +52,7 @@ namespace DGtal
 // template class VectorInHeat
 /**
  * Description of template class 'VectorsInHeat' <p>
- * \brief This class implements @cite Crane2013 on polygonal surfaces  (using @ref modulePolygonalCalculus).
+ * \brief This class implements @cite Sharp:2019:VHM on polygonal surfaces  (using @ref modulePolygonalCalculus).
  *
  * see @ref moduleVectorsInHeat for details and examples.
  *
