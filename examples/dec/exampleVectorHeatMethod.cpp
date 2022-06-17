@@ -68,14 +68,19 @@ polyscope::CurveNetwork *psBoundary;
 
 SurfMesh surfmesh;
 
+//Polygonal Calculus and VectorsInHeat solvers
 PC *calculus;
 VectorsInHeat<PC> *VHM;
 
+//sources
 std::vector<Vector> X_0;
-std::vector<Vector> X_t;
 
 bool noSources = true;
 
+/**
+ * @brief addRandomSource add a random vector in the tangent space
+ * of a vertex
+ */
 void addRandomSource(){
     size_t id = rand()%surfmesh.nbVertices();
     VHM->addSource(id,Eigen::Vector3d::Random(3).normalized());
@@ -85,19 +90,25 @@ void addRandomSource(){
     noSources = false;
 }
 
+/**
+ * @brief diffuse solves systems and add the solution to the
+ * display, if no source is given, adds a random one
+ */
 void diffuse(){
     if (noSources)
         addRandomSource();
     psMesh->addVertexVectorQuantity("VHM field",VHM->compute());
 }
 
+/**
+ * @brief precompute initialize VHM solvers, and source container
+ */
 void precompute(){
     auto nv = surfmesh.nbVertices();
     auto ael = surfmesh.averageEdgeLength();
     VHM->init(ael*ael);//init vector heat method solvers
 
     X_0.resize(nv,Vector::Zero(3));//extrinsic Source vectors
-    X_t.resize(nv,Vector::Zero(3));//extrinsic Vector field after diffusion
 
     psMesh->addVertexVectorQuantity("X_0",X_0);
 }
