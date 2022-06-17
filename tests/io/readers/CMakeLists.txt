@@ -6,7 +6,8 @@ set(DGTAL_TESTS_SRC_IO_READERS
        testPointListReader
        testTableReader
        testMeshReader
-       testMPolynomialReader )
+       testMPolynomialReader
+       testSTBReader)
 
 
 foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS})
