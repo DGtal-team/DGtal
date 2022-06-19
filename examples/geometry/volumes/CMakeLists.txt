@@ -5,6 +5,9 @@ set( DGTAL_EXAMPLES_SRC
         fullConvexityCollapsiblePoints2D
         fullConvexitySphereGeodesics
         fullConvexityLUT2D
+        exampleBoundedLatticePolytopeCount2D
+        exampleBoundedLatticePolytopeCount3D
+        exampleBoundedLatticePolytopeCount4D
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
