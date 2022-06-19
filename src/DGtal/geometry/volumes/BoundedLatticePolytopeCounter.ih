@@ -1,0 +1,199 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file BoundedLatticePolytopeCounter.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/01/02
+ *
+ * Implementation of inline methods defined in BoundedLatticePolytopeCounter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+BoundedLatticePolytopeCounter
+( const Polytope& P )
+{
+  init( &P );
+}
+
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+init
+( const Polytope* ptrP )
+{
+  myPolytope = ptrP;
+  if ( ptrP == nullptr ) return;
+  myLower    = ptrP->getDomain().lowerBound();
+  myUpper    = ptrP->getDomain().upperBound();
+}
+
+template <typename TSpace>
+typename  DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+countInsideAlongAxis( Point p, Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  const Polytope& P = *myPolytope;
+  const InequalityMatrix&  A = P.A;
+  const InequalityVector&  B = P.B;
+  const std::vector<bool>& I = P.I;
+  Integer x_min = myLower[ a ];
+  Integer x_max = myUpper[ a ];
+  Integer x = 0;
+  p[ a ] = x_min;
+  bool empty = false;
+  for ( Dimension k = 2*dimension; k < A.size(); k++ )
+    {
+      Integer c = A[ k ].dot( p );
+      Integer n = A[ k ][ a ];
+      Integer b = B[ k ];
+      if ( n == 0 )
+        { // constraint is // to the specified axis.
+          empty = ! ( I[ k ] ? ( c <= b ) : c < b );
+        }
+      else if ( n > 0 )
+        {
+          Integer d = b - c;
+          if ( d < 0 ) empty = true;
+          else
+            {
+              x = I[ k ] ? ( d / n ) : ( (d+n-1) / n - 1 ) ;
+              x_max = std::min( x_max, p[ a ] + x );
+            }
+        }
+      else // ( n < 0 )
+        {
+          Integer d = c - b;
+          if ( d >= 0 )
+            {
+              x = I[ k ] ? ( (d-n-1) / -n ) : ( d / -n + 1 );
+              x_min = std::max( x_min, p[ a ] + x );
+            }
+          // otherwise the constraint is true
+        }
+      if ( empty || ( x_max < x_min ) ) return 0;
+    }
+  return x_max - x_min + 1;
+}
+
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+intersectionIntervalAlongAxis( Point p, Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  const Polytope& P = *myPolytope;
+  const InequalityMatrix&  A = P.A;
+  const InequalityVector&  B = P.B;
+  const std::vector<bool>& I = P.I;
+  Integer x_min = myLower[ a ];
+  Integer x_max = myUpper[ a ]+1;
+  Integer x = 0;
+  const Integer x_a = x_min;
+  p[ a ] = x_a;
+  bool empty = false;
+  for ( Dimension k = 2*dimension; k < A.size(); k++ )
+    {
+      const Integer c = A[ k ].dot( p );
+      const Integer n = A[ k ][ a ];
+      const Integer b = B[ k ];
+      if ( n == 0 )
+        { // constraint is // to the specified axis.
+          empty = ! ( I[ k ] ? ( c <= b ) : c < b );
+        }
+      else if ( n > 0 )
+        {
+          Integer d = b - c;
+          if ( d < 0 ) empty = true;
+          else
+            {
+              x = I[ k ] ? ( d / n + 1 ) : ( (d+n-1) / n ) ;
+              x_max = std::min( x_max, x_a + x );
+            }
+        }
+      else // ( n < 0 )
+        {
+          Integer d = c - b;
+          if ( d >= 0 )
+            {
+              x = I[ k ] ? ( (d-n-1) / -n ) : ( d / -n + 1 );
+              x_min = std::max( x_min, x_a + x );
+            }
+          // otherwise the constraint is true
+        }
+      // std::cout << " (" << empty << ":" << x_min << "," << x_max << ")";
+      if ( empty || ( x_max <= x_min ) ) return Interval( 0, 0 );
+    }
+  return Interval( x_min, x_max );
+}
+
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+countAlongAxis( Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  Integer nb = 0;
+  for ( auto&& p : D )
+    {
+      auto I = intersectionIntervalAlongAxis( p, a );
+      nb    += I.second - I.first;
+      // std::cout << p << " #" << (I.second - I.first)
+      //           << " [" << I.first << "," << I.second << ")" << std::endl;
+    }
+  return nb;
+}
+
+template <typename TSpace>
+DGtal::Dimension
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+longestAxis( ) const
+{
+  ASSERT( ptrP != nullptr );
+  Dimension b = 0;
+  auto b_size = myUpper[ 0 ] - myLower[ 0 ];
+  for ( Dimension a = 1; a < dimension; a++ )
+    {
+      const auto a_size = myUpper[ a ] - myLower[ a ];
+      if ( b_size < a_size ) { b = a; b_size = a_size; }
+    }
+  return b;
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
