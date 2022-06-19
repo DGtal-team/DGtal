@@ -77,6 +77,7 @@ namespace DGtal
     using HalfSpace        = typename Polytope::HalfSpace;
     using BigInteger       = typename Polytope::BigInteger;
     using Interval         = std::pair<Integer,Integer>;
+    using PointRange       = std::vector<Point>;
     static const Dimension dimension = Space::dimension;
 
     BoundedLatticePolytopeCounter() = default;
@@ -114,6 +115,9 @@ namespace DGtal
     Integer countAlongAxis( Dimension a ) const;
     Integer countInteriorAlongAxis( Dimension a ) const;
 
+    void getPointsAlongAxis( PointRange& pts, Dimension a ) const;
+    void getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const;
+    
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.
     Dimension longestAxis() const;

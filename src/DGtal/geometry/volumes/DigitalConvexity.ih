@@ -35,14 +35,15 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Clone<KSpace> K )
-  : myK( K )
+DigitalConvexity( Clone<KSpace> K, bool fast )
+  : myK( K ), myFast( fast )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Point lo, Point hi )
+DigitalConvexity( Point lo, Point hi, bool fast )
+  : myFast( fast )
 {
   myK.init( lo, hi, true );
 }
@@ -202,20 +203,32 @@ simplexType( std::initializer_list<Point> l )
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-insidePoints( const LatticePolytope& polytope )
+insidePoints( const LatticePolytope& polytope, bool fast )
 {
   PointRange pts;
-  polytope.getPoints( pts );
+  if ( fast )
+    {
+      Counter C( polytope );
+      C.getPointsAlongAxis( pts, C.longestAxis() );
+    }
+  else
+    polytope.getPoints( pts );
   return pts;
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-interiorPoints( const LatticePolytope& polytope )
+interiorPoints( const LatticePolytope& polytope, bool fast )
 {
   PointRange pts;
-  polytope.getInteriorPoints( pts );
+  if ( fast )
+    {
+      Counter C( polytope );
+      C.getInteriorPointsAlongAxis( pts, C.longestAxis() );
+    }
+  else
+    polytope.getInteriorPoints( pts );
   return pts;
 }
 
@@ -332,7 +345,13 @@ is0Convex( const PointRange& X, bool safe ) const
 {
   if ( X.empty() ) return true;
   const auto P = makePolytope( X, safe );
-  return P.count() == X.size();
+  if ( myFast )
+    {
+      Counter C( P );
+      return C.countAlongAxis( C.longestAxis() ) == X.size();
+    }
+  else
+    return P.count() == X.size();
 }
 
 //-----------------------------------------------------------------------------
@@ -381,8 +400,9 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
   auto S = insidePoints( P );
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
   auto intersected_cells = makeCellCover( P, k, k );
-  return intersected_cells.nbCells() == touched_cells.nbCells()
-    && intersected_cells.subset( touched_cells );
+  return intersected_cells.nbCells() == touched_cells.nbCells();
+  // JOL: number should be enough
+  // && intersected_cells.subset( touched_cells );
 }
 
 //-----------------------------------------------------------------------------
@@ -396,8 +416,9 @@ isFullyConvex( const LatticePolytope& P ) const
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
       auto intersected_cells = makeCellCover( P, k, k );
-      if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
-           || ( ! intersected_cells.subset( touched_cells ) ) )
+      if ( ( intersected_cells.nbCells() != touched_cells.nbCells() ) )
+        // JOL: number should be enough
+        // || ( ! intersected_cells.subset( touched_cells ) ) )
         return false;
     }
   return true;

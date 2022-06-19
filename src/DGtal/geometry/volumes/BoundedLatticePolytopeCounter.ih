@@ -206,6 +206,55 @@ countInteriorAlongAxis( Dimension a ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+void
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+getPointsAlongAxis( PointRange& pts, Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  Integer nb = 0;
+  for ( auto&& p : D )
+    {
+      auto I  = intersectionIntervalAlongAxis( p, a );
+      Point q = p;
+      for ( Integer x = I.first; x != I.second; x++ )
+        {
+          q[ a ] = x;
+          pts.push_back( q );
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  Integer nb = 0;
+  for ( auto&& p : D )
+    {
+      auto I  = interiorIntersectionIntervalAlongAxis( p, a );
+      Point q = p;
+      for ( Integer x = I.first; x != I.second; x++ )
+        {
+          q[ a ] = x;
+          pts.push_back( q );
+        }
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 DGtal::Dimension
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 longestAxis( ) const
