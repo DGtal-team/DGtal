@@ -53,9 +53,6 @@
 
 namespace DGtal
 {
-  // Forward declaration.
-  template < typename TSpace > class BoundedLatticePolytopeCounter; 
-
   /////////////////////////////////////////////////////////////////////////////
   // template class BoundedLatticePolytope
   /**
@@ -76,7 +73,6 @@ namespace DGtal
   class BoundedLatticePolytope 
   {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    friend class BoundedLatticePolytopeCounter<TSpace>;
 
   public:
     typedef BoundedLatticePolytope<TSpace>  Self;

@@ -83,16 +83,6 @@ namespace DGtal
     BoundedLatticePolytopeCounter( const Polytope& P );
     void init( const Polytope* ptrP );
 
-    /// @param p any point with the current domain
-    /// @param a any axis between 0 and `dimension-1`.
-    /// @return the coordinate x along axis \a a such that the point
-    /// q, with \f$ q_a=x, \forall i \neq a, q_i=p_i \f$, is the first
-    /// lattice point in the current polytope. If there is no such
-    /// point, return `myUpper[a]+1`.
-    // Integer firstInside( Point p, Dimension a );
-    
-    Integer countInsideAlongAxis( Point p, Dimension a ) const;
-
     /// Computes the intersection of the lattice points of the
     /// infinite line going through point \a p along axis \a a and the
     /// current polytope, returned as an interval `[b,e)`, where `b`is

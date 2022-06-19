@@ -59,54 +59,6 @@ init
   myUpper    = ptrP->getDomain().upperBound();
 }
 
-template <typename TSpace>
-typename  DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
-DGtal::BoundedLatticePolytopeCounter<TSpace>::
-countInsideAlongAxis( Point p, Dimension a ) const
-{
-  ASSERT( ptrP != nullptr );
-  const Polytope& P = *myPolytope;
-  const InequalityMatrix&  A = P.A;
-  const InequalityVector&  B = P.B;
-  const std::vector<bool>& I = P.I;
-  Integer x_min = myLower[ a ];
-  Integer x_max = myUpper[ a ];
-  Integer x = 0;
-  p[ a ] = x_min;
-  bool empty = false;
-  for ( Dimension k = 2*dimension; k < A.size(); k++ )
-    {
-      Integer c = A[ k ].dot( p );
-      Integer n = A[ k ][ a ];
-      Integer b = B[ k ];
-      if ( n == 0 )
-        { // constraint is // to the specified axis.
-          empty = ! ( I[ k ] ? ( c <= b ) : c < b );
-        }
-      else if ( n > 0 )
-        {
-          Integer d = b - c;
-          if ( d < 0 ) empty = true;
-          else
-            {
-              x = I[ k ] ? ( d / n ) : ( (d+n-1) / n - 1 ) ;
-              x_max = std::min( x_max, p[ a ] + x );
-            }
-        }
-      else // ( n < 0 )
-        {
-          Integer d = c - b;
-          if ( d >= 0 )
-            {
-              x = I[ k ] ? ( (d-n-1) / -n ) : ( d / -n + 1 );
-              x_min = std::max( x_min, p[ a ] + x );
-            }
-          // otherwise the constraint is true
-        }
-      if ( empty || ( x_max < x_min ) ) return 0;
-    }
-  return x_max - x_min + 1;
-}
 
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
@@ -115,9 +67,9 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
 {
   ASSERT( ptrP != nullptr );
   const Polytope& P = *myPolytope;
-  const InequalityMatrix&  A = P.A;
-  const InequalityVector&  B = P.B;
-  const std::vector<bool>& I = P.I;
+  const InequalityMatrix&  A = P.getA();
+  const InequalityVector&  B = P.getB();
+  const std::vector<bool>& I = P.getI();
   Integer x_min = myLower[ a ];
   Integer x_max = myUpper[ a ]+1;
   Integer x = 0;
