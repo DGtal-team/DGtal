@@ -331,6 +331,18 @@ interiorPolytope() const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::BoundedLatticePolytope<TSpace>::
+closurePolytope() const
+{
+  BoundedLatticePolytope P( *this );
+  for ( auto it = P.I.begin(), itE = P.I.end(); it != itE; ++it )
+    *it = true;
+  return P;
+} 
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
 cut( Dimension k, bool pos, Integer b, bool large )

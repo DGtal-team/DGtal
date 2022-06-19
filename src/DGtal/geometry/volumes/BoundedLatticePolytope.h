@@ -199,7 +199,7 @@ namespace DGtal
       }
     };
 
-    /// @name Standard services (construction, initialization, assignment)
+    /// @name Standard services (construction, initialization, assignment, interior, closure)
     /// @{
 
     /**
@@ -313,6 +313,14 @@ namespace DGtal
 
     /// Clears the polytope.
     void clear();
+
+    /// @return the interior (in the topological sense) of this
+    /// polytope, by making all constraints strict.
+    BoundedLatticePolytope interiorPolytope() const;
+
+    /// @return the closure (in the topological sense) of this
+    /// polytope, by making all constraints large.
+    BoundedLatticePolytope closurePolytope() const;
     
     /// @}
 
@@ -406,10 +414,7 @@ namespace DGtal
     /// @name Global modification services (cut, swap, Minkowski sum)
     /// @{
 
-    /// @return the interior (in the topological sense) of this
-    /// polytope, by making all constraints strict.
-    BoundedLatticePolytope interiorPolytope() const;
-      
+    
     /**
        Cut the polytope by the given half space `a.x <= b` or `a.x <
        b` where `a` is some axis vector.
