@@ -56,7 +56,7 @@ namespace DGtal
 
   enum ImageIterability {  HIGH_ITER_IMAGE = 0 , LOW_ITER_I = 1};
   enum ImageBelongTestability {  HIGH_BEL_I = 0, LOW_BEL_I = 2 };
-  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4, ITKIMAGEDATA_CONTAINER_I  = 5};
+  enum ImageSpecificContainer { NORMAL_CONTAINER_I = 0, VTKIMAGEDATA_CONTAINER_I = 4, ITKIMAGEDATA_CONTAINER_I = 5};
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ImageSelector
