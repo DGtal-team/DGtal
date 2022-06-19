@@ -97,7 +97,22 @@ namespace DGtal
     /// that `b==e` when there is no intersection.
     Interval intersectionIntervalAlongAxis( Point p, Dimension a ) const;
 
+    /// Computes the intersection of the lattice points of the
+    /// infinite line going through point \a p along axis \a a and the
+    /// interior of the current polytope, returned as an interval
+    /// `[b,e)`, where `b`is the \a a-th coordinate of the first
+    /// lattice point in common, while `e` is the \a a-th coordinate
+    /// after the last lattice point in common.
+    ///
+    /// @param p any point with the current domain
+    /// @param a any axis between 0 (included) and `dimension` (excluded).
+    ///
+    /// @return the interval `[b,e)` of intersection, which is such
+    /// that `b==e` when there is no intersection.
+    Interval interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const;
+    
     Integer countAlongAxis( Dimension a ) const;
+    Integer countInteriorAlongAxis( Dimension a ) const;
 
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.

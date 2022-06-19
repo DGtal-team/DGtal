@@ -58,9 +58,12 @@ SCENARIO( "BoundedLatticePolytopeCounter< Z2 > unit tests", "[lattice_polytope][
     Point c( 15, 7 );
     Polytope P { a, b, c };
     int nbInside = P.count();
+    int nbInterior = P.countInterior();
     Counter C( P );
     int nb0 = C.countAlongAxis( 0 );
     int nb1 = C.countAlongAxis( 1 );
+    int nb0_int = C.countInteriorAlongAxis( 0 );
+    int nb1_int = C.countInteriorAlongAxis( 1 );
     THEN( "Its longest axis is 0" )
       {
         REQUIRE( C.longestAxis() == 0 );
@@ -69,6 +72,11 @@ SCENARIO( "BoundedLatticePolytopeCounter< Z2 > unit tests", "[lattice_polytope][
       {
         REQUIRE( nbInside == nb0 );
         REQUIRE( nbInside == nb1 );
+      }
+    THEN( "We can count its interior points per point or per axis" )
+      {
+        REQUIRE( nbInterior == nb0_int );
+        REQUIRE( nbInterior == nb1_int );
       }
   }
 }
@@ -80,17 +88,21 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
   typedef BoundedLatticePolytope< Space >  Polytope;
   typedef BoundedLatticePolytopeCounter< Space > Counter;
   
-  GIVEN( "A closed arbitrary simplex P at (0,0,0), (6,3,0), (0,5,10), (6,4,8)" ) {
+  GIVEN( "A closed arbitrary simplex P at (0,0,0), (6,3,0), (0,5,-10), (-6,4,8)" ) {
     Point a( 0, 0, 0 );
     Point b( 6, 3, 0 );
-    Point c( 0, 5, 10 );
-    Point d( 6, 4, 8 );
+    Point c( 0, 5, -10 );
+    Point d( -6, 4, 8 );
     Polytope P { a, b, c, d };
-    int nbInside = P.count();
+    int nbInside   = P.count();
+    int nbInterior = P.countInterior();
     Counter C( P );
     int nb0 = C.countAlongAxis( 0 );
     int nb1 = C.countAlongAxis( 1 );
     int nb2 = C.countAlongAxis( 2 );
+    int nb0_int = C.countInteriorAlongAxis( 0 );
+    int nb1_int = C.countInteriorAlongAxis( 1 );
+    int nb2_int = C.countInteriorAlongAxis( 2 );
     // std::cout << P << std::endl;
     THEN( "Its longest axis is 2" )
       {
@@ -101,6 +113,12 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
         REQUIRE( nbInside == nb0 );
         REQUIRE( nbInside == nb1 );
         REQUIRE( nbInside == nb2 );
+      }
+    THEN( "We can count its interior points per point or per axis" )
+      {
+        REQUIRE( nbInterior == nb0_int );
+        REQUIRE( nbInterior == nb1_int );
+        REQUIRE( nbInterior == nb2_int );
       }
   }
 }

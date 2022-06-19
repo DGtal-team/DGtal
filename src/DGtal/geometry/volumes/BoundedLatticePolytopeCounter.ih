@@ -47,6 +47,7 @@ BoundedLatticePolytopeCounter
   init( &P );
 }
 
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
@@ -60,6 +61,7 @@ init
 }
 
 
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
@@ -111,6 +113,58 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
   return Interval( x_min, x_max );
 }
 
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  const Polytope& P = *myPolytope;
+  const InequalityMatrix&  A = P.getA();
+  const InequalityVector&  B = P.getB();
+  Integer x_min = myLower[ a ];
+  Integer x_max = myUpper[ a ]+1;
+  Integer x = 0;
+  const Integer x_a = x_min;
+  p[ a ] = x_a;
+  bool empty = false;
+  for ( Dimension k = 2*dimension; k < A.size(); k++ )
+    {
+      const Integer c = A[ k ].dot( p );
+      const Integer n = A[ k ][ a ];
+      const Integer b = B[ k ];
+      if ( n == 0 )
+        { // constraint is // to the specified axis.
+          empty = ( b <= c );
+        }
+      else if ( n > 0 )
+        {
+          Integer d = b - c;
+          if ( d < 0 ) empty = true;
+          else
+            {
+              x = (d+n-1) / n;
+              x_max = std::min( x_max, x_a + x );
+            }
+        }
+      else // ( n < 0 )
+        {
+          Integer d = c - b;
+          if ( d >= 0 )
+            {
+              x = d / -n + 1;
+              x_min = std::max( x_min, x_a + x );
+            }
+          // otherwise the constraint is true
+        }
+      // std::cout << " (" << empty << ":" << x_min << "," << x_max << ")";
+      if ( empty || ( x_max <= x_min ) ) return Interval( 0, 0 );
+    }
+  return Interval( x_min, x_max );
+}
+
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
@@ -126,12 +180,31 @@ countAlongAxis( Dimension a ) const
     {
       auto I = intersectionIntervalAlongAxis( p, a );
       nb    += I.second - I.first;
-      // std::cout << p << " #" << (I.second - I.first)
-      //           << " [" << I.first << "," << I.second << ")" << std::endl;
     }
   return nb;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+countInteriorAlongAxis( Dimension a ) const
+{
+  ASSERT( ptrP != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  Integer nb = 0;
+  for ( auto&& p : D )
+    {
+      auto I = interiorIntersectionIntervalAlongAxis( p, a );
+      nb    += I.second - I.first;
+    }
+  return nb;
+}
+
+//-----------------------------------------------------------------------------
 template <typename TSpace>
 DGtal::Dimension
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
