@@ -49,7 +49,6 @@ using namespace DGtal;
 
 TEST_CASE( "Testing STBReader" )
 {
-  
   SECTION("Testing feature io/readers of STBReader (Grayscale PNG)")
   {
     std::string filename = testPath + "samples/contourS.png";
@@ -58,21 +57,39 @@ TEST_CASE( "Testing STBReader" )
     CAPTURE(image);
     
     PPMWriter<Image>::exportPPM("testwriter.ppm", image);
-    
     CHECK( image.isValid());
   }
   SECTION("Testing feature io/readers of STBReader (PPM color)")
   {
-    std::string filename = testPath + "samples/color64.ppm";
+    std::string filename = testPath + "samples/color64.";
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
-    Image image = STBReader<Image>::import( filename );
-    CAPTURE(image);
     
+    Image image = STBReader<Image>::import( filename+"ppm" );
     PPMWriter<Image>::exportPPM("testwriterColor.ppm", image);
-    
     CHECK( image.isValid());
   }
+  
+  SECTION("Testing all file formats")
+  {
+    std::string filename = testPath + "samples/color64.";
+    typedef ImageSelector < Z2i::Domain, Color>::Type Image;
+    
+    Image imagePPM = STBReader<Image>::import( filename+"ppm" );
+    CHECK( imagePPM.isValid());
+    Image imageJPG = STBReader<Image>::import( filename+"jpg" );
+    CHECK( imageJPG.isValid());
+    Image imageTGA = STBReader<Image>::import( filename+"tga" );
+    CHECK( imageTGA.isValid());
+    Image imageBMP = STBReader<Image>::import( filename+"bmp" );
+    CHECK( imageBMP.isValid());
+    Image imagePNG = STBReader<Image>::import( filename+"png" );
+    CHECK( imagePNG.isValid());
 
+    //For lossless compression formats
+    CHECK( imageBMP == imagePPM );
+    CHECK( imageTGA == imagePPM );
+    CHECK( imagePNG == imagePPM );
+  }
 }
 
 /** @ingroup Tests **/
