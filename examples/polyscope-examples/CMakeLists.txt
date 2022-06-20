@@ -22,6 +22,8 @@ set(POLYSCOPE_SRCS
   dgtalCalculus-bunny
   dgtalCalculus-halfsphere
   dgtalCalculus-geodesic
+  exampleVectorHeatMethod
+  exampleHarmonicParametrization
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})
