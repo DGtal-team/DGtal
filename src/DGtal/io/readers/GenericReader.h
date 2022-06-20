@@ -447,7 +447,7 @@ namespace DGtal
             typename TContainer::Point const pt (x,y);
             return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
           }
-        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" || extension == "tga" )
+        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" || extension == "tga" )
           {
             STBReader<TContainer, TFunctor> reader;
             return reader.import( filename, aFunctor );
