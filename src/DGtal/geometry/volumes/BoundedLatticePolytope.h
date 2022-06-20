@@ -644,6 +644,120 @@ namespace DGtal
     void insertPoints( PointSet& pts_set ) const;
 
     /// @}
+
+    // -------------- Enumeration services (old methods by scanning ) --------------
+  public:
+
+    /// @name Enumeration services by scanning (counting, get points in polytope)
+    /// @{
+    
+    /**
+     * Computes the number of integer points lying within the polytope.
+     *
+     * @return the number of integer points lying within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countByScanning() const;
+
+    /**
+     * Computes the number of integer points lying within the interior of the polytope.
+     *
+     * @return the number of integer points lying within the interior of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countInteriorByScanning() const;
+
+    /**
+     * Computes the number of integer points lying on the boundary of the polytope.
+     *
+     * @return the number of integer points lying on the boundary of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countBoundaryByScanning() const;
+
+    /**
+     * Computes the number of integer points within the polytope and
+     * the domain bounded by \a low and \a hi.
+     *
+     * @param[in] low the lowest point of the domain.
+     * @param[in] hi the highest point of the domain.
+     * @return the number of integer points within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countWithinByScanning( Point low, Point hi ) const;
+
+    /**
+     * Computes the number of integer points within the polytope up to
+     * some maximum number \a max. 
+     *
+     * @note For instance, a d-dimensional simplex that contains no
+     * integer points in its interior contains only d+1 points. If
+     * there is more, you know that the simplex has a non empty
+     * interior.
+     *
+     * @param[in] max the maximum number of points that are counted,
+     * the method exists when this number of reached.
+     *
+     * @return the number of integer points within the polytope up to .
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countUpToByScanning( Integer max ) const;
+
+    /**
+     * Computes the integer points within the polytope.
+     *
+     * @param[out] pts the integer points within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->count()
+     */
+    void getPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points interior to the polytope.
+     *
+     * @param[out] pts the integer points interior to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countInterior()
+     */
+    void getInteriorPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points boundary to the polytope.
+     *
+     * @param[out] pts the integer points boundary to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countBoundary()
+     */
+    void getBoundaryPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points within the polytope.
+     *
+     * @tparam PointSet any model of set with a method `insert( Point )`.
+     *
+     * @param[in,out] pts_set the set of points where points within
+     * this polytope are inserted.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    template <typename PointSet>
+    void insertPointsByScanning( PointSet& pts_set ) const;
+
+    /// @}
     
     
     // ----------------------- Interface --------------------------------------
