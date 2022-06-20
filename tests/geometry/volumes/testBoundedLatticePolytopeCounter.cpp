@@ -33,6 +33,7 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytopeCounter.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
