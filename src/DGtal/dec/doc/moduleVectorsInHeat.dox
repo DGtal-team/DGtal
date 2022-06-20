@@ -29,22 +29,29 @@ namespace DGtal {
 In this documentation page, we focus on an implementation of the
 "Vector Heat method" (\cite Sharp:2019:VHM). The main objective is to
 highlight the use of  differential operators from \ref
-modulePolygonalCalculus to solve elementary PDEs.
+modulePolygonalCalculus to solve elementary PDEs on intrinsic vector fields.
 
 Use example can be find at \ref exampleVectorHeatMethod.cpp example file.
 
  
-@warning The implementation heavily relies on implicit operators with many Eigen based small matrix constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
+@warning The implementation heavily relies on implicit operators with many Eigen
+based small matrix constructions, which has a huge overhead in Debug mode.
+Please consider to build the examples in Release
+(*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical
+objects.
  
 
 \section sectVHMIntro The main algorithm
 
-The algorithm consists in solving three linear systems (see @cite Sharp:2019:VHM for details): 
-- Given vectors sources @f$ \phi @f$ at a mesh vertices, we first solve a vector heat
-diffusion problem: Integrate the heat flow @f$ u @f$ such that @f$\Delta^{\nabla}
-u = \frac{\partial u}{\partial t}@f$ using a single step backward Euler step: @f$(Id -
-t\Delta^{\nabla}) u_t = \phi@f$. That step diffuses vector directions correctly using 
-levi-civita connection but not vector magnitudes hence we then solve the two following (scalar) diffusion systems:
+The algorithm consists in solving three linear systems
+(see @cite Sharp:2019:VHM for details):
+- Given vectors sources @f$ \phi @f$ at a mesh vertices, we first solve a vector
+heat diffusion problem: Integrate the heat flow @f$ u @f$ such that
+@f$\Delta^{\nabla} u = \frac{\partial u}{\partial t}@f$ using a single step
+backward Euler step: @f$(Id - t\Delta^{\nabla}) u_t = \phi@f$. That step
+diffuses vector directions correctly using levi-civita connection but not
+vector magnitudes hence we then solve the two following (scalar) diffusion
+systems:
 - @f$(Id - t\Delta) m_t = ||\phi||@f$
 - @f$(Id - t\Delta) \delta_t = 1_{\phi \neq 0}@f$
 - To finally evaluate the vector field : @f$ X_t = \frac{u_t}{||u_t||}\frac{m_t}{\delta_t} @f$

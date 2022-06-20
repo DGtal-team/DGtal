@@ -258,7 +258,7 @@ public:
     if (checkCache(D_,f))
       return myGlobalCache[D_][f];
     
-    auto nf = myFaceDegree[f];
+    const auto nf = myFaceDegree[f];
     DenseMatrix d = DenseMatrix::Zero(nf ,nf);
     for(auto i=0; i < nf; ++i)
     {
@@ -676,7 +676,7 @@ public:
   }
 
   ///@return Shape Operator at face f
-  DenseMatrix shape(const Face f)
+  DenseMatrix shape(const Face f) const
   {
     DenseMatrix N(myFaceDegree[f],3);
     uint cpt = 0;

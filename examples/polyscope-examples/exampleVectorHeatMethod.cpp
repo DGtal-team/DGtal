@@ -14,7 +14,7 @@
  *
  */
 /**
- * @file dec/VectorHeatMethod.cpp
+ * @file polyscope-examples/VectorHeatMethod.cpp
  * @author Baptiste GENEST (\c baptistegenest@gmail.com )
  * intership at Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *

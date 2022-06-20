@@ -14,7 +14,7 @@
  *
  */
 /**
- * @file dec/exampleHarmonicParametrization.cpp
+ * @file polyscope-examples/exampleHarmonicParametrization.cpp
  * @author Baptiste GENEST (\c baptistegenest@gmail.com )
  * internship at Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
