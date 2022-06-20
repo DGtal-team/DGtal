@@ -1,5 +1,5 @@
 /**
- * @file 
+ * @file
  * @author Baptiste GENEST (\c baptistegenest@gmail.com )
  * intership at Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -33,13 +33,13 @@ modulePolygonalCalculus to solve elementary PDEs on intrinsic vector fields.
 
 Use example can be find at \ref exampleVectorHeatMethod.cpp example file.
 
- 
+
 @warning The implementation heavily relies on implicit operators with many Eigen
 based small matrix constructions, which has a huge overhead in Debug mode.
 Please consider to build the examples in Release
 (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical
 objects.
- 
+
 
 \section sectVHMIntro The main algorithm
 
@@ -52,21 +52,21 @@ backward Euler step: @f$(Id - t\Delta^{\nabla}) u_t = \phi@f$. That step
 diffuses vector directions correctly using levi-civita connection but not
 vector magnitudes hence we then solve the two following (scalar) diffusion
 systems:
-- @f$(Id - t\Delta) m_t = ||\phi||@f$
-- @f$(Id - t\Delta) \delta_t = 1_{\phi \neq 0}@f$
+  - @f$(Id - t\Delta) m_t = ||\phi||@f$
+  - @f$(Id - t\Delta) \delta_t = 1_{\phi \neq 0}@f$
 - To finally evaluate the vector field : @f$ X_t = \frac{u_t}{||u_t||}\frac{m_t}{\delta_t} @f$
 
 The computation involves discrete differential operator definitions
-(Connection and standard Laplace-Beltrami) as well as linear solvers
+(Connection Laplace and standard Laplace-Beltrami) as well as linear solvers
 on sparse matrices. We do not go into the details of the
 discretization, please have a look to the paper if interested.
 
 
 \section sectVHM2 The interface
 
-The class VectorsInHeat contains the implementation of the Vector 
+The class VectorsInHeat contains the implementation of the Vector
 Heat method. It relies on the PolygonalCalculus class for the
-differential operators (@ref modulePolygonalCalculus).  
+differential operators (@ref modulePolygonalCalculus).
 
 First, we need to instantiate the VectorsInHeat class from an
 instance of  PolygonalCalculus:
@@ -84,8 +84,10 @@ dt@f$:
 heat.init(dt);
 @endcode
 
-@note For a discussion on the timestep please refer to @cite Sharp:2019:VHM. For short, the authors suggest a timestep in @f$ dt=m\cdot h^2@f$ for some constant @f$m@f$ and @f$h@f$ being the mean spacing between adjacent vertices.
- 
+@note For a discussion on the timestep please refer to @cite Sharp:2019:VHM. For short,
+the authors suggest a timestep in @f$ dt=m\cdot h^2@f$ for some constant @f$m@f$ and @f$h@f$
+being the mean spacing between adjacent vertices.
+
 Once prefactorized, we can add as many sources as we want using the method:
 @code
 heat.addSource( aVertexIndex, 3Dvector ) //the vector will be projected on the vertex tangent plane
