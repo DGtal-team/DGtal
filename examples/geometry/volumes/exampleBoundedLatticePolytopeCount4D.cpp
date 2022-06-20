@@ -57,7 +57,7 @@ Fast method computed 29885333 points in 597.177 ms.
 
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/volumes/ConvexityHelper.h"
-#include "DGtal/geometry/volumes/BoundedLatticePolytopeCounter.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 
 int main( int argc, char* argv[] )
 {
@@ -96,20 +96,18 @@ int main( int argc, char* argv[] )
   std::vector< Integer > slow_counts;
   for ( const auto& P : polytopes )
     {
-      const auto nb = P.count();
+      const auto nb = P.countByScanning();
       slow_nb      += nb;
       slow_counts.push_back( nb ); 
     }
   double t2 = DGtal::trace.endBlock();
   // Count interior points (fast method)
-  typedef DGtal::BoundedLatticePolytopeCounter< Space > Counter;
   DGtal::trace.beginBlock( "Compute number of lattice points within polytope (fast)" );
   std::size_t fast_nb = 0;
   std::vector< Integer > fast_counts;
   for ( const auto& P : polytopes )
     {
-      Counter C( P );
-      const auto nb = C.countAlongAxis( C.longestAxis() );
+      const auto nb = P.count();
       fast_nb      += nb;
       fast_counts.push_back( nb );
     }

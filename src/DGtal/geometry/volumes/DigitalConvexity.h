@@ -118,21 +118,15 @@ namespace DGtal
     /**
      * Constructor from cellular space.
      * @param K any cellular grid space.
-     *
-     * @param fast if 'true' uses fast method for enumerating lattice
-     * points within polytopes.
      */
-    DigitalConvexity( Clone<KSpace> K, bool fast = true );
+    DigitalConvexity( Clone<KSpace> K );
 
     /**
      * Constructor from lower and upper points.
      * @param lo the lowest point of the domain (bounding box for computations).
      * @param hi the highest point of the domain (bounding box for computations).
-     *
-     * @param fast if 'true' uses fast method for enumerating lattice
-     * points within polytopes.
      */
-    DigitalConvexity( Point lo, Point hi, bool fast = true );
+    DigitalConvexity( Point lo, Point hi );
 
     /**
      * Assignment.
@@ -292,18 +286,14 @@ namespace DGtal
     /// @{
 
     /// @param polytope any lattice polytope.
-    /// @param fast if 'true' uses fast method for enumerating lattice
-    /// points within polytopes.
     /// @return the range of digital points that belongs to the polytope.
     static
-    PointRange insidePoints( const LatticePolytope& polytope, bool fast = true );
+    PointRange insidePoints( const LatticePolytope& polytope );
 
     /// @param polytope any lattice polytope.
-    /// @param fast if 'true' uses fast method for enumerating lattice
-    /// points within polytopes.
     /// @return the range of digital points that belongs to the interior of the polytope.
     static
-    PointRange interiorPoints( const LatticePolytope& polytope, bool fast = true );
+    PointRange interiorPoints( const LatticePolytope& polytope );
 
     /// @param polytope any rational polytope.
     /// @return the range of digital points that belongs to the polytope.
@@ -607,8 +597,6 @@ namespace DGtal
   protected:
     /// The cellular grid space where computations are done.
     KSpace myK;
-    /// If 'true', uses BoundedLatticePolytopeCounter.
-    bool myFast;
     
     // ------------------------- Private Datas --------------------------------
   private:

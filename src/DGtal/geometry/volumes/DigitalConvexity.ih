@@ -35,15 +35,14 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Clone<KSpace> K, bool fast )
-  : myK( K ), myFast( fast )
+DigitalConvexity( Clone<KSpace> K )
+  : myK( K )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Point lo, Point hi, bool fast )
-  : myFast( fast )
+DigitalConvexity( Point lo, Point hi )
 {
   myK.init( lo, hi, true );
 }
@@ -203,32 +202,20 @@ simplexType( std::initializer_list<Point> l )
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-insidePoints( const LatticePolytope& polytope, bool fast )
+insidePoints( const LatticePolytope& polytope )
 {
   PointRange pts;
-  if ( fast )
-    {
-      Counter C( polytope );
-      C.getPointsAlongAxis( pts, C.longestAxis() );
-    }
-  else
-    polytope.getPoints( pts );
+  polytope.getPoints( pts );
   return pts;
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
-interiorPoints( const LatticePolytope& polytope, bool fast )
+interiorPoints( const LatticePolytope& polytope )
 {
   PointRange pts;
-  if ( fast )
-    {
-      Counter C( polytope );
-      C.getInteriorPointsAlongAxis( pts, C.longestAxis() );
-    }
-  else
-    polytope.getInteriorPoints( pts );
+  polytope.getInteriorPoints( pts );
   return pts;
 }
 
@@ -345,13 +332,7 @@ is0Convex( const PointRange& X, bool safe ) const
 {
   if ( X.empty() ) return true;
   const auto P = makePolytope( X, safe );
-  if ( myFast )
-    {
-      Counter C( P );
-      return C.countAlongAxis( C.longestAxis() ) == X.size();
-    }
-  else
-    return P.count() == X.size();
+  return P.count() == X.size();
 }
 
 //-----------------------------------------------------------------------------
