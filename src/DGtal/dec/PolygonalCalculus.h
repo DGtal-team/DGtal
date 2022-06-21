@@ -552,6 +552,10 @@ public:
 
   // ----------------------- Vector calculus----------------------------------
 private:
+  /// \brief proj project u on the orthgonal of n
+  /// \param u vector to project
+  /// \param n vector to build orthogonal space from
+  /// \return projected vector
   static Vector proj(const Vector & u, const Vector & n)
   {
     return u - (u.dot(n) / n.squaredNorm()) * n;
@@ -559,6 +563,9 @@ private:
 
 public:
   /// Conversion routines
+  /// \brief toVector convert Real3dPoint to Eigen::VectorXd
+  /// \param x the vector
+  /// \return the same vector in eigen type
   static Vector toVector(const Eigen::Vector3d & x)
   {
     Vector X(3);
@@ -567,6 +574,9 @@ public:
     return X;
   }
 
+  /// \brief toVec3 convert Real3dPoint to Eigen::Vector3d
+  /// \param x the vector
+  /// \return the same vector in eigen type
   static Eigen::Vector3d toVec3(const Real3dPoint & x)
   {
     return Eigen::Vector3d(x(0),x(1),x(2));
@@ -634,8 +644,11 @@ public:
     return tanB;
   }
 
-  ///@return 3D extrinsic vector from intrinsic 2D vector I expressed from
-  ///tangent frame at vertex v
+  /// \brief toExtrinsicVector
+  /// \param v the vertex
+  /// \param I the intrinsic vector at Tv
+  /// \return 3D extrinsic vector from intrinsic 2D vector I expressed from
+  /// tangent frame at vertex v
   Vector toExtrinsicVector(const Vertex v, const Vector & I) const
   {
     DenseMatrix T = Tv(v);
@@ -764,6 +777,7 @@ private: //Covariant operators routines
 public:
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
+  /// @param f the face
   /// @return the covariant gradient of the given vector field uf (expressed
   /// in corresponding vertex tangent frames), wrt face f
   /// @note Unlike the rest of the per face operators, the
@@ -777,6 +791,7 @@ public:
 
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
+  /// @param f the face
   /// @return the covariant projection of the given vector field uf (
   /// restricted to face f and expressed in corresponding vertex tangent
   /// frames)
