@@ -177,7 +177,7 @@ public:
     /** Adds a source vector (3D extrinsic) at a vertex @e aV
      *  the vector gets projected to the tangent space
     * @param aV the Vertex
-    * @param eV the extrinsic R3 vector to add (only keeps the tangential part)
+    * @param ev the extrinsic R3 vector to add (only keeps the tangential part)
      **/
     void addSource(const Vertex aV,const Vector& ev)
     {
