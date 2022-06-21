@@ -75,7 +75,8 @@ bool noSources = true;
  * @brief addRandomSource add a random vector in the tangent space
  * of a vertex
  */
-void addRandomSource(){
+void addRandomSource()
+{
     size_t id = rand()%surfmesh.nbVertices();
     VHM->addSource(id,Eigen::Vector3d::Random(3).normalized());
 
@@ -88,7 +89,8 @@ void addRandomSource(){
  * @brief diffuse solves systems and add the solution to the
  * display, if no source is given, adds a random one
  */
-void diffuse(){
+void diffuse()
+{
     if (noSources)
         addRandomSource();
     psMesh->addVertexVectorQuantity("VHM field",VHM->compute());
@@ -97,7 +99,8 @@ void diffuse(){
 /**
  * @brief precompute initialize VHM solvers, and source container
  */
-void precompute(){
+void precompute()
+{
     auto nv = surfmesh.nbVertices();
     auto ael = surfmesh.averageEdgeLength();
     VHM->init(ael*ael);//init vector heat method solvers

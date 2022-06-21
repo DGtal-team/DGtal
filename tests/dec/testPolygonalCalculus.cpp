@@ -227,7 +227,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( CP.cols() == 2);
 
     REQUIRE( CG(0,0) == Approx(0.707106));
-    REQUIRE( CP(0,0) == Approx(1.224));
+    REQUIRE( CP(0,0) == Approx(1.224744));
   }
   SECTION("Check lumped mass matrix")
   {

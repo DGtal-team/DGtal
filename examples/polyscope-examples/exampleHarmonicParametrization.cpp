@@ -105,7 +105,8 @@ SparseMatrix block(const SparseMatrix& mat, size_t row, size_t col,size_t height
  * @brief computeManifoldBoundaryChains
  * @return returns the list of chains that borders the mesh
  */
-std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1){
+std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1)
+{
 
     std::map<Vertex,bool> visited;
     std::map<Vertex,std::vector<Vertex>> adjacent;
@@ -176,18 +177,21 @@ std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1){
 
 /**
  * @brief edgeLength
- * @return length of the vector between vertex i and j (the edge doesn't have to exist)
+ * @return length of the vector between vertex i and j
+ * (the edge doesn't have to exist)
  */
 double edgeLength(Vertex i,Vertex j){
     return(surfmesh.position(i)-surfmesh.position(j)).norm();
 }
 
 /**
- * @brief FixBoundaryParametrization maps the give boundary chain to uv coordinates (forms a circle, with arc-length parametrization)
+ * @brief FixBoundaryParametrization maps the give boundary chain to uv
+ *  coordinates (forms a circle, with arc-length parametrization)
  * @param boundary
  * @return
  */
-std::pair<Vector,Vector> FixBoundaryParametrization(const std::vector<Vertex>& boundary){
+std::pair<Vector,Vector> FixBoundaryParametrization(const std::vector<Vertex>& boundary)
+{
     auto nb = boundary.size();
     Vector u(nb),v(nb);
     double totalBoundaryLength = 0;
@@ -209,7 +213,8 @@ std::pair<Vector,Vector> FixBoundaryParametrization(const std::vector<Vertex>& b
  * with UV coordinates
  * @param UV inpute parametrization
  */
-void VisualizeParametrizationOnCircle(const DenseMatrix& UV){
+void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
+{
     auto n= surfmesh.nbVertices();
     std::vector<RealPoint> pos(n);
     for (size_t v = 0;v<n;v++){
@@ -225,7 +230,8 @@ void VisualizeParametrizationOnCircle(const DenseMatrix& UV){
  * WARNING: reorders surfaceMesh indices.
  * @return (n,2) matrix with uv coordinates in columns
  */
-DenseMatrix HarmonicParametrization(){
+DenseMatrix HarmonicParametrization()
+{
     auto chains = computeManifoldBoundaryChains(2);
     std::cout << chains.size() << " chains found" << std::endl;
     //choose longest chain as boundary of the parametrization
