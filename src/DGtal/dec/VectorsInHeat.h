@@ -199,11 +199,21 @@ public:
         return myVectorSource;
     }
 
+    ///
+    /// \brief extrinsicVectorSourceAtVertex get extrinsic source at vertex
+    /// \param aV the vertex
+    /// \return 3D source vector
+    ///
     Vector extrinsicVectorSourceAtVertex(const Vertex aV){
         FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
         return myCalculus->toExtrinsicVector(aV,intrinsicVectorSourceAtVertex(aV));
     }
 
+    ///
+    /// \brief intrinsicVectorSourceAtVertex get intrinsic source at vertex
+    /// \param aV the vertex
+    /// \return 2D vector expressed in aV tangent frame
+    ///
     Vector intrinsicVectorSourceAtVertex(const Vertex aV){
         FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
         Vector s(2);
