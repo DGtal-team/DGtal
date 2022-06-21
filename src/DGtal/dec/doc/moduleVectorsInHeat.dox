@@ -107,9 +107,10 @@ auto u = heat.compute();
 
 From \ref exampleVectorHeatMethod.cpp code on a digital surface.
 
-Input   | Vector Heat Method | VHM with multiple (random) sources
---|--|--
- @image html images/poly/VHM_source.png "" | @image html images/poly/VHM_1_source.png "" | @image html images/poly/VHM_sources.png ""
+Input   | Result | Multiple Inputs | Result
+--|--|--|--
+ @image html images/poly/VHM_1_source.png "" | @image html images/poly/VHM_1_source_solve.png "" | @image html images/poly/VHM_multiple_sources.png "" | @image html images/poly/VHM_multiple_sources_solve.png ""
+
 
 */
 

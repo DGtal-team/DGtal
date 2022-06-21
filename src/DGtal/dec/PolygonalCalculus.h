@@ -590,7 +590,7 @@ public:
   ///set, the normal will be computed
   Eigen::Vector3d n_v(const Vertex & v) const
   {
-    return myVertexNormalEmbedder(v);
+    return myVertexNormalEmbedder(v).head(3);
   }
 
   ///@return 3x2 matrix defining the tangent space at vertex v, with basis
@@ -1161,6 +1161,9 @@ private:
   
   ///Embedding function (face,vertex)->R^3 for the vertex position wrt. the face.
   std::function<Real3dPoint(Face, Vertex)> myEmbedder;
+
+  ///Embedding function (vertex)->R^3 for the vertex normal.
+  std::function<Vector(Vertex)> myVertexNormalEmbedder;
   
   ///Cache containing the face degree
   std::vector<size_t> myFaceDegree;

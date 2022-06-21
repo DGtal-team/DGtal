@@ -32,17 +32,11 @@
 #include <DGtal/helpers/Shortcuts.h>
 #include <DGtal/helpers/ShortcutsGeometry.h>
 #include <DGtal/shapes/SurfaceMesh.h>
-#include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 #include <DGtal/dec/PolygonalCalculus.h>
 #include <DGtal/dec/VectorsInHeat.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
-#include <polyscope/point_cloud.h>
-#include <polyscope/curve_network.h>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 
 ////////// NAMESPACES /////////
 
@@ -94,8 +88,10 @@ SparseMatrix block(const SparseMatrix& mat, size_t row, size_t col,size_t height
     std::vector<Triplet> T;
     for (size_t i = col;i<last_col;i++)
         for (SparseMatrix::InnerIterator it(mat, i); it; ++it)
-            if (it.row() >= (long)row){
-                if (it.row() < (long)last_row){
+            if (it.row() >= (long)row)
+            {
+                if (it.row() < (long)last_row)
+                {
                     T.push_back(Triplet(it.row()-row,i-col,it.value()));
                 }
                 else

@@ -208,7 +208,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto lphi = L*phi;
     //but we can still check that L is semi-definite
     REQUIRE( L.determinant() == 0);
-    REQUIRE( lphi[2] == -3.68301);
+    REQUIRE( lphi[2] == Approx(-3.683));
   }
   SECTION("Covariant Operators")
   {
@@ -226,8 +226,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( CP.rows() == faces[f].size());
     REQUIRE( CP.cols() == 2);
 
-    REQUIRE( CG(0,0) == 0.707107);
-    REQUIRE( CP(0,0) == 1.22474);
+    REQUIRE( CG(0,0) == Approx(0.707));
+    REQUIRE( CP(0,0) == Approx(1.224));
   }
   SECTION("Check lumped mass matrix")
   {

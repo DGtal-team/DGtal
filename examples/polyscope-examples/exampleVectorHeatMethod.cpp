@@ -32,17 +32,11 @@
 #include <DGtal/helpers/Shortcuts.h>
 #include <DGtal/helpers/ShortcutsGeometry.h>
 #include <DGtal/shapes/SurfaceMesh.h>
-#include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 #include <DGtal/dec/PolygonalCalculus.h>
 #include <DGtal/dec/VectorsInHeat.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
-#include <polyscope/point_cloud.h>
-#include <polyscope/curve_network.h>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 
 ////////// NAMESPACES /////////
 
