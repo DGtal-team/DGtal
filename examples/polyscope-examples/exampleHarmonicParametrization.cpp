@@ -33,7 +33,7 @@
 #include <DGtal/helpers/ShortcutsGeometry.h>
 #include <DGtal/shapes/SurfaceMesh.h>
 #include <DGtal/dec/PolygonalCalculus.h>
-#include <DGtal/dec/VectorsInHeat.h>
+#include "DGtal/math/linalg/DirichletConditions.h"
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -59,47 +59,21 @@ typedef PC::Solver Solver;
 typedef PC::Vector Vector;
 typedef Eigen::Triplet<double> Triplet;
 typedef std::vector<Vertex> chain;
+typedef DirichletConditions< PC::LinAlg > Conditions;
+typedef Conditions::IntegerVector IntegerVector;
 
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
 polyscope::SurfaceMesh *psParam;
-polyscope::PointCloud *psVertices;
-polyscope::CurveNetwork *psBoundary;
 
 //DEC
 PC *calculus;
-VectorsInHeat<PC> *VHM;
 
 //surface mesh global
 SurfMesh surfmesh;
 std::vector<std::vector<size_t>> faces;
 std::vector<RealPoint> positions;
-
-/**
- * @brief block
- * @return the sub sparse matrix that starts at (row,col) of size (height,width)
- */
-SparseMatrix block(const SparseMatrix& mat, size_t row, size_t col,size_t height,size_t width)
-{
-    SparseMatrix B(height,width);
-    auto last_col = col + width;
-    auto last_row = row + height;
-    std::vector<Triplet> T;
-    for (size_t i = col;i<last_col;i++)
-        for (SparseMatrix::InnerIterator it(mat, i); it; ++it)
-            if (it.row() >= (long)row)
-            {
-                if (it.row() < (long)last_row)
-                {
-                    T.push_back(Triplet(it.row()-row,i-col,it.value()));
-                }
-                else
-                    break;
-            }
-    B.setFromTriplets(T.begin(),T.end());
-    return B;
-}
 
 /**
  * @brief computeManifoldBoundaryChains
@@ -188,22 +162,26 @@ double edgeLength(Vertex i,Vertex j){
  * @brief FixBoundaryParametrization maps the give boundary chain to uv
  *  coordinates (forms a circle, with arc-length parametrization)
  * @param boundary
- * @return
+ * @return the pair of uv parametrization as two vectors
  */
 std::pair<Vector,Vector> FixBoundaryParametrization(const std::vector<Vertex>& boundary)
 {
     auto nb = boundary.size();
-    Vector u(nb),v(nb);
+    auto n = surfmesh.nbVertices();
+    Vector u = Vector::Zero(n),v = Vector::Zero(n);
     double totalBoundaryLength = 0;
     for (Vertex i = 0;i<nb;i++)
         totalBoundaryLength += edgeLength(boundary[(i+1)%nb],boundary[i]);
 
     double partialSum = 0;
-    for (Vertex i = 0;i<nb;i++){
+    for (Vertex i = 0;i<nb;i++)
+    {
         double th = 2*M_PI*partialSum/totalBoundaryLength;
-        u(i) = std::cos(th);
-        v(i) = std::sin(th);
-        partialSum += edgeLength(boundary[(i+1)%nb],boundary[i]);
+        auto vi = boundary[i];
+        auto vj = boundary[(i+1)%nb];
+        u(vi) = std::cos(th);
+        v(vj) = std::sin(th);
+        partialSum += edgeLength(vi,vj);
     }
     return {u,v};
 }
@@ -211,96 +189,69 @@ std::pair<Vector,Vector> FixBoundaryParametrization(const std::vector<Vertex>& b
 /**
  * @brief VisualizeParametrizationOnCircle creates a polyscope mesh in 2D
  * with UV coordinates
- * @param UV inpute parametrization
+ * @param UV input parametrization
  */
 void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
 {
     auto n= surfmesh.nbVertices();
     std::vector<RealPoint> pos(n);
-    for (size_t v = 0;v<n;v++){
-        pos[v] = {UV(v,0),UV(v,1),0.};
+    double scale = 0;
+    RealPoint avg = {0.,0.,0.};
+    for (size_t v = 0;v<n;v++)
+    {
+        auto p = surfmesh.position(v);
+        avg += p;
+        if (p.norm() > scale)
+            scale = p.norm();
     }
-    polyscope::registerSurfaceMesh("Bunny param", pos, faces)->setEnabled(false);
+    avg /= surfmesh.nbVertices();
+    scale /= 2;
+    for (size_t v = 0;v<n;v++)
+        pos[v] = RealPoint{scale*UV(v,0),scale*UV(v,1),0.} + avg;
+    polyscope::registerSurfaceMesh("On circle parametrization", pos, faces)->setEnabled(false);
 }
 
 /**
  * @brief HarmonicParametrization computes the harmonic parametrization of the
  * loaded mesh, the fixed boundary is the largest one,
  * all holes must be homeomorphic to circles
- * WARNING: reorders surfaceMesh indices.
  * @return (n,2) matrix with uv coordinates in columns
  */
 DenseMatrix HarmonicParametrization()
 {
-    auto chains = computeManifoldBoundaryChains(2);
-    std::cout << chains.size() << " chains found" << std::endl;
+    uint n = surfmesh.nbVertices();
+    auto chains = computeManifoldBoundaryChains();
     //choose longest chain as boundary of the parametrization
     auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
 
-    std::vector<bool> isBoundary(surfmesh.nbVertices(),false);
-    auto uv_b = FixBoundaryParametrization(B);//maps boundary to circle
+    IntegerVector boundary = IntegerVector::Zero(n);
+    for (Vertex v : B)
+        boundary(v) = 1;
 
-    std::vector<RealPoint> new_pos;
-    std::vector<std::vector<size_t>> new_faces;
+    std::pair<Vector,Vector> uv_b = FixBoundaryParametrization(B);//maps boundary to circle
 
-    std::vector<RealPoint> b_pos;
-
-    //reorder vertices to facilitate boundary conditions
-    //{ reordering
-    std::vector<size_t> new_index(surfmesh.nbVertices());
-    size_t i = 0;
-    for (auto b : B){
-        new_pos.push_back(surfmesh.position(b));
-        b_pos.push_back(surfmesh.position(b));
-        new_index[b] = i;
-        isBoundary[b] = true;
-        i++;
-    }
-
-    for (size_t v = 0;v<surfmesh.nbVertices();v++)
-        if (!isBoundary[v]){
-            new_pos.push_back(surfmesh.position(v));
-            new_index[v] = i;
-            i++;
-        }
-
-    for (size_t f = 0;f<surfmesh.nbFaces();f++){
-        std::vector<size_t> ids;
-        for (auto v :surfmesh.incidentVertices(f) )
-            ids.push_back(new_index[v]);
-        new_faces.push_back(ids);
-    }
-
-    surfmesh = SurfMesh(new_pos.begin(),
-                new_pos.end(),
-                new_faces.begin(),
-                new_faces.end());
-
-    faces = new_faces;
-    positions = new_pos;
-    //}
-
-    uint n = surfmesh.nbVertices();
     calculus = new PC(surfmesh);
 
     //Impose dirichlet boundary condition to laplace problem
-    auto nb = B.size();
-    SparseMatrix L   = calculus->globalLaplaceBeltrami();
-
-    SparseMatrix L11 = block(L,nb,nb,n-nb,n-nb);
-    SparseMatrix L10 = block(L,nb,0,n-nb,nb);
+    Vector Z = Vector::Zero(n);
+    SparseMatrix L = calculus->globalLaplaceBeltrami();
+    SparseMatrix L_d = Conditions::dirichletOperator( L, boundary );
 
     PC::Solver solver;
-    solver.compute(L11);
+    solver.compute(L_d);
 
-    Vector rslt_u = solver.solve(-L10*uv_b.first);
-    Vector rslt_v = solver.solve(-L10*uv_b.second);
+    Vector b_u = Conditions::dirichletVector( L, Z,boundary, uv_b.first );
+    Vector b_v = Conditions::dirichletVector( L, Z,boundary, uv_b.second );
+
+    Vector rslt_u_d = solver.solve(b_u);
+    Vector rslt_v_d = solver.solve(b_v);
+
+    Vector rslt_u = Conditions::dirichletSolution(rslt_u_d,boundary,uv_b.first);
+    Vector rslt_v = Conditions::dirichletSolution(rslt_v_d,boundary,uv_b.second);
 
     DenseMatrix uv(n,2);
-    uv.block(0,0,nb,1) = uv_b.first;
-    uv.block(nb,0,n-nb,1) = rslt_u;
-    uv.block(0,1,nb,1) = uv_b.second;
-    uv.block(nb,1,n-nb,1) = rslt_v;
+    uv.col(0) = rslt_u;
+    uv.col(1) = rslt_v;
 
     return uv;
 }
@@ -345,7 +296,7 @@ int main(int, char **argv)
     VisualizeParametrizationOnCircle(UV);
 
     psMesh = polyscope::registerSurfaceMesh("Digital Surface", positions, faces);
-    psMesh->addVertexParameterizationQuantity("Harmonic parametrization",UV);
+    psMesh->addVertexParameterizationQuantity("Harmonic parametrization",UV)->setEnabled(true);
 
     //set correct view for voxel mesh
     polyscope::view::upDir = polyscope::view::UpDir::XUp;
