@@ -207,8 +207,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
     //it's not expected to have 0 since these vectors aren't actually the same
     auto lphi = L*phi;
     //but we can still check that L is semi-definite
-    double det = L.determinant() + 1;
-    REQUIRE( det == Approx(1.0));
+    double det = L.determinant();
+    REQUIRE( det == Approx(0.0));
     REQUIRE( lphi[2] == Approx(-3.683));
   }
   SECTION("Covariant Operators")
