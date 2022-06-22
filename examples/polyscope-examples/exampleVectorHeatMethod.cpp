@@ -57,8 +57,6 @@ typedef PC::SparseMatrix SparseMatrix;
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
-polyscope::PointCloud *psVertices;
-polyscope::CurveNetwork *psBoundary;
 
 SurfMesh surfmesh;
 
