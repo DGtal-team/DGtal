@@ -2,7 +2,8 @@ set(DGTAL_TESTS_SRC_IO_WRITERS
        testCompressedVolWriter
        testPNMRawWriter
        testMeshWriter
-       testGenericWriter)
+       testGenericWriter
+       testSTBWriter)
 
 if(MAGICK++_FOUND)
   set(DGTAL_TESTS_SRC_IO_WRITERS
