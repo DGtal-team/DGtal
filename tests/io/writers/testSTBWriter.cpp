@@ -39,7 +39,6 @@
 
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/writers/PPMWriter.h"
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -75,7 +74,7 @@ TEST_CASE( "Testing STBWriter" )
     STBWriter<Image>::exportBMP("color64-export.bmp", image);
   }
   
-  SECTION("Testing functor(PNG)")
+  SECTION("Testing scalar functor (PNG)")
   {
     typedef ImageSelector < Z2i::Domain, int>::Type Image;
     Image image(Z2i::Domain(Z2i::Point(0,0),  Z2i::Point(8,8)));

@@ -560,15 +560,10 @@ namespace DGtal
             typename TContainer::Point const pt (x,y);
             return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
           }
-        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
+        else if ( extension == "tga" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
           {
-#ifdef WITH_MAGICK
-            MagickReader<TContainer, TFunctor> reader;
-            return reader.importImage( filename, aFunctor );
-#else
-            trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-            throw dgtalio;
-#endif
+            STBReader<TContainer, TFunctor> reader;
+            return reader.import( filename, aFunctor );
           }
 
         trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
