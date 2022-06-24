@@ -537,7 +537,7 @@ public:
   /// exterior derivative and opposite of divergence as relation \f$
   /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
   /// \rangle \f$. See also https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
-  DenseMatrix LaplaceBeltrami(const Face f, const double lambda=1.0) const
+  DenseMatrix laplaceBeltrami(const Face f, const double lambda=1.0) const
   {
     if (checkCache(L_,f))
       return myGlobalCache[L_][f];
@@ -561,8 +561,7 @@ private:
     return u - (u.dot(n) / n.squaredNorm()) * n;
   }
 
-public:
-  /// Conversion routines
+  /// Conversion routines.
   /// \brief toVector convert Real3dPoint to Eigen::VectorXd
   /// \param x the vector
   /// \return the same vector in eigen type
@@ -595,7 +594,7 @@ public:
       n += vectorArea(f);
     return n.normalized();
   }
-
+  
   ///@return the normal vector at vertex v, if no normal vertex embedder is
   ///set, the normal will be computed
   Eigen::Vector3d n_v(const Vertex & v) const
@@ -603,6 +602,7 @@ public:
     return myVertexNormalEmbedder(v).head(3);
   }
 
+public:
   ///@return 3x2 matrix defining the tangent space at vertex v, with basis
   ///vectors in columns
   DenseMatrix Tv(const Vertex & v) const
