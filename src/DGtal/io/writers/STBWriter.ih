@@ -26,7 +26,7 @@
  * This file is part of the DGtal library.
  */
 #pragma once
-#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -36,13 +36,109 @@
 template <typename TImageContainer, typename TFunctor>
 inline
 bool
-DGtal::STBWriter<TImageContainer, TFunctor>::export(const std::string & filename,
-const TImageContainer & anImage,
-                                                       const Functor & aFunctor)
+DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filename,
+                                                         const TImageContainer & anImage,
+                                                         const Functor & aFunctor)
 {
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
   
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_png(filename.c_str(),  w,  h, comp, data, w*comp);
+  delete(data);
+  return error;
 }
 
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor)
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
+  delete(data);
+  return error;
+}
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor)
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
+  delete(data);
+  return error;
+}
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor,
+                                                       int quality )
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_jpg(filename.c_str(),  w,  h, comp, data, quality);
+  delete(data);
+  return error;
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

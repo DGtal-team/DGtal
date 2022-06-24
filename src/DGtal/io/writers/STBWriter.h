@@ -54,10 +54,13 @@ namespace DGtal
    * Description of template class 'STBWriter' <p>
    * \brief Aim: Image Writer using the `stb_image.h` header only code.
    *
+   * These methods export an image in various formats (png, jpg, tga, bmp) by
+   * first using the functor to convert the image values to colors.
    *
-   *
+   * @tparam TImageContainer the image type
+   * @tparam TFunctor the functor type that maps the image values to DGtal::Color
    */
-  template <typename TImageContainer,typename TFunctor=functors::ColorRGBEncoder<typename TImageContainer::Value> >
+  template <typename TImageContainer,typename TFunctor=functors::Identity>
   class STBWriter
   {
     //  ----------------------- Standard services ------------------------------
@@ -68,19 +71,58 @@ namespace DGtal
     typedef TFunctor Functor ;
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-    BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;
+    BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  Value, DGtal::Color > )) ;
 
     /**
-     * Main method to export an Image.
+     * Export an image as PNG
      *
      * @param filename the file name to export.
      * @param aFunctor the functor used to import and cast the source
-     * image values into the type of the image container value (DGtal::Color -> Value functor).
+     * image values into the type of the image container value (Value -> DGtal::Color functor).
      * @return an instance of the ImageContainer.
      */
-    static bool exportImage(const std::string & filename,
+    static bool exportPNG(const std::string & filename,
                        const ImageContainer& anImage,
                        const Functor & aFunctor =  Functor());
+    
+    /**
+     * Export an image as TGA
+     *
+     * @param filename the file name to export.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (Value -> DGtal::Color functor).
+     * @return an instance of the ImageContainer.
+     */
+    static bool exportTGA(const std::string & filename,
+                          const ImageContainer& anImage,
+                          const Functor & aFunctor =  Functor());
+    
+    /**
+     * Export an image as BMP
+     *
+     * @param filename the file name to export.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (Value -> DGtal::Color functor).
+     * @return an instance of the ImageContainer.
+     */
+    static bool exportBMP(const std::string & filename,
+                          const ImageContainer& anImage,
+                          const Functor & aFunctor =  Functor());
+    
+    /**
+     * Export an image as JPG
+     *
+     * @param filename the file name to export.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (Value -> DGtal::Color functor).
+     * @param quality the jpg compression quality (in [0,100], 100 is full quality, def = 70)
+     * @return an instance of the ImageContainer.
+     */
+    static bool exportJPG(const std::string & filename,
+                          const ImageContainer& anImage,
+                          const Functor & aFunctor =  Functor(),
+                          int quality = 70);
+    
   }; // end of class STBWriter
   
   

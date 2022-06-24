@@ -37,6 +37,7 @@
 #include "DGtal/io/writers/STBWriter.h"
 #include "DGtal/images/ImageSelector.h"
 
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/writers/PPMWriter.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,49 +49,51 @@ using namespace DGtal;
 // Functions for testing class STBReader.
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE( "Testing STBReader" )
+TEST_CASE( "Testing STBWriter" )
 {
-  SECTION("Testing feature io/readers of STBReader (Grayscale PNG)")
+  SECTION("Testing feature io/readers of STBWriter (Grayscale PNG)")
   {
     std::string filename = testPath + "samples/contourS.png";
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
     Image image = STBReader<Image>::import( filename );
     CAPTURE(image);
+    PPMWriter<Image>::exportPPM("contourS-export.ppm", image);
     
-    PPMWriter<Image>::exportPPM("testwriter.ppm", image);
-    CHECK( image.isValid());
-  }
-  SECTION("Testing feature io/readers of STBReader (PPM color)")
-  {
-    std::string filename = testPath + "samples/color64.";
-    typedef ImageSelector < Z2i::Domain, Color>::Type Image;
-    
-    Image image = STBReader<Image>::import( filename+"ppm" );
-    PPMWriter<Image>::exportPPM("testwriterColor.ppm", image);
+    STBWriter<Image>::exportPNG("contourS-export.png", image);
     CHECK( image.isValid());
   }
   
-  SECTION("Testing all file formats")
+  SECTION("Testing feature io/readers of STBWriter (PNG)")
   {
-    std::string filename = testPath + "samples/color64.";
+    std::string filename = testPath + "samples/color64.png";
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
-    
-    Image imagePPM = STBReader<Image>::import( filename+"ppm" );
-    CHECK( imagePPM.isValid());
-    Image imageJPG = STBReader<Image>::import( filename+"jpg" );
-    CHECK( imageJPG.isValid());
-    Image imageTGA = STBReader<Image>::import( filename+"tga" );
-    CHECK( imageTGA.isValid());
-    Image imageBMP = STBReader<Image>::import( filename+"bmp" );
-    CHECK( imageBMP.isValid());
-    Image imagePNG = STBReader<Image>::import( filename+"png" );
-    CHECK( imagePNG.isValid());
-
-    //For lossless compression formats
-    CHECK( imageBMP == imagePPM );
-    CHECK( imageTGA == imagePPM );
-    CHECK( imagePNG == imagePPM );
+    Image image = STBReader<Image>::import( filename );
+    CHECK( image.isValid());
+    PPMWriter<Image>::exportPPM("color64-export.ppm", image);
+    STBWriter<Image>::exportTGA("color64-export.tga", image);
+    STBWriter<Image>::exportJPG("color64-export.jpg", image);
+    STBWriter<Image>::exportBMP("color64-export.bmp", image);
   }
+  
+  SECTION("Testing functor(PNG)")
+  {
+    typedef ImageSelector < Z2i::Domain, int>::Type Image;
+    Image image(Z2i::Domain(Z2i::Point(0,0),  Z2i::Point(8,8)));
+    
+    image.setValue(Z2i::Point(3,3), 10);
+    image.setValue(Z2i::Point(1,1), 1);
+    image.setValue(Z2i::Point(7,7), 20);
+
+    // Creating colormap.
+    GradientColorMap<int> cmap_grad( 0, 30 );
+    cmap_grad.addColor( Color( 50, 50, 255 ) );
+    cmap_grad.addColor( Color( 255, 0, 0 ) );
+    cmap_grad.addColor( Color( 255, 255, 10 ) );
+    
+    CHECK( image.isValid());
+    STBWriter<Image,GradientColorMap<int>>::exportPNG("scalar-export.jpg", image, cmap_grad );
+  }
+  
 }
 
 /** @ingroup Tests **/
