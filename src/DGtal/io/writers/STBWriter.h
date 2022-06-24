@@ -77,6 +77,7 @@ namespace DGtal
      * Export an image as PNG
      *
      * @param filename the file name to export.
+     * @param anImage the image to export.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (Value -> DGtal::Color functor).
      * @return an instance of the ImageContainer.
@@ -89,6 +90,7 @@ namespace DGtal
      * Export an image as TGA
      *
      * @param filename the file name to export.
+     * @param anImage the image to export.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (Value -> DGtal::Color functor).
      * @return an instance of the ImageContainer.
@@ -101,6 +103,7 @@ namespace DGtal
      * Export an image as BMP
      *
      * @param filename the file name to export.
+     * @param anImage the image to export.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (Value -> DGtal::Color functor).
      * @return an instance of the ImageContainer.
@@ -113,6 +116,7 @@ namespace DGtal
      * Export an image as JPG
      *
      * @param filename the file name to export.
+     * @param anImage the image to export.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (Value -> DGtal::Color functor).
      * @param quality the jpg compression quality (in [0,100], 100 is full quality, def = 70)
