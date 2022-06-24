@@ -37,7 +37,15 @@ to define global ones.
 
 This module documents the operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use cases of these operators for geometry processing on digital surfaces will be added.
 
-
+@note The sign convention for the divergence and the Laplacian
+operator is opposite to the one of @cite degoes2020discrete. This is
+to match the usual mathematical convention that the Laplacian (and the
+Laplacian-Beltrami) has negative eigenvalues (and is the sum of second
+derivatives in the cartesian grid). It also follows the formal
+adjointness of exterior derivative and opposite of divergence as
+relation \f$ \langle \mathrm{d} u, v \rangle = - \langle u,
+\mathrm{div} v \rangle \f$. See also
+https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
 
 @note All illustrations below have been obtained using the
 DGtal+[polyscope](https://polyscope.run) examples \ref
@@ -208,6 +216,12 @@ To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can com
 
 For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can later be used for diffusion.
 
+You can also retrieve the global mass matrix via
+PolygonalCalculus::globalLumpedMassMatrix, which is used to define an
+inner product for 0-forms (i.e. scalar functions), as well as its
+inverse PolygonalCalculus::globalInverseLumpedMassMatrix(), generally
+used when one solves a weak problem and wishes to get a pointwise
+per-vertex solution.
 
 \section secLap Example: Solving a Laplace problem
 
@@ -224,6 +238,9 @@ to boundary vertices, or sampled on the object surface.
 Furthermore, the discrete version of the Laplace problem boils down to
 a simple linear problem using on the discrete Laplace-Beltrami sparse
 matrix.
+
+We also use class DirichletConditions to enforce Dirichlet boundary
+conditions on the system.
 
 The overall code is:
 \snippet dgtalCalculus-poisson.cpp PolyDEC-init

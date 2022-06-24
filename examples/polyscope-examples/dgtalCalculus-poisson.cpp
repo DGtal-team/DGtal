@@ -30,6 +30,7 @@
 #include <DGtal/shapes/SurfaceMesh.h>
 #include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
 #include <DGtal/dec/PolygonalCalculus.h>
+#include <DGtal/math/linalg/DirichletConditions.h>
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -47,7 +48,7 @@ typedef Shortcuts<Z3i::KSpace>         SH3;
 typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 // The following typedefs are useful
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
-
+typedef std::size_t             Index;
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
 SurfMesh surfmesh;
@@ -56,9 +57,12 @@ float scale = 0.1;
 void computeLaplace()
 {
   //! [PolyDEC-init]
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(surfmesh.nbVertices());
+  typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PolyDEC;
+  typedef DirichletConditions< EigenLinearAlgebraBackend >  DC;
+  PolyDEC calculus(surfmesh);
+  PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  PolyDEC::Form g = calculus.form0();
+  DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
   
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
@@ -71,16 +75,18 @@ void computeLaplace()
     auto adjVertices = surfmesh.edgeVertices(e);
     g(adjVertices.first)  = pihVertex(adjVertices.first);
     g(adjVertices.second) = pihVertex(adjVertices.second);
+    b(adjVertices.first)  = 1;
+    b(adjVertices.second) = 1;
   }
-  
-  //Solve Δu=0 with g as boundary conditions
-  //(the operator constructon and its prefactorization could have been factorized)
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
-  solver.compute(L);
+
+  // Solve Δu=0 with g as boundary conditions
+  PolyDEC::Solver solver;
+  PolyDEC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
+  solver.compute( L_dirichlet );
   ASSERT(solver.info()==Eigen::Success);
-  
-  PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = solver.solve(g);
-  ASSERT(solver.info()==Eigen::Success);
+  PolyDEC::Form g_dirichlet = DC::dirichletVector( L, g, b, g );
+  PolyDEC::Form x_dirichlet = solver.solve( g_dirichlet );
+  PolyDEC::Form u = DC::dirichletSolution( x_dirichlet, b, g );
   //! [PolyDEC-init]
 
   psMesh->addVertexScalarQuantity("g", g);

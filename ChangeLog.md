@@ -37,6 +37,10 @@
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
+  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
+    problems, add Dirichlet boundary conditions, update discrete
+    differential calculus examples (Jacques-Olivier
+    Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
 
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
@@ -46,7 +50,7 @@
 
 ## Changes
 - *Image*
-  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >1024^3)
+  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >$1024^3$)
     (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
   - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
     format support. New option to keep set domain or to compute current bounding
