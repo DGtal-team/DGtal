@@ -416,8 +416,7 @@ namespace DGtal
 
     /**
      * Import an image file by specifying a color encoder functor
-     *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .
+     *  (used only for color image format ppm, png, tga, bmp,jpeg) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param filename the image filename to be imported.
@@ -529,8 +528,7 @@ namespace DGtal
 
     /**
      * Import an image file by specifying a color encoder functor
-     *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .
+     *  (used only for color image format ppm, png, tga, bmp,jpeg) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param filename the image filename to be imported.

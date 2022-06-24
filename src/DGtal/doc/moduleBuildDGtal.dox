@@ -43,7 +43,6 @@ To build DGtal in is full configuration, you may need these dependencies too:
 - \e gmp,
 - \e cairo,
 - \e qglviewer,
-- \e graphicsmagick,
 - \e insighttoolkit (ITK),
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 - \e [CGAL](http://cgal.org) (build with Eigen enabled)
