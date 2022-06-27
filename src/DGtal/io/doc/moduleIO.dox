@@ -173,7 +173,7 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 | Dimension  | Name              | Description                                                 | Class name    | Comment                                                        |
 |------------|-------------------|-------------------------------------------------------------|---------------|----------------------------------------------------------------|
 |         2D | PGM               | Grayscale  netpbm image format                              | PGMReader     | http://netpbm.sourceforge.net/                                 |
-|            | any stb format    | Any file format in the stb_image library (bmp,png,jpg,tga)  | STBReader     |                                                                |
+|            | any stb format    | Any file format in the stb_image library (bmp,png,jpg,tga, gif)  | STBReader     |                                                                |
 |            | HDF5              | HDF5 file with 2D image dataset(s)                          | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 |            | any 2D ITK format | Any file format in the ITK library (png, jpg, mhd, mha, ...)| ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
 |         3D | PGM3D             | Grayscale  netpbm image format                              | PGMReader     |                                                                |
