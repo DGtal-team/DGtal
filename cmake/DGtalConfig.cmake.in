@@ -28,13 +28,6 @@ if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   set(WITH_GMP 1)
 endif()
 
-if(@MAGICK++_FOUND_DGTAL@) #if MAGICK++_FOUND_DGTAL
-  find_package(Magick REQUIRED
-    @Magick_HINTS@
-    )
-  set(WITH_MAGICK 1)
-endif()
-
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set(WITH_ITK 1)
   find_dependency(ITK REQUIRED
