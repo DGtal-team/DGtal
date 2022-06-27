@@ -61,7 +61,7 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 
 - \ref modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
 - \ref moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
-- \ref moduleVectorsInHeat (David Coeurjolly,Baptiste Genest)
+- \ref moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
 
 @b Package @b Concepts @b Overview
 - \ref packageDECConcepts
