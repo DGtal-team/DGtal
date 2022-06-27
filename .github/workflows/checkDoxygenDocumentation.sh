@@ -62,7 +62,7 @@ then
 else
     return_code=1;
 fi
-cd ..
+cd ../..
 
 ## We check examples consistency
 #
