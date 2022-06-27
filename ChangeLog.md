@@ -43,8 +43,8 @@
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
   - Updates to PolygonalCalculus: adding vector operators (mainly covariant 
     gradient and covariant projection as well as Connection-Laplacian. Also adding two 
-    more examples: harmonic parametrization and vector heat method. (David
-    Coeurjolly, Baptiste GENEST,[#1646](https://github.com/DGtal-team/DGtal/pull/1646))
+    more examples: harmonic parametrization and vector heat method. (Baptiste GENEST, David
+    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
 
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
