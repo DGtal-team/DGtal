@@ -22,6 +22,7 @@ set(POLYSCOPE_SRCS
   dgtalCalculus-bunny
   dgtalCalculus-halfsphere
   dgtalCalculus-geodesic
+  tangency-explorer
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})

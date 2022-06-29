@@ -664,6 +664,32 @@ getPoints( std::vector<Point>& pts ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const
+{
+  pts.clear();
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension a = C.longestAxis();
+  Integer nb  = 0;
+  Point lo    = D.lowerBound();
+  Point hi    = D.upperBound();
+  hi[ a ]     = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, a );
+      Point q( 2*p - alpha_shift );
+      q[ a ] = 2*I.first - alpha_shift[ a ];
+      for ( Integer x = I.first; x < I.second; x++ )
+        {
+          pts.push_back( q );
+          q[ a ] += 2;
+        }
+    }  
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -672,6 +698,32 @@ insertPoints( PointSet& pts_set ) const
   std::vector<Point> pts;
   getPoints( pts );
   pts_set.insert( pts.cbegin(), pts.cend() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointSet>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+insertKPoints( PointSet& pts_set, const Point& alpha_shift ) const
+{
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension a = C.longestAxis();
+  Integer nb  = 0;
+  Point lo    = D.lowerBound();
+  Point hi    = D.upperBound();
+  hi[ a ]     = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, a );
+      Point q( 2*p - alpha_shift );
+      q[ a ] = 2*I.first - alpha_shift[ a ];
+      for ( Integer x = I.first; x < I.second; x++ )
+        {
+          pts_set.insert( q );
+          q[ a ] += 2;
+        }
+    }  
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>

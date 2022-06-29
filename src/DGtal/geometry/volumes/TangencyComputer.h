@@ -460,11 +460,18 @@ namespace DGtal
     /// @name Tangency services
     /// @{
     
-    /// Tells is two points are cotangent with respect to the current digital set.
+    /// Tells if two points are cotangent with respect to the current digital set.
     /// @param[in] a any point
     /// @param[in] b any point
     /// @return 'true' if and only if \a a and \a b are cotangent in this set.
     bool arePointsCotangent( const Point& a, const Point& b ) const;
+
+    /// Tells if three points are cotangent with respect to the current digital set.
+    /// @param[in] a any point
+    /// @param[in] b any point
+    /// @param[in] c any point
+    /// @return 'true' if and only if \a a and \a b are cotangent in this set.
+    bool arePointsCotangent( const Point& a, const Point& b, const Point& c ) const;
 
     /// Extracts cotangent points by a breadth-first traversal.
     /// @param[in] a any point

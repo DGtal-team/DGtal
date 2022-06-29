@@ -80,8 +80,16 @@ namespace DGtal
     using PointRange       = std::vector<Point>;
     static const Dimension dimension = Space::dimension;
 
+    /// Default constructor
     BoundedLatticePolytopeCounter() = default;
+    
+    /// Constructor from valid polytope
+    /// @param P any polytope
     BoundedLatticePolytopeCounter( const Polytope& P );
+    
+    /// Initialization from polytope pointer (nullptr if you want to
+    /// create an invalid polytope).
+    /// @param ptrP any pointer on a polytope or nullptr.
     void init( const Polytope* ptrP );
 
     /// Computes the intersection of the lattice points of the
@@ -111,19 +119,62 @@ namespace DGtal
     /// @return the interval `[b,e)` of intersection, which is such
     /// that `b==e` when there is no intersection.
     Interval interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const;
-    
+
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    /// @return the number of lattice point inside the current polytope.
+    ///
+    /// @note The result does not depend on parameter \a a, but the
+    /// speed of computations depend on this choixe. The best choice
+    /// is the one that minimizes the projected area of the polytope
+    /// along this axis.
+    /// @see longestAxis
     Integer countAlongAxis( Dimension a ) const;
+    
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    /// @return the number of lattice point strictly inside the current polytope.
+    ///
+    /// @note The result does not depend on parameter \a a, but the
+    /// speed of computations depend on this choixe. The best choice
+    /// is the one that minimizes the projected area of the polytope
+    /// along this axis.
+    /// @see longestAxis
     Integer countInteriorAlongAxis( Dimension a ) const;
 
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    /// @return the lattice points inside the current polytope.
+    ///
+    /// @note The result does not depend on parameter \a a, but the
+    /// speed of computations depend on this choixe. The best choice
+    /// is the one that minimizes the projected area of the polytope
+    /// along this axis.
+    /// @see longestAxis
     void getPointsAlongAxis( PointRange& pts, Dimension a ) const;
+
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    /// @return the lattice points strictly inside the current polytope.
+    ///
+    /// @note The result does not depend on parameter \a a, but the
+    /// speed of computations depend on this choixe. The best choice
+    /// is the one that minimizes the projected area of the polytope
+    /// along this axis.
+    /// @see longestAxis
     void getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const;
     
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.
     Dimension longestAxis() const;
-    
+
+    /// @return the lower point of the tight bounding box of the current polytope.
+    Point lowerBound() const { return myLower; }
+    /// @return the upper point of the tight bounding box of the current polytope.
+    Point upperBound() const { return myUpper; }
+
+    // --------------------------- protected datas -----------------------------------
+    /// The associated polytope.
     const Polytope* myPolytope;
+    /// The lower point of the tight bounding box to the associated polytope. 
     Point myLower;
+    /// The upper point of the tight bounding box to the associated polytope. 
     Point myUpper;
   };
 

@@ -69,6 +69,17 @@ arePointsCotangent( const Point& a, const Point& b ) const
 
 //-----------------------------------------------------------------------------
 template < typename TKSpace >
+bool
+DGtal::TangencyComputer<TKSpace>::
+arePointsCotangent( const Point& a, const Point& b, const Point& c ) const
+{
+  std::vector< Point > Z { a, b, c };
+  const auto P = myDConv.makePolytope( Z );
+  return myDConv.isFullySubconvex( P, myCellCover );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
 DGtal::TangencyComputer<TKSpace>::
 getCotangentPoints( const Point& a ) const
