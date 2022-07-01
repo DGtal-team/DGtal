@@ -14,6 +14,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testNumberTraits
    testUnorderedSetByBlock
    testIntegerConverter
+   testIntegralIntervals
    )
 
 

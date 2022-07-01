@@ -52,8 +52,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class BoundedLatticePolytopeCounter
   /**
-     Description of template class 'BoundedLatticePolytopeCounter' <p> \brief
-     Aim: Represents an nD lattice polytope, i.e. a convex polyhedron
+     Description of template class 'BoundedLatticePolytopeCounter' <p>
+     \brief Aim: Useful to compute quickly the lattice points within a
+     polytope, i.e. a convex polyhedron.
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. 
@@ -76,10 +77,17 @@ namespace DGtal
     using Domain           = typename Polytope::Domain;
     using HalfSpace        = typename Polytope::HalfSpace;
     using BigInteger       = typename Polytope::BigInteger;
-    using Interval         = std::pair<Integer,Integer>;
-    using PointRange       = std::vector<Point>;
+    using Interval         = std::pair< Integer,Integer >;
+    using Intervals        = std::vector< Interval >;
+    using PointRange       = std::vector< Point >;
     static const Dimension dimension = Space::dimension;
 
+    /// Internal type used to represent a convex lattice point set.
+    using LatticeSetByInterval  = std::map< Point, Interval >;
+
+    /// Internal type used to represent any lattice point set.
+    using LatticeSetByIntervals = std::map< Point, Intervals >;
+    
     /// Default constructor
     BoundedLatticePolytopeCounter() = default;
     
@@ -159,7 +167,42 @@ namespace DGtal
     /// along this axis.
     /// @see longestAxis
     void getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const;
-    
+
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    ///
+    /// @return the set of lattice points within the current polytope,
+    /// represented as intervals along the given rows specified by the
+    /// axis.
+    LatticeSetByInterval getLatticeSet( Dimension a ) const;
+
+    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    ///
+    /// @return the set of cells (as points with Khalimsky
+    /// coordinates) whose closure touched the current polytope,
+    /// represented as intervals along the given rows specified by the
+    /// axis.
+    ///
+    /// @note The given polytope should have been built from a set of
+    /// points dilated by the unit cube in order to get exactly the
+    /// Star of the initial polytope.
+    LatticeSetByInterval getLatticeCells( Dimension a ) const;
+
+    /// Builds the lattice set representation of a range of points
+    ///
+    /// @param X any range of points
+    ///
+    /// @param a any axis with 0 <= a < d, where d is the dimension of
+    /// the space.
+    ///
+    /// @return its lattice set representation by intervals.
+    static
+    LatticeSetByIntervals
+    buildLatticeSet( const PointRange& X, Dimension a ) const;
+
+    static
+    LatticeSetByIntervals
+    buildStar( const LatticeSetByIntervals& X, Dimension a ) const;
+
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.
     Dimension longestAxis() const;
@@ -169,6 +212,18 @@ namespace DGtal
     /// @return the upper point of the tight bounding box of the current polytope.
     Point upperBound() const { return myUpper; }
 
+    // ------------------------- static methods ------------------------------------
+  public:
+    
+    // Erase the interval I from the intervals in V such that the integer
+    // in I are not part of V anymore.
+    //
+    // @param[i] I is a closed interval
+    // @param[inout] V is an ordered sequence of closed intervals
+    static
+    void eraseInterval( Interval I, Intervals& V );
+
+    
     // --------------------------- protected datas -----------------------------------
     /// The associated polytope.
     const Polytope* myPolytope;

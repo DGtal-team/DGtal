@@ -375,6 +375,83 @@ isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
+isFullyConvexFast( const PointRange& Z  ) const
+{
+  const auto touched_cells = makeCellCover( Z.begin(), Z.end(), 0, dimension );
+  return sizeStarCvxH( Z ) == touched_cells.nbCells();
+}
+  
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+StarCvxH( const PointRange& X ) const
+{
+  PointRange cells;
+  typedef BoundedLatticePolytopeCounter<Space> Counter;
+  typedef typename Counter::Interval           Interval;
+  // Computes Minkowski sum of Z with hypercube
+  PointRange Z = U( 0, X );
+  for ( Dimension k = 1; k < dimension; k++ )
+    Z = U( k, Z );
+  // Builds polytope
+  const auto P = makePolytope( Z );
+  // Extracts lattice points within polytope
+  // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
+  Counter C( P );
+  const Dimension a = C.longestAxis();
+  auto cellP = C.getLatticeCells( a );
+  // Builds cells from columns
+  for ( const auto& value : cellP )
+    {
+      Point    p = value.first;
+      Interval I = value.second;
+      for ( auto x = I.first; x <= I.second; x++ )
+        {
+          p[ a ] = x;
+          cells.push_back( p );
+        }
+    }
+  std::sort( cells.begin(), cells.end() );
+  return cells;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::Integer
+DGtal::DigitalConvexity<TKSpace>::
+sizeStarCvxH( const PointRange& X ) const
+{
+  PointRange cells;
+  typedef BoundedLatticePolytopeCounter<Space> Counter;
+  typedef typename Counter::Interval           Interval;
+  // Computes Minkowski sum of Z with hypercube
+  PointRange Z = U( 0, X );
+  for ( Dimension k = 1; k < dimension; k++ )
+    Z = U( k, Z );
+  // Builds polytope
+  const auto P = makePolytope( Z );
+  // Extracts lattice points within polytope
+  // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
+  Counter C( P );
+  const Dimension a = C.longestAxis();
+  auto cellP = C.getLatticeCells( a );
+  
+  // Counts the number of cells
+  Integer nb = 0;
+  for ( const auto& value : cellP )
+    {
+      Point    p = value.first;
+      Interval I = value.second;
+      nb += I.second - I.first + 1;
+    }
+  return nb;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const LatticePolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;

@@ -406,10 +406,40 @@ namespace DGtal
     /// @return 'true' iff \a X is fully digitally convex.
     bool isFullyConvex( const PointRange& X, bool convex0 = false,
                         bool safe = false ) const;
+
+    /// Tells if a given point range \a X is fully digitally
+    /// convex. The test uses the morphological characterization of
+    /// full convexity and a fast way to compute lattice points within
+    /// a polytope. It works for arbitrary set of points in arbitrary
+    /// dimenion.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    /// @return 'true' iff \a X is fully digitally convex.
+    ///
+    /// @note This method is generally faster than
+    /// DigitalConvexity::isFullyConvex if (1) the set is indeed is
+    /// fully convex, (2) the dimension is high (>= 3 or 4).
+    bool isFullyConvexFast( const PointRange& Z ) const;
+    
+    /// Performs the operations Star(CvxH(X)) for X a digital set.
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @return the range of cells touching the convex hull of X,
+    /// represented as lattice points with Khalimsky coordinates.
+    PointRange StarCvxH( const PointRange& X ) const;
+
+    /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @return the number of cells touching the convex hull of X,
+    /// represented as lattice points with Khalimsky coordinates.
+    Integer sizeStarCvxH( const PointRange& X ) const;
     
     /// @}
     
-    // ----------------------- Convexity services for lattice polytopes -----------------
+    // ----------------------- Convexity services for lattice polytopes --------------
   public:
     /// @name Convexity services for lattice polytopes
     /// @{

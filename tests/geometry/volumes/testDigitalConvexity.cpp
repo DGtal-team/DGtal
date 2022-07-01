@@ -247,6 +247,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nb012_not3 = 0;
     unsigned int nbf      = 0;
     unsigned int nbfg     = 0;
+    unsigned int nbffast  = 0;
     unsigned int nb0123   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
@@ -264,9 +265,11 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         bool cvx3     = dconv.isKConvex( tetra, 3 );
         bool cvxf     = dconv.isFullyConvex( tetra );
         bool cvxfg    = dconv.isFullyConvex( X, false );
-        if ( cvxf != cvxfg ) {
+        bool cvxffast = dconv.isFullyConvexFast( X );
+        if ( cvxf != cvxfg || cvxf != cvxffast) {
           std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
-                    << "[" << cvxf << "] [" << cvxfg << "]"
+                    << "[" << cvxf << "] [" << cvxfg
+                    << "] [" << cvxffast << "]"
                     << a << b << c << d << std::endl;
         }
         nbsimplex += 1;
@@ -276,6 +279,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         nb3       += cvx3 ? 1 : 0;
         nbf       += cvxf ? 1 : 0;
         nbfg      += cvxfg ? 1 : 0;
+        nbffast   += cvxffast ? 1 : 0;
         nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
         nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
       }
@@ -293,8 +297,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
       REQUIRE( nb012_not3 == 0 );
       REQUIRE( nbf == nb0123 );
     }
-    THEN( "Both methods for computing full convexity agree." ) {
+    THEN( "All methods for computing full convexity agree." ) {
       REQUIRE( nbf == nbfg );
+      REQUIRE( nbf == nbffast );
     }
   }
 }
@@ -501,3 +506,103 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
   }
 }
 
+SCENARIO( "DigitalConvexity< Z3 > full convexity of polyhedra", "[full_convexity][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -35, -35, -35 ), Point( 35, 35, 35 ) );
+  DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
+
+  const unsigned int nb = 100;
+  unsigned int nbfg     = 0;
+  unsigned int nbffast  = 0;
+  typedef std::vector< Point > PointRange;
+  std::vector< PointRange > XX;
+  for ( unsigned int i = 0; i < nb; ++i )
+    {
+      unsigned int k = 100;
+      PointRange X( k );
+      for ( unsigned int j = 0; j < k; ++ j )
+        X[ j ] = Point( rand() % 10, rand() % 10, rand() % 10 );
+      auto P = dconv.makePolytope( X );
+      PointRange Y;
+      P.getPoints( Y );
+      XX.push_back( Y );
+    }
+  Clock c;
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      bool fcvx = dconv.isFullyConvex( X, false );
+      nbfg += fcvx ? 1 : 0;
+    }
+  double t1 = c.stopClock();
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      bool fcvx = dconv.isFullyConvexFast( X );
+      nbffast += fcvx ? 1 : 0;
+    }
+  double t2 = c.stopClock();
+  WHEN( "Computing many polytopes." ) {
+    THEN( "Both methods agree on full convexity results" ) {
+      REQUIRE( nbfg == nbffast );
+      REQUIRE( t2 < t1 );
+    }
+  }
+}
+
+
+SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity][3d]" )
+{
+  typedef KhalimskySpaceND<4,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -35, -35, -35, -35 ), Point( 35, 35, 35, 35 ) );
+  DConvexity dconv( Point( -36, -36, -36, -36 ), Point( 36, 36, 36, 36 ) );
+
+  const unsigned int nb = 20;
+  unsigned int nbfg     = 0;
+  unsigned int nbffast  = 0;
+  typedef std::vector< Point > PointRange;
+  std::vector< PointRange > XX;
+  for ( unsigned int i = 0; i < nb; ++i )
+    {
+      unsigned int k = 500;
+      PointRange X( k );
+      for ( unsigned int j = 0; j < k; ++ j )
+        X[ j ] = Point( rand() % 8, rand() % 8, rand() % 8, rand() % 8 );
+      auto P = dconv.makePolytope( X );
+      PointRange Y;
+      P.getPoints( Y );
+      XX.push_back( Y );
+    }
+  Clock c;
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      bool fcvx = dconv.isFullyConvex( X, false );
+      nbfg += fcvx ? 1 : 0;
+    }
+  double t1 = c.stopClock();
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      bool fcvx = dconv.isFullyConvexFast( X );
+      nbffast += fcvx ? 1 : 0;
+    }
+  double t2 = c.stopClock();
+  WHEN( "Computing many polytopes." ) {
+    THEN( "Both methods agree on full convexity results" ) {
+      REQUIRE( nbfg == nbffast );
+      REQUIRE( t2 < t1 );
+    }
+  }
+}

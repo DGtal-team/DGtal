@@ -19,7 +19,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2020/01/02
+ * @date 2022/06/17
  *
  * Implementation of inline methods defined in BoundedLatticePolytopeCounter.h
  *
@@ -67,7 +67,7 @@ typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 intersectionIntervalAlongAxis( Point p, Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   const Polytope& P = *myPolytope;
   const InequalityMatrix&  A = P.getA();
   const InequalityVector&  B = P.getB();
@@ -119,7 +119,7 @@ typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   const Polytope& P = *myPolytope;
   const InequalityMatrix&  A = P.getA();
   const InequalityVector&  B = P.getB();
@@ -170,7 +170,7 @@ typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 countAlongAxis( Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
@@ -190,7 +190,7 @@ typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 countInteriorAlongAxis( Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
@@ -210,7 +210,7 @@ void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getPointsAlongAxis( PointRange& pts, Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
@@ -234,7 +234,7 @@ void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
@@ -255,11 +255,159 @@ getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByInterval
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+getLatticeSet( Dimension a ) const
+{
+  ASSERT( myPolytope != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  LatticeSetByInterval L;
+  for ( auto&& p : D )
+    {
+      auto I  = intersectionIntervalAlongAxis( p, a );
+      L[ p ] = I;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByInterval
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+getLatticeCells( Dimension a ) const
+{
+  ASSERT( myPolytope != nullptr );
+  Point lo = myLower;
+  Point hi = myUpper;
+  hi[ a ]  = lo[ a ];
+  Domain D( lo, hi );
+  LatticeSetByInterval L; //< stores the intersected cells
+  const Point  One = Point::diagonal( 1 );
+  Point q;
+  for ( auto&& p : D )
+    {
+      q = 2*p - One;
+      const auto I = intersectionIntervalAlongAxis( p, a );
+      const auto n = I.second - I.first;
+      if ( n != 0 )
+        {
+          // Now the second bound is included
+          L[ q ] = Interval( 2 * I.first - 1, 2 * I.second - 3 );
+        }
+    }
+  // It remains to compute all the k-cells, 0 <= k < d, intersected by Cvxh( Z )
+  for ( Dimension k = 0; k < dimension; k++ )
+    {
+      if ( k == a ) continue;
+      std::vector< Point > q_computed;
+      Intervals I_computed;
+      for ( const auto& value : L )
+        {
+          Point    p = value.first;
+          Interval I = value.second;
+          Point    r = p; r[ k ] += 2;
+          const auto it = L.find( r );
+          if ( it == L.end() ) continue; // neighbor is empty
+          // Otherwise compute common part.
+          Interval J = it->second;
+          auto     f = std::max( I.first,  J.first  );
+          auto     s = std::min( I.second, J.second );
+          if ( f <= s )
+            {
+              Point    q = p; q[ k ] += 1;
+              q_computed.push_back( q );
+              I_computed.push_back( Interval( f, s ) );
+            }
+        }
+      // Add new columns to map Point -> column
+      for ( auto i = 0; i < q_computed.size(); ++i )
+        {
+          L[ q_computed[ i ] ] = I_computed[ i ];
+        }
+    }
+  return L;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByIntervals
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+buildLatticeSet( const PointRange& X, Dimension a ) const
+{
+  LatticeSetByIntervals L;
+  for ( auto&& p : X ) {
+    Point q = p;
+    q[ a ]  = 0;
+    auto it = L.find( q );
+    insert( p[ a ], it->second );
+  }
+  return L;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByIntervals
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+buildStar( const LatticeSetByIntervals& X, Dimension a ) const
+{
+  // TODO
+  LatticeSetByIntervals C;
+  // First step, place points as pointels and insert their star along
+  // dimension a.
+  for ( const auto& pV : X )
+    {
+      Point      p = pV.first;
+      Intervals& V = pV.second;
+      for ( auto& I : V )
+        {
+          I.first = 2*I.first-1;
+          I.second = 2*I.second+1;
+        }
+      C[ 2*p ] = V;
+    }
+  // Second step, dilate along all directions
+  for ( Dimension k = 0; k < dimension; k++ )
+    {
+      if ( k == a ) continue;
+      std::vector< Point >     q_computed;
+      std::vector< Intervals > V_computed;
+      for ( const auto& value : C )
+        {
+          const Point       p = value.first;
+          connst Intervals& V = value.second;
+          Point    r = p; r[ k ] += 2;
+          const auto it = C.find( r );
+          if ( it == L.end() ) continue; // neighbor is empty
+          // TODO
+          
+          // Otherwise compute common part.
+          Interval J = it->second;
+          auto     f = std::max( I.first,  J.first  );
+          auto     s = std::min( I.second, J.second );
+          if ( f <= s )
+            {
+              Point    q = p; q[ k ] += 1;
+              q_computed.push_back( q );
+              I_computed.push_back( Interval( f, s ) );
+            }
+        }
+      // Add new columns to map Point -> column
+      for ( auto i = 0; i < q_computed.size(); ++i )
+        {
+          L[ q_computed[ i ] ] = I_computed[ i ];
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 DGtal::Dimension
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 longestAxis( ) const
 {
-  ASSERT( ptrP != nullptr );
+  ASSERT( myPolytope != nullptr );
   Dimension b = 0;
   auto b_size = myUpper[ 0 ] - myLower[ 0 ];
   for ( Dimension a = 1; a < dimension; a++ )
@@ -269,5 +417,80 @@ longestAxis( ) const
     }
   return b;
 }
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+insert( Integer x, Intervals& V )
+{
+  for ( std::size_t i = 0; i < V.size(); )
+    {
+      Interval& J = V[ i ];
+      if ( x < J.first )
+        {
+          if ( x == J.first - 1 )
+            J.first -= 1;
+          else
+            V.insert( V.begin() + i, Interval( x, x ) );
+          return;
+        }
+      if ( x == J.second + 1 )
+        {
+          J.second += 1;
+          if ( ( i+1 < V.size() ) && ( V[ i+1 ].first <= J.second + 1 ) )
+            {
+              J.second = V[ i+1 ].second;
+              V.erase( V.begin() + i + 1 );
+            }
+          return;
+        }
+    }
+  V.push_back( Interval( x, x ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytopeCounter<TSpace>::
+erase( Interval I, Intervals& V )
+{
+  for ( std::size_t i = 0; i < V.size(); )
+    {
+      Interval& J = V[ i ];
+      // I=[a,b], J=[a',b'], a <= b, a' <= b'
+      if ( I.second < J.first ) { break; } // b < a' : no further intersection
+      if ( J.second < I.first ) { ++i; continue; } // b' < a : no further intersection
+      // a' <= b and a <= b'
+      //       a ----------  b
+      // a' ...............  a'
+      //       b' ................. b'
+      //
+      // a' ..................... b' => a'..a-1       b+1..b'
+      Interval K1( J.first, I.first - 1 );
+      Interval K2( I.second + 1, J.second );
+      bool K1_exist = K1.second >= K1.first;
+      bool K2_exist = K2.second >= K2.first;
+      if ( K1_exist && K2_exist )
+        {
+          V[ i ] = K2;
+          V.insert( V.begin() + i, K1 );
+          break; // no further intersection possible
+        }
+      else if ( K1_exist )
+        {
+          V[ i ] = K1; i++;
+        }
+      else if ( K2_exist )
+        {
+          V[ i ] = K2; break;
+        }
+      else
+        {
+          V.erase( V.begin() + i );
+        }
+    }
+}
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
