@@ -189,6 +189,7 @@ namespace DGtal
     /// @{
     
     /// @return 'true' iff this object represents the empty set.
+    /// @return Constant time operation.
     bool empty() const
     {
       return myData.empty();
@@ -196,7 +197,7 @@ namespace DGtal
       
     /// @return the number of lattice points represented in this object.
     ///
-    /// @note The complexity is linear in the number of stored intervals.
+    /// @warning The complexity is linear in the number of stored intervals.
     Size size() const
     {
       Size nb = 0;
