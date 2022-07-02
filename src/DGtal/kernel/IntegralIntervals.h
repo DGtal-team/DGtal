@@ -370,13 +370,27 @@ namespace DGtal
     /// @return 'true' iff this integer set includes the integer set \a other.
     bool includes( const Self& other ) const
     {
-      auto it = myData.begin();
+      auto it = myData.cbegin();
       for ( const auto& I : other.myData )
         {
           // Find possible interval
-          while ( it != myData.end() && it->second < I.second ) ++it;
-          if ( it == myData.end() )  return false;
+          while ( it != myData.cend() && it->second < I.second ) ++it;
+          if ( it == myData.cend() )  return false;
           if ( I.first < it->first ) return false;
+        }
+      return true;
+    }
+
+    /// @param other any other integral set represented by intervals
+    /// @return 'true' iff this integer set equals the integer set \a other.
+    bool equals( const Self& other ) const
+    {
+      if ( myData.size() != other.myData.size() ) return false;
+      auto it = myData.cbegin();
+      for ( const auto& I : other.myData )
+        {
+          if ( it->first != I.first || it->second != I.second ) return false;
+          ++it;
         }
       return true;
     }

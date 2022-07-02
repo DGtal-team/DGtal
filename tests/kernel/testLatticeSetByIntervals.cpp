@@ -147,11 +147,15 @@ SCENARIO( "LatticeSetByIntervals< int > set operations tests", "[lattice_set]" )
     REQUIRE( tl < tv );
   }
   THEN( "Inclusions are correct" ) {
+    REQUIRE( ! A.equals( B ) );
+    REQUIRE( A_cup_B.equals( A_cup_B ) );
     REQUIRE( A_cup_B.includes( A_cup_B ) );
     REQUIRE( A_cup_B.includes( A ) );
+    REQUIRE( ! A_cup_B.equals( A ) );
     REQUIRE( ! A.includes( A_cup_B ) );
     REQUIRE( A_cup_B.includes( B ) );
     REQUIRE( ! B.includes( A_cup_B ) );
+    REQUIRE( ! A_cup_B.equals( B ) );
     REQUIRE( A_cup_B.includes( A_cap_B ) );
     REQUIRE( ! A_cap_B.includes( A_cup_B ) );
     REQUIRE( A.includes( A_minus_B ) );

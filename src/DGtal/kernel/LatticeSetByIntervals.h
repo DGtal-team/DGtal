@@ -383,6 +383,21 @@ namespace DGtal
         }
       return true;
     }
+
+    /// @param other any other integral set represented by intervals
+    /// @return 'true' iff this integer set equals the integer set \a other.
+    bool equals( const Self& other ) const
+    {
+      if ( myData.size() != other.myData.size() ) return false;
+      auto it = myData.cbegin();
+      for ( const auto& I : other.myData )
+        {
+          if ( it->first != I.first )            return false;
+          if ( ! it->second.equals( I.second ) ) return false;
+          ++it;
+        }
+      return true;
+    }
     
     /// Consider the set of integers as pointels and build its
     /// star. All integers are multiplied by two. All doubled integers

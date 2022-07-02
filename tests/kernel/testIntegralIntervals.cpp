@@ -159,9 +159,11 @@ SCENARIO( "IntegralIntervals< int > set operations tests", "[intervals]" )
   THEN( "Inclusions are correct" ) {
     REQUIRE( A_cup_B.includes( A_cup_B ) );
     REQUIRE( A_cup_B.includes( A ) );
+    REQUIRE( ! A_cup_B.equals( A ) );
     REQUIRE( ! A.includes( A_cup_B ) );
     REQUIRE( A_cup_B.includes( B ) );
     REQUIRE( ! B.includes( A_cup_B ) );
+    REQUIRE( ! B.equals( A_cup_B ) );
     REQUIRE( A_cup_B.includes( A_cap_B ) );
     REQUIRE( ! A_cap_B.includes( A_cup_B ) );
     REQUIRE( A.includes( A_minus_B ) );
