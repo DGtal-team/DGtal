@@ -47,6 +47,7 @@
 #include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/kernel/LatticeSetByIntervals.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
@@ -92,7 +93,8 @@ namespace DGtal
     typedef std::vector<Point>              PointRange;
     typedef std::unordered_set<Point>       PointSet;
     typedef DGtal::BoundedLatticePolytopeCounter< Space > Counter;
-
+    typedef DGtal::LatticeSetByIntervals< Space > LatticeSet;
+    
     static const Dimension dimension = KSpace::dimension;
 
 
@@ -421,13 +423,23 @@ namespace DGtal
     /// fully convex, (2) the dimension is high (>= 3 or 4).
     bool isFullyConvexFast( const PointRange& Z ) const;
     
-    /// Performs the operations Star(CvxH(X)) for X a digital set.
+    /// Builds the cell complex Star(CvxH(X)) for X a digital set,
+    /// represented a lattice set (stacked row representation).
     ///
     /// @param X any range of lattice points
     ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
     /// @return the range of cells touching the convex hull of X,
-    /// represented as lattice points with Khalimsky coordinates.
-    PointRange StarCvxH( const PointRange& X ) const;
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates).
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make opeerations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarCvxH( const PointRange& X, Dimension axis = dimension ) const;
 
     /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
     ///
@@ -499,6 +511,17 @@ namespace DGtal
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
 
+    bool isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const;
+    
+    /// Tells if a given set of points Y is digitally fully subconvex to
+    /// some lattice set \a Star_X, i.e. the cell cover of some set X
+    /// represented by lattice points.
+    ///
+    /// @param Y any set of points
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
+    bool isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const;
+    
     /// Tells if a given segment from \a a to \a b is digitally
     /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
     /// digital 0-subconvexity is the usual property \f$ Conv( P \cap

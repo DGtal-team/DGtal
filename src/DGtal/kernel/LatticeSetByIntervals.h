@@ -132,7 +132,7 @@ namespace DGtal
       : myAxis( axis )
     {
       for ( const auto& aRow : aSet )
-        myData[ aRow.first ].push_back( aRow.second );
+        myData[ aRow.first ].data().push_back( aRow.second );
     }
       
     /// Clears the data structure.
@@ -375,6 +375,13 @@ namespace DGtal
     /// `this->axis() == other.axis()`
     bool includes( const Self& other ) const
     {
+      if ( other.axis() != axis() )
+        {
+          trace.error() << "[LatticeSetByInterval::subtract] "
+                        << "Both lattice sets should share the same axis: "
+                        << axis() << " != " << other.axis() << std::endl;
+          return false;
+        }
       for ( const auto& pV : other.myData )
         {
           const Point& p = pV.first;
@@ -389,6 +396,13 @@ namespace DGtal
     /// @return 'true' iff this integer set equals the integer set \a other.
     bool equals( const Self& other ) const
     {
+      if ( other.axis() != axis() )
+        {
+          trace.error() << "[LatticeSetByInterval::subtract] "
+                        << "Both lattice sets should share the same axis: "
+                        << axis() << " != " << other.axis() << std::endl;
+          return false;
+        }
       if ( myData.size() != other.myData.size() ) return false;
       auto it = myData.cbegin();
       for ( const auto& I : other.myData )

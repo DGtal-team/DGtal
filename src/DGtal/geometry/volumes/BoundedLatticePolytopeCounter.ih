@@ -262,7 +262,8 @@ getLatticeSet( Dimension a ) const
   ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
-  hi[ a ]  = lo[ a ];
+  hi[ a ]  = 0;
+  lo[ a ]  = 0;
   Domain D( lo, hi );
   LatticeSetByInterval L;
   for ( auto&& p : D )
@@ -281,14 +282,15 @@ getLatticeCells( Dimension a ) const
   ASSERT( myPolytope != nullptr );
   Point lo = myLower;
   Point hi = myUpper;
-  hi[ a ]  = lo[ a ];
+  hi[ a ]  = 0;
+  lo[ a ]  = 0;
   Domain D( lo, hi );
   LatticeSetByInterval L; //< stores the intersected cells
   const Point  One = Point::diagonal( 1 );
   Point q;
   for ( auto&& p : D )
     {
-      q = 2*p - One;
+      q = 2*p - One; q[ a ] = 0;
       const auto I = intersectionIntervalAlongAxis( p, a );
       const auto n = I.second - I.first;
       if ( n != 0 )

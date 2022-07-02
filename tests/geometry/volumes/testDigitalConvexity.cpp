@@ -606,3 +606,41 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
     }
   }
 }
+
+SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexity][2d]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -36, -36 ), Point( 36, 36 ) );
+  unsigned int k = 6;
+  std::vector< Point > X( k );
+  X[ 0 ] = Point( 0,0 );
+  X[ 1 ] = Point( 7,-2 );
+  X[ 2 ] = Point( 3,6 );
+  X[ 3 ] = Point( 5, 5 );
+  X[ 4 ] = Point( 2, 3 );
+  X[ 5 ] = Point( -1, 1 );
+  auto  P = dconv.makePolytope( X );
+  auto CG = dconv.makeCellCover( P, 0, 2 );
+  auto  L = dconv.StarCvxH( X, 0 );
+  // std::cout << "StarX=[ ";
+  // auto  V = L.toPointRange();
+  // for ( auto p : V ) std::cout  << " " << p;
+  // std::cout << std::endl;
+  
+  std::cout << "#CG=" << CG.nbCells() << " #L=" << L.size() << std::endl;
+  for ( int i = 0; i < k; i++ )
+    for ( int j = i+1; j < k; j++ )
+      {
+        std::vector< Point > Z { X[ i ], X[ j ] };
+        const auto Q     = dconv.makePolytope( Z );
+        bool tangent_old = dconv.isFullySubconvex( Q, CG );
+        bool tangent_new = dconv.isFullySubconvex( Z, L );
+        REQUIRE( tangent_old == tangent_new );
+      }
+}
+

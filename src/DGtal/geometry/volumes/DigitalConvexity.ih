@@ -377,32 +377,17 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvexFast( const PointRange& Z  ) const
 { 
-  // std::cout  << "#Z=" << Z.size() << std::endl;
-  // const auto touched_cells = makeCellCover( Z.begin(), Z.end(), 0, dimension );
-  //  std::cout  << "#touched_cells=" << touched_cells.nbCells() << std::endl;
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
-  const auto Z_opt = Counter::buildLatticeSet( Z, 0 );
-  // std::cout  << "#Z_opt=" << Z_opt.size() << std::endl;
-  // int nb = 0;
-  // for ( const auto& v : Z_opt )
-  //   nb += v.second.size();
-  // std::cout  << "#nbZ_opt=" << nb << std::endl;
-  const auto C_opt = Counter::buildStar( Z_opt, 0 );
-  // std::cout  << "#C_opt=" << C_opt.size() << std::endl;
-  Integer nb = 0;
-  for ( const auto& v : C_opt )
-    nb += v.second.size();
-  // std::cout  << "#nbC_opt=" << nb << std::endl;
+  LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
+  const auto nb_cells = C_Z.star().size();
   const auto s = sizeStarCvxH( Z );
-  // std::cout  << "#StarCvxH( Z )=" << s << std::endl;
-  return s == nb; // touched_cells.nbCells();
+  return s == nb_cells; 
 }
   
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename  DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
-StarCvxH( const PointRange& X ) const
+StarCvxH( const PointRange& X, Dimension axis ) const
 {
   PointRange cells;
   typedef BoundedLatticePolytopeCounter<Space> Counter;
@@ -416,21 +401,9 @@ StarCvxH( const PointRange& X ) const
   // Extracts lattice points within polytope
   // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
   Counter C( P );
-  const Dimension a = C.longestAxis();
+  const Dimension a = axis >= dimension ? C.longestAxis() : axis;
   auto cellP = C.getLatticeCells( a );
-  // Builds cells from columns
-  for ( const auto& value : cellP )
-    {
-      Point    p = value.first;
-      Interval I = value.second;
-      for ( auto x = I.first; x <= I.second; x++ )
-        {
-          p[ a ] = x;
-          cells.push_back( p );
-        }
-    }
-  std::sort( cells.begin(), cells.end() );
-  return cells;
+  return LatticeSet( cellP, axis );
 }
 
 //-----------------------------------------------------------------------------
@@ -516,6 +489,32 @@ isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 {
   auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
   return intersected_cells.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const
+{
+  LatticePolytope Q = P + typename LatticePolytope::UnitSegment( 0 );
+  for ( Dimension k = 1; k < dimension; k++ )
+    Q = Q + typename LatticePolytope::UnitSegment( k );
+  typedef BoundedLatticePolytopeCounter<Space> Counter;
+  Counter C( Q );
+  const auto cells = C.getLatticeCells( StarX.axis() );
+  LatticeSet StarP( cells, StarX.axis() );
+  return StarX.includes( StarP );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const
+{
+  const auto SCY = StarCvxH( Y, StarX.axis() );
+  return StarX.includes( SCY );
 }
 
 //-----------------------------------------------------------------------------
