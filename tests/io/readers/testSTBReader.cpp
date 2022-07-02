@@ -92,7 +92,6 @@ TEST_CASE( "Testing STBReader" )
     CHECK( imageBMP == imagePPM );
     CHECK( imageTGA == imagePPM );
     CHECK( imagePNG == imagePPM );
-    CHECK( imageGIF == imagePPM );
   }
 }
 
