@@ -146,4 +146,19 @@ SCENARIO( "LatticeSetByIntervals< int > set operations tests", "[lattice_set]" )
   THEN( "Set operations on lattice sets are faster" ) {
     REQUIRE( tl < tv );
   }
+  THEN( "Inclusions are correct" ) {
+    REQUIRE( A_cup_B.includes( A_cup_B ) );
+    REQUIRE( A_cup_B.includes( A ) );
+    REQUIRE( ! A.includes( A_cup_B ) );
+    REQUIRE( A_cup_B.includes( B ) );
+    REQUIRE( ! B.includes( A_cup_B ) );
+    REQUIRE( A_cup_B.includes( A_cap_B ) );
+    REQUIRE( ! A_cap_B.includes( A_cup_B ) );
+    REQUIRE( A.includes( A_minus_B ) );
+    REQUIRE( ! A_minus_B.includes( A ) );
+    REQUIRE( A_cup_B.includes( A_delta_B ) );
+    REQUIRE( ! A_delta_B.includes( A_cup_B ) );
+    REQUIRE( ! A.includes( A_delta_B ) );
+    REQUIRE( ! B.includes( A_delta_B ) );
+  }
 }

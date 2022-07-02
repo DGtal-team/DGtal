@@ -264,6 +264,9 @@ namespace DGtal
     /// Performs the union of set \a other with this object.
     /// @param other any intervals
     /// @return a reference to this object
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self& add( const Self& other )
     {
       if ( other.axis() != axis() )
@@ -288,6 +291,9 @@ namespace DGtal
     /// Subtract set \a other from this object.
     /// @param other any intervals
     /// @return a reference to this object
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self& subtract( const Self& other )
     {
       if ( other.axis() != axis() )
@@ -310,6 +316,9 @@ namespace DGtal
     /// Performs the set union between this and other.
     /// @param other any other integral set represented by intervals
     /// @return the set union between this and other.
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self set_union( const Self& other ) const
     {
       Self U = *this;
@@ -320,6 +329,9 @@ namespace DGtal
     /// Performs the set difference between this and other.
     /// @param other any other integral set represented by intervals
     /// @return the set difference between this and other.
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self set_difference( const Self& other ) const
     {
       Self U = *this;
@@ -330,6 +342,9 @@ namespace DGtal
     /// Performs the set intersection between this and other.
     /// @param other any other integral set represented by intervals
     /// @return the set difference between this and other.
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self set_intersection( const Self& other ) const
     {
       Self A_plus_B  = set_union( other );
@@ -340,6 +355,9 @@ namespace DGtal
     /// Performs the set symmetric difference between this and other.
     /// @param other any other integral set represented by intervals
     /// @return the set symmetric difference between this and other.
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
     Self set_symmetric_difference( const Self& other ) const
     {
       Self A_minus_B = *this;
@@ -349,6 +367,23 @@ namespace DGtal
       return A_minus_B.add( B_minus_A );
     }
 
+    /// @param other any other lattice set represented by intervals
+    /// @return 'true' iff this lattice set includes the lattice set \a other.
+    ///
+    /// @pre \a other and 'this' should share the same axis:
+    /// `this->axis() == other.axis()`
+    bool includes( const Self& other ) const
+    {
+      for ( const auto& pV : other.myData )
+        {
+          const Point& p = pV.first;
+          const auto  it = myData.find( p );
+          if ( it == myData.cend() )                return false;
+          if ( ! it->second.includes( pV.second ) ) return false;
+        }
+      return true;
+    }
+    
     /// Consider the set of integers as pointels and build its
     /// star. All integers are multiplied by two. All doubled integers
     /// are completed with their immediately inferior and superior
