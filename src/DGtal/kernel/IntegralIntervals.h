@@ -365,6 +365,21 @@ namespace DGtal
         }
       return *this;
     }
+
+    /// @param other any other integral set represented by intervals
+    /// @return 'true' iff this integer set includes the integer set \a other.
+    bool includes( const Self& other ) const
+    {
+      auto it = myData.begin();
+      for ( const auto& I : other.myData )
+        {
+          // Find possible interval
+          while ( it != myData.end() && it->second < I.second ) ++it;
+          if ( it == myData.end() )  return false;
+          if ( I.first < it->first ) return false;
+        }
+      return true;
+    }
     
     // ----------------------- Interface --------------------------------------
 public:

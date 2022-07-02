@@ -138,15 +138,33 @@ SCENARIO( "IntegralIntervals< int > set operations tests", "[intervals]" )
   Intervals A_cap_B = A.set_intersection( B );
   Intervals A_minus_B = A.set_difference( B );
   Intervals A_delta_B = A.set_symmetric_difference( B );
-  THEN( "Interval can be constructed from sets" )
-    {
-      REQUIRE( X.size() ==  A.size() );
-      REQUIRE( Y.size() ==  B.size() );
-    }
+  bool A_cup_B_subset_A_cup_B = A_cup_B.includes( A_cup_B );
+  bool A_subset_A_cup_B = A_cup_B.includes( A );
+  bool B_subset_A_cup_B = A_cup_B.includes( B );
+  bool A_cap_B_subset_A_cup_B = A_cup_B.includes( A_cap_B );
+  bool A_minus_B_subset_A = A.includes( A_minus_B );
+  bool A_delta_B_subset_A_cup_B = A_cup_B.includes( A_delta_B );
+  bool A_delta_B_subset_A = A.includes( A_delta_B ); // false
+  bool A_delta_B_subset_B = B.includes( A_delta_B ); // false
+  THEN( "Interval can be constructed from sets" ) {
+    REQUIRE( X.size() ==  A.size() );
+    REQUIRE( Y.size() ==  B.size() );
+  }
   THEN( "Set operations on intervals are correct" ) {
-      REQUIRE( X_cup_Y.size()   ==  A_cup_B.size() );
-      REQUIRE( X_cap_Y.size()   ==  A_cap_B.size() );
-      REQUIRE( X_minus_Y.size() ==  A_minus_B.size() ); 
-      REQUIRE( X_delta_Y.size() ==  A_delta_B.size() ); 
+    REQUIRE( X_cup_Y.size()   ==  A_cup_B.size() );
+    REQUIRE( X_cap_Y.size()   ==  A_cap_B.size() );
+    REQUIRE( X_minus_Y.size() ==  A_minus_B.size() ); 
+    REQUIRE( X_delta_Y.size() ==  A_delta_B.size() ); 
+  }
+  THEN( "Inclusions are correct" ) {
+    REQUIRE( A_cup_B.includes( A_cup_B ) );
+    REQUIRE( A_cup_B.includes( A ) );
+    REQUIRE( ! A.includes( A_cup_B ) );
+    REQUIRE( A_cup_B.includes( B ) );
+    REQUIRE( A_cup_B.includes( A_cap_B ) );
+    REQUIRE( A.includes( A_minus_B ) );
+    REQUIRE( A_cup_B.includes( A_delta_B ) );
+    REQUIRE( ! A.includes( A_delta_B ) );
+    REQUIRE( ! B.includes( A_delta_B ) );
   }
 }
