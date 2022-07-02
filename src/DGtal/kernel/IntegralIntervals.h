@@ -355,15 +355,15 @@ namespace DGtal
     /// star. All integers are multiplied by two. All doubled integers
     /// are completed with their immediately inferior and superior
     /// value.
-    /// @return a reference to 'this'
-    Self& star()
+    Self star() const
     {
-      for ( auto& I : myData )
+      Self R( *this );
+      for ( auto& I : R.myData )
         {
           I.first  = 2*I.first-1;
           I.second = 2*I.second+1;
         }
-      return *this;
+      return R;
     }
 
     /// @param other any other integral set represented by intervals

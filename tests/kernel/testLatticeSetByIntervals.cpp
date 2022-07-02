@@ -66,8 +66,6 @@ SCENARIO( "LatticeSetByIntervals< int > unit tests", "[lattice_set]" )
     auto vec_L = L.toPointRange();
     std::sort( vec_L.begin(), vec_L.end() );
     std::vector< Point > vec_S( S.begin(), S.end() );
-    std::cout << "mem(L)=" << mem_L << std::endl;
-    std::cout << "mem(S)=" << mem_S << std::endl;
     for ( auto i = 0; i < vec_L.size(); i++ )
       {
         if ( vec_L[ i ] != vec_S[ i ] )
@@ -164,5 +162,37 @@ SCENARIO( "LatticeSetByIntervals< int > set operations tests", "[lattice_set]" )
     REQUIRE( ! A_delta_B.includes( A_cup_B ) );
     REQUIRE( ! A.includes( A_delta_B ) );
     REQUIRE( ! B.includes( A_delta_B ) );
+  }
+}
+
+SCENARIO( "LatticeSetByIntervals< int > topology operations tests", "[lattice_set]" )
+{
+  typedef DGtal::Z3i::Space   Space;
+  typedef Space::Point Point;
+  typedef LatticeSetByIntervals< Space > LatticeSet;
+  WHEN( "Computing the star of n isolated points, the number of cells is 27*n" ) {
+    std::vector< Point > X { {0,0,0}, {10,0,0}, {5,5,0}, {0,0,8} };
+    LatticeSet P( X.cbegin(), X.cend() );
+    auto StarP = P.star();
+    REQUIRE( P.size() == X.size() );
+    REQUIRE( StarP.size() == 27 * X.size() );
+  }
+  WHEN( "Computing the star of n points consecutive along space diagonal, the number of cells is 26*n+1" ) {
+    std::vector< Point > X { {0,0,0}, {1,1,1}, {2,2,2}, {3,3,3} };
+    LatticeSet P( X.cbegin(), X.cend() );
+    auto StarP = P.star();
+    REQUIRE( P.size() == X.size() );
+    REQUIRE( StarP.size() == ( 26 * X.size() + 1 ) );
+  }
+  WHEN( "Computing the star of n points conseccutive along any axis, the number of cells is 18*n+9" ) {
+    std::vector< Point > X { {0,0,0}, {1,0,0}, {2,0,0}, {3,0,0} };
+    for ( Dimension a = 0; a < 3; a++ )
+      {
+        LatticeSet P( X.cbegin(), X.cend(), a );
+        auto StarP = P.star();
+        CAPTURE( StarP.memory_usage() );
+        REQUIRE( P.size() == X.size() );
+        REQUIRE( StarP.size() == ( 18 * X.size() + 9 ) );
+      }
   }
 }
