@@ -233,7 +233,6 @@ exportFile( const std::string & filename,
       trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
       throw dgtalio;
     }
-
   return false;
 }
 

@@ -59,6 +59,7 @@ TEST_CASE( "Testing STBReader" )
     PPMWriter<Image>::exportPPM("testwriter.ppm", image);
     CHECK( image.isValid());
   }
+  
   SECTION("Testing feature io/readers of STBReader (PPM color)")
   {
     std::string filename = testPath + "samples/color64.";
@@ -84,11 +85,14 @@ TEST_CASE( "Testing STBReader" )
     CHECK( imageBMP.isValid());
     Image imagePNG = STBReader<Image>::import( filename+"png" );
     CHECK( imagePNG.isValid());
+    Image imageGIF = STBReader<Image>::import( filename+"gif" );
+    CHECK( imageGIF.isValid());
 
     //For lossless compression formats
     CHECK( imageBMP == imagePPM );
     CHECK( imageTGA == imagePPM );
     CHECK( imagePNG == imagePPM );
+    CHECK( imageGIF == imagePPM );
   }
 }
 

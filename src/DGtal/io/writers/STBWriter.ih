@@ -86,6 +86,8 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filen
   delete(data);
   return error;
 }
+
+
 template <typename TImageContainer, typename TFunctor>
 inline
 bool
