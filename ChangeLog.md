@@ -50,7 +50,7 @@
 
 ## Changes
 - *Image*
-  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >1024^3)
+  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >$1024^3$)
     (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
   - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
     format support. New option to keep set domain or to compute current bounding
