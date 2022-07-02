@@ -376,9 +376,26 @@ template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvexFast( const PointRange& Z  ) const
-{
-  const auto touched_cells = makeCellCover( Z.begin(), Z.end(), 0, dimension );
-  return sizeStarCvxH( Z ) == touched_cells.nbCells();
+{ 
+  // std::cout  << "#Z=" << Z.size() << std::endl;
+  // const auto touched_cells = makeCellCover( Z.begin(), Z.end(), 0, dimension );
+  //  std::cout  << "#touched_cells=" << touched_cells.nbCells() << std::endl;
+  typedef BoundedLatticePolytopeCounter<Space> Counter;
+  const auto Z_opt = Counter::buildLatticeSet( Z, 0 );
+  // std::cout  << "#Z_opt=" << Z_opt.size() << std::endl;
+  // int nb = 0;
+  // for ( const auto& v : Z_opt )
+  //   nb += v.second.size();
+  // std::cout  << "#nbZ_opt=" << nb << std::endl;
+  const auto C_opt = Counter::buildStar( Z_opt, 0 );
+  // std::cout  << "#C_opt=" << C_opt.size() << std::endl;
+  Integer nb = 0;
+  for ( const auto& v : C_opt )
+    nb += v.second.size();
+  // std::cout  << "#nbC_opt=" << nb << std::endl;
+  const auto s = sizeStarCvxH( Z );
+  // std::cout  << "#StarCvxH( Z )=" << s << std::endl;
+  return s == nb; // touched_cells.nbCells();
 }
   
 //-----------------------------------------------------------------------------

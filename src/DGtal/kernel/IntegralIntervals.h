@@ -79,6 +79,16 @@ namespace DGtal
     /// @param other any other object.
     IntegralIntervals( Self&& other ) = default;
 
+    /// Assignment
+    /// @param other any other object.
+    /// @return a reference to this object.
+    Self& operator=( const Self & other ) = default;
+
+    /// Move assignment
+    /// @param other any other object.
+    /// @return a reference to this object.
+    Self& operator=( Self&& other ) = default;
+    
     /// Constructor from range
     /// @tparam InputIterator any iterator on a range of integer values.
     /// @param other any other object.
@@ -118,6 +128,12 @@ namespace DGtal
       return nb;
     }
 
+    /// @return the current allocated space in the object container.
+    Size capacity() const
+    {
+      return myData.capacity();
+    }
+    
     /// @return 'true' if the set of integers is convex, i.e. empty or one interval.
     bool isConvex() const
     {
@@ -221,7 +237,7 @@ namespace DGtal
     /// @param i any integer
     void erase( Integer i )
     {
-      earse( Interval( i, i ) );
+      erase( Interval( i, i ) );
     }
     /// Erases the interval of integers from the sequence
     /// @param f,l  any valid interval (f <= l)
@@ -334,7 +350,21 @@ namespace DGtal
       B_minus_A.subtract( *this );
       return A_minus_B.add( B_minus_A );
     }
-    
+
+    /// Consider the set of integers as pointels and build its
+    /// star. All integers are multiplied by two. All doubled integers
+    /// are completed with their immediately inferior and superior
+    /// value.
+    /// @return a reference to 'this'
+    Self& star()
+    {
+      for ( auto& I : myData )
+        {
+          I.first  = 2*I.first-1;
+          I.second = 2*I.second+1;
+        }
+      return *this;
+    }
     
     // ----------------------- Interface --------------------------------------
 public:

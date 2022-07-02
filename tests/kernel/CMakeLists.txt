@@ -15,6 +15,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testUnorderedSetByBlock
    testIntegerConverter
    testIntegralIntervals
+   testLatticeSetByIntervals
    )
 
 

@@ -43,6 +43,7 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include "DGtal/kernel/IntegralIntervals.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -77,8 +78,8 @@ namespace DGtal
     using Domain           = typename Polytope::Domain;
     using HalfSpace        = typename Polytope::HalfSpace;
     using BigInteger       = typename Polytope::BigInteger;
-    using Interval         = std::pair< Integer,Integer >;
-    using Intervals        = std::vector< Interval >;
+    using Intervals        = IntegralIntervals< Integer >;
+    using Interval         = typename Intervals::Interval;
     using PointRange       = std::vector< Point >;
     static const Dimension dimension = Space::dimension;
 
@@ -197,11 +198,11 @@ namespace DGtal
     /// @return its lattice set representation by intervals.
     static
     LatticeSetByIntervals
-    buildLatticeSet( const PointRange& X, Dimension a ) const;
+    buildLatticeSet( const PointRange& X, Dimension a );
 
     static
     LatticeSetByIntervals
-    buildStar( const LatticeSetByIntervals& X, Dimension a ) const;
+    buildStar( const LatticeSetByIntervals& X, Dimension a );
 
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.
@@ -211,17 +212,6 @@ namespace DGtal
     Point lowerBound() const { return myLower; }
     /// @return the upper point of the tight bounding box of the current polytope.
     Point upperBound() const { return myUpper; }
-
-    // ------------------------- static methods ------------------------------------
-  public:
-    
-    // Erase the interval I from the intervals in V such that the integer
-    // in I are not part of V anymore.
-    //
-    // @param[i] I is a closed interval
-    // @param[inout] V is an ordered sequence of closed intervals
-    static
-    void eraseInterval( Interval I, Intervals& V );
 
     
     // --------------------------- protected datas -----------------------------------
