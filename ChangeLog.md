@@ -48,7 +48,7 @@
     [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
 - *I/O*
-  - Imagemagick dependency and related classes. Image file format (png, jpg, tga, bmp)
+  - Imagemagick dependency and related classes. Image file format (png, jpg, tga, bmp, gif)
     are now included in the DGtal core using `stb_image.h` and `stb_image_write.h`.
    (David Coeurjolly, [#1648](https://github.com/DGtal-team/DGtal/pull/1648))
 
