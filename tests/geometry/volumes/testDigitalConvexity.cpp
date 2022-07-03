@@ -627,20 +627,58 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
   auto  P = dconv.makePolytope( X );
   auto CG = dconv.makeCellCover( P, 0, 2 );
   auto  L = dconv.StarCvxH( X, 0 );
-  // std::cout << "StarX=[ ";
-  // auto  V = L.toPointRange();
-  // for ( auto p : V ) std::cout  << " " << p;
-  // std::cout << std::endl;
-  
-  std::cout << "#CG=" << CG.nbCells() << " #L=" << L.size() << std::endl;
+  REQUIRE( CG.nbCells() == L.size() );  
   for ( int i = 0; i < k; i++ )
     for ( int j = i+1; j < k; j++ )
       {
         std::vector< Point > Z { X[ i ], X[ j ] };
-        const auto Q     = dconv.makePolytope( Z );
-        bool tangent_old = dconv.isFullySubconvex( Q, CG );
-        bool tangent_new = dconv.isFullySubconvex( Z, L );
+        const auto Q        = dconv.makePolytope( Z );
+        bool tangent_old    = dconv.isFullySubconvex( Q, CG );
+        bool tangent_new    = dconv.isFullySubconvex( Z, L );
+        bool tangent_ab_old = dconv.isFullySubconvex( X[ i ], X[ j ], CG );
+        bool tangent_ab_new = dconv.isFullySubconvex( X[ i ], X[ j ], L );
         REQUIRE( tangent_old == tangent_new );
+        REQUIRE( tangent_ab_old == tangent_ab_new );
+        REQUIRE( tangent_new == tangent_ab_new );
       }
+}
+
+SCENARIO( "DigitalConvexity< Z3 > sub-convexity of polyhedra", "[full_subconvexity][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
+  std::vector< Point > X( 4 );
+  X[ 0 ] = Point( 0,0,0 );
+  X[ 1 ] = Point( 0,5,1 );
+  X[ 2 ] = Point( 2,1,6 );
+  X[ 3 ] = Point( 6,1,1 );
+  auto  P = dconv.makePolytope( X );
+  auto CG = dconv.makeCellCover( P, 0, 3 );
+  auto  L = dconv.StarCvxH( X, 0 );
+  std::vector< Point > Y;
+  P.getPoints( Y );
+  REQUIRE( CG.nbCells() == L.size() );
+  unsigned int nb    = 0;
+  unsigned int nb_ok = 0;
+  unsigned int nb_tgt= 0;
+  for ( int i = 0; i < 100; i++ )
+    {
+      Point a( rand() % 6, rand() % 6, rand() % 6 );
+      Point b( rand() % 6, rand() % 6, rand() % 6 );
+      //      Point b( rand() % 20 - 10, rand() % 20 - 10, rand() % 20 - 10 );
+      bool tangent_ab_old = dconv.isFullySubconvex( a, b, CG );
+      bool tangent_ab_new = dconv.isFullySubconvex( a, b, L );
+      nb_tgt += tangent_ab_new ? 1 : 0;
+      nb_ok  += ( tangent_ab_old == tangent_ab_new ) ? 1 : 0;
+      nb     += 1;
+    }
+  REQUIRE( nb == nb_ok );
+  REQUIRE( 0  <  nb_tgt );
+  REQUIRE( nb_tgt < 100 );
 }
 

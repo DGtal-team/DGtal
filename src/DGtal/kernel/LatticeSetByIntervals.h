@@ -455,6 +455,33 @@ namespace DGtal
       return C;
     }
 
+    /// Consider the set of integers as cells represented by their
+    /// Khalimsky coordinates, and build their star.
+    Self starOfCells() const
+    {
+      Self C( *this );
+      // First step, compute star along dimension a.
+      for ( auto& pV : C.myData )
+        {
+          pV.second = pV.second.starOfCells();
+        }
+      // Second step, dilate along remaining directions
+      for ( Dimension k = 0; k < dimension; k++ )
+        {
+          if ( k == myAxis ) continue;
+          for ( const auto& value : C.myData )
+            {
+              Point    q = value.first;
+              if ( q[ k ] & 0x1 ) continue;
+              q[ k ]    -= 1;
+              C.myData[ q ].add( value.second );
+              q[ k ]    += 2;
+              C.myData[ q ].add( value.second );
+            }
+        }
+      return C;
+    }
+    
     /// @}
     
     //------------------- specific services (interval insertion, removal) -------------
