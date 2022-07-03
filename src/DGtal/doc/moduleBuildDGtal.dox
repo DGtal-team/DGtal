@@ -43,7 +43,6 @@ To build DGtal in is full configuration, you may need these dependencies too:
 - \e gmp,
 - \e cairo,
 - \e qglviewer,
-- \e graphicsmagick,
 - \e insighttoolkit (ITK),
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 - \e [CGAL](http://cgal.org) (build with Eigen enabled)
@@ -82,7 +81,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true
+cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:

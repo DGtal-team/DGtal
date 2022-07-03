@@ -6,26 +6,13 @@ set(DGTAL_TESTS_SRC_IO_READERS
        testPointListReader
        testTableReader
        testMeshReader
-       testMPolynomialReader )
+       testMPolynomialReader
+       testSTBReader)
 
 
 foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS})
   DGtal_add_test(${FILE})
 endforeach()
-
-
-if(MAGICK++_FOUND)
-
-  set(DGTAL_TESTS_SRC_IO_READERS_Magick
-    testMagickReader
-    )
-
-  foreach(FILE ${DGTAL_TESTS_SRC_IO_READERS_Magick})
-    DGtal_add_test(${FILE})
-  endforeach()
-
-endif()
-
 
 if(HDF5_FOUND)
 

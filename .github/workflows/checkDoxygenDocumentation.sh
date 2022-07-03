@@ -54,7 +54,7 @@ fi
 
 
 ## We check src code consistency
-cd "$SRC_DIR/src"
+cd "$SRC_DIR/src/DGtal"
 "$SRC_DIR/.github/workflows/check_src_file_tag.sh"
 if [[ $? == 0 ]]
 then
@@ -62,7 +62,7 @@ then
 else
     return_code=1;
 fi
-cd ..
+cd ../..
 
 ## We check examples consistency
 #
