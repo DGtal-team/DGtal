@@ -351,11 +351,11 @@ namespace DGtal
       return A_minus_B.add( B_minus_A );
     }
 
-    /// Consider the set of integers as pointels and build its
-    /// star. All integers are multiplied by two. All doubled integers
-    /// are completed with their immediately inferior and superior
-    /// value.
-    Self star() const
+    /// Consider the set of integers as points, transform them into
+    /// pointels inn Khalimsky coordinates and build their star. All
+    /// integers are multiplied by two. All doubled integers are
+    /// completed with their immediately inferior and superior value.
+    Self starOfPoints() const
     {
       Self R( *this );
       for ( auto& I : R.myData )
@@ -366,6 +366,19 @@ namespace DGtal
       return R;
     }
 
+    /// Consider the set of integers as cells represented by their
+    /// Khalimsky coordinates, and build their star.
+    Self starOfCells() const
+    {
+      Self R( *this );
+      for ( auto& I : R.myData )
+        {
+          if ( ( I.first  & 0x1 ) == 0 ) I.first  -= 1;
+          if ( ( I.second & 0x1 ) == 0 ) I.second += 1;
+        }
+      return R;
+    }
+    
     /// @param other any other integral set represented by intervals
     /// @return 'true' iff this integer set includes the integer set \a other.
     bool includes( const Self& other ) const

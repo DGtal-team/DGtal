@@ -421,13 +421,14 @@ namespace DGtal
     /// @name topology operations
     /// @{
     
-    /// Consider the set of points as pointels and build its
+    /// Consider the set of integers as points, transform them into
+    /// pointels in Khalimsky coordinates and build their
     /// star. Afterwards points represent cells with their Khalimsky
     /// coordinates (i.e. even along an axis means closed, odd along
     /// an axis means open). Concretely, points coordinates are
     /// multiplied by two, and all the incident points are added to
     /// this set.
-    Self star() const
+    Self starOfPoints() const
     {
       Self C;
       // First step, place points as pointels and insert their star along
@@ -435,7 +436,7 @@ namespace DGtal
       for ( auto& pV : myData )
         {
           const Point q = 2 * pV.first;
-          C.myData[ q ] = pV.second.star();
+          C.myData[ q ] = pV.second.starOfPoints();
         }
       // Second step, dilate along remaining directions
       for ( Dimension k = 0; k < dimension; k++ )

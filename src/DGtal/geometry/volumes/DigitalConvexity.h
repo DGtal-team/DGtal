@@ -511,6 +511,13 @@ namespace DGtal
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
 
+    /// Tells if a given polytope \a P is digitally fully subconvex to 
+    /// some lattice set \a Star_X, i.e. the cell cover of some set X
+    /// represented by lattice points.
+    ///
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
     bool isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const;
     
     /// Tells if a given set of points Y is digitally fully subconvex to
@@ -520,6 +527,11 @@ namespace DGtal
     /// @param Y any set of points
     /// @param StarX any lattice set representing an open cubical complex.
     /// @return 'true' iff  Y is digitally fully subconvex to X.
+    ///
+    /// @note This method is slower than the two others, since it
+    /// builds the polytope embracing \a Y. However it is much more
+    /// generic since the two other methods require a Minkowski
+    /// summable polytope, i.e. `P.canBeSummed() == true`.
     bool isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const;
     
     /// Tells if a given segment from \a a to \a b is digitally
@@ -560,6 +572,21 @@ namespace DGtal
     /// polytope and then checking if it subconvex.
     bool isFullySubconvex( const Point& a, const Point& b,
                            const CellGeometry& C ) const;
+
+    /// Tells if a given segment from \a a to \a b is digitally fully
+    /// subconvex (i.e. tangent) to some open complex \a StarX.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param StarX any lattice set representing an open cubical complex.
+    ///
+    /// @return 'true' iff the segment is a digitally fully subconvex
+    /// of C, i.e. the two points are cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isFullySubconvex( const Point& a, const Point& b,
+                           const LatticeSet& StarX ) const;
     
     /// @}
 

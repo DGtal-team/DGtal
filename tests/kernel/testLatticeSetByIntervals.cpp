@@ -173,14 +173,14 @@ SCENARIO( "LatticeSetByIntervals< int > topology operations tests", "[lattice_se
   WHEN( "Computing the star of n isolated points, the number of cells is 27*n" ) {
     std::vector< Point > X { {0,0,0}, {10,0,0}, {5,5,0}, {0,0,8} };
     LatticeSet P( X.cbegin(), X.cend() );
-    auto StarP = P.star();
+    auto StarP = P.starOfPoints();
     REQUIRE( P.size() == X.size() );
     REQUIRE( StarP.size() == 27 * X.size() );
   }
   WHEN( "Computing the star of n points consecutive along space diagonal, the number of cells is 26*n+1" ) {
     std::vector< Point > X { {0,0,0}, {1,1,1}, {2,2,2}, {3,3,3} };
     LatticeSet P( X.cbegin(), X.cend() );
-    auto StarP = P.star();
+    auto StarP = P.starOfPoints();
     REQUIRE( P.size() == X.size() );
     REQUIRE( StarP.size() == ( 26 * X.size() + 1 ) );
   }
@@ -189,7 +189,7 @@ SCENARIO( "LatticeSetByIntervals< int > topology operations tests", "[lattice_se
     for ( Dimension a = 0; a < 3; a++ )
       {
         LatticeSet P( X.cbegin(), X.cend(), a );
-        auto StarP = P.star();
+        auto StarP = P.starOfPoints();
         CAPTURE( StarP.memory_usage() );
         REQUIRE( P.size() == X.size() );
         REQUIRE( StarP.size() == ( 18 * X.size() + 9 ) );
