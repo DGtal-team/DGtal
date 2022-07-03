@@ -39,7 +39,7 @@
 template <typename TKSpace>
 DGtal::TangencyComputer<TKSpace>::
 TangencyComputer( Clone<KSpace> K )
-  : myK( K ), myDConv( myK )
+  : myK( K ), myDConv( myK ), myLatticeCellCover( false )
 {
   setUp();
 }
@@ -49,11 +49,15 @@ template < typename TKSpace >
 template < typename PointIterator >
 void
 DGtal::TangencyComputer<TKSpace>::
-init( PointIterator itB, PointIterator itE )
+init( PointIterator itB, PointIterator itE, bool use_lattice_cell_cover )
 {
   myX = std::vector< Point >( itB, itE );
-  myCellCover =
-    myDConv.makeCellCover( myX.cbegin(), myX.cend(), 1, KSpace::dimension - 1 );    
+  myUseLatticeCellCover = use_lattice_cell_cover;
+  if ( use_lattice_cell_cover )
+    myLatticeCellCover = LatticeCellCover( myX.cbegin(), myX.cend() ).starOfPoints();
+  else
+    myCellCover =
+      myDConv.makeCellCover( myX.cbegin(), myX.cend(), 1, KSpace::dimension - 1 );    
   for ( Size i = 0; i < myX.size(); ++i )
     myPt2Index[ myX[ i ] ] = i;
 }
@@ -64,7 +68,9 @@ bool
 DGtal::TangencyComputer<TKSpace>::
 arePointsCotangent( const Point& a, const Point& b ) const
 {
-  return myDConv.isFullySubconvex( a, b, myCellCover );
+  return myUseLatticeCellCover
+    ? myDConv.isFullySubconvex( a, b, myLatticeCellCover )
+    : myDConv.isFullySubconvex( a, b, myCellCover );
 }
 
 //-----------------------------------------------------------------------------
@@ -75,7 +81,9 @@ arePointsCotangent( const Point& a, const Point& b, const Point& c ) const
 {
   std::vector< Point > Z { a, b, c };
   const auto P = myDConv.makePolytope( Z );
-  return myDConv.isFullySubconvex( P, myCellCover );
+  return myUseLatticeCellCover
+    ? myDConv.isFullySubconvex( P, myLatticeCellCover )
+    : myDConv.isFullySubconvex( P, myCellCover );
 }
 
 //-----------------------------------------------------------------------------
