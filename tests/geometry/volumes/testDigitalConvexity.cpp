@@ -568,7 +568,7 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
   Domain     domain( Point( -35, -35, -35, -35 ), Point( 35, 35, 35, 35 ) );
   DConvexity dconv( Point( -36, -36, -36, -36 ), Point( 36, 36, 36, 36 ) );
 
-  const unsigned int nb = 20;
+  const unsigned int nb = 10;
   unsigned int nbfg     = 0;
   unsigned int nbffast  = 0;
   typedef std::vector< Point > PointRange;
