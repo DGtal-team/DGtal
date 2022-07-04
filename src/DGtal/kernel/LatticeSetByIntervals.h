@@ -468,9 +468,7 @@ namespace DGtal
       Self C( *this );
       // First step, compute star along dimension a.
       for ( auto& pV : C.myData )
-        {
-          pV.second = pV.second.starOfCells();
-        }
+        pV.second = pV.second.starOfCells();
       // Second step, dilate along remaining directions
       for ( Dimension k = 0; k < dimension; k++ )
         {
@@ -481,12 +479,8 @@ namespace DGtal
               if ( q[ k ] & 0x1 ) continue;
               q[ k ]    -= 1;
               C.myData[ q ].add( value.second );
-              if ( q == Point( 0, 7 ) )
-                std::cout << q << " " << C.myData[ q ] <<  std::endl;
               q[ k ]    += 2;
               C.myData[ q ].add( value.second );
-              if ( q == Point( 0, 7 ) )
-                std::cout << q << " " << C.myData[ q ] <<  std::endl;
             }
         }
       return C;
@@ -531,8 +525,6 @@ namespace DGtal
         {
           auto & V = value.second;
           Intervals sub_to_V;
-          if ( value.first == Point( 0, 5 ) )
-            std::cout << "(0,5):  before " << V;
           for ( auto I : V.data() )
             {
               if ( ( I.first & 0x1 )  != 0 )
@@ -546,8 +538,6 @@ namespace DGtal
                 sub_to_V.data().push_back( Interval{ x+1, x+1 } );
             }
           V.subtract( sub_to_V );
-          if ( value.first == Point( 0, 5 ) )
-            std::cout << "(0,7):  after " << V;
         }
       // Erase empty stacks
       S.purge();
