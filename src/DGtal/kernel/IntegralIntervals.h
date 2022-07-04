@@ -67,6 +67,7 @@ namespace DGtal
     using Container = std::vector< Interval >;
     using Size      = std::size_t;
     using CIterator = typename Container::iterator;
+    using IntegerRange = std::vector< Integer >;
     
     /// Default Constructor 
     IntegralIntervals() = default;
@@ -398,6 +399,23 @@ namespace DGtal
             }
         }
       return R;
+    }
+
+    /// @return the range of points that contains the vertices of all
+    /// the cells stored in this set. It is thus a range of integers.
+    IntegerRange extremaOfCells() const
+    {
+      IntegerRange C;
+      for ( auto I : myData )
+        {
+          if ( ( I.first  & 0x1 ) != 0 ) I.first  -= 1;
+          if ( ( I.second & 0x1 ) != 0 ) I.second += 1;
+          for ( auto x = I.first; x <= I.second; x += 2 )
+            C.push_back( x >> 1 ); // here x / 2 == x >> 1 since x is even
+        }
+      auto last = std::unique( C.begin(), C.end() );
+      C.erase( last, C.end() );
+      return C;
     }
     
     /// @param other any other integral set represented by intervals

@@ -555,17 +555,7 @@ namespace DGtal
         {
           const Point&   p = pV.first;
           const auto&    V = pV.second;
-          Coordinates    C;
-          for ( auto I : V.data() )
-            {
-              if ( ( I.first  & 0x1 ) != 0 ) I.first  -= 1;
-              if ( ( I.second & 0x1 ) != 0 ) I.second += 1;
-              for ( auto x = I.first; x <= I.second; x += 2 )
-                C.push_back( x / 2 );
-            }
-          auto last = std::unique( C.begin(), C.end() );
-          C.erase( last, C.end() );
-          E[ p ] = C;
+          E[ p ] = V.extremaOfCells();
         }
       std::map< Point, Coordinates > next_E;
       for ( Dimension k = 0; k != dimension; k++ )
