@@ -428,9 +428,12 @@ namespace DGtal
     /// an axis means open). Concretely, points coordinates are
     /// multiplied by two, and all the incident points are added to
     /// this set.
+    ///
+    /// @return the star of this set of points transformed to
+    /// pointels, i.e. the smallest open cell complex containing it.
     Self starOfPoints() const
     {
-      Self C;
+      Self C( myAxis );
       // First step, place points as pointels and insert their star along
       // dimension a.
       for ( auto& pV : myData )
@@ -457,6 +460,9 @@ namespace DGtal
 
     /// Consider the set of integers as cells represented by their
     /// Khalimsky coordinates, and build their star.
+    ///
+    /// @return the star of this set of cells, i.e. the smallest open
+    /// cell complex containing it.
     Self starOfCells() const
     {
       Self C( *this );
@@ -481,7 +487,68 @@ namespace DGtal
         }
       return C;
     }
-    
+
+    /// Consider the set of integers as cells represented by their
+    /// Khalimsky coordinates, and build their skeleton.
+    ///
+    /// @return the skeleton of this set of cells, i.e. the smallest
+    /// set of cells such that its star covers it.
+    Self skeletonOfCells() const
+    {
+      Self S( *this );
+      // Now extracting implicitly its Skel
+      for ( const auto& pV : myData )
+        {
+          const Point&   p = pV.first;
+          const auto&    V = pV.second;
+          for ( Dimension k = 0; k < dimension; k++ )
+            {
+              if ( k == myAxis ) continue;
+              if ( ( p[ k ] & 0x1 ) != 0 ) continue; // if open along axis continue
+              // if closed, check upper incident cells along direction k
+              Point q = p;  q[ k ] -= 1;
+              Point r = p;  r[ k ] += 1;
+              auto itq = S.myData.find( q );
+              if ( itq != S.myData.end() )
+                {
+                  auto& W = itq->second;
+                  W.subtract( V );
+                }
+              auto itr = S.myData.find( r );
+              if ( itr != S.myData.end() )
+                {
+                  auto& W = itr->second;
+                  W.subtract( V );
+                }
+            }
+        }
+      // Extract skel along main axis
+      for ( auto& value : S.myData )
+        {
+          auto & V = value.second;
+          Intervals sub_to_V;
+          if ( value.first == Point( 0, 5 ) )
+            std::cout << "(0,5):  before " << V;
+          for ( auto I : V.data() )
+            {
+              if ( ( I.first & 0x1 )  != 0 )
+                {
+                  if ( I.first != I.second )
+                    sub_to_V.data().push_back( Interval{ I.first, I.first } );
+                  I.first  += 1;
+                }
+              if ( ( I.second & 0x1 ) != 0 ) I.second -= 1;
+              for ( auto x = I.first; x <= I.second; x += 2 )
+                sub_to_V.data().push_back( Interval{ x+1, x+1 } );
+            }
+          V.subtract( sub_to_V );
+          if ( value.first == Point( 0, 5 ) )
+            std::cout << "(0,5):  after " << V;
+        }
+      // Erase empty stacks
+      S.purge();
+      return S;
+    }
     /// @}
     
     //------------------- specific services (interval insertion, removal) -------------
