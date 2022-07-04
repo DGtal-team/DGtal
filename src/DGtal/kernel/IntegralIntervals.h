@@ -116,6 +116,8 @@ namespace DGtal
 
     /// @return a reference to the current data
     Container& data() { return myData; }
+    /// @return a const reference to the current data
+    const Container& data() const { return myData; }
 
     /// @return 'true' if the set contains no element
     bool empty() const { return myData.empty(); }

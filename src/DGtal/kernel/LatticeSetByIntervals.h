@@ -556,7 +556,7 @@ namespace DGtal
           const Point&   p = pV.first;
           const auto&    V = pV.second;
           Coordinates    C;
-          for ( auto I : V )
+          for ( auto I : V.data() )
             {
               if ( ( I.first  & 0x1 ) != 0 ) I.first  -= 1;
               if ( ( I.second & 0x1 ) != 0 ) I.second += 1;

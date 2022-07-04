@@ -315,17 +315,22 @@ SCENARIO( "LatticeSetByIntervals< int > 2d topology operations tests", "[lattice
         REQUIRE( StarSkelC.includes( C ) );
         REQUIRE( StarSkelStarC.equals( StarC ) );
       }
-    WHEN( "Computing the extrema of a random set of cells C, " ) {
+    WHEN( "Computing the extrema of a set of cells C, extremas are correct" ) {
       std::vector< Point > X;
-      X.push_back( Point(4,4) ); 
+      X.push_back( Point(10,-2) ); 
+      X.push_back( Point(5,5) ); 
+      X.push_back( Point(4,5) ); 
+      X.push_back( Point(3,5) ); 
       X.push_back( Point(2,1) ); 
       X.push_back( Point(2,3) ); 
       X.push_back( Point(1,1) );
+      X.push_back( Point(-2,3) );
+      X.push_back( Point(-3,2) );
       LatticeSet C( X.cbegin(), X.cend(), 0 );
       auto ExtrC = C.extremaOfCells();
       CAPTURE( C.toPointRange() );
       CAPTURE( ExtrC );
-      REQUIRE( ExtrC.size() > C.size() );
+      REQUIRE( ExtrC.size() ==  14 );
     }
   }
 }
