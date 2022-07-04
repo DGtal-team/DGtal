@@ -165,101 +165,101 @@ using namespace DGtal;
 //   }
 // }
 
-// SCENARIO( "LatticeSetByIntervals< int > 3d topology operations tests", "[lattice_set][3d]" )
-// {
-//   typedef DGtal::Z3i::Space   Space;
-//   typedef Space::Point Point;
-//   typedef LatticeSetByIntervals< Space > LatticeSet;
-//   WHEN( "Computing the star of n isolated points, the number of cells is 27*n, and taking its skel brings back the n points" ) {
-//     std::vector< Point > X { {0,0,0}, {10,0,0}, {5,5,0}, {0,0,8} };
-//     LatticeSet P( X.cbegin(), X.cend() );
-//     auto StarP = P.starOfPoints();
-//     auto SkelStarP = StarP.skeletonOfCells();
-//     REQUIRE( P.size() == X.size() );
-//     REQUIRE( StarP.size() == 27 * X.size() );
-//     REQUIRE( SkelStarP.size() == X.size() );
-//   }
-//   WHEN( "Computing the star of n points consecutive along space diagonal, the number of cells is 26*n+1, and taking its skel brings back the n points" ) {
-//     std::vector< Point > X { {0,0,0}, {1,1,1}, {2,2,2}, {3,3,3} };
-//     LatticeSet P( X.cbegin(), X.cend() );
-//     auto StarP = P.starOfPoints();
-//     auto SkelStarP = StarP.skeletonOfCells();
-//     REQUIRE( P.size() == X.size() );
-//     REQUIRE( StarP.size() == ( 26 * X.size() + 1 ) );
-//     REQUIRE( SkelStarP.size() == X.size() );
-//   }
-//   WHEN( "Computing the star of n points consecutive along any axis, the number of cells is 18*n+9, and taking its skel brings back the n points" ) {
-//     std::vector< Point > X { {0,0,0}, {1,0,0}, {2,0,0}, {3,0,0} };
-//     for ( Dimension a = 0; a < 3; a++ )
-//       {
-//         LatticeSet P( X.cbegin(), X.cend(), a );
-//         auto StarP = P.starOfPoints();
-//         auto SkelStarP = StarP.skeletonOfCells();
-//         CAPTURE( StarP.toPointRange() );
-//         CAPTURE( SkelStarP.toPointRange() );
-//         CAPTURE( a );
-//         REQUIRE( P.size() == X.size() );
-//         REQUIRE( StarP.size() == ( 18 * X.size() + 9 ) );
-//         REQUIRE( SkelStarP.size() == X.size() );
-//       }
-//   }
-//   WHEN( "Computing the skeleton of the star of a random set of points X, Skel(Star(X)) = X" ) {
-//     std::vector< Point > X;
-//     for ( int i = 0; i < 1000; i++ )
-//       X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-//     for ( Dimension a = 0; a < 3; a++ )
-//       {
-//         LatticeSet P( X.cbegin(), X.cend(), a );
-//         auto StarP = P.starOfPoints();
-//         auto SkelStarP = StarP.skeletonOfCells();
-//         REQUIRE( SkelStarP.size() == P.size() );
-//       }
-//   }
-//   WHEN( "Computing the skeleton of an open random set of cells O, O = Star(O), Skel(O) subset O and O = Star(Skel(O))" ) {
-//     std::vector< Point > X;
-//     for ( int i = 0; i < 50; i++ )
-//       X.push_back( Point( rand() % 5, rand() % 5, rand() % 5 ) );
-//     for ( Dimension a = 0; a < 3; a++ )
-//       {
-//         std::cout << "-------------- " << a << " -----------------" << std::endl;
-//         LatticeSet C( X.cbegin(), X.cend(), a );
-//         auto O     = C.starOfCells();
-//         auto StarO = O.starOfCells();
-//         auto SkelO = O.skeletonOfCells();
-//         auto StarSkelO = SkelO.starOfCells();
-//         CAPTURE( O.size() );
-//         CAPTURE( SkelO.size() );
-//         CAPTURE( StarSkelO.size() );
-//         CAPTURE( StarO.size() );
-//         REQUIRE( O.includes( SkelO ) );
-//         REQUIRE( StarSkelO.equals( O ) );
-//         REQUIRE( StarO.equals( O ) );
-//       }
-//   }
-//   WHEN( "Computing the skeleton of a random set of cells C, C subset Star(C), Skel(C) subset C, C subset Star(Skel(C)), Star(C) = Star(Skel(Star(C)))" ) {
-//     std::vector< Point > X;
-//     for ( int i = 0; i < 50; i++ )
-//       X.push_back( Point( rand() % 5, rand() % 5, rand() % 5 ) );
-//     for ( Dimension a = 0; a < 3; a++ )
-//       {
-//         std::cout << "-------------- " << a << " -----------------" << std::endl;
-//         LatticeSet C( X.cbegin(), X.cend(), a );
-//         auto StarC = C.starOfCells();
-//         auto SkelC = C.skeletonOfCells();
-//         auto StarSkelC = SkelC.starOfCells();
-//         auto StarSkelStarC = StarC.skeletonOfCells().starOfCells();
-//         CAPTURE( C.size() );
-//         CAPTURE( SkelC.size() );
-//         CAPTURE( StarSkelC.size() );
-//         CAPTURE( StarC.size() );
-//         CAPTURE( StarSkelStarC.size() );
-//         REQUIRE( StarC.includes( C ) );
-//         REQUIRE( C.includes( SkelC) );
-//         REQUIRE( StarSkelC.includes( C ) );
-//         REQUIRE( StarSkelStarC.equals( StarC ) );
-//       }
-//   }
-// }
+SCENARIO( "LatticeSetByIntervals< int > 3d topology operations tests", "[lattice_set][3d]" )
+{
+  typedef DGtal::Z3i::Space   Space;
+  typedef Space::Point Point;
+  typedef LatticeSetByIntervals< Space > LatticeSet;
+  WHEN( "Computing the star of n isolated points, the number of cells is 27*n, and taking its skel brings back the n points" ) {
+    std::vector< Point > X { {0,0,0}, {10,0,0}, {5,5,0}, {0,0,8} };
+    LatticeSet P( X.cbegin(), X.cend() );
+    auto StarP = P.starOfPoints();
+    auto SkelStarP = StarP.skeletonOfCells();
+    REQUIRE( P.size() == X.size() );
+    REQUIRE( StarP.size() == 27 * X.size() );
+    REQUIRE( SkelStarP.size() == X.size() );
+  }
+  WHEN( "Computing the star of n points consecutive along space diagonal, the number of cells is 26*n+1, and taking its skel brings back the n points" ) {
+    std::vector< Point > X { {0,0,0}, {1,1,1}, {2,2,2}, {3,3,3} };
+    LatticeSet P( X.cbegin(), X.cend() );
+    auto StarP = P.starOfPoints();
+    auto SkelStarP = StarP.skeletonOfCells();
+    REQUIRE( P.size() == X.size() );
+    REQUIRE( StarP.size() == ( 26 * X.size() + 1 ) );
+    REQUIRE( SkelStarP.size() == X.size() );
+  }
+  WHEN( "Computing the star of n points consecutive along any axis, the number of cells is 18*n+9, and taking its skel brings back the n points" ) {
+    std::vector< Point > X { {0,0,0}, {1,0,0}, {2,0,0}, {3,0,0} };
+    for ( Dimension a = 0; a < 3; a++ )
+      {
+        LatticeSet P( X.cbegin(), X.cend(), a );
+        auto StarP = P.starOfPoints();
+        auto SkelStarP = StarP.skeletonOfCells();
+        CAPTURE( StarP.toPointRange() );
+        CAPTURE( SkelStarP.toPointRange() );
+        CAPTURE( a );
+        REQUIRE( P.size() == X.size() );
+        REQUIRE( StarP.size() == ( 18 * X.size() + 9 ) );
+        REQUIRE( SkelStarP.size() == X.size() );
+      }
+  }
+  WHEN( "Computing the skeleton of the star of a random set of points X, Skel(Star(X)) = X" ) {
+    std::vector< Point > X;
+    for ( int i = 0; i < 1000; i++ )
+      X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+    for ( Dimension a = 0; a < 3; a++ )
+      {
+        LatticeSet P( X.cbegin(), X.cend(), a );
+        auto StarP = P.starOfPoints();
+        auto SkelStarP = StarP.skeletonOfCells();
+        REQUIRE( SkelStarP.size() == P.size() );
+      }
+  }
+  WHEN( "Computing the skeleton of an open random set of cells O, O = Star(O), Skel(O) subset O and O = Star(Skel(O))" ) {
+    std::vector< Point > X;
+    for ( int i = 0; i < 50; i++ )
+      X.push_back( Point( rand() % 5, rand() % 5, rand() % 5 ) );
+    for ( Dimension a = 0; a < 3; a++ )
+      {
+        std::cout << "-------------- " << a << " -----------------" << std::endl;
+        LatticeSet C( X.cbegin(), X.cend(), a );
+        auto O     = C.starOfCells();
+        auto StarO = O.starOfCells();
+        auto SkelO = O.skeletonOfCells();
+        auto StarSkelO = SkelO.starOfCells();
+        CAPTURE( O.size() );
+        CAPTURE( SkelO.size() );
+        CAPTURE( StarSkelO.size() );
+        CAPTURE( StarO.size() );
+        REQUIRE( O.includes( SkelO ) );
+        REQUIRE( StarSkelO.equals( O ) );
+        REQUIRE( StarO.equals( O ) );
+      }
+  }
+  WHEN( "Computing the skeleton of a random set of cells C, C subset Star(C), Skel(C) subset C, C subset Star(Skel(C)), Star(C) = Star(Skel(Star(C)))" ) {
+    std::vector< Point > X;
+    for ( int i = 0; i < 50; i++ )
+      X.push_back( Point( rand() % 5, rand() % 5, rand() % 5 ) );
+    for ( Dimension a = 0; a < 3; a++ )
+      {
+        std::cout << "-------------- " << a << " -----------------" << std::endl;
+        LatticeSet C( X.cbegin(), X.cend(), a );
+        auto StarC = C.starOfCells();
+        auto SkelC = C.skeletonOfCells();
+        auto StarSkelC = SkelC.starOfCells();
+        auto StarSkelStarC = StarC.skeletonOfCells().starOfCells();
+        CAPTURE( C.size() );
+        CAPTURE( SkelC.size() );
+        CAPTURE( StarSkelC.size() );
+        CAPTURE( StarC.size() );
+        CAPTURE( StarSkelStarC.size() );
+        REQUIRE( StarC.includes( C ) );
+        REQUIRE( C.includes( SkelC) );
+        REQUIRE( StarSkelC.includes( C ) );
+        REQUIRE( StarSkelStarC.equals( StarC ) );
+      }
+  }
+}
 
 SCENARIO( "LatticeSetByIntervals< int > 2d topology operations tests", "[lattice_set][2d]" )
 {
@@ -278,10 +278,17 @@ SCENARIO( "LatticeSetByIntervals< int > 2d topology operations tests", "[lattice
         auto StarO = O.starOfCells();
         auto SkelO = O.skeletonOfCells();
         auto StarSkelO = SkelO.starOfCells();
+        auto debug = StarO.set_symmetric_difference( O );
+        CAPTURE( O.axis() );
         CAPTURE( O.size() );
+        CAPTURE( StarO.size() );
         CAPTURE( SkelO.size() );
         CAPTURE( StarSkelO.size() );
-        CAPTURE( StarO.size() );
+        CAPTURE( O.toPointRange() );
+        CAPTURE( StarO.toPointRange() );
+        CAPTURE( SkelO.toPointRange() );
+        CAPTURE( StarSkelO.toPointRange() );
+        CAPTURE( debug.toPointRange() );
         REQUIRE( O.includes( SkelO ) );
         REQUIRE( StarSkelO.equals( O ) );
         REQUIRE( StarO.equals( O ) );
