@@ -355,6 +355,8 @@ namespace DGtal
     /// pointels inn Khalimsky coordinates and build their star. All
     /// integers are multiplied by two. All doubled integers are
     /// completed with their immediately inferior and superior value.
+    ///
+    /// @return the star of these points.
     Self starOfPoints() const
     {
       Self R( *this );
@@ -368,6 +370,8 @@ namespace DGtal
 
     /// Consider the set of integers as cells represented by their
     /// Khalimsky coordinates, and build their star.
+    ///
+    /// @return the star of these cells.
     Self starOfCells() const
     {
       Self R( *this );
@@ -376,6 +380,9 @@ namespace DGtal
           auto& I = R.myData[ i ];
           if ( ( I.first  & 0x1 ) == 0 ) I.first  -= 1;
           if ( ( I.second & 0x1 ) == 0 ) I.second += 1;
+          // We have to be careful since extending this interval may
+          // have reached the next interval.
+          // We have to merge them in this case.
           i += 1;
           if ( i < R.myData.size() )
             {
@@ -388,11 +395,6 @@ namespace DGtal
                 }
             }
         }
-      // for ( auto& I : R.myData )
-      //   {
-      //     if ( ( I.first  & 0x1 ) == 0 ) I.first  -= 1;
-      //     if ( ( I.second & 0x1 ) == 0 ) I.second += 1;
-      //   }
       return R;
     }
     
