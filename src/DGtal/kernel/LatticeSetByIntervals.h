@@ -543,6 +543,85 @@ namespace DGtal
       S.purge();
       return S;
     }
+
+    /// @return the range of points that contains the vertices of all
+    /// the cells stored in this set.
+    PointRange extremaOfCells() const
+    {
+      typedef std::vector< Integer > Coordinates;
+      std::map< Point, Coordinates > E;
+      // Now extracting vertices along axis direction.
+      for ( const auto& pV : myData )
+        {
+          const Point&   p = pV.first;
+          const auto&    V = pV.second;
+          Coordinates    C;
+          for ( auto I : V )
+            {
+              if ( ( I.first  & 0x1 ) != 0 ) I.first  -= 1;
+              if ( ( I.second & 0x1 ) != 0 ) I.second += 1;
+              for ( auto x = I.first; x <= I.second; x += 2 )
+                C.push_back( x / 2 );
+            }
+          auto last = std::unique( C.begin(), C.end() );
+          C.erase( last, C.end() );
+          E[ p ] = C;
+        }
+      std::map< Point, Coordinates > next_E;
+      for ( Dimension k = 0; k != dimension; k++ )
+        {
+          if ( k == myAxis ) continue;
+          for ( const auto& pC : E )
+            {
+              const auto& p = pC.first;
+              Point       q = p;
+              q[ k ]        = q[ k ] >> 1;
+              bool odd      = ( p[ k ] & 0x1 ) != 0;
+              { // odd/even always copy 
+                auto it = next_E.find( q );
+                if ( it == next_E.end() ) next_E[ q ] = pC.second;
+                else
+                  {
+                    Coordinates F;
+                    std::set_union( pC.second.cbegin(),  pC.second.cend(),
+                                    it->second.cbegin(), it->second.cend(),
+                                    std::back_inserter( F ) );
+                    it->second = F;
+                  }
+              }
+              if ( odd )
+                { // odd: must copy forward also
+                  q[ k ] += 1;
+                  auto it = next_E.find( q );
+                  if ( it == next_E.end() ) next_E[ q ] = pC.second;
+                  else
+                    {
+                      Coordinates F;
+                      std::set_union( pC.second.cbegin(),  pC.second.cend(),
+                                      it->second.cbegin(), it->second.cend(),
+                                      std::back_inserter( F ) );
+                      it->second = F;
+                    }
+                }
+            } // for ( const auto& pC : E )
+          E.swap( next_E );
+          next_E.clear();
+        }
+      // Build point range.
+      PointRange R;
+      for ( const auto& pC : E )
+        {
+          Point p = pC.first;
+          for ( auto&& x : pC.second )
+            {
+              p[ myAxis ] = x;
+              R.push_back( p );
+            }
+        }
+      std::sort( R.begin(), R.end() );
+      return R;
+    }
+    
     /// @}
     
     //------------------- specific services (interval insertion, removal) -------------
