@@ -440,6 +440,243 @@ sizeStarCvxH( const PointRange& X ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+Extr( const PointRange& C ) const
+{
+  // JOL: using std::set< Point > or std::unordered_set< Point > is slightly slower.
+  // We prefer to use vector for easier vectorization.
+  std::vector<Point> E;
+  E.reserve( 2*C.size() );
+  for ( auto&& kp : C )
+    {
+      auto c = myK.uCell( kp );
+      if ( myK.uDim( c ) == 0 )
+        E.push_back( myK.uCoords( c ) );
+      else
+        {
+          auto faces = myK.uFaces( c );
+          for ( auto&& f : faces )
+            if ( myK.uDim( f ) == 0 )
+              E.push_back( myK.uCoords( f ) );
+        }
+    }
+  std::sort( E.begin(), E.end() );
+  auto last = std::unique( E.begin(), E.end() );
+  E.erase( last, E.end() );
+  return E;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+FC_direct( const PointRange& Z ) const
+{
+  typedef std::size_t    Size;
+  typedef typename LatticePolytope::Domain Domain;
+  typedef typename Counter::Interval       Interval;
+  PointRange cells;
+  // Computes Minkowski sum of Z with hypercube
+  PointRange X( Z );
+  for ( Dimension k = 0; k < dimension; k++ )
+    X = U( k, X );
+  // Builds polytope
+  const auto P = makePolytope( X );
+  // Extracts lattice points within polytope
+  // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
+  Counter C( P );
+  const Dimension a = C.longestAxis();
+  Point lo = C.lowerBound();
+  Point hi = C.upperBound();
+  hi[ a ]  = lo[ a ];
+  const Domain projD( lo, hi ); //< the projected domain of the polytope.
+  const Point  One = Point::diagonal( 1 );
+  const Size  size = projD.size();
+  std::unordered_map< Point, Interval > cellP;
+  Point q;
+  for ( auto&& p : projD )
+    {
+      q = 2*p - One;
+      const auto I = C.intersectionIntervalAlongAxis( p, a );
+      const auto n = I.second - I.first;
+      if ( n != 0 )
+        {
+          // Now the second bound is included
+          cellP[ q ] = Interval( 2 * I.first - 1, 2 * I.second - 3 );
+        }
+    }
+  // It remains to compute all the k-cells, 0 <= k < d, intersected by Cvxh( Z )
+  for ( Dimension k = 0; k < dimension; k++ )
+    {
+      if ( k == a ) continue;
+      std::vector< Point >    q_computed;
+      std::vector< Interval > I_computed;
+      for ( const auto& value : cellP )
+        {
+          Point    p = value.first;
+          Interval I = value.second;
+          Point    r = p; r[ k ] += 2;
+          const auto it = cellP.find( r );
+          if ( it == cellP.end() ) continue; // neighbor is empty
+          // Otherwise compute common part.
+          Interval J = it->second;
+          auto     f = std::max( I.first,  J.first  );
+          auto     s = std::min( I.second, J.second );
+          if ( f <= s )
+            {
+              Point    q = p; q[ k ] += 1;
+              q_computed.push_back( q );
+              I_computed.push_back( Interval( f, s ) );
+            }
+        }
+      // Add new columns to map Point -> column
+      for ( auto i = 0; i < q_computed.size(); ++i )
+        {
+          cellP[ q_computed[ i ] ] = I_computed[ i ];
+        }
+    }
+  // The built complex is open.
+  // Check it and fill skelP
+  std::unordered_map< Point, std::vector< Interval > > skelP;
+  for ( const auto& value : cellP )
+    {
+      Point    p = value.first;
+      Interval I = value.second;
+      auto     n = I.second - I.first + 1;
+      if ( n % 2 == 0 )
+        trace.error() << "Weird thickness step 1="
+                      << n << std::endl;
+      std::vector< Interval > V( 1, I );
+      auto result = skelP.insert( std::make_pair( p, V ) );
+    }
+
+  // std::cout << "Extract skel" << std::endl;
+  // Now extracting implicitly its Skel
+  for ( const auto& value : cellP )
+    {
+      const Point&   p = value.first;
+      const auto&    I = value.second;
+      for ( Dimension k = 0; k < dimension; k++ )
+        {
+          if ( k == a ) continue;
+          if ( ( p[ k ] & 0x1 ) != 0 ) continue; // if open along axis continue
+          // if closed, check upper incident cells along direction k
+          Point q = p;  q[ k ] -= 1;
+          Point r = p;  r[ k ] += 1;
+          auto itq = skelP.find( q );
+          if ( itq != skelP.end() )
+            {
+              auto& W = itq->second;
+              eraseInterval( I, W );
+              // if ( W.empty() ) skelP.erase( itq );
+            }
+          auto itr = skelP.find( r );
+          if ( itr != skelP.end() )
+            {
+              auto& W = itr->second;
+              eraseInterval( I, W );
+              // if ( W.empty() ) skelP.erase( itr );
+            }
+        }
+    }
+  // Extract skel along main axis
+  for ( const auto& value : cellP )
+    {
+      const Point& p = value.first;
+      auto         I = value.second;
+      const auto itp = skelP.find( p );
+      if ( itp == skelP.end() ) continue;
+      if ( ( I.first & 0x1 )  != 0 ) I.first  += 1;
+      if ( ( I.second & 0x1 ) != 0 ) I.second -= 1;
+      auto& W = itp->second;
+      for ( auto x = I.first; x <= I.second; x += 2 )
+        {
+          eraseInterval( Interval{ x-1,x-1} , W );
+          eraseInterval( Interval{ x+1,x+1} , W );
+        }
+    }  
+  // Erase empty stacks
+  for ( auto it = skelP.begin(), itE = skelP.end(); it != itE; )
+    {
+      const auto&    V = it->second;
+      if ( V.empty() )
+        {
+          auto it_erase = it;
+          ++it;
+          skelP.erase( it_erase );
+        }
+      else ++it;
+    }
+  // Skel is constructed, now compute its Extr.
+  PointRange  O;
+  for ( const auto& value : skelP )
+    {
+      Point    p = value.first;
+      auto     W = value.second;
+      for ( auto&& I : W )
+        {
+          p[ a ] = I.first;
+          O.push_back( p );
+        }
+    }
+  return Extr( O );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+FC_with_LatticeSet( const PointRange& Z ) const
+{
+  const auto StarCvxZ     = StarCvxH( Z );
+  const auto SkelStarCvxZ = StarCvxZ.skeletonOfCells().toPointRange();
+  return Extr( SkelStarCvxZ );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
+{
+  if ( algo == EnvelopeAlgorithm::DIRECT )
+    return FC_direct( Z );
+  else if ( algo == EnvelopeAlgorithm::WITH_LATTICE_SET )
+    return FC_with_LatticeSet( Z );
+  else
+    return Z;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
+{
+  myDepthLastFCE = 0;
+  auto In = Z;
+  while (true) {
+    auto card_In = In.size();
+    In = FC( In, algo );
+    if ( In.size() == card_In ) return In;
+    myDepthLastFCE++;
+  }
+  trace.error() << "[DigitalConvexity::envelope] Should never pass here."
+                << std::endl;
+  return Z; //
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::Size
+DGtal::DigitalConvexity<TKSpace>::
+depthLastEnveloppe() const
+{
+  return myDepthLastFCE;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const LatticePolytope& P, const Dimension k ) const
@@ -632,6 +869,49 @@ isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 {
   auto intersected_cells = makeCellCover( P, C.minCellDim(), C.maxCellDim() );
   return intersected_cells.subset( C );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+void 
+DGtal::DigitalConvexity<TKSpace>::
+eraseInterval( Interval I, std::vector< Interval > & V )
+{
+  for ( std::size_t i = 0; i < V.size(); )
+    {
+      Interval& J = V[ i ];
+      // I=[a,b], J=[a',b'], a <= b, a' <= b'
+      if ( I.second < J.first ) { break; } // b < a' : no further intersection
+      if ( J.second < I.first ) { ++i; continue; } // b' < a : no further intersection
+      // a' <= b and a <= b'
+      //       a ----------  b
+      // a' ...............  a'
+      //     b' ................. b'
+      
+      // a' ..................... b' => a'..a-1       b+1 b'
+      Interval K1( J.first, I.first - 1 );
+      Interval K2( I.second + 1, J.second );
+      bool K1_exist = K1.second >= K1.first;
+      bool K2_exist = K2.second >= K2.first;
+      if ( K1_exist && K2_exist )
+        {
+          V[ i ] = K2;
+          V.insert( V.begin() + i, K1 );
+          break; // no further intersection possible
+        }
+      else if ( K1_exist )
+        {
+          V[ i ] = K1; i++;
+        }
+      else if ( K2_exist )
+        {
+          V[ i ] = K2; break;
+        }
+      else
+        {
+          V.erase( V.begin() + i );
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

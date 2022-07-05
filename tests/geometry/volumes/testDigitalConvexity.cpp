@@ -682,3 +682,30 @@ SCENARIO( "DigitalConvexity< Z3 > sub-convexity of polyhedra", "[full_subconvexi
   REQUIRE( nb_tgt < 100 );
 }
 
+SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
+
+  std::vector< Point > X;
+  for ( int i = 0; i < 5; i++ )
+    X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+  WHEN( "Computing the envelope of a digital set X" ) {
+    auto Z = dconv.envelope( X );
+    CAPTURE( dconv.depthLastEnveloppe() );
+    THEN( "Z contains X" ){
+      std::sort( X.begin(), X.end() );
+      bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(), X.cbegin(), X.cend() );
+      REQUIRE( X.size() <= Z.size() );
+      REQUIRE( Z_includes_X );
+    }
+    THEN( "Z is fully convex" ){
+      REQUIRE( dconv.isFullyConvex( Z ) );
+    }
+  }
+}
