@@ -534,7 +534,7 @@ namespace DGtal
     /// a digital set.
     enum class EnvelopeAlgorithm
       { DIRECT /**< Slightly faster but quite ugly big function */,
-        WITH_LATTICE_SET /**< Slightly slower function but decomposes well the algorithm */ 
+        LATTICE_SET /**< Slightly slower function but decomposes well the algorithm */ 
       };
     
     /// Computes `FC(Z):=Extr(Skel(Star(CvxH(Z))))`, for \a Z a range of points
@@ -545,13 +545,13 @@ namespace DGtal
     FC( const PointRange& Z,
         EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
 
-    /// Computes the fully convex envelope to \a Z,
-    /// i.e. `FC^*(Z):=FC(FC(....FC(Z)...))`, for \a Z a range of
+    /// Computes the fully convex envelope of \a Z,
+    /// i.e. \f$ FC^*(Z):=FC(FC( \ldots FC(Z) \ldots )) \f$, for \a Z a range of
     /// points, until stabilization of the iterative process.
     ///
     /// @param Z any range of points (must be sorted).
     /// @param algo the chosen method of computation.
-    /// @return  FC^*( Z )
+    /// @return \f$ FC^*( Z ) \f$
     ///
     /// @note If \a Z is fully convex, then the output is \a Z
     /// itself. Otherwise, the returned set of points includes \a Z
@@ -560,9 +560,27 @@ namespace DGtal
     envelope( const PointRange& Z,
               EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
 
+    /// Computes the fully convex envelope of \a Z relative to fully
+    /// convex digital set Y, i.e. \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots
+    /// FC_Y(Z) \ldots )) \f$ for \a Z a range of points, until
+    /// stabilization of the iterative process.
+    ///
+    /// @param Z any range of points (must be sorted).
+    /// @param Y any range of points (must be sorted) that is fully convex.
+    /// @param algo the chosen method of computation.
+    /// @return \f$ FC^*_Y( Z ) \f$
+    ///
+    /// @note If \a Z is fully convex, then the output is \a Z
+    /// itself. Otherwise, the returned set of points includes \a Z
+    /// and is fully convex.
+    PointRange
+    relativeEnvelope( const PointRange& Z, const PointRange& Y,
+                      EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
+
+    
     /// @return the number of iterations of the last process
     /// `FC^*(Z):=FC(FC(....FC(Z)...))`, i.e. the last call to
-    /// FullyConvexEnvelope.
+    /// DigitalConvexity::envelope or DigitalConvexity::relativeEnvelope .
     Size depthLastEnvelope() const;
     
     /// @}
@@ -745,7 +763,7 @@ namespace DGtal
     /// Computes `FC(Z):=Extr(Skel(Star(CvxH(Z))))`, for \a Z a range of points
     /// @param Z any range of points (must be sorted).
     /// @return  FC( Z )
-    PointRange FC_with_LatticeSet( const PointRange& Z ) const;
+    PointRange FC_LatticeSet( const PointRange& Z ) const;
 
     // Erase the interval I from the intervals in V such that the integer
     // in I are not part of V anymore.

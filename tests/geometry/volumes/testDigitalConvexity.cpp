@@ -716,7 +716,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
 
-  WHEN( "Computing the envelope Z of a digital set X" ) {
+  WHEN( "Computing the envelope Z of a digital set X with direct algorithm" ) {
     THEN( "Z contains X" ){
       for ( int k = 0; k < 5; k++ )
         {
@@ -724,7 +724,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
           std::vector< Point > X;
           for ( int i = 0; i < n; i++ )
             X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-          auto Z = dconv.envelope( X );
+          auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::DIRECT );
           CAPTURE( dconv.depthLastEnvelope() );
           std::sort( X.begin(), X.end() );
           bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
@@ -744,6 +744,128 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
             REQUIRE( dconv.isFullyConvex( Z ) );
           }
       }
+    }
+  }
+  WHEN( "Computing the envelope Z of a digital set X with LatticeSet algorithm" ) {
+    THEN( "Z contains X" ){
+      for ( int k = 0; k < 5; k++ )
+        {
+          int n = 3 + ( rand() % 7 );
+          std::vector< Point > X;
+          for ( int i = 0; i < n; i++ )
+            X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::LATTICE_SET );
+          CAPTURE( dconv.depthLastEnvelope() );
+          std::sort( X.begin(), X.end() );
+          bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
+                                             X.cbegin(), X.cend() );
+          REQUIRE( X.size() <= Z.size() );
+          REQUIRE( Z_includes_X );
+        }
+      THEN( "Z is fully convex" ){
+        for ( int k = 0; k < 5; k++ )
+          {
+            int n = 3 + ( rand() % 7 );
+            std::vector< Point > X;
+            for ( int i = 0; i < n; i++ )
+              X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            auto Z = dconv.envelope( X );
+            CAPTURE( dconv.depthLastEnvelope() );
+            REQUIRE( dconv.isFullyConvex( Z ) );
+          }
+      }
+    }
+  }
+}
+
+SCENARIO( "DigitalConvexity< Z2 > envelope", "[envelope][2d]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
+  
+  WHEN( "Computing the envelope Z of two points" ) {
+    THEN( "it requires at most one iteration" ){
+      for ( int k = 0; k < 10; k++ )
+        {
+          std::vector< Point > X;
+          X.push_back( Point( rand() % 100, rand() % 100 ) );
+          X.push_back( Point( rand() % 100, rand() % 100 ) );
+          auto Z = dconv.envelope( X );
+          REQUIRE( dconv.depthLastEnvelope() <= 1 );
+        }
+    }
+  }
+}
+
+SCENARIO( "DigitalConvexity< Z2 > relative envelope", "[rel_envelope][2d]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
+  
+  std::vector< Point > X { Point( -10, -7 ), Point( 10, 7 ) };
+  std::vector< Point > Y { Point( -11, -6 ), Point( 9, 8 ) };
+  X = dconv.envelope( X ); 
+  Y = dconv.envelope( Y ); 
+  REQUIRE( dconv.isFullyConvex( X ) );
+  REQUIRE( dconv.isFullyConvex( Y ) );
+  WHEN( "Computing the envelope of X relative to Y and Y relative to X" ) {
+    auto FC_X_rel_Y = dconv.relativeEnvelope( X, Y );
+    auto FC_Y_rel_X = dconv.relativeEnvelope( Y, X );
+    THEN( "Both sets are fully convex" ){
+      REQUIRE( dconv.isFullyConvex( FC_X_rel_Y ) );
+      REQUIRE( dconv.isFullyConvex( FC_Y_rel_X ) );
+    }
+    THEN( "There are inclusion rules between sets" ){
+      CAPTURE( FC_X_rel_Y );
+      CAPTURE( FC_Y_rel_X );
+      REQUIRE( std::includes( Y.cbegin(), Y.cend(),
+                              FC_X_rel_Y.cbegin(), FC_X_rel_Y.cend() ) );
+      REQUIRE( std::includes( X.cbegin(), X.cend(),
+                              FC_Y_rel_X.cbegin(), FC_Y_rel_X.cend() ) );
+    }
+  }
+}
+
+SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  DConvexity dconv( Point( -360, -360, -360 ), Point( 360, 360, 360 ) );
+  
+  std::vector< Point > X { Point( -61, -20, -8 ), Point( 43, 25, 9 ) };
+  std::vector< Point > Y { Point( -50, -27, -10 ), Point( 40, 37, 17 ) };
+  X = dconv.envelope( X ); 
+  Y = dconv.envelope( Y ); 
+  REQUIRE( dconv.isFullyConvex( X ) );
+  REQUIRE( dconv.isFullyConvex( Y ) );
+  WHEN( "Computing the envelope of X relative to Y and Y relative to X" ) {
+    auto FC_X_rel_Y = dconv.relativeEnvelope( X, Y );
+    auto FC_Y_rel_X = dconv.relativeEnvelope( Y, X );
+    THEN( "Both sets are fully convex" ){
+      REQUIRE( dconv.isFullyConvex( FC_X_rel_Y ) );
+      REQUIRE( dconv.isFullyConvex( FC_Y_rel_X ) );
+    }
+    THEN( "There are inclusion rules between sets" ){
+      CAPTURE( FC_X_rel_Y );
+      CAPTURE( FC_Y_rel_X );
+      REQUIRE( std::includes( Y.cbegin(), Y.cend(),
+                              FC_X_rel_Y.cbegin(), FC_X_rel_Y.cend() ) );
+      REQUIRE( std::includes( X.cbegin(), X.cend(),
+                              FC_Y_rel_X.cbegin(), FC_Y_rel_X.cend() ) );
     }
   }
 }

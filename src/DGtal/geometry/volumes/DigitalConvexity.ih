@@ -626,7 +626,7 @@ FC_direct( const PointRange& Z ) const
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
-FC_with_LatticeSet( const PointRange& Z ) const
+FC_LatticeSet( const PointRange& Z ) const
 {
   const auto StarCvxZ     = StarCvxH( Z );
   const auto SkelStarCvxZ = StarCvxZ.skeletonOfCells().toPointRange();
@@ -641,8 +641,8 @@ FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
 {
   if ( algo == EnvelopeAlgorithm::DIRECT )
     return FC_direct( Z );
-  else if ( algo == EnvelopeAlgorithm::WITH_LATTICE_SET )
-    return FC_with_LatticeSet( Z );
+  else if ( algo == EnvelopeAlgorithm::LATTICE_SET )
+    return FC_LatticeSet( Z );
   else
     return Z;
 }
@@ -663,9 +663,29 @@ envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
   }
   trace.error() << "[DigitalConvexity::envelope] Should never pass here."
                 << std::endl;
-  return Z; //
+  return Z; // to avoid warnings.
 }
 
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+relativeEnvelope( const PointRange& Z, const PointRange& Y,
+                  EnvelopeAlgorithm algo ) const
+{
+  myDepthLastFCE = 0;
+  auto In = Z;
+  while (true) {
+    PointRange Out;
+    std::set_intersection( In.cbegin(), In.cend(),
+                           Y.cbegin(), Y.cend(),
+                           std::back_inserter( Out ) );
+    In = FC( Out, algo ); 
+    if ( In.size() == Out.size() ) return Out;
+    myDepthLastFCE++;
+  }
+  return Z;
+}
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::Size
