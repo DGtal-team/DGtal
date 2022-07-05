@@ -520,6 +520,7 @@ SCENARIO( "DigitalConvexity< Z3 > full convexity of polyhedra", "[full_convexity
   const unsigned int nb = 100;
   unsigned int nbfg     = 0;
   unsigned int nbffast  = 0;
+  unsigned int nbfenv   = 0;
   typedef std::vector< Point > PointRange;
   std::vector< PointRange > XX;
   for ( unsigned int i = 0; i < nb; ++i )
@@ -548,10 +549,21 @@ SCENARIO( "DigitalConvexity< Z3 > full convexity of polyhedra", "[full_convexity
       nbffast += fcvx ? 1 : 0;
     }
   double t2 = c.stopClock();
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      auto card = dconv.envelope( X ).size();
+      bool fcvx = card == X.size();
+      nbfenv += fcvx ? 1 : 0;
+    }
+  double t3 = c.stopClock();
   WHEN( "Computing many polytopes." ) {
-    THEN( "Both methods agree on full convexity results" ) {
+    THEN( "All three methods agree on full convexity results" ) {
+      CAPTURE( t1 );
+      CAPTURE( t2 );
+      CAPTURE( t3 );
       REQUIRE( nbfg == nbffast );
-      REQUIRE( t2 < t1 );
+      REQUIRE( nbfg == nbfenv );
     }
   }
 }
@@ -571,6 +583,7 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
   const unsigned int nb = 10;
   unsigned int nbfg     = 0;
   unsigned int nbffast  = 0;
+  unsigned int nbfenv  = 0;
   typedef std::vector< Point > PointRange;
   std::vector< PointRange > XX;
   for ( unsigned int i = 0; i < nb; ++i )
@@ -599,10 +612,21 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
       nbffast += fcvx ? 1 : 0;
     }
   double t2 = c.stopClock();
+  c.startClock();
+  for ( const auto& X : XX )
+    {
+      auto card = dconv.envelope( X ).size();
+      bool fcvx = card == X.size();
+      nbfenv += fcvx ? 1 : 0;
+    }
+  double t3 = c.stopClock();
   WHEN( "Computing many polytopes." ) {
-    THEN( "Both methods agree on full convexity results" ) {
+    THEN( "All three methods agree on full convexity results" ) {
+      CAPTURE( t1 );
+      CAPTURE( t2 );
+      CAPTURE( t3 );
       REQUIRE( nbfg == nbffast );
-      REQUIRE( t2 < t1 );
+      REQUIRE( nbfg == nbfenv );
     }
   }
 }
