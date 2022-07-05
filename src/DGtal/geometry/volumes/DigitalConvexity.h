@@ -563,7 +563,7 @@ namespace DGtal
     /// @return the number of iterations of the last process
     /// `FC^*(Z):=FC(FC(....FC(Z)...))`, i.e. the last call to
     /// FullyConvexEnvelope.
-    Size depthLastEnveloppe() const;
+    Size depthLastEnvelope() const;
     
     /// @}
     

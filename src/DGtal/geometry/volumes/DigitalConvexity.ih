@@ -670,7 +670,7 @@ envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::Size
 DGtal::DigitalConvexity<TKSpace>::
-depthLastEnveloppe() const
+depthLastEnvelope() const
 {
   return myDepthLastFCE;
 }

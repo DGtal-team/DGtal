@@ -692,20 +692,34 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
 
-  std::vector< Point > X;
-  for ( int i = 0; i < 5; i++ )
-    X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-  WHEN( "Computing the envelope of a digital set X" ) {
-    auto Z = dconv.envelope( X );
-    CAPTURE( dconv.depthLastEnveloppe() );
+  WHEN( "Computing the envelope Z of a digital set X" ) {
     THEN( "Z contains X" ){
-      std::sort( X.begin(), X.end() );
-      bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(), X.cbegin(), X.cend() );
-      REQUIRE( X.size() <= Z.size() );
-      REQUIRE( Z_includes_X );
-    }
-    THEN( "Z is fully convex" ){
-      REQUIRE( dconv.isFullyConvex( Z ) );
+      for ( int k = 0; k < 5; k++ )
+        {
+          int n = 3 + ( rand() % 7 );
+          std::vector< Point > X;
+          for ( int i = 0; i < n; i++ )
+            X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          auto Z = dconv.envelope( X );
+          CAPTURE( dconv.depthLastEnvelope() );
+          std::sort( X.begin(), X.end() );
+          bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
+                                             X.cbegin(), X.cend() );
+          REQUIRE( X.size() <= Z.size() );
+          REQUIRE( Z_includes_X );
+        }
+      THEN( "Z is fully convex" ){
+        for ( int k = 0; k < 5; k++ )
+          {
+            int n = 3 + ( rand() % 7 );
+            std::vector< Point > X;
+            for ( int i = 0; i < n; i++ )
+              X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            auto Z = dconv.envelope( X );
+            CAPTURE( dconv.depthLastEnvelope() );
+            REQUIRE( dconv.isFullyConvex( Z ) );
+          }
+      }
     }
   }
 }
