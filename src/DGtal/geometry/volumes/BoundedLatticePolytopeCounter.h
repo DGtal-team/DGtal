@@ -188,22 +188,6 @@ namespace DGtal
     /// Star of the initial polytope.
     LatticeSetByInterval getLatticeCells( Dimension a ) const;
 
-    /// Builds the lattice set representation of a range of points
-    ///
-    /// @param X any range of points
-    ///
-    /// @param a any axis with 0 <= a < d, where d is the dimension of
-    /// the space.
-    ///
-    /// @return its lattice set representation by intervals.
-    static
-    LatticeSetByIntervals
-    buildLatticeSet( const PointRange& X, Dimension a );
-
-    static
-    LatticeSetByIntervals
-    buildStar( const LatticeSetByIntervals& X, Dimension a );
-
     /// @return the most elongated axis of the bounding box of the
     /// current polytope.
     Dimension longestAxis() const;

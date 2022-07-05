@@ -403,7 +403,7 @@ StarCvxH( const PointRange& X, Dimension axis ) const
   Counter C( P );
   const Dimension a = axis >= dimension ? C.longestAxis() : axis;
   auto cellP = C.getLatticeCells( a );
-  return LatticeSet( cellP, axis );
+  return LatticeSet( cellP, a );
 }
 
 //-----------------------------------------------------------------------------

@@ -334,55 +334,6 @@ getLatticeCells( Dimension a ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByIntervals
-DGtal::BoundedLatticePolytopeCounter<TSpace>::
-buildLatticeSet( const PointRange& X, Dimension a )
-{
-  LatticeSetByIntervals L;
-  for ( auto&& p : X ) {
-    Point q = p;
-    q[ a ]  = 0;
-    L[ q ].insert( p[ a ] );
-  }
-  return L;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace>
-typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByIntervals
-DGtal::BoundedLatticePolytopeCounter<TSpace>::
-buildStar( const LatticeSetByIntervals& X, Dimension a ) 
-{
-  LatticeSetByIntervals C;
-  // First step, place points as pointels and insert their star along
-  // dimension a.
-  for ( auto& pV : X )
-    {
-      const Point p = pV.first;
-      Intervals   V = pV.second;
-      C[ 2*p ]      = V.star();
-    }
-  // Second step, dilate along all directions
-  for ( Dimension k = 0; k < dimension; k++ )
-    {
-      if ( k == a ) continue;
-      for ( const auto& value : C )
-        {
-          const Point      p = value.first;
-          if ( p[ k ] & 0x1 ) continue;
-          const Intervals& V = value.second;
-          Point    q = p;
-          q[ k ] -= 1;
-          C[ q ].add( V );
-          q[ k ] += 2;
-          C[ q ].add( V );
-        }
-    }
-  return C;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace>
 DGtal::Dimension
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 longestAxis( ) const

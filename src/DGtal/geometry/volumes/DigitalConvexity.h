@@ -437,7 +437,7 @@ namespace DGtal
     /// Khalimsky coordinates).
     ///
     /// @note It is useful to specify an axis if you wish later to
-    /// compare or make opeerations with several lattice sets. They
+    /// compare or make operations with several lattice sets. They
     /// must indeed have the same axis.
     LatticeSet StarCvxH( const PointRange& X, Dimension axis = dimension ) const;
 
