@@ -561,7 +561,7 @@ namespace DGtal
               EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
 
     /// Computes the fully convex envelope of \a Z relative to fully
-    /// convex digital set Y, i.e. \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots
+    /// convex digital set \a Y, i.e. \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots
     /// FC_Y(Z) \ldots )) \f$ for \a Z a range of points, until
     /// stabilization of the iterative process.
     ///
@@ -577,6 +577,25 @@ namespace DGtal
     relativeEnvelope( const PointRange& Z, const PointRange& Y,
                       EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
 
+    /// Computes the fully convex envelope of \a Z relative to fully
+    /// convex digital set \a Y defined by a corresponding predicate
+    /// \a PredY. It computes \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots FC_Y(Z) \ldots
+    /// )) \f$ for \a Z a range of points, until stabilization of the
+    /// iterative process.
+    ///
+    /// @tparam Predicate the type of a predicate Point -> boolean
+    /// @param Z any range of points (must be sorted).
+    /// @param PredY a Point predicate such that `PredY(p)==true` iff \a p belongs to \a Y.
+    /// @param algo the chosen method of computation.
+    /// @return \f$ FC^*_Y( Z ) \f$
+    ///
+    /// @note If \a Z is fully convex, then the output is \a Z
+    /// itself. Otherwise, the returned set of points includes \a Z
+    /// and is fully convex.
+    template <typename Predicate>
+    PointRange
+    relativeEnvelope( const PointRange& Z, const Predicate& Y,
+                      EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
     
     /// @return the number of iterations of the last process
     /// `FC^*(Z):=FC(FC(....FC(Z)...))`, i.e. the last call to
@@ -765,12 +784,21 @@ namespace DGtal
     /// @return  FC( Z )
     PointRange FC_LatticeSet( const PointRange& Z ) const;
 
-    // Erase the interval I from the intervals in V such that the integer
-    // in I are not part of V anymore.
-    //
-    // @param[i] I is a closed interval
-    // @param[inout] V is a sorted list of closed intervals
+    /// Erase the interval I from the intervals in V such that the integer
+    /// in I are not part of V anymore.
+    ///
+    /// @param[in] I is a closed interval
+    /// @param[inout] V is a sorted list of closed intervals
     static void eraseInterval( Interval I, std::vector< Interval > & V );
+
+    /// Filters the points of \a E and outputs only the ones that
+    /// satisfies the given predicate \a Pred.
+    ///
+    /// @tparam Pred the type of a predicate Point -> boolean
+    /// @param[in] E any range of point
+    /// @return the subset of E whose elements satisfy the predicate \a Pred.
+    template <typename Predicate>
+    static PointRange filter( const PointRange& E, const Predicate& Pred );
     
   }; // end of class DigitalConvexity
 

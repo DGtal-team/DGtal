@@ -834,6 +834,23 @@ SCENARIO( "DigitalConvexity< Z2 > relative envelope", "[rel_envelope][2d]" )
                               FC_Y_rel_X.cbegin(), FC_Y_rel_X.cend() ) );
     }
   }
+  WHEN( "Computing the envelope of X relative to Y specified by a predicate" ) {
+    auto PredY = [] ( Point p )
+    { return ( -4 <= p.dot( Point( 2,5 ) ) ) && ( p.dot( Point( 2,5 ) ) < 9 ); };
+    auto FC_X_rel_Y = dconv.relativeEnvelope( X, PredY );
+    THEN( "It is fully convex and included in Y" ){
+      CAPTURE( FC_X_rel_Y );
+      REQUIRE( dconv.isFullyConvex( FC_X_rel_Y ) );
+      int nb    = 0;
+      int nb_in = 0;
+      for ( auto p : FC_X_rel_Y )
+        {
+          nb_in += PredY( p ) ? 1 : 0;
+          nb    += 1;
+        }
+      REQUIRE( nb == nb_in );
+    }
+  }
 }
 
 SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )

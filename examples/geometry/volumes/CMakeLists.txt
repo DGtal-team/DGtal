@@ -19,6 +19,7 @@ if (  WITH_VISU3D_QGLVIEWER )
       fullConvexityAnalysis3D
       fullConvexityThinning3D
       fullConvexityShortestPaths3D
+      digitalPolyhedronBuilder3D
    )
   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
       DGtal_add_example(${FILE})

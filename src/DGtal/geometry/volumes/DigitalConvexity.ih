@@ -686,6 +686,26 @@ relativeEnvelope( const PointRange& Z, const PointRange& Y,
   }
   return Z;
 }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename Predicate>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+relativeEnvelope( const PointRange& Z, const Predicate& PredY,
+                  EnvelopeAlgorithm algo ) const
+{
+  myDepthLastFCE = 0;
+  auto In = Z;
+  while (true) {
+    auto Out = filter( In, PredY );
+    In = FC( Out, algo ); 
+    if ( In.size() == Out.size() ) return In;
+    myDepthLastFCE++;
+  }
+  return Z;
+}
+
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::Size
@@ -932,6 +952,20 @@ eraseInterval( Interval I, std::vector< Interval > & V )
           V.erase( V.begin() + i );
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename Predicate>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+filter( const PointRange& E, const Predicate& Pred )
+{
+  PointRange Out;
+  Out.reserve( E.size() );
+  for ( auto&& p : E )
+    if ( Pred( p ) ) Out.push_back( p );
+  return Out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
