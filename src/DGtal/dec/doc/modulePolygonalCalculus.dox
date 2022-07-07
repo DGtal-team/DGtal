@@ -202,6 +202,8 @@ Operator  | Output | Description
 
 \subsection sectcovOPL Covariant Operators and Vector-Laplacian
 
+@image html images/poly/transport_to_face.png "transport of a vertex based vector field to face tangent plane"
+
 \subsubsection sectcovOP Covariant Gradient and Projection
 
 Since these operators are themselves matrices they cannot be constructed in the same way as the others ( Operator builder Matrix * function restricted to face Vector ), you need the specify the local vector field as well, in the same format as in @cite degoes2020discrete,
