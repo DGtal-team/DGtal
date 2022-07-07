@@ -30,25 +30,28 @@
 
 /**
    This example shows how to use the fully convex envelope to build a
-   digital polyhedron from an arbitrary mesh. It uses
-   DigitalConvexity::envelope for computations.
+   digital polyhedron from an arbitrary mesh. All faces have also the
+   property that their points lies in the naive/standard plane defined
+   by its vertices. It uses DigitalConvexity::relativeEnvelope for
+   computations.
    
    @see \ref dgtal_dconvexityapp_sec2
    
    For instance, you may call it on object "spot.obj" as
 
 \verbatim
-standardDigitalPolyhedronBuilder3D ../examples/samples/spot.obj 0.005 7
+standardDigitalPolyhedronBuilder3D ../examples/samples/lion-tri.obj 0.5 31
 \endverbatim
 
    The last parameter specifies whether you want to see vertices (1),
-   edges (2) and faces (4), or any combination.
+   edges common to both faces (2), part of edges that are only on one
+   face (4) and (8) and faces (16), or any combination.
 
 <table>
 <tr><td>
-\image html spot-h0_005-all.jpg "Digital polyhedral model of 'spot.obj' at gridstep 0.005" width=90%
+\image html lion-tri-h0_5-sstd-all.jpg "(Symmetric) standard Digital polyhedral model of 'lion-tri.obj' at gridstep 0.5" width=90%
 </td><td>
-\image html spot-h0_005-edges.jpg "Digital polyhedral model of 'spot.obj' at gridstep 0.005 (vertices and edges only)" width=90%
+\image html lion-tri-h0_5-sstd-edges.jpg "(Symmetric) standard Digital polyhedral model of 'lion-tri.obj' at gridstep 0.5 (vertices and edges only)" width=90%
 </td></tr>
 </table>
 
@@ -110,10 +113,10 @@ struct MedianPlane {
 };
 
 // Choose your plane !
-typedef MedianPlane< true,  false > Plane; //< Naive, thinnest possible
+// typedef MedianPlane< true,  false > Plane; //< Naive, thinnest possible
 // typedef MedianPlane< true,  true  > Plane; //< Naive, Symmetric
 // typedef MedianPlane< false, false > Plane; //< Standard
-// typedef MedianPlane< false, true  > Plane; //< Standard, Symmetric, thickest here
+typedef MedianPlane< false, true  > Plane; //< Standard, Symmetric, thickest here
 
 int main( int argc, char** argv )
 {
@@ -121,7 +124,7 @@ int main( int argc, char** argv )
   trace.info() << "\tComputes a digital polyhedron from an OBJ file" << std::endl;
   trace.info() << "\t- input.obj: choose your favorite mesh" << std::endl;
   trace.info() << "\t- h [==1]: the digitization gridstep" << std::endl;
-  trace.info() << "\t- view [==7]: display vertices(1), edges(2), arcs(4), faces(8)" << std::endl;
+  trace.info() << "\t- view [==31]: display vertices(1), common edges(2), positive side f edges(4), negative side f edges (8), faces(16)" << std::endl;
   string filename = examplesPath + "samples/lion.obj";
   std::string  fn = argc > 1 ? argv[ 1 ]         : filename; //< vol filename
   double        h = argc > 2 ? atof( argv[ 2 ] ) : 1.0;
@@ -250,21 +253,21 @@ int main( int argc, char** argv )
     }
   if ( view & 0x2 )
     {
+      viewer.setLineColor( colors[ 3 ] );
+      viewer.setFillColor( colors[ 3 ] );
+      for ( auto p : final_arc_points ) viewer << p;
+    }
+  if ( view & 0x4 )
+    {
       viewer.setLineColor( colors[ 1 ] );
       viewer.setFillColor( colors[ 1 ] );
       for ( auto p : pos_edge_points ) viewer << p;
     }
-  if ( view & 0x4 )
+  if ( view & 0x8 )
     {
       viewer.setLineColor( colors[ 2 ] );
       viewer.setFillColor( colors[ 2 ] );
       for ( auto p : neg_edge_points ) viewer << p;
-    }
-  if ( view & 0x8 )
-    {
-      viewer.setLineColor( colors[ 3 ] );
-      viewer.setFillColor( colors[ 3 ] );
-      for ( auto p : final_arc_points ) viewer << p;
     }
   if ( view & 0x10 )
     {
