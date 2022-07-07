@@ -109,7 +109,11 @@ struct MedianPlane {
   }
 };
 
-typedef MedianPlane< false, true > Plane;
+// Choose your plane !
+typedef MedianPlane< true,  false > Plane; //< Naive, thinnest possible
+// typedef MedianPlane< true,  true  > Plane; //< Naive, Symmetric
+// typedef MedianPlane< false, false > Plane; //< Standard
+// typedef MedianPlane< false, true  > Plane; //< Standard, Symmetric, thickest here
 
 int main( int argc, char** argv )
 {
