@@ -121,36 +121,36 @@ namespace DGtal
      * Export an Image to Raw format (unsigned 8bits little-endian, uint8_t, unsigned char).
      *
      * @param filename name of the output file.
-     * @param aImage the image to export.
+     * @param anImage the image to export.
      * @param aFunctor functor used to cast image values.
      * @return true if no errors occur.
      */
     static bool exportRaw8(const std::string& filename,
-         const Image& aImage,
+         const Image& anImage,
          const Functor& aFunctor = Functor());
 
     /**
      * Export an Image to Raw format (unsigned 16bits little-endian, uint16_t, unsigned short).
      *
      * @param filename name of the output file.
-     * @param aImage the image to export.
+     * @param anImage the image to export.
      * @param aFunctor functor used to cast image values.
      * @return true if no errors occur.
      */
     static bool exportRaw16(const std::string& filename,
-         const Image& aImage,
+         const Image& anImage,
          const Functor& aFunctor = Functor());
 
     /**
      * Export an Image to Raw format (unsigned 32bits little-endian, uint32_t, unsigned int).
      *
      * @param filename name of the output file.
-     * @param aImage the image to export.
+     * @param anImage the image to export.
      * @param aFunctor functor used to cast image values.
      * @return true if no errors occur.
      */
     static bool exportRaw32(const std::string& filename,
-         const Image& aImage,
+         const Image& anImage,
          const Functor& aFunctor = Functor());
 
   private:

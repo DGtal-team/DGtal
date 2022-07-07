@@ -153,9 +153,7 @@ bool testGenericWriter()
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing color image writer ... ";  
   bool ok8 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.ppm", anColorImage2D);
-#ifdef WITH_MAGICK
   ok8 = ok8 &&  DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.png", anColorImage2D);
-#endif  
   trace.info() <<"[done]"  << std::endl;
   nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && okITK) ? 1 : 0); 
   nb++;

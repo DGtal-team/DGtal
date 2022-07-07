@@ -1,0 +1,81 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file STBReader.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2022/06/14
+ *
+ * Implementation of inline methods defined in STBReader.h
+ *
+ * This file is part of the DGtal library.
+ */
+#pragma once
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+template <typename TImageContainer, typename TFunctor>
+inline
+TImageContainer
+DGtal::STBReader<TImageContainer, TFunctor>::import(const std::string & filename,
+                                                       const Functor & aFunctor)
+{
+  int x,y,n;
+  unsigned char *data = stbi_load(filename.c_str(), &x, &y, &n, 0);
+  
+  typename TImageContainer::Point firstPoint(0,0);
+  typename TImageContainer::Point lastPoint(x-1,y-1);
+  
+  typename TImageContainer::Domain domain(firstPoint,lastPoint);
+  TImageContainer image(domain);
+
+#ifdef VERBOSE
+  trace.info()<<"File size= "<<x<<"x"<<y<<" nbChannels= "<< n<<std::endl;
+#endif
+  
+  Color col;
+  for(auto j=0; j < y; ++j)
+    for(auto i=0; i < x; ++i)
+    {
+      const auto id = j*x+i;
+      if (n==1)
+        col.setRGBi(data[id],data[id],data[id],data[id]);
+      else
+        if (n==2)
+          col.setRGBi(data[2*id],data[2*id],data[2*id],data[2*id+1]);
+        else
+          if (n==3)
+            col.setRGBi(data[3*id],data[3*id+1],data[3*id+2],255);
+          else
+            col.setRGBi(data[4*id],data[4*id+1],data[4*id+2],data[4*id+3]);
+      
+      image.setValue(typename TImageContainer::Point(i,j), aFunctor(col) );
+    }
+  
+  stbi_image_free(data);
+  return image;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

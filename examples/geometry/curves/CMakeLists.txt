@@ -19,24 +19,13 @@ set(DGTAL_EXAMPLES_SRC
   exampleArithDSSIterator
   exampleDigitalConvexity
   exampleRationalConvexity
+  freemanChainDisplay
 )
 
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
-
-
-
-if(MAGICK++_FOUND)
-  set(DGTALE_EXAMPLES_IO_Magick
-    freemanChainDisplay
-    )
-  foreach(FILE ${DGTALE_EXAMPLES_IO_Magick})
-     DGtal_add_example(${FILE})
-  endforeach()
-endif()
-
 
 ### Test with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
