@@ -43,9 +43,10 @@
 standardDigitalPolyhedronBuilder3D ../examples/samples/lion-tri.obj 0.5 31
 \endverbatim
 
-   The last parameter specifies whether you want to see vertices (1),
-   edges common to both faces (2), part of edges that are only on one
-   face (4) and (8) and faces (16), or any combination.
+   The last parameter specifies whether you want to see vertices (1)
+   in black, edges common to both faces (2) in magenta, part of edges
+   that are only on one face (4) and (8) (red on one side, blue on the
+   other) and faces (16) in grey, or any combination.
 
 <table>
 <tr><td>
