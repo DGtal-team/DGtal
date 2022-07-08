@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <map>
 #include <DGtal/kernel/SpaceND.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Mesh.h"
