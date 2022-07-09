@@ -2,6 +2,17 @@
 
 ## New features / critical changes
 
+*General*
+ - A Dockerfile is added to create a Docker image to have a base to start development
+   using the DGtal library.(J. Miguel Salazar
+   [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
+ - Continuous integration does not use Travis anymore but Github
+   Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+ - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
+   [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
+ - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
+   (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
+
 - *Geometry package*
   - Add curvature measures computation on 3D surface mesh:
     implements Normal Cycle, face-constant Corrected Normal Current
@@ -12,21 +23,9 @@
     digital sets in nD, and helper classes for using full convexity in
     practice (local geometric analysis, tangency and shortest paths)
     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
-
-- *Mathematical Package*
-   - Add Lagrange polynomials and Lagrange interpolation
-     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
-
-- *General*
-  - A Dockerfile is added to create a Docker image to have a base to start development
-    using the DGtal library.(J. Miguel Salazar
-    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
-  - Continuous integration does not use Travis anymore but Github
-    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
-  - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
-    [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
-  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
-    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
+  - New VoronoiMapComplete class to store the full Voronoi map (with
+    all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
+    Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
 
 - *DEC*
   - New discrete differential operators on polygonal meshes have been
@@ -41,6 +40,10 @@
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+
+- *Mathematical Package*
+  - Add Lagrange polynomials and Lagrange interpolation
+    (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
 
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
@@ -74,9 +77,6 @@
     [#1593](https://github.com/DGtal-team/DGtal/pull/1593))
 
 - *Geometry*
-  - New VoronoiMapComplete class to store the full Voronoi map (with
-    all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
-    Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
