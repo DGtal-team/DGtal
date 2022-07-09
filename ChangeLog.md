@@ -139,6 +139,7 @@
   - Fix LongVolReader that fails to read large values. It was why testLongvol and
     testCompressedVolWriter were failing on some configurations.
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
+  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
 
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:

@@ -37,6 +37,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <string>
 //////////////////////////////////////////////////////////////////////////////
 
 #include "DGtal/helpers/StdDefs.h"
