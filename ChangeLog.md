@@ -1,4 +1,4 @@
-# DGtal 1.3 (beta)
+# DGtal 1.3
 
 ## New features / critical changes
 
@@ -53,6 +53,7 @@
    (David Coeurjolly, [#1648](https://github.com/DGtal-team/DGtal/pull/1648))
 
 ## Changes
+
 - *Image*
   - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >$1024^3$)
     (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
@@ -86,7 +87,8 @@
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
-  - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - Fix missing whitelist for the unit-tests in relation to
+    PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
   - Fix cmake related ITK usage in other projects (issue #1612).
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
@@ -99,8 +101,6 @@
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
     new shift method to avoid recomputing orientation plane.
     (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
-
-
 
 ## Bug fixes
 
