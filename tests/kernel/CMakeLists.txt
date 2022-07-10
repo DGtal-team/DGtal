@@ -38,7 +38,6 @@ if(BUILD_BENCHMARKS)
   #Benchmark target
   foreach(FILE ${DGTAL_BENCH_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-    add_dependencies(benchmark ${FILE})
   endforeach()
 endif()
 
