@@ -19,8 +19,6 @@ set(DGTAL_BENCH_SRC
 
 
 #Benchmark target
-if(BUILD_BENCHMARKS)
-  foreach(FILE ${DGTAL_BENCH_SRC})
-    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-  endforeach()
-endif()
+foreach(FILE ${DGTAL_BENCH_SRC})
+  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+endforeach()

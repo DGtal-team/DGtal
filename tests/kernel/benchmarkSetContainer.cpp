@@ -66,7 +66,7 @@ static void BM_Constructor(benchmark::State& state)
     {
       state.PauseTiming();
       typename Q::Domain dom(typename Q::Point().diagonal(0),
-                             typename Q::Point().diagonal(state.range(0)));
+                             typename Q::Point().diagonal((typename Q::Domain::Space::Integer)state.range(0)));
       state.ResumeTiming();
       Q image( dom );
     }

@@ -9,11 +9,9 @@ endforeach()
 
 
 #Benchmark target
-if(BUILD_BENCHMARKS)
-  set(DGTAL_BENCH_SRC
-    testInHalfPlane-benchmark
-    )
-  foreach(FILE ${DGTAL_BENCH_SRC})
-    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-  endforeach()
-endif()
+set(DGTAL_BENCH_SRC
+   testInHalfPlane-benchmark
+  )
+foreach(FILE ${DGTAL_BENCH_SRC})
+  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+endforeach()

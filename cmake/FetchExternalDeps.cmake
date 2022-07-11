@@ -25,8 +25,4 @@ if (BUILD_TESTING)
 
   message(STATUS "    Google benchmark (v1.6.1)")
   include(googlebenchmark)
-  set(BENCHMARK_FOUND_DGTAL 1)
-  set(BUILD_BENCHMARKS ON)
-  target_compile_definitions(DGtal PUBLIC -DWITH_BENCHMARK)
-  set(DGtalLibDependencies ${DGtalLibDependencies} benchmark::benchmark ${CMAKE_THREAD_LIBS_INIT})
 endif()

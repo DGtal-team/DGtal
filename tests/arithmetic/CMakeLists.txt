@@ -33,10 +33,8 @@ set(DGTAL_BENCH_GMP_SRC
 )
 
 #Benchmark target
-if(BUILD_BENCHMARKS)
-  if(GMP_FOUND)
-    foreach(FILE ${DGTAL_BENCH_GMP_SRC})
-      DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-    endforeach()
-  endif()
+if(GMP_FOUND)
+  foreach(FILE ${DGTAL_BENCH_GMP_SRC})
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  endforeach()
 endif()
