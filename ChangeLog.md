@@ -79,7 +79,7 @@
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
-
+  
 - *Build*
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
@@ -152,7 +152,8 @@
      (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
   - Fixing issue with the automatic deploy of the "nightly" documentation.
     (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
-
+  - Fix issue on computeHullThickness by adding angle tolerance to detect co-linearity vectors.
+    (Bertrand Kerautret, [#1647](https://github.com/DGtal-team/DGtal/pull/1647))
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
