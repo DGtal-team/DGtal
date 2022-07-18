@@ -11,8 +11,8 @@ env:
   BUILD_TYPE:   Release
   TESTBLACKLIST: "(testLinearStructure)"
   CONFIG_GLOBAL: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=25 -DWITH_OPENMP=true
-  CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
-  CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true 
+  CONFIG_LINUX:  -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
+  CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true
 
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libeigen3-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libfftw3-dev libinsighttoolkit4-dev
+           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libeigen3-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
