@@ -96,19 +96,20 @@ namespace DGtal
  */
 struct EigenLinearAlgebraBackend
 {
-    typedef Eigen::VectorXd DenseVector;
-    typedef Eigen::MatrixXd DenseMatrix;
-    typedef Eigen::VectorXi IntegerVector;
-
-    typedef Eigen::Triplet<double> Triplet;
-    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, DenseVector::Index> SparseMatrix;
-
-    typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
-    typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
-    typedef Eigen::ConjugateGradient<SparseMatrix> SolverConjugateGradient;
-    typedef Eigen::BiCGSTAB<SparseMatrix> SolverBiCGSTAB;
-    typedef Eigen::SparseLU<SparseMatrix> SolverSparseLU;
-    typedef Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<SparseMatrix::Index> > SolverSparseQR;
+  typedef Eigen::VectorXd DenseVector;
+  typedef Eigen::MatrixXd DenseMatrix;
+  typedef Eigen::VectorXi IntegerVector;
+  
+  typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, DenseVector::Index> SparseMatrix;
+  typedef Eigen::Triplet<double, SparseMatrix::StorageIndex> Triplet;
+  
+  /// Solvers on sparse matrices.
+  typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
+  typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
+  typedef Eigen::ConjugateGradient<SparseMatrix> SolverConjugateGradient;
+  typedef Eigen::BiCGSTAB<SparseMatrix> SolverBiCGSTAB;
+  typedef Eigen::SparseLU<SparseMatrix> SolverSparseLU;
+  typedef Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<SparseMatrix::Index> > SolverSparseQR;
 };
 ///////////////////////////////////////////////////////////////////////////////
 

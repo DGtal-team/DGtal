@@ -188,7 +188,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
     
-    auto L = boxCalculus.LaplaceBeltrami(f);
+    auto L = boxCalculus.laplaceBeltrami(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 1.0, 1.0, 1.0;
     expected << 0,0,0,0;
@@ -200,7 +200,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
 
-    auto L = boxCalculus.CovL(f);
+    auto L = boxCalculus.connectionLaplacian(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
     phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
     //since connection laplacian transports the phi vectors to the face,
@@ -218,8 +218,8 @@ TEST_CASE( "Testing PolygonalCalculus" )
 
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
     phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
-    auto CG = boxCalculus.CovariantGradient(f,phi);
-    auto CP = boxCalculus.CovariantProjection(f,phi);
+    auto CG = boxCalculus.covariantGradient(f,phi);
+    auto CP = boxCalculus.covariantProjection(f,phi);
 
     //check sizes
     REQUIRE( CG.rows() == 2);

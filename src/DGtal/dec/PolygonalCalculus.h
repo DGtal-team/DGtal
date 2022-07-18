@@ -90,7 +90,6 @@ public:
   ///Real vector type
   typedef typename MySurfaceMesh::RealVector Real3dVector;
   
-  
   ///Linear Algebra Backend from Eigen
   typedef EigenLinearAlgebraBackend LinAlg;
   ///Type of Vector
@@ -552,11 +551,11 @@ public:
 
   // ----------------------- Vector calculus----------------------------------
 private:
-  /// \brief proj project u on the orthgonal of n
+  /// Project u on the orthgonal of n
   /// \param u vector to project
   /// \param n vector to build orthogonal space from
   /// \return projected vector
-  static Vector proj(const Vector & u, const Vector & n)
+  static Vector project(const Vector & u, const Vector & n)
   {
     return u - (u.dot(n) / n.squaredNorm()) * n;
   }
@@ -581,6 +580,8 @@ private:
     return Eigen::Vector3d(x(0),x(1),x(2));
   }
 
+  /// Compute the (normalized) normal vector at a Vertex by averaging
+  /// the adjacent face normal vectors.
   /// \param v the vertex to compute the normal from
   /// \return 3D normal vector at vertex v
   ///
@@ -614,7 +615,7 @@ public:
     Real3dPoint tangentVector = getSurfaceMeshPtr()->position(v) -
                                 getSurfaceMeshPtr()->position(neighbor);
     Eigen::Vector3d w  = toVec3(tangentVector);
-    Eigen::Vector3d uu = proj(w,nv).normalized();
+    Eigen::Vector3d uu = project(w,nv).normalized();
     Eigen::Vector3d vv = nv.cross(uu);
 
     DenseMatrix tanB(3,2);
@@ -635,7 +636,7 @@ public:
     Real3dPoint tangentVector =
     getSurfaceMeshPtr()->position(v2) - getSurfaceMeshPtr()->position(v1);
     Eigen::Vector3d w  = toVec3(tangentVector);
-    Eigen::Vector3d uu = proj(w,nf).normalized();
+    Eigen::Vector3d uu = project(w,nf).normalized();
     Eigen::Vector3d vv = nf.cross(uu);
 
     DenseMatrix tanB(3,2);
@@ -705,7 +706,7 @@ public:
 
 private: //Covariant operators routines
   /// @return Block Diagonal matrix with Rvf for each vertex v in face f
-  DenseMatrix BlockConnection(const Face & f) const
+  DenseMatrix blockConnection(const Face & f) const
   {
     auto nf           = degree(f);
     DenseMatrix RU_fO = DenseMatrix::Zero(nf * 2,nf * 2);
@@ -720,7 +721,7 @@ private: //Covariant operators routines
   }
 
   /// @return the tensor-kronecker product of M with 2x2 identity matrix
-  DenseMatrix KroneckerWithI2(const DenseMatrix & M) const
+  DenseMatrix kroneckerWithI2(const DenseMatrix & M) const
   {
     size_t h       = M.rows();
     size_t w       = M.cols();
@@ -738,19 +739,19 @@ private: //Covariant operators routines
   /// the concatenated vectors. When applied, gives the associated 2x2 matrix
   /// in the isomorphic vector form (a b c d)^t to be used in the dirichlet
   /// energy (vector laplacian) G∇_f
-  DenseMatrix EnergyCovG_f(const Face & f) const
+  DenseMatrix energyCovG_f(const Face & f) const
   {
-    return KroneckerWithI2(Tf(f).transpose() * gradient(f)) *
-           BlockConnection(f);
+    return kroneckerWithI2(Tf(f).transpose() * gradient(f)) *
+           blockConnection(f);
   }
 
   /// @return Projection Gradient Operator, returns the operator that acts on
   /// the concatenated vectors. When applied, gives the associated nfx2 matrix
   /// in the isomorphic vector form (a b c d ...)^t to be used in the
   /// dirichlet energy (vector laplacian) P∇_f
-  DenseMatrix EnergyCovP_f(const Face & f) const
+  DenseMatrix energyCovP_f(const Face & f) const
   {
-    return KroneckerWithI2(P(f) * D(f)) * BlockConnection(f);
+    return kroneckerWithI2(P(f) * D(f)) * blockConnection(f);
     ;
   }
 
@@ -761,7 +762,7 @@ private: //Covariant operators routines
   /// @note Unlike the rest of the per face operators, the
   /// covariant operators need to be applied directly to the restriction of
   /// the vector field to the face,
-  DenseMatrix TransportAndFormatVectorField(const Face f, const Vector & uf)
+  DenseMatrix transportAndFormatVectorField(const Face f, const Vector & uf)
   {
     DenseMatrix uf_nabla(myFaceDegree[f], 2);
     size_t cpt = 0;
@@ -775,6 +776,7 @@ private: //Covariant operators routines
   }
 
 public:
+  /// Covarient gradient at a face a @a f of intrinsic vectors @u_f.
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
   /// @param f the face
@@ -783,12 +785,13 @@ public:
   /// @note Unlike the rest of the per face operators, the
   /// covariant operators need to be applied directly to the restriction of
   /// the vector field to the face,
-  DenseMatrix CovariantGradient(const Face f, const Vector & uf)
+  DenseMatrix covariantGradient(const Face f, const Vector & uf)
   {
     return Tf(f).transpose() * gradient(f) *
-           TransportAndFormatVectorField(f,uf);
+           transportAndFormatVectorField(f,uf);
   }
 
+  /// Compute the covariance projection at a face @a f of intrinsic vectors @u_f.
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
   /// @param f the face
@@ -798,15 +801,15 @@ public:
   /// @note Unlike the rest of the per face operators, the
   /// covariant operators need to be applied directly to the restriction of
   /// the vector field to the face
-  DenseMatrix CovariantProjection(const Face f, const Vector & uf)
+  DenseMatrix covariantProjection(const Face f, const Vector & uf)
   {
-    return P(f) * D(f) * TransportAndFormatVectorField(f,uf);
+    return P(f) * D(f) * transportAndFormatVectorField(f,uf);
   }
 
   /// L∇ := -(afG∇tG∇+λP∇tP∇)
   /// @return Connection/Vector laplacian at face f
   /// @note The sign convention for the divergence and the Laplacian
-  /// operator is opposite to the one of @cite degoes2020discrete .
+  /// operator is opposite to the one of @cite degoes2020discrete.
   /// This is to match the usual mathematical
   /// convention that the Laplacian (and the Laplacian-Beltrami) has
   /// negative eigenvalues (and is the sum of second derivatives in
@@ -815,15 +818,14 @@ public:
   /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
   /// \rangle \f$. See also
   /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
-  DenseMatrix CovL(const Face & f, double lambda = 1.0) const
+  DenseMatrix connectionLaplacian(const Face & f, double lambda = 1.0) const
   {
-    if (checkCache(COV_L_,f))
-      return myGlobalCache[COV_L_][f];
-    auto G = EnergyCovG_f(f);
-    auto P = EnergyCovP_f(f);
-    auto L = -(faceArea(f) * G.transpose() * G +
-              lambda * P.transpose() * P);
-    setInCache(COV_L_,f,L);
+    if (checkCache(CON_L_,f))
+      return myGlobalCache[CON_L_][f];
+    DenseMatrix G = energyCovG_f(f);
+    DenseMatrix P = energyCovP_f(f);
+    DenseMatrix L = -(faceArea(f) * G.transpose() * G + lambda * P.transpose() * P);
+    setInCache(CON_L_,f,L);
     return L;
   }
   /// @}
@@ -867,14 +869,14 @@ public:
     for( auto f = 0; f < mySurfaceMesh->nbFaces(); ++f )
     {
       auto nf = myFaceDegree[f];
-      DenseMatrix Lap = this->LaplaceBeltrami(f,lambda);
+      DenseMatrix Lap = this->laplaceBeltrami(f,lambda);
       const auto vertices = mySurfaceMesh->incidentVertices(f);
       for(auto i=0; i < nf; ++i)
         for(auto j=0; j < nf; ++j)
         {
           auto v = Lap(i,j);
           if (v!= 0.0)
-            triplets.emplace_back( Triplet( vertices[ i ], vertices[ j ],
+            triplets.emplace_back( Triplet( (SparseMatrix::StorageIndex)vertices[ i ], (SparseMatrix::StorageIndex)vertices[ j ],
                                             Lap( i, j ) ) );
         }
     }
@@ -942,7 +944,7 @@ public:
     for (auto f = 0; f < mySurfaceMesh->nbFaces(); f++)
     {
       auto nf             = degree(f);
-      DenseMatrix Lap     = CovL(f,lambda);
+      DenseMatrix Lap     = connectionLaplacian(f,lambda);
       const auto vertices = mySurfaceMesh->incidentVertices(f);
       for (auto i = 0u; i < nf; ++i)
         for (auto j = 0u; j < nf; ++j)
@@ -1129,7 +1131,7 @@ protected:
   /// @{
   
   ///Enum for operators in the internal cache strategy
-  enum OPERATOR { X_, D_, E_, A_, COGRAD_, GRAD_, FLAT_, B_, SHARP_, P_, M_, DIVERGENCE_, CURL_, L_,COV_L_};
+  enum OPERATOR { X_, D_, E_, A_, COGRAD_, GRAD_, FLAT_, B_, SHARP_, P_, M_, DIVERGENCE_, CURL_, L_,CON_L_};
   
   /// Update the face degree cache
   void updateFaceDegree()
