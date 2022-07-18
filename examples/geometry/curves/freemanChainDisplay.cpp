@@ -32,28 +32,20 @@
 #include <fstream>
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
-
-
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
-#include "DGtal/io/readers/MagickReader.h"
+#include "DGtal/io/readers/STBReader.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 
-
-
 #include "ConfigExamples.h"
-
 
 using namespace std;
 using namespace DGtal;
 using namespace Z2i;
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 int main()
@@ -64,7 +56,6 @@ int main()
 
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  
 
   // Creating FreemanChain from file
   std::string freemanChainFilename = examplesPath + "samples/contourS.fc";
@@ -73,11 +64,10 @@ int main()
   FreemanChain<Space::Integer> fc(fst);
   fst.close();
   
-  
   // Importing image with MagickReader
-  MagickReader<Image> reader;
-  std::string filenameImage = examplesPath + "samples/contourS.gif";
-  Image img = reader.importImage( filenameImage );
+  STBReader<Image> reader;
+  std::string filenameImage = examplesPath + "samples/contourS.png";
+  Image img = reader.import( filenameImage );
   
   Point ptInf = img.domain().lowerBound(); 
   Point ptSup = img.domain().upperBound(); 
@@ -93,7 +83,6 @@ int main()
   dgBoard.saveEPS("freemanChainDisplay.eps");
   dgBoard.saveSVG("freemanChainDisplay.svg");
   dgBoard.saveFIG("freemanChainDisplay.fig");
-  
   
   return 0;
 }

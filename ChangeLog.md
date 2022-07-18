@@ -51,6 +51,10 @@
     surfel (signed cell of a Khalimksy space). (David Coeurjolly,
     [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
+- *I/O*
+  - Imagemagick dependency and related classes. Image file format (png, jpg, tga, bmp, gif)
+    are now included in the DGtal core using `stb_image.h` and `stb_image_write.h`.
+   (David Coeurjolly, [#1648](https://github.com/DGtal-team/DGtal/pull/1648))
 
 ## Changes
 - *Image*
@@ -79,7 +83,7 @@
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
-
+  
 - *Build*
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
@@ -139,6 +143,7 @@
   - Fix LongVolReader that fails to read large values. It was why testLongvol and
     testCompressedVolWriter were failing on some configurations.
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
+  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
 
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
@@ -151,7 +156,8 @@
      (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
   - Fixing issue with the automatic deploy of the "nightly" documentation.
     (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
-
+  - Fix issue on computeHullThickness by adding angle tolerance to detect co-linearity vectors.
+    (Bertrand Kerautret, [#1647](https://github.com/DGtal-team/DGtal/pull/1647))
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))

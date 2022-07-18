@@ -68,7 +68,7 @@ namespace DGtal
    *
    * @see testPNMRawWriter.cpp
    */
-  template <typename TImage, typename TFunctor>
+  template <typename TImage, typename TFunctor = functors::Identity>
   struct PPMWriter
   {
     // ----------------------- Standard services ------------------------------
