@@ -105,11 +105,12 @@ auto u = heat.compute();
 
 \section sectVHM3 Examples
 
-From \ref exampleVectorHeatMethod.cpp code on a digital surface.
+From \ref exampleVectorHeatMethod.cpp code on a digital surface and a generic polygonal one.
 
 Input   | Result | Multiple Inputs | Result
 --|--|--|--
  @image html images/poly/VHM_1_source.png "" | @image html images/poly/VHM_1_source_solve.png "" | @image html images/poly/VHM_multiple_sources.png "" | @image html images/poly/VHM_multiple_sources_solve.png ""
+ @image html images/poly/bimba-1source.png "" | @image html images/poly/bimba-1vf.png "" | @image html images/poly/bimba-nsources.png "" | @image html images/poly/bimba-nvf.png ""
 
 
 */

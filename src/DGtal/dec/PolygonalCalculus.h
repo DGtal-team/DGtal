@@ -63,8 +63,8 @@ namespace DGtal
  * \langle u, \mathrm{div} v \rangle \f$. See also
  * https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
  *
- * @tparam TRealPoint a model of points R^3 (e.g. PointVector).
- * @tparam TRealVector a model of vectors in R^3 (e.g. PointVector).
+ * @tparam TRealPoint a model of points @f$\mathbb{R}^3@f$ (e.g. PointVector).
+ * @tparam TRealVector a model of vectors in @f$\mathbb{R}^3@f$ (e.g. PointVector).
  */
 template <typename TRealPoint, typename TRealVector>
 class PolygonalCalculus
@@ -126,8 +126,8 @@ public:
   /// and an embedder for the vertex position: function with two parameters, a face and a vertex
   /// which outputs the embedding in R^3 of the vertex w.r.t. to the face.
   /// @param surf an instance of SurfaceMesh
-  /// @param embedder an embedder
-  /// @param globalInternalCacheEnabled
+  /// @param embedder an embedder for the vertex position
+  /// @param globalInternalCacheEnabled if true, the global operator cache is enabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
                     const std::function<Real3dPoint(Face,Vertex)> &embedder,
                     bool globalInternalCacheEnabled = false):
@@ -141,8 +141,8 @@ public:
   /// and an embedder for the vertex normal: function with a vertex as
   /// parameter which outputs the embedding in R^3 of the vertex normal.
   /// @param surf an instance of SurfaceMesh
-  /// @param embedder an embedder
-  /// @param globalInternalCacheEnabled
+  /// @param embedder an embedder for the vertex position
+  /// @param globalInternalCacheEnabled if true, the global operator cache is enabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
                     const std::function<Vector(Vertex)> &embedder,
                     bool globalInternalCacheEnabled = false):
@@ -166,7 +166,9 @@ public:
                     const std::function<Real3dPoint(Face,Vertex)> &pos_embedder,
                     const std::function<Vector(Vertex)> &normal_embedder,
                     bool globalInternalCacheEnabled = false) :
-  mySurfaceMesh(&surf), myEmbedder(pos_embedder), myVertexNormalEmbedder(normal_embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
+  mySurfaceMesh(&surf), myEmbedder(pos_embedder),
+  myVertexNormalEmbedder(normal_embedder),
+  myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     init();
   };
@@ -210,7 +212,8 @@ public:
   /// @}
   
   // ----------------------- embedding  services  --------------------------
-  /// @name Embedding services
+  //MARK: Embedding services
+ /// @name Embedding services
   /// @{
   
   /// Update the embedding function.
@@ -220,8 +223,10 @@ public:
     myEmbedder = externalFunctor;
   }
   
+
   // ----------------------- Per face operators --------------------------------------
-  /// @name Per face operators
+  //MARK: Per face operator on scalars
+  /// @name Per face operators on scalars
   /// @{
   
   /// Return the vertex position matrix degree x 3 of the face.
@@ -548,61 +553,13 @@ public:
     setInCache(L_, f, op);
     return op;
   }
-
-  // ----------------------- Vector calculus----------------------------------
-private:
-  /// Project u on the orthgonal of n
-  /// \param u vector to project
-  /// \param n vector to build orthogonal space from
-  /// \return projected vector
-  static Vector project(const Vector & u, const Vector & n)
-  {
-    return u - (u.dot(n) / n.squaredNorm()) * n;
-  }
-
-  /// Conversion routines.
-  /// \brief toVector convert Real3dPoint to Eigen::VectorXd
-  /// \param x the vector
-  /// \return the same vector in eigen type
-  static Vector toVector(const Eigen::Vector3d & x)
-  {
-    Vector X(3);
-    for (int i = 0; i < 3; i++)
-      X(i) = x(i);
-    return X;
-  }
-
-  /// \brief toVec3 convert Real3dPoint to Eigen::Vector3d
-  /// \param x the vector
-  /// \return the same vector in eigen type
-  static Eigen::Vector3d toVec3(const Real3dPoint & x)
-  {
-    return Eigen::Vector3d(x(0),x(1),x(2));
-  }
-
-  /// Compute the (normalized) normal vector at a Vertex by averaging
-  /// the adjacent face normal vectors.
-  /// \param v the vertex to compute the normal from
-  /// \return 3D normal vector at vertex v
-  ///
-  Vector computeVertexNormal(const Vertex & v) const
-  {
-    Vector n(3);
-    n(0) = 0.;
-    n(1) = 0.;
-    n(2) = 0.;
-    for (auto f : mySurfaceMesh->incidentFaces(v))
-      n += vectorArea(f);
-    return n.normalized();
-  }
+  ///@}
   
-  ///@return the normal vector at vertex v, if no normal vertex embedder is
-  ///set, the normal will be computed
-  Eigen::Vector3d n_v(const Vertex & v) const
-  {
-    return myVertexNormalEmbedder(v).head(3);
-  }
-
+  // ----------------------- Vector calculus----------------------------------
+  //MARK: Vector Field Calculus
+  ///@name Per face operators on vector fields
+  ///@{
+  
 public:
   ///@return 3x2 matrix defining the tangent space at vertex v, with basis
   ///vectors in columns
@@ -689,8 +646,9 @@ public:
     return Tf(f).transpose() * Qvf(v,f) * Tv(v);
   }
 
-  ///@return Shape Operator at face f
-  DenseMatrix shape(const Face f) const
+  /// Shape operator on the face @a f.
+  ///@return the shape operator at face f
+  DenseMatrix shapeOperator(const Face f) const
   {
     DenseMatrix N(myFaceDegree[f],3);
     uint cpt = 0;
@@ -702,37 +660,6 @@ public:
     DenseMatrix GN = gradient(f) * N, Tf = T_f(f);
 
     return 0.5 * Tf.transpose() * (GN + GN.transpose()) * Tf;
-  }
-
-private: //Covariant operators routines
-  /// @return Block Diagonal matrix with Rvf for each vertex v in face f
-  DenseMatrix blockConnection(const Face & f) const
-  {
-    auto nf           = degree(f);
-    DenseMatrix RU_fO = DenseMatrix::Zero(nf * 2,nf * 2);
-    size_t cpt        = 0;
-    for (auto v : getSurfaceMeshPtr()->incidentVertices(f))
-    {
-      auto Rv                               = Rvf(v,f);
-      RU_fO.block<2,2>(2 * cpt,2 * cpt) = Rv;
-      ++cpt;
-    }
-    return RU_fO;
-  }
-
-  /// @return the tensor-kronecker product of M with 2x2 identity matrix
-  DenseMatrix kroneckerWithI2(const DenseMatrix & M) const
-  {
-    size_t h       = M.rows();
-    size_t w       = M.cols();
-    DenseMatrix MK = DenseMatrix::Zero(h * 2,w * 2);
-    for (size_t j = 0; j < h; j++)
-      for (size_t i = 0; i < w; i++)
-      {
-        MK(2 * j, 2 * i)         = M(j, i);
-        MK(2 * j + 1, 2 * i + 1) = M(j, i);
-      }
-    return MK;
   }
 
   /// @return Covariant Gradient Operator, returns the operator that acts on
@@ -775,7 +702,6 @@ private: //Covariant operators routines
     return uf_nabla;
   }
 
-public:
   /// Covarient gradient at a face a @a f of intrinsic vectors @u_f.
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
@@ -829,8 +755,9 @@ public:
     return L;
   }
   /// @}
+  
   // ----------------------- Global operators --------------------------------------
-
+  //MARK: Global Operators
   /// @name Global operators
   /// @{
 
@@ -1126,6 +1053,8 @@ public:
   /// @}
   
   // ------------------------- Protected Datas ------------------------------
+  //MARK: Protected
+  
 protected:
   /// @name Protected services and types
   /// @{
@@ -1168,9 +1097,95 @@ protected:
       myGlobalCache[key][f]  = ope;
   }
   
+  /// Project u on the orthgonal of n
+  /// \param u vector to project
+  /// \param n vector to build orthogonal space from
+  /// \return projected vector
+  static Vector project(const Vector & u, const Vector & n)
+  {
+    return u - (u.dot(n) / n.squaredNorm()) * n;
+  }
+  
+  /// Conversion routines.
+  /// \brief toVector convert Real3dPoint to Eigen::VectorXd
+  /// \param x the vector
+  /// \return the same vector in eigen type
+  static Vector toVector(const Eigen::Vector3d & x)
+  {
+    Vector X(3);
+    for (int i = 0; i < 3; i++)
+      X(i) = x(i);
+    return X;
+  }
+  
+  /// \brief toVec3 convert Real3dPoint to Eigen::Vector3d
+  /// \param x the vector
+  /// \return the same vector in eigen type
+  static Eigen::Vector3d toVec3(const Real3dPoint & x)
+  {
+    return Eigen::Vector3d(x(0),x(1),x(2));
+  }
+  
+  /// Compute the (normalized) normal vector at a Vertex by averaging
+  /// the adjacent face normal vectors.
+  /// \param v the vertex to compute the normal from
+  /// \return 3D normal vector at vertex v
+  ///
+  Vector computeVertexNormal(const Vertex & v) const
+  {
+    Vector n(3);
+    n(0) = 0.;
+    n(1) = 0.;
+    n(2) = 0.;
+    for (auto f : mySurfaceMesh->incidentFaces(v))
+      n += vectorArea(f);
+    return n.normalized();
+  }
+  
+  ///@return the normal vector at vertex v, if no normal vertex embedder is
+  ///set, the normal will be computed
+  Eigen::Vector3d n_v(const Vertex & v) const
+  {
+    return myVertexNormalEmbedder(v).head(3);
+  }
+
+  //Covariant operators routines
+  /// @return Block Diagonal matrix with Rvf for each vertex v in face f
+  DenseMatrix blockConnection(const Face & f) const
+  {
+    auto nf           = degree(f);
+    DenseMatrix RU_fO = DenseMatrix::Zero(nf * 2,nf * 2);
+    size_t cpt        = 0;
+    for (auto v : getSurfaceMeshPtr()->incidentVertices(f))
+    {
+      auto Rv                               = Rvf(v,f);
+      RU_fO.block<2,2>(2 * cpt,2 * cpt) = Rv;
+      ++cpt;
+    }
+    return RU_fO;
+  }
+  
+  /// @return the tensor-kronecker product of M with 2x2 identity matrix
+  DenseMatrix kroneckerWithI2(const DenseMatrix & M) const
+  {
+    size_t h       = M.rows();
+    size_t w       = M.cols();
+    DenseMatrix MK = DenseMatrix::Zero(h * 2,w * 2);
+    for (size_t j = 0; j < h; j++)
+      for (size_t i = 0; i < w; i++)
+      {
+        MK(2 * j, 2 * i)         = M(j, i);
+        MK(2 * j + 1, 2 * i + 1) = M(j, i);
+      }
+    return MK;
+  }
+
+  
+  
   /// @}
   
   // ------------------------- Internals ------------------------------------
+  //MARK: Internals
 private:
   
   ///Underlying SurfaceMesh

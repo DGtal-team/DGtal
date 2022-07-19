@@ -275,7 +275,7 @@ single point.
 
 
 \subsection mesh3D 3D Surface Mesh
-The static class \c MeshReader allows to import Mesh from OFF or OFS file format.
+The static class \c MeshReader allows to import Mesh from OBJ, OFF or OFS file format.
 Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with Viewer3D.
 
 The mesh importation can be done automatically from the extension file name by using the "<<" operator. For instance (see. \ref importMesh3D ):

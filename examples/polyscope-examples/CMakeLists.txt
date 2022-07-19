@@ -24,6 +24,7 @@ set(POLYSCOPE_SRCS
   dgtalCalculus-geodesic
   exampleVectorHeatMethod
   exampleHarmonicParametrization
+  example-bimbaPoly
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})
