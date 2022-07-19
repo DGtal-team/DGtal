@@ -613,7 +613,7 @@ public:
     return T.col(0) * I(0) + T.col(1) * I(1);
   }
 
-  /// \param I, set of intrinsic vectors, vectors indices must be the same as
+  /// \param I  set of intrinsic vectors, vectors indices must be the same as
   /// their associated vertex
   ///@return converts a set of intrinsic vectors to their extrinsic
   ///equivalent, expressed in correponding tangent frame
@@ -702,7 +702,7 @@ public:
     return uf_nabla;
   }
 
-  /// Covarient gradient at a face a @a f of intrinsic vectors @u_f.
+  /// Covarient gradient at a face a @a f of intrinsic vectors @a uf.
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
   /// @param f the face
@@ -717,7 +717,7 @@ public:
            transportAndFormatVectorField(f,uf);
   }
 
-  /// Compute the covariance projection at a face @a f of intrinsic vectors @u_f.
+  /// Compute the covariance projection at a face @a f of intrinsic vectors @a uf.
   /// @param uf list of all intrinsic vectors per vertex concatenated in a
   /// column vector
   /// @param f the face
