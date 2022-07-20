@@ -108,7 +108,7 @@ void myCallback()
     bool goodSelection = false;
     auto selection = polyscope::pick::getSelection();
     auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.first);
-    int idx = selection.second;
+    size_t idx = selection.second;
 
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("digital surface");

@@ -24,24 +24,13 @@ endif()
 foreach(FILE ${DGTAL_TESTS_SRC})
   DGtal_add_test(${FILE})
 endforeach()
+set(DGTAL_BENCH_SRC
+    benchmarkImageContainer)
 
-if(BUILD_BENCHMARKS)
-  set(DGTAL_BENCH_SRC)
-
-  if(WITH_BENCHMARK)
-    set(DGTAL_BENCH_SRC
-      ${DGTAL_BENCH_SRC}
-      benchmarkImageContainer
-    )
-  endif()
-
-  #Benchmark target
-  foreach(FILE ${DGTAL_BENCH_SRC})
-    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-    add_dependencies(benchmark ${FILE})
-  endforeach()
-endif()
-
+#Benchmark target
+foreach(FILE ${DGTAL_BENCH_SRC})
+  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+endforeach()
 
 #-----------------------
 #ITK based tests

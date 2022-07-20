@@ -72,8 +72,8 @@ namespace DGtal
    */
   namespace Hull2D
   {
-
-    
+    // used to compare point alignement in computeHullThickness. 
+    constexpr double angleTolerance = 1e-6;
     /// The 2 thickness definitions.
     enum ThicknessDefinition {HorizontalVerticalThickness, EuclideanThickness};
 
@@ -441,11 +441,28 @@ namespace DGtal
      * @param[in] b a second point defining the first line. 
      * @param[in] c a third point defining the second line. 
      * @param[in] d a third point defining the second line. 
-     
+     * @return the resulting angle is between 0 and 2M_PI.
      **/
     template<typename TInputPoint>
     inline
     double getAngle(const TInputPoint& a, const TInputPoint& b,const TInputPoint& c,const  TInputPoint& d);
+
+    
+    /**
+     * Determine if the two vectors (@a a,@a b) and (@a c,@a d) are co linear from opposite directions
+     * @param[in] a one of point defining the first line. 
+     * @param[in] b a second point defining the first line. 
+     * @param[in] c a third point defining the second line. 
+     * @param[in] d a third point defining the second line. 
+     * @return true if the two vectors are co linear from opposite directions, else it returns false. 
+     **/
+    template<typename TInputPoint>
+    inline
+    bool isCoLinearOpp(const TInputPoint& a, const TInputPoint& b,
+                       const TInputPoint& c, const TInputPoint& d );
+
+
+    
     
     /**
      * Computes the thickness of an anti podal pair (represented by
