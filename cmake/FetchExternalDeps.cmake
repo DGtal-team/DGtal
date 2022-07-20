@@ -22,4 +22,7 @@ if (BUILD_TESTING)
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
   include(Catch)
+
+  message(STATUS "    Google benchmark (v1.6.1)")
+  include(googlebenchmark)
 endif()

@@ -22,7 +22,6 @@ option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required, for Qt4 only disable WITH_QT5)." OFF)
 option(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 option(WITH_QT5 "Using Qt5." ON)
-option(WITH_BENCHMARK "With Google Benchmark." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 
 #----------------------------------
@@ -114,14 +113,6 @@ else (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
 endif()
 
-message(STATUS "")
-message(STATUS "For Developpers:")
-if(WITH_BENCHMARK)
-  set(LIST_OPTION ${LIST_OPTION} [GoogleBenchmark]\ )
-  message(STATUS "      WITH_BENCHMARK     true    (Google Benchmark)")
-else()
-  message(STATUS "      WITH_BENCHMARK     false   (Google Benchmark)")
-endif()
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
@@ -439,25 +430,6 @@ if(WITH_PATATE)
     message(STATUS "PATATE found. ${PATATE_INCLUDE_DIR} ")
  else()
    message(FATAL_ERROR "Patate headers not found.")
- endif()
-endif()
-
-# -----------------------------------------------------------------------------
-# Look for Google Benchmark
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(BENCHMARK_FOUND_DGTAL 0)
-if(WITH_BENCHMARK)
-  find_package(Benchmark REQUIRED)
-  if(BENCHMARK_FOUND)
-    set(BENCHMARK_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_BENCHMARK)
-    target_include_directories(DGtal PUBLIC ${BENCHMARK_INCLUDE_DIR})
-    target_link_libraries(DGtal PUBLIC ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
-  else()
-   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
  endif()
 endif()
 
