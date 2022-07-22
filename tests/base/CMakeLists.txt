@@ -36,18 +36,10 @@ endforeach()
 
 
 #--- Benchmark specific
-if (BUILD_BENCHMARKS)
-  set(DGTAL_TESTS_SRC_BENCHMARK)
+set(DGTAL_TESTS_SRC_BENCHMARK
+    testBenchmark)
+ 
+foreach(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
+  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+endforeach()
 
-  if (WITH_BENCHMARK)
-    set(DGTAL_TESTS_SRC_BENCHMARK
-      ${DGTAL_TESTS_SRC_BENCHMARK}
-      testBenchmark)
-  endif()
-
-  foreach(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
-    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-    add_dependencies(benchmark ${FILE})
-  endforeach()
-
-endif()
