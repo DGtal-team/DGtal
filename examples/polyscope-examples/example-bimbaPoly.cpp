@@ -407,7 +407,7 @@ int main()
   std::string inputFilename(examplesPath + "samples/bimbaPoly.obj" );
   
   Mesh<RealPoint> a3DMesh;
-  bool importOK = a3DMesh << inputFilename;
+  a3DMesh << inputFilename;
 
   for(auto it = a3DMesh.faceBegin(), itend = a3DMesh.faceEnd(); it != itend; ++it)
     faces.push_back(*it);
