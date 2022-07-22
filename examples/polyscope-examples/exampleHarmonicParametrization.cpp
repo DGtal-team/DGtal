@@ -219,7 +219,7 @@ void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
  */
 DenseMatrix HarmonicParametrization()
 {
-    uint n = surfmesh.nbVertices();
+    auto n = surfmesh.nbVertices();
     auto chains = computeManifoldBoundaryChains();
     //choose longest chain as boundary of the parametrization
     auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
