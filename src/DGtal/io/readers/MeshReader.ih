@@ -96,23 +96,34 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
 	throw dgtalio;
       } 
     }
-  while ( str[ 0 ] == '#' || str=="");
+  while (  str[ 0 ] == '#' || str=="" || str=="\r" || str=="\n" );
   std::istringstream str_in( str );
   int nbPoints, nbFaces, nbEdges;
   str_in >> nbPoints;
   str_in >> nbFaces;
   str_in >> nbEdges;
-
+  do
+    {
+      getline( infile, str );
+      if ( ! infile.good() )
+      {
+	trace.error() << "MeshReader : Invalid format in " << aFilename << std::endl;
+	throw dgtalio;
+      } 
+    }
+  while ( str[ 0 ] == '#' || str=="" || str=="\r" || str=="\n" );
+  str_in = std::istringstream ( str );
   // Reading mesh vertex 
   for(int i=0; i<nbPoints; i++)
   {
     TPoint p;
-    infile >> p[0];
-    infile >> p[1];
-    infile >> p[2];
+    str_in >> p[0];
+    str_in >> p[1];
+    str_in >> p[2];
     aMesh.addVertex(p);
     // Needed since a line can also contain vertex colors
     getline(infile, str);
+    str_in = std::istringstream ( str );
   }
   
   // Reading mesh faces
@@ -120,12 +131,12 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
   {
     // Reading the number of face vertex
     unsigned int aNbFaceVertex;
-    infile >> aNbFaceVertex;
+    str_in >> aNbFaceVertex;
     std::vector<unsigned int> aFace;
     for (unsigned int j=0; j< aNbFaceVertex; j++)
     {
       unsigned int anIndex;
-      infile >> anIndex;
+      str_in >> anIndex;
       aFace.push_back(anIndex);
     }
     if( invertVertexOrder )
@@ -138,35 +149,33 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       }
     }
     
-    // Needed since a can also contain vertex colors
-    getline(infile, str);
     // Contains colors:
     bool findValidColor=true;
-    if(str!="")
+
+    if(str_in.good())
     {
-      std::istringstream inColor(str);
       double colorR, colorG, colorB, colorT;
-      findValidColor=inColor.good();
-      if(findValidColor && inColor.good())
+      findValidColor=str_in.good();
+      if(findValidColor && str_in.good())
       {
-	inColor >> colorR;
+	str_in >> colorR;
       }
-      findValidColor &=!inColor.fail();
-      if(findValidColor && inColor.good())
+      findValidColor &=!str_in.fail();
+      if(findValidColor && str_in.good())
       {
-	inColor >> colorG;
+	str_in >> colorG;
       }
-      findValidColor &=!inColor.fail();
-      if(findValidColor && inColor.good())
+      findValidColor &=!str_in.fail();
+      if(findValidColor && str_in.good())
       {
-	inColor >> colorB;
+	str_in >> colorB;
       }
-      findValidColor &=!inColor.fail();
+      findValidColor &=!str_in.fail();
       
-      if(findValidColor && inColor.good()){
-	inColor >> colorT;
+      if(findValidColor && str_in.good()){
+	str_in >> colorT;
 	// Since alpha is optional:
-	if(inColor.fail()){
+	if(str_in.fail()){
 	  colorT=1.0;
 	}
       }
@@ -189,6 +198,10 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     {
       aMesh.addFace(aFace);
     }
+    getline(infile, str);
+    str_in = std::istringstream ( str );
+
+
   }
   
   return true;
