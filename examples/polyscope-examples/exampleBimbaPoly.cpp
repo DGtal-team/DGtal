@@ -172,7 +172,8 @@ std::pair<PC::Vector,PC::Vector> FixBoundaryParametrization(const std::vector<Ve
 {
   auto nb = boundary.size();
   auto n = surfmesh.nbVertices();
-  PC::Vector u = PC::Vector::Zero(n),v = PC::Vector::Zero(n);
+  PC::Vector u = PC::Vector::Zero(n);
+  PC::Vecotr v = PC::Vector::Zero(n);
   double totalBoundaryLength = 0;
   for (Vertex i = 0;i<nb;i++)
     totalBoundaryLength += edgeLength(boundary[(i+1)%nb],boundary[i]);
