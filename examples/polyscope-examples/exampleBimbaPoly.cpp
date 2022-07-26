@@ -155,7 +155,7 @@ std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1)
 
 /**
  * @brief edgeLength
- * @return length of the vector between vertex i and j
+ * @return Euclidean distance between vertex i and j
  * (the edge doesn't have to exist)
  */
 double edgeLength(Vertex i,Vertex j){
@@ -163,7 +163,7 @@ double edgeLength(Vertex i,Vertex j){
 }
 
 /**
- * @brief FixBoundaryParametrization maps the give boundary chain to uv
+ * @brief FixBoundaryParametrization maps the given boundary chain to uv
  *  coordinates (forms a circle, with arc-length parametrization)
  * @param boundary
  * @return the pair of uv parametrization as two vectors
