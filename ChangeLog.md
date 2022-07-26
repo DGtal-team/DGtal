@@ -41,7 +41,7 @@
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
-  - Updates to PolygonalCalculus: adding vector operators (mainly covariant 
+  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
     gradient and covariant projection as well as Connection-Laplacian. Also adding two 
     more examples: harmonic parametrization and vector heat method. (Baptiste GENEST, David
     Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
