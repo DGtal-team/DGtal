@@ -84,7 +84,7 @@ void addRandomSource()
 }
 
 /**
- * @brief diffuse solves systems and add the solution to the
+ * @brief Solve the linear systems and add the solution to the
  * display, if no source is given, adds a random one
  */
 void diffuse()
@@ -95,7 +95,7 @@ void diffuse()
 }
 
 /**
- * @brief precompute initialize VHM solvers, and source container
+ * @brief Precompute initialize VHM solvers, and source container
  */
 void precompute()
 {

@@ -49,7 +49,7 @@ The algorithm consists in solving three linear systems
 heat diffusion problem: Integrate the heat flow @f$ u @f$ such that
 @f$\Delta^{\nabla} u = \frac{\partial u}{\partial t}@f$ using a single step
 backward Euler step: @f$(Id - t\Delta^{\nabla}) u_t = \phi@f$. That step
-diffuses vector directions correctly using levi-civita connection but not
+diffuses vector directions correctly using Levi-Civita connection but not
 vector magnitudes hence we then solve the two following (scalar) diffusion
 systems:
   - @f$(Id - t\Delta) m_t = ||\phi||@f$

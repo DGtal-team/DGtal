@@ -57,7 +57,7 @@ typedef PC::SparseMatrix SparseMatrix;
 typedef PC::DenseMatrix DenseMatrix;
 typedef PC::Solver Solver;
 typedef PC::Vector Vector;
-typedef Eigen::Triplet<double> Triplet;
+typedef PC::Triplet Triplet;
 typedef std::vector<Vertex> chain;
 typedef DirichletConditions< PC::LinAlg > Conditions;
 typedef Conditions::IntegerVector IntegerVector;
