@@ -81,11 +81,13 @@ PC *calculus;
 
 /**
  * @brief computeManifoldBoundaryChains
- * @return returns the list of chains that borders the mesh
+ *
+ * @param boundaries a vector of chains coresponding to the surface mesh boundary
+ * @return true is the boundaries are disjoint and simple polygonal chains, false otherwise
  */
-std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1)
+bool computeManifoldBoundaryChains(std::vector<chain> &boundaries, int nb_chains = -1)
 {
-  
+  boundaries.clear();
   std::map<Vertex,bool> visited;
   std::map<Vertex,std::vector<Vertex>> adjacent;
   
@@ -103,14 +105,15 @@ std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1)
     
     adjacent[ij.first].push_back(ij.second);
     //vertex linked to more than 2 other vertices, hence cannot form a chain
-    assert(adjacent[ij.first].size()<=2);
+    ASSERT(adjacent[ij.first].size()<=2);
+    return false;
     
     adjacent[ij.second].push_back(ij.first);
     //vertex linked to more than 2 other vertices, hence cannot form a chain
-    assert(adjacent[ij.second].size()<=2);
+    ASSERT(adjacent[ij.second].size()<=2);
+    return false;
   }
   
-  std::vector<chain> boundaries;
   auto boundary_it = visited.begin();
   do{
     Vertex first = (*boundary_it).first;
@@ -143,19 +146,19 @@ std::vector<chain> computeManifoldBoundaryChains(int nb_chains = -1)
       }
       nb_iter++;
       if (nb_chains >= 0 && boundaries.size() >= (unsigned long)nb_chains )
-        return boundaries;
+        return true;
     }
     boundary_it = std::find_if(visited.begin(), visited.end(),
                                []
                                (std::pair<Vertex,bool> x){return !x.second;});
     //loop as long as all boundary vertices aren't visited
   } while(boundary_it != visited.end());
-  return boundaries;
+  return true;
 }
 
 /**
  * @brief edgeLength
- * @return Euclidean distance between vertex i and j
+ * @return Euclidean distance between the vertices i and j
  * (the edge doesn't have to exist)
  */
 double edgeLength(Vertex i,Vertex j){
@@ -173,7 +176,7 @@ std::pair<PC::Vector,PC::Vector> FixBoundaryParametrization(const std::vector<Ve
   auto nb = boundary.size();
   auto n = surfmesh.nbVertices();
   PC::Vector u = PC::Vector::Zero(n);
-  PC::Vecotr v = PC::Vector::Zero(n);
+  PC::Vector v = PC::Vector::Zero(n);
   double totalBoundaryLength = 0;
   for (Vertex i = 0;i<nb;i++)
     totalBoundaryLength += edgeLength(boundary[(i+1)%nb],boundary[i]);
@@ -225,7 +228,9 @@ void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
 DenseMatrix HarmonicParametrization()
 {
   auto n = surfmesh.nbVertices();
-  auto chains = computeManifoldBoundaryChains();
+  std::vector<chain> chains;
+  auto isManifold = computeManifoldBoundaryChains(chains);
+  FATAL_ERROR_MSG(!isManifold, "The boundary is not a collection of disjoint simple polygonal curves. Cannot create the parametrization");
   //choose longest chain as boundary of the parametrization
   auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
   
