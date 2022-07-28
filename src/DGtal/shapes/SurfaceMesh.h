@@ -436,6 +436,100 @@ namespace DGtal
     /// two left incident faces for instance.
     Edges computeNonManifoldEdges() const;
     
+    ///@return true if the boundary edges define a collection of
+    ///manifold 1d polygonal curves (non self intersection, 2 edges per vertex).
+    ///The method returns false if the surface mesh has no boundary.
+    bool isBoundariesManifold() const
+    {
+      //computes unordered list of boundary vertices
+      std::map<Vertex,bool> visited;
+      std::map<Vertex,std::vector<Vertex>> adjacent;
+      auto MBE = this->computeManifoldBoundaryEdges();
+      if (MBE.size()==0) return false;
+      
+      //BFS on edges
+      for (auto e : MBE)
+      {
+        auto ij = this->edgeVertices(e);
+        
+        visited[ij.first] = false;
+        visited[ij.second] = false;
+        
+        adjacent[ij.first].push_back(ij.second);
+        //vertex linked to more than 2 other vertices, hence cannot form a chain
+        if (adjacent[ij.first].size()>2) return false;
+        
+        adjacent[ij.second].push_back(ij.first);
+        //vertex linked to more than 2 other vertices, hence cannot form a chain
+        if (adjacent[ij.second].size()>2)  return false;
+      }
+      
+      return true;
+    }
+    
+    /*bool computeManifoldBoundaryChains(std::vector<chain> &boundaries, int nb_chains = -1)
+    {
+      boundaries.clear();
+            
+      //BFS on edges
+      for (auto e : MBE){
+        auto ij = surfmesh.edgeVertices(e);
+        
+        visited[ij.first] = false;
+        visited[ij.second] = false;
+        
+        adjacent[ij.first].push_back(ij.second);
+        //vertex linked to more than 2 other vertices, hence cannot form a chain
+        ASSERT(adjacent[ij.first].size()<=2);
+        return false;
+        
+        adjacent[ij.second].push_back(ij.first);
+        //vertex linked to more than 2 other vertices, hence cannot form a chain
+        ASSERT(adjacent[ij.second].size()<=2);
+        return false;
+      }
+      
+      auto boundary_it = visited.begin();
+      do{
+        Vertex first = (*boundary_it).first;
+        visited[first] = true;
+        
+        chain boundary;
+        boundary.push_back(first);
+        
+        Vertex current = first;
+        
+        size_t nb_iter = 0;
+        while (nb_iter < MBE.size()*2){
+          bool ok = false;
+          for (auto other : adjacent[current])
+            if (!visited[other]){
+              boundary.push_back(other);
+              current = other;
+              visited[other] = true;
+              ok = true;
+              break;
+            }
+          if (!ok){//all neighboors are visited
+            for (auto other : adjacent[current])
+              if (other == first){
+                boundaries.push_back(boundary);
+                break;
+              }
+            //if first vertex isn't found then this chain is not
+            //homeomorphic to a circle, hence isn't added to boundaries
+          }
+          nb_iter++;
+          if (nb_chains >= 0 && boundaries.size() >= (unsigned long)nb_chains )
+            return true;
+        }
+        boundary_it = std::find_if(visited.begin(), visited.end(),
+                                   []
+                                   (std::pair<Vertex,bool> x){return !x.second;});
+        //loop as long as all boundary vertices aren't visited
+      } while(boundary_it != visited.end());
+      return true;
+    }*/
     /// @}
     
     // ----------------------- Undirected simple graph services ----------------------
@@ -585,6 +679,17 @@ namespace DGtal
     /// @return the average of the length of edges.
     Scalar averageEdgeLength() const;
 
+    ///@return the Euclidean distance between any two vertices i and j.
+    ///@param i first vertex
+    ///@param j second vertex
+    Scalar distance(const Vertex i, const Vertex j) const
+    {
+      //unrolling for compiler optimization
+      const auto p=this->myPositions[ i ];
+      const auto q=this->myPositions[ j ];
+      return std::sqrt( (p[0]-q[0])*(p[0]-q[0]) + (p[1]-q[1])*(p[1]-q[1])+ (p[2]-q[2])*(p[2]-q[2]));
+    }
+    
     /// @param f any valid face index
     /// @return the average distance between the centroid of face \a f
     /// and its vertices.

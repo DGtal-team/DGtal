@@ -121,6 +121,11 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
         REQUIRE( polymesh.nbFaces() == 6 );
         REQUIRE( polymesh.Euler() == 1 );
       }
+    THEN( "Checking distances." )
+    {
+      REQUIRE( polymesh.distance(0,0) == Approx(0.0) );
+      REQUIRE( polymesh.distance(0,7) == Approx(std::sqrt(3)));
+    }
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
         BreadthFirstVisitor< PolygonMesh > visitor( polymesh, 0 );
@@ -147,7 +152,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
       }      
-    THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges" ) {
+    THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges, the boundary is a 1d manifold" ) {
       auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
       auto mani_inner   = polymesh.computeManifoldInnerEdges();
       auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
@@ -159,6 +164,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
       REQUIRE( mani_inner_c.size() == 9 );
       REQUIRE( mani_inner_u.size() == 0 );
       REQUIRE( non_mani.size()     == 0 );
+      REQUIRE( polymesh.isBoundariesManifold() == true);
     }
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Edge e13      = polymesh.makeEdge( 1, 3 );
