@@ -226,11 +226,11 @@ void initQuantities()
   trace.beginBlock("Basic quantities");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
   
-  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
-  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
-  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> normals;
-  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> vectorArea;
-  std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
+  std::vector<PC::Vector> gradients;
+  std::vector<PC::Vector> cogradients;
+  std::vector<PC::Real3dPoint> normals;
+  std::vector<PC::Real3dPoint> vectorArea;
+  std::vector<PC::Real3dPoint> centroids;
   
   std::vector<double> faceArea;
   
