@@ -118,7 +118,7 @@ public:
           mySurfaceMesh(&surf),  myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     myEmbedder =[&](Face f,Vertex v){ return mySurfaceMesh->position(v);};
-    myVertexNormalEmbedder = [&](Vertex v){ return computeVertexNormal(v);};
+    myVertexNormalEmbedder = [&](Vertex v){ return toReal3dVector(computeVertexNormal(v));};
     init();
   };
   
@@ -133,7 +133,7 @@ public:
                     bool globalInternalCacheEnabled = false):
   mySurfaceMesh(&surf), myEmbedder(embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myVertexNormalEmbedder = [&](Vertex v){ return computeVertexNormal(v); };
+    myVertexNormalEmbedder = [&](Vertex v){ return toReal3dVector(computeVertexNormal(v)); };
     init();
   };
   
@@ -144,7 +144,7 @@ public:
   /// @param embedder an embedder for the vertex position
   /// @param globalInternalCacheEnabled if true, the global operator cache is enabled
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
-                    const std::function<Vector(Vertex)> &embedder,
+                    const std::function<Real3dVector(Vertex)> &embedder,
                     bool globalInternalCacheEnabled = false):
       mySurfaceMesh(&surf), myVertexNormalEmbedder(embedder),
       myGlobalCacheEnabled(globalInternalCacheEnabled)
@@ -1127,6 +1127,16 @@ protected:
     return Eigen::Vector3d(x(0),x(1),x(2));
   }
   
+  /// Conversion routines.
+    /// \brief toReal3dVector converts Eigen::Vector3d to Real3dVector.
+    /// \param x the vector
+    /// \return the same vector in DGtal type
+    static Real3dVector toReal3dVector(const Eigen::Vector3d & x)
+    {
+      return { x(0), x(1), x(2)};
+    }
+    
+  
   /// Compute the (normalized) normal vector at a Vertex by averaging
   /// the adjacent face normal vectors.
   /// \param v the vertex to compute the normal from
@@ -1147,7 +1157,7 @@ protected:
   ///set, the normal will be computed
   Eigen::Vector3d n_v(const Vertex & v) const
   {
-    return myVertexNormalEmbedder(v).head(3);
+    return toVec3(myVertexNormalEmbedder(v));
   }
 
   //Covariant operators routines
@@ -1196,7 +1206,7 @@ private:
   std::function<Real3dPoint(Face, Vertex)> myEmbedder;
 
   ///Embedding function (vertex)->R^3 for the vertex normal.
-  std::function<Vector(Vertex)> myVertexNormalEmbedder;
+  std::function<Real3dVector(Vertex)> myVertexNormalEmbedder;
   
   ///Cache containing the face degree
   std::vector<size_t> myFaceDegree;
