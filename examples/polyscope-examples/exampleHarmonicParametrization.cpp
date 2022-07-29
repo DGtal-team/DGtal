@@ -38,6 +38,8 @@
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
 
+#include "ConfigExamples.h"
+
 ////////// NAMESPACES /////////
 
 using namespace DGtal;
@@ -185,12 +187,9 @@ int main(int argc, char **argv)
     params("surfaceComponents", "All");
 
     //load .vol
-    if ( argc <= 1 )
-    {
-      trace.error()<<"An inpout vol file must be provided."<<std::endl;
-      exit(2);
-    }
-    auto binary_image    = SH3::makeBinaryImage(argv[1], params );
+    std::string inputFilename(examplesPath + "samples/bunny-64.vol" );
+
+    auto binary_image    = SH3::makeBinaryImage(inputFilename, params );
 
     //offset K space to create boundary
     auto K               = SH3::getKSpace( binary_image, params );
