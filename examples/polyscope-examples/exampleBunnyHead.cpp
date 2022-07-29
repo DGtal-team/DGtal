@@ -37,7 +37,6 @@
 
 #include <DGtal/math/linalg/DirichletConditions.h>
 
-
 #include <DGtal/shapes/Mesh.h>
 #include <DGtal/io/readers/MeshReader.h>
 
