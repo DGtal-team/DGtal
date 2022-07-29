@@ -2,8 +2,6 @@
 # Exported from Luxology modo on Sat Feb 11 19:19:29 2012
 #
 
-mtllib bunnyhead.mtl
-
 o Mesh
 
 g default
@@ -6117,4 +6115,3 @@ f 892//892 856//856 1442//1442
 f 992//992 1143//1143 1154//1154
 f 711//711 205//205 271//271
 # polygons: 3000
-
