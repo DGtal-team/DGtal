@@ -647,7 +647,7 @@ public:
     return Tf(f).transpose() * Qvf(v,f) * Tv(v);
   }
 
-  /// Shape operator on the face @a f.
+  /// Shape operator on the face @a f (2x2 operator).
   ///@return the shape operator at face f
   DenseMatrix shapeOperator(const Face f) const
   {
