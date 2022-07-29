@@ -146,7 +146,8 @@ public:
   PolygonalCalculus(const ConstAlias<MySurfaceMesh> surf,
                     const std::function<Vector(Vertex)> &embedder,
                     bool globalInternalCacheEnabled = false):
-      mySurfaceMesh(&surf), myVertexNormalEmbedder(embedder), myGlobalCacheEnabled(globalInternalCacheEnabled)
+      mySurfaceMesh(&surf), myVertexNormalEmbedder(embedder),
+      myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
     myEmbedder = [&](Face f,Vertex v){ return mySurfaceMesh->position(v); };
     init();
