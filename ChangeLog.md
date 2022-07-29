@@ -61,7 +61,8 @@
     box of elements of the set in ImageFromSet.
     (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
   - Improved MeshReader for .off format in order to take into account more
-    comments. (Bertrand Kerautret, [#1652](https://github.com/DGtal-team/DGtal/pull/1652))
+    comments and other header code used in CGAL.
+    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
