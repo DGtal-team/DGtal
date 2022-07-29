@@ -43,6 +43,7 @@
 
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
+#include <polyscope/curve_network.h>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
@@ -144,11 +145,20 @@ void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
 DenseMatrix HarmonicParametrization()
 {
   auto n = surfmesh.nbVertices();
-  std::vector<chain> chains;
-  auto isManifold = computeManifoldBoundaryChains(chains);
-  FATAL_ERROR_MSG(!isManifold, "The boundary is not a collection of disjoint simple polygonal curves. Cannot create the parametrization");
+  
+  std::cout<<"Nb boundary edges = "<< surfmesh.computeManifoldBoundaryEdges().size()<<std::endl;
+  std::vector<chain> chains = surfmesh.computeManifoldBoundaryChains();
   //choose longest chain as boundary of the parametrization
+  std::cout<<"Nb boundaries  = "<< chains.size() << std::endl;
+  
   auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
+  
+  //Visualization of the boundary edges
+  std::vector<RealPoint> pos;
+  size_t cpt=0;
+  for(const auto v: B)
+    pos.push_back(surfmesh.position(v));
+  polyscope::registerCurveNetworkLoop("Longest boundary", pos);
   
   IntegerVector boundary = IntegerVector::Zero(n);
   for (Vertex v : B)
@@ -326,7 +336,7 @@ void myCallback()
 
 int main()
 {
-  std::string inputFilename(examplesPath + "samples/bimbaPoly.obj" );
+  std::string inputFilename(examplesPath + "samples/bunnyheadhole.obj" );
   
   Mesh<RealPoint> a3DMesh;
   a3DMesh << inputFilename;

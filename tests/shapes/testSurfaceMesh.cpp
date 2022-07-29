@@ -82,6 +82,28 @@ SurfaceMesh< PointVector<3,double>,
                       faces.cbegin(), faces.cend() );
 }
 
+
+SurfaceMesh< PointVector<3,double>,
+PointVector<3,double> > makeNonManifoldBoundary()
+{
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >  PolygonMesh;
+  typedef PolygonMesh::Vertices                 Vertices;
+  std::vector< RealPoint > positions;
+  std::vector< Vertices  > faces;
+  positions.push_back( RealPoint( 0, 0, 1 ) );
+  positions.push_back( RealPoint( 0, -1, 0 ) );
+  positions.push_back( RealPoint( 1, 0, 0 ) );
+  positions.push_back( RealPoint( 0, 1, 0 ) );
+  positions.push_back( RealPoint( 0, 0, 0 ) );
+  faces.push_back( { 0, 4, 1 } );
+  faces.push_back( { 0, 4, 2 } );
+  faces.push_back( { 0, 4, 3 } );
+  return PolygonMesh( positions.cbegin(), positions.cend(),
+                     faces.cbegin(), faces.cend() );
+}
+
 SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]" )
 {
   typedef PointVector<3,double>                RealPoint;
@@ -164,7 +186,6 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
       REQUIRE( mani_inner_c.size() == 9 );
       REQUIRE( mani_inner_u.size() == 0 );
       REQUIRE( non_mani.size()     == 0 );
-      REQUIRE( polymesh.isBoundariesManifold() == true);
     }
     THEN( "The face along (1,3) is a quadrangle (1,3,7,5)" ) {
       Edge e13      = polymesh.makeEdge( 1, 3 );
@@ -310,6 +331,28 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
       REQUIRE( polymesh.neighborVertices( 20 ).size()
                == readmesh.neighborVertices( 20 ).size() );
       REQUIRE( polymesh.vertexNormals().size() == readmesh.vertexNormals().size() );
+    }
+  }
+}
+
+SCENARIO( "SurfaceMesh< RealPoint3 > boundary tests", "[surfmesh][boundary]" )
+{
+  typedef PointVector<3,double>                      RealPoint;
+  typedef PointVector<3,double>                      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  auto polymesh = makeNonManifoldBoundary();
+  auto polymesh2 = makeBox();
+  WHEN( "Checking the topolopgy of the mesh boundary" ) {
+    auto chains = polymesh2.computeManifoldBoundaryChains();
+    THEN( "The box as a manifold boundary" ) {
+      CAPTURE(chains);
+      REQUIRE( polymesh2.isBoundariesManifold() == true);
+      REQUIRE( polymesh2.isBoundariesManifold(false) == true);
+      REQUIRE( chains.size() == 1);
+      REQUIRE( chains[0].size() == 6);
+    }
+    THEN( "The extra mesh does not have a manifold boundary" ) {
+      REQUIRE( polymesh.isBoundariesManifold() == false);
     }
   }
 }
