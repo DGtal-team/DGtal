@@ -566,7 +566,7 @@ public:
   DenseMatrix Tv(const Vertex & v) const
   {
     Eigen::Vector3d nv = n_v(v);
-    assert(std::abs(nv.norm() - 1.0) < 0.001);
+    ASSERT(std::abs(nv.norm() - 1.0) < 0.001);
     const auto & N            = getSurfaceMeshPtr()->neighborVertices(v);
     auto neighbor             = *N.begin();
     Real3dPoint tangentVector = getSurfaceMeshPtr()->position(v) -
@@ -586,7 +586,7 @@ public:
   DenseMatrix Tf(const Face & f) const
   {
     Eigen::Vector3d nf = faceNormal(f);
-    assert(std::abs(nf.norm() - 1.0) < 0.001);
+    ASSERT(std::abs(nf.norm() - 1.0) < 0.001);
     const auto & N = getSurfaceMeshPtr()->incidentVertices(f);
     auto v1        = *(N.begin());
     auto v2        = *(N.begin() + 1);
@@ -632,14 +632,14 @@ public:
     Eigen::Vector3d nf = faceNormal(f);
     Eigen::Vector3d nv = n_v(v);
     double c           = nv.dot(nf);
-    assert(c != -1.0);
+    ASSERT(std::abs( c + 1.0) > 0.0001);
     auto vv          = nv.cross(nf);
     DenseMatrix skew = bracket(vv);
     return Eigen::Matrix3d::Identity() + skew +
            1.0 / (1.0 + c) * skew * skew;
   }
 
-  ///@return Levi-Citiva connection from vertex v tangent space to face f
+  ///@return Levi-Civita connection from vertex v tangent space to face f
   ///tangent space (2x2 rotation matrix)
   DenseMatrix Rvf(const Vertex & v, const Face & f) const
   {
