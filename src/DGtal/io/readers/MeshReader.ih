@@ -75,10 +75,10 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       trace.error() << "MeshReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
-  if ( str.substr(0,3) != "OFF" && str.substr(0,4) != "NOFF")
+  if ( str.substr(0,3) != "OFF" && str.substr(0,4) != "NOFF" && str.substr(0,5) != "CNOFF")
     {
       std::cerr <<"*" <<str<<"*"<< std::endl;
-      trace.error() << "MeshReader : No OFF or NOFF format in " << aFilename << std::endl;
+      trace.error() << "MeshReader : No OFF, NOFF or CNOFF format in " << aFilename << std::endl;
       throw dgtalio;
     }
   if ( str.substr(0,4) == "NOFF")
