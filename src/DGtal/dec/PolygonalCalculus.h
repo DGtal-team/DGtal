@@ -665,8 +665,8 @@ public:
 
   /// @return to fit @cite degoes2020discrete paper's notations,
   /// this function maps all the per vertex vectors (expressed in the (2*nf)
-  /// vector form) to the nfx2 matrix with transported vectors (to face f) in
-  /// each row
+  /// vector form) into the nfx2 matrix with transported vectors (to face f) in
+  /// each row.
   /// @note Unlike the rest of the per face operators, the
   /// covariant operators need to be applied directly to the restriction of
   /// the vector field to the face,
