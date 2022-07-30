@@ -205,6 +205,8 @@ Operator  | Output | Description
  In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
  gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Pleas refer to @cite degoes2020discrete, section 5, for details.
  
+ As an example, these operators can be used to interpolate vector fields as illustrated in @ref moduleVectorsInHeat.
+ 
 @image html images/poly/transport_to_face.png "Transport of a vertex based vector field to face tangent plane"
 
 \subsubsection sectcovOP Covariant Gradient and Projection
