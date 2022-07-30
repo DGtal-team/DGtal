@@ -663,26 +663,6 @@ public:
     return 0.5 * Tf.transpose() * (GN + GN.transpose()) * Tf;
   }
 
-  /// @return Covariant Gradient Operator, returns the operator that acts on
-  /// the concatenated vectors. When applied, gives the associated 2x2 matrix
-  /// in the isomorphic vector form (a b c d)^t to be used in the dirichlet
-  /// energy (vector laplacian) G∇_f
-  DenseMatrix energyCovG_f(const Face & f) const
-  {
-    return kroneckerWithI2(Tf(f).transpose() * gradient(f)) *
-           blockConnection(f);
-  }
-
-  /// @return Projection Gradient Operator, returns the operator that acts on
-  /// the concatenated vectors. When applied, gives the associated nfx2 matrix
-  /// in the isomorphic vector form (a b c d ...)^t to be used in the
-  /// dirichlet energy (vector laplacian) P∇_f
-  DenseMatrix energyCovP_f(const Face & f) const
-  {
-    return kroneckerWithI2(P(f) * D(f)) * blockConnection(f);
-    ;
-  }
-
   /// @return to fit @cite degoes2020discrete paper's notations,
   /// this function maps all the per vertex vectors (expressed in the (2*nf)
   /// vector form) to the nfx2 matrix with transported vectors (to face f) in
@@ -732,13 +712,34 @@ public:
   {
     return P(f) * D(f) * transportAndFormatVectorField(f,uf);
   }
-
+  
+  /// @return Covariant Gradient Operator, returns the operator that acts on
+  /// the concatenated vectors. When applied, gives the associated 2x2 matrix
+  /// in the isomorphic vector form (a b c d)^t to be used in the dirichlet
+  /// energy (vector laplacian) G∇_f.
+  /// Used to define the connection Laplacian.
+  DenseMatrix covariantGradient_f(const Face & f) const
+  {
+    return kroneckerWithI2(Tf(f).transpose() * gradient(f)) * blockConnection(f);
+  }
+  
+  /// @return Projection Gradient Operator, returns the operator that acts on
+  /// the concatenated vectors. When applied, gives the associated nfx2 matrix
+  /// in the isomorphic vector form (a b c d ...)^t to be used in the
+  /// dirichlet energy (vector laplacian) P∇_f.
+  /// Used to define the connection Laplacian.
+  DenseMatrix covariantProjection_f(const Face & f) const
+  {
+    return kroneckerWithI2(P(f) * D(f)) * blockConnection(f);
+    ;
+  }
+  
   /// L∇ := -(afG∇tG∇+λP∇tP∇)
   /// @return Connection/Vector laplacian at face f
   /// @note The sign convention for the divergence and the Laplacian
   /// operator is opposite to the one of @cite degoes2020discrete.
   /// This is to match the usual mathematical
-  /// convention that the Laplacian (and the Laplacian-Beltrami) has
+  /// convention that the laplacian (and the Laplacian-Beltrami) has
   /// negative eigenvalues (and is the sum of second derivatives in
   /// the cartesian grid). It also follows the formal adjointness of
   /// exterior derivative and opposite of divergence as relation \f$
@@ -749,8 +750,8 @@ public:
   {
     if (checkCache(CON_L_,f))
       return myGlobalCache[CON_L_][f];
-    DenseMatrix G = energyCovG_f(f);
-    DenseMatrix P = energyCovP_f(f);
+    DenseMatrix G = covariantGradient_f(f);
+    DenseMatrix P = covariantProjection_f(f);
     DenseMatrix L = -(faceArea(f) * G.transpose() * G + lambda * P.transpose() * P);
     setInCache(CON_L_,f,L);
     return L;

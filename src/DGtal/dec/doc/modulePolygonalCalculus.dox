@@ -198,11 +198,15 @@ For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ no
 Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
-`calculus.LaplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+`calculus.laplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
 
-\subsection sectcovOPL Covariant Operators and Vector-Laplacian
+\subsection sectcovOPL Operators on directional fields and Connection Laplacian
 
-@image html images/poly/transport_to_face.png "transport of a vertex based vector field to face tangent plane"
+ In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
+ gradient of a vector field --first-order derivative on VF--,  and connection laplacian).
+ 
+ 
+@image html images/poly/transport_to_face.png "Transport of a vertex based vector field to face tangent plane"
 
 \subsubsection sectcovOP Covariant Gradient and Projection
 
@@ -215,15 +219,15 @@ where \f$u_{v_i}\f$ are the intrinsic vectors at each adjacent vertex expressed 
 
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.CovariantGradient(f,uf)`  | \f$ 2\times 2\f$ | Covariant Gradient defined for intrinsic vector valued 0-forms at face f
-`calculus.CovariantProjection(f,uf)`|  \f$ n_f \times 2\f$  | Covariant Projection operator defined for intrinsic vector valued 0-forms at face f
+`calculus.covariantGradient(f,uf)`  | \f$ 2\times 2\f$ | Covariant Gradient defined for intrinsic vector valued 0-forms at face f
+`calculus.covariantProjection(f,uf)`|  \f$ n_f \times 2\f$  | Covariant Projection operator defined for intrinsic vector valued 0-forms at face f
 
 \subsubsection sectVL Vector Laplacian
 
 Using the same format for vector fields as above, we can define a Vector Laplacian operator per face.
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.CovL(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix 
+`calculus.connectionLaplacian(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix 
 
 
 \section sectPolygonalCalculusGlo Global calculus
