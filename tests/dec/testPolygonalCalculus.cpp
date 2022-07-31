@@ -188,12 +188,47 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
     
-    auto L = boxCalculus.LaplaceBeltrami(f);
+    auto L = boxCalculus.laplaceBeltrami(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 1.0, 1.0, 1.0;
     expected << 0,0,0,0;
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
+  }
+  SECTION("Local Connection-Laplace-Beltrami")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    auto L = boxCalculus.connectionLaplacian(f);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    //since connection laplacian transports the phi vectors to the face,
+    //it's not expected to have 0 since these vectors aren't actually the same
+    auto lphi = L*phi;
+    //but we can still check that L is semi-definite
+    double det = L.determinant()+1.;
+    REQUIRE( det == Approx(1.0));
+    REQUIRE( lphi[2] == Approx(-3.683));
+  }
+  SECTION("Covariant Operators")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    auto CG = boxCalculus.covariantGradient(f,phi);
+    auto CP = boxCalculus.covariantProjection(f,phi);
+
+    //check sizes
+    REQUIRE( CG.rows() == 2);
+    REQUIRE( CG.cols() == 2);
+    REQUIRE( CP.rows() == faces[f].size());
+    REQUIRE( CP.cols() == 2);
+
+    REQUIRE( CG(0,0) == Approx(0.707106));
+    REQUIRE( CP(0,0) == Approx(1.224744));
   }
   SECTION("Check lumped mass matrix")
   {

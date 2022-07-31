@@ -18,7 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page modulePolygonalCalculus Discrete differential calculus on polygonal surfaces
-@writers David Coeurjolly
+@writers David Coeurjolly, Baptiste GENEST
 
 [TOC]
 
@@ -198,9 +198,38 @@ For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ no
 Operator  | Output | Description
 ------------- | ------------- | ----
 `calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
-`calculus.LaplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+`calculus.laplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
 
+\subsection sectcovOPL Operators on directional fields and Connection Laplacian
+
+ In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
+ gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Pleas refer to @cite degoes2020discrete, section 5, for details.
  
+ As an example, these operators can be used to interpolate vector fields as illustrated in @ref moduleVectorsInHeat.
+ 
+@image html images/poly/transport_to_face.png "Transport of a vertex based vector field to face tangent plane"
+
+\subsubsection sectcovOP Covariant Gradient and Projection
+
+Since these operators are themselves matrices they cannot be constructed in the same way as the others ( Operator builder Matrix * function restricted to face Vector ), you need the specify the local vector field as well, in the same format as in @cite degoes2020discrete,
+i.e. 
+\f{eqnarray*}{
+    u_{f} = [u_{v_1}^t \ldots u_{v_{nf}}^t]^t
+\f}
+where \f$u_{v_i}\f$ are the intrinsic vectors at each adjacent vertex expressed in their own tangent basis.
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.covariantGradient(f,uf)`  | \f$ 2\times 2\f$ | Covariant Gradient defined for intrinsic vector valued 0-forms at face f
+`calculus.covariantProjection(f,uf)`|  \f$ n_f \times 2\f$  | Covariant Projection operator defined for intrinsic vector valued 0-forms at face f
+
+\subsubsection sectVL Vector Laplacian
+
+Using the same format for vector fields as above, we can define a Vector Laplacian operator per face.
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.connectionLaplacian(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix 
+
 
 \section sectPolygonalCalculusGlo Global calculus
 
@@ -222,6 +251,7 @@ inner product for 0-forms (i.e. scalar functions), as well as its
 inverse PolygonalCalculus::globalInverseLumpedMassMatrix(), generally
 used when one solves a weak problem and wishes to get a pointwise
 per-vertex solution.
+
 
 \section secLap Example: Solving a Laplace problem
 
@@ -247,14 +277,15 @@ The overall code is:
 
 Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
 
-
 Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
 --|--|--
 @image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png "" 
 @image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png "" 
 @image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png "" 
 
+\subsection Global Vector Calculus
 
+Global Vector Laplace/Poisson problems can also be solved by the same way, using instead PolygonalCalculus<SurfMesh>::globalConnectionLaplace() and PolygonalCalculus<SurfMesh>::doubledGlobalLumpedMassMatrix(). One can find examples of such use in the \ref VectorsInHeat class.
 
 \section sectMisc Miscellaneous
 

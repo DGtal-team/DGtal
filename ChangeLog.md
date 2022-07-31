@@ -40,6 +40,10 @@
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+    gradient and covariant projection as well as Connection-Laplacian). Also adding two
+    more examples: harmonic parametrization and vectors in heat method. (Baptiste GENEST, David
+    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
 
 - *Mathematical Package*
   - Add Lagrange polynomials and Lagrange interpolation
@@ -64,7 +68,9 @@
     format support. New option to keep set domain or to compute current bounding
     box of elements of the set in ImageFromSet.
     (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
-
+  - Improved MeshReader for .off format in order to take into account more
+    comments and other header code used in CGAL.
+    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))

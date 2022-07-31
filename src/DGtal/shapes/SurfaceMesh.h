@@ -110,7 +110,7 @@ namespace DGtal
     typedef std::pair< Face, Scalar >               WeightedFace;
     /// The type that defines a list/range of vertices (e.g. to define faces)
     typedef std::vector< Vertex >                   Vertices;
-    /// The type that defines a list/range of faces
+    /// The type that defines a list/range of edges
     typedef std::vector< Edge >                     Edges;
     typedef std::vector< WeightedEdge >             WeightedEdges;
     typedef std::vector< Face >                     Faces;
@@ -436,6 +436,107 @@ namespace DGtal
     /// two left incident faces for instance.
     Edges computeNonManifoldEdges() const;
     
+    ///@return true if the boundary edges define a collection of
+    ///manifold 1d polygonal curves (at most 2 adjecent edges per vertex).
+    ///If checkClosed is set to true, we also check that all polygonal curves are closed.
+    ///
+    ///The method returns false if the surface mesh has no boundary.
+    ///
+    ///@param checkClosed if true, we check that each vertex has exactly two adejcent edges.
+    bool isBoundariesManifold(bool checkClosed = true) const
+    {
+      //computes unordered list of boundary vertices
+      std::map<Vertex,Vertices> adjacent;
+      auto MBE = this->computeManifoldBoundaryEdges();
+      if (MBE.size()==0) return false;
+      
+      for (auto e : MBE)
+      {
+        auto ij = this->edgeVertices(e);
+        adjacent[ij.first].push_back(ij.second);
+        if (adjacent[ij.first].size()>2) return false;
+        adjacent[ij.second].push_back(ij.first);
+        if (adjacent[ij.second].size()>2)  return false;
+      }
+      //we may check if all curves are closed.
+      if (checkClosed)
+        for(const auto &adj : adjacent)
+          if (adj.second.size() != 2) return false;
+      return true;
+    }
+    
+    /// Extract the boundary of a surface mesh as a collection of sequences
+    /// of vertices. The boundaries must be 1d manifold polygonal curves.
+    /// @pre the boundaries must be manifold.
+    ///
+    ///@return a vector of polygonal simple curves (vector of vertices).
+    std::vector<Vertices> computeManifoldBoundaryChains() const
+    {
+      std::vector<Vertices> boundaries;
+      Vertices boundary;
+      auto MBE = this->computeManifoldBoundaryEdges();
+      std::map<Vertex,bool> visited;
+      std::map<Vertex,Vertices> adjacent;
+      
+      ASSERT_MSG(MBE.size()>0,"The surface mesh must have boundary edges");
+      ASSERT_MSG(this->isBoundariesManifold(), "The surface mesh mush have manifold boundaries");
+      
+      //Coompute adjecency relationships
+      for (auto e : MBE)
+      {
+        auto ij = this->edgeVertices(e);
+        visited[ij.first] = false;
+        visited[ij.second] = false;
+        adjacent[ij.first].push_back(ij.second);
+        adjacent[ij.second].push_back(ij.first);
+      }
+      
+      auto boundary_it = visited.begin();
+      
+      while(boundary_it != visited.end() )
+      {
+        Vertex first = (*boundary_it).first;
+        visited[first] = true;
+        boundary.clear();
+        boundary.push_back(first);
+        
+        Vertex current = first;
+        size_t nb_iter = 0;
+        bool pushed=false;
+        
+        while ((!pushed) && (nb_iter < MBE.size()*2))
+        {
+          bool ok = false;
+          for (auto other : adjacent[current])
+            if (!visited[other])
+            {
+              boundary.push_back(other);
+              current = other;
+              visited[other] = true;
+              ok = true;
+              break;
+            }
+          if (!ok)
+          {
+            //all neighboors are visited
+            for (auto other : adjacent[current])
+              if (other == first)
+              {
+                boundaries.push_back(boundary);
+                pushed = true;
+                break;
+              }
+            //if first vertex isn't found then this chain is not
+            //homeomorphic to a circle, hence isn't added to boundaries
+          }
+          nb_iter++;
+        }
+        boundary_it = std::find_if(visited.begin(), visited.end(),
+                                   []
+                                   (std::pair<Vertex,bool> x){return !x.second;});
+      }
+      return boundaries;
+    }
     /// @}
     
     // ----------------------- Undirected simple graph services ----------------------
@@ -585,6 +686,17 @@ namespace DGtal
     /// @return the average of the length of edges.
     Scalar averageEdgeLength() const;
 
+    ///@return the Euclidean distance between any two vertices i and j.
+    ///@param i first vertex
+    ///@param j second vertex
+    Scalar distance(const Vertex i, const Vertex j) const
+    {
+      //unrolling for compiler optimization
+      const auto p=this->myPositions[ i ];
+      const auto q=this->myPositions[ j ];
+      return std::sqrt( (p[0]-q[0])*(p[0]-q[0]) + (p[1]-q[1])*(p[1]-q[1])+ (p[2]-q[2])*(p[2]-q[2]));
+    }
+    
     /// @param f any valid face index
     /// @return the average distance between the centroid of face \a f
     /// and its vertices.

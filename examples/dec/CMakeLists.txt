@@ -18,7 +18,6 @@ if (WITH_EIGEN)
         exampleHeatLaplace
         exampleDiscreteExteriorCalculusChladni
         exampleDiscreteExteriorCalculusUsage
-
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC2_DEC})
