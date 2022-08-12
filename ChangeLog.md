@@ -12,6 +12,7 @@
     digital sets in nD, and helper classes for using full convexity in
     practice (local geometric analysis, tangency and shortest paths)
     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+  - Add Affine Transformation in the geometry transformation module (Phuc Ngo,[#1571](https://github.com/DGtal-team/DGtal/pull/1571))  
 
 - *Mathematical Package*
    - Add Lagrange polynomials and Lagrange interpolation
