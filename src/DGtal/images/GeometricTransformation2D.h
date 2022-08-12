@@ -163,7 +163,7 @@ protected:
 public:
     /**
        * Constructor.
-       * @param aGeometricFunctor  - geometric transformation functor.
+       * @param aFunctor  - geometric transformation functor.
        */
     DomainGeometricTransformation2D ( const  TGeometricTransformFunctor & aFunctor ) : transform ( aFunctor ) {}
 
