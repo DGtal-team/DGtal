@@ -1,0 +1,332 @@
+/**
+ * @file 
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2021/09/07
+ *
+ * Documentation file for feature PolygonalCalculus
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page modulePolygonalCalculus Discrete differential calculus on polygonal surfaces
+@writers David Coeurjolly, Baptiste GENEST
+
+[TOC]
+
+@since 1.3
+
+  Part of package \ref packageDEC.
+
+In this documentation page, we detail the operators and tools for differential
+ calculus computations on generic polygonal surfaces
+(PolygonalCalculus class).  Such polygonal surfaces could be generic
+meshes (with non-planar, non-convex faces), or an embeddeing of a digital surface.
+
+The overall idea, compared to the \ref moduleDECIntroduction
+approach, is to define per face operators which can be later combined
+to define global ones.
+
+This module documents the operators defined in \cite degoes2020discrete. An additional documentation page showcasing classical use cases of these operators for geometry processing on digital surfaces will be added.
+
+@note The sign convention for the divergence and the Laplacian
+operator is opposite to the one of @cite degoes2020discrete. This is
+to match the usual mathematical convention that the Laplacian (and the
+Laplacian-Beltrami) has negative eigenvalues (and is the sum of second
+derivatives in the cartesian grid). It also follows the formal
+adjointness of exterior derivative and opposite of divergence as
+relation \f$ \langle \mathrm{d} u, v \rangle = - \langle u,
+\mathrm{div} v \rangle \f$. See also
+https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
+
+@note All illustrations below have been obtained using the
+DGtal+[polyscope](https://polyscope.run) examples \ref
+dgtalCalculus.cpp, \ref dgtalCalculus-single.cpp and \ref dgtalCalculus-poisson.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
+
+@warning The implementation heavily relies on implicit operators with many Eigen based small matrice constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
+ 
+ 
+
+\section sectPolygonalCalculusIntro Introduction
+
+The main idea of \cite degoes2020discrete is to define discrete
+operators per face, which can be combined to obtain a global operator
+acting on meshes. For vertex valued scalar or vector fields, this
+class implements elementary differential operators (gradient,
+derivatives, sharp/flat, Laplace-Beltrami...) which can be combined to
+define more complex ones, or to be used when solving variational
+geometry processing problems on meshes or digital surfaces.
+
+The operators detailed @cite degoes2020discrete extend Mimetic Finite
+Difference and Virtual Element Method operators to arbitrary 3d
+polygons and discrete surfaces.
+
+
+\section sectPolygonalCalculus2 Per face operators
+
+Let us consider a single (non-planar, non-convex) face example. Using
+
+@code
+using SurfMesh = SurfaceMesh<Z3i::RealPoint,Z3i::RealVector>;
+using namespace Z3i;
+
+//Vertices
+std::vector<RealPoint> positions={ {0,0,0},{20,0,0},{20,10,0},{10,8,5}, {0,15,1} };
+//Single face
+std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4 }};
+
+mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
+  
+PolygonalCalculus<SurfMesh> calculus(mesh);
+@endcode
+
+we obtain a  SurfaceMesh instance with a unique face and its associated PolygonalCalculus object.
+
+ Example| Example 
+--|--
+@image html images/poly/face.png "" | @image html images/poly/face_rot.png ""
+
+Let us add a scalar function on vertices. For instance, using Eigen syntax, we can use;
+
+@code
+PolygonalCalculus<SurfMesh>::Vector phi(5); //5 vertices
+phi << 1.0, 2.0, 0.0, 5.0 ,1.5;
+@endcode
+
+@note As the face is nonconvex / nonplanar, the vertex  scalar quantity  interpolation and the rendering in polyscope may be a bit odd.
+
+Phi| Interpolated phi
+--|--
+@image html images/poly/face_phi.png "" | @image html images/poly/face_phi_interp.png  ""
+
+
+When constructing a PolygonalCalculus<SurfMesh> instance, you can
+provide an external function to embed the vertex positions. By
+default, the positions of the surface mesh vertices (@a positions @a in the
+previous example) is used. If you want to update the embedding (could
+be useful on digital surfaces), the user can specify the mapping
+`(Face,Vertex)->RealPoint`. Please refer to
+PolygonalCalculus<SurfMesh>::setEmbedder for an example. 
+
+@note As the Face id is a parameter of the embedder, a given vertex
+can have different embeddings for all its incident faces.
+
+
+\subsection susub1 Basic operators
+
+We first describe some standard per face operators. Note that for all
+extrinsic operators that require the vertex position in @f$
+\mathbb{R}^3 @f$, the embedder is used.  For these quantities,
+vector/point are encoded as Eigen 3x1 vectors and collections of n
+points as an @f$ n\times 3@f$ matrix.
+
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.X(f)`  | \f$ n_f\times 3\f$ | positions of the face vertices (n_f points in @f$ \mathbb{R}^3 @f$)
+`calculus.E(f)`  | \f$ n_f\times 3\f$ |  the edge vectors of the face (n_f vectors in @f$ \mathbb{R}^3 @f$)
+`calculus.A(f)`  | \f$ n_f\times n_f\f$ | averaging operator that averages some values on vertices to values on edges (vectors \f$(p_{i+1}-p_{i})\in\mathbb{R}^3\f$)
+`calculus.B(f)`  | \f$ n_f\times 3\f$ | the edge mid-points of the face (n_f points in @f$ \mathbb{R}^3 @f$)
+`calculus.vectorArea(f)`  | \f$ n_f\f$ vector | the corrected vector area of the face (uses the embedder)
+`calculus.faceArea(f)`  | scalar | the corrected face  area  (uses the embedder)
+`calculus.faceNormalVector(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.faceNormalAsDGtalVector(f)`| RealVector | the corrected (unitary) normal vector of the face  (uses the embedder)
+`calculus.centroid(f)`| vector in \f$\mathbb{R}^3\f$ | the corrected centroid of the face
+`calculus.centroidAsDGtalVector(f)`| RealVector | the corrected centroid of the face
+
+\subsubsection subderiv Derivative operators
+
+Derivative operators act on a scalar field defined on the vertex of the face. 
+
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.D(f)`  | \f$ n_f\times n_f\f$ | derivative operator (d0 in DEC) mapping scalar values on vertices to values on edges (vertex scalars to a  1-form)
+`calculus.gradient(f)`|  \f$ 3 \times n_f\f$  | the gradient operator for vertex valued scalar functions of the face f
+`calculus.coGradient(f)`|  \f$ 3 \times n_f\f$  | the co-gradient operator for vertex valued scalar functions of the face f
+
+
+A*phi | D*phi (discrete 1-form)
+--| --
+@image html images/poly/A_phi.png "" | @image html images/poly/D_phi.png "" 
+
+
+gradient | co-gradient | corrected normal
+--| -- | --
+@image html images/poly/gradient.png ""  | @image html images/poly/cogradient.png ""  | @image html images/poly/normal.png ""
+
+
+
+
+
+\subsubsection subdflat Flat/Sharp and Projection Operators
+
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.flat(f)`  | \f$ n_f\times 3\f$ | Flat operator that maps an ambient vector to a local discrete 1-form
+`calculus.sharp(f)`|  \f$ 3 \times n_f\f$  | Sharp operator that maps a discrete 1-form to an ambient vector
+`calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form that removes the associated non-tangential part of the vector reconstructed using the sharp operator
+
+Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ sharp_f flat_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but  @f$ flat_f sharp_f v = v@f$ for any vector v does not hold  (due to rank deficiencies of the matrices).
+This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (sharp_f flat_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
+
+
+For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators and the classical DEC or FEM ones.
+
+
+
+a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form) | Sharp of the flat (green vector) | Sharp and normal vector (orange vector)
+--| -- | -- | -- | --
+@image html images/poly/face_vec.png ""  | @image html images/poly/face_vec1.png ""  | @image html images/poly/face_flat1form.png ""  | @image html images/poly/face_sharp.png ""   | @image html images/poly/face_sharpnorm.png ""
+
+
+
+\subsection sublap Inner Product and Laplace-Beltrami Operators
+
+
+For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator). 
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.M(f,lambda)`  | \f$ n_f\times n_f\f$ | Inner product operator on discrete 1-forms operator (lambda is a regularization parameter, see @cite degoes2020discrete)
+`calculus.laplaceBeltrami(f,lambda)`|  \f$ n_f \times n_f\f$  | Laplace-Beltrami operator \f$ D^tMD \f$ (lambda is a regularization parameter, see @cite degoes2020discrete), the matrix is PSD
+
+\subsection sectcovOPL Operators on directional fields and Connection Laplacian
+
+ In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
+ gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Pleas refer to @cite degoes2020discrete, section 5, for details.
+ 
+ As an example, these operators can be used to interpolate vector fields as illustrated in @ref moduleVectorsInHeat.
+ 
+@image html images/poly/transport_to_face.png "Transport of a vertex based vector field to face tangent plane"
+
+\subsubsection sectcovOP Covariant Gradient and Projection
+
+Since these operators are themselves matrices they cannot be constructed in the same way as the others ( Operator builder Matrix * function restricted to face Vector ), you need the specify the local vector field as well, in the same format as in @cite degoes2020discrete,
+i.e. 
+\f{eqnarray*}{
+    u_{f} = [u_{v_1}^t \ldots u_{v_{nf}}^t]^t
+\f}
+where \f$u_{v_i}\f$ are the intrinsic vectors at each adjacent vertex expressed in their own tangent basis.
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.covariantGradient(f,uf)`  | \f$ 2\times 2\f$ | Covariant Gradient defined for intrinsic vector valued 0-forms at face f
+`calculus.covariantProjection(f,uf)`|  \f$ n_f \times 2\f$  | Covariant Projection operator defined for intrinsic vector valued 0-forms at face f
+
+\subsubsection sectVL Vector Laplacian
+
+Using the same format for vector fields as above, we can define a Vector Laplacian operator per face.
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.connectionLaplacian(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix 
+
+
+\section sectPolygonalCalculusGlo Global calculus
+
+Given a scalar function defined on a generic surface mesh vertices, all previously mentioned operators can be applied to obtain consistent quantities on the overall mesh. For instance, from the  \ref dgtalCalculus.cpp example using Shortcuts and ShortcutsGeometry to set up the surface:
+
+
+Surface  | Phi | Gradient | Gradient+co-gradient 
+--|--|--|--
+@image html images/poly/init.png "" | @image html images/poly/goursat_phi.png "" | @image html images/poly/goursat_grad.png "" | @image html images/poly/goursat_gradcograd.png ""
+
+
+To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can combine the local operators into a global one, gathering the contributions of each face. 
+
+For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can later be used for diffusion.
+
+You can also retrieve the global mass matrix via
+PolygonalCalculus::globalLumpedMassMatrix, which is used to define an
+inner product for 0-forms (i.e. scalar functions), as well as its
+inverse PolygonalCalculus::globalInverseLumpedMassMatrix(), generally
+used when one solves a weak problem and wishes to get a pointwise
+per-vertex solution.
+
+
+\section secLap Example: Solving a Laplace problem
+
+Let suppose we want to solve the following Laplace problem for data interpolation:
+\f{eqnarray*}{
+        \Delta_\Omega u& = 0  \\ 
+        & s.t. u = g \text{ on } \partial\Omega
+\f}
+
+We want to solve that problem on a polygonal mesh @f$\Omega@f$
+(digital surface here) with a boundary and some scalar values attached
+to boundary vertices, or sampled on the object surface.
+
+Furthermore, the discrete version of the Laplace problem boils down to
+a simple linear problem using on the discrete Laplace-Beltrami sparse
+matrix.
+
+We also use class DirichletConditions to enforce Dirichlet boundary
+conditions on the system.
+
+The overall code is:
+\snippet dgtalCalculus-poisson.cpp PolyDEC-init
+
+Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
+
+Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
+--|--|--
+@image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png "" 
+@image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png "" 
+@image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png "" 
+
+\subsection Global Vector Calculus
+
+Global Vector Laplace/Poisson problems can also be solved by the same way, using instead PolygonalCalculus<SurfMesh>::globalConnectionLaplace() and PolygonalCalculus<SurfMesh>::doubledGlobalLumpedMassMatrix(). One can find examples of such use in the \ref VectorsInHeat class.
+
+\section sectMisc Miscellaneous
+
+\subsection sectPolygonalCalculusHP Cache mechanisms and high-performance computing
+
+ The PolygonalCalculus class has two cache mechanisms:
+ 
+- An external cache strategy to store a given operator into a compact container. Typical use case is when the user wants to precompute a given operator, store it and efficiently reuse it while iterating over the faces. We detail this construction below.
+- The second one is a global internal cache strategy that will store @b all per face operators on the fly. In that case, each operator returning a DenseMatrix is stored in a cache the first time the `calculus.operator(f)` is called. Typical use case is when the user wants to use many times a large set of different operators. To enable this strategy, you can use the `calculus.enableInternalGlobalCache()`, or from the last parameter of the class constructor (boolean set to true). E.g.
+   @code
+PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);  //global internal cache enabled.
+   @endcode
+   By default, this behavior is disabled as it is memory expensive (all operators are explicitly stored when used for the first time), and may not have a huge running time impact for some applications. An example is given in the \ref dgtalCalculus-bunny.cpp. Once enabled, the class API remains the same, everything is transperent to the user.
+ 
+We describe here the first external cache strategy. For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
+@code
+DenseMatrix M(const Face f, const double lambda=1.0) const
+{
+  auto Uf=sharp(f);
+  auto Pf=P(f);
+  return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
+}
+@endcode 
+which could be time consuming as the internal operators may be computed several times. 
+
+For high performance computations, we provide a generic cache mechanism to explicitly store all per face operators of a surface mesh (stored in a random access container).
+
+A typical usage is 
+@code
+auto cacheSharp    = getOperatorCacheMatrix( [&](Face f){ return(calculus.sharp(f);} );
+auto cachefaceArea = getOperatorCacheMatrix( [&](Face f){ return(calculus.faceArea(f);} );
+auto cacheP        = getOperatorCacheMatrix( [&](Face f){ return(calculus.P(f);} );
+@endcode
+
+Then, cached operators can be accessed and combined:
+@code
+auto Mf =   cachefaceArea[f] * cacheU[f].transpose()*cacheU[f] + lambda * cacheP[f].transpose() * cacheP[f];
+@endcode 
+
+
+
+*/
+
+}

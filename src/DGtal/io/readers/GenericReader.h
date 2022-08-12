@@ -49,11 +49,9 @@
 #include "DGtal/io/readers/PPMReader.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/readers/RawReader.h"
+#include "DGtal/io/readers/STBReader.h"
 #ifdef WITH_HDF5
 #include "DGtal/io/readers/HDF5Reader.h"
-#endif
-#ifdef WITH_MAGICK
-#include "DGtal/io/readers/MagickReader.h"
 #endif
 #ifdef WITH_ITK
 #include "DGtal/io/readers/DicomReader.h"
@@ -282,10 +280,8 @@ namespace DGtal
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
           }
-          else if ( extension == "nii" || extension == "mha" ||
-                    extension == "mhd" || extension == "tiff" ||
-                    extension == "tif" )
-          {
+        else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
+           {
             return ITKReader<TContainer>::importITK( filename, aFunctor );
           }
 #endif
@@ -420,8 +416,7 @@ namespace DGtal
 
     /**
      * Import an image file by specifying a color encoder functor
-     *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .
+     *  (used only for color image format ppm, png, tga, bmp,jpeg) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param filename the image filename to be imported.
@@ -451,15 +446,10 @@ namespace DGtal
             typename TContainer::Point const pt (x,y);
             return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
           }
-        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
+        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" || extension == "tga" )
           {
-#ifdef WITH_MAGICK
-            MagickReader<TContainer, TFunctor> reader;
-            return reader.importImage( filename, aFunctor );
-#else
-            trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-            throw dgtalio;
-#endif
+            STBReader<TContainer, TFunctor> reader;
+            return reader.import( filename, aFunctor );
           }
 
         trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericReader." << std::endl;
@@ -538,8 +528,7 @@ namespace DGtal
 
     /**
      * Import an image file by specifying a color encoder functor
-     *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .
+     *  (used only for color image format ppm, png, tga, bmp,jpeg) .
      *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param filename the image filename to be imported.
@@ -569,15 +558,10 @@ namespace DGtal
             typename TContainer::Point const pt (x,y);
             return RawReader< TContainer, TFunctor >::template importRaw<DGtal::Color>( filename, pt, aFunctor);
           }
-        else if ( extension == "gif" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
+        else if ( extension == "tga" || extension == "jpg" || extension == "png" || extension == "jpeg" || extension == "bmp" )
           {
-#ifdef WITH_MAGICK
-            MagickReader<TContainer, TFunctor> reader;
-            return reader.importImage( filename, aFunctor );
-#else
-            trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-            throw dgtalio;
-#endif
+            STBReader<TContainer, TFunctor> reader;
+            return reader.import( filename, aFunctor );
           }
 
         trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;

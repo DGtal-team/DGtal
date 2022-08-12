@@ -91,7 +91,7 @@ int main( int argc, char** argv )
 
   try { 
     //getting a bel
-    bel = Surfaces<KSpace>::findABel( ks, binaryImage, domain.size() );
+    bel = Surfaces<KSpace>::findABel( ks, binaryImage, (unsigned int)domain.size() );
     trace.info() << "starting bel: " << bel << std::endl;
  
   } catch (DGtal::InputException& i) {

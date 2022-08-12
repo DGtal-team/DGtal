@@ -1,11 +1,22 @@
 # DGtal 1.3 (beta)
 
 ## New features / critical changes
-- *Docker File*
-  - A Dockerfile is added to create a Docker image to have a base to start development
-    using the DGtal library.(J. Miguel Salazar [#1580](https://github.com/DGtal-team/DGtal/pull/1580)) 
 
-## Bug fixes
+- *Geometry package*
+  - Add curvature measures computation on 3D surface mesh:
+    implements Normal Cycle, face-constant Corrected Normal Current
+    and vertex-interpolated Corrected Normal Current.
+    (Jacques-Olivier Lachaud,[#1617](https://github.com/DGtal-team/DGtal/pull/1617))
+  - Completes the digital convexity module with new functions
+    related to full convexity: check of full convexity for arbitrary
+    digital sets in nD, and helper classes for using full convexity in
+    practice (local geometric analysis, tangency and shortest paths)
+    (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
+- *Mathematical Package*
+   - Add Lagrange polynomials and Lagrange interpolation
+     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+
 - *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar
@@ -14,21 +25,48 @@
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
     [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
+  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
+    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
-- *Geometry package*
-  - the following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
-    - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
-      returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead 
-      to a valid initialization or not. The method `eval` now uses this boolean value and returns the 
-      trivial normal vector if it has been set to 'False'.
-    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
-      delegate, but only checks the relevant parts (which have been pushed in to separate methods).
-    (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
-- *IO*
-  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
+- *DEC*
+  - New discrete differential operators on polygonal meshes have been
+    added. They can be used to process generic polygonal meshes (with
+    non-planar, non-convex faces) or digital surfaces. (David
+    Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
+  - New class to compute geodesics on polygonal surfaces using the
+    Geodesics in Heat approach and the new differential operators on
+    polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
+    Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
+  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
+    problems, add Dirichlet boundary conditions, update discrete
+    differential calculus examples (Jacques-Olivier
+    Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+    gradient and covariant projection as well as Connection-Laplacian). Also adding two
+    more examples: harmonic parametrization and vectors in heat method. (Baptiste GENEST, David
+    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
+
+- *Topology*
+  - New helper methods to retrieve the interior/exterior voxel of a given
+    surfel (signed cell of a Khalimksy space). (David Coeurjolly,
+    [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
+
+- *I/O*
+  - Imagemagick dependency and related classes. Image file format (png, jpg, tga, bmp, gif)
+    are now included in the DGtal core using `stb_image.h` and `stb_image_write.h`.
+   (David Coeurjolly, [#1648](https://github.com/DGtal-team/DGtal/pull/1648))
 
 ## Changes
-
+- *Image*
+  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >$1024^3$)
+    (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
+  - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
+    format support. New option to keep set domain or to compute current bounding
+    box of elements of the set in ImageFromSet.
+    (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
+  - Improved MeshReader for .off format in order to take into account more
+    comments and other header code used in CGAL.
+    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
@@ -44,18 +82,33 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
-    
-
+  - Small fix for shortest paths computation, which could sometimes
+    output several times the same node. Add tests and examples.
+    (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
+  
 - *Build*
+  - Continuous integration does not use Travis anymore but Github
+    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
     (approximated) % of unit-tests to build and run for randomized
     testing (David Coeurjolly [#1588](https://github.com/DGtal-team/DGtal/pull/1588))
   - Fix missing whitelist for the unit-tests in relation to PR [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
     (Bertrand Kerautret [#1595](https://github.com/DGtal-team/DGtal/pull/1595))
-  - Fix cmake related ITK usage in other projects (issue #1612). 
+  - Fix cmake related ITK usage in other projects (issue #1612).
     (Bertrand Kerautret and Pablo Hernandez-Cerdan [#1613](https://github.com/DGtal-team/DGtal/pull/1613))
   - Adding ITK in Github Actions CI on linux distribution.
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
+  - New variable in the Github Action script to disable some tests (not working in the bots)
+    (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
+  - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
+    (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
+
+
+- *Kernel*
+  - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
+    new shift method to avoid recomputing orientation plane.
+    (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
+
 
 
 ## Bug fixes
@@ -70,14 +123,49 @@
   - Fix cmake IN_LIST use policy. (Bertrand Kerautret,
     [#1592](https://github.com/DGtal-team/DGtal/pull/1592))
   - Adding a explicit list of tests to exclude from Github Actions
-    (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596)
+    (David Coeurjolly, [#1596](https://github.com/DGtal-team/DGtal/pull/1596))
   - Fixing bugs in the exclude list for CI
-    (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602)
+    (David Coeurjolly, [#1602](https://github.com/DGtal-team/DGtal/pull/1602))
+  - Reactivating Github Actions bots
+    (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
+  - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly,
+    [#1641](https://github.com/DGtal-team/DGtal/pull/1641))
+
+- *Examples*
+  - We can now have examples using [polyscope](https://polyscope.run)
+    as viewer (`BUILD_POLYSCOPE_EXAMPLES` cmake variable). (David
+    Coeurjolly,
+    [#1603](https://github.com/DGtal-team/DGtal/pull/1603))
+
+- *IO*
+  - Faster export of OBJ files. (David Coeurjolly, [#1608]((https://github.com/DGtal-team/DGtal/pull/1608))
   - Fixing bugs in writing Longvol from GenericWriter and tests.
     (Bertrand Kerautret, [#1610](https://github.com/DGtal-team/DGtal/pull/1610)
-  - Fix compilation issue in MeshReader compilation. 
-    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611) 
+  - Fix compilation issue in MeshReader compilation.
+    (Bertrand Kerautret, [#1611](https://github.com/DGtal-team/DGtal/pull/1611)
+  - Minor fixes in VolReader and LongVolReader to be able to load large vol files.
+    (David Coeurjolly, [#1637](https://github.com/DGtal-team/DGtal/pull/1637))
+  - Fix LongVolReader that fails to read large values. It was why testLongvol and
+    testCompressedVolWriter were failing on some configurations.
+    (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
+  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
 
+- *Geometry package*
+  - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
+    - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
+      returns a pair bool-frame instead of just a frame, in order to tell whether the frame will lead
+      to a valid initialization or not. The method `eval` now uses this boolean value and returns the
+      trivial normal vector if it has been set to 'False'.
+    - in `PlaneProbingParallelepipedEstimator`: `isValid` does not call the `isValid` method of the
+     delegate, but only checks the relevant parts (which have been pushed in to separate methods).
+     (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
+  - Fixing issue with the automatic deploy of the "nightly" documentation.
+    (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
+  - Fix issue on computeHullThickness by adding angle tolerance to detect co-linearity vectors.
+    (Bertrand Kerautret, [#1647](https://github.com/DGtal-team/DGtal/pull/1647))
+- *DEC*
+  - More DEC examples can be built without QGLViewer (they didn't need it).
+    (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
 
 # DGtal 1.2
 

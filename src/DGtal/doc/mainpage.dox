@@ -27,8 +27,7 @@ types. The kernel of DGtal offers digital spaces of arbitrary
 dimension, with user-chosen integer types. Several digital topology
 algorithms are already implemented (Rosenfeld topology, connected
 components, simple points, homotopic thinning). The kernel manages
-generic images (standard raster images but also tree images), and
-arbitrary file formats with ImageMagick installed. Basic geometric
+generic images (standard raster images but also tree images). Basic geometric
 primitives (digital lines and segments) are also available, as well as
 arbitrary dimensional volumetric distance transforms. A stream
 mechanism has been developed to display digital objects and export

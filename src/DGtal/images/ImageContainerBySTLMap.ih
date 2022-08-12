@@ -47,18 +47,14 @@ const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 
 template <typename TDomain, typename TValue>
 inline
-DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap( Clone<const Domain> aDomain, const Value& aValue)
-  : myDomainPtr( aDomain ), myDefaultValue( aValue )
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::ImageContainerBySTLMap( DGtal::Clone<const TDomain> aDomain, const TValue& aValue): myDomainPtr( aDomain ), myDefaultValue( aValue )
 {
 }
 
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline
-DGtal::ImageContainerBySTLMap<TDomain,TValue>
-::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
-  : Parent(other),
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::ImageContainerBySTLMap(const ImageContainerBySTLMap& other): Parent(other),
     myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
 {
 }

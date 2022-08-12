@@ -35,6 +35,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
+#include "DGtal/geometry/volumes/DigitalConvexity.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +46,139 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class CellGeometry.
 ///////////////////////////////////////////////////////////////////////////////
+
+SCENARIO( "CellGeometry< Z2 > segment tests", "[cell_geometry][2d][segment]" )
+{
+  typedef KhalimskySpaceND<2,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef CellGeometry< KSpace >           CGeometry;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef CGeometry::LatticePolytope       Polytope;
+
+  KSpace K;
+  K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+  DConvexity dconv( K );
+  GIVEN( "two points (1,1), Point(3,-2)" ) {
+    CGeometry geometry( K, 0, 2, false );
+    geometry.addCellsTouchingSegment( Point(1,1), Point(3,-2) );
+    THEN( "Its cell geometry contains 2 0-cells, 11 1-cells, 10 2-cells" ) {
+      auto C0 = geometry.getKPoints( 0 );
+      auto C1 = geometry.getKPoints( 1 );
+      auto C2 = geometry.getKPoints( 2 );
+      CAPTURE( C0 );
+      CAPTURE( C1 );
+      CAPTURE( C2 );
+      REQUIRE( C0.size() == 2 );
+      REQUIRE( C1.size() == 11 );
+      REQUIRE( C2.size() == 10 );
+    }
+  }
+  WHEN( "Computing random segments in domain (-5,-5)-(10,10)." ) {
+    unsigned int nb = 20;
+    for ( unsigned int i = 0; i < nb; ++i )
+      {
+        Point a( rand() % 13 - 4, rand() % 13 - 4 );
+        Point b( rand() % 13 - 4, rand() % 13 - 4 );
+        if ( a == b ) continue;
+        CGeometry segm_geometry( K, 0, 2, false );
+        segm_geometry.addCellsTouchingSegment( a, b );
+        CGeometry splx_geometry( K, 0, 2, false );
+        auto splx   = dconv.makeSimplex( { a, b } );
+        splx_geometry.addCellsTouchingPolytope( splx );
+        auto segm_0 = segm_geometry.getKPoints( 0 );
+        auto splx_0 = splx_geometry.getKPoints( 0 );
+        auto segm_1 = segm_geometry.getKPoints( 1 );
+        auto splx_1 = splx_geometry.getKPoints( 1 );
+        auto segm_2 = segm_geometry.getKPoints( 2 );
+        auto splx_2 = splx_geometry.getKPoints( 2 );
+        THEN( "Generic addCellsTouchingPolytope and specialized addCellsTouchingSegment should provide the same result" ) {
+          REQUIRE( segm_0.size() == splx_0.size() );
+          REQUIRE( segm_1.size() == splx_1.size() );
+          REQUIRE( segm_2.size() == splx_2.size() );
+          std::sort( segm_0.begin(), segm_0.end() );
+          std::sort( segm_1.begin(), segm_1.end() );
+          std::sort( segm_2.begin(), segm_2.end() );
+          std::sort( splx_0.begin(), splx_0.end() );
+          std::sort( splx_1.begin(), splx_1.end() );
+          std::sort( splx_2.begin(), splx_2.end() );
+          CAPTURE( segm_0 );
+          CAPTURE( segm_1 );
+          CAPTURE( segm_2 );
+          CAPTURE( splx_0 );
+          CAPTURE( splx_1 );
+          CAPTURE( splx_2 );
+          REQUIRE( std::equal( segm_0.cbegin(), segm_0.cend(), splx_0.cbegin() ) );
+          REQUIRE( std::equal( segm_1.cbegin(), segm_1.cend(), splx_1.cbegin() ) );
+          REQUIRE( std::equal( segm_2.cbegin(), segm_2.cend(), splx_2.cbegin() ) );
+        }
+      }
+  }
+}
+
+SCENARIO( "CellGeometry< Z3 > segment tests", "[cell_geometry][3d][segment]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Integer                  Integer;
+  typedef CellGeometry< KSpace >           CGeometry;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef CGeometry::LatticePolytope       Polytope;
+
+  KSpace K;
+  K.init( Point( -5, -5, -5 ), Point( 10, 10, 10 ), true );
+  DConvexity dconv( K );
+  WHEN( "Computing random segments in domain (-5,-5,-5)-(10,10,10)." ) {
+    unsigned int nb = 20;
+    for ( unsigned int i = 0; i < nb; ++i )
+      {
+        Point a( rand() % 13 - 4, rand() % 13 - 4, rand() % 13 - 4 );
+        Point b( rand() % 13 - 4, rand() % 13 - 4, rand() % 13 - 4 );
+        if ( a == b ) continue;
+        CGeometry segm_geometry( K, 0, 3, false );
+        segm_geometry.addCellsTouchingSegment( a, b );
+        CGeometry splx_geometry( K, 0, 3, false );
+        auto splx   = dconv.makeSimplex( { a, b } );
+        splx_geometry.addCellsTouchingPolytope( splx );
+        auto segm_0 = segm_geometry.getKPoints( 0 );
+        auto splx_0 = splx_geometry.getKPoints( 0 );
+        auto segm_1 = segm_geometry.getKPoints( 1 );
+        auto splx_1 = splx_geometry.getKPoints( 1 );
+        auto segm_2 = segm_geometry.getKPoints( 2 );
+        auto splx_2 = splx_geometry.getKPoints( 2 );
+        auto segm_3 = segm_geometry.getKPoints( 3 );
+        auto splx_3 = splx_geometry.getKPoints( 3 );
+        THEN( "Generic addCellsTouchingPolytope and specialized addCellsTouchingSegment should provide the same result" ) {
+          REQUIRE( segm_0.size() == splx_0.size() );
+          REQUIRE( segm_1.size() == splx_1.size() );
+          REQUIRE( segm_2.size() == splx_2.size() );
+          REQUIRE( segm_3.size() == splx_3.size() );
+          std::sort( segm_0.begin(), segm_0.end() );
+          std::sort( segm_1.begin(), segm_1.end() );
+          std::sort( segm_2.begin(), segm_2.end() );
+          std::sort( segm_3.begin(), segm_3.end() );
+          std::sort( splx_0.begin(), splx_0.end() );
+          std::sort( splx_1.begin(), splx_1.end() );
+          std::sort( splx_2.begin(), splx_2.end() );
+          std::sort( splx_3.begin(), splx_3.end() );
+          CAPTURE( segm_0 );
+          CAPTURE( segm_1 );
+          CAPTURE( segm_2 );
+          CAPTURE( segm_3 );
+          CAPTURE( splx_0 );
+          CAPTURE( splx_1 );
+          CAPTURE( splx_2 );
+          CAPTURE( splx_3 );
+          REQUIRE( std::equal( segm_0.cbegin(), segm_0.cend(), splx_0.cbegin() ) );
+          REQUIRE( std::equal( segm_1.cbegin(), segm_1.cend(), splx_1.cbegin() ) );
+          REQUIRE( std::equal( segm_2.cbegin(), segm_2.cend(), splx_2.cbegin() ) );
+          REQUIRE( std::equal( segm_3.cbegin(), segm_3.cend(), splx_3.cbegin() ) );
+        }
+      }
+  }
+}
 
 SCENARIO( "CellGeometry< Z2 > unit tests", "[cell_geometry][2d]" )
 {

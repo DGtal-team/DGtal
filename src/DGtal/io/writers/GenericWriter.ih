@@ -37,9 +37,7 @@
 #include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
-#ifdef WITH_MAGICK
-#include "DGtal/io/writers/MagickWriter.h"
-#endif
+#include "DGtal/io/writers/STBWriter.h"
 #ifdef WITH_ITK
 #include "DGtal/io/writers/ITKWriter.h"
 #endif
@@ -108,9 +106,7 @@ exportFile( const std::string & filename,
       return RawWriter<TContainer>::template exportRaw<TValue>( filename, anImage, aFunctor  );
     }
   #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }
@@ -148,9 +144,7 @@ exportFile( const std::string & filename,
       return RawWriter<TContainer>::template exportRaw<DGtal::uint64_t>( filename, anImage, aFunctor );
     }
  #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }
@@ -200,9 +194,7 @@ exportFile( const std::string & filename,
       return RawWriter< TContainer, TFunctor >::exportRaw8( filename, anImage, aFunctor );
     }
  #ifdef WITH_ITK
-  else if ( extension == "nii" || extension == "mha" ||
-            extension == "mhd" || extension == "tiff" ||
-            extension == "tif" )
+  else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
           }
@@ -241,7 +233,6 @@ exportFile( const std::string & filename,
       trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
       throw dgtalio;
     }
-
   return false;
 }
 
@@ -262,23 +253,26 @@ exportFile( const std::string & filename,
     {
       return PPMWriter< TContainer, TFunctor >::exportPPM( filename, anImage, aFunctor );
     }
-#ifdef WITH_MAGICK
-  else if ( extension == "gif"  || extension == "jpg"  || extension == "bmp" || extension == "png"   )
-    {
-      return MagickWriter< TContainer, TFunctor >::exportMagick( filename, anImage, aFunctor );
-    }
-#endif
-  else if ( extension == "raw" )
+    else if ( extension == "tga" )
+    return STBWriter< TContainer, TFunctor >::exportTGA( filename, anImage, aFunctor );
+    else if (extension == "bmp")
+    return STBWriter< TContainer, TFunctor >::exportBMP( filename, anImage, aFunctor );
+    else if (extension == "png")
+    return STBWriter< TContainer, TFunctor >::exportPNG( filename, anImage, aFunctor );
+    else if (extension == "jpg")
+    return STBWriter< TContainer, TFunctor >::exportJPG( filename, anImage, aFunctor );
+    
+    else if ( extension == "raw" )
     {
       return RawWriter< TContainer, TFunctor >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );
     }
-  else
+    else
     {
       trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
       throw dgtalio;
     }
-
-  return false;
+    
+    return false;
 }
 
 

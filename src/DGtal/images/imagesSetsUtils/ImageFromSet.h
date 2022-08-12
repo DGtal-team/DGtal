@@ -82,6 +82,9 @@ namespace DGtal
      * to copy.
      * @param itEnd ConstIterator on the set to specify the last point
      * to copy.
+     * @param keepSetDomain if true, the set domain is used to create
+     * the resulting image, else the bouding box of the set is used.
+    
      * @return an image.
      */
     template <typename Set>
@@ -89,7 +92,8 @@ namespace DGtal
     Image create(const Set &aSet, const Value &defaultValue,
                  const bool addBorder,
                  typename Set::ConstIterator itBegin, 
-                 typename Set::ConstIterator itEnd);
+                 typename Set::ConstIterator itEnd,
+                 const bool keepSetDomain=false);
 
     /** 
      * Create an Image from a DigitalSet. The size of the output image
@@ -100,14 +104,17 @@ namespace DGtal
      * @param defaultValue the default value for points in the set
      * @param addBorder if true, we add a border of size 1 of
      * defaultValue around the set. 
+     * @param keepSetDomain if true, the set domain is used to create
+     * the resulting image, else the bouding box of the set is used.
      *
      * @return an image.
      */
     template <typename Set>
     static
-    Image create(const Set &aSet, const Value &defaultValue, const bool addBorder=false)
+    Image create(const Set &aSet, const Value &defaultValue, const bool addBorder=false,
+                 const bool keepSetDomain=false)
     {
-      return create(aSet,defaultValue,addBorder,aSet.begin(), aSet.end());
+      return create(aSet,defaultValue,addBorder,aSet.begin(), aSet.end(), keepSetDomain);
     }        
     
     

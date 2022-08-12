@@ -93,7 +93,7 @@ add_custom_target(uninstall
 if (MSVC)
   option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
 else()
-  option(BUILD_SHARED_LIBS "Build shared libraries." ON)
+  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
 option(BUILD_TESTING "Build testing." OFF)
 option(DEBUG_VERBOSE "Verbose debug messages." OFF)
@@ -102,14 +102,6 @@ option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical oper
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
-
-# -----------------------------------------------------------------------------
-# Benchmark target
-# -----------------------------------------------------------------------------
-option(BUILD_BENCHMARKS "Build benchmarks." OFF)
-if(BUILD_BENCHMARKS)
-  add_custom_target(benchmark COMMAND echo "Benchmarks launched.....")
-endif()
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -130,4 +122,3 @@ if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   message(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 endif()
-

@@ -1,0 +1,201 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file NormalCycleComputer.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2020/02/18
+ *
+ * Implementation of inline methods defined in NormalCycleComputer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+NormalCycleComputer( ConstAlias< SurfaceMesh > aMesh )
+  : myMesh( aMesh )
+{}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+computeMu0() const
+{
+  ScalarMeasure mu0( &myMesh, 0.0 );
+  auto& face_mu0 = mu0.kMeasures( 2 );
+  face_mu0.resize( myMesh.nbFaces() );
+  Index idx_f = 0;
+  for ( const auto& f : myMesh.allIncidentVertices() )
+    {
+      RealPoints  p( f.size() );
+      for ( Index idx_v = 0; idx_v < f.size(); ++idx_v )
+	p[ idx_v ] = myMesh.positions()    [ f[ idx_v ] ];
+      face_mu0[ idx_f++ ] = Formula::area( p );
+    }
+  return mu0;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+computeMu1() const
+{
+  ScalarMeasure mu1( &myMesh, 0.0 );
+  auto& edge_mu1 = mu1.kMeasures( 1 );
+  edge_mu1.resize( myMesh.nbEdges() );
+  Index idx_e = 0;
+  for ( const auto& e : myMesh.allEdgeVertices() )
+    {
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
+      if ( right_faces.size() != 1 || left_faces.size() != 1 )
+        {
+          edge_mu1[ idx_e ] = 0.0;
+        }
+      else
+	{
+	  const RealPoint        a = myMesh.positions()[ e.first  ];
+	  const RealPoint        b = myMesh.positions()[ e.second ];
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_mu1[ idx_e ] = Formula::twiceMeanCurvature( a, b, right_n, left_n );
+	}
+      idx_e++;
+    }
+  return mu1;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::ScalarMeasure
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+computeMu2() const
+{
+  ScalarMeasure mu2( &myMesh, 0.0 );
+  auto& vertex_mu2 = mu2.kMeasures( 0 );
+  vertex_mu2.resize( myMesh.nbVertices() );
+  Index idx_v = 0;
+  for ( const auto& faces_v : myMesh.allIncidentFaces() )
+    {
+      const RealPoint a = myMesh.positions()[ idx_v ];
+      RealPoints pairs;
+      for ( auto f : faces_v )
+	{
+	  const auto & vtcs = myMesh.allIncidentVertices()[ f ];
+	  Index j = std::find( vtcs.cbegin(), vtcs.cend(), idx_v ) - vtcs.cbegin();
+	  if ( j != vtcs.size() )
+	    {
+	      const Index prev = ( j + vtcs.size() - 1 ) % vtcs.size();
+	      const Index next = ( j + vtcs.size() + 1 ) % vtcs.size();
+	      pairs.push_back( myMesh.positions()[ vtcs[ next ] ] );
+	      pairs.push_back( myMesh.positions()[ vtcs[ prev ] ] );
+	    }
+	}
+      vertex_mu2[ idx_v++ ] = Formula::gaussianCurvatureWithPairs( a, pairs );
+    }
+  return mu2;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::TensorMeasure
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+computeMuXY() const
+{
+  const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  TensorMeasure muXY( &myMesh, zeroT );
+  auto& edge_muXY = muXY.kMeasures( 1 );
+  edge_muXY.resize( myMesh.nbEdges() );
+  Index idx_e = 0;
+  for ( auto e : myMesh.allEdgeVertices() )
+    {
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
+      if ( right_faces.size() != 1 || left_faces.size() != 1 )
+	edge_muXY[ idx_e ] = zeroT;
+      else
+	{
+	  const RealPoint        a = myMesh.positions()[ e.first  ];
+	  const RealPoint        b = myMesh.positions()[ e.second ];
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_muXY[ idx_e ] =
+	    Formula::anisotropicCurvatureH1( a, b, right_n, left_n );
+	}
+      idx_e++;
+    }
+  return muXY;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::NormalCycleComputer<TRealPoint, TRealVector>::TensorMeasure
+DGtal::NormalCycleComputer<TRealPoint, TRealVector>::
+computeMuXYs() const
+{
+  const RealTensor zeroT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  TensorMeasure muXYs( &myMesh, zeroT );
+  auto& edge_muXYs = muXYs.kMeasures( 1 );
+  edge_muXYs.resize( myMesh.nbEdges() );
+  Index idx_e = 0;
+  for ( auto e : myMesh.allEdgeVertices() )
+    {
+      const auto & right_faces = myMesh.allEdgeRightFaces()[ idx_e ];
+      const auto &  left_faces = myMesh.allEdgeLeftFaces ()[ idx_e ];
+      if ( right_faces.size() != 1 || left_faces.size() != 1 )
+	edge_muXYs[ idx_e ] = zeroT;
+      else
+	{
+	  const RealPoint        a = myMesh.positions()[ e.first  ];
+	  const RealPoint        b = myMesh.positions()[ e.second ];
+	  const RealPoint    right = myMesh.faceCentroid( right_faces[ 0 ] );
+	  const RealPoint     left = myMesh.faceCentroid( left_faces [ 0 ] );
+	  const RealVector right_n = Formula::normal( a, right, b );
+	  const RealVector  left_n = Formula::normal( a, b, left  );
+	  edge_muXYs[ idx_e ] =
+	    Formula::anisotropicCurvatureH2( a, b, right_n, left_n );
+	}
+      idx_e++;
+    }
+  return muXYs;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////

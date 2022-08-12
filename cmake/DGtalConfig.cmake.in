@@ -28,13 +28,6 @@ if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   set(WITH_GMP 1)
 endif()
 
-if(@MAGICK++_FOUND_DGTAL@) #if MAGICK++_FOUND_DGTAL
-  find_package(Magick REQUIRED
-    @Magick_HINTS@
-    )
-  set(WITH_MAGICK 1)
-endif()
-
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set(WITH_ITK 1)
   find_dependency(ITK REQUIRED
@@ -89,20 +82,33 @@ if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
   if(APPLE)
     message("-- Setting OpenMP flags on MacOs. Assuming `brew install libomp`")
     if(CMAKE_C_COMPILER_ID MATCHES "Clang\$")
+     IF(EXISTS "/opt/homebrew/")
+      message(STATUS "Using M1/Homebrew C paths")
+      set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp  -I/opt/homebrew/include" CACHE INTERNAL "OpenMP flags for #Xcode toolchain.")
+      set(OpenMP_C_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+      set(OpenMP_omp_LIBRARY "/opt/homebrew/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+      else()
       set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
       set(OpenMP_C_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
       set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+     endif()
     endif()
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang\$")
+   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang\$")
+    IF(EXISTS "/opt/homebrew/")
+      message(STATUS "Using M1/Homebrew C++ paths")
+      set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp  -I/opt/homebrew/include"  CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
+      set(OpenMP_CXX_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+      set(OpenMP_omp_LIBRARY "/opt/homebrew/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+    else()
       set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
       set(OpenMP_CXX_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
       set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+     endif()
     endif()
   endif()
   find_dependency(OpenMP REQUIRED
-    @OpenMP_HINTS@
-    )
+         @OpenMP_HINTS@
+         )
   set(WITH_OPENMP 1)
 endif()
 
@@ -116,7 +122,7 @@ endif()
 
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
-  find_dependency(CGAL COMPONENTS Core 
+  find_dependency(CGAL COMPONENTS Core
     @CGAL_HINTS@
     )
   set(WITH_CGAL 1)

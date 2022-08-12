@@ -460,13 +460,21 @@ typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFacesInclusionsInBall( Scalar r, Index f ) const
 {
+  return computeFacesInclusionsInBall( r, f, faceCentroid( f ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const
+{
   WeightedFaces result;
   if ( r < 0.000001 )
     {
       result.push_back( std::make_pair( f, 0.000001 ) );
       return result;
     }
-  RealPoint p = faceCentroid( f );
   std::unordered_set< Index > marked;
   std::queue< Index > active;
   active.push( f );
@@ -500,6 +508,18 @@ std::tuple
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeCellsInclusionsInBall( Scalar r, Index f ) const
 {
+  return computeCellsInclusionsInBall( r, f, faceCentroid( f ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+std::tuple
+< typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Vertices,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const
+{
   Vertices      result_v;
   std::set<Vertex> set_v;
   WeightedEdges result_e;
@@ -509,7 +529,6 @@ computeCellsInclusionsInBall( Scalar r, Index f ) const
       result_f.push_back( std::make_pair( f, 0.000001 ) );
       return std::make_tuple( result_v, result_e, result_f );
     }
-  RealPoint p = faceCentroid( f );
   std::set< Index > marked;
   std::queue< Index > active;
   active.push( f );
@@ -538,6 +557,7 @@ computeCellsInclusionsInBall( Scalar r, Index f ) const
               const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
               if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
                 set_v.insert( vi );
+              if ( vn < vi ) continue; // edges are ordered pairs 
               const Edge e_ij = makeEdge( vi, vn );
               if ( e_ij >= nbEdges() ) {
                 trace.error() << "bad edge " << vi << " " << vn << std::endl;

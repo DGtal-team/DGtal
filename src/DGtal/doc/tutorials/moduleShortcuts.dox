@@ -489,8 +489,9 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::parametersMesh: parameters related to mesh, triangulated or polygonal surfaces.
   - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image. 
-  - Shortcuts::makePrimalPolygonalSurface: builds the primal polygonal surface of a digital surface
-  - Shortcuts::makeDualPolygonalSurface: builds the dual polygonal surface of a digital surface
+  - Shortcuts::makePrimalPolygonalSurface: builds the primal polygonal surface of a (manifold) digital surface
+  - Shortcuts::makePrimalSurfaceMesh: builds the primal polygonal surface of a digital surface (which may contain non-manifold edges)
+  - Shortcuts::makeDualPolygonalSurface: builds the dual polygonal surface of a  digital surface
   - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file, with optionnaly normals and colors information.
 
 -# Utilities

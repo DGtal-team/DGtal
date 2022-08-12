@@ -1,0 +1,264 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleDigitalConvexityApplications Applications of full digital convexity
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.3
+
+Part of the \ref packageGeometry.
+  
+This part of the manual describes some applications of a new
+definition of digital convexity, called full convexity \cite lachaud_dgmm_2021 .
+See \ref moduleDigitalConvexity for further details on full convexity.
+
+[TOC]
+
+The following programs are related to this documentation:
+geometry/volumes/fullConvexityAnalysis3D.cpp ,
+geometry/volumes/fullConvexityThinning3D.cpp ,
+geometry/volumes/fullConvexityLUT2D.cpp ,
+geometry/volumes/fullConvexityCollapsiblePoints2D.cpp ,
+geometry/volumes/fullConvexityShortestPaths3D.cpp ,
+geometry/volumes/fullConvexitySphereGeodesics.cpp .
+
+@section dgtal_dconvexityapp_sec1 Local convexity analysis
+
+Full convexity is stable by intersection with an half-space with
+axis-aligned normal vector and integer intercept. Hence if \f$ X \f$
+is fully convex, and \f$ N_k(x) \f$ is a \f$ (2k+1)^d \f$ neighborhood
+around point \a x, then \f$ X \cap N_k(x) \f$ is also fully convex.
+
+This shows that a fully convex set is locally fully convex everywhere.
+Reciprocally local analysis with full convexity gives information on
+the local geometry:
+- \f$ X \f$ is \a k-\a convex at \a x, whenever \f$ X \cap N_k(x) \f$ is fully convex;
+- \f$ X \f$ is \a k-\a concave at \a x, whenever \f$ (\mathbb{Z}^d \setminus X) \cap N_k(x) \f$ is fully convex;
+- \f$ X \f$ is \a k-\a planar at \a x, whenever it is both \a k-\a convex and \a k-\a concave at \a x;
+- otherwise \f$ X \f$ is \a k-\a atypical at \a x.
+
+Due to the stability properties of full convexity, one may observe
+that \f$ k+1 \f$-convexity at \a x implies \f$ k \f$-convexity at \a
+x, the same holds for concavity and planarity. Taking the
+contraposition indicates that \f$ k \f$-atypicality implies \f$ k+1
+\f$-atypicality.
+
+Class NeighborhoodConvexityAnalyzer offers many services to check
+these properties in an efficient way. It stores look-up tables to
+perform these services efficiently in 2D for 3x3 neighborhood, and
+also uses memoization to speed-up computations (useful in dimension
+greater than 2 and/or when the neighborhood is larger).
+
+The following snippet shows how you can use it.
+\code
+#include "DGtal/geometry/volumes/NeighborhoodConvexityAnalyzer.h"
+...
+using namespace Z3i;
+auto params = SH3::defaultParameters();
+auto bimage = SH3::makeBinaryImage( "Al.100.vol", params );
+auto K      = SH3::getKSpace( bimage );
+
+// Set up a memoizer of up to 50000 configurations.
+NeighborhoodConvexityAnalyzer< KSpace, 1 > NCA( K, 50000 );
+
+// Compute all immediate interior points (inner boundary).
+auto surface = SH3::makeDigitalSurface( bimage, K, params );
+std::vector< Point > points;
+for ( auto s : (*surface) )
+  {
+    Dimension k = K.sOrthDir( s );
+    auto voxel  = K.sIncident( s, k, K.sDirect( s, k ) );
+    Point p     = K.sCoords( voxel );
+    points.push_back( p );
+  }
+// Analyse inner boundary points
+for ( auto x : points )
+  {
+    nca.setCenter( x, *bimage );                         // center neighborhood on point x
+    bool  cvx = nca.isFullyConvex( true );               // check 1-convexity
+    bool ccvx = nca.isComplementaryFullyConvex( false ); // check 1-concavity
+    ...
+  }
+\endcode
+
+You may have a look at geometricAnalysis3D.cpp to have a more complete example.
+
+<table>
+<tr><td>
+\image html cps-analysis-1.jpg "Full convexity analysis at scale 1" width=90%
+</td><td>
+\image html cps-analysis-2.jpg "Full convexity analysis at scale 2" width=90%
+</td><td>
+\image html cps-analysis-3.jpg "Full convexity analysis at scale 3" width=90%
+</td><td>
+\image html cps-analysis-4.jpg "Full convexity analysis at scale 4" width=90%
+</td></tr>
+</table>
+<table>
+<tr><td>
+\image html cps-analysis-1-5.jpg "Full convexity multiscale analysis (scales 1-5)" width=90%
+</td><td>
+\image html cps-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td></tr>
+</table>
+<table>
+<tr><td>
+\image html ssphere-257-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td><td>
+\image html rc250-smooth-analysis-1-5.jpg "Full convexity smooth multiscale analysis (scales 1-5)" width=90%
+</td></tr>
+</table>
+
+@section dgtal_dconvexityapp_sec2 Tangency and shortest paths
+
+@subsection dgtal_dconvexityapp_sec21 Definition of tangency and shortest paths
+
+Tangency or subconvexity is a derived concept from full convexity.
+Let \f$ X \subset \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
+A \subset \mathbb{Z}^d \f$ is said to be \b digitally \a k- \b
+subconvex to \f$ X \f$ whenever \f$ C^d_k \lbrack \mathrm{Conv}(A)
+\rbrack \subset C^d_k \lbrack X \rbrack \f$. And \f$ A \f$ is said to
+be \b fully (digitally) \b subconvex to \f$ X \f$ whenever it is
+digitally \a k- subconvex to \f$ X \f$ for \f$ 0 \le k \le d \f$.
+
+We also say that \f$ A \f$ is \b tangent to \f$ X \f$. The elements of
+\f$ A \f$ are said to be \b cotangent (in \f$ X \f$). Note that
+necessarily \f$ A \subset X \f$.
+
+A \a path \f$ \gamma \f$ from \a a to \a b in \f$ X \f$ is then a
+sequence a points \f$ \gamma=(x_i)_{i=0,\ldots,n} \f$, such that \f$
+x_0 = a \f$, \f$ x_n = b \f$, and for all \f$ i \in \{ 0, \ldots, n-1
+\} \f$, it holds that \f$ \{ x_i, x_{i+1} \} \f$ is tangent to \f$ X \f$. 
+
+We can embed in the Euclidean space the path \f$ \gamma \f$ simply by
+joining its consecutive points by Euclidean straight line
+segments. Its \a length is then just the Euclidean length of its embedding.
+
+The cotangency relations define a graph on \f$ X \f$, which can be
+weighted by the length of the Euclidean segments joining cotangent
+points. Shortest paths on this graph are of course \a path in the
+above mentioned sense. 
+
+@subsection dgtal_dconvexityapp_sec22 Implementation with TangencyComputer class
+
+The class TangencyComputer offers some services to check tangency and
+to compute shortest paths:
+- TangencyComputer::TangencyComputer requires a cellular grid space big enough to include the future digital object
+- TangencyComputer::init defines the points of the digital object
+- several accessors are provided to get the space, the points (which are indexed in the same order as initialization), their indices and the cell cover 
+- TangencyComputer::arePointsCotangent checks if two points are cotangent
+- TangencyComputer::getCotangentPoints returns all the indices of the cotangent points to a given point
+- TangencyComputer::shortestPath builds the shortest path between a source and a destination
+- TangencyComputer::shortestPaths builds all shortest paths to a given source, or builds shortest paths between sources and a set of possible destinations
+- TangencyComputer::makeShortestPaths returns a ShortestPaths object, which allows you to compute shortest paths efficiently
+
+To use it, you should include the following headers
+
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-includes
+  
+
+@subsection dgtal_dconvexityapp_sec23 Shortest paths to a source
+
+We use here a TangencyComputer::ShortestPaths object to compute and
+store all shortest paths to a given target point.
+
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-shortest-paths
+
+The object stores for each point:
+- its ancestor in the breadth first traversal (following the sequence of ancestors gives you the shortest path to the target(s))
+- its distance to the (closest) target.
+
+Example fullConvexityShortestPaths3D.cpp illustrates that kind of computations, giving the distance of each object point to the specified target.
+
+<table>
+<tr><td>
+\image html cps-geodesics-1.jpg "Geodesic distances and geodesics on cube+sphere shape" width=500
+</td><td>
+\image html cps-geodesics-2.jpg "Geodesic distances on cube+sphere shape" width=500
+</td></tr>
+</table>
+
+You may obtain nicer views by exporting your result to an OBJ format and then render it.
+
+<table>
+<tr><td>
+\image html dragon256-geodesics-1.jpg "Geodesic distances on dragon digital surface" width=500
+</td><td>
+\image html butterfly-geodesics-1.jpg "Geodesic distances on butterfly digital surface" width=500
+</td></tr>
+</table>
+
+@subsection dgtal_dconvexityapp_sec24 Shortest path between a source and a target
+
+If you wish to compute only one path, generally it is faster to use
+breadth first traversal from both the source and the target and stop
+at first collision. This is already implemented in
+TangencyComputer::shortestPath, using two
+TangencyComputer::ShortestPaths objects. The snippet below shows you
+how it is computed internally:
+
+@snippet fullConvexityShortestPaths3D.cpp Tangency3D-shortest-path
+
+\image html cps-shortest-path.jpg "Shortest path between two points" width=500
+
+@subsection dgtal_dconvexityapp_sec25 Approximated shortest paths to speed-up computation
+
+Classes TangencyComputer and TangencyComputer::ShortestPaths offer a
+way to considerably speed up shortest paths computation if one
+tolerates a little bit of approximation. Several methods accept a
+distance parameter \a K. If \a K is greater than \f$ \sqrt{d} \f$,
+then shortest paths are exact (meaning all extracted paths are the
+shortest possible in the sense of the above mentioned algorithm), but if you give a lower value (from \f$ \sqrt{d}
+\f$ to 0 included), you obtain path that may be only shortest path
+approximations. The table below shows you the trade-off between the
+speed-up and the approximation error. As one can see, speed-up of \f$
+50-500 \times \f$ are obtained, while approximations error are very
+low or sometimes null.
+
+The following methods accept this parameter:
+- TangencyComputer::ShortestPaths::ShortestPaths
+- TangencyComputer::makeShortestPaths
+- TangencyComputer::shortestPaths
+
+Running the example geometry/volumes/fullConvexitySphereGeodesics.cpp
+shows the speed-up for different choices of \a K parameter, as well as
+the induced approximate distance. In the table below, not
+surprisingly, the maximum observed distance may be greater in case of
+approximation. We also indicate if the furthest point to the source
+point is correct or no.
+
+\b Table \b below: Computation times of shortest paths to a given
+source and maximal error onto a 3D sphere digitized with gridstep \f$ h \f$. The chosen \f$ K \f$ indicates the chosen distance
+parameter. Choosing \f$ K=\|p-q\| \f$ or \f$ K=\sqrt{3} \f$ guarantees the
+correctness of the output. However, decreasing \f$ K \f$ to \f$ 0 \f$ speeds up
+the algorithm, while the maximal relative error in the distance
+estimation stays very low. Each cell of the last four columns displays
+the computation time (in seconds), and between parenthesis: OK if the
+furthest point is the exact antipodal point to the source point on the
+sphere, and the relative error of the measured shortest path in
+percentage.
+
+| gridstep \a h | \f$ \#(X) \f$  | Max distance |\f$ K=\sqrt{3} \f$  | \f$ K=\sqrt{3}/4 \f$ | \f$ K=\sqrt{3}/16 \f$ | \f$ K = 0 \f$     |
+|---------------|----------------|-------------------|---------------------|----------------------|-----------------------|-------------------|
+| 0.25          |   296          | 2.88739           | 0.187 (OK)          | 0.068 (OK,0.000%)    | 0.024 (OK,0.000%)     | 0.013 (OK,0.000%) |
+| 0.125         |  1184          | 2.97166           | 1.480 (OK)          | 0.470 (OK,0.000%)    | 0.177 (OK,0.000%)     | 0.082 (OK,0.226%) |
+| 0.0625        |  4784          | 3.02389           | 11.744 (OK)         | 4.106 (OK,0.000%)    | 1.037 (OK,0.000%)     | 0.340 (OK,0.538%) |
+| 0.03125       | 19256          | 3.08405           | 97.161 (OK)         | 39.993 (OK,0.000%)   | 9.122 (OK,0.005%)     | 2.006 (OK,0.233%) |
+| 0.015625      | 77120          | 3.10879           |1828.890 (OK)         | 385.114 (OK,0.000%)   | 78.363 (OK,0.038%)  | 9.446 (OK,0.289%) |
+
+<table>
+<tr><td>
+\image html sphere1-h0_0625-geodesics.jpg "Exact geodesic distances on unit sphere digitized at h=0.0625 (max d=3.02389)" width=90%
+</td><td>
+\image html sphere1-h0_01-geodesics.jpg "Approximate geodesic distances on unit sphere digitized at h=0.01 (max d=3.1269)" width=90%
+</td></tr>
+</table>
+
+*/
+}

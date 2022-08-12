@@ -248,7 +248,7 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
   
   polysurf.clear();
-  // Numbers all vertices and add them to the triangulated surface.
+  // Numbers all vertices and add them to the polygonal surface.
   const KSpace & K = dsurf.container().space();
   for ( auto it = dsurf.begin(), it_end = dsurf.end(); it != it_end; ++it )
     {
@@ -291,7 +291,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   
   polysurf.clear();
   cellmap.clear();
-  // Numbers all vertices and add them to the triangulated surface.
+  // Numbers all vertices and add them to the polygonal surface.
   const KSpace & K = dsurf.container().space();
   for ( auto&& s : dsurf ) {
     auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
@@ -314,6 +314,55 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   return polysurf.build();
 }
 
+template < typename DigitalSurfaceContainer,
+typename CellEmbedder,
+typename CellMap >
+inline
+bool
+DGtal::MeshHelpers::digitalSurface2PrimalSurfaceMesh
+ ( const DigitalSurface<DigitalSurfaceContainer>& dsurf,
+  const CellEmbedder& cembedder,
+  SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>& polysurf,
+  CellMap& cellmap )
+{
+  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
+  typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
+  typedef typename Surface::KSpace                     KSpace;
+  typedef typename KSpace::Cell                        Cell;
+  typedef typename CellEmbedder::Value                 Point;
+  typedef typename SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>::Vertex Vertex;
+  BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+  
+  cellmap.clear();
+  std::vector<Point> positions;
+  size_t cpt=0;
+  // Numbers all vertices and add them to the polygonal surface.
+  const KSpace & K = dsurf.container().space();
+  for ( auto&& s : dsurf ) {
+    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
+    for ( auto&& primal_vtx : primal_vertices ) {
+      if ( ! cellmap.count( primal_vtx ) ) {
+        auto p = cembedder( primal_vtx );
+        positions.emplace_back(p);
+        cellmap[ primal_vtx ] = cpt;
+        ++cpt;
+      }
+    }
+  }
+  std::vector<std::vector<Vertex>> faces;
+  // Outputs all faces
+  for ( auto&& s : dsurf ) {
+    auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
+    std::vector<Vertex> face( primal_vertices.size() );
+    std::transform( primal_vertices.cbegin(), primal_vertices.cend(), face.begin(),
+                   [ &cellmap ] ( const Cell& v ) { return cellmap[ v ]; } );
+    faces.emplace_back( face );
+  }
+  polysurf.init(positions.begin(), positions.end(), faces.begin(), faces.end());
+
+  return polysurf.isValid();
+}
 template <typename Point>
 bool
 DGtal::MeshHelpers::exportOBJ

@@ -132,10 +132,10 @@ TEST_CASE( "Testing ITKReader" )
     "Checking import with/without shifted domain")
     
   {
-    Image3Dd imShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii",
+    Image3Dd imShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii.gz",
                                                         ITKIOTrait<Image3Dd::Value>::DefaultReadFunctor(), true );
 
-    Image3Dd imNonShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii", false );
+    Image3Dd imNonShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii.gz", false );
 
     REQUIRE( ( imShifted( Z3i::Point( 144, 100, 21 ) ) == 113 )  );
     REQUIRE( ( imNonShifted( Z3i::Point( 94, 50, 11 ) ) == 113 )  );

@@ -1,0 +1,236 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file NeighborhoodConvexityAnalyzer.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2021/06/16
+ *
+ * Implementation of inline methods defined in NeighborhoodConvexityAnalyzer.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+template < typename PointPredicate >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+setCenter( Point c, const PointPredicate& X )
+{
+  ASSERT( myDomain.isInside( c ) );
+  myCenter = c;
+  myNbInX        = 0;
+  myComputations = 0;
+  myResults      = 0;
+  Domain local_domain( c - Point::diagonal( radius() ),
+                       c + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  myCfgX.reset();
+  for ( auto q : local_domain )
+    {
+      if ( q == c )
+        {
+          myCenterInX = X( q );
+        }
+      else if ( myDomain.isInside( q ) )
+        {
+          if ( X( q ) )
+            {
+              myCfgX.set( bit );
+              ++myNbInX;
+            }
+        }
+      bit += 1;
+    }
+  myBasicCfgX.clear();
+  computeBasicConfigurations( myCfgX, myBasicCfgX );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+getLocalX( std::vector< Point >& localX, bool with_center ) const
+{
+  Domain local_domain( myCenter - Point::diagonal( radius() ),
+                       myCenter + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  for ( auto q : local_domain )
+    {
+      if ( q == myCenter ) {
+        if ( with_center )
+          localX.push_back( myCenter );
+      } else if ( myDomain.isInside( q ) ) {
+        if ( myCfgX.test( bit ) )
+          localX.push_back( q );
+      }
+      ++bit;
+    }
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
+{
+  Domain local_domain( myCenter - Point::diagonal( radius() ),
+                       myCenter + Point::diagonal( radius() ) );
+  Size bit       = 0;
+  for ( auto q : local_domain )
+    {
+      if ( q == myCenter ) {
+        if ( with_center )
+          localCompX.push_back( myCenter );
+      } else if ( myDomain.isInside( q ) ) {
+        if ( ! myCfgX.test( bit ) )
+          localCompX.push_back( q );
+      }
+      ++bit;
+    }
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+bool 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+checkBasicConfigurationsFullConvexity
+( bool compX, bool with_center ) const
+{
+  if ( ! compX )
+    { // shape X
+      const Size mask_center = with_center ? 0x10 : 0;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasicFullConvexityTable[ cfg.to_ulong() | mask_center ] )
+          return false;
+    }
+  else 
+    { // complementary of shape X
+      const Size mask_center = with_center ? 0x1ff : 0x1ef;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasicFullConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
+          return false;
+    }
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+bool 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+checkBasicConfigurations0Convexity
+( bool compX, bool with_center ) const
+{
+  if ( ! compX )
+    { // shape X
+      const Size mask_center = with_center ? 0x10 : 0;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasic0ConvexityTable[ cfg.to_ulong() | mask_center ] )
+          return false;
+    }
+  else 
+    { // complementary of shape X
+      const Size mask_center = with_center ? 0x1ff : 0x1ef;
+      for ( auto cfg : myBasicCfgX )
+        if ( ! myBasic0ConvexityTable[ (~cfg.to_ulong()) & mask_center ] )
+          return false;
+    }
+  return true;
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeBasicConfigurations
+( Configuration cfg, std::vector< BasicConfiguration > & result ) const
+{
+  if ( dimension == 2 ) result.push_back( cfg.to_ulong() );
+  else
+    {
+      for ( Dimension i = 0; i < dimension; i++ )
+        for ( Dimension j = i+1; j < dimension; j++ )
+          result.push_back( computeCentralBasicConfiguration( cfg, i, j ) );
+    }
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+typename DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::BasicConfiguration
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeCentralBasicConfiguration
+( Configuration cfg, Dimension i, Dimension j ) const
+{
+  Size incr_i = 1;
+  Size incr_j = 1;
+  for ( Dimension d = 0; d < i; ++d ) { incr_i *= 2*K+1; }
+  for ( Dimension d = 0; d < j; ++d ) { incr_j *= 2*K+1; }
+  BasicConfiguration basic;
+  basic[ 0 ] = cfg[ middle - incr_i - incr_j ];
+  basic[ 1 ] = cfg[ middle          - incr_j ];
+  basic[ 2 ] = cfg[ middle + incr_i - incr_j ];
+  basic[ 3 ] = cfg[ middle - incr_i          ];
+  basic[ 4 ] = cfg[ middle                   ];
+  basic[ 5 ] = cfg[ middle + incr_i          ];
+  basic[ 6 ] = cfg[ middle - incr_i + incr_j ];
+  basic[ 7 ] = cfg[ middle          + incr_j ];
+  basic[ 8 ] = cfg[ middle + incr_i + incr_j ];
+  return basic;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace, int K >
+void 
+DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
+computeBasicFullConvexityTable()
+{
+  typedef KhalimskySpaceND< 2, int > K2;
+  typedef K2::Point                  Point2;
+  typedef K2::Space                  Z2;
+  typedef DigitalConvexity< K2 >     DigConv2;
+  typedef HyperRectDomain< Z2 >      Domain2;
+  DigConv2 dconv2( Point2::diagonal( -2 ), Point2::diagonal( 2 ) );
+  Point2 p1 = Point2::diagonal( -1 );
+  Point2 p2 = Point2::diagonal(  1 );
+  Point2 c =  Point2::diagonal( 0 );
+  Domain2 domain( p1, p2 );
+  for ( unsigned int cfg = 0; cfg < 512; cfg++ )
+    {
+      // Building a configuration.
+      std::vector< Point2 > X;
+      unsigned int mask = 1;
+      for ( auto it = domain.begin(); it != domain.end(); ++it )
+        {
+          const Point2 p = *it;
+          if ( cfg & mask ) X.push_back( p );
+          mask <<= 1;
+        }
+      myBasicFullConvexityTable[ cfg ] = dconv2.isFullyConvex( X );
+      myBasic0ConvexityTable   [ cfg ] = dconv2.is0Convex    ( X );
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

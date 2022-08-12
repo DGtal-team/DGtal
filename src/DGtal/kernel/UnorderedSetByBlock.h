@@ -678,6 +678,25 @@ namespace DGtal
     }
 
     /**
+     *  @brief Inserts a range of element into the set.
+     *
+     *  @tparam InputIterator any model of input iterator 
+     *  @param[in]  first an iterator pointing on the first element of the range
+     *  @param[in]  last an iterator pointing after the last element of the range
+     *
+     *  This function inserts a range of elements into the set.  A set
+     *  relies on unique keys and thus an element is only inserted if it is
+     *  not already present in the set.
+     *
+     *  Each insertion requires amortized constant time.
+     */
+    template <typename InputIterator>
+    void  insert( InputIterator first, InputIterator last )
+    {
+      for ( ; first != last; ++first ) insert( *first );
+    }
+    
+    /**
      *  @brief Attempts to build and insert an element into the set.
      *  @param __args  Arguments used to generate an element.
      *  @return  A pair, of which the first element is an iterator that points

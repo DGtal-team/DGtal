@@ -156,7 +156,29 @@ bool testProjector()
   nbok += ( embedder2(pt2_2b) ==  PointVector<3,int>(5,4,3)  ) ? 1 : 0;
   nb++;
 
- 
+  //Point2DEmbedderIn3D (constructor from normal point)
+  PointVector<3,int> dirXaxis(1,0,0);
+  DGtal::functors::Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >,
+                                       int> embedder3(domain,
+                                                      pt2Origin3D,
+                                                      PointVector<3,int>(0,0,3),
+                                                      dirXaxis, 4);
+  PointVector<2, int> pt2c(0, 0);
+  PointVector<2, int> pt2_2c(2, 0);
+  trace.info() << "pt " << pt2c << " => " << embedder3(pt2c) << " == " << PointVector<3,int>(3,7,3) << std::endl;
+  nbok += ( embedder3(pt2c) == PointVector<3,int>(3,7,3) ) ? 1 : 0;
+  nb++;
+    
+  trace.info() << "pt " << pt2_2c << " => " << embedder3(pt2_2c) << " == " << PointVector<3,int>(5,7,3) << std::endl;
+  nbok += ( embedder3(pt2_2c) ==  PointVector<3,int>(5,7,3)  ) ? 1 : 0;
+  nb++;
+  
+  // testing shift functor
+  embedder3.shiftOriginPoint(Z3i::RealPoint(2, 0.4, 0.0));
+  trace.info() << "pt " << pt2_2c << " => " << embedder3(pt2_2c) << " == " << PointVector<3,int>(7,7,3) << std::endl;
+  nbok += ( embedder3(pt2_2c) ==  PointVector<3,int>(7,7,3)  ) ? 1 : 0;
+  nb++;
+    
   //comparison
   PointVector<3,int> res1(5,0,2); 
   trace.info() << "p " << p << " => " << proj1(p) << " == " << res1 << std::endl;
@@ -191,7 +213,8 @@ bool testProjector()
     aGridSize.push_back(5);  
     PointVector<2,int> shiftVector(0 ,0);
     DGtal::functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource,
-                                                                                           aGridSize,  shiftVector);
+                                                                                           aGridSize,
+                                                                                           shiftVector);
     trace.info()<< "Subsampling functor on 2D domain " << domainSource <<" with grid size " 
                 << aGridSize[0] << " " << aGridSize[1] << " and shift vector "<< shiftVector <<std::endl ;
     PointVector<2,int> pointTest(1,0);
@@ -225,7 +248,7 @@ bool testProjector()
             (pointInSourceDomain3D2== PointVector<3,int>(0, 1, 0));
 
   // FlipDomainAxis
-    std::vector<unsigned int> vectFlip; 
+    std::vector<HyperRectDomain<SpaceND<3, int> >::Size> vectFlip;
     vectFlip.push_back(1); 
     vectFlip.push_back(2);     
     functors::FlipDomainAxis<HyperRectDomain<SpaceND<3, int> > > flipFunctorAxis12(domainSource3D, vectFlip);

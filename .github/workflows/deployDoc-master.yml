@@ -1,0 +1,48 @@
+name: Documentation and deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  # This workflow contains a single job called "build"
+   GenerateDoc:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Set up
+      run:  sudo apt-get install libboost-dev graphviz texlive doxygen
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Building pages
+      run: |
+         mkdir build
+         cd build
+         cmake ..
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         make doc > buildDoc.log
+
+    - name: Checking doc
+      run: |
+          pwd
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          .github/workflows/checkDoxygenDocumentation.sh
+      #&& .github/workflows/check_src_file_tag.sh
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.7
+      with:
+        token: ${{ secrets.DEPLOYACTION }}
+        repository-name: DGtal-team/doc-nightly
+        folder: build/html
+        branch: test
+        single-commit: true
+        clean: true

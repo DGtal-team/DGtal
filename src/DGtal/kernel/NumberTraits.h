@@ -146,6 +146,16 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
+    
+    /** @brief
+     * Cast method to DGtal::uint64_t (for I/O or board export uses
+     * only).
+     */
+    static inline constexpr
+    DGtal::uint64_t castToUInt64_t(const T & aT) noexcept
+    {
+      return static_cast<DGtal::uint64_t>(aT);
+    }
 
     /** @brief
      * Cast method to double (for I/O or board export uses
@@ -289,6 +299,16 @@ namespace DGtal
       DGtal::int64_t castToInt64_t(const T & aT) noexcept
       {
         return static_cast<DGtal::int64_t>(aT);
+      }
+      
+      /** @brief
+       * Cast method to DGtal::uint64_t (for I/O or board export uses
+       * only).
+       */
+      static inline constexpr
+      DGtal::uint64_t castToUInt64_t(const T & aT) noexcept
+      {
+        return static_cast<DGtal::uint64_t>(aT);
       }
 
       /** @brief
@@ -475,6 +495,17 @@ namespace DGtal
       return aT.get_si();
     }
 
+    /** @brief
+     * Cast method to DGtal::uint64_t (for I/O or board export uses
+     * only).
+     */
+    static inline
+    DGtal::uint64_t castToUInt64_t(const DGtal::BigInteger & aT) noexcept
+    {
+      return aT.get_ui();
+    }
+
+    
     /** @brief
      * Cast method to double (for I/O or board export uses
      * only).

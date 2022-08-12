@@ -104,7 +104,7 @@ Point4Int a= {2, 3 , -5 , 6};
     typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
     
     ///Type used to represent sizes in the digital space.
-    typedef UnsignedInteger Size;
+    typedef size_t Size;
      
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
