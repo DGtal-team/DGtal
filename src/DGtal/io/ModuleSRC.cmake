@@ -6,8 +6,8 @@
 #### boards
 ##########################################
 
-set(DGTAL_SRC ${DGTAL_SRC}
-  DGtal/io/Color.cpp)
+#set(DGTAL_SRC ${DGTAL_SRC}
+#  DGtal/io/Color.cpp)
 
 
 set(DGTALIO_SRC ${DGTALIO_SRC}

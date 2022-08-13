@@ -229,6 +229,25 @@ void setStyle( Board3DTo2D< S, KS> &  ) const {}
 
 } // namespace DGtal
 
+namespace DGtal
+{
+
+#ifndef NDEBUG
+#ifdef __linux__
+#ifdef DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS
+  inline void beforeMain (void) __attribute__((constructor));
+  inline void beforeMain (void)
+  {
+      feenableexcept ( FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW );
+  }
+#endif
+#endif
+#endif
+
+  TraceWriterTerm traceWriterTerm(std::cerr);
+  Trace trace(traceWriterTerm);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
