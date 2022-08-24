@@ -35,6 +35,7 @@
 #define IntegralIntervals_h
 
 #include <vector>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CBoundedNumber.h"
 
