@@ -325,10 +325,44 @@ bool testConvexHullCompThickness()
   trace.info() << "Thickness Euclidean = " << thicknessE << std::endl;
   trace.info() << "Expected Euclidean Thickness  = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
-  nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE && thicknessHVb == thicknessHV;
-  nb++;
-  return nb==nbok;
+
+  // testing tickness after changing begin points.
+   std::vector<Z2i::RealPoint> hull {
+    {804.56832227024199, -68.471176393526704},
+    {804.96020257363512, -69.494933490400683},
+    {805.35232247974727, -70.519316530915930},
+    {825.15497274857830, -114.34711249674335},
+    {828.67425867587508, -121.69593677670120},
+    {829.05943325037651, -122.39546351563243},
+    {829.42436256177677, -122.73833140123513},
+    {827.82353937509288, -118.87280445059109},
+    {811.06291230576301, -82.124832029926566},
+    {806.83483124583609, -72.890457996792406},
+    {804.92531970702396, -68.803808853026638},
+    {804.55092650722997, -68.125792709291431},
+  };
+
+   double th = DGtal::functions::Hull2D::computeHullThickness(hull.begin(), hull.end(),
+                                                              DGtal::functions::Hull2D::HorizontalVerticalThickness);
+   std::rotate(hull.begin(), hull.begin() + 1, hull.end());
+   double th2 = DGtal::functions::Hull2D::computeHullThickness(hull.begin(), hull.end(),
+                                                               DGtal::functions::Hull2D::HorizontalVerticalThickness);
+   std::rotate(hull.begin(), hull.begin() + 5, hull.end());
+   double th3 = DGtal::functions::Hull2D::computeHullThickness(hull.begin(), hull.end(),
+                                                               DGtal::functions::Hull2D::HorizontalVerticalThickness);
+   trace.info() << "Thickness (before change init point)  = " << th << std::endl;
+   trace.info() << "Thickness (after change init point) = " << th2 << std::endl;
+   trace.info() << "Thickness (after change init point) = " << th3 << std::endl;
+    
+   nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE &&
+           thicknessHVb == thicknessHV && abs(th - th2) < 0.000001 &&
+           th - 0.604414 < 0.000001 && abs(th - th3) < 0.000001 ;
+   nb++;
+   return nb==nbok;
 }
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :

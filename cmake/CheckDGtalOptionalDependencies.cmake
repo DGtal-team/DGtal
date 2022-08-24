@@ -16,14 +16,12 @@ option(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OF
 option(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 option(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
 option(WITH_CGAL "With CGAL." OFF)
-option(WITH_MAGICK "With GraphicsMagick++." OFF)
 option(WITH_ITK "With Insight Toolkit ITK." OFF)
 option(WITH_CAIRO "With CairoGraphics." OFF)
 option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required, for Qt4 only disable WITH_QT5)." OFF)
 option(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
 option(WITH_QT5 "Using Qt5." ON)
-option(WITH_BENCHMARK "With Google Benchmark." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 
 #----------------------------------
@@ -93,12 +91,6 @@ else()
   message(STATUS "      WITH_HDF5          false   (HDF5 image i/o)")
 endif()
 
-if(WITH_MAGICK)
-  set(LIST_OPTION ${LIST_OPTION} [MAGICK]\ )
-  message(STATUS "      WITH_MAGICK        true    (GraphicsMagick based 2D image i/o)")
-else()
-  message(STATUS "      WITH_MAGICK        false   (GraphicsMagick based 2D image i/o)")
-endif()
 
 if(WITH_QGLVIEWER)
   set(LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
@@ -121,14 +113,6 @@ else (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
 endif()
 
-message(STATUS "")
-message(STATUS "For Developpers:")
-if(WITH_BENCHMARK)
-  set(LIST_OPTION ${LIST_OPTION} [GoogleBenchmark]\ )
-  message(STATUS "      WITH_BENCHMARK     true    (Google Benchmark)")
-else()
-  message(STATUS "      WITH_BENCHMARK     false   (Google Benchmark)")
-endif()
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
@@ -172,30 +156,6 @@ if(WITH_GMP)
     message(STATUS "   * GMPXX does not have iostream capabilities")
     message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
   endif()
-endif()
-
-# -----------------------------------------------------------------------------
-# Look for GraphicsMagic
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(MAGICK++_FOUND_DGTAL 0)
-if(WITH_MAGICK)
-  find_package(Magick REQUIRED)
-  if(MAGICK++_FOUND)
-    set(MAGICK++_FOUND_DGTAL 1)
-    target_include_directories(DGtal PUBLIC ${MAGICK++_INCLUDE_DIR})
-    message(STATUS "GraphicsMagick++ found." )
-    target_compile_definitions(DGtal PUBLIC -DWITH_MAGICK)
-    target_include_directories(DGtal PUBLIC ${MAGICK++_INCLUDE_DIR})
-    set(DGtalLibInc ${DGtalLibInc} ${MAGICK++_INCLUDE_DIR})
-    target_link_libraries(DGtal PUBLIC ${MAGICK++_LIBRARIES})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${MAGICK++_LIBRARIES})
-  else()
-    message(FATAL_ERROR "GraphicsMagick++ not found. Check the cmake variables associated to this package or disable it." )
-  endif()
-else()
-  unset(MAGICK++_INCLUDE_DIR)
-  unset(MAGICK++_LIBRARIES)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -470,25 +430,6 @@ if(WITH_PATATE)
     message(STATUS "PATATE found. ${PATATE_INCLUDE_DIR} ")
  else()
    message(FATAL_ERROR "Patate headers not found.")
- endif()
-endif()
-
-# -----------------------------------------------------------------------------
-# Look for Google Benchmark
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(BENCHMARK_FOUND_DGTAL 0)
-if(WITH_BENCHMARK)
-  find_package(Benchmark REQUIRED)
-  if(BENCHMARK_FOUND)
-    set(BENCHMARK_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_BENCHMARK)
-    target_include_directories(DGtal PUBLIC ${BENCHMARK_INCLUDE_DIR})
-    target_link_libraries(DGtal PUBLIC ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
-  else()
-   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
  endif()
 endif()
 

@@ -1,0 +1,147 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file STBWriter.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2022/06/14
+ *
+ * Implementation of inline methods defined in STBWriter.h
+ *
+ * This file is part of the DGtal library.
+ */
+#pragma once
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb/stb_image_write.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filename,
+                                                         const TImageContainer & anImage,
+                                                         const Functor & aFunctor)
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_png(filename.c_str(),  w,  h, comp, data, w*comp);
+  delete(data);
+  return error;
+}
+
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor)
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
+  delete(data);
+  return error;
+}
+
+
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor)
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
+  delete(data);
+  return error;
+}
+template <typename TImageContainer, typename TFunctor>
+inline
+bool
+DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filename,
+                                                       const TImageContainer & anImage,
+                                                       const Functor & aFunctor,
+                                                       int quality )
+{
+  const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
+  const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
+  const int comp=4;
+  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  
+  unsigned int cpt=0;
+  for(const auto &value: anImage)
+  {
+    Color v = aFunctor(value);
+    data[4*cpt]   = v.red();
+    data[4*cpt+1] = v.green();
+    data[4*cpt+2] = v.blue();
+    data[4*cpt+3] = v.alpha();
+    ++cpt;
+  }
+  const int error =  stbi_write_jpg(filename.c_str(),  w,  h, comp, data, quality);
+  delete(data);
+  return error;
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

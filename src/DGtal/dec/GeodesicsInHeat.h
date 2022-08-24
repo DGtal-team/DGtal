@@ -138,8 +138,6 @@ namespace DGtal
       myIsInit = true;
       myLambda = lambda;
 
-      SparseMatrix I(myCalculus->nbVertices(),myCalculus->nbVertices());
-      I.setIdentity();
       SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami( lambda );
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
       myHeatOpe              = mass - dt*laplacian;

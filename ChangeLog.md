@@ -41,22 +41,32 @@
     problems, add Dirichlet boundary conditions, update discrete
     differential calculus examples (Jacques-Olivier
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+    gradient and covariant projection as well as Connection-Laplacian). Also adding two
+    more examples: harmonic parametrization and vectors in heat method. (Baptiste GENEST, David
+    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
 
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
     surfel (signed cell of a Khalimksy space). (David Coeurjolly,
     [#1631](https://github.com/DGtal-team/DGtal/pull/1631))
 
+- *I/O*
+  - Imagemagick dependency and related classes. Image file format (png, jpg, tga, bmp, gif)
+    are now included in the DGtal core using `stb_image.h` and `stb_image_write.h`.
+   (David Coeurjolly, [#1648](https://github.com/DGtal-team/DGtal/pull/1648))
 
 ## Changes
 - *Image*
-  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >1024^3)
+  - Bugfix in the SpaceND and HyperRectDomain classes to allow very large extent (e.g. >$1024^3$)
     (David Coeurjolly, [#1636](https://github.com/DGtal-team/DGtal/pull/1636))
   - Improved ITK image selection in ImageSelector and add ITK xx.gz an other
     format support. New option to keep set domain or to compute current bounding
     box of elements of the set in ImageFromSet.
     (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
-
+  - Improved MeshReader for .off format in order to take into account more
+    comments and other header code used in CGAL.
+    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
@@ -75,7 +85,7 @@
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
-
+  
 - *Build*
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
@@ -90,6 +100,9 @@
     (Bertrand Kerautret [#1615](https://github.com/DGtal-team/DGtal/pull/1615))
   - New variable in the Github Action script to disable some tests (not working in the bots)
     (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
+  - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
+    (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
+
 
 - *Kernel*
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
@@ -135,6 +148,7 @@
   - Fix LongVolReader that fails to read large values. It was why testLongvol and
     testCompressedVolWriter were failing on some configurations.
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
+  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
 
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
@@ -147,7 +161,8 @@
      (Tristan Roussillon, [#1607](https://github.com/DGtal-team/DGtal/pull/1607))
   - Fixing issue with the automatic deploy of the "nightly" documentation.
     (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
-
+  - Fix issue on computeHullThickness by adding angle tolerance to detect co-linearity vectors.
+    (Bertrand Kerautret, [#1647](https://github.com/DGtal-team/DGtal/pull/1647))
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
