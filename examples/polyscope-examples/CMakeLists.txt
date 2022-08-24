@@ -23,6 +23,7 @@ set(POLYSCOPE_SRCS
   dgtalCalculus-halfsphere
   dgtalCalculus-geodesic
   tangency-explorer
+  tangency-reconstruction
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})

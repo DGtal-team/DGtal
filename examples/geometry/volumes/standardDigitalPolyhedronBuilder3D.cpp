@@ -199,9 +199,9 @@ int main( int argc, char** argv )
           int idx1 = faceVertices[ f ][ i ];
           int idx2 = faceVertices[ f ][ (i+1)%X.size() ];
           // Edges of both sides have many points in common
-          auto A = dconv.relativeEnvelope( Y, face_planes[ f ], Algorithm::DIRECT );
+          // auto A = dconv.relativeEnvelope( Y, face_planes[ f ], Algorithm::DIRECT );
           // Edges of both sides have much less points in common
-          // auto A = dconv.relativeEnvelope( Y, F, Algorithm::DIRECT );
+          auto A = dconv.relativeEnvelope( Y, F, Algorithm::DIRECT );
           bool pos = idx1 < idx2;
           (pos ? pos_edges_set : neg_edges_set).insert( A.cbegin(), A.cend() );
         }

@@ -132,6 +132,53 @@ checkSkelStarCvxHFullConvexity( int width )
 // @param width the width of the domain
 template <typename Space>
 bool
+checkCvxHPlusHypercubeFullConvexity( int width )
+{
+  typedef typename Space::Integer Integer;
+  typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
+  typedef DGtal::DigitalConvexity< KSpace > DConvexity;
+  typedef typename KSpace::Point  Point;
+  typedef std::vector<Point>      PointRange;
+
+  // Generate a random polytope in the specified domain
+  Point lo = Point::zero;
+  Point hi = Point::diagonal( width );
+  DConvexity dconv( lo, hi );
+  std::vector< Point > X, XpH, Y;
+  int   nb = Space::dimension + rand() % 7;
+  makeRandomRange( X, nb, width );
+  std::sort( X.begin(), X.end() );
+  XpH = X;
+  for ( Dimension k = 0;  k < Space::dimension; k++ )
+    XpH = dconv.U( k, XpH );
+  auto  P  = dconv.makePolytope( XpH );
+  P.getPoints( Y );
+  auto  C  = dconv.StarCvxH( X );
+  auto  E  = dconv.envelope( X );
+  bool  ok1 = dconv.isFullyConvex( E );
+  if ( ! ok1 )
+    trace.warning() << "FC*(X) is not fully convex !" << std::endl;
+  bool  ok2 = dconv.isFullyConvex( Y );
+  if ( ! ok2 )
+    {
+      trace.warning() << "CvxH(X+H) cap Z^d is not fully convex !" << std::endl;
+      for ( auto p : Y ) std::cout << " " << p;
+      trace.warning() << std::endl;
+    }
+  bool ok3 = std::includes( Y.cbegin(), Y.cend(), E.cbegin(), E.cend() );
+  trace.info() << "#X=" << X.size()
+               << " #CvxH(X+H) cap Z^d=" << Y.size()
+               << ( ok2 ? "/FC" : "/ERROR" )
+               << " #FC*(X)=" << E.size() << ( ok1 ? "/FC" : "/ERROR" )
+               << ( ok3 ? " FC*(X) subset CvxH(X+H) cap Z^d"
+                    : " FC*(X) not subset CvxH(X+H) cap Z^d" )
+               << std::endl;
+  return ok1 && ok2;
+}
+
+// @param width the width of the domain
+template <typename Space>
+bool
 checkProjectionFullConvexity( int width )
 {
   typedef typename Space::Integer    Integer;
@@ -177,6 +224,7 @@ int main( int argc, char* argv[] )
 {
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
+  int NB_TEST3 = 50;
   {
     trace.beginBlock( "Check SkelStarCvxH(X) full convexity 2D" );
     typedef DGtal::SpaceND< 2, int > Space;
@@ -238,6 +286,45 @@ int main( int argc, char* argv[] )
       {
         nb_ok += checkProjectionFullConvexity< Space >( 10 ) ? 1 : 0;
         nb    += 1;
+      }
+    trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
+    trace.endBlock();
+  }
+  {
+    trace.beginBlock( "Check CvxH plus Hypercube full convexity 2D" );
+    typedef DGtal::SpaceND< 2, int > Space;
+    unsigned int nb    = 0;
+    unsigned int nb_ok = 0;
+    for ( int i = 0; i < NB_TEST3; i++ )
+      {
+       	nb_ok += checkCvxHPlusHypercubeFullConvexity< Space >( 100 ) ? 1 : 0;
+	nb    += 1;
+      }
+    trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
+    trace.endBlock();
+  }
+  {
+    trace.beginBlock( "Check CvxH plus Hypercube full convexity 3D" );
+    typedef DGtal::SpaceND< 3, int > Space;
+    unsigned int nb    = 0;
+    unsigned int nb_ok = 0;
+    for ( int i = 0; i < NB_TEST3; i++ )
+      {
+       	nb_ok += checkCvxHPlusHypercubeFullConvexity< Space >( 30 ) ? 1 : 0;
+	nb    += 1;
+      }
+    trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
+    trace.endBlock();
+  }
+  {
+    trace.beginBlock( "Check CvxH plus Hypercube full convexity 4D" );
+    typedef DGtal::SpaceND< 4, int > Space;
+    unsigned int nb    = 0;
+    unsigned int nb_ok = 0;
+    for ( int i = 0; i < NB_TEST3; i++ )
+      {
+       	nb_ok += checkCvxHPlusHypercubeFullConvexity< Space >( 10 ) ? 1 : 0;
+	nb    += 1;
       }
     trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
     trace.endBlock();

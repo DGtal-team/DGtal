@@ -14,11 +14,11 @@
  *
  */
 /**
- * @file
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @file tangency-explorer.cpp
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2021/09/02
+ * @date 2022/06/15
  *
  * This file is part of the DGtal library.
  */
@@ -58,10 +58,12 @@ typedef DGtal::QuickHull< Kernel3D >         QuickHull3D;
 
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
+polyscope::SurfaceMesh *psDualMesh;
 polyscope::SurfaceMesh *psTriangle;
 polyscope::PointCloud*  psCloud;
 polyscope::PointCloud*  psCloudCvx;
 SurfMesh surfmesh;
+SurfMesh dual_surfmesh;
 float gridstep   = 1.0;
 int   vertex_idx = -1;
 float Time = 0.0;
@@ -449,24 +451,40 @@ int main( int argc, char* argv[] )
   K                    = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-  
+  SH3::Surfel2Index s2i;
+  auto dualSurface     = SH3::makeDualPolygonalSurface( s2i, surface );  
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-
+  
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
+  std::vector<std::vector<SH3::SurfaceMesh::Vertex>> dual_faces;
+  std::vector<RealPoint> dual_positions;
+  for(auto face= 0 ; face < dualSurface->nbFaces(); ++face)
+    dual_faces.push_back( dualSurface->verticesAroundFace( face ));
+    
+    //Recasting to vector of vertices
+  for ( auto vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
+    dual_positions.push_back( dualSurface->position( vtx ) );
+    
+  dual_surfmesh = SurfMesh(dual_positions.begin(),
+                           dual_positions.end(),
+                           dual_faces.begin(),
+                           dual_faces.end());
   std::cout << surfmesh << std::endl;
   std::cout << "number of non-manifold Edges = "
             << surfmesh.computeNonManifoldEdges().size() << std::endl;
+  std::cout << dual_surfmesh << std::endl;
+  std::cout << "number of non-manifold Edges = "
+            << dual_surfmesh.computeNonManifoldEdges().size() << std::endl;
   // Make digital surface
   digitizePointels( positions, digital_points );
   trace.info() << "Surface has " << digital_points.size() << " pointels." << std::endl;
@@ -482,6 +500,7 @@ int main( int argc, char* argv[] )
   polyscope::init();
 
   psMesh = polyscope::registerSurfaceMesh("Input surface", positions, faces);
+  psDualMesh = polyscope::registerSurfaceMesh("Input dual surface", dual_positions, dual_faces);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;
