@@ -99,8 +99,8 @@ struct MedianPlane {
   MedianPlane& operator=( const MedianPlane& other ) = default;
   MedianPlane& operator=( MedianPlane&& other ) = default;
   MedianPlane( Point p, Point q, Point r )
+    : N ( ( q - p ).crossProduct( r - p ) )
   {
-    N  = ( q - p ).crossProduct( r - p );
     mu = N.dot( p );
     omega = Naive ? N.norm( N.L_infty ) : N.norm( N.L_1 );
     if ( Symmetric && ( ( omega & 1 ) == 0 ) ) omega += 1;
@@ -162,8 +162,6 @@ int main( int argc, char** argv )
     }
   std::set< Point > faces_set, pos_edges_set, neg_edges_set;
   auto faceVertices = surfmesh.allIncidentVertices();
-  auto edgeVertices = surfmesh.allEdgeVertices();
-  auto edgeFaces    = surfmesh.allEdgeFaces();
 
   trace.beginBlock( "Checking face planarity" );
   std::vector< Plane > face_planes;
@@ -198,9 +196,9 @@ int main( int argc, char** argv )
           if ( Y[ 1 ] < Y[ 0 ] ) std::swap( Y[ 0 ], Y[ 1 ] ); 
           int idx1 = faceVertices[ f ][ i ];
           int idx2 = faceVertices[ f ][ (i+1)%X.size() ];
-          // Edges of both sides have many points in common
+          // Variant (1): edges of both sides have many points in common
           // auto A = dconv.relativeEnvelope( Y, face_planes[ f ], Algorithm::DIRECT );
-          // Edges of both sides have much less points in common
+          // Variant (2): edges of both sides have much less points in common
           auto A = dconv.relativeEnvelope( Y, F, Algorithm::DIRECT );
           bool pos = idx1 < idx2;
           (pos ? pos_edges_set : neg_edges_set).insert( A.cbegin(), A.cend() );
