@@ -27,7 +27,7 @@
  * This file is part of the DGtal library.
  */
 
-
+namespace DGtal {
 /**
    This example shows how to use the fully convex envelope to build a
    digital polyhedron from an arbitrary mesh. All faces have also the
@@ -58,7 +58,7 @@ standardDigitalPolyhedronBuilder3D ../examples/samples/lion-tri.obj 0.5 31
 
  \example geometry/volumes/standardDigitalPolyhedronBuilder3D.cpp
  */
-
+} // namespace DGtal {
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>

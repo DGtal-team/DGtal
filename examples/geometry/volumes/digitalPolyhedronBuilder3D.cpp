@@ -27,7 +27,7 @@
  * This file is part of the DGtal library.
  */
 
-
+namespace DGtal {
 /**
    This example shows how to use the fully convex envelope to build a
    digital polyhedron from an arbitrary mesh. It uses
@@ -54,7 +54,7 @@ digitalPolyhedronBuilder3D ../examples/samples/spot.obj 0.005 7
 
  \example geometry/volumes/digitalPolyhedronBuilder3D.cpp
  */
-
+} // namespace DGtal {
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
