@@ -92,8 +92,8 @@ namespace DGtal
     Self& operator=( Self&& other ) = default;
     
     /// Constructor from range
-    /// @tparam InputIterator any iterator on a range of integer values.
-    /// @param other any other object.
+    /// @tparam InputIterator the type of forward iterator on a range of integer values.
+    /// @param it,itE the range of integer values.
     template <typename InputIterator>
     IntegralIntervals( InputIterator it, InputIterator itE )
     {

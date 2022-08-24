@@ -423,7 +423,7 @@ namespace DGtal
     /// @note This method is generally faster than
     /// DigitalConvexity::isFullyConvex if (1) the set is indeed is
     /// fully convex, (2) the dimension is high (>= 3 or 4).
-    bool isFullyConvexFast( const PointRange& Z ) const;
+    bool isFullyConvexFast( const PointRange& X ) const;
     
     /// Tells if a given set of points Y is digitally fully subconvex to
     /// some lattice set \a Star_X, i.e. the cell cover of some set X
@@ -594,7 +594,7 @@ namespace DGtal
     /// and is fully convex.
     template <typename Predicate>
     PointRange
-    relativeEnvelope( const PointRange& Z, const Predicate& Y,
+    relativeEnvelope( const PointRange& Z, const Predicate& PredY,
                       EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
     
     /// @return the number of iterations of the last process
@@ -794,8 +794,9 @@ namespace DGtal
     /// Filters the points of \a E and outputs only the ones that
     /// satisfies the given predicate \a Pred.
     ///
-    /// @tparam Pred the type of a predicate Point -> boolean
+    /// @tparam Predicate the type of a predicate Point -> boolean
     /// @param[in] E any range of point
+    /// @param[in] Pred the predicate Point -> boolean 
     /// @return the subset of E whose elements satisfy the predicate \a Pred.
     template <typename Predicate>
     static PointRange filter( const PointRange& E, const Predicate& Pred );
