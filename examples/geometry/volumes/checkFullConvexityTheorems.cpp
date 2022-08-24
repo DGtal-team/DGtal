@@ -153,7 +153,6 @@ checkCvxHPlusHypercubeFullConvexity( int width )
     XpH = dconv.U( k, XpH );
   auto  P  = dconv.makePolytope( XpH );
   P.getPoints( Y );
-  auto  C  = dconv.StarCvxH( X );
   auto  E  = dconv.envelope( X );
   bool  ok1 = dconv.isFullyConvex( E );
   if ( ! ok1 )

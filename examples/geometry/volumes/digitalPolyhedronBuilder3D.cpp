@@ -127,7 +127,6 @@ int main( int argc, char** argv )
   std::set< Point > faces_set, edges_set;
   auto faceVertices = surfmesh.allIncidentVertices();
   auto edgeVertices = surfmesh.allEdgeVertices();
-  auto edgeFaces    = surfmesh.allEdgeFaces();
 
   trace.beginBlock( "Computing polyhedron" );
   for ( int f = 0; f < surfmesh.nbFaces(); ++f )
