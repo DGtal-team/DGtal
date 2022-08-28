@@ -35,14 +35,15 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Clone<KSpace> K )
-  : myK( K )
+DigitalConvexity( Clone<KSpace> K, bool safe )
+  : myK( K ), mySafe( safe )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Point lo, Point hi )
+DigitalConvexity( Point lo, Point hi, bool safe )
+  : mySafe( safe )
 {
   myK.init( lo, hi, true );
 }
@@ -290,9 +291,9 @@ makeCellCover( const RationalPolytope& P,
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
 DGtal::DigitalConvexity<TKSpace>::
-makePolytope( const PointRange& X, bool safe ) const
+makePolytope( const PointRange& X ) const
 {
-  if ( safe )
+  if ( mySafe )
     {
       typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
         InternalInteger;
@@ -328,10 +329,10 @@ U( Dimension i, const PointRange& X ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-is0Convex( const PointRange& X, bool safe ) const
+is0Convex( const PointRange& X ) const
 {
   if ( X.empty() ) return true;
-  const auto P = makePolytope( X, safe );
+  const auto P = makePolytope( X );
   return P.count() == X.size();
 }
 
@@ -339,13 +340,13 @@ is0Convex( const PointRange& X, bool safe ) const
 template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
-isFullyConvex( const PointRange& Z, bool convex0, bool safe ) const
+isFullyConvex( const PointRange& Z, bool convex0 ) const
 {
   ASSERT( dimension <= 64 );
   typedef DGtal::int64_t Direction;
   typedef std::vector< Direction > Directions;
   std::array< Directions, dimension > C;
-  const bool cvx0 = convex0 ? true : is0Convex( Z, safe );
+  const bool cvx0 = convex0 ? true : is0Convex( Z );
   if ( ! cvx0 ) return false;
   C[ 0 ].push_back( (Direction) 0 );
   std::map< Direction, PointRange > X;

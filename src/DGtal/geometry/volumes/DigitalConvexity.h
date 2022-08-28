@@ -122,15 +122,21 @@ namespace DGtal
     /**
      * Constructor from cellular space.
      * @param K any cellular grid space.
+     * @param safe when 'true' performs convex hull computations with arbitrary
+     * precision integer (if available), otherwise chooses a
+     * compromise between speed and precision (int64_t).
      */
-    DigitalConvexity( Clone<KSpace> K );
+    DigitalConvexity( Clone<KSpace> K, bool safe = false );
 
     /**
      * Constructor from lower and upper points.
      * @param lo the lowest point of the domain (bounding box for computations).
      * @param hi the highest point of the domain (bounding box for computations).
+     * @param safe when 'true' performs convex hull computations with arbitrary
+     * precision integer (if available), otherwise chooses a
+     * compromise between speed and precision (int64_t).
      */
-    DigitalConvexity( Point lo, Point hi );
+    DigitalConvexity( Point lo, Point hi, bool safe = false );
 
     /**
      * Assignment.
@@ -364,12 +370,8 @@ namespace DGtal
     ///
     /// @param X any range of \b pairwise \b distinct points
     ///
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
-    ///
     /// @return the corresponding lattice polytope.
-    LatticePolytope makePolytope( const PointRange& X, bool safe = false ) const;
+    LatticePolytope makePolytope( const PointRange& X ) const;
     
     /// Performs the digital Minkowski sum of \a X along direction \a i
     /// @param i any valid dimension
@@ -385,12 +387,8 @@ namespace DGtal
     /// 
     /// @param X any range of \b pairwise \b distinct points
     ///
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
-    ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool is0Convex( const PointRange& X, bool safe = false ) const;
+    bool is0Convex( const PointRange& X ) const;
     
     /// Tells if a given point range \a X is fully digitally
     /// convex. The test uses the morphological characterization of
@@ -402,14 +400,9 @@ namespace DGtal
     ///
     /// @param convex0 when 'true' indicates that \a X is known to be
     /// digitally 0-convex, otherwise the method will check it also.
-    /// 
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
     ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool isFullyConvex( const PointRange& X, bool convex0 = false,
-                        bool safe = false ) const;
+    bool isFullyConvex( const PointRange& X, bool convex0 = false ) const;
 
     /// Tells if a given point range \a X is fully digitally
     /// convex. The test uses the morphological characterization of
@@ -493,6 +486,20 @@ namespace DGtal
     bool isFullySubconvex( const Point& a, const Point& b,
                            const LatticeSet& StarX ) const;
 
+    /// Given a range of distinct points \a X, computes the tightiest
+    /// polytope that enclosed it. Note that this polytope may contain
+    /// more lattice points than the given input points.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @return the corresponding lattice polytope.
+    ///
+    /// @note alias for DigitalConvexity::makePolytope
+    LatticePolytope CvxH( const PointRange& X ) const
+    {
+      return makePolytope( X );
+    }
+    
     /// Builds the cell complex Star(CvxH(X)) for X a digital set,
     /// represented a lattice set (stacked row representation).
     ///
@@ -509,7 +516,8 @@ namespace DGtal
     /// @note It is useful to specify an axis if you wish later to
     /// compare or make operations with several lattice sets. They
     /// must indeed have the same axis.
-    LatticeSet StarCvxH( const PointRange& X, Dimension axis = dimension ) const;
+    LatticeSet StarCvxH( const PointRange& X,
+                         Dimension axis = dimension ) const;
 
     /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
     ///
@@ -764,6 +772,11 @@ namespace DGtal
     /// The cellular grid space where computations are done.
     KSpace myK;
 
+    /// when 'true' performs convex hull computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    bool mySafe;
+    
     /// The number of iterations of the last FullyConvexEnvelope operation.
     mutable Size myDepthLastFCE;
     
