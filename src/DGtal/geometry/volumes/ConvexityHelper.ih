@@ -188,7 +188,7 @@ computeDegeneratedLatticePolytope
 template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
-computeDegeneratedLatticePolytopeVertices
+computeDegeneratedConvexHullVertices
 ( PointRange& input_points )
 {
   typedef typename LatticePolytope::Domain     Domain;
@@ -235,13 +235,13 @@ computeDegeneratedLatticePolytopeVertices
   ASSERT( dimension > 1 );
   if ( dimension == 2 )
     {
-      std::cerr << "[ConvexityHelper::computeDegeneratedLatticePolytopeVertices]"
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << " Weird error: found initial full dimensional simplex" << std::endl;
       return PointRange();
     }
   if ( dimension >= 4 )
     {
-      std::cerr << "[ConvexityHelper::computeDegeneratedLatticePolytopeVertices]"
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << "Degenerated lattice polytope in nD, n >= 4 is not implemented"
                 << std::endl;
       return PointRange();
@@ -251,7 +251,7 @@ computeDegeneratedLatticePolytopeVertices
     ::crossProduct( basis[ 0 ], basis[ 1 ] );
   if ( n == Vector::zero )
     {
-      std::cerr << "[ConvexityHelper::computeDegeneratedLatticePolytopeVertices]"
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << "Weird numerical error, u . v != |u| |v| but u x v != 0"
                 << std::endl;
       return PointRange();
@@ -266,14 +266,14 @@ computeDegeneratedLatticePolytopeVertices
   bool ok_init = hull.setInitialSimplex( full_splx );
   if ( ! ok_init )
     {
-      std::cerr << "[ConvexityHelper::computeDegeneratedLatticePolytopeVertices]"
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << "Weird error in hull.setInitialSimplex" << std::endl;
       return PointRange();
     }
   bool ok_hull = hull.computeConvexHull( target );
   if ( ! ok_hull )
     {
-      std::cerr << "[ConvexityHelper::computeDegeneratedLatticePolytopeVertices]"
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << "Weird error in hull.computeConvexHull" << std::endl;
       return PointRange();
     }
@@ -402,7 +402,7 @@ computeLatticePolytope
 template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
-computeLatticePolytopeVertices
+computeConvexHullVertices
 ( const PointRange& input_points,
   bool remove_duplicates )
 {
@@ -412,7 +412,11 @@ computeLatticePolytopeVertices
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
-  if ( !ok ) return false; // TODO
+  if ( !ok )
+    {
+      PointRange Z( input_points );
+      return computeDegeneratedConvexHullVertices( Z );
+    }
   hull.getVertexPositions( positions );
   return positions;
 }

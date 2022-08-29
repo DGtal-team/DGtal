@@ -234,8 +234,8 @@ namespace DGtal
     /// not full.
     static
     PointRange
-    computeLatticePolytopeVertices( const PointRange& input_points,
-                                    bool remove_duplicates = true );    
+    computeConvexHullVertices( const PointRange& input_points,
+                               bool remove_duplicates = true );    
 
     
     /// Computes a surface mesh representation of the boundary of the
@@ -358,7 +358,7 @@ namespace DGtal
     LatticePolytope
     computeDegeneratedLatticePolytope( PointRange& input_points );
 
-    /// Computes the vertices of the lattice polytope enclosing a
+    /// Computes the vertices of the tightiest lattice polytope enclosing a
     /// range of distinct points, arranged such that they do not form
     /// a full dimensional polytope.
     ///
@@ -378,7 +378,7 @@ namespace DGtal
     /// dimensional and dimension was greater than 3.
     static
     PointRange
-    computeDegeneratedLatticePolytopeVertices( PointRange& input_points );
+    computeDegeneratedConvexHullVertices( PointRange& input_points );
     
     
     /// @}
