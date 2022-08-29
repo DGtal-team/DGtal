@@ -264,6 +264,13 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( complex.nbCells() == 1 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      const auto X = Helper::computeConvexHullVertices( V, false );
+      CAPTURE( X );
+      THEN( "The polytope has 6 vertices" )  {
+        REQUIRE( X.size() == 6 );
+      }
+    }
   }
   GIVEN( "Given a cube with an additional outside vertex " ) {
     std::vector<Point> V
