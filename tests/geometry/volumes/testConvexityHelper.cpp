@@ -308,6 +308,13 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( nb_finite == 2 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      const auto X = Helper::computeConvexHullVertices( V, false );
+      CAPTURE( X );
+      THEN( "The polytope has 9 vertices" )  {
+        REQUIRE( X.size() == 9 );
+      }
+    }
   }
   GIVEN( "Given a degenerated 1d polytope { (0,0,1), (3,-1,2), (9,-3,4), (-6,2,-1) } " ) {
     std::vector<Point> V
