@@ -383,7 +383,29 @@ isFullyConvexFast( const PointRange& Z  ) const
   const auto s = sizeStarCvxH( Z );
   return s == nb_cells; 
 }
-  
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+ExtrCvxH( const PointRange& X ) const
+{
+  if ( mySafe )
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytopeVertices( X, false, false );
+    }
+  else
+    {
+      typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
+        InternalInteger;
+      return ConvexityHelper< dimension, Integer, InternalInteger >::
+        computeLatticePolytopeVertices( X, false, false );
+    }
+}
+
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet

@@ -499,6 +499,18 @@ namespace DGtal
     {
       return makePolytope( X );
     }
+
+    /// Given a range of distinct points \a X, computes the vertices
+    /// of the tightiest polytope that enclosed it. 
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @return the vertices or extrema of `CvxH(X)`.
+    ///
+    /// @note The method works in nD for full dimensional convex
+    /// hulls. It can handle not full dimensional convex hull up to
+    /// dimension 3 included.
+    PointRange ExtrCvxH( const PointRange& X ) const;
     
     /// Builds the cell complex Star(CvxH(X)) for X a digital set,
     /// represented a lattice set (stacked row representation).
