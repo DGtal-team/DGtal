@@ -197,7 +197,7 @@ bool testMesh()
 
   trace.beginBlock ( "Testing face removing  ..." );
   Mesh<Point> aMesh4 = aMesh;
-  std::vector<unsigned int> f = {1};
+  std::vector<typename Mesh<Point>::Index> f = {1};
   aMesh4.removeFaces(f);
   bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
   trace.info() << (okRemoveFace ? "[face remove ok]":"[face remove fail]" ) << std::endl;

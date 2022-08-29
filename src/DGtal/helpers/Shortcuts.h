@@ -1966,14 +1966,14 @@ namespace DGtal
           output_mtl << "#  MTL format"<< std::endl;
           output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
 	  // Output vertices
-	  unsigned int n = std::min( positions.size(), vf.size() );
+	  auto n = std::min( positions.size(), vf.size() );
 	  for ( unsigned int i = 0; i < n; ++i )
 	    {
 	      RealPoint    p0 = positions[ i ];
 	      RealPoint    p1 = p0 + vf[ i ];
               RealVector    v = vf[ i ];
               RealVector absv = RealVector( fabs( v[ 0 ] ), fabs( v[ 1 ] ), fabs( v[ 2 ] ) );
-	      unsigned int mc = std::max_element( absv.begin(), absv.end() ) - absv.begin();
+	      auto mc = std::max_element( absv.begin(), absv.end() ) - absv.begin();
 	      RealVector   b  =
 		mc == 2 ? RealVector( 1, 0, 0 ) :
 		mc == 1 ? RealVector( 0, 0, 1 ) : RealVector( 0, 1, 0 );

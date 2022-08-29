@@ -164,8 +164,8 @@ DGtal::Mesh<TPoint>::addVertex(const TPoint &point)
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2,
-                                       unsigned int indexVertex3, const DGtal::Color &aColor)
+DGtal::Mesh<TPoint>::addTriangularFace(Index indexVertex1, Index indexVertex2,
+Index indexVertex3, const DGtal::Color &aColor)
 {
   MeshFace aFace;
   aFace.push_back(indexVertex1);
@@ -184,8 +184,8 @@ DGtal::Mesh<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int i
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2,
-                                 unsigned int indexVertex3, unsigned int indexVertex4,
+DGtal::Mesh<TPoint>::addQuadFace(Index indexVertex1,Index indexVertex2,
+                                  Index indexVertex3, Index indexVertex4,
                                  const DGtal::Color &aColor)
 {
   MeshFace aFace;
@@ -218,7 +218,7 @@ DGtal::Mesh<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor)
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::removeFaces(const std::vector<unsigned int> &facesIndex){
+DGtal::Mesh<TPoint>::removeFaces(const std::vector<Index> &facesIndex){
   DGtal::Mesh<TPoint> newMesh(true);
   std::vector<unsigned int> indexVertexFaceCard(nbVertex());
   std::vector<bool> indexFaceOK(nbFaces());
@@ -272,7 +272,7 @@ DGtal::Mesh<TPoint>::removeFaces(const std::vector<unsigned int> &facesIndex){
 template<typename TPoint>
 inline
 const TPoint &
-DGtal::Mesh<TPoint>::getVertex(unsigned int i) const
+DGtal::Mesh<TPoint>::getVertex(Index i) const
 {
   return myVertexList.at(i);
 }
@@ -282,7 +282,7 @@ DGtal::Mesh<TPoint>::getVertex(unsigned int i) const
 template<typename TPoint>
 inline
 TPoint &
-DGtal::Mesh<TPoint>::getVertex(unsigned int i)
+DGtal::Mesh<TPoint>::getVertex(Index i)
 {
   return myVertexList.at(i);
 }
@@ -292,7 +292,7 @@ DGtal::Mesh<TPoint>::getVertex(unsigned int i)
 template<typename TPoint>
 inline
 const typename  DGtal::Mesh<TPoint>::MeshFace &
-DGtal::Mesh<TPoint>::getFace(unsigned int i) const
+DGtal::Mesh<TPoint>::getFace(Index i) const
 {
   return myFaceList.at(i);
 }
@@ -301,7 +301,7 @@ DGtal::Mesh<TPoint>::getFace(unsigned int i) const
 template<typename TPoint>
 inline
 typename  DGtal::Mesh<TPoint>::MeshFace &
-DGtal::Mesh<TPoint>::getFace(unsigned int i)
+DGtal::Mesh<TPoint>::getFace(Index i)
 {
   return myFaceList.at(i);
 }
@@ -310,7 +310,7 @@ DGtal::Mesh<TPoint>::getFace(unsigned int i)
 template<typename TPoint>
 inline
 typename DGtal::Mesh<TPoint>::RealPoint
-DGtal::Mesh<TPoint>::getFaceBarycenter(unsigned int i) const
+DGtal::Mesh<TPoint>::getFaceBarycenter(Index i) const
 {
   DGtal::Mesh<TPoint>::RealPoint c;
   MeshFace aFace = getFace(i);
@@ -344,7 +344,7 @@ DGtal::Mesh<TPoint>::nbVertex() const
 template<typename TPoint>
 inline
 const DGtal::Color &
-DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
+DGtal::Mesh<TPoint>::getFaceColor(Index i) const
 {
   if(mySaveFaceColor)
     {
@@ -386,7 +386,7 @@ DGtal::Mesh<TPoint>::getBoundingBox() const
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::setFaceColor(const unsigned int index,
+DGtal::Mesh<TPoint>::setFaceColor(const Index index,
                                   const DGtal::Color &aColor)
 {
   if (!mySaveFaceColor)

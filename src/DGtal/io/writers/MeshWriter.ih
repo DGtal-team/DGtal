@@ -59,7 +59,7 @@ DGtal::MeshWriter<TPoint>::export2OFF(std::ostream & out,
       }
 
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
-        std::vector<unsigned int>  aFace = aMesh.getFace(i);
+        std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
 	out << aFace.size() << " " ;
 	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
@@ -105,7 +105,7 @@ DGtal::MeshWriter<TPoint>::export2OBJ(std::ostream &out,
       out << std::endl;
       // processing faces:
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
-        std::vector<unsigned int>  aFace = aMesh.getFace(i);
+        std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
 	out << "f " ;
 	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
@@ -151,7 +151,7 @@ DGtal::MeshWriter<TPoint>::export2OBJ_colors(std::ostream &out, std::ostream &ou
       // processing faces:
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
         // Getting face color index.
-        std::vector<unsigned int>  aFace = aMesh.getFace(i);
+        std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
         DGtal::Color c = aMesh.getFaceColor(i);
         size_t materialIndex = 0;
         if(mapMaterial.count(c)==0){
@@ -171,8 +171,8 @@ DGtal::MeshWriter<TPoint>::export2OBJ_colors(std::ostream &out, std::ostream &ou
         
         out << "usemtl material_"<< materialIndex << std::endl; 
 	out << "f " ;
-	for(unsigned int j=0; j<aFace.size(); j++){
-	  unsigned int indexVertex = aFace.at(j);
+	for(typename DGtal::Mesh<TPoint>::Index j=0; j<aFace.size(); j++){
+      typename DGtal::Mesh<TPoint>::Index indexVertex = aFace.at(j);
 	  out << (indexVertex+1) << " " ;	    
 	}
 	out << std::endl;
