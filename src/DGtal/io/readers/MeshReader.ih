@@ -143,7 +143,7 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     {
       for(unsigned int j=0; j < aFace.size()/2; j++)
       {
-        unsigned int tmp=aFace.at(j);
+        const auto tmp=aFace.at(j);
         aFace.at(j)=aFace.at(aFace.size()-1-j);
         aFace.at(aFace.size()-1-j)=tmp;
       }
@@ -277,34 +277,34 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
       getline( infile, str );
       if ( ! infile.good() ){
 	trace.error() << "MeshReader : Invalid format in " << aFilename << std::endl;
-	throw dgtalio;
-      } 
+        throw dgtalio;
+      }
     }
   while ( str[ 0 ] == '#' || str=="");
   std::istringstream str_in2( str );
   unsigned int nbFaces;
   str_in2 >> nbFaces;
   // Reading mesh faces
-  for(unsigned int i=0; i<nbFaces; i++){
+  for(unsigned int i=0; i<nbFaces; i++)
+  {
     // Reading the number of face vertex
     std::vector<typename Mesh<TPoint>::Index> aFace;
-    for (unsigned int j=0; j< 3; j++){
+    for (unsigned int j=0; j< 3; j++)
+    {
       unsigned int anIndex;
       infile >> anIndex;
       aFace.push_back(anIndex);
     }
-    if( invertVertexOrder ){
-      unsigned int tmp=aFace.at(0);
-	aFace.at(0)=aFace.at(2);
-	aFace.at(2)=tmp;
+    if( invertVertexOrder )
+    {
+      const auto tmp=aFace.at(0);
+      aFace.at(0)=aFace.at(2);
+      aFace.at(2)=tmp;
     }
     aMesh.addFace(aFace);
     getline(infile, str);
-	  
   }
-
   return true;
-   
 }
 
 //-----------------------------------------------------------------------------

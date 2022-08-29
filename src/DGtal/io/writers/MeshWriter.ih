@@ -46,40 +46,40 @@ template<typename TPoint>
 inline
 bool 
 DGtal::MeshWriter<TPoint>::export2OFF(std::ostream & out, 
-                                      const  DGtal::Mesh<TPoint> & aMesh, bool exportColor) {
+const  DGtal::Mesh<TPoint> & aMesh, bool exportColor) {
   DGtal::IOException dgtalio;
   try
-    {
-      out << "OFF"<< std::endl;
-      out << "# generated from MeshWriter from the DGTal library"<< std::endl;
-      out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << std::endl;
-	
-      for(unsigned int i=0; i< aMesh.nbVertex(); i++){
-	out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << std::endl;	
+  {
+    out << "OFF"<< std::endl;
+    out << "# generated from MeshWriter from the DGTal library"<< std::endl;
+    out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << std::endl;
+    
+    for(unsigned int i=0; i< aMesh.nbVertex(); i++){
+      out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << std::endl;
+    }
+    
+    for (unsigned int i=0; i< aMesh.nbFaces(); i++){
+      std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
+      out << aFace.size() << " " ;
+      for(typename Mesh<TPoint>::Index j=0; j<aFace.size(); j++){
+        const auto indexVertex = aFace.at(j);
+        out << indexVertex << " " ;
       }
-
-      for (unsigned int i=0; i< aMesh.nbFaces(); i++){
-        std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
-	out << aFace.size() << " " ;
-	for(unsigned int j=0; j<aFace.size(); j++){
-	  unsigned int indexVertex = aFace.at(j);
-	  out << indexVertex << " " ;	    
-	}
-	DGtal::Color col = aMesh.getFaceColor(i);
-	if(exportColor && aMesh.isStoringFaceColors() )
-          {
-            out << " ";
-            out << ((double) col.red())/255.0 << " "
-                << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
-                << " " << ((double) col.alpha())/255.0 ;
-          }  
-	out << std::endl;
+      DGtal::Color col = aMesh.getFaceColor(i);
+      if(exportColor && aMesh.isStoringFaceColors() )
+      {
+        out << " ";
+        out << ((double) col.red())/255.0 << " "
+        << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0
+        << " " << ((double) col.alpha())/255.0 ;
       }
-    }catch( ... )
-    {
-      trace.error() << "OFF writer IO error on export " << std::endl;
-      throw dgtalio;
-    }        
+      out << std::endl;
+    }
+  }catch( ... )
+  {
+    trace.error() << "OFF writer IO error on export " << std::endl;
+    throw dgtalio;
+  }        
   
   return true;
 }
@@ -107,8 +107,8 @@ DGtal::MeshWriter<TPoint>::export2OBJ(std::ostream &out,
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
         std::vector<typename DGtal::Mesh<TPoint>::Index>  aFace = aMesh.getFace(i);
 	out << "f " ;
-	for(unsigned int j=0; j<aFace.size(); j++){
-	  unsigned int indexVertex = aFace.at(j);
+	for(typename Mesh<TPoint>::Index j=0; j<aFace.size(); j++){
+      const auto indexVertex = aFace.at(j);
 	  out << (indexVertex+1) << " " ;	    
 	}
 	out << std::endl;

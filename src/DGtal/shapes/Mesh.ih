@@ -718,7 +718,7 @@ DGtal::Mesh<TPoint>::createMeshFromHeightSequence(Mesh<TPoint> &aMesh,  const st
                                                   const unsigned int lengthSequence,
                                                   double stepX, double stepY, double stepZ,
                                                   const DGtal::Color &aMeshColor ){
-  unsigned int nbVertexInitial = aMesh.nbVertex();
+  const auto nbVertexInitial = aMesh.nbVertex();
   // Generating vertices..
   int i = 0;
   unsigned int posY = 0;

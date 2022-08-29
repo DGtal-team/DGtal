@@ -1791,7 +1791,7 @@ namespace DGtal
           // Taking care of materials
           bool has_material = ( nbfaces == diffuse_colors.size() );
           Idx   idxMaterial = 0;
-          std::map<Color, unsigned int > mapMaterial;
+          std::map<Color, Idx > mapMaterial;
           if ( has_material )
             {
               for ( Idx f = 0; f < nbfaces; ++f )
