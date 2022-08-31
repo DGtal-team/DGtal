@@ -219,11 +219,64 @@ checkProjectionFullConvexity( int width )
   return nb_ok == nb;
 }
 
+
+// @param width the width of the domain
+template <typename Space>
+bool
+checkFullConvexityCharacterization( int width )
+{
+  typedef typename Space::Integer    Integer;
+  typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
+  typedef DGtal::DigitalConvexity< KSpace > DConvexity;
+  typedef typename KSpace::Point     Point;
+  typedef std::vector<Point>         PointRange;
+  typedef DGtal::KhalimskySpaceND< Space::dimension-1, Integer > ProjKSpace;
+  typedef DGtal::DigitalConvexity< ProjKSpace > ProjDConvexity;
+  typedef typename ProjKSpace::Point ProjPoint;
+  typedef std::vector<ProjPoint>     ProjPointRange;
+
+  // Generate a random polytope in the specified domain
+  Point lo = Point::zero;
+  Point hi = Point::diagonal( width );
+  DConvexity dconv( lo, hi );
+  std::vector< Point > X, Y;
+  int   n = Space::dimension + rand() % 17;
+  makeRandomRange( X, n, width );
+  auto  P  = dconv.makePolytope( X );
+  P.getPoints( Y );  
+  const bool cvx = dconv.is0Convex( Y );
+  const bool fc = dconv.isFullyConvex( Y );
+  bool  proj_fc = true;
+  std::cout << ( cvx ? "X Cvx" : "X Not Cvx" )
+            << "/" << ( fc ? "X FC" : "X Not FC" );
+  for ( Dimension a = 0; a < Space::dimension; a++ )
+    {
+      ProjPoint plo, phi;
+      project( plo, lo, a ); 
+      project( phi, hi, a ); 
+      ProjDConvexity pdconv( plo, phi );
+      std::vector< ProjPoint > PE;
+      projectRange( PE, Y, a );
+      bool ok = pdconv.isFullyConvex( PE );
+      std::cout << "/" << a << ( ok ? "FC" : "NFC" );
+      proj_fc = proj_fc && ok;
+      if ( fc && !ok )
+        trace.warning() << "Projection is not fully convex !" << std::endl;
+    }
+  if ( fc != proj_fc )
+    trace.warning() << "X is " << ( fc ? "FCvx" : "not FCvx" )
+                    << "proj(X) " << ( proj_fc ? "FCvx" : "not FCvx" )
+                    << std::endl;
+  else std::cout << ( fc ? " => FC ok" : " => Not FC ok" ) << std::endl;
+  return fc == proj_fc;
+}
+
 int main( int argc, char* argv[] )
 {
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
-  int NB_TEST3 = 50;
+  int NB_TEST3 = 5;
+  int NB_TEST4 = 1000;
   {
     trace.beginBlock( "Check SkelStarCvxH(X) full convexity 2D" );
     typedef DGtal::SpaceND< 2, int > Space;
@@ -328,6 +381,18 @@ int main( int argc, char* argv[] )
     trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
     trace.endBlock();
   }
-
+  {
+    trace.beginBlock( "Check full convexity characterization 3D" );
+    typedef DGtal::SpaceND< 3, int > Space;
+    unsigned int nb    = 0;
+    unsigned int nb_ok = 0;
+    for ( int i = 0; i < NB_TEST4; i++ )
+      {
+        nb_ok += checkFullConvexityCharacterization< Space >( 10 ) ? 1 : 0;
+        nb    += 1;
+      }
+    trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
+    trace.endBlock();
+  }
   return 0;
 }
