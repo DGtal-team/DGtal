@@ -97,6 +97,7 @@ intermediate steps, which can be useful in some contexts.
 
 \b Intermediate \b computations
 - DigitalConvexity::FC computes the operation \f$ \mathrm{FC}(Z):=\mathrm{Extr}(\mathrm{Skel}(\mathrm{Star}(\mathrm{CvxH}(Z)))) \f$, for \f$ Z \f$ a digital set.
+- DigitalConvexity::CvxH computes the lattice polytope that is the convex hull of the given digital set.
 - DigitalConvexity::StarCvxH computes the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the cells that touch the convex hull of the given digital set. 
 - DigitalConvexity::Star computes the set of lattice cells \f$ \mathrm{Star}(Z) \f$, i.e. the cells that touch some point of the given digital set. 
 - DigitalConvexity::StarCells computes the set of lattice cells \f$ \mathrm{Star}(C) \f$, i.e. the cells that touch some cell of the given set of cells, represented with lattice point and Khalimsky coordinates. 

@@ -599,12 +599,6 @@ namespace DGtal
     /// vertices to the skeleton of the cells in \a C.
     PointRange ExtrSkel( const LatticeSet& C ) const;
     
-    /// @param X any range of lattice points
-    ///
-    /// @return the range of digital points that are the extremal
-    /// vertices to the convex hull of the points of \a X.
-    PointRange ExtrCvxH( const PointRange& C ) const;
-
     /// Builds the lattice set (stacked row representation) associated
     /// to the given range of points.
     ///
