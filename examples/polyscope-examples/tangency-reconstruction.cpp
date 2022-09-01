@@ -1116,7 +1116,7 @@ int main( int argc, char* argv[] )
   if ( argc <= 1 ) return 0;
   bool input_polynomial = argc > 2;
   std::string filename   = std::string( argv[ 1 ] );
-  std::string polynomial = argc >= 2 ? std::string( argv[ 1 ] ) : std::string( "" );
+  std::string polynomial = std::string( argv[ 1 ] );
   const double h         = argc >= 3 ? atof( argv[ 2 ] ) : 1.0;
   const double bounds    = argc >= 4 ? atof( argv[ 3 ] ) : 10.0;
   
