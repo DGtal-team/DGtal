@@ -244,7 +244,7 @@ struct UnorderedPointSetPredicate
 {
   typedef DGtal::Z3i::Point Point;
   const std::unordered_set< Point >* myS;
-  UnorderedPointSetPredicate( const std::unordered_set< Point >& S )
+  explicit UnorderedPointSetPredicate( const std::unordered_set< Point >& S )
     : myS( &S ) {}
   bool operator()( const Point& p ) const
   { return myS->count( p ) != 0; }
