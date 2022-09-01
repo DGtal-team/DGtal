@@ -219,7 +219,25 @@ checkProjectionFullConvexity( int width )
   return nb_ok == nb;
 }
 
-
+template <typename Point>
+void displayPointRange2D( const std::vector< Point >& X )
+{
+  if ( X.empty() ) return;
+  Point lo  = X[ 0 ];
+  Point hi  = X[ 0 ];
+  for ( auto&& p : X ) { lo = lo.inf( p ); hi = hi.sup( p ); }
+  auto w = hi[ 0 ] - lo[ 0 ] + 1;
+  auto h = hi[ 1 ] - lo[ 1 ] + 1;
+  for ( int y = 0; y < h; y++ )
+    {
+      for ( int x = 0; x < w; x++ )
+        {
+          Point q( lo[ 0 ] + x, lo[ 1 ] + y );
+          std::cout << ( std::binary_search( X.cbegin(), X.cend(), q ) ? "*" : "." );
+        }
+      std::cout << std::endl;
+    }
+}
 // @param width the width of the domain
 template <typename Space>
 bool
@@ -247,8 +265,9 @@ checkFullConvexityCharacterization( int width )
   const bool cvx = dconv.is0Convex( Y );
   const bool fc = dconv.isFullyConvex( Y );
   bool  proj_fc = true;
-  std::cout << ( cvx ? "X Cvx" : "X Not Cvx" )
-            << "/" << ( fc ? "X FC" : "X Not FC" );
+  std::cout << "#X=" << Y.size()
+            << " " << ( cvx ? "X C" : "X NC" )
+            << "/" << ( fc ? "X FC" : "X NFC" );
   for ( Dimension a = 0; a < Space::dimension; a++ )
     {
       ProjPoint plo, phi;
@@ -257,8 +276,11 @@ checkFullConvexityCharacterization( int width )
       ProjDConvexity pdconv( plo, phi );
       std::vector< ProjPoint > PE;
       projectRange( PE, Y, a );
-      bool ok = pdconv.isFullyConvex( PE );
-      std::cout << "/" << a << ( ok ? "FC" : "NFC" );
+      // std::cout << std::endl;
+      // displayPointRange2D( PE );
+      bool ok  = pdconv.isFullyConvex( PE );
+      bool ok0 = pdconv.is0Convex( PE );
+      std::cout << "/" << a << ( ok0 ? ( ok ? "FC" : "NFC" ) : "NC" );
       proj_fc = proj_fc && ok;
       if ( fc && !ok )
         trace.warning() << "Projection is not fully convex !" << std::endl;
@@ -276,7 +298,7 @@ int main( int argc, char* argv[] )
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
   int NB_TEST3 = 5;
-  int NB_TEST4 = 1000;
+  int NB_TEST4 = 5000;
   {
     trace.beginBlock( "Check SkelStarCvxH(X) full convexity 2D" );
     typedef DGtal::SpaceND< 2, int > Space;

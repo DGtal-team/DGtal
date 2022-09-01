@@ -513,7 +513,7 @@ namespace DGtal
     PointRange ExtrCvxH( const PointRange& X ) const;
     
     /// Builds the cell complex Star(CvxH(X)) for X a digital set,
-    /// represented a lattice set (stacked row representation).
+    /// represented as a lattice set (stacked row representation).
     ///
     /// @param X any range of lattice points
     ///
@@ -539,9 +539,96 @@ namespace DGtal
     /// represented as lattice points with Khalimsky coordinates.
     Integer sizeStarCvxH( const PointRange& X ) const;
 
+    /// Builds the cell complex Star(X) for X a digital set,
+    /// represented as a lattice set (stacked row representation).
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// touches points of \a X, i.e. `Star(X)`.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet Star( const PointRange& X,
+                     Dimension axis = dimension ) const;
+
+    /// Builds the cell complex Star(C) for C a range of cells,
+    /// represented as a lattice set (stacked row representation).
+    ///
     /// @param C a range of cells represented with points in Khalimsky coordinates.
-    /// @return the range of digital points that  are vertices to the cells in C.
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// touches cells of \a C, i.e. `Star(C)`.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarCells( const PointRange& C,
+                          Dimension axis = dimension ) const;
+    
+    /// @param C a range of cells represented with points in Khalimsky coordinates.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the cells in \a C.
     PointRange Extr( const PointRange& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the cells in \a C.
+    PointRange Extr( const LatticeSet& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// form the skeleton of the given range of cells \a C.
+    LatticeSet Skel( const LatticeSet& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the skeleton of the cells in \a C.
+    PointRange ExtrSkel( const LatticeSet& C ) const;
+    
+    /// @param X any range of lattice points
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the convex hull of the points of \a X.
+    PointRange ExtrCvxH( const PointRange& C ) const;
+
+    /// Builds the lattice set (stacked row representation) associated
+    /// to the given range of points.
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the lattice set that represents the exact same points as \a X
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet toLatticeSet( const PointRange& X,
+                             Dimension axis = dimension ) const;
+
+    /// Builds the range of lattice points  associated
+    /// to the given lattice set.
+    ///
+    /// @param L any lattice set.
+    ///
+    /// @return the point range that represents the exact same points as \a L
+    PointRange toPointRange( const LatticeSet& L ) const;
     
     /// @}
 

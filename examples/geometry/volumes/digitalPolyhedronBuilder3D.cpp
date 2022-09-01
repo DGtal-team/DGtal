@@ -20,7 +20,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2021/06/20
+ * @date 2022/06/20
  *
  * An example file named digitalPolyhedronBuilder3D
  *
@@ -33,7 +33,7 @@ namespace DGtal {
    digital polyhedron from an arbitrary mesh. It uses
    DigitalConvexity::envelope for computations.
    
-   @see \ref dgtal_dconvexityapp_sec2
+   @see \ref dgtal_envelope_sec2
    
    For instance, you may call it on object "spot.obj" as
 

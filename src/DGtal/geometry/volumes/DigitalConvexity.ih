@@ -431,6 +431,46 @@ StarCvxH( const PointRange& X, Dimension axis ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+Star( const PointRange& X, const Dimension axis ) const
+{
+  const Dimension a = axis >= dimension ? 0 : axis;
+  LatticeSet L( X.cbegin(), X.cend(), a );
+  return L.starOfPoints();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+StarCells( const PointRange& C, const Dimension axis ) const
+{
+  const Dimension a = axis >= dimension ? 0 : axis;
+  LatticeSet L( C.cbegin(), C.cend(), a );
+  return L.starOfCells();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+toLatticeSet( const PointRange& X, const Dimension axis ) const
+{
+  const Dimension a = axis >= dimension ? 0 : axis;
+  return LatticeSet( X.cbegin(), X.cend(), a );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
+DGtal::DigitalConvexity<TKSpace>::
+toPointRange( const LatticeSet& L ) const
+{
+  return L.toPointRange();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::Integer
 DGtal::DigitalConvexity<TKSpace>::
 sizeStarCvxH( const PointRange& X ) const
@@ -488,6 +528,30 @@ Extr( const PointRange& C ) const
   auto last = std::unique( E.begin(), E.end() );
   E.erase( last, E.end() );
   return E;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+Extr( const LatticeSet& C ) const
+{
+  return C.extremaOfCells();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+Skel( const LatticeSet& C ) const
+{
+  return C.skeletonOfCells();
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+DGtal::DigitalConvexity<TKSpace>::
+ExtrSkel( const LatticeSet& C ) const
+{
+  return C.skeletonOfCells().extremaOfCells();
 }
 
 //-----------------------------------------------------------------------------
