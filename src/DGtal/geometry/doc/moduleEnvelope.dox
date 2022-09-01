@@ -82,7 +82,7 @@ It  satisfies the following properties:
 - \f$ \mathrm{FC}^*_{\mid Y}( X ) \f$ is included in the bounding box of \f$ X \f$  (geometric consistency)
 
 Again it may not be an increasing operator. The interest of relative
-envelopes will appear clearly in section dgtal_envelope_sec2.
+envelopes will appear clearly in section \ref dgtal_envelope_sec2 .
 
 @subsection dgtal_envelope_sec13 Computing fully convex envelopes
 
