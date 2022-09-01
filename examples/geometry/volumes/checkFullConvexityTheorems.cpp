@@ -276,8 +276,11 @@ checkFullConvexityCharacterization( int width )
       ProjDConvexity pdconv( plo, phi );
       std::vector< ProjPoint > PE;
       projectRange( PE, Y, a );
-      // std::cout << std::endl;
-      // displayPointRange2D( PE );
+      if ( Space::dimension == 3 )
+        {
+          std::cout << std::endl;
+          displayPointRange2D( PE );
+        }
       bool ok  = pdconv.isFullyConvex( PE );
       bool ok0 = pdconv.is0Convex( PE );
       std::cout << "/" << a << ( ok0 ? ( ok ? "FC" : "NFC" ) : "NC" );
@@ -298,7 +301,7 @@ int main( int argc, char* argv[] )
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
   int NB_TEST3 = 5;
-  int NB_TEST4 = 5000;
+  int NB_TEST4 = 25;
   {
     trace.beginBlock( "Check SkelStarCvxH(X) full convexity 2D" );
     typedef DGtal::SpaceND< 2, int > Space;
@@ -406,6 +409,19 @@ int main( int argc, char* argv[] )
   {
     trace.beginBlock( "Check full convexity characterization 3D" );
     typedef DGtal::SpaceND< 3, int > Space;
+    unsigned int nb    = 0;
+    unsigned int nb_ok = 0;
+    for ( int i = 0; i < NB_TEST4; i++ )
+      {
+        nb_ok += checkFullConvexityCharacterization< Space >( 10 ) ? 1 : 0;
+        nb    += 1;
+      }
+    trace.info() << nb_ok << "/" << nb << " OK tests" << std::endl;
+    trace.endBlock();
+  }
+  {
+    trace.beginBlock( "Check full convexity characterization 4D" );
+    typedef DGtal::SpaceND< 4, int > Space;
     unsigned int nb    = 0;
     unsigned int nb_ok = 0;
     for ( int i = 0; i < NB_TEST4; i++ )

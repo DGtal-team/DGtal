@@ -301,19 +301,17 @@ init( PointIterator itB, PointIterator itE )
       A.push_back( a );
       B.push_back( b );
     }
-  myValidEdgeConstraints = true;
-  if ( dimension >= 3 )
+  myValidEdgeConstraints = false;
+  if ( dimension == 3 )
     { // One should add edges
       for ( unsigned int i = 0; i < pts.size(); ++i )
 	for ( unsigned int j = i+1; j < pts.size(); ++j ) {
 	  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::addEdgeConstraint
 	    ( *this, i, j, pts );
 	}
-      if ( dimension >= 4 )
-	{ // Not implemented yet
-	  myValidEdgeConstraints = false;
-	}
+      myValidEdgeConstraints = true;
     }
+  // not implemented for dimension > 3
   return true;
 }
 
