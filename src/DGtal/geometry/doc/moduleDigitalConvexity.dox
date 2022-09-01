@@ -16,7 +16,7 @@ Part of the \ref packageGeometry.
   
 This part of the manual describes tools associated to a new definition
 of digital convexity, called the full convexity
-\cite lachaud_dgmm_2021 . This new definition solves many problems
+\cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 . This new definition solves many problems
 related to the usual definition of digital convexity, like possible
 non connectedness or non simple connectedness, while encompassing its
 desirable features. Fully convex sets are digitally convex, but are
@@ -54,7 +54,7 @@ contains exactly these digital points and no other.
 Although handy and easy to check, this definition lacks many
 properties related to (continuous) convexity in the Euclidean plane.
 
-We extend this definition as follows (see \cite lachaud_dgmm_2021 ).
+We extend this definition as follows (see \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 ).
 Let \f$ C^d \f$ be the usual regular cubical
 complex induced by the lattice \f$ \mathbb{Z}^d \f$, and let \f$ C^d_k
 \f$ be its \a k-cells, for \f$ 0 \le k \le d \f$. We have that the

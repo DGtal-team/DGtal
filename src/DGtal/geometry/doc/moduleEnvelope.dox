@@ -16,7 +16,7 @@ Part of the \ref packageGeometry.
   
 This part of the manual describes convex hull tools associated to a
 new definition of digital convexity, called the full convexity
-\cite lachaud_dgmm_2021 .
+\cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 .
 We talk about convex \a envelopes instead of convex \a hulls, since
 the presented operations do not satisfy all the usual hull
 operations. This is detailed below. Last, this module shows how the
