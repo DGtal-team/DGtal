@@ -3,6 +3,11 @@
 ## New features / critical changes
 
 - *Geometry package*
+  - Improve lattice polytope count operations and provide many new
+    services related to full convexity, like computing the (relative
+    or not) fully convex envelope, and building digital
+    polyhedra.
+    (Jacques-Olivier Lachaud,[#1656](https://github.com/DGtal-team/DGtal/pull/1656))
   - Add curvature measures computation on 3D surface mesh:
     implements Normal Cycle, face-constant Corrected Normal Current
     and vertex-interpolated Corrected Normal Current.
