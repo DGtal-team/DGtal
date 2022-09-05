@@ -69,6 +69,7 @@ stages:
       inputs:
         versionSpec: '$(python.version)'
     - script: |
+        python --version
         python -m pip install cmake
         python -m pip install ninja
         python -m pip install -r wrap/tests/requirements-test.txt
