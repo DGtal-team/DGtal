@@ -4,7 +4,7 @@ if(DGTAL_WRAP_PYTHON)
   FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11
-    GIT_TAG v2.10.0
+    GIT_TAG v2.9.2
   )
   FetchContent_GetProperties(pybind11)
   if(NOT pybind11_POPULATED)
