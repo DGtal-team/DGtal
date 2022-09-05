@@ -70,6 +70,7 @@ stages:
         versionSpec: '$(python.version)'
     - script: |
         python --version
+        echo "Python exec in the path: ${PYTHON_EXECUTABLE}"
         python -m pip install cmake
         python -m pip install ninja
         python -m pip install -r wrap/tests/requirements-test.txt
