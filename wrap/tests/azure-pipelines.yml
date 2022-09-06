@@ -78,7 +78,7 @@ stages:
         cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DDGTAL_BUILD_TESTING_PYTHON:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.9 -DCMAKE_OSX_ARCHITECTURES:STRING=x86_64 -DDGTAL_WRAP_PYTHON:BOOL=ON -DBOOST_ROOT:PATH=$(DEPENDENCIES_BUILD_DIR)/boost-build -DBoost_USE_STATIC_LIBS:BOOL=ON -S "$(Build.SourcesDirectory)" -B "$(Build.SourcesDirectory)/build"
         cmake --build "$(Build.SourcesDirectory)/build"
         cd "$(Build.SourcesDirectory)/build"
-        ctest -R python -V
+        ## ctest -R python -V https://github.com/DGtal-team/DGtal/issues/1658
       workingDirectory: '$(Build.SourcesDirectory)'
       displayName: 'Build project'
 
