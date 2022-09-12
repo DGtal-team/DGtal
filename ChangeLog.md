@@ -89,6 +89,8 @@
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
+  - First and second curvature directions were inverted in the `IIPrincipalCurvaturesAndDirectionsFunctor`,
+    fixed now. (David Coeurjolly, [#1657](https://github.com/DGtal-team/DGtal/pull/1657))
   
 - *Build*
   - Continuous integration does not use Travis anymore but Github
