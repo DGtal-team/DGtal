@@ -39,7 +39,6 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
-
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
@@ -93,7 +92,7 @@ TEST_CASE( "Testing CompressedLongvol" )
   Domain domain(Point(0,0,0), Point(2,2,2));
   typedef ImageContainerBySTLVector<Domain, DGtal::uint64_t> Image;
   Image image(domain);
-  image.setValue(Point(1,1,1), 4222222);
+  image.setValue(Point(1,1,1), 0X8899AABBCCDDEEFFull);
   
   SECTION("Testing API of CompressedVolWriter")
     {

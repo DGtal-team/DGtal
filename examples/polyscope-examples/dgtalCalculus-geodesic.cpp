@@ -53,7 +53,7 @@ typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
 typedef SurfMesh::Face                   Face;
 typedef SurfMesh::Vertex                  Vertex;
-
+typedef PolygonalCalculus<SH3::RealPoint,SH3::RealVector> PolyCalculus;
 //Polyscope global
 polyscope::SurfaceMesh *psMesh;
 polyscope::SurfaceMesh *psMeshReg;
@@ -61,23 +61,23 @@ SurfMesh surfmesh;
 SurfMesh surfmeshReg;
 float dt = 2.0;
 
-GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>> *heat;
-PolygonalCalculus<SH3::RealPoint,SH3::RealVector> *calculus;
+GeodesicsInHeat<PolyCalculus> *heat;
+PolyCalculus *calculus;
 
-GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>> *heatReg;
-PolygonalCalculus<SH3::RealPoint,SH3::RealVector> *calculusReg;
+GeodesicsInHeat<PolyCalculus> *heatReg;
+PolyCalculus *calculusReg;
 
 bool skipReg = true; //Global flag to enable/disable the regularization example.
 
 void precompute()
 {
-  calculus = new PolygonalCalculus<SH3::RealPoint,SH3::RealVector>(surfmesh);
-  heat = new GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>(calculus);
+  calculus = new PolyCalculus(surfmesh);
+  heat = new GeodesicsInHeat<PolyCalculus>(calculus);
   
   if (!skipReg)
   {
-    calculusReg = new PolygonalCalculus<SH3::RealPoint,SH3::RealVector>(surfmeshReg);
-    heatReg = new GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>(calculusReg);
+    calculusReg = new PolyCalculus(surfmeshReg);
+    heatReg = new GeodesicsInHeat<PolyCalculus>(calculusReg);
   }
   trace.beginBlock("Init solvers");
   heat->init(dt);
@@ -90,13 +90,13 @@ void addsource()
 {
   auto pos =rand() % surfmesh.nbVertices();
   heat->addSource( pos );
-  GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>::Vector source = heat->source();
+  GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
   psMesh->addVertexScalarQuantity("source", source);
 
   if (!skipReg)
   {
     heatReg->addSource( pos );
-    GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>::Vector source = heatReg->source();
+    GeodesicsInHeat<PolyCalculus>::Vector source = heatReg->source();
     psMeshReg->addVertexScalarQuantity("source", source);
   }
 }
@@ -105,13 +105,13 @@ void computeGeodesics()
 {
 
   heat->addSource( 0 ); //Forcing one seed (for screenshots)
-  GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>::Vector dist = heat->compute();
+  GeodesicsInHeat<PolyCalculus>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
 
   if (!skipReg)
   {
     heatReg->addSource( 0 ); //Forcing one seed (for screenshots)
-    GeodesicsInHeat<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>>::Vector dist = heatReg->compute();
+    GeodesicsInHeat<PolyCalculus>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
 }
@@ -171,6 +171,7 @@ int main()
                       positions.end(),
                       faces.begin(),
                       faces.end());
+  std::cout << surfmesh << std::endl;
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
   
   //Construction of a regularized surface

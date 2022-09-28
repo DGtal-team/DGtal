@@ -103,14 +103,6 @@ option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font wei
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
 
-# -----------------------------------------------------------------------------
-# Benchmark target
-# -----------------------------------------------------------------------------
-option(BUILD_BENCHMARKS "Build benchmarks." OFF)
-if(BUILD_BENCHMARKS)
-  add_custom_target(benchmark COMMAND echo "Benchmarks launched.....")
-endif()
-
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
 #------------------------------------------------------------------------------

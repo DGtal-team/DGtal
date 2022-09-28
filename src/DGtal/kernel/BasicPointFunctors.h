@@ -633,7 +633,7 @@ namespace functors
    * and double to re sampling with grid size less than 1).
    */
 
- template <typename TDomain, typename TInteger =  DGtal::int32_t, typename TValue = DGtal::uint32_t >
+ template <typename TDomain, typename TInteger =  DGtal::int32_t, typename TValue = typename TDomain::Size >
  class BasicDomainSubSampler
   {
   public:

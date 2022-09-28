@@ -11,6 +11,7 @@ set(DGTAL_TESTS_VOLUMES_SRC
   testConvexityHelper
   testFullConvexity
   testEhrhartPolynomial
+  testShortestPaths
 )
 
 foreach(FILE ${DGTAL_TESTS_VOLUMES_SRC})

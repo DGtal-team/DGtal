@@ -59,8 +59,9 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
   - \ref moduleHeatLaplaceOperator (Thomas Caissard)
   - \ref moduleGenericAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
 
-- \ref modulePolygonalCalculus (David Coeurjolly)
-- \ref moduleGeodesicsInHeat (David Coeurjolly)
+- \ref modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
+- \ref moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
+- \ref moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
 
 @b Package @b Concepts @b Overview
 - \ref packageDECConcepts
@@ -71,6 +72,11 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleDiscreteExteriorCalculusUsage.cpp
 - exampleDiscreteExteriorCalculusSolve.cpp
 - exampleDiscreteExteriorCalculusChladni.cpp
+- exampleHarmonicParametrization.cpp
+- exampleVectorHeatMethod.cpp
+- dgtalCalculus-poisson.cpp
+- dgtalCalculus-laplace.cpp
+- dgtalCalculus-bunny.cpp
 
 */
 

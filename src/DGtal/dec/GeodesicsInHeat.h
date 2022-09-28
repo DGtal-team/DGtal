@@ -43,23 +43,24 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/math/linalg/DirichletConditions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-/////////////////////////////////////////////////////////////////////////////
-// template class GeodesicsInHeat
-/**
- * Description of template class 'GeodesicsInHeat' <p>
- * \brief This class implements @cite Crane2013 on polygonal surfaces  (using @ref modulePolygonalCalculus).
- *
- * see @ref moduleGeodesicsInHeat for details and examples.
- *
- * @tparam a model of PolygonalCalculus.
- */
-template <typename TPolygonalCalculus>
-class GeodesicsInHeat
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // template class GeodesicsInHeat
+  /**
+   * Description of template class 'GeodesicsInHeat' <p>
+   * \brief This class implements @cite Crane2013 on polygonal surfaces  (using @ref modulePolygonalCalculus).
+   *
+   * see @ref moduleGeodesicsInHeat for details and examples.
+   *
+   * @tparam a model of PolygonalCalculus.
+   */
+  template <typename TPolygonalCalculus>
+  class GeodesicsInHeat
+  {
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -69,7 +70,10 @@ class GeodesicsInHeat
     typedef typename PolygonalCalculus::Solver Solver;
     typedef typename PolygonalCalculus::Vector Vector;
     typedef typename PolygonalCalculus::Vertex Vertex;
-
+    typedef typename PolygonalCalculus::LinAlg LinAlgBackend;
+    typedef DirichletConditions< LinAlgBackend > Conditions;
+    typedef typename Conditions::IntegerVector IntegerVector;
+    
     /**
      * Default constructor.
      */
@@ -117,31 +121,56 @@ class GeodesicsInHeat
     
     // ----------------------- Interface --------------------------------------
    
-    /// Initialize the solvers with @a dt as timestep for the
-    /// heat diffusion
-    /// @param dt timestep
-    void init(double dt)
+    /// Initialize the solvers with @a dt as timestep for the heat
+    /// diffusion and @a lambda parameter for the polygonal calculus,
+    /// which guarantee definiteness for positive @a lambda.
+    ///
+    /// @param dt the timestep
+    /// @param lambda timestep
+    ///
+    /// @param boundary_with_mixed_solution when 'true' and when the
+    /// surface has boundaries, mix two solutions of the heat
+    /// diffusion operation (Neumann and Dirichlet null conditions on
+    /// boundary).
+    void init( double dt, double lambda = 1.0,
+               bool boundary_with_mixed_solution = false  )
     {
-      myIsInit=true;
-      
-      //As the LB is PSD, the identity matrix shouldn't be necessary. However, some solvers
-      //may have issues with positive semi-definite matrix.
-      SparseMatrix I(myCalculus->nbVertices(),myCalculus->nbVertices());
-      I.setIdentity();
-      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami() + 1e-6 * I;
+      myIsInit = true;
+      myLambda = lambda;
+
+      SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami( lambda );
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
-      SparseMatrix heatOpe   = mass + dt*laplacian;
+      myHeatOpe              = mass - dt*laplacian;
       
       //Prefactorizing
-      myPoissonSolver.compute(laplacian);
-      myHeatSolver.compute(heatOpe);
+      myPoissonSolver.compute( laplacian );
+      myHeatSolver.compute   ( myHeatOpe );
       
       //empty source
       mySource    = Vector::Zero(myCalculus->nbVertices());
+
+      // Manage boundaries
+      myManageBoundary = false;
+      if ( ! boundary_with_mixed_solution ) return;
+      myBoundary = IntegerVector::Zero(myCalculus->nbVertices());
+      const auto surfmesh = myCalculus->getSurfaceMeshPtr();
+      const auto edges    = surfmesh->computeManifoldBoundaryEdges();
+      for ( auto e : edges )
+        {
+          const auto vtcs = surfmesh->edgeVertices( e );
+          myBoundary[ vtcs.first  ] = 1;
+          myBoundary[ vtcs.second ] = 1;
+        }
+      myManageBoundary = ! edges.empty();
+      if ( ! myManageBoundary ) return;
+      // Prepare solver for a problem with Dirichlet conditions.
+      SparseMatrix heatOpe_d = Conditions::dirichletOperator( myHeatOpe, myBoundary );
+      // Prefactoring
+      myHeatDirichletSolver.compute( heatOpe_d );
     }
     
     /** Adds a source point at a vertex @e aV
-    * @param aV the Vertex
+     * @param aV the Vertex
      **/
     void addSource(const Vertex aV)
     {
@@ -167,35 +196,47 @@ class GeodesicsInHeat
       FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
       //Heat diffusion
       Vector heatDiffusion = myHeatSolver.solve(mySource);
+      // Take care of boundaries
+      if ( myManageBoundary )
+        {
+          Vector bValues  = Vector::Zero( myCalculus->nbVertices() );
+          Vector bSources = Conditions::dirichletVector( myHeatOpe, mySource,
+                                                         myBoundary, bValues );
+          Vector bSol     = myHeatDirichletSolver.solve( bSources );
+          Vector heatDiffusionDirichlet
+                          = Conditions::dirichletSolution( bSol, myBoundary, bValues );
+          heatDiffusion = 0.5 * ( heatDiffusion + heatDiffusionDirichlet );
+        }
+      
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
       auto surfmesh = myCalculus->getSurfaceMeshPtr();
       
       // Heat, normalization and divergence per face
       for(auto f=0; f< myCalculus->nbFaces(); ++f)
-      {
-        Vector faceHeat( myCalculus->degree(f));
-        cpt=0;
-        auto vertices = surfmesh->incidentVertices(f);
-        for(auto v: vertices)
         {
-          faceHeat(cpt) = heatDiffusion( v );
-          ++cpt;
-        }
-        // ∇heat / ∣∣∇heat∣∣
-        Vector grad = -myCalculus->gradient(f) * faceHeat;
-        grad.normalize();
+          Vector faceHeat( myCalculus->degree(f));
+          cpt=0;
+          auto vertices = surfmesh->incidentVertices(f);
+          for(auto v: vertices)
+            {
+              faceHeat(cpt) = heatDiffusion( v );
+              ++cpt;
+            }
+          // ∇heat / ∣∣∇heat∣∣
+          Vector grad = -myCalculus->gradient(f) * faceHeat;
+          grad.normalize();
       
-        // div
-        DenseMatrix oneForm = myCalculus->flat(f)*grad;
-        Vector divergenceFace = myCalculus->divergence(f) * oneForm;
-        cpt=0;
-        for(auto v: vertices)
-        {
-          divergence(v) += divergenceFace(cpt);
-          ++cpt;
+          // div
+          DenseMatrix   oneForm = myCalculus->flat(f)*grad;
+          Vector divergenceFace = myCalculus->divergence( f, myLambda ) * oneForm;
+          cpt=0;
+          for(auto v: vertices)
+            {
+              divergence(v) += divergenceFace(cpt);
+              ++cpt;
+            }
         }
-      }
       
       // Last Poisson solve
       Vector distVec = myPoissonSolver.solve(divergence);
@@ -221,6 +262,9 @@ class GeodesicsInHeat
     ///The underlying PolygonalCalculus instance
     const PolygonalCalculus *myCalculus;
 
+    /// The operator for heat diffusion.
+    SparseMatrix myHeatOpe;
+    
     ///Poisson solver
     Solver myPoissonSolver;
 
@@ -235,7 +279,21 @@ class GeodesicsInHeat
   
     ///Validitate flag
     bool myIsInit;
+
+    /// Lambda parameter
+    double myLambda;
+
+    /// When 'true', manage boundaries with a mixed solution of
+    /// Neumann and Dirichlet conditions.
+    bool myManageBoundary;
+
+    /// The boundary characteristic vector
+    IntegerVector myBoundary;
     
+    ///Heat solver with Dirichlet boundary conditions.
+    Solver myHeatDirichletSolver;
+  
+  
   }; // end of class GeodesicsInHeat
 } // namespace DGtal
 

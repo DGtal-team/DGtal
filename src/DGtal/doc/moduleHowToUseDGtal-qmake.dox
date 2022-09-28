@@ -58,8 +58,7 @@ LIBS += -lDGtal  -lDGtal-visu3d  -framework qglviewer
 @endcode
 
 
-@warning If you want to use other optional  DGtal dependencies (ITK,
-ImageMagick, ...), you  have to add all associated DEFINES flags and
+@warning If you want to use other optional  DGtal dependencies (ITK), you  have to add all associated DEFINES flags and
 LIBS variables.
 
 

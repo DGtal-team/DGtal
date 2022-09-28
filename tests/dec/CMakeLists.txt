@@ -5,6 +5,7 @@ set(DGTAL_TESTS_SRC
     testHeatLaplace
     testPolygonalCalculus
     testGeodesicsInHeat
+    testVectorsInHeat
   )
 
 # add_test is disabled for the following sources

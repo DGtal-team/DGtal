@@ -42,7 +42,6 @@
 
 #include <DGtal/io/readers/GenericReader.h>
 #include <DGtal/io/colormaps/ColorBrightnessColorMap.h>
-#include <DGtal/io/viewers/Viewer3D.h>
 #include <DGtal/io/colormaps/TickedColorMap.h>
 #include "DGtal/io/readers/GenericReader.h"
 

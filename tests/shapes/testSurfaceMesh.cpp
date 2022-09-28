@@ -82,6 +82,28 @@ SurfaceMesh< PointVector<3,double>,
                       faces.cbegin(), faces.cend() );
 }
 
+
+SurfaceMesh< PointVector<3,double>,
+PointVector<3,double> > makeNonManifoldBoundary()
+{
+  typedef PointVector<3,double>                 RealPoint;
+  typedef PointVector<3,double>                 RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >  PolygonMesh;
+  typedef PolygonMesh::Vertices                 Vertices;
+  std::vector< RealPoint > positions;
+  std::vector< Vertices  > faces;
+  positions.push_back( RealPoint( 0, 0, 1 ) );
+  positions.push_back( RealPoint( 0, -1, 0 ) );
+  positions.push_back( RealPoint( 1, 0, 0 ) );
+  positions.push_back( RealPoint( 0, 1, 0 ) );
+  positions.push_back( RealPoint( 0, 0, 0 ) );
+  faces.push_back( { 0, 4, 1 } );
+  faces.push_back( { 0, 4, 2 } );
+  faces.push_back( { 0, 4, 3 } );
+  return PolygonMesh( positions.cbegin(), positions.cend(),
+                     faces.cbegin(), faces.cend() );
+}
+
 SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]" )
 {
   typedef PointVector<3,double>                RealPoint;
@@ -121,6 +143,11 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
         REQUIRE( polymesh.nbFaces() == 6 );
         REQUIRE( polymesh.Euler() == 1 );
       }
+    THEN( "Checking distances." )
+    {
+      REQUIRE( polymesh.distance(0,0) == Approx(0.0) );
+      REQUIRE( polymesh.distance(0,7) == Approx(std::sqrt(3)));
+    }
     THEN( "Breadth-first visiting the mesh from vertex 0, visit {0}, then {1,2,4}, then {3,5,6,9}, then {7,8}." )
       {
         BreadthFirstVisitor< PolygonMesh > visitor( polymesh, 0 );
@@ -147,7 +174,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
       }      
-    THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges" ) {
+    THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges, the boundary is a 1d manifold" ) {
       auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
       auto mani_inner   = polymesh.computeManifoldInnerEdges();
       auto mani_inner_c = polymesh.computeManifoldInnerConsistentEdges();
@@ -304,6 +331,28 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
       REQUIRE( polymesh.neighborVertices( 20 ).size()
                == readmesh.neighborVertices( 20 ).size() );
       REQUIRE( polymesh.vertexNormals().size() == readmesh.vertexNormals().size() );
+    }
+  }
+}
+
+SCENARIO( "SurfaceMesh< RealPoint3 > boundary tests", "[surfmesh][boundary]" )
+{
+  typedef PointVector<3,double>                      RealPoint;
+  typedef PointVector<3,double>                      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  auto polymesh = makeNonManifoldBoundary();
+  auto polymesh2 = makeBox();
+  WHEN( "Checking the topolopgy of the mesh boundary" ) {
+    auto chains = polymesh2.computeManifoldBoundaryChains();
+    THEN( "The box as a manifold boundary" ) {
+      CAPTURE(chains);
+      REQUIRE( polymesh2.isBoundariesManifold() == true);
+      REQUIRE( polymesh2.isBoundariesManifold(false) == true);
+      REQUIRE( chains.size() == 1);
+      REQUIRE( chains[0].size() == 6);
+    }
+    THEN( "The extra mesh does not have a manifold boundary" ) {
+      REQUIRE( polymesh.isBoundariesManifold() == false);
     }
   }
 }

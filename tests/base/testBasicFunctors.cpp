@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <cmath>
 #include <functional>
 
 #include "DGtal/base/Common.h"
@@ -109,13 +110,16 @@ bool testBasicFunctors()
   {
     //need to explicitely specialized std::ptr_fun because there are several
     //overloaded versions of std::floor if used intead ctor of 
-    //std::pointer_to_unary_function<double, double> 
-    std::pointer_to_unary_function<double, double> f(std::floor); 
-    std::pointer_to_unary_function<double, double> c(std::ceil); 
+    //std::pointer_to_unary_function<double, double>
+    // JOL: pointer_to_unary_function is deprecated as of C++11
+    double (*pF)(double) = &floor;
+    double (*pC)(double) = &ceil;
+    std::function<double(double)> f = pF;
+    std::function<double(double)> c = pC;
     functors::Cast<int> o;
 
     //composer
-    typedef DGtal::functors::Composer< std::pointer_to_unary_function<double, double>, 
+    typedef DGtal::functors::Composer< std::function<double(double)>,
     functors::Cast<int>, int > Quantizer;
     double d = 5.2; 
 

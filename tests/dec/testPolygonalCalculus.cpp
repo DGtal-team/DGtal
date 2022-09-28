@@ -19,6 +19,8 @@
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2021/09/02
  *
@@ -37,6 +39,8 @@
 #include "DGtal/dec/PolygonalCalculus.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/shapes/MeshHelpers.h"
+#include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/math/linalg/DirichletConditions.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -184,12 +188,47 @@ TEST_CASE( "Testing PolygonalCalculus" )
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
     
-    auto L = boxCalculus.LaplaceBeltrami(f);
+    auto L = boxCalculus.laplaceBeltrami(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 1.0, 1.0, 1.0;
     expected << 0,0,0,0;
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
+  }
+  SECTION("Local Connection-Laplace-Beltrami")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    auto L = boxCalculus.connectionLaplacian(f);
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    //since connection laplacian transports the phi vectors to the face,
+    //it's not expected to have 0 since these vectors aren't actually the same
+    auto lphi = L*phi;
+    //but we can still check that L is semi-definite
+    double det = L.determinant()+1.;
+    REQUIRE( det == Approx(1.0));
+    REQUIRE( lphi[2] == Approx(-3.683));
+  }
+  SECTION("Covariant Operators")
+  {
+    PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
+    auto nf = box.incidentVertices(f).size();
+
+    PolygonalCalculus< RealPoint,RealVector >::Vector phi(2*nf);
+    phi << 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0;
+    auto CG = boxCalculus.covariantGradient(f,phi);
+    auto CP = boxCalculus.covariantProjection(f,phi);
+
+    //check sizes
+    REQUIRE( CG.rows() == 2);
+    REQUIRE( CG.cols() == 2);
+    REQUIRE( CP.rows() == faces[f].size());
+    REQUIRE( CP.cols() == 2);
+
+    REQUIRE( CG(0,0) == Approx(0.707106));
+    REQUIRE( CP(0,0) == Approx(1.224744));
   }
   SECTION("Check lumped mass matrix")
   {
@@ -235,5 +274,107 @@ TEST_CASE( "Testing PolygonalCalculus" )
   }
   
 }
+
+TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
+{
+  typedef Shortcuts< KSpace >                SH3;
+  typedef SurfaceMesh< RealPoint,RealPoint > Mesh;
+  typedef Mesh::Index                        Index;
+  typedef PolygonalCalculus< RealPoint,RealVector > PolyDEC;
+  typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
+
+  // Build a more complex surface.
+  auto params = SH3::defaultParameters();
+  
+  params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", 2.0 );
+  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+  auto K               = SH3::getKSpace( params );
+  auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
+  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+  auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
+  
+  std::vector<std::vector< Index > > faces;
+  std::vector<RealPoint> positions = primalSurface->positions();
+  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+    faces.push_back(primalSurface->incidentVertices( face ));
+  
+  Mesh surfmesh = Mesh( positions.begin(), positions.end(),
+                            faces.begin(),     faces.end() );
+  auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
+  
+  SECTION("Check surface")
+    {
+      REQUIRE( surfmesh.nbVertices() == 1364 );
+      REQUIRE( surfmesh.nbFaces() == 1279 );
+      REQUIRE( boundaryEdges.size() == 168 );
+    }
+
+  // Builds calculus and solve a Poisson problem with Dirichlet boundary conditions
+  PolyDEC calculus( surfmesh );
+  // Laplace opeartor
+  PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
+  // value on boundary
+  PolyDEC::Vector g = calculus.form0();
+  // characteristic set of boundary
+  DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
+
+  SECTION("Solve Poisson problem with boundary Dirichlet conditions")
+    {
+      for ( double scale = 0.1; scale < 2.0; scale *= 2.0 )
+        {
+          std::cout << "scale=" << scale << std::endl;
+          auto phi = [&]( Index v)
+          {
+            return cos(scale*(surfmesh.position(v)[0]))
+              * (scale*surfmesh.position(v)[1]);
+          };
+          
+          for(auto &e: boundaryEdges)
+            {
+              auto adjVertices = surfmesh.edgeVertices(e);
+              auto v1 = adjVertices.first;
+              auto v2 = adjVertices.second;
+              g(v1) = phi(v1);
+              g(v2) = phi(v2);
+              b(v1) = 1;
+              b(v2) = 1;
+            }
+          // Solve Δu=0 with g as boundary conditions
+          PolyDEC::Solver solver;
+          PolyDEC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, b );
+          solver.compute( L_dirichlet );
+          REQUIRE( solver.info() == Eigen::Success );
+          PolyDEC::Vector g_dirichlet = DC::dirichletVector( L, g, b, g );
+          PolyDEC::Vector x_dirichlet = solver.solve( g_dirichlet );
+          REQUIRE( solver.info() == Eigen::Success );
+          PolyDEC::Vector u = DC::dirichletSolution( x_dirichlet, b, g );
+          double min_phi = 0.0;
+          double max_phi = 0.0;
+          double min_u   = 0.0;
+          double max_u   = 0.0;
+          double min_i_u = 0.0;
+          double max_i_u = 0.0;
+          double exp_u   = 0.0;
+          double exp_u2  = 0.0;
+          for ( auto v = 0; v < surfmesh.nbVertices(); ++v )
+            {
+              min_phi = std::min( min_phi, phi( v ) );
+              max_phi = std::max( max_phi, phi( v ) );
+              min_u   = std::min( min_u  , u  ( v ) );
+              max_u   = std::max( max_u  , u  ( v ) );
+              if ( b( v ) == 0.0 )
+                {
+                  min_i_u = std::min( min_i_u, u  ( v ) );
+                  max_i_u = std::max( max_i_u, u  ( v ) );
+                }
+            }
+          REQUIRE( min_phi <= min_u );
+          REQUIRE( max_phi >= max_u );
+          REQUIRE( min_phi <  min_i_u );
+          REQUIRE( max_phi >  max_i_u );
+        } //   for ( double scale = 0.1; scale < 2.0; scale *= 2.0 )
+    }
+};
 
 /** @ingroup Tests **/

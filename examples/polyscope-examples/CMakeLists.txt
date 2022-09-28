@@ -13,14 +13,32 @@ if(NOT WITH_EIGEN)
   message(FATAL_ERROR "Polyscope Polygonal Calculus examples require Eigen (WITH_EIGEN=true)")
 endif()
 
+# Make sure the compiler can find include files.
+include_directories (${PROJECT_SOURCE_DIR}/src/)
+include_directories (${PROJECT_BINARY_DIR}/src)
+
+# Make sure the compiler can find include files.
+include_directories (${PROJECT_SOURCE_DIR}/examples/)
 include_directories (${PROJECT_BINARY_DIR}/examples/)
+
+
+# Make sure the linker can find the Hello library once it is built.
+link_directories (${PROJECT_BINARY_DIR})
+
+# ConfigExamples.h instanciation.
+configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in
+  ${PROJECT_BINARY_DIR}/examples/ConfigExamples.h)
 
 set(POLYSCOPE_SRCS
   dgtalCalculus
   dgtalCalculus-single
   dgtalCalculus-poisson
   dgtalCalculus-bunny
+  dgtalCalculus-halfsphere
   dgtalCalculus-geodesic
+  exampleVectorHeatMethod
+  exampleHarmonicParametrization
+  exampleBunnyHead
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})
