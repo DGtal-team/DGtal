@@ -13,7 +13,7 @@ export(TARGETS DGtal FILE ${dgtal_export_file})
 # is ON. Disable it when deploying.
 set(_dependencies_list
   Boost ZLIB
-  GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3 CGAL FFTW3
+  GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3
   )
 foreach(dep ${_dependencies_list})
   if(DGTAL_CONFIG_HINTS)

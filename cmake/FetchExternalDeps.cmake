@@ -14,7 +14,8 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
 
 
 # -----------------------------------------------------------------------------
-# Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
+# Fetching Catch2 and googlebenchmark
+# (only if the BUILD_TESTING variable has been set to true)
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
 

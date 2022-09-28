@@ -34,9 +34,6 @@ else()
     endif()
     set(EIGEN_INCLUDE_DIRS ${eigen_SOURCE_DIR})
 
-    install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen
-        DESTINATION include
-    )
 endif()
 
 add_library(Eigen3_Eigen INTERFACE)
@@ -68,6 +65,6 @@ endif()
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME eigen)
 set_target_properties(Eigen3_Eigen PROPERTIES EXPORT_NAME Eigen)
 
-install(DIRECTORY ${EIGEN_INCLUDE_DIRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
 install(TARGETS Eigen3_Eigen EXPORT Eigen_Targets)
 install(EXPORT Eigen_Targets DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/eigen NAMESPACE Eigen3::)
