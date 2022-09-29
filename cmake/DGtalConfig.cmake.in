@@ -63,11 +63,6 @@ if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
     @Qt5_HINTS@
     )
   set(WITH_QT5 1)
-  # set(DGTAL_Qt5_DIR @Qt5_DIR@)
-  # set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS}
-  #                        "${Qt5Widgets_INCLUDE_DIRS}"
-  #                        "${Qt5OpenGL_INCLUDE_DIRS}"
-  #                        "${Qt5Xml_INCLUDE_DIRS}")
 endif (@QT5_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
@@ -109,6 +104,7 @@ if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
   set(WITH_EIGEN 1)
   include(eigen)
   set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+  set(DGTAL_LIBRARIES ${DGTAL_LIBRARIES} Eigen3::Eigen)
 endif()
 
 
