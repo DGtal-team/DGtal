@@ -36,7 +36,7 @@ jobs:
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp
+       run: brew install boost ninja gmp libomp 
 
 
      - name: Get white list of tests
