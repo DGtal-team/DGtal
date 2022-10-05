@@ -1,13 +1,3 @@
-# Enable floating point exception when DGtal library is loaded. Only works for gcc.
-if (UNIX AND NOT APPLE)
-  # Only used in Common.cpp
-  option(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
-  mark_as_advanced(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-  if(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-    target_compile_definitions(DGtal PRIVATE -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-  endif()
-endif()
-
 set(VERBOSE_DGTAL 0)
 set(DEBUG_VERBOSE_DGTAL 0)
 set(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
