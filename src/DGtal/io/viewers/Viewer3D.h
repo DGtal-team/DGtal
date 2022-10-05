@@ -59,11 +59,7 @@
 #include <GL/glu.h>
 #endif
 
-#ifdef WITH_QT5
-  #include <QApplication>
-#else
-  #include <QtGui/qapplication.h>
-#endif
+#include <QApplication>
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
