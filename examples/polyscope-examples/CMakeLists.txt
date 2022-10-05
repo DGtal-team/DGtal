@@ -46,5 +46,5 @@ foreach(FILE ${POLYSCOPE_SRCS})
   #enable the randomized testing but it does not work (polyscope headers are
   #not found properly).
   add_executable(${FILE} ${FILE}.cpp)
-  target_link_libraries(${FILE} DGtal ${DGTAL_LIBRARIES} polyscope)
+  target_link_libraries(${FILE} DGtal ${DGtalLibDependencies} polyscope Eigen3::Eigen)
 endforeach()

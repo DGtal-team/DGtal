@@ -58,24 +58,11 @@ if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
 endif (@QGLVIEWER_FOUND_DGTAL@)
 
 #-- We force the Qt rediscovering
-if (@QT4_FOUND_DGTAL@) #if QT4_FOUND_DGTAL
-  find_package(Qt4 REQUIRED COMPONENTS QtCore QtGUI QtXml QtOpenGL)
-  set(QT_USE_QTXML 1)
-  set(WITH_QT4 1)
-  # include(${QT_USE_FILE})
-  # set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} "${QT_INCLUDE_DIR}")
-endif (@QT4_FOUND_DGTAL@)
-
 if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
   find_dependency(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED
     @Qt5_HINTS@
     )
   set(WITH_QT5 1)
-  # set(DGTAL_Qt5_DIR @Qt5_DIR@)
-  # set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS}
-  #                        "${Qt5Widgets_INCLUDE_DIRS}"
-  #                        "${Qt5OpenGL_INCLUDE_DIRS}"
-  #                        "${Qt5Xml_INCLUDE_DIRS}")
 endif (@QT5_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
@@ -114,10 +101,10 @@ endif()
 
 
 if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-  find_dependency(Eigen3 @Eigen3_dgtal_min_version@ REQUIRED CONFIG
-    @Eigen3_HINTS@
-    )
   set(WITH_EIGEN 1)
+  include(eigen)
+  set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+  set(DGTAL_LIBRARIES ${DGTAL_LIBRARIES} Eigen3::Eigen)
 endif()
 
 
