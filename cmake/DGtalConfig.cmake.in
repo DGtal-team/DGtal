@@ -21,14 +21,11 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
+set(WITH_EIGEN 1)
+include(eigen)
+set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+endif()
 
-  if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-    set(WITH_EIGEN 1)
-    include(eigen)
-    set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
-    set(DGTAL_LIBRARIES ${DGTAL_LIBRARIES} Eigen3::Eigen)
-  endif()
-  
 
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
@@ -131,5 +128,5 @@ if(NOT TARGET DGtal)
   include ("${DGTAL_CMAKE_DIR}/DGtalLibraryDepends.cmake")
 endif()
 
-set(DGTAL_LIBRARIES DGtal)
+set(DGTAL_LIBRARIES DGtal Eigen3::Eigen)
 get_target_property(DGTAL_INCLUDE_DIRS DGtal INTERFACE_INCLUDE_DIRECTORIES)
