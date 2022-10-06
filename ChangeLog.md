@@ -8,8 +8,6 @@
    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
  - Continuous integration does not use Travis anymore but Github
    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
- - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
-   [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
@@ -42,7 +40,7 @@
     Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
   - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
     gradient and covariant projection as well as Connection-Laplacian). Also adding two
-    more examples: harmonic parametrization and vectors in heat method. (Baptiste GENEST, David
+    more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
     Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
 
 - *Mathematical Package*
@@ -70,7 +68,8 @@
     (Bertrand Kerautret, [#1633](https://github.com/DGtal-team/DGtal/pull/1633))
   - Improved MeshReader for .off format in order to take into account more
     comments and other header code used in CGAL.
-    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
+    (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and
+    [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo
     [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
@@ -89,7 +88,14 @@
   - First and second curvature directions were inverted in the `IIPrincipalCurvaturesAndDirectionsFunctor`,
     fixed now. (David Coeurjolly, [#1657](https://github.com/DGtal-team/DGtal/pull/1657))
   
+- *Kernel*
+  - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
+    new shift method to avoid recomputing orientation plane.
+    (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))
+
 - *Build*
+  - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
+    [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
   - Continuous integration does not use Travis anymore but Github
     Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
   - New cmake option (DGTAL_RANDOMIZED_TESTING_THRESHOLD) to set the
@@ -106,12 +112,6 @@
     (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
   - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
     (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
-
-
-- *Kernel*
-  - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
-    new shift method to avoid recomputing orientation plane.
-    (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))  
 
 ## Bug fixes
 
@@ -165,6 +165,7 @@
     (David Coeurjolly, [#1620](https://github.com/DGtal-team/DGtal/pull/1620))
   - Fix issue on computeHullThickness by adding angle tolerance to detect co-linearity vectors.
     (Bertrand Kerautret, [#1647](https://github.com/DGtal-team/DGtal/pull/1647))
+
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
