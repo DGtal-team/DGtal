@@ -21,12 +21,22 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
+
+  if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
+    set(WITH_EIGEN 1)
+    include(eigen)
+    set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+    set(DGTAL_LIBRARIES ${DGTAL_LIBRARIES} Eigen3::Eigen)
+  endif()
+  
+
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
     @GMP_HINTS@
     )
   set(WITH_GMP 1)
 endif()
+
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set(WITH_ITK 1)
@@ -100,12 +110,6 @@ if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
 endif()
 
 
-if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-  set(WITH_EIGEN 1)
-  include(eigen)
-  set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
-  set(DGTAL_LIBRARIES ${DGTAL_LIBRARIES} Eigen3::Eigen)
-endif()
 
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
