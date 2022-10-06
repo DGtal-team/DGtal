@@ -82,7 +82,7 @@ int main( int argc, char** argv )
   aMesh.addTriangularFace(0, 1, 2, Color(150,0,150,104));
   aMesh.addQuadFace(6,5,4,3, Color::Blue);
 
-  vector<unsigned int> listIndex;
+  Mesh<Point>::MeshFace listIndex;
   listIndex.push_back(7);
   listIndex.push_back(8);
   listIndex.push_back(9);
