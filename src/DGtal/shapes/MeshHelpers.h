@@ -333,7 +333,7 @@ namespace DGtal
     static
     bool exportMTLNewMaterial
     ( std::ostream& output_mtl,
-      unsigned int idxMaterial,
+      unsigned long idxMaterial,
       const Color& ambient_color,
       const Color& diffuse_color,
       const Color& specular_color );
