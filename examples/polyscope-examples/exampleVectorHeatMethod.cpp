@@ -75,12 +75,12 @@ bool noSources = true;
  */
 void addRandomSource()
 {
-    size_t id = rand()%surfmesh.nbVertices();
-    VHM->addSource(id,Eigen::Vector3d::Random(3).normalized());
-
-    X_0[id] = VHM->extrinsicVectorSourceAtVertex(id);
-    psMesh->addVertexVectorQuantity("X_0",X_0);
-    noSources = false;
+  size_t id = rand()%surfmesh.nbVertices();
+  VHM->addSource(id,Eigen::Vector3d::Random(3).normalized());
+  
+  X_0[id] = VHM->extrinsicVectorSourceAtVertex(id);
+  psMesh->addVertexVectorQuantity("X_0",X_0);
+  noSources = false;
 }
 
 /**
@@ -89,9 +89,9 @@ void addRandomSource()
  */
 void diffuse()
 {
-    if (noSources)
-        addRandomSource();
-    psMesh->addVertexVectorQuantity("VHM field",VHM->compute());
+  if (noSources)
+    addRandomSource();
+  psMesh->addVertexVectorQuantity("VHM field",VHM->compute());
 }
 
 /**
@@ -99,71 +99,77 @@ void diffuse()
  */
 void precompute()
 {
-    auto nv = surfmesh.nbVertices();
-    auto ael = surfmesh.averageEdgeLength();
-    VHM->init(ael*ael);//init vector heat method solvers
-
-    X_0.resize(nv,Vector::Zero(3));//extrinsic Source vectors
-
-    psMesh->addVertexVectorQuantity("X_0",X_0);
+  auto nv = surfmesh.nbVertices();
+  auto ael = surfmesh.averageEdgeLength();
+  VHM->init(ael*ael);//init vector heat method solvers
+  
+  X_0.resize(nv,Vector::Zero(3));//extrinsic Source vectors
+  
+  psMesh->addVertexVectorQuantity("X_0",X_0);
 }
 
 void myCallback()
 {
-    if(ImGui::Button("Compute Vector Field"))
-    {
-        diffuse();
-    }
-    if(ImGui::Button("Add random source"))
-    {
-        addRandomSource();
-    }
+  if(ImGui::Button("Compute Vector Field"))
+  {
+    diffuse();
+  }
+  if(ImGui::Button("Add random source"))
+  {
+    addRandomSource();
+  }
 }
 
-int main(int, char **argv)
+int main(int argc, char **argv)
 {
-    std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
-    std::vector<RealPoint> positions;
-
-    //load voxel model
-    auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-    params("surfaceComponents", "All");
-    auto binary_image    = SH3::makeBinaryImage(argv[1], params );
-    auto K               = SH3::getKSpace( binary_image, params );
-    auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
-    auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-
-    //Need to convert the faces
-    for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
-        faces.push_back(primalSurface->incidentVertices( face ));
-
-    //Recasting to vector of vertices
-    positions = primalSurface->positions();
-
-    surfmesh = SurfMesh(positions.begin(),
-                        positions.end(),
-                        faces.begin(),
-                        faces.end());
-
-    //instantiate PolyDEC
-    calculus = new PC(surfmesh);
-
-    //instantiate VHM
-    VHM = new VectorsInHeat<PC>(calculus);
-
-    //Initialize polyscope
-    polyscope::init();
-
-    psMesh = polyscope::registerSurfaceMesh("Digital Surface", positions, faces);
-
-    //Initialize solvers
-    precompute();
-
-    polyscope::view::upDir = polyscope::view::UpDir::XUp;
-
-    polyscope::state::userCallback = myCallback;
-
-    polyscope::show();
-    return EXIT_SUCCESS;
-
+  std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
+  std::vector<RealPoint> positions;
+  
+  if (argc <= 1)
+  {
+    trace.error()<<"Missing vol file. Usage: exampleVectorHeatMethod bunny.vol"<<std::endl;
+    exit(2);
+  }
+  
+  //load voxel model
+  auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
+  params("surfaceComponents", "All");
+  auto binary_image    = SH3::makeBinaryImage(argv[1], params );
+  auto K               = SH3::getKSpace( binary_image, params );
+  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+  auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
+  
+  //Need to convert the faces
+  for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
+    faces.push_back(primalSurface->incidentVertices( face ));
+  
+  //Recasting to vector of vertices
+  positions = primalSurface->positions();
+  
+  surfmesh = SurfMesh(positions.begin(),
+                      positions.end(),
+                      faces.begin(),
+                      faces.end());
+  
+  //instantiate PolyDEC
+  calculus = new PC(surfmesh);
+  
+  //instantiate VHM
+  VHM = new VectorsInHeat<PC>(calculus);
+  
+  //Initialize polyscope
+  polyscope::init();
+  
+  psMesh = polyscope::registerSurfaceMesh("Digital Surface", positions, faces);
+  
+  //Initialize solvers
+  precompute();
+  
+  polyscope::view::upDir = polyscope::view::UpDir::XUp;
+  
+  polyscope::state::userCallback = myCallback;
+  
+  polyscope::show();
+  return EXIT_SUCCESS;
+  
 }

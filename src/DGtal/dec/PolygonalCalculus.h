@@ -567,7 +567,7 @@ public:
   DenseMatrix Tv(const Vertex & v) const
   {
     Eigen::Vector3d nv = n_v(v);
-    ASSERT(std::abs(nv.norm() - 1.0) < 0.001);
+    ASSERT(std::abs(nv.norm() - 1.0) < 0.00000001);
     const auto & N            = getSurfaceMeshPtr()->neighborVertices(v);
     auto neighbor             = *N.begin();
     Real3dPoint tangentVector = getSurfaceMeshPtr()->position(v) -
@@ -633,11 +633,14 @@ public:
     Eigen::Vector3d nf = faceNormal(f);
     Eigen::Vector3d nv = n_v(v);
     double c           = nv.dot(nf);
-    ASSERT(std::abs( c + 1.0) > 0.0001);
+    
+    //Special case for opposite nv and nf vectors.
+    if (std::abs( c + 1.0) > 0.00001)
+      return -Eigen::Matrix3d::Identity();
+  
     auto vv          = nv.cross(nf);
     DenseMatrix skew = bracket(vv);
-    return Eigen::Matrix3d::Identity() + skew +
-           1.0 / (1.0 + c) * skew * skew;
+    return Eigen::Matrix3d::Identity() + skew + 1.0 / (1.0 + c) * skew * skew;
   }
 
   ///@return Levi-Civita connection from vertex v tangent space to face f
@@ -1149,9 +1152,18 @@ protected:
     n(0) = 0.;
     n(1) = 0.;
     n(2) = 0.;
-    for (auto f : mySurfaceMesh->incidentFaces(v))
+    auto faces = mySurfaceMesh->incidentFaces(v);
+    for (auto f : faces)
       n += vectorArea(f);
-    return n.normalized();
+    
+    if (fabs(n.norm() - 0.0) < 0.00001)
+    {
+      //On non-manifold edges touching the boundary, n may be null.
+      trace.warning()<<"[PolygonalCalculus] Trying to compute the normal vector at a boundary vertex incident to pnon-manifold edge, we return a random vector."<<std::endl;
+      n << Vector::Random(3);
+    }
+    n = n.normalized();
+    return n;
   }
   
   ///@return the normal vector at vertex v, if no normal vertex embedder is
