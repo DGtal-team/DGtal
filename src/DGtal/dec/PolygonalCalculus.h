@@ -567,7 +567,7 @@ public:
   DenseMatrix Tv(const Vertex & v) const
   {
     Eigen::Vector3d nv = n_v(v);
-    ASSERT(std::abs(nv.norm() - 1.0) < 0.00000001);
+    ASSERT(std::abs(nv.norm() - 1.0) < 0.0000001);
     const auto & N            = getSurfaceMeshPtr()->neighborVertices(v);
     auto neighbor             = *N.begin();
     Real3dPoint tangentVector = getSurfaceMeshPtr()->position(v) -
@@ -633,7 +633,7 @@ public:
     Eigen::Vector3d nf = faceNormal(f);
     Eigen::Vector3d nv = n_v(v);
     double c           = nv.dot(nf);
-    
+    ASSERT(std::abs( c + 1.0) > 0.0001);
     //Special case for opposite nv and nf vectors.
     if (std::abs( c + 1.0) > 0.00001)
       return -Eigen::Matrix3d::Identity();
@@ -1151,7 +1151,7 @@ protected:
     Vector n(3);
     n(0) = 0.;
     n(1) = 0.;
-    n(2) = 0.;
+    n(2) = 0.;    
     auto faces = mySurfaceMesh->incidentFaces(v);
     for (auto f : faces)
       n += vectorArea(f);
