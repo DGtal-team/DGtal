@@ -388,7 +388,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
             trace.beginBlock("criticalCliques of CubicalComplex");
             trace.info() << cubical << std::endl;
         }
-        for (size_t d = 0; d != dimension + 1; ++d)
+        for (Dimension d = 0; d != dimension + 1; ++d)
             criticals[d] = criticalCliquesForD(d, cubical, verbose);
 
         if (verbose) {

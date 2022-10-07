@@ -130,7 +130,7 @@ std::vector<Z2i::Point> extractPoints (SegmentComputerOnSurfels const& sc, Slice
             }
         }
 
-        currentIdx = points.size() - 1;
+        currentIdx = (int)points.size() - 1;
     }
 
     return points;

@@ -73,7 +73,7 @@ SurfMesh surfmesh;
 float scale = 10;
 PC::Vector phiEigen;
 int nbSources=1;
-std::vector< std::vector<unsigned int> > faces;
+std::vector< std::vector<SurfMesh::Index> > faces;
 std::vector<RealPoint> positions;
 
 //DEC

@@ -168,7 +168,7 @@ namespace DGtal
       /// computation.
       void clear()
       {
-        const int nb = size();
+        const auto nb = size();
         myAncestor = std::vector< Index > ( nb, nb );
         myDistance = std::vector< double >( nb, std::numeric_limits<double>::infinity() );
         myVisited  = std::vector< bool >  ( nb, false );
