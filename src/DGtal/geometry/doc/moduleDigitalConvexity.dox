@@ -119,7 +119,7 @@ Three classes help to check digital convexity.
 - from a \a full \a dimensional \a simplex: you may build a polytope in
   dimension \f$ d \le 3 \f$ from a range of \f$ n \le d + 1 \f$ points
   in general position. The polytope is then a simplex. For dimensions
-  higher than 3, you may only builds the polytope from a full
+  higher than 3, you may only build the polytope from a full
   dimensional simplex, i.e. \f$ n = d + 1 \f$ in general position.
 
 - from a \a domain and a \a range \a of \a half-spaces: they define
