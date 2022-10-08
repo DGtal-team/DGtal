@@ -362,7 +362,7 @@ DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
     , myPeriodicitySpec(aPeriodicitySpec)
 {
   // Finding periodic dimension index.
-  for ( std::size_t i = 0; i < Space::dimension; ++i )
+  for ( Dimension i = 0; i < Space::dimension; ++i )
     if ( isPeriodic(i) )
       myPeriodicityIndex.push_back( i );
 

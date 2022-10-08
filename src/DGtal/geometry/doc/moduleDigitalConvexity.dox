@@ -119,7 +119,7 @@ Three classes help to check digital convexity.
 - from a \a full \a dimensional \a simplex: you may build a polytope in
   dimension \f$ d \le 3 \f$ from a range of \f$ n \le d + 1 \f$ points
   in general position. The polytope is then a simplex. For dimensions
-  higher than 3, you may only builds the polytope from a full
+  higher than 3, you may only build the polytope from a full
   dimensional simplex, i.e. \f$ n = d + 1 \f$ in general position.
 
 - from a \a domain and a \a range \a of \a half-spaces: they define
@@ -141,8 +141,8 @@ naive way, by domain enumeration and constraint check. If \a m is the
 number of constraints and \a n the number of lattice points in the
 polytope domain, then complexity is in \f$ O(mn) \f$.
 
-@note Since 1.3, inside/interior point counting and retrieval has been
-considerably optimized and is between 5x to 200x faster. It uses line
+@note Since 1.3, inside/interior point counting and retrieval have been
+considerably optimized and are between 5x to 200x faster. The code uses line
 intersection to compute the inside points as intervals. See examples
 exampleBoundedLatticePolytopeCount2D.cpp ,
 exampleBoundedLatticePolytopeCount3D.cpp ,

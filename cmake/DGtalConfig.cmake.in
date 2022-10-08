@@ -21,12 +21,18 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
+set(WITH_EIGEN 1)
+include(eigen)
+set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+
+
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
     @GMP_HINTS@
     )
   set(WITH_GMP 1)
 endif()
+
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set(WITH_ITK 1)
@@ -58,24 +64,11 @@ if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
 endif (@QGLVIEWER_FOUND_DGTAL@)
 
 #-- We force the Qt rediscovering
-if (@QT4_FOUND_DGTAL@) #if QT4_FOUND_DGTAL
-  find_package(Qt4 REQUIRED COMPONENTS QtCore QtGUI QtXml QtOpenGL)
-  set(QT_USE_QTXML 1)
-  set(WITH_QT4 1)
-  # include(${QT_USE_FILE})
-  # set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} "${QT_INCLUDE_DIR}")
-endif (@QT4_FOUND_DGTAL@)
-
 if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
   find_dependency(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED
     @Qt5_HINTS@
     )
   set(WITH_QT5 1)
-  # set(DGTAL_Qt5_DIR @Qt5_DIR@)
-  # set(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS}
-  #                        "${Qt5Widgets_INCLUDE_DIRS}"
-  #                        "${Qt5OpenGL_INCLUDE_DIRS}"
-  #                        "${Qt5Xml_INCLUDE_DIRS}")
 endif (@QT5_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
@@ -113,12 +106,6 @@ if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
 endif()
 
 
-if(@EIGEN_FOUND_DGTAL@) #if EIGEN_FOUND_DGTAL
-  find_dependency(Eigen3 @Eigen3_dgtal_min_version@ REQUIRED CONFIG
-    @Eigen3_HINTS@
-    )
-  set(WITH_EIGEN 1)
-endif()
 
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
@@ -140,5 +127,5 @@ if(NOT TARGET DGtal)
   include ("${DGTAL_CMAKE_DIR}/DGtalLibraryDepends.cmake")
 endif()
 
-set(DGTAL_LIBRARIES DGtal)
+set(DGTAL_LIBRARIES DGtal Eigen3::Eigen)
 get_target_property(DGTAL_INCLUDE_DIRS DGtal INTERFACE_INCLUDE_DIRECTORIES)

@@ -89,7 +89,7 @@ int main( int argc, char** argv )
   //! [MeshUseMeshAddingBasicFaces]
 
   //! [MeshUseMeshAddingPolygonalFaces]
-  vector<unsigned int> listIndex;
+  Mesh<Point>::MeshFace listIndex;
   listIndex.push_back(7);
   listIndex.push_back(8);
   listIndex.push_back(9);

@@ -84,11 +84,11 @@ int main( int argc, char** argv )
   const float sx = -0.5;
   const float sy = -0.5;
   trace.beginBlock( "Compute fully subconvex sets" );
-  for ( unsigned int i = 0; i < T.size(); ++i )
-    for ( unsigned int j = i+2; j < T.size(); ++j )
+  for ( size_t i = 0; i < T.size(); ++i )
+    for ( size_t j = i+2; j < T.size(); ++j )
       {
         aBoard.setPenColorRGBi( rand() % 255, rand() % 255, rand() % 255 );
-        unsigned int k = (i+j)/2;
+        size_t k = (i+j)/2;
         if ( ! dconv.isSimplexFullDimensional( { T[i], T[j], T[k] } ) ) continue;
         auto triangle = dconv.makeSimplex( { T[i], T[j], T[k] } );
         if ( dconv.isFullySubconvex( triangle, c_cover ) )

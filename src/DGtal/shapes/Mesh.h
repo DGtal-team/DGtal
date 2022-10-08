@@ -110,17 +110,22 @@ namespace DGtal
 
 
     /**
-     * Structure for representing the faces from the vertex index.
-     **/
-
-    typedef std::vector<unsigned int> MeshFace;
-
-
-    /**
      * Define the type to store each mesh vertex.
      **/
     typedef  std::vector<TPoint> VertexStorage;
 
+    /**
+     * Define the size type of the containers.
+     **/
+    typedef typename VertexStorage::size_type Index;
+    
+    /**
+     * Structure for representing the faces from the vertex index.
+     **/
+    
+    typedef std::vector<Index> MeshFace;
+
+    
     /**
      * Define the type to store the faces of the mesh.
      **/
@@ -230,7 +235,7 @@ namespace DGtal
      * to order the vertices in CCW (to have the correct normal orientation).
      *
      **/
-    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3,
+    void addTriangularFace(Index indexVertex1, Index indexVertex2, Index indexVertex3,
                            const DGtal::Color &aColor=DGtal::Color::White);
 
 
@@ -247,8 +252,8 @@ namespace DGtal
      * to order the vertices in CCW (to have the correct normal orientation).
      *
      **/
-    void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2,
-                     unsigned int indexVertex3, unsigned int indexVertex4,
+    void addQuadFace(Index indexVertex1, Index indexVertex2,
+                     Index indexVertex3, Index indexVertex4,
                      const DGtal::Color & aColor=DGtal::Color::White);
 
 
@@ -269,20 +274,20 @@ namespace DGtal
      *
      * @param[in] facesIndex the index of the face to be removed.
      **/
-    void removeFaces(const std::vector<unsigned int>  &facesIndex);
+    void removeFaces(const std::vector<Index>  &facesIndex);
 
 
     /**
      * @param i the index of the vertex.
      * @return a const reference to the vertex of index i.
      **/
-    const TPoint & getVertex(unsigned int i) const;
+    const TPoint & getVertex(Index i) const;
 
     /**
      * @param i the index of the vertex.
      * @return a reference to the vertex of index i.
      **/
-    TPoint & getVertex(unsigned int i);
+    TPoint & getVertex(Index i);
 
 
 
@@ -290,14 +295,14 @@ namespace DGtal
      * @param i the index of the face.
      * @return a const reference to the face of index i.
      **/
-    const MeshFace & getFace(unsigned int i) const;
+    const MeshFace & getFace(Index i) const;
 
 
     /**
      * @param i the index of the face.
      * @return barycenter (RealPoint) of the face of index i.
      **/
-    RealPoint getFaceBarycenter(unsigned int i) const;
+    RealPoint getFaceBarycenter(Index i) const;
 
 
 
@@ -305,7 +310,7 @@ namespace DGtal
      * @param i the index of the face.
      * @return a const reference to the face of index i.
      **/
-    MeshFace & getFace(unsigned int i);
+    MeshFace & getFace(Index i);
 
 
 
@@ -314,7 +319,7 @@ namespace DGtal
      * @param i the index of the face.
      * @return the color of the face of index i.
      **/
-    const Color & getFaceColor(unsigned int i) const;
+    const Color & getFaceColor(Index i) const;
 
 
 
@@ -336,7 +341,7 @@ namespace DGtal
      *
      **/
 
-    void setFaceColor(unsigned int i, const DGtal::Color &aColor) ;
+    void setFaceColor(Index i, const DGtal::Color &aColor) ;
 
 
     /**
@@ -393,7 +398,7 @@ namespace DGtal
      *
      **/
 
-    FaceStorage::const_iterator
+    typename FaceStorage::const_iterator
     faceBegin() const {
       return myFaceList.begin();
     }
@@ -405,7 +410,7 @@ namespace DGtal
      *
      **/
 
-    FaceStorage::const_iterator
+    typename FaceStorage::const_iterator
     faceEnd() const {
       return myFaceList.end();
     }
@@ -416,7 +421,7 @@ namespace DGtal
      *
      **/
 
-    FaceStorage::iterator
+    typename FaceStorage::iterator
     faceBegin()  {
       return myFaceList.begin();
     }
@@ -428,7 +433,7 @@ namespace DGtal
      *
      **/
 
-    FaceStorage::iterator
+    typename FaceStorage::iterator
     faceEnd()  {
       return myFaceList.end();
     }
@@ -491,14 +496,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
-
-
-
-
-
-
     // ------------------------- Private Datas --------------------------------
   private:
     FaceStorage  myFaceList;
@@ -506,9 +503,6 @@ namespace DGtal
     ColorStorage myFaceColorList;
     bool mySaveFaceColor;
     DGtal::Color myDefaultColor;
-
-
-
 
 
     // ------------------------- Mesh generation ------------------------------
