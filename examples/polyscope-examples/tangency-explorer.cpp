@@ -32,6 +32,7 @@
 #include "DGtal/geometry/volumes/TangencyComputer.h"
 #include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingTetrahedronEstimator.h"
+#include "SymmetricConvexExpander.h"
 
 #include "polyscope/pick.h"
 #include <polyscope/polyscope.h>
@@ -66,8 +67,13 @@ SurfMesh surfmesh;
 SurfMesh dual_surfmesh;
 float gridstep   = 1.0;
 int   vertex_idx = -1;
+int   face_idx   = -1;
+int   edge_idx   = -1;
 float Time = 0.0;
-
+bool  is_selected = false;
+Point selected_kpoint; // valid if selection == true
+bool  PSym = false;
+bool  enforceFC = true;
 std::vector< Point >     digital_points;
 KSpace K;
 DGtal::DigitalConvexity< KSpace > dconv;
@@ -77,6 +83,18 @@ typedef DGtal::TangencyComputer< KSpace >::Index Index;
 typedef std::vector< Index >  Indices;
 typedef double                Scalar;
 typedef std::vector< Scalar > Scalars;
+
+struct UnorderedPointSetPredicate
+{
+  typedef DGtal::Z3i::Point Point;
+  const std::unordered_set< Point >* myS;
+  explicit UnorderedPointSetPredicate( const std::unordered_set< Point >& S )
+    : myS( &S ) {}
+  bool operator()( const Point& p ) const
+  { return myS->count( p ) != 0; }
+};
+
+std::unordered_set< Point > unorderedSet;
 
 // ----------------------------------------------------------------------
 // utilities pointel
@@ -185,15 +203,6 @@ void computeQuadrant( int q,
   In.push_back( In[ 1 ]+In[ 2 ] );
 }
 
-struct UnorderedPointSetPredicate
-{
-  typedef DGtal::Z3i::Point Point;
-  const std::unordered_set< Point >* myS;
-  explicit UnorderedPointSetPredicate( const std::unordered_set< Point >& S )
-    : myS( &S ) {}
-  bool operator()( const Point& p ) const
-  { return myS->count( p ) != 0; }
-};
 
 void computePlanes()
 {
@@ -285,6 +294,31 @@ void computeTangentCone()
   embedPointels( positions, emb_positions );
   psCloudCvx = polyscope::registerPointCloud( "Tangent cone vertices", emb_positions );
   psCloudCvx->setPointRadius( gridstep / 50.0  );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void computeSymmetricConvexSet()
+{
+  if ( digital_points.empty() ) return;
+  if ( ! is_selected ) return;
+  const auto p = digital_points[ vertex_idx ];
+  trace.beginBlock( "Compute symmetric convex set" );
+  Point lo = Point::diagonal(-10000);
+  Point up = Point::diagonal( 10000);
+  UnorderedPointSetPredicate predS( unorderedSet );
+  SymmetricConvexExpander< KSpace, UnorderedPointSetPredicate > SCE
+    ( predS, selected_kpoint, lo, up );
+  while ( SCE.advance( enforceFC ) )
+    if ( PSym && ! SCE.myPerfectSymmetry 
+         && SCE.current().second >= SCE.myPerfectSymmetryRadius )
+      break;
+  std::cout << "#symcvx=" << SCE.myPoints.size() << std::endl;
+  Time = trace.endBlock();
+  std::vector< Point > positions( SCE.myPoints.cbegin(), SCE.myPoints.cend() );
+  std::vector< RealPoint > emb_positions;
+  embedPointels( positions, emb_positions );
+  psCloud = polyscope::registerPointCloud( "Symmetric convex set", emb_positions );
+  psCloud->setPointRadius( gridstep / 100.0 );
 }
 
 struct TriangleContext
@@ -419,21 +453,62 @@ void myCallback()
     auto surf = polyscope::getSurfaceMesh("Input surface");
     goodSelection = goodSelection || (selectedSurface == surf);
     const auto nv = selectedSurface->nVertices(); 
+    const auto nf = selectedSurface->nFaces(); 
+    const auto ne = selectedSurface->nEdges(); 
     // Validate that it its a face index
     if ( goodSelection )
       {
         if ( idx < nv )
           {
-            std::ostringstream otext;
-            otext << "Selected vertex = " << idx;
-            ImGui::Text( "%s", otext.str().c_str() );
             vertex_idx = idx;
+            is_selected  = true;
+            selected_kpoint = digital_points[ vertex_idx ] * 2;
+            std::ostringstream otext;
+            otext << "Selected vertex = " << vertex_idx
+                  << " pos=" << selected_kpoint; 
+            ImGui::Text( "%s", otext.str().c_str() );
           }
-        else vertex_idx = -1;
+        else if ( idx - nv < nf )
+          {
+            face_idx  = idx - nv;
+            is_selected  = true;
+            selected_kpoint = Point::zero;
+            for ( auto i : selectedSurface->faces[ face_idx ] )
+              selected_kpoint += digital_points[ i ];
+            selected_kpoint /= 2;
+            std::ostringstream otext;
+            otext << "Selected face = " << face_idx
+                  << " pos=" << selected_kpoint; 
+            ImGui::Text( "%s", otext.str().c_str() );
+          }
+        else if ( idx - nv - nf < ne )
+          {
+            edge_idx  = idx - nv - nf;
+            is_selected  = false; // true; // ne fonctionne pas
+            selected_kpoint = Point::zero;
+            for ( auto i : selectedSurface->edgeIndices[ edge_idx ] )
+              selected_kpoint += digital_points[ i ];
+            selected_kpoint /= 2;
+            std::ostringstream otext;
+            otext << "Selected edge = " << edge_idx
+                  << " pos=" << selected_kpoint; 
+            ImGui::Text( "%s", otext.str().c_str() );
+          }
+        else
+          {
+            vertex_idx = -1;
+            face_idx   = -1;
+            edge_idx   = -1;
+            is_selected= false;
+          }
       }
   }
   if (ImGui::Button("Compute tangent cone"))
     computeTangentCone();
+  if (ImGui::Button("Compute symmetric convex set"))
+    computeSymmetricConvexSet();
+  ImGui::Checkbox("Perfect symmetry", &PSym );
+  ImGui::Checkbox("Full convexity", &enforceFC );
   if (ImGui::Button("Compute great triangle"))
     computeGreatTriangle();
   if (ImGui::Button("Compute planes"))
@@ -495,6 +570,10 @@ int main( int argc, char* argv[] )
     ( digital_points.cbegin(), digital_points.cend(), 0 ).starOfPoints();
   trace.info() << "#cell_cover = " << TC.cellCover().nbCells() << std::endl;
   trace.info() << "#lattice_cover = " << LS.size() << std::endl;
+
+  // Make predicate for pointel-based digital surface
+  unorderedSet = std::unordered_set< Point >( digital_points.cbegin(),
+                                              digital_points.cend() );
   
   // Initialize polyscope
   polyscope::init();

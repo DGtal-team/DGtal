@@ -301,7 +301,7 @@ init( PointIterator itB, PointIterator itE )
       A.push_back( a );
       B.push_back( b );
     }
-  myValidEdgeConstraints = false;
+  myValidEdgeConstraints = ( dimension == 2 );
   if ( dimension == 3 )
     { // One should add edges
       for ( unsigned int i = 0; i < pts.size(); ++i )
