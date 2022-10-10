@@ -66,9 +66,7 @@ using namespace Z3i;
 
 ////////// TYPEDEFS //////////
 
-typedef Z3i::Space Space;
-typedef Z3i::KSpace KSpace;
-typedef Z3i::RealVector RealVector;
+typedef Z3i::RealVector RealVector3D;
 typedef Z3i::RealPoint RealPoint3D;
 
 RealPoint cartesian_to_spherical(const RealPoint3D & a)
@@ -103,7 +101,7 @@ void laplacian(Shape& shape, const Options& options,
   trace.endBlock();
 
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
-  KSpace kspace;
+  Z3i::KSpace kspace;
   bool space_ok = kspace.init( domain.lowerBound(),
                  domain.upperBound(), true );
   if (!space_ok)
@@ -115,14 +113,14 @@ void laplacian(Shape& shape, const Options& options,
 
   trace.beginBlock( "Extracting boundary by scanning the space. " );
 
-  typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
+  typedef SurfelAdjacency<Z3i::KSpace::dimension> MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
 
-  typedef KSpace::SurfelSet SurfelSet;
+  typedef Z3i::KSpace::SurfelSet SurfelSet;
   typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
   MySetOfSurfels theSetOfSurfels( kspace, surfAdj );
-  Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
+  Surfaces<Z3i::KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
                   kspace, digitizer,
                   domain.lowerBound(),
                   domain.upperBound() );
