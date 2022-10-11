@@ -84,6 +84,9 @@ TEST_CASE( "Testing GeodesicsInHeat" )
     GeodesicsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector d = heat.compute();
     REQUIRE( d.size() == positions.size() );
     REQUIRE( d[5] == Approx(1.444608) );
+    heat.clearSource();
+    auto sources = heat.source();
+    REQUIRE(sources.sum() == 0);
   }
 }
 /** @ingroup Tests **/
