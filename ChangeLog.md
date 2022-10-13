@@ -169,7 +169,7 @@
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
-  - Improving PolygonalCalculus for vector field processing on non-manifold surfaces.
+  - Improving PolygonalCalculus and VectorHeatMethod for vector field processing on non-manifold surfaces.
     (David Coeurjolly, [#1659](https://github.com/DGtal-team/DGtal/pull/1659))
 
 # DGtal 1.2
