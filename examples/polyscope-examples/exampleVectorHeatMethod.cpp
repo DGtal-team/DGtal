@@ -66,8 +66,13 @@ VectorsInHeat<PC> *VHM;
 
 //sources
 std::vector<Vector> X_0;
+std::vector<Vertex> idX_0;
+
+//rotation matrix
+PC::DenseMatrix R;
 
 bool noSources = true;
+bool toggle=false;
 
 /**
  * @brief addRandomSource add a random vector in the tangent space
@@ -78,6 +83,7 @@ void addRandomSource()
   size_t id = rand()%surfmesh.nbVertices();
   VHM->addSource(id,Eigen::Vector3d::Random(3).normalized());
   
+  idX_0.push_back(id);
   X_0[id] = VHM->extrinsicVectorSourceAtVertex(id);
   psMesh->addVertexVectorQuantity("X_0",X_0);
   noSources = false;
@@ -101,12 +107,37 @@ void precompute()
 {
   auto nv = surfmesh.nbVertices();
   auto ael = surfmesh.averageEdgeLength();
-  VHM->init(ael*ael);//init vector heat method solvers
+  VHM->init(ael);//init vector heat method solvers (should be ael^2 but smoother results that way)
   
   X_0.resize(nv,Vector::Zero(3));//extrinsic Source vectors
   
   psMesh->addVertexVectorQuantity("X_0",X_0);
 }
+
+void clearSources()
+{
+  VHM->clearSource();
+  noSources=true;
+  idX_0.clear();
+  X_0.clear();
+  X_0.resize(surfmesh.nbVertices(),Vector::Zero(3));
+  //cleanup the visualization
+  psMesh->addVertexVectorQuantity("X_0",X_0);
+  psMesh->addVertexVectorQuantity("VHM field",X_0);
+}
+
+void rotate()
+{
+  VHM->clearSource();
+  for(const auto id: idX_0)
+  {
+    Vector x = R*X_0[id];
+    VHM->addSource(id, x);
+    X_0[id] = VHM->extrinsicVectorSourceAtVertex(id);
+  }
+  psMesh->addVertexVectorQuantity("X_0",X_0);
+}
+
 
 void myCallback()
 {
@@ -117,6 +148,20 @@ void myCallback()
   if(ImGui::Button("Add random source"))
   {
     addRandomSource();
+  }
+  if(ImGui::Button("Clear sources"))
+  {
+    clearSources();
+  }
+  
+  if(ImGui::Button("Start/stop rotating sources"))
+      toggle = !toggle;
+  
+
+  if (toggle)
+  {
+    rotate();
+    diffuse();
   }
 }
 
@@ -156,6 +201,14 @@ int main(int argc, char **argv)
   
   //instantiate VHM
   VHM = new VectorsInHeat<PC>(calculus);
+  
+  //For the rotation of input VF
+  PC::DenseMatrix Rotx(3,3),Roty(3,3),Rotz(3,3);
+  double theta=0.05;
+  Rotx << 1, 0,0,0,cos(theta),-sin(theta),0,sin(theta),cos(theta);
+  Roty << cos(theta), 0,sin(theta),0,1,0,-sin(theta),0,cos(theta);
+  Rotz << cos(theta), -sin(theta),0,sin(theta),cos(theta),0,0,0,1;
+  R=Rotz*Roty*Rotx;
   
   //Initialize polyscope
   polyscope::init();
