@@ -71,8 +71,6 @@
     (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and
     [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
 - *IO*
-  - Fix purple color. (Bertrand Kerautret and Phuc Ngo
-    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
   - Add Obj format in MeshReader including colors and fixing obj format read
     with relative face position.
     (Bertrand Kerautret, [#1584](https://github.com/DGtal-team/DGtal/pull/1584))
@@ -150,7 +148,10 @@
   - Fix LongVolReader that fails to read large values. It was why testLongvol and
     testCompressedVolWriter were failing on some configurations.
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
-  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
+  - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, 
+    [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
+  - Fix purple color. (Bertrand Kerautret and Phuc Ngo   
+    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
 
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
