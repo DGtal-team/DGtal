@@ -3,13 +3,13 @@
 ## New features / critical changes
 
 - *General*
- - A Dockerfile is added to create a Docker image to have a base to start development
-   using the DGtal library.(J. Miguel Salazar
-   [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
- - Continuous integration does not use Travis anymore but Github
-   Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
- - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
-   (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar
+    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
+  - Continuous integration does not use Travis anymore but Github
+    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
+    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
 - *Geometry package*
   - Add curvature measures computation on 3D surface mesh:
