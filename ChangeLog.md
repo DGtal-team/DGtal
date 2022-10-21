@@ -34,15 +34,15 @@
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
-  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
-    problems, add Dirichlet boundary conditions, update discrete
-    differential calculus examples (Jacques-Olivier
-    Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
-  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
-    gradient and covariant projection as well as Connection-Laplacian). Also adding two
-    more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
-    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
-
+    - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
+      problems, add Dirichlet boundary conditions, update discrete
+      differential calculus examples (Jacques-Olivier
+      Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+    - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+      gradient and covariant projection as well as Connection-Laplacian). Also adding two
+      more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
+      Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
+  
 - *Mathematical Package*
   - Add Lagrange polynomials and Lagrange interpolation
     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
