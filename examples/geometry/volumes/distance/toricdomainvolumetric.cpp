@@ -194,36 +194,36 @@ int main()
   board.clear();
   board << dtL2.domain();
   for ( auto it = dtL2.domain().begin(), itend = dtL2.domain().end();it != itend; ++it)
-    if ( dtL2.getVoronoiVector(*it) != *it )
-      Display2DFactory::draw(board,dtL2.getVoronoiVector(*it) - (*it), (*it));
+    if ( dtL2.getVoronoiSite(*it) != *it )
+      Display2DFactory::draw(board,dtL2.getVoronoiSite(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2.svg");
 
   board.clear();
   board << dtL2Toric.domain();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
-    if ( dtL2Toric.getVoronoiVector(*it) != *it )
-      Display2DFactory::draw(board, dtL2Toric.getVoronoiVector(*it) - (*it), (*it));
+    if ( dtL2Toric.getVoronoiSite(*it) != *it )
+      Display2DFactory::draw(board, dtL2Toric.getVoronoiSite(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2-toric.svg");
 
   board.clear();
   board << dtL2Toric.domain();
   for ( auto it = dtL2Toric.domain().begin(), itend = dtL2Toric.domain().end();it != itend; ++it)
-    if ( dtL2Toric.getVoronoiVector(*it) != *it )
-      Display2DFactory::draw(board, dtL2Toric.projectPoint(dtL2Toric.getVoronoiVector(*it)) - (*it), (*it));
+    if ( dtL2Toric.getVoronoiSite(*it) != *it )
+      Display2DFactory::draw(board, dtL2Toric.projectPoint(dtL2Toric.getVoronoiSite(*it)) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2-toric-projected.svg");
 
   board.clear();
   board << dtL2ToricX.domain();
   for ( auto it = dtL2ToricX.domain().begin(), itend = dtL2ToricX.domain().end();it != itend; ++it)
-    if ( dtL2ToricX.getVoronoiVector(*it) != *it )
-      Display2DFactory::draw(board, dtL2ToricX.getVoronoiVector(*it) - (*it), (*it));
+    if ( dtL2ToricX.getVoronoiSite(*it) != *it )
+      Display2DFactory::draw(board, dtL2ToricX.getVoronoiSite(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2-toricX.svg");
 
   board.clear();
   board << dtL2ToricY.domain();
   for ( auto it = dtL2ToricY.domain().begin(), itend = dtL2ToricY.domain().end();it != itend; ++it)
-    if ( dtL2ToricY.getVoronoiVector(*it) != *it )
-      Display2DFactory::draw(board, dtL2ToricY.getVoronoiVector(*it) - (*it), (*it));
+    if ( dtL2ToricY.getVoronoiSite(*it) != *it )
+      Display2DFactory::draw(board, dtL2ToricY.getVoronoiSite(*it) - (*it), (*it));
   board.saveSVG("toric-example-Voro-L2-toricY.svg");
 
   trace.endBlock();

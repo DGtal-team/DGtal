@@ -85,7 +85,9 @@
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
   - First and second curvature directions were inverted in the `IIPrincipalCurvaturesAndDirectionsFunctor`,
     fixed now. (David Coeurjolly, [#1657](https://github.com/DGtal-team/DGtal/pull/1657))
-  
+  - Renaming `getVoronoiVector` to `getVoronoiSite` in the DistanceTransformation class.
+    (David Coeurjolly, [#1660](https://github.com/DGtal-team/DGtal/pull/1660))
+
 - *Kernel*
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
     new shift method to avoid recomputing orientation plane.
