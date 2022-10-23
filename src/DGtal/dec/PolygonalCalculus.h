@@ -634,6 +634,10 @@ public:
     Eigen::Vector3d nv = n_v(v);
     double c           = nv.dot(nf);
     ASSERT(std::abs( c + 1.0) > 0.0001);
+    //Special case for opposite nv and nf vectors.
+    if (std::abs( c + 1.0) < 0.00001)
+      return -Eigen::Matrix3d::Identity();
+  
     auto vv          = nv.cross(nf);
     DenseMatrix skew = bracket(vv);
     return Eigen::Matrix3d::Identity() + skew +
@@ -1149,9 +1153,22 @@ protected:
     n(0) = 0.;
     n(1) = 0.;
     n(2) = 0.;
-    for (auto f : mySurfaceMesh->incidentFaces(v))
+   /* for (auto f : mySurfaceMesh->incidentFaces(v))
       n += vectorArea(f);
     return n.normalized();
+    */
+    auto faces = mySurfaceMesh->incidentFaces(v);
+    for (auto f : faces)
+      n += vectorArea(f);
+    
+    if (fabs(n.norm() - 0.0) < 0.00001)
+    {
+      //On non-manifold edges touching the boundary, n may be null.
+      trace.warning()<<"[PolygonalCalculus] Trying to compute the normal vector at a boundary vertex incident to pnon-manifold edge, we return a random vector."<<std::endl;
+      n << Vector::Random(3);
+    }
+    n = n.normalized();
+    return n;
   }
   
   ///@return the normal vector at vertex v, if no normal vertex embedder is
