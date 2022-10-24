@@ -34,15 +34,15 @@
     Geodesics in Heat approach and the new differential operators on
     polygonal surfaces (digital surfaces, or any PolygonalMesh instance) (David
     Coeurjolly, [#1603](https://github.com/DGtal-team/DGtal/pull/1603)
-  - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
-    problems, add Dirichlet boundary conditions, update discrete
-    differential calculus examples (Jacques-Olivier
-    Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
-  - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
-    gradient and covariant projection as well as Connection-Laplacian). Also adding two
-    more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
-    Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
-
+    - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
+      problems, add Dirichlet boundary conditions, update discrete
+      differential calculus examples (Jacques-Olivier
+      Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+    - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+      gradient and covariant projection as well as Connection-Laplacian). Also adding two
+      more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
+      Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
+  
 - *Mathematical Package*
   - Add Lagrange polynomials and Lagrange interpolation
     (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
@@ -86,7 +86,9 @@
     (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
   - First and second curvature directions were inverted in the `IIPrincipalCurvaturesAndDirectionsFunctor`,
     fixed now. (David Coeurjolly, [#1657](https://github.com/DGtal-team/DGtal/pull/1657))
-  
+  - Renaming `getVoronoiVector` to `getVoronoiSite` in the DistanceTransformation class.
+    (David Coeurjolly, [#1660](https://github.com/DGtal-team/DGtal/pull/1660))
+
 - *Kernel*
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
     new shift method to avoid recomputing orientation plane.
@@ -152,7 +154,6 @@
   - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
   - Fix purple color. (Bertrand Kerautret and Phuc Ngo [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
 
-
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
     - in `PlaneProbingDigitalSurfaceLocalEstimator`, the method `probingFrameWithPreEstimation` now
@@ -170,6 +171,8 @@
 - *DEC*
   - More DEC examples can be built without QGLViewer (they didn't need it).
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
+  - Improving PolygonalCalculus and VectorHeatMethod for vector field processing on non-manifold surfaces.
+    (David Coeurjolly, [#1659](https://github.com/DGtal-team/DGtal/pull/1659))
 
 # DGtal 1.2
 

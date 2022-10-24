@@ -61,17 +61,58 @@ SurfMesh surfmesh;
 SurfMesh surfmeshReg;
 float dt = 2.0;
 
+CountedPtr<SH3::BinaryImage> binary_image;
+CountedPtr<SH3::DigitalSurface> surface;
+
+
 GeodesicsInHeat<PolyCalculus> *heat;
 PolyCalculus *calculus;
 
 GeodesicsInHeat<PolyCalculus> *heatReg;
 PolyCalculus *calculusReg;
 
+SHG3::RealVectors iinormals;
+
+int sourceVertexId=0;
+float radiusII = 3.0;
+
 bool skipReg = true; //Global flag to enable/disable the regularization example.
+bool useProjectedCalculus = true; //Use estimated normal vectors to set up te embedding
 
 void precompute()
 {
-  calculus = new PolyCalculus(surfmesh);
+  
+  if (!useProjectedCalculus)
+    calculus = new PolyCalculus(surfmesh);
+  else
+  {
+    //Using the projection embedder
+    auto params2 = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
+    params2("r-radius", (double) radiusII);
+    auto surfels   = SH3::getSurfelRange( surface, params2 );
+    iinormals = SHG3::getIINormalVectors(binary_image, surfels,params2);
+    trace.info()<<iinormals.size()<<std::endl;
+    auto myProjEmbedder = [&](Face f, Vertex v)
+    {
+      const auto nn = iinormals[f];
+      RealPoint centroid(0.0,0.0,0.0); //centroid of the original face
+      auto cpt=0;
+      for(auto v: surfmesh.incidentVertices(f))
+      {
+        cpt++;
+        centroid += surfmesh.position(v);
+      }
+      centroid = centroid / (double)cpt;
+      RealPoint p = surfmesh.position(v);
+      auto cp = p-centroid;
+      RealPoint q = p - nn.dot(cp)*nn;
+      return q;
+    };
+    psMesh->addFaceVectorQuantity("II normals", iinormals);
+    calculus = new PolyCalculus(surfmesh);
+    calculus->setEmbedder( myProjEmbedder );
+  }
+  
   heat = new GeodesicsInHeat<PolyCalculus>(calculus);
   
   if (!skipReg)
@@ -86,31 +127,51 @@ void precompute()
   trace.endBlock();
 }
 
-void addsource()
+std::vector<std::pair<size_t,int>> source2count(GeodesicsInHeat<PolyCalculus>::Vector &source)
+{
+  std::vector<std::pair<size_t,int>> counts;
+  for(auto i=0; i< source.size(); ++i)
+  {
+    if (source(i)!=0.0)
+      counts.push_back(std::pair<size_t,int>(i,1));
+  }
+  return counts;
+}
+
+void addSource()
 {
   auto pos =rand() % surfmesh.nbVertices();
   heat->addSource( pos );
   GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
-  psMesh->addVertexScalarQuantity("source", source);
+  psMesh->addVertexCountQuantity("Sources", source2count(source));
 
   if (!skipReg)
   {
     heatReg->addSource( pos );
     GeodesicsInHeat<PolyCalculus>::Vector source = heatReg->source();
-    psMeshReg->addVertexScalarQuantity("source", source);
+    psMeshReg->addVertexCountQuantity("Sources", source2count(source));
   }
+}
+
+void clearSources()
+{
+  heat->clearSource();
+  psMesh->addVertexScalarQuantity("source", heat->source());
 }
 
 void computeGeodesics()
 {
-
-  heat->addSource( 0 ); //Forcing one seed (for screenshots)
+  heat->addSource( sourceVertexId ); //Forcing one seed (for screenshots)
+  GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
+  psMesh->addVertexCountQuantity("Sources", source2count(source));
   GeodesicsInHeat<PolyCalculus>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
 
   if (!skipReg)
   {
-    heatReg->addSource( 0 ); //Forcing one seed (for screenshots)
+    heatReg->addSource( sourceVertexId ); //Forcing one seed (for screenshots)371672
+    GeodesicsInHeat<PolyCalculus>::Vector sourceReg = heatReg->source();
+    psMeshReg->addVertexCountQuantity("Sources", source2count(sourceReg));
     GeodesicsInHeat<PolyCalculus>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
@@ -120,20 +181,35 @@ bool isPrecomputed=false;
 void myCallback()
 {
   ImGui::SliderFloat("dt", &dt, 0.,4.);
+  ImGui::SliderFloat("ii radius for normal vector estimation", &radiusII , 0.,10.);
   ImGui::Checkbox("Skip regularization", &skipReg);
-  if(ImGui::Button("Precomputation (required if you change the dt)"))
+  ImGui::Checkbox("Using projection", &useProjectedCalculus);
+  ImGui::InputInt("Index of the first source vertex", &sourceVertexId);
+  
+  
+  if(ImGui::Button("Precomputation (required if you change parameters)"))
   {
     precompute();
     isPrecomputed=true;
   }
-  if(ImGui::Button("Add random source"))
+  ImGui::Separator();
+  if(ImGui::Button("Add a random source"))
   {
     if (!isPrecomputed)
     {
       precompute();
       isPrecomputed=true;
     }
-    addsource();
+    addSource();
+  }
+  if(ImGui::Button("Clear sources"))
+  {
+    if (!isPrecomputed)
+    {
+      precompute();
+      isPrecomputed=true;
+    }
+    clearSources();
   }
   
   if(ImGui::Button("Compute geodesic"))
@@ -151,10 +227,11 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All");
-  std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
-  auto binary_image    = SH3::makeBinaryImage(filename, params );
+  params("r-radius", (double) radiusII);
+  std::string filename = examplesPath + std::string("/samples/bunny-128.vol");
+  binary_image         = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
-  auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
+  surface              = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   
   //Need to convert the faces
@@ -191,6 +268,7 @@ int main()
 
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
   psMeshReg = polyscope::registerSurfaceMesh("regularized surface", regularizedPosition, faces);
+  psMeshReg->setEnabled(false);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;
