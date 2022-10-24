@@ -2,14 +2,14 @@
 
 ## New features / critical changes
 
-*General*
- - A Dockerfile is added to create a Docker image to have a base to start development
-   using the DGtal library.(J. Miguel Salazar
-   [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
- - Continuous integration does not use Travis anymore but Github
-   Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
- - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
-   (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
+- *General*
+  - A Dockerfile is added to create a Docker image to have a base to start development
+    using the DGtal library.(J. Miguel Salazar
+    [#1580](https://github.com/DGtal-team/DGtal/pull/1580))
+  - Continuous integration does not use Travis anymore but Github
+    Actions. (David Coeurjolly, [#1591](https://github.com/DGtal-team/DGtal/pull/1591))
+  - Examples are not built anymore by default (BUILD_EXAMPLES now set to OFF by default).
+    (David Coeurjolly, [#1630](https://github.com/DGtal-team/DGtal/pull/1630))
 
 - *Geometry package*
   - Add curvature measures computation on 3D surface mesh:
@@ -70,9 +70,8 @@
     comments and other header code used in CGAL.
     (Bertrand Kerautret, [#1653](https://github.com/DGtal-team/DGtal/pull/1653) and
     [#1654](https://github.com/DGtal-team/DGtal/pull/1654))
+
 - *IO*
-  - Fix purple color. (Bertrand Kerautret and Phuc Ngo
-    [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
   - Add Obj format in MeshReader including colors and fixing obj format read
     with relative face position.
     (Bertrand Kerautret, [#1584](https://github.com/DGtal-team/DGtal/pull/1584))
@@ -151,6 +150,8 @@
     testCompressedVolWriter were failing on some configurations.
     (Roland Denis, [#1638](https://github.com/DGtal-team/DGtal/pull/1638))
   - Fix missing `#include<map>` in MeshReaeder (Jeremy Fix, [#1649](https://github.com/DGtal-team/DGtal/pull/1649))
+  - Fix purple color. (Bertrand Kerautret and Phuc Ngo [#1579](https://github.com/DGtal-team/DGtal/pull/1579))
+
 
 - *Geometry package*
   - The following changes have been made to fix a bug in `examplePlaneProbingSurfaceLocalEstimator`:
