@@ -158,7 +158,7 @@ bool testDistanceTransformation()
     {
       for(int j=2;j<=15;++j)
         {
-          Point p= dt.getVoronoiVector(Point(i,j));
+          Point p= dt.getVoronoiSite(Point(i,j));
           if (p==Point(i,j))
             trace.info()<<"-,- ";
           else
@@ -176,7 +176,7 @@ bool testDistanceTransformation()
       for(int j=2;j<=15;++j)
         {
           Point p= voro(Point(i,j));
-          if (p != dt.getVoronoiVector(Point(i,j)))
+          if (p != dt.getVoronoiSite(Point(i,j)))
             allfine = false;
           if (p==Point(i,j))
             trace.info()<<"-,- ";
