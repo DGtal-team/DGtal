@@ -176,6 +176,10 @@
   - Improving PolygonalCalculus and VectorHeatMethod for vector field processing on non-manifold surfaces.
     (David Coeurjolly, [#1659](https://github.com/DGtal-team/DGtal/pull/1659))
 
+- *graph*
+  - Fix warning related to copy assignment in class DistanceBreadthFirstVisitor
+    (Jacques-Olivier Lachaud, [#1662](https://github.com/DGtal-team/DGtal/pull/1662))
+
 # DGtal 1.2
 
 ## New Features / Critical Changes
