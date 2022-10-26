@@ -133,6 +133,8 @@
     (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
   - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly,
     [#1641](https://github.com/DGtal-team/DGtal/pull/1641))
+  - New doxygen settings to reduce diagram generation (David Coeurjolly,
+    [#1663](https://github.com/DGtal-team/DGtal/pull/1663))
 
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
