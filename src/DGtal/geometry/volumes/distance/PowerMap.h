@@ -170,6 +170,10 @@ namespace DGtal
      *
      * All parameters are aliased in this class.
      *
+     * @note if weights come from distance transform values, do not forget
+     * to square the distance values (for the l2 metric). I.e: @f$ w_i(c_i)=r_i^2@f$ for
+     * a ball @f$B_i(c_i,r_i)@f$.
+     *
      * @param aDomain defines the (hyper-rectangular) domain on which
      * the computation is performed.
      * @param aWeightImage an image

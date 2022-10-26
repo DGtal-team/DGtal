@@ -179,6 +179,13 @@ namespace DGtal
       mySource( aV ) = 1.0;
     }
     
+    /** Removes all source Diracs.
+     */
+    void clearSource()
+    {
+      mySource = Vector::Zero(myCalculus->nbVertices());
+    }
+    
     /**
      * @returns the source point vector.
      **/

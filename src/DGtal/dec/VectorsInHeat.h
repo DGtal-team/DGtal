@@ -190,8 +190,17 @@ public:
         myDiracSource( aV ) = 1;
     }
 
+    /** Clears all sources
+     **/
+    void clearSource()
+    {
+      myVectorSource.clear();
+      myScalarSource.clear();
+      myDiracSource.clear();
+    }
+  
     /**
-     * @returns the source point vector.
+     * @returns the source points vector.
      **/
     Vector vectorSource() const
     {

@@ -98,11 +98,11 @@ bool testDistanceTransformND()
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
 	norm2+= (*itd)*(*itd);
 
-      if ( dt.metric()->rawDistance( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
+      if ( dt.metric()->rawDistance( (*itDom), dt.getVoronoiSite(*itDom) ) != norm2)
   {
     trace.error()<<"Error at "<<(*itDom)
                  << ": expected="<<norm2<<" and computed="
-                 <<dt.metric()->rawDistance( (*itDom), dt.getVoronoiVector(*itDom) )
+                 <<dt.metric()->rawDistance( (*itDom), dt.getVoronoiSite(*itDom) )
                  <<endl;
   res=false;
   }
