@@ -25,13 +25,7 @@
  *
  * This file is part of the DGtal library.
  */
-<<<<<<< HEAD
-#pragma once
-#define STB_IMAGE_IMPLEMENTATION
-=======
 
-
->>>>>>> 8d87d3ba9 (without compilation stbimage)
 #include <stb/stb_image.h>
 
 ///////////////////////////////////////////////////////////////////////////////
