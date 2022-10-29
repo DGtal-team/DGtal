@@ -133,6 +133,8 @@
     (David Coeurjolly, [#1628](https://github.com/DGtal-team/DGtal/pull/1628))
   - OpenMP fix in DGtalConfig on macOS M1 (David Coeurjolly,
     [#1641](https://github.com/DGtal-team/DGtal/pull/1641))
+  - New doxygen settings to reduce diagram generation (David Coeurjolly,
+    [#1663](https://github.com/DGtal-team/DGtal/pull/1663))
 
 - *Examples*
   - We can now have examples using [polyscope](https://polyscope.run)
@@ -173,6 +175,10 @@
     (David Coeurjolly, [#1642](https://github.com/DGtal-team/DGtal/pull/1642))
   - Improving PolygonalCalculus and VectorHeatMethod for vector field processing on non-manifold surfaces.
     (David Coeurjolly, [#1659](https://github.com/DGtal-team/DGtal/pull/1659))
+
+- *graph*
+  - Fix warning related to copy assignment in class DistanceBreadthFirstVisitor
+    (Jacques-Olivier Lachaud, [#1662](https://github.com/DGtal-team/DGtal/pull/1662))
 
 # DGtal 1.2
 

@@ -232,12 +232,8 @@ while ( ! visitor.finished() )
       using Base::first;
       using Base::second;
 
-      inline Node()
-        : std::pair< Vertex, Scalar >()
-      {}
-      inline Node( const Node & other )
-        : std::pair< Vertex, Scalar >( other )
-      {}
+      inline Node() = default;
+      inline Node( const Node & other ) = default;
       inline Node( const Vertex & v, Scalar d )
         : std::pair< Vertex, Scalar >( v, d )
       {}
