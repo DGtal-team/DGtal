@@ -25,8 +25,14 @@
  *
  * This file is part of the DGtal library.
  */
-
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+#endif
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

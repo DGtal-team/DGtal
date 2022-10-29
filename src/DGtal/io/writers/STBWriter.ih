@@ -25,7 +25,10 @@
  *
  * This file is part of the DGtal library.
  */
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
+#endif
 #pragma GCC diagnostic warning "-Wdeprecated"
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
