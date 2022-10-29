@@ -25,13 +25,8 @@
  *
  * This file is part of the DGtal library.
  */
-#pragma once
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-//Removing deprecated usage of "sprintf"
-#pragma GCC diagnostic ignored "-Wdeprecated"
 #include <stb/stb_image_write.h>
 #pragma GCC diagnostic warning "-Wdeprecated"
-
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
