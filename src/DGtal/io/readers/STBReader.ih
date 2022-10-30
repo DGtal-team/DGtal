@@ -25,14 +25,12 @@
  *
  * This file is part of the DGtal library.
  */
-#ifndef STB_IMAGE_IMPLEMENTATION
+
+#ifndef _MSC_VER // Produce  error LNK2005 from already definition
+#pragma once
 #define STB_IMAGE_IMPLEMENTATION
+#endif //_MSC_VER
 #include <stb/stb_image.h>
-#endif
-
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
