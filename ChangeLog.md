@@ -113,7 +113,10 @@
     (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
   - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
     (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
-
+  - Fix compilation issues comming from other Eigen version with no
+    clear() (like in eigen version imported by ITK and transmitted in DGtal).
+    (Bertrand Kerautret [##1665](https://github.com/DGtal-team/DGtal/pull/1665))
+  
 ## Bug fixes
 
 - *General*
