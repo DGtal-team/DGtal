@@ -194,9 +194,9 @@ public:
      **/
     void clearSource()
     {
-      myVectorSource.clear();
-      myScalarSource.clear();
-      myDiracSource.clear();
+      for (auto &s :myVectorSource){s=0;}
+      for (auto &s :myScalarSource){s=0;}
+      for (auto &s :myDiracSource){s=0;}
     }
   
     /**
