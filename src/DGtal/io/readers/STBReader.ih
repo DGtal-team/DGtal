@@ -26,10 +26,10 @@
  * This file is part of the DGtal library.
  */
 
-#ifndef STB_ALREADY_IMPLEMENTED // Produce  error LNK2005 from already definition
+#ifndef NO_ADD_STBIMAGE_IMPLEMENT //To avoid duplicated linking errors (like LNK2005 in MSVC)
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
-#endif //STB_ALREADY_IMPLEMENTED
+#endif //NO_ADD_STBIMAGE_IMPLEMENT
 #include <stb/stb_image.h>
 
 ///////////////////////////////////////////////////////////////////////////////
