@@ -113,6 +113,8 @@
     (David Coeurjolly, [#1635](https://github.com/DGtal-team/DGtal/pull/1635))
   - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
     (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
+  - Fix compilation issue related to STBImage lib on VS.
+    (Bertrand Kerautret [#1666](https://github.com/DGtal-team/DGtal/pull/1666))
 
 ## Bug fixes
 
