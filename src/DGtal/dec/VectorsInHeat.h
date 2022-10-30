@@ -194,9 +194,9 @@ public:
      **/
     void clearSource()
     {
-      for (auto &s :myVectorSource){s=0;}
-      for (auto &s :myScalarSource){s=0;}
-      for (auto &s :myDiracSource){s=0;}
+      for (unsigned int i=0; i<2*myCalculus->nbVertices(); i++){ myVectorSource(i)=0;}
+      for (unsigned int i=0; i<myCalculus->nbVertices(); i++){ myScalarSource(i)=0;}
+      for (unsigned int i=0; i<myCalculus->nbVertices(); i++){ myDiracSource(i)=0;}
     }
   
     /**
