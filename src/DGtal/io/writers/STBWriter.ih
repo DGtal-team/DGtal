@@ -26,10 +26,10 @@
  * This file is part of the DGtal library.
  */
 
-#ifndef STB_IMAGE_WRITE_IMPLEMENTATION // Produce errors LNK2005 from already definition
+#ifndef STB_ALREADY_IMPLEMENTED // Produce errors LNK2005 from already definition
 #pragma once
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#endif //_MSC_VER
+#endif //STB_ALREADY_IMPLEMENTED
 #include <stb/stb_image_write.h>
 #pragma GCC diagnostic warning "-Wdeprecated"
 ///////////////////////////////////////////////////////////////////////////////
