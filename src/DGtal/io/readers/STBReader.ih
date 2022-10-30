@@ -26,10 +26,10 @@
  * This file is part of the DGtal library.
  */
 
-#ifndef _MSC_VER // Produce  error LNK2005 from already definition
+#ifndef STB_IMAGE_IMPLEMENTATION // Produce  error LNK2005 from already definition
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
-#endif //_MSC_VER
+#endif //STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
 ///////////////////////////////////////////////////////////////////////////////
