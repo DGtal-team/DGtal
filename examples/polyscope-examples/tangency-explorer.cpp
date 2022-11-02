@@ -301,7 +301,6 @@ void computeSymmetricConvexSet()
 {
   if ( digital_points.empty() ) return;
   if ( ! is_selected ) return;
-  const auto p = digital_points[ vertex_idx ];
   trace.beginBlock( "Compute symmetric convex set" );
   Point lo = Point::diagonal(-10000);
   Point up = Point::diagonal( 10000);
