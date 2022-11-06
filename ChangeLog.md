@@ -116,7 +116,9 @@
   - Fix compilation issues comming from other Eigen version with no
     clear() (like in eigen version imported by ITK and transmitted in DGtal).
     (Bertrand Kerautret [##1665](https://github.com/DGtal-team/DGtal/pull/1665))
-  
+  - Add new cmake option to avoid linking errors related to STB image library
+    (like LNK2005 in MSVC). (Bertrand Kerautret [#1666](https://github.com/DGtal-team/DGtal/pull/1666))
+
 ## Bug fixes
 
 - *General*
