@@ -130,7 +130,6 @@ namespace DGtal
   }; // end of class STBWriter
   
   
-  
 } // namespace DGtal
 
 
