@@ -370,8 +370,14 @@ namespace DGtal
     ///
     /// @param X any range of \b pairwise \b distinct points
     ///
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful in 2D/3D for checking digital k-convexity (see
+    /// moduleDigitalConvexity).
+    ///
     /// @return the corresponding lattice polytope.
-    LatticePolytope makePolytope( const PointRange& X ) const;
+    LatticePolytope makePolytope( const PointRange& X,
+                                  bool make_minkowski_summable = false ) const;
     
     /// Performs the digital Minkowski sum of \a X along direction \a i
     /// @param i any valid dimension

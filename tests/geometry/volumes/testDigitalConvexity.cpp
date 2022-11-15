@@ -648,7 +648,7 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
   X[ 3 ] = Point( 5, 5 );
   X[ 4 ] = Point( 2, 3 );
   X[ 5 ] = Point( -1, 1 );
-  auto  P = dconv.makePolytope( X );
+  auto  P = dconv.makePolytope( X, true );
   auto CG = dconv.makeCellCover( P, 0, 2 );
   auto  L = dconv.StarCvxH( X, 0 );
   REQUIRE( CG.nbCells() == L.size() );  
@@ -676,12 +676,13 @@ SCENARIO( "DigitalConvexity< Z3 > sub-convexity of polyhedra", "[full_subconvexi
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
-  std::vector< Point > X( 4 );
+  std::vector< Point > X( 5 );
   X[ 0 ] = Point( 0,0,0 );
   X[ 1 ] = Point( 0,5,1 );
   X[ 2 ] = Point( 2,1,6 );
   X[ 3 ] = Point( 6,1,1 );
-  auto  P = dconv.makePolytope( X );
+  X[ 4 ] = Point( -2,-2,-3 );
+  auto  P = dconv.makePolytope( X, true );
   auto CG = dconv.makeCellCover( P, 0, 3 );
   auto  L = dconv.StarCvxH( X, 0 );
   std::vector< Point > Y;

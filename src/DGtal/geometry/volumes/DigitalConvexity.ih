@@ -291,21 +291,21 @@ makeCellCover( const RationalPolytope& P,
 template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
 DGtal::DigitalConvexity<TKSpace>::
-makePolytope( const PointRange& X ) const
+makePolytope( const PointRange& X, bool make_minkowski_summable ) const
 {
   if ( mySafe )
     {
       typedef typename detail::ConvexityHelperInternalInteger< Integer, true >::Type
         InternalInteger;
       return ConvexityHelper< dimension, Integer, InternalInteger >::
-        computeLatticePolytope( X, false, false );
+        computeLatticePolytope( X, false, make_minkowski_summable );
     }
   else
     {
       typedef typename detail::ConvexityHelperInternalInteger< Integer, false >::Type
         InternalInteger;
       return ConvexityHelper< dimension, Integer, InternalInteger >::
-        computeLatticePolytope( X, false, false );
+        computeLatticePolytope( X, false, make_minkowski_summable );
     }
 }
 
