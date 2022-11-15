@@ -725,9 +725,9 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
           std::vector< Point > X;
           for ( int i = 0; i < n; i++ )
             X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          std::sort( X.begin(), X.end() );
           auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::DIRECT );
           CAPTURE( dconv.depthLastEnvelope() );
-          std::sort( X.begin(), X.end() );
           bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
                                              X.cbegin(), X.cend() );
           REQUIRE( X.size() <= Z.size() );
@@ -740,6 +740,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
             std::vector< Point > X;
             for ( int i = 0; i < n; i++ )
               X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            std::sort( X.begin(), X.end() );
             auto Z = dconv.envelope( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
@@ -755,9 +756,9 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
           std::vector< Point > X;
           for ( int i = 0; i < n; i++ )
             X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          std::sort( X.begin(), X.end() );
           auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::LATTICE_SET );
           CAPTURE( dconv.depthLastEnvelope() );
-          std::sort( X.begin(), X.end() );
           bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
                                              X.cbegin(), X.cend() );
           REQUIRE( X.size() <= Z.size() );
@@ -770,6 +771,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
             std::vector< Point > X;
             for ( int i = 0; i < n; i++ )
               X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            std::sort( X.begin(), X.end() );
             auto Z = dconv.envelope( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
@@ -796,6 +798,7 @@ SCENARIO( "DigitalConvexity< Z2 > envelope", "[envelope][2d]" )
           std::vector< Point > X;
           X.push_back( Point( rand() % 100, rand() % 100 ) );
           X.push_back( Point( rand() % 100, rand() % 100 ) );
+          std::sort( X.begin(), X.end() );
           auto Z = dconv.envelope( X );
           REQUIRE( dconv.depthLastEnvelope() <= 1 );
         }
@@ -815,6 +818,8 @@ SCENARIO( "DigitalConvexity< Z2 > relative envelope", "[rel_envelope][2d]" )
   
   std::vector< Point > X { Point( -10, -7 ), Point( 10, 7 ) };
   std::vector< Point > Y { Point( -11, -6 ), Point( 9, 8 ) };
+  std::sort( X.begin(), X.end() );
+  std::sort( Y.begin(), Y.end() );
   X = dconv.envelope( X ); 
   Y = dconv.envelope( Y ); 
   REQUIRE( dconv.isFullyConvex( X ) );
@@ -866,6 +871,8 @@ SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )
   
   std::vector< Point > X { Point( -61, -20, -8 ), Point( 43, 25, 9 ) };
   std::vector< Point > Y { Point( -50, -27, -10 ), Point( 40, 37, 17 ) };
+  std::sort( X.begin(), X.end() );
+  std::sort( Y.begin(), Y.end() );
   X = dconv.envelope( X ); 
   Y = dconv.envelope( Y ); 
   REQUIRE( dconv.isFullyConvex( X ) );
