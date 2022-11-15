@@ -722,10 +722,10 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
       for ( int k = 0; k < 5; k++ )
         {
           int n = 3 + ( rand() % 7 );
-          std::vector< Point > X;
+          std::set< Point > S;
           for ( int i = 0; i < n; i++ )
-            X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-          std::sort( X.begin(), X.end() );
+            S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          std::vector< Point > X( S.cbegin(), S.cend() );
           CAPTURE( X );
           auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::DIRECT );
           CAPTURE( Z );
@@ -739,10 +739,10 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
         for ( int k = 0; k < 5; k++ )
           {
             int n = 3 + ( rand() % 7 );
-            std::vector< Point > X;
+            std::set< Point > S;
             for ( int i = 0; i < n; i++ )
-              X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-            std::sort( X.begin(), X.end() );
+              S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            std::vector< Point > X( S.cbegin(), S.cend() );
             auto Z = dconv.envelope( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
@@ -755,10 +755,10 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
       for ( int k = 0; k < 5; k++ )
         {
           int n = 3 + ( rand() % 7 );
-          std::vector< Point > X;
+          std::set< Point > S;
           for ( int i = 0; i < n; i++ )
-            X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-          std::sort( X.begin(), X.end() );
+            S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+          std::vector< Point > X( S.cbegin(), S.cend() );
           auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::LATTICE_SET );
           CAPTURE( dconv.depthLastEnvelope() );
           bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
@@ -770,10 +770,10 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
         for ( int k = 0; k < 5; k++ )
           {
             int n = 3 + ( rand() % 7 );
-            std::vector< Point > X;
+            std::set< Point > S;
             for ( int i = 0; i < n; i++ )
-              X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
-            std::sort( X.begin(), X.end() );
+              S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
+            std::vector< Point > X( S.cbegin(), S.cend() );
             auto Z = dconv.envelope( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
