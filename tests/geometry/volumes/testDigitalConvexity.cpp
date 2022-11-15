@@ -726,7 +726,9 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
           for ( int i = 0; i < n; i++ )
             X.push_back( Point( rand() % 10, rand() % 10, rand() % 10 ) );
           std::sort( X.begin(), X.end() );
+          CAPTURE( X );
           auto Z = dconv.envelope( X, DConvexity::EnvelopeAlgorithm::DIRECT );
+          CAPTURE( Z );
           CAPTURE( dconv.depthLastEnvelope() );
           bool Z_includes_X = std::includes( Z.cbegin(), Z.cend(),
                                              X.cbegin(), X.cend() );
