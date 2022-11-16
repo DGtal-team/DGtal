@@ -238,7 +238,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     }
   }
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 100;
+    const unsigned int nb = 50;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -313,7 +313,7 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 100;
+    const unsigned int nb = 50;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -376,7 +376,7 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1 ), Point( 10, 10 ) );
   WHEN( "Computing many triangle in domain (0,0)-(9,9)." ) {
-    const unsigned int nb = 100;
+    const unsigned int nb = 50;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -435,7 +435,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
   DConvexity dconv( Point( -6, -6, -6 ), Point( 6, 6, 6 ) );
 
   WHEN( "Computing many tetrahedra" ) {
-    const unsigned int nb   = 100;
+    const unsigned int nb   = 50;
     unsigned int nb_fulldim = 0;
     unsigned int nb_ok_seg  = 0;
     unsigned int nb_ok_tri  = 0;
@@ -517,7 +517,7 @@ SCENARIO( "DigitalConvexity< Z3 > full convexity of polyhedra", "[full_convexity
   Domain     domain( Point( -35, -35, -35 ), Point( 35, 35, 35 ) );
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
 
-  const unsigned int nb = 100;
+  const unsigned int nb = 10;
   unsigned int nbfg     = 0;
   unsigned int nbffast  = 0;
   unsigned int nbfenv   = 0;
@@ -569,7 +569,7 @@ SCENARIO( "DigitalConvexity< Z3 > full convexity of polyhedra", "[full_convexity
 }
 
 
-SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity][3d]" )
+SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity][4d]" )
 {
   typedef KhalimskySpaceND<4,int>          KSpace;
   typedef KSpace::Point                    Point;
@@ -580,7 +580,7 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
   Domain     domain( Point( -35, -35, -35, -35 ), Point( 35, 35, 35, 35 ) );
   DConvexity dconv( Point( -36, -36, -36, -36 ), Point( 36, 36, 36, 36 ) );
 
-  const unsigned int nb = 10;
+  const unsigned int nb = 4;
   unsigned int nbfg     = 0;
   unsigned int nbffast  = 0;
   unsigned int nbfenv  = 0;
@@ -588,7 +588,7 @@ SCENARIO( "DigitalConvexity< Z4 > full convexity of polyhedra", "[full_convexity
   std::vector< PointRange > XX;
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int k = 500;
+      unsigned int k = 100;
       PointRange X( k );
       for ( unsigned int j = 0; j < k; ++ j )
         X[ j ] = Point( rand() % 8, rand() % 8, rand() % 8, rand() % 8 );
