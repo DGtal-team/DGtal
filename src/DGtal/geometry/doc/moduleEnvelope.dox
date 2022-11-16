@@ -15,12 +15,12 @@ namespace DGtal {
 Part of the \ref packageGeometry.
   
 This part of the manual describes convex hull tools associated to a
-new definition of digital convexity, called the full convexity
-\cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 .
-We talk about convex \a envelopes instead of convex \a hulls, since
+new definition of digital convexity, called the \b full \b convexity
+\cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 . Most of the work presented here is related to \cite feschet_2022_dgmm .
+We talk about convex \b envelopes instead of convex \b hulls, since
 the presented operations do not satisfy all the usual hull
 operations. This is detailed below. Last, this module shows how the
-envelope operation is usefull to build digital polyhedra.
+envelope operation is useful to build digital polyhedra.
 
 [TOC]
 
@@ -119,7 +119,7 @@ The previous static methods use two representations for lattice points and cells
   as sorted intervals. This saves memory and speeds up a lot of
   procedures.
 
-You may pass from one representation to the other as follows:
+You may switch from one representation to the other as follows:
 - DigitalConvexity::toLatticeSet builds the lattice set equivalent to the given range of points.
 - DigitalConvexity::toPointRange builds the range of points equivalent to the given lattice set.
 

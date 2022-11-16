@@ -1082,10 +1082,6 @@ DGtal::PointVector<dim,TComponent, TContainer>::selfDisplay( std::ostream & out 
   for (DGtal::Dimension i = 0; i < dimension ; ++i)
     out << myArray[ i ] << (i == dimension - 1 ? "" : ", ");
   out << ")";
-  // out << "[PointVector] {";
-  // for (DGtal::Dimension i = 0; i < dimension ; ++i)
-  //   out << myArray[ i ] << (i == dimension - 1 ? "" : ", ");
-  // out << "}";
 }
 
 //------------------------------------------------------------------------------

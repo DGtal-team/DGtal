@@ -143,7 +143,7 @@ namespace DGtal
     /// @return the number of lattice point strictly inside the current polytope.
     ///
     /// @note The result does not depend on parameter \a a, but the
-    /// speed of computations depend on this choixe. The best choice
+    /// speed of computation depends on this choice. The best choice
     /// is the one that minimizes the projected area of the polytope
     /// along this axis.
     /// @see longestAxis
@@ -153,7 +153,7 @@ namespace DGtal
     /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
     ///
     /// @note The result does not depend on parameter \a a, but the
-    /// speed of computations depend on this choixe. The best choice
+    /// speed of computation depends on this choice. The best choice
     /// is the one that minimizes the projected area of the polytope
     /// along this axis.
     /// @see longestAxis
@@ -164,7 +164,7 @@ namespace DGtal
     /// @return the lattice points strictly inside the current polytope.
     ///
     /// @note The result does not depend on parameter \a a, but the
-    /// speed of computations depend on this choixe. The best choice
+    /// speed of computation depends on this choice. The best choice
     /// is the one that minimizes the projected area of the polytope
     /// along this axis.
     /// @see longestAxis

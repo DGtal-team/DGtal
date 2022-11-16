@@ -55,6 +55,7 @@ namespace DGtal
      A class that represents a set of lattice points using intervals
      along a given axis.
 
+     @tparam TSpace any model of concepts::CSpace, for instance any SpaceND like Z2i::Space, Z3i::Space.
   */
   template < typename TSpace >
   class LatticeSetByIntervals

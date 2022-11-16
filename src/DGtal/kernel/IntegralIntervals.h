@@ -53,8 +53,10 @@ namespace DGtal
 
      Inserting -1 into X induced the sorted vector ((-3,2),(4,4),(7,8)).
 
-     @note Useful to represent points of lattice polytopes or of
-     digital sets.
+     @tparam TInteger any model of concepts::CBoundedNumber, for instance int, long, etc
+     
+     @note Useful to represent points of (especially convex) lattice
+     polytopes or points of digital sets.
   */
   template < typename TInteger >
   class IntegralIntervals
