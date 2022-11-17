@@ -41,15 +41,15 @@
     - Updates to PolygonalCalculus: changing sign convention, fix some Eigen
       problems, add Dirichlet boundary conditions, update discrete
       differential calculus examples (Jacques-Olivier
-      Lachaud,[#1643](https://github.com/DGtal-team/DGtal/pull/1643))
+      Lachaud, [#1643](https://github.com/DGtal-team/DGtal/pull/1643))
     - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
       gradient and covariant projection as well as Connection-Laplacian). Also adding two
       more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
-      Coeurjolly,  [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
+      Coeurjolly, [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
   
 - *Mathematical Package*
   - Add Lagrange polynomials and Lagrange interpolation
-    (Jacques-Olivier Lachaud,[#1594](https://github.com/DGtal-team/DGtal/pull/1594))
+    (Jacques-Olivier Lachaud, [#1594](https://github.com/DGtal-team/DGtal/pull/1594))
 
 - *Topology*
   - New helper methods to retrieve the interior/exterior voxel of a given
@@ -87,7 +87,7 @@
 - *Geometry*
   - Small fix for shortest paths computation, which could sometimes
     output several times the same node. Add tests and examples.
-    (Jacques-Olivier Lachaud,[#1644](https://github.com/DGtal-team/DGtal/pull/1644))
+    (Jacques-Olivier Lachaud, [#1644](https://github.com/DGtal-team/DGtal/pull/1644))
   - First and second curvature directions were inverted in the `IIPrincipalCurvaturesAndDirectionsFunctor`,
     fixed now. (David Coeurjolly, [#1657](https://github.com/DGtal-team/DGtal/pull/1657))
   - Renaming `getVoronoiVector` to `getVoronoiSite` in the DistanceTransformation class.
@@ -118,7 +118,7 @@
   - Google benchmark is now fetched when building the unit tests (using Fetch_Content)
     (David Coeurjolly, [#1651](https://github.com/DGtal-team/DGtal/pull/1651))
   - Add new cmake option to avoid linking errors related to STB image library
-    (like LNK2005 in MSVC). (Bertrand Kerautret [#1666](https://github.com/DGtal-team/DGtal/pull/1666))
+    (like LNK2005 in MSVC). (Bertrand Kerautret, [#1666](https://github.com/DGtal-team/DGtal/pull/1666))
 
 ## Bug fixes
 
