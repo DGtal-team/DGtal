@@ -45,15 +45,15 @@
 template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeSimplex
-( const std::vector< Point >& input_points,
+( const PointRange& input_points,
   bool remove_duplicates )
 {
-  std::vector< Point > X;
+  PointRange X;
   if ( remove_duplicates )
     {
       std::set<Point> S;
       for ( auto&& p : input_points ) S.insert( p );
-      X = std::vector< Point >( S.cbegin(), S.cend() );
+      X = PointRange( S.cbegin(), S.cend() );
     }
   else X = input_points;
   LatticePolytope P( X.cbegin(), X.cend() );
@@ -68,7 +68,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedLatticePolytope
-( std::vector< Point >& input_points )
+( PointRange& input_points )
 {
   typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
@@ -105,7 +105,7 @@ computeDegeneratedLatticePolytope
           if ( alpha[ i ] < alpha[ a ] ) a = i;
           if ( alpha[ i ] > alpha[ b ] ) b = i;
         }
-      std::vector< Point > X( 2 );
+      PointRange X( 2 );
       X[ 0 ] = input_points[ a ];
       X[ 1 ] = input_points[ b ];
       return LatticePolytope( X.cbegin(), X.cend() );
@@ -186,10 +186,117 @@ computeDegeneratedLatticePolytope
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
+computeDegeneratedConvexHullVertices
+( PointRange& input_points )
+{
+  typedef typename LatticePolytope::Domain     Domain;
+  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
+  typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
+  typedef typename ConvexHull::IndexRange      IndexRange;
+  typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
+  // input_points is a range of points with no duplicates, but which
+  // seems to be not full dimensional.
+  if ( input_points.size() <= 1 )
+    return input_points;
+  // At least 1-dimensional
+  std::vector< Vector >  basis;
+  std::vector< Integer > alpha;
+  basis.push_back( input_points[ 1 ] - input_points[ 0 ] );
+  const auto n0 = basis[ 0 ].norm();
+  alpha.push_back( Integer( 0 ) );
+  alpha.push_back( basis[ 0 ].dot( basis[ 0 ] ) );
+  Index i = 2;
+  while ( i < input_points.size() ) {
+    Vector v = input_points[ i ] - input_points[ 0 ];
+    alpha.push_back( basis[ 0 ].dot( v ) );
+    const auto ni = v.norm();
+    const double alignment =
+      fabs( fabs( NumberTraits< Integer >::castToDouble( alpha.back() ) )
+            - ( n0 * ni ) );
+    if ( alignment > 1e-8 ) break;
+    i++;
+  }
+  if ( i == input_points.size() ) 
+    { // 1-dimensional
+      Index a = 0, b = 0;
+      for ( i = 1; i < input_points.size(); i++ )
+        {
+          if ( alpha[ i ] < alpha[ a ] ) a = i;
+          if ( alpha[ i ] > alpha[ b ] ) b = i;
+        }
+      PointRange X( 2 );
+      X[ 0 ] = input_points[ a ];
+      X[ 1 ] = input_points[ b ];
+      return X;
+    }
+  // at least 2-dimensional
+  ASSERT( dimension > 1 );
+  if ( dimension == 2 )
+    {
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
+                << " Weird error: found initial full dimensional simplex" << std::endl;
+      return PointRange();
+    }
+  if ( dimension >= 4 )
+    {
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
+                << "Degenerated lattice polytope in nD, n >= 4 is not implemented"
+                << std::endl;
+      return PointRange();
+    }
+  basis.push_back( input_points[ i ] - input_points[ 0 ] );
+  Vector n = detail::BoundedLatticePolytopeSpecializer< dimension, Integer>
+    ::crossProduct( basis[ 0 ], basis[ 1 ] );
+  if ( n == Vector::zero )
+    {
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
+                << "Weird numerical error, u . v != |u| |v| but u x v != 0"
+                << std::endl;
+      return PointRange();
+    }
+  // Now the set of input points should be full dimensional.
+  input_points.push_back( input_points[ 0 ] + n );
+  // Compute convex hull
+  ConvexHull hull;
+  hull.setInput( input_points, false );
+  const auto target = ConvexHull::Status::VerticesCompleted;
+  IndexRange full_splx = { 0, 1, i, input_points.size() - 1 };
+  bool ok_init = hull.setInitialSimplex( full_splx );
+  if ( ! ok_init )
+    {
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
+                << "Weird error in hull.setInitialSimplex" << std::endl;
+      return PointRange();
+    }
+  bool ok_hull = hull.computeConvexHull( target );
+  if ( ! ok_hull )
+    {
+      std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
+                << "Weird error in hull.computeConvexHull" << std::endl;
+      return PointRange();
+    }
+  // Get convex hull vertices and remove top point
+  PointRange X;
+  hull.getVertexPositions( X );
+  const std::size_t nX = X.size();
+  for ( std::size_t j = 0; j < nX; j++ )
+    if ( X[ j ] == input_points.back() )
+      {
+        X[ j ] = X.back();
+        break;
+      }
+  X.resize( nX - 1 ); 
+  return X;
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeLatticePolytope
-( const std::vector< Point >& input_points,
+( const PointRange& input_points,
   bool remove_duplicates,
   bool make_minkowski_summable )
 {
@@ -238,7 +345,7 @@ computeLatticePolytope
   if ( make_minkowski_summable && dimension == 3 )
     {
       // Compute ridge vertices to add edge constraints.
-      std::vector< Point > positions;
+      PointRange positions;
       std::vector< IndexRange > facet_vertices; 
       std::vector< IndexRange > ridge_vertices; 
       std::map< Ridge, Index > ridge2index;
@@ -293,11 +400,34 @@ computeLatticePolytope
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
+computeConvexHullVertices
+( const PointRange& input_points,
+  bool remove_duplicates )
+{
+  typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
+  typedef typename ConvexHull::IndexRange      IndexRange;
+  PointRange positions;
+  ConvexHull hull;
+  hull.setInput( input_points, remove_duplicates );
+  bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  if ( !ok )
+    {
+      PointRange Z( input_points );
+      return computeDegeneratedConvexHullVertices( Z );
+    }
+  hull.getVertexPositions( positions );
+  return positions;
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
 template < typename TSurfaceMesh >
 bool
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( TSurfaceMesh&               mesh,
-  const std::vector< Point >& input_points,
+  const PointRange& input_points,
   bool remove_duplicates )
 {
   typedef TSurfaceMesh                         SurfaceMesh;
@@ -321,7 +451,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 bool
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBoundary
 ( PolygonalSurface< Point >&  polysurf,
-  const std::vector< Point >& input_points,
+  const PointRange& input_points,
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
@@ -330,7 +460,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
   if ( !ok ) return false;
-  std::vector< Point > positions;
+  PointRange positions;
   hull.getVertexPositions( positions );
   std::vector< IndexRange > faces;
   hull.getFacetVertices( faces );
@@ -346,7 +476,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 bool
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellComplex
 ( ConvexCellComplex< Point >& cell_complex,
-  const std::vector< Point >& input_points,
+  const PointRange& input_points,
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
@@ -386,7 +516,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 bool
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellComplex
 ( ConvexCellComplex< Point >& cell_complex,
-  const std::vector< Point >& input_points,
+  const PointRange& input_points,
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeDelaunayKernel >   Delaunay;
@@ -490,7 +620,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytop
   if ( make_minkowski_summable && dimension == 3 )
     {
       // Compute ridge vertices to add edge constraints.
-      std::vector< Point > positions;
+      PointRange positions;
       std::vector< IndexRange > facet_vertices; 
       std::vector< IndexRange > ridge_vertices; 
       std::map< Ridge, Index > ridge2index;

@@ -39,6 +39,8 @@ set(POLYSCOPE_SRCS
   exampleVectorHeatMethod
   exampleHarmonicParametrization
   exampleBunnyHead
+  tangency-explorer
+  tangency-reconstruction
 )
 
 foreach(FILE ${POLYSCOPE_SRCS})

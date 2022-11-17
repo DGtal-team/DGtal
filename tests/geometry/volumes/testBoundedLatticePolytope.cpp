@@ -113,6 +113,9 @@ SCENARIO( "BoundedLatticePolytope< Z2 > unit tests", "[lattice_polytope][2d]" )
       std::sort( inside.begin(), inside.end() );
       std::sort( interior.begin(), interior.end() );
       std::sort( boundary.begin(), boundary.end() );
+      CAPTURE( inside );
+      CAPTURE( interior );
+      CAPTURE( boundary );
       std::set_union( interior.cbegin(), interior.cend(), boundary.cbegin(), boundary.cend(),
                       std::back_inserter( all ) );
       REQUIRE( std::equal( inside.cbegin(), inside.cend(), all.cbegin() ) );
@@ -212,6 +215,9 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
       std::sort( inside.begin(), inside.end() );
       std::sort( interior.begin(), interior.end() );
       std::sort( boundary.begin(), boundary.end() );
+      CAPTURE( inside );
+      CAPTURE( interior );
+      CAPTURE( boundary );
       std::set_union( interior.cbegin(), interior.cend(), boundary.cbegin(), boundary.cend(),
                       std::back_inserter( all ) );
       REQUIRE( std::equal( inside.cbegin(), inside.cend(), all.cbegin() ) );

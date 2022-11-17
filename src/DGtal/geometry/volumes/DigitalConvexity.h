@@ -47,9 +47,11 @@
 #include <unordered_set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/kernel/LatticeSetByIntervals.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytopeCounter.h"
 #include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -84,13 +86,17 @@ namespace DGtal
     typedef typename KSpace::Vector         Vector;
     typedef typename KSpace::Cell           Cell;
     typedef typename KSpace::Space          Space;
+    typedef std::size_t                     Size;
     typedef DGtal::BoundedLatticePolytope < Space > Polytope;
     typedef DGtal::BoundedLatticePolytope < Space > LatticePolytope;
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;
     typedef DGtal::CellGeometry< KSpace >   CellGeometry;
     typedef std::vector<Point>              PointRange;
     typedef std::unordered_set<Point>       PointSet;
-
+    typedef DGtal::BoundedLatticePolytopeCounter< Space > Counter;
+    typedef typename Counter::Interval      Interval;
+    typedef DGtal::LatticeSetByIntervals< Space > LatticeSet;
+    
     static const Dimension dimension = KSpace::dimension;
 
 
@@ -116,15 +122,21 @@ namespace DGtal
     /**
      * Constructor from cellular space.
      * @param K any cellular grid space.
+     * @param safe when 'true' performs convex hull computations with arbitrary
+     * precision integer (if available), otherwise chooses a
+     * compromise between speed and precision (int64_t).
      */
-    DigitalConvexity( Clone<KSpace> K );
+    DigitalConvexity( Clone<KSpace> K, bool safe = false );
 
     /**
      * Constructor from lower and upper points.
      * @param lo the lowest point of the domain (bounding box for computations).
      * @param hi the highest point of the domain (bounding box for computations).
+     * @param safe when 'true' performs convex hull computations with arbitrary
+     * precision integer (if available), otherwise chooses a
+     * compromise between speed and precision (int64_t).
      */
-    DigitalConvexity( Point lo, Point hi );
+    DigitalConvexity( Point lo, Point hi, bool safe = false );
 
     /**
      * Assignment.
@@ -326,7 +338,7 @@ namespace DGtal
 
     /// Builds the cell geometry containing all the j-cells touching
     /// the lattice polytope P, for i <= j <= k. It conbains thus all the
-    /// j-cells intersecting the convex enveloppe of P.
+    /// j-cells intersecting the convex hull of P.
     ///
     /// @param P any lattice polytope such that `P.canBeSummed() == true`.
     /// @param i the first dimension for which the cell cover is computed.
@@ -337,7 +349,7 @@ namespace DGtal
 
     /// Builds the cell geometry containing all the j-cells touching
     /// the rational polytope P, for i <= j <= k. It conbains thus all the
-    /// j-cells intersecting the convex enveloppe of P.
+    /// j-cells intersecting the convex hull of P.
     ///
     /// @param P any rational polytope such that `P.canBeSummed() == true`.
     /// @param i the first dimension for which the cell cover is computed.
@@ -347,7 +359,7 @@ namespace DGtal
                                 Dimension k = KSpace::dimension ) const;
     /// @}
 
-    // ----------------------- Morphological services -----------------------------------
+    // ----------------------- Morphological services --------------------------------
   public:
     /// @name Morphological services
     /// @{
@@ -358,12 +370,14 @@ namespace DGtal
     ///
     /// @param X any range of \b pairwise \b distinct points
     ///
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful in 2D/3D for checking digital k-convexity (see
+    /// moduleDigitalConvexity).
     ///
     /// @return the corresponding lattice polytope.
-    LatticePolytope makePolytope( const PointRange& X, bool safe = false ) const;
+    LatticePolytope makePolytope( const PointRange& X,
+                                  bool make_minkowski_summable = false ) const;
     
     /// Performs the digital Minkowski sum of \a X along direction \a i
     /// @param i any valid dimension
@@ -379,12 +393,8 @@ namespace DGtal
     /// 
     /// @param X any range of \b pairwise \b distinct points
     ///
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
-    ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool is0Convex( const PointRange& X, bool safe = false ) const;
+    bool is0Convex( const PointRange& X ) const;
     
     /// Tells if a given point range \a X is fully digitally
     /// convex. The test uses the morphological characterization of
@@ -396,18 +406,312 @@ namespace DGtal
     ///
     /// @param convex0 when 'true' indicates that \a X is known to be
     /// digitally 0-convex, otherwise the method will check it also.
-    /// 
-    /// @param safe when 'true' performs computations with arbitrary
-    /// precision integer (if available), otherwise chooses a
-    /// compromise between speed and precision (int64_t).
     ///
     /// @return 'true' iff \a X is fully digitally convex.
-    bool isFullyConvex( const PointRange& X, bool convex0 = false,
-                        bool safe = false ) const;
+    bool isFullyConvex( const PointRange& X, bool convex0 = false ) const;
+
+    /// Tells if a given point range \a X is fully digitally
+    /// convex. The test uses the morphological characterization of
+    /// full convexity and a fast way to compute lattice points within
+    /// a polytope. It works for arbitrary set of points in arbitrary
+    /// dimenion.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    /// @return 'true' iff \a X is fully digitally convex.
+    ///
+    /// @note This method is generally faster than
+    /// DigitalConvexity::isFullyConvex if (1) the set is indeed is
+    /// fully convex, (2) the dimension is high (>= 3 or 4).
+    bool isFullyConvexFast( const PointRange& X ) const;
+    
+    /// Tells if a given set of points Y is digitally fully subconvex to
+    /// some lattice set \a Star_X, i.e. the cell cover of some set X
+    /// represented by lattice points.
+    ///
+    /// @param Y any set of points
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
+    ///
+    /// @note This method is slower than the two others, since it
+    /// builds the polytope embracing \a Y. However it is much more
+    /// generic since the two other methods require a Minkowski
+    /// summable polytope, i.e. `P.canBeSummed() == true`.
+    bool isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const;
+    
+    /// Tells if a given segment from \a a to \a b is digitally
+    /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
+    /// digital 0-subconvexity is the usual property \f$ Conv( P \cap
+    /// Z^d ) \subset C \cap Z^d) \f$. Otherwise the property asks
+    /// that the k-cells intersected by the convex hull of the segment
+    /// is a subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
+    ///
+    /// @return 'true' iff the segment is a digitally \a k-subconvex
+    /// of C, i.e. the two points are k-cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isKSubconvex( const Point& a, const Point& b,
+                       const CellGeometry& C, const Dimension k ) const;
+
+    /// Tells if a given segment from \a a to \a b is digitally fully
+    /// subconvex (i.e. tangent) to some cell cover \a C. The digital
+    /// 0-subconvexity is the usual property \f$ Conv( P \cap Z^d )
+    /// \subset C \cap Z^d) \f$. Otherwise the property asks that the
+    /// k-cells intersected by the convex hull of the segment is a
+    /// subset of the k-cells of C.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param C any cell cover geometry (i.e. a cubical complex).
+    ///
+    /// @return 'true' iff the segment is a digitally fully subconvex
+    /// of C, i.e. the two points are cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isFullySubconvex( const Point& a, const Point& b,
+                           const CellGeometry& C ) const;
+
+    /// Tells if a given segment from \a a to \a b is digitally fully
+    /// subconvex (i.e. tangent) to some open complex \a StarX.
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param StarX any lattice set representing an open cubical complex.
+    ///
+    /// @return 'true' iff the segment is a digitally fully subconvex
+    /// of C, i.e. the two points are cotangent.
+    ///
+    /// @note Three times faster than building a (degenerated) lattice
+    /// polytope and then checking if it subconvex.
+    bool isFullySubconvex( const Point& a, const Point& b,
+                           const LatticeSet& StarX ) const;
+
+    /// Given a range of distinct points \a X, computes the tightiest
+    /// polytope that enclosed it. Note that this polytope may contain
+    /// more lattice points than the given input points.
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @return the corresponding lattice polytope.
+    ///
+    /// @note alias for DigitalConvexity::makePolytope
+    LatticePolytope CvxH( const PointRange& X ) const
+    {
+      return makePolytope( X );
+    }
+
+    /// Given a range of distinct points \a X, computes the vertices
+    /// of the tightiest polytope that enclosed it. 
+    ///
+    /// @param X any range of \b pairwise \b distinct points
+    ///
+    /// @return the vertices or extrema of `CvxH(X)`.
+    ///
+    /// @note The method works in nD for full dimensional convex
+    /// hulls. It can handle not full dimensional convex hull up to
+    /// dimension 3 included.
+    PointRange ExtrCvxH( const PointRange& X ) const;
+    
+    /// Builds the cell complex Star(CvxH(X)) for X a digital set,
+    /// represented as a lattice set (stacked row representation).
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells touching the convex hull of X,
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates).
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarCvxH( const PointRange& X,
+                         Dimension axis = dimension ) const;
+
+    /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @return the number of cells touching the convex hull of X,
+    /// represented as lattice points with Khalimsky coordinates.
+    Integer sizeStarCvxH( const PointRange& X ) const;
+
+    /// Builds the cell complex Star(X) for X a digital set,
+    /// represented as a lattice set (stacked row representation).
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// touches points of \a X, i.e. `Star(X)`.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet Star( const PointRange& X,
+                     Dimension axis = dimension ) const;
+
+    /// Builds the cell complex Star(C) for C a range of cells,
+    /// represented as a lattice set (stacked row representation).
+    ///
+    /// @param C a range of cells represented with points in Khalimsky coordinates.
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// touches cells of \a C, i.e. `Star(C)`.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarCells( const PointRange& C,
+                          Dimension axis = dimension ) const;
+    
+    /// @param C a range of cells represented with points in Khalimsky coordinates.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the cells in \a C.
+    PointRange Extr( const PointRange& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the cells in \a C.
+    PointRange Extr( const LatticeSet& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the set of cells, represented as a lattice set, that
+    /// form the skeleton of the given range of cells \a C.
+    LatticeSet Skel( const LatticeSet& C ) const;
+
+    /// @param C a range of cells represented as a lattice set.
+    ///
+    /// @return the range of digital points that are the extremal
+    /// vertices to the skeleton of the cells in \a C.
+    PointRange ExtrSkel( const LatticeSet& C ) const;
+    
+    /// Builds the lattice set (stacked row representation) associated
+    /// to the given range of points.
+    ///
+    /// @param X any range of lattice points
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the lattice set that represents the exact same points as \a X
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet toLatticeSet( const PointRange& X,
+                             Dimension axis = dimension ) const;
+
+    /// Builds the range of lattice points  associated
+    /// to the given lattice set.
+    ///
+    /// @param L any lattice set.
+    ///
+    /// @return the point range that represents the exact same points as \a L
+    PointRange toPointRange( const LatticeSet& L ) const;
+    
+    /// @}
+
+    // ----------------------- Convex envelope services -----------------------------
+  public:
+    /// @name Convex envelope services
+    /// @{
+
+    /// Choice of algorithm for computing the fully convex envelope of
+    /// a digital set.
+    enum class EnvelopeAlgorithm
+      { DIRECT /**< Slightly faster but quite ugly big function */,
+        LATTICE_SET /**< Slightly slower function but decomposes well the algorithm */ 
+      };
+    
+    /// Computes `FC(Z):=Extr(Skel(Star(CvxH(Z))))`, for \a Z a range of points
+    /// @param Z any range of points (must be sorted).
+    /// @param algo the chosen method of computation.
+    /// @return  FC( Z )
+    PointRange
+    FC( const PointRange& Z,
+        EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
+
+    /// Computes the fully convex envelope of \a Z,
+    /// i.e. \f$ FC^*(Z):=FC(FC( \ldots FC(Z) \ldots )) \f$, for \a Z a range of
+    /// points, until stabilization of the iterative process.
+    ///
+    /// @param Z any range of points (must be sorted).
+    /// @param algo the chosen method of computation.
+    /// @return \f$ FC^*( Z ) \f$
+    ///
+    /// @note If \a Z is fully convex, then the output is \a Z
+    /// itself. Otherwise, the returned set of points includes \a Z
+    /// and is fully convex.
+    PointRange
+    envelope( const PointRange& Z,
+              EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
+
+    /// Computes the fully convex envelope of \a Z relative to fully
+    /// convex digital set \a Y, i.e. \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots
+    /// FC_Y(Z) \ldots )) \f$ for \a Z a range of points, until
+    /// stabilization of the iterative process.
+    ///
+    /// @param Z any range of points (must be sorted).
+    /// @param Y any range of points (must be sorted) that is fully convex.
+    /// @param algo the chosen method of computation.
+    /// @return \f$ FC^*_Y( Z ) \f$
+    ///
+    /// @note If \a Z is fully convex, then the output is \a Z
+    /// itself. Otherwise, the returned set of points includes \a Z
+    /// and is fully convex.
+    PointRange
+    relativeEnvelope( const PointRange& Z, const PointRange& Y,
+                      EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
+
+    /// Computes the fully convex envelope of \a Z relative to fully
+    /// convex digital set \a Y defined by a corresponding predicate
+    /// \a PredY. It computes \f$ FC^*_Y(Z):=FC_Y(FC_Y( \ldots FC_Y(Z) \ldots
+    /// )) \f$ for \a Z a range of points, until stabilization of the
+    /// iterative process.
+    ///
+    /// @tparam Predicate the type of a predicate Point -> boolean
+    /// @param Z any range of points (must be sorted).
+    /// @param PredY a Point predicate such that `PredY(p)==true` iff \a p belongs to \a Y.
+    /// @param algo the chosen method of computation.
+    /// @return \f$ FC^*_Y( Z ) \f$
+    ///
+    /// @note If \a Z is fully convex, then the output is \a Z
+    /// itself. Otherwise, the returned set of points includes \a Z
+    /// and is fully convex.
+    template <typename Predicate>
+    PointRange
+    relativeEnvelope( const PointRange& Z, const Predicate& PredY,
+                      EnvelopeAlgorithm algo = EnvelopeAlgorithm::DIRECT ) const;
+    
+    /// @return the number of iterations of the last process
+    /// `FC^*(Z):=FC(FC(....FC(Z)...))`, i.e. the last call to
+    /// DigitalConvexity::envelope or DigitalConvexity::relativeEnvelope .
+    Size depthLastEnvelope() const;
     
     /// @}
     
-    // ----------------------- Convexity services for lattice polytopes -----------------
+    // ----------------------- Convexity services for lattice polytopes --------------
   public:
     /// @name Convexity services for lattice polytopes
     /// @{
@@ -467,44 +771,15 @@ namespace DGtal
     /// dimensions stored in \a C.
     bool isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const;
 
-    /// Tells if a given segment from \a a to \a b is digitally
-    /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
-    /// digital 0-subconvexity is the usual property \f$ Conv( P \cap
-    /// Z^d ) \subset C \cap Z^d) \f$. Otherwise the property asks
-    /// that the k-cells intersected by the convex hull of the segment
-    /// is a subset of the k-cells of C.
+    /// Tells if a given polytope \a P is digitally fully subconvex to 
+    /// some lattice set \a Star_X, i.e. the cell cover of some set X
+    /// represented by lattice points.
     ///
-    /// @param a any point
-    /// @param b any point
-    /// @param C any cell cover geometry (i.e. a cubical complex).
-    /// @param k the dimension for which the digital k-convexity is checked, 0 <= k <= KSpace::dimension.
-    ///
-    /// @return 'true' iff the segment is a digitally \a k-subconvex
-    /// of C, i.e. the two points are k-cotangent.
-    ///
-    /// @note Three times faster than building a (degenerated) lattice
-    /// polytope and then checking if it subconvex.
-    bool isKSubconvex( const Point& a, const Point& b,
-                       const CellGeometry& C, const Dimension k ) const;
-
-    /// Tells if a given segment from \a a to \a b is digitally fully
-    /// subconvex (i.e. tangent) to some cell cover \a C. The digital
-    /// 0-subconvexity is the usual property \f$ Conv( P \cap Z^d )
-    /// \subset C \cap Z^d) \f$. Otherwise the property asks that the
-    /// k-cells intersected by the convex hull of the segment is a
-    /// subset of the k-cells of C.
-    ///
-    /// @param a any point
-    /// @param b any point
-    /// @param C any cell cover geometry (i.e. a cubical complex).
-    ///
-    /// @return 'true' iff the segment is a digitally fully subconvex
-    /// of C, i.e. the two points are cotangent.
-    ///
-    /// @note Three times faster than building a (degenerated) lattice
-    /// polytope and then checking if it subconvex.
-    bool isFullySubconvex( const Point& a, const Point& b,
-                           const CellGeometry& C ) const;
+    /// @param P any lattice polytope such that `P.canBeSummed() == true`.
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
+    bool isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const;
+    
     
     /// @}
 
@@ -596,6 +871,14 @@ namespace DGtal
     /// The cellular grid space where computations are done.
     KSpace myK;
 
+    /// when 'true' performs convex hull computations with arbitrary
+    /// precision integer (if available), otherwise chooses a
+    /// compromise between speed and precision (int64_t).
+    bool mySafe;
+    
+    /// The number of iterations of the last FullyConvexEnvelope operation.
+    mutable Size myDepthLastFCE;
+    
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -603,6 +886,33 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
+    /// Computes `FC(Z):=Extr(Skel(Star(CvxH(Z))))`, for \a Z a range of points
+    /// @param Z any range of points (must be sorted).
+    /// @return  FC( Z )
+    PointRange FC_direct( const PointRange& Z ) const;
+
+    /// Computes `FC(Z):=Extr(Skel(Star(CvxH(Z))))`, for \a Z a range of points
+    /// @param Z any range of points (must be sorted).
+    /// @return  FC( Z )
+    PointRange FC_LatticeSet( const PointRange& Z ) const;
+
+    /// Erase the interval I from the intervals in V such that the integer
+    /// in I are not part of V anymore.
+    ///
+    /// @param[in] I is a closed interval
+    /// @param[inout] V is a sorted list of closed intervals
+    static void eraseInterval( Interval I, std::vector< Interval > & V );
+
+    /// Filters the points of \a E and outputs only the ones that
+    /// satisfies the given predicate \a Pred.
+    ///
+    /// @tparam Predicate the type of a predicate Point -> boolean
+    /// @param[in] E any range of point
+    /// @param[in] Pred the predicate Point -> boolean 
+    /// @return the subset of E whose elements satisfy the predicate \a Pred.
+    template <typename Predicate>
+    static PointRange filter( const PointRange& E, const Predicate& Pred );
+    
   }; // end of class DigitalConvexity
 
   /// @name Functions related to DigitalConvexity (output)

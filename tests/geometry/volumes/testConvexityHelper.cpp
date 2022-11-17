@@ -134,6 +134,16 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
         REQUIRE( P.countInterior() == 0 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a segment defined by two points" ) {
+        REQUIRE( X.size() == 2 );
+        REQUIRE( X[ 0 ] == Point(-6, 2) );
+        REQUIRE( X[ 1 ] == Point( 9,-3) );
+      }
+    }
   }
   GIVEN( "Given a degenerated simplex { (4,0), (7,2), (-5,-6) } " ) {
     std::vector<Point> V
@@ -149,6 +159,16 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
       }
       THEN( "The polytope contains no interior points" ) {
         REQUIRE( P.countInterior() == 0 );
+      }
+    }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a segment defined by two points" ) {
+        REQUIRE( X.size() == 2 );
+        REQUIRE( X[ 0 ] == Point(-5,-6) );
+        REQUIRE( X[ 1 ] == Point( 7, 2) );
       }
     }
   }
@@ -244,6 +264,13 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( complex.nbCells() == 1 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      const auto X = Helper::computeConvexHullVertices( V, false );
+      CAPTURE( X );
+      THEN( "The polytope has 6 vertices" )  {
+        REQUIRE( X.size() == 6 );
+      }
+    }
   }
   GIVEN( "Given a cube with an additional outside vertex " ) {
     std::vector<Point> V
@@ -281,6 +308,13 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( nb_finite == 2 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      const auto X = Helper::computeConvexHullVertices( V, false );
+      CAPTURE( X );
+      THEN( "The polytope has 9 vertices" )  {
+        REQUIRE( X.size() == 9 );
+      }
+    }
   }
   GIVEN( "Given a degenerated 1d polytope { (0,0,1), (3,-1,2), (9,-3,4), (-6,2,-1) } " ) {
     std::vector<Point> V
@@ -298,6 +332,16 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( P.countInterior() == 0 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a segment defined by two points" ) {
+        REQUIRE( X.size() == 2 );
+        REQUIRE( X[ 0 ] == Point(-6, 2,-1) );
+        REQUIRE( X[ 1 ] == Point( 9,-3, 4) );
+      }
+    }    
   }
   GIVEN( "Given a degenerated 1d simplex { (1,0,-1), Point(4,-1,-2), Point(10,-3,-4) } " ) {
     std::vector<Point> V
@@ -313,6 +357,16 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
       THEN( "The polytope contains no interior points" ) {
         REQUIRE( P.countInterior() == 0 );
+      }
+    }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a segment defined by two points" ) {
+        REQUIRE( X.size() == 2 );
+        REQUIRE( X[ 0 ] == Point( 1, 0,-1) );
+        REQUIRE( X[ 1 ] == Point(10,-3,-4) );
       }
     }
   }
@@ -332,6 +386,18 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( P.countInterior() == 0 );
       }
     }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a quad" ) {
+        REQUIRE( X.size() == 4 );
+        REQUIRE( X[ 0 ] == Point( 0, 1, 2) );
+        REQUIRE( X[ 1 ] == Point( 0, 3, 2) );
+        REQUIRE( X[ 2 ] == Point( 1, 0, 1) );
+        REQUIRE( X[ 3 ] == Point( 2, 1, 0) );
+      }
+    }    
   }
   GIVEN( "Given a degenerated 2d simplex { (2,1,0), (1,0,1), (1,5,1), (0,3,2) } " ) {
     std::vector<Point> V
@@ -347,6 +413,18 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
       THEN( "The polytope contains no interior points" ) {
         REQUIRE( P.countInterior() == 0 );
+      }
+    }
+    WHEN( "Computing the vertices of its convex hull" ){
+      auto X = Helper::computeConvexHullVertices( V, false );
+      std::sort( X.begin(), X.end() );
+      CAPTURE( X );
+      THEN( "The polytope is a quad" ) {
+        REQUIRE( X.size() == 4 );
+        REQUIRE( X[ 0 ] == Point( 0, 3, 2) );
+        REQUIRE( X[ 1 ] == Point( 1, 0, 1) );
+        REQUIRE( X[ 2 ] == Point( 1, 5, 1) );
+        REQUIRE( X[ 3 ] == Point( 2, 1, 0) );
       }
     }
   }
