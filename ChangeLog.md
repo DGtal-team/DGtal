@@ -2,6 +2,15 @@
 
 ## New features / critical changes
 
+## Changes
+
+## Bug fixes
+
+
+# DGtal 1.3
+
+## New features / critical changes
+
 - *General*
   - A Dockerfile is added to create a Docker image to have a base to start development
     using the DGtal library.(J. Miguel Salazar
@@ -42,11 +51,11 @@
       problems, add Dirichlet boundary conditions, update discrete
       differential calculus examples (Jacques-Olivier
       Lachaud, [#1643](https://github.com/DGtal-team/DGtal/pull/1643))
-    - Updates to PolygonalCalculus: adding vector field operators (mainly covariant 
+    - Updates to PolygonalCalculus: adding vector field operators (mainly covariant
       gradient and covariant projection as well as Connection-Laplacian). Also adding two
       more examples: harmonic parametrization and vectors in heat method. (Baptiste Genest, David
       Coeurjolly, [#1646](https://github.com/DGtal-team/DGtal/pull/1646))
-  
+
 - *Mathematical Package*
   - Add Lagrange polynomials and Lagrange interpolation
     (Jacques-Olivier Lachaud, [#1594](https://github.com/DGtal-team/DGtal/pull/1594))
