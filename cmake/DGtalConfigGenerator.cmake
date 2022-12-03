@@ -13,7 +13,7 @@ export(TARGETS DGtal FILE ${dgtal_export_file})
 # is ON. Disable it when deploying.
 set(_dependencies_list
   Boost ZLIB
-  GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3 CGAL FFTW3
+  GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3
   )
 foreach(dep ${_dependencies_list})
   if(DGTAL_CONFIG_HINTS)
@@ -57,6 +57,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/FindFFTW3.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/FindQGLVIEWER.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/FindGMP.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   )
 file(COPY ${_find_cmake_files}
   DESTINATION "${PROJECT_BINARY_DIR}/Modules")

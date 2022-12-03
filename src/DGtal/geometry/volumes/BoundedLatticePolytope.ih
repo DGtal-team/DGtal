@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytopeCounter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -300,19 +301,17 @@ init( PointIterator itB, PointIterator itE )
       A.push_back( a );
       B.push_back( b );
     }
-  myValidEdgeConstraints = true;
-  if ( dimension >= 3 )
+  myValidEdgeConstraints = ( dimension == 2 );
+  if ( dimension == 3 )
     { // One should add edges
       for ( unsigned int i = 0; i < pts.size(); ++i )
 	for ( unsigned int j = i+1; j < pts.size(); ++j ) {
 	  detail::BoundedLatticePolytopeSpecializer< dimension, Integer >::addEdgeConstraint
 	    ( *this, i, j, pts );
 	}
-      if ( dimension >= 4 )
-	{ // Not implemented yet
-	  myValidEdgeConstraints = false;
-	}
+      myValidEdgeConstraints = true;
     }
+  // not implemented for dimension > 3
   return true;
 }
 
@@ -326,6 +325,18 @@ interiorPolytope() const
   BoundedLatticePolytope P( *this );
   for ( auto it = P.I.begin(), itE = P.I.end(); it != itE; ++it )
     *it = false;
+  return P;
+} 
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::BoundedLatticePolytope<TSpace>::
+closurePolytope() const
+{
+  BoundedLatticePolytope P( *this );
+  for ( auto it = P.I.begin(), itE = P.I.end(); it != itE; ++it )
+    *it = true;
   return P;
 } 
 
@@ -570,6 +581,215 @@ typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 count() const
 {
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  return C.countAlongAxis( C.longestAxis() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countInterior() const
+{
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  return C.countInteriorAlongAxis( C.longestAxis() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countBoundary() const
+{
+  const auto clP = closurePolytope();
+  return clP.count() - countInterior();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countWithin( Point lo, Point hi ) const
+{
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension b = 0;
+  lo = lo.sup( D.lowerBound() );
+  hi = hi.inf( D.upperBound() );
+  auto b_size = hi[ 0 ] - lo[ 0 ];
+  for ( Dimension a = 1; a < dimension; a++ )
+    {
+      const auto a_size = hi[ a ] - lo[ a ];
+      if ( b_size < a_size ) { b = a; b_size = a_size; }
+    }
+  hi[ b ] = lo[ b ];
+  Integer nb = 0;
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, b );
+      nb    += I.second - I.first;
+    }
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countUpTo( Integer max) const
+{
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension a = C.longestAxis();
+  Integer nb  = 0;
+  Point lo    = D.lowerBound();
+  Point hi    = D.upperBound();
+  hi[ a ]     = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, a );
+      nb    += I.second - I.first;
+      if ( nb >= max ) return max;
+    }
+  return nb;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getPoints( std::vector<Point>& pts ) const
+{
+  pts.clear();
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  C.getPointsAlongAxis( pts, C.longestAxis() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const
+{
+  pts.clear();
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension a = C.longestAxis();
+  Integer nb  = 0;
+  Point lo    = D.lowerBound();
+  Point hi    = D.upperBound();
+  hi[ a ]     = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, a );
+      Point q( 2*p - alpha_shift );
+      q[ a ] = 2*I.first - alpha_shift[ a ];
+      for ( Integer x = I.first; x < I.second; x++ )
+        {
+          pts.push_back( q );
+          q[ a ] += 2;
+        }
+    }  
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointSet>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+insertPoints( PointSet& pts_set ) const
+{
+  std::vector<Point> pts;
+  getPoints( pts );
+  pts_set.insert( pts.cbegin(), pts.cend() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+template <typename PointSet>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+insertKPoints( PointSet& pts_set, const Point& alpha_shift ) const
+{
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  Dimension a = C.longestAxis();
+  Integer nb  = 0;
+  Point lo    = D.lowerBound();
+  Point hi    = D.upperBound();
+  hi[ a ]     = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I = C.intersectionIntervalAlongAxis( p, a );
+      Point q( 2*p - alpha_shift );
+      q[ a ] = 2*I.first - alpha_shift[ a ];
+      for ( Integer x = I.first; x < I.second; x++ )
+        {
+          pts_set.insert( q );
+          q[ a ] += 2;
+        }
+    }  
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getInteriorPoints( std::vector<Point>& pts ) const
+{
+  pts.clear();
+  BoundedLatticePolytopeCounter<Space> C( *this );
+  C.getInteriorPointsAlongAxis( pts, C.longestAxis() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::
+getBoundaryPoints( std::vector<Point>& pts ) const
+{
+  const auto clP = closurePolytope();
+  BoundedLatticePolytopeCounter<Space> C  ( *this );  
+  BoundedLatticePolytopeCounter<Space> clC( clP );  
+  pts.clear();
+  const Dimension a = clC.longestAxis();
+  Point lo = clP.getDomain().lowerBound();
+  Point hi = clP.getDomain().upperBound();
+  hi[ a ]  = lo[ a ];
+  Domain localD( lo, hi );
+  for ( auto&& p : localD )
+    {
+      auto I   = C  .interiorIntersectionIntervalAlongAxis( p, a );
+      auto clI = clC.intersectionIntervalAlongAxis( p, a );
+      auto nbI   = I.second - I.first;
+      auto nbclI = clI.second - clI.first;
+      if ( nbI == nbclI ) continue;
+      if ( nbI >  nbclI )
+        trace.error() << "BoundedLatticePolytope::getBoundaryPoints: bad count"
+                      << std::endl;
+      Point q = p;
+      if ( nbI == 0 )
+        {
+          for ( Integer x = clI.first; x != clI.second; x++ )
+            {
+              q[ a ] = x;
+              pts.push_back( q );
+            }
+        }
+      else
+        {
+          if ( clI.first < I.first )
+            {
+              q[ a ] = clI.first;
+              pts.push_back( q );
+            }
+          if ( clI.second > I.second )
+            {
+              q[ a ] = I.second;
+              pts.push_back( q );
+            }
+        }
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Integer
+DGtal::BoundedLatticePolytope<TSpace>::
+countByScanning() const
+{
   Integer nb = 0;
   for ( const Point & p : D )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
@@ -580,7 +800,7 @@ count() const
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
-countInterior() const
+countInteriorByScanning() const
 {
   Integer nb = 0;
   for ( const Point & p : D )
@@ -591,7 +811,7 @@ countInterior() const
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
-countBoundary() const
+countBoundaryByScanning() const
 {
   Integer nb = 0;
   for ( const Point & p : D )
@@ -602,7 +822,7 @@ countBoundary() const
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
-countWithin( Point lo, Point hi ) const
+countWithinByScanning( Point lo, Point hi ) const
 {
   Integer nb = 0;
   Domain D1( lo.sup( D.lowerBound() ), hi.inf( D.upperBound() ) );
@@ -614,7 +834,7 @@ countWithin( Point lo, Point hi ) const
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
-countUpTo( Integer max) const
+countUpToByScanning( Integer max) const
 {
   Integer nb = 0;
   for ( const Point & p : D ) {
@@ -627,7 +847,7 @@ countUpTo( Integer max) const
 template <typename TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
-getPoints( std::vector<Point>& pts ) const
+getPointsByScanning( std::vector<Point>& pts ) const
 {
   pts.clear();
   for ( const Point & p : D )
@@ -638,7 +858,7 @@ template <typename TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
-insertPoints( PointSet& pts_set ) const
+insertPointsByScanning( PointSet& pts_set ) const
 {
   for ( const Point & p : D )
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
@@ -647,7 +867,7 @@ insertPoints( PointSet& pts_set ) const
 template <typename TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
-getInteriorPoints( std::vector<Point>& pts ) const
+getInteriorPointsByScanning( std::vector<Point>& pts ) const
 {
   pts.clear();
   for ( const Point & p : D )
@@ -657,7 +877,7 @@ getInteriorPoints( std::vector<Point>& pts ) const
 template <typename TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
-getBoundaryPoints( std::vector<Point>& pts ) const
+getBoundaryPointsByScanning( std::vector<Point>& pts ) const
 {
   pts.clear();
   for ( const Point & p : D )

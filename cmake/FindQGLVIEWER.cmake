@@ -7,21 +7,23 @@
 #  QGLVIEWER_DEFINITIONS - Compiler switches required for using QGLViewer
 #
 
-find_path(QGLVIEWER_INCLUDE_DIR 
+find_path(QGLVIEWER_INCLUDE_DIR
   NAMES QGLViewer/qglviewer.h
   PATHS /usr/include
   /usr/local/include
   /usr/local/lib/
+  /opt/homebrew/lib/
   /Library/Frameworks/
-  ENV QGLVIEWERROOT 
+  ENV QGLVIEWERROOT
   )
 
 
-find_library(QGLVIEWER_LIBRARY_RELEASE 
+find_library(QGLVIEWER_LIBRARY_RELEASE
   NAMES qglviewer-qt4 qglviewer QGLViewer QGLViewer2 QGLViewer-qt5
-  PATHS 
+  PATHS
   /usr/lib
   /usr/local/lib
+  /opt/homebrew/lib
   /Library/Frameworks/
   ENV QGLVIEWERROOT
   ENV LD_LIBRARY_PATH
@@ -32,6 +34,7 @@ find_library(QGLVIEWER_LIBRARY_RELEASE
 find_library(QGLVIEWER_LIBRARY_DEBUG
   NAMES dqglviewer dQGLViewer dQGLViewer2
   PATHS
+  /opt/homebrew/lib
   /usr/lib
   /usr/local/lib
   /usr/local/lib/QGLViewer.framework
@@ -39,7 +42,7 @@ find_library(QGLVIEWER_LIBRARY_DEBUG
   ENV QGLVIEWERROOT
   ENV LD_LIBRARY_PATH
   ENV LIBRARY_PATH
-  PATH_SUFFIXES QGLViewer QGLViewer/debug      
+  PATH_SUFFIXES QGLViewer QGLViewer/debug
   )
 
 if(QGLVIEWER_LIBRARY_RELEASE)
@@ -66,4 +69,3 @@ else()
     MESSAGE(FATAL_ERROR "Could not find QGLViewer")
   endif()
 endif()
-

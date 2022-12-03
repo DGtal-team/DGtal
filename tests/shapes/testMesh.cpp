@@ -91,6 +91,10 @@ bool testMesh()
   trace.info() << "Face2 points " << endl;
   trace.info() << p0f1 << p1f1 << p2f1<< endl;
 
+  //Checking inversion
+  aMesh.invertVertexFaceOrder();
+  aMesh.invertVertexFaceOrder();
+
 
   bool okMeshConstruct =  (p0==p0f0) && (p1==p1f0) && (p2==p2f0) &&
     (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
@@ -197,7 +201,7 @@ bool testMesh()
 
   trace.beginBlock ( "Testing face removing  ..." );
   Mesh<Point> aMesh4 = aMesh;
-  std::vector<unsigned int> f = {1};
+  std::vector<typename Mesh<Point>::Index> f = {1};
   aMesh4.removeFaces(f);
   bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
   trace.info() << (okRemoveFace ? "[face remove ok]":"[face remove fail]" ) << std::endl;

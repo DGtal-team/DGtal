@@ -145,7 +145,8 @@ public:
   /// @param indices a vector of integer indices
   /// @return 'true' iff the integer indices are all pairwise different.
   static
-  bool verifyIndicesUniqueness( const std::vector< unsigned int > &indices );
+  bool verifyIndicesUniqueness( const std::vector<
+                                typename DGtal::Mesh<TPoint>::Index > &indices );
 
    
   /// Reads an input material file associated ot an OBJ file format and outputs the

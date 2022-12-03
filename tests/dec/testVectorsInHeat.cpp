@@ -84,6 +84,10 @@ TEST_CASE( "Testing VectorsInHeat" )
     std::vector<VectorsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector> d = heat.compute();
     REQUIRE( d.size() == positions.size() );
     REQUIRE( d[5][0] == Approx(-0.111302) );
+
+    heat.clearSource();
+    VectorsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector sources=heat.vectorSource();
+    REQUIRE( sources.sum() == 0);
   }
 }
 /** @ingroup Tests **/

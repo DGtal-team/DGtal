@@ -1,0 +1,170 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleEnvelope Fully convex envelope, relative fully convex envelope and digital polyhedra
+
+@writers Jacques-Olivier Lachaud
+
+@since 1.3
+
+Part of the \ref packageGeometry.
+  
+This part of the manual describes convex hull tools associated to a
+new definition of digital convexity, called the \b full \b convexity
+\cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 . Most of the work presented here is related to \cite feschet_2022_dgmm .
+We talk about convex \b envelopes instead of convex \b hulls, since
+the presented operations do not satisfy all the usual hull
+operations. This is detailed below. Last, this module shows how the
+envelope operation is useful to build digital polyhedra.
+
+[TOC]
+
+The following programs are related to this documentation:
+\ref testDigitalConvexity.cpp, 
+\ref geometry/volumes/digitalPolyhedronBuilder3D.cpp,
+\ref geometry/volumes/standardDigitalPolyhedronBuilder3D.cpp .
+
+This module relies on module \ref moduleQuickHull for convex hull
+computations in arbitrary dimensions. You may also look at
+\ref moduleDigitalConvexity to see the theory of full convexity.
+
+@section dgtal_envelope_sec1  Fully convex envelopes
+
+@subsection dgtal_envelope_sec11 Envelope of a digital set
+
+We build an \a envelope \a operator \f$ \mathrm{FC}^* \f$ for a
+digital set \f$ Z \subset \mathbb{Z}^d \f$ with the following
+properties:
+- \f$ Z \subset \mathrm{FC}^*(Z) \f$ (inclusion)
+- \f$ \mathrm{FC}^*(Z) \f$ is always fully convex (full convexity)
+- \f$ \mathrm{FC}^*(Z)=Z \f$ if and only if \f$ Z \f$ is fully convex (characterization and idempotence)
+- \f$ \mathrm{FC}^*(Z) \f$ is included in the bounded box of \f$ Z \f$ (geometric consistency)
+
+However the following property is not true in general:
+- \f$ Z_1 \subset Z_2 \f$ implies \f$ \mathrm{FC}^*(Z_1) \subset \mathrm{FC}^*(Z_2) \f$ (increasing)
+
+The envelope operator is itself built upon the \f$ \mathrm{FC} \f$
+operator defined as:
+
+\f$
+\mathrm{FC}(Z):=\mathrm{Extr}(\mathrm{Skel}(\mathrm{Star}(\mathrm{CvxH}(Z))))
+\f$
+
+where:
+- \f$ \mathrm{CvxH} \f$ denotes the standard convex hull in Euclidean space,
+- \f$ \mathrm{Star} \f$ denotes the set of cells of the cubical grid complex induced by lattice points, whose closure intersects the given set,
+- \f$ \mathrm{Skel} \f$ denotes the skeleton of a cell complex, i.e. the smallest cell complex whose star is equal to the input cell complex,
+- \f$ \mathrm{Extr} \f$ returns the set of lattice points that are vertices of cells of the given cell complex.
+
+The envelope operator is the limit of the iterated repetition of
+operator \f$ \mathrm{FC} \f$. It is proven that this sequence achieves
+a fixed point in a bounded number of iterations. The figure below illustrates this operator in 2D.
+
+\image html operator-FC.jpg "Illustration of operator FC and its successive application, until idempotence. The result is a fully convex set." width=50%
+
+@subsection dgtal_envelope_sec12 Envelope of a digital set relative to another fully convex set
+
+Given a fully convex set \f$ Y \subset \mathbb{Z}^d \f$ and a digital set \f$ X \subset Y \f$, we can define the \a envelope \a of \f$ X \f$ \a relative \a to \f$ Y \f$ as
+
+\f$ \mathrm{FC}^*_{\mid Y}( X ) := \lim_{n \rightarrow +\infty}
+\mathrm{FC}^n_{\mid Y}( X ) \f$ with \f$ \mathrm{FC}_{\mid Y}( X ) :=
+\mathrm{FC}(X) \cap Y \f$.
+
+It  satisfies the following properties:
+- \f$ X \subset \mathrm{FC}^*_{\mid Y}( X ) \subset Y \f$ (inclusion)
+- \f$ \mathrm{FC}^*_{\mid Y}( X ) \f$ is fully convex (full convexity)
+- \f$ \mathrm{FC}^*_{\mid Y}( X ) = X \f$ if and only if \f$ X \f$ is fully convex (characterization and idempotence)
+- \f$ \mathrm{FC}^*_{\mid Y}( X ) \f$ is included in the bounding box of \f$ X \f$  (geometric consistency)
+
+Again it may not be an increasing operator. The interest of relative
+envelopes will appear clearly in section \ref dgtal_envelope_sec2 .
+
+@subsection dgtal_envelope_sec13 Computing fully convex envelopes
+
+Most operations are defined in class \ref DigitalConvexity. They allow
+to build the (relative or not) envelope, but also to compute
+intermediate steps, which can be useful in some contexts.
+
+\b Envelope \b operations
+- DigitalConvexity::envelope builds the fully convex envelope of any digital set.
+- DigitalConvexity::relativeEnvelope builds the relative fully convex envelope of any digital set relative to another fully convex set \f$ Y \f$. One variant takes as input for \f$ Y \f$ a set of lattice points; another variant takes a predicate for defining \f$ Y \f$. The second variant is useful when \f$ Y \f$ is infinite or can be quickly defined with a function, like arithmetic planes.
+- DigitalConvexity::depthLastEnvelope gives the number of \f$ \mathrm{FC} \f$ iterations in the last call to an envelope operation.
+
+\b Intermediate \b computations
+- DigitalConvexity::FC computes the operation \f$ \mathrm{FC}(Z):=\mathrm{Extr}(\mathrm{Skel}(\mathrm{Star}(\mathrm{CvxH}(Z)))) \f$, for \f$ Z \f$ a digital set.
+- DigitalConvexity::CvxH computes the lattice polytope that is the convex hull of the given digital set.
+- DigitalConvexity::StarCvxH computes the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the cells that touch the convex hull of the given digital set. 
+- DigitalConvexity::Star computes the set of lattice cells \f$ \mathrm{Star}(Z) \f$, i.e. the cells that touch some point of the given digital set. 
+- DigitalConvexity::StarCells computes the set of lattice cells \f$ \mathrm{Star}(C) \f$, i.e. the cells that touch some cell of the given set of cells, represented with lattice point and Khalimsky coordinates. 
+- DigitalConvexity::sizeStarCvxH computes the cardinal of the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the number of cells that touch the convex hull of the given digital set. Slightly faster than the previous one.
+- DigitalConvexity::Extr computes the extremal vertices of a range of cells.
+- DigitalConvexity::ExtrCvxH computes the extremal vertices of the convex hull of a range of lattice points.
+- DigitalConvexity::ExtrSkel computes the extremal vertices of the skeleton of a range of cells.
+
+\b Representations and \b conversions
+
+The previous static methods use two representations for lattice points and cells:
+
+- DigitalConvexity::PointRange : a range of lattice points is
+  represented by a \b sorted standard vector of points.
+- DigitalConvexity::LatticeSet : ranges and sets of cells are
+  represented with a stacked row representation called `lattice set`
+  (class LatticeSetByIntervals): each cell is represented by a lattice
+  point (its Khalimsky coordinates), cells of the same row are stacked
+  as sorted intervals. This saves memory and speeds up a lot of
+  procedures.
+
+You may switch from one representation to the other as follows:
+- DigitalConvexity::toLatticeSet builds the lattice set equivalent to the given range of points.
+- DigitalConvexity::toPointRange builds the range of points equivalent to the given lattice set.
+
+
+
+@section dgtal_envelope_sec2 Digital polyhedra
+
+Envelopes and relatives provide a very neat and unambiguous way to
+create a set of voxels associated to a given polyhedron.
+
+Indeed for any convex facet \f$ \sigma \f$ of a polyhedron with
+vertices \f$ V(\sigma) \f$, it suffices to define the \a generic \a
+digital \a facet \f$ \sigma^* \f$ as \f$ \mathrm{FC}^*( V(\sigma) )
+\f$. Moreover, if the vertices \f$ V(\sigma) \f$ are coplanar (this is
+always the case for a simplex), we can define the \a standard \a
+digital \a facet \f$ \sigma^*_1 \f$ as the envelope of \f$ V(\sigma)
+\f$ relative to the standard median digital plane containing the
+vertices. An even thinner facet is achievable: the \a naive \a digital
+\a facet \f$ \sigma^*_\infty \f$ is the envelope of \f$ V(\sigma) \f$
+relative to the naive median digital plane containing the
+vertices. This is illustrated below for a triangle defined by three vertices.
+
+\image html digital-facet.jpg "Illustration of generic, standard and naive digital facet with 3 vertices. Vertices are in black, edges are in black and grey, triangle is black, grey and white." width=70%
+
+From any polydron defined by its vertices and the combinatorics of its
+facets, we can thus build several well-defined digital polyhedra, that
+are valid for any digitization step \a h and any dimension:
+
+1. First digitize the vertices of the polyhedron at the desired
+   resolution, i.e. if the vertex has real position \f$ x \f$, then
+   its digital position is \f$ x^* := \mathrm{round}(x/h) \f$.
+
+2. Choose if you wish to build a generic, standard or naive
+   polyhedron, then digitize each facet (or edges) as the (relative or
+   not) fully convex envelope of its digitized vertices.
+
+This is illustrated below in 3D at two different resolutions.
+
+\image html digital-lion-g.jpg "Illustration of generic digital polyhedron of lion.obj polyhedron at two different resolutions. Facets may not be planar." width=70%
+\image html digital-lion-1.jpg "Illustration of standard digital polyhedron of lion-tri.obj polyhedron at two different resolutions. Each facet is planar." width=70%
+\image html digital-lion-oo.jpg "Illustration of naive digital polyhedron of lion-tri.obj polyhedron at two different resolutions. Each facet is planar." width=70%
+
+The digital polyhedron is guaranteed to cover all the faces and
+presents inclusions relations between facets and incident cells. The whole code for building digital polyhedra is given in examples \ref geometry/volumes/digitalPolyhedronBuilder3D.cpp and \ref geometry/volumes/standardDigitalPolyhedronBuilder3D.cpp .
+
+
+*/
+}

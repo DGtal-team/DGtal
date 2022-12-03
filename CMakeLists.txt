@@ -19,7 +19,7 @@ endif()
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 set(DGtal_VERSION_MAJOR 1)
-set(DGtal_VERSION_MINOR 3)
+set(DGtal_VERSION_MINOR 4)
 set(DGtal_VERSION_PATCH beta)
 set(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 set(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
@@ -28,6 +28,18 @@ set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 # Common build options/settings
 # -----------------------------------------------------------------------------
 include(Common)
+
+# -----------------------------------------------------------------------------
+# Development and debug options
+# -----------------------------------------------------------------------------
+include(DevelopmentOptions)
+
+# -----------------------------------------------------------------------------
+# Downloading external deps
+# -----------------------------------------------------------------------------
+message(STATUS "Downloading external projects")
+include(FetchExternalDeps)
+message(STATUS "Done.")
 
 #------------------------------------------------------------------------------
 # Add DGtal library
@@ -59,6 +71,15 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
   )
 
+# -----------------------------------------------------------------------------
+# Check mandatory and optional dependencies
+# -----------------------------------------------------------------------------
+include(CheckDGtalDependencies)
+include(CheckDGtalOptionalDependencies)
+
+# -----------------------------------------------------------------------------
+# Install
+# -----------------------------------------------------------------------------
 install(TARGETS DGtal
   # IMPORTANT: Add the DGtal library to the "export-set"
   EXPORT DGtalLibraryDepends
@@ -67,17 +88,6 @@ install(TARGETS DGtal
   ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
-
-# Misc
-if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
-  # Add -fPIC
-  set_target_properties(DGtal PROPERTIES POSITION_INDEPENDENT_CODE ON)
-endif()
-
-# -----------------------------------------------------------------------------
-# Development and debug options
-# -----------------------------------------------------------------------------
-include(DevelopmentOptions)
 
 # -----------------------------------------------------------------------------
 # Common build options/settings
@@ -89,12 +99,6 @@ include(OSDependentSettings)
 # -----------------------------------------------------------------------------
 SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
 SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
-
-# -----------------------------------------------------------------------------
-# Check mandatory and optional dependencies
-# -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
-include(CheckDGtalOptionalDependencies)
 
 #------------------------------------------------------------------------------
 # Examples
@@ -130,6 +134,11 @@ include(CheckCoverage)
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
 include(GeneratorSpecific)
+
+# -----------------------------------------------------------------------------
+# Common build options/settings
+# -----------------------------------------------------------------------------
+include(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Install settings

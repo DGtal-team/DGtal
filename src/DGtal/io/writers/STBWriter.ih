@@ -25,10 +25,13 @@
  *
  * This file is part of the DGtal library.
  */
+
+#ifndef NO_ADD_STBIMAGE_IMPLEMENT //To avoid duplicated linking errors (like LNK2005 in MSVC)
 #pragma once
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#endif //NO_ADD_STBIMAGE_IMPLEMENT
 #include <stb/stb_image_write.h>
-
+#pragma GCC diagnostic warning "-Wdeprecated"
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

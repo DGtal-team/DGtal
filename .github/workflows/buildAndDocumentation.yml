@@ -1,0 +1,122 @@
+name: CI (linux/macOS)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE:   Release
+  TESTBLACKLIST: "(testCompressedVolWriter|testLongvol|testLinearStructure)"
+  CONFIG_GLOBAL: -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=25
+  CONFIG_LINUX:  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_ITK=false -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
+  CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true
+
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    steps:
+     - uses: actions/checkout@v2
+       with:
+          fetch-depth: 10
+
+     - name: Install linux deps
+       if: matrix.os == 'ubuntu-latest'
+       run: |
+           sudo apt-get update
+           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libgraphicsmagick++1-dev libfftw3-dev libinsighttoolkit4-dev
+
+     - name: Install macOS deps
+       if: matrix.os == 'macOS-latest'
+       run: brew install boost ninja gmp
+
+     - name: Get white list of tests
+       run: |
+           echo "::set-output name=WHITELIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
+       id: whitelist
+
+     - name: Create Build Environment
+       run: cmake -E make_directory ${{runner.workspace}}/build
+
+     - name: Configure CMake (linux)
+       if: matrix.os == 'ubuntu-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" -G Ninja
+
+     - name: Configure CMake (macOS)
+       if: matrix.os == 'macOS-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"  -G Ninja
+
+     - name: Build
+       working-directory: ${{runner.workspace}}/build
+       shell: bash
+       # Execute the build.  You can specify a specific target with "--target <NAME>"
+       run: cmake --build . --config $BUILD_TYPE
+
+     - name: Test
+       working-directory: ${{runner.workspace}}/build
+       shell: bash
+       run: |
+           echo ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
+           ctest -C $BUILD_TYPE --output-on-failure -E $TESTBLACKLIST
+
+     - name: DGtalTools (linux only, we check this PR against DGtalTools master)
+       if: matrix.os == 'ubuntu-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: |
+           git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
+           cd DGtalTools
+           mkdir buildDGtalTools
+           cd buildDGtalTools
+           echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           ninja
+
+  # Documentatin (build, check and deploy)
+  Documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up
+      run:  sudo apt-get update && sudo apt-get install libboost-dev graphviz texlive doxygen
+
+    - name: Building pages
+      run: |
+         mkdir build
+         cd build
+         cmake ..
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         make doc > buildDoc.log
+
+    - name: Checking doc
+      run: |
+          pwd
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          .github/workflows/checkDoxygenDocumentation.sh
+      #&& .github/workflows/check_src_file_tag.sh
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+      with:
+        token: ${{ secrets.DEPLOYTOKEN }}
+        branch: master
+        repository-name: DGtal-team/doc-nightly
+        folder: build/html
+        single-comit: true
+        clean: true

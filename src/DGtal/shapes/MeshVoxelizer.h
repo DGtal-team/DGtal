@@ -94,7 +94,6 @@ namespace DGtal
     /****** Associated types *********************/
     using Space = typename DigitalSet::Space;
     using Space2D = SpaceND<2, typename Space::Integer>;
-    using MeshFace = std::vector< unsigned int >;
     using Domain   = typename DigitalSet::Domain;
     using PointR3  = typename Space::RealPoint;
     using VectorR3 = typename Space::RealPoint;
