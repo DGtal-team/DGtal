@@ -91,28 +91,42 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~Board2D();
+    ~Board2D(){};
     
     /** 
      * Constructs a new board and sets the background color, if any.
      * 
      * @param aBackgroundColor A color for the drawing's background.
      */
-    Board2D( const Color & aBackgroundColor = Color::None );
+    Board2D( const Color & aBackgroundColor = Color::None ): LibBoard::Board( aBackgroundColor ),
+                                                             myStyles()
+      {
+        this->setUnit(LibBoard::Board::UCentimeter);
+      };
 
     /** 
      * Copy constructor.
      * 
      * @param other The object to be copied.
      */
-    Board2D( const Board2D & other );
+    Board2D( const Board2D & other )  : LibBoard::Board( other ),
+                                        myStyles( other.myStyles )
+      {
+      };
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    Board2D & operator= ( const Board2D & other );
+    Board2D & operator= ( const Board2D & other ){
+      if ( this != &other )
+      {
+        LibBoard::Board::operator=( other );
+        myStyles = other.myStyles;
+      }
+      return *this;
+    };
 
     /**
      * @param objectName the name of the object (generally obtained
@@ -142,13 +156,21 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const
+      {
+        out << "[Board2D]";
+      };
+
 
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+    bool isValid() const
+      {
+        return true;
+      };
+
 
     // ------------------------- Public Datas ------------------------------
   public:
