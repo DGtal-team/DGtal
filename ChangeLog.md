@@ -1,4 +1,4 @@
-# DGtal 1.3
+# DGtal 1.4beta
 
 ## New features / critical changes
 
