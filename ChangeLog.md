@@ -4,6 +4,11 @@
 
 ## Changes
 
+- *IO*
+  - Add reading material indices in SurfaceMeshReader::readOBJ
+    (Jacques-Olivier Lachaud, [#1669](https://github.com/DGtal-team/DGtal/pull/1669))
+
+
 ## Bug fixes
 
 
