@@ -53,6 +53,7 @@ jobs:
         uses: actions/github-script@v6
         if: steps.get_round.outputs.result != 'stop'
         with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.reactions.createForIssueComment({
               comment_id: ${{ github.event.comment.id }},
