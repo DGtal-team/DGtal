@@ -1,4 +1,4 @@
-name: Documentation
+name: Documentation Commands
 
 on:
   issue_comment:
