@@ -1,4 +1,4 @@
-name: CI (linux/macOS)
+name: CI (linux/macOS), PR
 
 on:
   push:
