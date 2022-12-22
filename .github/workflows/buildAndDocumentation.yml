@@ -1,9 +1,7 @@
-name: CI (linux/macOS)
+name: CI (linux/macOS), master
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 env:
