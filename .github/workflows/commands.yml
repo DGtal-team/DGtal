@@ -94,7 +94,7 @@ jobs:
           repository-name: DGtal-team/doc-nightly
           folder: build_doc/html
           branch: test
-          single-commit: true
+          
 
       - name: Post address
         uses: actions/github-script@v6
