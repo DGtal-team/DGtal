@@ -67,6 +67,7 @@ jobs:
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
+
       - name: configure all
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
@@ -127,7 +128,7 @@ jobs:
               body: msg
             });
 
-########
+
 
 
 # ECHO COMMAND
