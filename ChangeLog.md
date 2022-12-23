@@ -6,7 +6,6 @@
 
 ## Bug fixes
 
-
 # DGtal 1.3
 
 ## New features / critical changes
