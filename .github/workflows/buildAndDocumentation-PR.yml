@@ -14,7 +14,6 @@ env:
   CONFIG_LINUX:  -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true    -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true
   CONFIG_MAC:  -DWITH_EIGEN=true -DWITH_GMP=true
 
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
