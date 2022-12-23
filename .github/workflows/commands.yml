@@ -63,15 +63,72 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -x
-          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
+
+
       - name: configure all
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -ex
-          mkdir -p build_doc && cd build_doc && cmake .. -DBUILD_EXAMPLES=true -DBUILD_TESTING=true && make -j2 doc
-########
+          mkdir -p build_doc && cd build_doc && cmake .. -DBUILD_EXAMPLES=true -DBUILD_TESTING=true
+
+
+      - name: build doc
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          cd build_doc
+          make -j 2 doc
+          mkdir pr${{ steps.get_pr_number.outputs.result }}
+          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          mv pr${{ steps.get_pr_number.outputs.result }} html/
+          ls
+          ls html
+          pwd
+          
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          token: ${{ secrets.DEPLOYACTION }}
+          repository-name: DGtal-team/doc-nightly
+          folder: build_doc/html
+          branch: test
+          single-commit: true
+
+      - name: Post address
+        uses: actions/github-script@v6
+        if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
+        with:
+          script: |
+            const tmp_round = "${{ steps.get_round.outputs.result }}";
+            const id = tmp_round.indexOf(":");
+            const round = tmp_round.substring(0,id);
+            const address = "The documentation is built. It will be available, after a few minutes, here: https://dgtal.github.io/${{ steps.get_pr_number.outputs.result }}/"+round+"/Manual/index.html"
+            github.rest.issues.createComment({
+              owner: "DGtal-team",
+              repo: "DGtal",
+              issue_number: ${{ github.event.issue.number }},
+              body: address
+            });
+
+      - name: Post error
+        env:
+          ERRORMSG: ${{steps.build_and_run.outputs.DoxygenError}}
+        uses: actions/github-script@v6
+        if: ${{ failure() && steps.get_round.outputs.result == 'builddoc' }}
+        with:
+          script: |
+            const error = process.env.ERRORMSG
+            const msg = "There was an error while building the doc: \n"+error
+            github.rest.issues.createComment({
+              owner: "DGtal-team",
+              repo: "DGtal",
+              issue_number: ${{ github.event.issue.number }},
+              body: msg
+            });
+
+
 
 
 # ECHO COMMAND
