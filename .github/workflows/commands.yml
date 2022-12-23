@@ -94,7 +94,6 @@ jobs:
           folder: build_doc/html
           branch: test
           single-commit: true
-          clean: true
 
       - name: Post address
         uses: actions/github-script@v6
