@@ -85,6 +85,7 @@ jobs:
           mv pr${{ steps.get_pr_number.outputs.result }} html/
           ls
           ls html
+          pwd
           
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
