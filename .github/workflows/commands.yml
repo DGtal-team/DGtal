@@ -78,7 +78,8 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -ex
-          cd build_doc make -j 2 doc
+          cd build_doc
+          make -j 2 doc
           mkdir html/pr${{ steps.get_pr_number.outputs.result }}
           mv html/* html/pr${{ steps.get_pr_number.outputs.result }}/
 
