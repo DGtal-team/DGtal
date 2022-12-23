@@ -1,0 +1,91 @@
+name: Commands
+
+on:
+  issue_comment:
+      types: [created]
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      pull-requests: write # to create comment
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        id: get_round
+        with:
+         result-encoding: string
+         script: |
+             const bodycmt = context.payload.comment.body
+             if(bodycmt.includes("/echo:"))
+               return 'echo'
+             if(bodycmt.includes("/builddoc:"))
+               return 'builddoc'
+             return 'stop'
+
+      - name: Emoji-comment
+        if: steps.get_round.outputs.result != 'stop'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.reactions.createForIssueComment({
+              comment_id: ${{ github.event.comment.id }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              content: 'rocket'})
+
+# buildDoc COMMAND
+      - uses: actions/github-script@v6
+        if: steps.get_round.outputs.result == 'builddoc'
+        id: get_pr_number
+        with:
+         result-encoding: string
+         script: |
+           //get pullrequest url
+           const pr_number = context.payload.issue.number
+           return pr_number
+
+      - uses: actions/checkout@v3
+        name: "checkout branch"
+        if: steps.get_round.outputs.result == 'builddoc'
+        with:
+           repository: ${{ github.repository }}
+           ref: refs/pull/${{ steps.get_pr_number.outputs.result }}/merge
+#           token: ${{ secrets.PUSH_TO_DGTAL_GITHUB_IO_TOKEN }}
+           fetch-depth: 2
+      - name: install dependencies
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          set -x
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen
+          git config --global user.email "dgtal@dgtal.org"
+          git config --global user.name "DGtal"
+      - name: configure all
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          set -ex
+          mkdir -p build_doc && cd build_doc && cmake .. -DBUILD_EXAMPLES=true -DBUILD_TESTING=true && make -j2 doc
+########
+
+
+# ECHO COMMAND
+      - name: Echo action
+        uses: actions/github-script@v6
+        if: steps.get_round.outputs.result == 'echo'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const bodycmt = context.payload.comment.body
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: bodycmt
+            })
+###########
