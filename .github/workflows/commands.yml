@@ -83,6 +83,8 @@ jobs:
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
           mv pr${{ steps.get_pr_number.outputs.result }} html/
+          ls
+          ls html
           
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
