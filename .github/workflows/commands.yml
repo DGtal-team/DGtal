@@ -77,7 +77,6 @@ jobs:
       - name: build doc
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
-          set -ex
           cd build_doc
           make -j 2 doc
           mkdir pr${{ steps.get_pr_number.outputs.result }}
@@ -92,7 +91,7 @@ jobs:
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
-          folder: builddoc/html
+          folder: build_doc/html
           branch: test
           single-commit: true
           clean: true
