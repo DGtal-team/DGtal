@@ -82,20 +82,20 @@ jobs:
           make -j 2 doc
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
-          mv pr${{ steps.get_pr_number.outputs.result }} html/
-          ls
-          ls html
-          pwd
-          
+          git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
+          git checkout test
+          mv pr${{ steps.get_pr_number.outputs.result }} doc-nightly/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
-          folder: build_doc/html
+          folder: build_doc/doc-nightly
           branch: test
+          single-comit: true
+          clean: true
           
-
       - name: Post address
         uses: actions/github-script@v6
         if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
