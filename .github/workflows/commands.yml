@@ -83,7 +83,7 @@ jobs:
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
-          cd doc-nightly && git checkout test
+          cd doc-nightly
           mv ../pr${{ steps.get_pr_number.outputs.result }} .
 
       - name: Deploy to GitHub Pages
@@ -92,7 +92,7 @@ jobs:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
           folder: build_doc/doc-nightly
-          branch: test
+          branch: master
           single-comit: true
           clean: true
 
