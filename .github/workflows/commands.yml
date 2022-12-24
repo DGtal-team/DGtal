@@ -83,8 +83,8 @@ jobs:
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
-          git checkout test
-          mv pr${{ steps.get_pr_number.outputs.result }} doc-nightly/
+          cd doc-nightly && git checkout test
+          mv ../pr${{ steps.get_pr_number.outputs.result }} .
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
@@ -95,7 +95,7 @@ jobs:
           branch: test
           single-comit: true
           clean: true
-          
+
       - name: Post address
         uses: actions/github-script@v6
         if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
