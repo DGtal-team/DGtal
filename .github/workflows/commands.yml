@@ -94,7 +94,7 @@ jobs:
           repository-name: DGtal-team/doc-nightly
           folder: build_doc/doc-nightly
           branch: master
-          single-comit: true
+          single-commit: true
           clean: true
 
       - name: Post address
