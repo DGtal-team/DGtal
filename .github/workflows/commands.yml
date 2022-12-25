@@ -84,7 +84,7 @@ jobs:
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
           cd doc-nightly
-          mv ../pr${{ steps.get_pr_number.outputs.result }} .
+          mv -f ../pr${{ steps.get_pr_number.outputs.result }} .
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.7
