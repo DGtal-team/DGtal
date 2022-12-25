@@ -350,8 +350,8 @@ namespace DGtal
    * - the k-th Khalimsky coordinate of upperCell() is equal to:
    *    - `2*upper[k]+2` if the k-th dimension is closed,
    *    - `2*upper[k]+1` if the k-th dimension is open or periodic.
-   *    .
-   * .
+   *
+   * 
    * The special behavior for __periodic dimensions__ guarantees that each cell has unique
    * Khalimsky coordinates in this range.
    * It is useful to span the space and also for cell-based containers (see e.g. CubicalComplex).
