@@ -2135,7 +2135,8 @@ PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
                          "WITH_FFTW3=" \
                          "WITH_FFTW3_FLOAT=" \
                          "WITH_FFTW3_DOUBLE" \
-                         "WITH_FFTW3_LONG"
+                         "WITH_FFTW3_LONG" \
+                         "DOXYGEN_SHOULD_SKIP_THIS"
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
