@@ -83,7 +83,7 @@ jobs:
           make -j 2 doc  > buildDoc.log
           export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
           export SRC_DIR=${{runner.workspace}}/DGtal/
-          .github/workflows/checkDoxygenDocumentation.sh
+          ${{runner.workspace}}/DGtal/.github/workflows/checkDoxygenDocumentation.sh
           if [ -s /tmp/doxygen.kept.log ]; then
               content=`cat /tmp/doxygen.kept.log`
               delimiter="$(openssl rand -hex 8)"
