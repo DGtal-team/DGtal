@@ -22,9 +22,9 @@ jobs:
          result-encoding: string
          script: |
              const bodycmt = context.payload.comment.body
-             if(bodycmt.includes("/echo:"))
+             if(bodycmt.includes("/echo"))
                return 'echo'
-             if(bodycmt.includes("/builddoc:"))
+             if(bodycmt.includes("/builddoc"))
                return 'builddoc'
              return 'stop'
 
