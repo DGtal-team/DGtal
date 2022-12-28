@@ -76,6 +76,7 @@ jobs:
 
 
       - name: build doc
+        id: build-and-check-doc
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           cd build_doc
@@ -129,7 +130,7 @@ jobs:
 
       - name: Post error
         env:
-          ERRORMSG: ${{steps.checking-doc.outputs.DoxygenError}}
+          ERRORMSG: ${{steps.build-and-check-doc.outputs.DoxygenError}}
         uses: actions/github-script@v6
         if: ${{ failure() && steps.get_round.outputs.result == 'builddoc' }}
         with:
