@@ -86,7 +86,7 @@ jobs:
           ${{runner.workspace}}/DGtal/.github/workflows/checkDoxygenDocumentation.sh
           if [ -s /tmp/doxygen.kept.log ]; then
               content=`cat /tmp/doxygen.kept.log`
-              echo ${{ content }}
+              echo $content
               delimiter="$(openssl rand -hex 8)"
               echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
               cat tmp.log >> "${GITHUB_OUTPUT}"
