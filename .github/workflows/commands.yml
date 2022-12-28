@@ -80,22 +80,17 @@ jobs:
         run: |
           cd build_doc
           make -j 2 doc  > buildDoc.log
-
-      - name: Checking doc
-        id: checking-doc
-        run: |
-            pwd
-            export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
-            export SRC_DIR=${{runner.workspace}}/DGtal/
-            .github/workflows/checkDoxygenDocumentation.sh
-             if [ -s tmp.log ]; then
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          .github/workflows/checkDoxygenDocumentation.sh
+          if [ -s /tmp/doxygen.kept.log ]; then
               content=`cat /tmp/doxygen.kept.log`
               delimiter="$(openssl rand -hex 8)"
               echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
               cat tmp.log >> "${GITHUB_OUTPUT}"
               echo "${delimiter}" >> "${GITHUB_OUTPUT}"
               exit 1
-            fi
+          fi
 
       - name: Preparing Deploy
         run: |
