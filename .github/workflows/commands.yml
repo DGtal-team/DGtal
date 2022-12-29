@@ -1,4 +1,4 @@
-name: Commands
+name: Processing commands
 
 on:
   issue_comment:
@@ -63,7 +63,7 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -x
-          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev texlive-latex-base
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
@@ -90,7 +90,7 @@ jobs:
               echo $content
               delimiter="$(openssl rand -hex 8)"
               echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
-              cat tmp.log >> "${GITHUB_OUTPUT}"
+              cat /tmp/doxygen.kept.log >> "${GITHUB_OUTPUT}"
               echo "${delimiter}" >> "${GITHUB_OUTPUT}"
               exit 1
           fi
@@ -138,7 +138,6 @@ jobs:
         with:
           script: |
             const error = process.env.ERRORMSG
-            echo $error
             const msg = "There was an error while building the doc: \n"+error
             github.rest.issues.createComment({
               owner: "DGtal-team",
