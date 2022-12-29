@@ -22,9 +22,9 @@ jobs:
          result-encoding: string
          script: |
              const bodycmt = context.payload.comment.body
-             if(bodycmt.includes("/echo:"))
+             if(bodycmt.includes("/echo"))
                return 'echo'
-             if(bodycmt.includes("/builddoc:"))
+             if(bodycmt.includes("/builddoc"))
                return 'builddoc'
              return 'stop'
 
@@ -76,10 +76,26 @@ jobs:
 
 
       - name: build doc
+        id: build-and-check-doc
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           cd build_doc
-          make -j 2 doc
+          make -j 2 doc  > buildDoc.log
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          ${{runner.workspace}}/DGtal/.github/workflows/checkDoxygenDocumentation.sh
+          if [ -s /tmp/doxygen.kept.log ]; then
+              content=`cat /tmp/doxygen.kept.log`
+              echo $content
+              delimiter="$(openssl rand -hex 8)"
+              echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
+              cat tmp.log >> "${GITHUB_OUTPUT}"
+              echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+              exit 1
+          fi
+
+      - name: Preparing Deploy
+        run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
@@ -115,7 +131,7 @@ jobs:
 
       - name: Post error
         env:
-          ERRORMSG: ${{steps.build_and_run.outputs.DoxygenError}}
+          ERRORMSG: ${{steps.build-and-check-doc.outputs.DoxygenError}}
         uses: actions/github-script@v6
         if: ${{ failure() && steps.get_round.outputs.result == 'builddoc' }}
         with:
