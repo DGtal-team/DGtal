@@ -121,6 +121,7 @@ jobs:
         with:
           script: |
             const error = process.env.ERRORMSG
+            echo $error
             const msg = "There was an error while building the doc: \n"+error
             github.rest.issues.createComment({
               owner: "DGtal-team",
