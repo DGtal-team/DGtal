@@ -10,7 +10,7 @@
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
-    the unit tests. (David Coeurjolly, [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+    the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
 
 # DGtal 1.3
 
