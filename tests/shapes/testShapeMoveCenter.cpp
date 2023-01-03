@@ -27,6 +27,8 @@
  * This file is part of the DGtal library.
  */
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <random>
@@ -164,3 +166,4 @@ TEMPLATE_TEST_CASE("Star shapes", "move() method",
       REQUIRE( shape.center() == RealPoint( newCenterX, newCenterY ) );
     }
 }
+#endif

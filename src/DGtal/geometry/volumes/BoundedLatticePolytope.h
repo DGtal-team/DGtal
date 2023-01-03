@@ -53,7 +53,6 @@
 
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
   // template class BoundedLatticePolytope
   /**
@@ -200,7 +199,7 @@ namespace DGtal
       }
     };
 
-    /// @name Standard services (construction, initialization, assignment)
+    /// @name Standard services (construction, initialization, assignment, interior, closure)
     /// @{
 
     /**
@@ -314,6 +313,14 @@ namespace DGtal
 
     /// Clears the polytope.
     void clear();
+
+    /// @return the interior (in the topological sense) of this
+    /// polytope, by making all constraints strict.
+    BoundedLatticePolytope interiorPolytope() const;
+
+    /// @return the closure (in the topological sense) of this
+    /// polytope, by making all constraints large.
+    BoundedLatticePolytope closurePolytope() const;
     
     /// @}
 
@@ -407,10 +414,7 @@ namespace DGtal
     /// @name Global modification services (cut, swap, Minkowski sum)
     /// @{
 
-    /// @return the interior (in the topological sense) of this
-    /// polytope, by making all constraints strict.
-    BoundedLatticePolytope interiorPolytope() const;
-      
+    
     /**
        Cut the polytope by the given half space `a.x <= b` or `a.x <
        b` where `a` is some axis vector.
@@ -538,7 +542,8 @@ namespace DGtal
      *
      * @return the number of integer points lying within the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      */
     Integer count() const;
 
@@ -547,7 +552,8 @@ namespace DGtal
      *
      * @return the number of integer points lying within the interior of the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      * 
      * @note `count() <= countInterior() + countBoundary()` with
      * equality when the polytope is closed.
@@ -559,7 +565,8 @@ namespace DGtal
      *
      * @return the number of integer points lying on the boundary of the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      * 
      * @note `count() <= countInterior() + countBoundary()` with
      * equality when the polytope is closed.
@@ -574,7 +581,8 @@ namespace DGtal
      * @param[in] hi the highest point of the domain.
      * @return the number of integer points within the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      */
     Integer countWithin( Point low, Point hi ) const;
 
@@ -592,7 +600,8 @@ namespace DGtal
      *
      * @return the number of integer points within the polytope up to .
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      */
     Integer countUpTo( Integer max ) const;
 
@@ -601,17 +610,35 @@ namespace DGtal
      *
      * @param[out] pts the integer points within the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      * @note At output, pts.size() == this->count()
      */
     void getPoints( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points within the polytope and converts
+     * them to cells represented with their Khalimsky coordinates.
+     *
+     * @param[out] pts the integer points within the polytope, with
+     * coordinates equal to `2*p - alpha_shift`, for `p` in the polytope.
+     *
+     * @param[in] alpha_shift the translation applied to each point.
+     *
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
+     * @note At output, pts.size() == this->count()
+     * @note Usefull for full convexity checks.
+     */
+    void getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const;
 
     /**
      * Computes the integer points interior to the polytope.
      *
      * @param[out] pts the integer points interior to the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      * @note At output, pts.size() == this->countInterior()
      */
     void getInteriorPoints( std::vector<Point>& pts ) const;
@@ -621,7 +648,8 @@ namespace DGtal
      *
      * @param[out] pts the integer points boundary to the polytope.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      * @note At output, pts.size() == this->countBoundary()
      */
     void getBoundaryPoints( std::vector<Point>& pts ) const;
@@ -634,10 +662,144 @@ namespace DGtal
      * @param[in,out] pts_set the set of points where points within
      * this polytope are inserted.
      *
-     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
      */
     template <typename PointSet>
     void insertPoints( PointSet& pts_set ) const;
+
+    /**
+     * Computes the integer points within the polytope and converts
+     * them to cells represented with their Khalimsky coordinates.
+     *
+     * @tparam PointSet any model of set with a method `insert( Point )`.
+     *
+     * @param[in,out] pts_set the set of points where points within
+     * this polytope are inserted. Each point is inserted with
+     * coordinates equal to `2*p - alpha_shift`, for `p` in the
+     * polytope.
+     *
+     * @param[in] alpha_shift the translation applied to each point.
+     *
+     * @note Quite fast: obtained by line intersection, see
+     * BoundedLatticePolytopeCounter
+     */
+    template <typename PointSet>
+    void insertKPoints( PointSet& pts_set, const Point& alpha_shift ) const;
+    
+    /// @}
+
+    // -------------- Enumeration services (old methods by scanning ) --------------
+  public:
+
+    /// @name Enumeration services by scanning (counting, get points in polytope)
+    /// @{
+    
+    /**
+     * Computes the number of integer points lying within the polytope.
+     *
+     * @return the number of integer points lying within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countByScanning() const;
+
+    /**
+     * Computes the number of integer points lying within the interior of the polytope.
+     *
+     * @return the number of integer points lying within the interior of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countInteriorByScanning() const;
+
+    /**
+     * Computes the number of integer points lying on the boundary of the polytope.
+     *
+     * @return the number of integer points lying on the boundary of the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * 
+     * @note `count() <= countInterior() + countBoundary()` with
+     * equality when the polytope is closed.
+     */
+    Integer countBoundaryByScanning() const;
+
+    /**
+     * Computes the number of integer points within the polytope and
+     * the domain bounded by \a low and \a hi.
+     *
+     * @param[in] low the lowest point of the domain.
+     * @param[in] hi the highest point of the domain.
+     * @return the number of integer points within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countWithinByScanning( Point low, Point hi ) const;
+
+    /**
+     * Computes the number of integer points within the polytope up to
+     * some maximum number \a max. 
+     *
+     * @note For instance, a d-dimensional simplex that contains no
+     * integer points in its interior contains only d+1 points. If
+     * there is more, you know that the simplex has a non empty
+     * interior.
+     *
+     * @param[in] max the maximum number of points that are counted,
+     * the method exists when this number of reached.
+     *
+     * @return the number of integer points within the polytope up to .
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    Integer countUpToByScanning( Integer max ) const;
+
+    /**
+     * Computes the integer points within the polytope.
+     *
+     * @param[out] pts the integer points within the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->count()
+     */
+    void getPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points interior to the polytope.
+     *
+     * @param[out] pts the integer points interior to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countInterior()
+     */
+    void getInteriorPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points boundary to the polytope.
+     *
+     * @param[out] pts the integer points boundary to the polytope.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     * @note At output, pts.size() == this->countBoundary()
+     */
+    void getBoundaryPointsByScanning( std::vector<Point>& pts ) const;
+
+    /**
+     * Computes the integer points within the polytope.
+     *
+     * @tparam PointSet any model of set with a method `insert( Point )`.
+     *
+     * @param[in,out] pts_set the set of points where points within
+     * this polytope are inserted.
+     *
+     * @note Quite slow: obtained by checking every point of the polytope domain.
+     */
+    template <typename PointSet>
+    void insertPointsByScanning( PointSet& pts_set ) const;
 
     /// @}
     

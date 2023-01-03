@@ -195,6 +195,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto lphi = L*phi;
     REQUIRE( lphi == expected);
   }
+
   SECTION("Local Connection-Laplace-Beltrami")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
@@ -211,6 +212,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( det == Approx(1.0));
     REQUIRE( lphi[2] == Approx(-3.683));
   }
+  
   SECTION("Covariant Operators")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;

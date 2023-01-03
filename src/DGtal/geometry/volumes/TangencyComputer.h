@@ -49,6 +49,7 @@
 #include "DGtal/base/Clone.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/kernel/LatticeSetByIntervals.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -83,7 +84,9 @@ namespace DGtal
     typedef std::size_t                 Index;
     typedef std::size_t                 Size;
     typedef std::vector< Index >        Path;
-
+    typedef CellGeometry< KSpace >      CellCover;
+    typedef LatticeSetByIntervals< Space > LatticeCellCover;
+    
     // ------------------------- Shortest path services --------------------------------
   public:
 
@@ -168,7 +171,7 @@ namespace DGtal
       /// computation.
       void clear()
       {
-        const int nb = size();
+        const auto nb = size();
         myAncestor = std::vector< Index > ( nb, nb );
         myDistance = std::vector< double >( nb, std::numeric_limits<double>::infinity() );
         myVisited  = std::vector< bool >  ( nb, false );
@@ -401,8 +404,14 @@ namespace DGtal
     /// @tparam PointIterator any model of ForwardIterator on Point.
     /// @param[in] itB an iterator pointing at the beginning of the range.
     /// @param[in] itE an iterator pointing after the end of the range.
+    ///
+    /// @param[in] use_lattice_cell_cover if 'true' uses
+    /// LatticeSetByIntervals to represent the cell geometry instead
+    /// of CellGeometry. Generally a little bit slower for digital
+    /// surfaces, but may be faster for volumetric objects.
     template < typename PointIterator >
-    void init( PointIterator itB, PointIterator itE );
+    void init( PointIterator itB, PointIterator itE,
+               bool use_lattice_cell_cover = false );
 
     /// @}
 
@@ -438,8 +447,13 @@ namespace DGtal
     }
       
     /// @return a const reference to the cell geometry of the current digital set.
-    const CellGeometry< KSpace >& cellCover() const
+    const CellCover& cellCover() const
     { return myCellCover; }
+
+    /// @return a const reference to the lattice cell geometry of the
+    /// current digital set.
+    const LatticeCellCover& latticeCellCover() const
+    { return myLatticeCellCover; }
 
     /// @param[in] path a sequence of point indices describing a valid path.
     /// @return its Euclidean length.
@@ -460,11 +474,18 @@ namespace DGtal
     /// @name Tangency services
     /// @{
     
-    /// Tells is two points are cotangent with respect to the current digital set.
+    /// Tells if two points are cotangent with respect to the current digital set.
     /// @param[in] a any point
     /// @param[in] b any point
     /// @return 'true' if and only if \a a and \a b are cotangent in this set.
     bool arePointsCotangent( const Point& a, const Point& b ) const;
+
+    /// Tells if three points are cotangent with respect to the current digital set.
+    /// @param[in] a any point
+    /// @param[in] b any point
+    /// @param[in] c any point
+    /// @return 'true' if and only if \a a and \a b are cotangent in this set.
+    bool arePointsCotangent( const Point& a, const Point& b, const Point& c ) const;
 
     /// Extracts cotangent points by a breadth-first traversal.
     /// @param[in] a any point
@@ -585,8 +606,15 @@ namespace DGtal
     std::vector< double > myDN;
     /// The vector of points defining the digital shape under study.
     std::vector< Point >  myX;
-    /// The cell geometry representing all the cells touching the digital shape. 
-    CellGeometry< KSpace > myCellCover;
+    /// Tells if one must use CellCover or LatticeCellCover for computations.
+    bool myUseLatticeCellCover;
+    /// The cell geometry representing all the cells touching the
+    /// digital shape (uses UnorderedSetByBlock behind)
+    CellCover myCellCover;
+    /// The lattice cell geometry representing all the cells touching
+    /// the digital shape (uses LatticeSetByIntervals behind).
+    LatticeCellCover myLatticeCellCover;
+    
     /// A map giving for each point its index.
     std::unordered_map< Point, Index > myPt2Index;
     

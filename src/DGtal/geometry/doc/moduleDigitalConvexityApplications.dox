@@ -15,8 +15,11 @@ namespace DGtal {
 Part of the \ref packageGeometry.
   
 This part of the manual describes some applications of a new
-definition of digital convexity, called full convexity \cite lachaud_dgmm_2021 .
+definition of digital convexity, called full convexity \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 .
+
 See \ref moduleDigitalConvexity for further details on full convexity.
+
+See \ref moduleEnvelope to see how to build fully convex hulls and digital polyhedra.
 
 [TOC]
 

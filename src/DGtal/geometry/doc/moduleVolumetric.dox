@@ -269,7 +269,7 @@ VoronoiMap class and overrides  methods required by
 the concepts::CConstImage concept. Note that the DistanceTransformation::Value
 type is double. If you want to get the underlying vector instead of
 the distance to perform exact computations, you can use the
-DistanceTransformation::getVoronoiVector method.
+DistanceTransformation::getVoronoiSite method.
 
 In the following example, we consider the previous small image and use
 a colormap to display distance values for the @f$ l_2 @f$ mertic:

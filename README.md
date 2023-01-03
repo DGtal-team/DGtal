@@ -74,6 +74,7 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)
 * Release 1.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4892404.svg)](https://doi.org/10.5281/zenodo.4892404)
 * Release 1.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075246.svg)](https://doi.org/10.5281/zenodo.4075246) 
 * Release 1.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2611275.svg)](https://doi.org/10.5281/zenodo.2611275)
@@ -84,4 +85,5 @@ More Information
 * Release 0.9 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.31884.svg)](http://dx.doi.org/10.5281/zenodo.31884)
 * Release 0.8 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11586.svg)](https://doi.org/10.5281/zenodo.11586)
 * Continuous Integration (Linux/MacOS) ![Build status](https://github.com/DGtal-team/DGtal/actions/workflows/buildAndDocumentation.yml/badge.svg)
-* Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/7labe8ft0jf30ng7/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal-8op01/branch/master)
+* Continuous Integration (Windows) [![Build status](https://ci.appveyor.com/api/projects/status/2b94dmr3agvkd379/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal/branch/master)
+

@@ -1,0 +1,171 @@
+name: Processing commands
+
+on:
+  issue_comment:
+      types: [created]
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      pull-requests: write # to create comment
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        id: get_round
+        with:
+         result-encoding: string
+         script: |
+             const bodycmt = context.payload.comment.body
+             if(bodycmt.includes("/echo"))
+               return 'echo'
+             if(bodycmt.includes("/builddoc"))
+               return 'builddoc'
+             return 'stop'
+
+      - name: Emoji-comment
+        if: steps.get_round.outputs.result != 'stop'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.reactions.createForIssueComment({
+              comment_id: ${{ github.event.comment.id }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              content: 'rocket'})
+
+# buildDoc COMMAND
+      - uses: actions/github-script@v6
+        if: steps.get_round.outputs.result == 'builddoc'
+        id: get_pr_number
+        with:
+         result-encoding: string
+         script: |
+           //get pullrequest url
+           const pr_number = context.payload.issue.number
+           return pr_number
+
+      - uses: actions/checkout@v3
+        name: "checkout branch"
+        if: steps.get_round.outputs.result == 'builddoc'
+        with:
+           repository: ${{ github.repository }}
+           ref: refs/pull/${{ steps.get_pr_number.outputs.result }}/merge
+#           token: ${{ secrets.PUSH_TO_DGTAL_GITHUB_IO_TOKEN }}
+           fetch-depth: 2
+      - name: install dependencies
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          set -x
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev texlive-latex-base
+          git config --global user.email "dgtal@dgtal.org"
+          git config --global user.name "DGtal"
+
+
+      - name: configure all
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          set -ex
+          mkdir -p build_doc && cd build_doc && cmake .. -DBUILD_EXAMPLES=true -DBUILD_TESTING=true
+
+
+      - name: build doc
+        id: build-and-check-doc
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
+          cd build_doc
+          make -j 2 doc  > buildDoc.log
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          ${{runner.workspace}}/DGtal/.github/workflows/checkDoxygenDocumentation.sh
+          if [ -s /tmp/doxygen.kept.log ]; then
+              echo "********************************************"
+              content=`cat /tmp/doxygen.kept.log`
+              echo $content
+              delimiter="$(openssl rand -hex 8)"
+              echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
+              cat /tmp/doxygen.kept.log >> "${GITHUB_OUTPUT}"
+              echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+              exit 1
+          fi
+
+      - name: Preparing Deploy
+        run: |
+          mkdir pr${{ steps.get_pr_number.outputs.result }}
+          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
+          cd doc-nightly
+          rm -rf pr${{ steps.get_pr_number.outputs.result }}
+          mv ../pr${{ steps.get_pr_number.outputs.result }} .
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          token: ${{ secrets.DEPLOYACTION }}
+          repository-name: DGtal-team/doc-nightly
+          folder: build_doc/doc-nightly
+          branch: master
+          single-commit: true
+          clean: true
+
+      - name: Post address
+        uses: actions/github-script@v6
+        if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
+        with:
+          script: |
+            const tmp_round = "${{ steps.get_round.outputs.result }}";
+            const id = tmp_round.indexOf(":");
+            const round = tmp_round.substring(0,id);
+            const address = "The documentation is built. It will be available, after a few minutes, here: https://dgtal-team.github.io/doc-nightly/pr${{ steps.get_pr_number.outputs.result }}/index.html"
+            github.rest.issues.createComment({
+              owner: "DGtal-team",
+              repo: "DGtal",
+              issue_number: ${{ github.event.issue.number }},
+              body: address
+            });
+            github.rest.reactions.createForIssueComment({
+                comment_id: ${{ github.event.comment.id }},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                content: 'bug'})
+
+      - name: Post error
+        env:
+          ERRORMSG: ${{steps.build-and-check-doc.outputs.DoxygenError}}
+        uses: actions/github-script@v6
+        if: ${{ failure() && steps.get_round.outputs.result == 'builddoc' }}
+        with:
+          script: |
+            const error = process.env.ERRORMSG
+            const msg = "There was an error while building the doc: \n"+error
+            github.rest.issues.createComment({
+              owner: "DGtal-team",
+              repo: "DGtal",
+              issue_number: ${{ github.event.issue.number }},
+              body: msg
+            });
+
+
+
+
+# ECHO COMMAND
+      - name: Echo action
+        uses: actions/github-script@v6
+        if: steps.get_round.outputs.result == 'echo'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const bodycmt = context.payload.comment.body
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: bodycmt
+            })
+###########
