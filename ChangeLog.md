@@ -2,8 +2,6 @@
 
 ## New features / critical changes
 
-## Changes
-
 ## Bug fixes
 
 - *General*
@@ -40,6 +38,8 @@
   - New VoronoiMapComplete class to store the full Voronoi map (with
     all co-cycling sites (Robin Lamy, David Coeurjolly, Isabelle
     Sivignon [#1605](https://github.com/DGtal-team/DGtal/pull/1605))
+  - Add Affine Transformation in the geometry transformation module 
+    (Phuc Ngo,[#1571](https://github.com/DGtal-team/DGtal/pull/1571))    
 
 - *DEC*
   - New discrete differential operators on polygonal meshes have been

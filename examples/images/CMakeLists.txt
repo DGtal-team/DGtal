@@ -18,6 +18,7 @@ set(DGTAL_EXAMPLES_SRC
   exampleRigidtransformation3d
   exampleArrayImageAdapter
   exampleConstImageFunctorHolder
+  exampleAffinetransformation2d
 )
 
 if( WITH_HDF5 )

@@ -18,7 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page moduleGeometricTransform Geometric transformations
-@writers Kacper Pluta
+@writers Kacper Pluta, Phuc Ngo
 @date 2014/07/17
 
 [TOC]
@@ -147,7 +147,80 @@ and for backward as well:
 \image html cat10_backward.jpg
 \image latex cat10_backward.jpg
 
+
+\section secAffine2D Affine transformations
+
+Affine transformations in \f$\mathbb{R}^n\f$ is a geometric transformation which
+preserves collinearity and parallelism. Thus, rigid transformations are also affine transformations. 
+
+In general an affine transformation can be written like: 
+
+\f[
+\begin{array}{l l}
+    \mathcal{A}: \mathbb{R}^n & \to \mathbb{R}^n \\
+    \mathbf{x} & \mapsto \mathbf{A . x} + \mathbf{t}
+\end{array}
+\f]
+
+where \f$\textbf{A}\f$ denotes an invertible matrix and \f$\textbf{t}\f$
+translation vector. Then, discrete affine transformations can be
+defined as follows:
+
+\f[
+  A = \mathcal{D} \circ \mathcal{A}_{| \mathbb{Z}^n}
+\f]
+
+where \f$\mathcal{D}\f$ is a standard rounding function. 
+
+\subsection subsecAffine2D Affine transformations in 2D discrete space
+In 2D, \f$\textbf{A}\f$ is a \f$2\times2\f$ matrix:
+
+\f[
+\mathbf{A} (a11,a12,a21,a22) = 
+\begin{pmatrix}
+a11 & a12\\
+a21 & a22 
+\end{pmatrix}
+\f]
+
+As rigid transformations, DGtal contains two models of discrete affine transformations: forward and backward. 
+To use them, we need to:
+
+a) add those includes: 
+@snippet images/exampleAffinetransformation2d.cpp include
+
+b) define these types:
+@snippet images/exampleAffinetransformation2d.cpp def
+
+where DomainGeometricTransformation2D is a helper functor which returns
+lower and upper bounds of transformed domain.
+
+c1) create transformation by providing information about the matrix \f$\textbf{A}\f$, and translation:
+
+@snippet images/exampleAffinetransformation2d.cpp trans
+
+c2) or create transformation by providing the origin, matrix \f$\textbf{A}\f$, and translation (e.g. @ref src/DGtal/images/AffineTransformation2D.h)
+
+d) if needed create a transformed domain eg:
+@snippet images/exampleAffinetransformation2d.cpp init_domain_helper
+@snippet images/exampleAffinetransformation2d.cpp domain
+
+e1) apply rigid transformation to image with forward model:
+@snippet images/exampleAffinetransformation2d.cpp forward
+
+e2) or with backward which can be used with ConstImageAdapter or ImageAdapter:
+@snippet images/exampleAffinetransformation2d.cpp backward
+
+Below image presents result for froward model and image "Church.pgm"
+\image html church_AffineForward.png
+\image latex church_AffineForward.png
+
+and for backward as well:
+\image html church_AffineBackward.png
+\image latex church_AffineBackward.png
+
 */
+
  }
 
 
