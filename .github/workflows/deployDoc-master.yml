@@ -37,8 +37,8 @@ jobs:
           .github/workflows/checkDoxygenDocumentation.sh
       #&& .github/workflows/check_src_file_tag.sh
 
-   - name: Preparing deploy
-     run: |
+    - name: Preparing deploy
+      run: |
         git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
         cp -r {{runner.workspace}}/DGtal/buid/html/* doc-nightly/
 
