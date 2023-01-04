@@ -65,9 +65,23 @@ using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
 // digital circle generator
-template<typename TKSpace>
+
+template<typename TP, typename TI>
+struct MyBallPredicate
+{
+  typedef TP Point;
+  typedef TI Integer;
+  MyBallPredicate(const TP &c, const TI r) {myCenter=c; myRad=r;};
+  bool operator()(const Point &p) const { return (p-myCenter).squaredNorm() < myRad*myRad; };
+  Point myCenter;
+  Integer myRad;
+};
+
+
+
+template<typename TKSpace, typename Integer>
 GridCurve<TKSpace>
-ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
+ballGenerator(Integer aCx, Integer aCy, Integer aR, bool aFlagIsCW)
 {
 
   // Types
@@ -80,34 +94,19 @@ ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
   typedef typename Space::RealPoint RealPoint;
   typedef HyperRectDomain<Space> Domain;
 
-  //Forme
-  Shape aShape(Point(aCx,aCy), aR);
-
-  // Window for the estimation
-  RealPoint xLow ( -aR-1, -aR-1 );
-  RealPoint xUp( aR+1, aR+1 );
-  GaussDigitizer<Space,Shape> dig;  
-  dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, 1 ); 
-  Domain domain = dig.getDomain();
-  // Create cellular space
-  KSpace K;
-  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
-  if ( ! ok )
-  {
-      std::cerr << " "
-    << " error in creating KSpace." << std::endl;
-      return GridCurve();
-  }
+  Point center(aCx,aCy);
+  MyBallPredicate<Point,Integer> predicate(center,aR);
   try 
   {
+    KSpace K;
+    bool ok = K.init( center - Point::diagonal(2*aR), center + Point::diagonal(2*aR), true);
 
     // Extracts shape boundary
     SurfelAdjacency<KSpace::dimension> SAdj( true );
-    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+    SCell bel = Surfaces<KSpace>::findABel( K, predicate, 10000 );
     // Getting the consecutive surfels of the 2D boundary
     std::vector<Point> points, points2;
-    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, predicate, bel );
     //counter-clockwise oriented by default
     GridCurve c; 
     if (aFlagIsCW)
@@ -292,9 +291,9 @@ bool testRecognition()
   for (unsigned int i = 0; i < 50 && flag; ++i)
   {
     //generate digital circle
-    double cx = (rand()%100 ) / 100.0;
-    double cy = (rand()%100 ) / 100.0;
-    double radius = (rand()%100 )+100;
+    uint32_t cx = (rand()%100 ) ;
+    uint32_t cy = (rand()%100 ) ;
+    uint32_t radius = (rand()%100 )+100;
     c = ballGenerator<KSpace>( cx, cy, radius, ((i%2)==1) ); 
     trace.info() << " #ball #" << i << " c(" << cx << "," << cy << ") r=" << radius << endl; 
     
