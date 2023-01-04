@@ -72,7 +72,7 @@ struct MyBallPredicate
   typedef TP Point;
   typedef TI Integer;
   MyBallPredicate(const TP &c, const TI r) {myCenter=c; myRad=r;};
-  bool operator()(const Point &p) const { return (p-myCenter).squaredNorm() < myRad*myRad; };
+  bool operator()(const Point &p) const { return (p-myCenter).dot(p-myCenter) < myRad*myRad; };
   Point myCenter;
   Integer myRad;
 };
