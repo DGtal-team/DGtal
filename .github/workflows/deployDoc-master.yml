@@ -40,7 +40,9 @@ jobs:
     - name: Preparing deploy
       run: |
         git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
-        cp -r {{runner.workspace}}/DGtal/buid/html/* doc-nightly/
+        ls build/
+        ls build/html/
+        cp -r buid/html/* doc-nightly/
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.7
