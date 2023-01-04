@@ -108,6 +108,12 @@ jobs:
           .github/workflows/checkDoxygenDocumentation.sh
       #&& .github/workflows/check_src_file_tag.sh
 
+    - name: Preparing deploy
+      run: |
+          git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
+          cp -r {{runner.workspace}}/DGtal/buid/html/* doc-nightly/
+
+
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
       if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
@@ -115,6 +121,6 @@ jobs:
         token: ${{ secrets.DEPLOYTOKEN }}
         branch: master
         repository-name: DGtal-team/doc-nightly
-        folder: build/html
+        folder: doc-nightly
         single-comit: true
         clean: true

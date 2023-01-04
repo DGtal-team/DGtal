@@ -146,7 +146,7 @@ jobs:
         with:
           script: |
             const error = process.env.ERRORMSG
-            const msg = "There was an error while building the doc: \n"+error
+            const msg = "There was an error while building the doc. Check the GitHub actions for debugging.\n"+error
             github.rest.issues.createComment({
               owner: "DGtal-team",
               repo: "DGtal",
