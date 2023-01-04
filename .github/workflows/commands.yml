@@ -80,6 +80,7 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           cd build_doc
+          wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build_doc/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
           make -j 2 doc  > buildDoc.log
           export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
           export SRC_DIR=${{runner.workspace}}/DGtal/
@@ -98,7 +99,7 @@ jobs:
       - name: Preparing Deploy
         run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
-          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          mv ${{runner.workspace}}/DGtal/build_doc/html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
           cd doc-nightly
           rm -rf pr${{ steps.get_pr_number.outputs.result }}
@@ -109,7 +110,7 @@ jobs:
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
-          folder: build_doc/doc-nightly
+          folder: doc-nightly
           branch: master
           single-commit: true
           clean: true
