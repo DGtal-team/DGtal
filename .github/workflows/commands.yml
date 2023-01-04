@@ -134,7 +134,7 @@ jobs:
                 comment_id: ${{ github.event.comment.id }},
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                content: 'bug'})
+                content: 'hooray'})
 
       - name: Post error
         env:
