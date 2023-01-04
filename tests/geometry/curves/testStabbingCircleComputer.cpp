@@ -285,8 +285,11 @@ bool testRecognition()
   unsigned int nb = 0;
 
   trace.beginBlock ( "Recognition" );
+  bool flag=true;
   
-  for (unsigned int i = 0; i < 50; ++i)
+  
+  
+  for (unsigned int i = 0; i < 50 && flag; ++i)
   {
     //generate digital circle
     double cx = (rand()%100 ) / 100.0;
@@ -304,20 +307,28 @@ bool testRecognition()
     StabbingCircleComputer<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
+    if (s.end() != r.end())
+    {
+      trace.info()<< "Complete circle not recognized"<<std::endl;
+      flag=false;
+    }
+    
     //checking if the circle is separating
-    bool flag = true;
-    typedef CircleFrom3Points<KSpace::Point> Circle; 
-    typedef functors::Point2ShapePredicate<Circle,false,true> 
-      FirstInCirclePred; 
-    typedef functors::Point2ShapePredicate<Circle,true,true> 
-      SecondInCirclePred; 
+    typedef CircleFrom3Points<KSpace::Point> Circle;
+    typedef functors::Point2ShapePredicate<Circle,false,true> FirstInCirclePred;
+    typedef functors::Point2ShapePredicate<Circle,true,true>  SecondInCirclePred;
     for (ConstIterator it = s.begin(); ((it != s.end()) && flag) ; ++it)
     {
       FirstInCirclePred p1( s.getSeparatingCircle() ); 
       SecondInCirclePred p2( s.getSeparatingCircle() ); 
       flag = ( p1(it->first)&&p2(it->second) ); 
+      if (!flag)
+      {
+        trace.info() << it->first <<" "<< it->second<<std::endl;
+      }
     }
     
+   
     //conclusion
     nbok += flag ? 1 : 0; 
     nb++;
