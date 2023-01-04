@@ -118,9 +118,8 @@ jobs:
           clean: true
 
       - name: Post address
-        if: steps.get_round.outputs.result == 'builddoc'
         uses: actions/github-script@v6
-        if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
+        if: ${{ steps.get_round.outputs.result == 'builddoc' && success() && steps.get_round.outputs.result != 'stop' }}
         with:
           script: |
             const tmp_round = "${{ steps.get_round.outputs.result }}";
