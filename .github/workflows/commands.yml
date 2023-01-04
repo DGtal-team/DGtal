@@ -99,7 +99,7 @@ jobs:
       - name: Preparing Deploy
         run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
-          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          mv ${{runner.workspace}}/DGtal/build_doc/html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
           cd doc-nightly
           rm -rf pr${{ steps.get_pr_number.outputs.result }}
