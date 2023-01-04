@@ -58,7 +58,7 @@ linear time algorithm to segment a digital curve into blurred segments
 of order \f$ d \f$. The main drawback of such a decomposition is the
 non optimality (it implies over segmentation).  Then the author
 introduce the notion of blurred segment of width \f$ \nu \f$ 
-\cite debledrennessonblurred2005. The width \f$ \nu \f$ is associated to the
+\cite DebledRennessonBlurred2005. The width \f$ \nu \f$ is associated to the
 isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
