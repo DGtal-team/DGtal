@@ -22,7 +22,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest]
 
     steps:
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@v3
        with:
           fetch-depth: 10
 
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up
       run:  sudo apt-get update && sudo apt-get install libboost-dev graphviz texlive doxygen
