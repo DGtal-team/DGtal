@@ -1,4 +1,4 @@
-name: Documentation and deploy nightly-build
+name: Nightly-build documentation and deploy
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Set up
-      run:  sudo apt-get install libboost-dev graphviz texlive doxygen
+      run:  sudo apt-get install libboost-dev graphviz texlive-base doxygen
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -43,7 +43,8 @@ jobs:
         ls build/
         pwd
         du -hs build/html
-        cp -r buid/html/* doc-nightly/
+        cd build/html
+        mv *  ../../doc-nightly/
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.7
