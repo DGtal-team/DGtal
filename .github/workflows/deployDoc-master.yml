@@ -52,6 +52,5 @@ jobs:
         token: ${{ secrets.DEPLOYACTION }}
         repository-name: DGtal-team/doc-nightly
         folder: doc-nightly
-        branch: master
         single-commit: true
         clean: true
