@@ -1,4 +1,4 @@
-name: Documentation and deploy
+name: Documentation and deploy nightly-build
 
 on:
   push:
