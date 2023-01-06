@@ -42,6 +42,7 @@ jobs:
         git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
         ls build/
         pwd
+        du -hs build/html
         cp -r buid/html/* doc-nightly/
 
     - name: Deploy to GitHub Pages
