@@ -108,7 +108,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: steps.get_round.outputs.result == 'builddoc'
-        uses: JamesIves/github-pages-deploy-action@4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
