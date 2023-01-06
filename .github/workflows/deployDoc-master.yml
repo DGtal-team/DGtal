@@ -44,7 +44,7 @@ jobs:
         pwd
         du -hs build/html
         cd build/html
-        mv *  ../../doc-nightly/
+        cp -r *  ../../doc-nightly/
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.7
