@@ -40,6 +40,8 @@ jobs:
     - name: Preparing deploy
       run: |
         git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
+        ls build/
+        pwd
         cp -r buid/html/* doc-nightly/
 
     - name: Deploy to GitHub Pages
