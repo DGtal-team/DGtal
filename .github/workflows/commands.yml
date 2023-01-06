@@ -80,6 +80,7 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           cd build_doc
+          wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build_doc/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
           make -j 2 doc  > buildDoc.log
           export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
           export SRC_DIR=${{runner.workspace}}/DGtal/
@@ -96,27 +97,29 @@ jobs:
           fi
 
       - name: Preparing Deploy
+        if: steps.get_round.outputs.result == 'builddoc'
         run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
-          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          mv ${{runner.workspace}}/DGtal/build_doc/html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
           cd doc-nightly
           rm -rf pr${{ steps.get_pr_number.outputs.result }}
           mv ../pr${{ steps.get_pr_number.outputs.result }} .
 
       - name: Deploy to GitHub Pages
+        if: steps.get_round.outputs.result == 'builddoc'
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
-          folder: build_doc/doc-nightly
+          folder: doc-nightly
           branch: master
           single-commit: true
           clean: true
 
       - name: Post address
         uses: actions/github-script@v6
-        if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
+        if: ${{ steps.get_round.outputs.result == 'builddoc' && success() && steps.get_round.outputs.result != 'stop' }}
         with:
           script: |
             const tmp_round = "${{ steps.get_round.outputs.result }}";
@@ -133,7 +136,7 @@ jobs:
                 comment_id: ${{ github.event.comment.id }},
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                content: 'bug'})
+                content: 'hooray'})
 
       - name: Post error
         env:
@@ -143,7 +146,7 @@ jobs:
         with:
           script: |
             const error = process.env.ERRORMSG
-            const msg = "There was an error while building the doc: \n"+error
+            const msg = "There was an error while building the doc. Check the GitHub actions for debugging.\n"+error
             github.rest.issues.createComment({
               owner: "DGtal-team",
               repo: "DGtal",
