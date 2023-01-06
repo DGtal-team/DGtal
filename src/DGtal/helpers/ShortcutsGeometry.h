@@ -1375,7 +1375,7 @@ namespace DGtal
       /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
       /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
@@ -1430,7 +1430,7 @@ namespace DGtal
       /// also outputs the feature vector \a features, corresponding to
       /// 0-form \a v in AT (the average of \a v for linels/surfels).
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
@@ -1498,7 +1498,7 @@ namespace DGtal
       /// approximation of \a input using Ambrosio-Tortorelli
       /// functional.
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       ///
@@ -1553,7 +1553,7 @@ namespace DGtal
       /// corresponding to 0-form \a v in AT (the average of \a v for
       /// linels/surfels).
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
@@ -1822,4 +1822,3 @@ namespace DGtal
 
 #undef ShortcutsGeometry_RECURSES
 #endif // else defined(ShortcutsGeometry_RECURSES)
-
