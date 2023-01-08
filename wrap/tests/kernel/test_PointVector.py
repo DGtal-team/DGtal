@@ -207,7 +207,7 @@ def test_bridge_buffer(Self):
     ps = Self()
     ps[0] = 2
     ps[1] = 4
-    dtype = getattr(np, ps.dtype)
+    dtype = ps.dtype
     if ps.dimension == 2:
         expected_np_array = np.array([ps[0], ps[1]], dtype=dtype)
     elif ps.dimension == 3:
