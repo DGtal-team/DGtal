@@ -42,9 +42,9 @@ jobs:
               repo: context.repo.repo,
               content: 'rocket'})
 
-# buildDoc COMMAND
+
+### Common
       - uses: actions/github-script@v6
-        if: steps.get_round.outputs.result == 'builddoc'
         id: get_pr_number
         with:
          result-encoding: string
@@ -52,6 +52,9 @@ jobs:
            //get pullrequest url
            const pr_number = context.payload.issue.number
            return pr_number
+######
+
+# buildDoc COMMAND
 
       - uses: actions/checkout@v3
         name: "checkout branch"
