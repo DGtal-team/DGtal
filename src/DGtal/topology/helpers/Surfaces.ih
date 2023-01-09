@@ -34,7 +34,6 @@
 #include <algorithm>
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/images/ImageSelector.h"
 #include "DGtal/topology/CSurfelPredicate.h"
 #include "DGtal/helpers/StdDefs.h"
 
