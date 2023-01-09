@@ -186,6 +186,14 @@ jobs:
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
+      - uses: actions/checkout@v3
+        name: "checkout branch"
+        if: steps.get_round.outputs.result == 'fullbuild'
+        with:
+           repository: ${{ github.repository }}
+           ref: refs/pull/${{ steps.get_pr_number.outputs.result }}/merge
+           fetch-depth: 2
+
       - name: Emoji-comment
         if: steps.get_round.outputs.result != 'stop'
         uses: actions/github-script@v6
