@@ -80,7 +80,7 @@ void testDepthFirstPropagation()
   Object obj(Z2i::dt4_8, shape_set);
   
   
-  HueShadeColorMap<int,3> cmap_grad( 0, obj.size());
+  HueShadeColorMap<int,3> cmap_grad( 0, (int)obj.size());
   //cmap_grad.addColor( Color( 0, 0, 200 ) );
   //cmap_grad.addColor( Color( 0, 0, 50 ) );
   
