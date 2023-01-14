@@ -23,8 +23,6 @@
  *
  * @date 2022/09/02
  *
- * Header file for module SymmetricConvexExpander.cpp
- *
  * This file is part of the DGtal library.
  */
 
@@ -308,20 +306,6 @@ namespace DGtal
     Integer myPerfectSymmetryRadius;
     
   };
-
-    // struct PointComparator {
-    //   Point center;
-    //   /// Default constructor. The object is invalid.
-    //   PointComparator() = default;
-      
-    //   explicit PointComparator( const Point& c ) : center( c ) {}
-    //   // p < q iff ||2p - c|| < || 2q - c ||
-    //   // iff 0 < (p-q).(c-p-q)
-    //   bool operator()( const Point& p, const Point& q ) const
-    //   {
-    //     return 0 < (p - q).dot(c - p - q);
-    //   }
-    // };
 
   
 } // namespace DGtal
