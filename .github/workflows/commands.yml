@@ -42,9 +42,9 @@ jobs:
               repo: context.repo.repo,
               content: 'rocket'})
 
-# buildDoc COMMAND
+
+### Common
       - uses: actions/github-script@v6
-        if: steps.get_round.outputs.result == 'builddoc'
         id: get_pr_number
         with:
          result-encoding: string
@@ -52,6 +52,9 @@ jobs:
            //get pullrequest url
            const pr_number = context.payload.issue.number
            return pr_number
+######
+
+# buildDoc COMMAND
 
       - uses: actions/checkout@v3
         name: "checkout branch"
@@ -186,6 +189,14 @@ jobs:
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
+      - uses: actions/checkout@v3
+        name: "checkout branch"
+        if: steps.get_round.outputs.result == 'fullbuild'
+        with:
+           repository: ${{ github.repository }}
+           ref: refs/pull/${{ steps.get_pr_number.outputs.result }}/merge
+           fetch-depth: 2
+
       - name: Emoji-comment
         if: steps.get_round.outputs.result != 'stop'
         uses: actions/github-script@v6
@@ -202,9 +213,9 @@ jobs:
         if: steps.get_round.outputs.result == 'fullbuild'
         run: |
           cmake -E make_directory ${{runner.workspace}}/build
+          cmake -S ${{runner.workspace}}/DGtal -B ${{runner.workspace}}/build -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=100 -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -G Ninja
           cd ${{runner.workspace}}/build
-          cmake .. -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=100 -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -G Ninja
-          cmake --build . 
-          export BUILD_DIR="(testLinearStructure)"
+          cmake --build .
+          export TESTBLACKLIST="(testLinearStructure)"
           ctest -E $TESTBLACKLIST
 ###########
