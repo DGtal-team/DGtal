@@ -22,7 +22,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest]
 
     steps:
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@v3
        with:
           fetch-depth: 10
 
@@ -81,40 +81,3 @@ jobs:
            echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
            cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
            ninja
-
-  # Documentatin (build, check and deploy)
-  Documentation:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up
-      run:  sudo apt-get update && sudo apt-get install libboost-dev graphviz texlive doxygen
-
-    - name: Building pages
-      run: |
-         mkdir build
-         cd build
-         cmake ..
-         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
-         make doc > buildDoc.log
-
-    - name: Checking doc
-      run: |
-          pwd
-          export BUILD_DIR=${{runner.workspace}}/DGtal/build
-          export SRC_DIR=${{runner.workspace}}/DGtal/
-          .github/workflows/checkDoxygenDocumentation.sh
-      #&& .github/workflows/check_src_file_tag.sh
-
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-      with:
-        token: ${{ secrets.DEPLOYTOKEN }}
-        branch: master
-        repository-name: DGtal-team/doc-nightly
-        folder: build/html
-        single-comit: true
-        clean: true
