@@ -16,6 +16,10 @@
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
 
+- *Examples*
+  - Fix Issue #1675, add missing SymmetricConvexExpander.h file
+    (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
+
 # DGtal 1.3
 
 ## New features / critical changes
