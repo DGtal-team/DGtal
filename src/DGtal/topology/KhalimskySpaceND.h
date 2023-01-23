@@ -486,7 +486,20 @@ namespace DGtal
 
     /// Default constructor.
     KhalimskySpaceND();
-
+    
+    /** @brief Constructor from upper and lower bounds for the maximal cells in
+     * this space.
+     *
+     * @param lower the lowest point in this space (digital coords)
+     * @param upper the upper point in this space (digital coords)
+     * @param isClosed 'true' if this space is closed and non-periodic in every dimension, 'false' if open.
+     *
+     * @see init()
+     */
+    KhalimskySpaceND( const Point & lower,
+		      const Point & upper,
+		      bool isClosed );
+    
     /** @brief Copy constructor.
      *
      * @param other the object to clone.

@@ -452,6 +452,16 @@ KhalimskySpaceND()
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+DGtal::KhalimskySpaceND< dim, TInteger>::
+KhalimskySpaceND( const Point & lower,
+		  const Point & upper,
+		  bool isClosed)
+{
+  init( lower, upper, isClosed );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 init( const Point & lower,
