@@ -12,6 +12,10 @@
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
     the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
 
+- *Topology package*
+  - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
+    [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
