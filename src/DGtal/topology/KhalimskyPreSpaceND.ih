@@ -657,7 +657,7 @@ DGtal::Dimension
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 uDim( const Cell & p )
 {
-  Integer i = NumberTraits<Integer>::ZERO;
+  DGtal::Dimension i = NumberTraits<DGtal::Dimension>::ZERO;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     if ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) )
       ++i;
@@ -670,7 +670,7 @@ DGtal::Dimension
 DGtal::KhalimskyPreSpaceND< dim, TInteger>::
 sDim( const SCell & p )
 {
-  Integer i = NumberTraits<Integer>::ZERO;
+  DGtal::Dimension i = NumberTraits<DGtal::Dimension>::ZERO;
   for ( DGtal::Dimension k = 0; k < DIM; ++k )
     if ( NumberTraits<Integer>::odd( p.coordinates[ k ] ) )
       ++i;
