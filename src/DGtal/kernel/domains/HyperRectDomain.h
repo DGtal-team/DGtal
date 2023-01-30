@@ -565,7 +565,7 @@ namespace DGtal
     Size size() const
       {
         Size res = 1;
-        for(auto i=0; i < Space::dimension; ++i)
+        for(Dimension i=0; i < Space::dimension; ++i)
           res *= static_cast<Size>(NumberTraits<Coordinate>::castToUInt64_t(myUpperBound[i] - myLowerBound[i] + 1));
         return res;
       }
