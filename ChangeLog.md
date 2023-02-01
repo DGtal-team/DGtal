@@ -11,6 +11,8 @@
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
     the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
+  - Removing unnecessary includes to speed-up compilation (David Coeurjolly, 
+    [#1680](https://github.com/DGtal-team/DGtal/pull/1680)) )
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
