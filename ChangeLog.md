@@ -3,7 +3,7 @@
 ## New features / critical changes
  
 - *General*
-  - Major update: C++14 is now required for DGtal. (David Coeurjolly, 
+  - Major update: C++17 is now required for DGtal. (David Coeurjolly, 
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
 
 ## Changes
