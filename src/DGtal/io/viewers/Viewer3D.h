@@ -979,7 +979,8 @@ namespace DGtal
           }
           updateRelativeCameraFromLightPosition();
         }
-      else if (verbose) {
+      else if (verbose) 
+      {
         {
           displayMessage(QString("Light source position fixed to main scene."), 3000);          
         }
