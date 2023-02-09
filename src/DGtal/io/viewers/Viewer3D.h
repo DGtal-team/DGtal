@@ -965,7 +965,7 @@ namespace DGtal
     /**
      * Change the light position mode (attached to camera or to the scence).
      *
-     * @param modeFixedCam if true (resp. false) the light position will be attached to the camera (resp. scene).
+     * @param fixedToCam if true (resp. false) the light position will be attached to the camera (resp. scene).
      * @param verbose is set to true, it will display the current mode on the viewer.
      **/
     void setLightModeFixToCamera(bool fixedToCam, bool verbose = true) {
