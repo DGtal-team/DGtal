@@ -974,7 +974,8 @@ namespace DGtal
       updateLightCoordsFromCamera();
       if(myLightPositionFixToCamera)
         {
-          if (verbose){
+          if (verbose)
+          {
             displayMessage(QString("Light source position fixed to camera."), 3000);
           }
           updateRelativeCameraFromLightPosition();
