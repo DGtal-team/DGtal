@@ -43,6 +43,7 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include <map>
 #include "DGtal/kernel/IntegralIntervals.h"
 #include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 //////////////////////////////////////////////////////////////////////////////

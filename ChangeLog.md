@@ -8,6 +8,10 @@
 
 ## Changes
 
+- *Github*
+  - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly, 
+    [#1683](https://github.com/DGtal-team/DGtal/pull/1683)) 
+
 ## Bug fixes
 
 - *General*
