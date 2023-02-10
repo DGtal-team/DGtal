@@ -3,6 +3,10 @@
 ## New features / critical changes
 
 ## Changes
+- *IO*
+  - New method to change the mode of the light position in Viewer3D (fixed to 
+    camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+
 
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly, 
