@@ -1309,19 +1309,8 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
 
     if ( ( e->key() == Qt::Key_P ) )
     {
-      myLightPositionFixToCamera =! myLightPositionFixToCamera;
-      updateLightCoordsFromCamera();
-      if(myLightPositionFixToCamera)
-        {
-          displayMessage(QString("Light source position fixed to camera."), 3000);
-          updateRelativeCameraFromLightPosition();
-        }
-      else
-        {
-          displayMessage(QString("Light source position fixed to main scene."), 3000);
-          //updateLightCoordsFromCamera();
-        }
-      update();
+      myLightPositionFixToCamera = !myLightPositionFixToCamera;
+      setLightModeFixToCamera(myLightPositionFixToCamera);
     }
   
   if ( ( e->key() ==Qt::Key_O ) )
