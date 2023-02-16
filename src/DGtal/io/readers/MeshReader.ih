@@ -336,6 +336,10 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       trace.error() << "MeshReader : can't open " << filename << std::endl;
       throw dgtalio;
     }
+  material = MeshReader<TPoint>::readMaterial(input);
+  useMtllib = !material.empty();
+  input.close();
+  input.open (filename.c_str(), std::ifstream::in);
   std::getline( input, linestr );
   Index l = 0;
   for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )

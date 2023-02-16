@@ -6,7 +6,8 @@
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to 
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
-
+  - Add alternative to store material inside obj file in MeshReader and MeshWriter.
+    (Bertrand Kerautret, [#1685](https://github.com/DGtal-team/DGtal/pull/1685))
 
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly, 
