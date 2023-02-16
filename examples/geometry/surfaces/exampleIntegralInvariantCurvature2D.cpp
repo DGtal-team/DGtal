@@ -39,7 +39,8 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
- #include "DGtal/images/ImageHelper.h"
+#include "DGtal/images/ImageHelper.h"
+#include "DGtal/images/ImageSelector.h"
 
 /// Estimator
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"

@@ -42,7 +42,7 @@
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
-
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -60,7 +60,6 @@
 
 #include <iostream>
 #include <exception>
-#include <algorithm>
 #include <boost/version.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/static_assert.hpp>

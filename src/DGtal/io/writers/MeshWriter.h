@@ -111,13 +111,24 @@ namespace DGtal
      * 
      * @param[out] out the output stream of the exported OBJ object.
      * @param[out] outMTL the output stream associated to the material file.
-     * @param[in] nameMTLFile the file name of the material file.
+     * @param[in] nameMTLFile the file name of the material file. If an empty string is given, the material will be written inside the output stream.
      * @param[in] aMesh the Mesh object to be exported.
      * @return true if no errors occur.
      */
     
     static bool export2OBJ_colors(std::ostream &out, std::ostream &outMTL,
                                   const std::string nameMTLFile,
+                                  const  Mesh<TPoint>  &aMesh);
+
+     /** 
+     * Export a Mesh towards a OBJ format including face colors.
+     * The material containing face colors will be written inside the resulting .obj file.
+     * @param[out] out the output stream of the exported OBJ object.
+     * @param[in] aMesh the Mesh object to be exported.
+     * @return true if no errors occur.
+     */
+    
+    static bool export2OBJ_colors(std::ostream &out,
                                   const  Mesh<TPoint>  &aMesh);
     
     
