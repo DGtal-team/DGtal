@@ -393,8 +393,10 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         std::stringstream matPathName ;
         matPathName << path << name;
         std::ifstream is (matPathName.str());
-        material = MeshReader<TPoint>::readMaterial(is);
-        useMtllib = true;
+        if (is.good()){
+          material = MeshReader<TPoint>::readMaterial(is);
+          useMtllib = true;
+        }
       }
       else if (keyword ==  "usemtl")
       {
