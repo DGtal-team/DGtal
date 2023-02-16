@@ -40,7 +40,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include "DGtal/base/Common.h"
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CConstBidirectionalRange.h"

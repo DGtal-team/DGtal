@@ -36,6 +36,7 @@
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/graph/CGraphVisitor.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include <set>
 #include <iterator>
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,7 +50,7 @@ using namespace DGtal::concepts;
 // Functions for testing objects as graph.
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef ImageSelector < Z2i::Domain, int>::Type Image;
+typedef ImageContainerBySTLVector< Z2i::Domain, int> Image;
 void testBreadthFirstPropagation()
 {
   typedef Z2i::Point Point;

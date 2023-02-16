@@ -42,6 +42,7 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -53,7 +54,7 @@ using namespace DGtal::concepts;
 // Functions for testing objects as graph.
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef ImageSelector < Z2i::Domain, int>::Type Image;
+typedef ImageContainerBySTLVector< Z2i::Domain, int> Image;
 bool testDistancePropagation()
 {
   typedef Z2i::Space Space;
