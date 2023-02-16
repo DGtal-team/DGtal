@@ -962,9 +962,32 @@ namespace DGtal
 
     void  rotateDomain(Image2DDomainD3D &anDom, double angle, ImageDirection rotationDir);
 
-
-
-
+    /**
+     * Change the light position mode (attached to camera or to the scence).
+     *
+     * @param fixedToCam if true (resp. false) the light position will be attached to the camera (resp. scene).
+     * @param verbose is set to true, it will display the current mode on the viewer.
+     **/
+    void setLightModeFixToCamera(bool fixedToCam, bool verbose = true) 
+    {
+      myLightPositionFixToCamera = fixedToCam;
+      updateLightCoordsFromCamera();
+      if(myLightPositionFixToCamera)
+        {
+          if (verbose)
+          {
+            displayMessage(QString("Light source position fixed to camera."), 3000);
+          }
+          updateRelativeCameraFromLightPosition();
+        }
+      else if (verbose) 
+      {
+        {
+          displayMessage(QString("Light source position fixed to main scene."), 3000);          
+        }
+        update();
+      }
+    };
     
 
     // ------------------------- Protected Datas ------------------------------
