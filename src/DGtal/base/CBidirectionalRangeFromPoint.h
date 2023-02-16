@@ -40,7 +40,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/base/CConstBidirectionalRangeFromPoint.h"

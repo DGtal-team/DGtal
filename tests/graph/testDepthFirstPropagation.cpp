@@ -39,6 +39,7 @@
 #include "DGtal/graph/CGraphVisitor.h"
 #include <set>
 #include <iterator>
+#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -50,7 +51,7 @@ using namespace DGtal::concepts;
 // Functions for testing objects as graph.
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef ImageSelector < Z2i::Domain, int>::Type Image;
+typedef ImageContainerBySTLVector< Z2i::Domain, int> Image;
 void testDepthFirstPropagation()
 {
   typedef Z2i::Point Point;
@@ -79,7 +80,7 @@ void testDepthFirstPropagation()
   Object obj(Z2i::dt4_8, shape_set);
   
   
-  HueShadeColorMap<int,3> cmap_grad( 0, obj.size());
+  HueShadeColorMap<int,3> cmap_grad( 0, (int)obj.size());
   //cmap_grad.addColor( Color( 0, 0, 200 ) );
   //cmap_grad.addColor( Color( 0, 0, 50 ) );
   

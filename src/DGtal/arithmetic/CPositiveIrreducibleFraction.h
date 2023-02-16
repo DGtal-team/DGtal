@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include <vector>
-#include "DGtal/base/Common.h"
 #include "DGtal/base/CBackInsertable.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/CInteger.h"
