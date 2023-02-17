@@ -26,7 +26,7 @@ set(Boost_FOUND FALSE)
 
 target_compile_definitions(DGtal PUBLIC ${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
 # SYSTEM to avoid warnings from boost.
-#target_include_directories(DGtal SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
+target_include_directories(DGtal PUBLIC ${Boost_INCLUDE_DIR})
 target_link_libraries(DGtal PRIVATE Boost::boost)
 
 # -----------------------------------------------------------------------------
