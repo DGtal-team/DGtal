@@ -17,10 +17,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DGTAL_CMAKE_DIR}/Modules")
 find_dependency(Boost REQUIRED
   @Boost_HINTS@
   )
-find_dependency(ZLIB REQUIRED
-  @ZLIB_HINTS@
-  )
 
+Find_dependency(ZLIB REQUIRED
+    @ZLIB_HINTS@
+    )
+    
 set(WITH_EIGEN 1)
 include(eigen)
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)

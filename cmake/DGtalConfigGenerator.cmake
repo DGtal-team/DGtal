@@ -58,6 +58,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/FindQGLVIEWER.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/FindGMP.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/zlib.cmake"
   )
 file(COPY ${_find_cmake_files}
   DESTINATION "${PROJECT_BINARY_DIR}/Modules")
