@@ -27,6 +27,10 @@
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
     [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
 
+- *Geometry package*
+  - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
+    [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
