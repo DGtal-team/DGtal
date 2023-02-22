@@ -43,7 +43,7 @@ jobs:
 
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'
-       run: conan profile new default --detect
+       run: conan profile detect
 
      - name: Get white list of tests
        run: |
