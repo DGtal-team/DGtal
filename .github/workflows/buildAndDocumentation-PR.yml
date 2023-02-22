@@ -40,6 +40,8 @@ jobs:
        if: matrix.os == 'windows-latest'
        id: conan
        uses: turtlebrowser/get-conan@main
+       with:
+         version: 1.50.0
 
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'

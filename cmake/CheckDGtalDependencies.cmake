@@ -31,7 +31,7 @@ if (WIN32)
                     BUILD missing
                     REMOTE conancenter
                     SETTINGS ${settings})
-ENDIF()
+endif()
 
 # -----------------------------------------------------------------------------
 # Looking for boost
