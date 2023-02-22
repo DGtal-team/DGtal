@@ -33,6 +33,7 @@ if (ENABLE_CONAN)
                                  itk/5.1.2
                                  cairo/1.17.2
                                  libpng/1.6.39  #cario/itk bug
+                                 libiconv/1.17  #cario/itk bug
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
