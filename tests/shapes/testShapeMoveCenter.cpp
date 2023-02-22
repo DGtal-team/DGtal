@@ -55,13 +55,13 @@ typedef Z2i::Space     Space;
 typedef Z2i::Point     Point;
 typedef Z2i::RealPoint RealPoint;
 
-typedef AccFlower2D<Space>  AccFlower;
-typedef Astroid2D<Space>    Astroid;
-typedef Ball2D<Space>       Ball;
-typedef Ellipse2D<Space>    Ellipse;
-typedef Flower2D<Space>     Flower;
-typedef Lemniscate2D<Space> Lemniscate;
-typedef NGon2D<Space>       NGon;
+typedef AccFlower2D<Space>  MyAccFlower;
+typedef Astroid2D<Space>    MyAstroid;
+typedef Ball2D<Space>       MyBall;
+typedef Ellipse2D<Space>    MyEllipse;
+typedef Flower2D<Space>     MyFlower;
+typedef Lemniscate2D<Space> MyLemniscate;
+typedef NGon2D<Space>       MyNGon;
 
 typedef ImplicitBall<Space>             BallImplicit;
 typedef ImplicitHyperCube<Space>        HyperCubeImplicit;
@@ -72,45 +72,45 @@ template<typename Shape>
 Shape createShape( const RealPoint& center, const RealPoint& radii );
 
 template<>
-AccFlower createShape( const RealPoint& center, const RealPoint& radii )
+MyAccFlower createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return AccFlower( center, radii[0], radii[1], 12, 2. );
+  return MyAccFlower( center, radii[0], radii[1], 12, 2. );
 }
 
 template<>
-Astroid createShape( const RealPoint& center, const RealPoint& radii )
+MyAstroid createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Astroid( center, radii[0], radii[1] );
+  return MyAstroid( center, radii[0], radii[1] );
 }
 
 template<>
-Ball createShape( const RealPoint& center, const RealPoint& radii )
+MyBall createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Ball( center, radii[0] );
+  return MyBall( center, radii[0] );
 }
 
 template<>
-Ellipse createShape( const RealPoint& center, const RealPoint& radii )
+MyEllipse createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Ellipse( center, radii[0], radii[1], 2. );
+  return MyEllipse( center, radii[0], radii[1], 2. );
 }
 
 template<>
-Flower createShape( const RealPoint& center, const RealPoint& radii )
+MyFlower createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Flower( center, radii[0], radii[1], 5, 2. );
+  return MyFlower( center, radii[0], radii[1], 5, 2. );
 }
 
 template<>
-Lemniscate createShape( const RealPoint& center, const RealPoint& radii )
+MyLemniscate createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return Lemniscate( center, radii[0] );
+  return MyLemniscate( center, radii[0] );
 }
 
 template<>
-NGon createShape( const RealPoint& center, const RealPoint& radii )
+MyNGon createShape( const RealPoint& center, const RealPoint& radii )
 {
-  return NGon( center, radii[0], 20, 2. );
+  return MyNGon( center, radii[0], 20, 2. );
 }
 
 template<>
@@ -141,7 +141,7 @@ std::uniform_real_distribution<double> unif(-1000000.,1000000.);
 std::default_random_engine re;
 
 TEMPLATE_TEST_CASE("Star shapes", "move() method",
-                    AccFlower, Astroid, Ball, Ellipse, Flower, Lemniscate, NGon,
+                    MyAccFlower, MyAstroid, MyBall, MyEllipse, MyFlower, MyLemniscate, MyNGon,
                     BallImplicit, HyperCubeImplicit, Norm1BallImplicit, RoundedHyperCubeImplicit)
 {
   const double centerX = unif(re);
