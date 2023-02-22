@@ -29,6 +29,7 @@ if (ENABLE_CONAN)
                                  boost/1.81.0
                                  gmp/6.2.1
                                  fftw/3.3.9
+                                 openssl/1.1.1s
                                  itk/5.1.2
                                  cairo/1.7.6
                       OPTIONS boost:header_only=True
