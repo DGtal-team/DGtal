@@ -10,8 +10,7 @@ message(STATUS "DGtal required dependencies: ")
 # Mandatory deps via conan on windows
 # -----------------------------------------------------------------------------
 option(ENABLE_CONAN "Enable conan for deps discovery (used for windows CI for instance) features." OFF)
-if (WIN32)
- if (ENABLE_CONAN)
+if (ENABLE_CONAN)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
   list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
@@ -26,6 +25,9 @@ if (WIN32)
   conan_cmake_configure(REQUIRES zlib/1.2.13
                                  boost/1.81.0
                                  gmp/6.2.1
+                                 fftw/3.3.9
+                                 itk/5.1.2
+                                 cairo/1.7.6
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
@@ -34,7 +36,6 @@ if (WIN32)
                     BUILD missing
                     REMOTE conancenter
                     SETTINGS ${settings})
-  endif()
 endif()
 
 # -----------------------------------------------------------------------------
