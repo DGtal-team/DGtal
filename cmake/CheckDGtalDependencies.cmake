@@ -6,30 +6,32 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal required dependencies: ")
 
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+if (WINDOWS)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+  list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+  if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
                 "${CMAKE_BINARY_DIR}/conan.cmake"
                 TLS_VERIFY ON)
-endif()
+  endif()
 
-include(${CMAKE_BINARY_DIR}/conan.cmake)
+  include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_configure(REQUIRES zlib/1.2.13
+  conan_cmake_configure(REQUIRES zlib/1.2.13
                       GENERATORS cmake_find_package)
 
-conan_cmake_configure(REQUIRES boost/1.81.0
+  conan_cmake_configure(REQUIRES boost/1.81.0
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
-conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE .
+  conan_cmake_autodetect(settings)
+  conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
                     SETTINGS ${settings})
+ENDIF()
 
 # -----------------------------------------------------------------------------
 # Looking for boost
