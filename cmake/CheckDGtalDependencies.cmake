@@ -39,6 +39,8 @@ if (ENABLE_CONAN)
                     BUILD missing
                     REMOTE conancenter
                     SETTINGS ${settings})
+else()
+  message(STATUS "Conan disabled")
 endif()
 
 # -----------------------------------------------------------------------------
