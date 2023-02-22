@@ -23,9 +23,7 @@ if (WIN32)
   include(${CMAKE_BINARY_DIR}/conan.cmake)
 
   conan_cmake_configure(REQUIRES zlib/1.2.13
-                      GENERATORS cmake_find_package)
-
-  conan_cmake_configure(REQUIRES boost/1.81.0
+                                 boost/1.81.0
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
