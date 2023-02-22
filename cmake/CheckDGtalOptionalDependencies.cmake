@@ -19,7 +19,7 @@ option(WITH_ITK "With Insight Toolkit ITK." OFF)
 option(WITH_CAIRO "With CairoGraphics." OFF)
 option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
-option(WITH_PATATE "With Patate library for geometry OFF (Eigen required)." processing)
+option(WITH_PATATE "With Patate library for geometry processing (Eigen required)." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 
 #----------------------------------

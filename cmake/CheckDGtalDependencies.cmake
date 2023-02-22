@@ -10,7 +10,10 @@ message(STATUS "DGtal required dependencies: ")
 # Mandatory deps via conan on windows
 # -----------------------------------------------------------------------------
 option(ENABLE_CONAN "Enable conan for deps discovery (used for windows CI for instance) features." OFF)
+
+
 if (ENABLE_CONAN)
+  message(STATUS  "Conan enabled for deps")
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
   list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
   if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
