@@ -7,7 +7,7 @@ message(STATUS "DGtal required dependencies: ")
 
 
 # -----------------------------------------------------------------------------
-# Mandatory deps via conan on windows
+# Mandatory and optional deps via conan
 # -----------------------------------------------------------------------------
 option(ENABLE_CONAN "Enable conan for deps discovery (used for windows CI for instance) features." OFF)
 
@@ -31,7 +31,7 @@ if (ENABLE_CONAN)
                                  fftw/3.3.9
                                  openssl/1.1.1s
                                  itk/5.1.2
-                                 cairo/1.7.6
+                                 cairo/1.17.6
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
