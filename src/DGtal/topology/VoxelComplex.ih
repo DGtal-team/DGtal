@@ -814,8 +814,7 @@ typename DGtal::VoxelComplex<TKSpace, TCellContainer>::CliqueContainer
 DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
     const Dimension d, const Parent &cubical, bool verbose) const
 {
-#ifdef WITH_OPENMP
-
+#if defined(WITH_OPENMP) && !defined(WIN32) 
     ASSERT(dimension >= 0 && dimension <= 3);
     CliqueContainer critical;
 
