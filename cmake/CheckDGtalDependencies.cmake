@@ -31,7 +31,7 @@ if (ENABLE_CONAN)
                                  fftw/3.3.9
                                  openssl/1.1.1s
                                  itk/5.1.2
-                                 cairo/1.17.6
+                                 cairo/1.17.2
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
