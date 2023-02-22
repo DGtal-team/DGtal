@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.11)
 cmake_policy(SET CMP0057 NEW) # the new interpretation of IN_LIST is by default not set (at least until  3.21.1).
-project (DGtal 1.4.beta)
+project (DGtal VERSION 1.4.beta)
 
 # -----------------------------------------------------------------------------
 # By default, do not warn when built on machines using only VS Express:
