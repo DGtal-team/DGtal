@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
      - uses: actions/checkout@v3
@@ -35,7 +35,6 @@ jobs:
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
        run: brew install boost ninja gmp libomp
-
 
      - name: Get white list of tests
        run: |
@@ -57,11 +56,17 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
+     - name: Configure CMake (windows)
+       if: matrix.os == 'windows-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+
      - name: Build
        working-directory: ${{runner.workspace}}/build
        shell: bash
        # Execute the build.  You can specify a specific target with "--target <NAME>"
-       run: cmake --build . --config $BUILD_TYPE
+       run: cmake --build . --config $BUILD_TYPE -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Test
        working-directory: ${{runner.workspace}}/build
