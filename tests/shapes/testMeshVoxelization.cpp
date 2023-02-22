@@ -24,7 +24,6 @@
  *
  * This file is part of the DGtal library.
  */
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "ConfigTest.h"

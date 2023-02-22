@@ -25,7 +25,6 @@
  *
  * This file is part of the DGtal library.
  */
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <limits>
 #include <unordered_set>
