@@ -36,6 +36,10 @@ jobs:
        if: matrix.os == 'macOS-latest'
        run: brew install boost ninja gmp libomp
 
+     - name: Install conan
+       id: conan
+       uses: turtlebrowser/get-conan@main
+
      - name: Get white list of tests
        run: |
            echo "::set-output name=WHITELIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
