@@ -30,7 +30,7 @@ endforeach()
 # -----------------------------------------------------------------------------
 # CPP11
 # -----------------------------------------------------------------------------
-set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 11)
+set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 17)
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED})
 else()
@@ -102,7 +102,7 @@ option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical oper
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
-option(NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF) 
+option(NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
 #------------------------------------------------------------------------------
