@@ -6,6 +6,9 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal required dependencies: ")
 
 
+# -----------------------------------------------------------------------------
+# Mandatory deps via conan on windows
+# -----------------------------------------------------------------------------
 if (WIN32)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
   list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
