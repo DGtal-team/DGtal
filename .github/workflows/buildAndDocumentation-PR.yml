@@ -41,9 +41,9 @@ jobs:
        id: conan
        uses: turtlebrowser/get-conan@main
 
-    - name: Create conan default profile
-      if: matrix.os == 'windows-latest'
-      run: conan profile new default --detect
+     - name: Create conan default profile
+       if: matrix.os == 'windows-latest'
+       run: conan profile new default --detect
 
      - name: Get white list of tests
        run: |
