@@ -29,9 +29,10 @@ if (ENABLE_CONAN)
                                  boost/1.81.0
                                  gmp/6.2.1
                                  fftw/3.3.9
-                                 openssl/1.1.1s
+                                 openssl/1.1.1s  #itk deps bug
                                  itk/5.1.2
                                  cairo/1.17.2
+                                 libpng/1.6.39  #cario/itk bug
                       OPTIONS boost:header_only=True
                       GENERATORS cmake_find_package)
 
