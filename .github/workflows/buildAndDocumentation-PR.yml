@@ -51,7 +51,7 @@ jobs:
        if: matrix.os == 'windows-latest'
        with:
          path: ~/.conan
-         key: ${{ runner.os }}-conan-${{ hashFiles('${{runner.workspace}}/DGtal/cmake/CheckDGtalDependencies.cmake') }}
+         key: ${{ runner.os }}-conan
          #-${{ hashFiles('.conan/settings.yml') }}
 
      - name: Get white list of tests
