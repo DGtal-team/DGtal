@@ -15,8 +15,13 @@ endif()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
+
+
+
 set(DGtal_VERSION_MAJOR 1)
 set(DGtal_VERSION_MINOR 4)
 set(DGtal_VERSION_PATCH beta)
