@@ -38,6 +38,9 @@ if (ENABLE_CONAN)
                     BUILD missing
                     REMOTE conancenter
                     SETTINGS ${settings})
+
+  set(FFTW3_DIR ${CONAN_FFTW_ROOT})
+  message(STATUS "Setting FFTW3_DIR to ${CONAN_FFTW_ROOT}")
 else()
   message(STATUS "Conan disabled")
 endif()
