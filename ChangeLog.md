@@ -4,14 +4,14 @@
 
 ## Changes
 - *IO*
-  - New method to change the mode of the light position in Viewer3D (fixed to 
+  - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
 
 - *Github*
-  - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly, 
-    [#1683](https://github.com/DGtal-team/DGtal/pull/1683)) 
+  - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
+    [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
 
 ## Bug fixes
 
@@ -20,8 +20,10 @@
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
     the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
-  - Removing unnecessary includes to speed-up compilation (David Coeurjolly, 
-    [#1680](https://github.com/DGtal-team/DGtal/pull/1680)) )
+  - Removing unnecessary includes to speed-up compilation (David Coeurjolly,
+    [#1680](https://github.com/DGtal-team/DGtal/pull/1680))
+  - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
+    [#1685](https://github.com/DGtal-team/DGtal/pull/1685)) 
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
