@@ -33,6 +33,7 @@ if (ENABLE_CONAN)
                                  libpng/1.6.39 #Explicit fix deps (compat issues)
                                  expat/2.5.0
                                  openssl/1.1.1s
+                                 libiconv/1.17
                       OPTIONS boost:header_only=True
                               gmp:enable_cxx=True
                       GENERATORS cmake_find_package)
