@@ -29,7 +29,7 @@ if (ENABLE_CONAN)
                                  gmp/6.2.1
                                  fftw/3.3.9
                                  cairo/1.17.6
-                                 itk/5.1.2
+                                 itk/5.1.0
                                  libpng/1.6.39 #Explicit fix deps (compat issues)
                                  expat/2.5.0
                                  openssl/1.1.1s
