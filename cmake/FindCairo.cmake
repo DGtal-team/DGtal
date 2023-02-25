@@ -23,7 +23,7 @@ FIND_PATH(CAIRO_INCLUDE_DIRS cairo.h
 )
 
 
-find_library(CAIRO_LIBRAIRIES
+find_library(CAIRO_LIBRARIES
              NAMES cairo
              PATHS /usr/lib
                   /usr/local/lib
