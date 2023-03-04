@@ -30,7 +30,7 @@ endforeach()
 # -----------------------------------------------------------------------------
 # CPP11
 # -----------------------------------------------------------------------------
-set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 11)
+set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 17)
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED})
 else()
