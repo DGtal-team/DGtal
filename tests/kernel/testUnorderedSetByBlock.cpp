@@ -61,9 +61,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
   typedef std::unordered_set< Point >      StdUnorderedSet;
   typedef UnorderedSetByBlock< Point >     BlockUnorderedSet;
 
-  const int nb_inserted = 100;
-  const int nb_sought   = 200;
-  const int nb_erased   = 100;
+  const size_t nb_inserted = 100;
+  const size_t nb_sought   = 200;
+  const size_t nb_erased   = 100;
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
@@ -96,7 +96,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( int i = 0; i < nb_sought; i++ )
+    for ( auto i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -284,7 +284,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( int i = 0; i < nb_sought; i++ )
+    for ( auto i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -306,9 +306,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    int std_nb_value_ok = 0;
-    int blk_nb_value_ok = 0;
-    for ( int i = 0; i < nb_sought; i++ )
+    size_t std_nb_value_ok = 0;
+    size_t blk_nb_value_ok = 0;
+    for ( auto i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         const auto stdIt = stdSet.find( p );
@@ -343,9 +343,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
   WHEN( "Erasing elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are left" ) {
     std::vector< Point > stdErase;
     std::vector< Point > blkErase;
-    int std_nb_erase_ok = 0;
-    int blk_nb_erase_ok = 0;
-    for ( int i = 0; i < nb_erased; i++ )
+    size_t std_nb_erase_ok = 0;
+    size_t blk_nb_erase_ok = 0;
+    for ( auto i = 0; i < nb_erased; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         auto stdFindIt   = stdSet.find ( p );
@@ -437,13 +437,13 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   typedef Splitter< Point, DGtal::uint64_t >       Splitter64;
   typedef UnorderedSetByBlock< Point, Splitter64 > BlockUnorderedSet;
 
-  const int nb_inserted = 10000;
-  const int nb_sought   = 200;
-  const int nb_erased   = 100;
+  const size_t nb_inserted = 10000;
+  const size_t nb_sought   = 200;
+  const size_t nb_erased   = 100;
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
-  for ( int i = 0; i < nb_inserted; i++ )
+  for ( auto i = 0; i < nb_inserted; i++ )
     {
       Point p = randomPoint<Point>( 200 );
       stdSet.insert( p );
@@ -472,7 +472,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( int i = 0; i < nb_sought; i++ )
+    for ( auto i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -626,9 +626,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
   typedef Splitter< Point, DGtal::uint64_t >       Splitter64;
   typedef UnorderedSetByBlock< Point, Splitter64 > BlockUnorderedSet;
 
-  const int nb_inserted = 40000;
-  const int nb_sought   = 2000;
-  const int nb_erased   = 1000;
+  const size_t nb_inserted = 40000;
+  const size_t nb_sought   = 2000;
+  const size_t nb_erased   = 1000;
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
