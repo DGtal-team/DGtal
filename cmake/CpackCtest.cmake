@@ -42,10 +42,14 @@ if (BUILD_TESTING)
   ENABLE_TESTING()
   include(CTest)
   if (CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
+         -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
+         -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long\
+          -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings")
   endif()
   if (CMAKE_COMPILER_IS_GNUCC)
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -Wextra -W -Wno-unknown-pragmas -Wno-long-long -pedantic -fprofile-arcs -ftest-coverage")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -Wextra -W -Wno-unknown-pragmas\
+        -Wno-long-long -pedantic")
   endif()
   add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
 else()
