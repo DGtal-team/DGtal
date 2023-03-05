@@ -443,7 +443,7 @@ namespace DGtal
     /// @note all 2-cells have the same weight for the data term.
     void setUp( double a, double l )
     {
-      const Dimension N = g2.size();
+      const Dimension N = (Dimension)g2.size();
       alpha     = a;
       lambda    = l;
       alpha_Id2 = alpha * ptrCalculus->template identity<2, PRIMAL>();

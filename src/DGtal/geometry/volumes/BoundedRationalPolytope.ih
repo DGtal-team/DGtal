@@ -424,7 +424,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
       B.push_back( b );
       I.push_back( large );
       myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
-      return A.size() - 1;
+      return static_cast<unsigned int>(A.size() - 1);
     }
   else
     {
@@ -432,7 +432,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
       B[ k ] = std::min( B[ k ], b );
       I[ k ] = large;
       myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
-      return k;
+      return static_cast<unsigned int>(k);
     }
 }
 //-----------------------------------------------------------------------------
