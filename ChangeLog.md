@@ -28,7 +28,9 @@
     [#1680](https://github.com/DGtal-team/DGtal/pull/1680))
   - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
     [#1685](https://github.com/DGtal-team/DGtal/pull/1685))
-  - Many warning fixed (due to c++17 upgrade) (David Coeurjolly,
+  - Many warning fixed (due to c++17 upgrade. (David Coeurjolly,
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+  - WITH_COVERAGE option removed. (David Coeurjolly,
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
 
 - *Topology package*
