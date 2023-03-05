@@ -372,7 +372,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
       B.push_back( b );
       I.push_back( large );
       myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
-      return A.size() - 1;
+      return (unsigned int)(A.size() - 1);
     }
   else
     {
@@ -380,7 +380,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
       B[ k ] = std::min( B[ k ], b );
       I[ k ] = large;
       myValidEdgeConstraints = myValidEdgeConstraints && valid_edge_constraint; // a cut might invalidate an edge constraint
-      return k;
+      return (unsigned int)k;
     }
 }
 //-----------------------------------------------------------------------------
@@ -894,7 +894,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-unsigned int
+size_t
 DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
 {
   return A.size();

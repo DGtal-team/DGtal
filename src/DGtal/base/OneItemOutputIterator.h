@@ -56,10 +56,17 @@ namespace DGtal
    * @tparam T at least a default constructible, copy constuctible and assignable type. 
    */
   template <typename T>
-  class OneItemOutputIterator :
-    public std::iterator<std::output_iterator_tag,void,void,void,void>  
+  class OneItemOutputIterator//: public std::iterator<std::output_iterator_tag,void,void,void,void>
   {
 
+  public:
+    using iterator_category = std::output_iterator_tag;
+    using value_type = void;
+    using difference_type = void;
+    using pointer = void;
+    using reference = void;
+
+    
     BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<T> )); 
     BOOST_CONCEPT_ASSERT(( boost::CopyConstructible<T> )); 
     BOOST_CONCEPT_ASSERT(( boost::Assignable<T> ));

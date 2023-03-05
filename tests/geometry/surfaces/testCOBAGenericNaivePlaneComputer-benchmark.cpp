@@ -81,7 +81,7 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
   unsigned int nb = 0;
   unsigned int nbok = 0;
   unsigned int nbchanges = 0;
-  unsigned int complexity = plane.complexity();
+  auto complexity = plane.complexity();
   while ( nb != nbpoints )
     {
       p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
@@ -91,9 +91,9 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+        case 0: p[ 0 ] = static_cast<typename Point::Component>(NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) )); break;
+        case 1: p[ 1 ] = static_cast<typename Point::Component>(NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) )); break;
+        case 2: p[ 2 ] = static_cast<typename Point::Component>(NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ))); break;
       } 
       bool ok = plane.extend( p ); // should be ok
       ++nb; nbok += ok ? 1 : 0;

@@ -69,8 +69,8 @@ namespace DGtal
     {
       if ( DSS->isInDSS ( p ) )
       {
-        unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) ) + 1;
-        unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
+        size_t pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) ) + 1;
+        size_t dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
         SegmentComputer comp ( *DSS );
         partial = myFunctor ( comp, pos, dssLen );
         tangent += partial;
@@ -96,7 +96,7 @@ namespace DGtal
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
     for ( ; DSS != lastDSS; ++DSS )
     {
-      unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() );
+      size_t dssLen = std::distance ( DSS.begin(), DSS.end() );
       SegmentComputer comp ( *DSS );
       for ( unsigned int i = 0; i < dssLen; i++ )
         outValues[ std::distance ( itb, DSS.begin() ) + i ] += myFunctor ( comp, i + 1, dssLen + 1 );

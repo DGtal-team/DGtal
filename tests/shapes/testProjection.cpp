@@ -139,7 +139,7 @@ bool test_shape(Shape& shape, const double h, const double epsilon)
   	functors::SCellToInnerPoint<KSpace> sCellToInnerPoint(kspace);
     functors::SCellToOuterPoint<KSpace> sCellToOuterPoint(kspace);
 
-    const int prev = ( i + sCells0.size() - 3 ) % sCells0.size(), next = (i + 3) % sCells0.size();
+    auto prev = ( i + sCells0.size() - 3 ) % sCells0.size(), next = (i + 3) % sCells0.size();
 
     RealPoint inner_prev = sCellToInnerPoint( sCells0[prev] );
     RealPoint outer_prev = sCellToOuterPoint( sCells0[prev] );

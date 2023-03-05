@@ -78,13 +78,12 @@ namespace DGtal
     /// @return its uint64 representation.
     static unsigned long long mpz_get_ull(mpz_t n)
     {
-      unsigned int lo, hi;
       mpz_t tmp;
       mpz_init( tmp );
       mpz_mod_2exp( tmp, n, 64 );   /* tmp = (lower 64 bits of n) */
-      lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */ 
+      auto lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */
       mpz_div_2exp( tmp, tmp, 32 ); /* tmp >>= 32 */
-      hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
+      auto hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
       mpz_clear( tmp );
       return (((unsigned long long)hi) << 32) + lo;
     }
@@ -198,11 +197,11 @@ namespace DGtal
     /// @return the same integer
     static DGtal::int32_t cast( DGtal::BigInteger i ) 
     {
-      DGtal::int32_t r = i.get_si();
+      auto r = i.get_si();
       if ( DGtal::BigInteger( r ) != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
-      return r;
+      return (DGtal::int32_t)r;
     }
 
     /// Conversion of a lattice point.

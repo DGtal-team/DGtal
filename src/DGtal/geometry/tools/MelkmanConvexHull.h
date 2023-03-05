@@ -191,7 +191,7 @@ namespace DGtal
     /**
      * @return the nomber of points constituing the convex hull.
      **/
-    unsigned int size() const;
+    size_t size() const;
     
     /**
      * clear the current content of the convex hull.
