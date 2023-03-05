@@ -70,7 +70,7 @@ SCENARIO( "IntegralIntervals< int > unit tests", "[intervals]" )
           {
             std::cout << "Bad count #V=" << V.size() << " #X=" << X.size()
                       << std::endl;
-            for ( auto i : X ) std::cout << " " << i;
+            for ( auto j : X ) std::cout << " " << j;
             std::cout << std::endl;
             break;
           }
@@ -103,7 +103,7 @@ SCENARIO( "IntegralIntervals< int > unit tests", "[intervals]" )
           {
             std::cout << "Bad count #V=" << V.size() << " #X=" << X.size()
                       << std::endl;
-            for ( auto i : X ) std::cout << " " << i;
+            for ( auto j : X ) std::cout << " " << j;
             std::cout << std::endl;
             break;
           }
