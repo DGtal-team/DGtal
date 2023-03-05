@@ -775,8 +775,8 @@ namespace functors
      *
      */
 
-    FlipDomainAxis(const TDomain &aSourceDomain, const std::vector<Size> & axisFlipped): mySourceDomain(aSourceDomain),
-                                                                                         myAxisFlipped(axisFlipped){
+    FlipDomainAxis(const TDomain &aSourceDomain, const std::vector<Dimension> & axisFlipped): mySourceDomain(aSourceDomain),
+                                                                                            myAxisFlipped(axisFlipped){
     };
 
 
@@ -804,7 +804,7 @@ namespace functors
 
   private:
     TDomain mySourceDomain;
-    std::vector<Size> myAxisFlipped;
+    std::vector<Dimension> myAxisFlipped;
  };
 
 

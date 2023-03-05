@@ -76,9 +76,9 @@ namespace DGtal
     for ( auto it = begin ; it != end; ++it )
     {
       // the returned type is signed but dssLen should never be negative
-      unsigned int dssLen = std::distance ( it->begin(), it->end() ) + 1;
+      const auto dssLen = std::distance ( it->begin(), it->end() ) + 1;
       prev = partial;
-      int pos = myDSSFilter. position ( *it, p );
+      const auto pos = myDSSFilter. position ( *it, p );
       partial = myFunctor ( *it, pos, dssLen );
       if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
         partial.first = -partial.first;
@@ -105,8 +105,8 @@ namespace DGtal
         if ( ! DSS->isInDSS ( *orphan ) && myDSSFilter.admissibility ( *DSS, *orphan ) )
         {
           // the returned type is signed but dssLen should never be negative
-          unsigned int dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
-          int pos = myDSSFilter. position ( *DSS, *orphan );
+          const auto dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
+          const auto pos = myDSSFilter. position ( *DSS, *orphan );
           outValues.insert ( std::make_pair ( *orphan,  myFunctor ( *DSS, pos, dssLen ) ) );
         }
       }
@@ -138,10 +138,10 @@ namespace DGtal
       if ( DSS->isInDSS ( p ) )
       {
         // the returned type is signed but dssLen should never be negative
-        unsigned int dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
+        const auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
         prev = partial;
         // the returned type is signed but pos should never be negative
-        unsigned int pos = std::distance ( DSS.begin(), std::find ( DSS.begin ( ), DSS.end ( ), p ) ) + 1;
+        const auto  pos = std::distance ( DSS.begin(), std::find ( DSS.begin ( ), DSS.end ( ), p ) ) + 1;
         partial = myFunctor ( *DSS, pos, dssLen );
         if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
 	      partial.first = -partial.first;

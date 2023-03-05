@@ -123,10 +123,10 @@ void zlib_base::after(const char*& src_begin, char*& dest_begin, bool compress)
             static_cast<zlib::uint>(next_in - src_begin) :
             static_cast<zlib::uint>(next_out - dest_begin);
         if (length > 0)
-            crc_ = crc_imp_ = crc32(crc_imp_, buf, length);
+            crc_ = crc_imp_ = static_cast<zlib::ulong>(crc32(crc_imp_, buf, length));
     }
-    total_in_ = s->total_in;
-    total_out_ = s->total_out;
+    total_in_ = static_cast<int>(s->total_in);
+    total_out_ = static_cast<int>(s->total_out);
     src_begin = const_cast<const char*>(next_in);
     dest_begin = next_out;
 }

@@ -306,7 +306,7 @@ typename DGtal::CellGeometry<TKSpace>::Size
 DGtal::CellGeometry<TKSpace>::
 nbCells() const
 {
-  return myKPoints.size();
+  return (DGtal::CellGeometry<TKSpace>::Size)myKPoints.size();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

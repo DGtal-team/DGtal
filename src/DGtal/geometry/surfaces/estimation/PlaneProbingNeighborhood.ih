@@ -74,7 +74,7 @@ inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay
 DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const
 {
-    int N = aPoints.size();
+    const auto N = aPoints.size();
     if (N == 1) {
         return aPoints[0];
     }

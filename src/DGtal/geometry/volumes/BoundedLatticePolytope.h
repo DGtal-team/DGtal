@@ -333,7 +333,7 @@ namespace DGtal
     const Domain& getDomain() const;
 
     /// @return the number of half-space constraints.
-    unsigned int nbHalfSpaces() const;
+    size_t nbHalfSpaces() const;
 
     /// @param i the index of the half-space constraint between 0 and
     /// `nbHalfSpaces()` (excluded).

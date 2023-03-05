@@ -233,7 +233,6 @@ while ( ! visitor.finished() )
       using Base::second;
 
       inline Node() = default;
-      inline Node( const Node & other ) = default;
       inline Node( const Vertex & v, Scalar d )
         : std::pair< Vertex, Scalar >( v, d )
       {}

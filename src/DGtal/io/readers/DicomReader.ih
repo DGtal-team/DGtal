@@ -118,9 +118,9 @@ importDicomFiles_( const std::vector<std::string> & filenames )
   
   const typename ItkImage::SizeType& inputSize =
     itkImage->GetLargestPossibleRegion().GetSize();
-  const unsigned int width = inputSize[0];
-  const unsigned int height = inputSize[1];
-  const unsigned int depth = inputSize[2];
+  const auto width = inputSize[0];
+  const auto height = inputSize[1];
+  const auto depth = inputSize[2];
   if ( !height || !width || !depth )
   {
     trace.error() << "DicomReader: one dimension is null (w=" << width
