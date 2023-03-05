@@ -85,7 +85,6 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
   typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Space Space;
   typedef typename Space::Point Point;
-  typedef HyperRectDomain<Space> Domain;
   
   MyBallPredicate<Point,Integer> predicate(aR);
   try 

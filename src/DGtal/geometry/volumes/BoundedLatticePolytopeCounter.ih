@@ -214,7 +214,6 @@ getPointsAlongAxis( PointRange& pts, Dimension a ) const
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
   Domain D( lo, hi );
-  Integer nb = 0;
   for ( auto&& p : D )
     {
       auto I  = intersectionIntervalAlongAxis( p, a );

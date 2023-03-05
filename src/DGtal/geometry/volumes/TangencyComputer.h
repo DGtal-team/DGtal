@@ -366,7 +366,7 @@ namespace DGtal
     };
 
     /// ShortestPaths may access to datas of TangencyComputer.
-    friend class ShortestPaths;
+    friend struct ShortestPaths;
     
     // ------------------------- Standard services --------------------------------
   public:

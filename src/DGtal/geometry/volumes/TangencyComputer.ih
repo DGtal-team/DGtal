@@ -314,11 +314,9 @@ expand()
   propagate( std::get<0>( elem ) );
   Index current;
   double d;
-  int nb = 0;
   while ( ! finished() )
     {
       elem = myQ.top();
-      nb += 1;
       current = std::get<0>( elem );
       d = std::get<2>( elem );
       ASSERT( ( ! ( myVisited[ current ] && ( d < myDistance[ current ] ) ) )

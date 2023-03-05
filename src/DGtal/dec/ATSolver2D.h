@@ -619,7 +619,6 @@ namespace DGtal
 	    trace.info() << "---------- Iteration "
 			 << i << "/" << iter_max << " ---------------" << std::endl;
 	  solveOneAlternateStep( );
-	  auto norms_v = checkV0();
 	  auto diffs_v = diffV0();
 	  if ( verbose >= 1 ) {
 	    trace.info() << "Variation |v^k+1 - v^k|_oo = " << std::get<0>( diffs_v )

@@ -253,7 +253,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
     Calculus calculus;
     // compute dimEmbedded-1 cells border
     std::map<Cell, double> cell_to_measure;
-    double primal_measure_accum = 0., dual_measure_accum = 0.;
 
     typedef std::map<Cell, int> CellsAccum;
     CellsAccum border_accum;
@@ -267,7 +266,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
         const int orth_dir = calculus.myKSpace.sOrthDir( cell_signed );
         const double measure = pow(h, dimEmbedded) * fabs( (*measure_it)[orth_dir] );
-        primal_measure_accum += measure;
         ++measure_it;
 
         calculus.insertSCell(cell_signed, measure, 1.);
@@ -310,7 +308,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
         {
             const double dual_measure = cell_to_measure.find( cell )->second;
             if(cell_to_measure.find( cell ) == cell_to_measure.end()) trace.warning() << "HOUUU" << std::endl;
-            dual_measure_accum += dual_measure;
             calculus.insertSCell(cell_signed, 1, dual_measure);
             continue;
         }
@@ -325,8 +322,6 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
         calculus.insertSCell(cell_signed, 1, dual_size);
     }
-
-    //ASSERT( primal_measure_accum == dual_measure_accum );
 
     calculus.updateIndexes();
 

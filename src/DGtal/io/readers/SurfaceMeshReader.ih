@@ -139,7 +139,6 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
   if ( ! normals.empty() )
     { // Build face normal map
       std::vector< RealVector > faces_normals;
-      Index i = 0;
       for ( auto face_n_indices : faces_normals_idx )
         { 
           RealVector n;

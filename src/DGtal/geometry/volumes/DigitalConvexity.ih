@@ -414,7 +414,6 @@ StarCvxH( const PointRange& X, Dimension axis ) const
 {
   PointRange cells;
   typedef BoundedLatticePolytopeCounter<Space> Counter;
-  typedef typename Counter::Interval           Interval;
   // Computes Minkowski sum of Z with hypercube
   PointRange Z = U( 0, X );
   for ( Dimension k = 1; k < dimension; k++ )
@@ -560,7 +559,6 @@ typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 FC_direct( const PointRange& Z ) const
 {
-  typedef std::size_t    Size;
   typedef typename LatticePolytope::Domain Domain;
   typedef typename Counter::Interval       Interval;
   PointRange cells;
@@ -579,7 +577,7 @@ FC_direct( const PointRange& Z ) const
   hi[ a ]  = lo[ a ];
   const Domain projD( lo, hi ); //< the projected domain of the polytope.
   const Point  One = Point::diagonal( 1 );
-  const Size  size = projD.size();
+  //const Size  size = projD.size(); //not USED
   std::unordered_map< Point, Interval > cellP;
   Point q;
   for ( auto&& p : projD )

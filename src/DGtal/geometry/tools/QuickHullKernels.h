@@ -201,7 +201,7 @@ namespace DGtal
     typedef IntegerConverter< dim, InternalInteger >   Inner;
     
     class HalfSpace {
-      friend class ConvexHullCommonKernel< dim, CoordinateInteger, InternalInteger >;
+      friend struct ConvexHullCommonKernel< dim, CoordinateInteger, InternalInteger >;
       InternalVector N; ///< the normal vector
       InternalScalar c; ///< the intercept
       HalfSpace( const InternalVector& aN, const InternalScalar aC )
@@ -260,7 +260,6 @@ namespace DGtal
       typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
       Matrix A;
       InternalVector N;
-      InternalScalar c;
       for ( Dimension i = 1; i < dimension; i++ )
         for ( Dimension j = 0; j < dimension; j++ )
           A.setComponent( i-1, j,
