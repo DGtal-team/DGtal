@@ -345,7 +345,7 @@ namespace DGtal
           }
           ForwardIterator myB;
           ForwardIterator myE;
-          unsigned int mySize;
+          size_t mySize;
         };
         WrapIt aConvexHull(itb, ite);
         double resThickness = std::numeric_limits<double>::max();

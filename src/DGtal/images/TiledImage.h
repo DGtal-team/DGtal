@@ -229,20 +229,19 @@ namespace DGtal
      * Specific TiledIterator on TiledImage.
      */
 
-    class TiledIterator : public
-    std::iterator<std::bidirectional_iterator_tag, Value, ptrdiff_t, Value*, Value&>
+    class TiledIterator
     {
 
       friend class TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy>;
 
     public:
-
-      /*typedef std::bidirectional_iterator_tag iterator_category; // ???
-        typedef Value value_type;
-        typedef ptrdiff_t difference_type; // ???
-        typedef Value* pointer;
-        typedef Value& reference;*/
-
+      
+      using iterator_category = std::bidirectional_iterator_tag;
+      using value_type = Value;
+      using difference_type = ptrdiff_t;
+      using pointer = Value*;
+      using reference = Value&;
+      
       typedef typename ImageContainer::Range::/*Output*/Iterator TiledRangeIterator;
       typedef typename Domain::Iterator BlockCoordsIterator;
 

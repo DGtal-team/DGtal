@@ -226,11 +226,11 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
 #ifdef WITH_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-  for(unsigned int i = 0; i < aMesh.nbFaces(); i++)
+  for(auto i = 0; i < aMesh.nbFaces(); i++)
   {
     DigitalSet currentSet{rawEmpty};
     MeshFace currentFace = aMesh.getFace(i);
-    for(unsigned int j=0; j + 2 < currentFace.size(); ++j)
+    for(auto j=0; j + 2 < currentFace.size(); ++j)
     {
       voxelize(currentSet, aMesh.getVertex(currentFace[0]),
                aMesh.getVertex(currentFace[j+1]),

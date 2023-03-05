@@ -474,7 +474,7 @@ namespace DGtal
     void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
       for ( Dimension k = 0; k < dimension; k++ )
-        out_p[ k ] = p[ k ];
+        out_p[ k ] = static_cast<typename OutputPoint::Component>(p[ k ]);
     }
 
   }; //   template < Dimension dim >  struct ConvexHullIntegralKernel {

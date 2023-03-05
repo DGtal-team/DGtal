@@ -106,7 +106,7 @@ typedef std::vector< Index >  Indices;
 typedef double                Scalar;
 typedef std::vector< Scalar > Scalars;
 
-Size pickPoint()
+int pickPoint()
 {
   if ( order.size() != digital_points.size() )
     {
@@ -117,9 +117,9 @@ Size pickPoint()
       current = 0;
     }
   if ( current == order.size() ) current = 0;
-  return order[ current++ ];
+  return static_cast<int>(order[ current++ ]);
 }
-Size pickOuterPoint()
+int pickOuterPoint()
 {
   if ( outer_order.size() != outer_digital_points.size() )
     {
@@ -130,7 +130,7 @@ Size pickOuterPoint()
       outer_current = 0;
     }
   if ( outer_current == outer_order.size() ) outer_current = 0;
-  return outer_order[ outer_current++ ];
+  return static_cast<int>(outer_order[ outer_current++ ]);
 }
 
 // ----------------------------------------------------------------------
@@ -671,7 +671,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] =
           local_tangency
           ? dconv.isFullySubconvex( P, local_LS )
@@ -761,7 +761,7 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] = dconv.isFullySubconvex( P, outer_LS );
       }
   else
@@ -830,7 +830,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] =
           local_tangency
           ? dconv.isFullySubconvex( P, local_LS )
@@ -923,7 +923,7 @@ void computeGlobalTangentDelaunayComplex()
     {
       auto Y = dcomplex.cellVertexPositions( c );
       auto P = dconv.makePolytope( Y );
-      if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+      if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
       is_cell_tangent[ c ] = dconv.isFullySubconvex( P, LS );
     }
     
@@ -1028,7 +1028,7 @@ void myCallback()
             std::ostringstream otext;
             otext << "Selected vertex = " << idx;
             ImGui::Text( "%s", otext.str().c_str() );
-            vertex_idx = idx;
+            vertex_idx = (Integer)idx;
           }
         else vertex_idx = -1;
       }

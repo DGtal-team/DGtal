@@ -30,8 +30,14 @@
 #pragma once
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #endif //NO_ADD_STBIMAGE_IMPLEMENT
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
+#pragma CLANG diagnostic push
+#pragma CLANG diagnostic ignored "-Wdeprecated"
 #include <stb/stb_image_write.h>
-#pragma GCC diagnostic warning "-Wdeprecated"
+#pragma GCC diagnostic pop
+#pragma CLANG diagnostic pop
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
