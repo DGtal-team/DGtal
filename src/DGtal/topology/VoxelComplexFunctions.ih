@@ -199,7 +199,7 @@ persistenceAsymetricThinningScheme(
   x_y.copySimplicityTable(vc);
 
   bool stability{false};
-  uint64_t generation{0};
+  unsigned int generation{0};
   auto xsize =  X.nbCells(3);
   auto xsize_old =  xsize;
   const bool close_it = true;
