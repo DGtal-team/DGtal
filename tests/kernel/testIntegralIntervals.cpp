@@ -138,7 +138,7 @@ SCENARIO( "IntegralIntervals< int > set operations tests", "[intervals]" )
   Intervals A_cap_B = A.set_intersection( B );
   Intervals A_minus_B = A.set_difference( B );
   Intervals A_delta_B = A.set_symmetric_difference( B );
-  bool A_cup_B_subset_A_cup_B = A_cup_B.includes( A_cup_B );
+  //bool A_cup_B_subset_A_cup_B = A_cup_B.includes( A_cup_B ); //not used 
   bool A_subset_A_cup_B = A_cup_B.includes( A );
   bool B_subset_A_cup_B = A_cup_B.includes( B );
   bool A_cap_B_subset_A_cup_B = A_cup_B.includes( A_cap_B );
