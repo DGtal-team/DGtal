@@ -41,6 +41,13 @@ if (BUILD_TESTING)
   message(STATUS "Build test files ENABLED")
   ENABLE_TESTING()
   include(CTest)
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
+       -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
+       -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long\
+        -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings")
+
+  endif()
   if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
          -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
@@ -50,6 +57,10 @@ if (BUILD_TESTING)
   if (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -Wextra -W -Wno-unknown-pragmas\
         -Wno-long-long -pedantic")
+  endif()
+  if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -Wextra -W -Wno-unknown-pragmas\
+      -Wno-long-long -pedantic")
   endif()
   add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
 else()
