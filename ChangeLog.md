@@ -29,7 +29,7 @@
   - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
     [#1685](https://github.com/DGtal-team/DGtal/pull/1685))
   - Many warning fixed (due to c++17 upgrade) (David Coeurjolly,
-    [#16xx](https://github.com/DGtal-team/DGtal/pull/1685))
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
