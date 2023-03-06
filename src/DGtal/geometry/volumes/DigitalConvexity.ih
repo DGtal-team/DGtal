@@ -175,8 +175,8 @@ displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE )
   if ( k != d+1 ) { out << "[SPLX INVALID]"; return; }
   Matrix M;
   for ( Dimension i = 0; i < d; ++i )
-    for ( Dimension k = 0; k < d; ++k )
-      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+    for ( Dimension kk = 0; kk < d; ++kk )
+      M.setComponent( i, kk, pts[ i ][ kk ] - pts[ d ][ kk ] );
   // A simplex has its vectors linearly independent.
   auto V = M.determinant();
   out << "[SPLX V=" << V;
@@ -413,7 +413,6 @@ DGtal::DigitalConvexity<TKSpace>::
 StarCvxH( const PointRange& X, Dimension axis ) const
 {
   PointRange cells;
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
   // Computes Minkowski sum of Z with hypercube
   PointRange Z = U( 0, X );
   for ( Dimension k = 1; k < dimension; k++ )
@@ -475,8 +474,6 @@ DGtal::DigitalConvexity<TKSpace>::
 sizeStarCvxH( const PointRange& X ) const
 {
   PointRange cells;
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
-  typedef typename Counter::Interval           Interval;
   // Computes Minkowski sum of Z with hypercube
   PointRange Z = U( 0, X );
   for ( Dimension k = 1; k < dimension; k++ )
@@ -560,7 +557,6 @@ DGtal::DigitalConvexity<TKSpace>::
 FC_direct( const PointRange& Z ) const
 {
   typedef typename LatticePolytope::Domain Domain;
-  typedef typename Counter::Interval       Interval;
   PointRange cells;
   // Computes Minkowski sum of Z with hypercube
   PointRange X( Z );
@@ -610,8 +606,8 @@ FC_direct( const PointRange& Z ) const
           auto     s = std::min( I.second, J.second );
           if ( f <= s )
             {
-              Point    q = p; q[ k ] += 1;
-              q_computed.push_back( q );
+              Point    qq = p; qq[ k ] += 1;
+              q_computed.push_back( qq );
               I_computed.push_back( Interval( f, s ) );
             }
         }
@@ -647,9 +643,9 @@ FC_direct( const PointRange& Z ) const
           if ( k == a ) continue;
           if ( ( p[ k ] & 0x1 ) != 0 ) continue; // if open along axis continue
           // if closed, check upper incident cells along direction k
-          Point q = p;  q[ k ] -= 1;
+          Point qq = p;  qq[ k ] -= 1;
           Point r = p;  r[ k ] += 1;
-          auto itq = skelP.find( q );
+          auto itq = skelP.find( qq );
           if ( itq != skelP.end() )
             {
               auto& W = itq->second;
@@ -862,7 +858,6 @@ isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const
   LatticePolytope Q = P + typename LatticePolytope::UnitSegment( 0 );
   for ( Dimension k = 1; k < dimension; k++ )
     Q = Q + typename LatticePolytope::UnitSegment( k );
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
   Counter C( Q );
   const auto cells = C.getLatticeCells( StarX.axis() );
   LatticeSet StarP( cells, StarX.axis() );

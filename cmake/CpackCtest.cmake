@@ -45,7 +45,7 @@ if (BUILD_TESTING)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
        -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
-       -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long\
+       -Wunused-parameter -Wunused-function   -Werror=type-limits     -Wunused  -Wno-long-long\
         -Wno-system-headers -Wno-deprecated -Wno-dtor-name -Woverloaded-virtual -Wwrite-strings")
 
     else()
@@ -54,7 +54,7 @@ if (BUILD_TESTING)
   if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
          -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
-         -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long\
+         -Wunused-parameter -Wunused-function  -Werror=type-limits      -Wunused  -Wno-long-long\
           -Wno-system-headers -Wno-deprecated -Wno-dtor-name -Woverloaded-virtual -Wwrite-strings")
   endif()
   if (CMAKE_COMPILER_IS_GNUCC)

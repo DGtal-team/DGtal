@@ -143,7 +143,7 @@ addCellsTouchingSegment( const Point& a, const Point& b )
 {
   const auto    V = b - a; 
   addCellsTouchingPoint( a );
-  for ( Integer k = 0; k < dimension; k++ )
+  for ( Dimension k = 0; k < dimension; k++ )
     {
       const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
       const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;

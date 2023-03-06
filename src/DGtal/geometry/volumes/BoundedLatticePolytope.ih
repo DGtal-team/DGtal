@@ -624,8 +624,8 @@ countWithin( Point lo, Point hi ) const
   Domain localD( lo, hi );
   for ( auto&& p : localD )
     {
-      auto I = C.intersectionIntervalAlongAxis( p, b );
-      nb    += I.second - I.first;
+      auto II = C.intersectionIntervalAlongAxis( p, b );
+      nb    += II.second - II.first;
     }
   return nb;
 }
@@ -644,8 +644,8 @@ countUpTo( Integer max) const
   Domain localD( lo, hi );
   for ( auto&& p : localD )
     {
-      auto I = C.intersectionIntervalAlongAxis( p, a );
-      nb    += I.second - I.first;
+      auto II = C.intersectionIntervalAlongAxis( p, a );
+      nb    += II.second - II.first;
       if ( nb >= max ) return max;
     }
   return nb;
@@ -676,10 +676,10 @@ getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const
   Domain localD( lo, hi );
   for ( auto&& p : localD )
     {
-      auto I = C.intersectionIntervalAlongAxis( p, a );
+      auto II = C.intersectionIntervalAlongAxis( p, a );
       Point q( 2*p - alpha_shift );
-      q[ a ] = 2*I.first - alpha_shift[ a ];
-      for ( Integer x = I.first; x < I.second; x++ )
+      q[ a ] = 2*II.first - alpha_shift[ a ];
+      for ( Integer x = II.first; x < II.second; x++ )
         {
           pts.push_back( q );
           q[ a ] += 2;
@@ -713,10 +713,10 @@ insertKPoints( PointSet& pts_set, const Point& alpha_shift ) const
   Domain localD( lo, hi );
   for ( auto&& p : localD )
     {
-      auto I = C.intersectionIntervalAlongAxis( p, a );
+      auto II = C.intersectionIntervalAlongAxis( p, a );
       Point q( 2*p - alpha_shift );
-      q[ a ] = 2*I.first - alpha_shift[ a ];
-      for ( Integer x = I.first; x < I.second; x++ )
+      q[ a ] = 2*II.first - alpha_shift[ a ];
+      for ( Integer x = II.first; x < II.second; x++ )
         {
           pts_set.insert( q );
           q[ a ] += 2;
@@ -750,9 +750,9 @@ getBoundaryPoints( std::vector<Point>& pts ) const
   Domain localD( lo, hi );
   for ( auto&& p : localD )
     {
-      auto I   = C  .interiorIntersectionIntervalAlongAxis( p, a );
+      auto II   = C  .interiorIntersectionIntervalAlongAxis( p, a );
       auto clI = clC.intersectionIntervalAlongAxis( p, a );
-      auto nbI   = I.second - I.first;
+      auto nbI   = II.second - II.first;
       auto nbclI = clI.second - clI.first;
       if ( nbI == nbclI ) continue;
       if ( nbI >  nbclI )
@@ -769,14 +769,14 @@ getBoundaryPoints( std::vector<Point>& pts ) const
         }
       else
         {
-          if ( clI.first < I.first )
+          if ( clI.first < II.first )
             {
               q[ a ] = clI.first;
               pts.push_back( q );
             }
-          if ( clI.second > I.second )
+          if ( clI.second > II.second )
             {
-              q[ a ] = I.second;
+              q[ a ] = II.second;
               pts.push_back( q );
             }
         }

@@ -652,8 +652,8 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
   auto CG = dconv.makeCellCover( P, 0, 2 );
   auto  L = dconv.StarCvxH( X, 0 );
   REQUIRE( CG.nbCells() == L.size() );  
-  for ( int i = 0; i < k; i++ )
-    for ( int j = i+1; j < k; j++ )
+  for ( unsigned int i = 0; i < k; i++ )
+    for ( unsigned int j = i+1; j < k; j++ )
       {
         std::vector< Point > Z { X[ i ], X[ j ] };
         const auto Q        = dconv.makePolytope( Z );
