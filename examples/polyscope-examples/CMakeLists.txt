@@ -9,9 +9,6 @@ endif()
 if(BUILD_SHARED_LIBS)
   message(FATAL_ERROR "Polyscope examples require static build of the DGtal. Please set BUILD_SHARED_LIBS variable to OFF")
 endif()
-if(NOT WITH_EIGEN)
-  message(FATAL_ERROR "Polyscope Polygonal Calculus examples require Eigen (WITH_EIGEN=true)")
-endif()
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)

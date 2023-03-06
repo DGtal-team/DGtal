@@ -512,10 +512,8 @@ void updateReconstructionFromCells( Point x, Point y,
 
 void updateReconstructionFromTangentConeLines( int vertex_idx )
 {
-  typedef QuickHull3D::IndexRange IndexRange;
   if ( digital_points.empty() ) return;
   if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
-  typedef std::size_t Size;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -535,7 +533,6 @@ void updateReconstructionFromTangentConeTriangles( int vertex_idx )
   typedef QuickHull3D::IndexRange IndexRange;
   if ( digital_points.empty() ) return;
   if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
-  typedef std::size_t Size;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -656,8 +653,6 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -746,8 +741,6 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
     local_X.push_back( outer_TC.point( idx ) );
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -815,8 +808,6 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -907,8 +898,6 @@ void computeGlobalTangentDelaunayComplex()
   trace.beginBlock( "Compute global tangent Delaunay complex" );
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, digital_points, false );
   if ( ! ok )
