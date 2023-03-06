@@ -177,7 +177,6 @@ SCENARIO( "BoundedRationalPolytope< Z3 > unit tests", "[rational_polytope][3d]" 
 {
   typedef SpaceND<3,int>                   Space;
   typedef Space::Point                     Point;
-  typedef Space::Vector                    Vector;
   typedef BoundedRationalPolytope< Space >  Polytope;
 
   GIVEN( "A tetrahedron P at (0,0,0), (5/2,0,0), (0,7/2,0), (0,0,3/2)" ) {

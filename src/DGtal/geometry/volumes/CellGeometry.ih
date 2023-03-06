@@ -60,7 +60,6 @@ CellGeometry( const KSpace & K,
     myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
     myVerbose( verbose )
 {
-  ASSERT( 0 <= myMinCellDim );
   ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
 }
@@ -71,7 +70,6 @@ DGtal::CellGeometry<TKSpace>::
 init( const KSpace & K,
       Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
 {
-  ASSERT( 0 <= myMinCellDim );
   ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
   myK = K;

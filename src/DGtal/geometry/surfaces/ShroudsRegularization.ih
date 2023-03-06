@@ -99,7 +99,6 @@ energySquaredCurvature()
   double E = 0.0;
   for ( Vertex v = 0; v < myT.size(); ++v )
     {
-      double area  = 1.0;
       const auto s = myPtrIdxSurface->surfel( v );
       const auto k = myPtrK->sOrthDir( s );
       for ( Dimension i = 0; i < 3; ++i )

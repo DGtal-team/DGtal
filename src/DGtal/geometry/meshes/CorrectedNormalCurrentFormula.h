@@ -290,6 +290,8 @@ namespace DGtal
     static
     Scalar mu1ConstantU( const RealPoints& pts, const RealVector& u )
     {
+      (void)pts; //not used parameter
+      (void)u;
       return 0.0;
     }
 
@@ -403,6 +405,10 @@ namespace DGtal
       const RealVector& ua, const RealVector& ub, const RealVector& uc,
       bool unit_u = false )
     {
+      (void)a; //not used
+      (void)b;
+      (void)c;
+      
       // Using non unitary interpolated normals give
       // MU2=1/2*det( uA, uB, uC )
       // When normals are unitary, it is the area of a spherical triangle.

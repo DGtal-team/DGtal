@@ -150,27 +150,27 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
   SECTION(
   "Testing Complete Voronoi Map from Discrete Bisector Function paper" )
   {
-    Point lowerBound( 0, 0 ), upperBound( 6, 7 );
-    Domain domain( lowerBound, upperBound );
-    DigitalSet set( domain );
-    for ( Point point : set.domain() )
+    Point _lowerBound( 0, 0 ), _upperBound( 6, 7 );
+    Domain _domain( _lowerBound, _upperBound );
+    DigitalSet _set( _domain );
+    for ( Point point : _set.domain() )
     {
       if ( point != Point( 1, 0 ) && point != Point( 5, 0 ) &&
            point != Point( 2, 2 ) && point != Point( 4, 4 ) &&
            point != Point( 0, 6 ) && point != Point( 6, 6 ) &&
            point != Point( 3, 7 ) )
-        set.insert( point );
+        _set.insert( point );
     }
 
     TImageContainer * brutForceVoronoiMap =
-    brut_force_voronoi_map_complete( set );
-    CompleteVMap vmap( set.domain(), set, Z2i::l2Metric );
+    brut_force_voronoi_map_complete( _set );
+    CompleteVMap _vmap( _set.domain(), _set, Z2i::l2Metric );
 
-    for ( Point point : set )
+    for ( Point point : _set )
     {
       std::unordered_set<Point> brut_force_set =
       brutForceVoronoiMap->operator()( point );
-      CompleteVMap::Value class_set = vmap( point );
+      CompleteVMap::Value class_set = _vmap( point );
 
       // Cheking that all voronoi sites from the brut force set are in the
       // algorithm set

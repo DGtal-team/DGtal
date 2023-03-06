@@ -322,7 +322,7 @@ getLatticeCells( Dimension a ) const
             }
         }
       // Add new columns to map Point -> column
-      for ( auto i = 0; i < q_computed.size(); ++i )
+      for ( typename Point::Index i = 0; i < q_computed.size(); ++i )
         {
           L[ q_computed[ i ] ] = I_computed[ i ];
         }

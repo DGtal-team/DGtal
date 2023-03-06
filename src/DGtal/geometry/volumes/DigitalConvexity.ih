@@ -333,7 +333,7 @@ is0Convex( const PointRange& X ) const
 {
   if ( X.empty() ) return true;
   const auto P = makePolytope( X );
-  return P.count() == X.size();
+  return P.count() == (DGtal::BoundedLatticePolytope<DGtal::SpaceND<3>>::Integer)X.size();
 }
 
 //-----------------------------------------------------------------------------
@@ -381,7 +381,7 @@ isFullyConvexFast( const PointRange& Z  ) const
   LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
   const auto nb_cells = C_Z.starOfPoints().size();
   const auto s = sizeStarCvxH( Z );
-  return s == nb_cells; 
+  return s == (Integer)nb_cells; 
 }
 
 //-----------------------------------------------------------------------------
@@ -612,7 +612,7 @@ FC_direct( const PointRange& Z ) const
             }
         }
       // Add new columns to map Point -> column
-      for ( auto i = 0; i < q_computed.size(); ++i )
+      for ( size_t i = 0; i < q_computed.size(); ++i )
         {
           cellP[ q_computed[ i ] ] = I_computed[ i ];
         }
@@ -630,6 +630,7 @@ FC_direct( const PointRange& Z ) const
                       << n << std::endl;
       std::vector< Interval > V( 1, I );
       auto result = skelP.insert( std::make_pair( p, V ) );
+      (void)result;//unused var;
     }
 
   // std::cout << "Extract skel" << std::endl;
@@ -910,7 +911,7 @@ isFullySubconvex( const Point& a, const Point& b,
   const auto    V = b - a;
   L_ab.insert( 2*a );
   // addCellsTouchingPoint( a );
-  for ( Integer k = 0; k < dimension; k++ )
+  for ( Dimension k = 0; k < dimension; k++ )
     {
       const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
       const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;

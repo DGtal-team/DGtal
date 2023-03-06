@@ -130,7 +130,7 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   myAlignPointelsIdx.resize( mySurfels.size() * 4 );
   myAlignPointels.resize( mySurfels.size() * 4 );
   
-  for(int i = 0; i < mySurfels.size(); ++i)
+  for(size_t i = 0; i < mySurfels.size(); ++i)
   {
     auto pointelsAround = myDigitalSurface->facesAroundVertex(mySurfels[i],true);
     ASSERT(pointelsAround.size() == 4);
@@ -323,7 +323,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
     myGradientAlign[ cell_p2 ] += cos_a2 * myNormals[i];
     myGradientAlign[ cell_p3 ] += cos_a3 * myNormals[i];
   }
-  for(auto i=0; i < myOriginalPositions.size(); ++i)
+  for(size_t i=0; i < myOriginalPositions.size(); ++i)
   {
     ASSERT(myNumberAdjEdgesToPointel[i] >0);
     myGradient[i] += 2.0*(*myBetas)[i] * myGradientAlign[i] / (double)myNumberAdjEdgesToPointel[i];
@@ -365,7 +365,7 @@ DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
   double last_energy = 0.0;
   double mydt=dt;
   bool first_iter = true;
-  for(auto i = 0; i < nbIters; ++i)
+  for(unsigned int i = 0; i < nbIters; ++i)
   {
     if (myConstantCoeffs)
       energy = computeGradient();
@@ -395,10 +395,10 @@ DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
     
     //One step advection
     SHG3::RealVector v;
-    for(int i=0; i < myRegularizedPositions.size(); ++i)
+    for(size_t ii=0; ii < myRegularizedPositions.size(); ++ii)
     {
-      v = - mydt * myGradient[i] ;
-      advectionFunc( myRegularizedPositions[i], myOriginalPositions[i], v );
+      v = - mydt * myGradient[ii] ;
+      advectionFunc( myRegularizedPositions[ii], myOriginalPositions[ii], v );
     }
   }
   return energy;

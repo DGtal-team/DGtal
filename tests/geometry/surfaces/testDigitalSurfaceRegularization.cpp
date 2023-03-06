@@ -183,7 +183,7 @@ TEST_CASE( "Testing DigitalSurfaceRegularization" )
     //Same with higher data attachment for x < 0.0
     //! [DigitalRegLocal]
     DigitalSurfaceRegularization<SH3::DigitalSurface> regul3(surface);
-    for(auto i = 0 ; i < original.size(); ++i)
+    for(size_t i = 0 ; i < original.size(); ++i)
       if (original[i][0]<0.0)
       {
         alphas[i] = 4.0;

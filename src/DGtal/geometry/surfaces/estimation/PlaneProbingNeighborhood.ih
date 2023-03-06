@@ -80,7 +80,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<Poi
     }
 
     PointOnProbingRay minPoint = aPoints[N-1];
-    for (int k = 0; k < N-1; ++k) {
+    for (Dimension k = 0; k < (Dimension)((int)N-1); ++k) {
         if (isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
             minPoint = aPoints[k];
         }
