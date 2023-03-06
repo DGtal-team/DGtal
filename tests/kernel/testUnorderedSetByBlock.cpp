@@ -67,7 +67,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
-  for ( int i = 0; i < nb_inserted; i++ )
+  for ( size_t i = 0; i < nb_inserted; i++ )
     {
       Point p = randomPoint<Point>( 10 );
       stdSet.insert( p );
@@ -96,7 +96,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( auto i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -120,7 +120,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     std::vector< Point > blkFound, blkNotFound;
     size_t std_nb_value_ok = 0;
     size_t blk_nb_value_ok = 0;
-    for ( int i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         const auto stdIt = stdSet.find( p );
@@ -157,7 +157,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     std::vector< Point > blkErase;
     size_t std_nb_erase_ok = 0;
     size_t blk_nb_erase_ok = 0;
-    for ( int i = 0; i < nb_erased; i++ )
+    for ( size_t i = 0; i < nb_erased; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         auto stdFindIt   = stdSet.find ( p );
@@ -308,7 +308,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     std::vector< Point > blkFound, blkNotFound;
     size_t std_nb_value_ok = 0;
     size_t blk_nb_value_ok = 0;
-    for ( auto i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         const auto stdIt = stdSet.find( p );
@@ -345,7 +345,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     std::vector< Point > blkErase;
     size_t std_nb_erase_ok = 0;
     size_t blk_nb_erase_ok = 0;
-    for ( auto i = 0; i < nb_erased; i++ )
+    for ( size_t i = 0; i < nb_erased; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         auto stdFindIt   = stdSet.find ( p );
@@ -443,7 +443,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
-  for ( auto i = 0; i < nb_inserted; i++ )
+  for ( size_t i = 0; i < nb_inserted; i++ )
     {
       Point p = randomPoint<Point>( 200 );
       stdSet.insert( p );
@@ -472,7 +472,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( auto i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -494,9 +494,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    int std_nb_value_ok = 0;
-    int blk_nb_value_ok = 0;
-    for ( int i = 0; i < nb_sought; i++ )
+    size_t std_nb_value_ok = 0;
+    size_t blk_nb_value_ok = 0;
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         const auto stdIt = stdSet.find( p );
@@ -531,9 +531,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   WHEN( "Erasing elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are left" ) {
     std::vector< Point > stdErase;
     std::vector< Point > blkErase;
-    int std_nb_erase_ok = 0;
-    int blk_nb_erase_ok = 0;
-    for ( int i = 0; i < nb_erased; i++ )
+    size_t std_nb_erase_ok = 0;
+    size_t blk_nb_erase_ok = 0;
+    for ( size_t i = 0; i < nb_erased; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         auto stdFindIt   = stdSet.find ( p );
@@ -632,7 +632,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
-  for ( int i = 0; i < nb_inserted; i++ )
+  for ( size_t i = 0; i < nb_inserted; i++ )
     {
       Point p = randomPoint<Point>( 100 );
       stdSet.insert( p );
@@ -661,7 +661,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( int i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -683,9 +683,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `find`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    int std_nb_value_ok = 0;
-    int blk_nb_value_ok = 0;
-    for ( int i = 0; i < nb_sought; i++ )
+    size_t std_nb_value_ok = 0;
+    size_t blk_nb_value_ok = 0;
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         const auto stdIt = stdSet.find( p );
@@ -720,9 +720,9 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
   WHEN( "Erasing elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are left" ) {
     std::vector< Point > stdErase;
     std::vector< Point > blkErase;
-    int std_nb_erase_ok = 0;
-    int blk_nb_erase_ok = 0;
-    for ( int i = 0; i < nb_erased; i++ )
+    size_t std_nb_erase_ok = 0;
+    size_t blk_nb_erase_ok = 0;
+    for ( size_t i = 0; i < nb_erased; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         auto stdFindIt   = stdSet.find ( p );
