@@ -198,8 +198,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    auto nb_std = std::distance(stdSet.begin(), stdSet.end());
-    auto nb_blk = std::distance(blkSet.begin(), blkSet.end());
+    size_t nb_std = std::distance(stdSet.begin(), stdSet.end());
+    size_t nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -255,7 +255,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
 
   StdUnorderedSet   stdSet;
   BlockUnorderedSet blkSet;
-  for ( int i = 0; i < nb_inserted; i++ )
+  for ( size_t i = 0; i < nb_inserted; i++ )
     {
       Point p = randomPoint<Point>( 10 );
       stdSet.insert( p );
@@ -284,7 +284,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
   WHEN( "Looking for elements in identical std::unordered_set<> and UnorderedSetByBlock<>, the same elements are find with method `count`" ) {
     std::vector< Point > stdFound, stdNotFound;
     std::vector< Point > blkFound, blkNotFound;
-    for ( auto i = 0; i < nb_sought; i++ )
+    for ( size_t i = 0; i < nb_sought; i++ )
       {
         Point p = randomPoint<Point>( 10 );
         if ( stdSet.count( p ) != 0 ) stdFound.push_back( p );
@@ -386,8 +386,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    auto nb_std = std::distance(stdSet.begin(), stdSet.end());
-    auto nb_blk = std::distance(blkSet.begin(), blkSet.end());
+    size_t nb_std = std::distance(stdSet.begin(), stdSet.end());
+    size_t nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -574,8 +574,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    auto nb_std = std::distance(stdSet.begin(), stdSet.end());
-    auto nb_blk = std::distance(blkSet.begin(), blkSet.end());
+    size_t nb_std = std::distance(stdSet.begin(), stdSet.end());
+    size_t nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
@@ -763,8 +763,8 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
     auto blkItE = blkItB;         std::advance( blkItE, 20 );
     stdSet.erase( stdItB, stdItE );
     blkSet.erase( blkItB, blkItE );
-    auto nb_std = std::distance(stdSet.begin(), stdSet.end());
-    auto nb_blk = std::distance(blkSet.begin(), blkSet.end());
+    size_t nb_std = std::distance(stdSet.begin(), stdSet.end());
+    size_t nb_blk = std::distance(blkSet.begin(), blkSet.end());
     REQUIRE( stdSet.size() == nb_std );
     REQUIRE( stdSet.size() == nb_std_before - 20 );
     REQUIRE( blkSet.size() == nb_blk );
