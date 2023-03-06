@@ -118,7 +118,6 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
   typedef PointVector<3,double>                 RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >  PolygonMesh;
   typedef PolygonMesh::Vertices                 Vertices;
-  typedef PolygonMesh::Face                     Face;
   typedef PolygonMesh::Edge                     Edge;
   typedef PolygonMesh::Vertex                   Vertex;
   GIVEN( "A box with an open side" ) {
@@ -236,7 +235,6 @@ SCENARIO( "SurfaceMesh< RealPoint3 > mesh helper tests", "[surfmesh][helper]" )
 {
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   GIVEN( "A sphere of radius 10" ) {
@@ -337,9 +335,6 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
 
 SCENARIO( "SurfaceMesh< RealPoint3 > boundary tests", "[surfmesh][boundary]" )
 {
-  typedef PointVector<3,double>                      RealPoint;
-  typedef PointVector<3,double>                      RealVector;
-  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
   auto polymesh = makeNonManifoldBoundary();
   auto polymesh2 = makeBox();
   WHEN( "Checking the topolopgy of the mesh boundary" ) {

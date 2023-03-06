@@ -50,13 +50,8 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
 {
   typedef Z3i::Space          Space;
   typedef Z3i::KSpace         KSpace;
-  typedef Z3i::Domain         Domain;
-  typedef Z3i::SCell          SCell;
   typedef Shortcuts< KSpace > SH3;
   typedef Space::Point        Point;
-  typedef Space::RealPoint    RealPoint;
-  typedef Space::RealVector   RealVector;
-  typedef Space::Vector       Vector;
   typedef std::size_t         Index;
   
   SECTION( "Computing shortest paths on a 3D unit sphere digitized at gridstep 0.25" )

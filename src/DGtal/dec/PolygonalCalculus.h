@@ -117,7 +117,7 @@ public:
                     bool globalInternalCacheEnabled = false):
           mySurfaceMesh(&surf),  myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myEmbedder =[&](Face f,Vertex v){ return mySurfaceMesh->position(v);};
+    myEmbedder =[&](Face f,Vertex v){ (void)f; return mySurfaceMesh->position(v);};
     myVertexNormalEmbedder = [&](Vertex v){ return toReal3dVector(computeVertexNormal(v));};
     init();
   };
@@ -149,7 +149,7 @@ public:
       mySurfaceMesh(&surf), myVertexNormalEmbedder(embedder),
       myGlobalCacheEnabled(globalInternalCacheEnabled)
   {
-    myEmbedder = [&](Face f,Vertex v){ return mySurfaceMesh->position(v); };
+    myEmbedder = [&](Face f,Vertex v){(void)f; return mySurfaceMesh->position(v); };
     init();
   };
 
@@ -265,7 +265,7 @@ public:
     
     const auto nf = myFaceDegree[f];
     DenseMatrix d = DenseMatrix::Zero(nf ,nf);
-    for(auto i=0; i < nf; ++i)
+    for(auto i=0u; i < nf; ++i)
     {
       d(i,i) = -1.;
       d(i, (i+1)%nf) = 1.;
@@ -299,7 +299,7 @@ public:
     
     const auto nf = myFaceDegree[f];
     DenseMatrix a = DenseMatrix::Zero(nf ,nf);
-    for(auto i=0; i < nf; ++i)
+    for(auto i=0u; i < nf; ++i)
     {
       a(i, (i+1)%nf) = 0.5;
       a(i,i) = 0.5;
@@ -489,7 +489,6 @@ public:
   
   /// Divergence operator of a one-form.
   /// @param f the face
-  /// @param lambda the regularization parameter
   /// @return a degree x degree matrix
   ///
   /// @note The sign convention for the divergence and the Laplacian
@@ -502,7 +501,7 @@ public:
   /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
   /// \rangle \f$. See also
   /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
-  DenseMatrix divergence(const Face f, const double lambda=1.0) const
+  DenseMatrix divergence(const Face f) const
   {
     if (checkCache(DIVERGENCE_,f))
       return myGlobalCache[DIVERGENCE_][f];
@@ -799,13 +798,13 @@ public:
   {
     SparseMatrix lapGlobal(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
     std::vector<Triplet> triplets;
-    for( auto f = 0; f < mySurfaceMesh->nbFaces(); ++f )
+    for( typename MySurfaceMesh::Index f = 0; f < mySurfaceMesh->nbFaces(); ++f )
     {
       auto nf = myFaceDegree[f];
       DenseMatrix Lap = this->laplaceBeltrami(f,lambda);
       const auto vertices = mySurfaceMesh->incidentVertices(f);
-      for(auto i=0; i < nf; ++i)
-        for(auto j=0; j < nf; ++j)
+      for(auto i=0u; i < nf; ++i)
+        for(auto j=0u; j < nf; ++j)
         {
           auto v = Lap(i,j);
           if (v!= 0.0)
@@ -826,7 +825,7 @@ public:
   {
     SparseMatrix M(mySurfaceMesh->nbVertices(), mySurfaceMesh->nbVertices());
     std::vector<Triplet> triplets;
-    for ( auto v = 0; v < mySurfaceMesh->nbVertices(); ++v )
+    for ( typename MySurfaceMesh::Index v = 0; v < mySurfaceMesh->nbVertices(); ++v )
       {
         auto faces = mySurfaceMesh->incidentFaces(v);
         auto varea = 0.0;
@@ -874,7 +873,7 @@ public:
     SparseMatrix lapGlobal(2 * nv, 2 * nv);
     SparseMatrix local(2 * nv, 2 * nv);
     std::vector<Triplet> triplets;
-    for (auto f = 0; f < mySurfaceMesh->nbFaces(); f++)
+    for (typename MySurfaceMesh::Index f = 0; f < mySurfaceMesh->nbFaces(); f++)
     {
       auto nf             = degree(f);
       DenseMatrix Lap     = connectionLaplacian(f,lambda);
@@ -905,7 +904,7 @@ public:
     auto nv = mySurfaceMesh->nbVertices();
     SparseMatrix M(2 * nv, 2 * nv);
     std::vector<Triplet> triplets;
-    for (auto v = 0; v < mySurfaceMesh->nbVertices(); ++v)
+    for (typename MySurfaceMesh::Index v = 0; v < mySurfaceMesh->nbVertices(); ++v)
     {
       auto faces = mySurfaceMesh->incidentFaces(v);
       auto varea = 0.0;
@@ -942,7 +941,7 @@ public:
   std::vector<DenseMatrix> getOperatorCacheMatrix(const std::function<DenseMatrix(Face)> &perFaceOperator) const
   {
     std::vector<DenseMatrix> cache;
-    for(auto f=0; f < mySurfaceMesh->nbFaces(); ++f)
+    for( typename MySurfaceMesh::Index f=0; f < mySurfaceMesh->nbFaces(); ++f)
       cache.push_back(perFaceOperator(f));
     return cache;
   }
@@ -966,7 +965,7 @@ public:
   std::vector<Vector> getOperatorCacheVector(const std::function<Vector(Face)> &perFaceVectorOperator) const
   {
     std::vector<Vector> cache;
-    for(auto f=0; f < mySurfaceMesh->nbFaces(); ++f)
+    for( typename MySurfaceMesh::Index f=0; f < mySurfaceMesh->nbFaces(); ++f)
       cache.push_back(perFaceVectorOperator(f));
     return cache;
   }
@@ -1072,7 +1071,7 @@ protected:
   void updateFaceDegree()
   {
     myFaceDegree.resize(mySurfaceMesh->nbFaces());
-    for(auto f = 0; f <  mySurfaceMesh->nbFaces(); ++f)
+    for(typename MySurfaceMesh::Index f = 0; f <  mySurfaceMesh->nbFaces(); ++f)
     {
       auto vertices = mySurfaceMesh->incidentVertices(f);
       auto nf = vertices.size();

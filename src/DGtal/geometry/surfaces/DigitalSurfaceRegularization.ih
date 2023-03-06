@@ -80,7 +80,7 @@ DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<
 {
   ASSERT_MSG(myInit, "The init() method must be called before setting the normals");
   myNormals.resize( mySurfels.size());
-  for(auto i=0; i< mySurfels.size();++i)
+  for(auto i=0u; i< mySurfels.size();++i)
     myNormals[i] = normalFunc( mySurfels[i] );
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   
   // Precompute all relations for fairness energy
   myNbAdjacent.resize( myFaces.size() );
-  for(auto faceId=0 ; faceId < myFaces.size(); ++faceId)
+  for(size_t faceId=0 ; faceId < myFaces.size(); ++faceId)
   {
     auto           idx = myPointelIndex[ dsurf_pointels[ faceId ] ];
     myFairnessPointelsIdx.push_back( idx );
@@ -217,7 +217,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   ASSERT_MSG(myNormals.size() != 0, "Some normal vectors must be attached to the digital surface before computing the gradient");
   
   //data attachment term
-  for(int i = 0; i < myOriginalPositions.size(); ++i)
+  for(size_t i = 0; i < myOriginalPositions.size(); ++i)
   {
     const auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
     energy          += myAlpha * delta_d.squaredNorm() ;
@@ -228,7 +228,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   
   //align
   auto it = myAlignPointelsIdx.cbegin();
-  for(int i = 0; i < mySurfels.size(); ++i)
+  for(size_t i = 0; i < mySurfels.size(); ++i)
   {
     const auto cell_p0 = *it++;
     const auto cell_p1 = *it++;
@@ -249,7 +249,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
     myGradientAlign[ cell_p2 ] += cos_a2 * myNormals[i];
     myGradientAlign[ cell_p3 ] += cos_a3 * myNormals[i];
   }
-  for(auto i=0; i < myOriginalPositions.size(); ++i)
+  for(auto i=0u; i < myOriginalPositions.size(); ++i)
   {
     ASSERT(myNumberAdjEdgesToPointel[i] >0);
     myGradient[i] += 2.0*myBeta * myGradientAlign[i] / (double)myNumberAdjEdgesToPointel[i];
@@ -259,7 +259,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
   auto itP  = myFairnessPointelsIdx.cbegin();
   auto itNb = myNbAdjacent.cbegin();
   SH3::RealPoint barycenter, phat ;
-  for(int faceId=0 ; faceId < myFaces.size(); ++faceId)
+  for(size_t faceId=0 ; faceId < myFaces.size(); ++faceId)
   {
     auto           idx = *itP++;
     unsigned int nbAdj = *itNb++;
@@ -289,7 +289,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   ASSERT_MSG(myNormals.size() != 0, "Some normal vectors must be attached to the digital surface before computing the gradient");
 
   //data attachment term
-  for(int i = 0; i < myOriginalPositions.size(); ++i)
+  for(size_t i = 0; i < myOriginalPositions.size(); ++i)
   {
     const auto delta_d     = myOriginalPositions[i] - myRegularizedPositions[i];
     energy          += (*myAlphas)[i] * delta_d.squaredNorm() ;
@@ -300,7 +300,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   
   //align
   auto it = myAlignPointelsIdx.cbegin();
-  for(int i = 0; i < mySurfels.size(); ++i)
+  for(size_t i = 0; i < mySurfels.size(); ++i)
   {
     const auto cell_p0 = *it++;
     const auto cell_p1 = *it++;
@@ -333,7 +333,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
   auto itP  = myFairnessPointelsIdx.cbegin();
   auto itNb = myNbAdjacent.cbegin();
   SH3::RealPoint barycenter, phat ;
-  for(int faceId=0 ; faceId < myFaces.size(); ++faceId)
+  for(auto faceId=0u; faceId < myFaces.size(); ++faceId)
   {
     const auto           idx = *itP++;
     const unsigned int nbAdj = *itNb++;

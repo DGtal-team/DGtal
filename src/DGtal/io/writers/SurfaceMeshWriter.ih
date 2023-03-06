@@ -168,11 +168,8 @@ writeEdgeLinesOBJ( std::string            objfile,
 {
   typedef KhalimskySpaceND< 3, int >    KSpace;
   typedef Shortcuts< KSpace >           SH;
-  typedef typename SH::RealPoint        RealPoint;
   typedef typename SH::RealPoints       RealPoints;
-  typedef typename SH::RealVector       RealVector;
   typedef typename SH::RealVectors      RealVectors;
-  typedef typename SH::Colors           Colors;
   typedef typename SurfaceMesh::Edge Edge;
 
   RealPoints  positions;
@@ -209,11 +206,8 @@ writeIsoLinesOBJ( std::string            objfile,
 {
   typedef KhalimskySpaceND< 3, int >    KSpace;
   typedef Shortcuts< KSpace >           SH;
-  typedef typename SH::RealPoint        RealPoint;
   typedef typename SH::RealPoints       RealPoints;
-  typedef typename SH::RealVector       RealVector;
   typedef typename SH::RealVectors      RealVectors;
-  typedef typename SH::Colors           Colors;
 
   RealPoints  positions;
   RealVectors edge_vectors;
@@ -253,12 +247,12 @@ writeIsoLinesOBJ( std::string            objfile,
             trace.warning() << "[SurfaceMeshWriter::writeIsoLinesOBJ]"
                             << " Weird iso-line on face " << f << std::endl;
           else {
-            for ( Size i = 0; i < crossings.size(); ++i )
-              for ( Size j = i+1; j < crossings.size(); ++j )
+            for ( Size ii = 0; ii < crossings.size(); ++ii )
+              for ( Size j = ii+1; j < crossings.size(); ++j )
                 {
-                  RealVector pq = crossings[ j ] - crossings[ i ];
+                  RealVector pq = crossings[ j ] - crossings[ii ];
                   if ( pq.squaredNorm() < 1e-8 ) continue;
-                  positions.push_back( crossings[ i ] );
+                  positions.push_back( crossings[ ii ] );
                   edge_vectors.push_back( pq );
                 }
           }
@@ -287,11 +281,8 @@ writeIsoLinesOBJ( std::string            objfile,
 {
   typedef KhalimskySpaceND< 3, int >    KSpace;
   typedef Shortcuts< KSpace >           SH;
-  typedef typename SH::RealPoint        RealPoint;
   typedef typename SH::RealPoints       RealPoints;
-  typedef typename SH::RealVector       RealVector;
   typedef typename SH::RealVectors      RealVectors;
-  typedef typename SH::Colors           Colors;
 
   RealPoints  positions;
   RealVectors edge_vectors;
@@ -334,12 +325,12 @@ writeIsoLinesOBJ( std::string            objfile,
                 trace.warning() << "[SurfaceMeshWriter::writeIsoLinesOBJ]"
                                 << " Weird iso-line on face " << f << std::endl;
               else {
-                for ( Size i = 0; i < crossings.size(); ++i )
+                for ( Size ii = 0; ii < crossings.size(); ++ii )
                   for ( Size j = i+1; j < crossings.size(); ++j )
                     {
-                      RealVector pq = crossings[ j ] - crossings[ i ];
+                      RealVector pq = crossings[ j ] - crossings[ ii ];
                       if ( pq.squaredNorm() < 1e-8 ) continue;
-                      positions.push_back( crossings[ i ] );
+                      positions.push_back( crossings[ ii ] );
                       edge_vectors.push_back( pq );
                       if ( ! diffuse_colors.empty() )
                         output_colors.push_back( diffuse_colors[ iso_i ] );

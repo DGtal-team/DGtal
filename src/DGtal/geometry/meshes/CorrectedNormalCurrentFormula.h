@@ -377,7 +377,7 @@ namespace DGtal
       avg_u /= l;
       Scalar mu2 = 0.0;
       const auto n = vu.size();
-      for ( auto i = 0; i < n; ++i )
+      for ( size_t i = 0; i < n; ++i )
         {
           ST st( avg_u, vu[ i ], vu[ (i+1) % n ] );
 	  mu2 += st.algebraicArea();

@@ -50,7 +50,6 @@ void test_linear_structure()
     //! [neumann-creation]
     typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
 
-    typedef std::list<Calculus::SCell> SCells;
     SCells cells;
 
     // fill cells container

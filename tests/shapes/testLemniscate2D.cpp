@@ -41,10 +41,6 @@
 using namespace DGtal;
 using namespace Z2i;
 
-typedef Z2i::Space     Space;
-typedef Z2i::Point     Point;
-typedef Z2i::RealPoint RealPoint;
-
 typedef Lemniscate2D<Space> Shape;
 
 double notNullValue(

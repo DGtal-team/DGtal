@@ -115,14 +115,14 @@ TEST_CASE( "Testing PolygonalCalculus" )
       auto vectorArea = boxCalculus.vectorArea(f);
       
       //Without correction, this should match
-      for(auto f=0; f<6; ++f)
-        REQUIRE( boxCalculus.faceArea(f) == box.faceArea(f) );
+      for(auto ff=0; ff<6; ++ff)
+        REQUIRE( boxCalculus.faceArea(ff) == box.faceArea(ff) );
      
       box.computeFaceNormalsFromPositions();
-      for(auto f=0; f<6; ++f)
+      for(auto ff=0; ff<6; ++ff)
       {
-        auto cn = boxCalculus.faceNormalAsDGtalVector(f);
-        auto n = box.faceNormal(f);
+        auto cn = boxCalculus.faceNormalAsDGtalVector(ff);
+        auto n = box.faceNormal(ff);
         REQUIRE(  cn == n  );
       }
       
@@ -226,7 +226,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     //check sizes
     REQUIRE( CG.rows() == 2);
     REQUIRE( CG.cols() == 2);
-    REQUIRE( CP.rows() == faces[f].size());
+    REQUIRE( CP.rows() == (Eigen::Index)faces[f].size());
     REQUIRE( CP.cols() == 2);
 
     REQUIRE( CG(0,0) == Approx(0.707106));
@@ -236,11 +236,11 @@ TEST_CASE( "Testing PolygonalCalculus" )
   {
     PolygonalCalculus< RealPoint,RealVector >::SparseMatrix M = boxCalculus.globalLumpedMassMatrix();
     double a=0.0;
-    for(auto v=0; v < box.nbVertices(); ++v )
+    for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index v=0; v < box.nbVertices(); ++v )
       a += M.coeffRef(v,v);
     
     double fa=0.0;
-    for(auto f=0; f < box.nbFaces(); ++f )
+    for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index f=0; f < box.nbFaces(); ++f )
       fa += box.faceArea(f);
     REQUIRE( a == fa );
   }
@@ -298,7 +298,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
   
   std::vector<std::vector< Index > > faces;
   std::vector<RealPoint> positions = primalSurface->positions();
-  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+  for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
   Mesh surfmesh = Mesh( positions.begin(), positions.end(),
@@ -357,9 +357,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
           double max_u   = 0.0;
           double min_i_u = 0.0;
           double max_i_u = 0.0;
-          double exp_u   = 0.0;
-          double exp_u2  = 0.0;
-          for ( auto v = 0; v < surfmesh.nbVertices(); ++v )
+          for (  PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index v = 0; v < surfmesh.nbVertices(); ++v )
             {
               min_phi = std::min( min_phi, phi( v ) );
               max_phi = std::max( max_phi, phi( v ) );

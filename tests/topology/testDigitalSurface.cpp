@@ -277,7 +277,6 @@ bool testExplicitDigitalSurface()
   typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
   typedef ExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator ConstIterator;
-  typedef Frontier::SCell SCell;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -386,7 +385,6 @@ bool testLightExplicitDigitalSurface()
   typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator ConstIterator;
-  typedef Frontier::SCell SCell;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;

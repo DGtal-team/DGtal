@@ -76,13 +76,13 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const Poi
   if( ( val1 == 0. && val2 == 0. ) ||
       ( val1 == 0. && val3 == 0. ) ||
       ( val2 == 0. && val3 == 0. ) )
-    return ONVERTEX;
+    return TRIANGLE_ONVERTEX;
   else if(val1 < 0. || val2 < 0. || val3 < 0.)
-    return OUTSIDE;
+    return TRIANGLE_OUTSIDE;
   else if(val1 == 0. || val2 == 0. || val3 == 0.)
-    return ONEDGE;
+    return TRIANGLE_ONEDGE;
   else
-    return INSIDE;
+    return TRIANGLE_INSIDE;
 }
 
 // ---------------------------------------------------------
@@ -156,7 +156,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
           PointR2 pp = myIntersectionTarget.project(i, v);
 
           // check if current voxel projection is inside ABC projection
-          if(pointIsInside2DTriangle(AA, BB, CC, pp) != OUTSIDE)
+          if(pointIsInside2DTriangle(AA, BB, CC, pp) != TRIANGLE_OUTSIDE)
           {
             if (outputSet.domain().isInside( v ) )
               outputSet.insert(v);
@@ -226,11 +226,11 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
 #ifdef WITH_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-  for(auto i = 0; i < aMesh.nbFaces(); i++)
+  for(size_t i = 0; i < aMesh.nbFaces(); i++)
   {
     DigitalSet currentSet{rawEmpty};
     MeshFace currentFace = aMesh.getFace(i);
-    for(auto j=0; j + 2 < currentFace.size(); ++j)
+    for(size_t j=0; j + 2 < currentFace.size(); ++j)
     {
       voxelize(currentSet, aMesh.getVertex(currentFace[0]),
                aMesh.getVertex(currentFace[j+1]),

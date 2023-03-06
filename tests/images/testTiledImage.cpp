@@ -270,7 +270,7 @@ bool test_range_constRange()
     // writing values
     const auto maximalValue = tiledImage.domain().size();
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
-    for (auto i = 0; i < maximalValue; ++i)
+    for (size_t i = 0; i < maximalValue; ++i)
     {
       *it++ = i;
     }

@@ -289,7 +289,9 @@ oneStepSquaredCurvatureMinimization
 	  const Scalar    y_3 = c_1 * ( yn_2 - yp_2 );
 	  const Scalar    y_4 = get<0>( c ) * yn_2
 	    - get<1>( c ) * y_2 + get<2>( c ) * yp_2;
-	  
+
+          (void)y_4; //not used FIXME: JOL
+          
 	  // We linearize Euler-Lagrange
 	  // EL = 24*x'^3*x''^3*y' 
 	  // + x'''*( - 13*x'^4*x''*y' - 14*x'^2*x''*y'^3 - x''*y'^5 )
