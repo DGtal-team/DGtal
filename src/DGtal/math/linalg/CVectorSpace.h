@@ -76,7 +76,6 @@ namespace DGtal
 
        | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
        |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-       | Reset container content      |  \a z.clear()         |                   |               |              |           |                |            |
        | Addition      | \a z = \a x + \a y           |                  | \c VectorSpace              |              |           |                |            |
        | Substraction      | \a z = \a x - \a y           |                   | \c VectorSpace              |              |           |                |            |
        | External multiplication      | \a z = \a a * \a x           |                   |  \c VectorSpace               |              |           |                |            |
@@ -100,7 +99,6 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CVectorSpace )
       {
-        z.clear();
         z = x + y;
         z = x - y;
         z = a * x;
