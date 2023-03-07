@@ -129,7 +129,7 @@ int main( int argc, char** argv)
   Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 1000000000000;
   Integer modx = ( argc > 4 ) ? atoll( argv[ 4 ] ) : 1000;
   testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );
-  return true;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

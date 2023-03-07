@@ -1,8 +1,21 @@
 # DGtal 1.4beta
 
 ## New features / critical changes
+ 
+- *General*
+  - Major update: C++17 is now required for DGtal. (David Coeurjolly, 
+    [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
 
 ## Changes
+- *IO*
+  - New method to change the mode of the light position in Viewer3D (fixed to
+    camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+  - Add a new method to store material information in obj file in MeshReader and MeshWriter.
+    (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
+
+- *Github*
+  - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
+    [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
 
 - *IO*
   - Add reading material indices in SurfaceMeshReader::readOBJ
@@ -16,10 +29,18 @@
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
     the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
+  - Removing unnecessary includes to speed-up compilation (David Coeurjolly,
+    [#1680](https://github.com/DGtal-team/DGtal/pull/1680))
+  - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
+    [#1685](https://github.com/DGtal-team/DGtal/pull/1685)) 
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
     [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+
+- *Geometry package*
+  - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
+    [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,

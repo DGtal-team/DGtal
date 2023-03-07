@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/CountedPtr.h"

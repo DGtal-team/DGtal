@@ -17,7 +17,6 @@
 #include "Board.h"
 #include "Board/Point.h"
 #include "Board/Rect.h"
-#include "Board/Shapes.h"
 #include "Board/Tools.h"
 #include "Board/PSFonts.h"
 #include <fstream>
