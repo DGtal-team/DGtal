@@ -45,7 +45,7 @@ if (BUILD_TESTING)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall \
         -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
-       -Wunused-parameter -Wunused-function   -Werror=type-limits -Wno-nonnull -Wno-unneeded-internal-declaration -Wno-unused-function  -Wno-delete-non-abstract-non-virtual-dtor   -Wunused  -Wno-long-long\
+       -Wunused-parameter -Wunused-function -Wno-deprecated-copy  -Werror=type-limits -Wno-nonnull -Wno-unneeded-internal-declaration -Wno-unused-function  -Wno-delete-non-abstract-non-virtual-dtor   -Wunused  -Wno-long-long\
         -Wno-system-headers -Wno-deprecated -Wno-dtor-name -Woverloaded-virtual -Wwrite-strings")
     endif()
     if (CMAKE_C_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
