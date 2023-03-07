@@ -100,7 +100,7 @@ inline
 typename DGtal::TriangulatedSurface<TPoint>::Point&
 DGtal::TriangulatedSurface<TPoint>::position( Vertex v )
 {
-  ASSERT( 0 <= v && v < myPositions.size() );
+  ASSERT( v < myPositions.size() );
   return myPositions[ v ];
 }
 //-----------------------------------------------------------------------------
@@ -109,7 +109,7 @@ inline
 const typename DGtal::TriangulatedSurface<TPoint>::Point&
 DGtal::TriangulatedSurface<TPoint>::position( Vertex v ) const
 {
-  ASSERT( 0 <= v && v < myPositions.size() );
+  ASSERT(  v < myPositions.size() );
   return myPositions[ v ];
 }
 //-----------------------------------------------------------------------------
