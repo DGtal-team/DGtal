@@ -97,13 +97,13 @@ bool checkPowerMap( const PowerMap & aPowerMap)
 
   // Site shifting depending on the periodicity.
   std::vector< typename PowerMap::PeriodicitySpec > periodicShift;
-  for ( std::size_t i = 0; i < ( 1u << PowerMap::Space::dimension ); ++i )
+  for ( typename PowerMap::Space::Dimension i = 0; i < ( 1u << PowerMap::Space::dimension ); ++i )
     {
       const auto periodicity = getPeriodicityFromInteger< PowerMap::Space::dimension >( i );
 
       // Checking if this periodicity possibility is valid.
       bool isValid = true;
-      for ( std::size_t j = 0; j < periodicity.size(); ++j )
+      for ( typename PowerMap::Space::Dimension j = 0; j < periodicity.size(); ++j )
         if ( periodicity[j] && ! aPowerMap.isPeriodic(j) )
           {
             isValid = false;
@@ -155,7 +155,7 @@ bool checkPowerMap( const PowerMap & aPowerMap)
               auto currSite = site;
 
               // Shifting site.
-              for ( std::size_t dim = 0; dim < PowerMap::Space::dimension ; ++dim )
+              for ( typename PowerMap::Space::Dimension dim = 0; dim < PowerMap::Space::dimension ; ++dim )
                 if ( periodicity[dim] )
                   currSite[dim] += ( pt[dim] < currSite[dim] ? -1 : 1 ) * extent[dim];
 
@@ -255,7 +255,7 @@ bool testPowerMap( std::array<bool, 2> const& aPeriodicity = {{ false, false }} 
       for(unsigned int j=0; j<11; j++)
         {
           Z2i::Point p(i,j);
-          DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
+          const auto dist = (i-power(p)[0])*(i-power(p)[0]) +
             ( j-power(p)[1])*(j-power(p)[1])  - image( power.projectPoint(power(p)) );
           if (dist>=0)
             std::cerr<< "0 ";

@@ -208,7 +208,6 @@ SCENARIO( "EhrhartPolynomial< Z2 > triangle tests", "[ehrhart_polynomial][2d]" )
     unsigned int nb0_ok = 0;
     unsigned int nb1_ok = 0;
     unsigned int nb_cvx_ok = 0;
-    unsigned int nb_not_cvx_ok = 0;
     for ( auto a : domain )
       for ( auto b : domain )
         for ( auto c : domain )

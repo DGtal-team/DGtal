@@ -179,7 +179,7 @@ sphereSecondPrincipalCurvatures( const Scalar radius, Size m, Size n )
 template <typename TRealPoint, typename TRealVector>
 typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
-sphereFirstPrincipalDirections( const Scalar radius, Size m, Size n )
+sphereFirstPrincipalDirections( const Scalar , Size m, Size n )
 {
   // since the sphere is made of umbilic points, returned directions
   // are arbitrary tangent vectors. Here we return latitude vectors.
@@ -210,7 +210,7 @@ sphereFirstPrincipalDirections( const Scalar radius, Size m, Size n )
 template <typename TRealPoint, typename TRealVector>
 typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
-sphereSecondPrincipalDirections( const Scalar radius, Size m, Size n )
+sphereSecondPrincipalDirections( const Scalar , Size m, Size n )
 {
   // since the sphere is made of umbilic points, returned directions
   // are arbitrary tangent vectors. Here we return latitude vectors.
@@ -290,9 +290,9 @@ makeLantern( const Scalar radius, const Scalar height, const RealPoint& center,
       std::vector< RealVector > vnormals( nbv );
       for ( Size k = 0; k < nbv; ++k )
         {
-          RealVector n = p[ k ] - center;
-          n[ 2 ] = 0.0;
-          vnormals[ k ] = n.getNormalized();
+          RealVector _n = p[ k ] - center;
+          _n[ 2 ] = 0.0;
+          vnormals[ k ] = _n.getNormalized();
         }
       smesh.setVertexNormals( vnormals.cbegin(), vnormals.cend() );
     }
@@ -301,9 +301,9 @@ makeLantern( const Scalar radius, const Scalar height, const RealPoint& center,
       std::vector< RealVector > fnormals( smesh.nbFaces() );
       for ( Size k = 0; k < fnormals.size(); ++k )
         {
-          RealVector n = smesh.faceCentroid( k ) - center;
-          n[ 2 ] = 0.0;
-          fnormals[ k ] = n.getNormalized();
+          RealVector _n = smesh.faceCentroid( k ) - center;
+          _n[ 2 ] = 0.0;
+          fnormals[ k ] = _n.getNormalized();
         }
       smesh.setFaceNormals( fnormals.cbegin(), fnormals.cend() );
     }
@@ -328,6 +328,7 @@ typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 lanternGaussianCurvatures( const Scalar radius, Size m, Size n )
 {
+  (void)radius; //unused param.
   n = std::max( n, (Size)2 ); // nb latitudes
   m = std::max( m, (Size)3 ); // nb longitudes
   const Size nbv = n * m;
@@ -340,6 +341,7 @@ typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 lanternFirstPrincipalCurvatures( const Scalar radius, Size m, Size n )
 {
+  (void)radius; //unused param.
   m = std::max( m, (Size)2 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows
@@ -357,6 +359,7 @@ typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::Scalars
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 lanternSecondPrincipalCurvatures( const Scalar radius, Size m, Size n )
 {
+  (void)radius; //unused param.
   m = std::max( m, (Size)2 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows
@@ -374,6 +377,7 @@ typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 lanternFirstPrincipalDirections( const Scalar radius, Size m, Size n )
 {
+  (void)radius; //unused param.
   m = std::max( m, (Size)2 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows
@@ -392,6 +396,7 @@ typename DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::RealVectors
 DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 lanternSecondPrincipalDirections( const Scalar radius, Size m, Size n )
 {
+  (void)radius; //unused param.
   m = std::max( m, (Size)2 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows
@@ -587,6 +592,10 @@ DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 torusFirstPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
                                Size m, Size n, const int twist )
 {
+  (void)big_radius;//not used
+  (void)small_radius;
+  (void)twist;
+  
   m = std::max( m, (Size)3 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows
@@ -613,6 +622,9 @@ DGtal::SurfaceMeshHelper<TRealPoint, TRealVector>::
 torusSecondPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
                                 Size m, Size n, const int twist )
 {
+  (void)big_radius; //not used
+  (void)small_radius; //not used
+  
   m = std::max( m, (Size)3 ); // nb latitudes
   n = std::max( n, (Size)3 ); // nb longitudes
   // vertices are numbered as follows

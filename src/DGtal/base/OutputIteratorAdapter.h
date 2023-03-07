@@ -72,13 +72,20 @@ namespace DGtal
    *
    */
   template <typename TIterator, typename TFunctor, typename TInputValue>
-  class OutputIteratorAdapter:
-    public std::iterator<std::output_iterator_tag,void,void,void,void>
+  class OutputIteratorAdapter
   {
     // ----------------------- Types definitions ------------------------------
 
   public:
 
+    using iterator_category = std::output_iterator_tag;
+    using value_type = void;
+    using difference_type = void;
+    using pointer = void;
+    using reference = void;
+  
+
+    
     typedef TIterator Iterator; 
     BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Iterator> )); 
     BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, 

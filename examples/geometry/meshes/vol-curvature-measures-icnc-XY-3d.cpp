@@ -133,7 +133,6 @@ int main( int argc, char* argv[] )
   using namespace DGtal::Z3i;
   typedef SurfaceMesh< RealPoint, RealVector >                    SM;
   typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNC;
-  typedef SurfaceMeshReader< RealPoint, RealVector >              SMR;
   typedef Shortcuts< KSpace >          SH;
   typedef ShortcutsGeometry< KSpace > SHG;
   //! [curvature-measures-Typedefs]

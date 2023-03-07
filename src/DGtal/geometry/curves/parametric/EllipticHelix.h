@@ -67,7 +67,7 @@ public:
     /**
      * Destructor.
      */
-    ~EllipticHelix() {}
+  ~EllipticHelix() {};
     /**
      * Constructor.
      * @param rr small radius of the helix

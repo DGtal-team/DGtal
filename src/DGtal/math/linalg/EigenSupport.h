@@ -39,7 +39,6 @@
 #define EigenSupport_h
 
 /** Prevents inclusion if Eigen support hasn't been enabled **/
-#if defined(WITH_EIGEN)
 
 //////////////////////////////////////////////////////////////////////////////
 // Eigen API extensions
@@ -144,9 +143,6 @@ namespace DGtal
   
 } // namespace DGtal
 
-#else // defined WITH_EIGEN
-#error "DGtal Eigen support hasn't been enabled"
-#endif // defined WITH_EIGEN
 #endif // !defined EigenSupport_h
 
 #undef EigenSupport_RECURSES

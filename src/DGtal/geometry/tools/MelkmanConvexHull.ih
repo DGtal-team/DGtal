@@ -176,7 +176,7 @@ DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::operator[](unsigned int i
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TOrientationFunctor>
 inline
-unsigned int 
+size_t
 DGtal::MelkmanConvexHull<TPoint, TOrientationFunctor>::size() const
 {
   // by definition the first and last points of the deque are the same.

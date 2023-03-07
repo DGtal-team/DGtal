@@ -41,11 +41,6 @@
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-DGtal::ClosedIntegerHalfPlane<TSpace>::~ClosedIntegerHalfPlane()
-{}
-//-----------------------------------------------------------------------------
-template <typename TSpace>
-inline
 DGtal::ClosedIntegerHalfPlane<TSpace>::
 ClosedIntegerHalfPlane( const Vector & aN, const Integer & aC )
   : N( aN ), c( aC ) 

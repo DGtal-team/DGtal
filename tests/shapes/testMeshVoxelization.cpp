@@ -42,13 +42,10 @@ using namespace Z3i;
 
 TEST_CASE("Basic voxelization test", "[voxelization]")
 {
-  using Space3Dint = SpaceND<3>;
-  using Domain   = HyperRectDomain<Space3Dint>;
   using PointR3  = PointVector<3, double>;
   using VectorR3 = PointVector<3, double>;
   using PointR2  = PointVector<2, double>;
   using PointZ3  = PointVector<3, int>;
-  using DigitalSet = DigitalSetBySTLSet<Domain>;
 
   using MeshVoxelizer26 = MeshVoxelizer< DigitalSet, 26>;
   using MeshVoxelizer6 = MeshVoxelizer< DigitalSet, 6>;
@@ -103,33 +100,33 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
 
     v[0] = 3.0;
     v[1] = 3.0;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::OUTSIDE);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_OUTSIDE);
 
     v[0] = 2.0;
     v[1] = 2.0;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::INSIDE);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_INSIDE);
 
     v[0] = 2;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::ONEDGE);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_ONEDGE);
 
     v[0] = 3;
     v[1] = 1;
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::ONVERTEX);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_ONVERTEX);
 
     // another case
     A = { 16.3299, 0. };
     B = { 0., 16.3299 };
     C = { -16.3299, 0. };
     v = { -17., 0.};
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::OUTSIDE);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_OUTSIDE);
 
     // another case
     A = { -0.891282, 9.91201 };
     B = { -1.40823, 9.91261 };
     C = { -1.36963, 9.37414 };
     v = { -1.16961, 9.83039 };
-    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::INSIDE);
+    REQUIRE(MeshVoxelizer6::pointIsInside2DTriangle(A, B, C, v) == TriOr::TRIANGLE_INSIDE);
   }
 
   // ---------------------------------------------------------

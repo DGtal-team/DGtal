@@ -43,6 +43,16 @@
 /** Prevents repeated inclusion of headers. */
 #define MPolynomial_h
 
+
+//David Coeurjolly: too many deprecation warnings
+//There are pragma pop at the end of this file.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
+
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
@@ -2085,6 +2095,10 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/math/MPolynomial.ih"
+
+#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

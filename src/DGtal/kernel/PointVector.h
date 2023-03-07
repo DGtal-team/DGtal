@@ -719,7 +719,7 @@ namespace DGtal
     /** @brief
      * Destructor.
      */
-    ~PointVector();
+    ~PointVector() {}
 
     // ----------------------- Standard services ------------------------------
 

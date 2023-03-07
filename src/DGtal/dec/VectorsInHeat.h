@@ -258,7 +258,7 @@ public:
 
         std::vector<Vector> result(surfmesh->nbVertices());
 
-        for (auto v = 0;v<surfmesh->nbVertices();v++){
+        for (typename PolygonalCalculus::MySurfaceMesh::Index v = 0;v<surfmesh->nbVertices();v++){
             Vector Y(2);
             Y(0) = vectorHeatDiffusion(2*v);
             Y(1) = vectorHeatDiffusion(2*v+1);

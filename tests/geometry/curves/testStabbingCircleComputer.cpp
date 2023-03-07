@@ -83,13 +83,8 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
   // Types
   typedef TKSpace KSpace;  
   typedef typename KSpace::SCell SCell;
-  typedef GridCurve<KSpace> GridCurve; 
-  typedef typename KSpace::Space Space;  
-  typedef Ball2D<Space> Shape;
+  typedef typename KSpace::Space Space;
   typedef typename Space::Point Point;
-  typedef typename Space::RealPoint RealPoint;
-  typedef HyperRectDomain<Space> Domain;
-  typedef typename Point::Component Component;
   
   MyBallPredicate<Point,Integer> predicate(aR);
   try 

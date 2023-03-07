@@ -248,7 +248,7 @@ bool testProjector()
             (pointInSourceDomain3D2== PointVector<3,int>(0, 1, 0));
 
   // FlipDomainAxis
-    std::vector<HyperRectDomain<SpaceND<3, int> >::Size> vectFlip;
+    std::vector<HyperRectDomain<SpaceND<3, int> >::Dimension> vectFlip;
     vectFlip.push_back(1); 
     vectFlip.push_back(2);     
     functors::FlipDomainAxis<HyperRectDomain<SpaceND<3, int> > > flipFunctorAxis12(domainSource3D, vectFlip);

@@ -381,7 +381,7 @@ namespace DGtal
     Self starOfCells() const
     {
       Self R( *this );
-      for ( auto i = 0; i < R.myData.size(); )
+      for ( size_t i = 0; i < R.myData.size(); )
         {
           auto& I = R.myData[ i ];
           if ( ( I.first  & 0x1 ) == 0 ) I.first  -= 1;

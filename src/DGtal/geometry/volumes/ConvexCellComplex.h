@@ -453,7 +453,7 @@ namespace DGtal
       }
       // Orient them consistently
       for ( Index c = 0; c < nbCells(); c++ ) {
-        const auto& c_vtcs = cellVertices( c );
+        //const auto& c_vtcs = cellVertices( c ); //not used
         for ( auto f : cellFaces( c ) ) {
           if ( ! f.second ) continue; // process only 'true' faces
           const   auto ov = faceComplementVertices( f );

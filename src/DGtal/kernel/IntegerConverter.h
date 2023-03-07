@@ -57,7 +57,7 @@ namespace DGtal
     
     /// @param[inout] n the (initialized) big integer to set
     /// @param[in] sll a signed long long integer to assign to \a n.
-    static void mpz_set_sll(mpz_t n, long long sll)
+    static inline void mpz_set_sll(mpz_t n, long long sll)
     {
       mpz_set_si(n, (int)(sll >> 32));     /* n = (int)sll >> 32 */
       mpz_mul_2exp(n, n, 32 );             /* n <<= 32 */
@@ -66,7 +66,7 @@ namespace DGtal
     
     /// @param[inout] n the (initialized) big integer to set
     /// @param[in] ull an unsigned long long integer to assign to \a n.
-    static void mpz_set_ull(mpz_t n, unsigned long long ull)
+    static inline void mpz_set_ull(mpz_t n, unsigned long long ull)
     {
       mpz_set_ui(n, (unsigned int)(ull >> 32)); /* n = (unsigned int)(ull >> 32) */
       mpz_mul_2exp(n, n, 32);                   /* n <<= 32 */
@@ -76,15 +76,14 @@ namespace DGtal
     /// Conversion to uint64 is tricky and not native for GMP.
     /// @param n any number
     /// @return its uint64 representation.
-    static unsigned long long mpz_get_ull(mpz_t n)
+    static inline unsigned long long mpz_get_ull(mpz_t n)
     {
-      unsigned int lo, hi;
       mpz_t tmp;
       mpz_init( tmp );
       mpz_mod_2exp( tmp, n, 64 );   /* tmp = (lower 64 bits of n) */
-      lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */ 
+      auto lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */
       mpz_div_2exp( tmp, tmp, 32 ); /* tmp >>= 32 */
-      hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
+      auto hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
       mpz_clear( tmp );
       return (((unsigned long long)hi) << 32) + lo;
     }
@@ -92,7 +91,7 @@ namespace DGtal
     /// Conversion to int64 is tricky and not native for GMP.
     /// @param n any number
     /// @return its int64 representation.
-    static long long mpz_get_sll(mpz_t n)
+    static inline long long mpz_get_sll(mpz_t n)
     {
       return (long long)mpz_get_ull(n); /* just use unsigned version */
     }
@@ -198,11 +197,11 @@ namespace DGtal
     /// @return the same integer
     static DGtal::int32_t cast( DGtal::BigInteger i ) 
     {
-      DGtal::int32_t r = i.get_si();
+      auto r = i.get_si();
       if ( DGtal::BigInteger( r ) != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
-      return r;
+      return (DGtal::int32_t)r;
     }
 
     /// Conversion of a lattice point.
