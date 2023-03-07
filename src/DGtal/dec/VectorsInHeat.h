@@ -194,9 +194,9 @@ public:
      **/
     void clearSource()
     {
-      myVectorSource.clear();
-      myScalarSource.clear();
-      myDiracSource.clear();
+      myVectorSource     	= Vector::Zero(2*myCalculus->nbVertices());
+      myScalarSource		= Vector::Zero(myCalculus->nbVertices());
+      myDiracSource		= Vector::Zero(myCalculus->nbVertices());
     }
   
     /**

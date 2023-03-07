@@ -117,7 +117,7 @@ template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 void
 DGtal::KForm<Calculus, order, duality>::clear()
 {
-    myContainer.clear();
+    myContainer.resize(0,0);
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
