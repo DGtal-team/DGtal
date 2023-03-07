@@ -101,7 +101,6 @@ namespace DGtal {
     typedef typename Image::Domain Domain;
     const Domain& domain = aImage.domain();
 
-    typedef ConstImageAdapter<Image, Domain, functors::Identity, ValueOut, Functor> AdaptedImage;
     const functors::Identity identityFunctor{};
     typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
     typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
