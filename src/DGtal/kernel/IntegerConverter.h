@@ -57,7 +57,7 @@ namespace DGtal
     
     /// @param[inout] n the (initialized) big integer to set
     /// @param[in] sll a signed long long integer to assign to \a n.
-    static void mpz_set_sll(mpz_t n, long long sll)
+    static inline void mpz_set_sll(mpz_t n, long long sll)
     {
       mpz_set_si(n, (int)(sll >> 32));     /* n = (int)sll >> 32 */
       mpz_mul_2exp(n, n, 32 );             /* n <<= 32 */
@@ -66,7 +66,7 @@ namespace DGtal
     
     /// @param[inout] n the (initialized) big integer to set
     /// @param[in] ull an unsigned long long integer to assign to \a n.
-    static void mpz_set_ull(mpz_t n, unsigned long long ull)
+    static inline void mpz_set_ull(mpz_t n, unsigned long long ull)
     {
       mpz_set_ui(n, (unsigned int)(ull >> 32)); /* n = (unsigned int)(ull >> 32) */
       mpz_mul_2exp(n, n, 32);                   /* n <<= 32 */
@@ -76,7 +76,7 @@ namespace DGtal
     /// Conversion to uint64 is tricky and not native for GMP.
     /// @param n any number
     /// @return its uint64 representation.
-    static unsigned long long mpz_get_ull(mpz_t n)
+    static inline unsigned long long mpz_get_ull(mpz_t n)
     {
       mpz_t tmp;
       mpz_init( tmp );
@@ -91,7 +91,7 @@ namespace DGtal
     /// Conversion to int64 is tricky and not native for GMP.
     /// @param n any number
     /// @return its int64 representation.
-    static long long mpz_get_sll(mpz_t n)
+    static inline long long mpz_get_sll(mpz_t n)
     {
       return (long long)mpz_get_ull(n); /* just use unsigned version */
     }

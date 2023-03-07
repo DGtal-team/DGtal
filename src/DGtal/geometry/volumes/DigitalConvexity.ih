@@ -249,7 +249,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( PointIterator itB, PointIterator itE,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
@@ -264,7 +263,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const LatticePolytope& P,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
@@ -279,7 +277,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const RationalPolytope& P,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
