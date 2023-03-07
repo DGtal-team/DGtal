@@ -5,6 +5,10 @@
 - *General*
   - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
+  - Mandatory dependencies and some optional ones can be setup by
+    conan.io, especially on windows  (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+
 
 ## Changes
 - *IO*
@@ -16,6 +20,9 @@
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+  - Continuous integration on windows is now performed by Github
+    Action instead of Appeveyor  (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 ## Bug fixes
 
