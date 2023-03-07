@@ -43,13 +43,13 @@ if (BUILD_TESTING)
   ENABLE_TESTING()
   include(CTest)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra\
-       -pedantic -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall \
+        -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
        -Wunused-parameter -Wunused-function   -Werror=type-limits -Wno-nonnull -Wno-unneeded-internal-declaration -Wno-unused-function  -Wno-delete-non-abstract-non-virtual-dtor   -Wunused  -Wno-long-long\
         -Wno-system-headers -Wno-deprecated -Wno-dtor-name -Woverloaded-virtual -Wwrite-strings")
     endif()
     if (CMAKE_C_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-      set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -Wextra -W  -Wno-delete-non-abstract-non-virtual-dtor -Wno-unknown-pragmas\
+      set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall  -W  -Wno-delete-non-abstract-non-virtual-dtor -Wno-unknown-pragmas\
       -Wno-long-long -pedantic")
   endif()
   add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
