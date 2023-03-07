@@ -41,10 +41,15 @@ set(POLYSCOPE_SRCS
   tangency-reconstruction
 )
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(MY_DEBUG_OPTIONS "-w")
+endif()
+
 foreach(FILE ${POLYSCOPE_SRCS})
   #We should be using `DGtal_add_example(${FILE} polyscope)` to
   #enable the randomized testing but it does not work (polyscope headers are
   #not found properly).
   add_executable(${FILE} ${FILE}.cpp)
   target_link_libraries(${FILE} DGtal ${DGtalLibDependencies} polyscope Eigen3::Eigen)
+  target_compile_options(${FILE} PUBLIC "$<$<CONFIG:DEBUG>:${MY_DEBUG_OPTIONS}>")
 endforeach()
