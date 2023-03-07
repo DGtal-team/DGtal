@@ -172,7 +172,7 @@ computeDegeneratedLatticePolytope
     Vector  N;
     Integer nu;
     for ( Dimension ii = 0; ii < dim; ++ii )
-      N[ i ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ ii ] );
+      N[ ii ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ ii ] );
     nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
     PHS.emplace_back( N, nu );
   }

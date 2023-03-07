@@ -386,7 +386,7 @@ void test_manual_operators_3d()
            -1,  1,
             0,  1,
             0,  1;
-
+      
         FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
 #endif
         FATAL_ERROR( Eigen::MatrixXd(d2p.transpose().myContainer) == Eigen::MatrixXd(d0.myContainer) );

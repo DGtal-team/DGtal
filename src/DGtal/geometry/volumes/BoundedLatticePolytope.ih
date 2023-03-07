@@ -894,10 +894,10 @@ DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
-size_t
+unsigned int
 DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
 {
-  return A.size();
+  return static_cast<unsigned int>(A.size());
 }
 
 //-----------------------------------------------------------------------------
