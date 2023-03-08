@@ -96,10 +96,11 @@ namespace DGtal {
   template <typename TDomain, typename TValue,  typename TFunctor>
   bool
   ITKWriter< ImageContainerByITKImage<TDomain, TValue>, TFunctor >::exportITK(const std::string& filename,
-                                                          const ImageContainerByITKImage<TDomain, TValue>& aImage, const TFunctor& aFunctor)
+                                                          const ImageContainerByITKImage<TDomain, TValue>& aImage,[[maybe_unused]] const TFunctor& aFunctor)
   {
 
-    (void)aFunctor;//not used
+    typedef typename Image::Domain Domain;
+
     typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
     typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
     typename ITKImageWriter::Pointer writer = ITKImageWriter::New();
