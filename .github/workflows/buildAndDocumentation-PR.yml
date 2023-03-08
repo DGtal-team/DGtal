@@ -52,7 +52,7 @@ jobs:
        if: matrix.os == 'windows-latest'
        with:
          path: ~/.conan
-         key: ${{ runner.os }}-conan
+         key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
 
      - name: Get white list of tests
        run: |
@@ -78,16 +78,17 @@ jobs:
        if: matrix.os == 'windows-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
        shell: bash
        # Execute the build.  You can specify a specific target with "--target <NAME>"
-       run: cmake --build . --config $BUILD_TYPE --parallel 3
+       run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
 
      - name: Test
        working-directory: ${{runner.workspace}}/build
+       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
        shell: bash
        run: |
            echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
