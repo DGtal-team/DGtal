@@ -6,7 +6,8 @@
   - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
   - Mandatory dependencies and some optional ones can be setup by
-    conan.io, especially on windows  (David Coeurjolly,
+    conan.io, especially on windows, new `ENABLE_CONAN` cmake
+    option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 
