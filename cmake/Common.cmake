@@ -45,10 +45,11 @@ if(NOT CMAKE_CXX_STANDARD_REQUIRED)
 endif()
 
 # -----------------------------------------------------------------------------
-# Visual Studio : to distinguish between debug and release lib
+# Visual Studio : to distinguish between debug and release lib and /bigobj flag
 # -----------------------------------------------------------------------------
 if (MSVC)
   set(CMAKE_DEBUG_POSTFIX "d")
+   add_compile_options(/bigobj)
 endif()
 
 # -----------------------------------------------------------------------------
