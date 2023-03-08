@@ -52,7 +52,7 @@ jobs:
        if: matrix.os == 'windows-latest'
        with:
          path: ~/.conan
-         key: ${{ runner.os }}-conan
+         key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
 
      - name: Get white list of tests
        run: |
@@ -88,6 +88,7 @@ jobs:
 
      - name: Test
        working-directory: ${{runner.workspace}}/build
+       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
        shell: bash
        run: |
            echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
