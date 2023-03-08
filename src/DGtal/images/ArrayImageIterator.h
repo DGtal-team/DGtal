@@ -77,7 +77,7 @@ namespace DGtal
         ArrayImageIterator<TIterableClass>,
         typename TIterableClass::Value,
         std::random_access_iterator_tag,
-        decltype( ((TIterableClass*)nullptr)->dereference( TIterableClass::Point::diagonal(0), typename TIterableClass::Point::Coordinate(0) ) )
+        decltype( ((new TIterableClass))->dereference( TIterableClass::Point::diagonal(0), typename TIterableClass::Point::Coordinate(0) ) )
       >
     {
     // ----------------------- Standard services ------------------------------
