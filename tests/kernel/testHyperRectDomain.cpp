@@ -238,7 +238,6 @@ void testIteratorHelper(
     Iterator const& it_begin, Iterator const& it_end,
     Point pt, Domain const& domain, bool forward = true)
 {
-  using Dimension = typename Domain::Dimension;
   std::vector<Dimension> dimensions(Domain::dimension);
   std::iota(dimensions.begin(), dimensions.end(), Dimension(0));
 
@@ -250,7 +249,6 @@ template <
 >
 void testIterator(Point const& a, Point const& b, Point const& c)
 {
-  using Dimension = typename Point::Dimension;
   using Space = SpaceND<Point::dimension, typename Point::Component>;
   using Domain = HyperRectDomain<Space>;
 

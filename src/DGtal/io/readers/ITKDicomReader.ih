@@ -52,6 +52,9 @@ namespace DGtal {
   I ITKDicomReader<I>::importDICOM( const std::vector<std::string> & filenames,
 				    const TFunctor & aFunctor )
   {
+    (void)ITK_IO_IMAGE_EXT; //To avoid compiler "not used" warning
+                            //when building only this reader.
+
     if ( filenames.empty() )
     {
       trace.error() << "[ITKDicomReader] empty filenames vector passed.";

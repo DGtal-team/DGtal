@@ -100,7 +100,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
     if (cell_dim == 0) ASSERT_MSG( property.primal_size == 1, "0-cell primal size must be equal to 1" );
     if (cell_dim == dimEmbedded) ASSERT_MSG( property.dual_size == 1, "n-cell dual size must be equal to 1" );
-    ASSERT_MSG( cell_dim >= 0 && cell_dim <= dimEmbedded, "wrong cell dimension" );
+    ASSERT_MSG( cell_dim <= dimEmbedded, "wrong cell dimension" );
     ASSERT_MSG( cell_dim != 0 || !property.flipped , "can't insert negative 0-cells" );
     ASSERT_MSG( cell_dim != dimAmbient || !property.flipped , "can't insert negative n-cells" );
 

@@ -268,9 +268,9 @@ bool test_range_constRange()
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWB, 4);
 
     // writing values
-    const int maximalValue = tiledImage.domain().size();
+    const auto maximalValue = tiledImage.domain().size();
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
-    for (int i = 0; i < maximalValue; ++i)
+    for (size_t i = 0; i < maximalValue; ++i)
     {
       *it++ = i;
     }

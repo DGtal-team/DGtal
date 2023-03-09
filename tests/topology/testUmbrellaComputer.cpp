@@ -49,10 +49,8 @@ bool testUmbrellaComputer()
 {
   using namespace Z3i;
   
-  typedef Space::RealPoint RealPoint;
   typedef ImplicitBall<Space> EuclideanShape;
   typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
-  typedef GaussDigitizer<Space,EuclideanShape>::Domain Domain;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
   //typedef Boundary::Tracker Tracker;
@@ -140,10 +138,8 @@ bool testCombinatorialSurface()
 {
   using namespace Z3i;
   
-  typedef Space::RealPoint RealPoint;
   typedef ImplicitBall<Space> EuclideanShape;
   typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
-  typedef GaussDigitizer<Space,EuclideanShape>::Domain Domain;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
   //typedef Boundary::Tracker Tracker;

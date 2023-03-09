@@ -98,7 +98,7 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
       }
       THEN( "The faces of cells are finite" ) {
         bool ok_finite = true;
-        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+        for ( CvxCellComplex::Size c = 0; c < complex.nbCells(); ++c ) {
           const auto faces = complex.cellFaces( c );
           for ( auto f : faces )
             ok_finite = ok_finite && ! complex.isInfinite( complex.faceCell( f ) );
@@ -107,7 +107,7 @@ SCENARIO( "ConvexityHelper< 2 > unit tests",
       }
       THEN( "The opposite of faces of cells are infinite except two" ) {
         int  nb_finite   = 0;
-        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+        for ( CvxCellComplex::Size c = 0; c < complex.nbCells(); ++c ) {
           const auto faces = complex.cellFaces( c );
           for ( auto f : faces ) {
             const auto opp_f = complex.opposite( f );
@@ -289,7 +289,7 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
       THEN( "The faces of cells are finite" ) {
         bool ok_finite = true;
-        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+        for ( CvxCellComplex::Size c = 0; c < complex.nbCells(); ++c ) {
           const auto faces = complex.cellFaces( c );
           for ( auto f : faces )
             ok_finite = ok_finite && ! complex.isInfinite( complex.faceCell( f ) );
@@ -298,7 +298,7 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
       THEN( "The opposite of faces of cells are infinite except two" ) {
         int  nb_finite   = 0;
-        for ( auto c = 0; c < complex.nbCells(); ++c ) {
+        for ( CvxCellComplex::Size c = 0; c < complex.nbCells(); ++c ) {
           const auto faces = complex.cellFaces( c );
           for ( auto f : faces ) {
             const auto opp_f = complex.opposite( f );

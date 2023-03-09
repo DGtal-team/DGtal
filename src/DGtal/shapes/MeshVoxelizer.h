@@ -154,7 +154,7 @@ namespace DGtal
 
     // ----------------------- Internal services ------------------------------
     ///Enum type when deciding if a 2D point belongs to a 2D triangle.
-    enum TriangleOrientation { OUTSIDE, INSIDE, ONEDGE, ONVERTEX };
+    enum TriangleOrientation { TRIANGLE_OUTSIDE, TRIANGLE_INSIDE, TRIANGLE_ONEDGE, TRIANGLE_ONVERTEX };
 
     /**
      * Compute (unsigned) distance between @a p and the Euclidean plane

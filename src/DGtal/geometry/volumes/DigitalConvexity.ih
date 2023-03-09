@@ -175,8 +175,8 @@ displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE )
   if ( k != d+1 ) { out << "[SPLX INVALID]"; return; }
   Matrix M;
   for ( Dimension i = 0; i < d; ++i )
-    for ( Dimension k = 0; k < d; ++k )
-      M.setComponent( i, k, pts[ i ][ k ] - pts[ d ][ k ] );
+    for ( Dimension kk = 0; kk < d; ++kk )
+      M.setComponent( i, kk, pts[ i ][ kk ] - pts[ d ][ kk ] );
   // A simplex has its vectors linearly independent.
   auto V = M.determinant();
   out << "[SPLX V=" << V;
@@ -249,7 +249,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( PointIterator itB, PointIterator itE,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
@@ -264,7 +263,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const LatticePolytope& P,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
@@ -279,7 +277,6 @@ DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const RationalPolytope& P,
                Dimension i, Dimension k ) const
 {
-  ASSERT( 0 <= i );
   ASSERT( i <= k );
   ASSERT( k <= KSpace::dimension );
   CellGeometry cgeom( myK, i, k, false );
@@ -333,7 +330,7 @@ is0Convex( const PointRange& X ) const
 {
   if ( X.empty() ) return true;
   const auto P = makePolytope( X );
-  return P.count() == X.size();
+  return P.count() == (DGtal::BoundedLatticePolytope<DGtal::SpaceND<3>>::Integer)X.size();
 }
 
 //-----------------------------------------------------------------------------
@@ -381,7 +378,7 @@ isFullyConvexFast( const PointRange& Z  ) const
   LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
   const auto nb_cells = C_Z.starOfPoints().size();
   const auto s = sizeStarCvxH( Z );
-  return s == nb_cells; 
+  return s == (Integer)nb_cells; 
 }
 
 //-----------------------------------------------------------------------------
@@ -413,8 +410,6 @@ DGtal::DigitalConvexity<TKSpace>::
 StarCvxH( const PointRange& X, Dimension axis ) const
 {
   PointRange cells;
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
-  typedef typename Counter::Interval           Interval;
   // Computes Minkowski sum of Z with hypercube
   PointRange Z = U( 0, X );
   for ( Dimension k = 1; k < dimension; k++ )
@@ -476,8 +471,6 @@ DGtal::DigitalConvexity<TKSpace>::
 sizeStarCvxH( const PointRange& X ) const
 {
   PointRange cells;
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
-  typedef typename Counter::Interval           Interval;
   // Computes Minkowski sum of Z with hypercube
   PointRange Z = U( 0, X );
   for ( Dimension k = 1; k < dimension; k++ )
@@ -560,9 +553,7 @@ typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 FC_direct( const PointRange& Z ) const
 {
-  typedef std::size_t    Size;
   typedef typename LatticePolytope::Domain Domain;
-  typedef typename Counter::Interval       Interval;
   PointRange cells;
   // Computes Minkowski sum of Z with hypercube
   PointRange X( Z );
@@ -579,7 +570,7 @@ FC_direct( const PointRange& Z ) const
   hi[ a ]  = lo[ a ];
   const Domain projD( lo, hi ); //< the projected domain of the polytope.
   const Point  One = Point::diagonal( 1 );
-  const Size  size = projD.size();
+  //const Size  size = projD.size(); //not USED
   std::unordered_map< Point, Interval > cellP;
   Point q;
   for ( auto&& p : projD )
@@ -612,13 +603,13 @@ FC_direct( const PointRange& Z ) const
           auto     s = std::min( I.second, J.second );
           if ( f <= s )
             {
-              Point    q = p; q[ k ] += 1;
-              q_computed.push_back( q );
+              Point    qq = p; qq[ k ] += 1;
+              q_computed.push_back( qq );
               I_computed.push_back( Interval( f, s ) );
             }
         }
       // Add new columns to map Point -> column
-      for ( auto i = 0; i < q_computed.size(); ++i )
+      for ( size_t i = 0; i < q_computed.size(); ++i )
         {
           cellP[ q_computed[ i ] ] = I_computed[ i ];
         }
@@ -636,6 +627,7 @@ FC_direct( const PointRange& Z ) const
                       << n << std::endl;
       std::vector< Interval > V( 1, I );
       auto result = skelP.insert( std::make_pair( p, V ) );
+      (void)result;//unused var;
     }
 
   // std::cout << "Extract skel" << std::endl;
@@ -649,9 +641,9 @@ FC_direct( const PointRange& Z ) const
           if ( k == a ) continue;
           if ( ( p[ k ] & 0x1 ) != 0 ) continue; // if open along axis continue
           // if closed, check upper incident cells along direction k
-          Point q = p;  q[ k ] -= 1;
+          Point qq = p;  qq[ k ] -= 1;
           Point r = p;  r[ k ] += 1;
-          auto itq = skelP.find( q );
+          auto itq = skelP.find( qq );
           if ( itq != skelP.end() )
             {
               auto& W = itq->second;
@@ -864,7 +856,6 @@ isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const
   LatticePolytope Q = P + typename LatticePolytope::UnitSegment( 0 );
   for ( Dimension k = 1; k < dimension; k++ )
     Q = Q + typename LatticePolytope::UnitSegment( k );
-  typedef BoundedLatticePolytopeCounter<Space> Counter;
   Counter C( Q );
   const auto cells = C.getLatticeCells( StarX.axis() );
   LatticeSet StarP( cells, StarX.axis() );
@@ -917,7 +908,7 @@ isFullySubconvex( const Point& a, const Point& b,
   const auto    V = b - a;
   L_ab.insert( 2*a );
   // addCellsTouchingPoint( a );
-  for ( Integer k = 0; k < dimension; k++ )
+  for ( Dimension k = 0; k < dimension; k++ )
     {
       const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
       const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;

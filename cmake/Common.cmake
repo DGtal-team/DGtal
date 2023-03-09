@@ -28,7 +28,7 @@ endforeach()
 
 
 # -----------------------------------------------------------------------------
-# CPP11
+# CPP17
 # -----------------------------------------------------------------------------
 set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 17)
 if(NOT CMAKE_CXX_STANDARD)
@@ -45,10 +45,11 @@ if(NOT CMAKE_CXX_STANDARD_REQUIRED)
 endif()
 
 # -----------------------------------------------------------------------------
-# Visual Studio : to distinguish between debug and release lib
+# Visual Studio : to distinguish between debug and release lib and /bigobj flag
 # -----------------------------------------------------------------------------
 if (MSVC)
   set(CMAKE_DEBUG_POSTFIX "d")
+   add_compile_options(/bigobj)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -102,7 +103,7 @@ option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical oper
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
-option(NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF) 
+option(NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
 #------------------------------------------------------------------------------

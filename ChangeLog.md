@@ -1,10 +1,15 @@
 # DGtal 1.4beta
 
 ## New features / critical changes
- 
+
 - *General*
-  - Major update: C++17 is now required for DGtal. (David Coeurjolly, 
+  - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
+  - Mandatory dependencies and some optional ones can be setup by
+    conan.io, especially on windows, new `ENABLE_CONAN` cmake
+    option to activate this. (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+
 
 ## Changes
 - *IO*
@@ -16,6 +21,9 @@
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+  - Continuous integration on windows is now performed by Github
+    Action instead of Appeveyor  (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 - *IO*
   - Add reading material indices in SurfaceMeshReader::readOBJ
@@ -32,7 +40,11 @@
   - Removing unnecessary includes to speed-up compilation (David Coeurjolly,
     [#1680](https://github.com/DGtal-team/DGtal/pull/1680))
   - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
-    [#1685](https://github.com/DGtal-team/DGtal/pull/1685)) 
+    [#1685](https://github.com/DGtal-team/DGtal/pull/1685))
+  - Many warning fixed (due to c++17 upgrade. (David Coeurjolly,
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+  - WITH_COVERAGE option removed. (David Coeurjolly,
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,

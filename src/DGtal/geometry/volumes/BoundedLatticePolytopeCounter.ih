@@ -214,7 +214,6 @@ getPointsAlongAxis( PointRange& pts, Dimension a ) const
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
   Domain D( lo, hi );
-  Integer nb = 0;
   for ( auto&& p : D )
     {
       auto I  = intersectionIntervalAlongAxis( p, a );
@@ -238,7 +237,7 @@ getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];
   Domain D( lo, hi );
-  Integer nb = 0;
+  //Integer nb = 0; not used
   for ( auto&& p : D )
     {
       auto I  = interiorIntersectionIntervalAlongAxis( p, a );
@@ -317,13 +316,13 @@ getLatticeCells( Dimension a ) const
           auto     s = std::min( I.second, J.second );
           if ( f <= s )
             {
-              Point    q = p; q[ k ] += 1;
-              q_computed.push_back( q );
+              Point    qq = p; qq[ k ] += 1;
+              q_computed.push_back( qq );
               I_computed.push_back( Interval( f, s ) );
             }
         }
       // Add new columns to map Point -> column
-      for ( auto i = 0; i < q_computed.size(); ++i )
+      for ( typename Point::Index i = 0; i < q_computed.size(); ++i )
         {
           L[ q_computed[ i ] ] = I_computed[ i ];
         }

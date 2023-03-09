@@ -73,7 +73,6 @@ computeDegeneratedLatticePolytope
   typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
   // input_points is a range of points with no duplicates, but which
   // seems to be not full dimensional.
@@ -172,8 +171,8 @@ computeDegeneratedLatticePolytope
   for ( auto& H : HS ) {
     Vector  N;
     Integer nu;
-    for ( Dimension i = 0; i < dim; ++i )
-      N[ i ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ i ] );
+    for ( Dimension ii = 0; ii < dim; ++ii )
+      N[ ii ] = IntegerConverter< dimension, Integer >::cast( H.internalNormal()[ ii ] );
     nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
     PHS.emplace_back( N, nu );
   }
@@ -191,11 +190,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedConvexHullVertices
 ( PointRange& input_points )
 {
-  typedef typename LatticePolytope::Domain     Domain;
-  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
-  typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
   // input_points is a range of points with no duplicates, but which
   // seems to be not full dimensional.
   if ( input_points.size() <= 1 )
@@ -407,7 +402,6 @@ computeConvexHullVertices
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   PointRange positions;
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
@@ -432,7 +426,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
 {
   typedef TSurfaceMesh                         SurfaceMesh;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
@@ -455,7 +448,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
@@ -480,7 +472,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellC
   bool remove_duplicates )
 {
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   typedef typename ConvexCellComplex< Point >::FaceRange FaceRange;
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
@@ -497,7 +488,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellC
   cell_complex.cell_faces.push_back( all_faces );
   // Vertices of this unique cell will be computed lazily on request.
   // Taking care of each face.
-  for ( const auto& vtcs : faces )
+  for ( Index i = 0; i < faces.size(); i++ )
     {
       // every inner face borders cell 0
       cell_complex.true_face_cell.push_back( 0 );
@@ -686,7 +677,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
 {
   typedef TSurfaceMesh                         SurfaceMesh;
   typedef QuickHull< RealConvexHullKernel >    ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   ConvexHull hull( precision );
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
@@ -711,7 +701,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
   bool remove_duplicates )
 {
   typedef QuickHull< RealConvexHullKernel >    ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   ConvexHull hull( precision );
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
@@ -737,7 +726,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellC
   bool remove_duplicates )
 {
   typedef QuickHull< RealConvexHullKernel >    ConvexHull;
-  typedef typename ConvexHull::IndexRange      IndexRange;
   typedef typename ConvexCellComplex< RealPoint >::FaceRange FaceRange;
   ConvexHull hull( precision );
   hull.setInput( input_points, remove_duplicates );
@@ -754,7 +742,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullCellC
   cell_complex.cell_faces.push_back( all_faces );
   // Vertices of this unique cell will be computed lazily on request.
   // Taking care of each face.
-  for ( const auto& vtcs : faces )
+  for ( Index i = 0; i < faces.size(); i++ )
     {
       // every inner face borders cell 0
       cell_complex.true_face_cell.push_back( 0 );

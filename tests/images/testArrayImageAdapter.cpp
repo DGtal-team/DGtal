@@ -137,7 +137,6 @@ void checkImage( TImage& anImage )
   using Value = typename Image::Value;
   using Domain = typename Image::Domain;
   using Point = typename Image::Point;
-  using Dimension = typename Point::Dimension;
   using Coordinate = typename Point::Coordinate;
   using RefImage = ImageContainerBySTLVector<Domain, Value>;
 

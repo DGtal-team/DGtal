@@ -64,12 +64,17 @@ namespace DGtal
    */
   template <typename TImage, typename TIteratorOnPts
 	    = typename TImage::Domain::ConstIterator>
-  class SetValueIterator:
-    public std::iterator<std::output_iterator_tag,void,void,void,void>
+  class SetValueIterator
   {
     // ----------------------- Types definitions ------------------------------
   public:
 
+    using iterator_category = std::output_iterator_tag;
+    using value_type = void;
+    using difference_type = void;
+    using pointer = void;
+    using reference = void;
+    
     typedef TImage Image;
     BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<Image> ));
 

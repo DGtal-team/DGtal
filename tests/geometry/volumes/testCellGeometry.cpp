@@ -51,11 +51,8 @@ SCENARIO( "CellGeometry< Z2 > segment tests", "[cell_geometry][2d][segment]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef DigitalConvexity< KSpace >       DConvexity;
-  typedef CGeometry::LatticePolytope       Polytope;
 
   KSpace K;
   K.init( Point( -5, -5 ), Point( 10, 10 ), true );
@@ -121,11 +118,8 @@ SCENARIO( "CellGeometry< Z3 > segment tests", "[cell_geometry][3d][segment]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef DigitalConvexity< KSpace >       DConvexity;
-  typedef CGeometry::LatticePolytope       Polytope;
 
   KSpace K;
   K.init( Point( -5, -5, -5 ), Point( 10, 10, 10 ), true );
@@ -184,8 +178,6 @@ SCENARIO( "CellGeometry< Z2 > unit tests", "[cell_geometry][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef CellGeometry< KSpace >           CGeometry;
 
   KSpace K;
@@ -210,8 +202,6 @@ SCENARIO( "CellGeometry< Z3 > unit tests", "[cell_geometry][3d]" )
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Space                    Space;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef HyperRectDomain<Space>           Domain;
 
@@ -249,8 +239,6 @@ SCENARIO( "CellGeometry< Z2 > intersections", "[cell_geometry][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef BoundedLatticePolytope< Space >  Polytope;
@@ -293,8 +281,6 @@ SCENARIO( "CellGeometry< Z3 > intersections", "[cell_geometry][3d]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef BoundedLatticePolytope< Space >  Polytope;
@@ -347,8 +333,6 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
-  typedef KSpace::Integer                  Integer;
   typedef KSpace::Space                    Space;
   typedef CellGeometry< KSpace >           CGeometry;
   typedef BoundedRationalPolytope< Space >  Polytope;
@@ -405,8 +389,6 @@ SCENARIO( "CellGeometry< Z3 > rational intersections",
 {
   typedef KhalimskySpaceND<3,int>           KSpace;
   typedef KSpace::Point                     Point;
-  typedef KSpace::Vector                    Vector;
-  typedef KSpace::Integer                   Integer;
   typedef KSpace::Space                     Space;
   typedef CellGeometry< KSpace >            CGeometry;
   typedef BoundedRationalPolytope< Space >  Polytope;

@@ -26,7 +26,6 @@
  *
  * This file is part of the DGtal library.
  */
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <array>
@@ -98,7 +97,7 @@ Point calcPointModuloDomain( Point aPoint, Domain const & aDomain )
   auto const & lowerBound = aDomain.lowerBound();
   auto const & upperBound = aDomain.upperBound();
 
-  for ( std::size_t i = 0; i < Domain::dimension; ++i )
+  for ( typename Domain::Dimension i = 0; i < Domain::dimension; ++i )
     aPoint[i] = ( aPoint[i] - 2*lowerBound[i] + upperBound[i] + 1 ) % ( upperBound[i] - lowerBound[i] + 1 ) + lowerBound[i];
 
   return aPoint;
@@ -158,7 +157,7 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
 
       // Checking if this periodicity possibility is valid.
       bool isValid = true;
-      for ( size_t j = 0; j < periodicity.size(); ++j )
+      for ( typename Voro::Space::Dimension j = 0; j < periodicity.size(); ++j )
         if ( periodicity[j] && ! voro.isPeriodic(j) )
           {
             isValid = false;
@@ -195,7 +194,7 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
               auto currSite = site;
 
               // Shifting site.
-              for ( std::size_t dim = 0; dim < Voro::Space::dimension ; ++dim )
+              for ( typename Voro::Space::Dimension dim = 0; dim < Voro::Space::dimension ; ++dim )
                 if ( periodicity[dim] )
                   currSite[dim] += ( pt[dim] < currSite[dim] ? -1 : 1 ) * extent[dim];
 

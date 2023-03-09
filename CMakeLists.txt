@@ -2,7 +2,6 @@
 # Project definition
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.11)
-cmake_policy(SET CMP0048 OLD) # project() doesn't have VERSION
 cmake_policy(SET CMP0057 NEW) # the new interpretation of IN_LIST is by default not set (at least until  3.21.1).
 project (DGtal)
 
@@ -16,8 +15,13 @@ endif()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
+
+
+
 set(DGtal_VERSION_MAJOR 1)
 set(DGtal_VERSION_MINOR 4)
 set(DGtal_VERSION_PATCH beta)
@@ -124,11 +128,6 @@ if (BUILD_EXAMPLES OR BUILD_TESTING)
 endif()
 message(STATUS "-------------------------------------------------------------------------------")
 endif()
-
-# -----------------------------------------------------------------------------
-# Code coverage
-# -----------------------------------------------------------------------------
-include(CheckCoverage)
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator
