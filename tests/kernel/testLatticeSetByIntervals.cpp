@@ -55,7 +55,7 @@ SCENARIO( "LatticeSetByIntervals< int > unit tests", "[lattice_set]" )
     std::set< Point > S;
     LatticeSet        L;
     unsigned int nb = 10000;
-    for ( auto i = 0; i < nb; i++ )
+    for ( unsigned int i = 0; i < nb; i++ )
       {
         Point p( rand() % 20, rand() % 20, rand() % 20 );
         S.insert( p );
@@ -66,7 +66,7 @@ SCENARIO( "LatticeSetByIntervals< int > unit tests", "[lattice_set]" )
     auto vec_L = L.toPointRange();
     std::sort( vec_L.begin(), vec_L.end() );
     std::vector< Point > vec_S( S.begin(), S.end() );
-    for ( auto i = 0; i < vec_L.size(); i++ )
+    for ( size_t i = 0; i < vec_L.size(); i++ )
       {
         if ( vec_L[ i ] != vec_S[ i ] )
           std::cout << i << " " << vec_L[ i ] << " != " << vec_S[ i ]
@@ -316,17 +316,17 @@ SCENARIO( "LatticeSetByIntervals< int > 2d topology operations tests", "[lattice
         REQUIRE( StarSkelStarC.equals( StarC ) );
       }
     WHEN( "Computing the extrema of a set of cells C, extremas are correct" ) {
-      std::vector< Point > X;
-      X.push_back( Point(10,-2) ); 
-      X.push_back( Point(5,5) ); 
-      X.push_back( Point(4,5) ); 
-      X.push_back( Point(3,5) ); 
-      X.push_back( Point(2,1) ); 
-      X.push_back( Point(2,3) ); 
-      X.push_back( Point(1,1) );
-      X.push_back( Point(-2,3) );
-      X.push_back( Point(-3,2) );
-      LatticeSet C( X.cbegin(), X.cend(), 0 );
+      std::vector< Point > XX;
+      XX.push_back( Point(10,-2) ); 
+      XX.push_back( Point(5,5) ); 
+      XX.push_back( Point(4,5) ); 
+      XX.push_back( Point(3,5) ); 
+      XX.push_back( Point(2,1) ); 
+      XX.push_back( Point(2,3) ); 
+      XX.push_back( Point(1,1) );
+      XX.push_back( Point(-2,3) );
+      XX.push_back( Point(-3,2) );
+      LatticeSet C( XX.cbegin(), XX.cend(), 0 );
       auto ExtrC = C.extremaOfCells();
       CAPTURE( C.toPointRange() );
       CAPTURE( ExtrC );

@@ -77,7 +77,7 @@ namespace DGtal
         ArrayImageIterator<TIterableClass>,
         typename TIterableClass::Value,
         std::random_access_iterator_tag,
-        decltype( ((TIterableClass*)nullptr)->dereference( TIterableClass::Point::diagonal(0), typename TIterableClass::Point::Coordinate(0) ) )
+        decltype( ((new TIterableClass))->dereference( TIterableClass::Point::diagonal(0), typename TIterableClass::Point::Coordinate(0) ) )
       >
     {
     // ----------------------- Standard services ------------------------------
@@ -89,7 +89,7 @@ namespace DGtal
       using Domain = typename IterableClass::Domain;    ///< Domain type. \todo or in template with default value ?
       using Point = typename Domain::Point;             ///< Point type.
       using Linearizer = DGtal::Linearizer<Domain, ColMajorStorage>; ///< Linearizer type. \todo hard-coded, but must be later set as template.
-      using Reference = decltype( ((IterableClass*)nullptr)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) ); ///< Return type when dereferencing this iterator.
+      using Reference = decltype( ((new IterableClass)->dereference( Point::diagonal(0), typename Point::Coordinate(0) ) )); ///< Return type when dereferencing this iterator.
 
       /// Default constructor.
       ArrayImageIterator();

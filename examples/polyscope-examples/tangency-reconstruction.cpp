@@ -106,7 +106,7 @@ typedef std::vector< Index >  Indices;
 typedef double                Scalar;
 typedef std::vector< Scalar > Scalars;
 
-Size pickPoint()
+int pickPoint()
 {
   if ( order.size() != digital_points.size() )
     {
@@ -117,9 +117,9 @@ Size pickPoint()
       current = 0;
     }
   if ( current == order.size() ) current = 0;
-  return order[ current++ ];
+  return static_cast<int>(order[ current++ ]);
 }
-Size pickOuterPoint()
+int pickOuterPoint()
 {
   if ( outer_order.size() != outer_digital_points.size() )
     {
@@ -130,7 +130,7 @@ Size pickOuterPoint()
       outer_current = 0;
     }
   if ( outer_current == outer_order.size() ) outer_current = 0;
-  return outer_order[ outer_current++ ];
+  return static_cast<int>(outer_order[ outer_current++ ]);
 }
 
 // ----------------------------------------------------------------------
@@ -512,10 +512,8 @@ void updateReconstructionFromCells( Point x, Point y,
 
 void updateReconstructionFromTangentConeLines( int vertex_idx )
 {
-  typedef QuickHull3D::IndexRange IndexRange;
   if ( digital_points.empty() ) return;
   if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
-  typedef std::size_t Size;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -535,7 +533,6 @@ void updateReconstructionFromTangentConeTriangles( int vertex_idx )
   typedef QuickHull3D::IndexRange IndexRange;
   if ( digital_points.empty() ) return;
   if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
-  typedef std::size_t Size;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -656,8 +653,6 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -671,7 +666,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] =
           local_tangency
           ? dconv.isFullySubconvex( P, local_LS )
@@ -746,8 +741,6 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
     local_X.push_back( outer_TC.point( idx ) );
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -761,7 +754,7 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] = dconv.isFullySubconvex( P, outer_LS );
       }
   else
@@ -815,8 +808,6 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -830,7 +821,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
-        if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+        if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
         is_cell_tangent[ c ] =
           local_tangency
           ? dconv.isFullySubconvex( P, local_LS )
@@ -907,8 +898,6 @@ void computeGlobalTangentDelaunayComplex()
   trace.beginBlock( "Compute global tangent Delaunay complex" );
 
   typedef ConvexCellComplex< Point >::Index       Index;
-  typedef ConvexCellComplex< Point >::VertexRange VertexRange;
-  typedef ConvexCellComplex< Point >::Cell        Cell;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, digital_points, false );
   if ( ! ok )
@@ -923,7 +912,7 @@ void computeGlobalTangentDelaunayComplex()
     {
       auto Y = dcomplex.cellVertexPositions( c );
       auto P = dconv.makePolytope( Y );
-      if ( P.countUpTo( Y.size()+1 ) >= Y.size()+1 ) continue;
+      if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
       is_cell_tangent[ c ] = dconv.isFullySubconvex( P, LS );
     }
     
@@ -1014,7 +1003,7 @@ void myCallback()
     bool goodSelection = false;
     auto selection = polyscope::pick::getSelection();
     auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.first);
-    int idx = selection.second;
+    const auto idx = selection.second;
 
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("Input surface");
@@ -1028,7 +1017,7 @@ void myCallback()
             std::ostringstream otext;
             otext << "Selected vertex = " << idx;
             ImGui::Text( "%s", otext.str().c_str() );
-            vertex_idx = idx;
+            vertex_idx = (Integer)idx;
           }
         else vertex_idx = -1;
       }

@@ -250,7 +250,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
     auto &vc = complex_fixture;
     SECTION(" get neighbors from Kspace") {
         {
-            size_t dim_voxel = 3;
+            Dimension dim_voxel = 3;
             auto it = vc.begin(dim_voxel);
             for (std::size_t n = 0; n < 10; ++n)
                 ++it;
@@ -287,7 +287,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
 
 TEST_CASE_METHOD(Fixture_complex_diamond, "Test Simplicity", "[simplicity]") {
     auto &vc = complex_fixture;
-    size_t dim_voxel = 3;
+    Dimension dim_voxel = 3;
     auto cit = vc.begin(dim_voxel);
     for (std::size_t n = 0; n < 10; ++n)
         ++cit;

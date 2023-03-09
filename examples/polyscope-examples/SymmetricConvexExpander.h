@@ -175,7 +175,7 @@ namespace DGtal
       while ( ! finished() )
         {
           const auto p = current().first;
-          const auto d = current().second; // current ring distance
+          //NOT USED const auto d = current().second; // current ring distance
           const auto sp = symmetric( p );
           myPoints.insert( p );
           myPoints.insert( sp );

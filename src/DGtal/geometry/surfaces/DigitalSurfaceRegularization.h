@@ -275,7 +275,7 @@ namespace DGtal
                          const double epsilon = 0.0001)
        {
          return regularize(nbIters,dt,epsilon,
-                           [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ p += v; });
+                           [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ (void)o; p += v; });
        }
       
     

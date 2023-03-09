@@ -66,7 +66,6 @@ int main( int argc, char* argv[] )
   int R  = argc > 3 ? atoi( argv[ 3 ] ) : 50;   // max diameter of shape
 
   typedef int64_t                              Integer;
-  typedef DGtal::SpaceND< 3, Integer >                Space;
   typedef DGtal::ConvexityHelper< 3, Integer > Helper;
   typedef Helper::LatticePolytope              Polytope;
   typedef Polytope::Point                      Point;

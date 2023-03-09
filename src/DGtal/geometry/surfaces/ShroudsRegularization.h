@@ -310,6 +310,7 @@ namespace DGtal {
       double  l2      = 0.0;
       int     nb      = 0;
       double   r      = 0.5;
+      (void)randomization; //parameter not used, avoiding warning
       do {
 	std::tie( loo, l2 ) =
 	  reg == Regularization::SQUARED_CURVATURE

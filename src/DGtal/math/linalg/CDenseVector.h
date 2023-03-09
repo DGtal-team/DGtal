@@ -94,17 +94,17 @@ public:
 
     BOOST_CONCEPT_USAGE( CDenseVector )
     {
-				Scalar& aa = z(i);
-				aa = aa; // to avoid compiler warning
-
-        checkConstConstraints();
+      Scalar& aa = z(i);
+      (void)aa; // to avoid compiler warning
+      
+      checkConstConstraints();
     }
 
     void checkConstConstraints() const
-    {
-				Scalar bb = z(i);
-				bb = bb; // to avoid compiler warning
-    }
+  {
+    Scalar bb = z(i);
+    (void)bb; // to avoid compiler warning
+  }
 
     // ------------------------- Private Datas --------------------------------
 private:

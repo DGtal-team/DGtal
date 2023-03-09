@@ -50,9 +50,7 @@ int main( int argc, char** argv )
   typedef Z3i::KSpace                      KSpace;
   typedef Shortcuts< KSpace >              SH3;
   typedef ShortcutsGeometry< KSpace >      SHG3;
-  typedef SH3::Surfel                      Surfel;
   typedef SH3::Cell                        Cell;
-  typedef SHG3::RealVector                 RealVector;
 
   const double alpha_at  = 0.1;
   const double lambda_at = 0.01;
@@ -112,6 +110,8 @@ int main( int argc, char** argv )
   bool ok3 = SH3::saveVectorFieldOBJ( positions, at_normals, 0.05, SH3::Colors(),
 				      "output-vf-at-normals.obj",
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
+
+  ASSERT(ok1 && ok2 && ok3);
   //! [AT-surface-getV0]
   SH3::Scalars features( linels.size() );
   at_solver.getOutputScalarFieldV0( features, linels.cbegin(), linels.cend(),
@@ -135,6 +135,7 @@ int main( int argc, char** argv )
 				      "output-features.obj",
 				      SH3::Color( 0, 0, 0 ), SH3::Color::Red );
 
+  ASSERT(ok4);
   trace.endBlock();
   return 0;
 }

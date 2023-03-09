@@ -101,8 +101,8 @@ namespace DGtal
         Point upperBound;
         for (Dimension k = 0; k < dimension; k++)
         {
-            lowerBound[k] = start[k]+myDomainShift[k];
-            upperBound[k] = start[k]+size[k]+myDomainShift[k]-1;
+            lowerBound[k] = static_cast<typename Point::Component>(start[k]+myDomainShift[k]);
+            upperBound[k] = static_cast<typename Point::Component>(start[k]+size[k]+myDomainShift[k]-1);
         }
 
         myDomain = TDomain(lowerBound, upperBound);

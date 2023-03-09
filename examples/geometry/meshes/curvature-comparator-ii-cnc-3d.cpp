@@ -136,7 +136,6 @@ int main( int argc, char* argv[] )
   typedef SurfaceMesh< RealPoint, RealVector >                    SM;
   typedef CorrectedNormalCurrentComputer< RealPoint, RealVector > CNC;
   typedef Shortcuts< KSpace >          SH;
-  typedef SH::DigitalSurface           DigSurf;
   typedef ShortcutsGeometry< KSpace >  SHG;
   //! [curvature-comparator-Typedefs]
   std::string  poly = argv[ 1 ]; // polynomial

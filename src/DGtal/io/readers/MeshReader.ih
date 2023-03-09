@@ -385,7 +385,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         std::operator>>( lineinput, name );
         std::string base = name.substr(0,name.find_last_of("."));
         auto iSep = filename.find_last_of('/');
-        if (iSep == -1)
+        if ((int)iSep == -1)
         { // special for windows.
           iSep = filename.find_last_of('\\');
         }

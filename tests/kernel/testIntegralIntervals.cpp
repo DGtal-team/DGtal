@@ -70,7 +70,7 @@ SCENARIO( "IntegralIntervals< int > unit tests", "[intervals]" )
           {
             std::cout << "Bad count #V=" << V.size() << " #X=" << X.size()
                       << std::endl;
-            for ( auto i : X ) std::cout << " " << i;
+            for ( auto j : X ) std::cout << " " << j;
             std::cout << std::endl;
             break;
           }
@@ -103,7 +103,7 @@ SCENARIO( "IntegralIntervals< int > unit tests", "[intervals]" )
           {
             std::cout << "Bad count #V=" << V.size() << " #X=" << X.size()
                       << std::endl;
-            for ( auto i : X ) std::cout << " " << i;
+            for ( auto j : X ) std::cout << " " << j;
             std::cout << std::endl;
             break;
           }
@@ -138,14 +138,6 @@ SCENARIO( "IntegralIntervals< int > set operations tests", "[intervals]" )
   Intervals A_cap_B = A.set_intersection( B );
   Intervals A_minus_B = A.set_difference( B );
   Intervals A_delta_B = A.set_symmetric_difference( B );
-  bool A_cup_B_subset_A_cup_B = A_cup_B.includes( A_cup_B );
-  bool A_subset_A_cup_B = A_cup_B.includes( A );
-  bool B_subset_A_cup_B = A_cup_B.includes( B );
-  bool A_cap_B_subset_A_cup_B = A_cup_B.includes( A_cap_B );
-  bool A_minus_B_subset_A = A.includes( A_minus_B );
-  bool A_delta_B_subset_A_cup_B = A_cup_B.includes( A_delta_B );
-  bool A_delta_B_subset_A = A.includes( A_delta_B ); // false
-  bool A_delta_B_subset_B = B.includes( A_delta_B ); // false
   THEN( "Interval can be constructed from sets" ) {
     REQUIRE( X.size() ==  A.size() );
     REQUIRE( Y.size() ==  B.size() );

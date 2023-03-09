@@ -167,7 +167,7 @@ namespace DGtal
       linearModel.computeRegression();
       itx += n;
       ity += n;
-      unsigned int l = myX.size() - n + 1;
+      unsigned int l = (unsigned int)myX.size() - n + 1;
       for ( ; itx != itxe; ++itx, ++ity, --l )
         {
           std::pair<double,double> ic;
@@ -210,7 +210,7 @@ namespace DGtal
       linearModel.computeRegression();
       itx += n;
       ity += n;
-      unsigned int l = myX.size() - n + 1;
+      unsigned int l = static_cast<unsigned int>(myX.size()) - n + 1;
       for ( ; itx != itxe; ++itx, ++ity, --l )
         {
           std::pair<double,double> ic;

@@ -48,7 +48,6 @@ int main(int /*argc*/, char** /*argv*/)
      
    
   // -------------------------------------------------------------------------- Type declaring
-  typedef Space::RealPoint RealPoint;
   typedef Ball3D<Space> EuclideanShape;
 
   bool test = true;

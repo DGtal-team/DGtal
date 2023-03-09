@@ -220,7 +220,7 @@ namespace DGtal
       auto surfmesh = myCalculus->getSurfaceMeshPtr();
       
       // Heat, normalization and divergence per face
-      for(auto f=0; f< myCalculus->nbFaces(); ++f)
+      for(typename PolygonalCalculus::MySurfaceMesh::Index f=0; f< myCalculus->nbFaces(); ++f)
         {
           Vector faceHeat( myCalculus->degree(f));
           cpt=0;
@@ -236,7 +236,7 @@ namespace DGtal
       
           // div
           DenseMatrix   oneForm = myCalculus->flat(f)*grad;
-          Vector divergenceFace = myCalculus->divergence( f, myLambda ) * oneForm;
+          Vector divergenceFace = myCalculus->divergence( f ) * oneForm;
           cpt=0;
           for(auto v: vertices)
             {

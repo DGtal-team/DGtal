@@ -345,13 +345,13 @@ namespace DGtal
           }
           ForwardIterator myB;
           ForwardIterator myE;
-          unsigned int mySize;
+          size_t mySize;
         };
         WrapIt aConvexHull(itb, ite);
         double resThickness = std::numeric_limits<double>::max();
         unsigned int i = 0;
         unsigned int j = 1;
-        unsigned int size = aConvexHull.mySize;
+        const auto size = aConvexHull.mySize;
         if(size<3)
           {
           if(size>0)

@@ -82,7 +82,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ClosedIntegerHalfPlane();
+    ~ClosedIntegerHalfPlane() {};
     /**
      * Default constructor.
      */

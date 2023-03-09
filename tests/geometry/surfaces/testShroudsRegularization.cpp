@@ -86,7 +86,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
     auto regularizedPos = shrouds_reg.positions();
     auto polySurf       = SH3::makeDualPolygonalSurface( idxsurface );
     auto polySurfPos    = polySurf->positions();
-    for ( auto i = 0; i < regularizedPos.size(); i++ )
+    for ( size_t i = 0; i < regularizedPos.size(); i++ )
       polySurfPos[ i ] = regularizedPos[ i ];
     SH3::saveOBJ( polySurf, "goursat-shrouds-reg-k2.obj" );
     //! [ShroudsRegSaveObj]

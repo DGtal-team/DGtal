@@ -160,7 +160,6 @@ bool testSegmentation()
 
   trace.beginBlock ( "Testing block ..." );
 
-  typedef GridCurve< KhalimskySpaceND< 2, int > > Curve;
   typedef Curve::PointsRange::ConstIterator Iterator;
   typedef FrechetShortcut<Iterator,int> SegmentComputer;
 

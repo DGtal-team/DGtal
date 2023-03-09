@@ -238,7 +238,7 @@ SCENARIO( "CorrectedNormalCurrentComputer ICNC convergence tests", "[icnc][conve
         }
       double sphere_area     = 4.0 * M_PI;
       for ( auto & v : errors_mu0 ) v = fabs( v - sphere_area ) / sphere_area;
-      for ( auto i = 0; i < errors_mu0.size()-1; i++ ) {
+      for ( auto i = 0; i < (int)errors_mu0.size()-1; i++ ) {
         REQUIRE( errors_mu0[ i+1 ] < errors_mu0[ i ] );
       }
     }
@@ -256,7 +256,7 @@ SCENARIO( "CorrectedNormalCurrentComputer ICNC convergence tests", "[icnc][conve
         }
       double sphere_twice_mc = 8.0 * M_PI;
       for ( auto & v : errors_mu1 ) v = fabs( v - sphere_twice_mc ) / sphere_twice_mc;
-      for ( auto i = 0; i < errors_mu1.size()-1; i++ ) {
+      for ( auto i = 0; i < (int)errors_mu1.size()-1; i++ ) {
         REQUIRE( errors_mu1[ i+1 ] < errors_mu1[ i ] );
       }
     }
@@ -274,7 +274,7 @@ SCENARIO( "CorrectedNormalCurrentComputer ICNC convergence tests", "[icnc][conve
         }
       double sphere_gauss_c  = 4.0 * M_PI;
       for ( auto & v : errors_mu2 ) v = fabs( v - sphere_gauss_c ) / sphere_gauss_c;
-      for ( auto i = 0; i < errors_mu2.size()-1; i++ ) {
+      for ( auto i = 0; i < (int)errors_mu2.size()-1; i++ ) {
         REQUIRE( errors_mu2[ i+1 ] < errors_mu2[ i ] );
       }
     }
@@ -301,7 +301,7 @@ SCENARIO( "CorrectedNormalCurrentComputer CCNC convergence tests", "[ccnc][conve
         }
       double sphere_area     = 4.0 * M_PI;
       for ( auto & v : errors_mu0 ) v = fabs( v - sphere_area ) / sphere_area;
-      for ( auto i = 0; i < errors_mu0.size()-1; i++ ) {
+      for ( auto i = 0; i < (int)errors_mu0.size()-1; i++ ) {
         REQUIRE( errors_mu0[ i+1 ] < errors_mu0[ i ] );
       }
     }
@@ -319,7 +319,7 @@ SCENARIO( "CorrectedNormalCurrentComputer CCNC convergence tests", "[ccnc][conve
         }
       double sphere_twice_mc = 8.0 * M_PI;
       for ( auto & v : errors_mu1 ) v = fabs( v - sphere_twice_mc ) / sphere_twice_mc;
-      for ( auto i = 0; i < errors_mu1.size()-1; i++ ) {
+      for ( auto i = 0; i < (int)errors_mu1.size()-1; i++ ) {
         REQUIRE( errors_mu1[ i+1 ] < errors_mu1[ i ] );
       }
     }

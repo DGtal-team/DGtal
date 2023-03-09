@@ -66,7 +66,7 @@ SCENARIO( "Shortcuts< K3 > pointel ordering", "[shortcuts][pointel]" )
     }
     THEN( "The vertices of the polygonal surface are in the same order as the pointel range" ) {
       unsigned int nb_ok = 0, nb_ko = 0;
-      for ( auto i = 0; i < polySurf->nbVertices(); i++ )
+      for ( size_t i = 0; i < polySurf->nbVertices(); i++ )
 	{
 	  auto    p = pointels[ i ];
 	  auto  idx = c2i[ p ];
@@ -77,6 +77,7 @@ SCENARIO( "Shortcuts< K3 > pointel ordering", "[shortcuts][pointel]" )
 	    }
 	  else nb_ok += 1;
 	}
+      (void)nb_ok;//not used
       REQUIRE( nb_ko == 0 );
     }
   }

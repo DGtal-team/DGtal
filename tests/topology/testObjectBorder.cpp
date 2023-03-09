@@ -200,10 +200,8 @@ bool testObjectBorder()
 
     //We split the border according to its components
     vector<ObjectType48> borders ( 30 );
-    unsigned int nbComponents;
-
     vector<ObjectType48>::iterator it = borders.begin();
-    nbComponents = bubbleBorder2.writeComponents ( it );
+    auto nbComponents = bubbleBorder2.writeComponents ( it );
 
     trace.info() << "The Bubble object has " << nbComponents << " (4,8)-connected components" << endl;
 

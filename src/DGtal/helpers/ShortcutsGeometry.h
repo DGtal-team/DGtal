@@ -49,10 +49,8 @@
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 
-#if defined(WITH_EIGEN)
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/dec/ATSolver2D.h"
-#endif // defined(WITH_EIGEN)
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -1405,6 +1403,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used. FIXME: JOL
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1469,6 +1469,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+        
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1526,6 +1528,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1593,6 +1597,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+        
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();

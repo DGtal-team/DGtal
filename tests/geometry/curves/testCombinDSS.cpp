@@ -57,7 +57,6 @@ using namespace Z2i;
 
 
 typedef FreemanChain<int> Contour;
-typedef FreemanChain<int>::Vector Vector;
 
 
 

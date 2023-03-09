@@ -183,7 +183,7 @@ namespace DGtal
       /// @note Must be done before starting computations.
       void init( Index i )
       {
-        ASSERT( 0 <= i && i < size() );
+        ASSERT( i < size() );
         myQ.push( std::make_tuple( i, i, 0.0 ) );
         myAncestor[ i ] = i;
         myDistance[ i ] = 0.0;
@@ -202,7 +202,7 @@ namespace DGtal
         for ( ; it != itE; ++it )
           {
             const auto i = *it;
-            ASSERT( 0 <= i && i < size() );
+            ASSERT( i < size() );
             myQ.push( std::make_tuple( i, i, 0.0 ) );
           }
         const auto elem = myQ.top();
@@ -248,7 +248,7 @@ namespace DGtal
       /// @return the point with index \a i.
       const Point& point( Index i ) const
       {
-        ASSERT( 0 <= i && i < size() );
+        ASSERT( i < size() );
         return myTgcyComputer->point( i );
       }
 
@@ -260,7 +260,7 @@ namespace DGtal
       /// called.
       Index ancestor( Index i ) const
       {
-        ASSERT( 0 <= i && i < size() );
+        ASSERT( i < size() );
         return myAncestor[ i ];
       }
 
@@ -272,7 +272,7 @@ namespace DGtal
       /// called.
       double distance( Index i ) const
       {
-        ASSERT( 0 <= i && i < size() );
+        ASSERT( i < size() );
         return myDistance[ i ];
       }
 
@@ -366,7 +366,7 @@ namespace DGtal
     };
 
     /// ShortestPaths may access to datas of TangencyComputer.
-    friend class ShortestPaths;
+    friend struct ShortestPaths;
     
     // ------------------------- Standard services --------------------------------
   public:

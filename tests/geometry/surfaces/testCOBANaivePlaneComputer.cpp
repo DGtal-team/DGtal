@@ -285,7 +285,6 @@ bool testCOBANaivePlaneComputer()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   using namespace Z3i;
-  typedef BigInteger Integer;
   typedef COBANaivePlaneComputer<Z3, BigInteger> NaivePlaneComputer;
   typedef COBAGenericNaivePlaneComputer<Z3, BigInteger> GenericNaivePlaneComputer;
 

@@ -50,13 +50,8 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
 {
   typedef Z3i::Space          Space;
   typedef Z3i::KSpace         KSpace;
-  typedef Z3i::Domain         Domain;
-  typedef Z3i::SCell          SCell;
   typedef Shortcuts< KSpace > SH3;
   typedef Space::Point        Point;
-  typedef Space::RealPoint    RealPoint;
-  typedef Space::RealVector   RealVector;
-  typedef Space::Vector       Vector;
   typedef std::size_t         Index;
   
   SECTION( "Computing shortest paths on a 3D unit sphere digitized at gridstep 0.25" )
@@ -87,15 +82,15 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
           if ( lattice_points[ uppest ] < lattice_points[ i ] ) uppest = i;
         }
       // Compute shortest paths
-      typedef TangencyComputer< KSpace >::Index Index;
+      typedef TangencyComputer< KSpace >::Index _Index;
       TangencyComputer< KSpace > TC( K );
       TC.init( lattice_points.cbegin(), lattice_points.cend() );
       auto SP = TC.makeShortestPaths( sqrt(3.0) );
       SP.init( lowest ); //< set source
       double last_distance = 0.0;
-      Index  last = 0;
+      _Index  last = 0;
       double prev_distance = 0.0;
-      std::set< Index > V;
+      std::set< _Index > V;
       unsigned int nb_multiple_pops = 0;
       unsigned int nb_decreasing_distance = 0;
       while ( ! SP.finished() )
