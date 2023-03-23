@@ -308,7 +308,6 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
@@ -371,7 +370,6 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -1, -1 ), Point( 10, 10 ) );
@@ -635,8 +633,6 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -36, -36 ), Point( 36, 36 ) );
@@ -652,8 +648,8 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
   auto CG = dconv.makeCellCover( P, 0, 2 );
   auto  L = dconv.StarCvxH( X, 0 );
   REQUIRE( CG.nbCells() == L.size() );  
-  for ( int i = 0; i < k; i++ )
-    for ( int j = i+1; j < k; j++ )
+  for ( unsigned int i = 0; i < k; i++ )
+    for ( unsigned int j = i+1; j < k; j++ )
       {
         std::vector< Point > Z { X[ i ], X[ j ] };
         const auto Q        = dconv.makePolytope( Z );
@@ -671,8 +667,6 @@ SCENARIO( "DigitalConvexity< Z3 > sub-convexity of polyhedra", "[full_subconvexi
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
@@ -711,8 +705,6 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
@@ -787,8 +779,6 @@ SCENARIO( "DigitalConvexity< Z2 > envelope", "[envelope][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
@@ -812,8 +802,6 @@ SCENARIO( "DigitalConvexity< Z2 > relative envelope", "[rel_envelope][2d]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
@@ -865,8 +853,6 @@ SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Space                    Space;
-  typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360, -360 ), Point( 360, 360, 360 ) );

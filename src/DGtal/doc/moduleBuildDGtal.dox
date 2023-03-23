@@ -33,7 +33,7 @@ manage the project build on various systems.
 To build DGtal in is minimal configuration, you need at least these
 dependencies:
 
-- \e c++ compiler (g++, clang++, ...) with C++11 features (gcc>4.6 for instance)
+- \e c++ compiler (g++, clang++, ...) with C++17 features
 - \e [cmake](http://cmake.org) (>3.1, optionally cmake-gui),
 - \e |boost](http://www.boost.org) boost >= 1.50.0  (no need to have the libraries installed)
 - \e zlib (already available in most OS)
@@ -46,13 +46,16 @@ To build DGtal in is full configuration, you may need these dependencies too:
 - \e insighttoolkit (ITK),
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 - \e [CGAL](http://cgal.org) (build with Eigen enabled)
-- \e [Eigen] (http://eigen.tuxfamily.org/index.php?title=Main_Page)
 
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
 - \e graphviz.
 
+
+@note Since 1.4, some dependencies could be installed using
+[conan.io](https://conan.io). Just install the conan binary (1.57) and
+cmake will install all libraries (which may take some time for the first build).
 
 \subsection linux Build on Linux-based distributions
 
@@ -150,13 +153,13 @@ tools with recent Visual Studio target. During the project generation,
 you would have to specify the path to @e boost headers (or paths
 needed for any optional dependency such as GMP, CGAL, Cairo...).
 
-@note Do not forget to set @e BUILD_SHARED_LIBS cmake to false (static DGtal lib target).
+
+@note Do not forget to set @e BUILD_SHARED_LIBS cmake to false (static
+DGtal lib target, default).
 
 
-@advanced When working on DGtal within github, we have set up a Windows
-container (using [appeveyor](http://www.appeveyor.com)) for continuous
-integration. In the "appeveyor.yml" script, you would find information about
-how we compile the DGtal library on this windows environnement.
+@advanced When working on DGtal within github, we have set up a
+Windows container for continuous integration. 
 
 */
 

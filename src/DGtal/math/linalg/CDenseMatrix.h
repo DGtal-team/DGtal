@@ -94,16 +94,15 @@ public:
 
     BOOST_CONCEPT_USAGE( CDenseMatrix )
     {
-				Scalar& aa = z(i, j);
-				aa = aa; // to avoid compiler warning
-
-        checkConstConstraints();
+      Scalar& aa = z(i, j);
+      (void)aa; // to avoid compiler warning     
+      checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-				Scalar bb = z(i, j);
-				bb = bb; // to avoid compiler warning
+      Scalar bb = z(i, j);
+      (void)bb; // to avoid compiler warning
     }
 
     // ------------------------- Private Datas --------------------------------

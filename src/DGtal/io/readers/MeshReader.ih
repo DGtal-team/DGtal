@@ -336,6 +336,10 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       trace.error() << "MeshReader : can't open " << filename << std::endl;
       throw dgtalio;
     }
+  material = MeshReader<TPoint>::readMaterial(input);
+  useMtllib = !material.empty();
+  input.close();
+  input.open (filename.c_str(), std::ifstream::in);
   std::getline( input, linestr );
   Index l = 0;
   for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )
@@ -381,7 +385,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         std::operator>>( lineinput, name );
         std::string base = name.substr(0,name.find_last_of("."));
         auto iSep = filename.find_last_of('/');
-        if (iSep == -1)
+        if ((int)iSep == -1)
         { // special for windows.
           iSep = filename.find_last_of('\\');
         }
@@ -389,8 +393,10 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         std::stringstream matPathName ;
         matPathName << path << name;
         std::ifstream is (matPathName.str());
-        material = MeshReader<TPoint>::readMaterial(is);
-        useMtllib = true;
+        if (is.good()){
+          material = MeshReader<TPoint>::readMaterial(is);
+          useMtllib = true;
+        }
       }
       else if (keyword ==  "usemtl")
       {

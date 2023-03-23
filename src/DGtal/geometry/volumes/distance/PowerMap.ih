@@ -104,7 +104,7 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 
   //We run the 1D problems in //
 #pragma omp parallel for schedule(dynamic)
-  for (size_t i = 0; i < subRangePoints.size(); ++i)
+  for (int i = 0; i < (int)subRangePoints.size(); ++i)  //MSCV needs signed
     computeOtherStep1D ( subRangePoints[i], dim);
 
 #else

@@ -105,11 +105,6 @@ PointVector(const PointVector<dim, OtherComponent, OtherStorage> & apoint1,
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
-DGtal::PointVector<dim, TComponent, TContainer>::~PointVector()
-{}
-//------------------------------------------------------------------------------
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector( const Component * ptrValues )
 {
   // The problem here is that we have no guaranty on the size of init !!

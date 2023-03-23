@@ -318,8 +318,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  std::vector<Quantity> lastInnerMoments(nbMoments );
+  std::vector<Quantity> lastOuterMoments(nbMoments );
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
 
@@ -371,8 +371,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  std::vector<Quantity> lastInnerMoments( nbMoments );
+  std::vector<Quantity> lastOuterMoments( nbMoments );
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
   CovarianceMatrix resultCovarianceMatrix;
@@ -823,8 +823,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  std::vector<Quantity> lastInnerMoments( nbMoments );
+  std::vector<Quantity> lastOuterMoments( nbMoments );
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
 
@@ -876,8 +876,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  std::vector<Quantity> lastInnerMoments( nbMoments );
+  std::vector<Quantity> lastOuterMoments( nbMoments );
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
   CovarianceMatrix resultCovarianceMatrix;
@@ -1855,8 +1855,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   Dimension recount = 0;
 #endif
 
-  Quantity lastInnerMoments[ nbMoments ];
-  Quantity lastOuterMoments[ nbMoments ];
+  std::vector<Quantity> lastInnerMoments( nbMoments );
+  std::vector<Quantity> lastOuterMoments( nbMoments );
 
   CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
 

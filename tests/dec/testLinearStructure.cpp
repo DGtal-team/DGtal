@@ -50,7 +50,6 @@ void test_linear_structure()
     //! [neumann-creation]
     typedef DiscreteExteriorCalculus<1, 2, EigenLinearAlgebraBackend> Calculus;
 
-    typedef std::list<Calculus::SCell> SCells;
     SCells cells;
 
     // fill cells container
@@ -322,7 +321,7 @@ void test_linear_ring()
     const Calculus::PrimalIdentity0 laplace = calculus.laplace<PRIMAL>();
     display_operator_info("laplace", laplace);
 
-    const int laplace_size = calculus.kFormLength(0, PRIMAL);
+    const auto laplace_size = calculus.kFormLength(0, PRIMAL);
     const Eigen::MatrixXd laplace_dense(laplace.myContainer);
 
     for (int ii=0; ii<laplace_size; ii++)
@@ -387,7 +386,7 @@ void test_manual_operators_3d()
            -1,  1,
             0,  1,
             0,  1;
-
+      
         FATAL_ERROR( Eigen::MatrixXd(d0.myContainer) == d0_th );
 #endif
         FATAL_ERROR( Eigen::MatrixXd(d2p.transpose().myContainer) == Eigen::MatrixXd(d0.myContainer) );

@@ -60,7 +60,6 @@ CellGeometry( const KSpace & K,
     myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
     myVerbose( verbose )
 {
-  ASSERT( 0 <= myMinCellDim );
   ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
 }
@@ -71,7 +70,6 @@ DGtal::CellGeometry<TKSpace>::
 init( const KSpace & K,
       Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
 {
-  ASSERT( 0 <= myMinCellDim );
   ASSERT( myMinCellDim <= myMaxCellDim );
   ASSERT( myMaxCellDim <= myK.dimension );
   myK = K;
@@ -143,7 +141,7 @@ addCellsTouchingSegment( const Point& a, const Point& b )
 {
   const auto    V = b - a; 
   addCellsTouchingPoint( a );
-  for ( Integer k = 0; k < dimension; k++ )
+  for ( Dimension k = 0; k < dimension; k++ )
     {
       const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
       const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;
@@ -306,7 +304,7 @@ typename DGtal::CellGeometry<TKSpace>::Size
 DGtal::CellGeometry<TKSpace>::
 nbCells() const
 {
-  return myKPoints.size();
+  return (DGtal::CellGeometry<TKSpace>::Size)myKPoints.size();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

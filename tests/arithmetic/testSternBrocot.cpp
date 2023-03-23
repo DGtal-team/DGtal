@@ -99,7 +99,7 @@ bool testReducedFraction()
   trace.info() << "(" << nbok << "/" << nb << ") " 
                << " cfrac"
                << std::endl;
-  unsigned int depth = cf1.size();
+  unsigned int depth = (unsigned int)cf1.size();
   for ( unsigned int k = 1; k < depth; ++k )
     {
       std::vector<Quotient> cf1_red;

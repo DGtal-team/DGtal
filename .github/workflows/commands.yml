@@ -1,4 +1,4 @@
-name: Commands
+name: Processing commands
 
 on:
   issue_comment:
@@ -15,6 +15,7 @@ jobs:
       pull-requests: write # to create comment
 
     runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request }}
     steps:
       - uses: actions/github-script@v6
         id: get_round
@@ -22,10 +23,12 @@ jobs:
          result-encoding: string
          script: |
              const bodycmt = context.payload.comment.body
-             if(bodycmt.includes("/echo:"))
+             if(bodycmt.includes("/echo"))
                return 'echo'
-             if(bodycmt.includes("/builddoc:"))
+             if(bodycmt.includes("/builddoc"))
                return 'builddoc'
+             if(bodycmt.includes("/fullbuild"))
+                 return 'fullbuild'
              return 'stop'
 
       - name: Emoji-comment
@@ -40,9 +43,9 @@ jobs:
               repo: context.repo.repo,
               content: 'rocket'})
 
-# buildDoc COMMAND
+
+### Common
       - uses: actions/github-script@v6
-        if: steps.get_round.outputs.result == 'builddoc'
         id: get_pr_number
         with:
          result-encoding: string
@@ -50,6 +53,9 @@ jobs:
            //get pullrequest url
            const pr_number = context.payload.issue.number
            return pr_number
+######
+
+# buildDoc COMMAND
 
       - uses: actions/checkout@v3
         name: "checkout branch"
@@ -63,7 +69,7 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -x
-          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev texlive-latex-base
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
@@ -76,30 +82,50 @@ jobs:
 
 
       - name: build doc
+        id: build-and-check-doc
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           cd build_doc
-          make -j 2 doc
+          wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build_doc/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+          make -j 2 doc  > buildDoc.log
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build_doc
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          ${{runner.workspace}}/DGtal/.github/workflows/checkDoxygenDocumentation.sh
+          if [ -s /tmp/doxygen.kept.log ]; then
+              echo "********************************************"
+              content=`cat /tmp/doxygen.kept.log`
+              echo $content
+              delimiter="$(openssl rand -hex 8)"
+              echo "DoxygenError<<${delimiter}" >> "${GITHUB_OUTPUT}"
+              cat /tmp/doxygen.kept.log >> "${GITHUB_OUTPUT}"
+              echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+              exit 1
+          fi
+
+      - name: Preparing Deploy
+        if: steps.get_round.outputs.result == 'builddoc'
+        run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
-          mv html/* pr${{ steps.get_pr_number.outputs.result }}/
+          mv ${{runner.workspace}}/DGtal/build_doc/html/* pr${{ steps.get_pr_number.outputs.result }}/
           git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
           cd doc-nightly
           rm -rf pr${{ steps.get_pr_number.outputs.result }}
           mv ../pr${{ steps.get_pr_number.outputs.result }} .
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.7
+        if: steps.get_round.outputs.result == 'builddoc'
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-nightly
-          folder: build_doc/doc-nightly
+          folder: doc-nightly
           branch: master
           single-commit: true
           clean: true
 
       - name: Post address
         uses: actions/github-script@v6
-        if: ${{ success() && steps.get_round.outputs.result != 'stop' }}
+        if: ${{ steps.get_round.outputs.result == 'builddoc' && success() && steps.get_round.outputs.result != 'stop' }}
         with:
           script: |
             const tmp_round = "${{ steps.get_round.outputs.result }}";
@@ -112,16 +138,21 @@ jobs:
               issue_number: ${{ github.event.issue.number }},
               body: address
             });
+            github.rest.reactions.createForIssueComment({
+                comment_id: ${{ github.event.comment.id }},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                content: 'hooray'})
 
       - name: Post error
         env:
-          ERRORMSG: ${{steps.build_and_run.outputs.DoxygenError}}
+          ERRORMSG: ${{steps.build-and-check-doc.outputs.DoxygenError}}
         uses: actions/github-script@v6
         if: ${{ failure() && steps.get_round.outputs.result == 'builddoc' }}
         with:
           script: |
             const error = process.env.ERRORMSG
-            const msg = "There was an error while building the doc: \n"+error
+            const msg = "There was an error while building the doc. Check the GitHub actions for debugging.\n"+error
             github.rest.issues.createComment({
               owner: "DGtal-team",
               repo: "DGtal",
@@ -146,4 +177,46 @@ jobs:
               repo: context.repo.repo,
               body: bodycmt
             })
+###########
+
+
+
+# fullbuild COMMAND
+      - name: install dependencies
+        if: steps.get_round.outputs.result == 'fullbuild'
+        run: |
+          set -x
+          sudo apt-get update && sudo apt-get install -y libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev
+          git config --global user.email "dgtal@dgtal.org"
+          git config --global user.name "DGtal"
+
+      - uses: actions/checkout@v3
+        name: "checkout branch"
+        if: steps.get_round.outputs.result == 'fullbuild'
+        with:
+           repository: ${{ github.repository }}
+           ref: refs/pull/${{ steps.get_pr_number.outputs.result }}/merge
+           fetch-depth: 2
+
+      - name: Emoji-comment
+        if: steps.get_round.outputs.result != 'stop'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.reactions.createForIssueComment({
+              comment_id: ${{ github.event.comment.id }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              content: 'rocket'})
+
+      - name: configure/build/test fullbuild
+        if: steps.get_round.outputs.result == 'fullbuild'
+        run: |
+          cmake -E make_directory ${{runner.workspace}}/build
+          cmake -S ${{runner.workspace}}/DGtal -B ${{runner.workspace}}/build -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=100 -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true  -DWITH_EIGEN=true  -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -G Ninja
+          cd ${{runner.workspace}}/build
+          cmake --build .
+          export TESTBLACKLIST="(testLinearStructure)"
+          ctest -E $TESTBLACKLIST
 ###########

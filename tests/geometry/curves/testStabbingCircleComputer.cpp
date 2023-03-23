@@ -65,68 +65,52 @@ using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
 // digital circle generator
-template<typename TKSpace>
-GridCurve<TKSpace>
-ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
+
+template<typename TP, typename TI>
+struct MyBallPredicate
+{
+  typedef TP Point;
+  typedef TI Integer; 
+  MyBallPredicate(const Integer& aR) : myRad(aR) {};
+  bool operator()(const Point &aP) const { return aP.dot(aP) <= myRad*myRad; };
+  Integer myRad;
+};
+
+template<typename TKSpace, typename Integer>
+void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Integer& aR, const bool& aFlagIsCW)
 {
 
   // Types
   typedef TKSpace KSpace;  
   typedef typename KSpace::SCell SCell;
-  typedef GridCurve<KSpace> GridCurve; 
-  typedef typename KSpace::Space Space;  
-  typedef Ball2D<Space> Shape;
+  typedef typename KSpace::Space Space;
   typedef typename Space::Point Point;
-  typedef typename Space::RealPoint RealPoint;
-  typedef HyperRectDomain<Space> Domain;
-
-  //Forme
-  Shape aShape(Point(aCx,aCy), aR);
-
-  // Window for the estimation
-  RealPoint xLow ( -aR-1, -aR-1 );
-  RealPoint xUp( aR+1, aR+1 );
-  GaussDigitizer<Space,Shape> dig;  
-  dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, 1 ); 
-  Domain domain = dig.getDomain();
-  // Create cellular space
-  KSpace K;
-  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
-  if ( ! ok )
-  {
-      std::cerr << " "
-    << " error in creating KSpace." << std::endl;
-      return GridCurve();
-  }
+  
+  MyBallPredicate<Point,Integer> predicate(aR);
   try 
-  {
-
-    // Extracts shape boundary
-    SurfelAdjacency<KSpace::dimension> SAdj( true );
-    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-    // Getting the consecutive surfels of the 2D boundary
-    std::vector<Point> points, points2;
-    Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
-    //counter-clockwise oriented by default
-    GridCurve c; 
-    if (aFlagIsCW)
     {
-      points2.assign( points.rbegin(), points.rend() );
-      c.initFromVector(points2); 
-    } 
-    else 
-    {
-      c.initFromVector(points); 
+      // Extracts shape boundary
+      SurfelAdjacency<KSpace::dimension> SAdj( true );
+      SCell bel = Surfaces<KSpace>::findABel( aKSpace, predicate, 10000 );
+      // Getting the consecutive surfels of the 2D boundary
+      std::vector<Point> points, points2;
+      Surfaces<KSpace>::track2DBoundaryPoints( points,  aKSpace, SAdj, predicate, bel );
+      //counter-clockwise oriented by default
+      if (aFlagIsCW)
+	{
+	  points2.assign( points.rbegin(), points.rend() );
+	  aGC.initFromVector(points2); 
+	} 
+      else 
+	{
+	  aGC.initFromVector(points); 
+	}
     }
-    return c;
-  }
   catch ( InputException& e )
-  {
+    {
       std::cerr << " "
-    << " error in finding a bel." << std::endl;
-      return GridCurve();
-  }
+		<< " error in finding a bel." << std::endl;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -277,23 +261,25 @@ bool testStabbingCircleComputer(const TCurve& curve)
  */
 bool testRecognition()
 {
-
-  typedef KhalimskySpaceND<2,int> KSpace; 
-  GridCurve<KSpace> c; 
+  typedef KhalimskySpaceND<2,int64_t> KSpace;
+  //Note: int64_t is enough for radii less than 200
+  typedef KSpace::Space Space;  
+  typedef Space::Point Point;
   
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
   trace.beginBlock ( "Recognition" );
-  
-  for (unsigned int i = 0; i < 50; ++i)
+  bool flag=true;
+    
+  for (unsigned int i = 1; i < 200 && flag; ++i)
   {
-    //generate digital circle
-    double cx = (rand()%100 ) / 100.0;
-    double cy = (rand()%100 ) / 100.0;
-    double radius = (rand()%100 )+100;
-    c = ballGenerator<KSpace>( cx, cy, radius, ((i%2)==1) ); 
-    trace.info() << " #ball #" << i << " c(" << cx << "," << cy << ") r=" << radius << endl; 
+    int radius = i; 
+    KSpace kspace( Point::diagonal(-2*radius), Point::diagonal(2*radius), true ); 
+    GridCurve<KSpace> c(kspace); 
+    ballGenerator<KSpace>( kspace, c, radius, ((i%2)==0) ); 
+    trace.info() << " #ball c(0,0) r=" << radius
+		 << " cw=" << ((i%2)==0) << endl; 
     
     //range
     typedef GridCurve<KSpace>::IncidentPointsRange Range; 
@@ -304,20 +290,29 @@ bool testRecognition()
     StabbingCircleComputer<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
+    if (s.end() != r.end())
+    {
+      trace.info()<< "Complete circle not recognized"<<std::endl;
+      flag=false;
+    }
+    
     //checking if the circle is separating
-    bool flag = true;
-    typedef CircleFrom3Points<KSpace::Point> Circle; 
-    typedef functors::Point2ShapePredicate<Circle,false,true> 
-      FirstInCirclePred; 
-    typedef functors::Point2ShapePredicate<Circle,true,true> 
-      SecondInCirclePred; 
+    typedef CircleFrom3Points<KSpace::Point> Circle;
+    typedef functors::Point2ShapePredicate<Circle,false,true> FirstInCirclePred;
+    typedef functors::Point2ShapePredicate<Circle,true,true>  SecondInCirclePred;
     for (ConstIterator it = s.begin(); ((it != s.end()) && flag) ; ++it)
     {
       FirstInCirclePred p1( s.getSeparatingCircle() ); 
       SecondInCirclePred p2( s.getSeparatingCircle() ); 
       flag = ( p1(it->first)&&p2(it->second) ); 
+      if (!flag)
+      {
+        trace.info() << s.getSeparatingCircle() << " "
+		     << it->first << " "
+		     << it->second << std::endl;
+      }
     }
-    
+   
     //conclusion
     nbok += flag ? 1 : 0; 
     nb++;
@@ -424,19 +419,19 @@ int main( int argc, char** argv )
   }
   
   {//basic operations
-    typedef KhalimskySpaceND<2,int> KSpace; 
-
+    typedef KhalimskySpaceND<2,int> KSpace;
+    typedef KSpace::Space::Point Point; 
+    KSpace kspace(Point::diagonal(-10),Point::diagonal(10),true); 
     GridCurve<KSpace> c, rc; 
-    c = ballGenerator<KSpace>(0,0,6,false); 
-    std::vector<PointVector<2,int> > rv; 
-    rc = ballGenerator<KSpace>(0,0,6,true); 
+    ballGenerator(kspace,c,6,false); 
+    ballGenerator(kspace,rc,6,true); 
 
     res = testStabbingCircleComputer(c)
   && drawingTestStabbingCircleComputer(c, "CCW")
   && drawingTestStabbingCircleComputer(rc, "CW"); 
   }
   
-  {//recognition 
+  {//recognition
     res = res && testRecognition();
   }
   

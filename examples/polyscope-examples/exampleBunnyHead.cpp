@@ -154,7 +154,6 @@ DenseMatrix HarmonicParametrization()
   
   //Visualization of the boundary edges
   std::vector<RealPoint> pos;
-  size_t cpt=0;
   for(const auto v: B)
     pos.push_back(surfmesh.position(v));
   polyscope::registerCurveNetworkLoop("Longest boundary", pos);
@@ -262,7 +261,6 @@ void computeGeodesics()
 {
   PC calculus(surfmesh);
   GeodesicsInHeat<PC> GHM(calculus);
-  typedef PC::Vector Vector;
   std::vector<double> X_0;
 
   auto nv = surfmesh.nbVertices();

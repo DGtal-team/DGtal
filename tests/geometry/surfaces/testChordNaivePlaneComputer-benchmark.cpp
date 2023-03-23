@@ -89,9 +89,9 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       } 
       bool ok = plane.extend( p ); // should be ok
       ++nb; nbok += ok ? 1 : 0;

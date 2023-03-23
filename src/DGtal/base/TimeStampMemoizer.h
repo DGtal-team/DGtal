@@ -200,8 +200,7 @@ namespace DGtal
     {
       if ( myVerbose ) selfDisplay( trace.info() );
       Size nb = 0;
-      TimeStamp threshold =
-        std::max( (Size) myTimeStamp
+      TimeStamp threshold = (TimeStamp) std::max( (Size) myTimeStamp
                   - (Size) round( (myMaxSize + 0.5 * myHits) * myRatio ),
                   (Size) 0 );
       for ( auto it = myMap.begin(), itE = myMap.end(); it != itE; )

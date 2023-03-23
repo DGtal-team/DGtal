@@ -138,10 +138,16 @@ namespace DGtal
      * storing the current coordinate.
      */
 
-    class ConstIterator : public 
-      std::iterator<std::bidirectional_iterator_tag, Point, int, Point*, Point> 
+    class ConstIterator
     {
-
+    public:
+      
+      using iterator_category = std::bidirectional_iterator_tag;
+      using value_type = Point;
+      using difference_type = int;
+      using pointer = Point*;
+      using reference = Point;
+      
       // ------------------------- Private data -----------------------
 
       private:

@@ -49,10 +49,8 @@
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 
-#if defined(WITH_EIGEN)
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/dec/ATSolver2D.h"
-#endif // defined(WITH_EIGEN)
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -1375,7 +1373,7 @@ namespace DGtal
       /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
       /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
@@ -1405,6 +1403,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used. FIXME: JOL
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1430,7 +1430,7 @@ namespace DGtal
       /// also outputs the feature vector \a features, corresponding to
       /// 0-form \a v in AT (the average of \a v for linels/surfels).
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam VectorFieldInput the type of vector field for input values (RandomAccess container)
@@ -1469,6 +1469,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+        
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1498,7 +1500,7 @@ namespace DGtal
       /// approximation of \a input using Ambrosio-Tortorelli
       /// functional.
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       ///
@@ -1526,6 +1528,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1553,7 +1557,7 @@ namespace DGtal
       /// corresponding to 0-form \a v in AT (the average of \a v for
       /// linels/surfels).
       ///
-      /// @see \ref moduleAT
+      /// @see \ref moduleGenericAT
       ///
       /// @tparam TAnyDigitalSurface either kind of DigitalSurface, like ShortcutsGeometry::LightDigitalSurface or ShortcutsGeometry::DigitalSurface.
       /// @tparam CellRangeConstIterator the type of iterator for traversing a range of cells
@@ -1593,6 +1597,8 @@ namespace DGtal
                                      const Parameters&              params
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
+        (void)surface; //param not used FIXME: JOL
+        
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1822,4 +1828,3 @@ namespace DGtal
 
 #undef ShortcutsGeometry_RECURSES
 #endif // else defined(ShortcutsGeometry_RECURSES)
-

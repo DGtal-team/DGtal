@@ -421,7 +421,7 @@ DGtal::Mesh<TPoint>::invertVertexFaceOrder(){
       auto aFace =  myFaceList.at(i);
       for(unsigned int j=0; j < aFace.size()/2; j++)
         {
-          unsigned int tmp=aFace.at(j);
+          const auto tmp=aFace.at(j);
           aFace.at(j)=aFace.at(aFace.size()-1-j);
           aFace.at(aFace.size()-1-j)=tmp;
         }

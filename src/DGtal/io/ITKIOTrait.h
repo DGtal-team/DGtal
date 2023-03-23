@@ -42,28 +42,29 @@
 
 namespace DGtal
 {
- /**
-  * ITK images extensions handled by GenericReader and GenericWriter 
-  **/
-  const auto ITK_IO_IMAGE_EXT = {"nii", "gz" ,"mha", "mhd", "tiff", "nrrd",
-    "tif", "pic", "mnc"};
+  /**
+   * ITK images extensions handled by GenericReader and GenericWriter 
+   **/
+  [[maybe_unused]] const auto ITK_IO_IMAGE_EXT = {"nii", "gz" ,"mha", "mhd", "tiff", "nrrd",
+                                                  "tif", "pic", "mnc"};
   
   
-/////////////////////////////////////////////////////////////////////////////
-// class ITKIOTrait
-/**
- * Description of class 'ITKIOTrait' <p>
- * \brief Aim: Provide type trait for ITK reader and ITK writer
- * @tparam Value is the value type of the DGtal image one wants to save or read using ITKWriter or ITKReader
- */
-template <typename Value>
-struct ITKIOTrait
-{
-		typedef Value ValueOut; // Associated ITK image value type
-		typedef functors::Cast<ValueOut> DefaultWriteFunctor; // Default functor used by ITKWriter
-		typedef functors::Cast<Value> DefaultReadFunctor; // Default functor used by ITKReader
+  /////////////////////////////////////////////////////////////////////////////
+  // class ITKIOTrait
+  /**
+   * Description of class 'ITKIOTrait' <p> \brief Aim: Provide type
+   * trait for ITK reader and ITK writer @tparam Value is the value
+   * type of the DGtal image one wants to save or read using ITKWriter
+   * or ITKReader
+   */
+  template <typename Value>
+  struct ITKIOTrait
+  {
+    typedef Value ValueOut; // Associated ITK image value type
+    typedef functors::Cast<ValueOut> DefaultWriteFunctor; // Default functor used by ITKWriter
+    typedef functors::Cast<Value> DefaultReadFunctor; // Default functor used by ITKReader
 
-private:
+  private:
 
     /**
      * Constructor.
@@ -74,16 +75,16 @@ private:
     ITKIOTrait& operator=(const ITKIOTrait& other);
 
 
-}; // end of struct ITKIOTrait
+  }; // end of struct ITKIOTrait
 
-// specialization
-template <>
-struct ITKIOTrait<bool>
-{
-		typedef unsigned char ValueOut;
-		typedef functors::Cast<unsigned char> DefaultWriteFunctor;
-		typedef functors::Cast<bool> DefaultReadFunctor;
-};
+  // specialization
+  template <>
+  struct ITKIOTrait<bool>
+  {
+    typedef unsigned char ValueOut;
+    typedef functors::Cast<unsigned char> DefaultWriteFunctor;
+    typedef functors::Cast<bool> DefaultReadFunctor;
+  };
 
 } // namespace DGtal
 

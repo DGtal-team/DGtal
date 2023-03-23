@@ -120,7 +120,7 @@ int main( int argc, char** argv )
           auto segment = dconv.makeRationalSimplex( { denominator, T2[i], T2[j] } );
           if ( ! dconv.isFullySubconvex( segment, c_cover ) ) break;
         }
-      j = ( j + T2.size() - 1 ) % T2.size();
+      j = (unsigned int)( j + T2.size() - 1 ) % T2.size();
       if ( j != last_j )
         { // display fully subconvex segments
           aBoard.setLineWidth( 2.5 );

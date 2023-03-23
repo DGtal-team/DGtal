@@ -41,6 +41,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

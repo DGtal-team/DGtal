@@ -65,8 +65,6 @@ collapse( CubicalComplex< TKSpace, TCellContainer > & K,
   CellMapIterator        it_cell;   // generic iterator on a cell.
   CellMapIterator        it_cell_c; // points on c in the free pair (c,d)
   CellMapIterator        it_cell_d; // points on d in the free pair (c,d)
-  CMIVectorConstIterator itlow;
-  CMIVectorConstIterator itqup;
 
   if ( verbose ) trace.info() << "[CC::collapse]-+ tag collapsible elements... " << flush;
   // Restricts the set of elements that are collapsible.

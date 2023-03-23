@@ -55,7 +55,7 @@ namespace DGtal
     template <typename X, typename Y>
       struct ValueConverter {
 	/// By default, it is impossible to do such conversions.
-	static Y cast( const X& value )
+	static Y cast( const X&  )
 	{
 	  ASSERT( false
 		  && "[ValueConverter<X,Y>::cast] there is no such generic type converter." );

@@ -335,7 +335,7 @@ int main( int /* argc */, char** /* argv */ )
     SH3::RealPoints positions( surfels.size() );
     std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
         	    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
-    bool ok    = SH3::saveOBJ( surface, SH3::RealVectors(), SH3::Colors(),
+    SH3::saveOBJ( surface, SH3::RealVectors(), SH3::Colors(),
 			       "goursat-primal.obj" );
     // output principal curvatures and directions
     auto cmap  = SH3::getColorMap( -0.5, 0.5, params );
@@ -348,6 +348,7 @@ int main( int /* argc */, char** /* argv */ )
     bool ok_k2 = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-primal-k2.obj" );
     bool ok_d2 = SH3::saveVectorFieldOBJ( positions, d2, 0.05, colors,
 					  "goursat-primal-d2.obj", SH3::Color::Black );
+    ASSERT(ok_k1 && ok_d1 && ok_k2 && ok_d2);
     //! [dgtal_shortcuts_ssec2_2_13s]
   }
   trace.endBlock();

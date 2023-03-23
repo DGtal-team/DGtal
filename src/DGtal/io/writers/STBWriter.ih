@@ -30,8 +30,16 @@
 #pragma once
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #endif //NO_ADD_STBIMAGE_IMPLEMENT
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #include <stb/stb_image_write.h>
-#pragma GCC diagnostic warning "-Wdeprecated"
+#pragma GCC diagnostic pop
+#pragma clang diagnostic pop
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
@@ -46,7 +54,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filen
   const int w = anImage.domain().upperBound()[0]  -  anImage.domain().lowerBound()[0] +1 ;
   const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
   const int comp=4;
-  unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
+  unsigned char *data = (unsigned char*)malloc( w * h * comp );
   
   unsigned int cpt=0;
   for(const auto &value: anImage)
@@ -59,7 +67,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filen
     ++cpt;
   }
   const int error =  stbi_write_png(filename.c_str(),  w,  h, comp, data, w*comp);
-  delete(data);
+  free(data);
   return error;
 }
 
@@ -86,7 +94,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filen
     ++cpt;
   }
   const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
-  delete(data);
+  free(data);
   return error;
 }
 
@@ -114,7 +122,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filen
     ++cpt;
   }
   const int error =  stbi_write_bmp(filename.c_str(),  w,  h, comp, data);
-  delete(data);
+  free(data);
   return error;
 }
 template <typename TImageContainer, typename TFunctor>
@@ -141,7 +149,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filen
     ++cpt;
   }
   const int error =  stbi_write_jpg(filename.c_str(),  w,  h, comp, data, quality);
-  delete(data);
+  free(data);
   return error;
 }
 //                                                                           //

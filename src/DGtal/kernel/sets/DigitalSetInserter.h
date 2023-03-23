@@ -62,14 +62,20 @@ namespace DGtal
    * @tparam TDigitalSet any model of CDigitalSet
    */
   template <typename TDigitalSet>
-  class DigitalSetInserter:
-    public std::iterator<std::output_iterator_tag,void,void,void,void>
+  class DigitalSetInserter
 {
 
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> )); 
 
     // ----------------------- Standard services ------------------------------
   public:
+
+    using iterator_category = std::output_iterator_tag;
+    using value_type = void;
+    using difference_type = void;
+    using pointer = void;
+    using reference = void;
+    
     /**
      * Constructor.
      * @param aSet any digital set

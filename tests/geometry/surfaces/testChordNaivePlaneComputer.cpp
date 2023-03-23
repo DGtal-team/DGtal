@@ -90,9 +90,9 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
@@ -132,9 +132,9 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
       PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 )
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
@@ -200,11 +200,11 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
           y = (Integer) pp[ 1 ];
           z = (Integer) pp[ 2 ];
           switch ( axis ) {
-          case 0: pp[ 0 ] = NumberTraits<Integer>::castToInt64_t
+          case 0: pp[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t
               ( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-          case 1: pp[ 1 ] = NumberTraits<Integer>::castToInt64_t
+          case 1: pp[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t
               ( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-          case 2: pp[ 2 ] = NumberTraits<Integer>::castToInt64_t
+          case 2: pp[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t
               ( ic.ceilDiv( d - a * x - b * y, c ) ); break;
           }
         }
@@ -246,9 +246,9 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
       PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 )
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
@@ -312,9 +312,9 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
@@ -354,9 +354,9 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
       PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 )
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
@@ -428,6 +428,7 @@ checkWidth( Integer a, Integer b, Integer c, Integer d,
 {
   typedef typename NaivePlaneComputer::Point Point;
   typedef typename NaivePlaneComputer::InternalScalar InternalScalar;
+  typedef typename Point::Component PointInteger;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
   Integer absB = ic.abs( b );
@@ -454,9 +455,9 @@ checkWidth( Integer a, Integer b, Integer c, Integer d,
       y = (Integer) p[ 1 ];
       z = (Integer) p[ 2 ];
       switch ( axis ) {
-      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      case 0: p[ 0 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = (PointInteger)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       }
     }
   trace.beginBlock( "Computing axis width." );
@@ -728,9 +729,9 @@ checkExtendWithManyPoints( unsigned int diameter,
           Integer y = (Integer) p[ 1 ];
           Integer z = (Integer) p[ 2 ];
           switch( axis ) {
-          case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-          case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-          case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+          case 0: p[ 0 ] = (Integer)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+          case 1: p[ 1 ] = (Integer)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+          case 2: p[ 2 ] = (Integer)NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
           }
           pts.push_back( p );
         }

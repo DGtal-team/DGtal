@@ -182,7 +182,7 @@ namespace DGtal
       { data.nextBlock = 0; }
 
       inline
-      Data & insert( unsigned int idx, unsigned int size, const Data & v )
+      Data & insert( size_t idx, size_t size, const Data & v )
       {
         ASSERT( idx <= size );
 	if ( size < N )
@@ -244,7 +244,7 @@ namespace DGtal
       }
 
       inline 
-      void erase( unsigned int idx, unsigned int size )
+      void erase( size_t idx, size_t size )
       {
 	// std::cerr << "__FirstBlock::erase(" << idx << ")"
 	// 	  << " this=" << this
@@ -303,7 +303,7 @@ namespace DGtal
       inline __AnyBlock() : next( 0 ) {}
 
       inline
-      Data & insert( unsigned int idx, unsigned int size, const Data & v )
+      Data & insert( size_t idx, size_t size, const Data & v )
       {
         ASSERT( idx <= size );
 	if ( idx >= M ) 
@@ -354,7 +354,7 @@ namespace DGtal
       }
 
       inline 
-      __AnyBlock* erase( unsigned int idx, unsigned int size )
+      __AnyBlock* erase( size_t idx, size_t size )
       {
 	// std::cerr << "__AnyBlock::erase(" << idx << "," << size << ")" 
 	// 	  << " this=" << this

@@ -130,7 +130,6 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
            + name ). c_str() );
   
   // Creates a digitizer on the window (xLow, xUp).
-  typedef Space::RealPoint RealPoint;
   RealPoint xLow( -10.0, -10.0 );
   RealPoint xUp( 10.0, 10.0 );
   GaussDigitizer<Space,Shape> dig;

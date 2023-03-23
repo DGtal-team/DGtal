@@ -148,7 +148,7 @@ namespace DGtal {
   ITKReader<I>::getITKComponentType( const std::string & filename )
   {
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
-    IOComponentType componentType;
+    IOComponentType componentType=itk::ImageIOBase::IOComponentType::UCHAR;
     try
     {
       itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(

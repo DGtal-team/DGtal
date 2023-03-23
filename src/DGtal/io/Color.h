@@ -198,7 +198,7 @@ namespace DGtal
     std::array<double, 3> getHSV() const
     {
       double h,s,v;
-      Color::RGBtoHSV(h,s,v, this->r(), this->g(), this->b());
+      Color::RGBtoHSV(h,s,v, this->red(), this->green(), this->blue());
       return {h,s,v};
     }
     

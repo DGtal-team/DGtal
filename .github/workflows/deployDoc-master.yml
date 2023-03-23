@@ -1,4 +1,4 @@
-name: Documentation and deploy
+name: Nightly-build documentation and deploy
 
 on:
   push:
@@ -6,17 +6,17 @@ on:
 
 jobs:
   # This workflow contains a single job called "build"
-   GenerateDoc:
+   GenerateDocOnMaster:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up
-      run:  sudo apt-get install libboost-dev graphviz texlive doxygen
+      run:  sudo apt-get install libboost-dev graphviz texlive-base doxygen
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -37,12 +37,21 @@ jobs:
           .github/workflows/checkDoxygenDocumentation.sh
       #&& .github/workflows/check_src_file_tag.sh
 
+    - name: Preparing deploy
+      run: |
+        git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
+        ls build/
+        pwd
+        du -hs build/html
+        cd build/html
+        cp -r *  ../../doc-nightly/
+
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.7
+      uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
         token: ${{ secrets.DEPLOYACTION }}
         repository-name: DGtal-team/doc-nightly
-        folder: build/html
+        folder: doc-nightly
         branch: master
         single-commit: true
         clean: true

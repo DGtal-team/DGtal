@@ -198,7 +198,7 @@ namespace DGtal
     /// polynomial).
     Polynomial basis( Size i ) const
     {
-      ASSERT( 0 <= i && i < size() );
+      ASSERT( i < size() );
       return myLagrangeBasis[ i ];
     }
       

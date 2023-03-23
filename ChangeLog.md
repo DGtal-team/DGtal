@@ -2,13 +2,60 @@
 
 ## New features / critical changes
 
+- *General*
+  - Major update: C++17 is now required for DGtal. (David Coeurjolly,
+    [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
+  - Mandatory dependencies and some optional ones can be setup by
+    conan.io, especially on windows, new `ENABLE_CONAN` cmake
+    option to activate this. (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+
+
 ## Changes
+- *IO*
+  - New method to change the mode of the light position in Viewer3D (fixed to
+    camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+  - Add a new method to store material information in obj file in MeshReader and MeshWriter.
+    (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
+
+- *Github*
+  - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
+    [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
+  - Continuous integration on windows is now performed by Github
+    Action instead of Appeveyor  (David Coeurjolly,
+    [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 ## Bug fixes
 
 - *General*
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
+  - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
+    the unit tests. (David Coeurjolly, [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
+  - Removing unnecessary includes to speed-up compilation (David Coeurjolly,
+    [#1680](https://github.com/DGtal-team/DGtal/pull/1680))
+  - Upgrading pybind11 to v2.9 or python binding (David Coeurjolly,
+    [#1685](https://github.com/DGtal-team/DGtal/pull/1685))
+  - Many warning fixed (due to c++17 upgrade. (David Coeurjolly,
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+  - WITH_COVERAGE option removed. (David Coeurjolly,
+    [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+
+- *Topology package*
+  - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
+    [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+
+- *Geometry package*
+  - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
+    [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+
+- *IO*
+  - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
+    [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
+
+- *Examples*
+  - Fix Issue #1675, add missing SymmetricConvexExpander.h file
+    (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
 
 # DGtal 1.3
 
