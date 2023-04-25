@@ -1,4 +1,4 @@
-name: CI (linux/macOS), PR
+name: CI (linux/macOS/windows), PR
 
 on:
   pull_request:
