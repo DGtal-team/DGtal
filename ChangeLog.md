@@ -26,7 +26,6 @@
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 ## Bug fixes
-
 - *General*
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
