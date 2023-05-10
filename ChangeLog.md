@@ -9,6 +9,8 @@
     conan.io, especially on windows, new `ENABLE_CONAN` cmake
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+  - Faster build using ccache with the cmake `USE_CCACHE=YES`option (ccache must
+    be installed). (David Coeurjolly, [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
 
 
 ## Changes

@@ -19,6 +19,16 @@ if(COLOR_WITH_ALPHA_ARITH)
 endif()
 
 # -----------------------------------------------------------------------------
+# CPM and CCache specific options
+# -----------------------------------------------------------------------------
+include(cmake/CPM.cmake)
+CPMAddPackage(
+  NAME Ccache.cmake
+  GITHUB_REPOSITORY TheLartians/Ccache.cmake
+  VERSION 1.2
+)
+
+# -----------------------------------------------------------------------------
 # Debug specific options
 # -----------------------------------------------------------------------------
 option(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
