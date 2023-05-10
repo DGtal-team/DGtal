@@ -45,7 +45,7 @@ stages:
 - stage: 'TestPythonMacOS'
   dependsOn: []
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-latest'
   variables:
     DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
   jobs:
