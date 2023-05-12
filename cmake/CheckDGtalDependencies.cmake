@@ -6,8 +6,6 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal required dependencies: ")
 
 
-message(WARNING "==== DGtal Dir ==== ${PROJECT_SOURCE_DIR} and ${PROJECT_BINARY_DIR} ====")
-
 # -----------------------------------------------------------------------------
 # Mandatory and optional deps via conan
 # -----------------------------------------------------------------------------

@@ -115,7 +115,6 @@ add_custom_target(distclean
 #------------------------------------------------------------------------------
 configure_file(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
   ${PROJECT_BINARY_DIR}/src/DGtal/base/Config.h)
-message(WARNING "==== DGtal Dir ==== ${PROJECT_SOURCE_DIR} and ${PROJECT_BINARY_DIR} ====")
 
 #------------------------------------------------------------------------------
 # Building in the source tree is forbidden
