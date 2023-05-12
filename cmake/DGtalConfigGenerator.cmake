@@ -34,10 +34,13 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfigVersion.cmake" @ONLY)
 
 # Install the export set for use with the install-tree
-set(DGTAL_CMAKE_DIR_INSTALL "${INSTALL_DATA_DIR_RELATIVE}")
-install(EXPORT DGtalLibraryDepends 
-  DESTINATION  ${DGTAL_CMAKE_DIR_INSTALL}
-  COMPONENT dev)
+set(DGTAL_CMAKE_DIR_INSTALL "${INSTALL_DATA_DIR}")
+message(STATUS "====== ${INSTALL_DATA_DIR}")
+if(DGTAL_CMAKE_DIR_INSTALL)
+ install(EXPORT DGtalLibraryDepends 
+    DESTINATION  ${DGTAL_CMAKE_DIR_INSTALL}
+    COMPONENT dev)
+endif()
 
 # Create a DGtalConfig.cmake file for the use from the install tree
 # and install it
@@ -46,10 +49,13 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
 
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake" @ONLY)
+
+if(DGTAL_CMAKE_DIR_INSTALL)
 install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
   DESTINATION "${DGTAL_CMAKE_DIR_INSTALL}" COMPONENT dev)
+endif()
 
 # Distribute FindFoo.cmake files to the build and install tree
 set(_find_cmake_files
