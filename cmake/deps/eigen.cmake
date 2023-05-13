@@ -22,7 +22,7 @@ if(EIGEN_ROOT)
 else()
     message(STATUS "Third-party (external): creating target 'Eigen3::Eigen'")
 
-    include(CPM)
+    include(cmake/CPM.cmake)
     CPMAddPackage(
         NAME eigen
         GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
