@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Adobe. All rights reserved.
+# Copyright 2019 Adobe. All rights reserved.
 # This file is licensed to you under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License. You may obtain a copy
 # of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,26 +14,26 @@ if(TARGET Eigen3::Eigen)
 endif()
 
 option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
+option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
 
 if(EIGEN_ROOT)
-    message(STATUS "    Eigen3 creating target 'Eigen3::Eigen' for external path: ${EIGEN_ROOT}")
+    message(STATUS "Third-party (external): creating target 'Eigen3::Eigen' for external path: ${EIGEN_ROOT}")
     set(EIGEN_INCLUDE_DIRS ${EIGEN_ROOT})
 else()
-  message(STATUS "    Eigen3 (v3.3.7) creating target 'Eigen3::Eigen'")
+    message(STATUS "Third-party (external): creating target 'Eigen3::Eigen'")
 
-    include(FetchContent)
-    FetchContent_Declare(
-        eigen
-        GIT_REPOSITORY https://github.com/libigl/eigen-git-mirror.git
-        GIT_TAG tags/3.3.7
-        GIT_SHALLOW TRUE
+    include(CPM)
+    CPMAddPackage(
+        NAME eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.4.0
+        DOWNLOAD_ONLY ON
     )
-    FetchContent_GetProperties(eigen)
-    if(NOT eigen_POPULATED)
-        FetchContent_Populate(eigen)
-    endif()
     set(EIGEN_INCLUDE_DIRS ${eigen_SOURCE_DIR})
 
+    install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen
+        DESTINATION include
+    )
 endif()
 
 add_library(Eigen3_Eigen INTERFACE)
@@ -44,6 +44,11 @@ target_include_directories(Eigen3_Eigen SYSTEM INTERFACE
     $<BUILD_INTERFACE:${EIGEN_INCLUDE_DIRS}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+target_compile_definitions(Eigen3_Eigen INTERFACE EIGEN_MPL2_ONLY)
+
+if(EIGEN_DONT_VECTORIZE)
+    target_compile_definitions(Eigen3_Eigen INTERFACE EIGEN_DONT_VECTORIZE)
+endif()
 
 if(EIGEN_WITH_MKL)
     # TODO: Checks that, on 64bits systems, `mkl::mkl` is using the LP64 interface
