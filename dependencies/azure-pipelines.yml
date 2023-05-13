@@ -14,7 +14,7 @@ stages:
 - stage: 'DeployLinux'
   dependsOn: []
   pool:
-    vmImage: 'ubuntu-18.04'
+    vmImage: 'ubuntu-22.04'
   variables:
     DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
   jobs:
@@ -39,7 +39,7 @@ stages:
 - stage: 'DeployMacOS'
   dependsOn: []
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-latest'
   variables:
     DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
   jobs:

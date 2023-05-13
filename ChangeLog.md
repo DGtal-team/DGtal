@@ -1,7 +1,6 @@
 # DGtal 1.4beta
 
 ## New features / critical changes
-
 - *General*
   - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
@@ -28,7 +27,6 @@
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
 ## Bug fixes
-
 - *General*
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
