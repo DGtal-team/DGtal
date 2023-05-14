@@ -22,7 +22,6 @@ find_dependency(ZLIB REQUIRED
   )
 
 set(WITH_EIGEN 1)
-include(CPM)
 include(eigen)
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
