@@ -31,6 +31,7 @@ stages:
       displayName: "install libXt and opengl dependencies"
     - script: |
         python -m pip install cmake
+        python -m pip install pytest
         python -m pip install ninja
         python -m pip install -r wrap/tests/requirements-test.txt
         mkdir build
