@@ -22,6 +22,14 @@
 
 #include "DGtal/kernel/PointVector.h"
 
+
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#else
+#include <unistd.h>
+#endif
+
 /**
  * Arithmetic operators between types,
  * Note that TOther can be equal to TSelf.
