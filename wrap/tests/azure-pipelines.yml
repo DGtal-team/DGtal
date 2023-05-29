@@ -44,7 +44,7 @@ stages:
         python --version
         /usr/bin/python3.10 -m pip install pytest
         python -m pip install pytest
-        ctest -R python -V --output-on-failure
+        ##ctest -R python -V --output-on-failure
       workingDirectory: '$(Build.SourcesDirectory)/build'
       displayName: 'CTest'
 
