@@ -39,7 +39,10 @@ stages:
         cmake --build "$(Build.SourcesDirectory)/build"
       workingDirectory: '$(Build.SourcesDirectory)'
       displayName: 'Build project'
-    - script: ctest -R python -V --output-on-failure
+    - script: |
+        python --version
+        python -m pip install pytest
+        ctest -R python -V --output-on-failure
       workingDirectory: '$(Build.SourcesDirectory)/build'
       displayName: 'CTest'
 
