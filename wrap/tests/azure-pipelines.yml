@@ -30,6 +30,7 @@ stages:
     - script: sudo apt-get -y install libxt-dev libgl1-mesa-dev
       displayName: "install libXt and opengl dependencies"
     - script: |
+        python --version
         python -m pip install cmake
         python -m pip install pytest
         python -m pip install ninja
@@ -41,6 +42,7 @@ stages:
       displayName: 'Build project'
     - script: |
         python --version
+        /usr/bin/python3.10 -m pip install pytest
         python -m pip install pytest
         ctest -R python -V --output-on-failure
       workingDirectory: '$(Build.SourcesDirectory)/build'
