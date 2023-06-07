@@ -41,7 +41,7 @@
   - WITH_COVERAGE option removed. (David Coeurjolly,
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
-    [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+    [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
