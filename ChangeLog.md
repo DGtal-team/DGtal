@@ -9,10 +9,13 @@
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
-    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696))
+    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
 
 
 ## Changes
+- *General*
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+    
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
