@@ -14,7 +14,7 @@
 
 ## Changes
 - *General*
-  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
     
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
