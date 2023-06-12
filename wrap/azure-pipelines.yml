@@ -8,7 +8,7 @@ stages:
     displayName: 'DeployLinuxWithDockcross' # friendly name to display in the UI
     timeoutInMinutes: 0
     pool:                # see the following "Pool" schema
-      vmImage: 'ubuntu-18.04'
+      vmImage: 'ubuntu-22.04'
     steps:
     - task: Bash@3
       inputs:
@@ -22,7 +22,7 @@ stages:
 - stage: 'DeployMacOS'
   dependsOn: []
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-latest'
   variables:
     DEPENDENCIES_BUILD_DIR: $(Agent.BuildDirectory)/build_deps
   jobs:

@@ -1,7 +1,6 @@
 # DGtal 1.4beta
 
 ## New features / critical changes
-
 - *General*
   - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
@@ -9,9 +8,14 @@
     conan.io, especially on windows, new `ENABLE_CONAN` cmake
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+  - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
+    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
 
 
 ## Changes
+- *General*
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+    
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -31,7 +35,6 @@
 
 
 ## Bug fixes
-
 - *General*
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
@@ -45,6 +48,8 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - WITH_COVERAGE option removed. (David Coeurjolly,
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+  - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
+    [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
