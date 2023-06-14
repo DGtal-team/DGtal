@@ -35,6 +35,13 @@ set(DGTAL_TESTS_SRC
   testLemniscate2D
   )
 
+
+if (WITH_LIBIGL)
+   set(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
+       testlibigl
+)
+endif()
+
 foreach(FILE ${DGTAL_TESTS_SRC})
   DGtal_add_test(${FILE})
 endforeach()

@@ -21,6 +21,7 @@ option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry processing (Eigen required)." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
+option(WITH_LIBIGL "With libIGL." OFF)
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -94,6 +95,14 @@ if (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         true    (FFTW3 discrete Fourier transform library)")
 else (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
+endif()
+
+
+if (WITH_LIBIGL)
+  set(LIST_OPTION ${LIST_OPTION} [FFTW3]\ )
+  message(STATUS "      WITH_LIBIGL         true    (libIGL)")
+else (WITH_LIBIGL)
+  message(STATUS "      WITH_LIBIGL         false   (libIGL)")
 endif()
 
 message(STATUS "")
@@ -405,5 +414,17 @@ if(WITH_FFTW3)
   endif()
 
 endif()
+
+# -----------------------------------------------------------------------------
+# Look for libigl.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+if(WITH_LIBIGL)
+
+  include(cmake/deps/libigl.cmake)
+  set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
+
+endif()
+
 
 message(STATUS "-------------------------------------------------------------------------------")
