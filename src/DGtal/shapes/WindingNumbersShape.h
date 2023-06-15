@@ -37,6 +37,7 @@
 #include <igl/fast_winding_number.h>
 #include <igl/octree.h>
 #include <igl/knn.h>
+#include <igl/copyleft/cgal/point_areas.h>
 namespace DGtal
 {
 

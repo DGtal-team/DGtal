@@ -23,6 +23,7 @@ CPMAddPackage(
     NAME libigl
     GITHUB_REPOSITORY libigl/libigl
     GIT_TAG 3ea7f9480967fcf6bf02ce9b993c0ea6d2fc45f6
+    OPTIONS LIBIGL_WITH_CGAL
 )
 
 set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)

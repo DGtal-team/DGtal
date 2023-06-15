@@ -21,7 +21,7 @@ option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry processing (Eigen required)." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
-option(WITH_LIBIGL "With libIGL." OFF)
+option(WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -421,9 +421,13 @@ endif()
 # -----------------------------------------------------------------------------
 if(WITH_LIBIGL)
 
+  if (WITH_CGAL)
+    message(STATUS "DGtal/CGAL enabled.")
+  else()
+    message(FATAL_ERROR "LIBIGL requires CGAL. Please if the `WITH_CGAL=true` cmake flag.")
+  endif()
   include(cmake/deps/libigl.cmake)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
-
 endif()
 
 
