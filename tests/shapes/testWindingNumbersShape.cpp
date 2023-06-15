@@ -34,7 +34,8 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 
-#include <igl/readOBJ.h>
+#include <DGtal/shapes/WindingNumbersShape.h>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,17 +46,16 @@ using namespace Z3i;
 // Functions for testing class PolygonalCalculus.
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE( "Testing LibIGL" )
+TEST_CASE( "Testing WindingNumbersShape" )
 {
-  Eigen::MatrixXd V;
-  Eigen::MatrixXi F;
-  
-  SECTION("Simple test with OBJ IO")
+  using WNShape = WindingNumbersShape<Z3i::Space>;
+  SECTION("Checking concept")
     {
-      igl::readOBJ(testPath + "samples/testObj.obj", V, F);
-      REQUIRE( V.rows() == 10);
-      REQUIRE( F.rows() == 6);
+      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CEuclideanOrientedShape<WNShape>) );
     }
+  
+  
+  
 };
 
 /** @ingroup Tests **/

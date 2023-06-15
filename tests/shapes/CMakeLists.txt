@@ -39,6 +39,7 @@ set(DGTAL_TESTS_SRC
 if (WITH_LIBIGL)
    set(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC}
        testlibigl
+       testWindingNumbersShape
 )
 endif()
 
