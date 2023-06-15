@@ -64,20 +64,17 @@ namespace DGtal
     //Removing Default constructor
     WindingNumbersShape() = delete;
 
-    WindingNumbersShape(Eigen::MatrixXd &points, Eigen::MatrixXd &normals)
+    WindingNumbersShape(const Eigen::MatrixXd &points, const Eigen::MatrixXd &normals)
     {
-      // Build octree
-      std::vector<std::vector<int > > O_PI;
-      Eigen::MatrixXi O_CH;
-      Eigen::MatrixXd O_CN;
-      Eigen::VectorXd O_W;
-      igl::octree(P,O_PI,O_CH,O_CN,O_W);
-      Eigen::VectorXd A;
+      myPoints  = points;
+      myNormals = normals; 
+      // Build octree, from libIGL tutorials
+      igl::octree(myPoints,myO_PI,myO_CH,myO_CN,myO_W);
       {
         Eigen::MatrixXi I;
-        igl::knn(points,20,O_PI,O_CH,O_CN,O_W,I);
+        igl::knn(myPoints,20,myO_PI,myO_CH,myO_CN,myO_W,I);
         // CGAL is only used to help get point areas
-        igl::copyleft::cgal::point_areas(points,I,N,A);
+        igl::copyleft::cgal::point_areas(myPoints,I,myNormals,myPointAreas);
       }
     }
     
@@ -87,11 +84,50 @@ namespace DGtal
     ///
     /// @param aPoint [in] a point in space
     /// @return a DGtal::Orientation value
-    Orientation orientation(const RealPoint aPoint) const
+    Orientation orientation(const RealPoint aPoint, const double threshold = 0.5) const
     {
-      return DGtal::OUTSIDE;
+      Eigen::MatrixXd queries(3,1);
+      queries << aPoint(0) , aPoint(1) , aPoint(2);
+      auto singlePoint = orientationBatch(queries, threshold);
+      return singlePoint[0];
     }
     
+    ///
+    std::vector<Orientation> orientationBatch(const Eigen::MatrixXd & queries, 
+                                              const double threshold = 0.5) const
+    {
+      Eigen::VectorXd W;
+      std::vector<Orientation> results( queries.rows() );
+      Eigen::MatrixXd O_CM;
+      Eigen::VectorXd O_R;
+      Eigen::MatrixXd O_EC;
+      igl::fast_winding_number(myPoints,myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
+      igl::fast_winding_number(myPoints,myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
+
+      //Reformating the output
+      for(auto i=0u; i < queries.rows(); ++i)
+        if (queries(i) < threshold )
+          results[i] = DGtal::OUTSIDE;
+        else
+           if (queries(i) > threshold)
+              results[i] = DGtal::INSIDE;
+           else
+              results[i] = DGtal::ON;    
+      return results;
+    }
+
+    ///Copy of the points
+    Eigen::MatrixXd myPoints;
+    ///Copy of the normals
+    Eigen::MatrixXd myNormals;
+
+    //libIGL octree for fast queries
+    std::vector<std::vector<int > > myO_PI;
+    Eigen::MatrixXi myO_CH;
+    Eigen::MatrixXd myO_CN;
+    Eigen::VectorXd myO_W;
+    Eigen::VectorXd myPointAreas;
+
     
   };
 }

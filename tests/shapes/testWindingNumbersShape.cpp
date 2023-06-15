@@ -49,12 +49,31 @@ using namespace Z3i;
 TEST_CASE( "Testing WindingNumbersShape" )
 {
   using WNShape = WindingNumbersShape<Z3i::Space>;
+
   SECTION("Checking concept")
     {
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CEuclideanOrientedShape<WNShape>) );
     }
   
-  
+  SECTION("Simple testof the API")
+  {
+    Eigen::MatrixXd points(4,3);
+    points << 0,0,0,
+              1,1,0,
+              0,1,0,
+              1,1,1;
+    Eigen::MatrixXd normals(4,3);
+    normals << 0,0,-1,
+               0,0,-1,
+               0,0,-1,
+               0,0,1;
+
+    WNShape wnshape(points,normals);
+
+    RealPoint p(1.0,1.0,1.0);
+    DGtal::Orientation ori = wnshape.orientation(p);
+    std::cout<<ori<<" "<<p<<std::endl;
+  }
   
 };
 
