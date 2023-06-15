@@ -34,6 +34,7 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 
+#include <igl/readOBJ.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,11 +48,14 @@ using namespace Z3i;
 
 TEST_CASE( "Testing LibIGL" )
 {
+  Eigen::MatrixXd V;
+  Eigen::MatrixXi F;
   
-  SECTION("Simple test")
+  SECTION("Simple test with OBJ IO")
     {
-      
-      REQUIRE( 1== 1);
+      igl::readOBJ(testPath + "samples/testObj.obj", V, F);
+      REQUIRE( V.rows() == 10);
+      REQUIRE( F.rows() == 6);
     }
 };
 
