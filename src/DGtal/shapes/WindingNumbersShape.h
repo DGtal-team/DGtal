@@ -32,6 +32,8 @@
 /** Prevents repeated inclusion of headers. */
 #define WindingNumbersShape_h
 
+#include <vector>
+#include <algorithm>
 #include <DGtal/base/Common.h>
 #include <DGtal/shapes/CEuclideanOrientedShape.h>
 #include <igl/fast_winding_number.h>
@@ -67,26 +69,36 @@ namespace DGtal
     WindingNumbersShape(const Eigen::MatrixXd &points, const Eigen::MatrixXd &normals)
     {
       myPoints  = points;
-      myNormals = normals; 
+      myNormals = normals;
+      myPointAreas =Eigen::VectorXd::Ones(myPoints.rows());
       // Build octree, from libIGL tutorials
       igl::octree(myPoints,myO_PI,myO_CH,myO_CN,myO_W);
-      {
+      /*{
         Eigen::MatrixXi I;
-        igl::knn(myPoints,20,myO_PI,myO_CH,myO_CN,myO_W,I);
+        igl::knn(myPoints,std::min(20, (int)points.rows()),myO_PI,myO_CH,myO_CN,myO_W,I);
         // CGAL is only used to help get point areas
         igl::copyleft::cgal::point_areas(myPoints,I,myNormals,myPointAreas);
-      }
+      }*/
     }
     
+    WindingNumbersShape(const Eigen::MatrixXd &points,
+                        const Eigen::MatrixXd &normals,
+                        const Eigen::MatrixXd &areas)
+    {
+      myPoints  = points;
+      myNormals = normals;
+      myPointAreas = areas;
+      igl::octree(myPoints,myO_PI,myO_CH,myO_CN,myO_W);
+     }
     
     /// Orientation of a point using the winding number value from
     /// an oriented pointcloud.
     ///
     /// @param aPoint [in] a point in space
     /// @return a DGtal::Orientation value
-    Orientation orientation(const RealPoint aPoint, const double threshold = 0.5) const
+    Orientation orientation(const RealPoint aPoint, const double threshold = 0.3) const
     {
-      Eigen::MatrixXd queries(3,1);
+      Eigen::MatrixXd queries(1,3);
       queries << aPoint(0) , aPoint(1) , aPoint(2);
       auto singlePoint = orientationBatch(queries, threshold);
       return singlePoint[0];
@@ -94,7 +106,7 @@ namespace DGtal
     
     ///
     std::vector<Orientation> orientationBatch(const Eigen::MatrixXd & queries, 
-                                              const double threshold = 0.5) const
+                                              const double threshold = 0.3) const
     {
       Eigen::VectorXd W;
       std::vector<Orientation> results( queries.rows() );
@@ -106,13 +118,15 @@ namespace DGtal
 
       //Reformating the output
       for(auto i=0u; i < queries.rows(); ++i)
-        if (queries(i) < threshold )
+      {
+        if (std::abs(W(i)) < threshold )
           results[i] = DGtal::OUTSIDE;
         else
-           if (queries(i) > threshold)
-              results[i] = DGtal::INSIDE;
-           else
-              results[i] = DGtal::ON;    
+          if (std::abs(W(i)) > threshold)
+            results[i] = DGtal::INSIDE;
+          else
+            results[i] = DGtal::ON;
+      }
       return results;
     }
 
@@ -128,7 +142,6 @@ namespace DGtal
     Eigen::VectorXd myO_W;
     Eigen::VectorXd myPointAreas;
 
-    
   };
 }
 

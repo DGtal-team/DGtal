@@ -59,8 +59,8 @@ TEST_CASE( "Testing WindingNumbersShape" )
   {
     Eigen::MatrixXd points(4,3);
     points << 0,0,0,
-              1,1,0,
               0,1,0,
+              1,0,0,
               1,1,1;
     Eigen::MatrixXd normals(4,3);
     normals << 0,0,-1,
@@ -70,9 +70,18 @@ TEST_CASE( "Testing WindingNumbersShape" )
 
     WNShape wnshape(points,normals);
 
-    RealPoint p(1.0,1.0,1.0);
+    RealPoint p(-2.0,-2.0,-2.0);
     DGtal::Orientation ori = wnshape.orientation(p);
-    std::cout<<ori<<" "<<p<<std::endl;
+    REQUIRE( ori == DGtal::OUTSIDE);
+
+    p = RealPoint(2.0,2.0,2.0);
+    ori = wnshape.orientation(p);
+    REQUIRE( ori == DGtal::OUTSIDE);
+
+    RealPoint q= RealPoint(.2,.2,.2);
+    auto ori2 = wnshape.orientation(q);
+    REQUIRE( ori2 == DGtal::INSIDE);
+    
   }
   
 };
