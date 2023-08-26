@@ -888,6 +888,34 @@ void
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 flip( const Edge e )
 {
+  //         l                   l
+  //        / \                 /|\
+  //       /   \               / | \
+  //      /     \             /  |  \
+  //     /   l   \           /   |   \
+  //    /         \         /    |    \
+  //   i --- e --- j  ==>  i  l  e  r  j    if k < l otherwise r and l are swapped     
+  //    \         /         \    |    /
+  //     \   r   /           \   |   /
+  //      \     /             \  |  /
+  //       \   /               \ | /
+  //        \ /                 \|/
+  //         k                   k
+
+  // (1) We must collect all information: right and left face, vertices k and l
+  const Face      r    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      l    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( r );
+  const Vertices& lvtx = incidentVertices( l );
+
+  // (3) the two other vertices of the quad are not already neighbors.
+  std::size_t i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l). 
+  // TODO
 }
 
 ///////////////////////////////////////////////////////////////////////////////
