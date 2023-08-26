@@ -436,32 +436,32 @@ namespace DGtal
     /// two left incident faces for instance.
     Edges computeNonManifoldEdges() const;
     
-    ///@return true if the boundary edges define a collection of
-    ///manifold 1d polygonal curves (at most 2 adjecent edges per vertex).
-    ///If checkClosed is set to true, we also check that all polygonal curves are closed.
+    /// @return true if the boundary edges define a collection of
+    /// manifold 1d polygonal curves (at most 2 adjecent edges per vertex).
+    /// If checkClosed is set to true, we also check that all polygonal curves are closed.
     ///
-    ///The method returns false if the surface mesh has no boundary.
+    /// The method returns false if the surface mesh has no boundary.
     ///
-    ///@param checkClosed if true, we check that each vertex has exactly two adejcent edges.
-    bool isBoundariesManifold(bool checkClosed = true) const
+    /// @param checkClosed if true, we check that each vertex has exactly two adejcent edges.
+    bool isBoundariesManifold( bool checkClosed = true ) const
     {
-      //computes unordered list of boundary vertices
+      // computes unordered list of boundary vertices
       std::map<Vertex,Vertices> adjacent;
       auto MBE = this->computeManifoldBoundaryEdges();
-      if (MBE.size()==0) return false;
+      if ( MBE.size() == 0 ) return false;
       
       for (auto e : MBE)
       {
         auto ij = this->edgeVertices(e);
-        adjacent[ij.first].push_back(ij.second);
-        if (adjacent[ij.first].size()>2) return false;
-        adjacent[ij.second].push_back(ij.first);
-        if (adjacent[ij.second].size()>2)  return false;
+        adjacent[ ij.first ].push_back( ij.second );
+        if ( adjacent[ ij.first ] .size() > 2 ) return false;
+        adjacent[ ij.second ].push_back( ij.first );
+        if ( adjacent[ ij.second ].size() > 2 )  return false;
       }
       //we may check if all curves are closed.
-      if (checkClosed)
-        for(const auto &adj : adjacent)
-          if (adj.second.size() != 2) return false;
+      if ( checkClosed )
+        for ( const auto &adj : adjacent )
+          if ( adj.second.size() != 2 ) return false;
       return true;
     }
     
@@ -469,7 +469,7 @@ namespace DGtal
     /// of vertices. The boundaries must be 1d manifold polygonal curves.
     /// @pre the boundaries must be manifold.
     ///
-    ///@return a vector of polygonal simple curves (vector of vertices).
+    /// @return a vector of polygonal simple curves (vector of vertices).
     std::vector<Vertices> computeManifoldBoundaryChains() const
     {
       std::vector<Vertices> boundaries;
@@ -853,6 +853,39 @@ namespace DGtal
     Scalar vertexInclusionRatio( RealPoint p, Scalar r, Index v ) const;
 
     /// @}
+
+    //---------------------------------------------------------------------------
+  public:
+    /// @name Mesh editing services
+    /// @{
+
+    /// An edge is (topologically) flippable iff: (1) it does not lie
+    /// on the boundary, (2) it is bordered by two triangles, one that
+    /// to its right, one to its left, (3) the two other vertices of
+    /// the quad are not already neighbors. 
+    ///
+    /// @param e any edge.
+    /// @return 'true' if the edge \a e is topologically flippable.
+    ///
+    /// @note Time complexity is O(1).
+    bool isFlippable( const Edge e ) const;
+
+    /// Flip the edge \a e. Be careful that after the flip, this edge
+    /// index determines another edge, which is the other diagonal of
+    /// the quadrilateral having \a e as its diagonal.
+    ///
+    /// @param e any valid edge.
+    ///
+    /// @pre the edge must be flippable, `isFlippable( e ) == true`
+    ///
+    /// @post After the flip, the edge index \a e corresponds to the
+    /// index of the flipped edge (if you reflip it you get your
+    /// former configuration).
+    ///
+    /// @note Time complexity is O(1).
+    void flip( const Edge e );
+    
+    /// @}    
     
     // ----------------------- Interface --------------------------------------
   public:

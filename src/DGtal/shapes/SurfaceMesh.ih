@@ -840,6 +840,56 @@ computeNonManifoldEdges() const
   return edges;
 }
 
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+isFlippable( const Edge e ) const
+{
+  /// An edge is (topologically) flippable iff: (1) it does not lie
+  /// on the boundary, (2) it is bordered by two triangles, one that
+  /// to its right, one to its left, (3) the two other vertices of
+  /// the quad are not already neighbors.
+
+  // edge is (i,j) with i<j
+  
+  // (1) the edge must be bordered by two faces, one on its left, one on its right.
+  const Faces& rfaces = edgeRightFaces( e );
+  if ( rfaces.size() != 1 ) return false; //< not one face to the right
+  const Faces& lfaces = edgeLeftFaces ( e );
+  if ( lfaces.size() != 1 ) return false; //< not one face to the left 
+
+  // (2) both faces must be triangles
+  const Face      r    = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      l    = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( r );
+  if ( rvtx.size() != 3 ) return false;   //< right face is not a triangle
+  const Vertices& lvtx = incidentVertices( l );
+  if ( lvtx.size() != 3 ) return false;   //< left  face is not a triangle
+
+  // (3) the two other vertices of the quad are not already neighbors.
+  std::size_t i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l). 
+  if ( ! ( k != i && k != j && l != i && l != j && k != l ) )
+    trace.error() << "[SurfaceMesh::isFlippable] Invalid neighbors to edge." << std::endl;
+  const Vertices& Nk = neighborVertices( k );
+  const auto     itl = std::find( Nk.cbegin(), Nk.cend(), l );
+  return itl == Nk.cend();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+flip( const Edge e )
+{
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
