@@ -340,9 +340,12 @@ DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 makeEdge( Vertex i, Vertex j ) const
 {
   VertexPair vp = i < j ? std::make_pair( i,j ) : std::make_pair( j,i );
-  auto it = std::lower_bound( myEdgeVertices.cbegin(), myEdgeVertices.cend(), vp );
-  if ( it == myEdgeVertices.cend() || *it != vp ) return nbEdges();
-  return it - myEdgeVertices.cbegin();
+  auto it = myEdgeVertices.find( vp );
+  if ( it == myEdgeVertices.cend()  ) return nbEdges();
+  return it.first;
+  // auto it = std::lower_bound( myEdgeVertices.cbegin(), myEdgeVertices.cend(), vp );
+  // if ( it == myEdgeVertices.cend() || *it != vp ) return nbEdges();
+  // return it - myEdgeVertices.cbegin();
 }
 
 //-----------------------------------------------------------------------------
@@ -433,7 +436,7 @@ typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::RealPoint
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 edgeCentroid( Index e ) const
 {
-  const auto& vtcs = myEdgeVertices[ e ];
+  const auto& vtcs = edgeVertices( e );
   RealPoint c = myPositions[ vtcs.first ] + myPositions[ vtcs.second ];
   return c / 2.0;
 }
@@ -600,7 +603,7 @@ typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 edgeInclusionRatio( RealPoint p, Scalar r, Index e ) const
 {
-  const auto vertices = myEdgeVertices[ e ];
+  const auto vertices = edgeVertices( e );
   const RealPoint   b = edgeCentroid( e );
   const Scalar     d0 = ( myPositions[ vertices.first ] - p ).norm();
   const Scalar     d1 = ( myPositions[ vertices.second ] - p ).norm();
@@ -745,7 +748,6 @@ computeEdges()
       idx_f++;
     }
   const Size nbe = edges.size();
-  myEdgeVertices.resize  ( nbe );
   myEdgeFaces.resize     ( nbe );
   myEdgeRightFaces.resize( nbe );
   myEdgeLeftFaces.resize ( nbe );

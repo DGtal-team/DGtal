@@ -324,10 +324,15 @@ namespace DGtal
     { return myNeighborVertices[ v ]; }
 
     /// @param e any edge
-    /// @return a const reference to the vector giving for edge \a e
-    /// its two vertices (as a pair (i,j), i<j).
-    const VertexPair& edgeVertices( Edge e ) const
-    { return myEdgeVertices[ e ]; }
+    /// @return a pair giving for edge \a e its two vertices (as a
+    /// pair (i,j), i<j).
+    /// @note if the edge is not valid, return {0,0}.
+    VertexPair edgeVertices( Edge e ) const
+    {
+      const auto it = myEdgeVertices.find( e );
+      if ( it != myEdgeVertices.cend() ) return it->second;
+      else return VertexPair( Vertex( 0 ), Vertex( 0 ) );
+    }
     
     /// @param e any edge
     /// @return a const reference to the range giving for edge \a e
@@ -375,11 +380,18 @@ namespace DGtal
     const std::vector< Vertices >& allNeighborVertices() const
     { return myNeighborVertices; }
 
-    /// @return a const reference to the vector giving for each edge
-    /// its two vertices (as a pair (i,j), i<j).
-    /// @note edges are sorted in increasing order.
-    const std::vector< VertexPair >& allEdgeVertices() const
-    { return myEdgeVertices; }
+    /// @return a vector giving for each edge its two vertices (as a
+    /// pair (i,j), i<j).
+    /// @note Since 1.4, order is not significant (this is to allow
+    /// flip and modification in the surface mesh).
+    std::vector< VertexPair > allEdgeVertices() const
+    {
+      std::vector< VertexPair > E;
+      E.reserve( nbEdges() );
+      for ( auto& p : myEdgeVertices )
+	E.push_back( p.second );
+      return E;
+    }
     
     /// @return a const reference to the vector giving for each edge
     /// its incident faces (one, two, or more if non manifold)
@@ -918,8 +930,8 @@ namespace DGtal
     std::vector< Faces >        myNeighborFaces;
     /// For each vertex, its range of neighbor vertices (no particular order)
     std::vector< Vertices >     myNeighborVertices;
-    /// For each edge, its two vertices
-    std::vector< VertexPair >   myEdgeVertices;
+    /// A map giving, for each edge, its two vertices
+    std::map< Edge,VertexPair > myEdgeVertices;
     /// For each edge, its faces (one, two, or more if non manifold)
     std::vector< Faces >        myEdgeFaces;
     /// For each edge, its faces to its right  (zero if open, one, or more if
