@@ -861,11 +861,11 @@ isFlippable( const Edge e ) const
   if ( lfaces.size() != 1 ) return false; //< not one face to the left 
 
   // (2) both faces must be triangles
-  const Face      r    = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
-  const Face      l    = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
-  const Vertices& rvtx = incidentVertices( r );
+  const Face      rf   = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      lf   = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( rf );
   if ( rvtx.size() != 3 ) return false;   //< right face is not a triangle
-  const Vertices& lvtx = incidentVertices( l );
+  const Vertices& lvtx = incidentVertices( lf );
   if ( lvtx.size() != 3 ) return false;   //< left  face is not a triangle
 
   // (3) the two other vertices of the quad are not already neighbors.
@@ -892,21 +892,21 @@ flip( const Edge e )
   //        / \                 /|\
   //       /   \               / | \
   //      /     \             /  |  \
-  //     /   l   \           /   |   \
+  //     /   lf  \           /   |   \
   //    /         \         /    |    \
-  //   i --- e --- j  ==>  i  l  e  r  j    if k < l otherwise r and l are swapped     
+  //   i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise r and l are swapped     
   //    \         /         \    |    /
-  //     \   r   /           \   |   /
+  //     \   rf  /           \   |   /
   //      \     /             \  |  /
   //       \   /               \ | /
   //        \ /                 \|/
   //         k                   k
 
   // (1) We must collect all information: right and left face, vertices k and l
-  const Face      r    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
-  const Face      l    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
-  const Vertices& rvtx = incidentVertices( r );
-  const Vertices& lvtx = incidentVertices( l );
+  const Face      rf   = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      lf   = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( rf );
+  const Vertices& lvtx = incidentVertices( lf );
 
   // (3) the two other vertices of the quad are not already neighbors.
   std::size_t i, j;
