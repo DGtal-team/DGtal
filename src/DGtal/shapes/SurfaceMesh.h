@@ -226,8 +226,16 @@ namespace DGtal
 
     /// Uses the positions of vertices to compute a normal vector to
     /// each face of the mesh. It computes the barycenter,
-    /// triangulates implicitly the face to build the normal vector from the average of implicit triangle normals.
+    /// triangulates implicitly the face to build the normal vector
+    /// from the average of implicit triangle normals.
     void computeFaceNormalsFromPositions();
+
+    /// Uses the positions of vertices to compute a normal vector to
+    /// the face \a f of the mesh. It computes the barycenter,
+    /// triangulates implicitly the face to build the normal vector
+    /// from the average of implicit triangle normals.
+    /// @param f any valid index of face.
+    void computeFaceNormalFromPositions( const Face f );
 
     /// Uses the normals associated with vertices to compute a normal
     /// vector to each face of the mesh. It simply averages the
@@ -328,11 +336,7 @@ namespace DGtal
     /// pair (i,j), i<j).
     /// @note if the edge is not valid, return {0,0}.
     VertexPair edgeVertices( Edge e ) const
-    {
-      const auto it = myEdgeVertices.find( e );
-      if ( it != myEdgeVertices.cend() ) return it->second;
-      else return VertexPair( Vertex( 0 ), Vertex( 0 ) );
-    }
+    { return myEdgeVertices[ e ]; }
     
     /// @param e any edge
     /// @return a const reference to the range giving for edge \a e
@@ -384,14 +388,8 @@ namespace DGtal
     /// pair (i,j), i<j).
     /// @note Since 1.4, order is not significant (this is to allow
     /// flip and modification in the surface mesh).
-    std::vector< VertexPair > allEdgeVertices() const
-    {
-      std::vector< VertexPair > E;
-      E.reserve( nbEdges() );
-      for ( auto& p : myEdgeVertices )
-	E.push_back( p.second );
-      return E;
-    }
+    const std::vector< VertexPair >& allEdgeVertices() const
+    { return myEdgeVertices; }
     
     /// @return a const reference to the vector giving for each edge
     /// its incident faces (one, two, or more if non manifold)
@@ -888,16 +886,41 @@ namespace DGtal
     ///
     /// @param e any valid edge.
     ///
+    /// @param recompute_face_normals when 'true', recompute normals
+    /// of flipped faces with the positions of the vertices.
+    ///
     /// @pre the edge must be flippable, `isFlippable( e ) == true`
     ///
     /// @post After the flip, the edge index \a e corresponds to the
     /// index of the flipped edge (if you reflip it you get your
     /// former configuration).
     ///
-    /// @note Time complexity is O(1).
-    void flip( const Edge e );
+    /// @note Time complexity is O(log n), due to the updating of
+    /// surrounding edges information.
+    ///
+    /// @warning For performance reasons, The neighbor faces of each
+    /// face are not recomputed. One should call \ref computeNeighbors
+    /// to recompute them. However the neighbor vertices to each
+    /// vertex are recomputed.
+    ///
+    /// @warning Vertex normals are not recomputed, but face normals
+    /// may be recomputed if asked for. The face normals are then the
+    /// geometric normals of triangles.
+    void flip( const Edge e, bool recompute_face_normals = false );
     
     /// @}    
+
+    //---------------------------------------------------------------------------
+  public:
+    /// @name Look-up table computation services
+    /// @{
+    
+    /// Computes neighboring information.
+    void computeNeighbors();
+    /// Computes edge information.
+    void computeEdges();
+
+    /// @}
     
     // ----------------------- Interface --------------------------------------
   public:
@@ -930,8 +953,10 @@ namespace DGtal
     std::vector< Faces >        myNeighborFaces;
     /// For each vertex, its range of neighbor vertices (no particular order)
     std::vector< Vertices >     myNeighborVertices;
-    /// A map giving, for each edge, its two vertices
-    std::map< Edge,VertexPair > myEdgeVertices;
+    /// For each edge, its two vertices
+    std::vector< VertexPair >   myEdgeVertices;
+    /// For each vertex pair, its edge index.
+    std::map< VertexPair,Edge > myVertexPairEdge;
     /// For each edge, its faces (one, two, or more if non manifold)
     std::vector< Faces >        myEdgeFaces;
     /// For each edge, its faces to its right  (zero if open, one, or more if
@@ -954,10 +979,46 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   protected:
 
-    /// Computes neighboring information.
-    void computeNeighbors();
-    /// Computes edge information.
-    void computeEdges();
+    /// Removes the index \a i from the vector \a v.
+    /// @param[inout] v a vector of indices
+    /// @param[in] i an index
+    void removeIndex( std::vector< Index >& v, Index i )
+    {
+      const std::size_t n = v.size();
+      for ( std::size_t j = 0; j < n; j++ )
+	if ( v[ j ] == i )
+	  {
+	    std::swap( v[ j ], v.back() );
+	    v.resize( n - 1 );
+	    return;
+	  }
+      trace.error() << "[SurfaceMesh::removeIndex] Index is not in vector." << std::endl;
+    }
+
+    /// Replaces the index \a i with the index \a ri in the vector \a v.
+    /// @param[inout] v a vector of indices
+    /// @param[in] i an index
+    /// @param[in] ri an index    
+    void replaceIndex( std::vector< Index >& v, Index i, Index ri )
+    {
+      const std::size_t n = v.size();
+      for ( std::size_t j = 0; j < n; j++ )
+	if ( v[ j ] == i )
+	  {
+	    v[ j ] = ri;
+	    return;
+	  }
+      trace.error() << "[SurfaceMesh::removeIndex] Index is not in vector." << std::endl;
+    }
+
+    /// Adds the index \a i to the vector \a v.
+    /// @param[inout] v a vector of indices
+    /// @param[in] i an index
+    void addIndex( std::vector< Index >& v, Index i )
+    {
+      v.push_back( i );
+    }
+    
 
     /// @return a random number between 0.0 and 1.0
     static Scalar rand01()
