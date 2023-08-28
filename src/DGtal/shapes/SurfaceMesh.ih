@@ -755,6 +755,8 @@ computeEdges()
       idx_f++;
     }
   const Size nbe = edges.size();
+  myVertexPairEdge.clear();
+  myEdgeVertices.resize  ( nbe );  
   myEdgeFaces.resize     ( nbe );
   myEdgeRightFaces.resize( nbe );
   myEdgeLeftFaces.resize ( nbe );
@@ -928,7 +930,20 @@ flip( const Edge e, bool recompute_face_normals )
   // std::vector< Faces >        myNeighborFaces; //< not done
   if ( k < l )
     {
-      // e=(k,l) remains with rf as right face et lf as left face
+      //         l                   l
+      //        / \                 /|\
+      //       /   \               / | \
+      //      /     \             /  |	\
+      //     /   lf  \           /   |   \
+      //    /         \         /    |    \
+      //   i --- e --- j  ==>  i  lf e  rf j    ( k < l )
+      //    \         /         \    |    /
+      //     \   rf  /           \   |   /
+      //      \     /             \  |  /
+      //       \   /               \ | /
+      //        \ /                 \|/
+      //         k                   k
+      // e=(k,l) with rf as right face et lf as left face
       rvtx[ 0 ] = l; rvtx[ 1 ] = k; rvtx[ 2 ] = j;
       lvtx[ 0 ] = k; lvtx[ 1 ] = l; lvtx[ 2 ] = i;
       VertexPair kl = std::make_pair( k, l );
@@ -963,22 +978,22 @@ flip( const Edge e, bool recompute_face_normals )
 	  computeFaceNormalFromPositions( lf );
 	}
     }
-  //         l                   l
-  //        / \                 /|\
-  //       /   \               / | \
-  //      /     \             /  |  \
-  //     /   lf  \           /   |   \
-  //    /         \         /    |    \
-  //   i --- e --- j  ==>  i  rf e  lf j    (k > l)
-  //    \         /         \    |    /
-  //     \   rf  /           \   |   /
-  //      \     /             \  |  /
-  //       \   /               \ | /
-  //        \ /                 \|/
-  //         k                   k
   else // k > l
     {
-      // e=(k,l) changes with lf as right face et rf as left face
+      //         l                   l
+      //        / \                 /|\
+      //       /   \               / | \
+      //      /     \             /  |  \
+      //     /   lf  \           /   |   \
+      //    /         \         /    |    \
+      //   i --- e --- j  ==>  i  rf e  lf j    (k > l)
+      //    \         /         \    |    /
+      //     \   rf  /           \   |   /
+      //      \     /             \  |  /
+      //       \   /               \ | /
+      //        \ /                 \|/
+      //         k                   k
+      // e=(l,k) with rf as right face et lf as left face
       rvtx[ 0 ] = i; rvtx[ 1 ] = k; rvtx[ 2 ] = l;
       lvtx[ 0 ] = j; lvtx[ 1 ] = l; lvtx[ 2 ] = k;
       VertexPair lk = std::make_pair( l, k );
