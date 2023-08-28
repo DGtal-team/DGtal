@@ -941,7 +941,8 @@ flip( const Edge e, bool recompute_face_normals )
       removeIndex ( myNeighborVertices[ i ], j );
       removeIndex ( myNeighborVertices[ j ], i );      
       addIndex    ( myNeighborVertices[ k ], l );
-      addIndex    ( myNeighborVertices[ l ], k );      
+      addIndex    ( myNeighborVertices[ l ], k );
+      // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
       const auto e_ik      = makeEdge( i, k );
       const bool e_ik_left = i < k;
       replaceIndex( myEdgeFaces[ e_ik ], rf, lf );
@@ -962,8 +963,55 @@ flip( const Edge e, bool recompute_face_normals )
 	  computeFaceNormalFromPositions( lf );
 	}
     }
+  //         l                   l
+  //        / \                 /|\
+  //       /   \               / | \
+  //      /     \             /  |  \
+  //     /   lf  \           /   |   \
+  //    /         \         /    |    \
+  //   i --- e --- j  ==>  i  rf e  lf j    (k > l)
+  //    \         /         \    |    /
+  //     \   rf  /           \   |   /
+  //      \     /             \  |  /
+  //       \   /               \ | /
+  //        \ /                 \|/
+  //         k                   k
   else // k > l
     {
+      // e=(k,l) changes with lf as right face et rf as left face
+      rvtx[ 0 ] = i; rvtx[ 1 ] = k; rvtx[ 2 ] = l;
+      lvtx[ 0 ] = j; lvtx[ 1 ] = l; lvtx[ 2 ] = k;
+      VertexPair lk = std::make_pair( l, k );
+      myEdgeVertices  [ e  ] = lk;
+      myVertexPairEdge[ lk ] = e;
+      removeIndex ( myIncidentFaces[ i ], lf );
+      removeIndex ( myIncidentFaces[ j ], rf );      
+      addIndex    ( myIncidentFaces[ k ], lf );
+      addIndex    ( myIncidentFaces[ l ], rf );
+      removeIndex ( myNeighborVertices[ i ], j );
+      removeIndex ( myNeighborVertices[ j ], i );      
+      addIndex    ( myNeighborVertices[ k ], l );
+      addIndex    ( myNeighborVertices[ l ], k );
+      // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
+      const auto e_kj      = makeEdge( k, j );
+      const bool e_kj_left = k < j;
+      replaceIndex( myEdgeFaces[ e_kj ], rf, lf );
+      if ( e_kj_left ) myEdgeLeftFaces [ e_kj ][ 0 ] = lf;
+      else             myEdgeRightFaces[ e_kj ][ 0 ] = lf;
+      // nothing to change for e_jl (lf is still the incident face)
+      const auto e_li      = makeEdge( l, i );
+      const bool e_li_left = l < i;
+      replaceIndex( myEdgeFaces[ e_li ], lf, rf );
+      if ( e_li_left ) myEdgeLeftFaces [ e_li ][ 0 ] = rf;
+      else             myEdgeRightFaces[ e_li ][ 0 ] = rf;
+      // nothing to change for e_ik (rf is still the incident face)      
+      // vertex normals are not updated.
+      // face normals are recomputed if asked for.
+      if ( recompute_face_normals )
+	{
+	  computeFaceNormalFromPositions( rf );
+	  computeFaceNormalFromPositions( lf );
+	}
     }
 }
 
