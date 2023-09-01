@@ -880,6 +880,11 @@ namespace DGtal
     /// @note Time complexity is O(1).
     bool isFlippable( const Edge e ) const;
 
+    /// @pre `isFlippable( e )` must be true.
+    /// @param e any edge.
+    /// @return the two other vertices of the quadrilateral around the edge \a e. 
+    VertexPair otherDiagonal( const Edge e ) const;
+    
     /// Flip the edge \a e. Be careful that after the flip, this edge
     /// index determines another edge, which is the other diagonal of
     /// the quadrilateral having \a e as its diagonal.

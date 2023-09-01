@@ -896,6 +896,29 @@ isFlippable( const Edge e ) const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::VertexPair
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+otherDiagonal( const Edge e ) const
+{
+  // only valid if `isFlippable( e )` is true.
+  const Faces&  rfaces = edgeRightFaces( e );
+  const Faces&  lfaces = edgeLeftFaces ( e );
+  const Face      rf   = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      lf   = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( rf );
+  const Vertices& lvtx = incidentVertices( lf );
+  Vertex i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l).
+  return ( k < l ) ? std::make_pair( k, l ) : std::make_pair( l, k );
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
 void
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 flip( const Edge e, bool recompute_face_normals )
@@ -917,8 +940,8 @@ flip( const Edge e, bool recompute_face_normals )
   // (1) We must collect all information: right and left face, vertices k and l
   const Face  rf    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
   const Face  lf    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
-  Vertices&   rvtx  = incidentVertices( rf );
-  Vertices&   lvtx  = incidentVertices( lf );
+  Vertices&   rvtx  = myIncidentVertices[ rf ];
+  Vertices&   lvtx  = myIncidentVertices[ lf ];
   Vertex i, j;
   std::tie( i, j ) = edgeVertices( e );
   const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
