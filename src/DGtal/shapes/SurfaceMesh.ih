@@ -923,20 +923,22 @@ void
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 flip( const Edge e, bool recompute_face_normals )
 {
-  //         l                   l
-  //        / \                 /|\
-  //       /   \               / | \
-  //      /     \             /  |  \
-  //     /   lf  \           /   |   \
-  //    /         \         /    |    \
-  //   i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise r and l are swapped     
-  //    \         /         \    |    /
-  //     \   rf  /           \   |   /
-  //      \     /             \  |  /
-  //       \   /               \ | /
-  //        \ /                 \|/
-  //         k                   k
-
+  /*
+           l                   l
+          / \                 /|\
+         /   \               / | \
+        /     \             /  |  \
+       /   lf  \           /   |   \
+      /         \         /    |    \
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise r and l are swapped     
+      \         /         \    |    /
+       \   rf  /           \   |   /
+        \     /             \  |  /
+         \   /               \ | /
+          \ /                 \|/
+           k                   k
+  */
+  
   // (1) We must collect all information: right and left face, vertices k and l
   const Face  rf    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
   const Face  lf    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
@@ -953,19 +955,21 @@ flip( const Edge e, bool recompute_face_normals )
   // std::vector< Faces >        myNeighborFaces; //< not done
   if ( k < l )
     {
-      //         l                   l
-      //        / \                 /|\
-      //       /   \               / | \
-      //      /     \             /  |	\
-      //     /   lf  \           /   |   \
-      //    /         \         /    |    \
-      //   i --- e --- j  ==>  i  lf e  rf j    ( k < l )
-      //    \         /         \    |    /
-      //     \   rf  /           \   |   /
-      //      \     /             \  |  /
-      //       \   /               \ | /
-      //        \ /                 \|/
-      //         k                   k
+      /*
+               l                   l
+              / \                 /|\
+             /   \               / | \
+            /     \             /  |  \
+           /   lf  \           /   |   \
+          /         \         /    |    \
+         i --- e --- j  ==>  i  lf e  rf j    ( k < l )
+          \         /         \    |    /
+           \   rf  /           \   |   /
+            \     /             \  |  /
+             \   /               \ | /
+              \ /                 \|/
+               k                   k
+      */
       // e=(k,l) with rf as right face et lf as left face
       rvtx[ 0 ] = l; rvtx[ 1 ] = k; rvtx[ 2 ] = j;
       lvtx[ 0 ] = k; lvtx[ 1 ] = l; lvtx[ 2 ] = i;
@@ -1003,19 +1007,21 @@ flip( const Edge e, bool recompute_face_normals )
     }
   else // k > l
     {
-      //         l                   l
-      //        / \                 /|\
-      //       /   \               / | \
-      //      /     \             /  |  \
-      //     /   lf  \           /   |   \
-      //    /         \         /    |    \
-      //   i --- e --- j  ==>  i  rf e  lf j    (k > l)
-      //    \         /         \    |    /
-      //     \   rf  /           \   |   /
-      //      \     /             \  |  /
-      //       \   /               \ | /
-      //        \ /                 \|/
-      //         k                   k
+      /*
+               l                   l
+              / \                 /|\
+             /   \               / | \
+            /     \             /  |  \
+           /   lf  \           /   |   \
+          /         \         /    |    \
+         i --- e --- j  ==>  i  rf e  lf j    (k > l)
+          \         /         \    |    /
+           \   rf  /           \   |   /
+            \     /             \  |  /
+             \   /               \ | /
+              \ /                 \|/
+               k                   k
+      */
       // e=(l,k) with rf as right face et lf as left face
       rvtx[ 0 ] = i; rvtx[ 1 ] = k; rvtx[ 2 ] = l;
       lvtx[ 0 ] = j; lvtx[ 1 ] = l; lvtx[ 2 ] = k;
