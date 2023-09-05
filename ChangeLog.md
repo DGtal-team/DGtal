@@ -22,6 +22,11 @@
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
 
+- *Shapes*
+  - Add flips to SurfaceMesh data structure
+    (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+	
+	
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
