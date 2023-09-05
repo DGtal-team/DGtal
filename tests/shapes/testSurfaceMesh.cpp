@@ -437,8 +437,8 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flip tests", "[surfmesh][flip]" )
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  typedef PolygonMesh::Edge                          Edge;  
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
-  typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto meshLantern = PolygonMeshHelper::makeLantern( 3.0, 3.0, RealPoint::zero,
 						     10, 10, NormalsType::NO_NORMALS );
