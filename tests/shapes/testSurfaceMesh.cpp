@@ -378,6 +378,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  typedef PolygonMesh::Edge                          Edge;  
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto meshBox     = makeBox();
@@ -388,7 +389,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
                                                   10, 10, 0, NormalsType::NO_NORMALS );
   WHEN( "Checking if one can flip box edges" ) {
     auto nb_flippable = 0;
-    for ( auto e = 0; e < meshBox.nbEdges(); e++ )
+    for ( Edge e = 0; e < meshBox.nbEdges(); e++ )
       if ( meshBox.isFlippable( e ) ) nb_flippable++;
     THEN( "No box edges are flippable (they border quads)" ) {
       REQUIRE( nb_flippable == 0 );
@@ -396,7 +397,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
   }
   WHEN( "Checking if one can flip tetrahedron edges" ) {
     auto nb_flippable = 0;
-    for ( auto e = 0; e < meshTetra.nbEdges(); e++ )
+    for ( Edge e = 0; e < meshTetra.nbEdges(); e++ )
       if ( meshTetra.isFlippable( e ) ) nb_flippable++;
     THEN( "No tetrahedron edges are flippable (the neihgborhood is not simply connected)" ) {
       REQUIRE( nb_flippable == 0 );
@@ -404,7 +405,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
   }
   WHEN( "Checking if one can flip torus edges" ) {
     auto nb_flippable = 0;
-    for ( auto e = 0; e < meshTorus.nbEdges(); e++ )
+    for ( Edge e = 0; e < meshTorus.nbEdges(); e++ )
       if ( meshTorus.isFlippable( e ) ) nb_flippable++;
     THEN( "All torus edges are flippable (it is a closed triangulated surface)" ) {
       REQUIRE( nb_flippable == meshTorus.nbEdges() );
@@ -416,11 +417,11 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
     auto nb_flippable       = 0;
     auto nb_bdry_flippable  = 0;
     auto nb_inner_flippable = 0;    
-    for ( auto e = 0; e < meshLantern.nbEdges(); e++ )
+    for ( Edge e = 0; e < meshLantern.nbEdges(); e++ )
       if ( meshLantern.isFlippable( e ) ) nb_flippable++;
-    for ( auto e : bdry_edges )
+    for ( Edge e : bdry_edges )
       if ( meshLantern.isFlippable( e ) ) nb_bdry_flippable++;
-    for ( auto e : inner_edges )
+    for ( Edge e : inner_edges )
       if ( meshLantern.isFlippable( e ) ) nb_inner_flippable++;
     THEN( "Innner lantern edges are flippable while boundary edges are not flippable" ) {
       REQUIRE( nb_flippable == inner_edges.size() );
@@ -446,7 +447,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flip tests", "[surfmesh][flip]" )
   auto nb_flipped  = 0;
   for ( auto i = 0; i < 100; i++ )
     {
-      auto e = rand() % meshLantern.nbEdges();
+      Edge e = rand() % meshLantern.nbEdges();
       if ( meshLantern.isFlippable( e ) )
 	{
 	  meshLantern.flip( e, false );
@@ -485,7 +486,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > restore lantern with flips tests", "[surfme
   }
   auto nb_flipped = 0;
   const auto&   X = meshLantern.positions();
-  for ( auto e = 0; e < meshLantern.nbEdges(); e++ )
+  for ( Edge e = 0; e < meshLantern.nbEdges(); e++ )
     {
       if ( meshLantern.isFlippable( e ) )
 	{
