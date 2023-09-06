@@ -404,7 +404,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
     }
   }
   WHEN( "Checking if one can flip torus edges" ) {
-    auto nb_flippable = 0;
+    Edge nb_flippable = 0;
     for ( Edge e = 0; e < meshTorus.nbEdges(); e++ )
       if ( meshTorus.isFlippable( e ) ) nb_flippable++;
     THEN( "All torus edges are flippable (it is a closed triangulated surface)" ) {
@@ -414,9 +414,9 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
   WHEN( "Checking if one can flip lantern edges" ) {
     auto bdry_edges  = meshLantern.computeManifoldBoundaryEdges();
     auto inner_edges = meshLantern.computeManifoldInnerEdges();
-    auto nb_flippable       = 0;
-    auto nb_bdry_flippable  = 0;
-    auto nb_inner_flippable = 0;    
+    Edge nb_flippable       = 0;
+    Edge nb_bdry_flippable  = 0;
+    Edge nb_inner_flippable = 0;    
     for ( Edge e = 0; e < meshLantern.nbEdges(); e++ )
       if ( meshLantern.isFlippable( e ) ) nb_flippable++;
     for ( Edge e : bdry_edges )
@@ -474,6 +474,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > restore lantern with flips tests", "[surfme
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  typedef PolygonMesh::Edge                          Edge;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
@@ -481,10 +482,10 @@ SCENARIO( "SurfaceMesh< RealPoint3 > restore lantern with flips tests", "[surfme
                                                      10, 10, NormalsType::NO_NORMALS );
   {
     std::ofstream output( "lantern.obj" );
-    bool okw = PolygonMeshWriter::writeOBJ( output, meshLantern );
+    PolygonMeshWriter::writeOBJ( output, meshLantern );
     output.close();
   }
-  auto nb_flipped = 0;
+  Edge nb_flipped = 0;
   const auto&   X = meshLantern.positions();
   for ( Edge e = 0; e < meshLantern.nbEdges(); e++ )
     {
@@ -503,7 +504,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > restore lantern with flips tests", "[surfme
     }
   {
     std::ofstream output( "flipped-lantern.obj" );
-    bool okw = PolygonMeshWriter::writeOBJ( output, meshLantern );
+    PolygonMeshWriter::writeOBJ( output, meshLantern );
     output.close();
   }
   WHEN( "Flipping all long edges" ) {
