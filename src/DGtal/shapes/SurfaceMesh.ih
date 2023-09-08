@@ -888,7 +888,17 @@ isFlippable( const Edge e ) const
   const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
   const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l). 
   if ( ! ( k != i && k != j && l != i && l != j && k != l ) )
-    trace.error() << "[SurfaceMesh::isFlippable] Invalid neighbors to edge." << std::endl;
+    {
+      /// May happen if we have identical triangles (i,j,k) and (j,i,k)
+      if ( k == l ) return false;
+      /// Otherwise there is a problem.
+      trace.error() << "[SurfaceMesh::isFlippable] Invalid neighbors to edge: "
+		    << "(i,j,k,l) == (" << i << "," << j << "," << k << "," << l << ")"
+		    << std::endl
+		    << "right=(" << rvtx[ 0 ] << "," << rvtx[ 1 ] << "," << rvtx[ 2 ] << ")" << std::endl
+		    << "left =(" << lvtx[ 0 ] << "," << lvtx[ 1 ] << "," << lvtx[ 2 ] << ")" << std::endl;
+      return false;
+    }
   const Vertices& Nk = neighborVertices( k );
   const auto     itl = std::find( Nk.cbegin(), Nk.cend(), l );
   return itl == Nk.cend();

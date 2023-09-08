@@ -997,7 +997,10 @@ namespace DGtal
 	    v.resize( n - 1 );
 	    return;
 	  }
-      trace.error() << "[SurfaceMesh::removeIndex] Index is not in vector." << std::endl;
+      trace.error() << "[SurfaceMesh::removeIndex] Index " << i
+		    << " is not in vector:";
+      for ( auto e : v ) std::cerr << " " << e;
+      std::cerr << std::endl;
     }
 
     /// Replaces the index \a i with the index \a ri in the vector \a v.
@@ -1013,7 +1016,10 @@ namespace DGtal
 	    v[ j ] = ri;
 	    return;
 	  }
-      trace.error() << "[SurfaceMesh::removeIndex] Index is not in vector." << std::endl;
+      trace.error() << "[SurfaceMesh::replaceIndex] Index " << i
+		    << " (subs=" << ri << ") is not in vector:";
+      for ( auto e : v ) std::cerr << " " << e;
+      std::cerr << std::endl;
     }
 
     /// Adds the index \a i to the vector \a v.
