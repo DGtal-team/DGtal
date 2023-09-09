@@ -15,6 +15,9 @@
 ## Changes
 - *General*
   - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+
+- *Project*
+  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan, [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
     
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
