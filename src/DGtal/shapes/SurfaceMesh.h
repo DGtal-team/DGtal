@@ -886,48 +886,50 @@ namespace DGtal
     /// @return the two other vertices of the quadrilateral around the edge \a e. 
     VertexPair otherDiagonal( const Edge e ) const;
     
-    /// Flip the edge \a e. Be careful that after the flip, this edge
-    /// index determines another edge, which is the other diagonal of
-    /// the quadrilateral having \a e as its diagonal.
-    ///
-    /// \verbatim
-    ///       l                   l
-    ///      / \                 /|\
-    ///     /   \               / | \
-    ///    /     \             /  |  \
-    ///   /   lf  \           /   |   \
-    ///  /         \         /    |    \
-    /// i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
-    ///  \         /         \    |    /
-    ///   \   rf  /           \   |   /
-    ///    \     /             \  |  /
-    ///     \   /               \ | /
-    ///      \ /                 \|/
-    ///       k                   k
-    /// \endverbatim
-    ///
-    /// @param e any valid edge.
-    ///
-    /// @param recompute_face_normals when 'true', recompute normals
-    /// of flipped faces with the positions of the vertices.
-    ///
-    /// @pre the edge must be flippable, `isFlippable( e ) == true`
-    ///
-    /// @post After the flip, the edge index \a e corresponds to the
-    /// index of the flipped edge (if you reflip it you get your
-    /// former configuration).
-    ///
-    /// @note Time complexity is O(log n), due to the updating of
-    /// surrounding edges information.
-    ///
-    /// @warning For performance reasons, The neighbor faces of each
-    /// face are not recomputed. One should call \ref computeNeighbors
-    /// to recompute them. However the neighbor vertices to each
-    /// vertex are recomputed.
-    ///
-    /// @warning Vertex normals are not recomputed, but face normals
-    /// may be recomputed if asked for. The face normals are then the
-    /// geometric normals of triangles.
+    /**
+       Flip the edge \a e. Be careful that after the flip, this edge
+       index determines another edge, which is the other diagonal of
+       the quadrilateral having \a e as its diagonal.
+      
+       \verbatim
+             l                   l
+            / \                 /|\
+           /   \               / | \
+          /     \             /  |  \
+         /   lf  \           /   |   \
+        /         \         /    |    \
+       i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
+        \         /         \    |    /
+         \   rf  /           \   |   /
+          \     /             \  |  /
+           \   /               \ | /
+            \ /                 \|/
+             k                   k
+       \endverbatim
+      
+       @param e any valid edge.
+      
+       @param recompute_face_normals when 'true', recompute normals
+       of flipped faces with the positions of the vertices.
+      
+       @pre the edge must be flippable, `isFlippable( e ) == true`
+      
+       @post After the flip, the edge index \a e corresponds to the
+       index of the flipped edge (if you reflip it you get your
+       former configuration).
+      
+       @note Time complexity is O(log n), due to the updating of
+       surrounding edges information.
+      
+       @warning For performance reasons, The neighbor faces of each
+       face are not recomputed. One should call \ref computeNeighbors
+       to recompute them. However the neighbor vertices to each
+       vertex are recomputed.
+      
+       @warning Vertex normals are not recomputed, but face normals
+       may be recomputed if asked for. The face normals are then the
+       geometric normals of triangles.
+    */
     void flip( const Edge e, bool recompute_face_normals = false );
     
     /// @}    
