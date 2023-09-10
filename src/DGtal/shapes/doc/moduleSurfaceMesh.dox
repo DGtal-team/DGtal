@@ -235,7 +235,7 @@ corresponding to relative distances 0.25, 0.5 and 0.75.
 
 @image html spot-bft-isolines.png "SurfaceMesh faces colored according to distance to bluest vertex and three isodistance lines"
 
-\section Flipping edges
+\section SurfMesh_sec8 Flipping edges 
 
 Since 1.4, you may modify a SurfaceMesh through flips. Only edges that
 are incident to a triangle on the right and a triangle on the left are
