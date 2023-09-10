@@ -253,7 +253,7 @@ The following methods are useful for flipping an edge:
   3. the two other vertices of the quad are not already neighbors,
   4. the edge is not bordered by the same two triangles, in opposite orientation.
 
-- SurfaceMesh::flip performs the flip on a flippable edge. The flipped
+- SurfaceMesh::flip performs the flip on a flippable edge `e=(i,j)`. The flipped
   edge keeps the same index as the original edge. You may choose
   whether or not you update locally the face normals.
 
@@ -273,17 +273,21 @@ The following methods are useful for flipping an edge:
            k                   k
   \endverbatim
   
-  @note Vertex normals are not updated after a flip. Furthermore,
-  neighbor faces of faces are not recomputed. You may recompute face
-  neighborhoods at the end of a sequence of flips by calling
-  SurfaceMesh::computeNeighbors.
+  @note Almost all information is recomputed locally. Only vertex
+  normals are not updated after a flip, as well as neighbor faces of
+  faces are not recomputed. You may recompute face neighborhoods at
+  the end of a sequence of flips by calling
+  SurfaceMesh::computeNeighbors. You may for instance recompute vertex
+  normals from face normals by a call to
+  SurfaceMesh::computeVertexNormalsFromFaceNormals.
 
 - SurfaceMesh::otherDiagonal returns, given a flippable edge, the two
   other vertices of the quadrilateral. So in the flip example above,
   it returns (k,l) if k < l or (l,k) otherwise.
 
   
-The following code builds a Schwarz lantern, and then flips all flippable edges that are longer than their flipped edge.
+The following code builds a Schwarz lantern, and then flips all
+flippable edges that are longer than their flipped edge.
 
 @code
   typedef PointVector<3,double>                      RealPoint;
