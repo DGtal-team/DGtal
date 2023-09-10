@@ -872,7 +872,8 @@ namespace DGtal
     /// An edge is (topologically) flippable iff: (1) it does not lie
     /// on the boundary, (2) it is bordered by two triangles, one that
     /// to its right, one to its left, (3) the two other vertices of
-    /// the quad are not already neighbors. 
+    /// the quad are not already neighbors, (4) the edge is not
+    /// bordered by the same two triangles, in opposite orientation.
     ///
     /// @param e any edge.
     /// @return 'true' if the edge \a e is topologically flippable.
@@ -888,6 +889,22 @@ namespace DGtal
     /// Flip the edge \a e. Be careful that after the flip, this edge
     /// index determines another edge, which is the other diagonal of
     /// the quadrilateral having \a e as its diagonal.
+    ///
+    /// \verbatim
+    ///       l                   l
+    ///      / \                 /|\
+    ///     /   \               / | \
+    ///    /     \             /  |  \
+    ///   /   lf  \           /   |   \
+    ///  /         \         /    |    \
+    /// i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
+    ///  \         /         \    |    /
+    ///   \   rf  /           \   |   /
+    ///    \     /             \  |  /
+    ///     \   /               \ | /
+    ///      \ /                 \|/
+    ///       k                   k
+    /// \endverbatim
     ///
     /// @param e any valid edge.
     ///

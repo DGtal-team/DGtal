@@ -350,9 +350,6 @@ makeEdge( Vertex i, Vertex j ) const
   const auto it = myVertexPairEdge.find( vp );
   if ( it == myVertexPairEdge.cend()  ) return nbEdges();
   return it->second;
-  // auto it = std::lower_bound( myEdgeVertices.cbegin(), myEdgeVertices.cend(), vp );
-  // if ( it == myEdgeVertices.cend() || *it != vp ) return nbEdges();
-  // return it - myEdgeVertices.cbegin();
 }
 
 //-----------------------------------------------------------------------------
@@ -940,7 +937,7 @@ flip( const Edge e, bool recompute_face_normals )
         /     \             /  |  \
        /   lf  \           /   |   \
       /         \         /    |    \
-     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise r and l are swapped     
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped     
       \         /         \    |    /
        \   rf  /           \   |   /
         \     /             \  |  /

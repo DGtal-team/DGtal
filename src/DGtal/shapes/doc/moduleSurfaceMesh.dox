@@ -247,14 +247,42 @@ the original mesh.
 
 The following methods are useful for flipping an edge:
 - SurfaceMesh::isFlippable indicates if a given edge is flippable.
-- SurfaceMesh::otherDiagonal returns, given a flippable edge, the two other vertices of the quadrilateral.
-- SurfaceMesh::flip performs the flip on a flippable edge. The flipped edge keeps the same index as the original edge. You may choose whether or not you update locally the face normals.
+  An edge is (topologically) flippable iff:
+  1. it does not lie on the boundary,
+  2. it is bordered by two triangles, one that to its right, one to its left,
+  3. the two other vertices of the quad are not already neighbors,
+  4. the edge is not bordered by the same two triangles, in opposite orientation.
 
-@note Vertex normals are not updated after a flip. Furthermore,
-neighbor faces of faces are not recomputed. You may recompute face
-neighborhoods at the end of a sequence of flips by calling
-SurfaceMesh::computeNeighbors.
+- SurfaceMesh::flip performs the flip on a flippable edge. The flipped
+  edge keeps the same index as the original edge. You may choose
+  whether or not you update locally the face normals.
 
+  \verbatim
+           l                   l
+          / \                 /|\
+         /   \               / | \
+        /     \             /  |  \
+       /   lf  \           /   |   \
+      /         \         /    |    \
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
+      \         /         \    |    /
+       \   rf  /           \   |   /
+        \     /             \  |  /
+         \   /               \ | /
+          \ /                 \|/
+           k                   k
+  \endverbatim
+  
+  @note Vertex normals are not updated after a flip. Furthermore,
+  neighbor faces of faces are not recomputed. You may recompute face
+  neighborhoods at the end of a sequence of flips by calling
+  SurfaceMesh::computeNeighbors.
+
+- SurfaceMesh::otherDiagonal returns, given a flippable edge, the two
+  other vertices of the quadrilateral. So in the flip example above,
+  it returns (k,l) if k < l or (l,k) otherwise.
+
+  
 The following code builds a Schwarz lantern, and then flips all flippable edges that are longer than their flipped edge.
 
 @code
