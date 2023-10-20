@@ -237,13 +237,14 @@ corresponding to relative distances 0.25, 0.5 and 0.75.
 
 \section SurfMesh_sec8 Flipping edges 
 
-Since 1.4, you may modify a SurfaceMesh through flips. Only edges that
-are incident to a triangle on the right and a triangle on the left are
-(topologically) flippable. These two triangles form then a
-quadrilateral, and the edge is one diagonal of this
+Since 1.4, you may modify a SurfaceMesh through flips. Only (oriented)
+edges that are incident to a triangle on the right and a triangle on
+the left are (topologically) flippable. These two triangles form then
+a quadrilateral, and the edge is one diagonal of this
 quadrilateral. Flipping the edge means that the quadrilateral is now
 split only the other diagonal. Flipping twice the same edge restores
-the original mesh.
+the original mesh. Flipping edges has meaning only on orientable parts
+of a surface.
 
 The following methods are useful for flipping an edge:
 - SurfaceMesh::isFlippable indicates if a given edge is flippable.
