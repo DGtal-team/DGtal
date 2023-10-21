@@ -535,7 +535,7 @@ int main( int argc, char* argv[] )
   
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-  
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
