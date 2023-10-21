@@ -20,7 +20,7 @@ if (ENABLE_CONAN)
     file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
                 "${CMAKE_BINARY_DIR}/conan.cmake"
                  STATUS DOWNLOAD_STATUS
-                TLS_VERIFY ON)
+                TLS_VERIFY OFF)
     list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
     list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)
     # Check if download was successful.
