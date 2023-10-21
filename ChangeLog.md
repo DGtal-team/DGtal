@@ -39,6 +39,8 @@
 
 ## Bug fixes
 - *General*
+  - Fix conan file upload issue and log message. (Bertrand Kerautret,
+    [#1704](https://github.com/DGtal-team/DGtal/pull/1704))
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
