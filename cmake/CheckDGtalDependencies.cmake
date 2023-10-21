@@ -22,7 +22,7 @@ if (ENABLE_CONAN)
                 TLS_VERIFY ON)
   endif()
 
-  include(${CMAKE_BINARY_DIR}/conan.cmake)
+  include("${CMAKE_BINARY_DIR}/conan.cmake")
 
   conan_cmake_configure(REQUIRES zlib/1.2.13
                                  boost/1.81.0
