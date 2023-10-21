@@ -33,6 +33,8 @@ if (ENABLE_CONAN)
                      "${CMAKE_BINARY_DIR}/conan.cmake"
                       STATUS DOWNLOAD_STATUS
                       TLS_VERIFY OFF)
+       list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+       list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)                   
        if(${STATUS_CODE} EQUAL 0)
          message(STATUS "Download completed successfully!")
        else()
