@@ -19,20 +19,41 @@ if (ENABLE_CONAN)
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
                 "${CMAKE_BINARY_DIR}/conan.cmake"
-                TLS_VERIFY ON)
+                 STATUS DOWNLOAD_STATUS
+                 TLS_VERIFY ON)
+    list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+    list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)
+    # Check if download was successful.
+    if(${STATUS_CODE} EQUAL 0)
+       message(STATUS "Download completed successfully!")
+    else()
+       message(STATUS "Error occurred during download: ${ERROR_MESSAGE}")
+       message(STATUS "Trying turning TLS_VERIFY OFF")
+       file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+                     "${CMAKE_BINARY_DIR}/conan.cmake"
+                      STATUS DOWNLOAD_STATUS
+                      TLS_VERIFY OFF)
+       list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+       list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)                   
+       if(${STATUS_CODE} EQUAL 0)
+         message(STATUS "Download completed successfully!")
+       else()
+         message(FATAL_ERROR "Error occurred during download: ${ERROR_MESSAGE}")
+       endif()
+    endif()
   endif()
 
-  include(${CMAKE_BINARY_DIR}/conan.cmake)
+  include("${CMAKE_BINARY_DIR}/conan.cmake")
 
   conan_cmake_configure(REQUIRES zlib/1.2.13
                                  boost/1.81.0
                                  gmp/6.2.1
                                  fftw/3.3.9
-                                 cairo/1.17.6
-                                 libpng/1.6.39 #Explicit fix deps (compat issues)
-                                 expat/2.5.0
-                                 openssl/1.1.1s
-                                 libiconv/1.17
+                                 #cairo/1.17.6
+                                 #libpng/1.6.39 #Explicit fix deps (compat issues)
+                                 #expat/2.5.0
+                                 #openssl/1.1.1s
+                                 #libiconv/1.17
                       OPTIONS boost:header_only=True
                               gmp:enable_cxx=True
                       GENERATORS cmake_find_package)

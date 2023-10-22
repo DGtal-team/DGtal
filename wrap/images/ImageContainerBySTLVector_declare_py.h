@@ -64,14 +64,14 @@ using Is3D = typename std::enable_if<TPoint::dimension == 3>::type;
 template<typename TT>
 void def_toindices(pybind11::class_<TT> & py_class,
         Is2D<typename TT::Point> * = nullptr) {
-    py_class.def("toindices", [](const TT & self, const typename TT::Point & a_point) {
+    py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
             return pybind11::make_tuple(a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
 template<typename TT>
 void def_toindices(pybind11::class_<TT> & py_class,
         Is3D<typename TT::Point> * = nullptr) {
-    py_class.def("toindices", [](const TT & self, const typename TT::Point & a_point) {
+    py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
             return pybind11::make_tuple(a_point[2], a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
