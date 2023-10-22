@@ -39,6 +39,9 @@
 
 ## Bug fixes
 - *General*
+  - For now, removing Cairo deps install on windows (6hours long build 
+    with conan in the windows debug mode). (David Coeurjolly, 
+    [#1705](https://github.com/DGtal-team/DGtal/pull/1705))
   - Fix conan file upload issue and log message. (Bertrand Kerautret,
     [#1704](https://github.com/DGtal-team/DGtal/pull/1704))
   - Fix of couple of doxygen warnings that cause errors on Github Actions
