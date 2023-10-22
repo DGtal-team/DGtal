@@ -16,7 +16,9 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Set up
-      run:  sudo apt-get install libboost-dev graphviz texlive-base doxygen
+      run: |
+          sudo apt update 
+          sudo apt-get install libboost-dev graphviz texlive-base doxygen
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
