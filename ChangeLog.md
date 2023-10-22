@@ -9,16 +9,27 @@
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
-    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696))
+    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
 
 
 ## Changes
+- *General*
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+
+- *Project*
+  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan, [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
+    
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
 
+- *Shapes*
+  - Add flips to SurfaceMesh data structure
+    (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+	
+	
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -28,6 +39,8 @@
 
 ## Bug fixes
 - *General*
+  - Fix conan file upload issue and log message. (Bertrand Kerautret,
+    [#1704](https://github.com/DGtal-team/DGtal/pull/1704))
   - Fix of couple of doxygen warnings that cause errors on Github Actions
     CI bots. (David Coeurjolly, [#1672](https://github.com/DGtal-team/DGtal/pull/1672))
   - Removing "WITH_BENCHMARK" option as Google Benchmark is already included when building
@@ -40,6 +53,8 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - WITH_COVERAGE option removed. (David Coeurjolly,
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
+  - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
+    [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
@@ -52,6 +67,8 @@
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
+  - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
+    (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
 
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file

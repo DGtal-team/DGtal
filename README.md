@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS), master](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml) [![Build status](https://ci.appveyor.com/api/projects/status/2b94dmr3agvkd379/branch/master?svg=true)](https://ci.appveyor.com/project/kerautret/dgtal/branch/master)
+[![CI (linux/macOS), master](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml) 
 
 Description
 ===========

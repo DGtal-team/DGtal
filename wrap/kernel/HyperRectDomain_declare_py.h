@@ -45,7 +45,7 @@ The following code snippet demonstrates how to use \p HyperRectDomain
 )";
     auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
-    py_class.def("dtype", [](const TT &self) {
+    py_class.def("dtype", [](const TT &) {
             return DGtal::Python::Integer_str;
             });
     // ----------------------- Constructors -----------------------------------
