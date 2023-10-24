@@ -100,7 +100,8 @@ jobs:
        shell: bash
        run: |
            echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-           ctest -C $${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
+           ctest -C ${{ matrix.BUILD_TYPE }} --output-on-failure -E $TESTBLACKLIST  
+
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'

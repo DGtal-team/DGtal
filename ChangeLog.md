@@ -39,6 +39,8 @@
 
 ## Bug fixes
 - *General*
+  - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
+    [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
   - For now, removing Cairo deps install on windows (6hours long build 
     with conan in the windows debug mode). (David Coeurjolly, 
     [#1705](https://github.com/DGtal-team/DGtal/pull/1705))
