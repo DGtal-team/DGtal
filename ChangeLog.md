@@ -11,6 +11,9 @@
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
     (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
 
+- *Geometry*
+  - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
+  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 ## Changes
 - *General*
@@ -58,6 +61,8 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
     [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
+  - Cleanup of the cmake script for dependency discovery (David Coeurjolly,
+    [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
