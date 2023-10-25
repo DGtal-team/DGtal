@@ -85,7 +85,7 @@ int main()
   polyscope::init();
   
   auto iinormals = SHG3::getIINormalVectors(binary_image, surfels, params);
-  auto psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
+  auto psMesh = polyscope::registerSurfaceMesh("input digital surface", positions, faces);
   psMesh->addFaceVectorQuantity("normals", iinormals);
   
   //
@@ -104,26 +104,49 @@ int main()
     normals(i,2) = n(2);
     
   }
-  auto pc= polyscope::registerPointCloud("Points", points);
+  auto pc= polyscope::registerPointCloud("input boundary points", points);
   pc->addVectorQuantity("normals", normals);
   WindingNumbersShape<Z3i::Space> wnshape(points,normals);
   
-  trace.info() << binary_image->domain() << std::endl;
-  double step = 0.5;
-  auto width=33+2;
-  Eigen::MatrixXd queries(width*width*width,3);
-  auto cpt=0;
-  for(auto z=-2; z < 33; ++z)
-    for(auto y=-2; y < 33; ++y)
-      for(auto x=-2; x < 33; ++x)
-      {
-        Eigen::RowVector3<double> p(x,y,z);
-        queries.row(cpt) = p;
-        ++cpt;
-      }
+  auto lower = binary_image->domain().lowerBound();
+  auto upper = binary_image->domain().upperBound();
+  auto extend = (upper-lower);
+
+  {
+    double step = 1.0;
+    size_t size = (size_t)std::floor(extend[0]*step * extend[1]*step * extend[2] * step);
+    Eigen::MatrixXd queries(size,3);
+    auto cpt=0;
+    for(double x= lower[0] ; x < upper[0] ; x+= step)
+      for(double y= lower[1] ; y < upper[1] ; y+= step)
+        for(double z= lower[2] ; z < upper[2] ; z+= step)
+        {
+          Eigen::RowVector3<double> p(x,y,z);
+          queries.row(cpt) = p;
+          ++cpt;
+        }
+    trace.info()<<"Cpt= "<<cpt<<" size= "<<size<<std::endl;
+    auto orientations = wnshape.orientationBatch(queries);
+    polyscope::registerPointCloud("probes",queries)->addScalarQuantity("orientation",orientations);
+  }
   
-  auto orientations = wnshape.orientationBatch(queries);
-  polyscope::registerPointCloud("probes",queries)->addScalarQuantity("orientati on",orientations);
+  {
+    double step = 2;
+    size_t size = (size_t)std::floor(extend[0]*step * extend[1]*step * extend[2] * step);
+    Eigen::MatrixXd queries(size,3);
+    auto cpt=0;
+    for(double x= lower[0] ; x < upper[0] ; x+= step)
+      for(double y= lower[1] ; y < upper[1] ; y+= step)
+        for(double z= lower[2] ; z < upper[2] ; z+= step)
+        {
+          Eigen::RowVector3<double> p(x,y,z);
+          queries.row(cpt) = p;
+          ++cpt;
+        }
+    trace.info()<<"Cpt= "<<cpt<<" size= "<<size<<std::endl;
+    auto orientations = wnshape.orientationBatch(queries);
+    polyscope::registerPointCloud("probeslow",queries)->addScalarQuantity("orientation",orientations);
+  }
   
   // Set the callback function
   polyscope::state::userCallback = myCallback;
