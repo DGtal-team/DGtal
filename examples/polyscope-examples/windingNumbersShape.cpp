@@ -24,6 +24,8 @@
  */
 #include <iostream>
 #include <string>
+#include <algorithm>
+
 #include <DGtal/base/Common.h>
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/helpers/Shortcuts.h>
@@ -55,7 +57,7 @@ void myCallback()
 int main()
 {
     auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-    params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 2.0);
+    params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 3.0);
     
     std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
     auto binary_image    = SH3::makeBinaryImage(filename, params );
@@ -113,7 +115,7 @@ int main()
     auto upper = binary_image->domain().upperBound();
     auto extend = (upper-lower);
     
-    auto exec_h = [&](double h){
+    auto resample_h = [&](double h){
         
         RegularPointEmbedder<Z3i::Space> pointEmbedder;
         pointEmbedder.init( h );
@@ -127,12 +129,12 @@ int main()
         Eigen::MatrixXd queries(size,3);
         auto cpt=0;
         for(const auto &vox: domain)
-                {
-                    Eigen::RowVector3<double> p(vox[0],vox[1],vox[2]);
-                    p *= h;
-                    queries.row(cpt) = p;
-                    ++cpt;
-                }
+        {
+            Eigen::RowVector3<double> p(vox[0],vox[1],vox[2]);
+            p *= h;
+            queries.row(cpt) = p;
+            ++cpt;
+        }
         trace.info()<<"Cpt= "<<cpt<<" size= "<<size<<std::endl;
         auto orientations = wnshape.orientationBatch(queries);
         //polyscope::registerPointCloud("probes " + std::to_string(h),queries)->addScalarQuantity("orientation",orientations);
@@ -147,7 +149,7 @@ int main()
             ++cpt;
         }
         trace.info() <<"Number of voxels = "<<voxels.size()<<std::endl;
-
+        
         //Digital surface
         Z3i::KSpace kspace;
         kspace.init(lowerPoint, upperPoint, true);
@@ -170,6 +172,8 @@ int main()
         auto primalSurfaceReco   = SH3::makePrimalSurfaceMesh(surfPtr);
         
         std::vector<RealPoint> positionsReco = primalSurfaceReco->positions();
+        //Fixing the embedding
+        std::for_each(std::begin(positionsReco), std::end(positionsReco), [&](RealPoint &p){p=p*h;});
         
         std::vector<std::vector<SH3::SurfaceMesh::Vertex>> facesReco;
         for(auto face= 0 ; face < primalSurfaceReco->nbFaces(); ++face)
@@ -177,10 +181,11 @@ int main()
         auto psMesh = polyscope::registerSurfaceMesh("Reconstruction "+std::to_string(h), positionsReco, facesReco);
     };
     
-    exec_h(1.0);
-    exec_h(2.0);
-    exec_h(0.06);
-
+    resample_h(1.0);
+    resample_h(2.0); //downscaling
+    resample_h(0.5); //upscaling
+    //exec_h(0.06); //extreme upscaling, 2M vertices
+    
     // Set the callback function
     polyscope::state::userCallback = myCallback;
     polyscope::show();
