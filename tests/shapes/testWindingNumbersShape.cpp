@@ -35,6 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include <DGtal/shapes/WindingNumbersShape.h>
+#include <DGtal/shapes/GaussDigitizer.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -81,9 +82,31 @@ TEST_CASE( "Testing WindingNumbersShape" )
     RealPoint q= RealPoint(.2,.2,.2);
     auto ori2 = wnshape.orientation(q);
     REQUIRE( ori2 == DGtal::INSIDE);
-    
   }
-  
+    
+ SECTION("Tesing with the GaussDigitizer")
+ {
+     Eigen::MatrixXd points(4,3);
+     points << 0,0,0,
+               0,1,0,
+               1,0,0,
+               1,1,1;
+     Eigen::MatrixXd normals(4,3);
+     normals << 0,0,-1,
+                0,0,-1,
+                0,0,-1,
+                0,0,1;
+
+     WNShape wnshape(points,normals);
+     GaussDigitizer<Z3i::Space, WNShape> gauss;
+     gauss.attach(wnshape);
+     gauss.init(Z3i::RealPoint(0,0,0),Z3i::RealPoint(1.5,1.5,1.5), 0.5);
+     auto cpt=0;
+     for(auto p: gauss.getDomain())
+         if (gauss.orientation(p) == DGtal::INSIDE)
+             ++cpt;
+     REQUIRE( cpt == 8);
+ }
 };
 
 /** @ingroup Tests **/
