@@ -49,6 +49,7 @@ typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
 
 
+
 void myCallback()
 {
     
@@ -72,10 +73,8 @@ int main()
     //Need to convert the faces
     std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
     std::vector<RealPoint> positions;
-    
     for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
         faces.push_back(primalSurface->incidentVertices( face ));
-    
     //Recasting to vector of vertices
     positions = primalSurface->positions();
     
@@ -109,6 +108,8 @@ int main()
     }
     auto pc= polyscope::registerPointCloud("input boundary points", points);
     pc->addVectorQuantity("normals", normals);
+  
+    
     WindingNumbersShape<Z3i::Space> wnshape(points,normals);
     
     auto lower = binary_image->domain().lowerBound();
@@ -125,7 +126,7 @@ int main()
         trace.info() <<"Digital domain = "<<domain.size()<<" " <<domain<<std::endl;
         
         //Winding (batched)
-        size_t size = domain.size();//(size_t)std::ceil(extend[0] * extend[1] * extend[2] * std::pow(h, -3.0));
+        size_t size = domain.size();
         Eigen::MatrixXd queries(size,3);
         auto cpt=0;
         for(const auto &vox: domain)
@@ -137,8 +138,7 @@ int main()
         }
         trace.info()<<"Cpt= "<<cpt<<" size= "<<size<<std::endl;
         auto orientations = wnshape.orientationBatch(queries);
-        //polyscope::registerPointCloud("probes " + std::to_string(h),queries)->addScalarQuantity("orientation",orientations);
-        
+
         //Binary Predicate
         Z3i::DigitalSet voxels(domain);
         cpt=0;
@@ -184,7 +184,7 @@ int main()
     resample_h(1.0);
     resample_h(2.0); //downscaling
     resample_h(0.5); //upscaling
-    //exec_h(0.06); //extreme upscaling, 2M vertices
+    resample_h(0.07); //extreme upscaling, 2M vertices
     
     // Set the callback function
     polyscope::state::userCallback = myCallback;

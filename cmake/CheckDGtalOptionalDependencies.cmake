@@ -415,7 +415,6 @@ endif()
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 if(WITH_LIBIGL)
-
   if (WITH_CGAL)
     message(STATUS "DGtal/CGAL enabled.")
   else()
@@ -424,6 +423,5 @@ if(WITH_LIBIGL)
   include(cmake/deps/libigl.cmake)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
 endif()
-
 
 message(STATUS "-------------------------------------------------------------------------------")
