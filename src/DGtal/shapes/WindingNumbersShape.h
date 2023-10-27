@@ -44,7 +44,6 @@
 #include <igl/octree.h>
 #include <igl/knn.h>
 #include <igl/copyleft/cgal/point_areas.h>
-
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
@@ -55,9 +54,6 @@ namespace DGtal
    function from an oriented point cloud. The implicit function is given by the
    generalized winding number  of the oriented point cloud  @cite barill2018fast .
    We use the libIGL implementation.
-   
-   
-   
    
    @see testWindingNumberShape,  windingNumberShape
    
@@ -177,11 +173,15 @@ namespace DGtal
     ///Copy of the normals
     Eigen::MatrixXd myNormals;
     
-    //libIGL octree for fast queries
+    ///libIGL octree for fast queries data structure
     std::vector<std::vector<int > > myO_PI;
+    ///libIGL octree for fast queries data structure
     Eigen::MatrixXi myO_CH;
+    ///libIGL octree for fast queries data structure
     Eigen::MatrixXd myO_CN;
+    ///libIGL octree for fast queries data structure
     Eigen::VectorXd myO_W;
+    ///libIGL octree for fast queries data structure
     Eigen::VectorXd myPointAreas;
     
   };
