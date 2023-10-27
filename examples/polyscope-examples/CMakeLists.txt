@@ -43,7 +43,7 @@ set(POLYSCOPE_SRCS
 
 if(WITH_LIBIGL)
  set(POLYSCOPE_SRCS  
-      ${POLYSCOPE_SRCS} 1
+      ${POLYSCOPE_SRCS} 
       windingNumbersShape
  )
 endif()
