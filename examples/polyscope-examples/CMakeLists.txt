@@ -39,8 +39,15 @@ set(POLYSCOPE_SRCS
   exampleBunnyHead
   tangency-explorer
   tangency-reconstruction
-  windingNumbersShape
 )
+
+if(WITH_LIBIGL)
+ set(POLYSCOPE_SRCS  
+      ${POLYSCOPE_SRCS} 
+      windingNumbersShape
+ )
+endif()
+
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(MY_DEBUG_OPTIONS "-w")
