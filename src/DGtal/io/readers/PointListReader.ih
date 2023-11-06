@@ -79,7 +79,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       TPoint p;
       while ( !in_str.fail()&& (nbFound<TPoint::dimension)){
         std::operator>>(in_str,val);
-        if(!in_str.fail() && val != " "){
+        if(!in_str.fail()){
           std::istringstream valFromStr( val );
           typename TPoint::Component valConverted;
           valFromStr >> valConverted;
