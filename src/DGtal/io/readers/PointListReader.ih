@@ -88,7 +88,6 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
                 if (idx == aVectPosition.at(j) ){
                     nbFound++;
                     p[j]=valConverted;
-                    val="";
                 }
             }
           }
