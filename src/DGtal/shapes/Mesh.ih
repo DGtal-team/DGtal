@@ -448,7 +448,10 @@ void
 DGtal::Mesh<TPoint>::cleanMeshVertex(){
     typedef typename Mesh<TPoint>::Index Index;
     std::map<TPoint, Index> mapPtIndex;
-    Mesh<TPoint>::VertexStorage newVertexSet;
+    Index vInitSize = nbVertex();
+    std::vector<bool> vToRemove (vInitSize, true);
+    std::vector<Index> vTrans (vInitSize, 0);
+
     Index ptIndex = 0;
     for ( Index f = 0; f< nbFaces(); f++ )
     {
@@ -458,19 +461,38 @@ DGtal::Mesh<TPoint>::cleanMeshVertex(){
             auto ptFace = getVertex(face[i]);
             if (mapPtIndex.count(ptFace) == 0)
             {
-                mapPtIndex[ptFace]=ptIndex;
-                newVertexSet.push_back(ptFace);
-                face[i] = ptIndex;
+                mapPtIndex[ptFace]=face[i];
                 ptIndex++;
+                vToRemove[face[i]]=false;
+
             }
             else{
                 face[i] = mapPtIndex[ptFace];
             }
         }
     }
-   
-   clearVertices();
-   myVertexList=newVertexSet;
+   Index nErase = 0;
+   for (unsigned int i = 0; i < vInitSize; i++ )
+   {
+        if(vToRemove[i])
+        {
+           myVertexList.erase(myVertexList.begin()+((int)i-nErase));
+           nErase++;
+        }
+        else
+        {
+          vTrans[i] = i-nErase;
+        }
+    }
+    //Updating the face index
+    for ( Index f = 0; f< nbFaces(); f++ )
+    {
+        auto &face = getFace(f);
+        for (Index i = 0; i<face.size(); i++)
+        {
+           face[i] = vTrans[ face[i] ];
+        }
+    }
 }
 
 template<typename TPoint>
