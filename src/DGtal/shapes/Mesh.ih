@@ -443,6 +443,36 @@ DGtal::Mesh<TPoint>::clearVertices(){
   myVertexList.clear();
 }
 
+template <typename TPoint>
+void
+DGtal::Mesh<TPoint>::cleanMeshVertex(){
+    typedef typename Mesh<TPoint>::Index Index;
+    std::map<TPoint, Index> mapPtIndex;
+    Mesh<TPoint>::VertexStorage newVertexSet;
+    Index ptIndex = 0;
+    for ( Index f = 0; f< nbFaces(); f++ )
+    {
+        auto &face = getFace(f);
+        for (Index i = 0; i<face.size(); i++)
+        {
+            auto ptFace = getVertex(face[i]);
+            if (mapPtIndex.count(ptFace) == 0)
+            {
+                mapPtIndex[ptFace]=ptIndex;
+                newVertexSet.push_back(ptFace);
+                face[i] = ptIndex;
+                ptIndex++;
+            }
+            else{
+                face[i] = mapPtIndex[ptFace];
+            }
+        }
+    }
+   
+   clearVertices();
+   myVertexList=newVertexSet;
+}
+
 template<typename TPoint>
 inline
 void

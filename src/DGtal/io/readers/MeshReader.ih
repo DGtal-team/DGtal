@@ -203,7 +203,7 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
   }
   if (cleanVertexFace)
   {
-    MeshHelpers::cleanMeshVertex(aMesh);
+    aMesh.cleanMeshVertex();
   }  
   
   return true;
@@ -436,7 +436,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh,
     }
   }
   if (onlyFaceVertex && ! input.bad()){
-     MeshHelpers::cleanMeshVertex(mesh);
+     mesh.cleanMeshVertex();
   }
   return ( ! input.bad() );
 }

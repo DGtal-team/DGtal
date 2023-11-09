@@ -33,7 +33,6 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/shapes/Mesh.h"
-#include "DGtal/shapes/MeshHelpers.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -217,7 +216,7 @@ bool testMesh()
   aMeshClean.addVertex(pc3);aMeshClean.addVertex(pc0);   aMeshClean.addVertex(pc1);   aMeshClean.addVertex(pc2);
   
   aMeshClean.addTriangularFace(1,2,3);
-  MeshHelpers::cleanMeshVertex(aMeshClean);
+  aMeshClean.cleanMeshVertex();
 
   trace.info() << "nb vertex after clean: " << aMeshClean.nbVertex() ;
   bool okClean =  aMeshClean.nbVertex() == 3;
