@@ -471,11 +471,13 @@ namespace DGtal
      **/
     void clearVertices();
       
-      /// Clean the input mesh by removing vertex not associated to a
-      /// face and also unify duplicated vertex given at the same
-      /// position.
-   
-      void cleanMeshVertex();
+    /**
+     * Clean the input mesh by removing vertex not associated to a
+     * face and also unify duplicated vertex given at the same
+     * position.
+     **/
+     void cleanMeshVertex();
+
     /**
      * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
      * @param[in] aScale the scale factor.

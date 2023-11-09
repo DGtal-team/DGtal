@@ -451,8 +451,7 @@ DGtal::Mesh<TPoint>::cleanMeshVertex(){
     Index vInitSize = nbVertex();
     std::vector<bool> vToRemove (vInitSize, true);
     std::vector<Index> vTrans (vInitSize, 0);
-
-    Index ptIndex = 0;
+    
     for ( Index f = 0; f< nbFaces(); f++ )
     {
         auto &face = getFace(f);
@@ -462,9 +461,7 @@ DGtal::Mesh<TPoint>::cleanMeshVertex(){
             if (mapPtIndex.count(ptFace) == 0)
             {
                 mapPtIndex[ptFace]=face[i];
-                ptIndex++;
-                vToRemove[face[i]]=false;
-
+		vToRemove[face[i]]=false;
             }
             else{
                 face[i] = mapPtIndex[ptFace];

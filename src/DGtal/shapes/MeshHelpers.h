@@ -65,17 +65,6 @@ namespace DGtal
     // ----------------------- Static services ------------------------------
   public:
     
-
-    /// Clean the input mesh by removing vertex not associated to a
-    /// face and also unify duplicated vertex given at the same
-    /// position.
-    ///
-    /// @tparam Point the type for points.
-    /// @param[out] mesh the input mesh.
-  
-    template <typename Point>
-    static void
-    cleanMeshVertex(Mesh<Point>& mesh);
     
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
