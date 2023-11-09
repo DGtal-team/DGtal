@@ -461,15 +461,16 @@ DGtal::Mesh<TPoint>::cleanMeshVertex(){
             if (mapPtIndex.count(ptFace) == 0)
             {
                 mapPtIndex[ptFace]=face[i];
-		vToRemove[face[i]]=false;
+                vToRemove[face[i]]=false;
             }
-            else{
+            else
+            {
                 face[i] = mapPtIndex[ptFace];
             }
         }
     }
    Index nErase = 0;
-   for (unsigned int i = 0; i < vInitSize; i++ )
+   for (Index i = 0; i < vInitSize; i++ )
    {
         if(vToRemove[i])
         {
