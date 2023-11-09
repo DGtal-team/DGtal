@@ -179,6 +179,10 @@
     new shift method to avoid recomputing orientation plane.
     (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))
 
+- *Shapes package*
+  - Add vertex cleaning method in Mesh.
+   (Bertrand Kerautret, [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
+
 - *Build*
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,
     [#1609](https://github.com/DGtal-team/DGtal/pull/1609))
