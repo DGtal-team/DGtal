@@ -40,6 +40,38 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Point>
+void
+DGtal::MeshHelpers::cleanMeshVertex(Mesh<Point>& mesh){
+    typedef typename Mesh<Point>::Index Index;
+    std::map<Point, Index> mapPtIndex;
+    std::vector<Point> newVertexSet;
+    Index ptIndex = 0;
+    for ( Index f = 0; f< mesh.nbFaces(); f++ )
+    {
+        auto &face = mesh.getFace(f);
+        for (Index i = 0; i<face.size(); i++)
+        {
+            auto ptFace = mesh.getVertex(face[i]);
+            if (mapPtIndex.count(ptFace) == 0)
+            {
+                mapPtIndex[ptFace]=ptIndex;
+                newVertexSet.push_back(ptFace);
+                face[i] = ptIndex;
+                ptIndex++;
+            }
+            else{
+                face[i] = mapPtIndex[ptFace];
+            }
+        }
+    }
+   mesh.clearVertices();
+   for(auto const &v : newVertexSet){
+        mesh.addVertex(v);
+   }
+}
+
+
+template <typename Point>
 inline
 bool
 DGtal::MeshHelpers::mesh2TriangulatedSurface

@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/shapes/MeshHelpers.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -205,10 +206,29 @@ bool testMesh()
   aMesh4.removeFaces(f);
   bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
   trace.info() << (okRemoveFace ? "[face remove ok]":"[face remove fail]" ) << std::endl;
-
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
-       okSubDivide && okQuadToTrans && okRemoveFace;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing mesh cleaning  ..." );
+  Mesh<RealPoint> aMeshClean;
+  RealPoint pc0 (0,0);
+  RealPoint pc1 (1,0);
+  RealPoint pc2 (1,1);
+  RealPoint pc3 (0,1);
+  aMeshClean.addVertex(pc3);aMeshClean.addVertex(pc0);   aMeshClean.addVertex(pc1);   aMeshClean.addVertex(pc2);
+  
+  aMeshClean.addTriangularFace(1,2,3);
+  MeshHelpers::cleanMeshVertex(aMeshClean);
+
+  trace.info() << "nb vertex after clean: " << aMeshClean.nbVertex() ;
+  bool okClean =  aMeshClean.nbVertex() == 3;
+  trace.info() << "(should be 3) "<< (okClean? "[ok]": "[error]") << std::endl;
+  trace.endBlock();
+
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
+       okSubDivide && okQuadToTrans && okRemoveFace && okClean;
+
+
   return ok;
 
 }

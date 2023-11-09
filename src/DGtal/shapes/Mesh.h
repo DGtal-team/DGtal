@@ -465,6 +465,12 @@ namespace DGtal
      **/
     void clearFaces();
 
+    
+    /**
+     * Clear all vertices of the mesh.
+     **/
+    void clearVertices();
+
     /**
      * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
      * @param[in] aScale the scale factor.

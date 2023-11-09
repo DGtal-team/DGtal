@@ -54,7 +54,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename, 
 					 DGtal::Mesh<TPoint> & aMesh, 
-					 bool invertVertexOrder)
+					 bool invertVertexOrder, bool cleanVertexFace)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -199,10 +199,12 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       aMesh.addFace(aFace);
     }
     getline(infile, str);
-    str_in = std::istringstream ( str );
-    
-    
+    str_in = std::istringstream ( str );    
   }
+  if (cleanVertexFace)
+  {
+    MeshHelpers::cleanMeshVertex(aMesh);
+  }  
   
   return true;
 }
@@ -312,7 +314,8 @@ template <typename TPoint>
 inline
 bool
 DGtal::MeshReader<TPoint>::
-importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
+importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh,
+	       bool onlyFaceVertex )
 {
   typedef typename Mesh<TPoint>::Index Index;
   std::vector<TPoint>  vertices;
@@ -432,6 +435,9 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       mesh.setFaceColor(i, colors[i]);
     }
   }
+  if (onlyFaceVertex && ! input.bad()){
+     MeshHelpers::cleanMeshVertex(mesh);
+  }
   return ( ! input.bad() );
 }
 
@@ -455,7 +461,6 @@ DGtal::operator<< (   Mesh<TPoint> & mesh, const std::string &filename )
     DGtal::MeshReader< TPoint >::importOBJFile(filename, mesh);
     return true;
   }
-  
   return false;
 }
 

@@ -435,6 +435,14 @@ DGtal::Mesh<TPoint>::clearFaces(){
   myFaceList.clear();
 }
 
+
+template<typename TPoint>
+inline
+void
+DGtal::Mesh<TPoint>::clearVertices(){
+  myVertexList.clear();
+}
+
 template<typename TPoint>
 inline
 void
