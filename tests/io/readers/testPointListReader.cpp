@@ -91,7 +91,7 @@ bool testPointListReader()
     }
     trace.info()<< std::endl;
   }
-  trace.beginBlock ( "Testing reading spectial 1 dimension elements (several by lines)..." );
+  trace.beginBlock ( "Testing reading special 1 dimension elements (polygon of 1 dimension point)..." );
 
   typedef  PointVector<1, int> Point1D;
   std::vector< std::vector< Point1D > > vectPt1D = PointListReader< Point1D >::getPolygonsFromFile(filenamePoly);
