@@ -76,6 +76,8 @@
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
   - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
     (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
+  - Fix of the `PointListReader::getPolygonsFromInputStream` (Xun Gong,
+    [#1708](https://github.com/DGtal-team/DGtal/pull/1708))
 
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
