@@ -54,7 +54,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename, 
 					 DGtal::Mesh<TPoint> & aMesh, 
-					 bool invertVertexOrder, bool cleanVertexFace)
+					 bool invertVertexOrder, bool onlyFaceVertex)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -201,9 +201,9 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     getline(infile, str);
     str_in = std::istringstream ( str );    
   }
-  if (cleanVertexFace)
+  if (onlyFaceVertex)
   {
-    aMesh.cleanMeshVertex();
+    aMesh.removeIsolatedVertices();
   }  
   
   return true;
@@ -436,7 +436,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh,
     }
   }
   if (onlyFaceVertex && ! input.bad()){
-     mesh.cleanMeshVertex();
+     mesh.removeIsolatedVertices();;
   }
   return ( ! input.bad() );
 }
