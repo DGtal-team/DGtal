@@ -28,6 +28,8 @@
 - *Shapes*
   - Add flips to SurfaceMesh data structure
     (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+  - Add method to remove isolated vertices in Mesh,
+    (Bertrand Kerautret, [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
 	
 	
 - *Github*
@@ -178,10 +180,6 @@
   - New constructor in Point2DEmbedderIn3D to explicitly orient the image plane and
     new shift method to avoid recomputing orientation plane.
     (Bertrand Kerautret [#1619](https://github.com/DGtal-team/DGtal/pull/1619))
-
-- *Shapes package*
-  - Add vertex cleaning method in Mesh.
-   (Bertrand Kerautret, [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
 
 - *Build*
   - New cmake targets to collect cmake, doxygen and markdown files (David Coeurjolly,

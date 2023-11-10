@@ -213,19 +213,24 @@ bool testMesh()
   RealPoint pc1 (1,0);
   RealPoint pc2 (1,1);
   RealPoint pc3 (0,1);
+  RealPoint pc4 (1,-1);
   aMeshClean.addVertex(pc3);aMeshClean.addVertex(pc0);   aMeshClean.addVertex(pc1);   aMeshClean.addVertex(pc2);
+  aMeshClean.addVertex(pc4);
   
   aMeshClean.addTriangularFace(1,2,3);
-  aMeshClean.cleanMeshVertex();
+  aMeshClean.addTriangularFace(4,1,2);
+  aMeshClean.removeIsolatedVertices();
 
   trace.info() << "nb vertex after clean: " << aMeshClean.nbVertex() ;
-  bool okClean =  aMeshClean.nbVertex() == 3;
-  trace.info() << "(should be 3) "<< (okClean? "[ok]": "[error]") << std::endl;
+  bool okClean =  aMeshClean.nbVertex() == 4;
+  trace.info() << "get firt vertex index of second face : " << aMeshClean.nbVertex() ;
+  bool okClean2 =  aMeshClean.getFace(1)[0] == 3;
+  trace.info() << "(should be 3) "<< (okClean2? "[ok]": "[error]") << std::endl;
   trace.endBlock();
 
   
   ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
-       okSubDivide && okQuadToTrans && okRemoveFace && okClean;
+       okSubDivide && okQuadToTrans && okRemoveFace && okClean && okClean2;
 
 
   return ok;

@@ -221,6 +221,7 @@ inline
 void
 DGtal::Mesh<TPoint>::removeFaces(const std::vector<Index> &facesIndex){
   DGtal::Mesh<TPoint> newMesh(true);
+  
   std::vector<unsigned int> indexVertexFaceCard(nbVertex());
   std::vector<bool> indexFaceOK(nbFaces());
   std::fill(indexVertexFaceCard.begin(), indexVertexFaceCard.end(), 0);
@@ -446,52 +447,42 @@ DGtal::Mesh<TPoint>::clearVertices(){
 
 template <typename TPoint>
 void
-DGtal::Mesh<TPoint>::cleanMeshVertex(){
-  typedef typename Mesh<TPoint>::Index MIndex;
-  std::map<TPoint, MIndex> mapPtIndex;
-  Index vInitSize = nbVertex();
-  std::vector<bool> vToRemove (vInitSize, true);
-  std::vector<Index> vTrans (vInitSize, 0);
-    
-  for ( MIndex f = 0; f< nbFaces(); f++ )
-  {
-    auto &face = getFace(f);
-    for (MIndex i = 0; i<face.size(); i++)
+DGtal::Mesh<TPoint>::removeIsolatedVertices(){
+    typedef typename Mesh<TPoint>::Index MIndex;
+    DGtal::Mesh<TPoint>::VertexStorage vSt;
+    std::vector<bool> vertexUsed (nbVertex(), false);
+    for ( MIndex f = 0; f< nbFaces(); f++ )
     {
-      auto ptFace = getVertex(face[i]);
-      if (mapPtIndex.count(ptFace) == 0)
-      {
-        mapPtIndex[ptFace]=face[i];
-        vToRemove[face[i]]=false;
-      }
-      else
-      {
-        face[i] = mapPtIndex[ptFace];
-      }
+        auto face = getFace(f);
+        for (MIndex i = 0; i<face.size(); i++)
+        {
+            vertexUsed[face[i]] = true;
+        }
     }
-  }
-  MIndex nErase = 0;
-  for (MIndex i = 0; i < vInitSize; i++ )
-  {
-    if(vToRemove[i])
+    std::vector<int> translateIndexId;
+    int currentIndex = 0;
+    int nbV = nbVertex();
+    for(MIndex i = 0; i < nbV; i++ )
     {
-      myVertexList.erase(myVertexList.begin()+((int)i-nErase));
-      nErase++;
+        if (vertexUsed[i])
+        {
+            translateIndexId.push_back(currentIndex);
+            currentIndex++;
+        }
+        else
+        {
+            translateIndexId.push_back(0);
+            myVertexList.erase(myVertexList.begin()+currentIndex);
+        }
     }
-    else
+    for ( MIndex f = 0; f< nbFaces(); f++ )
     {
-      vTrans[i] = i-nErase;
+        auto &face = getFace(f);
+        for (MIndex i = 0; i<face.size(); i++)
+        {
+            face[i]=translateIndexId[face[i]];
+        }
     }
-  }
-  //Updating the face index
-  for ( MIndex f = 0; f< nbFaces(); f++ )
-  {
-    auto &face = getFace(f);
-    for (MIndex i = 0; i<face.size(); i++)
-    {
-      face[i] = vTrans[ face[i] ];
-    }
-  }
 }
 
 template<typename TPoint>
