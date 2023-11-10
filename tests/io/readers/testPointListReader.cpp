@@ -91,9 +91,29 @@ bool testPointListReader()
     }
     trace.info()<< std::endl;
   }
-  nbok += (vectPolygons.at(0).size()==2 && vectPolygons.at(1).size()==2 && vectPolygons.at(0).at(0)==Z3i::Point(1,2,3)
-           && vectPolygons.at(0).at(1)==Z3i::Point(4,5,6) && vectPolygons.at(1).at(0)==Z3i::Point(0,0,10)
-           && vectPolygons.at(1).at(1)==Z3i::Point(0,5,5)) ? 1 : 0; 
+  trace.beginBlock ( "Testing reading special 1 dimension elements (polygon of 1 dimension point)..." );
+
+  typedef  PointVector<1, int> Point1D;
+  std::vector< std::vector< Point1D > > vectPt1D = PointListReader< Point1D >::getPolygonsFromFile(filenamePoly);
+  for(unsigned int i=0; i< vectPt1D.size(); i++){
+    std::vector< Point1D > aPolygon  = vectPt1D.at(i);
+    trace.info() << "Polygon " << i << ": " ;
+    for(unsigned int j =0; j <aPolygon.size(); j++){
+      trace.info()<< "Point :" << aPolygon.at(j); 
+    }
+    trace.info()<< std::endl;
+  }
+  Point1D p1, p2, p3, p4, p5, p6; p1[0]=1; p2[0]=2; p3[0]=3; p4[0]=4; p5[0]=5; p6[0]=6;
+  Point1D p7, p8, p9, p10, p11, p12; p7[0]=0; p8[0]=0; p9[0]=10; p10[0]=0; p11[0]=5; p12[0]=5;
+
+    nbok += (vectPt1D.at(0).size()==6 && vectPt1D.at(1).size()==6 && vectPt1D.at(0).at(0) == p1 &&
+          vectPt1D.at(0).at(1)==p2 && vectPt1D.at(0).at(2) == p3 &&  vectPt1D.at(0).at(3) == p4
+       && vectPt1D.at(0).at(4)==p5 && vectPt1D.at(0).at(5)==p6
+       && vectPt1D.at(1).at(0)==p7
+       && vectPt1D.at(1).at(1)==p8 && vectPt1D.at(1).at(2)==p9 &&  vectPt1D.at(1).at(3)==p10
+       && vectPt1D.at(1).at(4)==p11 && vectPt1D.at(1).at(5)==p12);
+
+
   nb++;
   trace.endBlock();
 
