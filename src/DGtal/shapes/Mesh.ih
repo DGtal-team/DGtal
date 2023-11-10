@@ -460,8 +460,8 @@ DGtal::Mesh<TPoint>::removeIsolatedVertices(){
         }
     }
     std::vector<int> translateIndexId;
-    int currentIndex = 0;
-    int nbV = nbVertex();
+    MIndex currentIndex = 0;
+    MIndex nbV = nbVertex();
     for(MIndex i = 0; i < nbV; i++ )
     {
         if (vertexUsed[i])
