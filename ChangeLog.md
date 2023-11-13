@@ -42,6 +42,8 @@
 
 ## Bug fixes
 - *General*
+  - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
+    [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
   - For now, removing Cairo deps install on windows (6hours long build 
     with conan in the windows debug mode). (David Coeurjolly, 
     [#1705](https://github.com/DGtal-team/DGtal/pull/1705))
@@ -77,6 +79,8 @@
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
   - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
     (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
+  - Fix of the `PointListReader::getPolygonsFromInputStream` (Xun Gong,
+    [#1708](https://github.com/DGtal-team/DGtal/pull/1708))
 
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
