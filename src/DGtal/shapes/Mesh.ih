@@ -459,7 +459,7 @@ DGtal::Mesh<TPoint>::removeIsolatedVertices(){
             vertexUsed[face[i]] = true;
         }
     }
-    std::vector<int> translateIndexId;
+    std::vector<MIndex> translateIndexId;
     MIndex currentIndex = 0;
     MIndex nbV = nbVertex();
     for(MIndex i = 0; i < nbV; i++ )
