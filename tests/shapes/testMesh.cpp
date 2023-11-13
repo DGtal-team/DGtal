@@ -149,7 +149,7 @@ bool testMesh()
   trace.endBlock();
 
   trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
-  aMesh.changeScale(2);
+  aMesh.reScale(2);
   std::pair<Point, Point> bb = aMesh.getBoundingBox();
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
   trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;

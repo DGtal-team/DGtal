@@ -488,7 +488,7 @@ DGtal::Mesh<TPoint>::removeIsolatedVertices(){
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::changeScale(const typename TPoint::Component aScale){
+DGtal::Mesh<TPoint>::rescale(const typename TPoint::Component aScale){
   for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
   {
     (*it) *= aScale;
