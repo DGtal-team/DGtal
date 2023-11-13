@@ -423,6 +423,8 @@ if(WITH_LIBIGL)
   include(cmake/deps/libigl.cmake)
   target_compile_definitions(DGtal PUBLIC -DWITH_LIBIGL)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
+  set(LIBIGL_FOUND_DGTAL 1)
+
 endif()
 
 message(STATUS "-------------------------------------------------------------------------------")
