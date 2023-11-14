@@ -1179,7 +1179,7 @@ GENERATE_TREEVIEW      = YES # required!
 DISABLE_INDEX          = NO
 FULL_SIDEBAR           = NO
 HTML_EXTRA_STYLESHEET  =      @top_srcdir@/doc/doxygen-awesome-css-main/doxygen-awesome.css \
-                        @top_srcdir@/doc/ddoxygen-awesome-css-main/oxygen-awesome-sidebar-only.css
+                        @top_srcdir@/doc/doxygen-awesome-css-main/oxygen-awesome-sidebar-only.css
 HTML_COLORSTYLE        = LIGHT # required with Doxygen >= 1.9.5
 
 #@top_srcdir@/doc/modern-doxygen-blue.css \
