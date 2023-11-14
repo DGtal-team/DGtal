@@ -85,10 +85,10 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
           valFromStr >> valConverted;
           if(!valFromStr.fail()){
             for(unsigned int j=0; j< TPoint::dimension; j++){
-              if (idx == aVectPosition.at(j) ){
-                nbFound++;
-                p[j]=valConverted;
-              }
+                if (idx == aVectPosition.at(j) ){
+                    nbFound++;
+                    p[j]=valConverted;
+                }
             }
           }
         }
@@ -132,6 +132,7 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
       TPoint p;
       unsigned int index =0;
       while ( in_str.good() ){
+        valStr="";
         std::operator>>(in_str, valStr);
         std::istringstream word_str( valStr );
         word_str >> p[index];
