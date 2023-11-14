@@ -10,6 +10,8 @@
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
     (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
+  - Better documentation style using doxygen-awesome.css. (David Coeurjolly,
+  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 - *Geometry*
   - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
