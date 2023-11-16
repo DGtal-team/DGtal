@@ -119,7 +119,7 @@ jobs:
           token: ${{ secrets.DEPLOYACTION }}
           repository-name: DGtal-team/doc-pr
           folder: doc-pr
-          branch: master
+          branch: main
           single-commit: true
           clean: true
 
