@@ -465,11 +465,23 @@ namespace DGtal
      **/
     void clearFaces();
 
+    
+    /**
+     * Clear all vertices of the mesh.
+     **/
+    void clearVertices();
+      
+    /**
+     * Removed isolated vertices of input mesh that are not associated to a
+     * face.
+     **/
+     void removeIsolatedVertices();
+
     /**
      * Change the scale of the mesh (i.e all vertex coordinates are multiplied by a given factor aScale).
      * @param[in] aScale the scale factor.
      **/
-    void changeScale(const typename TPoint::Component aScale);
+    void rescale(const typename TPoint::Component aScale);
 
     /**
      * SubDivide triangular mesh if triangle area is larger than the given parameter.

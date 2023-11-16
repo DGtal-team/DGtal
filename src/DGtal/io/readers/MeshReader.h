@@ -104,14 +104,16 @@ public:
  /** 
   * Main method to import OFF meshes file (Geomview Object File Format) 
   * 
-  * @param filename the file name to import.
-  * @param aMesh (return) the mesh object to be imported.
-  * @param invertVertexOrder used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @param[in] filename the file name to import.
+  * @param[out] aMesh the mesh object to be imported.
+  * @param[in] invertVertexOrder used to invert (default value=false) the order of imported points (important for normal
+  * @param[in] onlyFaceVertex flag used to import only vertces associated to a face.
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
   static  bool  importOFFFile(const std::string & filename, 
-			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false);
+			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false,
+			      bool onlyFaceVertex=false);
   
 
   
@@ -134,11 +136,12 @@ public:
   ///
   /// @param[in] filename the input filename of the OBJ file to be read.
   /// @param[out] aMesh the output  mesh.
-  ///
+  /// @param[in] onlyFaceVertex flag used to import only vertces associated to a face.
+  /// 
   /// @return 'true' if both reading the input stream was ok and the
   /// created mesh is ok.
   static
-  bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh );
+  bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh, bool onlyFaceVertex=false );
 
   
   /// Checks that each index in \a indices is unique.

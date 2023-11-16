@@ -64,6 +64,8 @@ namespace DGtal
   {
     // ----------------------- Static services ------------------------------
   public:
+    
+    
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
     /// only triangles, so polygonal faces (0,1,2,3,4,...) of the
