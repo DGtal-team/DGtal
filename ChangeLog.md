@@ -33,6 +33,9 @@
 - *Shapes*
   - Add flips to SurfaceMesh data structure
     (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+  - Add method to remove isolated vertices in Mesh, improve obj
+    material reading from potential obsolete path. (Bertrand Kerautret,
+    [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
 	
 	
 - *Github*
