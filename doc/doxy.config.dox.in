@@ -1653,6 +1653,13 @@ DISABLE_INDEX          = NO
 
 GENERATE_TREEVIEW      = NO
 
+GENERATE_TREEVIEW      = NO #YES # required!
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_EXTRA_STYLESHEET  =      @top_srcdir@/doc/doxygen-awesome-css-main/doxygen-awesome.css 
+HTML_COLORSTYLE        = LIGHT # required with Doxygen >= 1.9.5
+
+
 # When both GENERATE_TREEVIEW and DISABLE_INDEX are set to YES, then the
 # FULL_SIDEBAR option determines if the side bar is limited to only the treeview
 # area (value NO) or if it should extend to the full height of the window (value
