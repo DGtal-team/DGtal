@@ -70,6 +70,8 @@
     [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
   - Cleanup of the cmake script for dependency discovery (David Coeurjolly,
     [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
+  - Cleaning up unnecessary ModuleSRC.cmake files (David Coeurjolly
+    [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
