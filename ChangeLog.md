@@ -63,6 +63,8 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
     [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
+  - Cleaning up unnecessary ModuleSRC.cmake files (David Coeurjolly
+    [#16xx](https://github.com/DGtal-team/DGtal/pull/16xx))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
