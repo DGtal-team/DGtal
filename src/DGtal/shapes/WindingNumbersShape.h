@@ -39,6 +39,9 @@
 #include <vector>
 #include <algorithm>
 #include <DGtal/base/Common.h>
+#include <DGtal/base/CountedConstPtrOrConstPtr.h>
+#include <DGtal/base/ConstAlias.h>
+
 #include <DGtal/shapes/CEuclideanOrientedShape.h>
 #include <igl/fast_winding_number.h>
 #include <igl/octree.h>
@@ -50,7 +53,7 @@ namespace DGtal
   /**
    Description of template class 'WindingNumbersShape'
    
-   \brief Aim: model of a CEuclideanShape from an implicit
+   \brief Aim: model of a CEuclideanOrientedShape from an implicit
    function from an oriented point cloud. The implicit function is given by the
    generalized winding number  of the oriented point cloud  @cite barill2018fast .
    We use the libIGL implementation.
@@ -76,19 +79,20 @@ namespace DGtal
     ///
     /// @param points a "nx3" matrix with the sample coordinates.
     /// @param normals a "nx3" matrix for the normal vectors.
-    WindingNumbersShape(const Eigen::MatrixXd &points, const Eigen::MatrixXd &normals)
+    WindingNumbersShape(ConstAlias<Eigen::MatrixXd> points, 
+                        ConstAlias<Eigen::MatrixXd> normals)
     {
       myPoints  = points;
       myNormals = normals;
-      myPointAreas =Eigen::VectorXd::Ones(myPoints.rows());
+      myPointAreas = Eigen::VectorXd::Ones(myPoints->rows());
       // Build octree, from libIGL tutorials
-      igl::octree(myPoints,myO_PI,myO_CH,myO_CN,myO_W);
-      if (points.rows()> 20)
+      igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
+      if (points->rows()> 20)
       {
         Eigen::MatrixXi I;
-        igl::knn(myPoints,(int)points.rows(),myO_PI,myO_CH,myO_CN,myO_W,I);
+        igl::knn(*myPoints,(int)points->rows(),myO_PI,myO_CH,myO_CN,myO_W,I);
         // CGAL is only used to help get point areas
-        igl::copyleft::cgal::point_areas(myPoints,I,myNormals,myPointAreas);
+        igl::copyleft::cgal::point_areas(*myPoints,I,*myNormals,myPointAreas);
       }
       else
       {
@@ -102,20 +106,20 @@ namespace DGtal
     /// @param points a "nx3" matrix with the sample coordinates.
     /// @param normals a "nx3" matrix for the normal vectors.
     /// @param areas a "n" vector with the @a area @a of each point.
-    WindingNumbersShape(const Eigen::MatrixXd &points,
-                        const Eigen::MatrixXd &normals,
+    WindingNumbersShape(ConstAlias<Eigen::MatrixXd> points,
+                        ConstAlias<Eigen::MatrixXd> normals,
                         const Eigen::VectorXd &areas)
     {
       myPoints  = points;
       myNormals = normals;
       myPointAreas = areas;
-      igl::octree(myPoints,myO_PI,myO_CH,myO_CN,myO_W);
+      igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
     }
     
     
     /// Set the @a area @a map for each point.
     /// @param areas a Eigen vector of estimated area for each input point.
-    void setPointAreas(const Eigen::VectorXd &areas)
+    void setPointAreas(ConstAlias<Eigen::VectorXd> areas)
     {
       myPointAreas = areas;
     }
@@ -151,8 +155,10 @@ namespace DGtal
       Eigen::MatrixXd O_CM;
       Eigen::VectorXd O_R;
       Eigen::MatrixXd O_EC;
-      igl::fast_winding_number(myPoints,myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
-      igl::fast_winding_number(myPoints,myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
+      
+      //Checking if the areas
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
       
       //Reformating the output
       for(auto i=0u; i < queries.rows(); ++i)
@@ -168,10 +174,13 @@ namespace DGtal
       return results;
     }
     
-    ///Copy of the points
-    Eigen::MatrixXd myPoints;
-    ///Copy of the normals
-    Eigen::MatrixXd myNormals;
+    ///Const alias to the points
+    CountedConstPtrOrConstPtr<Eigen::MatrixXd> myPoints;
+    ///Const alias to the normals
+    CountedConstPtrOrConstPtr<Eigen::MatrixXd> myNormals;
+    ///Const alias to point area measure
+    Eigen::VectorXd myPointAreas;
+    
     
     ///libIGL octree for fast queries data structure
     std::vector<std::vector<int > > myO_PI;
@@ -181,8 +190,7 @@ namespace DGtal
     Eigen::MatrixXd myO_CN;
     ///libIGL octree for fast queries data structure
     Eigen::VectorXd myO_W;
-    ///libIGL octree for fast queries data structure
-    Eigen::VectorXd myPointAreas;
+   
     
   };
 }

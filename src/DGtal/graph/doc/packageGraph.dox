@@ -50,12 +50,12 @@ elaborate graph algorithm, a possible option is to use wrappers to
 boost::graph.
 
 @b Modules
- - \ref moduleGraphDefinitions (Jacques-Olivier Lachaud, David Coeurjolly)
- - \ref moduleBoostGraphWrapping (Jacques-Olivier Lachaud)
+ - \subpage moduleGraphDefinitions (Jacques-Olivier Lachaud, David Coeurjolly)
+ - \subpage moduleBoostGraphWrapping (Jacques-Olivier Lachaud)
 
 
 @b Package @b Concepts @b Overview
- - \ref packageGraphConcepts
+ - \subpage packageGraphConcepts
 
 @b Related @b documentation @b pages
 

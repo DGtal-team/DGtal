@@ -58,9 +58,9 @@ void myCallback()
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-  params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 3.0);
+  params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 4.0);
   
-  std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
+  std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
   auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
@@ -112,8 +112,11 @@ int main()
   auto pc= polyscope::registerPointCloud("input boundary points", points);
   pc->addVectorQuantity("normals", normals);
   
-  
+  //Winding number shape
   WindingNumbersShape<Z3i::Space> wnshape(points,normals);
+  Eigen::VectorXd areas = Eigen::VectorXd::Ones(points.rows());
+ // areas = 1.0/(double)points.rows() * areas;
+  wnshape.setPointAreas(areas);
   
   auto lower = binary_image->domain().lowerBound();
   auto upper = binary_image->domain().upperBound();
@@ -186,7 +189,8 @@ int main()
   resample_h(1.0);
   resample_h(2.0); //downscaling
   resample_h(0.5); //upscaling
-                   //resample_h(0.07); //extreme upscaling, 2M vertices
+  resample_h(0.2); //upscaling
+  //resample_h(0.07); //extreme upscaling, 2M vertices
   
   // Set the callback function
   polyscope::state::userCallback = myCallback;

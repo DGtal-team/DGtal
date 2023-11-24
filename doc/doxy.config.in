@@ -1173,7 +1173,7 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO #YES # required!
+GENERATE_TREEVIEW      = YES #NO #YES # required!
 DISABLE_INDEX          = NO
 FULL_SIDEBAR           = NO
 HTML_EXTRA_STYLESHEET  =      @top_srcdir@/doc/doxygen-awesome-css-main/doxygen-awesome.css 
