@@ -60,7 +60,7 @@ int main()
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 4.0);
   
-  std::string filename = examplesPath + std::string("/samples/bunny-64.vol");
+  std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
   auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
@@ -114,9 +114,9 @@ int main()
   
   //Winding number shape
   WindingNumbersShape<Z3i::Space> wnshape(points,normals);
-  Eigen::VectorXd areas = Eigen::VectorXd::Ones(points.rows());
+ // Eigen::VectorXd areas = Eigen::VectorXd::Ones(points.rows());
  // areas = 1.0/(double)points.rows() * areas;
-  wnshape.setPointAreas(areas);
+ // wnshape.setPointAreas(areas);
   
   auto lower = binary_image->domain().lowerBound();
   auto upper = binary_image->domain().upperBound();

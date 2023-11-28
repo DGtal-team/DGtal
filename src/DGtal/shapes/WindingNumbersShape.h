@@ -93,6 +93,7 @@ namespace DGtal
         igl::knn(*myPoints,(int)points->rows(),myO_PI,myO_CH,myO_CN,myO_W,I);
         // CGAL is only used to help get point areas
         igl::copyleft::cgal::point_areas(*myPoints,I,*myNormals,myPointAreas);
+        trace.info()<<" Min/max point area : "<<myPointAreas.minCoeff()<<" -- "<<myPointAreas.maxCoeff()<<std::endl;
       }
       else
       {
