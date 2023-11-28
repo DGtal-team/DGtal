@@ -87,7 +87,7 @@
     (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
 - *DEC*
   - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
-    [#xxxx](https://github.com/DGtal-team/DGtal/pull/1675))
+    [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
 
 # DGtal 1.3
 
