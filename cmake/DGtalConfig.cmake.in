@@ -9,6 +9,7 @@
 set(DGTAL_VERSION "@DGTAL_VERSION@")
 
 include(CMakeFindDependencyMacro)
+include(CPM)
 
 get_filename_component(DGTAL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DGTAL_CMAKE_DIR}/Modules")
