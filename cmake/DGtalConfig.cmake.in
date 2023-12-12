@@ -13,6 +13,9 @@ include(CMakeFindDependencyMacro)
 get_filename_component(DGTAL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${DGTAL_CMAKE_DIR}/Modules")
 
+include(CPM)
+
+
 #### Required dependencies  ####
 find_dependency(Boost REQUIRED
   @Boost_HINTS@
