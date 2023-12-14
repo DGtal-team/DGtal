@@ -25,6 +25,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <fstream>      // std::ofstream
 
 #include <DGtal/base/Common.h>
 #include <DGtal/helpers/StdDefs.h>
@@ -96,7 +97,7 @@ int main()
   //
   Eigen::MatrixXd points(surfels.size(),3);
   Eigen::MatrixXd normals(surfels.size(),3);
-  
+  std::ofstream ofs ("bunny.pts", std::ofstream::out);
   for(auto i=0; i< surfels.size(); ++i)
   {
     auto p = embedder(surfels[i]);
@@ -108,7 +109,9 @@ int main()
     normals(i,1) = n(1);
     normals(i,2) = n(2);
     
+    ofs<<p(0)<<" "<<p(1)<<" "<<p(2)<<" "<<n(0)<<" "<< n(1)<<" "<<n(2)<<std::endl;
   }
+  ofs.close();
   auto pc= polyscope::registerPointCloud("input boundary points", points);
   pc->addVectorQuantity("normals", normals);
   
