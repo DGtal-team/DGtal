@@ -72,6 +72,9 @@
     [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
   - Cleaning up unnecessary ModuleSRC.cmake files (David Coeurjolly
     [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
+  - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
+    [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
+
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
