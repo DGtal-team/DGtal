@@ -38,7 +38,7 @@ From @cite barill2018fast, the implicit function for a point cloud @f$ \{(p_i,n_
 @f]
 where @f$ a_i@f$ is some area contribution of the point @f$ p_i@f$ to the surface (computed from the projection of the k-nearest neighbors to @f$ p_i@f$ onto the 
 tangent plane at @f$ p_i @f$).
-By thresholding the winding function with some values in @f$[0,1]@f$, we can define a iso-surface that approximate the exterior enveloppe of the shape
+By thresholding the winding function with some values in @f$[0,1]@f$, we can define an iso-surface that approximates the exterior envelope of the shape
 defined by the oriented point cloud. For fast computations, we rely on the [libigl](https://libigl.github.io) of the generalized winding numbers.
 
 
