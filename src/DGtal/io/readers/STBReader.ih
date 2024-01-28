@@ -28,6 +28,7 @@
 
 #ifndef NO_ADD_STBIMAGE_IMPLEMENT //To avoid duplicated linking errors (like LNK2005 in MSVC)
 #pragma once
+#define STB_IMAGE_STATIC  //issue #1714
 #define STB_IMAGE_IMPLEMENTATION
 #endif //NO_ADD_STBIMAGE_IMPLEMENT
 #pragma GCC diagnostic push
