@@ -50,6 +50,8 @@
 
 ## Bug fixes
 - *General*
+  - Missing `boost/next_prior.hpp` includes in ReverseIterator, Melkman and Convex
+    Hull files (David Coeurjolly, [#1716](https://github.com/DGtal-team/DGtal/pull/1716))
   - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
     [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
   - For now, removing Cairo deps install on windows (6hours long build 
