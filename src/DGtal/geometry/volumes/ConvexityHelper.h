@@ -387,13 +387,19 @@ namespace DGtal
     /// @param b any point distinct from \a c and \a a.
     /// @param c any point distinct from \a a and \a b.    
     ///
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful for checking full convexity (see
+    /// moduleDigitalConvexity).
+    ///
     /// @return the tightiest bounded lattice polytope
     /// (i.e. H-representation) including the given range of points,
     /// or an empty polytope if points were not distinct or if the
     /// dimension was not 3.
     static
     LatticePolytope
-    compute3DTriangle( const Point& a, const Point& b, const Point& c );  
+    compute3DTriangle( const Point& a, const Point& b, const Point& c,
+		       bool make_minkowski_summable = false );
     
     
     /// @}
