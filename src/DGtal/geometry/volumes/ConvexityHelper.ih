@@ -185,6 +185,39 @@ computeDegeneratedLatticePolytope
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
+( const Point& a, const Point& b, const Point& c )
+{
+  if constexpr( dim != 3 ) return LatticePolytope();
+  // Compute domain
+  const Point   l = a.inf( b ).inf( c );
+  const Point   u = a.sup( b ).sup( c );
+  Domain domain( l, u );
+  const Vector ab = b - a;
+  const Vector bc = c - b;
+  const Vector ca = a - c;
+  const Vector n  = ab.cross( bc );
+  if ( n == Vector::zero ) return LatticePolytope();
+  // Initialize polytope
+  std::vector< PolytopeHalfSpace >   PHS;
+  PHS.reserve( 5 );
+  const Integer nda = n.dot( a );
+  const Vector  u   = ab.cross( n );
+  const Vector  v   = bc.cross( n );
+  const Vector  w   = ca.cross( n );
+  PHS.emplace_back(  n,  nda  );
+  PHS.emplace_back( -n, -nda );
+  PHS.emplace_back(  u, u.dot( a ) );
+  PHS.emplace_back(  v, v.dot( b ) );
+  PHS.emplace_back(  w, w.dot( c ) );
+  return LatticePolytope( domain, PHS.cbegin(), PHS.cend(),
+                          false, false );
+}
+
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedConvexHullVertices

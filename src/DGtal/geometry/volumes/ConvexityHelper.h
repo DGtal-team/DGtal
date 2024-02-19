@@ -379,6 +379,21 @@ namespace DGtal
     static
     PointRange
     computeDegeneratedConvexHullVertices( PointRange& input_points );
+
+    /// Computes the lattice polytope enclosing a triangle in
+    /// dimension 3.
+    ///
+    /// @param a any point distinct from \a b and \a c.
+    /// @param b any point distinct from \a c and \a a.
+    /// @param c any point distinct from \a a and \a b.    
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given range of points,
+    /// or an empty polytope if points were not distinct or if the
+    /// dimension was not 3.
+    static
+    LatticePolytope
+    compute3DTriangle( const Point& a, const Point& b, const Point& c );  
     
     
     /// @}
