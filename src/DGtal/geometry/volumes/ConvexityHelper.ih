@@ -195,13 +195,14 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
   typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   // Compute domain
-  const Point  low  = a.inf( b ).inf( c );
-  const Point  high = a.sup( b ).sup( c );
   const Vector ab   = b - a;
   const Vector bc   = c - b;
   const Vector ca   = a - c;
   const Vector n    = Op::crossProduct( ab, bc );
-  if ( n == Vector::zero ) return LatticePolytope();
+  if ( n == Vector::zero )
+    return computeDegeneratedTriangle( a, b, c );
+  const Point  low  = a.inf( b ).inf( c );
+  const Point  high = a.sup( b ).sup( c );
   // Initialize polytope
   std::vector< PolytopeHalfSpace >   PHS;
   PHS.reserve( make_minkowski_summable ? 11 : 5 );
@@ -241,6 +242,65 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
   return LatticePolytope( Domain( low, high ),
 			  PHS.cbegin(), PHS.cend(),
                           make_minkowski_summable, false );
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
+computeDegeneratedTriangle
+( const Point& a, const Point& b, const Point& c )
+{
+  if ( a == b ) return computeSegment( a, c );
+  if ( ( a == c ) || ( b == c ) ) return computeSegment( a, b );
+  // The three points are distinct, hence aligned. One is in-between the two others.
+  const Point  low  = a.inf( b ).inf( c );
+  const Point  high = a.sup( b ).sup( c );
+  for ( Dimension k = 0; k < dim; k++ )
+    {
+      if ( a[ k ] != low[ k ] || a[ k ] != high[ k ] ) return computeSegment( b, c );
+      if ( b[ k ] != low[ k ] || b[ k ] != high[ k ] ) return computeSegment( a, c );
+      if ( c[ k ] != low[ k ] || c[ k ] != high[ k ] ) return computeSegment( a, b );      
+    }
+  trace.error() << "[ConvexityHelper::computeSegmentFromDegeneratedTriangle] "
+		<< "Should never arrive here." << std::endl;
+  return computeSegment( a, a );
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeSegment
+( const Point& a, const Point& b )
+{
+  if constexpr( dim != 3 ) return LatticePolytope();
+  using Op = detail::BoundedRationalPolytopeSpecializer< dimension, Integer>;
+  typedef typename LatticePolytope::Domain     Domain;
+  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
+  // Compute domain
+  const Point  low  = a.inf( b );
+  const Point  high = a.sup( b );
+  const Vector ab   = b - a;
+  bool  degenerate  = ( ab == Vector::zero );
+  // Initialize polytope
+  std::vector< PolytopeHalfSpace >   PHS;
+  if ( degenerate ) 
+    return LatticePolytope( Domain( low, high ), PHS.cbegin(), PHS.cend(), true, false );
+  PHS.reserve( 2*dim );
+  // Compute additionnal constraints on edges so that the
+  // Minkowski sum with axis-aligned edges is valid.
+  for ( Integer d = -1; d <= 1; d += 2 )
+    for ( Dimension k = 0; k < dim; k++ )
+      {
+	const Vector  i   = Vector::base( k, d );
+	const Vector  e   = Op::crossProduct( ab, i );
+	if ( e != Vector::zero )
+	  {
+	    const Integer e_a = e.dot( a );
+	    PHS.emplace_back( e, e_a );
+	  }
+      }
+  return LatticePolytope( Domain( low, high ), PHS.cbegin(), PHS.cend(), true, false );
 }
 
 
