@@ -73,7 +73,6 @@
   - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
     [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
 
-
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
     [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
@@ -81,6 +80,10 @@
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
     [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+  - Add creation of polytopes from segment and triangles in
+    ConvexityHelper and faster full subconvexity tests for triangles
+    in DigitalConvexity (Jacques-Olivier Lachaud,
+    [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
