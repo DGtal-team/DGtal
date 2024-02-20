@@ -925,7 +925,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const Point& a, const Point& b, const Point& c,
 		  const LatticeSet& StarX ) const
 {
-  ASSERT( dim == 3 );
+  ASSERT( dimension == 3 );
   const auto SCabc = StarCvxH( a, b, c, StarX.axis() );
   return StarX.includes( SCabc );
 }
