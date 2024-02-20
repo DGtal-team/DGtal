@@ -24,10 +24,16 @@
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
+  - Fix duplicate symbols on Windows due to stb_image, see issue #1714 (David Coeurjolly,
+    [#1715](https://github.com/DGtal-team/DGtal/pull/1715)
+
 
 - *Shapes*
   - Add flips to SurfaceMesh data structure
     (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+  - Add method to remove isolated vertices in Mesh, improve obj
+    material reading from potential obsolete path. (Bertrand Kerautret,
+    [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
 	
 	
 - *Github*
@@ -39,6 +45,8 @@
 
 ## Bug fixes
 - *General*
+  - Missing `boost/next_prior.hpp` includes in ReverseIterator, Melkman and Convex
+    Hull files (David Coeurjolly, [#1716](https://github.com/DGtal-team/DGtal/pull/1716))
   - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
     [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
   - For now, removing Cairo deps install on windows (6hours long build 
@@ -60,6 +68,11 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
     [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
+  - Cleaning up unnecessary ModuleSRC.cmake files (David Coeurjolly
+    [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
+  - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
+    [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
+
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
@@ -74,10 +87,15 @@
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
   - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
     (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
+  - Fix of the `PointListReader::getPolygonsFromInputStream` (Xun Gong,
+    [#1708](https://github.com/DGtal-team/DGtal/pull/1708))
 
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
     (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
+- *DEC*
+  - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
+    [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
 
 # DGtal 1.3
 

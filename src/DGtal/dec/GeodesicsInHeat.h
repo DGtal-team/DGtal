@@ -141,6 +141,14 @@ namespace DGtal
       SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami( lambda );
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
       myHeatOpe              = mass - dt*laplacian;
+    
+      // from https://geometry-central.net
+      // NOTE: In theory, it should not be necessary to shift the Laplacian: the Polydec Laplace is always PSD. However, when the
+      // matrix is only positive SEMIdefinite, some solvers may not work (ie Eigen's Cholesky solver doesn't work, but
+      // Suitesparse does).
+      SparseMatrix Id = SparseMatrix(myCalculus->nbVertices(),myCalculus->nbVertices());
+      Id.setIdentity();
+      laplacian += 1e-6 * Id;
       
       //Prefactorizing
       myPoissonSolver.compute( laplacian );
@@ -203,6 +211,8 @@ namespace DGtal
       FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
       //Heat diffusion
       Vector heatDiffusion = myHeatSolver.solve(mySource);
+      ASSERT(myHeatSolver.info()==Eigen::Success);
+
       // Take care of boundaries
       if ( myManageBoundary )
         {
@@ -214,7 +224,6 @@ namespace DGtal
                           = Conditions::dirichletSolution( bSol, myBoundary, bValues );
           heatDiffusion = 0.5 * ( heatDiffusion + heatDiffusionDirichlet );
         }
-      
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
       auto surfmesh = myCalculus->getSurfaceMeshPtr();
@@ -247,10 +256,10 @@ namespace DGtal
       
       // Last Poisson solve
       Vector distVec = myPoissonSolver.solve(divergence);
+      ASSERT(myPoissonSolver.info()==Eigen::Success);
 
       //Source val
       auto sourceval = distVec(myLastSourceIndex);
-      
       //shifting the distances to get 0 at sources
       return distVec - sourceval*Vector::Ones(myCalculus->nbVertices());
     }
