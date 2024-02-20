@@ -199,6 +199,12 @@ Lattice point retrieval services:
 - BoundedLatticePolytope::getBoundaryPoints outputs the lattice points on the boundary of the polytope
 - BoundedLatticePolytope::insertPoints inserts the lattice points in the polytope into some point set
 
+The class ConvexityHelper also provides several static methods related to BoundedLatticePolytope:
+- ConvexityHelper::computeLatticePolytope computes a BoundedLatticePolytope from an arbitrary range of points (use QuickHull algorithm, \see moduleQuickHull).
+- ConvexityHelper::compute3DTriangle computes the BoundedLatticePolytope enclosing a 3D triangle (faster way than above, but limited to 3D triangles).
+- ConvexityHelper::computeDegeneratedTriangle computes the BoundedLatticePolytope enclosing a degenerated triangle (the three points are aligned or non distinct, but may lie in arbitrary dimension).
+- ConvexityHelper::computeSegment computes the BoundedLatticePolytope enclosing a segment in arbitrary dimension.
+
 
 @subsection dgtal_dconvexity_sec22 Building a set of lattice cells from digital points
 
@@ -334,9 +340,9 @@ Convexity services:
 - DigitalConvexity::isKConvex tells if a given polytope is k-convex
 - DigitalConvexity::isFullyConvex tells if a given polytope is fully convex
 - DigitalConvexity::isKSubconvex tells if a given polytope is k-subconvex to some cell cover (i.e. k-tangent)
-- DigitalConvexity::isKSubconvex( const Point&, const Point&, const CellGeometry&, const Dimension ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is k-subconvex (i.e. k-tangent) to the given cell cover.
+- DigitalConvexity::isKSubconvex( const Point& a, const Point& b, const CellGeometry& C, const Dimension k ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is k-subconvex (i.e. k-tangent) to the given cell cover.
 - DigitalConvexity::isFullySubconvex tells if a given polytope is fully subconvex to some cell cover
-- DigitalConvexity::isFullySubconvex( const Point&, const Point&, const CellGeometry& ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
+- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const CellGeometry& C ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
 
 @subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
 
