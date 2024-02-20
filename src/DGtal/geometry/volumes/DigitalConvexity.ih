@@ -446,9 +446,9 @@ StarCvxH( const Point& a, const Point& b, const Point& c,
       // Extracts lattice points within polytope
       // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
       Counter C( P );
-      const Dimension a = axis >= dimension ? C.longestAxis() : axis;
-      const auto  cellP = C.getLatticeCells( a );
-      return LatticeSet( cellP, a );
+      if ( axis >= dimension ) axis = C.longestAxis();
+      const auto  cellP = C.getLatticeCells( axis );
+      return LatticeSet( cellP, axis );
     }
   else
     {
@@ -464,9 +464,9 @@ StarCvxH( const Point& a, const Point& b, const Point& c,
       // Extracts lattice points within polytope
       // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
       Counter C( P );
-      const Dimension a = axis >= dimension ? C.longestAxis() : axis;
-      const auto  cellP = C.getLatticeCells( a );
-      return LatticeSet( cellP, a );
+      if ( axis >= dimension ) axis = C.longestAxis();
+      const auto  cellP = C.getLatticeCells( axis );
+      return LatticeSet( cellP, axis );
     }
 }
 
