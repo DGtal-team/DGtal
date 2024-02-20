@@ -304,8 +304,8 @@ bool ok  = simplex_cover.subset( point_cover ); // true
 
 Morphological services (since 1.3):
 - DigitalConvexity::makePolytope( const PointRange& X, bool safe ) const builds the tightest polytope enclosing the digital set \a X
-- DigitalConvexity::isFullyConvex( const PointRange& X, bool convex0, bool safe ) const checks the full convexity of the digital set \a X
-- DigitalConvexity::is0Convex( const PointRange& X, bool safe ) const checks the usual digital convexity (H-convexity or 0-convexity) of the digital set \a X
+- DigitalConvexity::isFullyConvex( const PointRange& X, bool convex0 ) const checks the full convexity of the digital set \a X
+- DigitalConvexity::is0Convex( const PointRange& X ) const checks the usual digital convexity (H-convexity or 0-convexity) of the digital set \a X
 - DigitalConvexity::U( Dimension i, const PointRange& X ) const performs the digital Minkowski sum of \a X along direction \a i
 
 The following snippet shows that a 4D ball is indeed fully convex.
