@@ -190,7 +190,6 @@ DGtal::BoundedLatticePolytopeCounter<TSpace>::
 countInteriorAlongAxis( Dimension a ) const
 {
   ASSERT( myPolytope != nullptr );
-  //std::cout << "countInteriorAlongAxis(" << a << ")" << std::endl; 
   Point lo = myLower;
   Point hi = myUpper;
   hi[ a ]  = lo[ a ];

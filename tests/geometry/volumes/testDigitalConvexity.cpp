@@ -888,7 +888,6 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexit
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
@@ -915,7 +914,6 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexit
         auto simplex = dconv.makeSimplex( pts.cbegin(), pts.cend() );
         auto cover   = dconv.makeCellCover( simplex, 0, 3 );
 	auto ls      = dconv.StarCvxH( pts );
-	auto axis    = ls.axis();
         {
           unsigned int nb_subconvex1 = 0;
 	  unsigned int nb_subconvex2 = 0;
@@ -969,8 +967,8 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
-  Domain     domain( Point( -10, -10, -10 ), Point( 10, 10, 10 ) );
-  DConvexity dconv ( Point( -11, -11, -11 ), Point( 11, 11, 11 ) );
+  Domain     domain( Point( -20, -20, -20 ), Point( 20, 20, 20 ) );
+  DConvexity dconv ( Point( -21, -21, -21 ), Point( 21, 21, 21 ) );
 
   WHEN( "Computing many tetrahedra" ) {
     const unsigned int nb   = 50;

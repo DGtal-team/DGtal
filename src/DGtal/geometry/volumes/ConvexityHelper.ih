@@ -429,7 +429,7 @@ computeLatticePolytope
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
-  for ( auto i = 1; i < input_points.size(); i++ )
+  for ( std::size_t i = 1; i < input_points.size(); i++ )
     {
       const auto& p = input_points[ i ];
       l = l.inf( p );
