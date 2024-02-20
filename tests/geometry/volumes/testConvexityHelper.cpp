@@ -557,7 +557,7 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
 	  n = (b-a).crossProduct(c-a);
 	} while ( n != Vector::zero );
 	std::vector<Point> V = { a, b, c };
-	P = Helper::computeLatticePolytope( V, false, false );
+	P = Helper::computeLatticePolytope( V, true, false );
 	T = Helper::compute3DTriangle( a, b, c );
 	nb_P  = P.count();
 	nb_T  = T.count();
@@ -600,7 +600,7 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
 	  n = (b-a).crossProduct(c-a);
 	} while ( n != Vector::zero );
 	std::vector<Point> V = { a, b, c };
-	P  = Helper::computeLatticePolytope( V, false, true );
+	P  = Helper::computeLatticePolytope( V, true, true );
 	T  = Helper::compute3DTriangle( a, b, c, true );
 	for ( Dimension k = 0; k < 3; k++ )
 	  {

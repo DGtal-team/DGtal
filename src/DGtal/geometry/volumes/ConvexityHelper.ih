@@ -258,9 +258,11 @@ computeDegeneratedTriangle
   const Point  high = a.sup( b ).sup( c );
   for ( Dimension k = 0; k < dim; k++ )
     {
-      if ( a[ k ] != low[ k ] || a[ k ] != high[ k ] ) return computeSegment( b, c );
-      if ( b[ k ] != low[ k ] || b[ k ] != high[ k ] ) return computeSegment( a, c );
-      if ( c[ k ] != low[ k ] || c[ k ] != high[ k ] ) return computeSegment( a, b );      
+      const auto lk = low [ k ];
+      const auto hk = high[ k ];      
+      if ( ( a[ k ] != lk ) && ( a[ k ] != hk ) ) return computeSegment( b, c );
+      if ( ( b[ k ] != lk ) && ( b[ k ] != hk ) ) return computeSegment( a, c );
+      if ( ( c[ k ] != lk ) && ( c[ k ] != hk ) ) return computeSegment( a, b );
     }
   trace.error() << "[ConvexityHelper::computeSegmentFromDegeneratedTriangle] "
 		<< "Should never arrive here." << std::endl;
@@ -427,10 +429,12 @@ computeLatticePolytope
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
-  for ( const auto& p : input_points ) {
-    l = l.inf( p );
-    u = u.sup( p );
-  }
+  for ( auto i = 1; i < input_points.size(); i++ )
+    {
+      const auto& p = input_points[ i ];
+      l = l.inf( p );
+      u = u.sup( p );
+    }
   Domain domain( l, u );
   // Compute convex hull
   ConvexHull hull;
