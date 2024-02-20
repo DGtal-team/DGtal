@@ -345,8 +345,8 @@ Convexity services:
 - DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const CellGeometry& C ) const tells if the Euclidean straight segment \f$ \lbrack a,b \rbrack \f$ is fully k-subconvex (i.e. tangent) to the given cell cover.
 - DigitalConvexity::isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const tells if a given polytope is fully subconvex to a set of cells, represented as a LatticeSetByIntervals.
 - DigitalConvexity::isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const tells is the given range of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals.
-- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const LatticeSet& StarX ) const tells if the given pair of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (faster than previous generic method).
-- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const Point& c, const LatticeSet& StarX ) const tells if the given triplets of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (faster than previous generic method).
+- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const LatticeSet& StarX ) const tells if the given pair of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (three times faster than previous generic method).
+- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const Point& c, const LatticeSet& StarX ) const tells if the given triplets of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (five times faster than previous generic method).
 
 @subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
 

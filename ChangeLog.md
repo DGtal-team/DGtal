@@ -81,7 +81,7 @@
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
     [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
   - Add creation of polytopes from segment and triangles in
-    ConvexityHelper and faster full subconvexity tests for triangles
+    ConvexityHelper and 3-5xfaster full subconvexity tests for triangles
     in DigitalConvexity (Jacques-Olivier Lachaud,
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
 
