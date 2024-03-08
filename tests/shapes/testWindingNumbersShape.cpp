@@ -22,7 +22,7 @@
  *
  * @date 2023/06/14
  *
- * Functions for testing class PolygonalCalculus.
+ * Functions for testing class WindingNumbersShape.
  *
  * This file is part of the DGtal library.
  */
