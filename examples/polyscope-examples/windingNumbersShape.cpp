@@ -94,7 +94,6 @@ int main()
   auto psMesh = polyscope::registerSurfaceMesh("input digital surface", positions, faces);
   psMesh->addFaceVectorQuantity("normals", iinormals);
   
-  //
   Eigen::MatrixXd points(surfels.size(),3);
   Eigen::MatrixXd normals(surfels.size(),3);
   std::ofstream ofs ("bunny.pts", std::ofstream::out);
