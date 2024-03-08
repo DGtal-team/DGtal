@@ -49,13 +49,6 @@ typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 // The following typedefs are useful
 typedef SurfaceMesh< RealPoint, RealVector >  SurfMesh;
 
-
-
-void myCallback()
-{
-  
-}
-
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
@@ -116,9 +109,7 @@ int main()
   
   //Winding number shape
   WindingNumbersShape<Z3i::Space> wnshape(points,normals);
- // Eigen::VectorXd areas = Eigen::VectorXd::Ones(points.rows());
- // areas = 1.0/(double)points.rows() * areas;
- // wnshape.setPointAreas(areas);
+ 
   
   auto lower = binary_image->domain().lowerBound();
   auto upper = binary_image->domain().upperBound();
@@ -191,11 +182,15 @@ int main()
   resample_h(1.0);
   resample_h(2.0); //downscaling
   resample_h(0.5); //upscaling
+#if defined(NDEBUG)  
+  resample_h(0.2); //upscaling  
   resample_h(0.2); //upscaling
+#else  
+  trace.warning() << "CMake Debug mode detected, limiting upscaling to 0.5.";  
+#endif  
   //resample_h(0.07); //extreme upscaling, 2M vertices
   
   // Set the callback function
-  polyscope::state::userCallback = myCallback;
   polyscope::show();
   return EXIT_SUCCESS;
 }
