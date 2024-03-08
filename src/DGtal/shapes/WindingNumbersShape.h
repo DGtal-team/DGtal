@@ -77,6 +77,9 @@ namespace DGtal
     /// Construct a WindingNumberShape Euclidean shape from an oriented point cloud.
     /// This constructor estimates the @a area @a  of each point using CGAL.
     ///
+    /// If the number of points is greater than 20, CGAL is used to estimate the   
+    /// per-sample area.
+    ///
     /// @param points a "nx3" matrix with the sample coordinates.
     /// @param normals a "nx3" matrix for the normal vectors.
     WindingNumbersShape(ConstAlias<Eigen::MatrixXd> points, 
