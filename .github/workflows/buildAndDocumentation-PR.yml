@@ -9,8 +9,8 @@ env:
   BUILD_TYPE:    Debug
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
   CONFIG_GLOBAL:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true
-  CONFIG_LINUX:   -DUSE_CCACHE=YES -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DUSE_CCACHE=YES -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true
+  CONFIG_LINUX:   -DUSE_CCACHE=YES -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_CGAL=true -DWITH_LIBIGL=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
+  CONFIG_MAC:     -DUSE_CCACHE=YES -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true -DWITH_CGAL=true -DWITH_LIBIGL=true
   CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  -DWITH_GMP=true
 
 jobs:
@@ -34,11 +34,11 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp ccache
+       run: brew install boost ninja gmp libomp ccache cgal
 
      - name: Install conan
        if: matrix.os == 'windows-latest'
