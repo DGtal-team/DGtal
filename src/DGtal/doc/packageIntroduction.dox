@@ -48,13 +48,13 @@ also illustrate a mechanism to use DGtal in your own project.
 
 
 @b Modules
- - \ref moduleIntroduction (Tristan Roussillon)
- - \ref moduleBuildDGtal (Martial Tola, David Coeurjolly)
- - \ref moduleHowToUseDGtal (David Coeurjolly)
+ - \subpage moduleIntroduction (Tristan Roussillon)
+ - \subpage moduleBuildDGtal (Martial Tola, David Coeurjolly)
+ - \subpage moduleHowToUseDGtal (David Coeurjolly)
 
 
  @b Related @b documentation @b pages
- - \ref moduleHowToUseDGtal-qmake
+ - \subpage moduleHowToUseDGtal-qmake
 
 
 
