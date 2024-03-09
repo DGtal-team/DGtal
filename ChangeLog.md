@@ -292,6 +292,10 @@
   - Fix warning related to copy assignment in class DistanceBreadthFirstVisitor
     (Jacques-Olivier Lachaud, [#1662](https://github.com/DGtal-team/DGtal/pull/1662))
 
+- *Shapes package*
+  - fix slow remove of isolated vertices in Mesh.
+    (Bertrand Kerautret, [#1718](https://github.com/DGtal-team/DGtal/pull/1718))
+
 # DGtal 1.2
 
 ## New Features / Critical Changes
