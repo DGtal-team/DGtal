@@ -6,15 +6,12 @@
 #### boards
 ##########################################
 
-set(DGTAL_SRC ${DGTAL_SRC}
-  DGtal/io/Color.cpp)
+#set(DGTAL_SRC ${DGTAL_SRC})
 
 
-set(DGTALIO_SRC ${DGTALIO_SRC}
-  DGtal/io/boards/Board2D.cpp
-  DGtal/io/boards/Board3D.cpp)
+#set(DGTALIO_SRC ${DGTALIO_SRC})
 
 
-if( WITH_CAIRO )
-  set(DGTALIO_SRC ${DGTALIO_SRC} DGtal/io/boards/Board3DTo2D.cpp)
-endif()
+#if( WITH_CAIRO )
+#  set(DGTALIO_SRC ${DGTALIO_SRC} DGtal/io/boards/Board3DTo2D.cpp)
+#endif()
