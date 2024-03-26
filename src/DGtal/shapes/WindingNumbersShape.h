@@ -78,7 +78,7 @@ namespace DGtal
     /// This constructor estimates the @a area @a  of each point using CGAL.
     ///
     /// If the number of points is greater than 20, CGAL is used to estimate the
-    /// per-sample area (if skipPointAreas is set to false). 
+    /// per-sample area (if skipPointAreas is set to false).
     ///
     /// @param points a "nx3" matrix with the sample coordinates.
     /// @param normals a "nx3" matrix for the normal vectors.
@@ -90,11 +90,10 @@ namespace DGtal
       myPoints  = points;
       myNormals = normals;
       myPointAreas = Eigen::VectorXd::Ones(myPoints->rows());
-      myPointAreasSet = false;
       // Build octree, from libIGL tutorials
       igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
       if (skipPointAreas)
-        trace.warning()<<"[WindingNumberShape] Skipping the CGAL point area estimation."<<std::endl;
+        trace.warning()<<"[WindingNumberShape] Skipping the CGAL point area estimation. By default, point areas are set to 1.0"<<std::endl;
       else
         if (points->rows()> 20)
         {
@@ -103,7 +102,6 @@ namespace DGtal
           // CGAL is only used to help get point areas
           igl::copyleft::cgal::point_areas(*myPoints,I,*myNormals,myPointAreas);
           trace.info()<<"[WindingNumberShape] Min/max point area : "<<myPointAreas.minCoeff()<<" -- "<<myPointAreas.maxCoeff()<<std::endl;
-          myPointAreasSet = true;
         }
         else
         {
@@ -125,7 +123,6 @@ namespace DGtal
       myNormals = normals;
       myPointAreas = areas;
       igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
-      myPointAreasSet = true;
     }
     
     
@@ -134,14 +131,12 @@ namespace DGtal
     void setPointAreas(ConstAlias<Eigen::VectorXd> areas)
     {
       myPointAreas = areas;
-      myPointAreasSet = true;
     }
     
     /// Orientation of a point using the winding number value from
     /// an oriented pointcloud.
     ///
-    /// @note For multiple queries, orientationBatch() should be used. If point areas have been
-    /// provided, we always return "OUTSIDE"
+    /// @note For multiple queries, orientationBatch() should be used.
     ///
     /// @param aPoint [in] a point in space
     /// @param threshold [in] the iso-value of the surface of the winding number implicit map (default = 0.3).
@@ -149,11 +144,6 @@ namespace DGtal
     Orientation orientation(const RealPoint aPoint,
                             const double threshold = 0.3) const
     {
-      if (!myPointAreasSet)
-      {  
-        trace.error() <<"[WindingNumber] the point areas have not been set. Always returning 'OUTSIDE' "<<std::endl;
-        return DGtal::OUTSIDE;
-      }
       Eigen::MatrixXd queries(1,3);
       queries << aPoint(0) , aPoint(1) , aPoint(2);
       auto singlePoint = orientationBatch(queries, threshold);
@@ -162,8 +152,6 @@ namespace DGtal
     
     /// Orientation of a set of points (queries) using the winding number value from
     /// an oriented pointcloud.
-    ///
-    /// @note If point areas have been provided, we always return "OUTSIDE"
     ///
     /// @param queries [in] a "nx3" matrix with the query points in space.
     /// @param threshold [in] the iso-value of the surface of the winding number implicit map (default = 0.3).
@@ -176,13 +164,7 @@ namespace DGtal
       Eigen::MatrixXd O_CM;
       Eigen::VectorXd O_R;
       Eigen::MatrixXd O_EC;
-      
-      if (!myPointAreasSet)
-      {
-        trace.error() <<"[WindingNumber] the point areas have not been set. Always returning 'OUTSIDE' "<<std::endl;
-        return results;
-      }
-      
+    
       //Checking if the areas
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
@@ -207,9 +189,6 @@ namespace DGtal
     CountedConstPtrOrConstPtr<Eigen::MatrixXd> myNormals;
     ///Const alias to point area measure
     Eigen::VectorXd myPointAreas;
-    
-    ///Boolean to detect if myPointAreas has been set
-    bool myPointAreasSet;
     
     ///libIGL octree for fast queries data structure
     std::vector<std::vector<int > > myO_PI;
