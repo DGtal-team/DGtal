@@ -77,31 +77,36 @@ namespace DGtal
     /// Construct a WindingNumberShape Euclidean shape from an oriented point cloud.
     /// This constructor estimates the @a area @a  of each point using CGAL.
     ///
-    /// If the number of points is greater than 20, CGAL is used to estimate the   
-    /// per-sample area.
+    /// If the number of points is greater than 20, CGAL is used to estimate the
+    /// per-sample area (if skipPointAreas is set to false).
     ///
     /// @param points a "nx3" matrix with the sample coordinates.
     /// @param normals a "nx3" matrix for the normal vectors.
-    WindingNumbersShape(ConstAlias<Eigen::MatrixXd> points, 
-                        ConstAlias<Eigen::MatrixXd> normals)
+    /// @param skipPointAreas if true, we do not estimate the point areas using CGAL (default: false)
+    WindingNumbersShape(ConstAlias<Eigen::MatrixXd> points,
+                        ConstAlias<Eigen::MatrixXd> normals,
+                        bool skipPointAreas = false)
     {
       myPoints  = points;
       myNormals = normals;
       myPointAreas = Eigen::VectorXd::Ones(myPoints->rows());
       // Build octree, from libIGL tutorials
       igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
-      if (points->rows()> 20)
-      {
-        Eigen::MatrixXi I;
-        igl::knn(*myPoints,(int)points->rows(),myO_PI,myO_CH,myO_CN,myO_W,I);
-        // CGAL is only used to help get point areas
-        igl::copyleft::cgal::point_areas(*myPoints,I,*myNormals,myPointAreas);
-        trace.info()<<" Min/max point area : "<<myPointAreas.minCoeff()<<" -- "<<myPointAreas.maxCoeff()<<std::endl;
-      }
+      if (skipPointAreas)
+        trace.warning()<<"[WindingNumberShape] Skipping the CGAL point area estimation. By default, point areas are set to 1.0"<<std::endl;
       else
-      {
-        trace.warning()<<"[WindingNumberShape] Too few points to use CGAL point_areas. Using the constant area setting."<<std::endl;
-      }
+        if (points->rows()> 20)
+        {
+          Eigen::MatrixXi I;
+          igl::knn(*myPoints,(int)points->rows(),myO_PI,myO_CH,myO_CN,myO_W,I);
+          // CGAL is only used to help get point areas
+          igl::copyleft::cgal::point_areas(*myPoints,I,*myNormals,myPointAreas);
+          trace.info()<<"[WindingNumberShape] Min/max point area : "<<myPointAreas.minCoeff()<<" -- "<<myPointAreas.maxCoeff()<<std::endl;
+        }
+        else
+        {
+          trace.warning()<<"[WindingNumberShape] Too few points to use CGAL point_areas. Using the constant area setting."<<std::endl;
+        }
     }
     
     /// Construct a WindingNumberShape Euclidean shape from an oriented point cloud.
@@ -155,11 +160,11 @@ namespace DGtal
                                               const double threshold = 0.3) const
     {
       Eigen::VectorXd W;
-      std::vector<Orientation> results( queries.rows() );
+      std::vector<Orientation> results( queries.rows(), DGtal::OUTSIDE );
       Eigen::MatrixXd O_CM;
       Eigen::VectorXd O_R;
       Eigen::MatrixXd O_EC;
-      
+    
       //Checking if the areas
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
@@ -185,7 +190,6 @@ namespace DGtal
     ///Const alias to point area measure
     Eigen::VectorXd myPointAreas;
     
-    
     ///libIGL octree for fast queries data structure
     std::vector<std::vector<int > > myO_PI;
     ///libIGL octree for fast queries data structure
@@ -194,7 +198,7 @@ namespace DGtal
     Eigen::MatrixXd myO_CN;
     ///libIGL octree for fast queries data structure
     Eigen::VectorXd myO_W;
-   
+    
     
   };
 }
