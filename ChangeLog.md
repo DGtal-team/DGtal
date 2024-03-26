@@ -39,7 +39,7 @@
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
   - Update of the WindingNumber constructor to allow external computation of point areas
-    (David Coeurjolly,[#17xx](https://github.com/DGtal-team/DGtal/issues/17xx))
+    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 	
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
