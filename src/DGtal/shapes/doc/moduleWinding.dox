@@ -89,7 +89,7 @@ std::vector<Orientation> orientations = winding.orientationBatch(queries);
 The output vector contains the orientation of the query points in the same order.
 
 At this point, we completely rely on libIGL and CGAL to estimate the @f$ a_i @f$ area measures. If the user
-wants to provide these quantities, the @f$\{a_i\}@f$ can be prescribed at the constructor, or using the `setAreaMeasure()` method. 
+wants to provide these quantities, the @f$\{a_i\}@f$ can be prescribed at the constructor, or using the `setAreaMeasure()` method (with a `skipPointAreas` to `true` at the constructor). 
 
 @note The orientation methods have a default thresholding parameter set to 0.3. Please check the class documentation for details. 
 
