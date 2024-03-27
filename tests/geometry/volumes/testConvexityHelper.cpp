@@ -429,3 +429,203 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
     }
   }
 } 
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class ConvexityHelper in 3D.
+///////////////////////////////////////////////////////////////////////////////
+
+SCENARIO( "ConvexityHelper< 3 > triangle tests",
+          "[convexity_helper][triangle][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  typedef Helper::Vector          Vector;
+  GIVEN( "Given non degenerated triplets of points" ) {
+    Helper::LatticePolytope P;
+    Helper::LatticePolytope T;
+    Point a, b, c;
+    Vector n;
+    int nb_total = 0;
+    int nb_ok    = 0;
+    int nbi_ok   = 0;
+    int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
+    for ( int i = 0; i < 20; i++ )
+      {
+	do {
+	  a = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  b = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  c = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  n = (b-a).crossProduct(c-a);
+	} while ( n == Vector::zero );
+	std::vector<Point> V = { a, b, c };
+	P = Helper::computeLatticePolytope( V, false, false );
+	T = Helper::compute3DTriangle( a, b, c );
+	nb_P  = P.count();
+	nb_T  = T.count();
+	nbi_P = P.countInterior();
+	nbi_T = T.countInterior();
+	nb_total += 1;
+	nb_ok    += ( nb_P == nb_T ) ? 1 : 0;
+	nbi_ok   += ( nbi_P == 0 && nbi_T == 0 ) ? 1 : 0;
+	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
+      }
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( P ); CAPTURE( T );
+    CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
+    WHEN( "Computing their tightiest polytope or triangle" ) {
+      THEN( "They have the same number of inside points" ) {
+	REQUIRE( nb_ok == nb_total );
+      }
+      THEN( "They do not have interior points" ) {
+        REQUIRE( nbi_ok == nb_total );
+      }
+    }
+  }
+
+  GIVEN( "Given non degenerated triplets of points" ) {
+    typedef Helper::LatticePolytope::UnitSegment UnitSegment;
+    Helper::LatticePolytope P;
+    Helper::LatticePolytope T;
+    Point a, b, c;
+    Vector n;
+    int nb_total = 0;
+    int nb_ok    = 0;
+    int nbi_ok   = 0;    
+    int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
+    for ( int i = 0; i < 20; i++ )
+      {
+	do {
+	  a = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  b = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  c = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  n = (b-a).crossProduct(c-a);
+	} while ( n == Vector::zero );
+	std::vector<Point> V = { a, b, c };
+	P  = Helper::computeLatticePolytope( V, false, true );
+	T  = Helper::compute3DTriangle( a, b, c, true );
+	for ( Dimension k = 0; k < 3; k++ )
+	  {
+	    P += UnitSegment( k );
+	    T += UnitSegment( k );
+	  }
+	nb_P  = P.count();
+	nb_T  = T.count();
+	nbi_P = P.countInterior();
+	nbi_T = T.countInterior();
+	nb_total += 1;
+	nb_ok    += ( nb_P  == nb_T  ) ? 1 : 0;
+	nbi_ok   += ( nbi_P == nbi_T ) ? 1 : 0;
+	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
+      }
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( P ); CAPTURE( T );
+    CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
+    WHEN( "Computing their tightiest polytope or triangle, dilated by a cube" ) {
+      THEN( "They have the same number of inside points" ) {
+	REQUIRE( nb_ok == nb_total );
+      }
+      THEN( "They have the same number of interior points" ) {
+        REQUIRE( nbi_ok == nb_total );
+      }
+    }
+  }
+}
+
+
+SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
+          "[convexity_helper][triangle][degenerate][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  typedef Helper::Vector          Vector;
+  GIVEN( "Given degenerated triplets of points" ) {
+    Helper::LatticePolytope P;
+    Helper::LatticePolytope T;
+    Point a, b, c;
+    Vector n;
+    int nb_total = 0;
+    int nb_ok    = 0;
+    int nbi_ok   = 0;
+    int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
+    for ( int i = 0; i < 20; i++ )
+      {
+	do {
+	  a = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  b = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  c = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  n = (b-a).crossProduct(c-a);
+	} while ( n != Vector::zero );
+	std::vector<Point> V = { a, b, c };
+	P = Helper::computeLatticePolytope( V, true, false );
+	T = Helper::compute3DTriangle( a, b, c );
+	nb_P  = P.count();
+	nb_T  = T.count();
+	nbi_P = P.countInterior();
+	nbi_T = T.countInterior();
+	nb_total += 1;
+	nb_ok    += ( nb_P == nb_T ) ? 1 : 0;
+	nbi_ok   += ( nbi_P == 0 && nbi_T == 0 ) ? 1 : 0;
+	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
+      }
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( P ); CAPTURE( T );
+    CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
+    WHEN( "Computing their tightiest polytope or triangle" ) {
+      THEN( "They have the same number of inside points" ) {
+	REQUIRE( nb_ok == nb_total );
+      }
+      THEN( "They do not have interior points" ) {
+        REQUIRE( nbi_ok == nb_total );
+      }
+    }
+  }
+
+  GIVEN( "Given degenerated triplets of points" ) {
+    typedef Helper::LatticePolytope::UnitSegment UnitSegment;
+    Helper::LatticePolytope P;
+    Helper::LatticePolytope T;
+    Point a, b, c;
+    Vector n;
+    int nb_total = 0;
+    int nb_ok    = 0;
+    int nbi_ok   = 0;    
+    int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
+    for ( int i = 0; i < 20; i++ )
+      {
+	do {
+	  a = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  b = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  c = Point( rand() % 10, rand() % 10, rand() % 10 );
+	  n = (b-a).crossProduct(c-a);
+	} while ( n != Vector::zero );
+	std::vector<Point> V = { a, b, c };
+	P  = Helper::computeLatticePolytope( V, true, true );
+	T  = Helper::compute3DTriangle( a, b, c, true );
+	for ( Dimension k = 0; k < 3; k++ )
+	  {
+	    P += UnitSegment( k );
+	    T += UnitSegment( k );
+	  }
+	nb_P  = P.count();
+	nb_T  = T.count();
+	nbi_P = P.countInterior();
+	nbi_T = T.countInterior();
+	nb_total += 1;
+	nb_ok    += ( nb_P  == nb_T  ) ? 1 : 0;
+	nbi_ok   += ( nbi_P == nbi_T ) ? 1 : 0;
+	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
+      }
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( P ); CAPTURE( T );
+    CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
+    WHEN( "Computing their tightiest polytope or triangle, dilated by a cube" ) {
+      THEN( "They have the same number of inside points" ) {
+	REQUIRE( nb_ok == nb_total );
+      }
+      THEN( "They have the same number of interior points" ) {
+        REQUIRE( nbi_ok == nb_total );
+      }
+    }
+  }
+}
