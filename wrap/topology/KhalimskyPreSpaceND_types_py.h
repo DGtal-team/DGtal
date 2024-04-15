@@ -16,6 +16,11 @@
 #ifndef DGTAL_KHALIMSKYPRESPACEND_TYPES_PY_H
 #define DGTAL_KHALIMSKYPRESPACEND_TYPES_PY_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include "base/Common_types_py.h" // For DGtal::Python::Integer
 #include "DGtal/topology/KhalimskyPreSpaceND.h"
 
