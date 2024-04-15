@@ -7,11 +7,11 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=false -DBUILD_TESTING=false -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true 
-  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON
-  CONFIG_LINUX:   -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWITH_CGAL=true -DWITH_LIBIGL=true  -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true -DWITH_CGAL=true -DWITH_LIBIGL=true 
-  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  -DWITH_GMP=true
+  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=false -DBUILD_TESTING=false -DWITH_EIGEN=true
+  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTING_PYTHON=ON
+  CONFIG_LINUX:
+  CONFIG_MAC:
+  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe"
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         python-version: ["3.11"]
         BUILD_TYPE: [Release]
 
@@ -33,34 +33,70 @@ jobs:
         with: 
           python-version: ${{ matrix.python-version }}
 
-      - name: Install linux deps
+      - name: Installing dependancies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
       
+      - name: Installing dependancies (macOS)
+        if: matrix.os == 'macOS-latest'
+        run: brew install boost ninja gmp libomp ccache cgal
+
+      - name: Install dependancies (conan - Windows 1/2)
+        if: matrix.os == 'windows-latest'
+        id: conan
+        uses: turtlebrowser/get-conan@main
+        with:
+          version: 1.57.0
+
+      - name: Install dependancies (conan - Windows 2/2)
+        if: matrix.os == 'windows-latest'
+        run: conan profile new default --detect
+
+      - uses: actions/cache@v3
+        if: matrix.os == 'windows-latest'
+        with:
+          path: ~/.conan
+          key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
+
+
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
 
-      - name: Configure CMake (linux)
+      - name: Configure CMake (Linux)
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        # run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_PYTHON $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" -G Ninja
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} -DDGTAL_WRAP_PYTHON=ON -G Ninja
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_LINUX -G Ninja
+
+      - name: Configure CMake (macOS)
+        if: matrix.os == 'macOS-latest'
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_MAC -G Ninja
+
+      - name: Configure CMake (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
+
 
       - name: Build
-        working-directory: ${{runner.workspace}}/build  
         shell: bash
+        working-directory: ${{runner.workspace}}/build  
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 8
 
-      - name: Import module test 
-        working-directory: ${{runner.workspace}}/build    
+      - name: Import module Test 
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
         run: |
           python -c "import dgtal"
 
       - name: Install python dependancies
+        shell: bash
         run: |
           python -m pip install cmake
           python -m pip install pytest    
@@ -68,6 +104,7 @@ jobs:
           python -m pip install itk 
 
       - name: Run unit tests
+        shell: bash
         working-directory: ${{runner.workspace}}/build  
         run: | 
           python -c "import sys; print(sys.path)"
