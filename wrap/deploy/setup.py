@@ -15,6 +15,17 @@ except ImportError:
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from dgtalVersion import get_versions
 
+CMAKE_OPTIONS = [
+    '-DCMAKE_BUILD_TYPE=Release',
+    '-DBUILD_SHARED_LIBS:BOOL=OFF',
+    '-DBUILD_EXAMPLES:BOOL=OFF',
+    '-DBUILD_TESTING:BOOL=OFF',
+    '-DDGTAL_WRAP_PYTHON:BOOL=ON'
+]
+if sys.platform == "win32":
+    CMAKE_OPTIONS.append("-DENABLE_CONAN:BOOL=ON")
+
+
 # this_directory = path.abspath(path.dirname(__file__))
 # dgtal_readme_path = path.join(this_directory, 'DGtal-source', 'DGtal', 'README.md')
 # if path.exists(dgtal_readme_path):
@@ -37,13 +48,7 @@ setup(
         'dgtal': ['tables/*.zlib']
     },
     cmake_source_dir='../..', # Top CMakeLists.txt directory
-    cmake_args=[
-        '-DCMAKE_BUILD_TYPE=Release',
-        '-DBUILD_SHARED_LIBS:BOOL=OFF',
-        '-DBUILD_EXAMPLES:BOOL=OFF',
-        '-DBUILD_TESTING:BOOL=OFF',
-        '-DDGTAL_WRAP_PYTHON:BOOL=ON'
-    ],
+    cmake_args=CMAKE_OPTIONS,
     cmake_install_target="dgtal-install-runtime",
     py_modules=[
         'dgtalVersion',
@@ -73,4 +78,4 @@ setup(
     url=r'https://github.com/DGtal-team/DGtal',
     install_requires=[
     ]
-    )
+)
