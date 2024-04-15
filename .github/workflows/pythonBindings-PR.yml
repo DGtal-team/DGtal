@@ -107,8 +107,7 @@ jobs:
         shell: bash
         working-directory: ${{runner.workspace}}/build  
         run: | 
-          python -c "import sys; print(sys.path)"
-          ctest -R python -V --output-on-failure
+          ctest -R python -C ${{ matrix.BUILD_TYPE }} -V --output-on-failure
 
 
       
