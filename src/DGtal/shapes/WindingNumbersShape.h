@@ -41,12 +41,23 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/base/CountedConstPtrOrConstPtr.h>
 #include <DGtal/base/ConstAlias.h>
-
 #include <DGtal/shapes/CEuclideanOrientedShape.h>
+
+
+//Removing Warnings from libIGL for gcc and clang
+#pragma GCC system_header  // For GCC
+#pragma clang system_header  // For Clang
+
 #include <igl/fast_winding_number.h>
 #include <igl/octree.h>
 #include <igl/knn.h>
 #include <igl/copyleft/cgal/point_areas.h>
+
+#pragma GCC diagnostic pop  // For GCC
+#pragma clang diagnostic pop  // For Clang
+
+
+
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
