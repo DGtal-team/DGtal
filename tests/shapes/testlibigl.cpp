@@ -34,7 +34,16 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 
+//Removing Warnings from libIGL for gcc and clang
+#pragma GCC system_header  // For GCC
+#pragma clang system_header  // For Clang
+
 #include <igl/readOBJ.h>
+
+#pragma GCC diagnostic pop  // For GCC
+#pragma clang diagnostic pop  // For Clang
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
