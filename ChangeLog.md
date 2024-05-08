@@ -103,6 +103,10 @@
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
     (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
 
+- *Shapes*
+  - Removing libIGL warnings in WindingNumber classes (David Coeurjolly,
+    [#1722](https://github.com/DGtal-team/DGtal/pull/1722))
+
 - *DEC*
   - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
     [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
