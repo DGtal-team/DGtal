@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
         BUILD_TYPE: [Release]
 
     steps:
