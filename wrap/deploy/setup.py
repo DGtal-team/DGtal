@@ -38,10 +38,10 @@ if sys.platform == "win32":
 long_description= r'DGtal is an open-source, cross-platform library providing ' \
                    'Digital Geometry Tools and Algorithms.'
 setup(
-    name='dgtal_ghactions_test',
+    name='DGtal',
     version=get_versions()['package-version'],
-    author='Pablo Hernandez-Cerdan',
-    author_email='pablo.hernandez.cerdan@outlook.com',
+    author='David Coeurjolly',
+    author_email='david.coeurjolly@cnrs.fr',
     packages=['dgtal'],
     package_dir={'dgtal': 'dgtal'},
     package_data={
