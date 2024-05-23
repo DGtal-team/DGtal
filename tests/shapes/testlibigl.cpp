@@ -34,14 +34,8 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 
-//Removing Warnings from libIGL for gcc and clang
-#pragma GCC system_header  // For GCC
-#pragma clang system_header  // For Clang
+#include <igl/readOFF.h>
 
-#include <igl/readOBJ.h>
-
-#pragma GCC diagnostic pop  // For GCC
-#pragma clang diagnostic pop  // For Clang
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,8 +55,8 @@ TEST_CASE( "Testing LibIGL" )
   
   SECTION("Simple test with OBJ IO")
     {
-      igl::readOBJ(testPath + "samples/testObj.obj", V, F);
-      REQUIRE( V.rows() == 10);
+      igl::readOFF(testPath + "samples/box.off", V, F);
+      REQUIRE( V.rows() == 8);
       REQUIRE( F.rows() == 6);
     }
 };
