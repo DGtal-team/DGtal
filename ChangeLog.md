@@ -21,6 +21,8 @@
 - *General*
   - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly,
     [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+  - Python bindings and Pypi deploy are now handled by Github-Actions (Bastien Doignies,
+    [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
 
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
