@@ -71,10 +71,6 @@ jobs:
           python -m pip install delocate
           python -m pip install scikit-build
 
-      - name: Testing wdir
-        run: |
-          ls .
-
       - name: Setting build informations (Linux)
         if: matrix.os == 'ubuntu-latest'
         shell: bash
@@ -144,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: deploy
+      name: deploy-pypi
       url: https://test.pypi.org/p/dgtal_ghactions_test
 
     permissions:
