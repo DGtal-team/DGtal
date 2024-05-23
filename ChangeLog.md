@@ -110,6 +110,8 @@
 - *DEC*
   - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
     [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
+   - Removing unnecessary unt-test in testPolygonalCalculus (David Coeurjolly,
+    [#1724](https://github.com/DGtal-team/DGtal/pull/1724))
 
 # DGtal 1.3
 
