@@ -483,7 +483,7 @@ public:
   /**
    * Private member @a myChain is a string of letters
    */    
-  const std::string myChain;
+  std::string myChain;
   // ------------------------- iterator services --------------------------------
 public:
 

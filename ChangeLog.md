@@ -90,6 +90,8 @@
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
     [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+  - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
+    [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
