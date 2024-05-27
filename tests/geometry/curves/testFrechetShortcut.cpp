@@ -243,11 +243,6 @@ bool testSegmentationLarger(const string& filename, int min, int max, double del
 
   trace.beginBlock ( "Greedy segmentation on larger contours" );
 
-   
-  //std::vector<Z2i::Point> contour;
- 
-  //contour = PointListReader< Z2i::Point >::getPointsFromFile(filename);
-
   trace.info() << "Reading input curve" << filename << std::endl; 
 
   typedef Curve::PointsRange::ConstIterator Iterator;
@@ -258,7 +253,7 @@ bool testSegmentationLarger(const string& filename, int min, int max, double del
   instream.open (filename.c_str(), ifstream::in);
 
   aCurve.initFromVectorStream(instream);
-
+  
   
   typedef Curve::PointsRange Range; //range
   Range r = aCurve.getPointsRange(); //range
@@ -291,15 +286,11 @@ bool testSegmentationLarger(const string& filename, int min, int max, double del
       for ( ; it != itEnd; ++it)
 	{
 	  SegmentComputer s(*it);
-	  //trace.info() << s << std::endl;
 	  board << (*it);
-	  // nb++;
 	}
-
-    //board << aCurve;
+      // save simplified curves in eps file
       string outputFilename = "FrechetShortcut-"+output+".eps";
       board.saveEPS(outputFilename.c_str(), Board2D::BoundingBox, 5000 );
-      //board.saveEPS("FrechetShortcutGreedySegmentationLargeTest.eps", Board2D::BoundingBox, 5000 );
     }
   
   trace.endBlock();
