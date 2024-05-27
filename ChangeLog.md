@@ -76,11 +76,11 @@
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
-    [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+    [#1681](https://github.com/DGtal-team/DGtal/pull/1681))
 
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
-	[#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+	[#1688](https://github.com/DGtal-team/DGtal/pull/1688))
   - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, Isabelle Sivignon)
   - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new tests in testFrechetShortcut (Isabelle Sivignon)
 
