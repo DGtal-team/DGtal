@@ -75,8 +75,14 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleHarmonicParametrization.cpp
 - exampleVectorHeatMethod.cpp
 - dgtalCalculus-poisson.cpp
-- dgtalCalculus-laplace.cpp
+- dgtalCalculus.cpp
+- dgtalCalculus-single.cpp
+- dgtalCalculus-geodesic.cpp
+- dgtalCalculus-halfsphere.cpp
 - dgtalCalculus-bunny.cpp
+- exampleVectorHeatMethod.cpp
+- exampleHarmonicParametrization.cpp
+- exampleBunnyHead.cpp
 
 */
 
