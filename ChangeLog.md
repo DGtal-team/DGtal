@@ -1,4 +1,4 @@
-# DGtal 1.4beta
+# DGtal 1.4
 
 ## New features / critical changes
 - *General*
@@ -10,15 +10,20 @@
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
     (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
+  - Better documentation style using doxygen-awesome.css. (David Coeurjolly,
+  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
+- *Geometry*
+  - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
+  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 ## Changes
 - *General*
-  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly,
+    [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+  - Python bindings and Pypi deploy are now handled by Github-Actions (Bastien Doignies,
+    [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
 
-- *Project*
-  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan, [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
-    
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -27,15 +32,20 @@
   - Fix duplicate symbols on Windows due to stb_image, see issue #1714 (David Coeurjolly,
     [#1715](https://github.com/DGtal-team/DGtal/pull/1715)
 
-
 - *Shapes*
   - Add flips to SurfaceMesh data structure
     (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
   - Add method to remove isolated vertices in Mesh, improve obj
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
-	
-	
+  - Update of the WindingNumber constructor to allow external computation of point areas
+    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+
+
+- *Project*
+  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
+    [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
+
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -68,11 +78,12 @@
     [#1691](https://github.com/DGtal-team/DGtal/pull/1691))
   - Cleanup of cmake targets when BUILD_TESTING is disabled (David Coeurjolly
     [#1698](https://github.com/DGtal-team/DGtal/pull/1698))
+  - Cleanup of the cmake script for dependency discovery (David Coeurjolly,
+    [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
   - Cleaning up unnecessary ModuleSRC.cmake files (David Coeurjolly
     [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
   - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
     [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
-
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
@@ -81,6 +92,8 @@
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
 	[#1688](https://github.com/DGtal-team/DGtal/pull/1688))
+  - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
+	[#1723](https://github.com/DGtal-team/DGtal/pull/1723))
   - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, Isabelle Sivignon)
   - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new tests in testFrechetShortcut (Isabelle Sivignon)
 
@@ -96,9 +109,16 @@
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
     (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
+
+- *Shapes*
+  - Removing libIGL warnings in WindingNumber classes (David Coeurjolly,
+    [#1722](https://github.com/DGtal-team/DGtal/pull/1722))
+
 - *DEC*
   - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
     [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
+   - Removing unnecessary unt-test in testPolygonalCalculus (David Coeurjolly,
+    [#1724](https://github.com/DGtal-team/DGtal/pull/1724))
 
 # DGtal 1.3
 
@@ -287,6 +307,10 @@
 - *graph*
   - Fix warning related to copy assignment in class DistanceBreadthFirstVisitor
     (Jacques-Olivier Lachaud, [#1662](https://github.com/DGtal-team/DGtal/pull/1662))
+
+- *Shapes package*
+  - fix slow remove of isolated vertices in Mesh.
+    (Bertrand Kerautret, [#1718](https://github.com/DGtal-team/DGtal/pull/1718))
 
 # DGtal 1.2
 

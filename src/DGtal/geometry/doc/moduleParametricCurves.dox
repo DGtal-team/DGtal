@@ -55,39 +55,40 @@ t \f$, and a sampling interval \f$ [t_{min}, t_{max}] \f$ such that \f$ t \in [t
 <b>Output:</b> A sequence of integer points, which connectivity, in some places, may depends on \f$ K_{NEXT}, t \f$ and
 the relation between the curve's curvature and the digital grid (see some examples below).
 
-<B>Simplified pseudo-code:</B><br>
->  <I>Create a raw digitization</I><br>
-> <B>while</B> \f$ t \in [t_{min}, t_{tmax}] \f$ <B>do</B>
->> point = [\f$ \gamma(t) \f$]       <i>// [.] stands for a rounding function </i> <br>
->> weights[point] = weights[point] + 1<br>
->> <B>if not</B> buffer.hasElement(point) <B>then</B>
->>> buffer.push_back(point)<br>
->> t = t + step<br>
->  digital_curve.push_back(buffer[0])<br>
->  <I>Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of
->  \f$ \gamma \f$.</I><br>
->  <B>for</B> \f$i = 1\f$ <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
->>  <B>for</B> \f$ j = i + 1 \f$ <B>and</B> \f$ k = 0 \f$ <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
->>>  <B>if</B> is26Connected(digital_curve.back(), buffer[j]) <B>and</B> weights[buffer[j]] \f$ > \f$ weights[buffer[i]] <B>then</B><br>
->>>>  \f$ i = j \f$ <br>
->>>>  \f$k = 0 \f$ <br>
->>>  else
->>>>  \f$ k = k + 1 \f$
->>>  \f$ j = j + 1 \f$
->>  digital_curve.push_back(buffer[i])<br>
->>  \f$ i = i + 1 \f$
->  <I>Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.</I><br>
->  <B>for</B> \f$ i = 0 \f$ <B>while</B> \f$ i <\f$ size(buffer) <B>do</B>
->>  \f$ tmp = i + 1 \f$ <br>
->>  <B>for</B> \f$ j = i + 1 \f$ <B>and</B> \f$ k = 0 \f$ <B>while</B>  \f$ j <\f$ size(buffer) <B>and</B> \f$ k < K_{NEXT} \f$ <B>do</B>
->>>  <B>if</B> is26Connected(digital_curve[i], digital_curve[j]) <B>then</B><br>
->>>>  \f$ tmp = j \f$ <br>
->>>>  \f$ k = 0 \f$ <br>
->>>  else
->>>>  \f$ k = k + 1 \f$
->>>  \f$ j = j + 1 \f$
->>  digital_curve.erase(i + 1, tmp)<br>
->>  \f$ i = tmp + 1 \f$
+Simplified pseudo-code:
+@code
+//Create a raw digitization
+ while t in  [t_{min}, t_{tmax}]  do
+  point = [ \gamma(t)]       // [.] stands for a rounding function 
+  weights[point] = weights[point] + 1
+  if not  buffer.hasElement(point) then
+    buffer.push_back(point)
+  t = t + step
+digital_curve.push_back(buffer[0])
+ //Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of   \gamma 
+  for i = 1 while  i < size(buffer) do
+    for  j = i + 1  and  k = 0  while   j < size(buffer) and  k < K_{NEXT}  do
+     if is26Connected(digital_curve.back(), buffer[j]) and weights[buffer[j]]  >  weights[buffer[i]] then
+       i = j  
+      k = 0  
+     else
+       k = k + 1 
+       j = j + 1 
+  digital_curve.push_back(buffer[i])
+  i = i + 1 
+ //Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.
+  for  i = 0  while  i < size(buffer) do
+     tmp = i + 1  
+    for  j = i + 1  and  k = 0  while   j < size(buffer) and  k < K_{NEXT}  do
+      if is26Connected(digital_curve[i], digital_curve[j]) then
+       tmp = j  
+       k = 0  
+     else
+        k = k + 1 
+      j = j + 1 
+    digital_curve.erase(i + 1, tmp)
+     i = tmp + 1 
+ @endcode
 
 In the implemented version the buffer has size three times the value of \f$ K_{NEXT} \f$, and each
 time the buffer is flushed a part of the digital curve is created (see the two first nested loops in the code
@@ -102,9 +103,9 @@ the output digital curve, information like
 - time - a time value that minimize the distance between the integer point and \f$ \gamma \f$ for a given time step.
 
 Note that, the time information is not computed by default therefore if not needed the user should
-avoid calling <B>NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator,
-back_inserter_iterator)</B>, and use
-<B>NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator)</B>, instead.
+avoid calling NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator,
+back_inserter_iterator), and use
+NaiveParametricCurveDigitizer3D::digitize(back_inserter_iterator), instead.
 
 \section digiExample Examples
 
@@ -115,7 +116,7 @@ Before using NaiveParametricCurveDigitizer3D, you must include the following hea
 @snippet geometry/curves/exampleParamCurve3dDigitization.cpp DigiHelixHeader
 
 Note that, EllipticHelix.h should be replaced with the desirable curve.
-The list of 3D parametric curves is given below. <B>Note that</B>, EllipticHelix is the only
+The list of 3D parametric curves is given below. Note that, EllipticHelix is the only
 curve that implements inverse functions (see EllipticHelix.h) for more information.
 
 Then, you can construct the needed types as follows:
@@ -231,6 +232,7 @@ In order to resolve the issue it is necessary to increase the value of \f$ K_{NE
 
 List of related examples: exampleParamCurve3dDigitization.cpp,
 exampleParamCurve3dDigitizationTransformationDecorator.cpp, exampleTrofoliKnot.cpp
+
 */
 
 }
