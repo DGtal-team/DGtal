@@ -20,6 +20,7 @@
  *
  * @date 2021/09/02
  *
+ * @ingroup Examples
  * This file is part of the DGtal library.
  */
 #include <iostream>
