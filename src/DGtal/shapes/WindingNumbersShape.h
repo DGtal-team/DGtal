@@ -173,7 +173,7 @@ namespace DGtal
       Eigen::VectorXd W;
       std::vector<Orientation> results( queries.rows(), DGtal::OUTSIDE );
 
-      rawWindingNumberBatch(queries, threshold, W);
+      rawWindingNumberBatch(queries, W);
      
       //Reformating the output
       for(auto i=0u; i < queries.rows(); ++i)
@@ -193,10 +193,8 @@ namespace DGtal
     /// Returns the raw value of the Winding Number funciton at a set of points (queries).
     ///
     /// @param queries [in] a "nx3" matrix with the query points in space.
-    /// @param threshold [in] the iso-value of the surface of the winding number implicit map.
     /// @param W [out] a vector with all windung number values.
     void rawWindingNumberBatch(const Eigen::MatrixXd & queries,
-                               const double threshold,
                                Eigen::VectorXd &W) const
     {
       Eigen::MatrixXd O_CM;
