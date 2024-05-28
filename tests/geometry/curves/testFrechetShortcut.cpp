@@ -171,13 +171,13 @@ bool testSegmentation()
 
   // Test when error = 3
   
-  double anerror = 3;
+
   int nbok = 3;
   int nb=0;
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
-    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(anerror) );
+    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(3) );
 
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
@@ -194,13 +194,13 @@ bool testSegmentation()
 
   // test when error = 0
   
-  double anerror2 = 0;
+
   int nbok2 = 5;
   int nb2=0;
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
-    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(anerror2) );
+    Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(0) );
 
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
