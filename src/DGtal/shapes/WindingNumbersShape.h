@@ -204,8 +204,6 @@ namespace DGtal
       //Checking if the areas
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
-      
-      return W;
     }
     
     ///Const alias to the points
