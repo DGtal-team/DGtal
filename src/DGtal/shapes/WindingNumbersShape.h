@@ -172,14 +172,9 @@ namespace DGtal
     {
       Eigen::VectorXd W;
       std::vector<Orientation> results( queries.rows(), DGtal::OUTSIDE );
-      Eigen::MatrixXd O_CM;
-      Eigen::VectorXd O_R;
-      Eigen::MatrixXd O_EC;
-    
-      //Checking if the areas
-      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
-      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
-      
+
+      rawWindingNumberBatch(queries, threshold, W);
+     
       //Reformating the output
       for(auto i=0u; i < queries.rows(); ++i)
       {
@@ -192,6 +187,27 @@ namespace DGtal
             results[i] = DGtal::ON;
       }
       return results;
+    }
+    
+
+    /// Returns the raw value of the Winding Number funciton at a set of points (queries).
+    ///
+    /// @param queries [in] a "nx3" matrix with the query points in space.
+    /// @param threshold [in] the iso-value of the surface of the winding number implicit map.
+    /// @param W [out] a vector with all windung number values.
+    void rawWindingNumberBatch(const Eigen::MatrixXd & queries,
+                               const double threshold,
+                               Eigen::VectorXd &W) const
+    {
+      Eigen::MatrixXd O_CM;
+      Eigen::VectorXd O_R;
+      Eigen::MatrixXd O_EC;
+      
+      //Checking if the areas
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
+      
+      return W;
     }
     
     ///Const alias to the points
