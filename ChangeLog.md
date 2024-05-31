@@ -84,6 +84,8 @@
     [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
   - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
     [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
+  - DGTAL_LIBRARIES cmake flag now contains the Deps (David Coeurjolly,
+    [#17xx](https://github.com/DGtal-team/DGtal/pull/17xx))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
