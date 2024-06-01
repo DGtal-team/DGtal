@@ -38,7 +38,9 @@
   - Add method to remove isolated vertices in Mesh, improve obj
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
-  - Update of the WindingNumber constructor to allow external computation of point areas
+  - Update of the WindingNumberShape constructor to allow external computation of point areas
+    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+  - the WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
 
