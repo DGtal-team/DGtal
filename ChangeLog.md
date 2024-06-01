@@ -38,7 +38,9 @@
   - Add method to remove isolated vertices in Mesh, improve obj
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
-  - Update of the WindingNumber constructor to allow external computation of point areas
+  - Update of the WindingNumberShape constructor to allow external computation of point areas
+    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+  - the WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
 
@@ -84,6 +86,8 @@
     [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
   - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
     [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
+  - DGTAL_LIBRARIES cmake flag now contains the Deps (David Coeurjolly,
+    [#1728](https://github.com/DGtal-team/DGtal/pull/1728))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
