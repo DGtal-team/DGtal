@@ -1,4 +1,4 @@
-# DGtal 1.4beta
+# DGtal 1.4
 
 ## New features / critical changes
 - *General*
@@ -19,11 +19,11 @@
 
 ## Changes
 - *General*
-  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly, [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+  - Renaming AUTHORS→CONTRIBUTORS for HAL (David Coeurjolly,
+    [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
+  - Python bindings and Pypi deploy are now handled by Github-Actions (Bastien Doignies,
+    [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
 
-- *Project*
-  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan, [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
-    
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
     camera or the scene) (Bertrand Kerautret, [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -38,9 +38,16 @@
   - Add method to remove isolated vertices in Mesh, improve obj
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
-  - Update of the WindingNumber constructor to allow external computation of point areas
+  - Update of the WindingNumberShape constructor to allow external computation of point areas
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
-	
+  - the WindingNumberShape class can output the raw winding number values
+    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+
+
+- *Project*
+  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
+    [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
+
 - *Github*
   - New `/builddoc` and `/fullbuild` commands on PR comments (David Coeurjolly,
     [#1683](https://github.com/DGtal-team/DGtal/pull/1683))
@@ -79,6 +86,8 @@
     [#1711](https://github.com/DGtal-team/DGtal/pull/1711))
   - Fixing install path of CPM in the DGtalConfig.cmake.in (David Coeurjolly,
     [#1713](https://github.com/DGtal-team/DGtal/pull/1713))
+  - DGTAL_LIBRARIES cmake flag now contains the Deps (David Coeurjolly,
+    [#1728](https://github.com/DGtal-team/DGtal/pull/1728))
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
@@ -91,6 +100,8 @@
     ConvexityHelper and 3-5xfaster full subconvexity tests for triangles
     in DigitalConvexity (Jacques-Olivier Lachaud,
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
+  - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
+    [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
@@ -103,9 +114,16 @@
 - *Examples*
   - Fix Issue #1675, add missing SymmetricConvexExpander.h file
     (Jacques-Olivier Lachaud, [#1675](https://github.com/DGtal-team/DGtal/pull/1675))
+
+- *Shapes*
+  - Removing libIGL warnings in WindingNumber classes (David Coeurjolly,
+    [#1722](https://github.com/DGtal-team/DGtal/pull/1722))
+
 - *DEC*
   - Fix an issue with the Geodesic in Heat Poisson solver (David Coeurjolly,
     [#1712](https://github.com/DGtal-team/DGtal/pull/1712))
+   - Removing unnecessary unt-test in testPolygonalCalculus (David Coeurjolly,
+    [#1724](https://github.com/DGtal-team/DGtal/pull/1724))
 
 # DGtal 1.3
 

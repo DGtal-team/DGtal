@@ -34,7 +34,10 @@
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
 
-#include <igl/readOBJ.h>
+#include <igl/readOFF.h>
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -52,8 +55,8 @@ TEST_CASE( "Testing LibIGL" )
   
   SECTION("Simple test with OBJ IO")
     {
-      igl::readOBJ(testPath + "samples/testObj.obj", V, F);
-      REQUIRE( V.rows() == 10);
+      igl::readOFF(testPath + "samples/box.off", V, F);
+      REQUIRE( V.rows() == 8);
       REQUIRE( F.rows() == 6);
     }
 };

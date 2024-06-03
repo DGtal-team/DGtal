@@ -41,12 +41,23 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/base/CountedConstPtrOrConstPtr.h>
 #include <DGtal/base/ConstAlias.h>
-
 #include <DGtal/shapes/CEuclideanOrientedShape.h>
+
+
+//Removing Warnings from libIGL for gcc and clang
+#pragma GCC system_header  // For GCC
+#pragma clang system_header  // For Clang
+
 #include <igl/fast_winding_number.h>
 #include <igl/octree.h>
 #include <igl/knn.h>
 #include <igl/copyleft/cgal/point_areas.h>
+
+#pragma GCC diagnostic pop  // For GCC
+#pragma clang diagnostic pop  // For Clang
+
+
+
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
@@ -161,14 +172,9 @@ namespace DGtal
     {
       Eigen::VectorXd W;
       std::vector<Orientation> results( queries.rows(), DGtal::OUTSIDE );
-      Eigen::MatrixXd O_CM;
-      Eigen::VectorXd O_R;
-      Eigen::MatrixXd O_EC;
-    
-      //Checking if the areas
-      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
-      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
-      
+
+      rawWindingNumberBatch(queries, W);
+     
       //Reformating the output
       for(auto i=0u; i < queries.rows(); ++i)
       {
@@ -181,6 +187,23 @@ namespace DGtal
             results[i] = DGtal::ON;
       }
       return results;
+    }
+    
+
+    /// Returns the raw value of the Winding Number funciton at a set of points (queries).
+    ///
+    /// @param queries [in] a "nx3" matrix with the query points in space.
+    /// @param W [out] a vector with all windung number values.
+    void rawWindingNumberBatch(const Eigen::MatrixXd & queries,
+                               Eigen::VectorXd &W) const
+    {
+      Eigen::MatrixXd O_CM;
+      Eigen::VectorXd O_R;
+      Eigen::MatrixXd O_EC;
+      
+      //Checking if the areas
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
+      igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
     }
     
     ///Const alias to the points
