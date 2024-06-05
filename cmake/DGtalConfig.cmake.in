@@ -28,6 +28,11 @@ set(WITH_EIGEN 1)
 include(eigen)
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
+if (@LIBIGL_FOUND_DGTAL@) 
+  include(libigl)
+  set(WITH_LIBIGL 1)
+  set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
+endif()
 
 if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
@@ -108,9 +113,6 @@ if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
   set(WITH_OPENMP 1)
 endif()
 
-
-
-
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
   find_dependency(CGAL COMPONENTS Core
     @CGAL_HINTS@
@@ -130,5 +132,5 @@ if(NOT TARGET DGtal)
   include ("${DGTAL_CMAKE_DIR}/DGtalLibraryDepends.cmake")
 endif()
 
-set(DGTAL_LIBRARIES DGtal Eigen3::Eigen)
+set(DGTAL_LIBRARIES DGtal ${DGtalLibDependencies})
 get_target_property(DGTAL_INCLUDE_DIRS DGtal INTERFACE_INCLUDE_DIRECTORIES)

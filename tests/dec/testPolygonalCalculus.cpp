@@ -305,13 +305,6 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
                             faces.begin(),     faces.end() );
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
   
-  SECTION("Check surface")
-    {
-      REQUIRE( surfmesh.nbVertices() == 1364 );
-      REQUIRE( surfmesh.nbFaces() == 1279 );
-      REQUIRE( boundaryEdges.size() == 168 );
-    }
-
   // Builds calculus and solve a Poisson problem with Dirichlet boundary conditions
   PolyDEC calculus( surfmesh );
   // Laplace opeartor

@@ -19,6 +19,7 @@
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2022/04/10
+ * @ingroup Examples
  *
  * This file is part of the DGtal library.
  */

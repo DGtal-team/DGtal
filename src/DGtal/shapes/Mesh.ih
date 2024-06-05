@@ -467,14 +467,15 @@ DGtal::Mesh<TPoint>::removeIsolatedVertices(){
         if (vertexUsed[i])
         {
             translateIndexId.push_back(currentIndex);
+            vSt.push_back(myVertexList[i]);
             currentIndex++;
         }
         else
         {
             translateIndexId.push_back(0);
-            myVertexList.erase(myVertexList.begin()+currentIndex);
         }
     }
+    myVertexList = vSt;
     for ( MIndex f = 0; f< nbFaces(); f++ )
     {
         auto &face = getFace(f);
