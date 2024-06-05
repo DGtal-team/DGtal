@@ -43,6 +43,10 @@
   - the WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
+- *DEC*
+  - New helper functor to construct an embedder to correct the PolygonalCalculs
+    (projection onto estimated tangent planes) (David Coeurjolly,
+    [#1730](https://github.com/DGtal-team/DGtal/issues/17309))
 
 - *Project*
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
