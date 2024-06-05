@@ -1,4 +1,23 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 #pragma once
+
+#if !defined InterpolatedCorrectedCalculus_h
+/** Prevents repeated inclusion of headers. */
+#define InterpolatedCorrectedCalculus_h
 
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/SurfaceDEC.h"
@@ -7,6 +26,24 @@
 namespace DGtal
 {
 
+  /////////////////////////////////////////////////////////////////////////////
+  // template class InterpolatedCorrectedCalculus
+  /**
+     Description of template class 'InterpolatedCorrectedCalculus' <p>
+     \brief Implement differential operators on digital surfaces with
+     a vertex normal field.
+
+     Works digital surfaces.
+
+     Requires vertex normals on attached surface mesh.
+
+     Implements SurfaceDEC methods. Use them to access the corresponding operators.
+
+   * @tparam TLinearAlgebraBackend linear algebra backend used (i.e.
+   EigenSparseLinearAlgebraBackend).
+     @tparam TRealPoint an arbitrary model of 3D RealPoint.
+     @tparam TRealVector an arbitrary model of 3D RealVector.
+  */
   template <typename TLinearAlgebraBackend, typename TRealPoint,
             typename TRealVector>
   class InterpolatedCorrectedCalculus
@@ -465,6 +502,18 @@ namespace DGtal
     }
 
     public:
+    /// @name Initialization services
+    /// @{
+
+    /// Default constructor. The object is invalid.
+    InterpolatedCorrectedCalculus() : myMesh( nullptr )
+    {
+    }
+
+    /// Constructor from surface mesh \a smesh.
+    /// @param smesh any surface mesh
+    /// @param use2ndOrder wether to use 2nd order method for interpolating normals (slightly more precise)
+    /// @param lambda value used for M1 positive definitness following @cite degoes2020discrete
     InterpolatedCorrectedCalculus( const ConstAlias<Mesh> smesh,
                                    bool use2ndOrder = false,
                                    double lambda    = 0.1 )
@@ -477,6 +526,7 @@ namespace DGtal
         return;
       }
     }
+    ///@}
 
     private:
     DenseMatrix buildLocalM0( Index f ) const
@@ -500,7 +550,7 @@ namespace DGtal
       for ( Face f = 0; f < myMesh->nbFaces(); ++f )
       {
         const auto vtcs = myMesh->incidentVertices( f );
-        const auto nv    = vtcs.size();
+        const auto nv   = vtcs.size();
         if ( nv == 4 )
           values = quadrangleInnerProduct0( f );
         else
@@ -564,6 +614,7 @@ namespace DGtal
 
     DenseMatrix buildLocalM2( Index f ) const
     {
+        /*
       const auto nv = myMesh->incidentVertices( f ).size();
       DenseMatrix res;
       if ( nv == 4 )
@@ -574,6 +625,8 @@ namespace DGtal
                       << " face should be quadrangles" << std::endl;
       }
       return res;
+      */
+      return DenseMatrix();
     }
 
     LinearOperator buildM2() const
@@ -693,12 +746,13 @@ namespace DGtal
 
     DenseMatrix buildLocalD0( Index f ) const
     {
-        const auto nc = myMesh->incidentVertices(f).size();
-        DenseMatrix res = DenseMatrix::Zero(nc, nc);
-        for(int i = 0; i < nc; i++) {
-            res((i-1+nc)%nc, i) = 1;
-            res(i, i) = -1;
-        }
+      const auto nc   = myMesh->incidentVertices( f ).size();
+      DenseMatrix res = DenseMatrix::Zero( nc, nc );
+      for ( int i = 0; i < nc; i++ )
+      {
+        res( ( i - 1 + nc ) % nc, i ) = 1;
+        res( i, i )                   = -1;
+      }
       return res;
     }
 
@@ -735,3 +789,5 @@ namespace DGtal
   };
 
 } // namespace DGtal
+
+#endif

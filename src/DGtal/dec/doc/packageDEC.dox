@@ -62,6 +62,7 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - \subpage modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
 - \subpage moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
 - \subpage moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
+- \subpage moduleNormalCorrectedFEM (Colin Weill--Duflos)
 
 @b Package @b Concepts @b Overview
 - \subpage packageDECConcepts
@@ -83,6 +84,7 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleVectorHeatMethod.cpp
 - exampleHarmonicParametrization.cpp
 - exampleBunnyHead.cpp
+- dgtalFEM-poisson.cpp
 
 */
 

@@ -1,8 +1,23 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+ #pragma once
 
-
-#if !defined SurfaceMeshMFE_h
+#if !defined NormalCorrectedFEM_h
 /** Prevents repeated inclusion of headers. */
-#define SurfaceMeshMFE_h
+#define NormalCorrectedFEM_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -18,10 +33,14 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class CorrectedFEM
   /**
-     Description of template class 'CorrectedFEM' <p> \brief Aim:
+     Description of template class 'NormalCorrectedFEM' <p> \brief Aim:
      Provides methods for building a stiffness and mass matrix to solve
      Poisson problems using the Finite Element Method using a
      corrected normal field.
+
+     Works with triangular and quadrangular surfaces.
+
+     Requires face normals on attached surface mesh.
 
    * @tparam TLinearAlgebraBackend linear algebra backend used (i.e.
    EigenSparseLinearAlgebraBackend).
@@ -37,6 +56,7 @@ namespace DGtal
     typedef TRealVector RealVector;
     typedef typename LinearAlgebraBackend::SparseMatrix LinearOperator;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
+    typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef SurfaceMesh<RealPoint, RealVector> Mesh;
     typedef typename Mesh::Vertex Vertex;
     typedef typename Mesh::Edge Edge;
@@ -368,6 +388,13 @@ namespace DGtal
       init( &smesh );
     }
 
+    /// @}
+    /// @name Standard services
+    /// @{
+
+    /// Return the stiffness matrix degree x degree of the face.
+    /// @param f a face
+    /// @return the degree x degree stiffness matrix
     DenseMatrix localL0( Face f ) const
     {
       const auto vtcs = myMesh->incidentVertices( f );
@@ -384,20 +411,42 @@ namespace DGtal
       }
     }
 
+    /// Return the global stiffness matrix n_v x n_v.
+    /// @return the n_v x n_v stiffness matrix
+    ///
+    /// @note The sign convention for the divergence and the Laplacian
+    /// operator is opposite to the one of @cite degoes2020discrete .
+    /// This is to match the usual mathematical
+    /// convention that the Laplacian (and the Laplacian-Beltrami) has
+    /// negative eigenvalues (and is the sum of second derivatives in
+    /// the cartesian grid). It also follows the formal adjointness of
+    /// exterior derivative and opposite of divergence as relation \f$
+    /// \langle \mathrm{d} u, v \rangle = - \langle u, \mathrm{div} v
+    /// \rangle \f$. See also
+    /// https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
     LinearOperator L0() const
     {
       return buildL0();
     }
 
+    /// Return the global mass matrix n_v x n_v.
+    /// This matrix is not diagonal. To obtain a (less precise)
+    /// diagonal version use lumpedM0()
+    /// @return the n_v x n_v mass matrix
     LinearOperator M0() const
     {
       return buildM0();
     }
 
+    /// Return the global lumped mass matrix n_v x n_v.
+    /// This matrix is diagonal. To obtain a (more precise)
+    /// non diagonal version use M0()
+    /// @return the n_v x n_v mass matrix
     LinearOperator lumpedM0() const
     {
       return buildLumpedM0();
     }
+    /// @}
   };
 } // namespace DGtal
 
