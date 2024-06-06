@@ -32,7 +32,7 @@
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
   - Fix duplicate symbols on Windows due to stb_image, see issue #1714 (David Coeurjolly,
-    [#1715](https://github.com/DGtal-team/DGtal/pull/1715)
+    [#1715](https://github.com/DGtal-team/DGtal/pull/1715))
 
 - *Shapes*
   - Add flips to SurfaceMesh data structure (Jacques-Olivier Lachaud,
