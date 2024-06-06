@@ -40,7 +40,7 @@
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
   - Update of the WindingNumberShape constructor to allow external computation of point areas
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
-  - the WindingNumberShape class can output the raw winding number values
+  - The WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
 
