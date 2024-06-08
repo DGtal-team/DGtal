@@ -50,7 +50,6 @@ jobs:
        if: matrix.os == 'windows-latest'
        run: |
          conan profile detect --force
-         conan install . --output-folder=build --build=missing
 
 
      - uses: actions/cache@v4
@@ -84,6 +83,7 @@ jobs:
        shell: bash
        working-directory: ${{runner.workspace}}/build
        run: |
+          conan install .. --build=missing
           ls -l
           cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
