@@ -128,7 +128,8 @@ interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
   const Integer x_a = x_min;
   p[ a ] = x_a;
   bool empty = false;
-  for ( Dimension k = 2*dimension; k < A.size(); k++ )
+  // We must take into account also bounding box constraints for interior points.
+  for ( Dimension k = 0; k < A.size(); k++ )
     {
       const Integer c = A[ k ].dot( p );
       const Integer n = A[ k ][ a ];
