@@ -43,6 +43,11 @@
   - The WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
+- *Geometry package*
+  - Add creation of polytopes from segments and triangles in
+    ConvexityHelper and 3-5xfaster full subconvexity tests for triangles
+    in DigitalConvexity (Jacques-Olivier Lachaud,
+    [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
 
 - *Project*
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
@@ -96,6 +101,8 @@
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
     [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+  - Fix BoundedLatticePolytopeCounter::countInterior method (Jacques-Olivier Lachaud,
+    [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
     [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
 
