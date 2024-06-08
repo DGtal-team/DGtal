@@ -51,7 +51,7 @@ jobs:
         id: conan
         uses: turtlebrowser/get-conan@main
         with:
-          version: 1.57.0
+          version: 2.4.0
 
       - name: Install dependancies (conan - Windows 2/2)
         if: matrix.os == 'windows-latest'

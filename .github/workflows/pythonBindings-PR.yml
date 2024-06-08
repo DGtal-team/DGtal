@@ -48,11 +48,13 @@ jobs:
         id: conan
         uses: turtlebrowser/get-conan@main
         with:
-          version: 1.57.0
+          version: 2.4.0
 
       - name: Install dependancies (conan - Windows 2/2)
         if: matrix.os == 'windows-latest'
-        run: conan profile new default --detect
+        run: |
+          conan profile new default --detect
+          conan install . --output-folder=build --build=missing
 
       - uses: actions/cache@v3
         if: matrix.os == 'windows-latest'
@@ -80,7 +82,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
 
 
       - name: Build
