@@ -50,15 +50,15 @@ jobs:
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'
        run: |
-       conan profile detect --force
-       conan install . --output-folder=build --build=missing
+         conan profile detect --force
+         conan install . --output-folder=build --build=missing
 
 
      - uses: actions/cache@v4
        if: matrix.os == 'windows-latest'
        with:
          path: ~/.conan2
-         key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
+         key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
 
      - name: Get white list of tests
        run: |
