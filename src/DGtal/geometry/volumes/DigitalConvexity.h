@@ -437,6 +437,24 @@ namespace DGtal
     /// generic since the two other methods require a Minkowski
     /// summable polytope, i.e. `P.canBeSummed() == true`.
     bool isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const;
+
+
+    /// Tells if the non-degenerated 3D triangle a,b,c is digitally
+    /// fully subconvex to some lattice set \a Star_X, i.e. the cell
+    /// cover of some set X represented by lattice points.
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)
+    ///
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
+    ///
+    /// @note This method is supposed to be faster than the others,
+    /// but is limited to 3D triangles.
+    bool isFullySubconvex( const Point& a, const Point& b, const Point& c,
+			   const LatticeSet& StarX ) const;
+
     
     /// Tells if a given segment from \a a to \a b is digitally
     /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
@@ -491,7 +509,7 @@ namespace DGtal
     /// polytope and then checking if it subconvex.
     bool isFullySubconvex( const Point& a, const Point& b,
                            const LatticeSet& StarX ) const;
-
+    
     /// Given a range of distinct points \a X, computes the tightiest
     /// polytope that enclosed it. Note that this polytope may contain
     /// more lattice points than the given input points.
@@ -537,6 +555,30 @@ namespace DGtal
     LatticeSet StarCvxH( const PointRange& X,
                          Dimension axis = dimension ) const;
 
+    /// Builds the cell complex `Star(CvxH({a,b,c}))` for `a,b,c` a
+    /// non-degenerate 3D triangle, represented as a lattice set (stacked
+    /// row representation).
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)    
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells touching the triangle `abc`,
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates). If the triangle is degenerate (a,b,c
+    /// not distinct or aligned), then it returns an empty range of
+    /// cells.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarCvxH( const Point& a, const Point& b, const Point& c,
+                         Dimension axis = dimension ) const;
+    
     /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
     ///
     /// @param X any range of lattice points

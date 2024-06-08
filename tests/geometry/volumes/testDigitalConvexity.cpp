@@ -882,3 +882,145 @@ SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )
     }
   }
 }
+
+
+SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexity][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -5, -5, -5 ), Point( 5, 5, 5 ) );
+  DConvexity dconv( Point( -6, -6, -6 ), Point( 6, 6, 6 ) );
+
+
+  WHEN( "Computing many tetrahedra" ) {
+    const unsigned int nb   = 50;
+    unsigned int nb_fulldim = 0;
+    unsigned int nb_ok_tri1 = 0;
+    unsigned int nb_ok_tri2 = 0;
+    for ( unsigned int l = 0; l < nb; ++l )
+      {
+        const Point a { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point b { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point c { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const Point d { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+        const std::vector<Point> pts = { a, b, c, d };
+        const bool fulldim = dconv.isSimplexFullDimensional(pts.cbegin(), pts.cend());
+        nb_fulldim += fulldim ? 1 : 0;
+        if ( ! fulldim ) continue;
+        auto simplex = dconv.makeSimplex( pts.cbegin(), pts.cend() );
+        auto cover   = dconv.makeCellCover( simplex, 0, 3 );
+	auto ls      = dconv.StarCvxH( pts );
+        {
+          unsigned int nb_subconvex1 = 0;
+	  unsigned int nb_subconvex2 = 0;
+          unsigned int nb_total      = 0;
+          for ( unsigned int i = 0; i < 4; i++ )
+            for ( unsigned int j = i+1; j < 4; j++ )
+              for ( unsigned int k = j+1; k < 4; k++ )
+                {
+                  auto tri1 = dconv.makeSimplex({ pts[ i ], pts[ j ], pts[ k ] });
+                  bool ok1  = dconv.isFullySubconvex( tri1, cover );
+                  bool ok2  = dconv.isFullySubconvex( pts[ i ], pts[ j ], pts[ k ], ls );
+                  nb_subconvex1 += ok1 ? 1 : 0;
+                  nb_subconvex2 += ok2 ? 1 : 0;		  
+                  nb_total      += 1;
+                  if ( ! ok1 ) {
+                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "splx v =" << a << b << c << d << std::endl;
+                    trace.info() << "simplex=" << simplex << std::endl;
+                    trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
+                                 << pts[ k ] << std::endl;
+                    trace.info() << "tri1=" << tri1 << std::endl;
+                  }
+                  if ( ! ok2 ) {
+                    trace.info() << "****** TRIANGLE 3D NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "splx v =" << a << b << c << d << std::endl;
+                    trace.info() << "simplex=" << simplex << std::endl;
+                    trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
+                                 << pts[ k ] << std::endl;
+                  }
+                }
+          nb_ok_tri1 += ( nb_subconvex1 == nb_total ) ? 1 : 0;
+          nb_ok_tri2 += ( nb_subconvex2 == nb_total ) ? 1 : 0;	  
+        }
+      }
+    THEN( "All triangles of a tetrahedron should be subconvex to it." ) {
+      REQUIRE( nb_ok_tri1 == nb_fulldim );
+    }
+    THEN( "All 3D triangles of a tetrahedron should be subconvex to it." ) {
+      REQUIRE( nb_ok_tri2 == nb_fulldim );
+    }
+  }
+
+}
+
+SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[subconvexity][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -20, -20, -20 ), Point( 20, 20, 20 ) );
+  DConvexity dconv ( Point( -21, -21, -21 ), Point( 21, 21, 21 ) );
+
+  WHEN( "Computing many tetrahedra" ) {
+    const unsigned int nb   = 50;
+    unsigned int nb_total   = 0;
+    unsigned int nb_ok_tri  = 0;
+    unsigned int nb_subconvex1 = 0;
+    unsigned int nb_subconvex2 = 0;
+    for ( unsigned int l = 0; l < nb; ++l )
+      {
+        const Point a { (rand() % 10 - 10), (rand() % 10 - 10), (rand() % 10 - 10) };
+        const Point b { (rand() % 20     ), (rand() % 20 - 10), (rand() % 20 - 10) };
+        const Point c { (rand() % 20 - 10), (rand() % 20     ), (rand() % 20 - 10) };
+        const Point d { (rand() % 20 - 10), (rand() % 20 - 10), (rand() % 20     ) };
+        const std::vector<Point> pts = { a, b, c, d };
+        const bool fulldim = dconv.isSimplexFullDimensional(pts.cbegin(), pts.cend());
+        if ( ! fulldim ) continue;
+        auto simplex = dconv.makeSimplex( pts.cbegin(), pts.cend() );
+        auto cover   = dconv.makeCellCover( simplex, 0, 3 );
+	auto ls      = dconv.StarCvxH( pts );
+        {
+          for ( unsigned int i = 0; i < 100; i++ )
+	    {
+	      const Point p { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Point q { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Point r { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Vector n = ( q - p ).crossProduct( r - p );
+	      if ( n == Vector::zero ) continue;
+	      auto tri1 = dconv.makeSimplex( { p, q, r } );
+	      bool ok1  = dconv.isFullySubconvex( tri1, cover );
+	      bool ok2  = dconv.isFullySubconvex( p, q, r, ls );
+	      nb_subconvex1 += ok1 ? 1 : 0;
+	      nb_subconvex2 += ok2 ? 1 : 0;		  
+	      if ( ok1 != ok2 ) {
+		std::cout << "***** FULL SUBCONVEXITY ERROR ON TRIANGLE ****" << std::endl;
+		std::cout << "splx v =" << a << b << c << d << std::endl;
+		std::cout << "simplex=" << simplex << std::endl;
+		std::cout << "tri v  =" << p << q << r << std::endl;
+		std::cout << "tri1=" << tri1 << std::endl;
+		std::cout << "tri1 is fully subconvex: " << ( ok1 ? "YES" : "NO" ) << std::endl;
+		std::cout << "3 points are fully subconvex: " << ( ok2 ? "YES" : "NO" ) << std::endl;
+	      }
+	      nb_ok_tri += ( ok1 == ok2 ) ? 1 : 0;
+	      nb_total  += 1;
+	    }
+	}
+      }
+    THEN( "The number of triangles and point triplets subconvex to it should be equal." ) {
+      REQUIRE( nb_subconvex1 == nb_subconvex2 );
+    }
+    THEN( "Full subconvexity should agree on every subset." ) {
+      REQUIRE( nb_ok_tri == nb_total );
+    }
+  }
+  
+}
