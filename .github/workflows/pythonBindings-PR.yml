@@ -54,13 +54,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           conan profile detect --force
-          conan install . --output-folder=build --build=missing
-
+  
       - uses: actions/cache@v3
         if: matrix.os == 'windows-latest'
         with:
           path: ~/.conan2
-          key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
+          key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
 
 
       - name: Create Build Environment
@@ -82,7 +81,9 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
+        run: |
+            conan install $GITHUB_WORKSPACE --build=missing
+            cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
 
 
       - name: Build

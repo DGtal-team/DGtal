@@ -25,6 +25,9 @@
     [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
     [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
+  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option 
+    (documentation update instead) (David Coeurjolly, 
+    [#1729](https://github.com/DGtal-team/DGtal/pull/1729))
 
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
