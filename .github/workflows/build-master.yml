@@ -10,7 +10,7 @@ env:
   CONFIG_GLOBAL:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true 
   CONFIG_LINUX:   -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWITH_CGAL=true -DWITH_LIBIGL=true  -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
   CONFIG_MAC:     -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true -DWITH_CGAL=true -DWITH_LIBIGL=true 
-  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  -DWITH_GMP=true
+  CONFIG_WINDOWS: -DWITH_OPENMP=true  -DWITH_GMP=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  
 
 jobs:
   build:
@@ -48,7 +48,9 @@ jobs:
 
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'
-       run: conan profile new default --detect
+       run: |
+          conan profile new default --detect
+          conan install . --output-folder=build --build=missing
 
      - uses: actions/cache@v4
        if: matrix.os == 'windows-latest'
@@ -80,7 +82,7 @@ jobs:
        if: matrix.os == 'windows-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
