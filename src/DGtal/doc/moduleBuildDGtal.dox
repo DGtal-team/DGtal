@@ -54,8 +54,14 @@ If you want to generate the documentation, you would need:
 
 
 @note Since 1.4, some dependencies could be installed using
-[conan.io](https://conan.io). Just install the conan binary (1.57) and
-cmake will install all libraries (which may take some time for the first build).
+[conan.io](https://conan.io). Just install the conan 2 binary and
+cmake will install all libraries (which may take some time for the first build). For instance:
+```
+conan profile detect --force ##Conan profile
+cd build
+conan install .. --build=missing
+cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW 
+```
 
 \subsection linux Build on Linux-based distributions
 
