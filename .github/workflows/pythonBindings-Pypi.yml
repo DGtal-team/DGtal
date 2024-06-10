@@ -68,7 +68,6 @@ jobs:
         shell: bash
         run: |
           python -m pip install cmake
-          python -m pip install ninja
           python -m pip install delocate
           python -m pip install scikit-build
 
@@ -101,7 +100,7 @@ jobs:
         shell: bash
         working-directory: wrap/deploy  
         run: |
-          python setup.py bdist_wheel --build-type ${{ matrix.BUILD_TYPE }} -G Ninja
+          python setup.py bdist_wheel --build-type ${{ matrix.BUILD_TYPE }}
 
       - name: Verifying wheel (Install - 1/2) 
         shell: bash
