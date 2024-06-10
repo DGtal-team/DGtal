@@ -132,5 +132,5 @@ if(NOT TARGET DGtal)
   include ("${DGTAL_CMAKE_DIR}/DGtalLibraryDepends.cmake")
 endif()
 
-set(DGTAL_LIBRARIES DGtal Eigen3::Eigen)
+set(DGTAL_LIBRARIES DGtal ${DGtalLibDependencies})
 get_target_property(DGTAL_INCLUDE_DIRS DGtal INTERFACE_INCLUDE_DIRECTORIES)
