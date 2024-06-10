@@ -270,7 +270,7 @@ Geodesic distances without correction | Geodesic distances with correction
 @image html images/poly/corrected-without.png "" | @image html images/poly/corrected-with.png ""
 
  
-The functor functors::EmbedderFromNormalVectors can be used to implicitly project Face vertices onto the prescribed tangent plane. A calssical usage is the following one:
+The functor functors::EmbedderFromNormalVectors can be used to implicitly project Face vertices onto the prescribed tangent plane. A classical usage is the following one:
  
  @code
  //A surface mesh. Eg. primal surface of a digital surface
