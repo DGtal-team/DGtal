@@ -57,12 +57,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           conan profile detect --force
-          conan install $GITHUB_WORKSPACE --build=missing
 
       - uses: actions/cache@v3
         if: matrix.os == 'windows-latest'
         with:
-          path: ~/.conan
+          path: ~/.conan2
           key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
 
       - name: Install python dependencies
@@ -89,6 +88,13 @@ jobs:
           sed -i '' "1s/.*/VERSION = '${{ github.ref_name }}'/" dgtalVersion.py
           cat dgtalVersion.py
 
+      - name: Deps on Windows
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: |
+              conan install $GITHUB_WORKSPACE --build=missing
+       
       - name: Setting build informations (Windows)
         if: matrix.os == 'windows-latest'
         shell: bash
