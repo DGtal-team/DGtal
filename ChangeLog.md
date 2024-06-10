@@ -5,13 +5,13 @@
   - Major update: C++17 is now required for DGtal. (David Coeurjolly,
     [#1682](https://github.com/DGtal-team/DGtal/pull/1682))
   - Mandatory dependencies and some optional ones can be setup by
-    conan.io, especially on windows, new `ENABLE_CONAN` cmake
+    conan.io, especially on Windows, new `ENABLE_CONAN` cmake
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
   - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
     (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
   - Better documentation style using doxygen-awesome.css. (David Coeurjolly,
-  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
+    [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 - *Geometry*
   - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
@@ -23,6 +23,11 @@
     [#1699](https://github.com/DGtal-team/DGtal/pull/1699))
   - Python bindings and Pypi deploy are now handled by Github-Actions (Bastien Doignies,
     [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
+  - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
+    [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
+  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option 
+    (documentation update instead) (David Coeurjolly, 
+    [#1729](https://github.com/DGtal-team/DGtal/pull/1729))
 
 - *IO*
   - New method to change the mode of the light position in Viewer3D (fixed to
@@ -30,19 +35,29 @@
   - Add a new method to store material information in obj file in MeshReader and MeshWriter.
     (Bertrand Kerautret, [#1686](https://github.com/DGtal-team/DGtal/pull/1686))
   - Fix duplicate symbols on Windows due to stb_image, see issue #1714 (David Coeurjolly,
-    [#1715](https://github.com/DGtal-team/DGtal/pull/1715)
+    [#1715](https://github.com/DGtal-team/DGtal/pull/1715))
 
 - *Shapes*
-  - Add flips to SurfaceMesh data structure
-    (Jacques-Olivier Lachaud, [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
+  - Add flips to SurfaceMesh data structure (Jacques-Olivier Lachaud,
+    [#1702](https://github.com/DGtal-team/DGtal/pull/1702))
   - Add method to remove isolated vertices in Mesh, improve obj
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
   - Update of the WindingNumberShape constructor to allow external computation of point areas
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
-  - the WindingNumberShape class can output the raw winding number values
+  - The WindingNumberShape class can output the raw winding number values
     (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
+- *DEC*
+  - New helper functor to construct an embedder to correct the PolygonalCalculs
+    (projection onto estimated tangent planes) (David Coeurjolly,
+    [#1730](https://github.com/DGtal-team/DGtal/issues/17309))
+
+- *Geometry package*
+  - Add creation of polytopes from segments and triangles in
+    ConvexityHelper and 3-5xfaster full subconvexity tests for triangles
+    in DigitalConvexity (Jacques-Olivier Lachaud,
+    [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
 
 - *Project*
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
@@ -95,11 +110,15 @@
 
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
-	[#1688](https://github.com/DGtal-team/DGtal/pull/1688))
+    [#1688](https://github.com/DGtal-team/DGtal/pull/1688)
+  - Fix BoundedLatticePolytopeCounter::countInterior method (Jacques-Olivier Lachaud,
+    [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
-	[#1723](https://github.com/DGtal-team/DGtal/pull/1723))
-  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, Isabelle Sivignon)
-  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new tests in testFrechetShortcut (Isabelle Sivignon)
+	  [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
+  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, 
+     Isabelle Sivignon [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
+  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new 
+    tests in testFrechetShortcut (Isabelle Sivignon, [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
 
 
 - *IO*
