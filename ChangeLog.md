@@ -15,7 +15,7 @@
 
 - *Geometry*
   - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
-  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
+    [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 ## Changes
 - *General*
@@ -44,9 +44,9 @@
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
   - Update of the WindingNumberShape constructor to allow external computation of point areas
-    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+    (David Coeurjolly, [#1719](https://github.com/DGtal-team/DGtal/issues/1719))
   - The WindingNumberShape class can output the raw winding number values
-    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+    (David Coeurjolly, [#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
 - *DEC*
   - New helper functor to construct an embedder to correct the PolygonalCalculs
@@ -106,7 +106,7 @@
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
-    [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+    [#1681](https://github.com/DGtal-team/DGtal/pull/1681))
 
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
@@ -114,7 +114,12 @@
   - Fix BoundedLatticePolytopeCounter::countInterior method (Jacques-Olivier Lachaud,
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
-    [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
+	  [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
+  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, 
+     Isabelle Sivignon [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
+  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new 
+    tests in testFrechetShortcut (Isabelle Sivignon, [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
+
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,

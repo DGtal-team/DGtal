@@ -52,6 +52,9 @@
 
 #include "DGtal/geometry/curves/SegmentComputerUtils.h"
 
+
+#define PRECISION 0.00000001
+
 namespace DGtal
 {
   
@@ -399,6 +402,24 @@ namespace DGtal
 					     double *xi, double *yi,
 					     double *xi_prime, double *yi_prime)
       {
+	// I. Sivignon 05/2024: fix to handle the case where r0=0 or
+	// r1=0. Enables the case where error=0. 
+	// Other special cases where circles are tangent are treated
+	// below. 
+	if(r0==0)
+	  {
+	    *xi = x0; *yi = y0;
+	    *xi_prime = x0 ; *yi_prime = y0;
+	    return 1;
+	  }
+	else
+	  if(r1==0)
+	    {
+	      *xi = x1; *yi = y1;
+	      *xi_prime = x1 ; *yi_prime = y1;
+	      return 1;
+	    }
+	
 	double a, dx, dy, d, h, rx, ry;
 	double x2, y2;
 	
@@ -407,10 +428,21 @@ namespace DGtal
 	 */
 	dx = x1 - x0;
 	dy = y1 - y0;
-	
+
 	/* Determine the straight-line distance between the centers. */
 	//d = sqrt((dy*dy) + (dx*dx));
 	d = hypot(dx,dy); // Suggested by Keith Briggs
+
+	if((r0+r1)*(r0+r1)-((dy*dy)+(dx*dx)) < PRECISION)   
+	  {  // I. Sivignon 05/2024: fix to handle the case where
+	     // circles are tangent but radii are non zero.
+	    
+	    double alpha= r0/d;
+	    *xi = x0 + dx*alpha;
+	    *yi = y0 + dy*alpha;
+	    *xi_prime = *xi; *yi_prime = *yi; 
+	    return 1;
+	  }
 	
 	/* Check for solvability. */
 	if (d > (r0 + r1))
@@ -424,7 +456,8 @@ namespace DGtal
 	    /* no solution. one circle is contained in the other */
 	    return 0;
 	  }
-	
+
+	//   }
 	/* 'point 2' is the point where the line through the circle
 	 * intersection points crosses the line between the circle
 	 * centers.  
@@ -432,16 +465,17 @@ namespace DGtal
 	
 	/* Determine the distance from point 0 to point 2. */
 	a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
-	
+
 	/* Determine the coordinates of point 2. */
 	x2 = x0 + (dx * a/d);
 	y2 = y0 + (dy * a/d);
-	
+
+
 	/* Determine the distance from point 2 to either of the
        * intersection points.
        */
 	h = sqrt((r0*r0) - (a*a));
-	
+
 	/* Now determine the offsets of the intersection points from
 	 * point 2.
 	 */
@@ -487,6 +521,7 @@ namespace DGtal
 	
 	int res =
 	  circle_circle_intersection(x0,y0,r0,x1,y1,r1,xi,yi,xi_prime,yi_prime);
+
 	
 	return res;
 	
@@ -522,10 +557,13 @@ namespace DGtal
 	  }
 	else
 	  {
-	    if(y>0)
-	      return M_PI_2;
-	    else
-	      return 3*M_PI_2;
+	    if(y==0)
+	      return 0;
+	    else 
+	      if(y>0)
+		return M_PI_2;
+	      else
+		return 3*M_PI_2;
 	  }
 	return -1;
       }      
@@ -795,8 +833,6 @@ public:
    * @return end iterator of the FrechetShortcut range.
    */
   ConstIterator end() const;
-  
-
   
 
   public:  
