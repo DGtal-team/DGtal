@@ -64,7 +64,7 @@ jobs:
           path: ~/.conan
           key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
 
-      - name: Install python dependancies
+      - name: Install python dependencies
         shell: bash
         run: |
           python -m pip install cmake
