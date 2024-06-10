@@ -17,6 +17,7 @@ and to construct a federative project. Another objective of DGtal is
 to simplify the construction of demonstration tools to share new
 results and potential efficiency of the proposed work.
 
+DGtal received the [Symposium on Geometry Processing Software Award in 2016](http://awards.geometryprocessing.org/).
 
 Quick Install
 =============
