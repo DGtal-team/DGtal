@@ -15,7 +15,7 @@
 
 - *Geometry*
   - New implicit shape from point cloud using LibIGL Winding Numbers. (David Coeurjolly,
-  [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
+    [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
 ## Changes
 - *General*
@@ -44,9 +44,9 @@
     material reading from potential obsolete path. (Bertrand Kerautret,
     [#1709](https://github.com/DGtal-team/DGtal/issues/1709))
   - Update of the WindingNumberShape constructor to allow external computation of point areas
-    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+    (David Coeurjolly, [#1719](https://github.com/DGtal-team/DGtal/issues/1719))
   - The WindingNumberShape class can output the raw winding number values
-    (David Coeurjolly,[#1719](https://github.com/DGtal-team/DGtal/issues/1719))
+    (David Coeurjolly, [#1719](https://github.com/DGtal-team/DGtal/issues/1719))
 
 - *DEC*
   - New helper functor to construct an embedder to correct the PolygonalCalculs
