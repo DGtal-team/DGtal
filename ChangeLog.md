@@ -106,7 +106,7 @@
 
 - *Topology package*
   - Fix KhalimskySpaceND to get it work with BigInteger (Tristan Roussillon,
-    [#1681](https://github.com/DGtal-team/DGtal/pull/1681)
+    [#1681](https://github.com/DGtal-team/DGtal/pull/1681))
 
 - *Geometry package*
   - Fix Issue #1676 in testStabbingCircleComputer (Tristan Roussillon,
@@ -114,7 +114,12 @@
   - Fix BoundedLatticePolytopeCounter::countInterior method (Jacques-Olivier Lachaud,
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
-    [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
+	  [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
+  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, 
+     Isabelle Sivignon [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
+  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new 
+    tests in testFrechetShortcut (Isabelle Sivignon, [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
+
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
