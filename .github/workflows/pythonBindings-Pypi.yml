@@ -57,6 +57,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           conan profile detect --force
+          conan install $GITHUB_WORKSPACE --build=missing
 
       - uses: actions/cache@v3
         if: matrix.os == 'windows-latest'
