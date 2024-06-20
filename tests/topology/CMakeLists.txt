@@ -16,6 +16,7 @@ set(DGTAL_TESTS_SRC
    testParDirCollapse
    testHalfEdgeDataStructure
    testIndexedDigitalSurface
+   testSplitFunctions
 )
 
 foreach(FILE ${DGTAL_TESTS_SRC})
