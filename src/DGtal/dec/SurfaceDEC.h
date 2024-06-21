@@ -42,21 +42,22 @@ namespace DGtal
     /// @name Global operators
     /// @{
 
-    /// Global differential
+    /// \brief Global differential
     /// @return the n_e x n_v diffential matrix
     LinearOperator D0() const
     {
       return static_cast<T const *>( this )->buildD0();
     }
 
-    /// Global Laplace-Beltrami
+    /// \brief Global Laplace-Beltrami
     /// @return the n_v x n_v striffness matrix
     LinearOperator L0() const
     {
       return static_cast<T const *>( this )->buildL0();
     }
 
-    /// Global inner product between 0 forms
+    /// \brief Global inner product between 0 forms
+    ///
     /// For a diagonal version see lumpedM0()
     /// @return the n_v x n_v mass matrix
     LinearOperator M0() const
@@ -64,7 +65,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildM0();
     }
 
-    /// Global diagonal inner product between 0 forms
+    /// \brief Global diagonal inner product between 0 forms
     ///
     /// @param f a face
     /// @return the n_v x n_v diagonal mass matrix
@@ -73,28 +74,28 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLumpedM0();
     }
 
-    /// Global inner product between 1 forms
+    /// \brief Global inner product between 1 forms
     /// @return the n_e x n_e mass matrix
     LinearOperator M1() const
     {
       return static_cast<T const *>( this )->buildM1();
     }
 
-    /// Global inner product between 2 forms
+    /// \brief Global inner product between 2 forms
     /// @return the n_f x n_f mass matrix
     LinearOperator M2() const
     {
       return static_cast<T const *>( this )->buildM2();
     }
 
-    /// Global Sharp operator
+    /// \brief Global Sharp operator
     /// @return a 3*n_f x n_e matrix
     LinearOperator Sharp() const
     {
       return static_cast<T const *>( this )->buildSharp();
     }
 
-    /// Global Flat operator
+    /// \brief Global Flat operator
     /// @return a n_e x 3*n_f matrix
     LinearOperator Flat() const
     {
@@ -106,7 +107,7 @@ namespace DGtal
     /// @name Per face operators
     /// @{
 
-    /// Differential inside a face
+    /// \brief Differential inside a face
     /// @param f a face
     /// @return the degree x degree differential matrix
     DenseMatrix localD0( Index f ) const
@@ -114,7 +115,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalD0( f );
     }
 
-    /// Laplace-Beltrami inside a face
+    /// \brief Laplace-Beltrami inside a face
     /// @param f a face
     /// @return the degree x degree stiffness matrix
     DenseMatrix localL0( Index f ) const
@@ -122,7 +123,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalL0( f );
     }
 
-    /// Inner product between 0 forms inside a face
+    /// \brief Inner product between 0 forms inside a face
     /// @param f a face
     /// @return the degree x degree mass matrix
     DenseMatrix localM0( Index f ) const
@@ -130,7 +131,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalM0( f );
     }
 
-    /// Inner product between 1 forms inside a face
+    /// \brief Inner product between 1 forms inside a face
     /// @param f a face
     /// @return the degree x degree mass matrix
     DenseMatrix localM1( Index f ) const
@@ -138,7 +139,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalM1( f );
     }
 
-    /// Inner product between 2 forms inside a face
+    /// \brief Inner product between 2 forms inside a face
     /// @param f a face
     /// @return the 1 x 1 mass matrix
     DenseMatrix localM2( Index f ) const
@@ -146,7 +147,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalM2( f );
     }
 
-    /// Sharp operator for inside a face
+    /// \brief Sharp operator for inside a face
     /// @param f a face
     /// @return a 3 x degree matrix
     DenseMatrix localSharp( Index f ) const
@@ -154,7 +155,7 @@ namespace DGtal
       return static_cast<T const *>( this )->buildLocalSharp( f );
     }
 
-    /// Flat operator inside a face
+    /// \brief Flat operator inside a face
     /// @param f a face
     /// @return a degree x 3 matrix
     DenseMatrix localFlat( Index f ) const

@@ -40,6 +40,7 @@ set(POLYSCOPE_SRCS
   tangency-explorer
   tangency-reconstruction
   dgtalFEM-poisson
+  dgtalCC-poisson
 )
 
 if(WITH_LIBIGL)

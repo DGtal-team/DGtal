@@ -37,7 +37,8 @@ namespace DGtal
 
      Requires vertex normals on attached surface mesh.
 
-     Implements SurfaceDEC methods. Use them to access the corresponding operators.
+     Implements SurfaceDEC methods. Use them to access the corresponding
+   operators.
 
    * @tparam TLinearAlgebraBackend linear algebra backend used (i.e.
    EigenSparseLinearAlgebraBackend).
@@ -512,8 +513,10 @@ namespace DGtal
 
     /// Constructor from surface mesh \a smesh.
     /// @param smesh any surface mesh
-    /// @param use2ndOrder wether to use 2nd order method for interpolating normals (slightly more precise)
-    /// @param lambda value used for M1 positive definitness following @cite degoes2020discrete
+    /// @param use2ndOrder wether to use 2nd order method for interpolating
+    /// normals (slightly more precise)
+    /// @param lambda value used for M1 positive definitness following @cite
+    /// degoes2020discrete
     InterpolatedCorrectedCalculus( const ConstAlias<Mesh> smesh,
                                    bool use2ndOrder = false,
                                    double lambda    = 0.1 )
@@ -614,24 +617,21 @@ namespace DGtal
 
     DenseMatrix buildLocalM2( Index f ) const
     {
-        /*
       const auto nv = myMesh->incidentVertices( f ).size();
       DenseMatrix res;
       if ( nv == 4 )
-        res = DenseMatrix::Identity( 4, 4 ) * quadrangleArea( f );
+        res = DenseMatrix::Identity( 1, 1 ) / quadrangleArea( f );
       else
       {
         trace.error() << "[InterpolatedCorrectedCalculus::buildLocalM2]"
                       << " face should be quadrangles" << std::endl;
       }
       return res;
-      */
-      return DenseMatrix();
     }
 
     LinearOperator buildM2() const
     {
-      Triplets triplets, triplets2;
+      Triplets triplets;
       LinearOperator myM2 =
       LinearOperator( myMesh->nbFaces(), myMesh->nbFaces() );
       for ( Face f = 0; f < myMesh->nbFaces(); ++f )
@@ -646,7 +646,6 @@ namespace DGtal
                         << " faces should be quadrangular." << std::endl;
         }
         triplets.push_back( { f, f, 1.0 / area } );
-        triplets2.push_back( { f, f, area } );
       }
       myM2.setFromTriplets( triplets.cbegin(), triplets.cend() );
       return myM2;

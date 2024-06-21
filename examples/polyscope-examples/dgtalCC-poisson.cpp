@@ -29,7 +29,7 @@
 #include <DGtal/helpers/ShortcutsGeometry.h>
 #include <DGtal/shapes/SurfaceMesh.h>
 #include <DGtal/geometry/surfaces/DigitalSurfaceRegularization.h>
-#include <DGtal/dec/NormalCorrectedFEM.h>
+#include <DGtal/dec/InterpolatedCorrectedCalculus.h>
 #include <DGtal/math/linalg/DirichletConditions.h>
 
 #include <polyscope/polyscope.h>
@@ -56,12 +56,12 @@ float scale = 0.1;
 
 void computeLaplace()
 {
-  //! [FEM-init]
-  typedef NormalCorrectedFEM<EigenLinearAlgebraBackend, SH3::RealPoint,SH3::RealVector> ncFEM;
+  //! [CC-init]
+  typedef InterpolatedCorrectedCalculus<EigenLinearAlgebraBackend, SH3::RealPoint,SH3::RealVector> CC;
   typedef DirichletConditions< EigenLinearAlgebraBackend >  DC;
-  ncFEM calculus(surfmesh);
-  ncFEM::LinearOperator L = calculus.L0();
-  ncFEM::DenseVector g = ncFEM::DenseVector::Zero(surfmesh.nbVertices());
+  CC calculus(surfmesh);
+  CC::LinearOperator L = calculus.L0();
+  CC::DenseVector g = CC::DenseVector::Zero(surfmesh.nbVertices());
   DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
 
   //We set values on the boundary
@@ -80,14 +80,14 @@ void computeLaplace()
   }
 
   // Solve Δu=0 with g as boundary conditions
-  ncFEM::LinearAlgebraBackend::SolverSimplicialLDLT solver;
-  ncFEM::LinearOperator L_dirichlet = DC::dirichletOperator( L, b );
+  CC::LinearAlgebraBackend::SolverSimplicialLDLT solver;
+  CC::LinearOperator L_dirichlet = DC::dirichletOperator( L, b );
   solver.compute( L_dirichlet );
   ASSERT(solver.info()==Eigen::Success);
-  ncFEM::DenseVector g_dirichlet = DC::dirichletVector( L, g, b, g );
-  ncFEM::DenseVector x_dirichlet = solver.solve( g_dirichlet );
-  ncFEM::DenseVector u = DC::dirichletSolution( x_dirichlet, b, g );
-  //! [FEM-init]
+  CC::DenseVector g_dirichlet = DC::dirichletVector( L, g, b, g );
+  CC::DenseVector x_dirichlet = solver.solve( g_dirichlet );
+  CC::DenseVector u = DC::dirichletSolution( x_dirichlet, b, g );
+  //! [CC-init]
 
   psMesh->addVertexScalarQuantity("g", g);
   psMesh->addVertexScalarQuantity("u", u);
@@ -124,6 +124,7 @@ int main()
                       faces.begin(),
                       faces.end());
   surfmesh.computeFaceNormalsFromPositions();
+  surfmesh.computeVertexNormalsFromFaceNormals();
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
 
   // Initialize polyscope
