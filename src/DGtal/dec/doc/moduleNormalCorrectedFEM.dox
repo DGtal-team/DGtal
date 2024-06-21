@@ -1,0 +1,153 @@
+
+/**
+ * @file
+ * @author Colin Weill--Duflos (\c colin.weill-duflos@univ-smb.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2024/06/05
+ *
+ * Documentation file for feature NormalCorrectedFEM
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleNormalCorrectedFEM Normal corrected Finite Element Method for Poisson problems
+@writers Colin Weill--Duflos
+
+[TOC]
+
+@since 1.5
+
+  Part of package \ref packageDEC.
+
+In this documentation page, we detail a laplacian operator
+ computations on surface mesh equipped with faces normals provided by the
+ NormalCorrectedFEM class.
+
+@note The sign convention for the divergence and the Laplacian
+operator is opposite to the one of @cite degoes2020discrete. This is
+to match the usual mathematical convention that the Laplacian (and the
+Laplacian-Beltrami) has negative eigenvalues (and is the sum of second
+derivatives in the cartesian grid). It also follows the formal
+adjointness of exterior derivative and opposite of divergence as
+relation \f$ \langle \mathrm{d} u, v \rangle = - \langle u,
+\mathrm{div} v \rangle \f$. See also
+https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
+
+@note All illustrations below have been obtained using the
+DGtal+[polyscope](https://polyscope.run) example dgtalFEM-poisson.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
+
+@warning The implementation heavily relies on implicit operators with many Eigen based small matrice constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
+
+
+
+\section sectNormalCorrectedFEMIntro Introduction
+
+We aim at solving a problem of the form @f$\Delta u = f@f$.
+We follows the Finite Element Method to derive two matrices @f$L, M@f$
+such that @f$L \mathbf{u} = M \mathbf{f}@f$. We use a normal based
+metric to make our operator work on digital surfaces.
+
+The metric used is @f$ G = \begin{bmatrix} 1 - (\mathbf{u}_x)^2 & -\mathbf{u}_x \mathbf{u}_y \\
+-\mathbf{u}_x \mathbf{u}_y & 1-(\mathbf{u}_y)^2 \end{bmatrix} @f$
+
+Where @f$\mathbf{u} = (\mathbf{u}_x, \mathbf{u}_y, \mathbf{u}_z)@f$ is the provided normal
+for a surfel in the natural coordinate surface of the surfel.
+
+\section sectNormalCorrectedFEMface Per face operators
+
+Let us consider a single face digital surface (i.e. : a square). Using :
+
+@code
+using ncFEM = NormalCorrectedFEM<EigenLinearAlgebraBackend, Z3i::RealPoint, Z3i::RealVector>;
+using SurfMesh = SurfaceMesh<Z3i::RealPoint,Z3i::RealVector>;
+using namespace Z3i;
+
+//Vertices
+std::vector<RealPoint> positions={ {0,0,0},{1,0,0},{1,1,0},{0,0,1} };
+//Single face
+std::vector<std::vector<size_t>> faces={{ 0,1,2,3 }};
+
+mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
+// We require normal at faces. For digital surfaces, prefer using a convergent estimator
+mesh.computeFaceNormalsFromPositions();
+
+ncFEM calculus(mesh);
+@endcode
+
+we obtain a SurfaceMesh instance with a unique face, we add the naturally defined normal
+to it and we define its associated NormalCorrectedFEM object.
+
+Let us add a scalar function on vertices. For instance, using Eigen syntax, we can use;
+
+@code
+ncFEM::DenseVector phi(4); //4 vertices
+phi << 1.0, 2.0, 0.0, 5.0;
+@endcode
+
+\subsection sectNormalCorrectedMMstiff Mass matrix and stiffness matrix
+
+The expression for the integral of the product of two functions @f$f@f$ and @f$g@f$ inside a surfel is given by the following expression :
+@f[ \int_{\square} \sqrt{det(G)}fg @f]
+
+The expression for the integral of the dot product of the gradient of two functions @f$f@f$ and @f$g@f$ inside a surfel is given by the following expression :
+@f[ \int_{\square} \sqrt{det(G)} \nabla f^T G^{-1} \nabla g \rangle @f]
+
+By evaluating this expression with a linear basis, we can build matrices letting us evaluate these integrals for any two linear functions inside a face.
+The results can be obtained in the following way :
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.localM0(f)`  | \f$ n_v\times n_v\f$ | mass matrix (corresponds to the inner product between 0 forms in @cite degoes2020discrete)
+`calculus.localL0(f)`|  \f$ n_v \times n_v\f$  | stiffness matrix (corresponds to Laplace-Beltrami operator in @cite degoes2020discrete), the matrix is PSD
+
+\section sectNormalCorrectedFEMGlo Global operators
+
+Given a scalar function defined on a generic surface mesh vertices, all previously mentioned operators can be applied to obtain consistent quantities on the overall mesh.
+
+
+Operator  | Output | Description
+------------- | ------------- | ----
+`calculus.M0()`  | \f$ n_v \times n_v\f$ | global mass matrix (PD)
+`calculus.lumpedM0()`  | \f$ n_v \times n_v\f$ | global lumped mass matrix (Diagonal, positive)
+`calculus.L0()`|  \f$ n_v \times n_v\f$  | global stiffness matrix (SPD)
+
+
+\section secNormalCorrectedFEMLap Example: Solving a Laplace problem
+
+Let suppose we want to solve the following Laplace problem for data interpolation:
+\f{eqnarray*}{
+        \Delta_\Omega u& = 0  \\
+        & s.t. u = g \text{ on } \partial\Omega
+\f}
+
+We want to solve that problem on a digital surface @f$\Omega@f$
+ with a boundary and some scalar values attached
+to boundary vertices, or sampled on the object surface.
+
+Furthermore, the discrete version of the Laplace problem boils down to
+a simple linear problem using on the discrete Laplace-Beltrami sparse
+matrix.
+
+We also use class DirichletConditions to enforce Dirichlet boundary
+conditions on the system.
+
+The overall code is:
+\snippet dgtalFEM-poisson.cpp FEM-init
+
+Leading to the following results (see \ref dgtalFEM-poisson.cpp):
+
+Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
+--|--|--
+@image html images/fem/poisson-fem-surf.png "" | @image html images/fem/poisson-fem-g.png "" | @image html images/fem/poisson-fem-u.png ""
+
+*/
+
+}

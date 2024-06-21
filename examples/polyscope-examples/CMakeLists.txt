@@ -39,11 +39,13 @@ set(POLYSCOPE_SRCS
   exampleBunnyHead
   tangency-explorer
   tangency-reconstruction
+  dgtalFEM-poisson
+  dgtalCC-poisson
 )
 
 if(WITH_LIBIGL)
- set(POLYSCOPE_SRCS  
-      ${POLYSCOPE_SRCS} 
+ set(POLYSCOPE_SRCS
+      ${POLYSCOPE_SRCS}
       windingNumbersShape
  )
 endif()
