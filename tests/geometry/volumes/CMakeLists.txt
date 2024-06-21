@@ -9,6 +9,7 @@ set(DGTAL_TESTS_VOLUMES_SRC
   testBoundedRationalPolytope
   testCellGeometry
   testDigitalConvexity
+  testPConvexity
   testConvexityHelper
   testFullConvexity
   testEhrhartPolynomial
