@@ -55,6 +55,7 @@ namespace DGtal
     typedef TRealPoint RealPoint;
     typedef TRealVector RealVector;
     typedef typename LinearAlgebraBackend::SparseMatrix LinearOperator;
+    typedef typename LinearAlgebraBackend::SparseMatrix::StorageIndex StorageIndex;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef SurfaceMesh<RealPoint, RealVector> Mesh;
@@ -87,18 +88,18 @@ namespace DGtal
       const auto face_n       = myMesh->faceNormal( f );
       const double z          = face_n.dot( nn );
       const double doubleArea = n.norm();
-      triplets.push_back( { v0, v0, 1. / 12. * z * doubleArea } );
-      triplets.push_back( { v0, v1, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v0, v2, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v1, v0, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v1, v1, 1. / 12. * z * doubleArea } );
-      triplets.push_back( { v1, v2, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v2, v0, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v2, v1, 1. / 24. * z * doubleArea } );
-      triplets.push_back( { v2, v2, 1. / 12. * z * doubleArea } );
-      lumpedTriplets.push_back( { v0, v0, 1. / 6. * z * doubleArea } );
-      lumpedTriplets.push_back( { v1, v1, 1. / 6. * z * doubleArea } );
-      lumpedTriplets.push_back( { v2, v2, 1. / 6. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v0, (StorageIndex)v0, 1. / 12. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v0, (StorageIndex)v1, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v0, (StorageIndex)v2, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v1, (StorageIndex)v0, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v1, (StorageIndex)v1, 1. / 12. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v1, (StorageIndex)v2, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v2, (StorageIndex)v0, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v2, (StorageIndex)v1, 1. / 24. * z * doubleArea } );
+      triplets.push_back( { (StorageIndex)v2, (StorageIndex)v2, 1. / 12. * z * doubleArea } );
+      lumpedTriplets.push_back( { (StorageIndex)v0, (StorageIndex)v0, 1. / 6. * z * doubleArea } );
+      lumpedTriplets.push_back( { (StorageIndex)v1, (StorageIndex)v1, 1. / 6. * z * doubleArea } );
+      lumpedTriplets.push_back( { (StorageIndex)v2, (StorageIndex)v2, 1. / 6. * z * doubleArea } );
     }
 
     void buildQuadrangleFaceMass( Triplets & triplets,
@@ -133,20 +134,20 @@ namespace DGtal
               int v_j = v[ i2 ][ j2 ];
               if ( i == i2 && j == j2 )
               {
-                triplets.push_back( { v_i, v_j, area * z * 1. / 9. } );
-                lumpedTriplets.push_back( { v_i, v_j, 1. / 4. * z * area } );
+                triplets.push_back( { (StorageIndex)v_i, (StorageIndex)v_j, area * z * 1. / 9. } );
+                lumpedTriplets.push_back( { (StorageIndex)v_i, (StorageIndex)v_j, 1. / 4. * z * area } );
               }
               else if ( i == i2 && j == 1 - j2 )
               {
-                triplets.push_back( { v_i, v_j, area * z * 1. / 18. } );
+                triplets.push_back( { (StorageIndex)v_i, (StorageIndex)v_j, area * z * 1. / 18. } );
               }
               else if ( j == j2 && i == 1 - i2 )
               {
-                triplets.push_back( { v_i, v_j, area * z * 1. / 18. } );
+                triplets.push_back( { (StorageIndex)v_i, (StorageIndex)v_j, area * z * 1. / 18. } );
               }
               else
               {
-                triplets.push_back( { v_i, v_j, area * z * 1. / 36. } );
+                triplets.push_back( { (StorageIndex)v_i, (StorageIndex)v_j, area * z * 1. / 36. } );
               }
             }
           }
@@ -311,7 +312,7 @@ namespace DGtal
         }
         for ( int i = 0; i < values.rows(); i++ )
           for ( int j = 0; j < values.cols(); j++ )
-            triplets.push_back( { vtcs[ i ], vtcs[ j ], values( i, j ) } );
+            triplets.push_back( { (StorageIndex)vtcs[ i ], (StorageIndex)vtcs[ j ], values( i, j ) } );
       }
       L.setFromTriplets( triplets.cbegin(), triplets.cend() );
       return -L;

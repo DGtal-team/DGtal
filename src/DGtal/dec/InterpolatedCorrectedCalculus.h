@@ -62,6 +62,8 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseVector::Index Index;
     typedef typename LinearAlgebraBackend::DenseVector::Scalar Scalar;
     typedef typename LinearAlgebraBackend::SparseMatrix LinearOperator;
+    typedef
+    typename LinearAlgebraBackend::SparseMatrix::StorageIndex StorageIndex;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef SurfaceMesh<RealPoint, RealVector> Mesh;
@@ -564,7 +566,8 @@ namespace DGtal
         }
         for ( int i = 0; i < values.rows(); i++ )
           for ( int j = 0; j < values.cols(); j++ )
-            triplets.push_back( { vtcs[ i ], vtcs[ j ], values( i, j ) } );
+            triplets.push_back( { (StorageIndex)vtcs[ i ],
+                                  (StorageIndex)vtcs[ j ], values( i, j ) } );
       }
       myM0.setFromTriplets( triplets.cbegin(), triplets.cend() );
       return myM0;
@@ -599,9 +602,11 @@ namespace DGtal
         if ( a_f <= 1e-8 )
           trace.warning() << "Bad corrected area " << f << " " << a_f
                           << std::endl;
-        triplets.push_back( { 3 * f, 3 * f, a_f } );
-        triplets.push_back( { 3 * f + 1, 3 * f + 1, a_f } );
-        triplets.push_back( { 3 * f + 2, 3 * f + 2, a_f } );
+        triplets.push_back( { (StorageIndex)3 * f, (StorageIndex)3 * f, a_f } );
+        triplets.push_back(
+        { (StorageIndex)3 * f + 1, (StorageIndex)3 * f + 1, a_f } );
+        triplets.push_back(
+        { (StorageIndex)3 * f + 2, (StorageIndex)3 * f + 2, a_f } );
       }
       CA.setFromTriplets( triplets.cbegin(), triplets.cend() );
       // Compute projection operator
@@ -645,7 +650,7 @@ namespace DGtal
           trace.error() << "[InterpolatedCorrectedCalculus::buildM2]"
                         << " faces should be quadrangular." << std::endl;
         }
-        triplets.push_back( { f, f, 1.0 / area } );
+        triplets.push_back( { (StorageIndex)f, (StorageIndex)f, 1.0 / area } );
       }
       myM2.setFromTriplets( triplets.cbegin(), triplets.cend() );
       return myM2;
@@ -689,8 +694,9 @@ namespace DGtal
         const auto G_f = buildLocalSharp( f );
         for ( Dimension x = 0; x < 3; ++x )
           for ( Dimension n = 0; n < nc; ++n )
-            triplets.push_back(
-            { 3 * f + x, edge_idcs[ n ], edge_sign[ n ] * G_f( x, n ) } );
+            triplets.push_back( { (StorageIndex)3 * f + x,
+                                  (StorageIndex)edge_idcs[ n ],
+                                  edge_sign[ n ] * G_f( x, n ) } );
       }
       mySharp.setFromTriplets( triplets.cbegin(), triplets.cend() );
       return mySharp;
@@ -735,7 +741,8 @@ namespace DGtal
           for ( Dimension n = 0; n < nc; ++n )
           {
             const double nbFaces = myMesh->edgeFaces( edge_idcs[ n ] ).size();
-            triplets.push_back( { edge_idcs[ n ], 3 * f + x,
+            triplets.push_back( { (StorageIndex)edge_idcs[ n ],
+                                  (StorageIndex)3 * f + x,
                                   edge_sign[ n ] * V_f( n, x ) / nbFaces } );
           }
       }
@@ -762,8 +769,8 @@ namespace DGtal
       Edge e = 0;
       for ( auto && vtcs : myMesh->allEdgeVertices() )
       {
-        triplets.push_back( { e, vtcs.first, -1 } );
-        triplets.push_back( { e, vtcs.second, 1 } );
+        triplets.push_back( { (StorageIndex)e, (StorageIndex)vtcs.first, -1 } );
+        triplets.push_back( { (StorageIndex)e, (StorageIndex)vtcs.second, 1 } );
         e++;
       }
       LinearOperator myD0 =

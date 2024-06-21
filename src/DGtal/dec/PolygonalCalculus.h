@@ -1410,8 +1410,8 @@ namespace DGtal
       typename MySurfaceMesh::Index e = 0;
       for ( auto && vtcs : mySurfaceMesh->allEdgeVertices() )
       {
-        triplets.push_back( { e, vtcs.first, -1 } );
-        triplets.push_back( { e, vtcs.second, 1 } );
+        triplets.push_back( {(SparseMatrix::StorageIndex)e,(SparseMatrix::StorageIndex)vtcs.first, -1 } );
+        triplets.push_back( {(SparseMatrix::StorageIndex)e,(SparseMatrix::StorageIndex)vtcs.second, 1 } );
         e++;
       }
       SparseMatrix myD0 =
