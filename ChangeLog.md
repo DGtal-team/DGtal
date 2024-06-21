@@ -1,7 +1,8 @@
 # DGtal 1.5beta
 ## New features / critical changes
 ## Changes
-- *DEC* Add normal corrected FEM calculus for Poisson problem and Interpolated Calculus variant of DEC (Colin Weill--Duflos, PULL_REQUEST)
+- *DEC*
+  - Add normal corrected FEM calculus for Poisson problem and Interpolated Calculus variant of DEC (Colin Weill--Duflos, PULL_REQUEST)
 ## Bug fixes
 
 # DGtal 1.4
