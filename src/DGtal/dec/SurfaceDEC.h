@@ -15,6 +15,17 @@
  **/
 #pragma once
 
+/**
+ * @file
+ * @author
+ *
+ * @date 2024/06/21
+ *
+ * Header file for module SurfaceDEC.h
+ *
+ * This file is part of the DGtal library.
+ */
+
 #if !defined SurfaceDEC_h
 /** Prevents repeated inclusion of headers. */
 #define SurfaceDEC_h
