@@ -15,6 +15,18 @@
  **/
  #pragma once
 
+
+/**
+ * @file
+ * @author
+ *
+ * @date 2024/06/21
+ *
+ * Header file for module SurfaceDEC.h
+ *
+ * This file is part of the DGtal library.
+ */
+
 #if !defined NormalCorrectedFEM_h
 /** Prevents repeated inclusion of headers. */
 #define NormalCorrectedFEM_h
@@ -383,6 +395,7 @@ namespace DGtal
 
     /// Constructor from surface mesh \a smesh.
     /// @param smesh any surface mesh
+    /// @param order the order (default 1)
     NormalCorrectedFEM( ConstAlias<Mesh> smesh, int order = 1 )
       : myMesh( nullptr ), order( order )
     {
