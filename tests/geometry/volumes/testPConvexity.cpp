@@ -59,12 +59,18 @@ SCENARIO( "PConvexity< Z2 > P-convexity tests", "[p_convexity][2d]" )
   std::vector<Point> V1 = { Point(0,0), Point(-1,0), Point(1,0), Point(0,1) };
   REQUIRE( pconv.is0Convex( V1 ) );
   REQUIRE( pconv.isPConvex( V1 ) );
+  REQUIRE( pconv.convexityMeasure( V1 ) == 1.0 );
+  REQUIRE( pconv.fullConvexityMeasure( V1 ) == 1.0 );
   std::vector<Point> V2 = { Point(-1,0), Point(1,0), Point(0,1) };
   REQUIRE( ! pconv.is0Convex( V2 ) );
   REQUIRE( ! pconv.isPConvex( V2 ) );
+  REQUIRE( pconv.convexityMeasure( V2 ) < 1.0 );
+  REQUIRE( pconv.fullConvexityMeasure( V2 ) < 1.0 );
   std::vector<Point> V3 = { Point(0,0), Point(-1,0), Point(1,0) };
   REQUIRE( pconv.is0Convex( V3 ) );
   REQUIRE( pconv.isPConvex( V3 ) );
+  REQUIRE( pconv.convexityMeasure( V3 ) == 1.0 );
+  REQUIRE( pconv.fullConvexityMeasure( V3 ) == 1.0 );
   std::vector<Point> V4 = { Point(0,0), Point(-1,0), Point(1,0), Point(0,1),
     Point(0,-1) };
   REQUIRE( pconv.is0Convex( V4 ) );
@@ -72,6 +78,8 @@ SCENARIO( "PConvexity< Z2 > P-convexity tests", "[p_convexity][2d]" )
   std::vector<Point> V5 = { Point(-1,0), Point(0,0), Point(3,1) };
   REQUIRE( pconv.is0Convex( V5 ) );
   REQUIRE( ! pconv.isPConvex( V5 ) );
+  REQUIRE( pconv.convexityMeasure( V5 ) == 1.0 );
+  REQUIRE( pconv.fullConvexityMeasure( V5 ) < 1.0 );
 }
 
 SCENARIO( "PConvexity< Z3 > ball tests", "[p_convexity][3d]" )
@@ -83,7 +91,7 @@ SCENARIO( "PConvexity< Z3 > ball tests", "[p_convexity][3d]" )
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
     
-    Convexity  conv;
+    Convexity  pconv;
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
     Point      c  = Point::zero;
@@ -91,11 +99,15 @@ SCENARIO( "PConvexity< Z3 > ball tests", "[p_convexity][3d]" )
     DigitalSet ball  ( domain );
     Shapes< Domain >::addNorm2Ball( ball, c, 5 );
     std::vector<Point> V( ball.begin(), ball.end() );
-    bool cvx0 = conv.is0Convex( V );
-    bool fcvx = conv.isPConvex( V );
+    bool cvx0 = pconv.is0Convex( V );
+    bool fcvx = pconv.isPConvex( V );
     THEN( "It is a 0-convex and P-convex by morphological characterization" ) {
       REQUIRE( cvx0 );
       REQUIRE( fcvx );
+    }
+    THEN( "Then both its convexity measure and its full convexity measure is 1.0" ) {
+      REQUIRE( pconv.convexityMeasure( V ) == 1.0 );
+      REQUIRE( pconv.fullConvexityMeasure( V ) == 1.0 );
     }
   }
 }
@@ -122,6 +134,10 @@ SCENARIO( "PConvexity< Z4 > ball tests", "[p_convexity][4d]" )
     THEN( "It is a 0-convex and P-convex by morphological characterization" ) {
       REQUIRE( cvx0 );
       REQUIRE( fcvx );
+    }
+    THEN( "Then both its convexity measure and its full convexity measure is 1.0" ) {
+      REQUIRE( conv.convexityMeasure( V ) == 1.0 );
+      REQUIRE( conv.fullConvexityMeasure( V ) == 1.0 );
     }
   }
 }
