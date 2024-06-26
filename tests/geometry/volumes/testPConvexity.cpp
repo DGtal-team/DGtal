@@ -35,8 +35,10 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/geometry/volumes/PConvexity.h"
+#include "DGtal/geometry/volumes/DigitalConvexity.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -138,6 +140,93 @@ SCENARIO( "PConvexity< Z4 > ball tests", "[p_convexity][4d]" )
     THEN( "Then both its convexity measure and its full convexity measure is 1.0" ) {
       REQUIRE( conv.convexityMeasure( V ) == 1.0 );
       REQUIRE( conv.fullConvexityMeasure( V ) == 1.0 );
+    }
+  }
+}
+
+
+SCENARIO( "DigitalConvexity< Z3 > fully convex and p-convex tetrahedra", "[p_convexity][full_convexity][convex_simplices][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef PConvexity< Space >              PConvexity;
+
+  Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
+  DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
+  PConvexity pconv;
+  
+  WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
+    const unsigned int nb = 100;
+    unsigned int nbsimplex= 0;
+    unsigned int nb0      = 0;
+    unsigned int nb1      = 0;
+    unsigned int nb2      = 0;
+    unsigned int nb3      = 0;
+    unsigned int nb012_not3 = 0;
+    unsigned int nbf      = 0;
+    unsigned int nbfg     = 0;
+    unsigned int nbffast  = 0;
+    unsigned int nbp      = 0;
+    unsigned int nb0123   = 0;
+    for ( unsigned int i = 0; i < nb; ++i )
+      {
+        Point a( rand() % 5, rand() % 5, rand() % 5 );
+        Point b( rand() % 5, rand() % 5, rand() % 5 );
+        Point c( rand() % 5, rand() % 5, rand() % 5 );
+        Point d( rand() % 5, rand() % 5, rand() % 5 );
+        if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
+        auto tetra = dconv.makeSimplex( { a, b, c, d } );
+        std::vector< Point > X;
+        tetra.getPoints( X );
+        bool cvx0     = dconv.isKConvex( tetra, 0 );
+        bool cvx1     = dconv.isKConvex( tetra, 1 );
+        bool cvx2     = dconv.isKConvex( tetra, 2 );
+        bool cvx3     = dconv.isKConvex( tetra, 3 );
+        bool cvxf     = dconv.isFullyConvex( tetra );
+        bool cvxfg    = dconv.isFullyConvex( X, false );
+        bool cvxffast = dconv.isFullyConvexFast( X );
+        bool cvxp     = pconv.isPConvex( X );
+        if ( cvxf != cvxfg || cvxf != cvxffast || cvxf != cvxp ) {
+          std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
+                    << "[" << cvxf << "] [" << cvxfg
+                    << "] [" << cvxffast << "]"
+                    << "] [" << cvxp << "]"
+                    << a << b << c << d << std::endl;
+        }
+        nbsimplex += 1;
+        nb0       += cvx0 ? 1 : 0;
+        nb1       += cvx1 ? 1 : 0;
+        nb2       += cvx2 ? 1 : 0;
+        nb3       += cvx3 ? 1 : 0;
+        nbf       += cvxf ? 1 : 0;
+        nbfg      += cvxfg ? 1 : 0;
+        nbffast   += cvxffast ? 1 : 0;
+        nbp       += cvxp ? 1 : 0;
+        nb0123    += ( cvx0 && cvx1 && cvx2 && cvx3 ) ? 1 : 0;
+        nb012_not3+= ( cvx0 && cvx1 && cvx2 && ! cvx3 ) ? 1 : 0;
+      }
+    THEN( "All valid tetrahedra are 0-convex." ) {
+      REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "There are less 1-convex, 2-convex and 3-convex than 0-convex." ) {
+      REQUIRE( nb1 < nb0 );
+      REQUIRE( nb2 < nb0 );
+      REQUIRE( nb3 < nb0 );
+    }
+    THEN( "When the tetrahedron is 0-convex, 1-convex and 2-convex, then it is 3-convex, so fully convex and also P-convex." ) {
+      REQUIRE( nb1 <= nb3 );
+      REQUIRE( nb2 <= nb3 );
+      REQUIRE( nb012_not3 == 0 );
+      REQUIRE( nbf == nb0123 );
+      REQUIRE( nbf == nbp );
+    }
+    THEN( "All methods for computing full convexity and P-convexity agree." ) {
+      REQUIRE( nbf == nbfg );
+      REQUIRE( nbf == nbffast );
+      REQUIRE( nbf == nbp );
     }
   }
 }
