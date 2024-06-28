@@ -8,6 +8,7 @@ set( DGTAL_EXAMPLES_SRC
         exampleBoundedLatticePolytopeCount2D
         exampleBoundedLatticePolytopeCount3D
         exampleBoundedLatticePolytopeCount4D
+	pConvexity-benchmark
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
