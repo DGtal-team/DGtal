@@ -1,3 +1,18 @@
+# DGtal 1.5
+
+## New features / critical changes
+
+- *Geometry*
+	
+  - Add P-convexity, another characterization of full convexity,
+    which is faster to compute (Jacques-Olivier Lachaud,
+    [#1736](https://github.com/DGtal-team/DGtal/pull/1736))
+
+## Changes
+
+## Bug fixes
+
+
 # DGtal 1.4
 
 ## New features / critical changes
