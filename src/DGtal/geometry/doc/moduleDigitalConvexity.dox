@@ -105,7 +105,7 @@ to them.
 The notion of \b P-convexity has been proposed in \cite feschet_2024_dgmm . A set \f$ S \subset \mathbb{Z}^d \f$ is \b P-convex if and only if
 
 - \f$ S \f$ is 0-convex,
-- and, if \f$ d > 1 \f$, the $d$ projections of $S$ along each axis is P-convex (in \f$ \mathbb{Z}^{d-1} \f$.
+- and, if \f$ d > 1 \f$, the $d$ projections of $S$ along each axis is P-convex (in \f$ \mathbb{Z}^{d-1} \f$).
 
 P-convexity is equivalent to full convexity as shown in \cite feschet_2024_dgmm .
 
@@ -477,58 +477,175 @@ disconnected.
 
 \image html full-convexity-measure.png "Convexity measure M_d and full convexity measure M_d^F on small 2D digital sets."
 
+
 @section dgtal_dconvexity_sec4 Best algorithm for checking full convexity
 
-There are several equivalent definitions of full convexity, which lead
-to different algorithms to check if a given range of \a n points \a X is indeed
-fully convex:
+There exists multiple equivalent characterizations of full
+convexity. Some of them induce algorithms for checking if a digital
+set is indeed fully convex, but the question ``which is the fastest
+way'' remains. We recap here the different characterizations for \f$ X
+\subset \mathbb{Z}^d \f$ being full convex, which lead to an arbitrary
+dimensional algorithm for checking if a given range of \a n points \a
+X is indeed fully convex:
 
-- \a X is fully convex iff \a X is digitally \f$ k \f$-convex, for \f$ 1 \le k \le d \f$. This method is not implemented directly, since it requires to compute intersections with cell.
+- \b discrete \b morphological \b characterization  \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022
 
-- \a X is fully convex iff \f$ \forall \alpha \subset \{1, \ldots, d\}, U_\alpha(X) = \mathrm{CvxH}(U_\alpha(X)) \cap \mathbb{Z}^d \f$ (morphological characterization \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 ), where \f$ U_\alpha \f$ is a discrete Minkowski sum. This is implemented as DigitalConvexity::isFullyConvex 
+  \a X is fully convex iff \f$ \forall \alpha \subset \{1, \ldots,
+  d\}, U_\alpha(X) = \mathrm{CvxH}(U_\alpha(X)) \cap \mathbb{Z}^d \f$,
+  
+  where \f$ U_\alpha \f$ is the discrete Minkowski sum defined as \f$
+  U_\emptyset(X):= X \f$, and for any subset of directions \f$ \alpha
+  \in \{1,\ldots,d\} \f$ and a direction \f$ i \in \alpha \f$, \f$
+  U_\alpha(X) := U_{\alpha \setminus \{i\}}(X) \cup \mathbf{e}_i (U_{\alpha
+  \setminus \{i\}}(X)) \f$ (the latter being the unit translation of
+  the set along direction \a i).
 
-- \a X is fully convex iff \f$ X = \mathrm{Star}(\mathrm{Cvxh}(X)) \cap \mathbb{Z}^d \f$ (cellular characterization \cite feschet_2023_jmiv ). This is implemented as DigitalConvexity::isFullyConvexFast
+  This is implemented as DigitalConvexity::isFullyConvex .
 
-- \a X is fully convex iff \f$ X = FC(X) \f$ (convex envelope characterization \cite feschet_2023_jmiv ). This is implemented as DigitalConvexity::envelope, but its speed is not tested here, since it is similar to the previous one
+- \b cellular \b characterization \cite feschet_2023_jmiv (Lemma 13)
 
-- \a X is fully convex iff \a X is P-convex (P-convex characterization \cite feschet_2024_dgmm ). This is implemented as PConvexity::isPConvex 
+  \a X is fully convex iff \f$ X = \mathrm{Star}(\mathrm{Cvxh}(X))
+  \cap \mathbb{Z}^d \f$.
 
-- \a X is fully convex iff \a X is \f$ S^d \f$-convex (see \cite feschet_2024_dgmm ). This is  a mathematically interesting characterization, but it is not an efficient one (its complexity is greater than \f$ \Omega( n^d ) \f$). 
+  Furthermore, Theorem 5 of \cite feschet_2023_jmiv tells that \f$
+  \mathrm{Star}(\mathrm{CvxH}(X)) \f$ is directly computable from \f$
+  \mathrm{CvxH}(U_{\{1,\ldots,d\}}(X)) \f$, so one convex hull
+  computation is sufficient.
+  
+  This is implemented as DigitalConvexity::isFullyConvexFast .
 
-We compare below three of these methods for checking if a range of
-points is fully convex (see example
-geometry/volumes/pConvexity-benchmark.cpp ):
-DigitalConvexity::isFullyConvex, DigitalConvexity::isFullyConvexFast,
-PConvexity::isPConvex. Computation speeds depend on the number of points, the
-output (is it fully convex or not), the dimension, and the algorithm.
+- \b envelope \b idempotence  \cite feschet_2023_jmiv (Theorem 2)
+
+  \a X is fully convex iff \f$ X = FC(X) \f$, where \f$
+  FC(X):=\mathrm{Extr}( \mathrm{Skel}( \mathrm{Star}( \mathrm{CvxH}( X
+  ) ) ) ) \f$.
+
+  This is implemented as DigitalConvexity::envelope, but its speed is
+  not tested here, since it is similar to the previous one
+
+- \b P-convexity \b characterization \cite feschet_2024_dgmm
+
+  \a X is fully convex iff \f$ X \f$ is 0-convex, and, if \f$ d > 1
+  \f$, the \a d  projections of \f$ X \f$ along each axis is P-convex (in \f$
+  \mathbb{Z}^{d-1} \f$).
+
+  This is implemented as PConvexity::isPConvex .
+
+All three methods are tested for dimension 2, 3, and 4. In the first
+set of experiments (left of figures) we compare them on generic
+digital sets, which are randomly generated in a given range with a
+target density from \f$ 10\% \f$ to \f$ 90\% \f$. In the second set of
+experiments (right of figures), we limit our comparison to digital sets that are either
+digitally 0-convex or fully convex. We then distinguish the timings
+for checking full convexity depending on the output full convexity
+property of the input set, since it influences the computation time
+(typically increases it).
+
+Figures below sum up the different computation times for dimension 2, 3, and 4.
+
+<table>
+<tr>
+<td>
+\image html timings-ncvx-Z2.png "" width=98%
+</td>
+<td>
+\image html timings-Z2.png "" width=98%
+</td>
+</tr>
+<tr>
+<td colspan="2">
+This figure displays the respective computation times (ms) in \f$ \mathbb{Z}^2 \f$
+of P-convexity (as squares), discrete morphological characterization
+(as diamonds) and cellular characterization (as disks), as a function
+of the cardinal of the digital set. \b Left: digital sets are
+randomly generated in a given range with a target point density from
+\f$ 10\% \f$ to \f$ 90\% \f$. \b Right: digital sets are randomly generated
+so that they are either 0-convex or fully convex.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+\image html timings-ncvx-Z3.png "" width=98%
+</td>
+<td>
+\image html timings-Z3.png "" width=98%
+</td>
+</tr>
+<tr>
+<td colspan="2">
+This figure displays the respective computation times (ms) in \f$ \mathbb{Z}^3 \f$
+of P-convexity (as squares), discrete morphological characterization
+(as diamonds) and cellular characterization (as disks), as a function
+of the cardinal of the digital set. \b Left: digital sets are
+randomly generated in a given range with a target point density from
+\f$ 10\% \f$ to \f$ 90\% \f$. \b Right: digital sets are randomly generated
+so that they are either 0-convex or fully convex.
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+\image html timings-ncvx-Z4.png "" width=98%
+</td>
+<td>
+\image html timings-Z4.png "" width=98%
+</td>
+</tr>
+<tr>
+<td colspan="2">
+This figure displays the respective computation times (ms) in \f$ \mathbb{Z}^4 \f$
+of P-convexity (as squares), discrete morphological characterization
+(as diamonds) and cellular characterization (as disks), as a function
+of the cardinal of the digital set. \b Left: digital sets are
+randomly generated in a given range with a target point density from
+\f$ 10\% \f$ to \f$ 90\% \f$. \b Right: digital sets are randomly generated
+so that they are either 0-convex or fully convex.
+</td>
+</tr>
+</table>
+
 
 All approaches follow more or less a quasi linear complexity \f$ O(n
 \log n) \f$ (tests are limited to dimension lower or equal to
-4). However, we can distinguish two cases:
+4). However, we can distinguish three cases:
 
-- if \a X was fully convex, then the fastest method is
-  PConvexity::isPConvex, followed by
-  DigitalConvexity::isFullyConvexFast and the slowest is
-  DigitalConvexity::isFullyConvex (especially when increasing the
-  dimension).
+- if \a X is not even convex, both P-convexity and the discrete
+  morphological characterization are the fastest with similar results,
+  since both their first step involves checking 0-convexity. The
+  cellular characterization is the slowest since it computes directly
+  a convex hull with additional vertices.
 
-- if \a X was not fully convex, then the fastest method remains
-  PConvexity::isPConvex, followed by DigitalConvexity::isFullyConvex,
-  and the slowest is DigitalConvexity::isFullyConvexFast (especially
+- if \a X is convex but not fully convex, then the fastest method
+  remains the P-convexity, followed by the discrete morphological
+  characterization, and the slowest is the cellular characterization.
+
+- if \a X is fully convex, then the fastest method is again the
+  P-convexity, followed by the cellular characterization, and the
+  slowest is the discrete morphological characterization (especially
   when increasing the dimension).
 
-@note Overall PConvexity::isPConvex is almost always the fastest way to check the full convexity of a given range of digital points.
-
-\image html timings-Z2.png "Computation times (ms) of P-convexity wrt full convexity in Z2 as a function of the cardinal of the digital set. P-convexity is generally 2-3x faster to compute."
-\image html timings-Z3.png "Computation times (ms) of P-convexity wrt full convexity in Z3 as a function of the cardinal of the digital set. P-convexity is generally 3-10x faster to compute. The difference is greater for non P-convex / non fully convex sets."
-\image html timings-Z4.png "Computation times (ms) of P-convexity wrt full convexity in Z4 as a function of the cardinal of the digital set. P-convexity is generally 3-20x faster to compute. The difference is greater for non P-convex / non fully convex sets."
+@note Overall the \b P-convexity characterization (method
+PConvexity::isPConvex) is \b almost \b always \b the \b fastest \b way \b to \b check \b the
+\b full \b convexity of a given range of digital points, with speed-up from
+2 to 100 times faster especially when increasing the dimension. This
+new characterization of full convexity is thus for now the best way to
+check if a digital set is fully convex.
 
 \warning One could be surprised by the last graph in 4D. Indeed we
 expect convex hull computations in \f$ O(n^2) \f$ in 4D. We observe
 here timings close to \f$ \Theta(n \log n) \f$. This is due to the
-fact that the digital sets we are considering are 0-convex, so "full of
-digital points". Convex hull computations by QuickHull are thus faster
-than expected since many points are "hidden" in the shape.
+fact that the digital sets we are considering are 0-convex, so "full
+of digital points". Convex hull computations by QuickHull are thus
+faster than expected since many points are "hidden" in the shape. It
+can also be seen on the left of this figure that timings depend more
+on the range of random points than on the density (e.g. see horizontal
+strokes of circles, corresponding to density increases), which
+confirms the above explanation.
 
 @section dgtal_dconvexity_sec5 Rational polytopes
 
