@@ -1,3 +1,15 @@
+# DGtal 1.5beta
+
+## New features / critical changes
+
+## Changes
+- *General*
+  - Removing DGtal installation with `homebrew` on mac (the formula being deprecated) (David Coeurjolly,
+    [#1738](https://github.com/DGtal-team/DGtal/pull/1738))
+
+## Bug fixes
+
+
 # DGtal 1.4
 
 ## New features / critical changes
