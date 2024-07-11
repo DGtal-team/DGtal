@@ -99,7 +99,7 @@ endif()
 
 
 if (WITH_LIBIGL)
-  set(LIST_OPTION ${LIST_OPTION} [FFTW3]\ )
+  set(LIST_OPTION ${LIST_OPTION} [LIBIGL]\ )
   message(STATUS "      WITH_LIBIGL        true    (libIGL)")
 else (WITH_LIBIGL)
   message(STATUS "      WITH_LIBIGL        false   (libIGL)")
