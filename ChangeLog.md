@@ -9,6 +9,8 @@
 
 ## Bug fixes
 
+- *DEC*
+  - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
 
 # DGtal 1.4
 
