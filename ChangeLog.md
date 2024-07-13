@@ -2,16 +2,17 @@
 
 ## New features / critical changes
 
-- *Geometry*
-	
+- *Geometry*	
   - Add P-convexity, another characterization of full convexity,
     which is faster to compute (Jacques-Olivier Lachaud,
     [#1736](https://github.com/DGtal-team/DGtal/pull/1736))
-	
+
 ## Changes
+
 - *General*
   - Removing DGtal installation with `homebrew` on mac (the formula being deprecated) (David Coeurjolly,
     [#1738](https://github.com/DGtal-team/DGtal/pull/1738))
+
 
 ## Bug fixes
 
