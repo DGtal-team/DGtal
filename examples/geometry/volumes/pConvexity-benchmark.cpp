@@ -43,8 +43,7 @@
 /**
    This example compares the speed of computation of P-convexity wrt
    to the computation of full convexity. Both definitions are
-   equivalent but P-convexity is faster to compute, especially when
-   increasing the dimension.
+   equivalent but P-convexity is faster to compute, especially in higher dimensions.
 
 \verbatim
 pConvexity-benchmark

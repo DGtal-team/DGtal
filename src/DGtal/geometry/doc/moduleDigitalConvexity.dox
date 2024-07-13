@@ -468,10 +468,10 @@ starting from dimension 2, and is always less or equal to the convexity measure.
 - method PConvexity::convexityMeasure returns the convexity measure \f$ M_d(A) \f$ of the given range of digital points \a A,
 - method PConvexity::fullConvexityMeasure returns the full convexity measure \f$ M_d^F(A) \f$ of the given range of digital points \a A.
 
-The Figure below illustrates the links and the differences between the
+The figure below illustrates the links and the differences between the
 two convexity measures Md and MdF on simple 2D examples. As one can
 see, the usual convexity measure may not detect disconnectedness, is
-sensitive to specific alignments of pixels, while full convexity is
+sensitive to specific alignments of pixels. On the contrary, full convexity is
 globally more stable to perturbation and is never 1 when sets are
 disconnected.
 
@@ -610,7 +610,7 @@ so that they are either 0-convex or fully convex.
 </table>
 
 
-All approaches follow more or less a quasi linear complexity \f$ O(n
+All approaches follow more or less a linearithmic or subquadratic complexity \f$ O(n
 \log n) \f$ (tests are limited to dimension lower or equal to
 4). However, we can distinguish three cases:
 
