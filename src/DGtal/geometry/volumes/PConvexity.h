@@ -133,7 +133,7 @@ namespace DGtal
       bool isPConvex( const std::vector< Point >& X, bool safe ) const
       {
 	if ( ! is0Convex( X, safe ) ) return false;
-	for ( auto j = 0; j < projp.size(); j++ )
+	for ( std::size_t j = 0; j < projp.size(); j++ )
 	  {
 	    const auto pi_j_X = project( X, j );
 	    if ( ! projp[ j ].isPConvex( pi_j_X, safe ) ) return false;
@@ -163,7 +163,7 @@ namespace DGtal
 	    const auto P = ConvexityHelper< dim, Integer, InternalInteger >::
 	      computeLatticePolytope( X, false, false );
 	    const std::size_t number_lattice_points_in_P = P.count();
-	    return double( X.size() ) / double( P.count() );
+	    return double( X.size() ) / double( number_lattice_points_in_P );
 	  }
 	else
 	  {
@@ -172,7 +172,7 @@ namespace DGtal
 	    const auto P = ConvexityHelper< dim, Integer, InternalInteger >::
 	      computeLatticePolytope( X, false, false );
 	    const std::size_t number_lattice_points_in_P = P.count();
-	    return double( X.size() ) / double( P.count() );
+	    return double( X.size() ) / double( number_lattice_points_in_P );
 	  }
       }
       
@@ -189,7 +189,7 @@ namespace DGtal
       double fullConvexityMeasure( const std::vector< Point >& X, bool safe ) const
       {
 	double m = convexityMeasure( X, safe );
-	for ( auto j = 0; j < projp.size(); j++ )
+	for ( std::size_t j = 0; j < projp.size(); j++ )
 	  {
 	    auto pX = project( X, j );
 	    m      *= projp[ j ].fullConvexityMeasure( pX, safe );
@@ -225,7 +225,7 @@ namespace DGtal
       std::vector< ProjPoint > project( const std::vector< Point >& p, Dimension a ) 
       {
 	std::vector< ProjPoint > pp( p.size() );
-	for ( auto i = 0; i < p.size(); i++ )
+	for ( std::size_t i = 0; i < p.size(); i++ )
 	  pp[ i ] = project( p[ i ], a );
 	std::sort( pp.begin(), pp.end() );
 	auto last = std::unique( pp.begin(), pp.end() );
