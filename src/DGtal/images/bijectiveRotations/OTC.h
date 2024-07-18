@@ -1,7 +1,42 @@
+/**
+*  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
+#pragma once
 
-#ifndef OTC_H
-#define OTC_H
+/**
+ * @file OTC.h
+ * @author S. Breuils, J.O. Lachaud, D. Coeurjolly
+ *
+ * @date 2024/07/9
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(OTC_RECURSES)
+#error Recursive header files inclusion detected in GAVector.h
+#else // defined(OTC_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define OTC_RECURSES
+
+#if !defined OTC_h
+/** Prevents repeated inclusion of headers. */
+#define OTC_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
@@ -155,4 +190,8 @@ struct OTC {
   };
 }
 
-#endif //OTC_H
+#endif //OTC
+
+#undef OTC_RECURSES
+#endif // else defined(OTC_RECURSES)
+

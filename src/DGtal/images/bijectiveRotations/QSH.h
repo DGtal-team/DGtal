@@ -1,6 +1,42 @@
+/**
+*  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
-#ifndef QSH_H
-#define QSH_H
+#pragma once
+
+/**
+* @file QSH.h
+ * @author S. Breuils, J.O. Lachaud, D. Coeurjolly
+ *
+ * @date 2024/07/9
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(QSH_RECURSES)
+#error Recursive header files inclusion detected in QSH.h
+#else // defined(QSH_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define QSH_RECURSES
+
+#if !defined QSH_h
+/** Prevents repeated inclusion of headers. */
+#define QSH_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
 #include "DGtal/base/Common.h"
 #include <DGtal/io/readers/GenericReader.h>
 #include <DGtal/images/RigidTransformation2D.h>
@@ -54,7 +90,6 @@ struct RotationShears {
     /// @return a reference to the centre of rotation
     inline TOutputValue& center(){return my_center;};
 
-/// table à charger dans une autre classe :
 
   /// @param p a lattice point
   /// @return the rotation of the point \a p according to the current
@@ -136,4 +171,7 @@ TImage RotationShears<TSpace,TInputValue,TOutputValue>::rotateImage( const TImag
 
 
 }
-#endif //QSH_H
+#endif //QSH
+
+#undef QSH_RECURSES
+#endif // else defined(QSH_RECURSES)
