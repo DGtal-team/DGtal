@@ -27,7 +27,7 @@
 
 #if defined(PointUtils_RECURSES)
 #error Recursive header files inclusion detected in PointUtils.h
-#else // defined(RDSL_RECURSES)
+#else // defined(PointUtils_RECURSES)
 /** Prevents recursive inclusion of headers. */
 #define PointUtils_RECURSES
 
