@@ -45,14 +45,13 @@
 #include "RBC_vec.h"
 
 namespace DGtal {
-    template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
-typename TFunctor = DGtal::functors::VectorRounding < TInputValue, TOutputValue >>
+    template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
     struct RBC {
-        const RBC_vec<TSpace,TInputValue,TOutputValue,TFunctor>& rot;
-        typedef typename RBC_vec<TSpace,TInputValue,TOutputValue,TFunctor>::Circle Circle;
+        const RBC_vec<TSpace,TInputValue,TOutputValue>& rot;
+        typedef typename RBC_vec<TSpace,TInputValue,TOutputValue>::Circle Circle;
 
         /// Constructor from a RotationByCircles object.
-        RBC( const RBC_vec<TSpace,TInputValue,TOutputValue,TFunctor>& aRot, const double angle, const TOutputValue center )
+        RBC( const RBC_vec<TSpace,TInputValue,TOutputValue>& aRot, const double angle, const TOutputValue center )
           : rot( aRot ),my_angle(angle),my_center(center) {}
 
         /// Rotates the whole image \a Image circle by circle.

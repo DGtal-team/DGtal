@@ -47,8 +47,7 @@
 #include <DGtal/images/ImageSelector.h>
 
 namespace DGtal {
-    template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
-typename TFunctor = DGtal::functors::VectorRounding < TInputValue, TOutputValue >>
+    template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
 struct RBC_vec {
         typedef std::vector< TOutputValue > Circle;
 

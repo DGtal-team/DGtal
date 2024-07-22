@@ -44,14 +44,13 @@
 #include "RBC.h"
 
 namespace DGtal {
-  template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
-typename TFunctor = DGtal::functors::VectorRounding < TInputValue, TOutputValue >>
+  template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
 struct OTC {
     const std::vector< std::vector< int > >& _table;
     int _dr;
     TOutputValue          center;
     int               max_radius;
-    RBC_vec<TSpace,TInputValue,TOutputValue,TFunctor> rbc;
+    RBC_vec<TSpace,TInputValue,TOutputValue> rbc;
     //std::vector< unsigned char > input; // size 3*W*H
     //std::vector< unsigned char > output;// size 3*W*H
     int angle;
