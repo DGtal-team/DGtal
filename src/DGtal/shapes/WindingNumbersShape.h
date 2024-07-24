@@ -201,7 +201,7 @@ namespace DGtal
       Eigen::VectorXd O_R;
       Eigen::MatrixXd O_EC;
       
-      //Checking if the areas
+      //Computing the WN values
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
     }
