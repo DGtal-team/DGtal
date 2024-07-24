@@ -1,4 +1,4 @@
-# DGtal 1.5beta
+# DGtal 1.4.1
 
 ## New features / critical changes
 
@@ -8,7 +8,6 @@
     [#1738](https://github.com/DGtal-team/DGtal/pull/1738))
 
 ## Bug fixes
-
 - *General*
   - Fixing typos int the cmake script (David Coeurjolly, [#1739](https://github.com/DGtal-team/DGtal/pull/1739))
 
