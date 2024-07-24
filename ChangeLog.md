@@ -16,6 +16,9 @@
 
 ## Bug fixes
 
+- *General*
+  - Fixing typos int the cmake script (David Coeurjolly, [#1739](https://github.com/DGtal-team/DGtal/pull/1739))
+
 - *DEC*
   - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
 
