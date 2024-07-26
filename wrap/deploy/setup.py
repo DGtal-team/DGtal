@@ -23,7 +23,13 @@ CMAKE_OPTIONS = [
     '-DDGTAL_WRAP_PYTHON:BOOL=ON'
 ]
 if sys.platform == "win32":
-    CMAKE_OPTIONS.append("-DENABLE_CONAN:BOOL=ON")
+    CMAKE_OPTIONS.append("-DENABLE_CONAN:BOOL=ON ")
+    CMAKE_OPTIONS.append(" -DENABLE_CONAN=true")
+    CMAKE_OPTIONS.append("-DCMAKE_C_COMPILER=\"cl.exe\"")
+    CMAKE_OPTIONS.append("-DCMAKE_CXX_COMPILER=\"cl.exe\"")
+    CMAKE_OPTIONS.append("-DCMAKE_TOOLCHAIN_FILE=\"conan_toolchain.cmake\"")
+    CMAKE_OPTIONS.append("-DCMAKE_POLICY_DEFAULT_CMP0091=NEW")
+
 
 
 # this_directory = path.abspath(path.dirname(__file__))
