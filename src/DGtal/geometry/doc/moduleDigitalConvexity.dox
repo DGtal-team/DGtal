@@ -22,7 +22,7 @@ encompassing its desirable features. Fully convex sets are digitally
 convex, but are also connected and simply connected. They have a
 morphological characterisation, which induces a simple convexity test
 algorithm. As an important example, arithmetic planes are fully convex
-too.  Since 1.5, \b P-convexity can also be checked in arbitrary
+too.  Since DGtal release 1.5, \b P-convexity can also be checked in arbitrary
 dimension. It is worth to note that it is equivalent to full
 convexity, and is generally faster to check \cite feschet_2024_dgmm .
 
@@ -470,7 +470,7 @@ starting from dimension 2, and is always less or equal to the convexity measure.
 
 The figure below illustrates the links and the differences between the
 two convexity measures Md and MdF on simple 2D examples. As one can
-see, the usual convexity measure may not detect disconnectedness, is
+see, the usual convexity measure may not detect disconnectedness and it is
 sensitive to specific alignments of pixels. On the contrary, full convexity is
 globally more stable to perturbation and is never 1 when sets are
 disconnected.
