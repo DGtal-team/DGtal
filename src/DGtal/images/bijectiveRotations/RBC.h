@@ -83,29 +83,7 @@ namespace DGtal {
         }
 
 
-        /// Rotates the \a r-th circle around center in the image \a Image.
-        template<typename TImage>
-        TImage rotateCircle( TImage img,TImage& rotatedImage,
-             TOutputValue center,
-             double angle,
-             int r ) const
-        {
-            if ( r >= rot.size() ) return rotatedImage;
 
-
-
-            return rotatedImage;
-
-            // const Circle& C = rot.circle( r ); // \todo change above algorithm to this one
-            // std::vector< unsigned char > save( C.size() );
-            // for ( int i = 0; i < C.size(); i++ )
-            //     save[ i ] = getValue( Image, center + C[ i ] );
-            // int shift = int( round( -angle * C.size() / ( 2.0 * M_PI ) ) );
-            // for ( int i = 0; i < C.size(); i++ ) {
-            //     int j = ( C.size() + i + shift ) % C.size();
-            //     setValue( Image, center + C[ j ], save[ i ] );
-            // }
-        }
 
         double my_angle;
         TOutputValue my_center;
