@@ -34,23 +34,20 @@
 #if !defined QSH_h
 /** Prevents repeated inclusion of headers. */
 #define QSH_h
-
-//////////////////////////////////////////////////////////////////////////////
-// Inclusions
-#include "DGtal/base/Common.h"
-#include <DGtal/io/readers/GenericReader.h>
+#include <DGtal/base/Common.h>
 #include <DGtal/images/RigidTransformation2D.h>
 
 namespace DGtal {
-//////////////////////////////////////////////////////////////////////////////
-/// Represent a bijective rotation shears .
-/// Provides a `rotate` method (if `angle`and `center` are set.
-/// typedef not outside of class
-
-
+/**
+ * Description of template struct CDLR
+ * \brief QSH : Quasi Shears represents a bijective rotation through shears
+ * @tparam TSpace a 2 dimensional space.
+ * @tparam TInputValue type of the input point e.g., TSpace::RealPoint.
+ * @tparam TOutputValue type of the output point e.g., TSpace::Point
+*/
 
 template < typename TSpace, typename TInputValue = typename TSpace::Point, typename TOutputValue = typename TSpace::Point>
-struct RotationShears {
+struct QSH {
         ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
@@ -77,12 +74,25 @@ struct RotationShears {
     template<typename Img>
     Img rotateImage(Img img) const;
 
-    RotationShears(double ang, TOutputValue ptCenter  );
+    /**
+   * QSH Constructor.
+   * @param theta  the angle given in radians.
+   * @param center  the center of rotation.
+   */
+    QSH(double ang, TOutputValue ptCenter  );
 
+    /// init a QSH rotation using Andres' parameters
+    void initQSHRotation(){
+            a = round(omega*std::sin(my_angle));
+            aprime = round(omega*std::sin(my_angle/2.0));
+            bprime = round(omega*std::cos(my_angle/2.0));
+    }
 
     /// @return the angle of rotation.
     inline double    angle() const{return my_angle;};
 
+    /// set rotation angle
+    inline void  set_angle(const double new_angle){my_angle=new_angle;initQSHRotation();}
 
 
     /// @return the centre of rotation
@@ -97,9 +107,9 @@ struct RotationShears {
     TOutputValue rotate( const TInputValue& p ) const;
     TOutputValue operator()( const TInputValue& p ) const;
 
-
-
-  /// SBJL rotate image with the image as a template parameter
+    std::string tostring() const {
+        return {"QSH"};
+    }
 
 protected:
     /// The angle of rotation.
@@ -119,21 +129,19 @@ private:
 };
 
 template<typename TSpace, typename TInputValue, typename TOutputValue>
-RotationShears<TSpace,TInputValue,TOutputValue>::RotationShears( const double ang, const TOutputValue ptCenter  ):my_angle(ang),my_center(ptCenter){
-    a = round(omega*std::sin(my_angle));
-    aprime = round(omega*std::sin(my_angle/2.0));
-    bprime = round(omega*std::cos(my_angle/2.0));
+QSH<TSpace,TInputValue,TOutputValue>::QSH( const double ang, const TOutputValue ptCenter  ):my_angle(ang),my_center(ptCenter){
+    initQSHRotation();
 }
 
 
 
 template<typename TSpace, typename TInputValue, typename TOutputValue>
-TOutputValue RotationShears<TSpace,TInputValue,TOutputValue>::rotate( const TInputValue& p ) const{
+TOutputValue QSH<TSpace,TInputValue,TOutputValue>::rotate( const TInputValue& p ) const{
     return this->operator()(p);
 }
 
 template<typename TSpace, typename TInputValue, typename TOutputValue>
-TOutputValue RotationShears<TSpace,TInputValue,TOutputValue>::operator()( const TInputValue& p ) const{
+TOutputValue QSH<TSpace,TInputValue,TOutputValue>::operator()( const TInputValue& p ) const{
 
     TOutputValue pcentered = p-my_center;
 
@@ -147,9 +155,9 @@ TOutputValue RotationShears<TSpace,TInputValue,TOutputValue>::operator()( const 
 
 template<typename TSpace, typename TInputValue, typename TOutputValue>
 template<typename TImage>
-TImage RotationShears<TSpace,TInputValue,TOutputValue>::rotateImage( const TImage img ) const{
+TImage QSH<TSpace,TInputValue,TOutputValue>::rotateImage( const TImage img ) const{
     typedef typename TImage::Domain TDomain;
-    typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::RotationShears<TSpace>> MyDomainTransformer;
+    typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::QSH<TSpace>> MyDomainTransformer;
     typedef std::pair < typename TSpace::Point, typename TSpace::Point > Bounds;
 
 
@@ -168,9 +176,9 @@ TImage RotationShears<TSpace,TInputValue,TOutputValue>::rotateImage( const TImag
     return rotatedImage;
 }
 
-
-
 }
+
+
 #endif //QSH
 
 #undef QSH_RECURSES

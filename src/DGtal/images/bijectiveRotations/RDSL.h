@@ -25,39 +25,56 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(RDSL_RECURSES)
-#error Recursive header files inclusion detected in RDSL.h
-#else // defined(RDSL_RECURSES)
+#if defined(CDLR_RECURSES)
+#error Recursive header files inclusion detected in CDLR.h
+#else // defined(CDLR_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define RDSL_RECURSES
+#define CDLR_RECURSES
 
-#if !defined RDSL_h
+#if !defined CDLR_h
 /** Prevents repeated inclusion of headers. */
-#define RDSL_h
-
-//////////////////////////////////////////////////////////////////////////////
-// Inclusions
+#define CDLR_h
 
 #include "DGtal/base/Common.h"
-#include <DGtal/io/readers/GenericReader.h>
 #include <DGtal/images/RigidTransformation2D.h>
+#include "CDLR_naiverotation.h"
+#include "DigitizedReflection.h"
+#include "Policy.h"
 namespace DGtal {
+
+    /**
+     * Description of template struct CDLR
+     * \brief CDLR : Rotation with Discrete Line Reflections,
+     * @tparam TSpace a 2 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint.
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+    */
     template < typename TSpace, typename TInputValue = typename TSpace::Point, typename TOutputValue = typename TSpace::Point>
-    struct RotationDSL {
-
-        /// \brief DSL reflection function, see Andres et al.
-        inline int X(int y, const double a, const double b, const int k) const{
-            return std::ceil((2.0*k-1)/2.0 - (a/b)*(y)); // a = sin(theta) ; b=cos(theta)
-        }
-
-
-
-        RotationDSL( double ang, TOutputValue ptCenter  );
+    class CDLR {
+    public:
+        /**
+       * CDLR Constructor.
+       * @param ang  the angle given in radians.
+       * @param ptCenter  the center of rotation.
+       * @param policy either Linf, L2, Lcontinuity, see Policy
+       */
+        CDLR( double ang, TOutputValue ptCenter, std::shared_ptr<Policy<TSpace,HyperRectDomain< TSpace>,CDLR_naiverotation<TSpace>>> policy  );
 
         /// @return the angle of rotation.
         inline double    angle() const{return my_angle;};
-        /// @return a reference to the angle of rotation.
-        inline void   set_angle(const double new_angle){my_angle=new_angle; a = std::sin(my_angle);b = std::cos(my_angle);};
+        /// @return set the angle of rotation and call the composition of reflections solver.
+        inline void   set_angle(const double new_angle) {
+            my_angle=new_angle;
+            my_naive_rdlr_rotation.set_angle(new_angle);
+            dslSolver(new_angle,my_center);
+        }
+
+        /// initialisation function to find the composition of Discrete Line Reflection that minimises the sum of
+        /// linf and lcontinuity
+        void dslSolver(double ang, TOutputValue ptCenter);
+
+
+
         /// @return the centre of rotation
         inline TOutputValue  center() const{return my_center;};
         /// @return a reference to the centre of rotation
@@ -69,143 +86,118 @@ namespace DGtal {
         TOutputValue rotate( const TInputValue& p ) const;
         TOutputValue operator()( const TInputValue& p ) const;
 
-
-
-
         template<typename Img>
         Img rotateImage(Img img) const;
 
-    private:
-        TOutputValue reflect( const TInputValue& p ) const;
-
+        std::string tostring() const {
+            return {"CDLR"};
+        }
 
     protected:
-        /// The angle of rotation.
+        /// The angle of rotation
         double   my_angle;
-        /// The center of rotation.
+        /// The center of rotation
         TOutputValue my_center;
+
+
+
+        CDLR_naiverotation<TSpace,TInputValue,TOutputValue> my_naive_rdlr_rotation;
+        std::shared_ptr<Policy<TSpace,HyperRectDomain< TSpace>,CDLR_naiverotation<TSpace>>> my_policy;
 
     private:
         /// DSL specific variables, see Andres paper
         double a;
         double b;
-
-
+        double my_minAngle;
     };
 
     template<typename TSpace, typename TInputValue, typename TOutputValue>
-    RotationDSL<TSpace,TInputValue,TOutputValue>::RotationDSL( const double ang, const TOutputValue ptCenter  ):my_angle(ang),my_center(ptCenter){
-        a = std::sin(my_angle/2.0);
-        b = std::cos(my_angle/2.0);
+    CDLR<TSpace,TInputValue,TOutputValue>::CDLR( const double ang, const TOutputValue ptCenter, std::shared_ptr<Policy<TSpace,HyperRectDomain< TSpace>,CDLR_naiverotation<TSpace>>> policy ):my_angle(ang),my_center(ptCenter),my_naive_rdlr_rotation(ang,ptCenter,0.),my_policy(policy){
+        dslSolver(ang,ptCenter);
+    }
+
+    template<typename TSpace, typename TInputValue, typename TOutputValue>
+    void CDLR<TSpace, TInputValue, TOutputValue>::dslSolver(double ang, TOutputValue ptCenter) {
+
+        a = std::sin(ang/2.0);
+        b = std::cos(ang/2.0);
+
+        TInputValue origin(0,0);
+        DGtal::functors::ForwardRigidTransformation2D<TSpace,TInputValue,DGtal::SpaceND< 2, DGtal::int32_t >::RealPoint,DGtal::functors::Identity> euclideanRot(my_center,my_angle,origin);
+
+        double errorMinAlpha = 200.*200;
+        int N = 200;
+
+        // create the domain
+        TOutputValue A(0,0);
+        TOutputValue B(1000,1000);
+        HyperRectDomain<TSpace> my_domain(A,B);
+
+
+        /// look for the pair of reflections that minimizes the Linf and Lcontinuity norm
+        std::vector<double> mix_errors;
+        std::vector<double> angles;
+        for(int k=0;k<N;++k){
+            double alphaCourant = -M_PI_2 + (k*M_PI_2)/N;
+            angles.push_back(alphaCourant);
+
+            // compute both reflections and get both the Linf and Lcontinuity errors
+            std::vector<double> linf_per_image;
+            my_naive_rdlr_rotation.set_startingAngle(alphaCourant);
+            double error = my_policy->evaluate(my_domain,my_naive_rdlr_rotation,my_angle,my_center);
+            mix_errors.push_back(error);
+        }
+        for(int idxImages = 0 ; idxImages < mix_errors.size() ; idxImages++) {
+            if(mix_errors[idxImages] < errorMinAlpha) {
+                errorMinAlpha = mix_errors[idxImages];
+                my_minAngle = angles[idxImages];
+            }
+        }
     }
 
 
-
     template<typename TSpace, typename TInputValue, typename TOutputValue>
-    TOutputValue RotationDSL<TSpace,TInputValue,TOutputValue>::rotate( const TInputValue& p ) const{
+    TOutputValue CDLR<TSpace,TInputValue,TOutputValue>::rotate( const TInputValue& p ) const{
         return this->operator()(p);
     }
 
 
-    template<typename TSpace, typename TInputValue, typename TOutputValue>
-    TOutputValue RotationDSL<TSpace,TInputValue,TOutputValue>::reflect( const TInputValue& p ) const{
-        TOutputValue pcentered = p-my_center;
 
-
-        int k = std::floor(pcentered[0] + (a/b)*pcentered[1] + 0.5);
-
-        TOutputValue X1 = TOutputValue(X(std::ceil(a*b*k),a,b,k),std::ceil(a*b*k));
-        TOutputValue X2 = TOutputValue(X(std::floor(a*b*k),a,b,k),std::floor(a*b*k));
-
-        const double line2 = a*X1[0]-b*X1[1];
-        if(line2<b/2 && line2 >(-b/2)){
-            return TOutputValue(X(2*X1[1]-pcentered[1],a,b,k),2*X1[1]-pcentered[1])+ my_center;
-        }else{
-            const double line3 = a*X2[0]-b*X2[1];
-            if(line3<b/2 && line3 >(-b/2)){
-                return TOutputValue(X(2*X2[1]-pcentered[1],a,b,k),2*X2[1]-pcentered[1])+ my_center;
-            }
-            else{
-                return TOutputValue(X(X1[1]+X2[1]-pcentered[1],a,b,k),X1[1]+X2[1]-pcentered[1]) + my_center;
-            }
-        }
-
-
-    }
 
 
 
 
     template<typename TSpace, typename TInputValue, typename TOutputValue>
-    TOutputValue RotationDSL<TSpace,TInputValue,TOutputValue>::operator()( const TInputValue& p ) const{
-        return this->reflect(RotationDSL(0.,my_center).reflect(p));
+    TOutputValue CDLR<TSpace,TInputValue,TOutputValue>::operator()( const TInputValue& p ) const{
+        return my_naive_rdlr_rotation.reflect(my_minAngle+(my_angle),my_center,my_naive_rdlr_rotation.reflect(my_minAngle,my_center,p-my_center))+my_center;
     }
 
 
     template<typename TSpace, typename TInputValue, typename TOutputValue>
     template<typename TImage>
-    TImage RotationDSL<TSpace,TInputValue,TOutputValue>::rotateImage( const TImage img ) const{
+    TImage CDLR<TSpace,TInputValue,TOutputValue>::rotateImage( const TImage img ) const{
         typedef typename TImage::Domain TDomain;
-        typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::RotationDSL<TSpace>> MyDomainTransformer;
+        typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::CDLR<TSpace>> MyDomainTransformer;
         typedef std::pair < typename TSpace::Point, typename TSpace::Point > Bounds;
 
-        TInputValue origin(0,0);
-
+        typename TSpace::Point bottomLeft(-2,-2);
+        typename TSpace::Point topRight(2,2);
         MyDomainTransformer domainTransformer ( *this );
         Bounds bounds = domainTransformer ( img.domain() );
-        TDomain transformedDomain ( bounds.first, bounds.second );
+        TDomain transformedDomain ( bounds.first+bottomLeft, bounds.second+topRight );
         TImage rotatedImage ( transformedDomain );
-
-        DGtal::functors::ForwardRigidTransformation2D<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::SpaceND< 2, DGtal::int32_t >::Point,DGtal::SpaceND< 2, DGtal::int32_t >::RealPoint,DGtal::functors::Identity> euclideanRot(my_center,my_angle,origin);
-
-        int indiceAlpha = 0;
-        double alphaMin = 0.0;
-        double errorMinAlpha = 200.*200;
-        int N = 100;
-
-        /// look for the pair of reflections that minimizes the Linf norm
-        for(int k=0;k<N;++k){
-            double alphaCourant = -M_PI_4 + (k*M_PI_4)/N;
-
-            // compute both reflections and get the Linf error
-            double currentLinf=0.0;
-            for(int i =0 ; i<201;++i){
-                for(int j =0 ; j<201;++j){
-                    int x=i-100;
-                    int y=j-100;
-
-                    DGtal::Z2i::Point xref1 = RotationDSL<TSpace>(alphaCourant,DGtal::Z2i::Point(i-100,j-100)).reflect(DGtal::Z2i::Point(x,y));
-                    DGtal::Z2i::Point xrot2 = RotationDSL<TSpace>(alphaCourant+(my_angle),DGtal::Z2i::Point(i-100,j-100)).reflect(xref1);//reflect(xref1, alphaCourant+(my_angle));
-
-                    DGtal::Z2i::RealPoint xrotReal = euclideanRot({i-100,j-100});
-
-                    double pointError = std::max(fabs(xrotReal[0]-xrot2[0]),(fabs(xrotReal[1]-xrot2[1])));
-                    if(pointError>currentLinf){
-                        currentLinf=pointError;
-                    }
-                }
-            }
-
-            if(currentLinf<errorMinAlpha){
-                errorMinAlpha=currentLinf;
-                alphaMin = alphaCourant;
-                indiceAlpha=k;
-            }
-
-        }
-
-
 
         for (typename TDomain::ConstIterator it = img.domain().begin(); it != img.domain().end(); ++it )
         {
-            rotatedImage.setValue(RotationDSL<TSpace>(alphaMin+(my_angle),my_center).reflect(RotationDSL<TSpace>(alphaMin,my_center).reflect((*it))),img(*it));//(*this)(*it)
+            rotatedImage.setValue((*this)(*it),img(*it));
         }
-
         return rotatedImage;
     }
+
+
 }
 
 
-#endif //RDSL
-#undef RDSL_RECURSES
-#endif // else defined(RDSL_RECURSES)
+#endif //CDLR
+#undef CDLR_RECURSES
+#endif // else defined(CDLR_RECURSES)

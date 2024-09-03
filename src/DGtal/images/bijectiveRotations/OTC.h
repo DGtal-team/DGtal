@@ -38,12 +38,16 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <vector>
-#include "DGtal/base/Common.h"
-#include "DGtal/kernel/BasicPointFunctors.h"
-#include <DGtal/helpers/StdDefs.h>
 #include "RBC.h"
 
 namespace DGtal {
+  /**
+   * Description of template struct OTC
+   * \brief OTC : Optimal Transport through Circle bijective rotation
+   * @tparam TSpace a 2 dimensional space.
+   * @tparam TInputValue type of the input point e.g., TSpace::RealPoint.
+   * @tparam TOutputValue type of the output point e.g., TSpace::Point
+  */
   template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
 struct OTC {
     const std::vector< std::vector< int > >& _table;
@@ -59,6 +63,13 @@ struct OTC {
     int _outS;
     std::vector< int > _offset; // precomputes the number of points in circles < k
 
+    /**
+   * OTC Constructor.
+   * @param table precomputed table thanks to the OT implementation
+   * @param dr  width of each ring (OTC-2, OTC3)
+   * @param c center of rotation
+   * @param W,H size of the image
+   */
     OTC( const std::vector< std::vector< int > >& table,
           int dr,
           TOutputValue c, int W, int H, bool white = true )
@@ -161,18 +172,20 @@ struct OTC {
     }
 
     /// \todo rotate dgtal image
-    ///
     template<typename TImage>
     TImage rotateImage( const TImage& img) const
     {
       typedef typename TImage::Domain TDomain;
       typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::OTC<TSpace>> MyDomainTransformer;
       typedef std::pair < typename TSpace::Point, typename TSpace::Point > Bounds;
+      typename TSpace::Point bottomLeft(-1,-1);
+      typename TSpace::Point topRight(1,1);
+
 
 
       MyDomainTransformer domainTransformer ( *this );
       Bounds bounds = domainTransformer ( img.domain() );
-      TDomain transformedDomain ( bounds.first, bounds.second );
+      TDomain transformedDomain ( bounds.first+bottomLeft, bounds.second+topRight );
       TImage rotatedImage ( transformedDomain );
 
       for (typename TDomain::ConstIterator it = img.domain().begin(); it != img.domain().end(); ++it ) {
@@ -185,11 +198,13 @@ struct OTC {
       return img;
     }
 
+    std::string tostring() const {
+      return {"OTC"};
+    }
 
   };
 }
 
-#endif //OTC
 
 #undef OTC_RECURSES
 #endif // else defined(OTC_RECURSES)
