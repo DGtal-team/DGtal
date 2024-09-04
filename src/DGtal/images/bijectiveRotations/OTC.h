@@ -52,7 +52,7 @@ namespace DGtal {
 struct OTC {
     const std::vector< std::vector< int > >& _table;
     int _dr;
-    TOutputValue          center;
+    TOutputValue          my_center;
     int               max_radius;
     RBC_vec<TSpace,TInputValue,TOutputValue> rbc;
     //std::vector< unsigned char > input; // size 3*W*H
@@ -88,7 +88,7 @@ struct OTC {
       max_radius  = std::max( max_radius, int( ceil( sqrt( distance2( c, corner0H ) ) ) ) );
       max_radius  = std::max( max_radius, int( ceil( sqrt( distance2( c, cornerWH ) ) ) ) );
       rbc.init( max_radius, false );
-      center = c;
+      my_center = c;
       rbc.center() = c;
       _outS = 2*max_radius+1;
       //output.resize( _outS * _outS * 3 ); // by sb
@@ -103,10 +103,15 @@ struct OTC {
       }
     }
 
-    void setAngle( int alpha )
+
+    /// @return the centre of rotation
+    inline TOutputValue  center() const{return my_center;}
+
+
+    void set_angle( double alpha )
     {
-      angle       = alpha;
-      rbc.setAngle() = alpha * M_PI / 180.0;
+      angle       = std::round((alpha*180.0)/M_PI);
+      rbc.setAngle() = alpha;
       std::cout <<"OTC angle="<<rbc.angle()<<std::endl;
     }
 
@@ -116,7 +121,7 @@ struct OTC {
     {
 
       // We must find the correct ring.
-      auto  pc0 = static_cast<TOutputValue>(p - center);
+      auto  pc0 = static_cast<TOutputValue>(p - my_center);
 
       //std::cout <<"pc0="<<pc0<<std::endl;
       //TOutputValue  pc( pc0[ 0 ], -pc0[ 1 ] );// sb comment
@@ -153,7 +158,7 @@ struct OTC {
       TOutputValue q = rbc.circle( out_r )[ out_i ];
       TOutputValue r = TOutputValue( q[ 0 ] + outSize()/2, -q[ 1 ] + outSize()/2 );
       //unsigned char* pInput  = &input[ 0 ]  + 3*( p[ 1 ] * _W    + p[ 0 ] );
-      return TOutputValue( q[ 0 ] + center[0] , q[ 1 ] + center[1]);
+      return TOutputValue( q[ 0 ] + my_center[0] , q[ 1 ] + my_center[1]);
 
     }
 

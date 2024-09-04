@@ -47,23 +47,29 @@ namespace DGtal {
     struct GAVector{
         TInputValue my_gavec;
 
-        explicit GAVector( const TInputValue& pt )
+        /// @brief zero multivector
+        explicit GAVector( const TInputValue& pt= TInputValue(0,0))
           : my_gavec( pt ) {}
 
+        /// @brief scalar part of the a mv, i.e. compute the dot product part of the geometric product
         typename TInputValue::Component dot( GAVector other ) const
         {
             return my_gavec[0] * other.my_gavec[0] + my_gavec[1] * other.my_gavec[1];
         }
 
+        /// @brief bivector part of the a mv, i.e. compute the outer product part of the geometric product
         typename TInputValue::Component bivectorPart( const GAVector& other ) const
         {
             return my_gavec[0] * other.my_gavec[1] - my_gavec[1] * other.my_gavec[0];
         }
+
+        /// @brief geometric product with a scalar
         GAVector operator*( typename TInputValue::Component f ) const
         {
             return GAVector( TInputValue(my_gavec[0] * f, my_gavec[1] * f) );
         }
 
+        /// @brief geometric product between two vectors
         GAVector operator*(const GAVector& v )// geometric product
         {
             return GAVector( TInputValue(this->dot(v), this->bivectorPart(v)) );
@@ -86,7 +92,6 @@ namespace DGtal {
 
     };
 }
-
 
 #endif //GAVector
 
