@@ -36,8 +36,6 @@
 /** Prevents repeated inclusion of headers. */
 #define RBC_h
 
-//////////////////////////////////////////////////////////////////////////////
-// Inclusions
 #include <iostream>
 #include <vector>
 #include <map>
@@ -45,12 +43,25 @@
 #include "RBC_vec.h"
 
 namespace DGtal {
+
+    /**
+     * Description of template struct RBC
+     * \brief RBC : Bijective Rotation through Circles
+     * @tparam TSpace a 2 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint.
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+    */
     template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
     struct RBC {
-        const RBC_vec<TSpace,TInputValue,TOutputValue>& rot;
+        RBC_vec<TSpace,TInputValue,TOutputValue> rot;
         typedef typename RBC_vec<TSpace,TInputValue,TOutputValue>::Circle Circle;
 
-        /// Constructor from a RotationByCircles object.
+        /**
+       * RBC Constructor.
+       * @param angle  the angle given in radians.
+       * @param center  the center of rotation.
+       * @param aRot RBC Circles initialiser
+       */
         RBC( const RBC_vec<TSpace,TInputValue,TOutputValue>& aRot, const double angle, const TOutputValue center )
           : rot( aRot ),my_angle(angle),my_center(center) {}
 
@@ -62,14 +73,18 @@ namespace DGtal {
             typedef DGtal::functors::DomainRigidTransformation2D < typename TImage::Domain, DGtal::RBC_vec<TSpace>> MyDomainTransformer;
             typedef std::pair < typename TSpace::Point, typename TSpace::Point > Bounds;
 
+            typename TSpace::Point bottomLeft(-1,-1);
+            typename TSpace::Point topRight(1,1);
 
             MyDomainTransformer domainTransformer ( rot );
             Bounds bounds = domainTransformer ( img.domain() );
-            TDomain transformedDomain ( bounds.first, bounds.second );
+            TDomain transformedDomain ( bounds.first+bottomLeft, bounds.second+topRight );
             TImage rotatedImage ( transformedDomain );
 
+
+
             // for ( auto r = 1; r < rot.size(); r++ )
-            //     rotateCircle( img, rotatedImage, my_center, my_angle, r );
+            //      rotateCircle( img, rotatedImage, my_center, my_angle, r );
 
             for (typename TDomain::ConstIterator it = img.domain().begin(); it != img.domain().end(); ++it ) {
                 rotatedImage.setValue((*this).rot.operator()(*it),img(*it));
@@ -82,7 +97,17 @@ namespace DGtal {
             return (*this).rot.operator()(aInput);
         }
 
+        std::string tostring() const {
+            return {"RBC"};
+        }
 
+        void set_angle(const double newAngle) {
+            my_angle=newAngle;
+            rot.setAngle()= newAngle;
+        }
+
+        /// @return the centre of rotation
+        inline TOutputValue  center() const{return my_center;}
 
 
         double my_angle;
@@ -92,7 +117,6 @@ namespace DGtal {
 
 
 }
-
 
 #endif //RBC
 

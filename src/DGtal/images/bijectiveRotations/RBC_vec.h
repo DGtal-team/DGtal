@@ -35,8 +35,6 @@
 /** Prevents repeated inclusion of headers. */
 #define RBC_vec_h
 
-//////////////////////////////////////////////////////////////////////////////
-// Inclusions
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
@@ -47,6 +45,13 @@
 #include <DGtal/images/ImageSelector.h>
 
 namespace DGtal {
+    /**
+     * Description of template struct RBC_vec
+     * \brief RBC : Bijective Rotation through Circles
+     * @tparam TSpace a 2 dimensional space.
+     * @tparam TInputValue type of the input point e.g., TSpace::RealPoint.
+     * @tparam TOutputValue type of the output point e.g., TSpace::Point
+    */
     template<typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point>
 struct RBC_vec {
         typedef std::vector< TOutputValue > Circle;
@@ -61,7 +66,6 @@ struct RBC_vec {
         /// Constructor
         /// @param max_radius the maximal distance of a point to
         /// the center of rotation.
-        ///
         /// @param smart when 'true', tries to regularize the number of
         /// points of each circle, when 'false' each circle contains the
         /// point between distance r (included) and r+1 (excluded).
@@ -214,8 +218,6 @@ struct RBC_vec {
         double   my_angle;
         /// The center of rotation.
         TOutputValue my_center;
-
-
     };
 }
 
