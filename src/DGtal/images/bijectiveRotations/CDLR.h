@@ -17,7 +17,7 @@
 #pragma once
 
 /**
-* @file RDSL.h
+* @file CDLR.h
  * @author S. Breuils, J.O. Lachaud, D. Coeurjolly
  *
  * @date 2024/07/9
