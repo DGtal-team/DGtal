@@ -19,23 +19,6 @@ results and potential efficiency of the proposed work.
 
 DGtal received the [Symposium on Geometry Processing Software Award in 2016](http://awards.geometryprocessing.org/).
 
-Quick Install
-=============
-
-* MacOS (using [homebrew](http://brew.sh)):
-
-       brew tap DGtal-team/DGtal
-       brew install dgtal
-
-
-(```brew options dgtal``` to enable optional features)
-
-* Linux and windows: no binary package, please compile the library.
-
-
-Additional instructions are available in the
-[documentation](http://dgtal.org/doc/stable/moduleBuildDGtal.html).
-
 Quick Build Instructions
 ========================
 

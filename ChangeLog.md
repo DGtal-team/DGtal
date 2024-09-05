@@ -1,3 +1,31 @@
+# DGtal 1.5beta
+
+
+# DGtal 1.4.1
+
+## New features / critical changes
+
+- *Geometry*	
+  - Add P-convexity, another characterization of full convexity,
+    which is faster to compute (Jacques-Olivier Lachaud,
+    [#1736](https://github.com/DGtal-team/DGtal/pull/1736))
+
+## Changes
+
+- *General*
+  - Removing DGtal installation with `homebrew` on mac (the formula being deprecated) (David Coeurjolly,
+    [#1738](https://github.com/DGtal-team/DGtal/pull/1738))
+
+
+## Bug fixes
+- *General*
+  - Fixing typos int the cmake script (David Coeurjolly, [#1739](https://github.com/DGtal-team/DGtal/pull/1739))
+
+- *DEC*
+  - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
+
+
+	
 # DGtal 1.4
 
 ## New features / critical changes
