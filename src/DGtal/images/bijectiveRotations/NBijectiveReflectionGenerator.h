@@ -57,28 +57,28 @@ namespace DGtal{
 
         explicit NBijectiveGenerator(const size_t km):kmax(km){
             for(int k=0; k<kmax; k++){
-                int x_kpp_k = (k+1);// /sqrt(2*k*k+2*k+1);
-                int x_k_kpp = (k);///sqrt(2*k*k+2*k+1);
-                int x_1_2kpp = (1);// /sqrt(2*(2*k*k+2*k+1));
-                int x_2kpp_1 = (2*k+1); // /sqrt(2*(2*k*k+2*k+1));
+                int x_kpp_k = (k+1);
+                int x_k_kpp = (k);
+                int x_1_2kpp = (1);
+                int x_2kpp_1 = (2*k+1);
 
 
-                int y_kpp_k = (k);// /sqrt(2*k*k+2*k+1);
-                int y_k_kpp = (k+1);// /sqrt(2*k*k+2*k+1);
-                int y_1_2kpp = (2*k+1);// /sqrt(2*(2*k*k+2*k+1));
-                int y_2kpp_1 = (1);// /sqrt(2*(2*k*k+2*k+1));
+                int y_kpp_k = (k);
+                int y_k_kpp = (k+1);
+                int y_1_2kpp = (2*k+1);
+                int y_2kpp_1 = (1);
 
 
-                int x_kpp_k_m = (k+1);// /sqrt(2*k*k+2*k+1);
-                int x_k_kpp_m = (k);///sqrt(2*k*k+2*k+1);
-                int x_1_2kpp_m = (1);// /sqrt(2*(2*k*k+2*k+1));
-                int x_2kpp_1_m = (2*k+1); // /sqrt(2*(2*k*k+2*k+1));
+                int x_kpp_k_m = (k+1);
+                int x_k_kpp_m = (k);
+                int x_1_2kpp_m = (1);
+                int x_2kpp_1_m = (2*k+1);
 
 
-                int y_kpp_k_m = -(k);// /sqrt(2*k*k+2*k+1);
-                int y_k_kpp_m = -(k+1);// /sqrt(2*k*k+2*k+1);
-                int y_1_2kpp_m = -(2*k+1);// /sqrt(2*(2*k*k+2*k+1));
-                int y_2kpp_1_m = -(1);// /sqrt(2*(2*k*k+2*k+1));
+                int y_kpp_k_m = -(k);
+                int y_k_kpp_m = -(k+1);
+                int y_1_2kpp_m = -(2*k+1);
+                int y_2kpp_1_m = -(1);
 
                 BijectiveVectors.push_back(GAVector<TSpace>({x_kpp_k,y_kpp_k}));
                 BijectiveVectors.push_back(GAVector<TSpace>({x_k_kpp,y_k_kpp}));
@@ -94,7 +94,7 @@ namespace DGtal{
 
 
         /// @brief  compose bijective digitized reflections
-        /// @param Avector
+        /// @param Avector the composition of bijective reflection
         /// @return vector of indices of bijective digitized reflections
         std::vector<std::pair<std::vector<int>,GAVector<TSpace>>> composeBijectiveReflections(
             std::vector<std::pair<std::vector<int>,GAVector<TSpace>>>&  Avector ){
@@ -115,23 +115,19 @@ namespace DGtal{
                         resultatCourant=normalVectorsAndResult;
                     }
 
-                    // std::cout << "Result Point("<<resultatCourant.second.x<<","<<resultatCourant.second.y<<")"<<std::endl;
                 }
             }
             // unique
             std::sort(result.begin(), result.end(), [](const std::pair<std::vector<int>,GAVector<TSpace>>& b1, const std::pair<std::vector<int>,GAVector<TSpace>>& b2) {
                     return b1.second < b2.second;});
 
-            // auto last = std::unique(result.begin(),result.end(), [](const std::pair<std::vector<int>,GAVector<TSpace,TInputValue>>& b1, const std::pair<std::vector<int>,GAVector<TSpace,TInputValue>>& b2) {
-            //         return b1.second==b2.second && std::is_permutation (b1.first.begin(), b1.first.end(), b2.first.begin());});
-            // result.erase(last,result.end());
-
 
             return result;
         }
 
-        /// @brief  predicate to
-        /// @param pairs of composition of bijective reflections
+        /// @brief  predicate to compare two composition of bijective reflections
+        /// @param b1 first pair of composition of bijective reflections
+        /// @param b2 second pair of composition of bijective reflections
         /// @return composition leads to same error?
         bool sameBijectiveComposition(const std::pair<std::vector<int>,GAVector<TSpace>>& b1, const std::pair<std::vector<int>,GAVector<TSpace>>& b2) const{
             // both reflections thanks to reflection composer
