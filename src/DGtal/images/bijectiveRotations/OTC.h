@@ -67,7 +67,6 @@ struct OTC {
    * @param dr  width of each ring (OTC-2, OTC3)
    * @param c center of rotation
    * @param W,H size of the image
-   * @param white
    */
     OTC( const std::vector< std::vector< int > >& table,
           int dr,
