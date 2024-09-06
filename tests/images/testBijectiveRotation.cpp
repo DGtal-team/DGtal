@@ -18,8 +18,6 @@
  * @file
  * @ingroup Tests
  * @author Stephane Breuils, David Coeurjolly, Jacques-Olivier Lachaud
- *
- *
  * @date 2024/08
  *
  * This file is part of the DGtal library
@@ -48,12 +46,12 @@
 //! [include]
 //////////////////
 ///
-#include "QSH.h"
-#include "RDSL.h"
-#include "RBC.h"
-#include "OTC.h"
-#include "CBDR.h"
-#include "Rotationtables.h"
+#include "DGtal/images/bijectiverotations/QSH.h"
+#include "DGtal/images/bijectiverotations/CDLR.h"
+#include "DGtal/images/bijectiverotations/RBC.h"
+#include "DGtal/images/bijectiverotations/OTC.h"
+#include "DGtal/images/bijectiverotations/CBDR.h"
+#include "DGtal/images/bijectiverotations/Rotationtables.h"
 
 
 using namespace std;
@@ -62,7 +60,7 @@ using namespace functors;
 using namespace Z2i;
 
 std::vector<std::string> supportedBijectiveRotation = {
- "OTC", "CBDR", "RDSL", "QSH" , "RBC"
+ "OTC", "CBDR", "CDLR", "QSH" , "RBC"
 };
 
 
@@ -99,7 +97,7 @@ bool testBijectiveRotations(TBijectiveRotation& bijectiveRot) {
 }
 
 /// check that RDSL with a Linf error results in the same domain as RDSL with a mix of 1*Linf and 0*Lcontinuity
-bool testRDSLPolicy(const Point& c, const double angle) {
+bool testCDLRPolicy(const Point& c, const double angle) {
  typedef ImageSelector<Domain, unsigned char >::Type GrayImage;
  typedef ImageSelector<Domain, DGtal::Color >::Type ColorImage;
 
@@ -108,10 +106,10 @@ bool testRDSLPolicy(const Point& c, const double angle) {
  typedef MyDomainTransformer::Bounds Bounds;
 
 
- auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::DSL_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
- auto linfWithMix = std::make_shared<DGtal::MixedPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::DSL_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>(0.0,1.0);
- DGtal::RotationDSL<DGtal::SpaceND<2, DGtal::int32_t> > rotDSLLinf(angle, c, linf);
- DGtal::RotationDSL<DGtal::SpaceND<2, DGtal::int32_t> > rotDSLLinf_withMix(angle, c, linfWithMix);
+ auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CDLR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
+ auto linfWithMix = std::make_shared<DGtal::MixedPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CDLR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>(0.0,1.0);
+ DGtal::CDLR<DGtal::SpaceND<2, DGtal::int32_t> > rotCDLRLinf(angle, c, linf);
+ DGtal::CDLR<DGtal::SpaceND<2, DGtal::int32_t> > rotCDLRLinf_withMix(angle, c, linfWithMix);
 
  Point A(0,0);
  Point B(200,200);
@@ -121,9 +119,9 @@ bool testRDSLPolicy(const Point& c, const double angle) {
  bool isSameTransformedDomain = true;
  for (typename Domain::ConstIterator it = imgGray.domain().begin(); it != imgGray.domain().end(); ++it )
  {
-  Point cbdrLinf = rotDSLLinf(*it);
-  Point cbdrLinf_withMix = rotDSLLinf_withMix(*it);
-  isSameTransformedDomain *= (cbdrLinf_withMix==cbdrLinf);
+  Point cdlrLinf = rotCDLRLinf(*it);
+  Point cdlrLinf_withMix = rotCDLRLinf_withMix(*it);
+  isSameTransformedDomain *= (cdlrLinf_withMix==cdlrLinf);
  }
  return isSameTransformedDomain;
 }
@@ -139,8 +137,8 @@ bool testCBDRPolicy(const Point& c, const double angle) {
  int kmax = 10; int n = 2;
 
 
- auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_vec<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
- auto linfWithMix = std::make_shared<DGtal::MixedPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_vec<DGtal::SpaceND< 2, DGtal::int32_t >>>>(1.0,0.0);
+ auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
+ auto linfWithMix = std::make_shared<DGtal::MixedPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>(1.0,0.0);
  DGtal::CBDR<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::Z2i::RealPoint> rotCBDRLinf(angle, c,n,kmax, linf);
  DGtal::CBDR<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::Z2i::RealPoint> rotCBDRLinf_withMix(angle, c,n,kmax, linfWithMix);
 
@@ -177,11 +175,11 @@ int main() {
  DGtal::QSH<DGtal::SpaceND< 2, DGtal::int32_t >> rot_QSH(angle,c);
 
  /// Linf DSL
- auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::DSL_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
- DGtal::RotationDSL<DGtal::SpaceND<2, DGtal::int32_t> > rot_RDSL(angle, c, linf);
+ auto linf = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CDLR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
+ DGtal::CDLR<DGtal::SpaceND<2, DGtal::int32_t> > rot_RDSL(angle, c, linf);
 
  /// Linf CBDR
- auto linfCBDR = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_vec<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
+ auto linfCBDR = std::make_shared<DGtal::LinfPolicy<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::HyperRectDomain< DGtal::SpaceND< 2, DGtal::int32_t >>,DGtal::CBDR_naiverotation<DGtal::SpaceND< 2, DGtal::int32_t >>>>();
  const int n = 3;const int kmax=15;
  DGtal::CBDR<DGtal::SpaceND< 2, DGtal::int32_t >,DGtal::Z2i::RealPoint> rot_CBDR(angle,c,n,kmax,linfCBDR);
 
@@ -200,12 +198,12 @@ int main() {
  bool res = testBijectiveRotations<OTC<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_OTC) &&
             testBijectiveRotations<RBC<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_RBC) &&
             testBijectiveRotations<CBDR<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_CBDR) &&
-             testBijectiveRotations<RotationDSL<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_RDSL) &&
+             testBijectiveRotations<CDLR<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_RDSL) &&
              testBijectiveRotations<QSH<DGtal::SpaceND< 2, DGtal::int32_t >>>(rot_QSH);
 
 
  // equal domain
- res = res&& testRDSLPolicy({100,100}, M_PI_4);
+ res = res&& testCDLRPolicy({100,100}, M_PI_4);
  res = res && testCBDRPolicy({100,100}, M_PI_4);
 
  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
