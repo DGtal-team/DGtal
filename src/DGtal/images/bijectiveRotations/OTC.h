@@ -55,8 +55,6 @@ struct OTC {
     TOutputValue          my_center;
     int               max_radius;
     RBC_vec<TSpace,TInputValue,TOutputValue> rbc;
-    //std::vector< unsigned char > input; // size 3*W*H
-    //std::vector< unsigned char > output;// size 3*W*H
     int angle;
     int _W;
     int _H;
@@ -69,10 +67,11 @@ struct OTC {
    * @param dr  width of each ring (OTC-2, OTC3)
    * @param c center of rotation
    * @param W,H size of the image
+   * @param white
    */
     OTC( const std::vector< std::vector< int > >& table,
           int dr,
-          TOutputValue c, int W, int H, bool white = true )
+          TOutputValue c, int W, int H )
       : _table( table ), rbc( 0 )
     {
       _W     = W;
@@ -91,8 +90,7 @@ struct OTC {
       my_center = c;
       rbc.center() = c;
       _outS = 2*max_radius+1;
-      //output.resize( _outS * _outS * 3 ); // by sb
-      //std::fill( output.begin(), output.end(), white ? 255 : 0 ); // by sb
+
       // Precompute offset table
       _offset.resize( max_radius );
       int n = 0;
@@ -134,7 +132,6 @@ struct OTC {
         : ( angle < 270 ) ? TOutputValue( -pc[ 0 ], -pc[ 1 ] )
         : TOutputValue( pc[ 1 ], -pc[ 0 ] );
 
-      //std::cout <<"rpc="<<rpc<<std::endl;
       auto       it = rbc.point2circle.find( rpc );
       if ( it == rbc.point2circle.end() ) return static_cast<TOutputValue>(p);
       int      in_r = it->second[ 0 ];
@@ -176,7 +173,6 @@ struct OTC {
         }
     }
 
-    /// \todo rotate dgtal image
     template<typename TImage>
     TImage rotateImage( const TImage& img) const
     {
