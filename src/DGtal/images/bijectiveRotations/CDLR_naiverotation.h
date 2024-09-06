@@ -112,7 +112,6 @@ namespace DGtal {
                                                                   my_startingAngle, my_center, p));
         }
         TOutputValue operator()( const TInputValue& p ) const {
-            //std::cout << "dsl naive : starting angle="<<my_startingAngle<<" ; angle = "<<my_angle <<std::endl;
             return rotate(p);
         }
 

@@ -61,11 +61,6 @@ namespace DGtal{
         /// - or the the composition of digitized reflections and the final rotation
         VectorField getOutputVectorFieldFromContour(const TDomain& set2dContour, bool continuityVecField =false ){
             VectorField outVecField;
-            // std::cout << "DSL output vector error : normalVectors "<<normalVectors.my_startingAngle<<std::endl;
-            // std::cout << "DSL output vector error : rotation angle "<<normalVectors.my_angle<<std::endl;
-            // std::cout << "input test point = "<<*(set2dContour.begin()+30)<<std::endl;
-            // std::cout << "output double reflections = "<<normalVectors(*(set2dContour.begin()+30)-my_center)+my_center<<std::endl;
-            // std::cout << "output rotation = "<<targetRotation(*(set2dContour.begin()+30))<<std::endl;
 
             for (typename TDomain::ConstIterator it = set2dContour.begin(); it != set2dContour.end(); ++it ) {
                 std::vector<typename TSpace::RealPoint> pixelError;

@@ -104,7 +104,6 @@ namespace DGtal{
             for(std::pair<std::vector<int>,GAVector<TSpace>> normalVectorsAndResult : Avector){
                 std::pair<std::vector<int>,GAVector<TSpace>> resultatCourant = normalVectorsAndResult;
                 for(size_t indexB = 0 ; indexB<BijectiveVectors.size();++indexB){
-                    // std::cout << "Product Point("<<normalVectorsAndResult.second.x<<","<<normalVectorsAndResult.second.y<<")"<<" *Point("<<b.x<<","<<b.y<<")"<<std::endl;
                     GAVector<TSpace> outVec = normalVectorsAndResult.second*BijectiveVectors[indexB];
                     if(outVec.my_gavec[0] <0){
                         // resultatCourant.first.insert(resultatCourant.first.begin(),indexB);
@@ -181,8 +180,6 @@ namespace DGtal{
         std::vector<std::pair<std::vector<int>,GAVector<TSpace>>> n_bijectiveReflections_get_NormalVectorsAngles(size_t n)
         {
             std::vector<std::pair<std::vector<int>,GAVector<TSpace>>> vecBijNormals;
-            std::cout << "getNormals vectors n="<<n<<std::endl;
-            std::cout << "BijectiveVectors vectors size="<<BijectiveVectors.size()<<std::endl;
             for(int i =0 ; i< BijectiveVectors.size() ; ++i){
                 vecBijNormals.push_back({{i},BijectiveVectors[i]});
             }
@@ -192,23 +189,18 @@ namespace DGtal{
 
             for ( size_t j = 1; j < n; ++j )
             {
-                std::cout << "start n="<<j<<std::endl;
                 vecBijNormals = composeBijectiveReflections( vecBijNormals);
 
                 // remove duplicates with predicate defined below
                 auto last = std::unique(vecBijNormals.begin(),vecBijNormals.end(),[this](const std::pair<std::vector<int>,GAVector<TSpace>>& b1, const std::pair<std::vector<int>,GAVector<TSpace>>& b2) {
                 return sameBijectiveComposition(b1, b2);});
                 vecBijNormals.erase(last,vecBijNormals.end());
-                std::cout << "end n="<<j<<std::endl;
             }
             if(n==3){
-                std::cout << "n not even start n="<<n<<std::endl;
                 /// interpret as the composition of 4 vectors : 3 bijective and 1 trivial bijective reflection
                 for(auto& pairIndicesGAVec : vecBijNormals)
                     pairIndicesGAVec.first.insert(pairIndicesGAVec.first.begin(),0);
             }
-            std::cout << "to be sorted vector size="<<vecBijNormals.size()<<std::endl;
-            std::cout << "size of each vector="<<vecBijNormals[0].first.size()<<std::endl;
 
             std::sort(vecBijNormals.begin(), vecBijNormals.end(), [](const std::pair<std::vector<int>,GAVector<TSpace>>& b1, const std::pair<std::vector<int>,GAVector<TSpace>>& b2) {
                       return b1.second.angleToXAxis() < b2.second.angleToXAxis();});
@@ -267,9 +259,6 @@ namespace DGtal{
             int i = std::lower_bound(vecBijNormals.begin(), vecBijNormals.end(), targetAngle,[](const std::pair<std::vector<GAVector<TSpace>>,GAVector<TSpace>>& b1, const double b2) {
                         return 2.0*b1.second.angleToXAxis() < b2;
                     }) - vecBijNormals.begin();
-            std::cout << "starting index="<<i<<std::endl;
-            std::cout << "starting angle="<<(vecBijNormals[i]).second.my_gavec<<std::endl;
-            std::cout << "starting angle="<<2*(vecBijNormals[i]).second.angleToXAxis()<<std::endl;
 
             int leftCompo=i-1;
             int rightCompo = i;

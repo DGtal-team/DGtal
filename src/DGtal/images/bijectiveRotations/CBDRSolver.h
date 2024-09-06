@@ -81,13 +81,10 @@ namespace DGtal{
             }
 
             CBDR_naiverotation<TSpace> reflections(bijectiveReflections);
-            // ErrorRealVectors firstError(reflections,my_angle,my_center);
-            // VectorField firsterrors = firstError.getOutputVectorFieldFromContour(set2d);
 
             // finally get the average error
             double minError = policy.evaluate(set2d, reflections,my_angle, my_center);  //outputError(firsterrors,policy); // should now be policy
 
-            std::cout << "first error ="<<minError<<std::endl;
             itMinError = lowerAngle;
 
             for(it = lowerAngle+1 ; it != upperAngle ; ++it ){
@@ -105,8 +102,6 @@ namespace DGtal{
                     minError = error;
                 }
             }
-            std::cout << "best angle="<<2*(*it).second.angleToXAxis()<<std::endl;
-            std::cout << "best error="<<minError<<std::endl;;
             return {(*itMinError).first,minError};
         }
         NBijectiveGenerator<TSpace,typename TSpace::RealPoint> nBijectiveGenerator;
@@ -151,8 +146,6 @@ namespace DGtal{
                 numberOfCompositions,
                 my_angle);
 
-                std::cout << "lower bound angle="<<2*(*lowerAngle).second.angleToXAxis()<<std::endl;
-                std::cout << "upper bound angle="<<2*(*upperAngle).second.angleToXAxis()<<std::endl;
 
                 CBDRSolver_GAvec<TSpace,TDomain> rotationSolver(kmax,my_angle,my_center);
                 std::pair<std::vector<GAVector<TSpace>>,double> bestParam_Error =rotationSolver.outputCompositionReflection(points,lowerAngle,upperAngle,policy);

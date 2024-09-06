@@ -57,7 +57,7 @@ namespace DGtal {
     {
       DGtal::functors::VectorRounding < TInputValue, TOutputValue > roundingOpe;
       Z2i::RealPoint m_r = Z2i::RealPoint(normalVector.my_gavec[0],normalVector.my_gavec[1]);
-      Z2i::RealPoint x_r = Z2i::RealPoint(aInput[0],aInput[1]); // \todo change type of xr
+      Z2i::RealPoint x_r = Z2i::RealPoint(aInput[0],aInput[1]);
       Z2i::RealPoint p=x_r - 2.0*((x_r[0]*m_r[0] + x_r[1]*m_r[1])/(m_r[0]*m_r[0] + m_r[1]*m_r[1]))*m_r;
       return  roundingOpe(p);
     }
