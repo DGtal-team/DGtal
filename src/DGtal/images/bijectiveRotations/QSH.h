@@ -76,8 +76,8 @@ struct QSH {
 
     /**
    * QSH Constructor.
-   * @param theta  the angle given in radians.
-   * @param center  the center of rotation.
+   * @param ang  the angle given in radians.
+   * @param ptCenter  the center of rotation.
    */
     QSH(double ang, TOutputValue ptCenter  );
 
