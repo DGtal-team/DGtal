@@ -19,7 +19,7 @@
 #pragma once
 
 /**
-* @file RBC.h
+* @file Rotationtables.h
  * @author S. Breuils, J.O. Lachaud, D. Coeurjolly
  *
  * @date 2024/08
