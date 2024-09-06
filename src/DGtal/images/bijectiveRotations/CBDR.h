@@ -73,6 +73,8 @@ struct CBDR {
        * @param nbreflect the number of composition of bjijective reflections applied (2,4)
        * @param km conditions the number of bijective reflection normal vectors
        * @param policy either Linf, L2, Lcontinuity, see Policy
+       * @param precompute use precomputed table of the sorted bijective composition of bijective digitized reflections
+       * @param fast use the table that stores for each angle the composition that minimised the Linf metric distorsion
        */
         CBDR(const double theta,const typename TSpace::Point center,const size_t nbreflect,const size_t km, std::shared_ptr<Policy<TSpace,HyperRectDomain< TSpace>,CBDR_naiverotation<TSpace>>> policy,
             const bool precompute=true, const bool fast =true ):nbijectiveGen(km),my_domain(typename TSpace::Point(0,0),typename TSpace::Point(100,100)),my_angle(theta),my_center(center),nbReflections(nbreflect),kmax(km),my_policy(policy),
