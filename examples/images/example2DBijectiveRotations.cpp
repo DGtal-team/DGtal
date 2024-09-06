@@ -72,7 +72,7 @@ performRotation( const TImage& img, TBijectiveRotation& obj )
   return output;
 }
 
-void usage( std::string cmd )
+void usage( const std::string& cmd )
 {
   std::cout << "Usage: " << cmd << " <image> <angle> [<method>] [black|*white*] [detect]" << "\n"
 	    << "\t Compute the rotated <image> by an angle <angle> (in degrees) \n"
@@ -88,7 +88,6 @@ int main( int argc, char* argv[] )
   double      degree = std::atof( argv[ 2 ] );
   double      angle  = degree * M_PI / 180.0;
   std::string method = ( argc > 3 ) ? argv[ 3 ] : "RBC";
-  std::string bg     = ( argc > 4 ) ? argv[ 4 ] : "white";
 
   typedef ImageContainerBySTLVector< Domain, Color > Image;
   typedef ForwardRigidTransformation2D < Space > ForwardTrans;

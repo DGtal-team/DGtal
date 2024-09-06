@@ -137,7 +137,7 @@ namespace DGtal{
             for(size_t nReflection = 0 ; nReflection < vecBijectiveSearchTree.size();++nReflection){
                 typename std::vector<std::pair<std::vector<GAVector<TSpace>>,GAVector<TSpace>>>::iterator lowerAngle;
                 typename std::vector<std::pair<std::vector<GAVector<TSpace>>,GAVector<TSpace>>>::iterator upperAngle;
-                int numberOfCompositions=100;
+                int numberOfCompositions=N;
 
                 nbijectiveVectors.getKNearestBijectiveComposition(
                 vecBijectiveSearchTree[nReflection],

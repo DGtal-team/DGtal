@@ -77,7 +77,7 @@ struct CBDR {
         CBDR(const double theta,const typename TSpace::Point center,const size_t nbreflect,const size_t km, std::shared_ptr<Policy<TSpace,HyperRectDomain< TSpace>,CBDR_naiverotation<TSpace>>> policy,
             const bool precompute=true, const bool fast =true ):nbijectiveGen(km),my_domain(typename TSpace::Point(0,0),typename TSpace::Point(100,100)),my_angle(theta),my_center(center),nbReflections(nbreflect),kmax(km),my_policy(policy),
                         usePrecomputedTable(precompute),useFastTable(fast),N(100),my_cbdr(initCBDRVec()) {
-        }// \todo change N to 100
+        }
 
 
 
@@ -96,7 +96,6 @@ struct CBDR {
                         fastCBDRTable=initFastPrecomputationTable(my_domain,nbijectiveGen,vecBijectiveSearchTree);
                 }
                 /// solver part
-                //std::cout << "before solver fast table size="<<fastCBDRTable.size()<<std::endl;
                 CBDRFastSolver<TSpace,HyperRectDomain<TSpace>> cbdrFastSolver(fastCBDRTable,my_angle,my_center,kmax);
                 return std::make_shared<CBDR_naiverotation<TSpace>>(cbdrFastSolver.solve());
             }else{
