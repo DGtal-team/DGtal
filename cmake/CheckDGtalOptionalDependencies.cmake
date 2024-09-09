@@ -19,8 +19,9 @@ option(WITH_ITK "With Insight Toolkit ITK." OFF)
 option(WITH_CAIRO "With CairoGraphics." OFF)
 option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
-option(WITH_PATATE "With Patate library for geometry processing (Eigen required)." OFF)
+option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
+option(WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -94,6 +95,14 @@ if (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         true    (FFTW3 discrete Fourier transform library)")
 else (WITH_FFTW3)
   message(STATUS "      WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
+endif()
+
+
+if (WITH_LIBIGL)
+  set(LIST_OPTION ${LIST_OPTION} [LIBIGL]\ )
+  message(STATUS "      WITH_LIBIGL        true    (libIGL)")
+else (WITH_LIBIGL)
+  message(STATUS "      WITH_LIBIGL        false   (libIGL)")
 endif()
 
 message(STATUS "")
@@ -327,10 +336,10 @@ endif()
 # -----------------------------------------------------------------------------
 set(CGAL_FOUND_DGTAL 0)
 if(WITH_CGAL)
-  if(WITH_GMP AND  WITH_EIGEN)
+  if(WITH_GMP)
     message(STATUS "GMP and Eigen3 detected for CGAL.")
   else()
-    message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must activate  WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
+    message(FATAL_ERROR "CGAL needs GMP. You must activate the WITH_GMP flag and have the associated package installed.")
   endif()
 
   find_package(CGAL COMPONENTS Core)
@@ -354,11 +363,6 @@ endif()
 # -----------------------------------------------------------------------------
 set(PATATE_FOUND_DGTAL 0)
 if(WITH_PATATE)
-  if(WITH_EIGEN)
-    message(STATUS "Eigen3 detected for PATATE.")
-  else()
-    message(FATAL_ERROR "PATATE needs  Eigen3. You must activate  WITH_EIGEN flags and have the associated package installed.")
-  endif()
   find_package(Patate)
   if(PATATE_FOUND)
     target_include_directories(DGtal PUBLIC ${PATATE_INCLUDE_DIR})
@@ -403,6 +407,23 @@ if(WITH_FFTW3)
     set(FFTW3_LONG_FOUND_DGTAL 1)
     target_compile_definitions(DGtal PUBLIC -DWITH_FFTW3_LONG)
   endif()
+
+endif()
+
+# -----------------------------------------------------------------------------
+# Look for libigl.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+if(WITH_LIBIGL)
+  if (WITH_CGAL)
+    message(STATUS "DGtal/CGAL enabled.")
+  else()
+    message(FATAL_ERROR "LIBIGL requires CGAL. Please if the `WITH_CGAL=true` cmake flag.")
+  endif()
+  include(cmake/deps/libigl.cmake)
+  target_compile_definitions(DGtal PUBLIC -DWITH_LIBIGL)
+  set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
+  set(LIBIGL_FOUND_DGTAL 1)
 
 endif()
 

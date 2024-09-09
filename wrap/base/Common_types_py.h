@@ -17,6 +17,12 @@
 #ifndef DGTAL_COMMON_TYPES_H
 #define DGTAL_COMMON_TYPES_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
+
 #include "DGtal/base/Common.h"
 
 namespace DGtal {

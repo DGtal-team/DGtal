@@ -66,15 +66,15 @@ Charrier and Lilian Buzer).
 
 @b Modules
 
-- \ref moduleIntegerComputations (Jacques-Olivier Lachaud)
-- \ref moduleIrreducibleFraction (Jacques-Olivier Lachaud, Xavier Provençal)
-- \ref moduleDigitalStraightness (Jacques-Olivier Lachaud, Mouhammad Said)
-- \ref moduleLatticePolytope2D (Jacques-Olivier Lachaud, Emilie Charrier)
+- \subpage moduleIntegerComputations (Jacques-Olivier Lachaud)
+- \subpage moduleIrreducibleFraction (Jacques-Olivier Lachaud, Xavier Provençal)
+- \subpage moduleDigitalStraightness (Jacques-Olivier Lachaud, Mouhammad Said)
+- \subpage moduleLatticePolytope2D (Jacques-Olivier Lachaud, Emilie Charrier)
 
 
 @b Package @b Concepts @b Overview
 
-- \ref packageArithmeticConcepts
+- \subpage packageArithmeticConcepts
 
 @b Related @b documentation @b pages
 

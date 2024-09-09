@@ -215,10 +215,8 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
       // otherwise, iterate.
       if( m > l )
         {
-          int iter = 0;
           do
             {
-              ++iter;  // (Could check iteration count here.)
               // Compute implicit shift
               Quantity g = d[ l ];
               Quantity p = ( d[ l + 1 ] - g ) / ( Quantity( 2.0 ) * e[ l ] );

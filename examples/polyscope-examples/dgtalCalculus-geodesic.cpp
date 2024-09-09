@@ -17,6 +17,7 @@
  * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @ingroup Examples
  *
  * @date 2021/09/02
  *
@@ -92,25 +93,11 @@ void precompute()
     auto surfels   = SH3::getSurfelRange( surface, params2 );
     iinormals = SHG3::getIINormalVectors(binary_image, surfels,params2);
     trace.info()<<iinormals.size()<<std::endl;
-    auto myProjEmbedder = [&](Face f, Vertex v)
-    {
-      const auto nn = iinormals[f];
-      RealPoint centroid(0.0,0.0,0.0); //centroid of the original face
-      auto cpt=0;
-      for(auto v: surfmesh.incidentVertices(f))
-      {
-        cpt++;
-        centroid += surfmesh.position(v);
-      }
-      centroid = centroid / (double)cpt;
-      RealPoint p = surfmesh.position(v);
-      auto cp = p-centroid;
-      RealPoint q = p - nn.dot(cp)*nn;
-      return q;
-    };
     psMesh->addFaceVectorQuantity("II normals", iinormals);
+    
     calculus = new PolyCalculus(surfmesh);
-    calculus->setEmbedder( myProjEmbedder );
+    functors::EmbedderFromNormalVectors<Z3i::RealPoint, Z3i::RealVector> embedderFromNormals(iinormals,surfmesh);
+    calculus->setEmbedder( embedderFromNormals );
   }
   
   heat = new GeodesicsInHeat<PolyCalculus>(calculus);
