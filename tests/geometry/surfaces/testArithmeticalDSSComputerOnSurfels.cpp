@@ -40,6 +40,7 @@
 
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/surfaces/ArithmeticalDSSComputerOnSurfels.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 using namespace std;
@@ -49,11 +50,17 @@ using KSpace = Z3i::KSpace;
 using SH3    = Shortcuts<KSpace>;
 using Surfel = KSpace::SCell;
 
-using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, std::vector<Surfel>::const_iterator, int, 4>;
+//using CirculatorOnSurfels =  Circulator<std::vector<Surfel>::const_iterator>;
+//using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, CirculatorOnSurfels, int, 4>;
+using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, std::vector<Surfel>::const_iterator, int>;
 using SegmentationSurfels   = SaturatedSegmentation<SegmentComputerOnSurfels>;
+//using SegmentationSurfels   = GreedySegmentation<SegmentComputerOnSurfels>;
 
+//using CirculatorOnPoints =  Circulator<std::vector<Z2i::Point>::const_iterator>;
+//using SegmentComputer = ArithmeticalDSSComputer<CirculatorOnPoints, Z2i::Integer, 4>;
 using SegmentComputer = ArithmeticalDSSComputer<std::vector<Z2i::Point>::const_iterator, int, 4>;
 using Segmentation = SaturatedSegmentation<SegmentComputer>;
+//using Segmentation = GreedySegmentation<SegmentComputer>;
 
 struct Slice
 {
@@ -79,7 +86,8 @@ std::pair<KSpace, Slice> getSlice (std::string const& shape = "ellipsoid", doubl
     Surfel surfel = Surfaces<KSpace>::findABel(kspace, *binary_image, 10000);
 
     KSpace::DirIterator q1 = kspace.sDirs(surfel);
-    Dimension dim1 = *q1, dim2 = kspace.sOrthDir(surfel);
+    KSpace::DirIterator q2 = kspace.sOrthDirs(surfel);
+    Dimension dim1 = *q1, dim2 = *q2;
     auto tracker = surface->container().newTracker(surfel);
     SurfaceSlice surfaceSlice(tracker, dim1);
     delete tracker;
@@ -91,46 +99,22 @@ std::pair<KSpace, Slice> getSlice (std::string const& shape = "ellipsoid", doubl
     return { kspace, slice };
 }
 
-std::vector<Z2i::Point> extractPoints (SegmentComputerOnSurfels const& sc, Slice const& slice)
+std::vector<Z2i::Point> extractPoints (SegmentComputerOnSurfels const& sc, KSpace const& aKSpace, Slice const& slice)
 {
     std::vector<Z2i::Point> points;
 
-    auto initialPoints = sc.projectSurfel(slice.start);
+    auto initialPoints = sc.getProjectedPointsFromSurfel(slice.start);
     points.push_back(initialPoints.first);
     points.push_back(initialPoints.second);
 
-    int currentIdx = 0;
-    bool firstIt = true;
     for (auto sit = slice.contour.begin() + 1; sit != slice.contour.end(); ++sit)
     {
         Surfel s = *sit;
-        auto projectedPoints = sc.projectSurfel(s);
-
-        if (firstIt) {
-            if (projectedPoints.first == points[currentIdx]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.first == points[currentIdx + 1]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.second == points[currentIdx]) {
-                points.push_back(projectedPoints.first);
-            } else if (projectedPoints.second == points[currentIdx + 1]) {
-                points.push_back(projectedPoints.first);
-            } else {
-                assert(false);
-            }
-
-            firstIt = false;
-        } else {
-            if (projectedPoints.first == points[currentIdx]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.second == points[currentIdx]) {
-                points.push_back(projectedPoints.first);
-            } else {
-                assert(false);
-            }
-        }
-
-        currentIdx = (int)points.size() - 1;
+        auto pt = sc.getNextProjectedPoint(s);
+	std::cout << pt << " " << s << " "
+		  << ( (aKSpace.sSign(s) == aKSpace.POS)?(aKSpace.sDirectIncident(s, 2)):(aKSpace.sIndirectIncident(s, 2)) )
+		  << std::endl; 
+	points.push_back(pt);
     }
 
     return points;
@@ -146,21 +130,40 @@ TEST_CASE("Testing ArithmeticalDSSComputerOnSurfels")
 
     // Do a segmentation using the surfel class
     SegmentComputerOnSurfels recognitionAlgorithmSurfels(kspace, slice.dim1, slice.dim2);
+    //auto citSurfels = CirculatorOnSurfels(slice.contour.begin(), slice.contour.begin(), slice.contour.end());
+    //SegmentationSurfels segmentationSurfels(citSurfels, citSurfels, recognitionAlgorithmSurfels);
     SegmentationSurfels segmentationSurfels(slice.contour.begin(), slice.contour.end(), recognitionAlgorithmSurfels);
 
     // Extract the projected points
-    std::vector<Z2i::Point> points = extractPoints(recognitionAlgorithmSurfels, slice);
+    std::vector<Z2i::Point> points = extractPoints(recognitionAlgorithmSurfels, kspace, slice);
 
     // Do a segmentation on the projected points
     SegmentComputer recognitionAlgorithm;
+    //auto cit = CirculatorOnPoints(points.begin(), points.begin(), points.end());
+    //Segmentation segmentation(cit, cit, recognitionAlgorithm);
     Segmentation segmentation(points.begin(), points.end(), recognitionAlgorithm);
 
+    //print for debuging
+    auto segIt = segmentation.begin();
+    while (segIt != segmentation.end()) {
+      std::cout << segIt->primitive() << std::endl; 
+      ++segIt;
+    }
+    std::cout << "------------------------------------------" << std::endl; 
+    auto segSurfelIt = segmentationSurfels.begin();
+    while (segSurfelIt != segmentationSurfels.end()) {
+      std::cout << segSurfelIt->primitive() << std::endl; 
+      ++segSurfelIt;
+    }
+    
     // The two segmentations must be the same
     bool allEqual = true;
-    auto segIt = segmentation.begin();
-    auto segSurfelIt = segmentationSurfels.begin();
+    segIt = segmentation.begin();
+    segSurfelIt = segmentationSurfels.begin();
     while (segIt != segmentation.end() && segSurfelIt != segmentationSurfels.end()) {
-        allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
+      //std::cout << segSurfelIt->primitive().back() << " - " << segSurfelIt->primitive().front() << std::endl; 
+      //std::cout << segIt->primitive() << " " << segSurfelIt->primitive() << std::endl; 
+      allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
 
         ++segIt;
         ++segSurfelIt;
