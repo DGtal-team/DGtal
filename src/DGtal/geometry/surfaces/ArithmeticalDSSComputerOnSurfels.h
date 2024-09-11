@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
-#include <DGtal/kernel/BasicPointFunctors.h>
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
