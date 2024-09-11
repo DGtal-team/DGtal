@@ -62,8 +62,10 @@ namespace DGtal
   // class ArithmeticalDSSComputerOnSurfels
   /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted
-   * to the dynamic recognition of digital straight segments (DSS) along any
-   * sequence of 3D surfels.
+   * to the dynamic recognition of digital straight segments (DSS) along a 
+   * sequence of surfels lying on a slice of the digital surface (i.e., the 
+   * orthogonal direction of all surfels belong to a same plane, most pairs
+   * of consecutive surfels share a common linel).
    *
    * @tparam TKSpace type of Khalimsky space
    * @tparam TIterator type of iterator on 3d surfels,
@@ -150,7 +152,31 @@ namespace DGtal
      */
     typedef Point Vector;
 
+    /**
+     * Alias of this class
+     */
     typedef ArithmeticalDSSComputerOnSurfels<KSpace,ConstIterator,TInteger> Self;
+
+    /**
+     * Helpers used to extract relevant points from a pair of points
+     */
+    struct DirectPairExtractor {
+
+      virtual Point first(const std::pair<Point,Point>& aPair) const { return aPair.first; }
+      virtual Point second(const std::pair<Point,Point>& aPair) const { return aPair.second; }
+      
+    };
+    struct IndirectPairExtractor : public DirectPairExtractor {
+      
+      Point first(const std::pair<Point,Point>& aPair) const { return  aPair.second; }
+      Point second(const std::pair<Point,Point>& aPair) const { return aPair.first; }
+
+    }; 
+    typedef std::shared_ptr<DirectPairExtractor> PairExtractor;  
+    
+    /**
+     * Reversed version of this class (using reverse iterators)
+     */
     typedef ArithmeticalDSSComputerOnSurfels<KSpace,ReverseIterator<ConstIterator>,TInteger> Reverse;
 
     // ----------------------- Standard services ------------------------------
@@ -167,8 +193,11 @@ namespace DGtal
      * @param aKSpace a Khalimsky space
      * @param aDim1 a first direction that describes the projection plane
      * @param aDim2 a second direction that describes the projection plane
+     * @param aFlagToReverse a boolean telling whether one has to reverse 
+     * the orientation of the points associated to a surfel or not 
+     * ('false' by default)
      */
-    ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2);
+    ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2, bool aFlagToReverse = false);
     
     /**
      * Initialisation.
@@ -413,6 +442,12 @@ namespace DGtal
      */
     Projector my2DProjector; 
 
+    /**
+     * Smart pointer on an object used to extract relevant points 
+     * from a pair of points
+     */
+    PairExtractor myExtractor; 
+    
     /**
     * DSS representation
     */

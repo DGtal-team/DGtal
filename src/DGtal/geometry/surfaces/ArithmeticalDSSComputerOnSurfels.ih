@@ -53,7 +53,8 @@ template <typename TKSpace, typename TIterator, typename TInteger>
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
 ArithmeticalDSSComputerOnSurfels()
-  : myKSpace(nullptr), myDSS( Point(0,0) ), myBegin(), myEnd()
+  : myKSpace(nullptr), mySliceAxis1(), mySliceAxis2(), myProjectionAxis(),
+    my2DProjector(), myExtractor(nullptr), myDSS( Point(0,0) ), myBegin(), myEnd()
 {
 }
 
@@ -61,8 +62,9 @@ ArithmeticalDSSComputerOnSurfels()
 template <typename TKSpace, typename TIterator, typename TInteger>
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
-ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2)
-  : myKSpace(&aKSpace), mySliceAxis1(aDim1), mySliceAxis2(aDim2), myProjectionAxis(), my2DProjector(), myDSS( Point(0,0) ), myBegin(), myEnd()
+ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2, bool aFlagToReverse)
+  : myKSpace(&aKSpace), mySliceAxis1(aDim1), mySliceAxis2(aDim2), myProjectionAxis(),
+    my2DProjector(), myExtractor(), myDSS( Point(0,0) ), myBegin(), myEnd()
 {
    ASSERT(aDim1 != aDim2);
    
@@ -70,26 +72,12 @@ ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimensi
 
    std::vector<Dimension> v = {aDim1, aDim2}; 
    my2DProjector.init(v.begin(),v.end());
-}
 
-
-//-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, typename TInteger>
-inline
-void DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
-init(const ConstIterator& it)
-{
-  ASSERT(myKSpace != nullptr);
-
-  myBegin = it;
-  myEnd = it;
-  ++myEnd;
-
-  SCell surfel = *it;
-  auto [p,q] = getProjectedPointsFromSurfel(surfel); 
-  myDSS = DSS( p );
-  ASSERT(myDSS.isExtendableFront( q )); 
-  myDSS.extendFront( q ); 
+   if (aFlagToReverse) {
+     myExtractor = PairExtractor(new IndirectPairExtractor()); 
+   } else {
+     myExtractor = PairExtractor(new DirectPairExtractor()); 
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -98,7 +86,7 @@ inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
 ArithmeticalDSSComputerOnSurfels ( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger> & other )
   : myKSpace(other.myKSpace), mySliceAxis1(other.mySliceAxis1), mySliceAxis2(other.mySliceAxis2), myProjectionAxis(other.myProjectionAxis),
-      my2DProjector(other.my2DProjector), myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
+    my2DProjector(other.my2DProjector), myExtractor(other.myExtractor), myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
 {
 }
 
@@ -116,6 +104,7 @@ operator=( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger> & 
       mySliceAxis2 = other.mySliceAxis2;
       myProjectionAxis = other.myProjectionAxis; 
       my2DProjector = other.my2DProjector;
+      myExtractor = other.myExtractor; 
       myDSS = other.myDSS;
       myBegin = other.myBegin;
       myEnd = other.myEnd;
@@ -130,7 +119,7 @@ typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Re
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>
 ::getReverse() const
 {
-  return Reverse(*myKSpace, mySliceAxis1, mySliceAxis2);
+  return Reverse(*myKSpace, mySliceAxis1, mySliceAxis2, true);
 }
 
 //-----------------------------------------------------------------------------
@@ -393,6 +382,31 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::selfDisplay
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+//                       Initialization                                      //
+///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TIterator, typename TInteger>
+inline
+void DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
+init(const ConstIterator& it)
+{
+  ASSERT(myKSpace != nullptr);
+
+  myBegin = it;
+  myEnd = it;
+  ++myEnd;
+
+  SCell surfel = *it;
+  auto pair = getProjectedPointsFromSurfel(surfel);
+  auto p = myExtractor->first(pair); 
+  myDSS = DSS( p );
+  auto q = myExtractor->second(pair); 
+  ASSERT(myDSS.isExtendableFront( q )); 
+  myDSS.extendFront( q ); 
+}
+
+///////////////////////////////////////////////////////////////////////////////
 //                       Projection                                          //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -404,10 +418,6 @@ std::pair<typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TIn
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getProjectedPointsFromSurfel(SCell const& aSurfel) const
 {
 
-  // std::cout << myKSpace->sKCoords(aSurfel) << " "
-  // 	    << myProjectionAxis
-  // 	    << std::endl; 
-
   SCell linel1;
   //this convention has been chosen so that
   //linels always stand at the same side
@@ -417,20 +427,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getProjecte
     linel1 = myKSpace->sIndirectIncident(aSurfel, myProjectionAxis); 
   }
 
-  // std::cout << myKSpace->sKCoords(linel1) << " "
-  // 	    << (*myKSpace->sDirs(linel1))
-  // 	    << std::endl; 
-
-  auto pair1 = getProjectedPointsFromLinel(linel1);
-
-  // /// for debugging
-  // auto [p, q] = pair1; //structured bindings C++17
-  // std::cout << myKSpace->sKCoords(aSurfel) << std::endl; 
-  // std::cout << myKSpace->sKCoords(linel1) << std::endl; 
-  // std::cout << p << q << std::endl;
-  // ///
-  
-  return pair1; 
+  return getProjectedPointsFromLinel(linel1);
 }
 
 //-----------------------------------------------------------------
@@ -439,7 +436,7 @@ inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getNextProjectedPoint(SCell const& aSurfel) const
 {
-  return getProjectedPointsFromSurfel(aSurfel).second; 
+  return myExtractor->second(getProjectedPointsFromSurfel(aSurfel)); 
 }
 
 //-----------------------------------------------------------------
@@ -448,7 +445,7 @@ inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getPreviousProjectedPoint(SCell const& aSurfel) const
 {
-  return getProjectedPointsFromSurfel(aSurfel).first; 
+  return myExtractor->first(getProjectedPointsFromSurfel(aSurfel)); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -467,17 +464,9 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getProjecte
   
   auto pointel1 = myKSpace->sIndirectIncident(aLinel, dim);
   auto p1 = my2DProjector(myKSpace->sCoords(pointel1));  
-  // std::cout << myKSpace->sKCoords(pointel1) << " "
-  // 	    << myKSpace->sCoords(pointel1) << " "
-  // 	    << p1 
-  // 	    << std::endl; 
 
   auto pointel2 = myKSpace->sDirectIncident(aLinel, dim); 
   auto p2 = my2DProjector(myKSpace->sCoords(pointel2));  
-  // std::cout << myKSpace->sKCoords(pointel2) << " "
-  // 	    << myKSpace->sCoords(pointel2) << " "
-  // 	    << p2
-  // 	    << std::endl; 
 
   return {p1, p2}; 
 }
