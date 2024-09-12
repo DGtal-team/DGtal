@@ -400,7 +400,7 @@ namespace DGtal
      * Returns the ends of a unit segment corresponding 
      * to the projection of a given signed linel. 
      *
-     * @param aSurfel any signed surfel.
+     * @param aLinel any signed linel.
      * @return a pair of 2D points. 
      */
     std::pair<Point,Point> getProjectedPointsFromLinel(SCell const& aLinel) const; 
