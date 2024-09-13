@@ -94,7 +94,7 @@ namespace DGtal
       using RealPoint2  = PointVector<2, double>;
       using Container   = std::deque<SCell>;
       using Iterator    = typename Container::const_iterator;
-      using DSSComputer = ArithmeticalDSSComputerOnSurfels<KSpace, Circulator<Iterator>, Integer, 4>;
+      using DSSComputer = ArithmeticalDSSComputerOnSurfels<KSpace, Circulator<Iterator>, Integer>;
 
     // ----------------------- Standard services ------------------------------
   public:

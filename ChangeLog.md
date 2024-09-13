@@ -1,5 +1,8 @@
 # DGtal 1.5beta
 
+## Bug fixes
+- *Geometry*
+  - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
 
 # DGtal 1.4.1
 
