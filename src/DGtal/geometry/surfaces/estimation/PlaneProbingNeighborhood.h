@@ -166,7 +166,7 @@ namespace DGtal
      *
      * @return the update operation to apply.
      */
-    UpdateOperation closestCandidate ();
+    virtual UpdateOperation closestCandidate ();
 
     /**
      * Constructs an update operation from the closest candidate point.
@@ -174,7 +174,7 @@ namespace DGtal
      * @param aClosest the closest candidate point.
      * @return the update operation.
      */
-    virtual UpdateOperation getOperation (PointOnProbingRay const& aClosest) const;
+    UpdateOperation getOperation (PointOnProbingRay const& aClosest) const;
 
     /**
      * Classify the state of the H-neighborhood encoded as an array of 6 booleans.

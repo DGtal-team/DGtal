@@ -1,0 +1,369 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file
+ * @author Tristan Roussilllon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2024/09/16
+ *
+ * Header file for module PlaneProbingLNeighborhood.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(PlaneProbingLNeighborhood_RECURSES)
+#error Recursive header files inclusion detected in PlaneProbingLNeighborhood.h
+#else // defined(PlaneProbingLNeighborhood_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define PlaneProbingLNeighborhood_RECURSES
+
+#if !defined PlaneProbingLNeighborhood_h
+/** Prevents repeated inclusion of headers. */
+#define PlaneProbingLNeighborhood_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
+#include <cassert>
+#include <iostream>
+#include <vector>
+#include "DGtal/base/Common.h"
+#include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.h"
+#include "DGtal/kernel/CPointPredicate.h"
+//////////////////////////////////////////////////////////////////////////////
+
+namespace DGtal
+{
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class PlaneProbingLNeighborhood
+  /**
+   * Description of template class 'PlaneProbingLNeighborhood' <p>
+   * \brief Aim: Represents a way to probe the L-neighborhood, 
+   * see \cite Lu2022 for details.
+   *
+   * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
+   */
+  template <typename TPredicate>
+  class PlaneProbingLNeighborhood: public DGtal::PlaneProbingNeighborhood<TPredicate>
+  {
+    BOOST_CONCEPT_ASSERT((DGtal::concepts::CPointPredicate<TPredicate>));
+
+    // ----------------------- Public types ------------------------------
+  public:
+    using Predicate         = TPredicate;
+    using Point             = typename Predicate::Point;
+    using Vector            = Point;
+    using Integer           = typename Point::Coordinate;
+    using Triangle          = std::array<Vector, 3>;
+
+    using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
+    using UpdateOperation     = typename PlaneProbingNeighborhood<TPredicate>::UpdateOperation;
+
+    using PointOnProbingRay  = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
+
+    using GridPoint          = typename detail::GridPoint<int>;
+    
+    // ----------------------- Inner types ------------------------------
+
+    // Data structure used to represent a ray on a grid.    
+    struct GridRay
+    {
+      GridRay () = default;
+
+      GridRay (const GridPoint& aGridPoint,
+    	       const std::pair<Integer,Integer>& aDirection,
+    	       const Integer& aIdx = 0)
+    	: myGridPoint(aGridPoint), myDirection(aDirection), myIdx(aIdx) {}
+
+      GridRay (const GridRay& other)
+    	: myGridPoint(other.myGridPoint), myDirection(other.myDirection), myIdx(other.myIdx) {}
+
+      GridRay& operator=(const GridRay& other) {
+    	if (this != &other) {
+    	  myGridPoint = other.myGridPoint; 
+    	  myDirection = other.myDirection;
+    	  myIdx = other.myIdx; 
+    	}
+    	return *this; 
+      }
+
+      bool operator== (GridRay const& other) const {
+	return ( (myGridPoint == other.myGridPoint) &&
+		 (myDirection == other.myDirection) &&
+		 (myIdx == other.myIdx) );
+      }
+
+      bool operator!= (GridRay const& other) const {
+	return !(*this == other);
+      }
+      
+      GridRay next(const int& offset) const {
+    	return GridRay(myGridPoint, myDirection, myIdx+offset); 
+      }
+      
+      Integer index() const {
+    	return myIdx; 
+      }
+
+      GridPoint gridPoint() const {
+    	return myGridPoint + myGridPoint.getOnSameGrid(myDirection)*myIdx; 
+      }
+      
+      GridPoint myGridPoint;       //grid point
+      std::pair<Integer, Integer> myDirection; //direction
+      Integer myIdx;  //index on the ray
+    };
+    
+    // Data structure used to store the closest grid point associated with a vertex of the triangle.    
+    struct ClosestGridPoint
+    {
+      ClosestGridPoint () = default;
+
+      ClosestGridPoint (const GridPoint& aGridPoint,
+			const bool& first, const bool& second )
+	: myGridPoint(aGridPoint), myPair(std::make_pair(first,second)) {}
+
+      //a grid point, which can be not valid if no grid point belong to the plane
+      GridPoint myGridPoint;
+      //pair of bool values that encode the local configuration:
+      //at the position k, x if the predicate has returned x on v + mk,
+      //where v is the associated vertex
+      std::pair<bool,bool> myPair; 
+    };
+    
+    // ----------------------- Standard services ------------------------------
+  public:
+    /**
+     * Default constructor.
+     */
+    PlaneProbingLNeighborhood() = delete;
+
+    /**
+     * Constructor.
+     *
+     * @param aPredicate a probing predicate.
+     * @param aQ the fixed point 'q'.
+     * @param aM a frame composed of the three vectors.
+     */
+    PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM);
+
+    /**
+     * Destructor.
+     */
+    ~PlaneProbingLNeighborhood();
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    PlaneProbingLNeighborhood ( const PlaneProbingLNeighborhood & other ) = delete;
+
+    /**
+     * Move constructor.
+     * @param other the object to move.
+     */
+    PlaneProbingLNeighborhood ( PlaneProbingLNeighborhood && other ) = delete;
+
+    /**
+     * Copy assignment operator.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    PlaneProbingLNeighborhood & operator= ( const PlaneProbingLNeighborhood & other ) = delete;
+
+    /**
+     * Move assignment operator.
+     * @param other the object to move.
+     * @return a reference on 'this'.
+     */
+    PlaneProbingLNeighborhood & operator= ( PlaneProbingLNeighborhood && other ) = delete;
+
+    // ----------------------- Plane-Probing services ------------------------------
+  public:
+    
+    /**
+     * Computes the current state of the neighborhood.
+     * This is the function that is overloaded for the different probing modes.
+     *
+     * @return the hexagon state, see HexagonState.
+     */
+    HexagonState hexagonState () override;
+
+    /**
+     * Computes the closest candidate point, used for updating a frame in a plane probing based estimator.
+     *
+     * @return the update operation to apply.
+     */
+    UpdateOperation closestCandidate () override;
+    
+    // ------------------------- Protected Datas ------------------------------
+  protected:
+
+    std::vector<ClosestGridPoint> myGrids; /**< closest point and additional useful data stored at each vertex. */
+    
+    // ------------------------- Helpers to find a closest point --------------
+  protected:
+    
+    /**
+     * Computes the closest candidate point in a given grid identified by the 
+     * index of the associated vertex.
+     *
+     * @param aIdx
+     * @return an instance of ClosestGridPoint.
+     */
+    ClosestGridPoint closestInGrid (const int& aIdx) const;
+
+    /**
+     * Computes the candidate grid points lying in a cone given by two grid points.
+     *
+     * @param y1 a first grid point
+     * @param y2 a second grid point
+     * @param out an output iterator on grid points
+     */
+    void candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
+			   std::back_insert_iterator<std::vector<GridPoint> > out) const;
+    
+    /**
+     * Computes the closest point, among a list of candidates, using a Delaunay-based criterion.
+     *
+     * @param aPoints the list of points.
+     * @return the closest point.
+     */
+    GridPoint closestInList (std::vector<GridPoint> const& aPoints) const;
+
+    /**
+     * Finds a closest point on a given ray using a linear search.
+     *
+     * @param aRay a ray.
+     * @param aBound a bound that limits the search range. 
+     * @return a closest point on the ray.
+     */
+    GridRay closestOnRayLinearWithPredicate (GridRay const& aRay, Integer const& aBound) const;
+    
+    /**
+     * Finds a closest point on a given ray using a binary search.
+     *
+     * @param aRay a ray.
+     * @param aBound a bound that limits the search range. 
+     * @return a closest point on the ray.
+     */
+    GridRay closestOnRayLogWithPredicate (GridRay const& aRay, Integer const& aBound) const; 
+   
+    /**
+     * Constructs an update operation from the closest candidate point.
+     *
+     * @param aClosest the closest candidate point.
+     * @return the update operation.
+     */
+    UpdateOperation getOperationFromGridPoint (GridPoint const& aClosest) const;
+   
+    /**
+     * Update a grid after a triangle update. This procedure is called at the 
+     * beginning of every call to hexagonState, which must prepare the computations. 
+     *
+     * @param aIdx
+     */
+    void updateGrid (const int& aIdx);
+ 
+    // ----------------------- Helpers --------------------------------------
+  protected:
+
+    /**
+     * Returns the vector from the base to a grid point.
+     *
+     * @param aP a point on a grid.
+     * @return the vector.
+     */
+    Point direction (GridPoint const& aP) const;
+
+    /**
+     * Returns the vector from the point q to the current point on the grid.
+     *
+     * @param aP a point on a grid.
+     * @return the vector from the fixed point 'q' to the current point on the grid.
+     */
+    Point relativePoint (GridPoint const& aP) const;
+
+    /**
+     * Returns the current point on the grid.
+     *
+     * @param aP a point on a grid.
+     * @return the current point on the grid.
+     */
+    Point absolutePoint (GridPoint const& aP) const;
+
+    /**
+     * Returns the vector from the point q to the current point on the grid.
+     *
+     * @param aP a point on a ray.
+     * @return the vector from the fixed point 'q' to the current point on the grid.
+     */
+    Point relativePoint (GridRay const& aP) const;
+
+    /**
+     * Returns the current point on the grid.
+     *
+     * @param aP a point on a ray.
+     * @return the current point on the grid.
+     */
+    Point absolutePoint (GridRay const& aP) const;
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+  }; // end of class PlaneProbingLNeighborhood
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'PlaneProbingLNeighborhood'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'PlaneProbingLNeighborhood' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPredicate>
+  std::ostream&
+  operator<< ( std::ostream & out, const PlaneProbingLNeighborhood<TPredicate> & object );
+
+} // namespace DGtal
+
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Includes inline functions.
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingLNeighborhood.ih"
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined PlaneProbingLNeighborhood_h
+
+#undef PlaneProbingLNeighborhood_RECURSES
+#endif // else defined(PlaneProbingLNeighborhood_RECURSES)

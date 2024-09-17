@@ -140,6 +140,40 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
         REQUIRE(nbOk == 100);
     }
 
+
+    SECTION("R and L algorithms should return the correct, same normal and the final basis should be reduced")
+    {
+        using Point = PointVector<3, int>;
+
+        int nbOk = 0;
+        Point estimatedR, estimatedL;
+        bool isReducedR = false, isReducedL = false;
+
+        for (const auto& n: NORMALS) {
+            TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::compute
+                (n,
+                 [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::R>::Estimator& estimator) {
+                    estimatedR = estimator.compute();
+                    isReducedR = estimator.isReduced();
+                 });
+
+            TestPlaneProbingTetrahedronEstimator<int, ProbingMode::L>::compute
+                (n,
+                 [&] (TestPlaneProbingTetrahedronEstimator<int, ProbingMode::L>::Estimator& estimator) {
+                    estimatedL = estimator.compute();
+                    isReducedL = estimator.isReduced();
+                 });
+
+            if (estimatedR == n && estimatedL == estimatedR &&
+                isReducedR && isReducedL)
+            {
+                nbOk++;
+            }
+        }
+
+        REQUIRE(nbOk == 100);
+    }
+    
 #ifdef WITH_GMP
     SECTION("H and R algorithm should return the correct normal, R-algorithm a reduced basis with BigInteger")
     {
