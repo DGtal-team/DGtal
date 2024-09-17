@@ -205,8 +205,8 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
       	} else {
       	  //we look for a closest point on the ray u +cw, c<gamma
       	  //std::cout << "search for a closest in plane" << std::endl;
-      	  GridRay gr = closestOnRayLogWithPredicate(GridRay(u,w.direction()),gamma);
-	  ASSERT( gr == closestOnRayLinearWithPredicate(GridRay(u,w.direction()),gamma) );
+      	  GridPointOnProbingRay gr = closestOnRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma);
+	  ASSERT( gr == closestOnRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma) );
       	  *out++ = gr.gridPoint(); 
       	}
       } else {
@@ -219,8 +219,8 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
 	//whatever w2Next is in plane or not, 
 	//we look for a closest point on the ray u +cw, c<=gamma+1
 	//std::cout << "search for a closest in plane" << std::endl;
-	GridRay gr = closestOnRayLogWithPredicate(GridRay(u,w.direction()),(gamma+2));
-	ASSERT( gr == closestOnRayLinearWithPredicate(GridRay(u,w.direction()),(gamma+2)) ); 
+	GridPointOnProbingRay gr = closestOnRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2));
+	ASSERT( gr == closestOnRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) ); 
 	*out++ = gr.gridPoint(); 
       }
       
@@ -261,10 +261,10 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestInList (std::vector<GridPoi
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridRay
-DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (GridRay const& aRay, Integer const& aBound) const
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const
 {
-  GridRay Xk = aRay, Xl = aRay.next(aRay.index()+aBound);
+  GridPointOnProbingRay Xk = aRay, Xl = aRay.next(aRay.index()+aBound);
   ASSERT(this->myPredicate(absolutePoint(Xk)));
 
   // Binary search
@@ -272,7 +272,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (Grid
   while (d > 4) {
     ASSERT(this->myPredicate(absolutePoint(Xk)));
 
-    GridRay Xalpha = Xk.next(Integer(d / 4)),
+    GridPointOnProbingRay Xalpha = Xk.next(Integer(d / 4)),
       Xbeta  = Xk.next(Integer(d / 2)),
       Xgamma = Xk.next(Integer(3*d/4));
 
@@ -299,13 +299,13 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (Grid
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridRay
-DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLinearWithPredicate (GridRay const& aRay, const Integer& aBound) const
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLinearWithPredicate (GridPointOnProbingRay const& aRay, const Integer& aBound) const
 {
   ASSERT(this->myPredicate(absolutePoint(aRay)));
 
   Integer counter = 0; 
-  GridRay previousX = aRay, currentX = previousX.next(1);
+  GridPointOnProbingRay previousX = aRay, currentX = previousX.next(1);
   while (this->myPredicate(absolutePoint(currentX)) &&
 	 this->isSmallest(relativePoint(previousX), relativePoint(currentX)) &&
 	 counter < aBound) {
@@ -403,7 +403,7 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
-relativePoint (GridRay const& aP) const
+relativePoint (GridPointOnProbingRay const& aP) const
 {
   return relativePoint(aP.gridPoint());  
 }
@@ -413,7 +413,7 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
-absolutePoint (GridRay const& aP) const
+absolutePoint (GridPointOnProbingRay const& aP) const
 {
   return absolutePoint(aP.gridPoint()); 
 }

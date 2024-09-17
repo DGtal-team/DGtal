@@ -76,76 +76,49 @@ namespace DGtal
     using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
     using UpdateOperation     = typename PlaneProbingNeighborhood<TPredicate>::UpdateOperation;
 
-    using PointOnProbingRay  = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
-
-    using GridPoint          = typename detail::GridPoint<int>;
+    using PointOnProbingRay     = typename detail::PointOnProbingRay<int>;
+    using GridPoint             = typename detail::GridPoint<int>;
+    using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<int>;
     
-    // ----------------------- Inner types ------------------------------
-
-    // Data structure used to represent a ray on a grid.    
-    struct GridRay
-    {
-      GridRay () = default;
-
-      GridRay (const GridPoint& aGridPoint,
-    	       const std::pair<Integer,Integer>& aDirection,
-    	       const Integer& aIdx = 0)
-    	: myGridPoint(aGridPoint), myDirection(aDirection), myIdx(aIdx) {}
-
-      GridRay (const GridRay& other)
-    	: myGridPoint(other.myGridPoint), myDirection(other.myDirection), myIdx(other.myIdx) {}
-
-      GridRay& operator=(const GridRay& other) {
-    	if (this != &other) {
-    	  myGridPoint = other.myGridPoint; 
-    	  myDirection = other.myDirection;
-    	  myIdx = other.myIdx; 
-    	}
-    	return *this; 
-      }
-
-      bool operator== (GridRay const& other) const {
-	return ( (myGridPoint == other.myGridPoint) &&
-		 (myDirection == other.myDirection) &&
-		 (myIdx == other.myIdx) );
-      }
-
-      bool operator!= (GridRay const& other) const {
-	return !(*this == other);
-      }
-      
-      GridRay next(const int& offset) const {
-    	return GridRay(myGridPoint, myDirection, myIdx+offset); 
-      }
-      
-      Integer index() const {
-    	return myIdx; 
-      }
-
-      GridPoint gridPoint() const {
-    	return myGridPoint + myGridPoint.getOnSameGrid(myDirection)*myIdx; 
-      }
-      
-      GridPoint myGridPoint;       //grid point
-      std::pair<Integer, Integer> myDirection; //direction
-      Integer myIdx;  //index on the ray
-    };
-    
-    // Data structure used to store the closest grid point associated with a vertex of the triangle.    
+    // ----------------------- Internal type -------------------------------
+  private: 
+    /**
+     * Description of data structure 'ClosestGridPoint' <p>
+     * \brief Aim: Used to store the closest grid point associated 
+     * to a vertex of the triangle and two extra boolean values
+     * about the local configuration at that vertex. 
+     * 
+     * More precisely, given a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ 
+     * and a point \f$ q \f$, let us denote \f$ v \f$ the vertex equal to 
+     * \f$ q - m_k \f$. The first boolean value is 'true' iff
+     * the predicate returns 'true' on \f$ v - m_{k+1} \f$ and,  
+     * similarly, the second boolean value is 'true' iff
+     * the predicate returns 'true' on \f$ v - m_{k+2} \f$
+     * (the indices are taken modulo 3). 
+     */    
     struct ClosestGridPoint
     {
+      /** 
+       * Default constructor.
+       */
       ClosestGridPoint () = default;
 
+      /**
+       * Constructor
+       *
+       * @param aGridPoint the closest grid point (possibly invalid)
+       * @param aFirst the first boolean value
+       * @param aSecond the second boolean value
+       */
       ClosestGridPoint (const GridPoint& aGridPoint,
 			const bool& first, const bool& second )
 	: myGridPoint(aGridPoint), myPair(std::make_pair(first,second)) {}
 
-      //a grid point, which can be not valid if no grid point belong to the plane
-      GridPoint myGridPoint;
-      //pair of bool values that encode the local configuration:
-      //at the position k, x if the predicate has returned x on v + mk,
-      //where v is the associated vertex
-      std::pair<bool,bool> myPair; 
+      GridPoint myGridPoint; /**< a grid point, which can be invalid 
+				 if no grid point belong to the underlying surface */
+
+      std::pair<bool,bool> myPair; /**< pair of boolean values that encode 
+				       the local configuration */
     };
     
     // ----------------------- Standard services ------------------------------
@@ -255,7 +228,7 @@ namespace DGtal
      * @param aBound a bound that limits the search range. 
      * @return a closest point on the ray.
      */
-    GridRay closestOnRayLinearWithPredicate (GridRay const& aRay, Integer const& aBound) const;
+    GridPointOnProbingRay closestOnRayLinearWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const;
     
     /**
      * Finds a closest point on a given ray using a binary search.
@@ -264,7 +237,7 @@ namespace DGtal
      * @param aBound a bound that limits the search range. 
      * @return a closest point on the ray.
      */
-    GridRay closestOnRayLogWithPredicate (GridRay const& aRay, Integer const& aBound) const; 
+    GridPointOnProbingRay closestOnRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const; 
    
     /**
      * Constructs an update operation from the closest candidate point.
@@ -315,7 +288,7 @@ namespace DGtal
      * @param aP a point on a ray.
      * @return the vector from the fixed point 'q' to the current point on the grid.
      */
-    Point relativePoint (GridRay const& aP) const;
+    Point relativePoint (GridPointOnProbingRay const& aP) const;
 
     /**
      * Returns the current point on the grid.
@@ -323,7 +296,7 @@ namespace DGtal
      * @param aP a point on a ray.
      * @return the current point on the grid.
      */
-    Point absolutePoint (GridRay const& aP) const;
+    Point absolutePoint (GridPointOnProbingRay const& aP) const;
 
     // ----------------------- Interface --------------------------------------
   public:
