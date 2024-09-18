@@ -38,7 +38,7 @@ testPlaneProbingParallelepipedEstimator.cpp.
 
 \section sectPlaneProbing1 Introduction to plane-probing algorithms
 
-A plane-probing algorithm (see @cite LPRJMIV2017, @cite RLDGCI2019 and @cite LMRJMIV2020)
+A plane-probing algorithm (see @cite LPRJMIV2017, @cite RLDGCI2019, @cite LMRJMIV2020 and @cite Lu2022)
 computes the normal vector of a set of digital points
 from a starting point and a predicate \b InPlane: "Is a point x in the set of digital points?".
 This predicate is used to probe the set as locally as possible
