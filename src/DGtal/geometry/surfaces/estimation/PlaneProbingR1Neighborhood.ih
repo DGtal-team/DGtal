@@ -124,7 +124,9 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 35:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(0);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 2, 1, 0 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 2, 1, 0 }, 0) }; 
+                PointOnProbingRay closest = this->closestPointInList(shortList);
+                //PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 2, 1, 0 }, 0) });
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
@@ -132,7 +134,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 7:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(0);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 1, 2, 0 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 1, 2, 0 }, 0) };
+                PointOnProbingRay closest = this->closestPointInList(shortList);
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
@@ -140,7 +143,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 14:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(1);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 0, 2, 1 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 0, 2, 1 }, 0) };
+                PointOnProbingRay closest = this->closestPointInList(shortList);
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
@@ -148,7 +152,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 28:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(1);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 2, 0, 1 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 2, 0, 1 }, 0) };
+                PointOnProbingRay closest = this->closestPointInList(shortList);
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
@@ -156,7 +161,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 56:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(2);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 1, 0, 2 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 1, 0, 2 }, 0) };
+                PointOnProbingRay closest = this->closestPointInList(shortList);
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;
@@ -164,7 +170,8 @@ DGtal::PlaneProbingR1Neighborhood<TPredicate>::hexagonState ()
         case 49:
             {
                 std::pair<PointOnProbingRay, PointOnProbingRay> candidate = candidateRay(2);
-                PointOnProbingRay closest = this->closestPointInList({ candidate.second, PointOnProbingRay({ 0, 1, 2 }, 0) });
+		std::vector<PointOnProbingRay> shortList = { candidate.second, PointOnProbingRay({ 0, 1, 2 }, 0) }; 
+                PointOnProbingRay closest = this->closestPointInList(shortList);
                 this->myCandidates.push_back(closestRayPoint(std::make_pair(candidate.first, closest)));
             }
             break;

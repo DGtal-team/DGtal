@@ -152,6 +152,18 @@ namespace DGtal
                  */
                 Integer const& index () const;
 
+	        /**
+		 * Returns the geometric realization of this grid point. 
+		 *
+		 * @param aM an array of three points. 
+		 * @tparam Point a type for points. 
+		 * @return the computed point. 
+		 */
+	         template < typename Point >
+		 Point relativePoint (std::array<Point, 3> const& aM) const {
+		   return -aM[mySigma[0]] + aM[mySigma[1]] + aM[mySigma[2]] * myIndex;
+		 }
+	  
                 /**
                  * Equality test between two rays: the internal permutations and
                  * indices must be the same.
@@ -291,8 +303,8 @@ namespace DGtal
 	/**
 	 * Returns the geometric realization of this grid point. 
 	 *
-	 * @param aM an array of three vectors. 
-	 * @tparam Point a type for vectors. 
+	 * @param aM an array of three points. 
+	 * @tparam Point a type for points. 
 	 * @return the computed point. 
 	 */
 	template < typename Point >
@@ -493,6 +505,19 @@ namespace DGtal
 	GridPoint<Integer> gridPoint() const {
 	  return myOrigin + myOrigin.getOnSameGrid(myDirection)*myIdx; 
 	}
+
+	/**
+	 * Returns the geometric realization of this grid point. 
+	 *
+	 * @param aM an array of three points. 
+	 * @tparam Point a type for points. 
+	 * @return the computed point. 
+	 */
+	template < typename Point >
+	Point relativePoint (std::array<Point, 3> const& aM) const {
+	  return gridPoint().relativePoint(aM); 
+	}
+
 
       private: 
 	GridPoint<Integer> myOrigin; /**< starting point of the ray */

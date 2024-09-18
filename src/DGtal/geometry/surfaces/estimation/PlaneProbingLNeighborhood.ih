@@ -44,7 +44,7 @@ template < typename TPredicate >
 inline
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
-    : DGtal::PlaneProbingNeighborhood<TPredicate>(aPredicate, aQ, aM)
+    : DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM)
 {
   for (int k = 0; k < 3; k++) {
     myGrids.push_back(closestInGrid(k)); 
@@ -66,7 +66,6 @@ inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingLNeighborhood<TPredicate>::hexagonState ()
 {
-  // std::cout << "hexagon state" << std::endl; 
   for (int k = 0; k < 3; k++) {
     updateGrid(k);
   }
@@ -104,7 +103,8 @@ closestCandidate ()
     // to ensure that there is at least one point in the plane in the H-neighbhorhood
     ASSERT(validGridPoints.size() == 2);
     
-    if (this->isSmallest(relativePoint(validGridPoints[0]), relativePoint(validGridPoints[1]))) {
+    if (this->isSmallest(this->relativePoint(validGridPoints[0]),
+			 this->relativePoint(validGridPoints[1]))) {
       return getOperationFromGridPoint(validGridPoints[1]);
     } else {
       return getOperationFromGridPoint(validGridPoints[0]);
@@ -129,10 +129,10 @@ closestInGrid (const int& aIdx) const
   GridPoint y1(1,0,k); //y1 = vk + m1
   GridPoint y2(0,1,k); //y2 = vk + m2
 
-  if (this->myPredicate(absolutePoint(y1))) {
-    if (this->myPredicate(absolutePoint(y2))) {
+  if (this->myPredicate(this->absolutePoint(y1))) {
+    if (this->myPredicate(this->absolutePoint(y2))) {
       //at least 2 candidates
-      if (this->isSmallest(relativePoint(y1), relativePoint(y2))) {
+      if (this->isSmallest(this->relativePoint(y1), this->relativePoint(y2))) {
 	candidates.push_back(y2); 
       } else {
 	candidates.push_back(y1);
@@ -140,7 +140,7 @@ closestInGrid (const int& aIdx) const
       
       ASSERT(candidates.size() == 1);
       candidatesInGrid(y1, y2, std::back_inserter(candidates));
-      GridPoint closest = closestInList(candidates); 
+      GridPoint closest = this->closestPointInList(candidates); 
       return ClosestGridPoint( closest, true, true );
 
     } else {
@@ -148,7 +148,7 @@ closestInGrid (const int& aIdx) const
       return ClosestGridPoint( y1, true, false );
     }
   } else {
-    if (this->myPredicate(absolutePoint(y2))) {
+    if (this->myPredicate(this->absolutePoint(y2))) {
       //1 candidate
       return ClosestGridPoint( y2, false, true );
     } else {
@@ -168,8 +168,8 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
 {
   using DGtal::detail::squaredNorm;
 
-  ASSERT( (this->myPredicate(absolutePoint(y1)) &&
-	   (this->myPredicate(absolutePoint(y2)))) ); 
+  ASSERT( (this->myPredicate(this->absolutePoint(y1)) &&
+	   (this->myPredicate(this->absolutePoint(y2)))) ); 
 
   Integer a = direction(y1).dot(direction(y2));
   if (a < 0) {
@@ -192,43 +192,33 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
       GridPoint w2 = u + w*gamma;
       GridPoint w2Next = u + w*(gamma+1);
     
-      // std::cout << "gamma=" << gamma << " "// << std::endl; 
-      // 		<< "w2" << direction(w2) << " " << squaredNorm(direction(w2)) << " "
-      // 		<< "angle=" << (direction(w2).dot(direction(w2Next))) << " "
-      // 		<< std::endl;
-      
       if (direction(w2).dot(direction(w2Next)) < 0) {
-      	//std::cout << "obtuse" << std::endl; 
 
-      	if (this->myPredicate(absolutePoint(w2))) {
+      	if (this->myPredicate(this->absolutePoint(w2))) {
       	  candidatesInGrid(w, w2, out); 
       	} else {
       	  //we look for a closest point on the ray u +cw, c<gamma
-      	  //std::cout << "search for a closest in plane" << std::endl;
-      	  GridPointOnProbingRay gr = closestOnRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma);
-	  ASSERT( gr == closestOnRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma) );
+      	  GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma);
+	  ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma) );
       	  *out++ = gr.gridPoint(); 
       	}
       } else {
       	//excepted the first one, the other angles along
       	// the ray are all acute (or right),
-      	//std::cout << "obtuse, then all acute" << std::endl;
       	ASSERT( direction(w2).dot(direction(w2Next)) >= 0 );
       	ASSERT( direction(w).dot(direction(w2Next)) >= 0 ); 
 
 	//whatever w2Next is in plane or not, 
 	//we look for a closest point on the ray u +cw, c<=gamma+1
-	//std::cout << "search for a closest in plane" << std::endl;
-	GridPointOnProbingRay gr = closestOnRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2));
-	ASSERT( gr == closestOnRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) ); 
+	GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2));
+	ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) ); 
 	*out++ = gr.gridPoint(); 
       }
       
     } else { //a1 and a2 are both acute (or right),
       //only y has yet to be considered (in addition to y1, y2)
       //(because the angle between y1 and y2 is obtuse)
-      //std::cout << "acute" << std::endl; 
-      if (this->myPredicate(absolutePoint(y))) {
+      if (this->myPredicate(this->absolutePoint(y))) {
 	*out++ = y;
       }
     }
@@ -240,37 +230,16 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPoint
-DGtal::PlaneProbingLNeighborhood<TPredicate>::closestInList (std::vector<GridPoint> const& aPoints) const
-{
-    int N = aPoints.size();
-    if (N == 1) {
-        return aPoints[0];
-    }
-
-    GridPoint minPoint = aPoints[N-1];
-    for (int k = 0; k < N-1; ++k) {
-        if (this->isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
-            minPoint = aPoints[k];
-        }
-    }
-
-    return minPoint;
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
-inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
-DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const
 {
   GridPointOnProbingRay Xk = aRay, Xl = aRay.next(aRay.index()+aBound);
-  ASSERT(this->myPredicate(absolutePoint(Xk)));
+  ASSERT(this->myPredicate(this->absolutePoint(Xk)));
 
   // Binary search
   Integer d = Xl.index() - Xk.index();
   while (d > 4) {
-    ASSERT(this->myPredicate(absolutePoint(Xk)));
+    ASSERT(this->myPredicate(this->absolutePoint(Xk)));
 
     GridPointOnProbingRay Xalpha = Xk.next(Integer(d / 4)),
       Xbeta  = Xk.next(Integer(d / 2)),
@@ -279,11 +248,11 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (Grid
     ASSERT(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() &&
 	   Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
 
-    if (this->myPredicate(absolutePoint(Xbeta)) &&
-	this->isSmallest(relativePoint(Xbeta), relativePoint(Xgamma))) {
+    if (this->myPredicate(this->absolutePoint(Xbeta)) &&
+	this->isSmallest(this->relativePoint(Xbeta), this->relativePoint(Xgamma))) {
       Xk = Xbeta;
-    } else if (! this->myPredicate(absolutePoint(Xalpha)) ||
-	       this->isSmallest(relativePoint(Xbeta), relativePoint(Xalpha))) {
+    } else if (! this->myPredicate(this->absolutePoint(Xalpha)) ||
+	       this->isSmallest(this->relativePoint(Xbeta), this->relativePoint(Xalpha))) {
       Xl = Xbeta;
     } else {
       Xk = Xalpha;
@@ -293,27 +262,27 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLogWithPredicate (Grid
     d = Xl.index() - Xk.index();
   }
 
-  return closestOnRayLinearWithPredicate(Xk, d);
+  return closestOnBoundedRayLinearWithPredicate(Xk, d);
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
-DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnRayLinearWithPredicate (GridPointOnProbingRay const& aRay, const Integer& aBound) const
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLinearWithPredicate (GridPointOnProbingRay const& aRay, const Integer& aBound) const
 {
-  ASSERT(this->myPredicate(absolutePoint(aRay)));
+  ASSERT(this->myPredicate(this->absolutePoint(aRay)));
 
   Integer counter = 0; 
   GridPointOnProbingRay previousX = aRay, currentX = previousX.next(1);
-  while (this->myPredicate(absolutePoint(currentX)) &&
-	 this->isSmallest(relativePoint(previousX), relativePoint(currentX)) &&
+  while (this->myPredicate(this->absolutePoint(currentX)) &&
+	 this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX)) &&
 	 counter < aBound) {
         previousX = currentX;
         currentX = previousX.next(1);
     }
 
-    ASSERT(this->myPredicate(absolutePoint(previousX)));
+    ASSERT(this->myPredicate(this->absolutePoint(previousX)));
 
     return previousX;
 }
@@ -339,9 +308,6 @@ void
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 updateGrid (const int& aIdx)
 {
-  // //TODO, we can be smarter if we do not recompute the closest point in some cases
-  // myGrids[aIdx] = closestInGrid(aIdx);
-
   //Let r1 and r2 be the two rays bound to the vertex of index 'aIdx'
   PointOnProbingRay r1 = PointOnProbingRay({aIdx, (aIdx+1)%3, (aIdx+2)%3}); 
   PointOnProbingRay r2 = PointOnProbingRay({aIdx, (aIdx+2)%3, (aIdx+1)%3}); 
@@ -365,9 +331,6 @@ updateGrid (const int& aIdx)
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Helpers ----------------------------------------
-
 // ------------------------------------------------------------------------
 template < typename TPredicate >
 inline
@@ -377,47 +340,6 @@ direction (GridPoint const& aP) const
 {
   return aP.directionVector(this->myM);  
 }
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
-inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
-DGtal::PlaneProbingLNeighborhood<TPredicate>::
-relativePoint (GridPoint const& aP) const
-{
-  return aP.relativePoint(this->myM);  
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
-inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
-DGtal::PlaneProbingLNeighborhood<TPredicate>::
-absolutePoint (GridPoint const& aP) const
-{
-    return this->myQ + aP.relativePoint(this->myM);
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
-inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
-DGtal::PlaneProbingLNeighborhood<TPredicate>::
-relativePoint (GridPointOnProbingRay const& aP) const
-{
-  return relativePoint(aP.gridPoint());  
-}
-
-// ------------------------------------------------------------------------
-template < typename TPredicate >
-inline
-typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
-DGtal::PlaneProbingLNeighborhood<TPredicate>::
-absolutePoint (GridPointOnProbingRay const& aP) const
-{
-  return absolutePoint(aP.gridPoint()); 
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

@@ -90,14 +90,15 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
-typename DGtal::PlaneProbingRNeighborhood<TPredicate>::PointOnProbingRay
-DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (PointOnProbingRay const& aRay) const
+TPointAdapter
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (TPointAdapter const& aRay) const
 {
     assert(this->myPredicate(this->absolutePoint(aRay)));
 
     // Exponential march
-    PointOnProbingRay Xk = aRay, Xl = aRay.next(1);
+    TPointAdapter Xk = aRay, Xl = aRay.next(1);
     while (this->myPredicate(this->absolutePoint(Xk)) &&
            this->isSmallest(this->relativePoint(Xk), this->relativePoint(Xl))) {
         Integer d = Xl.index() - Xk.index();
@@ -111,7 +112,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
     while (d > 4) {
         assert(this->myPredicate(this->absolutePoint(Xk)));
 
-        PointOnProbingRay Xalpha = Xk.next(Integer(d / 4)),
+        TPointAdapter Xalpha = Xk.next(Integer(d / 4)),
                           Xbeta  = Xk.next(Integer(d / 2)),
                           Xgamma = Xk.next(Integer(3*d/4));
 
@@ -137,13 +138,14 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
-typename DGtal::PlaneProbingRNeighborhood<TPredicate>::PointOnProbingRay
-DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (PointOnProbingRay const& aRay) const
+TPointAdapter
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (TPointAdapter const& aRay) const
 {
     assert(this->myPredicate(this->absolutePoint(aRay)));
 
-    PointOnProbingRay previousX = aRay, currentX = previousX.next(1);
+    TPointAdapter previousX = aRay, currentX = previousX.next(1);
     while (this->myPredicate(this->absolutePoint(currentX)) &&
            this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX))) {
         previousX = currentX;

@@ -45,6 +45,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/helpers/PlaneProbingEstimatorHelper.h"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 #include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +62,7 @@ namespace DGtal
    * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
   template <typename TPredicate>
-  class PlaneProbingLNeighborhood: public DGtal::PlaneProbingNeighborhood<TPredicate>
+  class PlaneProbingLNeighborhood: public DGtal::PlaneProbingRNeighborhood<TPredicate>
   {
     BOOST_CONCEPT_ASSERT((DGtal::concepts::CPointPredicate<TPredicate>));
 
@@ -212,14 +213,6 @@ namespace DGtal
      */
     void candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
 			   std::back_insert_iterator<std::vector<GridPoint> > out) const;
-    
-    /**
-     * Computes the closest point, among a list of candidates, using a Delaunay-based criterion.
-     *
-     * @param aPoints the list of points.
-     * @return the closest point.
-     */
-    GridPoint closestInList (std::vector<GridPoint> const& aPoints) const;
 
     /**
      * Finds a closest point on a given ray using a linear search.
@@ -228,7 +221,7 @@ namespace DGtal
      * @param aBound a bound that limits the search range. 
      * @return a closest point on the ray.
      */
-    GridPointOnProbingRay closestOnRayLinearWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const;
+    GridPointOnProbingRay closestOnBoundedRayLinearWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const;
     
     /**
      * Finds a closest point on a given ray using a binary search.
@@ -237,7 +230,7 @@ namespace DGtal
      * @param aBound a bound that limits the search range. 
      * @return a closest point on the ray.
      */
-    GridPointOnProbingRay closestOnRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const; 
+    GridPointOnProbingRay closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const; 
    
     /**
      * Constructs an update operation from the closest candidate point.
@@ -254,9 +247,6 @@ namespace DGtal
      * @param aIdx
      */
     void updateGrid (const int& aIdx);
- 
-    // ----------------------- Helpers --------------------------------------
-  protected:
 
     /**
      * Returns the vector from the base to a grid point.
@@ -265,38 +255,42 @@ namespace DGtal
      * @return the vector.
      */
     Point direction (GridPoint const& aP) const;
+    
+  //   // ----------------------- Helpers --------------------------------------
+  // protected:
 
-    /**
-     * Returns the vector from the point q to the current point on the grid.
-     *
-     * @param aP a point on a grid.
-     * @return the vector from the fixed point 'q' to the current point on the grid.
-     */
-    Point relativePoint (GridPoint const& aP) const;
 
-    /**
-     * Returns the current point on the grid.
-     *
-     * @param aP a point on a grid.
-     * @return the current point on the grid.
-     */
-    Point absolutePoint (GridPoint const& aP) const;
+  //   /**
+  //    * Returns the vector from the point q to the current point on the grid.
+  //    *
+  //    * @param aP a point on a grid.
+  //    * @return the vector from the fixed point 'q' to the current point on the grid.
+  //    */
+  //   Point relativePoint (GridPoint const& aP) const;
 
-    /**
-     * Returns the vector from the point q to the current point on the grid.
-     *
-     * @param aP a point on a ray.
-     * @return the vector from the fixed point 'q' to the current point on the grid.
-     */
-    Point relativePoint (GridPointOnProbingRay const& aP) const;
+  //   /**
+  //    * Returns the current point on the grid.
+  //    *
+  //    * @param aP a point on a grid.
+  //    * @return the current point on the grid.
+  //    */
+  //   Point absolutePoint (GridPoint const& aP) const;
 
-    /**
-     * Returns the current point on the grid.
-     *
-     * @param aP a point on a ray.
-     * @return the current point on the grid.
-     */
-    Point absolutePoint (GridPointOnProbingRay const& aP) const;
+  //   /**
+  //    * Returns the vector from the point q to the current point on the grid.
+  //    *
+  //    * @param aP a point on a ray.
+  //    * @return the vector from the fixed point 'q' to the current point on the grid.
+  //    */
+  //   Point relativePoint (GridPointOnProbingRay const& aP) const;
+
+  //   /**
+  //    * Returns the current point on the grid.
+  //    *
+  //    * @param aP a point on a ray.
+  //    * @return the current point on the grid.
+  //    */
+  //   Point absolutePoint (GridPointOnProbingRay const& aP) const;
 
     // ----------------------- Interface --------------------------------------
   public:
