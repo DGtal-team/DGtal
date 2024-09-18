@@ -77,9 +77,9 @@ namespace DGtal
     using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
     using UpdateOperation     = typename PlaneProbingNeighborhood<TPredicate>::UpdateOperation;
 
-    using PointOnProbingRay     = typename detail::PointOnProbingRay<int>;
-    using GridPoint             = typename detail::GridPoint<int>;
-    using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<int>;
+    using PointOnProbingRay     = typename detail::PointOnProbingRay<Integer>;
+    using GridPoint             = typename detail::GridPoint<Integer>;
+    using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<Integer>;
     
     // ----------------------- Internal type -------------------------------
   private: 
@@ -255,42 +255,6 @@ namespace DGtal
      * @return the vector.
      */
     Point direction (GridPoint const& aP) const;
-    
-  //   // ----------------------- Helpers --------------------------------------
-  // protected:
-
-
-  //   /**
-  //    * Returns the vector from the point q to the current point on the grid.
-  //    *
-  //    * @param aP a point on a grid.
-  //    * @return the vector from the fixed point 'q' to the current point on the grid.
-  //    */
-  //   Point relativePoint (GridPoint const& aP) const;
-
-  //   /**
-  //    * Returns the current point on the grid.
-  //    *
-  //    * @param aP a point on a grid.
-  //    * @return the current point on the grid.
-  //    */
-  //   Point absolutePoint (GridPoint const& aP) const;
-
-  //   /**
-  //    * Returns the vector from the point q to the current point on the grid.
-  //    *
-  //    * @param aP a point on a ray.
-  //    * @return the vector from the fixed point 'q' to the current point on the grid.
-  //    */
-  //   Point relativePoint (GridPointOnProbingRay const& aP) const;
-
-  //   /**
-  //    * Returns the current point on the grid.
-  //    *
-  //    * @param aP a point on a ray.
-  //    * @return the current point on the grid.
-  //    */
-  //   Point absolutePoint (GridPointOnProbingRay const& aP) const;
 
     // ----------------------- Interface --------------------------------------
   public:

@@ -60,7 +60,7 @@ static const Z3i::Vector NORMALS[100] = {
 };
 
 static const Z3i::Vector NORMALS_BIG[2] = {
-    {1, 59438, 82499}, {2071, 8513, 6444},
+  {1, 59438, 82499}, {2071, 8513, 6444}
 };
 
 template < typename Integer, ProbingMode mode >
@@ -175,13 +175,13 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
     }
     
 #ifdef WITH_GMP
-    SECTION("H and R algorithm should return the correct normal, R-algorithm a reduced basis with BigInteger")
+    SECTION("H , R and L algorithms should return the correct normal, R and L algorithms a reduced basis with BigInteger")
     {
         using Point = PointVector<3, BigInteger>;
 
         int nbOk = 0;
-        Point estimatedH, estimatedR;
-        bool isReducedH = false, isReducedR = false;
+        Point estimatedH, estimatedR, estimatedL;
+        bool isReducedH = false, isReducedR = false, isReducedL = false;
 
         for (const auto& n: NORMALS_BIG) {
             TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::H>::compute
@@ -194,11 +194,19 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
             TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::R>::compute
                 (n,
                  [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::R>::Estimator& estimator) {
-                    estimatedR = estimator.compute();
-                    isReducedR = estimator.isReduced();
+		   estimatedR = estimator.compute();
+		   isReducedR = estimator.isReduced();
                  });
-
-            if (estimatedH == n && estimatedR == estimatedH && !isReducedH && isReducedR)
+	    
+            TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::L>::compute
+                (n,
+                 [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::L>::Estimator& estimator) {
+                    estimatedL = estimator.compute();
+                    isReducedL = estimator.isReduced();
+                 });
+	    
+            if (estimatedH == n && estimatedR == estimatedH && estimatedL == estimatedH
+		&& !isReducedH && isReducedR && isReducedL)
             {
                 nbOk++;
             }

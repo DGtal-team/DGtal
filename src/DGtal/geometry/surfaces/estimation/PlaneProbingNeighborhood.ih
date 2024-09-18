@@ -80,7 +80,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<TPo
   ASSERT(b != e);
   auto minPoint = *b;
 
-  for (auto it = ++b; b != e; ++b) {
+  for (auto it = ++b; it != e; ++it) {
     if (isSmallest(relativePoint(minPoint), relativePoint(*it))) {
       minPoint = *it;
     }

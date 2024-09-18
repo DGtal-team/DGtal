@@ -255,7 +255,7 @@ namespace DGtal
 	 * @param aDir a pair of nonnegative integers. 
 	 * @param aK an index in {0,1,2}.
 	 */
-	GridPoint (std::pair<Integer,Integer> const& aDir, Integer aK ) : myDir(aDir), myK(aK) {}
+	GridPoint (std::pair<Integer,Integer> const& aDir, int aK ) : myDir(aDir), myK(aK) {}
 
 	/**
 	 * Constructs a grid point from a couple of coordinates and 
@@ -265,7 +265,7 @@ namespace DGtal
 	 * @param aY second coordinate. 
 	 * @param aK an index in {0,1,2}.
 	 */
-	GridPoint (Integer aX, Integer aY, Integer aK ) : myDir(std::make_pair(aX,aY)), myK(aK) {}
+	GridPoint (Integer aX, Integer aY, int aK ) : myDir(std::make_pair(aX,aY)), myK(aK) {}
 	  
 	/**
 	 * Returns the couple of coordinates, i.e., 
@@ -283,7 +283,7 @@ namespace DGtal
 	 *
 	 * @return the index. 
 	 */
-	Integer k() const {
+	int k() const {
 	  return myK; 
 	}
 	
@@ -388,7 +388,7 @@ namespace DGtal
       private:
 
 	std::pair<Integer,Integer> myDir; /**< Couple of coordinates giving a direction */
-	Integer myK; /**< Index of a point used as origin */	
+	int myK; /**< Index of a point used as origin */	
 	
       }; //end of class GridPoint
 

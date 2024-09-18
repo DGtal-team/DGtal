@@ -187,8 +187,7 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
       }
       ASSERT(squaredNorm(direction(u)) > squaredNorm(direction(w))); 
       
-      Integer gamma = std::floor( (-((double) a)
-				   /squaredNorm(direction(w))) );
+      Integer gamma = (-a)/squaredNorm(direction(w));
       GridPoint w2 = u + w*gamma;
       GridPoint w2Next = u + w*(gamma+1);
     
