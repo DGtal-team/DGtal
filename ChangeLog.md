@@ -1,6 +1,12 @@
 # DGtal 1.5beta
 
+## New features
+
+- *Geometry*
+  - Implementation of the plane-probing L-algorithm (Tristan Roussillon, [#1744](https://github.com/DGtal-team/DGtal/pull/1744))
+
 ## Bug fixes
+
 - *Geometry*
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
 
