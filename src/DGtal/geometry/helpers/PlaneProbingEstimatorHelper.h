@@ -359,12 +359,12 @@ namespace DGtal
 	/**
 	 * Scales this grid point by a scalar (as if it was vector). 
 	 *
-	 * @param a scalar value
+	 * @param aValue a scalar value
 	 * @return the resulting point.  
 	 */
-	GridPoint operator*(Integer value) const {   
-	  std::pair<Integer,Integer> d = std::make_pair(myDir.first*value,
-						myDir.second*value);
+	GridPoint operator*(Integer aValue) const {   
+	  std::pair<Integer,Integer> d = std::make_pair(myDir.first*aValue,
+						myDir.second*aValue);
 	  return getOnSameGrid(d);                                    
 	} 
 	

@@ -112,8 +112,8 @@ namespace DGtal
        * @param aSecond the second boolean value
        */
       ClosestGridPoint (const GridPoint& aGridPoint,
-			const bool& first, const bool& second )
-	: myGridPoint(aGridPoint), myPair(std::make_pair(first,second)) {}
+			const bool& aFirst, const bool& aSecond )
+	: myGridPoint(aGridPoint), myPair(std::make_pair(aFirst,aSecond)) {}
 
       GridPoint myGridPoint; /**< a grid point, which can be invalid 
 				 if no grid point belong to the underlying surface */
