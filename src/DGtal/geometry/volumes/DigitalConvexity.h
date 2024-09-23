@@ -455,6 +455,23 @@ namespace DGtal
     bool isFullySubconvex( const Point& a, const Point& b, const Point& c,
 			   const LatticeSet& StarX ) const;
 
+    /// Tells if the non-degenerated 3D open triangle a,b,c (ie
+    /// without its edges and vertices) is digitally fully subconvex
+    /// to some lattice set \a Star_X, i.e. the cell cover of some set
+    /// X represented by lattice points.
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)
+    ///
+    /// @param StarX any lattice set representing an open cubical complex.
+    /// @return 'true' iff  Y is digitally fully subconvex to X.
+    ///
+    /// @note This method is supposed to be faster than the others,
+    /// but is limited to 3D open triangles.
+    bool isOpenTriangleFullySubconvex( const Point& a, const Point& b, const Point& c,
+				       const LatticeSet& StarX ) const;
+    
     
     /// Tells if a given segment from \a a to \a b is digitally
     /// k-subconvex (i.e. k-tangent) to some cell cover \a C. The
@@ -578,6 +595,32 @@ namespace DGtal
     /// must indeed have the same axis.
     LatticeSet StarCvxH( const Point& a, const Point& b, const Point& c,
                          Dimension axis = dimension ) const;
+
+    /// Builds the cell complex `Star(OpenTriangle({a,b,c}))` for
+    /// `a,b,c` the vertices of a non-degenerate open 3D triangle (ie
+    /// without edges or vertices), represented as a lattice set
+    /// (stacked row representation).
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)    
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells touching the open triangle `abc`,
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates). If the triangle is degenerate (a,b,c
+    /// not distinct or aligned), then it returns an empty range of
+    /// cells.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet StarOpenTriangle( const Point& a, const Point& b, const Point& c,
+				 Dimension axis = dimension ) const;
+
     
     /// Computes the number of cells in Star(CvxH(X)) for X a digital set.
     ///
