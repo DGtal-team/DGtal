@@ -356,6 +356,18 @@ namespace DGtal
     /// form `Ax <= b`, 'false' if it is of the form `Ax < b`.
     bool isLarge( unsigned int i ) const;
 
+    /// Sets the \a i-th half space constraint to the form `Ax <= b`.
+    ///
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    void setLarge( unsigned int i );
+    
+    /// Sets the \a i-th half space constraint to the form `Ax < b`.
+    ///
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    void setStrict( unsigned int i );
+
     /// @return the matrix A in the polytope representation \f$ Ax \le B \f$.
     const InequalityMatrix& getA() const;
     

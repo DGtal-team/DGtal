@@ -929,6 +929,25 @@ DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::setLarge( unsigned int i )
+{
+  ASSERT( i < nbHalfSpaces() );
+  I[ i ] = true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::setStrict( unsigned int i )
+{
+  ASSERT( i < nbHalfSpaces() );
+  I[ i ] = false;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityMatrix&
 DGtal::BoundedLatticePolytope<TSpace>::getA() const
 {
@@ -979,7 +998,7 @@ DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
       out << "  [";
       for ( Dimension j = 0; j < dimension; ++j )
         out << " " << A[ i ][ j ];
-      out << " ] . x <= " << B[ i ] << std::endl;
+      out << " ] . x " << ( isLarge( i ) ? "<=" : "<" ) << " " << B[ i ] << std::endl;
     }
 }
 
