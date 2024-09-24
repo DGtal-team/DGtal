@@ -1054,4 +1054,13 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
     CAPTURE( P );
     REQUIRE( P.size() == 10 );
   }
+  {
+    Point a( 1, 0, 0 );
+    Point b( 0, 1, 0 );
+    Point c( 0, 0, 1 );  
+    auto LS = dconv.CoverCvxH( a, b, c );
+    auto P  = LS.toPointRange();
+    CAPTURE( P );
+    REQUIRE( P.size() == 7 );
+  }
 }

@@ -622,13 +622,6 @@ CoverCvxH( const Point& a, const Point& b, const Point& c,
       auto P012 = P01 + StrictUnitSegment( 2 );
       Counter C012( P012 );
       auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
-      std::vector< Point > Vp;
-      C012.getPointsAlongAxis( Vp, axis );
-      std::cout << "#P012=" << P012.count() << " #P012'=" << P012.countByScanning()
-		<< " #C012=" << C012.countAlongAxis( axis )
-		<< " #V012=" << V012.size()
-		<< " #Vp=" << Vp.size()
-		<< std::endl;
       // Convert points to Khalimsky coordinates and insert them in LatticeSet.
       LS = LatticeSet( axis );
       for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
