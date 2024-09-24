@@ -596,7 +596,6 @@ CoverCvxH( const Point& a, const Point& b, const Point& c,
       using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
       using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
       auto P = Helper::compute3DTriangle( a, b, c, true );
-      std::cout << "[DigitalConvexity::CoverCvxH] " << a << " " << b << " " << c << std::endl;
       if ( ! P.isValid() ) return LS;
       Counter C( P );
       if ( axis >= dimension ) axis = C.longestAxis();
