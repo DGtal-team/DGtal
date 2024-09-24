@@ -455,6 +455,25 @@ namespace DGtal
     bool isFullySubconvex( const Point& a, const Point& b, const Point& c,
 			   const LatticeSet& StarX ) const;
 
+    /// Tells if the non-degenerated 3D triangle a,b,c is 
+    /// fully covered by some lattice set of cells \a cells.
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)
+    ///
+    /// @param cells any lattice set representing a set of cells.
+    ///
+    /// @return 'true' iff `Cvxh({a,b,c})` is fully covered by \a cells,
+    /// i.e. all the cells intersected by the triangle belong to \a
+    /// cells.
+    ///
+    /// @note This method is supposed to be faster than the others,
+    /// but is limited to 3D triangles.
+    bool isFullyCovered( const Point& a, const Point& b, const Point& c,
+			 const LatticeSet& cells ) const;
+
+    
     /// Tells if the non-degenerated 3D open triangle a,b,c (ie
     /// without its edges and vertices) is digitally fully subconvex
     /// to some lattice set \a Star_X, i.e. the cell cover of some set
@@ -689,6 +708,35 @@ namespace DGtal
     /// @return the range of digital points that are the extremal
     /// vertices to the skeleton of the cells in \a C.
     PointRange ExtrSkel( const LatticeSet& C ) const;
+
+    /// Builds the cell complex `Cover(CvxH({a,b,c}))` for `a,b,c` a
+    /// non-degenerate 3D triangle, represented as a lattice set
+    /// (stacked row representation). The cover of a Euclidean set X
+    /// is the set of grid cells that have a non-empty intersection
+    /// with X. It is always included in the star of X, which is the
+    /// of cells whose closure has a non-empty intersection with
+    /// X. However the cover of X is not necessarily closed or open.
+    ///
+    /// @param a any 3D point (distinct from the two others)
+    /// @param b any 3D point (distinct from the two others)
+    /// @param c any 3D point (distinct from the two others)    
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells intersecting the triangle `abc`,
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates). If the triangle is degenerate (a,b,c
+    /// not distinct or aligned), then it returns an empty range of
+    /// cells.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet CoverCvxH( const Point& a, const Point& b, const Point& c,
+			  Dimension axis = dimension ) const;
+
     
     /// Builds the lattice set (stacked row representation) associated
     /// to the given range of points.

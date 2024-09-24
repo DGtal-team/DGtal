@@ -1024,3 +1024,23 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[
   }
   
 }
+
+SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -20, -20, -20 ), Point( 20, 20, 20 ) );
+  DConvexity dconv ( Point( -21, -21, -21 ), Point( 21, 21, 21 ) );
+  Point a( 0, 0, 0 );
+  Point b( 2, 1, 0 );
+  Point c( 2, 2, 0 );  
+  auto LS = dconv.CoverCvxH( a, b, c );
+  auto P  = LS.toPointRange();
+  CAPTURE( P );
+  REQUIRE( false );
+}
