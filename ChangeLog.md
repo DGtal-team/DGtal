@@ -3,7 +3,7 @@
 ## Bug fixes
 
 - *General*
-  - Fix cmake CGAL 6.0 Breaking change. (David Coeurjolly, [#xxxx](https://github.com/DGtal-team/DGtal/pull/1742))
+  - Fix cmake CGAL 6.0 Breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
 
 - *Geometry*
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
