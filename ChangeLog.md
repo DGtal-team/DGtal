@@ -1,8 +1,13 @@
 # DGtal 1.5beta
 
 ## Bug fixes
+
+- *General*
+  - Fix cmake CGAL 6.0 Breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
+
 - *Geometry*
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
+  
 
 # DGtal 1.4.1
 
