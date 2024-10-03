@@ -214,8 +214,8 @@ namespace DGtal
          * @param aRay the probing ray to display.
          * @return the output stream after the writing.
          */
-        template < typename Integer >
-        std::ostream& operator<< (std::ostream& aOs, PointOnProbingRay<Integer> const& aRay);
+      template < typename Integer, typename Index >
+      std::ostream& operator<< (std::ostream& aOs, PointOnProbingRay<Integer,Index> const& aRay);
 
       /////////////////////////////////////////////////////////////////////////////
       // template class GridPoint
@@ -397,8 +397,8 @@ namespace DGtal
        * @param aGridPoint the grid point to display.
        * @return the output stream after the writing.
        */
-      template < typename Integer >
-      std::ostream& operator<< (std::ostream& aOs, GridPoint<Integer> const& aGridPoint) {
+      template < typename Integer, typename Index >
+      std::ostream& operator<< (std::ostream& aOs, GridPoint<Integer,Index> const& aGridPoint) {
 	aOs << "GridPoint[k=" << aGridPoint.k()
 	    << ", a=" << aGridPoint.direction().first
 	    << ", b=" << aGridPoint.direction().second
