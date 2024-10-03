@@ -176,7 +176,7 @@ getOperation (PointOnProbingRay const& aClosest) const
 {
     return  {
         aClosest.sigma(),
-        { 1, -1, -aClosest.index() },
+        { 1, -1, -aClosest.position() },
     };
 }
 

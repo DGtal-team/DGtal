@@ -77,9 +77,10 @@ namespace DGtal
     using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
     using UpdateOperation     = typename PlaneProbingNeighborhood<TPredicate>::UpdateOperation;
 
-    using PointOnProbingRay     = typename detail::PointOnProbingRay<Integer>;
-    using GridPoint             = typename detail::GridPoint<Integer>;
-    using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<Integer>;
+    using Index                 = typename PlaneProbingNeighborhood<TPredicate>::Index;  
+    using PointOnProbingRay     = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
+    using GridPoint             = typename detail::GridPoint<Integer, Index>;
+    using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<Integer, Index>;
     
     // ----------------------- Internal type -------------------------------
   private: 
@@ -202,7 +203,7 @@ namespace DGtal
      * @param aIdx
      * @return an instance of ClosestGridPoint.
      */
-    ClosestGridPoint closestInGrid (const int& aIdx) const;
+    ClosestGridPoint closestInGrid (const Index& aIdx) const;
 
     /**
      * Computes the candidate grid points lying in a cone given by two grid points.
@@ -246,7 +247,7 @@ namespace DGtal
      *
      * @param aIdx
      */
-    void updateGrid (const int& aIdx);
+    void updateGrid (const Index& aIdx);
 
     /**
      * Returns the vector from the base to a grid point.

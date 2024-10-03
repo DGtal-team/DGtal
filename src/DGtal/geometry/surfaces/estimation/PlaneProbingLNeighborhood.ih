@@ -121,11 +121,11 @@ template < typename TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::ClosestGridPoint
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
-closestInGrid (const int& aIdx) const
+closestInGrid (const Index& aIdx) const
 {
   std::vector<GridPoint> candidates; 
   
-  int k = aIdx; 
+  Index k = aIdx; 
   GridPoint y1(1,0,k); //y1 = vk + m1
   GridPoint y2(0,1,k); //y2 = vk + m2
 
@@ -305,7 +305,7 @@ template < typename TPredicate >
 inline
 void
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
-updateGrid (const int& aIdx)
+updateGrid (const Index& aIdx)
 {
   //Let r1 and r2 be the two rays bound to the vertex of index 'aIdx'
   PointOnProbingRay r1 = PointOnProbingRay({aIdx, (aIdx+1)%3, (aIdx+2)%3}); 

@@ -108,14 +108,14 @@ namespace DGtal
          *
          * @tparam Integer the integer type, model of concepts::CInteger.
          */
-        template < typename Integer = int >
+      template < typename Integer = int, typename Index = std::size_t >
         class PointOnProbingRay
         {
             BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
 
             // ----------------------- Public types ------------------------------
             public:
-                using Permutation = std::array<int, 3>;
+                using Permutation = std::array<Index, 3>;
 
             public:
                 /**
@@ -127,9 +127,9 @@ namespace DGtal
                  * Constructs a ray with a permutation and an index.
                  *
                  * @param aSigma a permutation.
-                 * @param aIndex an index.
+                 * @param aInt an integer that determines a point along the ray.
                  */
-                PointOnProbingRay (Permutation const& aSigma, Integer const& aIndex = Integer(0));
+                PointOnProbingRay (Permutation const& aSigma, Integer const& aInt = Integer(0));
 
                 /**
                  * @return the base point of the ray (with index 0).
@@ -145,12 +145,12 @@ namespace DGtal
                  * @param aIndex an index between 0 and 2.
                  * @return the i-th element of the permutation that defines the ray.
                  */
-                int sigma (int aIndex) const;
+	        Index sigma (Index const& aIndex) const;
 
                 /**
-                 * @return index of the current point on the ray.
+                 * @return integer that locates the current point on the ray.
                  */
-                Integer const& index () const;
+                Integer const& position () const;
 
 	        /**
 		 * Returns the geometric realization of this grid point. 
@@ -160,9 +160,7 @@ namespace DGtal
 		 * @return the computed point. 
 		 */
 	         template < typename Point >
-		 Point relativePoint (std::array<Point, 3> const& aM) const {
-		   return -aM[mySigma[0]] + aM[mySigma[1]] + aM[mySigma[2]] * myIndex;
-		 }
+		 Point relativePoint (std::array<Point, 3> const& aM) const;
 	  
                 /**
                  * Equality test between two rays: the internal permutations and
@@ -206,7 +204,7 @@ namespace DGtal
 
             private:
                 Permutation mySigma; /**< The permutation. */
-                Integer myIndex; /**< The index. */
+                Integer myPosition; /**< The index. */
         }; // end of class PointOnProbingRay
 
         /**
@@ -236,7 +234,7 @@ namespace DGtal
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
        */
-      template < typename Integer = int >
+      template < typename Integer = int, typename Index = std::size_t >
       class GridPoint
       {
 	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
@@ -255,7 +253,7 @@ namespace DGtal
 	 * @param aDir a pair of nonnegative integers. 
 	 * @param aK an index in {0,1,2}.
 	 */
-	GridPoint (std::pair<Integer,Integer> const& aDir, int aK ) : myDir(aDir), myK(aK) {}
+	GridPoint (std::pair<Integer,Integer> const& aDir, Index const& aK ) : myDir(aDir), myK(aK) {}
 
 	/**
 	 * Constructs a grid point from a couple of coordinates and 
@@ -265,7 +263,7 @@ namespace DGtal
 	 * @param aY second coordinate. 
 	 * @param aK an index in {0,1,2}.
 	 */
-	GridPoint (Integer aX, Integer aY, int aK ) : myDir(std::make_pair(aX,aY)), myK(aK) {}
+	GridPoint (Integer const& aX, Integer const& aY, Index const& aK ) : myDir(std::make_pair(aX,aY)), myK(aK) {}
 	  
 	/**
 	 * Returns the couple of coordinates, i.e., 
@@ -283,7 +281,7 @@ namespace DGtal
 	 *
 	 * @return the index. 
 	 */
-	int k() const {
+	Index k() const {
 	  return myK; 
 	}
 	
@@ -388,7 +386,7 @@ namespace DGtal
       private:
 
 	std::pair<Integer,Integer> myDir; /**< Couple of coordinates giving a direction */
-	int myK; /**< Index of a point used as origin */	
+	Index myK; /**< Index of a point used as origin */	
 	
       }; //end of class GridPoint
 
@@ -421,7 +419,7 @@ namespace DGtal
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
        */
-      template < typename Integer = int >
+      template < typename Integer = int, typename Index = std::size_t >
       class GridPointOnProbingRay
       {
 	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
@@ -439,7 +437,7 @@ namespace DGtal
 	 * @param aDirection direction of the ray
 	 * @param aIdx index of the grid point along the ray
 	 */
-	GridPointOnProbingRay (const GridPoint<Integer>& aGridPoint,
+	GridPointOnProbingRay (const GridPoint<Integer, Index>& aGridPoint,
 			       const std::pair<Integer,Integer>& aDirection,
 			       const Integer& aIdx = 0)
 	  : myOrigin(aGridPoint), myDirection(aDirection), myIdx(aIdx) {}
@@ -502,7 +500,7 @@ namespace DGtal
 	/**
 	 * @return the current grid point as an instance of GridPoint.
 	 */
-	GridPoint<Integer> gridPoint() const {
+	GridPoint<Integer, Index> gridPoint() const {
 	  return myOrigin + myOrigin.getOnSameGrid(myDirection)*myIdx; 
 	}
 
@@ -520,7 +518,7 @@ namespace DGtal
 
 
       private: 
-	GridPoint<Integer> myOrigin; /**< starting point of the ray */
+	GridPoint<Integer, Index> myOrigin; /**< starting point of the ray */
 	std::pair<Integer, Integer> myDirection; /**< direction of the ray */
 	Integer myIdx; /**< index of the point along the ray */
 	

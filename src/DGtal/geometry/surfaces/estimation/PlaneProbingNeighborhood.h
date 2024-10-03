@@ -73,7 +73,8 @@ namespace DGtal
       using Vector            = Point;
       using Integer           = typename Point::Coordinate;
       using Triangle          = std::array<Vector, 3>;
-      using PointOnProbingRay = detail::PointOnProbingRay<Integer>;
+      using Index             = std::size_t; 
+    using PointOnProbingRay = detail::PointOnProbingRay<Integer,Index>;
 
       /**
        * Represents a configuration of the H-neighborhood.
@@ -95,7 +96,7 @@ namespace DGtal
        */
       struct UpdateOperation
       {
-          std::array<int, 3>     sigma;
+          std::array<Index, 3>     sigma;
           std::array<Integer, 3> coeffs;
       };
 
