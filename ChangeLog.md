@@ -4,6 +4,8 @@
 
 - *General*
   - Fix cmake CGAL 6.0 Breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
+  - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1xxx](https://github.com/DGtal-team/DGtal/pull/1xxx)
+
 
 - *Geometry*
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
