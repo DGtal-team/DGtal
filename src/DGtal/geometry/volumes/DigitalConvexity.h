@@ -468,8 +468,7 @@ namespace DGtal
     /// i.e. all the cells intersected by the triangle belong to \a
     /// cells.
     ///
-    /// @note This method is supposed to be faster than the others,
-    /// but is limited to 3D triangles.
+    /// @note This method is limited to 3D triangles.
     bool isFullyCovered( const Point& a, const Point& b, const Point& c,
 			 const LatticeSet& cells ) const;
 

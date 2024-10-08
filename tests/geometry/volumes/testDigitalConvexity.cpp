@@ -1064,3 +1064,73 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
     REQUIRE( P.size() == 7 );
   }
 }
+
+
+SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangles", "[subconvexity][3d][full_cover]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -20, -20, -20 ), Point( 20, 20, 20 ) );
+  DConvexity dconv ( Point( -21, -21, -21 ), Point( 21, 21, 21 ) );
+
+  WHEN( "Computing many tetrahedra" ) {
+    const unsigned int nb     = 50;
+    unsigned int nb_total     = 0;
+    unsigned int nb_ok_tri    = 0;
+    unsigned int nb_subconvex = 0;
+    unsigned int nb_covered   = 0;
+    for ( unsigned int l = 0; l < nb; ++l )
+      {
+        const Point a { (rand() % 10 - 10), (rand() % 10 - 10), (rand() % 10 - 10) };
+        const Point b { (rand() % 20     ), (rand() % 20 - 10), (rand() % 20 - 10) };
+        const Point c { (rand() % 20 - 10), (rand() % 20     ), (rand() % 20 - 10) };
+        const Point d { (rand() % 20 - 10), (rand() % 20 - 10), (rand() % 20     ) };
+        const std::vector<Point> pts = { a, b, c, d };
+        const bool fulldim = dconv.isSimplexFullDimensional(pts.cbegin(), pts.cend());
+        if ( ! fulldim ) continue;
+        auto simplex = dconv.makeSimplex( pts.cbegin(), pts.cend() );
+        auto cover   = dconv.makeCellCover( simplex, 0, 3 );
+	auto ls      = dconv.StarCvxH( pts );
+        {
+          for ( unsigned int i = 0; i < 100; i++ )
+	    {
+	      const Point p { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Point q { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Point r { (rand() % 10 - 5), (rand() % 10 - 5), (rand() % 10 - 5) };
+	      const Vector n = ( q - p ).crossProduct( r - p );
+	      if ( n == Vector::zero ) continue;
+	      auto tri1 = dconv.makeSimplex( { p, q, r } );
+	      bool ok1  = dconv.isFullySubconvex( p, q, r, ls );
+	      bool ok2  = dconv.isFullyCovered( p, q, r, ls );
+	      nb_subconvex += ok1 ? 1 : 0;
+	      nb_covered   += ok2 ? 1 : 0;		  
+	      bool ok = ok1 == ok2;
+	      if ( ! ok )
+		{
+		  std::cout << "***** FULL SUBCONVEXITY ERROR ON TRIANGLE ****" << std::endl;
+		  std::cout << "splx v =" << a << b << c << d << std::endl;
+		  std::cout << "simplex=" << simplex << std::endl;
+		  std::cout << "tri v  =" << p << q << r << std::endl;
+		  std::cout << "tri1=" << tri1 << std::endl;
+		  std::cout << "3 points are fully subconvex: " << ( ok1 ? "YES" : "NO" ) << std::endl;
+		  std::cout << "3 points are fully covered by star: " << ( ok2 ? "YES" : "NO" ) << std::endl;
+		}
+	      nb_ok_tri += ( ok ) ? 1 : 0;
+	      nb_total  += 1;
+	    }
+	}
+      }
+    THEN( "The number of subconvex and covered triangles should be equal." ) {
+      REQUIRE( nb_subconvex == nb_covered );
+    }
+    THEN( "Full subconvexity and covering should agree on every subset." ) {
+      REQUIRE( nb_ok_tri == nb_total );
+    }
+  }
+  
+}
