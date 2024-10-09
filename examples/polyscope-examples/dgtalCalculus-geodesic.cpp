@@ -114,29 +114,20 @@ void precompute()
   trace.endBlock();
 }
 
-std::vector<std::pair<size_t,int>> source2count(GeodesicsInHeat<PolyCalculus>::Vector &source)
-{
-  std::vector<std::pair<size_t,int>> counts;
-  for(auto i=0; i< source.size(); ++i)
-  {
-    if (source(i)!=0.0)
-      counts.push_back(std::pair<size_t,int>(i,1));
-  }
-  return counts;
-}
+
 
 void addSource()
 {
   auto pos =rand() % surfmesh.nbVertices();
   heat->addSource( pos );
   GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
-  psMesh->addVertexCountQuantity("Sources", source2count(source));
+  psMesh->addVertexScalarQuantity("Sources", source);
 
   if (!skipReg)
   {
     heatReg->addSource( pos );
     GeodesicsInHeat<PolyCalculus>::Vector source = heatReg->source();
-    psMeshReg->addVertexCountQuantity("Sources", source2count(source));
+    psMeshReg->addVertexScalarQuantity("Sources", source);
   }
 }
 
@@ -150,7 +141,7 @@ void computeGeodesics()
 {
   heat->addSource( sourceVertexId ); //Forcing one seed (for screenshots)
   GeodesicsInHeat<PolyCalculus>::Vector source = heat->source();
-  psMesh->addVertexCountQuantity("Sources", source2count(source));
+  psMesh->addVertexScalarQuantity("Sources", source);
   GeodesicsInHeat<PolyCalculus>::Vector dist = heat->compute();
   psMesh->addVertexDistanceQuantity("geodesic", dist);
 
@@ -158,7 +149,7 @@ void computeGeodesics()
   {
     heatReg->addSource( sourceVertexId ); //Forcing one seed (for screenshots)371672
     GeodesicsInHeat<PolyCalculus>::Vector sourceReg = heatReg->source();
-    psMeshReg->addVertexCountQuantity("Sources", source2count(sourceReg));
+    psMeshReg->addVertexScalarQuantity("Sources", sourceReg);
     GeodesicsInHeat<PolyCalculus>::Vector dist = heatReg->compute();
     psMeshReg->addVertexDistanceQuantity("geodesic", dist);
   }
