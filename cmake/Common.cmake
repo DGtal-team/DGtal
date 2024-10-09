@@ -81,12 +81,15 @@ include(TargetDoxygenDox OPTIONAL)
 # -----------------------------------------------------------------------------
 # uninstall target
 # -----------------------------------------------------------------------------
+option(DGTAL_REMOVE_UNINSTALL "Remove DGtal uninstall target." OFF)
+if (NOT DGTAL_REMOVE_UNINSTALL)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake
   @ONLY)
 add_custom_target(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake")
+endif()
 
 # -----------------------------------------------------------------------------
 # Parsing cmake options

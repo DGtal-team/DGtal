@@ -1,0 +1,386 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2024/09/16
+ *
+ * Implementation of inline methods defined in PlaneProbingLNeighborhood.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
+    : DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM)
+{
+  for (int k = 0; k < 3; k++) {
+    myGrids.push_back(closestInGrid(k)); 
+  }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+DGtal::PlaneProbingLNeighborhood<TPredicate>::~PlaneProbingLNeighborhood()
+{}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Plane Probing services ------------------------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::HexagonState
+DGtal::PlaneProbingLNeighborhood<TPredicate>::hexagonState ()
+{
+  for (int k = 0; k < 3; k++) {
+    updateGrid(k);
+  }
+  
+  std::array<bool, 6> state({ false, false, false, false, false, false });
+  for (int k = 0; k < 3; k++) {
+    state[2*k] = myGrids[k].myPair.first;
+    state[2*k+1] = myGrids[k].myPair.second;
+  }
+
+  return this->classify(state);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+closestCandidate ()
+{
+  
+  std::vector<GridPoint> validGridPoints;
+  for (int k = 0; k < 3; k++) {
+    GridPoint gp = myGrids[k].myGridPoint; 
+    if (gp.isValid())
+      validGridPoints.push_back(gp); 
+  }
+
+  if (validGridPoints.size() == 1) {
+    
+    return getOperationFromGridPoint(validGridPoints[0]);
+    
+  } else {
+    // One should call hexagonState before closestCandidate, and check the return value
+    // to ensure that there is at least one point in the plane in the H-neighbhorhood
+    ASSERT(validGridPoints.size() == 2);
+    
+    if (this->isSmallest(this->relativePoint(validGridPoints[0]),
+			 this->relativePoint(validGridPoints[1]))) {
+      return getOperationFromGridPoint(validGridPoints[1]);
+    } else {
+      return getOperationFromGridPoint(validGridPoints[0]);
+    }
+  }
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Helpers to find a closest point ----------------
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::ClosestGridPoint
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+closestInGrid (const Index& aIdx) const
+{
+  std::vector<GridPoint> candidates; 
+  
+  Index k = aIdx; 
+  GridPoint y1(1,0,k); //y1 = vk + m1
+  GridPoint y2(0,1,k); //y2 = vk + m2
+
+  if (this->myPredicate(this->absolutePoint(y1))) {
+    if (this->myPredicate(this->absolutePoint(y2))) {
+      //at least 2 candidates
+      if (this->isSmallest(this->relativePoint(y1), this->relativePoint(y2))) {
+	candidates.push_back(y2); 
+      } else {
+	candidates.push_back(y1);
+      }
+      
+      ASSERT(candidates.size() == 1);
+      candidatesInGrid(y1, y2, std::back_inserter(candidates));
+      GridPoint closest = this->closestPointInList(candidates); 
+      return ClosestGridPoint( closest, true, true );
+
+    } else {
+      //1 candidate
+      return ClosestGridPoint( y1, true, false );
+    }
+  } else {
+    if (this->myPredicate(this->absolutePoint(y2))) {
+      //1 candidate
+      return ClosestGridPoint( y2, false, true );
+    } else {
+      //no candidate
+      return ClosestGridPoint( GridPoint(0, 0, k), false, false );
+    }
+  }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+void
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
+		  std::back_insert_iterator<std::vector<GridPoint> > out) const
+{
+  using DGtal::detail::squaredNorm;
+
+  ASSERT( (this->myPredicate(this->absolutePoint(y1)) &&
+	   (this->myPredicate(this->absolutePoint(y2)))) ); 
+
+  Integer a = direction(y1).dot(direction(y2));
+  if (a < 0) {
+
+    GridPoint y = y1 + y2;
+    Integer a1 = direction(y1).dot(direction(y));
+    Integer a2 = direction(y2).dot(direction(y));
+    if ( (a1 < 0)||(a2 < 0) ) {
+
+      //if a2 < 0
+      GridPoint u = y1;
+      GridPoint w = y2;
+      if (a1 < 0) {
+	std::swap(u, w); 
+      }
+      ASSERT(squaredNorm(direction(u)) > squaredNorm(direction(w))); 
+      
+      Integer gamma = (-a)/squaredNorm(direction(w));
+      GridPoint w2 = u + w*gamma;
+      GridPoint w2Next = u + w*(gamma+1);
+    
+      if (direction(w2).dot(direction(w2Next)) < 0) {
+
+      	if (this->myPredicate(this->absolutePoint(w2))) {
+      	  candidatesInGrid(w, w2, out); 
+      	} else {
+      	  //we look for a closest point on the ray u +cw, c<gamma
+      	  GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma);
+	  ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma) );
+      	  *out++ = gr.gridPoint(); 
+      	}
+      } else {
+      	//excepted the first one, the other angles along
+      	// the ray are all acute (or right),
+      	ASSERT( direction(w2).dot(direction(w2Next)) >= 0 );
+      	ASSERT( direction(w).dot(direction(w2Next)) >= 0 ); 
+
+	//whatever w2Next is in plane or not, 
+	//we look for a closest point on the ray u +cw, c<=gamma+1
+	GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2));
+	ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) ); 
+	*out++ = gr.gridPoint(); 
+      }
+      
+    } else { //a1 and a2 are both acute (or right),
+      //only y has yet to be considered (in addition to y1, y2)
+      //(because the angle between y1 and y2 is obtuse)
+      if (this->myPredicate(this->absolutePoint(y))) {
+	*out++ = y;
+      }
+    }
+  } //if a >= 0, we have an acute or right angle
+  //and no other point has to be considered.
+  //(if right angle, then case of cospherical points)
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const
+{
+  GridPointOnProbingRay Xk = aRay, Xl = aRay.next(aRay.index()+aBound);
+  ASSERT(this->myPredicate(this->absolutePoint(Xk)));
+
+  // Binary search
+  Integer d = Xl.index() - Xk.index();
+  while (d > 4) {
+    ASSERT(this->myPredicate(this->absolutePoint(Xk)));
+
+    GridPointOnProbingRay Xalpha = Xk.next(Integer(d / 4)),
+      Xbeta  = Xk.next(Integer(d / 2)),
+      Xgamma = Xk.next(Integer(3*d/4));
+
+    ASSERT(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() &&
+	   Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
+
+    if (this->myPredicate(this->absolutePoint(Xbeta)) &&
+	this->isSmallest(this->relativePoint(Xbeta), this->relativePoint(Xgamma))) {
+      Xk = Xbeta;
+    } else if (! this->myPredicate(this->absolutePoint(Xalpha)) ||
+	       this->isSmallest(this->relativePoint(Xbeta), this->relativePoint(Xalpha))) {
+      Xl = Xbeta;
+    } else {
+      Xk = Xalpha;
+      Xl = Xgamma;
+    }
+
+    d = Xl.index() - Xk.index();
+  }
+
+  return closestOnBoundedRayLinearWithPredicate(Xk, d);
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
+DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLinearWithPredicate (GridPointOnProbingRay const& aRay, const Integer& aBound) const
+{
+  ASSERT(this->myPredicate(this->absolutePoint(aRay)));
+
+  Integer counter = 0; 
+  GridPointOnProbingRay previousX = aRay, currentX = previousX.next(1);
+  while (this->myPredicate(this->absolutePoint(currentX)) &&
+	 this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX)) &&
+	 counter < aBound) {
+        previousX = currentX;
+        currentX = previousX.next(1);
+    }
+
+    ASSERT(this->myPredicate(this->absolutePoint(previousX)));
+
+    return previousX;
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::UpdateOperation
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+getOperationFromGridPoint (GridPoint const& aP) const
+{
+  auto k = aP.k();
+  auto d = aP.direction(); 
+  return  { { k, (k+1)%3, (k+2)%3 }, //permutation
+	    { 1, -d.first, -d.second } //coefficients
+  };
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+void
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+updateGrid (const Index& aIdx)
+{
+  //Let r1 and r2 be the two rays bound to the vertex of index 'aIdx'
+  PointOnProbingRay r1 = PointOnProbingRay({aIdx, (aIdx+1)%3, (aIdx+2)%3}); 
+  PointOnProbingRay r2 = PointOnProbingRay({aIdx, (aIdx+2)%3, (aIdx+1)%3}); 
+  //Check: do they are in the allowed rays?
+  if (this->isNeighbor(r1)) {
+    if (this->isNeighbor(r2)) {
+      //if both, 
+      myGrids[aIdx] = closestInGrid(aIdx);
+    } else {
+      //if only r1,
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(1, 0, aIdx), true, false );       
+    }
+  } else {
+    if (this->isNeighbor(r2)) {
+      //if only r2,
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 1, aIdx), false, true );       
+    } else {
+      //if none of them, no candidate
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 0, aIdx), false, false ); 
+    }
+  }
+}
+
+// ------------------------------------------------------------------------
+template < typename TPredicate >
+inline
+typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
+DGtal::PlaneProbingLNeighborhood<TPredicate>::
+direction (GridPoint const& aP) const
+{
+  return aP.directionVector(this->myM);  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TPredicate>
+inline
+void
+DGtal::PlaneProbingLNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PlaneProbingLNeighborhood]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TPredicate>
+inline bool DGtal::PlaneProbingLNeighborhood<TPredicate>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TPredicate>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+		      const DGtal::PlaneProbingLNeighborhood<TPredicate> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
