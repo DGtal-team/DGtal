@@ -152,7 +152,8 @@ namespace DGtal
      * @param aRay a ray.
      * @return the closest point on the ray.
      */
-    PointOnProbingRay closestPointOnRayLogWithPredicate (PointOnProbingRay const& aRay) const;
+    template <typename TPointAdapter>
+    TPointAdapter closestPointOnRayLogWithPredicate (TPointAdapter const& aRay) const;
 
     /**
      * Finds the closest point on a given ray using a linear search.
@@ -160,7 +161,8 @@ namespace DGtal
      * @param aRay a ray.
      * @return the closest point on the ray.
      */
-    PointOnProbingRay closestPointOnRayLinearWithPredicate (PointOnProbingRay const& aRay) const;
+    template <typename TPointAdapter>
+    TPointAdapter closestPointOnRayLinearWithPredicate (TPointAdapter const& aRay) const;
 
     // ------------------------- Internals ------------------------------------
   private:
