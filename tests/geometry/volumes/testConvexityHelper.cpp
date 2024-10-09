@@ -629,3 +629,158 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
     }
   }
 }
+
+
+SCENARIO( "ConvexityHelper< 3 > open segment tests",
+          "[convexity_helper][open segment][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  typedef Helper::Vector          Vector;
+  typedef Helper::LatticePolytope::UnitSegment UnitSegment;
+
+  auto nb_open_segment_smaller_than_segment = 0;
+  auto nb_dilated_open_segment_smaller_than_dilated_segment = 0;
+  auto nb_dilated_open_segment_greater_than_interior_dilated_segment = 0;
+  const int N = 100;
+  const int K = 10;
+  for ( auto n = 0; n < N; n++ )
+    {
+      Point a( rand() % K, rand() % K, rand() % K );
+      Point b( rand() % K, rand() % K, rand() % K );
+      if ( a == b ) b[ rand() % 3 ] += 1;
+      Helper::LatticePolytope CS = Helper::computeSegment( a, b );
+      Helper::LatticePolytope OS = Helper::computeOpenSegment( a, b );
+      {
+	CAPTURE( CS );
+	CAPTURE( OS );
+	auto cs_in = CS.count();
+	auto os_in = OS.count();
+	REQUIRE( os_in < cs_in );
+	nb_open_segment_smaller_than_segment += ( os_in < cs_in ) ? 1 : 0;
+      }
+      for ( Dimension k = 0; k < 3; k++ )
+	{
+	  CS += UnitSegment( k );
+	  OS += UnitSegment( k );
+	}
+      {
+	CAPTURE( CS );
+	CAPTURE( OS );
+	auto cs_in  = CS.count();
+	auto cs_int = CS.countInterior();
+	auto os_in  = OS.count();
+	REQUIRE( os_in  < cs_in );
+	REQUIRE( cs_int <= os_in );
+	nb_dilated_open_segment_smaller_than_dilated_segment
+	  += ( os_in < cs_in ) ? 1 : 0;
+	nb_dilated_open_segment_greater_than_interior_dilated_segment
+	  += ( cs_int <= os_in ) ? 1 : 0;
+      }
+    }
+  WHEN( "Computing open segments" ) {
+      THEN( "They contain less lattice points than closed segments" ) {
+	REQUIRE( nb_open_segment_smaller_than_segment == N );
+      }
+      THEN( "When dilated, they contain less lattice points than dilated closed segments" ) {
+	REQUIRE( nb_dilated_open_segment_smaller_than_dilated_segment == N );
+      }
+      THEN( "When dilated, they contain more lattice points than the interior of dilated closed segments" ) {
+	REQUIRE( nb_dilated_open_segment_greater_than_interior_dilated_segment == N );
+      }
+  }
+}
+
+
+SCENARIO( "ConvexityHelper< 3 > open triangle tests",
+          "[convexity_helper][open triangle][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  typedef Helper::Vector          Vector;
+  typedef Helper::LatticePolytope::UnitSegment UnitSegment;
+
+  auto nb_open_triangle_smaller_than_triangle = 0;
+  auto nb_dilated_open_triangle_smaller_than_dilated_triangle = 0;
+  auto nb_dilated_open_triangle_greater_than_interior_dilated_triangle = 0;
+  const int N = 100;
+  const int K = 10;
+  for ( auto n = 0; n < N; n++ )
+    {
+      Point a( rand() % K, rand() % K, rand() % K );
+      Point b( rand() % K, rand() % K, rand() % K );
+      Point c( rand() % K, rand() % K, rand() % K );
+      if ( a == b ) b[ rand() % 3 ] += 1;
+      if ( b == c ) c[ rand() % 3 ] += 1;
+      if ( c == a ) c[ rand() % 3 ] += 1;
+      if ( b == c ) c[ rand() % 3 ] += 1;
+      CAPTURE( a, b, c );
+      Helper::LatticePolytope CS = Helper::compute3DTriangle( a, b, c, true );
+      Helper::LatticePolytope OS = Helper::compute3DOpenTriangle( a, b, c, true );
+      {
+	CAPTURE( CS );
+	CAPTURE( OS );
+	auto cs_in = CS.count();
+	auto os_in = OS.count();
+	REQUIRE( os_in < cs_in );
+	nb_open_triangle_smaller_than_triangle += ( os_in < cs_in ) ? 1 : 0;
+      }
+      for ( Dimension k = 0; k < 3; k++ )
+	{
+	  CS += UnitSegment( k );
+	  OS += UnitSegment( k );
+	}
+      {
+	CAPTURE( CS );
+	CAPTURE( OS );
+	auto cs_in  = CS.count();
+	auto cs_int = CS.countInterior();
+	auto os_in  = OS.count();
+	REQUIRE( os_in  < cs_in );
+	REQUIRE( cs_int <= os_in );
+	nb_dilated_open_triangle_smaller_than_dilated_triangle
+	  += ( os_in < cs_in ) ? 1 : 0;
+	nb_dilated_open_triangle_greater_than_interior_dilated_triangle
+	  += ( cs_int <= os_in ) ? 1 : 0;
+      }
+    }
+  WHEN( "Computing open triangles" ) {
+      THEN( "They contain less lattice points than closed triangles" ) {
+	REQUIRE( nb_open_triangle_smaller_than_triangle == N );
+      }
+      THEN( "When dilated, they contain less lattice points than dilated closed triangles" ) {
+	REQUIRE( nb_dilated_open_triangle_smaller_than_dilated_triangle == N );
+      }
+      THEN( "When dilated, they contain more lattice points than the interior of dilated closed triangles" ) {
+	REQUIRE( nb_dilated_open_triangle_greater_than_interior_dilated_triangle == N );
+      }
+  }
+}
+
+SCENARIO( "ConvexityHelper< 3 > open triangle unit tests",
+          "[convexity_helper][open triangle][3d]" )
+{
+  typedef ConvexityHelper< 3 >    Helper;
+  typedef Helper::Point           Point;
+  typedef Helper::Vector          Vector;
+  typedef Helper::LatticePolytope::UnitSegment UnitSegment;
+
+  Point a( 0, 0, 0 );
+  Point b( 2, 1, 1 );
+  Point c( 2, 2, 1 );
+  CAPTURE( a, b, c );
+  Helper::LatticePolytope CS = Helper::compute3DTriangle( a, b, c, true );
+  Helper::LatticePolytope OS = Helper::compute3DOpenTriangle( a, b, c, true );
+  for ( Dimension k = 0; k < 3; k++ )
+    {
+      CS += UnitSegment( k );
+      OS += UnitSegment( k );
+    }
+  std::vector< Point > PCS, POS;
+  CS.getPoints( PCS );
+  OS.getPoints( POS );
+  CAPTURE( PCS, POS );
+  REQUIRE( PCS.size() == 21 );
+  REQUIRE( POS.size() == 3 );
+}
+  
