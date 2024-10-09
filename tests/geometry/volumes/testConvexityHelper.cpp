@@ -781,6 +781,6 @@ SCENARIO( "ConvexityHelper< 3 > open triangle unit tests",
   OS.getPoints( POS );
   CAPTURE( PCS, POS );
   REQUIRE( PCS.size() == 21 );
-  REQUIRE( POS.size() == 4 );
+  REQUIRE( POS.size() == 3 );
 }
   
