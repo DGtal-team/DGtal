@@ -112,6 +112,11 @@
     Action instead of Appeveyor  (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
 
+- *IO*
+  - Add reading material indices in SurfaceMeshReader::readOBJ
+    (Jacques-Olivier Lachaud, [#1677](https://github.com/DGtal-team/DGtal/pull/1677))
+
+
 ## Bug fixes
 - *General*
   - Missing `boost/next_prior.hpp` includes in ReverseIterator, Melkman and Convex
