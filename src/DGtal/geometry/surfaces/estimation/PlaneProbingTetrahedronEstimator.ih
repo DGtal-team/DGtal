@@ -36,6 +36,7 @@
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingHNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingRNeighborhood.h"
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingR1Neighborhood.h"
+#include "DGtal/geometry/surfaces/estimation/PlaneProbingLNeighborhood.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,6 +94,18 @@ namespace DGtal
                 }
         };
 
+        template < typename TPredicate >
+        struct PlaneProbingNeighborhoodSelector<TPredicate, DGtal::ProbingMode::L>
+        {
+            static DGtal::PlaneProbingNeighborhood<TPredicate>*
+                select(TPredicate const& aPredicate,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point const& aQ,
+                       typename DGtal::PlaneProbingNeighborhood<TPredicate>::Triangle const& aM)
+                {
+                    return new DGtal::PlaneProbingLNeighborhood<TPredicate>(aPredicate, aQ, aM);
+                }
+        };
+      
     } // namespace detail
 } // namespace DGtal
 

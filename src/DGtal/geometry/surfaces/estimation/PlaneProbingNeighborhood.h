@@ -73,7 +73,8 @@ namespace DGtal
       using Vector            = Point;
       using Integer           = typename Point::Coordinate;
       using Triangle          = std::array<Vector, 3>;
-      using PointOnProbingRay = detail::PointOnProbingRay<Integer>;
+      using Index             = std::size_t; 
+    using PointOnProbingRay = detail::PointOnProbingRay<Integer,Index>;
 
       /**
        * Represents a configuration of the H-neighborhood.
@@ -95,7 +96,7 @@ namespace DGtal
        */
       struct UpdateOperation
       {
-          std::array<int, 3>     sigma;
+          std::array<Index, 3>     sigma;
           std::array<Integer, 3> coeffs;
       };
 
@@ -166,7 +167,7 @@ namespace DGtal
      *
      * @return the update operation to apply.
      */
-    UpdateOperation closestCandidate ();
+    virtual UpdateOperation closestCandidate ();
 
     /**
      * Constructs an update operation from the closest candidate point.
@@ -174,7 +175,7 @@ namespace DGtal
      * @param aClosest the closest candidate point.
      * @return the update operation.
      */
-    virtual UpdateOperation getOperation (PointOnProbingRay const& aClosest) const;
+    UpdateOperation getOperation (PointOnProbingRay const& aClosest) const;
 
     /**
      * Classify the state of the H-neighborhood encoded as an array of 6 booleans.
@@ -218,9 +219,11 @@ namespace DGtal
      * Computes the closest point, among a list of candidates, using a Delaunay-based criterion.
      *
      * @param aPoints the list of points.
+     * @tparam TPointAdapter a type for the input list of points
      * @return the closest point.
      */
-    PointOnProbingRay closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const;
+    template <class TPointAdapter>
+    TPointAdapter closestPointInList (std::vector<TPointAdapter> const& aPoints) const;
 
     /**
      * Tests whether a ray should be probed or not, according to the current
@@ -242,20 +245,26 @@ namespace DGtal
     bool isSmallest (Point const& aX, Point const& aY) const;
 
     /**
-     * Returns the vector from the point q to the current point on the ray.
+     * Returns the vector from the point q to the current point, 
+     * represented by the input object. 
      *
-     * @param aRay a point on a ray.
-     * @return the vector from the fixed point 'q' to the current point on the ray.
+     * @param aPoint a representation of the current point.
+     * @tparam TPointAdapter a type for the representation of the input point. 
+     * @return the vector from the fixed point 'q' to the current point.
      */
-    Point relativePoint (PointOnProbingRay const& aRay) const;
+    template <class TPointAdapter>
+    Point relativePoint (TPointAdapter const& aPoint) const;
 
     /**
-     * Returns the current point on the ray.
+     * Returns the geometric realization of the input representation 
+     * of the current point on the ray.
      *
-     * @param aRay a point on a ray.
-     * @return the current point on the ray.
+     * @param aPoint a representation of the current point.
+     * @tparam TPointAdapter a type for the representation of the input point. 
+     * @return the current point.
      */
-    Point absolutePoint (PointOnProbingRay const& aRay) const;
+    template <class TPointAdapter>
+    Point absolutePoint (TPointAdapter const& aPoint) const;
 
     // ------------------------- Internals ------------------------------------
   private:
