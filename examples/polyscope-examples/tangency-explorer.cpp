@@ -451,9 +451,9 @@ void myCallback()
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("Input surface");
     goodSelection = goodSelection || (selectedSurface == surf);
-    const auto nv = selectedSurface->nVertices(); 
-    const auto nf = selectedSurface->nFaces(); 
-    const auto ne = selectedSurface->nEdges(); 
+    const auto nv = surfmesh.nbVertices();
+    const auto nf = surfmesh.nbFaces();
+    const auto ne = surfmesh.nbEdges();
     // Validate that it its a face index
     if ( goodSelection )
       {
@@ -477,20 +477,6 @@ void myCallback()
             selected_kpoint /= 2;
             std::ostringstream otext;
             otext << "Selected face = " << face_idx
-                  << " pos=" << selected_kpoint; 
-            ImGui::Text( "%s", otext.str().c_str() );
-          }
-        else if ( idx - nv - nf < ne )
-          {
-            edge_idx  = idx - nv - nf;
-            is_selected  = false; // true; // ne fonctionne pas
-            selected_kpoint = Point::zero;
-            auto vv = surfmesh.edgeVertices( edge_idx );
-            selected_kpoint += digital_points[ vv.first ];
-            selected_kpoint += digital_points[ vv.second ];
-            selected_kpoint /= 2;
-            std::ostringstream otext;
-            otext << "Selected edge = " << edge_idx
                   << " pos=" << selected_kpoint; 
             ImGui::Text( "%s", otext.str().c_str() );
           }
