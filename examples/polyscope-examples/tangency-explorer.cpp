@@ -472,7 +472,7 @@ void myCallback()
             face_idx  = idx - nv;
             is_selected  = true;
             selected_kpoint = Point::zero;
-            for ( auto i : selectedSurface->faces[ face_idx ] )
+            for ( auto i : surfmesh.incidentVertices( face_idx ) )
               selected_kpoint += digital_points[ i ];
             selected_kpoint /= 2;
             std::ostringstream otext;
@@ -485,8 +485,9 @@ void myCallback()
             edge_idx  = idx - nv - nf;
             is_selected  = false; // true; // ne fonctionne pas
             selected_kpoint = Point::zero;
-            for ( auto i : selectedSurface->edgeIndices[ edge_idx ] )
-              selected_kpoint += digital_points[ i ];
+            auto vv = surfmesh.edgeVertices( edge_idx );
+            selected_kpoint += digital_points[ vv.first ];
+            selected_kpoint += digital_points[ vv.second ];
             selected_kpoint /= 2;
             std::ostringstream otext;
             otext << "Selected edge = " << edge_idx
