@@ -5,6 +5,11 @@
 - *Geometry*
   - Implementation of the plane-probing L-algorithm (Tristan Roussillon, [#1744](https://github.com/DGtal-team/DGtal/pull/1744))
 
+## Changes
+
+- *General*
+  - Upgrade of polyscope version in examples from 1.2.0 to 2.3.0 (David Coeurjolly, [#1743](https://github.com/DGtal-team/DGtal/pull/1743))
+
 ## Bug fixes
 
 - *General*
