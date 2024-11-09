@@ -248,11 +248,11 @@ int main()
                       faces.begin(),
                       faces.end());
 
-  std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
-  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
-
   // Initialize polyscope
   polyscope::init();
+
+  std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
+  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
   
   // Set the callback function
   polyscope::state::userCallback = myCallback;
