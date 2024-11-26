@@ -20,7 +20,7 @@
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
 
 - *Topology*
-  - Fixing images in the Cubical Complex documentation paghe (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745)) 
+  - Fixing images in the Cubical Complex documentation paghe (David Coeurjolly, [#1748](https://github.com/DGtal-team/DGtal/pull/1748)) 
 
 # DGtal 1.4.1
 
