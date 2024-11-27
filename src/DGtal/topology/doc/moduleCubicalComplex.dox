@@ -335,10 +335,10 @@ c) attach a cubical complex \f$X\f$ to be thinned:
 d) run the algorithm (here two iterations):
 @snippet topology/cubicalComplexThinning.cpp thinn
 
-@image html ComplexBeforeThinning.png "The starting complex X before thinning." width=3cm
+@image html ComplexBeforeThinning.png "The starting complex X before thinning." 
 @image latex ComplexBeforeThinning.png "The starting complex X before thinning." width=3cm
 
-@image html ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse." width=5cm
+@image html ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse."
 @image latex ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse." width=5cm
 
 The second scheme, so-called SurfaceCollapse is similar to ParDirCollapse. The only difference is that after each
@@ -351,7 +351,7 @@ To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply 
 d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnSurface
 
-@image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." width=3cm
+@image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." 
 @image latex ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." width=3cm
 
 The last scheme, so-called IsthmusCollapse is similar to SurfaceCollapse. The only difference is that after each
@@ -365,7 +365,7 @@ To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply 
 d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnIsthmus
 
-@image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." width=3cm
+@image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." 
 @image latex ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." width=3cm
 
 For more details see the example topology/cubicalComplexThinning.cpp.
