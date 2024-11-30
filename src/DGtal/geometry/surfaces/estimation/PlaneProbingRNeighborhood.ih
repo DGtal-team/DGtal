@@ -90,33 +90,34 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
-typename DGtal::PlaneProbingRNeighborhood<TPredicate>::PointOnProbingRay
-DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (PointOnProbingRay const& aRay) const
+TPointAdapter
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate (TPointAdapter const& aRay) const
 {
     assert(this->myPredicate(this->absolutePoint(aRay)));
 
     // Exponential march
-    PointOnProbingRay Xk = aRay, Xl = aRay.next(1);
+    TPointAdapter Xk = aRay, Xl = aRay.next(1);
     while (this->myPredicate(this->absolutePoint(Xk)) &&
            this->isSmallest(this->relativePoint(Xk), this->relativePoint(Xl))) {
-        Integer d = Xl.index() - Xk.index();
+        Integer d = Xl.position() - Xk.position();
         Xk = Xl;
         Xl = Xl.next(2 * d);
     }
-    Xk = Xk.previous(Integer((Xl.index() - Xk.index()) / 2));
+    Xk = Xk.previous(Integer((Xl.position() - Xk.position()) / 2));
 
     // Binary search
-    Integer d = Xl.index() - Xk.index();
+    Integer d = Xl.position() - Xk.position();
     while (d > 4) {
         assert(this->myPredicate(this->absolutePoint(Xk)));
 
-        PointOnProbingRay Xalpha = Xk.next(Integer(d / 4)),
+        TPointAdapter Xalpha = Xk.next(Integer(d / 4)),
                           Xbeta  = Xk.next(Integer(d / 2)),
                           Xgamma = Xk.next(Integer(3*d/4));
 
-        assert(Xk.index() < Xalpha.index() && Xalpha.index() < Xbeta.index() &&
-               Xbeta.index() < Xgamma.index() && Xgamma.index() < Xl.index());
+        assert(Xk.position() < Xalpha.position() && Xalpha.position() < Xbeta.position() &&
+               Xbeta.position() < Xgamma.position() && Xgamma.position() < Xl.position());
 
         if (this->myPredicate(this->absolutePoint(Xbeta)) &&
             this->isSmallest(this->relativePoint(Xbeta), this->relativePoint(Xgamma))) {
@@ -129,7 +130,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
             Xl = Xgamma;
         }
 
-        d = Xl.index() - Xk.index();
+        d = Xl.position() - Xk.position();
     }
 
     return closestPointOnRayLinearWithPredicate(Xk);
@@ -137,13 +138,14 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
-typename DGtal::PlaneProbingRNeighborhood<TPredicate>::PointOnProbingRay
-DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (PointOnProbingRay const& aRay) const
+TPointAdapter
+DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredicate (TPointAdapter const& aRay) const
 {
     assert(this->myPredicate(this->absolutePoint(aRay)));
 
-    PointOnProbingRay previousX = aRay, currentX = previousX.next(1);
+    TPointAdapter previousX = aRay, currentX = previousX.next(1);
     while (this->myPredicate(this->absolutePoint(currentX)) &&
            this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX))) {
         previousX = currentX;

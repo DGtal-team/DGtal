@@ -49,7 +49,7 @@ using KSpace = Z3i::KSpace;
 using SH3    = Shortcuts<KSpace>;
 using Surfel = KSpace::SCell;
 
-using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, std::vector<Surfel>::const_iterator, int, 4>;
+using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, std::vector<Surfel>::const_iterator, int>;
 using SegmentationSurfels   = SaturatedSegmentation<SegmentComputerOnSurfels>;
 
 using SegmentComputer = ArithmeticalDSSComputer<std::vector<Z2i::Point>::const_iterator, int, 4>;
@@ -79,7 +79,8 @@ std::pair<KSpace, Slice> getSlice (std::string const& shape = "ellipsoid", doubl
     Surfel surfel = Surfaces<KSpace>::findABel(kspace, *binary_image, 10000);
 
     KSpace::DirIterator q1 = kspace.sDirs(surfel);
-    Dimension dim1 = *q1, dim2 = kspace.sOrthDir(surfel);
+    KSpace::DirIterator q2 = kspace.sOrthDirs(surfel);
+    Dimension dim1 = *q1, dim2 = *q2;
     auto tracker = surface->container().newTracker(surfel);
     SurfaceSlice surfaceSlice(tracker, dim1);
     delete tracker;
@@ -95,42 +96,15 @@ std::vector<Z2i::Point> extractPoints (SegmentComputerOnSurfels const& sc, Slice
 {
     std::vector<Z2i::Point> points;
 
-    auto initialPoints = sc.projectSurfel(slice.start);
+    auto initialPoints = sc.getProjectedPointsFromSurfel(slice.start);
     points.push_back(initialPoints.first);
     points.push_back(initialPoints.second);
 
-    int currentIdx = 0;
-    bool firstIt = true;
     for (auto sit = slice.contour.begin() + 1; sit != slice.contour.end(); ++sit)
     {
         Surfel s = *sit;
-        auto projectedPoints = sc.projectSurfel(s);
-
-        if (firstIt) {
-            if (projectedPoints.first == points[currentIdx]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.first == points[currentIdx + 1]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.second == points[currentIdx]) {
-                points.push_back(projectedPoints.first);
-            } else if (projectedPoints.second == points[currentIdx + 1]) {
-                points.push_back(projectedPoints.first);
-            } else {
-                assert(false);
-            }
-
-            firstIt = false;
-        } else {
-            if (projectedPoints.first == points[currentIdx]) {
-                points.push_back(projectedPoints.second);
-            } else if (projectedPoints.second == points[currentIdx]) {
-                points.push_back(projectedPoints.first);
-            } else {
-                assert(false);
-            }
-        }
-
-        currentIdx = (int)points.size() - 1;
+        auto pt = sc.getNextProjectedPoint(s);
+	points.push_back(pt);
     }
 
     return points;
@@ -160,10 +134,10 @@ TEST_CASE("Testing ArithmeticalDSSComputerOnSurfels")
     auto segIt = segmentation.begin();
     auto segSurfelIt = segmentationSurfels.begin();
     while (segIt != segmentation.end() && segSurfelIt != segmentationSurfels.end()) {
-        allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
-
-        ++segIt;
-        ++segSurfelIt;
+      
+      allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
+      ++segIt;
+      ++segSurfelIt;
     }
 
     REQUIRE(allEqual);
