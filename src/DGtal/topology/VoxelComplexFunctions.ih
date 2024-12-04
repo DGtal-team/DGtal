@@ -81,6 +81,14 @@ asymetricThinningScheme(
   typename TComplex::Parent x_y(vc.space());
   typename TComplex::Parent x_k(vc.space());
 
+  // Initialize the constraint set
+  for (auto it = vc.begin(3), itE = vc.end(3) ; it != itE ; ++it ){
+    const auto &constraint_voxel = it->first ;
+    if( Skel(vc, constraint_voxel) == true || it->second.data == TComplex::FIXED){
+      K.insertVoxelCell(constraint_voxel);
+    }
+  }
+
   bool stability{false};
   uint64_t generation{0};
   auto xsize =  X.nbCells(3);
@@ -128,7 +136,7 @@ asymetricThinningScheme(
     x_k = X  - K;
     for (auto it = x_k.begin(3), itE = x_k.end(3) ; it != itE ; ++it ){
       auto new_voxel = it->first ;
-      if( Skel(X, new_voxel) == true){
+      if( Skel(X, new_voxel) == true || it->second.data == TComplex::FIXED){
         K.insertVoxelCell(new_voxel);
         // K.insertCell(3, new_voxel);
         // K.objectSet().insert(K.space().uCoords(new_voxel));
