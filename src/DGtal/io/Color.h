@@ -85,7 +85,13 @@ namespace DGtal
      */
 
     Color( const unsigned int aRgb,
-           unsigned char aAlpha = 255 );
+           unsigned char aAlpha = 255 )
+   :myAlpha( aAlpha )
+   {
+     myRed = ( aRgb & 0xFF0000u ) >> 16;
+     myGreen = ( aRgb & 0xFF00u ) >> 8;
+     myBlue = aRgb & 0xFF;
+   }
 
     /**
      * Copy Constructor.
@@ -516,6 +522,24 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const Color & aColor );
 
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+const DGtal::Color DGtal::Color::None(0,0,0,0);
+const DGtal::Color DGtal::Color::Black((unsigned char)0,(unsigned char)0,(unsigned char)0);
+const DGtal::Color DGtal::Color::Gray((unsigned char)128,(unsigned char)128,(unsigned char)128);
+const DGtal::Color DGtal::Color::White((unsigned char)255,(unsigned char)255,(unsigned char)255);
+const DGtal::Color DGtal::Color::Red((unsigned char)255,(unsigned char)0,(unsigned char)0);
+const DGtal::Color DGtal::Color::Green((unsigned char)0,(unsigned char)255,(unsigned char)0);
+const DGtal::Color DGtal::Color::Lime((unsigned char)0,(unsigned char)255,(unsigned char)0);
+const DGtal::Color DGtal::Color::Blue((unsigned char)0,(unsigned char)0,(unsigned char)255);
+const DGtal::Color DGtal::Color::Cyan((unsigned char)0,(unsigned char)255,(unsigned char)255);
+const DGtal::Color DGtal::Color::Magenta((unsigned char)255,(unsigned char)0,(unsigned char)255);
+const DGtal::Color DGtal::Color::Yellow((unsigned char)255,(unsigned char)255,(unsigned char)0);
+const DGtal::Color DGtal::Color::Silver((unsigned char)190,(unsigned char)190,(unsigned char)190);
+const DGtal::Color DGtal::Color::Purple((unsigned char)128,(unsigned char)0,(unsigned char)128);
+const DGtal::Color DGtal::Color::Navy((unsigned char)0,(unsigned char)0,(unsigned char)128);
+const DGtal::Color DGtal::Color::Aqua((unsigned char)0,(unsigned char)255,(unsigned char)255);
 
 } // namespace DGtal
 
