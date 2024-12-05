@@ -199,7 +199,7 @@ namespace DGtal
     /// @return the same integer
     static DGtal::int32_t cast( DGtal::BigInteger i ) 
     {
-      auto r = i.get_si();
+      auto r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
       if ( DGtal::BigInteger( r ) != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
@@ -281,9 +281,14 @@ namespace DGtal
     /// @return the same integer
     static DGtal::int64_t cast( DGtal::BigInteger i ) 
     {
+#ifdef WITH_GMP
       DGtal::int64_t r = detail::mpz_get_sll( i.get_mpz_t() );
       DGtal::BigInteger tmp;
       detail::mpz_set_sll( tmp.get_mpz_t(), r );
+#else
+      DGtal::int64_t r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
+      DGtal::BigInteger tmp(r);
+#endif
       if ( tmp != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
@@ -348,7 +353,11 @@ namespace DGtal
     static DGtal::BigInteger cast( DGtal::int64_t i ) 
     {
       DGtal::BigInteger tmp;
+#ifdef WITH_GMP
       detail::mpz_set_sll( tmp.get_mpz_t(), i );
+#else
+      tmp = i;
+#endif
       return tmp;
     }
 
