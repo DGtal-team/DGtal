@@ -52,6 +52,7 @@
 namespace DGtal
 {
 #ifdef WITH_BIGINTEGER
+#ifdef WITH_GMP
   namespace detail {
     /// ------------- GMP SPECIALIZED SERVICES ----------------------------
     
@@ -96,6 +97,7 @@ namespace DGtal
       return (long long)mpz_get_ull(n); /* just use unsigned version */
     }
   }
+#endif
 #endif
     
   /// ------------- INTEGER/POINT CONVERSION SERVICES --------------------

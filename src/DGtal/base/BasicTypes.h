@@ -45,6 +45,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <boost/cstdint.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
@@ -77,6 +78,9 @@ namespace DGtal
   #define WITH_BIGINTEGER
   ///Multi-precision integer with GMP implementation.
   typedef mpz_class BigInteger;
+#else
+  #define WITH_BIGINTEGER
+  typedef boost::multiprecision::cpp_int BigInteger;
 #endif
 
 } // namespace DGtal
