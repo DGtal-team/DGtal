@@ -19,6 +19,7 @@
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author David Coeurjolly (\c david.coeurjolly@cnrs.fr ), LIRIS (CNRS, UMR 5205),
  *
  * @date 2010/07/02
  *
