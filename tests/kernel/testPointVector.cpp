@@ -131,7 +131,7 @@ TEST_CASE( "2D Point Vector Unit tests with BigInteger" )
   RealPoint3D p3_3d( p3[0], p3[1] );
   RealPoint3D p4_3d( p4[0], p4[1] );
   
-  SECTION("Cross products with integers")
+  SECTION("Cross products with (big)integers")
   {
     Point2D p = p1 - p2;
     Point2D expected(6,6);
@@ -151,7 +151,7 @@ TEST_CASE( "2D Point Vector Unit tests with BigInteger" )
     COMPARE_VALUE_AND_TYPE( crossProduct(p4, p3), crossProduct(p4_3d, p3_3d) );
   }
   
-  SECTION("Cross products with mixed integers/reals")
+  SECTION("Cross products with mixed (big)integers/reals")
   {
     COMPARE_VALUE_AND_TYPE( p1.crossProduct(p3), p1_3d.crossProduct(p3_3d) );
     COMPARE_VALUE_AND_TYPE( crossProduct(p1, p3), crossProduct(p1_3d, p3_3d) );

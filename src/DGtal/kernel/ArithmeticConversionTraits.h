@@ -117,8 +117,7 @@ namespace DGtal
    * @see ArithmeticConversionTraits
    */
   template <typename T, typename U>
-  struct ArithmeticConversionTraits< T, U,
-  typename std::enable_if<    std::is_arithmetic<T>::value
+  struct ArithmeticConversionTraits< T, U, typename std::enable_if<    std::is_arithmetic<T>::value
   && std::is_arithmetic<U>::value >::type >
   {
     using type = typename std::common_type<T, U>::type; //! Arithmetic operation result type.
