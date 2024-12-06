@@ -1030,7 +1030,7 @@ DGtal::PointVector<dim, TComponent, TContainer>::normInfinity() const
     {
       tmp =  ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ] ;
       if ( tmp > val )
-  val = tmp;
+        val = tmp;
     }
   return val;
 }

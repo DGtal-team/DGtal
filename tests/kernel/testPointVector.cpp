@@ -133,7 +133,7 @@ TEST_CASE( "2D Point Vector Unit tests with BigInteger" )
   
   SECTION("Cross products with integers")
   {
-    auto p = p1 - p2;
+    Point2D p = p1 - p2;
     Point2D expected(6,6);
     CHECK( p  == expected ) ;
     

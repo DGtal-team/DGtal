@@ -173,10 +173,7 @@ namespace DGtal
    * @param rhs     Second operand (only used for auto-deducing its type).
    * @param args    Parameters forwarded to the constructor.
    */
-  template <
-  typename LHS,
-  typename RHS,
-  typename... Args >
+  template <typename LHS,typename RHS,typename... Args >
   inline
   ArithmeticConversionType<LHS, RHS>
   constructFromArithmeticConversion( LHS const& lhs, RHS const& rhs, Args &&... args )
@@ -188,7 +185,7 @@ namespace DGtal
   }
   
 #ifdef WITH_GMP
-  /** @brief Specialization when first operand is a @ref BigInteger.
+  /** @brief Specialization when first operand is a @ref BigInteger with GMP.
    *
    * @warning result type if set to BigInteger instead of the possible
    *    more complex __gmp_expr.
@@ -216,7 +213,7 @@ namespace DGtal
     using type = BigInteger;
   };
   
-  /** @brief Specialization when both operands are @ref BigInteger.
+  /** @brief Specialization when both operands are @ref BigInteger with GMP.
    *
    * @warning result type if set to BigInteger instead of the possible
    *    more complex __gmp_expr.
@@ -230,6 +227,37 @@ namespace DGtal
   };
 #endif
   
+  
+  /** @brief Specialization when first operand is a @ref BigInteger.
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template <typename T>
+  struct ArithmeticConversionTraits<T, BigInteger,typename std::enable_if< std::is_integral<T>::value >::type >
+  {
+    using type = BigInteger;
+  };
+  
+  /** @brief Specialization when second operand is a @ref BigInteger with GMP.
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template <typename U>
+  struct ArithmeticConversionTraits<BigInteger, U,typename std::enable_if< std::is_integral<U>::value >::type >
+  {
+    using type = BigInteger;
+  };
+  
+  /** @brief Specialization when both operands are @ref BigInteger.
+   *
+   *
+   * @see ArithmeticConversionTraits
+   */
+  template <>
+  struct ArithmeticConversionTraits<BigInteger,BigInteger>
+  {
+    using type = BigInteger;
+  };
 } // namespace DGtal
 
 
