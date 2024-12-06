@@ -91,11 +91,20 @@ TEST_CASE( "Checking CInteger models")
   trace.info() << "  - digits unsigned int = " << NumberTraits<unsigned int>::digits()<< std::endl;
   trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;
   trace.endBlock();
+}
+
+TEST_CASE("DGal::BigInteger tests")
+{
+  trace.beginBlock ( "Checking CUnsignedInteger models ..." );
+  BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::BigInteger> ));
+  trace.endBlock();
   
+  DGtal::BigInteger big(425);
+  CHECK(big == (int)425);
   
-  int a = 42;
-  DGtal::BigInteger b(42);
-  CHECK(a == b);
+  DGtal::BigInteger anotherbig(5);
+  DGtal::BigInteger res = big + anotherbig;
+  CHECK(res == (int)430);
 }
 
 //                                                                           //
