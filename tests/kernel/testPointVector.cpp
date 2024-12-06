@@ -135,7 +135,7 @@ TEST_CASE( "2D Point Vector Unit tests with BigInteger" )
   {
     auto p = p1 - p2;
     Point2D expected(6,6);
-    CHECK( p  == expected ;
+    CHECK( p  == expected ) ;
     
     COMPARE_VALUE_AND_TYPE( p1.crossProduct(p2), p1_3d.crossProduct(p2_3d) );
     COMPARE_VALUE_AND_TYPE( crossProduct(p1, p2), crossProduct(p1_3d, p2_3d) );
