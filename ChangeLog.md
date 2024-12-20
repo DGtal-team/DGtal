@@ -1,4 +1,4 @@
-# DGtal 1.5beta
+# DGtal 1.4.2(beta)
 
 ## New features
 
@@ -13,7 +13,7 @@
 ## Bug fixes
 
 - *General*
-  - Fix cmake CGAL 6.0 Breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
+  - Fix cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
   - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
 
 - *Geometry*
