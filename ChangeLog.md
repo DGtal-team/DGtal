@@ -13,8 +13,9 @@
 ## Bug fixes
 
 - *General*
-  - Fix cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
+  - Fixing cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
   - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
+  - Using the `dcoeurjo/GeometryProcessing-cmake-recipes` openmp recipe to detect openmp (David Coeurjolly, [#1750](https://github.com/DGtal-team/DGtal/pull/1750))
 
 - *Geometry*
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
