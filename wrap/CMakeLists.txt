@@ -97,6 +97,6 @@ add_custom_target(dgtal-install-runtime
   DEPENDS DGtal _dgtal
   )
 
-if(DGTAL_BUILD_TESTING_PYTHON)
+if(DGTAL_BUILD_TESTS_PYTHON)
   add_subdirectory(tests)
 endif()

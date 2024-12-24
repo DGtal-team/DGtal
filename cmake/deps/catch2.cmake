@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Fetching Catch2 (only if the BUILD_TESTING variable has been set to true)
+# Fetching Catch2 (only if the DGTAL_BUILD_TESTS variable has been set to true)
 # -----------------------------------------------------------------------------
 
 if (TARGET Catch2)
