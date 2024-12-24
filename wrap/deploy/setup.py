@@ -18,8 +18,8 @@ from dgtalVersion import get_versions
 CMAKE_OPTIONS = [
     '-DCMAKE_BUILD_TYPE=Release',
     '-DBUILD_SHARED_LIBS:BOOL=OFF',
-    '-DBUILD_EXAMPLES:BOOL=OFF',
-    '-DBUILD_TESTING:BOOL=OFF',
+    '-DDGTAL_BUILD_EXAMPLES:BOOL=OFF',
+    '-DDGTAL_BUILD_TESTS:BOOL=OFF',
     '-DDGTAL_WRAP_PYTHON:BOOL=ON'
 ]
 if sys.platform == "win32":
