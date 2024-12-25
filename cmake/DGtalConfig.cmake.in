@@ -30,7 +30,7 @@ set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
 if (@LIBIGL_FOUND_DGTAL@) 
   include(libigl)
-  set(WITH_LIBIGL 1)
+  set(DGTAL_WITH_LIBIGL 1)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
 endif()
 

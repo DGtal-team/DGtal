@@ -21,7 +21,7 @@ option(WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
-option(WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
+option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -98,11 +98,11 @@ else (WITH_FFTW3)
 endif()
 
 
-if (WITH_LIBIGL)
+if (DGTAL_WITH_LIBIGL)
   set(LIST_OPTION ${LIST_OPTION} [LIBIGL]\ )
-  message(STATUS "      WITH_LIBIGL        true    (libIGL)")
-else (WITH_LIBIGL)
-  message(STATUS "      WITH_LIBIGL        false   (libIGL)")
+  message(STATUS "      DGTAL_WITH_LIBIGL        true    (libIGL)")
+else (DGTAL_WITH_LIBIGL)
+  message(STATUS "      DGTAL_WITH_LIBIGL        false   (libIGL)")
 endif()
 
 message(STATUS "")
@@ -192,7 +192,7 @@ set(CAIRO_FOUND_DGTAL 0)
 if(DGTAL_WITH_CAIRO)
   find_package(Cairo REQUIRED)
   if(CAIRO_FOUND)
-    target_compile_definitions(DGtal PUBLIC -DWITH_CAIRO)
+    target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_CAIRO)
     target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
@@ -388,14 +388,14 @@ endif()
 # Look for libigl.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-if(WITH_LIBIGL)
+if(DGTAL_WITH_LIBIGL)
   if (WITH_CGAL)
     message(STATUS "DGtal/CGAL enabled.")
   else()
     message(FATAL_ERROR "LIBIGL requires CGAL. Please if the `WITH_CGAL=true` cmake flag.")
   endif()
   include(cmake/deps/libigl.cmake)
-  target_compile_definitions(DGtal PUBLIC -DWITH_LIBIGL)
+  target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_LIBIGL)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
   set(LIBIGL_FOUND_DGTAL 1)
 

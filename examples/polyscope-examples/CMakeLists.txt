@@ -41,7 +41,7 @@ set(POLYSCOPE_SRCS
   tangency-reconstruction
 )
 
-if(WITH_LIBIGL)
+if(DGTAL_WITH_LIBIGL)
  set(POLYSCOPE_SRCS  
       ${POLYSCOPE_SRCS} 
       windingNumbersShape
