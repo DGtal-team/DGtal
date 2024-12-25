@@ -12,7 +12,7 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-option(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
+option(DGTAL_WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 option(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 option(WITH_CGAL "With CGAL." OFF)
 option(WITH_ITK "With Insight Toolkit ITK." OFF)
@@ -33,7 +33,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 #---------------------------------
 
-if(WITH_OPENMP)
+if(DGTAL_WITH_OPENMP)
   set(LIST_OPTION ${LIST_OPTION} [OpenMP]\ )
   message(STATUS "      WITH_OPENMP        true    (OpenMP multithread features)")
 else()
@@ -287,11 +287,11 @@ endif()
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 set(OPENMP_FOUND_DGTAL 0)
-if(WITH_OPENMP)
+if(DGTAL_WITH_OPENMP)
   include(openmp)
   set(DGtalLibDependencies ${DGtalLibDependencies} OpenMP::OpenMP_CXX)
   set(OPENMP_FOUND_DGTAL 1)
-  set(WITH_OPENMP 1)
+  set(DGTAL_WITH_OPENMP 1)
 endif()
 
 # -----------------------------------------------------------------------------

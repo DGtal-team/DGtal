@@ -2,7 +2,7 @@ set(DGTAL_EXAMPLES_SRC
   examplePointFunctorHolder
 )
 
-if(WITH_OPENMP)
+if(DGTAL_WITH_OPENMP)
   set(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC}
     exampleHyperRectDomainParallelScan
   )

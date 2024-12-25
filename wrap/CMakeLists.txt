@@ -40,7 +40,7 @@ target_include_directories(_dgtal SYSTEM PRIVATE ${enabled_include_system_dirs_}
 if(WITH_ITK)
   target_compile_definitions(_dgtal PRIVATE WITH_ITK)
 endif()
-if(WITH_OPENMP)
+if(DGTAL_WITH_OPENMP)
   target_compile_definitions(_dgtal PRIVATE WITH_OPENMP)
 endif()
 if(WITH_FFTW3)

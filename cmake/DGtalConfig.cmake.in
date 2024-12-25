@@ -82,7 +82,7 @@ endif (@QT5_FOUND_DGTAL@)
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
    include(openmp)
    set(DGtalLibDependencies ${DGtalLibDependencies} OpenMP::OpenMP_CXX)
-  set(WITH_OPENMP 1)
+  set(DGTAL_WITH_OPENMP 1)
 endif()
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
