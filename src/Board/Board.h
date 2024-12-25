@@ -857,7 +857,7 @@ public:
 		std::string filename="output.svg") const ;
   
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   // cairo
   /** 
    * Save the drawing with cairo. When a size is given (not BoundingBox), the drawing is

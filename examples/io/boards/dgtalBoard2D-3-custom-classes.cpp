@@ -82,7 +82,7 @@ int main()
   board.saveEPS("dgtalBoard2D-3-custom-classes.eps");
   board.saveTikZ("dgtalBoard2D-3-custom-classes.tikz");
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.ps", Board2D::CairoPS);

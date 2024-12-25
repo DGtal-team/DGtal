@@ -54,7 +54,7 @@ if(@CAIRO_FOUND_DGTAL@) #if CAIRO_FOUND_DGTAL
   find_package(Cairo REQUIRED
     @Cairo_HINTS@
     )
-  set(WITH_CAIRO 1)
+  set(DGTAL_WITH_CAIRO 1)
 endif()
 
 if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL

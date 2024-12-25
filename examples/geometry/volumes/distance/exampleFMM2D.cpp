@@ -108,7 +108,7 @@ void draw( const TImage aImg, const double& aMaxValue, std::string aBasename)
     s << aBasename << ".eps"; 
     b.saveEPS(s.str().c_str());
   }
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
   {
     std::stringstream s; 
     s << aBasename << ".png"; 

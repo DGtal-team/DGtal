@@ -96,7 +96,7 @@ int main()
   board.saveEPS( "dgtalBoard2D-4-colormaps.eps");
   board.saveTikZ( "dgtalBoard2D-4-colormaps.tikz");
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-4-colormaps-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-4-colormaps-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-4-colormaps-cairo.ps", Board2D::CairoPS);
