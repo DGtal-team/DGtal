@@ -1,3 +1,6 @@
+# DGtal 2.0
+
+
 # DGtal 1.4.2
 
 ## New features
