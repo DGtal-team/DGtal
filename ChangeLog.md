@@ -1,7 +1,7 @@
 # DGtal 2.0
 
 - *Build*
-  - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#17XX](https://github.com/DGtal-team/DGtal/pull/17XX))
+  - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753))
 
 # DGtal 1.4.2
 
