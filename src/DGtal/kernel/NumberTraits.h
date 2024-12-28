@@ -422,10 +422,10 @@ namespace DGtal
     typedef typename boost::call_traits<BigInteger>::param_type ParamType;
 
     /// Constant Zero.
-    static const DGtal::BigInteger ZERO;
+    static const DGtal::BigInteger ZERO ;
 
     /// Constant One.
-    static const DGtal::BigInteger ONE;
+    static const DGtal::BigInteger ONE ;
 
     /// Return the zero of this integer.
     static inline
@@ -446,7 +446,7 @@ namespace DGtal
     ReturnType min() noexcept
     {
       FATAL_ERROR_MSG(false, "UnBounded interger type does not support min() function");
-      return ZERO;
+      return zero();
     }
 
     /// Return the maximum possible value (trigger an error since BitInteger is unbounded).
@@ -454,7 +454,7 @@ namespace DGtal
     ReturnType max() noexcept
     {
       FATAL_ERROR_MSG(false, "UnBounded interger type does not support max() function");
-      return ZERO;
+      return zero();
     }
 
     /// Return the number of significant binary digits (trigger an error since BitInteger is unbounded).
@@ -492,7 +492,11 @@ namespace DGtal
     static inline
     DGtal::int64_t castToInt64_t(const DGtal::BigInteger & aT) noexcept
     {
+#ifdef WITH_GMP
       return aT.get_si();
+#else
+      return static_cast<DGtal::int64_t>(aT);
+#endif
     }
 
     /** @brief
@@ -502,7 +506,11 @@ namespace DGtal
     static inline
     DGtal::uint64_t castToUInt64_t(const DGtal::BigInteger & aT) noexcept
     {
+#ifdef WITH_GMP
       return aT.get_ui();
+#else
+      return static_cast<DGtal::uint64_t>(aT);
+#endif
     }
 
     
@@ -513,7 +521,11 @@ namespace DGtal
     static inline
     double castToDouble(const DGtal::BigInteger & aT) noexcept
     {
+#ifdef WITH_GMP
       return aT.get_d();
+#else
+      return static_cast<double>(aT);
+#endif
     }
 
     /** @brief Check the parity of a number.
@@ -524,7 +536,11 @@ namespace DGtal
     static inline
     bool even( ParamType aT ) noexcept
     {
+#ifdef WITH_GMP
       return mpz_even_p( aT.get_mpz_t() );
+#else
+      return (boost::multiprecision::integer_modulus(aT, 2) == 0);
+#endif
     }
 
     /** @brief Check the parity of a number.
@@ -535,7 +551,11 @@ namespace DGtal
     static inline
     bool odd( ParamType aT ) noexcept
     {
+#ifdef WITH_GMP
       return mpz_odd_p( aT.get_mpz_t() );
+#else
+      return (boost::multiprecision::integer_modulus(aT, 2) == 1);
+#endif
     }
   }; // end of class NumberTraits<DGtal::BigInteger>.
 
