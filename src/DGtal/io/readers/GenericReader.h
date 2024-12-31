@@ -50,7 +50,7 @@
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/readers/RawReader.h"
 #include "DGtal/io/readers/STBReader.h"
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
 #include "DGtal/io/readers/HDF5Reader.h"
 #endif
 #ifdef  DGTAL_WITH_ITK
@@ -270,7 +270,7 @@ namespace DGtal
             return RawReader< TContainer, TFunctor >::template importRaw<TValue>( filename, pt, aFunctor  );
           }
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
         if ( extension == "h5" )
           return HDF5Reader<TContainer, TFunctor>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
 #endif
@@ -400,7 +400,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
 
     /**
-     * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
+     * Import a volume image file.  For the special format h5 (you need to set  DGTAL_WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated
      * according to the dimension if the image.
      *
@@ -490,7 +490,7 @@ namespace DGtal
             return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
           }
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
         if (extension=="h5")
           return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif
@@ -512,7 +512,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
 
     /**
-     * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
+     * Import a volume image file.  For the special format h5 (you need to set  DGTAL_WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated
      * according to the dimension if the image.
      *
@@ -601,7 +601,7 @@ namespace DGtal
             return PGMReader<TContainer, TFunctor>::importPGM(filename, aFunctor);
           }
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
         if (extension=="h5")
           return HDF5Reader<TContainer, TFunctor>::importHDF5(filename, "image8bit", aFunctor);
 #endif

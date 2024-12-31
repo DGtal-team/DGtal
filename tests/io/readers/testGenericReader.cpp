@@ -116,7 +116,7 @@ bool testGenericReader()
   nb++;
   
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
   std::string filenameImageh5 = testPath + "samples/cat10.h5";    
   Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
   DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain(); 

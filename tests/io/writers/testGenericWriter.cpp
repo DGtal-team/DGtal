@@ -102,7 +102,7 @@ bool testGenericWriter()
   trace.info() <<"[done]"  << std::endl;
   
   bool okh5 = true;
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
   trace.info() << "Testing writing HDF5 3D ... ";
   okh5 = anImportedImage1 >> "testGenericWriter.h5";
   trace.info() <<"[done]"  << std::endl;
