@@ -479,7 +479,7 @@
     (Jocelyn Meyron, [#1553](https://github.com/DGtal-team/DGtal/pull/1553))
   - Fix issue
     [#1566](https://github.com/DGtal-team/DGtal/issues/1566): do not
-    compile example checkLatticeBallQuickHull if WITH_GMP is not set
+    compile example checkLatticeBallQuickHull if DGTAL_WITH_GMP is not set
     (Jacques-Olivier Lachaud,[#1567](https://github.com/DGtal-team/DGtal/pull/1567))
   - Fix AppVeyor issue on PlaneProbingParallelepipedEstimator and PlaneProbingRNeighborhood
     (Bertrand Kerautret, [#1568](https://github.com/DGtal-team/DGtal/pull/1568))

@@ -47,8 +47,8 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
-#ifndef WITH_CGAL
-#error You need to have activated CGAL (WITH_CGAL) to include this file.
+#ifndef  DGTAL_WITH_CGAL
+#error You need to have activated CGAL  (DGTAL_WITH_CGAL) to include this file.
 #endif
 
 //CGAL

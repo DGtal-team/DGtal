@@ -43,8 +43,8 @@ endif()
 if(DGTAL_WITH_OPENMP)
   target_compile_definitions(_dgtal PRIVATE DGTAL_WITH_OPENMP)
 endif()
-if(WITH_FFTW3)
-  target_compile_definitions(_dgtal PRIVATE WITH_FFTW3)
+if(DGTAL_WITH_FFTW3)
+  target_compile_definitions(_dgtal PRIVATE DGTAL_WITH_FFTW3)
 endif()
 
 install(FILES ${wrap_header_common}

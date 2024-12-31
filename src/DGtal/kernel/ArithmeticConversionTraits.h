@@ -187,7 +187,7 @@ namespace DGtal
       return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
     }
 
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
   /** @brief Specialization when first operand is a @ref BigInteger.
    *
    * @warning result type if set to BigInteger instead of the possible

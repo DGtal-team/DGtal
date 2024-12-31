@@ -38,7 +38,7 @@ if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
     @GMP_HINTS@
     )
-  set(WITH_GMP 1)
+  set(DGTAL_WITH_GMP 1)
 endif()
 
 
@@ -89,14 +89,14 @@ if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
   find_dependency(CGAL COMPONENTS Core
     @CGAL_HINTS@
     )
-  set(WITH_CGAL 1)
+  set (DGTAL_WITH_CGAL 1)
 endif()
 
 if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   find_package(FFTW3 REQUIRED
     @FFTW3_HINTS@
     )
-  set(WITH_FFTW3 1)
+  set(DGTAL_WITH_FFTW3 1)
 endif()
 
 if(NOT TARGET DGtal)

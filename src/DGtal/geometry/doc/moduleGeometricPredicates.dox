@@ -197,7 +197,7 @@ a working type.
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62
 
 For greater coordinates, we recommand to use InHalfPlaneBy2x2DetComputer
-together with Simple2x2DetComputer using DGtal::BigInteger as integral types (WITH_GMP ON). 
+together with Simple2x2DetComputer using DGtal::BigInteger as integral types (DGTAL_WITH_GMP ON). 
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62plus
 
 \subsection subsectmoduleGeometricPredicates14 Benchmark

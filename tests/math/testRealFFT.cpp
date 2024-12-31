@@ -30,8 +30,8 @@
  * Aim: Tests of real-data in-place Fast Fourier Transform featured by RealFFT.
  */
 
-#ifndef WITH_FFTW3
-  #error You need to have activated FFTW3 (WITH_FFTW3) to include this file.
+#ifndef DGTAL_WITH_FFTW3
+  #error You need to have activated FFTW3 (DGTAL_WITH_FFTW3_FFTW3) to include this file.
 #endif
 
 #include <cstddef>
@@ -301,7 +301,7 @@ void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImag
 ///////////////////////////////////////////////////////////////////////////////
 // Test cases.
 
-#ifdef WITH_FFTW3_FLOAT
+#ifdef DGTAL_WITH_FFTW3_FLOAT
 TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
 {
   constexpr typename DGtal::Dimension N = 2;
@@ -326,7 +326,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in float precision.", "[2D][float]" )
 }
 #endif
 
-#ifdef WITH_FFTW3_DOUBLE
+#ifdef DGTAL_WITH_FFTW3_DOUBLE
 TEST_CASE( "Checking RealFFT on a 2D image in double precision.", "[2D][double]" )
 {
   constexpr typename DGtal::Dimension N = 2;
@@ -351,7 +351,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in double precision.", "[2D][double]"
 }
 #endif
 
-#ifdef WITH_FFTW3_LONG
+#ifdef DGTAL_WITH_FFTW3_LONG
 TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][long double]" )
 {
   using namespace DGtal;
@@ -378,7 +378,7 @@ TEST_CASE( "Checking RealFFT on a 2D image in long double precision.", "[2D][lon
 }
 #endif
 
-#ifdef WITH_FFTW3_DOUBLE
+#ifdef DGTAL_WITH_FFTW3_DOUBLE
 TEST_CASE( "Checking RealFFT on a 3D image in double precision.", "[3D][double]" )
 {
   constexpr typename DGtal::Dimension N = 3;
@@ -418,7 +418,7 @@ TEST_CASE( "Checking RealFFT on a 3D image in double precision.", "[3D][double]"
 }
 #endif
 
-#ifdef WITH_FFTW3_DOUBLE
+#ifdef DGTAL_WITH_FFTW3_DOUBLE
 TEST_CASE( "Checking RealFFT on a 4D image in double precision.", "[4D][double]" )
 {
   constexpr typename DGtal::Dimension N = 4;

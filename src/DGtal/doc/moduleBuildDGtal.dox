@@ -90,7 +90,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true  -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
+cmake .. -DDGTAL_WITH_GMP=true  -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
