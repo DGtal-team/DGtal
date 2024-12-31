@@ -99,7 +99,7 @@ several functors:
   functors::MongeJetFittingPrincipalCurvaturesEstimator: return
   differential quantity by a polynomial surface fitting @cite CGal,
   @cite Cazals2005 . These estimators require CGAL and Eigen3
-  dependency  (DGTAL_WITH_CGAL, WITH_EIGEN).
+  dependency  (DGTAL_WITH_CGAL).
 
 - functors::LinearLeastSquareFittingNormalVectorEstimator: normal vector
   estimation from least square fitting of the embedded sufel
