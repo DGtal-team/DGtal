@@ -7,7 +7,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=false -DDGTAL_BUILD_TESTS=false -DWITH_EIGEN=true
+  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=false -DDGTAL_BUILD_TESTS=false
   CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTS_PYTHON=ON
   CONFIG_LINUX:
   CONFIG_MAC:
