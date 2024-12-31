@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # Fetching polyscope (only if the WITH_POLYSCOPE_EXAMPLES Variable has been set to true)
 # -----------------------------------------------------------------------------
-if (BUILD_POLYSCOPE_EXAMPLES)
+if (DGTAL_BUILD_POLYSCOPE_EXAMPLES)
   message(STATUS "    polyscope (v2.3.0)")
   include(polyscope)
 endif()
