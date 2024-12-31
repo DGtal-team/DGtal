@@ -43,7 +43,7 @@ endif()
 
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
-  set(WITH_ITK 1)
+  set (DGTAL_WITH_ITK 1)
   find_dependency(ITK REQUIRED
     @ITK_HINTS@
     )

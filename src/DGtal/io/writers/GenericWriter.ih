@@ -38,7 +38,7 @@
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/writers/STBWriter.h"
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
 #include "DGtal/io/writers/ITKWriter.h"
 #endif
 
@@ -105,7 +105,7 @@ exportFile( const std::string & filename,
     {
       return RawWriter<TContainer>::template exportRaw<TValue>( filename, anImage, aFunctor  );
     }
-  #ifdef WITH_ITK
+  #ifdef  DGTAL_WITH_ITK
   else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
@@ -143,7 +143,7 @@ exportFile( const std::string & filename,
     {
       return RawWriter<TContainer>::template exportRaw<DGtal::uint64_t>( filename, anImage, aFunctor );
     }
- #ifdef WITH_ITK
+ #ifdef  DGTAL_WITH_ITK
   else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );
@@ -193,7 +193,7 @@ exportFile( const std::string & filename,
     {
       return RawWriter< TContainer, TFunctor >::exportRaw8( filename, anImage, aFunctor );
     }
- #ifdef WITH_ITK
+ #ifdef  DGTAL_WITH_ITK
   else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
           {
             return ITKWriter<TContainer, TFunctor>::exportITK( filename, anImage, aFunctor );

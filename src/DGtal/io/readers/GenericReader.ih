@@ -88,7 +88,7 @@ import( const std::string & filename,
     {
       return PGMReader<TContainer>::importPGM3D( filename );
     }
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
     else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
     {
       

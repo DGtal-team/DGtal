@@ -53,7 +53,7 @@
 #ifdef WITH_HDF5
 #include "DGtal/io/readers/HDF5Reader.h"
 #endif
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
 #include "DGtal/io/readers/DicomReader.h"
 #include "DGtal/io/readers/ITKReader.h"
 #endif
@@ -275,7 +275,7 @@ namespace DGtal
           return HDF5Reader<TContainer, TFunctor>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
 #endif
 
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
         if ( extension == "dcm" )
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
@@ -351,7 +351,7 @@ namespace DGtal
             return RawReader< TContainer, TFunctor >::importRaw32 ( filename, pt, aFunctor  );
           }
 
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
         if ( extension == "dcm" )
           {
             return DicomReader<TContainer, TFunctor>::importDicom(filename, aFunctor);
