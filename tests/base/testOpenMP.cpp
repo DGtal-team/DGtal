@@ -46,7 +46,7 @@ bool testOpenMP()
 {
   trace.beginBlock ( "Testing basic OpenMP ..." );
 
-#ifdef WITH_OPENMP
+#ifdef DGTAL_WITH_OPENMP
   trace.info() << "Parallel helloworld"<<std::endl;
 #pragma omp parallel
   trace.info()<<"Hello, world.\n";

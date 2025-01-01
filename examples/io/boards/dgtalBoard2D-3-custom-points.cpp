@@ -96,7 +96,7 @@ int main()
   board.saveEPS("dgtalBoard2D-3-custom-points.eps");
   board.saveTikZ("dgtalBoard2D-3-custom-points.tikz");
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.ps", Board2D::CairoPS);

@@ -172,7 +172,7 @@ bool testDrawGridCurve(const string &filename)
   aBoard.setUnit(Board2D::UCentimeter);
   aBoard << c; 
   aBoard.saveEPS( "GridCurve.eps", Board2D::BoundingBox, 5000 );
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board2D::BoundingBox, 5000);
 #endif
 

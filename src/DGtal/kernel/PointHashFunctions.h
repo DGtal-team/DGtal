@@ -67,7 +67,7 @@ namespace std {
   };
 }
 
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
 namespace std
 {
   template <>

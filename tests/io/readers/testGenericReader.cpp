@@ -58,10 +58,10 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint16_t>
   Image3D16bits;
-#endif // WITH_ITK
+#endif //  DGTAL_WITH_ITK
 
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint32_t> Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, DGtal::uint64_t> Image3D64bits;
@@ -116,7 +116,7 @@ bool testGenericReader()
   nb++;
   
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
   std::string filenameImageh5 = testPath + "samples/cat10.h5";    
   Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
   DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain(); 
@@ -164,7 +164,7 @@ bool testGenericReader()
   nbok += (size0Img5==5 && size1Img5==5  && anImportedImage5(DGtal::Z2i::Point(2,3))==250000*2*3*4) ? 1 : 0; 
   nb++;
 
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
   std::string filenameImage6 = testPath + "samples/lobsterCroped16b.mhd";
   typedef DGtal::functors::Rescaling<uint16_t, unsigned char> RescalFCT2;
   RescalFCT2 resc2 = RescalFCT2( 0, 65535, 0, 255 );
@@ -199,7 +199,7 @@ bool testGenericReader()
   nbok +=
   ( anImportedImage7( DGtal::Z3i::Point( 35, 29, 3 ) ) == 60400 ) ? 1 : 0;
   nb++;
-#endif // WITH_ITK
+#endif //  DGTAL_WITH_ITK
 
   DGtal::trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   DGtal::trace.endBlock();

@@ -173,7 +173,7 @@ void convexHull()
     //![Hull2D-Caliper-display]
     
     board.saveSVG( "ConvexHullCCW.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("ConvexHullCCW.png", Board2D::CairoPNG);
 #endif
   }
@@ -195,7 +195,7 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "ConvexHullCCWWithPointsOnEdges.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("ConvexHullCCWWithPointsOnEdges.png", Board2D::CairoPNG);
 #endif
 
@@ -218,7 +218,7 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "ConvexHullCW.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("ConvexHullCW.png", Board2D::CairoPNG);
 #endif
   }
@@ -238,7 +238,7 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "ConvexHullCCWbis.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("ConvexHullCCWbis.png", Board2D::CairoPNG);
 #endif
   }
@@ -278,25 +278,25 @@ void convexHull()
     Board2D board;
     drawPolygon( polygonalLine.begin(), polygonalLine.end(), board, true ); 
     board.saveSVG( "SimplePolygonalLine.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("SimplePolygonalLine.png", Board2D::CairoPNG);
 #endif
     board.clear(); 
     drawPolygon( resGraham.begin(), resGraham.end(), board ); 
     board.saveSVG( "SimplePolygonalLineGraham.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("SimplePolygonalLineGraham.png", Board2D::CairoPNG);
 #endif
     board.clear(); 
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "SimplePolygonalLineMelkman.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("SimplePolygonalLineMelkman.png", Board2D::CairoPNG);
 #endif
     board.clear(); 
     drawPolygon( ch.begin(), ch.end(), board ); 
     board.saveSVG( "SimplePolygonalLineMelkman2.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("SimplePolygonalLineMelkman2.png", Board2D::CairoPNG);
 #endif
   }
@@ -311,7 +311,7 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board, false ); 
     board.saveSVG( "AndrewWEVP.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AndrewWEVP.png", Board2D::CairoPNG);
 #endif
   }
@@ -336,7 +336,7 @@ void convexHull()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board, false ); 
     board.saveSVG( "GrahamWEVP.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("GrahamWEVP.png", Board2D::CairoPNG);
 #endif
   }

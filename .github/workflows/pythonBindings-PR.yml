@@ -2,16 +2,16 @@ name: CI Python bindings (linux/macOS/windows)
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, main2.0 ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=false -DBUILD_TESTING=false -DWITH_EIGEN=true
-  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTING_PYTHON=ON
+  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=false -DDGTAL_BUILD_TESTS=false
+  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTS_PYTHON=ON
   CONFIG_LINUX:
   CONFIG_MAC:
-  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe"
+  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true -DENABLE_CONAN=true -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe"
 
 jobs:
   build:

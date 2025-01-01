@@ -132,7 +132,7 @@ int main( int argc, char** argv )
   board.saveEPS("FrechetShortcutExample.eps", Board2D::BoundingBox, 5000 ); 
 
   //! [FrechetShortcutUsage]
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
     board.saveCairo("FrechetShortcutExample.png"); 
   #endif
 

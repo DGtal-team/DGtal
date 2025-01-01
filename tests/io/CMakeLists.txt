@@ -5,7 +5,7 @@ set(DGTAL_TESTS_SRC_IOVIEWERS
   testLongvol
   testArcDrawing )
 
-if (WITH_ITK)
+if  (DGTAL_WITH_ITK)
     set(DGTAL_TESTS_SRC_IOVIEWERS ${DGTAL_TESTS_SRC_IOVIEWERS} testITKio)
 endif()
 

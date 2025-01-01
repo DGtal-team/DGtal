@@ -90,7 +90,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true 
+cmake .. -DDGTAL_WITH_GMP=true  -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
@@ -119,8 +119,8 @@ library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) s
 
 Beside these options, user can also specify these options:
 
-- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
-- \e BUILD_TESTING (ON/OFF): to build the test suite (default: OFF)
+- \e DGTAL_BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
+- \e DGTAL_BUILD_TESTS (ON/OFF): to build the test suite (default: OFF)
 
 - \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
  (default: OFF). If set to ON, verbose

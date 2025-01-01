@@ -112,7 +112,7 @@ int main( )
   
   aBoard.saveSVG("greedy-dss-decomposition.svg");
   aBoard.saveEPS("greedy-dss-decomposition.eps");
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("greedy-dss-decomposition.png"); 
   #endif
 

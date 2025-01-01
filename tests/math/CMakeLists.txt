@@ -13,7 +13,7 @@ set(DGTAL_TESTS_SRC_MATH
        testLagrangeInterpolation
        )
 
-if (WITH_FFTW3)
+if (DGTAL_WITH_FFTW3)
   set (DGTAL_TESTS_SRC_MATH ${DGTAL_TESTS_SRC_MATH} testRealFFT)
 endif()
 

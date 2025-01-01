@@ -98,7 +98,7 @@ int main( int argc, char** argv )
       std::queue<DigitalSet::Iterator> Q;
       it = S.begin(); 
       itE = S.end();
-#ifdef WITH_OPENMP
+#ifdef DGTAL_WITH_OPENMP
       std::vector<DigitalSet::Iterator> v( S.size() );
       std::vector<uint8_t> b( v.size() );
       for ( size_t i = 0; it != itE; ++it, ++i )

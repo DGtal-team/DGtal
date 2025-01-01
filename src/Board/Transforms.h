@@ -103,7 +103,7 @@ public:
            const double margin );
 };
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 /**
  * The TransformCairo structure.
  * @brief Structure representing a scaling and translation

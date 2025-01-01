@@ -80,7 +80,7 @@ int main( /*int argc, char** argv*/ )
     aBoard.clear();
     Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
     aBoard.saveSVG("tiledImage-image.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("tiledImage-image.png", Board2D::CairoPNG);
 #endif
     
@@ -254,7 +254,7 @@ int main( /*int argc, char** argv*/ )
     aBoard.clear();
     Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
     aBoard.saveSVG("tiledImage-image2.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("tiledImage-image2.png", Board2D::CairoPNG);
 #endif
     

@@ -49,7 +49,7 @@ https://en.wikipedia.org/wiki/Laplace–Beltrami_operator
 
 @note All illustrations below have been obtained using the
 DGtal+[polyscope](https://polyscope.run) examples \ref
-dgtalCalculus.cpp, \ref dgtalCalculus-single.cpp and \ref dgtalCalculus-poisson.cpp. To build these examples, enable the `BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DBUILD_POLYSCOPE_EXAMPLES=ON`).
+dgtalCalculus.cpp, \ref dgtalCalculus-single.cpp and \ref dgtalCalculus-poisson.cpp. To build these examples, enable the `DGTAL_BUILD_POLYSCOPE_EXAMPLES` variable (e.g. `cmake .. -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=ON`).
 
 @warning The implementation heavily relies on implicit operators with many Eigen based small matrice constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
  

@@ -34,7 +34,7 @@ set(DGTAL_TESTS_SRC
   testLemniscate2D
   )
 
-if (WITH_LIBIGL)
+if (DGTAL_WITH_LIBIGL)
    set(DGTAL_TESTS_SRC_LIBIGL 
        testlibigl
        testWindingNumbersShape

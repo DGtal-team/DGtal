@@ -304,7 +304,7 @@ bool testImageAdapter()
 
     Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("church.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("church.png", Board2D::CairoPNG);
 #endif
 
@@ -329,7 +329,7 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, bell_tower, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("bell_tower.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("bell_tower.png", Board2D::CairoPNG);
 #endif
 
@@ -351,7 +351,7 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, cars, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("cars.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("cars.png", Board2D::CairoPNG);
 #endif
 
@@ -366,7 +366,7 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, bell_tower, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("bell_tower_after_filling.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("bell_tower_after_filling.png", Board2D::CairoPNG);
 #endif
 
@@ -381,7 +381,7 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, cars, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("cars_after_filling.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("cars_after_filling.png", Board2D::CairoPNG);
 #endif
     
@@ -422,7 +422,7 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, floor_lamp, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("floor_lamp.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("floor_lamp.png", Board2D::CairoPNG);
 #endif
     
@@ -436,14 +436,14 @@ bool testImageAdapter()
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, floor_lamp, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("floor_lamp_after_filling.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("floor_lamp_after_filling.png", Board2D::CairoPNG);
 #endif
 
     aBoard.clear();
     Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
     aBoard.saveSVG("church_after_filling.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("church_after_filling.png", Board2D::CairoPNG);
 #endif
 

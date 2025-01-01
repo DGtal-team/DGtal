@@ -20,7 +20,7 @@
 #include <vector>
 #include <iostream>
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 // cairo
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -212,7 +212,7 @@ struct Path {
   void flushSVGCommands( std::ostream & stream,
        const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairoPoints( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif

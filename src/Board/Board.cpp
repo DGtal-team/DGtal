@@ -29,7 +29,7 @@
 #include <algorithm>
 #include <cstdio>
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 // cairo
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -1133,7 +1133,7 @@ Board::save( const char * filename, PageSize size, double margin ) const
   save( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Board::saveCairo( const char * filename, CairoType type, PageSize size, double margin ) const
 {

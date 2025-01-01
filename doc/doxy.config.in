@@ -2129,20 +2129,19 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
-                         "WITH_GMP=" \
-                         "WITH_BIGINTEGER=" \
-                         "WITH_CAIRO=" \
-                         "WITH_CGAL=" \
-                         "WITH_EIGEN=" \
-                         "WITH_HDF5=" \
-                         "WITH_ITK=" \
-                         "WITH_MAGICK=" \
-                         "WITH_PATATE=" \
-                         "WITH_QGLVIEWER=" \
-                         "WITH_FFTW3=" \
-                         "WITH_FFTW3_FLOAT=" \
-                         "WITH_FFTW3_DOUBLE" \
-                         "WITH_FFTW3_LONG" \
+                         "DGTAL_WITH_GMP=" \
+                         "DGTAL_WITH_BIGINTEGER=" \
+                         "DGTAL_WITH_CAIRO=" \
+                         "DGTAL_WITH_CGAL=" \
+                         "DGTAL_WITH_HDF5=" \
+                         "DGTAL_WITH_ITK=" \
+                         "DGTAL_WITH_MAGICK=" \
+                         "DGTAL_WITH_PATATE=" \
+                         "DGTAL_WITH_QGLVIEWER=" \
+                         "DGTAL_WITH_FFTW3=" \
+                         "DGTAL_WITH_FFTW3_FLOAT=" \
+                         "DGTAL_WITH_FFTW3_DOUBLE" \
+                         "DGTAL_WITH_FFTW3_LONG" \
                          "DOXYGEN_SHOULD_SKIP_THIS"
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this

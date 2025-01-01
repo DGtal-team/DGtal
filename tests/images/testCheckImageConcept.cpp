@@ -33,7 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
 #include "DGtal/images/ImageContainerByITKImage.h"
 #endif
 #include "DGtal/images/ImageContainerByHashTree.h"
@@ -58,7 +58,7 @@ bool testCheckImageConcept()
   typedef ImageContainerBySTLVector<Domain, int> ImageVector;
   typedef ImageContainerBySTLVector<Domain, int> ImageMap;
  
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
  typedef ImageContainerByITKImage<Domain, int> ImageITK;
 #endif
 
@@ -67,7 +67,7 @@ bool testCheckImageConcept()
 
   BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageVector >));
   BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageMap >));
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
   BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageITK >));
 #endif
 

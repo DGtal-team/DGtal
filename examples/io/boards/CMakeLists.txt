@@ -12,7 +12,7 @@ set(DGTAL_TESTS_SRC
    )
 
 
-if( WITH_CAIRO )
+if( DGTAL_WITH_CAIRO )
   set(DGTAL_TESTS_SRC
     ${DGTAL_TESTS_SRC}
     dgtalBoard3DTo2D-0-demo-kernel-2

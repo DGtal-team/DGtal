@@ -45,7 +45,7 @@
 
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/volumes/distance/LpMetric.h"
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingNormalVectorEstimator.h"
@@ -101,7 +101,7 @@ int main(  )
 
 
   //! [SurfelFunctorsType]
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
   typedef DGtal::functors::MongeJetFittingGaussianCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorGaussian;
   typedef functors::MongeJetFittingMeanCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorMean;
   typedef functors::MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
@@ -126,7 +126,7 @@ int main(  )
 
   //! [SurfelFunctorsInstances]
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
   ///Creating functors for h=1.0
   FunctorGaussian estimatorK(embedder,1.0);
   FunctorMean estimatorH(embedder, 1.0);
@@ -150,7 +150,7 @@ int main(  )
   //! [SurfelFunctorsInstances]
 
   //! [SurfelFunctorsEstim]
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
   reporterK.attach(surface);
   reporterH.attach(surface);
   reporterN.attach(surface);
@@ -178,7 +178,7 @@ int main(  )
   reporterElem.init(1.0, surface.begin(), surface.end());
   FunctorNormalElem::Quantity valElem = reporterElem.eval( surface.begin());
 
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
   trace.info() << "Gaussian = "<<valK <<std::endl;
   trace.info() << "Mean = "<<valH<< std::endl;
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;

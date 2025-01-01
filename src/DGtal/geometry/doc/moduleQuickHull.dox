@@ -115,7 +115,7 @@ parameters are DGtal::int64_t for both.
 
 As a rule of the thumb, determinant computations raise integers to the
 power of the dimension, hence the choice of DGtal::BigInteger
-(requires WITH_GMP) for `InternalInteger` is compulsory when \f$ N^d
+(requires DGTAL_WITH_GMP) for `InternalInteger` is compulsory when \f$ N^d
 \ge 4.10^{18} \f$, for \f$ N \f$ the maximum norm of input points and
 \f$ d \f$ the dimension. When `CoordinateInteger` is DGtal::int64_t,
 then the following table sums up these rules.

@@ -8,7 +8,7 @@
 #/implementation, ...)
 #
 #------------------------------------------------------------------------------
-if (BUILD_TESTING)
+if (DGTAL_BUILD_TESTS)
   FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.dox)
   add_custom_target(doxygen SOURCES ${DGTAL_MYHEADERS})
   set(DGTAL_MYHEADERS "")

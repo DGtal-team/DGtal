@@ -157,7 +157,7 @@ namespace DGtal
   template < class Space, class KSpace>  class Display3D;
 
 
-#if defined( WITH_CAIRO )
+#if defined( DGTAL_WITH_CAIRO )
   template < class Space, class KSpace> class Board3DTo2D;
 #endif
 #if defined( WITH_VISU3D_QGLVIEWER )
@@ -165,7 +165,7 @@ namespace DGtal
 #endif
 
 
-#if defined( WITH_CAIRO )
+#if defined( DGTAL_WITH_CAIRO )
   /**
    * Interface that specifies that an object can draw itself on a
    *  3Dto2D Board

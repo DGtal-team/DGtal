@@ -48,7 +48,7 @@ $ ./examples/geometry/curves/exampleArithDSS3d
 #include <iostream>
 
 #include "DGtal/io/viewers/Viewer3D.h"
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 #include "DGtal/io/boards/Board3DTo2D.h"
 #endif
 
@@ -100,7 +100,7 @@ int main( int argc, char** argv )
   viewer  << SetMode3D(p.className(), "Grid");
 
 #endif
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   Board3DTo2D<> boardViewer;
   boardViewer  << SetMode3D(p.className(), "Grid"); 
   boardViewer << CameraPosition(-23.500000, 12.500000, 42.078199)
@@ -121,7 +121,7 @@ int main( int argc, char** argv )
        viewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
        viewer << currentSegmentComputer;  
     #endif
-    #ifdef WITH_CAIRO   
+    #ifdef DGTAL_WITH_CAIRO   
        boardViewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
        boardViewer << currentSegmentComputer;  
        boardViewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
@@ -136,7 +136,7 @@ int main( int argc, char** argv )
     flag = application.exec();
   #endif
 
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
     boardViewer.saveCairo("exampleArithDSS3d.pdf", Board3DTo2D<>::CairoPDF, 600*2, 400*2);
   #endif
 

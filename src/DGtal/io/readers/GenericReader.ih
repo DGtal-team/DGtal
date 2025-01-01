@@ -88,7 +88,7 @@ import( const std::string & filename,
     {
       return PGMReader<TContainer>::importPGM3D( filename );
     }
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
     else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
     {
       
@@ -103,7 +103,7 @@ import( const std::string & filename,
       return RawReader< TContainer >::template importRaw<TValue>( filename, pt );
     }
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
   if ( extension == "h5" )
     return HDF5Reader<TContainer>::importHDF5_3D( filename, "UInt8Array3D" );
 #endif
@@ -193,7 +193,7 @@ import( const std::string &filename,
       return RawReader<TContainer>::template importRaw<TValue>( filename, pt  );
     }
 
-#ifdef WITH_HDF5
+#ifdef  DGTAL_WITH_HDF5
    if ( extension == "h5" )
      return HDF5Reader<TContainer>::importHDF5(filename, "image8bit");
 #endif

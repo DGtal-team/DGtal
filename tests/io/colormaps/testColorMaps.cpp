@@ -225,7 +225,7 @@ int main()
   board.saveSVG( "colormaps.svg" );
   board.saveTikZ( "colormaps.tikz" );
   
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("colormaps-cairo.pdf", Board2D::CairoPDF);
 #endif
 

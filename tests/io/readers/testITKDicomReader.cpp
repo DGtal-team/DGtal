@@ -37,7 +37,7 @@
 #include "DGtal/images/ImageContainerByITKImage.h"
 #include "DGtal/io/readers/ITKDicomReader.h"
 // Required ITK files to read serie DICOM files
-// DGtal must be compiled with "-DWITH_ITK=true" option
+// DGtal must be compiled with " -DDGTAL_WITH_ITK=true" option
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"

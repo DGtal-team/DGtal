@@ -219,7 +219,7 @@ TransformSVG::setBoundingBox( const Rect & rect,
   }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 //
 // TransformCairo
 // 

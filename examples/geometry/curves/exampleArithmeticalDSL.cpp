@@ -107,7 +107,7 @@ void exampleNaiveDSL()
 
   // Save
   board.saveSVG("NaiveDSL.svg");
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
   board.saveCairo("NaiveDSL.png", Board2D::CairoPNG);
   #endif
 
@@ -165,7 +165,7 @@ void exampleStandardDSL()
 
   // Save
   board.saveSVG("StandardDSL.svg");
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
   board.saveCairo("StandardDSL.png", Board2D::CairoPNG);
   #endif
 
@@ -297,7 +297,7 @@ void drawArithmeticalDSL(typename DSL::Integer a,
 	     << "-" << octant
 	     << "-" << a << "-" << b
 	     << ".png"; 
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
   board.saveCairo(ssFileName.str().c_str(), Board2D::CairoPNG);
   #endif
 

@@ -24,7 +24,7 @@ but also data to perform computations efficiently.
 
 We use integer types DGtal::int32_t, DGtal::int64_t, and
 DGtal::BigInteger (integers of arbitrary size). The last type is
-available only if DGtal was compiled with \c cmake \c -DWITH_GMP=true
+available only if DGtal was compiled with \c cmake \c -DDGTAL_WITH_GMP=true
 \c ...
 
 You may use any of these types or new ones, provided they satisfy the
