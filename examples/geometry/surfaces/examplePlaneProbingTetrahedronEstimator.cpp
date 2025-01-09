@@ -51,7 +51,7 @@ int main(void)
   //! [PlaneProbingTetrahedronEstimatorConstruction]
   // The general form is ProbingEstimator<Predicate, mode> where
   // - Predicate is a model of concepts::PointPredicate, see DigitalPlanePredicate or DigitalSurfacePredicate for instance,
-  // - mode specifies the candidate set, it is one of { ProbingMode::H, ProbingMode::R, ProbingMode::R1 }.
+  // - mode specifies the candidate set, it is one of { ProbingMode::H, ProbingMode::R, ProbingMode::R1, ProbingMode::L }.
   using DigitalPlane = DigitalPlanePredicate<Space>;
   using Estimator    = PlaneProbingTetrahedronEstimator<DigitalPlane, ProbingMode::R1>;
 

@@ -73,6 +73,8 @@ namespace DGtal
       using Integer             = typename Point::Coordinate;
       using HexagonState        = typename PlaneProbingRNeighborhood<TPredicate>::HexagonState;
 
+      using Index               = typename PlaneProbingRNeighborhood<TPredicate>::Index;
+    
     // ----------------------- Standard services ------------------------------
   public:
     /**
@@ -160,7 +162,7 @@ namespace DGtal
      * @param index an integer between 0 and 2.
      * @return a pair of a point on a ray and a ray.
      */
-    std::pair<PointOnProbingRay, PointOnProbingRay> candidateRay (int index) const;
+    std::pair<PointOnProbingRay, PointOnProbingRay> candidateRay (Index const& index) const;
 
     /**
      * @param aPoint a point on a ray.

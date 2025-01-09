@@ -205,7 +205,7 @@ The following images show you binary operations apply on two Ball2D (results are
 @image html union_shapes.png "Plus operation"
 @image html intersection_shapes.png "Intersection operation"
 @image html minus_shapes.png "Minus operation"
-@image html union_shapes_golf.png "Minus operations" width=5cm
+@image html union_shapes_golf.png "Minus operations" 
 @image latex union_shapes.png "Plus operation" width=5cm
 @image latex intersection_shapes.png "Intersection operation" width=5cm
 @image latex minus_shapes.png "Minus operation" width=5cm

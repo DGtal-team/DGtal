@@ -149,6 +149,7 @@ void myCallback()
     }
     computeGeodesics();
   }
+  ImGui::Text("You can use the mouse left-click to select the new source point.");
 }
 
 int main()

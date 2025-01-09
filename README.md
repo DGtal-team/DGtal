@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS), master](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml) 
+[![CI (linux/macOS), master](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml)
 
 Description
 ===========
@@ -18,23 +18,6 @@ to simplify the construction of demonstration tools to share new
 results and potential efficiency of the proposed work.
 
 DGtal received the [Symposium on Geometry Processing Software Award in 2016](http://awards.geometryprocessing.org/).
-
-Quick Install
-=============
-
-* MacOS (using [homebrew](http://brew.sh)):
-
-       brew tap DGtal-team/DGtal
-       brew install dgtal
-
-
-(```brew options dgtal``` to enable optional features)
-
-* Linux and windows: no binary package, please compile the library.
-
-
-Additional instructions are available in the
-[documentation](http://dgtal.org/doc/stable/moduleBuildDGtal.html).
 
 Quick Build Instructions
 ========================

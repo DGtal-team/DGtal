@@ -33,28 +33,28 @@ jobs:
         with: 
           python-version: ${{ matrix.python-version }}
 
-      - name: Installing dependancies (Linux)
+      - name: Installing dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
       
-      - name: Installing dependancies (macOS)
+      - name: Installing dependencies (macOS)
         if: matrix.os == 'macOS-latest'
         run: brew install boost ninja gmp libomp ccache cgal
 
-      - name: Install dependancies (conan - Windows 1/2)
+      - name: Install dependencies (conan - Windows 1/2)
         if: matrix.os == 'windows-latest'
         id: conan
         uses: turtlebrowser/get-conan@main
         with:
           version: 2.4.0
 
-      - name: Install dependancies (conan - Windows 2/2)
+      - name: Install dependencies (conan - Windows 2/2)
         if: matrix.os == 'windows-latest'
         run: |
           conan profile detect --force
-  
+
       - uses: actions/cache@v3
         if: matrix.os == 'windows-latest'
         with:

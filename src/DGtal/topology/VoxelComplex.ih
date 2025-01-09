@@ -36,7 +36,6 @@
 #include <boost/property_map/property_map.hpp>
 #include <iostream>
 #ifdef WITH_OPENMP
-// #include <experimental/algorithm>
 #include <omp.h>
 #endif
 //////////////////////////////////////////////////////////////////////////////

@@ -18,10 +18,10 @@
 
 /**
  * @file ArithmeticalDSSComputerOnSurfels.h
- * @author Jocelyn Meyron (\c
- * jocelyn.meyron@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
- * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
- * France
+ * @author Jocelyn Meyron (\c jocelyn.meyron@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2021/01/22
  *
@@ -46,7 +46,9 @@
 #include <list>
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
@@ -60,8 +62,10 @@ namespace DGtal
   // class ArithmeticalDSSComputerOnSurfels
   /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted
-   * to the dynamic recognition of digital straight segments (DSS) along any
-   * sequence of 3D surfels.
+   * to the dynamic recognition of digital straight segments (DSS) along a 
+   * sequence of surfels lying on a slice of the digital surface (i.e., the 
+   * orthogonal direction of all surfels belong to a same plane, most pairs
+   * of consecutive surfels share a common linel).
    *
    * @tparam TKSpace type of Khalimsky space
    * @tparam TIterator type of iterator on 3d surfels,
@@ -77,8 +81,7 @@ namespace DGtal
    * @see ArithmeticalDSS NaiveDSS8 StandardDSS4
    */
   template <typename TKSpace, typename TIterator,
-    typename TInteger = typename TKSpace::Space::Integer,
-    unsigned short adjacency = 8>
+    typename TInteger = typename TKSpace::Space::Integer>
   class ArithmeticalDSSComputerOnSurfels
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
@@ -96,11 +99,6 @@ namespace DGtal
      * Type of signed cell
      */
     typedef typename KSpace::SCell  SCell; 
-
-    /**
-     * Type of unsigned cell
-     */
-    typedef typename KSpace::Cell  Cell; 
 
     /**
      * Type of iterator, at least readable and forward
@@ -121,6 +119,11 @@ namespace DGtal
     typedef PointVector<2, TInteger> Point;
 
     /**
+     * Type of 3d to 2d projector 
+     */
+    typedef functors::Projector<SpaceND<2,TInteger> > Projector; 
+    
+    /**
      * Type of coordinate
      */
     typedef typename Point::Coordinate Coordinate;
@@ -135,7 +138,7 @@ namespace DGtal
     /**
      * Type of objects that represents DSSs
      */
-    typedef ArithmeticalDSS<Coordinate, Integer, adjacency> DSS;
+    typedef ArithmeticalDSS<Coordinate, Integer, 4> DSS;
     //we expect that the iterator type returned DGtal points, used in the DSS representation
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Point, typename DSS::Point >::value ));
 
@@ -149,8 +152,32 @@ namespace DGtal
      */
     typedef Point Vector;
 
-    typedef ArithmeticalDSSComputerOnSurfels<KSpace,ConstIterator,TInteger,adjacency> Self;
-    typedef ArithmeticalDSSComputerOnSurfels<KSpace,ReverseIterator<ConstIterator>,TInteger,adjacency> Reverse;
+    /**
+     * Alias of this class
+     */
+    typedef ArithmeticalDSSComputerOnSurfels<KSpace,ConstIterator,TInteger> Self;
+
+    /**
+     * Helpers used to extract relevant points from a pair of points
+     */
+    struct DirectPairExtractor {
+
+      virtual Point first(const std::pair<Point,Point>& aPair) const { return aPair.first; }
+      virtual Point second(const std::pair<Point,Point>& aPair) const { return aPair.second; }
+      
+    };
+    struct IndirectPairExtractor : public DirectPairExtractor {
+      
+      Point first(const std::pair<Point,Point>& aPair) const { return  aPair.second; }
+      Point second(const std::pair<Point,Point>& aPair) const { return aPair.first; }
+
+    }; 
+    typedef std::shared_ptr<DirectPairExtractor> PairExtractor;  
+    
+    /**
+     * Reversed version of this class (using reverse iterators)
+     */
+    typedef ArithmeticalDSSComputerOnSurfels<KSpace,ReverseIterator<ConstIterator>,TInteger> Reverse;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -164,11 +191,14 @@ namespace DGtal
     /**
      * Constructor.
      * @param aKSpace a Khalimsky space
-     * @param aDim1 the first direction to project
-     * @param aDim2 the second direction to project
+     * @param aDim1 a first direction that describes the projection plane
+     * @param aDim2 a second direction that describes the projection plane
+     * @param aFlagToReverse a boolean telling whether one has to reverse 
+     * the orientation of the points associated to a surfel or not 
+     * ('false' by default)
      */
-    ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2);
-
+    ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2, bool aFlagToReverse = false);
+    
     /**
      * Initialisation.
      * @param it an iterator on 3D surfels
@@ -227,6 +257,9 @@ namespace DGtal
      * Tests whether the current DSS can be extended at the front.
      *
      * @return 'true' if yes, 'false' otherwise.
+     *
+     * @warning the caller must be sure that the iterator returned  
+     * by 'end()' can be safely dereferenced. 
      */
     bool isExtendableFront();
 
@@ -240,7 +273,11 @@ namespace DGtal
     /**
      * Tests whether the current DSS can be extended at the front.
      * Computes the parameters of the extended DSS if yes.
+     *
      * @return 'true' if yes, 'false' otherwise.
+     *
+     * @warning the caller must be sure that the iterator returned  
+     * by 'end()' can be safely dereferenced. 
      */
     bool extendFront();
 
@@ -265,6 +302,32 @@ namespace DGtal
      */
     bool retractBack();
 
+    /**
+     * Returns the ends of a unit segment corresponding 
+     * to the projection of a given signed surfel. 
+     *
+     * @param aSurfel any signed surfel.
+     * @return a pair of 2D points. 
+     */
+    std::pair<Point,Point> getProjectedPointsFromSurfel(SCell const& aSurfel) const; 
+
+    /**
+     * Front end of the projection of a given surfel. 
+     *
+     * @param aSurfel any signed surfel.
+     * @return the second 2D point.
+     * @see getProjectedPointsFromSurfel
+     */
+    Point getNextProjectedPoint(SCell const& aSurfel) const;
+    
+    /**
+     * Back end of the projection of a given surfel. 
+     *
+     * @param aSurfel any signed surfel.
+     * @return the second 2D point.
+     * @see getProjectedPointsFromSurfel
+     */
+    Point getPreviousProjectedPoint(SCell const& aSurfel) const; 
 
     // ------------------------- Accessors ------------------------------
     /**
@@ -329,92 +392,77 @@ namespace DGtal
      */
     bool isValid() const;
 
-    /**
-     * @param aSCell a surfel.
-     * @return the pair of 2D points projected on the plane defined by \ref myProjection1, \ref myProjection2.
-     */
-    std::pair<Point, Point> projectSurfel(SCell const& aSCell) const;
 
     // ------------------------- Hidden services ------------------------------
   private:
-    /**
-     * @param aSurfel1 the first unsigned surfel.
-     * @param aSurfel2 the second unsigned surfel.
-     * @param aLinel the common unsigned linel if it exists.
-     * @return 'true' if we found a common linel, 'false' otherwise.
-     */
-    bool commonLinel (Cell const& aSurfel1, Cell const& aSurfel2, Cell& aLinel);
 
     /**
-     * @param aPoint a digital 3D point.
-     * @return the 2D orthogonal projection on the plane defined by \ref myProjection1, \ref myProjection2
+     * Returns the ends of a unit segment corresponding 
+     * to the projection of a given signed linel. 
+     *
+     * @param aLinel any signed linel.
+     * @return a pair of 2D points. 
      */
-    Point projectInPlane (Point3 const& aPoint) const;
-
+    std::pair<Point,Point> getProjectedPointsFromLinel(SCell const& aLinel) const; 
+    
     /**
-     * @param it an iterator on a surfel.
-     * @param aPoint the new 2D point of 'it' that is not common to the previous surfel (if the update is possible).
-     * @param aUpdatePrevious a boolean that indicates whether to update myPreviousSurfel or not.
-     * @param aIsFront a boolean indicating we want to update in the front or in the back direction.
-     * @return 'true' if the update is possible, 'false' otherwise.
+     * Returns the unique dimension in {0,1,2} \ {aDim1, aDim2}. 
+     *
+     * @param aDim1 a dimension
+     * @param aDim2 a dimension
      */
-    bool getOtherPointFromSurfel (ConstIterator const& it, Point& aPoint, bool aIsFront, bool aUpdatePrevious);
-
+    Dimension dimNotIn(Dimension const& aDim1, Dimension const& aDim2) const; 
+    
     // ------------------------- Protected Datas ------------------------------
   protected:
 
     /**
-     * Khalimsky space
+     * (Pointer to) Khalimsky space
      */
     const KSpace* myKSpace;
 
     /**
-     * The first projection dimension.
+     * A first direction that describes the projection plane
      */
-    Dimension myDim1;
+    Dimension mySliceAxis1;
+    
+    /**
+     * A second direction that describes the projection plane
+     */
+    Dimension mySliceAxis2;
+    
+    /**
+     * A direction along which the points are projected
+     * (and orthogonal to the projection plane) 
+     */
+    Dimension myProjectionAxis;
 
     /**
-     * The second projection dimension.
+     * Functor that projects a 3D point to a 2D point along myProjectionAxis
      */
-    Dimension myDim2;
+    Projector my2DProjector; 
 
     /**
-     * The first projection direction.
+     * Smart pointer on an object used to extract relevant points 
+     * from a pair of points
      */
-    Point3 myProjection1;
-
-    /**
-     * The second projection direction.
-     */
-    Point3 myProjection2;
-
-    /**
-     * The direction that is orthogonal to the two projection directions.
-     */
-    Point3 myProjectionNormal;
-
-    /**
-     * We store the previous surfel in the 'front' direction to compute the common linel.
-     * Used in \ref getOtherPointFromSurfel.
-     */
-    ConstIterator myPreviousSurfelFront;
-
-    /**
-     * We store the previous surfel in the 'back' direction to compute the common linel.
-     * Used in \ref getOtherPointFromSurfel.
-     */
-    ConstIterator myPreviousSurfelBack;
-
+    PairExtractor myExtractor; 
+    
     /**
     * DSS representation
     */
     DSS myDSS;
+    
     /**
     * begin iterator
     */
     ConstIterator myBegin;
+    
     /**
     * end iterator
+    *
+    * @warning the user must be sure that it can be safely dereferenced
+    * before calling 'isExtendableFront' and 'extendFront'. 
     */
     ConstIterator myEnd;
 
@@ -438,9 +486,9 @@ namespace DGtal
  * @param object the object of class 'ArithmeticalDSSComputerOnSurfels' to write.
  * @return the output stream after the writing.
  */
-template <typename TKSpace, typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TKSpace, typename TIterator, typename TInteger>
 std::ostream&
-operator<< ( std::ostream & out,  const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger,adjacency> & object )
+operator<< ( std::ostream & out,  const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger> & object )
 {
   object.selfDisplay( out);
   return out;

@@ -5,6 +5,52 @@
   - Add normal corrected FEM calculus for Poisson problem and Interpolated Calculus variant of DEC (Colin Weill--Duflos, PULL_REQUEST)
 ## Bug fixes
 
+# DGtal 1.4.2
+
+## New features
+
+- *Geometry*
+  - Implementation of the plane-probing L-algorithm (Tristan Roussillon, [#1744](https://github.com/DGtal-team/DGtal/pull/1744))
+
+## Changes
+
+- *General*
+  - Upgrade of polyscope version in examples from 1.2.0 to 2.3.0 (David Coeurjolly, [#1743](https://github.com/DGtal-team/DGtal/pull/1743))
+  - Fixing cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
+  - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
+  - Using the `dcoeurjo/GeometryProcessing-cmake-recipes` openmp recipe to detect openmp (David Coeurjolly, [#1750](https://github.com/DGtal-team/DGtal/pull/1750))
+
+## Bug fixes
+
+- *Geometry*
+  - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
+
+- *Topology*
+  - Fixing images in the Cubical Complex documentation page (David Coeurjolly, [#1748](https://github.com/DGtal-team/DGtal/pull/1748)) 
+
+# DGtal 1.4.1
+
+## New features / critical changes
+
+- *Geometry*	
+  - Add P-convexity, another characterization of full convexity,
+    which is faster to compute (Jacques-Olivier Lachaud,
+    [#1736](https://github.com/DGtal-team/DGtal/pull/1736))
+
+## Changes
+
+- *General*
+  - Removing DGtal installation with `homebrew` on mac (the formula being deprecated) (David Coeurjolly,
+    [#1738](https://github.com/DGtal-team/DGtal/pull/1738))
+
+
+## Bug fixes
+- *General*
+  - Fixing typos int the cmake script (David Coeurjolly, [#1739](https://github.com/DGtal-team/DGtal/pull/1739))
+
+- *DEC*
+  - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
+
 # DGtal 1.4
 
 ## New features / critical changes

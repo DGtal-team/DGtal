@@ -41,12 +41,12 @@ dependencies:
 To build DGtal in is full configuration, you may need these dependencies too:
 
 - \e gmp,
+- \e [CGAL](http://cgal.org) (build with Eigen enabled),
+- \e [libIGL](https://libigl.github.io),
 - \e cairo,
 - \e qglviewer,
 - \e insighttoolkit (ITK),
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
-- \e [CGAL](http://cgal.org) (build with Eigen enabled)
-
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
@@ -105,17 +105,6 @@ sudo make install
 Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based
 instructions from source code archive.
-
-If you use  <a href="https://brew.sh">Homebrew</a> package manager on Mac,
-DGtal is available in the package repository:
-@code
-brew tap DGtal-team/DGtal
-brew install dgtal
-@endcode
-and to get build options:
-@code
-brew options dgtal
-@endcode
 
 
 \section cmakeDGtal Main DGtal cmake options

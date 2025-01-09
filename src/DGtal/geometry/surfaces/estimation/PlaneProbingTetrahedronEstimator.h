@@ -60,6 +60,7 @@ namespace DGtal
         H, /**< The H-neighborhood composed of 6 points on an hexagon, see \ref PlaneProbingHNeighborhood.*/
         R, /**< The R-neighborhood composed of 6 rays, see \ref PlaneProbingRNeighborhood. */
         R1, /**< The R-neighborhood but with an optimization to reduce the number of calls to the predicate, see \ref PlaneProbingR1Neighborhood. */
+        L, /**< The L-neighborhood composed of three lattices, see \ref PlaneProbingLNeighborhood. */
     };
 
     /**
@@ -84,6 +85,10 @@ namespace DGtal
 
             case ProbingMode::R1:
                 aOs << "R1";
+                break;
+
+            case ProbingMode::L:
+                aOs << "L";
                 break;
         }
 

@@ -858,6 +858,23 @@ volume = 64,
 year = 2022
 }
 
+@article{feschet_2023_jmiv,
+  author       = {Fabien Feschet and
+                  Jacques{-}Olivier Lachaud},
+  title        = {An Envelope Operator for Full Convexity to Define Polyhedral Models
+                  in Digital Spaces},
+  journal      = {J. Math. Imaging Vis.},
+  volume       = {65},
+  number       = {5},
+  pages        = {754--769},
+  year         = {2023},
+  url          = {https://doi.org/10.1007/s10851-023-01155-w},
+  doi          = {10.1007/s10851-023-01155-w},
+  timestamp    = {Sat, 30 Sep 2023 10:19:35 +0200},
+  biburl       = {https://dblp.org/rec/journals/jmiv/FeschetL23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
 @InProceedings{feschet_2022_dgmm,
 author="Feschet, Fabien
 and Lachaud, Jacques-Olivier",
@@ -865,7 +882,7 @@ editor="Baudrier, {\'E}tienne
 and Naegel, Beno{\^i}t
 and Kr{\"a}henb{\"u}hl, Adrien
 and Tajine, Mohamed",
-title="Full Convexity for Polyhedral Models in Digital Spaces",
+title="Full Convexity for Polyhedral Models in Digital Spaces",
 booktitle="Discrete Geometry and Mathematical Morphology",
 year="2022",
 publisher="Springer International Publishing",
@@ -876,6 +893,23 @@ isbn="978-3-031-19897-7",
 volume={13493},
 series={Lecture Notes in Computer Science}
 }
+
+@InProceedings{feschet_2024_dgmm,
+author="Feschet, Fabien
+and Lachaud, Jacques-Olivier",
+editor="Brunetti, Sara
+and Frosini, Andrea
+and Rinaldi, Simone",
+title="New Characterizations of Full Convexity",
+booktitle="Discrete Geometry and Mathematical Morphology (DGMM'2024), April 15-18, Firenze",
+year="2024",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="41--53",
+abstract="Full convexity has been recently proposed as an alternative definition of digital convexity. In contrast to classical definitions, fully convex sets are always connected and even simply connected whatever the dimension, while remaining digitally convex in the usual sense. Several characterizations were proposed in former works, either based on lattice intersection enumeration with several convex hulls, or using the idempotence of an envelope operator. We continue these efforts by studying simple properties of real convex sets whose digital counterparts remain largely misunderstood. First we study if we can define full convexity through variants of the usual continuous convexity via segments inclusion, i.e. ``for all pair of points of X, the straight segment joining them must lie within the set X''. We show an equivalence of full convexity with this segment convexity in dimension 2, and counterexamples starting from dimension 3. If we consider now d-simplices instead of a segment (2-simplex), we achieve an equivalence in arbitrary dimension d. Secondly, we exhibit another characterization of full convexity, which is recursive with respect to the dimension and uses simple axis projections. This latter characterization leads to two immediate applications: a proof that digital balls are indeed fully convex, and a natural progressive measure of full convexity for arbitrary digital sets.",
+isbn="978-3-031-57793-2"
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% End/Geometry/volumes
 
@@ -1293,6 +1327,24 @@ url="https://doi.org/10.1007/978-3-319-58002-9_9"
     doi = {10.1007/s10851-020-00965-6},
     HAL_ID = {hal-02879784},
     HAL_VERSION = {v1},
+}
+
+@InProceedings{Lu2022,
+author="Lu, Jui-Ting
+and Roussillon, Tristan
+and Coeurjolly, David",
+editor="Baudrier, {\'E}tienne
+and Naegel, Beno{\^i}t
+and Kr{\"a}henb{\"u}hl, Adrien
+and Tajine, Mohamed",
+title="A New Lattice-Based Plane-Probing Algorithm",
+booktitle="Discrete Geometry and Mathematical Morphology",
+year="2022",
+publisher="Springer International Publishing",
+address="Cham",
+pages="366--381",
+abstract="Plane-probing algorithms have become fundamental tools to locally capture arithmetical and geometrical properties of digital surfaces (boundaries of a connected set of voxels), and especially normal vector information. On a digital plane, the overall idea is to consider a local pattern, a triangle, that is expanded starting from a point of interest using simple probes of the digital plane with a predicate ``Is a point x in the digital plane?''. Challenges in plane-probing methods are to design an algorithm that terminates on a triangle with several geometrical properties: its normal vector should match with the expected one for digital plane (correctness), the triangle should be as compact as possible (acute or right angles only), and probes should be as close as possible to the source point (locality property). In addition, we also wish to minimize the number of iterations or probes during the computations. Existing methods provide correct outputs but only experimental evidence for these properties. In this paper, we present a new plane-probing algorithm that is theoretically correct on digital planes, and with better experimental compactness and locality than existing solutions. Additional properties of this new approach also suggest that theoretical proofs of the aforementioned geometrical properties could be achieved.",
+isbn="978-3-031-19897-7"
 }
 
 @INPROCEEDINGS{Lachaud03c,

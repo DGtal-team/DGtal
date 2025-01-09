@@ -59,11 +59,13 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
   - \subpage moduleHeatLaplaceOperator (Thomas Caissard)
   - \subpage moduleGenericAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
 
-- \subpage modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
-- \subpage moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
-- \subpage moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
-- \subpage moduleNormalCorrectedFEM (Colin Weill--Duflos)
-- \subpage moduleInterpolatedCorrectedCalculus (Colin Weill--Duflos)
+
+- Discrete Corrected Polygonal Calculus 
+  - \subpage modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
+  - \subpage moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
+  - \subpage moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
+  - \subpage moduleNormalCorrectedFEM (Colin Weill--Duflos)
+  - \subpage moduleInterpolatedCorrectedCalculus (Colin Weill--Duflos)
 
 @b Package @b Concepts @b Overview
 - \subpage packageDECConcepts

@@ -69,7 +69,7 @@ using Surfel    = KSpace::SCell;
 using Container = std::vector<Surfel>;
 using Integer   = int;
 short adjacency = 4;
-using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, Container::const_iterator, Integer, adjacency>;
+using SegmentComputerOnSurfels = ArithmeticalDSSComputerOnSurfels<KSpace, Container::const_iterator, Integer>;
 
 // Instantiation
 SegmentComputerOnSurfels computer(kspace, // A 3D Khalimsky space
