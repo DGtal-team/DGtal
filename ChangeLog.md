@@ -1,5 +1,7 @@
 # DGtal 2.0
 
+- *CMake*
+  - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard)
 
 # DGtal 1.4.2
 

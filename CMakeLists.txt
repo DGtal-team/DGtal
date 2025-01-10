@@ -1,9 +1,9 @@
 # -----------------------------------------------------------------------------
 # Project definition
 # -----------------------------------------------------------------------------
-cmake_minimum_required (VERSION 3.11)
+cmake_minimum_required (VERSION 3.20)
 cmake_policy(SET CMP0057 NEW) # the new interpretation of IN_LIST is by default not set (at least until  3.21.1).
-project (DGtal)
+project (DGtal VERSION 1.4.2)
 
 # -----------------------------------------------------------------------------
 # By default, do not warn when built on machines using only VS Express:
@@ -21,13 +21,14 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 
 
-
-set(DGtal_VERSION_MAJOR 1)
-set(DGtal_VERSION_MINOR 4)
-set(DGtal_VERSION_PATCH 2)
-set(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
-set(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
-set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
+# @TODO : See if those variable are still usefull,
+#         Note that they are set in source code !
+set(DGtal_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
+set(DGtal_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
+set(DGtal_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+set(DGTAL_VERSION ${CMAKE_PROJECT_VERSION})
+set(PROJECT_VERSION ${CMAKE_PROJECT_VERSION})
+set(VERSION ${CMAKE_PROJECT_VERSION})
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
