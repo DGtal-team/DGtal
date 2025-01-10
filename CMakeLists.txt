@@ -55,7 +55,6 @@ message(STATUS "Done.")
 # with a set command on the variable ${DGTAL_SRC}
 #
 include(src/DGtal/base/ModuleSRC.cmake)
-include(src/DGtal/io/ModuleSRC.cmake)
 include(src/DGtal/helpers/ModuleSRC.cmake)
 ## Board dependency
 include(src/Board/ModuleSRC.cmake)
@@ -64,10 +63,9 @@ include(src/BoostAddons/ModuleSRC.cmake)
 
 list(TRANSFORM DGTAL_SRC PREPEND "src/")
 list(TRANSFORM BOARD_SRC PREPEND "src/")
-list(TRANSFORM DGTALIO_SRC PREPEND "src/")
 
 # DGtal Target. Library is added on the top directory to use target_link_libraries for CMake < 3.13
-add_library (DGtal ${DGTAL_SRC} ${DGTALIO_SRC} ${BOARD_SRC} )
+add_library (DGtal ${DGTAL_SRC} ${BOARD_SRC} )
 target_include_directories(DGtal PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>
