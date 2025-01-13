@@ -54,7 +54,6 @@ message(STATUS "Done.")
 # each subdir can contain a ModuleSRC.txt file
 # with a set command on the variable ${DGTAL_SRC}
 #
-include(src/DGtal/base/ModuleSRC.cmake)
 include(src/DGtal/helpers/ModuleSRC.cmake)
 ## Board dependency
 include(src/Board/ModuleSRC.cmake)
