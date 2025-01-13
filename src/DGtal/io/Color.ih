@@ -272,6 +272,7 @@ DGtal::Color::RGBtoHSV
 // Standard services - public :
 
 
+inline
 DGtal::Color::Color( const unsigned int rgb, unsigned char aAlphaValue )
  :myAlpha( aAlphaValue )
 {
@@ -281,6 +282,7 @@ DGtal::Color::Color( const unsigned int rgb, unsigned char aAlphaValue )
 }
 
 
+inline
 DGtal::Color &
 DGtal::Color::setRGBA( const DGtal::uint32_t aRGBA )
 {
@@ -292,6 +294,7 @@ DGtal::Color::setRGBA( const DGtal::uint32_t aRGBA )
 }
 
 
+inline
 DGtal::Color &
 DGtal::Color::setRGBf( float aRedValue,
            float aGreenValue,
@@ -313,7 +316,7 @@ DGtal::Color::setRGBf( float aRedValue,
 }
 
 
-
+inline
 bool
 DGtal::Color::operator==( const Color & aColor ) const
 {
@@ -323,6 +326,8 @@ DGtal::Color::operator==( const Color & aColor ) const
     && myAlpha == aColor.myAlpha;
 }
 
+
+inline
 bool
 DGtal::Color::operator!=( const Color & aColor ) const
 {
@@ -332,6 +337,8 @@ DGtal::Color::operator!=( const Color & aColor ) const
     || myAlpha != aColor.myAlpha;
 }
 
+
+inline
 bool
 DGtal::Color::operator<( const Color & aColor ) const
 {
@@ -350,18 +357,24 @@ DGtal::Color::operator<( const Color & aColor ) const
   return false;
 }
 
+
+inline
 bool
 DGtal::Color::operator>( const Color & aColor ) const
 {
   return !this->operator<(aColor);
 }
 
+
+inline
 bool
 DGtal::Color::operator<=( const Color & aColor ) const
 {
   return this->operator<(aColor) || this->operator==(aColor);
 }
 
+
+inline
 bool
 DGtal::Color::operator>=( const Color & aColor ) const
 {
@@ -369,6 +382,7 @@ DGtal::Color::operator>=( const Color & aColor ) const
 }
 
 
+inline
 void
 DGtal::Color::flushPostscript( std::ostream & stream ) const
 {
@@ -377,6 +391,8 @@ DGtal::Color::flushPostscript( std::ostream & stream ) const
    << ((double)myBlue/255.0) << " srgb\n";
 }
 
+
+inline
 std::string
 DGtal::Color::postscript() const
 {
@@ -385,6 +401,8 @@ DGtal::Color::postscript() const
   return buffer;
 }
 
+
+inline
 std::string
 DGtal::Color::svg() const
 {
@@ -394,6 +412,8 @@ DGtal::Color::svg() const
   return buffer;
 }
 
+
+inline
 std::string
 DGtal::Color::svgAlpha( const char * prefix ) const
 {
@@ -403,6 +423,8 @@ DGtal::Color::svgAlpha( const char * prefix ) const
   return buffer;
 }
 
+
+inline
 std::string
 DGtal::Color::tikz() const
 {
@@ -435,6 +457,7 @@ DGtal::Color::tikz() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
+inline
 void
 DGtal::Color::selfDisplay ( std::ostream & out ) const
 {
@@ -445,6 +468,7 @@ DGtal::Color::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
+inline
 bool
 DGtal::Color::isValid() const
 {
