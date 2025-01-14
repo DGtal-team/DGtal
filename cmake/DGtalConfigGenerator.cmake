@@ -13,6 +13,7 @@ export(TARGETS DGtal FILE ${dgtal_export_file})
 # is ON. Disable it when deploying.
 set(_dependencies_list
   Boost ZLIB
+  LibBoard
   GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )
 foreach(dep ${_dependencies_list})
