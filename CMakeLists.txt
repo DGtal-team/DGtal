@@ -43,10 +43,17 @@ message(STATUS "Downloading external projects")
 include(FetchExternalDeps)
 message(STATUS "Done.")
 
+
 #------------------------------------------------------------------------------
 # Add DGtal library
 #------------------------------------------------------------------------------
 add_subdirectory(src)
+
+# -----------------------------------------------------------------------------
+# Check mandatory and optional dependencies
+# -----------------------------------------------------------------------------
+include(CheckDGtalDependencies)
+include(CheckDGtalOptionalDependencies)
 
 # add_library(DGtal SHARED ${DGTAL_SRC})
 # target_include_directories(DGtal PUBLIC src/DGtal)
