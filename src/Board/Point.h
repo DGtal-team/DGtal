@@ -15,6 +15,7 @@
 #define _BOARD_POINT_H_
 
 #include <cmath>
+#include "DGtal/io/Color.h"
 
 namespace LibBoard {
 

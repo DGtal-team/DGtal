@@ -10,4 +10,10 @@ set(BOARD_SRC
 
 # @TODO : proper parent directory
 add_library(DGTAL_LibBoard STATIC ${BOARD_SRC})
-target_include_directories(DGTAL_LibBoard PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
+
+target_include_directories(DGTAL_LibBoard PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>
+  # INSTALL_INTERFACE must not contain absolute paths
+  $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
+)
