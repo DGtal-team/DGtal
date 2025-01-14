@@ -55,6 +55,13 @@ add_subdirectory(src)
 include(CheckDGtalDependencies)
 include(CheckDGtalOptionalDependencies)
 
-# add_library(DGtal SHARED ${DGTAL_SRC})
-# target_include_directories(DGtal PUBLIC src/DGtal)
-# target_link_libraries(DGtal PUBLIC LibBoard PRIVATE BoostAddons DGtal_STB)
+# -----------------------------------------------------------------------------
+# Randomized build 1/2.
+# -----------------------------------------------------------------------------
+SET(DGTAL_RANDOMIZED_TESTING_THRESHOLD "100" CACHE INTERNAL "Threshold for the random selection of unit tests to build.")
+SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted unit-test/examples to build.")
+
+#------------------------------------------------------------------------------
+# Examples
+#------------------------------------------------------------------------------
+include(BuildExamples)
