@@ -48,14 +48,3 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     target_compile_options(DGtal PRIVATE -Wdocumentation)
   endif()
 endif()
-
-
-# Enable floating point exception when DGtal library is loaded. Only works for gcc.
-if (UNIX AND NOT APPLE)
-  # Only used in Common.cpp
-  option(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS "Enable feenableexcept when DGtal library is loaded." OFF)
-  mark_as_advanced(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-  if(DGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-    target_compile_definitions(DGtal PRIVATE -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS)
-  endif()
-endif()

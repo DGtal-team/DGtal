@@ -2,7 +2,6 @@
 # Project definition
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
-cmake_policy(SET CMP0057 NEW) # the new interpretation of IN_LIST is by default not set (at least until  3.21.1).
 project (DGtal VERSION 1.4.2)
 
 # -----------------------------------------------------------------------------
@@ -65,3 +64,48 @@ SET(DGTAL_RANDOMIZED_TESTING_WHITELIST "" CACHE INTERNAL "List of whitelisted un
 # Examples
 #------------------------------------------------------------------------------
 include(BuildExamples)
+
+# -----------------------------------------------------------------------------
+# Unit-testing, Cpack and Ctest settings
+# -----------------------------------------------------------------------------
+include(CpackCtest)
+
+# -----------------------------------------------------------------------------
+# Randomized build 2/2.
+# -----------------------------------------------------------------------------
+if (BUILD_EXAMPLES OR BUILD_TESTING)
+ message(STATUS "Randomized examples/testing")
+ if (DGTAL_RANDOMIZED_TESTING_THRESHOLD EQUAL "100")
+  message(STATUS "All examples or unit-tests will be compiled (cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
+ else()
+  message(STATUS "Only ~${DGTAL_RANDOMIZED_TESTING_THRESHOLD}% of the (randomly selected) examples/tests will be  compiled/run")
+  message(STATUS "  (you can adjust this with the cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")
+  message(STATUS " Whitelist: ${DGTAL_RANDOMIZED_TESTING_WHITELIST}")
+endif()
+message(STATUS "-------------------------------------------------------------------------------")
+endif()
+
+# -----------------------------------------------------------------------------
+# Custom command/targets depending on the cmake generator
+# -----------------------------------------------------------------------------
+include(GeneratorSpecific)
+
+# -----------------------------------------------------------------------------
+# Common build options/settings
+# -----------------------------------------------------------------------------
+include(OSDependentSettings)
+
+#------------------------------------------------------------------------------
+# Python wrappings
+#------------------------------------------------------------------------------
+include(PythonWrappings)
+
+# -----------------------------------------------------------------------------
+# Unzip and install topology Look up Tables.
+# -----------------------------------------------------------------------------
+include(NeighborhoodTablesConfig)
+
+# -----------------------------------------------------------------------------
+# Unzip and install topology Look up Tables.
+# -----------------------------------------------------------------------------
+include(Install)

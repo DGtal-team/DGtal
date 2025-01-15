@@ -64,19 +64,19 @@ endif()
 # -----------------------------------------------------------------------------
 # Doxygen targets
 # -----------------------------------------------------------------------------
-message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "Checking if doxygen/dot is installed:")
-message(STATUS " ")
-set(INSTALL_DOC_DIR_RELATIVE share/DGtal CACHE PATH "Relative installation directory for DGtal documentation files.")
-set(INSTALL_DOC_PATH_CUSTOM "" CACHE PATH "Custom absolute path to the directory to install DGtal documentation files. If empty, CMAKE_INSTALL_PREFIX/INSTALL_DOC_DIR_RELATIVE will be used.")
-if("${INSTALL_DOC_PATH_CUSTOM}" STREQUAL "")
-  set(INSTALL_DOC_PATH "${CMAKE_INSTALL_PREFIX}/${INSTALL_DOC_DIR_RELATIVE}")
-else()
-  set(INSTALL_DOC_PATH "${INSTALL_DOC_PATH_ABSOLUTE}")
-endif()
-include(doxygen)
-include(TargetDoxygenDoc OPTIONAL)
-include(TargetDoxygenDox OPTIONAL)
+# message(STATUS "-------------------------------------------------------------------------------")
+# message(STATUS "Checking if doxygen/dot is installed:")
+# message(STATUS " ")
+# set(INSTALL_DOC_DIR_RELATIVE share/DGtal CACHE PATH "Relative installation directory for DGtal documentation files.")
+# set(INSTALL_DOC_PATH_CUSTOM "" CACHE PATH "Custom absolute path to the directory to install DGtal documentation files. If empty, CMAKE_INSTALL_PREFIX/INSTALL_DOC_DIR_RELATIVE will be used.")
+# if("${INSTALL_DOC_PATH_CUSTOM}" STREQUAL "")
+#   set(INSTALL_DOC_PATH "${CMAKE_INSTALL_PREFIX}/${INSTALL_DOC_DIR_RELATIVE}")
+# else()
+#   set(INSTALL_DOC_PATH "${INSTALL_DOC_PATH_ABSOLUTE}")
+# endif()
+# include(doxygen)
+# include(TargetDoxygenDoc OPTIONAL)
+# include(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
