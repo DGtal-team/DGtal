@@ -2,7 +2,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
-project (DGtal VERSION 1.4.2)
+project (DGtal VERSION 2.0.0)
 
 # -----------------------------------------------------------------------------
 # By default, do not warn when built on machines using only VS Express:
