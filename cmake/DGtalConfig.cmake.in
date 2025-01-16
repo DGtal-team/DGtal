@@ -96,5 +96,3 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
-
-check_required_components(DGtal)
