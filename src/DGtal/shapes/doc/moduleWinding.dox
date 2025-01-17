@@ -42,7 +42,7 @@ By thresholding the winding function with some values in @f$[0,1]@f$, we can def
 defined by the oriented point cloud. For fast computations, we rely on the [libigl](https://libigl.github.io) of the generalized winding numbers.
 
 
-@warning This class requires to have LIBIGL, CGAL and GMP cmake flags set to true (e.g. `cmake .. -DWITH_LIBIGL!true -DWITH_CGAL=true -DWITH_GMP=true`)
+@warning This class requires to have LIBIGL, CGAL and GMP cmake flags set to true (e.g. `cmake ..  -DDGTAL_WITH_LIBIGL!true - DDGTAL_WITH_CGAL=true -DDGTAL_WITH_GMP=true`)
 
 
 \section sectmoduleWinding1 Basic usage

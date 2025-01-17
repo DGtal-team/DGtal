@@ -24,7 +24,7 @@ set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
 if (@LIBIGL_FOUND_DGTAL@) 
   include(libigl)
-  set(WITH_LIBIGL 1)
+  set(DGTAL_WITH_LIBIGL 1)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
 endif()
 
@@ -34,12 +34,12 @@ if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
   find_package(GMP REQUIRED
     @GMP_HINTS@
     )
-  set(WITH_GMP 1)
+  set(DGTAL_WITH_GMP 1)
 endif()
 
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
-  set(WITH_ITK 1)
+  set (DGTAL_WITH_ITK 1)
   find_dependency(ITK REQUIRED
     @ITK_HINTS@
     )
@@ -50,14 +50,14 @@ if(@CAIRO_FOUND_DGTAL@) #if CAIRO_FOUND_DGTAL
   find_package(Cairo REQUIRED
     @Cairo_HINTS@
     )
-  set(WITH_CAIRO 1)
+  set(DGTAL_WITH_CAIRO 1)
 endif()
 
 if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL
   find_dependency(HDF5 REQUIRED HL C
     @HDF5_HINTS@
     )
-  set(WITH_HDF5 1)
+  set (DGTAL_WITH_HDF5 1)
 endif()
 
 if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
@@ -78,21 +78,21 @@ endif (@QT5_FOUND_DGTAL@)
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
    include(openmp)
    set(DGtalLibDependencies ${DGtalLibDependencies} OpenMP::OpenMP_CXX)
-  set(WITH_OPENMP 1)
+  set(DGTAL_WITH_OPENMP 1)
 endif()
 
 if(@CGAL_FOUND_DGTAL@) #if CGAL_FOUND_DGTAL
   find_dependency(CGAL COMPONENTS Core
     @CGAL_HINTS@
     )
-  set(WITH_CGAL 1)
+  set (DGTAL_WITH_CGAL 1)
 endif()
 
 if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   find_package(FFTW3 REQUIRED
     @FFTW3_HINTS@
     )
-  set(WITH_FFTW3 1)
+  set(DGTAL_WITH_FFTW3 1)
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")

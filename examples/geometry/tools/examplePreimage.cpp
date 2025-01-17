@@ -134,7 +134,7 @@ int main( int argc, char** argv )
   board << r << SetMode(pole.className(),"Grid") << pole << thePreimage; 
   board.saveEPS( "PreimageExample2.eps" );
   board.saveSVG( "PreimageExample2.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("PreimageExample2.pdf", Board2D::CairoPDF);
 #endif
 

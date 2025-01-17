@@ -230,7 +230,7 @@ Path::flushSVGPoints( std::ostream & stream,
   }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Path::flushCairoPoints( cairo_t *cr,
      const TransformCairo & transform ) const

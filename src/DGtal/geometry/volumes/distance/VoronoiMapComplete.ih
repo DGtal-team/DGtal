@@ -92,7 +92,7 @@ const Dimension dim ) const
 
   Domain localDomain( myLowerBoundCopy, myUpperBoundCopy );
 
-#ifdef WITH_OPENMP
+#ifdef DGTAL_WITH_OPENMP
   // Parallel loop
   std::vector<Point> subRangePoints;
   // Starting point precomputation

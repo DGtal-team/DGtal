@@ -546,7 +546,7 @@ bool testDisplay()
   aBoard.saveEPS( "testDisplayFC.eps", Board::BoundingBox, 5000 );
   aBoard.saveFIG( "testDisplayFC.fig", Board::BoundingBox, 5000 );
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   aBoard.saveCairo("testDisplayFC-cairo.pdf", Board2D::CairoPDF, Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.png", Board2D::CairoPNG, Board::BoundingBox, 5000);
   aBoard.saveCairo("testDisplayFC-cairo.ps",  Board2D::CairoPS,  Board::BoundingBox, 5000);

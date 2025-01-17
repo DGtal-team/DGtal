@@ -73,7 +73,7 @@ include(CpackCtest)
 # -----------------------------------------------------------------------------
 # Randomized build 2/2.
 # -----------------------------------------------------------------------------
-if (BUILD_EXAMPLES OR BUILD_TESTING)
+if (DGTAL_BUILD_EXAMPLES OR DGTAL_BUILD_TESTS)
  message(STATUS "Randomized examples/testing")
  if (DGTAL_RANDOMIZED_TESTING_THRESHOLD EQUAL "100")
   message(STATUS "All examples or unit-tests will be compiled (cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")

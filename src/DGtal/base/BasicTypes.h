@@ -46,7 +46,7 @@
 #include <iostream>
 #include <cstdint>
 
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
 #include <gmpxx.h>
 #endif
 //////////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ namespace DGtal
   ///signed 94-bit integer.
   typedef std::int64_t int64_t;
   
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
   #define WITH_BIGINTEGER
   ///Multi-precision integer with GMP implementation.
   typedef mpz_class BigInteger;
