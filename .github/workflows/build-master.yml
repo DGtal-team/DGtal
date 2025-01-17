@@ -33,7 +33,7 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
@@ -131,7 +131,7 @@ jobs:
     - name: Set up
       run: |
          sudo apt-get update
-         sudo apt-get install  zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev  graphviz texlive doxygen
+         sudo apt-get install  zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev  graphviz texlive doxygen
 
     - name: Building pages
       run: |
