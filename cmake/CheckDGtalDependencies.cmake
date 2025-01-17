@@ -18,11 +18,16 @@ target_compile_definitions(DGtal PUBLIC ${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
 # SYSTEM to avoid warnings from boost.
 target_include_directories(DGtal SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
 
+target_compile_definitions(DGTAL_BoostAddons PUBLIC ${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
+target_include_directories(DGTAL_BoostAddons SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
+
 # -----------------------------------------------------------------------------
 # Looking for zlib
 # -----------------------------------------------------------------------------
 find_package(ZLIB REQUIRED)
 target_link_libraries(DGtal PUBLIC ZLIB::ZLIB)
+target_link_libraries(DGTAL_BoostAddons PUBLIC ZLIB::ZLIB)
+
 set(DGtalLibDependencies ${DGtalLibDependencies} ${ZLIB_LIBRARIES})
 
 # -----------------------------------------------------------------------------

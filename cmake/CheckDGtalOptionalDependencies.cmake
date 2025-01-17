@@ -197,7 +197,14 @@ if(DGTAL_WITH_CAIRO)
     target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+    
+    target_compile_definitions(DGTAL_LibBoard PUBLIC  -DDGTAL_WITH_CAIRO)
+    target_include_directories(DGTAL_LibBoard PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
+    target_link_libraries(DGTAL_LibBoard PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+
     message(STATUS "cairo found")
+
+
     set(CAIRO_FOUND_DGTAL 1)
   else()
     message(FATAL_ERROR "cairo not found. Check the cmake variables associated to this package or disable it." )

@@ -208,7 +208,7 @@ public:
         (i.e. X).
     */
     typedef MPolynomial< n - 1, X, 
-                         typename std::allocator_traits<Alloc>::rebind_alloc<X> > MPolyNM1;
+                         typename std::allocator_traits<Alloc>::template rebind_alloc<X> > MPolyNM1;
                          // typename Alloc::template rebind<X>::other > MPolyNM1;
 
     template<int nn, class TT, class AA, class SS>
@@ -423,7 +423,7 @@ public:
     typedef TX X;
     typedef MPolynomial< n, Ring, Alloc > MPolyN;
     typedef MPolynomial< n - 1, X, 
-                         typename std::allocator_traits<Alloc>::rebind_alloc<X> > MPolyNM1;
+                         typename std::allocator_traits<Alloc>::template rebind_alloc<X> > MPolyNM1;
                          // typename Alloc::template rebind<X>::other > MPolyNM1;
   private:
     const MPolyN & myPoly; ///< The polynomial in question
@@ -809,12 +809,12 @@ public:
   public:
     typedef TAlloc Alloc;
     typedef typename std::allocator_traits<Alloc>::pointer TPointer;
-    typedef typename std::vector<TPointer, typename std::allocator_traits<Alloc>::rebind_alloc<TPointer> >::size_type Size;
+    typedef typename std::vector<TPointer, typename std::allocator_traits<Alloc>::template rebind_alloc<TPointer> >::size_type Size;
     // typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
    
   private:
     Alloc myAllocator;
-    std::vector<TPointer, typename std::allocator_traits<Alloc>::rebind_alloc<TPointer> > myVec;
+    std::vector<TPointer, typename std::allocator_traits<Alloc>::template rebind_alloc<TPointer> > myVec;
     
     // Previous : typename Alloc::const_reference
     // const value_type& should be equivalent according to : https://stackoverflow.com/questions/16360068/why-is-allocatorreference-being-phased-out 
@@ -999,7 +999,7 @@ public:
        adequate allocators. This is for efficiency purposes.
     */
     typedef IVector< MPolyNM1, 
-                     typename std::allocator_traits<Alloc>::rebind_alloc<MPolyNM1>, (n > 1) >
+                     typename std::allocator_traits<Alloc>::template rebind_alloc<MPolyNM1>, (n > 1) >
                      // typename Alloc::template rebind<MPolyNM1 >::other, (n>1) >
     Storage;
     typedef typename Storage::Size Size;
