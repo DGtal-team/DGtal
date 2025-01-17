@@ -44,6 +44,8 @@ if(NOT CMAKE_CXX_STANDARD_REQUIRED)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
+message(STATUS "C++ standard set to ${CMAKE_CXX_STANDARD}")
+
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib and /bigobj flag
 # -----------------------------------------------------------------------------
