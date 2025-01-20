@@ -59,7 +59,7 @@ cmake will install all libraries (which may take some time for the first build).
 ```
 conan profile detect --force ##Conan profile
 cd build
-conan install .. --build=missing
+conan install .. --build=missing -s cppstd=20
 cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW 
 ```
 
