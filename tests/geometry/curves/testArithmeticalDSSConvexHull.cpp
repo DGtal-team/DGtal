@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"

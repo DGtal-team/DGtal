@@ -225,7 +225,7 @@ namespace DGtal
     /**
      * Used to define a default functor to allow default constructor
      **/
-    Functor myDefaultFunctor;
+    Functor myDefaultFunctor{};
     /**
      * first point used to reverse the convexhull container.
      **/
