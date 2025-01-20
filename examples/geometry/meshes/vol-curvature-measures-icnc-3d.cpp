@@ -98,6 +98,7 @@ makeColorMap( double min_value, double max_value )
 
 void usage( int argc, char* argv[] )
 {
+  ((void) argc); 
   std::cout << "Usage: " << std::endl
             << "\t" << argv[ 0 ] << " <filename.vol> <R> <m> <M> <Hmax> <Gmax>" << std::endl
             << std::endl

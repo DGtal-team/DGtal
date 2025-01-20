@@ -107,6 +107,7 @@ makeColorMap( double min_value, double max_value )
 
 void usage( int argc, char* argv[] )
 {
+  ((void) argc);
   std::cout << "Usage: " << std::endl
             << "\t" << argv[ 0 ] << " <shape> <m> <n> <R>" << std::endl
             << std::endl

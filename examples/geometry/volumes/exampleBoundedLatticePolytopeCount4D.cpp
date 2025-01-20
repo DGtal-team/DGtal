@@ -76,7 +76,7 @@ int main( int argc, char* argv[] )
   for ( int i = 0; i < N; i++ )
     {
       std::vector< Point > V;
-      for ( int i = 0; i < nb; i++ ) {
+      for ( int j = 0; j < nb; j++ ) {
         Point p( rand() % (2*R+1) - R, rand() % (2*R+1) - R,
                  rand() % (2*R+1) - R, rand() % (2*R+1) - R );
         V.push_back( p );
@@ -95,9 +95,9 @@ int main( int argc, char* argv[] )
   std::vector< Integer > slow_counts;
   for ( const auto& P : polytopes )
     {
-      const auto nb = P.countByScanning();
-      slow_nb      += nb;
-      slow_counts.push_back( nb ); 
+      const auto nb2 = P.countByScanning();
+      slow_nb      += nb2;
+      slow_counts.push_back( nb2 ); 
     }
   double t2 = DGtal::trace.endBlock();
   // Count interior points (fast method)
@@ -106,9 +106,9 @@ int main( int argc, char* argv[] )
   std::vector< Integer > fast_counts;
   for ( const auto& P : polytopes )
     {
-      const auto nb = P.count();
-      fast_nb      += nb;
-      fast_counts.push_back( nb );
+      const auto nb2 = P.count();
+      fast_nb      += nb2;
+      fast_counts.push_back( nb2 );
     }
   double t3 = DGtal::trace.endBlock();
   bool ok = std::equal( slow_counts.cbegin(), slow_counts.cend(), fast_counts.cbegin() );

@@ -211,7 +211,7 @@ writeIsoLinesOBJ( std::string            objfile,
 
   RealPoints  positions;
   RealVectors edge_vectors;
-  Scalar      lengths = 0.0;
+  // Scalar      lengths = 0.0;
   // We have: (1-t)*v0 + t*v1 = v
   const auto  t = [] ( Scalar v0, Scalar v1, Scalar v )
     { return ( v - v0 ) / ( v1 - v0 ); };

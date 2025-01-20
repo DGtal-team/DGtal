@@ -89,6 +89,8 @@ typedef Space::Vector       Vector;
 // Called when an user clicks on a surfel.
 int reaction( void* viewer, DGtal::int32_t name, void* data )
 {
+  ((void) viewer);
+
   DGtal::int32_t* selected = (DGtal::int32_t*) data;
   *selected = name;
   std::cout << "Selected surfel=" << *selected << std::endl;
@@ -257,16 +259,16 @@ int main( int argc, char** argv )
   std::vector< Index > Q; //< the output shortest path
   while ( ! SP0.finished() && ! SP1.finished() )
     {
-      auto n0 = SP0.current();
-      auto n1 = SP1.current();
-      auto p0 = std::get<0>( n0 );
-      auto p1 = std::get<0>( n1 );
+      auto n0_ = SP0.current(); ((void) n0_);
+      auto n1_ = SP1.current();
+      // auto p0_ = std::get<0>( n0_ );
+      auto p1_ = std::get<0>( n1_ );
       SP0.expand();
       SP1.expand();
-      if ( SP0.isVisited( p1 ) )
+      if ( SP0.isVisited( p1_ ) )
         {
-          auto c0 = SP0.pathToSource( p1 );
-          auto c1 = SP1.pathToSource( p1 );
+          auto c0 = SP0.pathToSource( p1_ );
+          auto c1 = SP1.pathToSource( p1_ );
           std::copy(c0.rbegin(), c0.rend(), std::back_inserter(Q));
           Q.pop_back();
           std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
@@ -302,9 +304,9 @@ int main( int argc, char** argv )
     viewerCore.setLineColor( Color::Green );
     for ( auto i = 1; i < Q.size(); i++ )
       {
-        Point p1 = TC.point( Q[ i-1 ] );
-        Point p2 = TC.point( Q[ i   ] );
-        viewerCore.addLine( p1, p2, 18.0 );
+        Point p1_ = TC.point( Q[ i-1 ] );
+        Point p2_ = TC.point( Q[ i   ] );
+        viewerCore.addLine( p1_, p2_, 18.0 );
       }
     viewerCore << MViewer3D::updateDisplay;
     application.exec();
@@ -339,9 +341,9 @@ int main( int argc, char** argv )
       {
         for ( auto i = 1; i < path.size(); i++ )
           {
-            Point p1 = TC.point( path[ i-1 ] );
-            Point p2 = TC.point( path[ i   ] );
-            viewerCore.addLine( p1, p2, 18.0 );
+            Point p1_ = TC.point( path[ i-1 ] );
+            Point p2_ = TC.point( path[ i   ] );
+            viewerCore.addLine( p1_, p2_, 18.0 );
           }
         trace.info() << "length=" << TC.length( path ) << std::endl;
       }

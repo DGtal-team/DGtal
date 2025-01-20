@@ -99,6 +99,7 @@ makeColorMap( double min_value, double max_value )
 
 void usage( int argc, char* argv[] )
 {
+  ((void) argc); ((void) argv);
   using namespace DGtal;
   using namespace DGtal::Z3i;
   typedef Shortcuts< KSpace >          SH;
@@ -191,7 +192,7 @@ int main( int argc, char* argv[] )
   auto pointels = SH::getPointelRange( c2i, surface );
   auto vertices = SH::RealPoints( pointels.size() );
   std::transform( pointels.cbegin(), pointels.cend(), vertices.begin(),
-                  [&] (const SH::Cell& c) { return h * embedder( c ); } ); 
+                  [&] (const SH::Cell& cell) { return h * embedder( cell ); } ); 
   for ( auto&& surfel : surfels )
     {
       const auto primal_surfel_vtcs = SH::getPointelRange( K, surfel );

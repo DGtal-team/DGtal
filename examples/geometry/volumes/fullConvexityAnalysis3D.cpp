@@ -234,6 +234,8 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
                   std::vector<Point> pts,
                   ImagePtr bimage )
   {
+    ((void) aK);
+    ((void) bimage);
     return std::vector< Geometry >( pts.size(), std::make_pair( 0, 0 ) );
   }
 };

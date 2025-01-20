@@ -97,7 +97,7 @@ checkSkelStarCvxHFullConvexity( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point  Point;
-  typedef std::vector<Point>      PointRange;
+  // typedef std::vector<Point>      PointRange;
 
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
@@ -138,7 +138,7 @@ checkCvxHPlusHypercubeFullConvexity( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point  Point;
-  typedef std::vector<Point>      PointRange;
+  // typedef std::vector<Point>      PointRange;
 
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
@@ -184,11 +184,11 @@ checkProjectionFullConvexity( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point     Point;
-  typedef std::vector<Point>         PointRange;
+  // typedef std::vector<Point>         PointRange;
   typedef DGtal::KhalimskySpaceND< Space::dimension-1, Integer > ProjKSpace;
   typedef DGtal::DigitalConvexity< ProjKSpace > ProjDConvexity;
   typedef typename ProjKSpace::Point ProjPoint;
-  typedef std::vector<ProjPoint>     ProjPointRange;
+  // typedef std::vector<ProjPoint>     ProjPointRange;
 
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
@@ -247,11 +247,11 @@ checkFullConvexityCharacterization( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point     Point;
-  typedef std::vector<Point>         PointRange;
+  // typedef std::vector<Point>         PointRange;
   typedef DGtal::KhalimskySpaceND< Space::dimension-1, Integer > ProjKSpace;
   typedef DGtal::DigitalConvexity< ProjKSpace > ProjDConvexity;
   typedef typename ProjKSpace::Point ProjPoint;
-  typedef std::vector<ProjPoint>     ProjPointRange;
+  // typedef std::vector<ProjPoint>     ProjPointRange;
 
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
@@ -298,6 +298,8 @@ checkFullConvexityCharacterization( int width )
 
 int main( int argc, char* argv[] )
 {
+  ((void) argc); ((void) argv);
+
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
   int NB_TEST3 = 5;

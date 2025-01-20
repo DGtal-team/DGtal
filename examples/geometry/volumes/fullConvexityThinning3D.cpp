@@ -122,7 +122,7 @@ int main( int argc, char** argv )
   {
     params( "surfaceComponents" , "All" );
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
-    bool ok      = SH3::saveOBJ( surface, "source.obj" );
+                   SH3::saveOBJ( surface, "source.obj" );
   }
   
   trace.beginBlock ( "Thinning" );
@@ -137,7 +137,7 @@ int main( int argc, char** argv )
       nb_simple = 0;
       trace.info() << "Pass #S=" << shape_set.size()
                    << " #Q=" << to_process.size() << std::endl; 
-      for ( auto it  = to_process.begin(), itE = to_process.end(); it != itE; ++it )
+      for ( it  = to_process.begin(), itE = to_process.end(); it != itE; ++it )
         {
           Point p = *it;
           if ( ! image( p ) ) continue; // already removed

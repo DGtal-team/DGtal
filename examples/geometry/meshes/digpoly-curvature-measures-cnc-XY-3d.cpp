@@ -139,6 +139,7 @@ makeColorMap( double min_value, double max_value )
 
 void usage( int argc, char* argv[] )
 {
+  ((void) argc);  
   using namespace DGtal;
   using namespace DGtal::Z3i;
   typedef Shortcuts< KSpace >          SH;
