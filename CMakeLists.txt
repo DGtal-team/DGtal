@@ -25,6 +25,11 @@ set(DGTAL_VERSION ${CMAKE_PROJECT_VERSION})
 set(PROJECT_VERSION ${CMAKE_PROJECT_VERSION})
 set(VERSION ${CMAKE_PROJECT_VERSION})
 
+#------------------------------------------------------------------------------
+# Add DGtal library
+#------------------------------------------------------------------------------
+add_subdirectory(src)
+
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
@@ -41,12 +46,6 @@ include(DevelopmentOptions)
 message(STATUS "Downloading external projects")
 include(FetchExternalDeps)
 message(STATUS "Done.")
-
-
-#------------------------------------------------------------------------------
-# Add DGtal library
-#------------------------------------------------------------------------------
-add_subdirectory(src)
 
 # -----------------------------------------------------------------------------
 # Check mandatory and optional dependencies
