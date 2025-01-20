@@ -83,7 +83,7 @@ jobs:
        shell: bash
        working-directory: ${{runner.workspace}}/build
        run: |
-          conan install $GITHUB_WORKSPACE --build=missing -s cppstd=20
+          conan install $GITHUB_WORKSPACE --build=missing  
           cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build

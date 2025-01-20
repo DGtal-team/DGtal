@@ -12,3 +12,6 @@ CMakeToolchain
 [options] 
 boost*:header_only=True
 gmp*:enable_cxx=True
+
+[settings]
+compiler.cppstd=20
