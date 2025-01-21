@@ -82,7 +82,7 @@ jobs:
         shell: bash
         working-directory: ${{runner.workspace}}/build
         run: |
-            conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=gnu20
+            conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
             cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
 
 
