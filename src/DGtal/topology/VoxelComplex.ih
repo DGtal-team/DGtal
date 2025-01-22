@@ -824,7 +824,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
 #pragma omp single nowait
         {for (auto it = cubical.begin(d), itE = cubical.end(d); it != itE; ++it)
 #pragma omp task firstprivate(it)
-             {auto clique_p = criticalCliquePair(d, it);
+             {
+    auto clique_p = criticalCliquePair(d, it);
     const auto &is_critical = clique_p.first;
     const auto &clique = clique_p.second;
     // Push

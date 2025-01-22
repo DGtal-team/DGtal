@@ -1,0 +1,581 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SplitFunctions.ih
+ * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
+ *
+ * @date 2019/01/08
+ *
+ * Implementation of inline methods defined in SplitFunctions.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+template <typename TPoint>
+size_t DGtal::functions::computeSplits(
+    const size_t requested_number_of_splits,
+    const TPoint & lowerBound,
+    const TPoint & upperBound,
+    unsigned int splits[]
+    )
+{
+  const auto dim = lowerBound.dimension;
+  auto region_size = upperBound - lowerBound;
+  for ( size_t i = 0; i < dim; ++i )
+  {
+    if ( region_size[ i ] < 0 )
+      throw std::runtime_error(
+      "upperBound is smaller than lowerBound, region_size is negative" );
+  }
+
+  // Implementation taken from ITK:
+  // itkImageRegionSplitterMultidimensional.cxx ComputeSplitInternal
+  // size of each splited region
+  std::vector<double> splitRegionSize(dim); // Note: stack allocation preferred
+  unsigned int        numberOfPieces = 1;
+
+  // initialize arrays
+  for (unsigned int i = 0; i < dim; ++i)
+  {
+    splits[i] = 1;
+    splitRegionSize[i] = region_size[i];
+  }
+
+  while (true)
+  {
+    // find the dimension with the largest size
+    unsigned int maxSplitDim = 0;
+    for (unsigned int i = 1; i < dim; ++i)
+    {
+      if (splitRegionSize[maxSplitDim] < splitRegionSize[i])
+      {
+        maxSplitDim = i;
+      }
+    }
+
+    // calculate the number of additional pieces this split would add
+    unsigned int additionalNumPieces = 1;
+    for (unsigned int i = 0; i < dim; ++i)
+    {
+      if (i != maxSplitDim)
+      {
+        additionalNumPieces *= splits[i];
+      }
+    }
+
+    // check if this would give us too many pieces or
+    // if this would require the subpixel splits
+    if ( numberOfPieces + additionalNumPieces > requested_number_of_splits ||
+         splits[ maxSplitDim ] == static_cast<unsigned int>(region_size[ maxSplitDim ]) )
+    {
+      return numberOfPieces;
+    }
+
+    // update the variable with the new split
+    numberOfPieces += additionalNumPieces;
+    ++splits[maxSplitDim];
+    splitRegionSize[maxSplitDim] = region_size[maxSplitDim] / double(splits[maxSplitDim]);
+  }
+
+}
+template <typename TPoint>
+DGtal::SplitBounds<TPoint> DGtal::functions::getSplit(
+    const size_t splitIndex,
+    const size_t requested_number_of_splits,
+    const TPoint & lowerBound,
+    const TPoint & upperBound
+    )
+{
+  SplitBounds<TPoint> out;
+  out.splitIndex = splitIndex;
+  out.lowerBound = lowerBound;
+  out.upperBound = upperBound;
+  auto & outputLowerBound = out.lowerBound;
+  auto & outputUpperBound = out.upperBound;
+
+  const auto dim = lowerBound.dimension;
+  const auto region_size = upperBound - lowerBound;
+  auto output_region_size = region_size;
+  // Implementation taken from ITK:
+  // itkImageRegionSplitterMultidimensional.cxx GetSplitInternal
+  // number of splits in each dimension
+  std::vector<unsigned int> splits(dim); // Note: stack allocation preferred
+
+  // index into splitted regions
+  out.splittedRegionIndex = std::vector<unsigned int>(dim); // Note: stack allocation preferred
+  auto & splittedRegionIndex = out.splittedRegionIndex;
+
+  DGtal::functions::computeSplits(requested_number_of_splits,
+      lowerBound, upperBound, &splits[0]);
+
+  // determine which splitted region we are in
+  unsigned int offset = splitIndex;
+  for (unsigned i = dim - 1; i > 0; --i)
+  {
+    unsigned int dimensionOffset = 1;
+    for (unsigned int j = 0; j < i; ++j)
+    {
+      dimensionOffset *= splits[j];
+    }
+
+    splittedRegionIndex[i] = offset / dimensionOffset;
+    offset -= (splittedRegionIndex[i] * dimensionOffset);
+  }
+  splittedRegionIndex[0] = offset;
+
+
+  // Assign the output split region to the input region in-place
+  for (unsigned int i = 0; i < dim; i++)
+  {
+    const auto inputRegionSize = region_size[i];
+    const auto indexOffset =
+      std::floor((splittedRegionIndex[i]) * (inputRegionSize / double(splits[i])));
+
+    outputLowerBound[i] += indexOffset;
+    if (splittedRegionIndex[i] < splits[i] - 1)
+    {
+      // Modified from ITK, minus -1 (index,size in ITK versus lower/upperBounds here)
+      output_region_size[i] =
+        std::floor((splittedRegionIndex[i] + 1) * (inputRegionSize / double(splits[i]))) - indexOffset - 1;
+    }
+    else
+    {
+      // this dimension is falling off the edge of the image
+      output_region_size[i] = output_region_size[i] - indexOffset;
+    }
+  }
+  outputUpperBound = outputLowerBound + output_region_size;
+
+  return out;
+}
+
+template < typename TComplex >
+TComplex
+DGtal::functions::extractSubComplex(
+    const TComplex & vc ,
+    const typename TComplex::Point & sub_lowerBound,
+    const typename TComplex::Point & sub_upperBound
+    ) {
+  const auto & kspace = vc.space();
+  const bool kspace_isClosed = true;
+  typename TComplex::KSpace sub_kspace;
+  sub_kspace.init(sub_lowerBound, sub_upperBound, kspace_isClosed);
+  TComplex sub_complex(sub_kspace);
+
+  const auto sub_lowerCell = sub_kspace.lowerCell();
+  const auto sub_upperCell = sub_kspace.upperCell();
+  const auto & sub_lowerCell_coords = kspace.uKCoords(sub_lowerCell);
+  const auto & sub_upperCell_coords = kspace.uKCoords(sub_upperCell);
+  auto kcell = sub_lowerCell;
+  static_assert(TComplex::KSpace::dimension == 3,
+      "The KSpace::dimension of TComplex isn't 3");
+  for(auto k_x = sub_lowerCell_coords[0]; k_x <= sub_upperCell_coords[0]; k_x++) {
+    for(auto k_y = sub_lowerCell_coords[1]; k_y <= sub_upperCell_coords[1]; k_y++) {
+      for(auto k_z = sub_lowerCell_coords[2]; k_z <= sub_upperCell_coords[2]; k_z++) {
+        kspace.uSetKCoord(kcell, 0, k_x);
+        kspace.uSetKCoord(kcell, 1, k_y);
+        kspace.uSetKCoord(kcell, 2, k_z);
+        const auto dim_cell = kspace.uDim(kcell);
+        const auto iter_cell_map = vc.findCell(dim_cell, kcell);
+        if(iter_cell_map != vc.end(dim_cell)) {
+          sub_complex.insertCell(dim_cell,
+              kcell, iter_cell_map->second);
+        }
+      }
+    }
+  }
+
+  return sub_complex;
+}
+
+template < typename TComplex >
+bool
+DGtal::functions::isInBorder(
+    const typename TComplex::KSpace::Cell &cell,
+    const typename TComplex::Point & lowerBound,
+    const typename TComplex::Point & upperBound,
+    const typename TComplex::Point * wide_point,
+    const typename TComplex::Point * lowerBound_to_ignore,
+    const typename TComplex::Point * upperBound_to_ignore) {
+
+  const typename TComplex::Point wide =
+    wide_point ? *wide_point : typename TComplex::Point(1,1,1);
+
+  const auto cell_coords = TComplex::KSpace::Cell::PreCellularGridSpace::uCoords(cell);
+  // dist to lower and upper
+  const auto distToLower = cell_coords - lowerBound;
+  const auto distToUpper = upperBound - cell_coords;;
+  bool is_close_to_lower_border =
+    distToLower[0] < wide[0]
+    || distToLower[1] < wide[1]
+    || distToLower[2] < wide[2];
+  bool is_close_to_upper_border =
+    distToUpper[0] < wide[0]
+    || distToUpper[1] < wide[1]
+    || distToUpper[2] < wide[2];
+
+  if(lowerBound_to_ignore && upperBound_to_ignore) {
+    if(is_close_to_lower_border) {
+      const auto distToLower_to_ignore = cell_coords - *lowerBound_to_ignore;
+      bool is_close_to_lower_border_to_ignore =
+        distToLower_to_ignore[0] < wide[0]
+        || distToLower_to_ignore[1] < wide[1]
+        || distToLower_to_ignore[2] < wide[2];
+
+      if(is_close_to_lower_border_to_ignore) {
+        // Don't ignore if it is closer to lowerBound than
+        // lowerBound_to_ignore (corners) for any dimension
+        // Compute the border plane normal that results in non-zero
+        // for the dimensions that need checking.
+        const auto lowerBound_border_plane_normal =
+          lowerBound - *lowerBound_to_ignore;
+        for(size_t dim = 0; dim < 3; dim++) {
+          if(lowerBound_border_plane_normal[dim]) {
+            if(distToLower[dim] < wide[dim]
+                && distToLower[dim] <= distToLower_to_ignore[dim]) {
+              is_close_to_lower_border_to_ignore = false;
+            }
+          }
+        }
+      }
+      is_close_to_lower_border &= !is_close_to_lower_border_to_ignore;
+    }
+
+    if(is_close_to_upper_border) {
+      const auto distToUpper_to_ignore = *upperBound_to_ignore - cell_coords;;
+      bool is_close_to_upper_border_to_ignore =
+        distToUpper_to_ignore[0] < wide[0]
+        || distToUpper_to_ignore[1] < wide[1]
+        || distToUpper_to_ignore[2] < wide[2];
+
+      if(is_close_to_upper_border_to_ignore) {
+        // Don't ignore if it is closer to upperBound than
+        // upperBound_to_ignore (corners) for any dimension
+        // Compute the border plane normal that results in non-zero
+        // for the dimensions that need checking.
+        const auto upperBound_border_plane_normal =
+          *upperBound_to_ignore - upperBound;
+        for(size_t dim = 0; dim < 3; dim++) {
+          if(upperBound_border_plane_normal[dim]) {
+            if(distToUpper[dim] < wide[dim]
+                && distToUpper[dim] <= distToUpper_to_ignore[dim]) {
+              is_close_to_upper_border_to_ignore = false;
+            }
+          }
+        }
+      }
+      is_close_to_upper_border &= !is_close_to_upper_border_to_ignore;
+    }
+  }
+
+  const bool isInBorder_not_to_ignore = is_close_to_lower_border
+    || is_close_to_upper_border;
+  return isInBorder_not_to_ignore;
+}
+
+template < typename TComplex >
+std::vector<typename TComplex::CellMapIterator>
+DGtal::functions::getBorderVoxels(
+    TComplex & vc,
+    const typename TComplex::Point & lowerBound,
+    const typename TComplex::Point & upperBound,
+    const typename TComplex::Point * wide_point,
+    const typename TComplex::Point * lowerBound_to_ignore,
+    const typename TComplex::Point * upperBound_to_ignore)
+{
+  if(wide_point) {
+    const typename TComplex::Point wide = *wide_point;
+    // wide_point has to be positive
+    ASSERT(wide.min() > 0);
+    // wide point cannot be greater than the domain in any dimension
+    std::array<bool, 3> is_close_to_lower_upper_border_to_ignore =
+    {false, false, false};
+    if(lowerBound_to_ignore && upperBound_to_ignore) {
+      const auto dist_lowerToUpper_to_ignore =
+        *upperBound_to_ignore - *lowerBound_to_ignore;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(wide[dim] <= dist_lowerToUpper_to_ignore[dim]) {
+          is_close_to_lower_upper_border_to_ignore[dim] = true;
+        }
+      }
+    }
+    const auto dist_lowerToUpper = upperBound - lowerBound;
+    for(size_t dim = 0; dim < 3; ++dim) {
+      if(wide[dim] >= dist_lowerToUpper[dim]
+         && !is_close_to_lower_upper_border_to_ignore[dim]) {
+        std::cerr <<
+          "wide_point in getBorderVoxels is equal or greater than the domain itself\n" <<
+          "wide_point: " << wide << "\n" <<
+          "dist_lowerToUpper: " << dist_lowerToUpper <<
+          std::endl;
+        if(lowerBound_to_ignore && upperBound_to_ignore) {
+          std::cerr << "dist_lowerToUpper_to_ignore: " <<
+            (*upperBound_to_ignore - *lowerBound_to_ignore) << std::endl;
+        }
+      }
+    }
+  }
+
+  using CellIterators = std::vector<typename TComplex::CellMapIterator>;
+  CellIterators iterators;
+
+  for(auto it = vc.begin(3); it != vc.end(3); ++it) {
+    const auto & cell = it->first;
+
+    const bool isInBorder_not_to_ignore = isInBorder<TComplex>(cell,
+        lowerBound, upperBound,
+        wide_point, lowerBound_to_ignore, upperBound_to_ignore);
+
+    if(isInBorder_not_to_ignore) {
+      iterators.push_back(it);
+    }
+  }
+  return iterators;
+}
+
+template < typename TComplex, typename TDistanceTransform >
+std::vector<typename TComplex::CellMapIterator>
+DGtal::functions::getBorderVoxelsWithDistanceMap(
+    TComplex & vc,
+    const typename TComplex::Point & lowerBound,
+    const typename TComplex::Point & upperBound,
+    const typename TComplex::Point * wide_point,
+    const typename TComplex::Point * lowerBound_to_ignore,
+    const typename TComplex::Point * upperBound_to_ignore,
+    const TDistanceTransform * dist_map)
+{
+  const auto & kspace = vc.space();
+  if(wide_point) {
+    const typename TComplex::Point wide = *wide_point;
+    // wide_point has to be positive
+    ASSERT(wide.min() > 0);
+    // wide point cannot be greater than the domain in any dimension
+    std::array<bool, 3> is_close_to_lower_upper_border_to_ignore =
+    {false, false, false};
+    if(lowerBound_to_ignore && upperBound_to_ignore) {
+      const auto dist_lowerToUpper_to_ignore =
+        *upperBound_to_ignore - *lowerBound_to_ignore;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(wide[dim] <= dist_lowerToUpper_to_ignore[dim]) {
+          is_close_to_lower_upper_border_to_ignore[dim] = true;
+        }
+      }
+    }
+    const auto dist_lowerToUpper = upperBound - lowerBound;
+    for(size_t dim = 0; dim < 3; ++dim) {
+      if(wide[dim] >= dist_lowerToUpper[dim]
+         && !is_close_to_lower_upper_border_to_ignore[dim]) {
+        std::cerr <<
+          "wide_point in getBorderVoxels is equal or greater than the domain itself\n" <<
+          "wide_point: " << wide << "\n" <<
+          "dist_lowerToUpper: " << dist_lowerToUpper <<
+          std::endl;
+        if(lowerBound_to_ignore && upperBound_to_ignore) {
+          std::cerr << "dist_lowerToUpper_to_ignore: " <<
+            (*upperBound_to_ignore - *lowerBound_to_ignore) << std::endl;
+        }
+      }
+    }
+  }
+
+  using CellIterators = std::vector<typename TComplex::CellMapIterator>;
+  CellIterators iterators;
+
+  for(auto it = vc.begin(3); it != vc.end(3); ++it) {
+    const auto & cell = it->first;
+
+    const bool isInBorder_not_to_ignore = isInBorder<TComplex>( cell,
+        lowerBound, upperBound,
+        wide_point, lowerBound_to_ignore, upperBound_to_ignore);
+
+    if(isInBorder_not_to_ignore && dist_map) {
+      const auto cell_coords = kspace.uCoords(cell);
+      const auto distToLower = cell_coords - lowerBound;
+      const auto distToUpper = upperBound - cell_coords;;
+      const auto dist_map_value = (*dist_map)(cell_coords);
+      bool closer_to_block_border_than_object_border = false;
+      for(size_t dim = 0; dim < 3; ++dim) {
+        if(   dist_map_value <= distToLower[dim]
+           || dist_map_value <= distToUpper[dim]) {
+          closer_to_block_border_than_object_border = true;
+        }
+      }
+      if(closer_to_block_border_than_object_border) {
+        iterators.push_back(it);
+      }
+    }
+    // With no dmap is exactly the same as getBorderVoxels
+    else if(isInBorder_not_to_ignore) {
+      iterators.push_back(it);
+    }
+  }
+  return iterators;
+}
+
+
+template < typename TComplex >
+void
+DGtal::functions::setBorderData(
+    TComplex & vc,
+    const std::vector<typename TComplex::CellMapIterator> &border_iterators,
+    const DGtal::uint32_t &data) {
+  for(auto vit = border_iterators.begin(); vit != border_iterators.end(); ++vit){
+    (*vit)->second = data;
+    // Set the data of all faces as well
+    const auto faces = vc.cellBoundary((*vit)->first);
+    for(const auto & face : faces) {
+      auto it = vc.findCell(face);
+      it->second = data;
+    }
+
+  }
+}
+
+template < typename TComplex >
+DGtal::SplittedComplexes<TComplex>
+DGtal::functions::splitComplex(
+    const TComplex & vc ,
+    const size_t requested_number_of_splits
+    ) {
+  const auto & kspace = vc.space();
+  const auto & lowerBound = kspace.lowerBound();
+  const auto & upperBound = kspace.upperBound();
+  std::vector<unsigned int> splits(kspace.dimension);
+  const auto number_of_splits =
+    DGtal::functions::computeSplits(requested_number_of_splits,
+        lowerBound, upperBound, splits.data());
+  std::vector<typename TComplex::KSpace> sub_kspaces(number_of_splits);
+  // Initiate output struct
+  SplittedComplexes<TComplex> out;
+  out.number_of_splits = number_of_splits;
+  out.splits = splits;
+  auto & sub_complexes = out.sub_complexes;
+  // Note that when dividing a k-space special care hast to be taken in the
+  // opennes or clossedness of the low dim cells (1-cell and 2-cell in 3D).
+  // To avoid sharing those pointels and linels in the frontier between subspaces,
+  // only one of the colindant sub_kspaces should include them, and the rest omit them.
+  // In case of Cubical and Voxel Complexes, those cells are not that signficant,
+  // at least for thinning, so we make all the sub_kspaces closed.
+  const bool kspace_isClosed = true;
+  for(size_t split = 0; split < number_of_splits; ++split) {
+    const auto split_bounds = DGtal::functions::getSplit(
+        split, requested_number_of_splits, lowerBound, upperBound);
+    // Save the domain of the original splits in the output
+    out.splits_bounds.push_back(split_bounds);
+    const auto & sub_lowerBound = split_bounds.lowerBound;
+    const auto & sub_upperBound = split_bounds.upperBound;
+    sub_kspaces[split].init(sub_lowerBound, sub_upperBound, kspace_isClosed);
+  }
+
+  for(size_t split = 0; split < number_of_splits; ++split) {
+    sub_complexes.emplace_back(TComplex(sub_kspaces[split]));
+    // Note: You don't want to use simplicity table, some spels are going to be FIXED
+    // Also, isSimple from object does not give the same results than isSimpleByThinning
+    // being the latter correct and more general in the case of FIXED data.
+    // sub_complexes[split].copySimplicityTable(vc);
+
+    // Copy cells and cell data from input vc to sub_complexes
+    // First, iterate over the kspace of the sub-domain
+    // Then find cell in original complex, if exists, insert it (copy) into the sub_complex
+    const auto sub_lowerCell = sub_kspaces[split].lowerCell();
+    const auto sub_upperCell = sub_kspaces[split].upperCell();
+    const auto & sub_lowerCell_coords = kspace.uKCoords(sub_lowerCell);
+    const auto & sub_upperCell_coords = kspace.uKCoords(sub_upperCell);
+    auto kcell = sub_lowerCell;
+    static_assert(TComplex::KSpace::dimension == 3,
+        "The KSpace::dimension of TComplex isn't 3");
+    for(auto k_x = sub_lowerCell_coords[0]; k_x <= sub_upperCell_coords[0]; k_x++) {
+      for(auto k_y = sub_lowerCell_coords[1]; k_y <= sub_upperCell_coords[1]; k_y++) {
+        for(auto k_z = sub_lowerCell_coords[2]; k_z <= sub_upperCell_coords[2]; k_z++) {
+          kspace.uSetKCoord(kcell, 0, k_x);
+          kspace.uSetKCoord(kcell, 1, k_y);
+          kspace.uSetKCoord(kcell, 2, k_z);
+          const auto dim_cell = kspace.uDim(kcell);
+          const auto iter_cell_map = vc.findCell(dim_cell, kcell);
+          if(iter_cell_map != vc.end(dim_cell)) {
+            // iter_cell_map->first is equal to kcell...
+            sub_complexes[split].insertCell(dim_cell,
+                iter_cell_map->first, iter_cell_map->second);
+          }
+        }
+      }
+    }
+  }
+  return out;
+}
+
+size_t
+DGtal::functions::getNumberOfBorderBlocksFromSplits(
+    const std::vector<unsigned int> & splits)
+{
+  const auto dimension = splits.size();
+  size_t number_of_block_complexes = 0;
+  for(size_t dim = 0; dim < dimension; ++dim) {
+    for(size_t split = 1; split < splits[dim]; ++split) {
+      number_of_block_complexes++;
+    }
+  }
+  return number_of_block_complexes;
+}
+
+template <typename TPoint>
+std::vector<std::array<TPoint, 2>>
+DGtal::functions::getBorderBlocksFromSplits(
+    const TPoint & lowerBound,
+    const TPoint & upperBound,
+    const std::vector<SplitBounds<TPoint>> & splits_bounds,
+    const size_t wide_of_block_sub_complex
+    )
+{
+  // The blocks spans the whole domain (large thin layers), and they only differ from lowerBound, upperBound in one dimension where the split is.
+  using PointPair = std::array<TPoint, 2>;
+  std::vector<PointPair> block_lower_upper_bounds;
+  std::vector<std::set<unsigned int>> visited_index_per_dim(lowerBound.dimension);
+  for(const auto & split_bound : splits_bounds) {
+    const auto & split_index = split_bound.splittedRegionIndex;
+    for(size_t dim = 0; dim < split_bound.lowerBound.dimension; dim++) {
+      if(split_index[dim] > 0 &&
+         visited_index_per_dim[dim].find(split_index[dim]) ==
+         visited_index_per_dim[dim].end()) {
+        visited_index_per_dim[dim].emplace(split_index[dim]);
+        auto block_lowerBound = lowerBound;
+        auto block_upperBound = upperBound;
+        block_lowerBound[dim] = split_bound.lowerBound[dim];
+        block_upperBound[dim] = split_bound.lowerBound[dim];
+        if(wide_of_block_sub_complex) {
+          block_lowerBound[dim] -= wide_of_block_sub_complex;
+          block_upperBound[dim] += wide_of_block_sub_complex - 1;
+          if(block_lowerBound[dim] < lowerBound[dim]) block_lowerBound[dim] = lowerBound[dim];
+          if(block_upperBound[dim] > upperBound[dim]) block_upperBound[dim] = upperBound[dim];
+        }
+        block_lower_upper_bounds.emplace_back(
+            PointPair({block_lowerBound, block_upperBound}));
+      }
+    }
+  }
+  return block_lower_upper_bounds;
+}
+
+template < typename TComplex >
+void
+DGtal::functions::mergeSubComplexes(TComplex & out,
+    const std::vector<TComplex> &complexes)
+{
+  for(auto & sc : complexes) {
+    out |= sc;
+  }
+}

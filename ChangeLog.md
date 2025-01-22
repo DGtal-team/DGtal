@@ -630,6 +630,8 @@
     (Pablo Hernandez-Cerdan, [#1505](https://github.com/DGtal-team/DGtal/pull/1505))
   - Fix fillData in CubicalComplex
     (Pablo Hernandez-Cerdan, [#1519](https://github.com/DGtal-team/DGtal/pull/1519))
+  - Add functions to SplitFunctions header to divide a domain into hypercubes.
+    (Pablo Hernandez-Cerdan,[#1521](https://github.com/DGtal-team/DGtal/pull/1521))
 
 - *Shapes package*
   - Add a moveTo(const RealPoint& point) method to implicit and star shapes
