@@ -1,4 +1,14 @@
-add_library(DGtal SHARED helpers/StdDefs.cpp)
+if (BUILD_SHARED_LIBS)
+  add_library(DGtal SHARED helpers/StdDefs.cpp)
+else()
+  add_library(DGtal STATIC helpers/StdDefs.cpp)
+endif()
+
+if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+  # Add -fPIC
+  set_target_properties(DGtal PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif()
+
 
 target_include_directories(DGtal PUBLIC
   # src/DGtal

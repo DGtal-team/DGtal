@@ -20,12 +20,6 @@ if(MSVC)
   endif()
 endif()
 
-# Misc
-if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
-# Add -fPIC
-set_target_properties(DGtal PROPERTIES POSITION_INDEPENDENT_CODE ON)
-endif()
-
 #------------------------------------------------------------------------------
 # Remove some MS Visual c++ flags
 #------------------------------------------------------------------------------
