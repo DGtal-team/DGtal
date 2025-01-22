@@ -1432,6 +1432,7 @@ inline
 void DGtal::Display2DFactory::drawWithAdjacencies( DGtal::Board2D & aBoard,
            const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
+    
   typedef TDigitalSet DigitalSet;
   typedef typename DigitalSet::Point DSPoint;
 
