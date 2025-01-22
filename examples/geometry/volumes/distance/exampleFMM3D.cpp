@@ -127,7 +127,7 @@ int main( int argc, char** argv )
      << bel
      << std::endl;
 
-  } catch (DGtal::InputException i) {
+  } catch (const DGtal::InputException& i) {
     trace.emphase() << "starting bel not found" << std::endl;
     return 0;
   }
