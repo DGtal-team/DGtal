@@ -1432,9 +1432,9 @@ inline
 void DGtal::Display2DFactory::drawWithAdjacencies( DGtal::Board2D & aBoard,
            const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
-    
+
   typedef TDigitalSet DigitalSet;
-  typedef typename DigitalSet::Point DSPoint;
+  // typedef typename DigitalSet::Point Point;
 
   typedef TDigitalTopology DigitalTopology;
   typedef typename DigitalSet::Domain Domain;
@@ -1442,8 +1442,6 @@ void DGtal::Display2DFactory::drawWithAdjacencies( DGtal::Board2D & aBoard,
       typename DigitalSetSelector < Domain,
       SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
   typedef Object<DigitalTopology, SmallSet> SmallObject;
-
-  DSPoint p;
 
   for (typename TDigitalSet::ConstIterator it = o.pointSet().begin();
       it != o.pointSet().end();
@@ -1455,7 +1453,7 @@ void DGtal::Display2DFactory::drawWithAdjacencies( DGtal::Board2D & aBoard,
         it2 != neig.pointSet().end();
         ++it2)
     {
-      p = (*it2) - (*it);
+      auto p = (*it2) - (*it);
       draw(aBoard, p, (*it));
     }
   }
