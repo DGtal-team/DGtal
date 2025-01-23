@@ -232,7 +232,7 @@ bool testPointsIterators()
   typedef FreemanChain<Coordinate> FreemanChain;
   typedef FreemanChain::Point Point;
   typedef FreemanChain::ConstIterator PointIterator;
-  typedef std::reverse_iterator<PointIterator> ReverseIterator;
+  typedef boost::reverse_iterator<PointIterator> ReverseIterator;
 
   trace.beginBlock ( "Testing FreemanChain Iterator" );
 
@@ -283,7 +283,7 @@ bool testCodesIterators()
   typedef FreemanChain<Coordinate> FreemanChain;
   typedef FreemanChain::CodesRange Range;
 //  typedef Range::ConstIterator PointIterator;
-//  typedef std::reverse_iterator<PointIterator> ReverseIterator;
+//  typedef boost::reverse_iterator<PointIterator> ReverseIterator;
 
   trace.beginBlock ( "Testing CodesRange Iterator" );
 

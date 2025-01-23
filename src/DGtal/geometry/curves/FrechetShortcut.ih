@@ -633,7 +633,7 @@ DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TI
 
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<std::reverse_iterator<TIterator>,TInteger>
+DGtal::FrechetShortcut<boost::reverse_iterator<TIterator>,TInteger>
 DGtal::FrechetShortcut<TIterator,TInteger>
 ::getReverse() const
 {

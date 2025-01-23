@@ -220,7 +220,7 @@ as follows:
 
 
 In order to take profit of the whole DGtal framework, you should use
-DGtal::ReverseIterator instead of std::reverse_iterator or
+DGtal::ReverseIterator instead of boost::reverse_iterator or
 even boost::reverse_iterator. 
 
     #include "DGtal/base/ReverseIterator.h"

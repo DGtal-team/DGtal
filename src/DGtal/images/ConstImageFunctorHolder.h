@@ -120,7 +120,7 @@ public:
   using Functor   = TFunctor;
 
   using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
-  using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
+  using ConstReverseIterator = boost::reverse_iterator< ConstIterator >;
   class ConstRange;
 
   BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension );

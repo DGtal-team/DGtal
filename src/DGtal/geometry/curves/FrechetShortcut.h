@@ -122,7 +122,7 @@ namespace DGtal
     //required types
     typedef TIterator ConstIterator;
     typedef FrechetShortcut<ConstIterator,Integer> Self; 
-    typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,Integer> Reverse;
+    typedef FrechetShortcut<boost::reverse_iterator<ConstIterator>,Integer> Reverse;
     
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 

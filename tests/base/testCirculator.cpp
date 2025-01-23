@@ -298,7 +298,7 @@ int main( int argc, char** argv )
   res = res && (c1 == c2) && (c1 == c3);
 
   trace.info() << "(reverse_iterator<Circulator> / Circulator<reverse_iterator>)" << endl;
-  std::reverse_iterator<Circulator<vector<int>::iterator> > rc1( c1 );
+  boost::reverse_iterator<Circulator<vector<int>::iterator> > rc1( c1 );
   Circulator <vector<int>::reverse_iterator> c4(  v.rend(), v.rbegin(), v.rend() );
   res = res && (rc1.base().base() == c4.base().base());
   trace.info() << "first element: (" << *--rc1 << " == " << *--c4 << ")" << endl;

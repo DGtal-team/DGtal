@@ -216,7 +216,7 @@ the following nested types:
  - Reverse (like Self but based on reverse iterators) 
 
 Reverse is a type that behaves like Self but based on 
-std::reverse_iterator<ConstIterator> instead of ConstIterator. 
+boost::reverse_iterator<ConstIterator> instead of ConstIterator. 
 Moreover, in order to build an instance of Self (resp. Reverse) from 
 a segment computer, the following methods should be defined:   
 

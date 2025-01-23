@@ -93,7 +93,7 @@ namespace DGtal
 
     typedef typename TRange::Point Point;   
     typedef ConstIteratorAdapter<typename TRange::ConstIterator,TFunctor,TReturnType> ConstIterator; 
-    typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+    typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     // ------------------------- standard services --------------------------------
 

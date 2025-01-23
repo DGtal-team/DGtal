@@ -449,7 +449,7 @@ namespace DGtal
     typedef TiledIterator ConstIterator;
     typedef TiledIterator OutputIterator;
 
-    typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
+    typedef boost::reverse_iterator<TiledIterator> ReverseTiledIterator;
     typedef ReverseTiledIterator ConstReverseIterator;
     typedef ReverseTiledIterator ReverseOutputIterator;
 

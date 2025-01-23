@@ -86,17 +86,17 @@ namespace DGtal
       typedef TIterator Iterator;
       typedef TConstIterator ConstIterator;
 
-      typedef std::reverse_iterator<Iterator> ReverseIterator;
-      typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+      typedef boost::reverse_iterator<Iterator> ReverseIterator;
+      typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef TIterator OutputIterator;
-      typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
+      typedef boost::reverse_iterator<Iterator> ReverseOutputIterator;
 
       typedef DGtal::Circulator<Iterator> Circulator;
-      typedef std::reverse_iterator<Circulator> ReverseCirculator;
+      typedef boost::reverse_iterator<Circulator> ReverseCirculator;
 
       typedef DGtal::Circulator<ConstIterator> ConstCirculator;
-      typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+      typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
 

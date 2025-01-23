@@ -82,10 +82,10 @@ namespace DGtal
       typedef typename TiledImage::Point Point;
 
       typedef typename TiledImage::ConstIterator ConstIterator;
-      typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+      typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef Circulator<ConstIterator> ConstCirculator;
-      typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+      typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
       
