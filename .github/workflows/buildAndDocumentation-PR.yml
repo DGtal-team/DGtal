@@ -118,8 +118,9 @@ jobs:
            cd DGtalTools
            mkdir buildDGtalTools
            cd buildDGtalTools
-           echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
-           cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           ls -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps
+           echo  cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
            ninja
 
   # Documentatin (build, check and deploy)
