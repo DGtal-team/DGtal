@@ -161,7 +161,6 @@ namespace DGtal
 
     /// @param[out] pts the range of lattice points that are interior to this polytope.
     /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
-    /// @return the lattice points strictly inside the current polytope.
     ///
     /// @note The result does not depend on parameter \a a, but the
     /// speed of computation depends on this choice. The best choice
