@@ -53,6 +53,8 @@
 
 #include "DGtal/base/TiledImageBidirectionalConstRangeFromPoint.h"
 #include "DGtal/base/TiledImageBidirectionalRangeFromPoint.h"
+
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

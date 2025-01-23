@@ -35,6 +35,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
+#include "boost/iterator/reverse_iterator.hpp"
 ///////////////////////////////////////////////////////////////////////////////
 
 

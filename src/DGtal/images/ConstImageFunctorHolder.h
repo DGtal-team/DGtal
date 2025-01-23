@@ -45,6 +45,7 @@
 
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/concept/assert.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/FunctorHolder.h"

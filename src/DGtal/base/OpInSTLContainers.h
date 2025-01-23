@@ -63,7 +63,7 @@ namespace DGtal
    * 
 @code
 //      anIterator = aContainer.erase(anIterator);
-//does not compile if anIterator has type 'boost::reverse_iterator'
+//does not compile if anIterator has type 'std::reverse_iterator'
 //erase only takes parameter of type 'std::iterator'
         anIterator = 
         DGtal::OpInSTLContainers<Container,Iterator>
@@ -93,10 +93,10 @@ namespace DGtal
     template <typename Container>
     struct OpInSTLContainers<
       Container, 
-      boost::reverse_iterator<typename Container::iterator> > 
+      std::reverse_iterator<typename Container::iterator> > 
     {
       typedef typename Container::iterator Iterator;
-      typedef boost::reverse_iterator<typename Container::iterator> ReverseIterator;
+      typedef std::reverse_iterator<typename Container::iterator> ReverseIterator;
 
       static ReverseIterator erase(
                   Container& aContainer,

@@ -62,6 +62,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/ConstAlias.h"
 
+#include "boost/iterator/reverse_iterator.hpp"
+
 
 //////////////////////////////////////////////////////////////////////////////
 

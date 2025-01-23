@@ -47,6 +47,7 @@
 #include "DGtal/base/IteratorAdapter.h"
 #include "DGtal/base/CBidirectionalRangeFromPoint.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

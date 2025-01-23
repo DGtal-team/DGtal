@@ -46,6 +46,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include <boost/icl/interval_set.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 #include <map>
 
 //////////////////////////////////////////////////////////////////////////////

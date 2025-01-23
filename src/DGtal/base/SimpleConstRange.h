@@ -48,6 +48,7 @@
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
