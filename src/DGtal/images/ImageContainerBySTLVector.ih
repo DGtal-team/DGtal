@@ -42,7 +42,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 DGtal::ImageContainerBySTLVector<Domain, T>::
 ImageContainerBySTLVector(const Domain &aDomain ) :
@@ -53,7 +53,7 @@ ImageContainerBySTLVector(const Domain &aDomain ) :
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 DGtal::ImageContainerBySTLVector<Domain,T>
 ::ImageContainerBySTLVector(const ImageContainerBySTLVector& other)
@@ -62,7 +62,7 @@ DGtal::ImageContainerBySTLVector<Domain,T>
 {
 }
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 DGtal::ImageContainerBySTLVector<Domain,T>&
 DGtal::ImageContainerBySTLVector<Domain,T>
@@ -79,7 +79,7 @@ DGtal::ImageContainerBySTLVector<Domain,T>
 
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 DGtal::ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 {
@@ -87,7 +87,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 T
 DGtal::ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
@@ -96,7 +96,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) con
   return this->operator[](linearized( aPoint ) );
 }
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 void
 DGtal::ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
@@ -106,7 +106,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 const typename DGtal::ImageContainerBySTLVector<Domain, T>::Domain&
 DGtal::ImageContainerBySTLVector<Domain, T>::domain() const
@@ -115,7 +115,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::domain() const
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 typename DGtal::ImageContainerBySTLVector<Domain, T>::ConstRange
 DGtal::ImageContainerBySTLVector<Domain, T>::constRange() const
@@ -124,7 +124,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::constRange() const
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 typename DGtal::ImageContainerBySTLVector<Domain, T>::Range
 DGtal::ImageContainerBySTLVector<Domain, T>::range()
@@ -132,7 +132,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::range()
   return Range ( this->begin(), this->end(), DistanceFunctorFromPoint<Self>(this) );
 }
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 const typename DGtal::ImageContainerBySTLVector<Domain, T>::Vector&
 DGtal::ImageContainerBySTLVector<Domain, T>::extent() const
@@ -141,7 +141,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::extent() const
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 void
 DGtal::ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShift)
@@ -150,7 +150,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShif
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename V>
+template <typename TDomain, DGtal::concepts::CLabel V>
 inline
 void
 DGtal::ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
@@ -160,7 +160,7 @@ DGtal::ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out )
 }
 
 //------------------------------------------------------------------------------
-template <typename Domain, typename T>
+template <typename Domain, DGtal::concepts::CLabel T>
 inline
 bool
 DGtal::ImageContainerBySTLVector<Domain, T>::isValid() const
@@ -170,7 +170,7 @@ DGtal::ImageContainerBySTLVector<Domain, T>::isValid() const
 
 
 //------------------------------------------------------------------------------
-template <typename D, typename V>
+template <typename D, DGtal::concepts::CLabel V>
 inline
 std::string
 DGtal::ImageContainerBySTLVector<D, V>::className() const
@@ -181,7 +181,7 @@ DGtal::ImageContainerBySTLVector<D, V>::className() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
-template<typename Domain, typename T>
+template<typename Domain, DGtal::concepts::CLabel T>
 inline
 typename DGtal::ImageContainerBySTLVector<Domain, T>::Size
 DGtal::ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) const

@@ -41,7 +41,7 @@ namespace DGtal {
   /**
    * ImageSelector specialization when Preferences is LOW_ITER_I+LOW_BEL_I
    */
-  template <typename Domain,  typename Value>
+  template <typename Domain,  concepts::CLabel Value>
   struct ImageSelector<Domain,  Value, LOW_ITER_I+LOW_BEL_I>
   {
     /**
@@ -54,7 +54,7 @@ namespace DGtal {
   /**
    * ImageSelector specialization when Preferences is ITKIMAGEDATA_CONTAINER_I
    */
-  template <typename Domain,  typename Value>
+  template <typename Domain,  concepts::CLabel Value>
   struct ImageSelector<Domain,  Value, ITKIMAGEDATA_CONTAINER_I>
   {
     /**

@@ -58,7 +58,7 @@ namespace DGtal
   // constructor
   // ---------------------------------------------------------------------
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   ImageContainerByHashTree<Domain, Value, HashKey>
   ::ImageContainerByHashTree ( const unsigned int hashKeySize,
@@ -98,7 +98,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   ImageContainerByHashTree<Domain, Value, HashKey>
   ::ImageContainerByHashTree ( const Domain &aDomain,
@@ -141,7 +141,7 @@ namespace DGtal
 
 
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   ImageContainerByHashTree<Domain, Value, HashKey>
   ::ImageContainerByHashTree ( const unsigned int hashKeySize,
@@ -188,7 +188,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
 
   //------------------------------------------------------------------------------
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   const typename ImageContainerByHashTree<Domain, Value, HashKey >::Domain&
   ImageContainerByHashTree<Domain, Value, HashKey >::domain() const
@@ -197,7 +197,7 @@ namespace DGtal
   }
 
   //------------------------------------------------------------------------------
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   typename ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
   ImageContainerByHashTree<Domain, Value, HashKey >::constRange() const
@@ -205,7 +205,7 @@ namespace DGtal
     return ConstRange(  *this );
   }
   //------------------------------------------------------------------------------
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   typename ImageContainerByHashTree<Domain, Value, HashKey >::Range
   ImageContainerByHashTree<Domain, Value, HashKey >::range()
@@ -223,7 +223,7 @@ namespace DGtal
   }*/
 
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const Point& aPoint, const Value value )
@@ -232,7 +232,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const HashKey key, const Value value )
@@ -312,20 +312,20 @@ namespace DGtal
 
   }
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   Value ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const HashKey key ) const
   {
     return get ( key );
   }
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   Value ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const Point &aPoint ) const
   {
     return get ( aPoint );
   }
 
-  template < typename Domain, typename Value, typename HashKey >
+  template < typename Domain, concepts::CLabel Value, typename HashKey >
   inline
   Value ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const HashKey key ) const
   {
@@ -344,7 +344,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey >
+  template < typename Domain, concepts::CLabel Value, typename HashKey >
   inline
   Value ImageContainerByHashTree<Domain, Value, HashKey  >::reverseGet ( const HashKey key ) const
   {
@@ -371,7 +371,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   Value
   ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const Point & aPoint ) const
@@ -380,7 +380,7 @@ namespace DGtal
   }
 
   //Deprecated
-  template < typename Domain, typename Value, typename HashKey >
+  template < typename Domain, concepts::CLabel Value, typename HashKey >
   inline
   Value
   ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
@@ -403,7 +403,7 @@ namespace DGtal
       }
   }
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   HashKey
   ImageContainerByHashTree<Domain, Value, HashKey  >::getKey ( const Point & aPoint ) const
@@ -420,7 +420,7 @@ namespace DGtal
     return result;
   }
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   HashKey
   ImageContainerByHashTree<Domain, Value, HashKey  >::getIntermediateKey ( HashKey key ) const
@@ -429,7 +429,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   bool
   ImageContainerByHashTree<Domain, Value, HashKey  >::Iterator::next()
@@ -460,7 +460,7 @@ namespace DGtal
   //
   // ---------------------------------------------------------------------
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   bool
   ImageContainerByHashTree<Domain, Value, HashKey  >::removeNode ( HashKey key )
@@ -491,7 +491,7 @@ namespace DGtal
     return false;
   }
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::recursiveRemoveNode ( HashKey key, unsigned int nbRecursions )
@@ -515,7 +515,7 @@ namespace DGtal
   //
   // ---------------------------------------------------------------------
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::setDepth ( unsigned int depth )
@@ -527,7 +527,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   unsigned int
   ImageContainerByHashTree<Domain, Value, HashKey  >::getKeyDepth ( HashKey key ) const
@@ -541,7 +541,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   int*
   ImageContainerByHashTree<Domain, Value, HashKey  >::getCoordinatesFromKey ( HashKey key ) const
@@ -572,7 +572,7 @@ namespace DGtal
   }
 
 
-  template < typename Domain, typename Value, typename HashKey  >
+  template < typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   bool
   ImageContainerByHashTree<Domain, Value, HashKey  >::isKeyValid ( HashKey key ) const
@@ -599,7 +599,7 @@ namespace DGtal
   // ---------------------------------------------------------------------
   // Debug
   // ---------------------------------------------------------------------
-  template <typename Domain, typename Value , typename HashKey >
+  template <typename Domain, concepts::CLabel Value , typename HashKey >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( std::ostream& out, bool displayKeys ) const
@@ -610,7 +610,7 @@ namespace DGtal
     printTree ( ROOT_KEY, out, displayKeys );
   }
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, std::ostream& out, bool displayKeys ) const
@@ -643,7 +643,7 @@ namespace DGtal
       }
   }
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( std::ostream& out, unsigned int nbBits ) const
@@ -685,7 +685,7 @@ namespace DGtal
   }
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   void
   ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( std::ostream& out ) const
@@ -704,7 +704,7 @@ namespace DGtal
 
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   unsigned int
   ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes ( unsigned int intermediateKey ) const
@@ -728,7 +728,7 @@ namespace DGtal
 
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   unsigned int
   ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes() const
@@ -743,7 +743,7 @@ namespace DGtal
   }
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   unsigned int
   ImageContainerByHashTree<Domain, Value, HashKey  >::getNbEmptyLists() const
@@ -759,7 +759,7 @@ namespace DGtal
   }
 
 
-  template<typename Domain, typename Value, typename HashKey  >
+  template<typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   double
   ImageContainerByHashTree<Domain, Value, HashKey  >::getAverageCollisions() const
@@ -786,7 +786,7 @@ namespace DGtal
 
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   unsigned int
   ImageContainerByHashTree<Domain, Value, HashKey >::getMaxCollisions() const
@@ -808,7 +808,7 @@ namespace DGtal
   }
 
   //------------------------------------------------------------------------------
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   inline
   std::string
   ImageContainerByHashTree<Domain, Value, HashKey >::className() const
@@ -816,7 +816,7 @@ namespace DGtal
     return "ImageContainerByHashTree";
   }
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   Value
   ImageContainerByHashTree<Domain, Value, HashKey  >::blendChildren ( HashKey key ) const
   {
@@ -839,7 +839,7 @@ namespace DGtal
   }
 
 
-  template <typename Domain, typename Value, typename HashKey  >
+  template <typename Domain, concepts::CLabel Value, typename HashKey  >
   bool
   ImageContainerByHashTree<Domain, Value, HashKey >::checkIntegrity ( HashKey key, bool leafAbove ) const
   {
@@ -894,7 +894,7 @@ namespace DGtal
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
    */
-  template < typename Domain, typename Value, typename HashKey>
+  template < typename Domain, concepts::CLabel Value, typename HashKey>
   inline
   void
   ImageContainerByHashTree< Domain, Value, HashKey>::selfDisplay ( std::ostream & out ) const

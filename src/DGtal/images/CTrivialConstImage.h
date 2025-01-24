@@ -84,13 +84,12 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
 
    */
 
-  template <typename I>
+  template <typename I> 
+    requires concepts::CLabel<typename I::Value>
   struct CTrivialConstImage: concepts::CPointFunctor<I>
   {
 
   public:
-
-    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
     //Inner types
     typedef typename I::Domain Domain;
     BOOST_CONCEPT_ASSERT((concepts::CDomain<Domain>));

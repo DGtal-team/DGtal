@@ -121,8 +121,7 @@ namespace DGtal
    * @see testImageContainerBenchmark.cpp
    */
 
-  template <typename TDomain, typename TValue>
-
+  template <typename TDomain, concepts::CLabel TValue>
   class ImageContainerBySTLVector: public std::vector<TValue>
   {
 
@@ -149,7 +148,6 @@ namespace DGtal
 					    HyperRectDomain< typename Domain::Space > >::value ) );
 
     /// range of values
-    BOOST_CONCEPT_ASSERT ( ( concepts::CLabel<TValue> ) );
     typedef TValue Value;
 
     /////////////////// Data members //////////////////
@@ -539,7 +537,7 @@ namespace DGtal
    * @param object the object of class 'Image' to write.
    * @return the output stream after the writing.
    */
-  template <typename Domain, typename V>
+  template <typename Domain, concepts::CLabel V>
   inline
   std::ostream&
   operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain, V> & object )

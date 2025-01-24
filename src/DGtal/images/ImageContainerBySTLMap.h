@@ -92,7 +92,7 @@ namespace DGtal
    * @see testImage.cpp
    */
 
-  template <typename TDomain, typename TValue>
+  template <typename TDomain, concepts::CLabel TValue>
   class ImageContainerBySTLMap:
     public std::map<typename TDomain::Point, TValue >
   {
@@ -120,7 +120,6 @@ namespace DGtal
     static const typename Domain::Dimension dimension;
 
     /// range of values
-    BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
     typedef TValue Value;
     typedef DefaultConstImageRange<Self> ConstRange;
     typedef DefaultImageRange<Self> Range;
@@ -268,7 +267,7 @@ namespace DGtal
    * @param object the object of class 'Image' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDomain, typename TValue>
+  template <typename TDomain, concepts::CLabel TValue>
   inline
   std::ostream&
   operator<< ( std::ostream & out,

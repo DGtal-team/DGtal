@@ -39,27 +39,27 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
 								TValue>::dimension = TDomain::Space::dimension;
 
 //------------------------------------------------------------------------------
 
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::ImageContainerBySTLMap( DGtal::Clone<const TDomain> aDomain, const TValue& aValue): myDomainPtr( aDomain ), myDefaultValue( aValue )
 {
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::ImageContainerBySTLMap(const ImageContainerBySTLMap& other): Parent(other),
     myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
 {
 }
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>&
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
@@ -74,14 +74,14 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>
   return *this;
 }
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::~ImageContainerBySTLMap( )
 {
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Value
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::operator()(const Point &aPoint) const
@@ -95,7 +95,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::operator()(const Point &aPoint) c
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::setValue(const Point &aPoint, const Value &aValue)
@@ -108,7 +108,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::setValue(const Point &aPoint, con
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 const typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Domain&
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::domain() const
@@ -117,7 +117,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::domain() const
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::ConstRange
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::constRange() const
@@ -126,7 +126,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::constRange() const
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Range
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::range()
@@ -134,7 +134,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::range()
   return Range( *this );
 }
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::OutputIterator
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::outputIterator()
@@ -144,7 +144,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::outputIterator()
 
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 bool
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::isValid() const
@@ -153,7 +153,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::isValid() const
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::selfDisplay ( std::ostream & out ) const
@@ -163,7 +163,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::selfDisplay ( std::ostream & out 
 }
 
 //------------------------------------------------------------------------------
-template <typename TDomain, typename TValue>
+template <typename TDomain, DGtal::concepts::CLabel TValue>
 inline
 std::string
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::className() const

@@ -124,7 +124,7 @@ namespace DGtal
    * @see testImageContainerByHashTree.cpp
    *
    * */
-  template < typename TDomain, typename TValue, typename THashKey = typename DGtal::uint64_t >
+  template < typename TDomain, concepts::CLabel TValue, typename THashKey = typename DGtal::uint64_t >
   class ImageContainerByHashTree
   {
 
@@ -161,7 +161,7 @@ namespace DGtal
                                           HyperRectDomain<typename Domain::Space > >::value));
 
     /// values range
-  BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
+    // BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
     typedef TValue Value;
     //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
     typedef DefaultConstImageRange<Self> ConstRange;

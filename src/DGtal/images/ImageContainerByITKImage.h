@@ -89,13 +89,11 @@ namespace DGtal
      *
      * \see testITKImage.cpp
      */
-    template <typename TDomain, typename TValue>
+    template <typename TDomain, concepts::CLabel TValue>
     class ImageContainerByITKImage
     {
       // ----------------------- Standard services ------------------------------
     public:
-
-      BOOST_CONCEPT_ASSERT(( concepts::CLabel<TValue> ));
       BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
       typedef TValue Value;

@@ -90,15 +90,14 @@ Description of \b concept \b 'CColorMap' <p>
 # Notes
    */
   template <typename CMap>
+    requires concepts::CLabel<typename CMap::Value>
   struct CColorMap
   {
     // ----------------------- Concept checks ------------------------------
   public:
     
     typedef typename CMap::Value Value;
-    
-    BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
-    
+        
     BOOST_CONCEPT_USAGE( CColorMap )
     {
       CMap myCMap( myMin, myMax );

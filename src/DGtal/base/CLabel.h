@@ -42,8 +42,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
-#include "DGtal/base/Common.h"
+#include <concepts>
+#include <type_traits>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -88,11 +88,10 @@ namespace DGtal
        @tparam T the type that should be a model of CLabel.
     */
     template <typename T>
-    struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
-      boost::EqualityComparable<T>
-    {
-
-    }; // end of concept CLabel
+    concept CLabel = 
+      std::is_default_constructible_v<T> &&
+      std::is_copy_assignable_v<T>       &&
+      std::equality_comparable<T>;
 
   } // namespace concepts
 

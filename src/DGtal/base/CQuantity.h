@@ -42,8 +42,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
-#include "DGtal/base/Common.h"
+#include <concepts>
+#include <type_traits>
 #include "DGtal/base/CLabel.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -88,12 +88,9 @@ namespace DGtal
 
        @tparam T the type that should be a model of CQuantity.
     */
-    template <typename T>
-    struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
-    {
-
-
-    }; // end of concept CQuantity
+    template <concepts::CLabel T> 
+    struct CQuantity : boost::LessThanComparable<T>
+    { }; // end of concept CQuantity
 
   } // namespace concepts
 

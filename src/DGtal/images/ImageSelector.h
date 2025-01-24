@@ -71,12 +71,9 @@ namespace DGtal
    * \brief Aim:  Automatically defines an adequate image type according
    * to the hints given by the user.  
    */
-  template <typename Domain,  typename Value, int Preferences = 0 >
+  template <typename Domain,  concepts::CLabel Value, int Preferences = 0 >
   struct ImageSelector
   {
-
-    BOOST_CONCEPT_ASSERT((concepts::CLabel<Value>));
-
     // ----------------------- Local types ------------------------------
     /**
      * Adequate digital set representation for the given preferences.
