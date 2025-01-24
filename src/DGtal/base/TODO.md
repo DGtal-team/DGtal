@@ -1,2 +1,0 @@
-- [ ] CLabel.h
-- [ ] CQuantity.h (Simple)

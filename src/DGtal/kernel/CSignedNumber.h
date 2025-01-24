@@ -93,8 +93,8 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
      CBoundedInteger.
     
    */
-  template <typename T>
-  struct CSignedNumber: CQuantity<T>
+  template <concepts::CQuantity T>
+  struct CSignedNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:

@@ -62,7 +62,7 @@ namespace DGtal
 
        #  Refinement of
        -  CLabel 
-       -  boost::LessThanComparable
+       -  std::totally_ordered
 
        #  Associated types
 
@@ -88,9 +88,11 @@ namespace DGtal
 
        @tparam T the type that should be a model of CQuantity.
     */
-    template <concepts::CLabel T> 
-    struct CQuantity : boost::LessThanComparable<T>
-    { }; // end of concept CQuantity
+
+    template <typename T>
+    concept CQuantity = 
+      concepts::CLabel<T> &&
+      std::totally_ordered<T>;
 
   } // namespace concepts
 

@@ -97,8 +97,8 @@ BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
      CBoundedInteger.
     
    */
-  template <typename T>
-  struct CIntegralNumber: CQuantity<T>
+  template <concepts::CQuantity T>
+  struct CIntegralNumber 
   {
     // ----------------------- Concept checks ------------------------------
   public:

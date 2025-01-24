@@ -121,6 +121,8 @@ LpMetric, ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
 @tparam T the type that should be a model of CMetricSpace.
  */
 template <typename T>
+  requires concepts::CQuantity<typename T::Value> && 
+           concepts::CQuantity<typename T::RawValue>
 struct CMetricSpace:  boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
@@ -131,8 +133,6 @@ public:
   typedef typename T::RawValue RawValue;
 
   BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
-  BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
-  BOOST_CONCEPT_ASSERT(( CQuantity< RawValue > ));
 
   BOOST_CONCEPT_USAGE( CMetricSpace )
   {

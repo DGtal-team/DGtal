@@ -93,6 +93,7 @@ namespace DGtal
        @tparam T the type that should be a model of CGlobalGeometricEstimator.
     */
     template <typename T>
+      requires concepts::CQuantity<typename T::Quantity>
     struct CGlobalGeometricEstimator
     {
 
@@ -100,7 +101,6 @@ namespace DGtal
     public:
 
       typedef typename T::Quantity Quantity;
-      BOOST_CONCEPT_ASSERT(( concepts::CQuantity< Quantity > ));
 
       typedef typename T::ConstIterator ConstIterator;
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));

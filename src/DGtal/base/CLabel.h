@@ -61,9 +61,9 @@ namespace DGtal
        Models of CLabel can be default-constructible, assignable and equality comparable.
 
        # Refinement of 
-       - boost::DefaultConstructible
-       - boost::Assignable 
-       - boost::EqualityComparable
+       - std::is_default_constructible_v
+       - std::is_copy_assignable_v
+       - std::equality_comparable
 
        # Associated types
 

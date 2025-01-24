@@ -90,8 +90,8 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 
 
    */
-  template <typename T>
-  struct CUnsignedNumber: CQuantity<T>
+  template <concepts::CQuantity T>
+  struct CUnsignedNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:

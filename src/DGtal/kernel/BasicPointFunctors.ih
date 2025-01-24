@@ -141,7 +141,7 @@ DGtal::functors::Projector<S>::operator()( const TInputPoint& aPoint ) const
 }
 //------------------------------------------------------------------------------
 
-template< typename TP, typename TD, typename TV >
+template< typename TP, typename TD, DGtal::concepts::CQuantity TV >
 inline
 DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain
 ( ConstAlias< PointPredicate > aPtrPredicate,
@@ -153,14 +153,14 @@ DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFun
 
 }
 
-template< typename TP, typename TD, typename TV >
+template< typename TP, typename TD, DGtal::concepts::CQuantity TV >
 inline
 DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other )
     : myPtrPredicate( other.myPtrPredicate ), myDomain( other.myDomain), myTrueValue( other.myTrueValue ), myFalseValue( other.myFalseValue )
 {
 }
 
-template< typename TP, typename TD, typename TV >
+template< typename TP, typename TD, DGtal::concepts::CQuantity TV >
 inline
 typename DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::Value
 DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator()( const Point& aPoint ) const
@@ -175,7 +175,7 @@ DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator
     return myFalseValue;
 }
 
-template <typename TP, typename TD, typename TV>
+template <typename TP, typename TD, DGtal::concepts::CQuantity TV>
 inline
 DGtal::functors::PointFunctorFromPointPredicateAndDomain<TP,TD, TV> &
 DGtal::functors::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( const PointFunctorFromPointPredicateAndDomain<TP,TD,TV> &other)

@@ -92,8 +92,8 @@ uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
 @tparam T the type that is checked. T should be a model of
      CBoundedNumber.
    */
-  template <typename T>
-  struct CBoundedNumber: CQuantity<T>
+  template <concepts::CQuantity T>
+  struct CBoundedNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:

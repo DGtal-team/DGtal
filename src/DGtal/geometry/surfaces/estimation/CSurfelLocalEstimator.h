@@ -103,6 +103,7 @@ namespace DGtal {
   *  @tparam T the type that should be a model of CSurfelLocalEstimator.
   */
   template <typename T>
+      requires concepts::CQuantity<typename T::Quantity>
   struct CSurfelLocalEstimator
     : boost::DefaultConstructible<T>,  boost::CopyConstructible<T>, boost::Assignable<T>
   {
@@ -111,7 +112,6 @@ namespace DGtal {
   public:
 
     typedef typename T::Quantity Quantity;
-    BOOST_CONCEPT_ASSERT(( CQuantity< Quantity > ));
     typedef typename T::Surfel Surfel;
 
     BOOST_CONCEPT_USAGE( CSurfelLocalEstimator )
