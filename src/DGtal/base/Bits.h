@@ -29,9 +29,8 @@
 #define BITS_HPP
 
 #include <string>
+#include <algorithm>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/ExpressionTemplates.h"
 
 namespace DGtal
 {
@@ -57,7 +56,6 @@ namespace DGtal
     static std::string bitString(T value, unsigned nbBits = 0)
     {
       std::string bitStr;
-      /*functors::Min<unsigned int> min;*/
 
       // if the requested number of bit is 0, use the size of the data type instead
       if(nbBits == 0) nbBits = sizeof(T)*8;
