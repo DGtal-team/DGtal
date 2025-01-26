@@ -27,8 +27,8 @@
  *
  * This file is part of the DGtal library.
  */
-#if !defined(WITH_CAIRO)
-#error "Board3DTo2D requires Cairo (WITH_CAIRO option when building DGtal)"
+#if !defined(DGTAL_WITH_CAIRO)
+#error "Board3DTo2D requires Cairo (DGTAL_WITH_CAIRO option when building DGtal)"
 #endif
 
 #if defined(Board3DTo2D_RECURSES)

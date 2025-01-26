@@ -17,7 +17,7 @@ set(DGTAL_TESTS_SRC
   testConstImageFunctorHolder
   )
 
-if( WITH_HDF5 )
+if(  DGTAL_WITH_HDF5 )
   set(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC} testImageFactoryFromHDF5)
 endif()
 

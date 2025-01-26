@@ -36,8 +36,8 @@
 /** Prevents repeated inclusion of headers. */
 #define RealFFT_h
 
-#ifndef WITH_FFTW3
-  #error You need to have activated FFTW3 (WITH_FFTW3) to include this file.
+#ifndef DGTAL_WITH_FFTW3
+  #error You need to have activated FFTW3 (DGTAL_WITH_FFTW3) to include this file.
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ struct FFTWWrapper
     static_assert( ! std::is_same<Real, Real>::value, "[DGtal::RealFFT] Value type not supported." );
   };
 
-#ifdef WITH_FFTW3_DOUBLE
+#ifdef DGTAL_WITH_FFTW3_DOUBLE
 /** Wrapper implementations to fftw functions for double values.
  * @warning Remember to link against fftw3 library.
  */
@@ -169,7 +169,7 @@ struct FFTWWrapper<double>
   };
 #endif
 
-#ifdef WITH_FFTW3_FLOAT
+#ifdef DGTAL_WITH_FFTW3_FLOAT
 /** Wrapper implementations to fftw functions for float values.
  * @warning Remember to link against fftw3f library.
  */
@@ -181,7 +181,7 @@ struct FFTWWrapper<float>
   };
 #endif
 
-#ifdef WITH_FFTW3_LONG
+#ifdef DGTAL_WITH_FFTW3_LONG
 /** Wrapper implementations to fftw functions for long double values.
  * @warning Remember to link against fftw3l library.
  */

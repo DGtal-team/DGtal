@@ -22,9 +22,9 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 
 
 
-set(DGtal_VERSION_MAJOR 1)
-set(DGtal_VERSION_MINOR 4)
-set(DGtal_VERSION_PATCH 2)
+set(DGtal_VERSION_MAJOR 2)
+set(DGtal_VERSION_MINOR 0)
+set(DGtal_VERSION_PATCH beta)
 set(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 set(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 set(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
@@ -116,7 +116,7 @@ include(CpackCtest)
 # -----------------------------------------------------------------------------
 # Randomized build 2/2.
 # -----------------------------------------------------------------------------
-if (BUILD_EXAMPLES OR BUILD_TESTING)
+if (DGTAL_BUILD_EXAMPLES OR DGTAL_BUILD_TESTS)
  message(STATUS "Randomized examples/testing")
  if (DGTAL_RANDOMIZED_TESTING_THRESHOLD EQUAL "100")
   message(STATUS "All examples or unit-tests will be compiled (cmake variable DGTAL_RANDOMIZED_TESTING_THRESHOLD)")

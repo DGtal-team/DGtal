@@ -10,7 +10,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-if ( WITH_GMP )
+if ( DGTAL_WITH_GMP )
   set(DGTAL_EXAMPLES_GMP_SRC
       convergents-biginteger
       extended-euclid

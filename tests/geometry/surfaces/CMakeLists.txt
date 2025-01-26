@@ -29,7 +29,7 @@ foreach(FILE ${TESTS_SURFACES_SRC})
 endforeach()
 
 
-if (  WITH_CGAL )
+if (   DGTAL_WITH_CGAL )
   set(CGAL_TESTS_SRC
     testMonge )
   foreach(FILE ${CGAL_TESTS_SRC})

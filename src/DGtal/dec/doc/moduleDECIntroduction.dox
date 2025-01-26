@@ -358,7 +358,7 @@ The solving method used is provided as the second template parameter of Discrete
 It depends on the linear algebra backend you pass as second template argument in the definition of DiscreteExteriorCalculus.
 Usually some linear solvers are provided in the linear algebra backend itself, but you can create your own as long as it models the CLinearAlgebraSolver concept.
 
-If you activated Eigen support during compilation (i.e. "-DWITH_EIGEN=true"), you can use any solver provided in the EigenSupport.h header.
+Using Eigen detected when building the project,  you can use any solver provided in the EigenSupport.h header.
 It is recommended to use the EigenLinearAlgebraBackend since it is fast and provide a lot of linear solvers.
 
 Once the DEC solver is created, the linear operator \f$f\f$ must be passed via DiscreteExteriorCalculusSolver.compute.

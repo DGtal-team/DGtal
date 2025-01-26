@@ -62,7 +62,7 @@ namespace DGtal
  * \brief Aim: Import a 3D DICOM image from file series.
  *
  *  This class requires ITK installation (http://www.itk.org/ITK/resources/software.html)
- *  and to compile DGtal with -DWITH_ITK option.
+ *  and to compile DGtal with  -DDGTAL_WITH_ITK option.
  *
  *  Simple example: (extract from test/io/readers/testDicomReader.cpp)
  *
