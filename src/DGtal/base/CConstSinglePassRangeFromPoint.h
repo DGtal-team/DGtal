@@ -82,35 +82,11 @@ namespace DGtal
        @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
     */
     template <CConstSinglePassRange T>
-      struct CConstSinglePassRangeFromPoint
-      {
-        // ----------------------- Concept checks ------------------------------
-      public:
-        // 1. define first provided types (i.e. inner types), like
-        typedef typename T::Point Point;
-
-        // 2. then check the presence of data members, operators and methods with
-        BOOST_CONCEPT_USAGE( CConstSinglePassRangeFromPoint )
-        {
-          checkConstConstraints();
-        }
-        void checkConstConstraints() const
-        {
-          // const method dummyConst should take parameter myA of type A and return
-          // something of type B
-          ConceptUtils::sameType( myB, myX.begin( myPoint ) );
-        }
-        // ------------------------- Private Datas --------------------------------
-      private:
-        T myX; // do not require T to be default constructible.
-        Point myPoint;
-        ConstIterartor myB;
-
-        // ------------------------- Internals ------------------------------------
-      private:
-
-      }; // end of concept CConstSinglePassRangeFromPoint
-
+    concept CConstSinglePassRangeFromPoint = 
+      requires(const Container& x, typename T::Point p, typename T::ConstIterator it) {
+        ConceptUtils::sameType( it, x.begin( p ) );
+      };
+      
   } // namespace concepts
 
 } // namespace DGtal
