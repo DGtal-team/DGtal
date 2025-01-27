@@ -1,3 +1,10 @@
+# DGtal 1.5beta
+## New features / critical changes
+## Changes
+- *DEC*
+  - Add normal corrected FEM calculus for Poisson problem and Interpolated Calculus variant of DEC (Colin Weill--Duflos, PULL_REQUEST)
+## Bug fixes
+
 # DGtal 1.4.2
 
 ## New features
@@ -44,8 +51,6 @@
 - *DEC*
   - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
 
-
-	
 # DGtal 1.4
 
 ## New features / critical changes
@@ -56,8 +61,8 @@
     conan.io, especially on Windows, new `ENABLE_CONAN` cmake
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
-  - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
-    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
+  - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option
+    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696))
   - Better documentation style using doxygen-awesome.css. (David Coeurjolly,
     [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
@@ -73,8 +78,8 @@
     [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
     [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
-  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option 
-    (documentation update instead) (David Coeurjolly, 
+  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option
+    (documentation update instead) (David Coeurjolly,
     [#1729](https://github.com/DGtal-team/DGtal/pull/1729))
 
 - *IO*
@@ -124,8 +129,8 @@
     Hull files (David Coeurjolly, [#1716](https://github.com/DGtal-team/DGtal/pull/1716))
   - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
     [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
-  - For now, removing Cairo deps install on windows (6hours long build 
-    with conan in the windows debug mode). (David Coeurjolly, 
+  - For now, removing Cairo deps install on windows (6hours long build
+    with conan in the windows debug mode). (David Coeurjolly,
     [#1705](https://github.com/DGtal-team/DGtal/pull/1705))
   - Fix conan file upload issue and log message. (Bertrand Kerautret,
     [#1704](https://github.com/DGtal-team/DGtal/pull/1704))
@@ -163,16 +168,16 @@
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
 	  [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
-  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, 
+  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret,
      Isabelle Sivignon [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
-  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new 
+  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new
     tests in testFrechetShortcut (Isabelle Sivignon, [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
 
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
-  - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
+  - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ`
     (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
   - Fix of the `PointListReader::getPolygonsFromInputStream` (Xun Gong,
     [#1708](https://github.com/DGtal-team/DGtal/pull/1708))
@@ -586,7 +591,7 @@
     (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *io*
-  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
   - New Viridis ColorGradientPreset and clean of  useless template specializations in
     the GenericWriter for color image. (Bertrand Kerautret
@@ -762,7 +767,7 @@
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element.
-    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))
   - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
     Fix issue #1501.
     (Pablo Hernandez-Cerdan, [#1506](https://github.com/DGtal-team/DGtal/pull/1506))
