@@ -83,8 +83,8 @@ namespace DGtal
        @tparam T the type that is checked. T should be a model of CSinglePassRange.
 
     */
-    template <typename T>
-    struct CSinglePassRange : CConstSinglePassRange<T>
+    template <CConstSinglePassRange T>
+    struct CSinglePassRange
     {
       // ----------------------- Concept checks ------------------------------
     public:

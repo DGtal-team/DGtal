@@ -83,8 +83,8 @@ namespace DGtal
        @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
        @tparam Value the type of object t in (*it) = t.
     */
-    template <typename T, typename Value>
-    struct CSinglePassRangeWithWritableIterator : CConstSinglePassRange<T>
+    template <CConstSinglePassRange T, typename Value>
+    struct CSinglePassRangeWithWritableIterator
     {
       // ----------------------- Concept checks ------------------------------
     public:

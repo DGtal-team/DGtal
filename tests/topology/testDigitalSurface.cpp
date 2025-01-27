@@ -486,6 +486,19 @@ bool testLightExplicitDigitalSurface()
 
 
 template <typename KSpace>
+  requires CConstSinglePassRange<
+    DigitalSurface<
+      DigitalSetBoundary<
+        KSpace, 
+        typename DigitalSetSelector<
+          HyperRectDomain<
+            typename KSpace::Space
+          >, 
+          BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS
+        >::Type
+      >
+    > 
+  >
 bool testDigitalSurface()
 {
   unsigned int nbok = 0;
@@ -520,7 +533,6 @@ bool testDigitalSurface()
   typedef DigitalSurface<DSContainer> MyDS;
 
   //Checking the type as a model of CSinglePassConstRange
-  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange < MyDS> ));
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph < MyDS> ));
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph < MyDS> ));
   

@@ -81,8 +81,8 @@ namespace DGtal
        #  Notes
        @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
     */
-    template <typename T>
-      struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T>
+    template <CConstSinglePassRange T>
+      struct CConstSinglePassRangeFromPoint
       {
         // ----------------------- Concept checks ------------------------------
       public:

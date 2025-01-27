@@ -123,13 +123,12 @@ DGtal::imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg,
 }
 
 //------------------------------------------------------------------------------
-template<typename R, typename I>
+template<DGtal::concepts::CConstSinglePassRange R, typename I>
 inline
 void 
 DGtal::imageFromRangeAndValue(const R& aRange, I& aImg, 
 			      const typename I::Value& aValue)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CConstSinglePassRange<R> ));
   BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
 
   imageFromRangeAndValue( aRange.begin(), aRange.end(), aImg, aValue); 

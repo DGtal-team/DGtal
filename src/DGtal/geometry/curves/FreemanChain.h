@@ -884,6 +884,7 @@ public:
      * @tparam TRange  type of points range
      */
     template<typename TRange>
+    requires concepts::CConstSinglePassRange<TRange>
     static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
     
     /**

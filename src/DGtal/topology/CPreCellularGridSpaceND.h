@@ -282,6 +282,9 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 @tparam T the type that should be a model of CPreCellularGridSpaceND.
  */
 template <typename T>
+requires 
+  CConstSinglePassRange<typename T::Cells> &&
+  CConstSinglePassRange<typename T::SCells>
 struct CPreCellularGridSpaceND
   : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
 {
@@ -311,8 +314,6 @@ public:
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Integer, typename Space::Integer >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector, typename Space::Vector >::value ));
-  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange< Cells > ));
-  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange< SCells > ));
   BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< CellSet > ));
   BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SCellSet > ));
   BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SurfelSet > ));

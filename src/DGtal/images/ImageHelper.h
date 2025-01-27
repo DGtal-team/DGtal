@@ -175,7 +175,7 @@ namespace DGtal
    * @tparam R any model of CConstSinglePassRange
    * @tparam I any model of CImage
    */
-  template<typename R, typename I>
+  template<DGtal::concepts::CConstSinglePassRange R, typename I>
   void imageFromRangeAndValue(const R& aRange, I& aImg, 
 			      const typename I::Value& aValue = 0); 
 

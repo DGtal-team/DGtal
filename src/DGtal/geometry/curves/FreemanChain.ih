@@ -705,10 +705,10 @@ void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TConstIterator& i
 
 template <typename TInteger>
 template <typename TRange>
+requires DGtal::concepts::CConstSinglePassRange<TRange>
 inline
 void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CConstSinglePassRange<TRange> ));
   readFromPointsRange( aRange.begin(), aRange.end(), c ); 
 }
 

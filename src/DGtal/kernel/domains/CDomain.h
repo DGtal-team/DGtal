@@ -125,8 +125,8 @@ namespace DGtal
    *
    * @todo Complete domain checking.
    */
-  template <typename T>
-  struct CDomain : public CConstSinglePassRange<T>
+  template <CConstSinglePassRange T>
+  struct CDomain
   {
     // ----------------------- Concept checks ------------------------------
   public:

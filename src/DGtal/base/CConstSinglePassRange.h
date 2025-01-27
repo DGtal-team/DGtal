@@ -40,9 +40,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include "DGtal/base/Common.h"
-#include "boost/concept_check.hpp"
-#include "DGtal/base/ConceptUtils.h"
+#include <iterator>
+#include <concepts>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,7 +72,7 @@ namespace DGtal
 
        # Valid expressions and semantics
 
-       | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+       | Name          | Expression | Type requirements   | Return *type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        | begin of range| \e x.begin()|                    | \e ConstIterator |             | returns a forward iterator on the beginning of the range | | |
        | end of range  | \e x.end()|                      | \e ConstIterator |             | returns a forward iterator after the end of the range | | |
@@ -88,29 +87,20 @@ namespace DGtal
        # Models
 
     */
-    template <typename T>
-    struct CConstSinglePassRange
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::ConstIterator ConstIterator;
-    
-      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
-    
-      BOOST_CONCEPT_USAGE(CConstSinglePassRange)
-      {
-        checkConstConstraints();
-      }
-      void checkConstConstraints() const
-      {
-        concepts::ConceptUtils::sameType( it, i.begin() );
-        concepts::ConceptUtils::sameType( it, i.end() );
-      }
-    
-    private:
-      T i;
-      ConstIterator it;
-    }; // end of concept CConstSinglePassRange
+    template <typename Container>
+    concept CConstSinglePassRange = 
+    requires(const Container& x, typename Container::ConstIterator it) {
+        ++it;
+        requires std::convertible_to<decltype(  it == it) , bool>;
+        requires std::convertible_to<decltype(!(it == it)), bool>;
+        requires std::convertible_to<
+          typename boost::iterator_traversal<typename Container::ConstIterator>::type, 
+          boost::single_pass_traversal_tag
+        >; 
+
+        concepts::ConceptUtils::sameType(it, x.begin());
+        concepts::ConceptUtils::sameType(it, x.end());
+    };
 
   } // namespace concepts
     
