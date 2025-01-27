@@ -40,7 +40,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,30 +89,11 @@ namespace DGtal
 
        @tparam T the type that should be a model of CBackInsertable.
     */
-    template <typename T>
-    struct CBackInsertable
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::value_type value_type;
-      BOOST_CONCEPT_USAGE( CBackInsertable )
-      {
-        myX.push_back( myV );
-        checkConstConstraints();
-      }
-      void checkConstConstraints() const
-      {
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      value_type myV;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CBackInsertable
-
+    template <typename Container>
+    concept CBackInsertable = 
+    requires(Container x, typename Container::value_type a){
+      x.push_back(a);
+    };
   } // namespace concepts
 
 } // namespace DGtal
