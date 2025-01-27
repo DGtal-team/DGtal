@@ -1488,10 +1488,14 @@ namespace DGtal
             auto v      = sharp( j, i );
             auto edge_i = mySurfaceMesh->makeEdge( vertices[ i ],
                                                    vertices[ ( i + 1 ) % nf ] );
-            if ( v != 0.0 )
-              triplets.emplace_back( Triplet(
-              (SparseMatrix::StorageIndex)f + j * mySurfaceMesh->nbFaces(),
-              (SparseMatrix::StorageIndex)edge_i, v ) );
+            if(vertices[i] < vertices[(i + 1) % nf])
+            triplets.emplace_back( Triplet(
+                (SparseMatrix::StorageIndex)3 * f + j,
+                (SparseMatrix::StorageIndex)edge_i, v ) );
+            else
+            triplets.emplace_back( Triplet(
+                (SparseMatrix::StorageIndex)3 * f + j,
+                (SparseMatrix::StorageIndex)edge_i, -v ) );
           }
       }
       mySharp.setFromTriplets( triplets.begin(), triplets.end() );
@@ -1510,17 +1514,22 @@ namespace DGtal
         DenseMatrix flat    = this->flat( f );
         const auto vertices = mySurfaceMesh->incidentVertices( f );
         for ( auto i = 0u; i < nf; ++i )
-          for ( auto j = 0; j < 3; ++j )
-          {
-            auto v      = flat( i, j );
+        for ( auto j = 0; j < 3; ++j )
+        {
             auto edge_i = mySurfaceMesh->makeEdge( vertices[ i ],
-                                                   vertices[ ( i + 1 ) % nf ] );
-            if ( v != 0.0 )
-              triplets.emplace_back( Triplet(
-              (SparseMatrix::StorageIndex)edge_i,
-              (SparseMatrix::StorageIndex)f + j * mySurfaceMesh->nbFaces(),
-              v ) );
-          }
+                vertices[ ( i + 1 ) % nf ] );
+            auto v      = flat( i, j ) / (double) mySurfaceMesh->edgeFaces(edge_i).size();
+            if(vertices[i] < vertices[(i + 1) % nf])
+            triplets.emplace_back( Triplet(
+                (SparseMatrix::StorageIndex)edge_i,
+                (SparseMatrix::StorageIndex)3 * f + j,
+                v ) );
+            else
+            triplets.emplace_back( Triplet(
+                (SparseMatrix::StorageIndex)edge_i,
+                (SparseMatrix::StorageIndex)3 * f + j,
+                -v ) );
+        }
       }
       myFlat.setFromTriplets( triplets.begin(), triplets.end() );
       return myFlat;

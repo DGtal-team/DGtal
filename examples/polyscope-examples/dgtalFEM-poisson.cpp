@@ -105,7 +105,7 @@ int main()
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
 
   auto h=.7   ; //gridstep
-  params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", h );
+  params( "polynomial", "0.1*y*y -0.1*x*x - 2.1*z" )( "gridstep", h );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto K               = SH3::getKSpace( params );
