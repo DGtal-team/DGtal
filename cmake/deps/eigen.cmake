@@ -12,10 +12,10 @@
 
 option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
 option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
-option(WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if WITH_ITK=ON)" ON)
+option(DGTAL_WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if DGTAL_WITH_ITK=ON)" ON)
 
 
-if (WITH_ITK AND WITH_EIGEN_ITK)
+if (DGTAL_WITH_ITK AND DGTAL_WITH_EIGEN_ITK)
    message(STATUS "Using EIGEN from ITK project, to avoid any eigen conflit version we strongly recommand to compile ITK using cmake option -DITK_USE_SYSTEM_EIGEN:BOOL=on ")
    return()    
 endif()
