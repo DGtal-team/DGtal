@@ -21,6 +21,11 @@
 - *Topology*
   - Fixing images in the Cubical Complex documentation page (David Coeurjolly, [#1748](https://github.com/DGtal-team/DGtal/pull/1748)) 
 
+- *Build*
+  - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. 
+  (Bertrand Kerautret, [#1756](https://github.com/DGtal-team/DGtal/pull/1756)
+
+
 # DGtal 1.4.1
 
 ## New features / critical changes
