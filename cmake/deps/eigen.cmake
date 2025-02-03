@@ -9,12 +9,20 @@
 # OF ANY KIND, either express or implied. See the License for the specific language
 # governing permissions and limitations under the License.
 #
-if(TARGET Eigen3::Eigen)
-    return()
-endif()
 
 option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
 option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
+option(WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if WITH_ITK=ON)" ON)
+
+
+if (WITH_ITK AND WITH_EIGEN_ITK)
+   message(STATUS "Using EIGEN from ITK project, to avoid any eigen conflit version we strongly recommand to compile ITK using cmake option -DITK_USE_SYSTEM_EIGEN:BOOL=on ")
+   return()    
+endif()
+
+if(TARGET Eigen3::Eigen)
+    return()
+endif()
 
 if(EIGEN_ROOT)
     message(STATUS "Third-party (external): creating target 'Eigen3::Eigen' for external path: ${EIGEN_ROOT}")
