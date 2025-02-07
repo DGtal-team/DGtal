@@ -122,7 +122,7 @@ int main( int argc, char** argv )
   {
     params( "surfaceComponents" , "All" );
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
-                   SH3::saveOBJ( surface, "source.obj" );
+    SH3::saveOBJ( surface, "source.obj" );
   }
   
   trace.beginBlock ( "Thinning" );
