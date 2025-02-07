@@ -36,7 +36,6 @@ DGtal/Catch examples
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-// #include "ConfigExamples.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 

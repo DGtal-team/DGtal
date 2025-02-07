@@ -209,7 +209,6 @@ public:
     */
     typedef MPolynomial< n - 1, X, 
                          typename std::allocator_traits<Alloc>::template rebind_alloc<X> > MPolyNM1;
-                         // typename Alloc::template rebind<X>::other > MPolyNM1;
 
     template<int nn, class TT, class AA, class SS>
     friend class MPolynomialEvaluator;
@@ -424,7 +423,6 @@ public:
     typedef MPolynomial< n, Ring, Alloc > MPolyN;
     typedef MPolynomial< n - 1, X, 
                          typename std::allocator_traits<Alloc>::template rebind_alloc<X> > MPolyNM1;
-                         // typename Alloc::template rebind<X>::other > MPolyNM1;
   private:
     const MPolyN & myPoly; ///< The polynomial in question
     const X & myEvalPoint; ///< the evaluation point
@@ -810,7 +808,6 @@ public:
     typedef TAlloc Alloc;
     typedef typename std::allocator_traits<Alloc>::pointer TPointer;
     typedef typename std::vector<TPointer, typename std::allocator_traits<Alloc>::template rebind_alloc<TPointer> >::size_type Size;
-    // typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
    
   private:
     Alloc myAllocator;
@@ -1000,7 +997,6 @@ public:
     */
     typedef IVector< MPolyNM1, 
                      typename std::allocator_traits<Alloc>::template rebind_alloc<MPolyNM1>, (n > 1) >
-                     // typename Alloc::template rebind<MPolyNM1 >::other, (n>1) >
     Storage;
     typedef typename Storage::Size Size;
 

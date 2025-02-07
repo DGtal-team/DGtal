@@ -97,8 +97,7 @@ checkSkelStarCvxHFullConvexity( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point  Point;
-  // typedef std::vector<Point>      PointRange;
-
+  
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
   Point hi = Point::diagonal( width );
