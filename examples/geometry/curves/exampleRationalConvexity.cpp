@@ -62,9 +62,8 @@ using namespace Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main( )
 {
-  ((void) argc); ((void) argv);
   trace.beginBlock ( "Example for 2d gridcurves" );
   string S = examplesPath + "samples/contourS.fc";
 

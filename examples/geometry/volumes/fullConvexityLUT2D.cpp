@@ -167,9 +167,8 @@ displaySimplicityTable( Board2D & board,
 }
 
 
-int main( int argc, char** argv )
+int main( )
 {
-  ((void) argc); ((void) argv);
   DConv dconv( Point::diagonal( -5 ), Point::diagonal( 5 ) );
   
   trace.beginBlock ( "Generate 2d tables" );

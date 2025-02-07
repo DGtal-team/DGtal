@@ -296,10 +296,8 @@ checkFullConvexityCharacterization( int width )
   return fc == proj_fc;
 }
 
-int main( int argc, char* argv[] )
+int main( )
 {
-  ((void) argc); ((void) argv);
-
   int NB_TEST1 = 5;
   int NB_TEST2 = 5;
   int NB_TEST3 = 5;

@@ -388,9 +388,8 @@ void outputResults( Dimension dim,
   
 */
 
-int main( int argc, char* argv[] )
+int main( )
 {
-  ((void) argc); ((void) argv);
   // P-convexity
   srand( 0 );
   if ( false )
