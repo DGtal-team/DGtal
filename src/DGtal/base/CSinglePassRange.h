@@ -84,24 +84,11 @@ namespace DGtal
 
     */
     template <CConstSinglePassRange T>
-    struct CSinglePassRange
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::Iterator Iterator;
-
-      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
-
-      BOOST_CONCEPT_USAGE(CSinglePassRange)
-      {
-        Iterator it=i.begin();
-        it=i.end();
-      };
-
-    private:
-      T i;
-    }; // end of concept CSinglePassRange
-
+    concept CSinglePassRange = requires (T i) {
+      typename T::iterator; // Check for existance 
+      typename T::iterator it = i.begin();
+      it = i.end(); // Requires the iterator to be copyable 
+    };
   } // namespace concepts
 
 } // namespace DGtal
