@@ -128,3 +128,11 @@ if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   message(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 endif()
+
+#------------------------------------------------------------------------------
+# Concepts options
+#------------------------------------------------------------------------------
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # Allows compiler to tells more about concept failure
+  add_compile_options(-fconcepts-diagnostics-depth=3)
+endif()
