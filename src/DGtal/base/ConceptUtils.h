@@ -265,7 +265,35 @@ namespace ConceptUtils
   */
   void checkTrueOrFalse( const TagTrue & tag );
 
+  /**
+     \brief Equivalent of boost::OutputIterator
+   
+      #  Notation
+       - \a it : A type that is a model of OutputIterator
+       - \a v : object of type Value, that can be written to the iterator
+     
+     #  Valid expressions and semantics
+     | Name                                   | Expression       | Type requirements | Return type     | Precondition | Semantics                                          | Post condition | Complexity |
+     |----------------------------------------|------------------|-------------------|-----------------|--------------|----------------------------------------------------|----------------|------------|
+     | Dereference                            | *it              |                   |                 |              |                                                    |                |            |
+     | Dereference and assign                 | *it = v          |                   |                 |              |                                                    |                |            |
+     | Preincrement                           | ++it             |                   | OutputIterator& |              |                                                    |                |            |
+     | Postincrement                          | it++             |                   |                 |              |                                                    |                |            |
+     | Postincrement, dereference, and assign | *it++ = v        |                   |                 |              |                                                    |                |            |
+     
 
+     Unlike std::output_iterator, this concept does not requires for iterators
+     to be substracted together, to define subtypes, ...
+   */ 
+  template<typename I, typename V>
+  concept OutputIterator = requires(I it, V v)
+  {
+    *it;
+    *it = v;
+    { ++it } -> std::same_as<I&>;
+    it++;
+    *it++ = v;
+  };
 } // end of namespace ConceptUtils
   } //end of namespace concepts.
 } // namespace DGtal
