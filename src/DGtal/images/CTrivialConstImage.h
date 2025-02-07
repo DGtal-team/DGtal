@@ -85,10 +85,10 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
    */
 
   template <typename I> 
-    requires concepts::CLabel<typename I::Value>
-  struct CTrivialConstImage: concepts::CPointFunctor<I>
+  requires concepts::CLabel<typename I::Value> &&
+           concepts::CPointFunctor<I>
+  struct CTrivialConstImage
   {
-
   public:
     //Inner types
     typedef typename I::Domain Domain;

@@ -59,6 +59,7 @@ namespace DGtal
  *
  */
   template <typename TImageContainer, typename TFunctor= functors::Cast< typename TImageContainer::Value > >
+  requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value>
   struct HDF5Reader
   {
     // ----------------------- Standard services ------------------------------
@@ -72,7 +73,6 @@ namespace DGtal
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));

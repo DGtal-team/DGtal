@@ -37,11 +37,10 @@
 
 template <typename T, typename TFunctor>
 template <typename Word>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, Word, typename T::Value >
 T
 DGtal::RawReader<T, TFunctor>::importRaw(const std::string& filename, const Vector& extent, const Functor& aFunctor)
 {
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Word, Value > )) ;
-
     FILE * fin;
     fin = fopen( filename.c_str() , "rb" );
 

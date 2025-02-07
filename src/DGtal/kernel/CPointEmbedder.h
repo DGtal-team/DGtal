@@ -92,7 +92,8 @@ It adds inner types to functor.
 @tparam T the type that should be a model of CPointEmbedder.
 */
 template <typename T>
-struct CPointEmbedder : CUnaryFunctor<T, typename T::Point, typename T::RealPoint>
+requires CUnaryFunctor<T, typename T::Point, typename T::RealPoint>
+struct CPointEmbedder 
 {
     // ----------------------- Concept checks ------------------------------
 public:

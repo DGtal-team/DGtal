@@ -58,6 +58,7 @@ DGtal::Surfaces<TKSpace>::~Surfaces()
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointPredicate>
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 typename DGtal::Surfaces<TKSpace>::SCell
 DGtal::Surfaces<TKSpace>::
 findABel
@@ -65,8 +66,6 @@ findABel
   const PointPredicate & pp,
   unsigned int nbtries)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
-
   DGtal::InputException dgtalerror;
   Point sizes = K.upperBound() - K.lowerBound();
   Point x1 = K.lowerBound();
@@ -95,6 +94,7 @@ findABel
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointPredicate>
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 typename DGtal::Surfaces<TKSpace>::SCell
 DGtal::Surfaces<TKSpace>::
 findABel
@@ -102,7 +102,6 @@ findABel
   const PointPredicate & pp,
   Point x1, Point x2 )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   // (1) Checks the two candidates in the space.
   bool val_v1 = pp( x1 ); // dset.find( x1 ) != dset.end();
   ASSERT( val_v1 != pp( x2 ) );
@@ -175,6 +174,7 @@ findABel
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SCellSet, typename PointPredicate >
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::
 trackBoundary( SCellSet & surface,
@@ -183,8 +183,6 @@ trackBoundary( SCellSet & surface,
                const PointPredicate & pp,
                const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
-
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -228,6 +226,7 @@ trackBoundary( SCellSet & surface,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SCellSet, typename SurfelPredicate >
+requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
 void
 DGtal::Surfaces<TKSpace>::
 trackSurface( SCellSet & surface,
@@ -236,8 +235,6 @@ trackSurface( SCellSet & surface,
               const SurfelPredicate & sp,
               const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
-
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -282,6 +279,7 @@ trackSurface( SCellSet & surface,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SCellSet, typename SurfelPredicate >
+requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
 void
 DGtal::Surfaces<TKSpace>::
 trackClosedSurface( SCellSet & surface,
@@ -290,8 +288,6 @@ trackClosedSurface( SCellSet & surface,
                     const SurfelPredicate & sp,
                     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
-
   SCell b;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -329,6 +325,7 @@ trackClosedSurface( SCellSet & surface,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointPredicate>
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::track2DBoundary
 ( std::vector<SCell> & aSCellContour2D,
@@ -337,7 +334,6 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   ASSERT( K.dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -401,6 +397,7 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointPredicate>
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 void
 DGtal::Surfaces<TKSpace>::track2DSliceBoundary
 ( std::vector<SCell> & aSCellContour2D,
@@ -410,7 +407,6 @@ DGtal::Surfaces<TKSpace>::track2DSliceBoundary
   const PointPredicate & pp,
   const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );
@@ -472,6 +468,7 @@ DGtal::Surfaces<TKSpace>::track2DSliceBoundary
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SurfelPredicate >
+requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
 inline
 void
 DGtal::Surfaces<TKSpace>::
@@ -481,7 +478,6 @@ track2DSurface( std::vector<SCell> & aSCellContour,
 		const SurfelPredicate & sp,
 		const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   ASSERT( KSpace::dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
@@ -535,6 +531,7 @@ track2DSurface( std::vector<SCell> & aSCellContour,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SurfelPredicate >
+requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
 inline
 void
 DGtal::Surfaces<TKSpace>::
@@ -545,7 +542,6 @@ track2DSliceSurface( std::vector<SCell> & aSCellContour,
 		     const SurfelPredicate & sp,
 		     const SCell & start_surfel )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
   ASSERT( K.sIsSurfel( start_surfel ) );

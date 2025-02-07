@@ -66,6 +66,7 @@ namespace DGtal
    * @see testLongvol.cpp
    */
   template <typename TImage, typename TFunctor = functors::Identity>
+  requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, DGtal::uint64_t /*ValueLongvol*/ >
   struct LongvolWriter
   {
     // ----------------------- Standard services ------------------------------
@@ -73,10 +74,7 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    typedef DGtal::uint64_t ValueLongvol;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, ValueLongvol> )) ;    
-    
+    typedef DGtal::uint64_t ValueLongvol;    
     
     /** 
      * Export an Image with the Longvol format. A DGtal::IOException

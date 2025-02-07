@@ -83,6 +83,11 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
             typename TKernelFunction>
+  requires concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+  >
   class VoronoiCovarianceMeasureOnDigitalSurface
   {
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
@@ -104,8 +109,6 @@ namespace DGtal
     typedef EigenDecomposition<KSpace::dimension,Scalar> LinearAlgebraTool;  ///< diagonalizer (nD).
     typedef typename VCM::VectorN                   VectorN;  ///< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  ///< nxn R-matrix
-
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
     struct EigenStructure {

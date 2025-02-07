@@ -85,19 +85,7 @@ Description of \b concept '\b CPointFunctor' <p>
  # Notes
    */
   template <typename T>
-  struct CPointFunctor : CUnaryFunctor<T, typename T::Point, typename T::Value>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Point Point;
-    typedef typename T::Value Value;
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CPointFunctor
+  concept CPointFunctor = CUnaryFunctor<T, typename T::Point, typename T::Value>;
   }
 } // namespace DGtal
 

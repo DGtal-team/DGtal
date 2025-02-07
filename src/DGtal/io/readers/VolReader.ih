@@ -44,6 +44,7 @@
 
 
 template <typename T, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename T::Value >
 inline
 T
 DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
@@ -250,6 +251,7 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     
     
     template <typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename T::Value >
     const char *DGtal::VolReader<T, TFunctor>::requiredHeaders[] =
     {
       "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color", NULL
@@ -259,6 +261,7 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename T::Value >
     inline
     int
     DGtal::VolReader<T, TFunctor>::getHeaderField( const char *type, const HeaderField * header )
@@ -277,6 +280,7 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename T::Value >
     inline
     const char *
     DGtal::VolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
@@ -291,6 +295,7 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename T::Value >
     inline
     int
     DGtal::VolReader<T,  TFunctor>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )

@@ -43,6 +43,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/SurfelAdjacency.h"
+
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/topology/CSurfelPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -268,6 +271,7 @@ namespace DGtal
        3 if it was the third interior.
     */
     template <typename PointPredicate>
+    requires DGtal::concepts::CPointPredicate<PointPredicate>
     unsigned int getAdjacentOnPointPredicate( SCell & adj_surfel,
                 const PointPredicate & pp, 
                 Dimension track_dir,
@@ -297,6 +301,7 @@ namespace DGtal
        3 if it was the third interior.
     */
     template <typename SurfelPredicate>
+    requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
     unsigned int getAdjacentOnSurfelPredicate( SCell & adj_surfel,
                                                const SurfelPredicate & sp, 
                                                Dimension track_dir,

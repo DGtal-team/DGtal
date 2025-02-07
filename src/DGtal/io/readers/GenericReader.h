@@ -126,13 +126,12 @@ namespace DGtal
      *
      **/
     template <typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, TValue, typename TContainer::Value>
     static TContainer importWithValueFunctor(
     const std::string & filename, const TFunctor & aFunctor,
     std::vector<unsigned int> dimSpace =
     std::vector<unsigned int>() )
     {
-      BOOST_CONCEPT_ASSERT(
-      (concepts::CUnaryFunctor<TFunctor, TValue, typename TContainer::Value>));
       DGtal::IOException dgtalio;
       const std::string extension =
       filename.substr( filename.find_last_of( "." ) + 1 );
@@ -170,17 +169,14 @@ namespace DGtal
      *
      **/
 
-    template <typename TFunctor>
+    template <typename TFunctor> 
+    requires concepts::CUnaryFunctor<TFunctor, TValue, typename TContainer::Value>
     static TContainer importWithColorFunctor(
     const std::string & filename, const TFunctor & aFunctor,
     std::vector<unsigned int> dimSpace =
     std::vector<unsigned int>() )
 
     {
-      BOOST_CONCEPT_ASSERT(
-      (concepts::CUnaryFunctor<TFunctor, DGtal::Color,
-                               typename TContainer::Value>));
-
       DGtal::IOException dgtalio;
       const std::string extension =
       filename.substr( filename.find_last_of( "." ) + 1 );
@@ -242,12 +238,12 @@ namespace DGtal
      *
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
                                              unsigned int y=0, unsigned int z=0)
       {
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
         DGtal::IOException dgtalio;
         const std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
@@ -331,12 +327,12 @@ namespace DGtal
      *
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, DGtal::uint32_t, typename TContainer::Value >
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const TFunctor &aFunctor,
                                              unsigned int x=0,
                                              unsigned int y=0, unsigned int z=0)
       {
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint32_t, typename TContainer::Value > )) ;
         DGtal::IOException dgtalio;
         const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
 
@@ -426,12 +422,12 @@ namespace DGtal
      *
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value>
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor,
                                              unsigned int x=0,
                                              unsigned int y=0)
       {
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
         DGtal::IOException dgtalio;
         //Getting image extension
         const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -469,12 +465,11 @@ namespace DGtal
      * @param y specify the  y image size to be used with raw format.
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value >
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
                                              unsigned int y=0)
       {
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
-
         DGtal::IOException dgtalio;
         //Getting image extension
         const std::string extension = filename.substr( filename.find_last_of(".") + 1 );
@@ -538,12 +533,11 @@ namespace DGtal
      *
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value>
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
                                              unsigned int y=0)
       {
-
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TContainer::Value> )) ;
         DGtal::IOException dgtalio;
         //Getting image extension
         const std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -580,12 +574,11 @@ namespace DGtal
      * @param y specify the  y image size to be used with raw format.
      **/
     template<typename TFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value>
     static TContainer importWithValueFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
                                              unsigned int y=0)
       {
-        BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
-
         DGtal::IOException dgtalio;
         //Getting image extension
         const std::string extension = filename.substr(filename.find_last_of(".") + 1);

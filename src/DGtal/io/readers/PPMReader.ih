@@ -50,6 +50,7 @@
 
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::Color, typename TImageContainer::Value >
 inline
 TImageContainer 
 DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFilename,

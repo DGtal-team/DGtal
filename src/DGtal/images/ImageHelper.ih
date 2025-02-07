@@ -38,11 +38,11 @@
 
 //------------------------------------------------------------------------------
 template<typename I, typename O, typename P>
+requires DGtal::concepts::CPointPredicate<P> 
 inline
 void 
 DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<P> )); 
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename P::Point> ));
 
@@ -52,12 +52,12 @@ DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, 
 
 //------------------------------------------------------------------------------
 template<typename I, typename O, typename F>
+requires DGtal::concepts::CPointFunctor<F>
 inline
 void 
 DGtal::setFromPointsRangeAndFunctor(const I& itb, const I& ite, const O& ito, 
 				    const F& aFunctor, const typename F::Value& aThreshold)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<F> )); 
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename F::Point> ));
 
@@ -136,12 +136,12 @@ DGtal::imageFromRangeAndValue(const R& aRange, I& aImg,
 
 //------------------------------------------------------------------------------
 template<typename I, typename F>
+requires DGtal::concepts::CPointFunctor<F>
 inline
 void 
 DGtal::imageFromFunctor(I& aImg, const F& aFun)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CImage<I> )); 
-  BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<F> ));
 
   typename I::Domain d = aImg.domain();
 

@@ -100,6 +100,7 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer, typename TMetric, 
             typename TFunctorOnSurfel, typename TConvolutionFunctor>
+  requires concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
   class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -108,7 +109,6 @@ namespace DGtal
     ///Concept Checks
     BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric>));
     BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TConvolutionFunctor,double,double> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
     ///Digital surface container type

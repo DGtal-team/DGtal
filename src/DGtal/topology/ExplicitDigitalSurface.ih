@@ -38,13 +38,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::~Tracker()
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
@@ -56,7 +56,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
                        s );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::Tracker( const Tracker & other )
@@ -64,7 +64,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 const typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::DigitalSurfaceContainer &
@@ -74,7 +74,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
   return mySurface;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 const typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::Surfel &
@@ -84,7 +84,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
   return myNeighborhood.surfel();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::Dimension
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
@@ -93,7 +93,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
   return myNeighborhood.orthDir();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 void
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
@@ -103,7 +103,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
   myNeighborhood.setSurfel( s );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::uint8_t
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
@@ -118,13 +118,13 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::~ExplicitDigitalSurface()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 ( const ExplicitDigitalSurface & other )
@@ -135,7 +135,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
 ( ConstAlias<KSpace> aKSpace,
@@ -148,7 +148,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::ExplicitDigitalSurface
   computeSurfels( s, closed );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 const
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency &
@@ -157,7 +157,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency() const
   return mySurfelAdjacency;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Adjacency &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency()
@@ -165,7 +165,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelAdjacency()
   return mySurfelAdjacency;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 const
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelPredicate &
@@ -177,7 +177,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelPredicate() const
 //-----------------------------------------------------------------------------
 // --------- CDigitalSurfaceContainer realization -------------------------
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 const typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::KSpace &
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::space() const
@@ -185,7 +185,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::space() const
   return myKSpace;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 bool
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isInside
@@ -194,7 +194,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isInside
   return surfelPredicate()( s );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelConstIterator
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::begin() const
@@ -202,7 +202,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::begin() const
   return mySurfels.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelConstIterator
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::end() const
@@ -210,7 +210,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::end() const
   return mySurfels.end();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Size
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::nbSurfels() const
@@ -218,7 +218,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::nbSurfels() const
   return (Size)mySurfels.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 bool
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::empty() const
@@ -226,7 +226,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::empty() const
   return mySurfels.empty();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::DigitalSurfaceTracker*
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::newTracker
@@ -235,7 +235,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::newTracker
   return new Tracker( *this, s );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 DGtal::Connectedness
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::connectedness() const
@@ -245,7 +245,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::connectedness() const
 
 // ------------------------- Hidden services ------------------------------
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 void
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::computeSurfels
@@ -293,7 +293,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::computeSurfels
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 void
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::selfDisplay ( std::ostream & out ) const
@@ -305,7 +305,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::selfDisplay ( std::ostr
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 bool
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isValid() const
@@ -318,7 +318,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TKSpace, typename TSurfelPredicate>
+template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

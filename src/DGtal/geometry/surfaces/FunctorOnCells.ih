@@ -43,6 +43,7 @@
  * Destructor.
  */
 template <typename TF, typename TKS>
+requires DGtal::concepts::CPointFunctor<TF>
 inline
 DGtal::FunctorOnCells<TF, TKS>::~FunctorOnCells()
 {
@@ -56,6 +57,7 @@ DGtal::FunctorOnCells<TF, TKS>::~FunctorOnCells()
  * @param out the output stream where the object is written.
  */
 template <typename TF, typename TKS>
+requires DGtal::concepts::CPointFunctor<TF>
 inline
 void
 DGtal::FunctorOnCells<TF, TKS>::selfDisplay ( std::ostream & out ) const
@@ -68,6 +70,7 @@ DGtal::FunctorOnCells<TF, TKS>::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename TF, typename TKS>
+requires DGtal::concepts::CPointFunctor<TF>
 inline
 bool
 DGtal::FunctorOnCells<TF, TKS>::isValid() const
@@ -81,6 +84,7 @@ DGtal::FunctorOnCells<TF, TKS>::isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TF, typename TKS>
+requires DGtal::concepts::CPointFunctor<TF>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

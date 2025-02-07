@@ -67,7 +67,7 @@ namespace DGtal
      @tparam TPointPredicate a model of concepts::CPointPredicate: this functor
      defines the inside of a shape on points where it is true.
    */
-  template <typename TKSpace, typename TPointPredicate>
+  template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
   class ImplicitDigitalSurface
   {
   public:
@@ -163,7 +163,6 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
     
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
 
     // -------------------- specific types ------------------------------
     typedef typename std::vector<Surfel> SurfelStorage;

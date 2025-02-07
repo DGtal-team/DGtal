@@ -72,6 +72,10 @@ namespace DGtal
    *
    */
   template <typename TIterator, typename TFunctor, typename TInputValue>
+  requires concepts::CUnaryFunctor<
+    TFunctor, 
+    typename std::iterator_traits<TIterator>::value_type&, TInputValue& 
+  >
   class OutputIteratorAdapter
   {
     // ----------------------- Types definitions ------------------------------
@@ -88,8 +92,6 @@ namespace DGtal
     
     typedef TIterator Iterator; 
     BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Iterator> )); 
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, 
-                           typename std::iterator_traits<Iterator>::value_type&, TInputValue& > )); 
 
     // ----------------------- Standard services ------------------------------
   public:

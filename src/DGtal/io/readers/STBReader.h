@@ -58,6 +58,7 @@ namespace DGtal
    *
    */
   template <typename TImageContainer,typename TFunctor=functors::ColorRGBEncoder<typename TImageContainer::Value> >
+  requires concepts::CUnaryFunctor<TFunctor,  DGtal::Color, typename TImageContainer::Value>
   class STBReader
   {
     //  ----------------------- Standard services ------------------------------
@@ -68,7 +69,6 @@ namespace DGtal
     typedef TFunctor Functor ;
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-    BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;
 
     /**
      * Main method to import an Image into an instance of the

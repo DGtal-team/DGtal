@@ -43,6 +43,7 @@
 
 namespace DGtal {
   template<typename I,typename C>
+  requires concepts::CUnaryFunctor<C, typename I::Value, DGtal::uint64_t /*ValueLongvol*/ >
   bool
   LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage, const bool compressed,
                                     const Functor  & aFunctor)

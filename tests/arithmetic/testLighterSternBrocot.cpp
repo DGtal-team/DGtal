@@ -561,6 +561,7 @@ bool testPattern()
 }
 
 template <typename Fraction>
+requires concepts::CPointPredicate<StandardDSLQ0<Fraction>>
 bool testStandardDSLQ0()
 {
   typedef StandardDSLQ0<Fraction> DSL;
@@ -568,7 +569,6 @@ bool testStandardDSLQ0()
   typedef typename DSL::Point Point;
   typedef typename DSL::Vector2I Vector2I;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< DSL > ));
   unsigned int nbok = 0;
   unsigned int nb = 0;
 

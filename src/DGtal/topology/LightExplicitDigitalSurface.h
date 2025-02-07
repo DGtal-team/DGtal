@@ -114,7 +114,7 @@ namespace DGtal
      @endcode
      
    */
-  template <typename TKSpace, typename TSurfelPredicate>
+  template <typename TKSpace, concepts::CSurfelPredicate TSurfelPredicate>
   class LightExplicitDigitalSurface
   {
   public:
@@ -210,8 +210,6 @@ namespace DGtal
     typedef TSurfelPredicate SurfelPredicate;
 
     // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate< SurfelPredicate > ));
-
     // ----------------------- other types ------------------------------
   public:
     typedef SurfelAdjacency<KSpace::dimension> Adjacency;
@@ -359,7 +357,7 @@ namespace DGtal
        
        @param[in] pred the predicate for selecting neighbors.
     */
-    template <typename OutputIterator, typename VertexPredicate>
+    template <typename OutputIterator, concepts::CVertexPredicate VertexPredicate>
     void writeNeighbors( OutputIterator & it,
                          const Vertex & v,
                          const VertexPredicate & pred ) const;

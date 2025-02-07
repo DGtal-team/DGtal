@@ -46,6 +46,11 @@
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 ~VoronoiCovarianceMeasureOnDigitalSurface()
@@ -53,6 +58,11 @@ DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSepar
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface, 
@@ -143,6 +153,11 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 DGtal::CountedConstPtrOrConstPtr< typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Surface >
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -152,6 +167,11 @@ surface() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 DGtal::Surfel2PointEmbedding
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -161,6 +181,11 @@ surfelEmbedding() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Scalar
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -170,6 +195,11 @@ R() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Scalar
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -179,6 +209,11 @@ r() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Scalar
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -188,6 +223,11 @@ radiusTrivial() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 const typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Surfel2Normals&
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -197,6 +237,11 @@ mapSurfel2Normals() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 const typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Point2EigenStructure&
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -207,6 +252,11 @@ mapPoint2ChiVCM() const
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -236,6 +286,11 @@ getChiVCMEigenvalues( VectorN& values, Surfel s ) const
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -270,6 +325,11 @@ getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 template <typename PointOutputIterator>
 inline
 PointOutputIterator
@@ -317,6 +377,11 @@ getPoints( PointOutputIterator outIt, Surfel s ) const
  * @param out the output stream where the object is written.
  */
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 void
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -333,6 +398,11 @@ selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -347,6 +417,11 @@ isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+requires DGtal::concepts::CUnaryFunctor<
+    TKernelFunction,
+    typename TDigitalSurfaceContainer::KSpace::Point, 
+    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
+>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

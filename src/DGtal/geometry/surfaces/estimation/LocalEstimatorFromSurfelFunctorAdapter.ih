@@ -36,6 +36,7 @@
 
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
                                               TFunctorOnSurfel, TConvolutionFunctor>::
@@ -46,6 +47,7 @@ LocalEstimatorFromSurfelFunctorAdapter()
 
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
                                               TFunctorOnSurfel, TConvolutionFunctor>::
@@ -62,6 +64,7 @@ LocalEstimatorFromSurfelFunctorAdapter
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
                                               TFunctorOnSurfel, TConvolutionFunctor>::
@@ -72,6 +75,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -83,6 +87,7 @@ selfDisplay ( std::ostream & out ) const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 bool
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -96,6 +101,7 @@ isValid() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -109,6 +115,7 @@ attach( ConstAlias<Surface> aSurface )
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -128,6 +135,7 @@ setParams( ConstAlias<TMetric> aMetric,
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, TFunctorOnSurfel, TConvolutionFunctor>::Scalar
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -140,7 +148,7 @@ h() const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
-
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template<typename SurfelIt>
 inline
 void
@@ -157,6 +165,7 @@ init(const double _h,
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator>
 inline
 typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -187,6 +196,7 @@ eval( const SurfelConstIterator& it ) const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
@@ -206,6 +216,7 @@ eval ( const SurfelConstIterator& itb,
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

@@ -112,6 +112,7 @@ namespace DGtal
 
 */
   template <typename TKSpace, typename TPointPredicate>
+  requires concepts::CPointPredicate< TPointPredicate >
   class LightImplicitDigitalSurface
   {
   public:
@@ -207,7 +208,6 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
 
     // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
 
     // ----------------------- other types ------------------------------
   public:
@@ -354,6 +354,7 @@ namespace DGtal
        @param[in] pred the predicate for selecting neighbors.
     */
     template <typename OutputIterator, typename VertexPredicate>
+    requires concepts::CVertexPredicate< VertexPredicate >
     void writeNeighbors( OutputIterator & it,
                          const Vertex & v,
                          const VertexPredicate & pred ) const;

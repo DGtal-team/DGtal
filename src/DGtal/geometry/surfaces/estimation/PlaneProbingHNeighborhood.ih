@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingHNeighborhood<TPredicate>::
 PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
@@ -47,7 +47,7 @@ PlaneProbingHNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
 {}
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingHNeighborhood<TPredicate>::
 ~PlaneProbingHNeighborhood()
@@ -57,7 +57,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::
 // ----------------------- Plane Probing services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingHNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
@@ -89,7 +89,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::hexagonState ()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 void
 DGtal::PlaneProbingHNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
@@ -101,7 +101,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::selfDisplay ( std::ostream & out )
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 bool
 DGtal::PlaneProbingHNeighborhood<TPredicate>::isValid() const
@@ -114,7 +114,7 @@ DGtal::PlaneProbingHNeighborhood<TPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

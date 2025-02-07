@@ -292,8 +292,8 @@ bool testCOBANaivePlaneComputer()
   BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< GenericNaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlaneComputer > ));
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer::Primitive > ));
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer::Primitive > ));
+  DGTAL_CONCEPT_CHECK( requires CPointPredicate< NaivePlaneComputer::Primitive > );
+  DGTAL_CONCEPT_CHECK( requires CPointPredicate< GenericNaivePlaneComputer::Primitive > );
 
   trace.beginBlock ( "Testing block: COBANaivePlaneComputer instantiation." );
   NaivePlaneComputer plane;

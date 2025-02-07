@@ -73,9 +73,7 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
-  struct CSurfelPredicate : CPredicate< T, typename T::Surfel> 
-  {
-  }; // end of concept CSurfelPredicate
+  concept CSurfelPredicate = CPredicate< T, typename T::Surfel>;
   
 } // namespace concepts
 } // namespace DGtal

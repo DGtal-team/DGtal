@@ -61,11 +61,9 @@ namespace DGtal
    *
    * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
-  template <typename TPredicate>
+  template <concepts::CPointPredicate TPredicate>
   class PlaneProbingLNeighborhood: public DGtal::PlaneProbingRNeighborhood<TPredicate>
   {
-    BOOST_CONCEPT_ASSERT((DGtal::concepts::CPointPredicate<TPredicate>));
-
     // ----------------------- Public types ------------------------------
   public:
     using Predicate         = TPredicate;

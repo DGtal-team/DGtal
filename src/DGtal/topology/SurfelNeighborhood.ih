@@ -343,6 +343,7 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename PointPredicate>
+requires DGtal::concepts::CPointPredicate<PointPredicate>
 unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnPointPredicate( SCell & adj_surfel,
@@ -350,8 +351,6 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
                              DGtal::Dimension track_dir,
                              bool pos ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
-
   // Check that [m_surfel] is a bel.
   ASSERT( mySpace != 0 );
   ASSERT( mySurfelAdj != 0 );
@@ -407,6 +406,7 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename SurfelPredicate>
+requires DGtal::concepts::CSurfelPredicate<SurfelPredicate>
 unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnSurfelPredicate( SCell & adj_surfel,
@@ -414,8 +414,6 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
                               DGtal::Dimension track_dir,
                               bool pos ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate<SurfelPredicate> ));
-
   // Check that [m_surfel] is a bel.
   ASSERT( mySpace != 0 );
   ASSERT( mySurfelAdj != 0 );

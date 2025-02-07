@@ -43,6 +43,7 @@
 // Implementation of inline methods                                          //
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 DGtal::Profile<TValueFunctor, TValue>::~Profile()
 {
   if ( myXsamples != 0 ) delete myXsamples;
@@ -50,6 +51,7 @@ DGtal::Profile<TValueFunctor, TValue>::~Profile()
 }
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 DGtal::Profile<TValueFunctor, TValue>::Profile()
   : myXsamples( 0 ), myStats( 0 ), myProfileDef(MEAN), myStoreValInStats(false)
 {
@@ -57,6 +59,7 @@ DGtal::Profile<TValueFunctor, TValue>::Profile()
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 DGtal::Profile<TValueFunctor, TValue>::Profile(ProfileType type)
   : myXsamples( 0 ), myStats( 0 ), myProfileDef(type), myStoreValInStats(false)
 {
@@ -64,6 +67,7 @@ DGtal::Profile<TValueFunctor, TValue>::Profile(ProfileType type)
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::clear()
 {
@@ -82,6 +86,7 @@ DGtal::Profile<TValueFunctor, TValue>::clear()
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::init(const unsigned int nb, const bool storeValsInStats )
 {
@@ -98,6 +103,7 @@ DGtal::Profile<TValueFunctor, TValue>::init(const unsigned int nb, const bool st
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void
 DGtal::Profile<TValueFunctor, TValue>::addValue( const unsigned int indexX, const TValue value )
 {
@@ -106,6 +112,7 @@ DGtal::Profile<TValueFunctor, TValue>::addValue( const unsigned int indexX, cons
 }
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void
 DGtal::Profile<TValueFunctor, TValue>::addStatistic
 ( const unsigned int indexX, const Statistic<TValue> & stat )
@@ -116,6 +123,7 @@ DGtal::Profile<TValueFunctor, TValue>::addStatistic
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void
 DGtal::Profile<TValueFunctor, TValue>::getProfile
 ( std::vector<TValue> & x, std::vector<TValue> & y ) const
@@ -149,6 +157,7 @@ DGtal::Profile<TValueFunctor, TValue>::getProfile
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::stopStatsSaving()
 {
@@ -159,6 +168,7 @@ DGtal::Profile<TValueFunctor, TValue>::stopStatsSaving()
 }
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 inline
 DGtal::Profile<TValueFunctor, TValue>::Profile( const Profile & other ){
   if(other.myStats!=0 && other.myXsamples!=0)
@@ -183,6 +193,7 @@ DGtal::Profile<TValueFunctor, TValue>::Profile( const Profile & other ){
 }
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 inline
 DGtal::Profile<TValueFunctor, TValue> & 
 DGtal::Profile<TValueFunctor, TValue>::operator=
@@ -217,6 +228,7 @@ DGtal::Profile<TValueFunctor, TValue>::operator=
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 template <typename Iterator>
 inline
 void 
@@ -238,6 +250,7 @@ DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator en
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 void 
 DGtal::Profile<TValueFunctor, TValue>::selfDisplay( std::ostream& out ) const
 {
@@ -245,6 +258,7 @@ DGtal::Profile<TValueFunctor, TValue>::selfDisplay( std::ostream& out ) const
 }
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 bool
 DGtal::Profile<TValueFunctor, TValue>::isValid() const
 {
@@ -263,6 +277,7 @@ DGtal::Profile<TValueFunctor, TValue>::isValid() const
  * @return the output stream after the writing.
  */
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
@@ -274,6 +289,7 @@ DGtal::operator<< ( std::ostream & out,
 
 
 template<typename TValueFunctor, typename TValue>
+requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 inline
 void 
 DGtal::Profile<TValueFunctor, TValue>::setType(ProfileType type){

@@ -126,7 +126,7 @@ namespace DGtal
    * Lastly, the domain of the container must be HyperRectDomain.
    */
   template < typename TSpace,
-             typename TPointPredicate,
+             concepts::CPointPredicate TPointPredicate,
              typename TSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
@@ -137,7 +137,6 @@ namespace DGtal
 
   public:
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 

@@ -1297,6 +1297,7 @@ namespace DGtal
      */
 
     template <typename DSSComputer, typename Functor = detail::CurvatureFromDSSLength >
+    requires concepts::CUnaryFunctor< Functor, DSSComputer, double >
     class CurvatureFromDSSBaseEstimator
     {
 
@@ -1306,8 +1307,6 @@ namespace DGtal
       typedef DSSComputer SegmentComputer; 
       typedef typename DSSComputer::ConstIterator ConstIterator; 
       typedef double Quantity;
-
-      BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor< Functor, SegmentComputer, Quantity > ));  
 
       // ----------------------- internal data ------------------------------
     public:

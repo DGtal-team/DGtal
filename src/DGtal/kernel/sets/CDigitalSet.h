@@ -135,9 +135,9 @@ namespace DGtal
 @tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
+  requires concepts::CPointPredicate<T>
   struct CDigitalSet :
-    boost::CopyConstructible< T >, 
-    concepts::CPointPredicate< T >
+    boost::CopyConstructible< T >
   {
     // ----------------------- Concept checks ------------------------------
   public:

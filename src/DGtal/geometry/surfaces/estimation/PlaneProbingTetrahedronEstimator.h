@@ -107,11 +107,9 @@ namespace DGtal
    *
    * @todo Add PlaneProbingAlgorithm concept.
    */
-  template <typename TPredicate, ProbingMode mode = ProbingMode::H>
+  template <DGtal::concepts::CPointPredicate TPredicate, ProbingMode mode = ProbingMode::H>
   class PlaneProbingTetrahedronEstimator
   {
-    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
-
     // ----------------------- Public types ------------------------------
   public:
       using Self                   = PlaneProbingTetrahedronEstimator<TPredicate, mode>;

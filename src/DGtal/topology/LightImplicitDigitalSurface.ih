@@ -40,12 +40,14 @@
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::~Tracker()
 {}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
@@ -58,6 +60,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::Tracker( const Tracker & other )
@@ -66,6 +69,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 const typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::DigitalSurfaceContainer &
@@ -76,6 +80,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 const typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::Surfel &
@@ -86,6 +91,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::Dimension
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
@@ -95,6 +101,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
@@ -105,6 +112,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::uint8_t
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
@@ -119,12 +127,14 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::~LightImplicitDigitalSurface()
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigitalSurface
 ( const LightImplicitDigitalSurface & other )
@@ -137,6 +147,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigita
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigitalSurface
 ( ConstAlias<KSpace> aKSpace,
@@ -149,6 +160,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::LightImplicitDigita
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 const 
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency & 
@@ -158,6 +170,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency() c
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency & 
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency()
@@ -166,6 +179,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency()
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 const 
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::PointPredicate & 
@@ -178,6 +192,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::pointPredicate() co
 // --------- CDigitalSurfaceContainer realization -------------------------
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 const typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::KSpace & 
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::space() const
@@ -186,6 +201,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::space() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 bool
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::isInside
@@ -208,6 +224,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::isInside
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::SurfelConstIterator
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::begin() const
@@ -217,6 +234,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::begin() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::SurfelConstIterator
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::end() const
@@ -225,6 +243,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::end() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Size
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::nbSurfels() const
@@ -236,6 +255,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::nbSurfels() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 bool
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::empty() const
@@ -244,6 +264,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::empty() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::DigitalSurfaceTracker* 
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::newTracker
@@ -253,6 +274,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::newTracker
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::Connectedness
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::connectedness() const
@@ -263,6 +285,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::connectedness() con
 // ----------------- UndirectedSimplePreGraph realization --------------------
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Size
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
@@ -283,6 +306,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename OutputIterator>
 inline
 void 
@@ -303,7 +327,9 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate> 
 template <typename OutputIterator, typename VertexPredicate>
+requires DGtal::concepts::CVertexPredicate<VertexPredicate>
 inline
 void
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
@@ -311,7 +337,6 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
                   const Vertex & v,
                   const VertexPredicate & pred ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CVertexPredicate< VertexPredicate > ));
   Vertex s;
   myTracker.move( v );
   for ( typename KSpace::DirIterator q = space().sDirs( v );
@@ -329,6 +354,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Size
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
@@ -348,6 +374,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>
  * @param out the output stream where the object is written.
  */
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::selfDisplay ( std::ostream & out ) const
@@ -360,6 +387,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::selfDisplay ( std::
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 bool
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::isValid() const
@@ -373,6 +401,7 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TKSpace, typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

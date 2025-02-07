@@ -42,6 +42,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 template <typename T, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename T::Value > 
 inline
 T
 DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
@@ -238,6 +239,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     
     
     template <typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename T::Value >
     const char *DGtal::LongvolReader<T, TFunctor>::requiredHeaders[] =
     {
       "X", "Y", "Z", "Lvoxel-Size", "Int-Endian", "Lvoxel-Endian", "Alpha-Color", NULL
@@ -247,6 +249,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename T::Value >
     inline
     int
     DGtal::LongvolReader<T,TFunctor>::getHeaderField( const char *type, const HeaderField * header )
@@ -265,6 +268,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename T::Value >
     inline
     const char *
     DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
@@ -279,6 +283,7 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     
     
     template<typename T, typename TFunctor>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename T::Value >
     inline
     int
     DGtal::LongvolReader<T, TFunctor>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )

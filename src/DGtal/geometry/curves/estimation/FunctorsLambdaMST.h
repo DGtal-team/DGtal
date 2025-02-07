@@ -109,9 +109,9 @@ namespace functors
  * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
  */
 template<typename DSS, typename LambdaFunction>
+requires concepts::CUnaryFunctor < LambdaFunction, double, double >
 class TangentFromDSS2DFunctor
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor < LambdaFunction, double, double > ));
   // ----------------------- Types ------------------------------
 public:
   typedef PointVector<2, double> RealVector;
@@ -170,9 +170,9 @@ private:
  * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
  */
 template<typename DSS, typename LambdaFunction>
+requires concepts::CUnaryFunctor < LambdaFunction, double, double >
 class TangentFromDSS3DFunctor
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor < LambdaFunction, double, double > ));
 public:
   // ----------------------- Types ------------------------------
   typedef PointVector<3, double> RealVector;

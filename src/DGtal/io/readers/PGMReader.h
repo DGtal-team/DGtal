@@ -94,6 +94,7 @@ namespace DGtal
  */
 template <typename TImageContainer,
           typename TFunctor = functors::Cast<typename TImageContainer::Value>>
+requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value >
 struct PGMReader
 {
   // ----------------------- Standard services ------------------------------
@@ -106,10 +107,6 @@ struct PGMReader
     typedef TFunctor Functor;
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
-
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
-
-    
 
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));

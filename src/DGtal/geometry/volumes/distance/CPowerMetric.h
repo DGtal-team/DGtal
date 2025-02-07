@@ -95,8 +95,8 @@ power metrics.
 @tparam T the type that should be a model of CPowerMetric.
  */
 template <typename T>
-  requires concepts::CQuantity<T::Value> &&
-           concepts::CQuantity<T::Weight>
+  requires concepts::CQuantity<typename T::Value> &&
+           concepts::CQuantity<typename T::Weight>
 struct CPowerMetric: boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------

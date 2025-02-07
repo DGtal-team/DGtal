@@ -86,53 +86,8 @@ Description of \b concept '\b CUnaryFunctor' <p>
 # Notes
   */
   template <typename X, typename A, typename R>
-  struct CUnaryFunctor : boost::Assignable<X>
-  {
-
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_USAGE( CUnaryFunctor )
-    {
-      // x( a ) returns r.
-      ConceptUtils::sameType( r, x.operator() ( a ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    X x;
-    A a;
-    R r;
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CUnaryFunctor
-
-  //specialization for references
-  template <typename X, typename A, typename R>
-  struct CUnaryFunctor<X, A&, R&> : boost::Assignable<X>
-  {
-
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_USAGE( CUnaryFunctor )
-    {
-      ConceptUtils::sameType( getRef(r), x.operator() ( getRef(a) ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    X x;
-    A a;
-    R r;
-    // ------------------------- Internals ------------------------------------
-  private:
-    template<typename T>
-    T& getRef(T& t) 
-    {
-      return t; 
-    }
-
-  }; // end of concept CUnaryFunctor
+  concept CUnaryFunctor = std::is_copy_assignable_v<X> &&
+                          std::is_invocable_r_v<R, X, A>;
   }
 } // namespace DGtal
 

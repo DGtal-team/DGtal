@@ -88,6 +88,7 @@ Such object provides a gradient map that associates to each argument some real v
 @tparam T the type that should be a model of CWithGradientMap.
  */
 template <typename T>
+requires CUnaryFunctor<typename T::GradientMap, typename T::Argument, typename T::RealVector>
 struct CWithGradientMap
 {
     // ----------------------- Concept checks ------------------------------
@@ -96,7 +97,6 @@ public:
   typedef typename T::RealVector RealVector;
   typedef typename T::GradientMap GradientMap;
   BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< GradientMap > ));
-  BOOST_CONCEPT_ASSERT(( CUnaryFunctor< GradientMap, Argument, RealVector > ));
   BOOST_CONCEPT_USAGE( CWithGradientMap )
   {
     checkConstConstraints();

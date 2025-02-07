@@ -114,6 +114,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     template <typename Word>
+    requires concepts::CUnaryFunctor<TFunctor, Word, typename TImageContainer::Value >
     static ImageContainer importRaw(const std::string & filename,
              const Vector & extent,
              const Functor & aFunctor =  Functor());

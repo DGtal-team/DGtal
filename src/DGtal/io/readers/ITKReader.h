@@ -103,6 +103,7 @@ namespace DGtal
      */
     template <typename TFunctor =
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, typename ITKIOTrait<typename TImage::Value>::ValueOut, typename TImage::Value>
     static Image importITK(
     const std::string & filename,
     const TFunctor & aFunctor = TFunctor(), bool shiftDomainUsingOrigin=true);

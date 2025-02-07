@@ -89,22 +89,9 @@ namespace DGtal
        CPredicate allows to factor codes when writing concepts for new
        kinds of predicates.
     */
+
     template <typename T, typename TElement>
-    struct CPredicate :  CUnaryFunctor<T,TElement,bool>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef TElement Element;
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myPred;
-      Element myElement;
-      bool myBool;
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CPredicate
+    concept CPredicate = CUnaryFunctor<T, TElement, bool>; 
   } // namespace concepts
 } // namespace DGtal
 

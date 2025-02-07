@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
@@ -111,7 +112,7 @@ namespace DGtal
 *
 * @see testIntegralInvariantCovarianceEstimator.cpp
 */
-template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
+template <typename TKSpace, concepts::CPointPredicate TPointPredicate, typename TCovarianceMatrixFunctor>
 class IntegralInvariantCovarianceEstimator
 {
 public:
@@ -121,7 +122,6 @@ public:
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
 
   BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;
@@ -160,7 +160,9 @@ public:
   typedef typename Matrix::Component Component;
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
+  
+  DGTAL_CONCEPT_CHECK(requires concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity >);
+
   BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
                                                  typename CovarianceMatrixFunctor::Argument >::value ));
 

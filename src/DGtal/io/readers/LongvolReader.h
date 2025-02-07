@@ -87,7 +87,8 @@ namespace DGtal
    * @see testLongvol.cpp
    */
   template <typename TImageContainer,
-  typename TFunctor= functors::Cast< typename TImageContainer::Value > >
+  typename TFunctor = functors::Cast< typename TImageContainer::Value > >
+  requires concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, typename TImageContainer::Value >
   struct LongvolReader
   {
     // ----------------------- Standard services ------------------------------
@@ -96,7 +97,6 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
     
     

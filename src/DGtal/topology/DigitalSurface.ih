@@ -196,6 +196,7 @@ writeNeighbors( OutputIterator & it,
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename OutputIterator, typename VertexPredicate>
+requires DGtal::concepts::CVertexPredicate<VertexPredicate>
 inline
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -203,7 +204,6 @@ writeNeighbors( OutputIterator & it,
                 const Vertex & v,
                 const VertexPredicate & pred ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CVertexPredicate< VertexPredicate > ));
   Vertex s;
   myTracker->move( v );
   for ( typename KSpace::DirIterator q = container().space().sDirs( v );

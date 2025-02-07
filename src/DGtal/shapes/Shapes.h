@@ -139,6 +139,7 @@ namespace DGtal
        PointPredicate::Point is Point.
      */
     template < typename DigitalSet, typename PointPredicate >
+    requires concepts::CPointPredicate<PointPredicate>
     static
     void makeSetFromPointPredicate( DigitalSet & aSet,
                                     const PointPredicate & aPP );

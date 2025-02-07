@@ -133,6 +133,7 @@ namespace DGtal
    */
 
   template<typename TValueFunctor = functors::Identity, typename TValue = double >
+  requires concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
   class Profile
   {
     // ----------------------- Standard services ------------------------------
@@ -154,8 +155,6 @@ namespace DGtal
      * The type value stored in the profile.  
      **/
     typedef TValue Value;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, Value, Value>  ));
 
     
     /**

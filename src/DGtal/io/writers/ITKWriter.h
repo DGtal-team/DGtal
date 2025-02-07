@@ -61,6 +61,7 @@ namespace DGtal
    * @see ITKIOTrait
    */
   template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
+  requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, typename ITKIOTrait<typename TImage::Value>::ValueOut>
   struct ITKWriter
   {
     static const typename TImage::Domain::Dimension dimension = TImage::Domain::dimension;
@@ -74,7 +75,6 @@ namespace DGtal
     typedef TFunctor Functor;
 
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
     BOOST_STATIC_ASSERT(( (dimension == 3) || (dimension == 2) ));
 
     /**
@@ -107,6 +107,7 @@ namespace DGtal
    * Template partial specialisation for ImageContainerByITKImage. This specialisation is usefull to export image including image spacing.
    **/
 template <typename TDomain, typename TValue, typename TFunctor >
+requires concepts::CUnaryFunctor<TFunctor, TValue, typename ITKIOTrait<TValue>::ValueOut>
 struct ITKWriter<ImageContainerByITKImage<TDomain, TValue>, TFunctor >
 {
   typedef ImageContainerByITKImage<TDomain, TValue> Image;
@@ -114,7 +115,6 @@ struct ITKWriter<ImageContainerByITKImage<TDomain, TValue>, TFunctor >
   typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
   typedef TFunctor Functor;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
   BOOST_STATIC_ASSERT(( (Image::Domain::dimension == 3) || (Image::Domain::dimension == 2) ));
   /**
    * Export an ImageContainerByITKImage with a format supported by ITK.

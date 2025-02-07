@@ -79,7 +79,7 @@ namespace DGtal
    * @tparam TDigitalSetContainer container type to store the point predicate (default: DigitalSetBySTLSet)
    *
    */
-  template <typename TPointPredicate, typename TDomain,
+  template <concepts::CPointPredicate TPointPredicate, typename TDomain,
             typename TDigitalSetContainer=DigitalSetBySTLSet<TDomain> >
   class KanungoNoise
   {
@@ -88,7 +88,6 @@ namespace DGtal
 
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSetContainer> ));
     
     ///Object type

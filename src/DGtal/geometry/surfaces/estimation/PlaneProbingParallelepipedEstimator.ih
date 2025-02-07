@@ -40,7 +40,7 @@
 
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::
 PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
@@ -56,7 +56,7 @@ PlaneProbingParallelepipedEstimator (Point const& aPoint, Triangle const& aM,
 // ----------------------- Plane Probing services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
 NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
@@ -68,7 +68,7 @@ NotAbovePredicate (Predicate const& aPredicate, Integer const& aBound,
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate&
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
@@ -85,7 +85,7 @@ operator=(const NotAbovePredicate & other)
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
@@ -95,7 +95,7 @@ inPlane (Point const& aPoint) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
@@ -126,7 +126,7 @@ operator() (Point const& aPoint) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::NotAbovePredicate::
@@ -137,7 +137,7 @@ q () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
@@ -146,7 +146,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::q () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) const
@@ -155,7 +155,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::m (int aIndex) con
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Point
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getOrigin () const
@@ -164,7 +164,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getOrigin () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () const
@@ -173,7 +173,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isSeparating () co
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState () const
@@ -182,7 +182,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isInReverseState (
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (UpdateOperation const& aOp)
 {
@@ -204,7 +204,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::translateIf (Updat
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 std::vector<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::UpdateOperation>
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::geometricalDecomposition (UpdateOperation const& aOp) const
 {
@@ -256,7 +256,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::geometricalDecompo
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vector<PointOnProbingRay> const& aNeighbors)
 {
@@ -308,7 +308,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance (std::vect
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
@@ -317,7 +317,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::advance ()
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute (std::vector<PointOnProbingRay> const& aNeighbors)
@@ -328,7 +328,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute (std::vect
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Quantity
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
@@ -337,7 +337,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::compute ()
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::HexagonState
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::hexagonState () const
@@ -346,7 +346,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::hexagonState () co
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
@@ -355,7 +355,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getNormal () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 std::pair<typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector,
           typename DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::Vector>
@@ -364,7 +364,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getBasis () const
     return myTetrahedronEstimator.getBasis();
 }
 
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isReduced () const
@@ -374,7 +374,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isReduced () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 int
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getState () const
@@ -397,7 +397,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::getState () const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate, DGtal::ProbingMode mode >
+template < DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode >
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::inPlane (const Point& aPoint) const
@@ -412,7 +412,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::inPlane (const Poi
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TPredicate, DGtal::ProbingMode mode>
+template <DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode>
 inline
 void
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::selfDisplay ( std::ostream & out ) const
@@ -424,7 +424,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::selfDisplay ( std:
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TPredicate, DGtal::ProbingMode mode>
+template <DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode>
 inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isValid() const
@@ -440,7 +440,7 @@ DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TPredicate, DGtal::ProbingMode mode>
+template <DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

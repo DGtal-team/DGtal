@@ -67,6 +67,7 @@ namespace DGtal
    * @tparam TKSpace Khalimsky space in which the shape is defined.
    */
   template <typename TFunctorOnPoints, typename TKSpace>
+  requires concepts::CPointFunctor< TFunctorOnPoints >
   class FunctorOnCells
   {
     // ----------------------- Standard services ------------------------------
@@ -80,7 +81,6 @@ namespace DGtal
     typedef typename FunctorOnPoints::Value Value;
     typedef typename KSpace::SCell Cell;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor< FunctorOnPoints > ));
     //BOOST_CONCEPT_ASSERT(( CSpace< KSpace > ));
 
     /**

@@ -123,12 +123,12 @@ namespace DGtal
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
                                        typename TSpace::Vector>
              >
+  requires concepts::CPointPredicate<TPointPredicate>
   class VoronoiMap
   {
 
   public:
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 

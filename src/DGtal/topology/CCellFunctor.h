@@ -86,14 +86,13 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
+  requires CUnaryFunctor<T, typename T::Cell, typename T::Quantity>
   struct CCellFunctor
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Cell Cell;
     typedef typename T::Quantity Quantity;
-    
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Cell,Quantity> ));
     
     BOOST_CONCEPT_USAGE( CCellFunctor )
     {

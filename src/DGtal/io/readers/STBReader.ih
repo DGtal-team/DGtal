@@ -47,6 +47,7 @@
 
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor,  DGtal::Color, typename TImageContainer::Value>
 inline
 TImageContainer
 DGtal::STBReader<TImageContainer, TFunctor>::import(const std::string & filename,
@@ -87,7 +88,6 @@ DGtal::STBReader<TImageContainer, TFunctor>::import(const std::string & filename
   stbi_image_free(data);
   return image;
 }
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

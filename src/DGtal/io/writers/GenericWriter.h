@@ -111,9 +111,9 @@ namespace DGtal
    * Template partial specialisation for volume images of dimension 3 and unsigned char value type (which allows to export vol, pgm3D, h5 and raw file format).
    **/
   template <typename TContainer, typename TFunctor>
+  requires concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char> )) ;
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
 
     /**
@@ -134,10 +134,9 @@ namespace DGtal
    * Template partial specialisation for volume images of dimension 3 and DGtal::uint64_t value type (which allows to export longvol file format).
    **/
   template <typename TContainer, typename TFunctor>
+  requires concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t >
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
-
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t > )) ;
     BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
 
 

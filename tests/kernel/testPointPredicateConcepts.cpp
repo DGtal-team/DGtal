@@ -54,31 +54,31 @@ testPointPredicateConcepts()
 {
     // PointFunctorPredicate
     typedef PointFunctorPredicate<PointFunctor1, Predicate1> PointPredicate1;
-    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< PointPredicate1 > );
     typedef PointFunctorPredicate<PointFunctor2, Predicate2> PointPredicate2;
-    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< PointPredicate2 > );
 
     // Binary PointPredicate
     typedef std::logical_and<bool> BinaryFunctor;
-    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< BinaryPointPredicate<PointPredicate1, PointPredicate2, BinaryFunctor> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< BinaryPointPredicate<PointPredicate1, PointPredicate2, BinaryFunctor> > );
 
     // NotPointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< NotPointPredicate<PointPredicate1> > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< NotPointPredicate<PointPredicate2> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< NotPointPredicate<PointPredicate1> > );
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< NotPointPredicate<PointPredicate2> > );
 
     typedef typename PointFunctor1::Point Point;
     // EqualPointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< EqualPointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< EqualPointPredicate<Point> > );
     // IsWithinPointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< IsWithinPointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< IsWithinPointPredicate<Point> > );
     // IsUpperPointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< IsUpperPointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< IsUpperPointPredicate<Point> > );
     // IsLowerPointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< IsLowerPointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< IsLowerPointPredicate<Point> > );
     // TruePointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< TruePointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< TruePointPredicate<Point> > );
     // FalsePointPredicate
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< FalsePointPredicate<Point> > ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< FalsePointPredicate<Point> > );
 
     return true;
 }

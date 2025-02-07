@@ -70,10 +70,7 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
-  struct CVertexPredicate : CPredicate< T, typename T::Vertex> 
-  {
-  }; // end of concept CVertexPredicate
-  
+  concept CVertexPredicate = CPredicate< T, typename T::Vertex>; 
 } // namespace concepts
 } // namespace DGtal
 

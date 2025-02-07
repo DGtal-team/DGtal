@@ -94,6 +94,9 @@ namespace DGtal
    * @todo for now we use a CanonicSCellEmbedder times the gridstep to embed surfels.
    */
   template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+  requires concepts::CUnaryFunctor<
+    TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+  >
   class TrueDigitalSurfaceLocalEstimator
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
@@ -110,7 +113,6 @@ namespace DGtal
     typedef typename RealPoint::Coordinate Scalar;
     typedef typename GeometricFunctor::Quantity Quantity;
     typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor< GeometricFunctor, RealPoint, Quantity > ));
 
     // ----------------------- Standard services ------------------------------
   public:

@@ -49,6 +49,7 @@
 // Implementation of inline functions and external operators                 //
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value >
 inline
 TImageContainer 
 DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFilename, 
@@ -171,6 +172,7 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
 
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value >
 inline
 TImageContainer 
 DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFilename, 

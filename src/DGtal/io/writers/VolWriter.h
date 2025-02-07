@@ -65,6 +65,7 @@ namespace DGtal
    * @tparam TFunctor the type of functor used in the export.
    */
   template <typename TImage, typename TFunctor = functors::Identity>
+  requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, unsigned char>
   struct VolWriter
   {
     // ----------------------- Standard services ------------------------------
@@ -72,7 +73,6 @@ namespace DGtal
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     /** 

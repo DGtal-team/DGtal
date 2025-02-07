@@ -49,6 +49,7 @@ namespace DGtal {
 
   template <typename I>
   template <typename TFunctor>
+  requires concepts::CUnaryFunctor<TFunctor, typename ITKIOTrait<typename I::Value>::ValueOut, typename I::Value>
   I ITKDicomReader<I>::importDICOM( const std::vector<std::string> & filenames,
 				    const TFunctor & aFunctor )
   {
@@ -63,7 +64,6 @@ namespace DGtal {
     
     typedef typename Image::Domain Domain;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
-    BOOST_CONCEPT_ASSERT( (concepts::CUnaryFunctor<TFunctor, ValueOut, Value>));
     const IOComponentType componentType =
       ITKReader<I>::getITKComponentType( filenames[0] );
     // We suppose all file have the same 'componentType'.

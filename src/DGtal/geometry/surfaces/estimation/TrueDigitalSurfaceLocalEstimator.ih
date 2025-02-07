@@ -40,6 +40,9 @@
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 ~TrueDigitalSurfaceLocalEstimator()
@@ -47,6 +50,9 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 TrueDigitalSurfaceLocalEstimator()
@@ -57,6 +63,9 @@ TrueDigitalSurfaceLocalEstimator()
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 TrueDigitalSurfaceLocalEstimator( const Self& other )
@@ -67,6 +76,9 @@ TrueDigitalSurfaceLocalEstimator( const Self& other )
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>&
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -88,6 +100,9 @@ operator=( const Self& other )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::Scalar
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -97,6 +112,9 @@ h() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 void 
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -107,6 +125,9 @@ attach( ConstAlias<Shape> aShape )
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 void 
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -126,6 +147,9 @@ setParams(  ConstAlias<KSpace> ks,
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 template <typename SurfelConstIterator>
 inline
 void 
@@ -139,6 +163,9 @@ init( const Scalar _h,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 template <typename SurfelConstIterator>
 inline
 typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::Quantity
@@ -151,6 +178,9 @@ eval( SurfelConstIterator it ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
 OutputIterator
@@ -167,6 +197,9 @@ eval( SurfelConstIterator itb,
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::RealPoint
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -188,6 +221,9 @@ embed( Surfel surfel ) const
  * @param out the output stream where the object is written.
  */
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 void
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -201,6 +237,9 @@ selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 bool
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
@@ -218,6 +257,9 @@ isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+requires DGtal::concepts::CUnaryFunctor<
+  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
+>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

@@ -40,7 +40,7 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
@@ -52,7 +52,7 @@ PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingLNeighborhood<TPredicate>::~PlaneProbingLNeighborhood()
 {}
@@ -61,7 +61,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::~PlaneProbingLNeighborhood()
 // ----------------------- Plane Probing services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingLNeighborhood<TPredicate>::hexagonState ()
@@ -80,7 +80,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::hexagonState ()
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -117,7 +117,7 @@ closestCandidate ()
 // ----------------------- Helpers to find a closest point ----------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::ClosestGridPoint
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -159,7 +159,7 @@ closestInGrid (const Index& aIdx) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 void
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -227,7 +227,7 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
 DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const
@@ -265,7 +265,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLogWithPredicat
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::GridPointOnProbingRay
 DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLinearWithPredicate (GridPointOnProbingRay const& aRay, const Integer& aBound) const
@@ -287,7 +287,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLinearWithPredi
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -301,7 +301,7 @@ getOperationFromGridPoint (GridPoint const& aP) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 void
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -331,7 +331,7 @@ updateGrid (const Index& aIdx)
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
@@ -347,7 +347,7 @@ direction (GridPoint const& aP) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 void
 DGtal::PlaneProbingLNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
@@ -359,7 +359,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::selfDisplay ( std::ostream & out )
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline bool DGtal::PlaneProbingLNeighborhood<TPredicate>::isValid() const
 {
     return true;
@@ -370,7 +370,7 @@ inline bool DGtal::PlaneProbingLNeighborhood<TPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

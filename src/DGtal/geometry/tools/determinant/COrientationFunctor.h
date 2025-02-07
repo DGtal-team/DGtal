@@ -110,7 +110,8 @@ namespace DGtal
      @tparam T the type that should be a model of COrientationFunctor.
   */
   template <typename T>
-  struct COrientationFunctor : concepts::CPointFunctor<T>
+  requires concepts::CPointFunctor<T>
+  struct COrientationFunctor
   {
     // ----------------------- Concept checks ------------------------------
   public:

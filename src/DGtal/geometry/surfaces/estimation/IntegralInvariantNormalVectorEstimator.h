@@ -100,7 +100,7 @@ namespace deprecated
 *
 * @see testVoronoiCovarianceMeasureOnSurface.cpp
 */
-template <typename TKSpace, typename TPointPredicate>
+template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
 class IntegralInvariantNormalVectorEstimator
 {
 public:
@@ -109,7 +109,6 @@ public:
   typedef TPointPredicate PointPredicate;
 
   BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;

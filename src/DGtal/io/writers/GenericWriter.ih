@@ -124,6 +124,7 @@ exportFile( const std::string & filename,
 
 
 template <typename TContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t >
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::
@@ -161,6 +162,7 @@ exportFile( const std::string & filename,
 
 
 template <typename TContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::

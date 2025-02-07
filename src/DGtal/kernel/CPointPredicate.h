@@ -77,21 +77,7 @@ namespace DGtal {
   # Notes
   */
   template <typename T>
-  struct CPointPredicate: CPredicate<T, typename T::Point>
-  {
-  // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Point Point;
-
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    // ------------------------- Internals ------------------------------------
-  private:
-
-
-  }; // end of concept CPointPredicate
+  concept CPointPredicate = CPredicate<T, typename T::Point>;
 } // namespace concepts
 } // namespace DGtal
 

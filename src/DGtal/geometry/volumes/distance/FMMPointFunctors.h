@@ -700,7 +700,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+  template <typename TDistanceImage, typename TSet, concepts::CPointFunctor TSpeedFunctor>
   class SpeedExtrapolator
   {
 
@@ -713,7 +713,6 @@ namespace DGtal
     typedef TDistanceImage DistanceImage;
     typedef typename DistanceImage::Point Point;
     typedef typename DistanceImage::Value DistanceValue;
-    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TSpeedFunctor> ));
     typedef TSpeedFunctor SpeedFunctor;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename SpeedFunctor::Point >::value ));
     typedef typename SpeedFunctor::Value Value; 

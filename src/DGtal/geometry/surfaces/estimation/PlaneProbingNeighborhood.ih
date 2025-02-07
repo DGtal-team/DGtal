@@ -36,7 +36,7 @@
 // INITIALIZATION of static data.
 ///////////////////////////////////////////////////////////////////////////////
 
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 const typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay DGtal::PlaneProbingNeighborhood<TPredicate>::myNeighborhood[6] =
 {
     PointOnProbingRay({0, 1, 2}), PointOnProbingRay({0, 2, 1}),
@@ -52,7 +52,7 @@ const typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay DG
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingNeighborhood<TPredicate>::
 PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
@@ -60,7 +60,7 @@ PlaneProbingNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle 
 {}
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 {}
@@ -69,7 +69,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 // ----------------------- Plane Probing services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 template < typename TPointAdapter >
 inline
 TPointAdapter
@@ -89,7 +89,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<TPo
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const& aState) const
@@ -142,7 +142,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::classify (std::array<bool, 6> const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 void
 DGtal::PlaneProbingNeighborhood<TPredicate>::
@@ -152,7 +152,7 @@ setNeighbors (std::vector<PointOnProbingRay> const& aNeighbors)
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingNeighborhood<TPredicate>::
@@ -168,7 +168,7 @@ closestCandidate ()
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingNeighborhood<TPredicate>::
@@ -181,7 +181,7 @@ getOperation (PointOnProbingRay const& aClosest) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 bool
 DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (PointOnProbingRay const& r) const
@@ -195,7 +195,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::isNeighbor (PointOnProbingRay const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 bool
 DGtal::PlaneProbingNeighborhood<TPredicate>::
@@ -222,7 +222,7 @@ isSmallest (Point const& aX, Point const& aY) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 template < typename TPointAdapter >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
@@ -233,7 +233,7 @@ relativePoint (TPointAdapter const& aPoint) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 template < typename TPointAdapter >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
@@ -251,7 +251,7 @@ absolutePoint (TPointAdapter const& aPoint) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 void
 DGtal::PlaneProbingNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
@@ -263,7 +263,7 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) 
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline bool DGtal::PlaneProbingNeighborhood<TPredicate>::isValid() const
 {
     return true;
@@ -274,7 +274,7 @@ inline bool DGtal::PlaneProbingNeighborhood<TPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

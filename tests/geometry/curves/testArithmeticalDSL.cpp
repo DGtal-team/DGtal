@@ -46,11 +46,9 @@ using namespace DGtal;
  * @tparam DSL a model of arithmetical DSL, 
  * either naive or standard 
  */
-template <typename DSL>
+template <concepts::CPointPredicate DSL>
 bool mainTest()
-{
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSL> ));
-  
+{ 
   typedef typename DSL::Point Point; 
 
   unsigned int nbok = 0;

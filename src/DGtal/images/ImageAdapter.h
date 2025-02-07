@@ -106,6 +106,9 @@ template <typename TImageContainer,
           typename TNewValue,
           typename TFunctorV,
           typename TFunctorVm1>
+requires concepts::CUnaryFunctor<TFunctorD, typename TNewDomain::Point, typename TImageContainer::Point> && 
+         concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, TNewValue> &&
+         concepts::CUnaryFunctor<TFunctorVm1, TNewValue, typename TImageContainer::Value>
 class ImageAdapter
 {
 
@@ -121,10 +124,6 @@ public:
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctorVm1, Value, typename TImageContainer::Value > ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

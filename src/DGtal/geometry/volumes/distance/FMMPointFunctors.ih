@@ -903,7 +903,7 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap, isIndirect>
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+template <typename TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 (const DistanceImage& aDistImg, const Set& aSet, SpeedFunctor& aSpeedFunc)
@@ -915,7 +915,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+template <typename TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
   (const SpeedExtrapolator& other)
@@ -927,7 +927,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+template <typename TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>&
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
@@ -946,7 +946,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+template <typename TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::~SpeedExtrapolator
   ()
@@ -954,7 +954,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::~SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+template <typename TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 typename DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::Value
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()

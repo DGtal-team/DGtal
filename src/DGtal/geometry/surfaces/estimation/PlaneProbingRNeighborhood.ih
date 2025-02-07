@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingRNeighborhood<TPredicate>::
 PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle const& aM)
@@ -47,7 +47,7 @@ PlaneProbingRNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
 {}
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 DGtal::PlaneProbingRNeighborhood<TPredicate>::
 ~PlaneProbingRNeighborhood()
@@ -57,7 +57,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::
 // ----------------------- Plane Probing services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 inline
 typename DGtal::PlaneProbingRNeighborhood<TPredicate>::HexagonState
 DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
@@ -89,7 +89,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::hexagonState ()
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 template < typename TPointAdapter >
 inline
 TPointAdapter
@@ -137,7 +137,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLogWithPredicate 
 }
 
 // ------------------------------------------------------------------------
-template < typename TPredicate >
+template < DGtal::concepts::CPointPredicate TPredicate >
 template < typename TPointAdapter >
 inline
 TPointAdapter
@@ -164,7 +164,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::closestPointOnRayLinearWithPredica
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 void
 DGtal::PlaneProbingRNeighborhood<TPredicate>::selfDisplay ( std::ostream & out ) const
@@ -176,7 +176,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::selfDisplay ( std::ostream & out )
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 bool
 DGtal::PlaneProbingRNeighborhood<TPredicate>::isValid() const
@@ -189,7 +189,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TPredicate>
+template <DGtal::concepts::CPointPredicate TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

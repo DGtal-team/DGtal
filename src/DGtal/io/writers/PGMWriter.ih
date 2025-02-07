@@ -41,6 +41,7 @@
 namespace DGtal {
 
 template<typename I,typename C>
+requires concepts::CUnaryFunctor<C, typename I::Value, unsigned char>
 bool
 PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 			  const Functor & aFunctor,  bool saveASCII, bool topbotomOrder)
@@ -110,6 +111,7 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 }
 
 template<typename I,typename C>
+requires concepts::CUnaryFunctor<C, typename I::Value, unsigned char>
 bool
 PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
 			    const Functor&aFunctor, bool saveASCII)

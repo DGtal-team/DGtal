@@ -39,11 +39,10 @@
 
 template <typename I,typename C>
 template <typename Word>
+requires DGtal::concepts::CUnaryFunctor<C, typename I::Value, Word>
 bool
 DGtal::RawWriter<I, C>::exportRaw(const std::string& filename, const I& aImage, const Functor& aFunctor)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::CUnaryFunctor<Functor, Value, Word> ));
-
   std::ofstream out;
   typename I::Domain domain = aImage.domain();
   typename I::Value val;

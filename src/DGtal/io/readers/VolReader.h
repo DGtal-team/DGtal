@@ -86,6 +86,7 @@ namespace DGtal
    */
   template <typename TImageContainer,  
 	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
+  requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value >
   struct VolReader
   {
     // ----------------------- Standard services ------------------------------
@@ -94,8 +95,6 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
-
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
 
 

@@ -44,6 +44,7 @@
 
 namespace DGtal {
   template<typename I,typename F>
+  requires concepts::CUnaryFunctor<F, typename I::Value, unsigned char>
   bool
   HDF5Writer<I,F>::exportHDF5_3D(const std::string & filename, const I & aImage, const std::string & aDataset,
 			    const Functor & aFunctor)

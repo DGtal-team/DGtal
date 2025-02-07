@@ -638,14 +638,13 @@ namespace DGtal
        * @param aMode the mode of representation (default GrayScaleMode).
        */
       template <typename TImageType, typename TFunctor>
-
+      requires concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int>
       TextureImage( const TImageType & image, const TFunctor &aFunctor,
                     ImageDirection normalDir=zDirection,
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
                     TextureMode aMode= GrayScaleMode)
       {
         BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
-        BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
         myDrawDomain=false;
         myDirection=normalDir;
         myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -703,11 +702,11 @@ namespace DGtal
        * @param zTranslation the image translation in the z direction (default 0).
        **/
       template <typename TImageType, typename TFunctor>
+      requires concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int>
       void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0,
                                    double yTranslation=0.0, double zTranslation=0.0)
       {
         BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
-        BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
         assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== static_cast<int>(myImageWidth) &&
                  (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== static_cast<int>(myImageHeight));
 

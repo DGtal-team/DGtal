@@ -47,6 +47,9 @@
  * @param out the output stream where the object is written.
  */
 template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV, typename TFunctorVm1>
+requires DGtal::concepts::CUnaryFunctor<TFunctorD, typename TNewDomain::Point, typename TImageContainer::Point> && 
+         DGtal::concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, TNewValue> &&
+         DGtal::concepts::CUnaryFunctor<TFunctorVm1, TNewValue, typename TImageContainer::Value>
 inline
 void
 DGtal::ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>::selfDisplay ( std::ostream & out ) const
@@ -60,6 +63,9 @@ DGtal::ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV
 // Implementation of inline functions                                        //
 
 template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV, typename TFunctorVm1>
+requires DGtal::concepts::CUnaryFunctor<TFunctorD, typename TNewDomain::Point, typename TImageContainer::Point> && 
+         DGtal::concepts::CUnaryFunctor<TFunctorV, typename TImageContainer::Value, TNewValue> &&
+         DGtal::concepts::CUnaryFunctor<TFunctorVm1, TNewValue, typename TImageContainer::Value>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

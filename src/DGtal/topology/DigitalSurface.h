@@ -48,6 +48,7 @@
 #include <boost/graph/properties.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/graph/CVertexPredicate.h"
 #include "DGtal/kernel/CWithGradientMap.h"
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
@@ -463,7 +464,7 @@ namespace DGtal
 
        @pre container().isInside( v )
     */
-    template <typename OutputIterator, typename VertexPredicate>
+    template <typename OutputIterator, concepts::CVertexPredicate VertexPredicate>
     void writeNeighbors( OutputIterator & it,
                          const Vertex & v,
                          const VertexPredicate & pred ) const;

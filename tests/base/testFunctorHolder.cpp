@@ -54,7 +54,6 @@ double add(double v)
   return v + 1.5;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Test cases
 
@@ -66,8 +65,9 @@ TEST_CASE( "Holding a lambda", "[lambda]" )
   {
     auto fn = [&cst] (double v) { return v + cst; };
     auto holder = holdFunctor(fn);
+    
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -78,7 +78,7 @@ TEST_CASE( "Holding a lambda", "[lambda]" )
     const auto fn = [&cst] (double v) { return v + cst; };
     auto holder = holdFunctor(fn);
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -88,7 +88,7 @@ TEST_CASE( "Holding a lambda", "[lambda]" )
   {
     auto holder = holdFunctor( [&cst] (double v) { return v + cst; } );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -98,7 +98,7 @@ TEST_CASE( "Holding a lambda", "[lambda]" )
   {
     auto holder = holdFunctor( [cst] (double v) mutable { return v + cst; } );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -123,7 +123,7 @@ TEST_CASE( "Holding a functor", "[functor]" )
     auto fn = Functor(cst);
     auto holder = holdFunctor(fn);
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -134,7 +134,7 @@ TEST_CASE( "Holding a functor", "[functor]" )
     const auto fn = Functor(cst);
     auto holder = holdFunctor(fn);
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -144,7 +144,7 @@ TEST_CASE( "Holding a functor", "[functor]" )
   {
     auto holder = holdFunctor( Functor(cst) );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -157,7 +157,7 @@ TEST_CASE( "Holding a function", "[function]" )
   {
     auto holder = holdFunctor( add );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -167,7 +167,7 @@ TEST_CASE( "Holding a function", "[function]" )
   {
     auto holder = holdFunctor( &add );
     BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+    DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
     REQUIRE( holder(0.5) == 2.0 );
     auto holder2 = holder;
     REQUIRE( holder2(0.5) == 2.0 );
@@ -182,7 +182,7 @@ TEST_CASE( "Holding a std::function", "[std::function]" )
   std::function<double(double)> fn = Functor(cst);
   auto holder = holdFunctor( fn );
   BOOST_CONCEPT_ASSERT(( boost::Assignable<decltype(holder)> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<decltype(holder), double, double> ));
+  DGTAL_CONCEPT_CHECK( requires concepts::CUnaryFunctor<decltype(holder), double, double> );
   REQUIRE( holder(0.5) == 2.0 );
   auto holder2 = holder;
   REQUIRE( holder2(0.5) == 2.0 );

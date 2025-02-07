@@ -242,6 +242,7 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
 
 template <typename TDomain>
 template <typename DigitalSet, typename PointPredicate>
+requires DGtal::concepts::CPointPredicate< PointPredicate >
 void
 DGtal::Shapes<TDomain>::makeSetFromPointPredicate
 ( DigitalSet & aSet,
@@ -249,7 +250,6 @@ DGtal::Shapes<TDomain>::makeSetFromPointPredicate
 {
   
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
   BOOST_STATIC_ASSERT
     (( concepts::ConceptUtils::SameType< Domain, typename DigitalSet::Domain >::value ));
   BOOST_STATIC_ASSERT

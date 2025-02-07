@@ -61,6 +61,7 @@ namespace DGtal
    * @tparam TFunctor the functor type that maps the image values to DGtal::Color
    */
   template <typename TImageContainer,typename TFunctor=functors::Identity>
+  requires concepts::CUnaryFunctor<TFunctor, typename TImageContainer::Value, DGtal::Color >
   class STBWriter
   {
     //  ----------------------- Standard services ------------------------------
@@ -71,7 +72,6 @@ namespace DGtal
     typedef TFunctor Functor ;
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-    BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  Value, DGtal::Color > )) ;
 
     /**
      * Export an image as PNG

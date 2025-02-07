@@ -60,13 +60,13 @@ namespace DGtal {
   
   template <typename I>
   template <typename TFunctor>
+  requires concepts::CUnaryFunctor<TFunctor, typename ITKIOTrait<typename I::Value>::ValueOut, typename I::Value>
   I ITKReader<I>::importITK(
   const std::string & filename,
   const TFunctor & aFunctor, bool shiftDomainUsingOrigin )
   {
     typedef typename Image::Domain Domain;
     typedef itk::ImageIOBase::IOComponentType IOComponentType;
-    BOOST_CONCEPT_ASSERT( (concepts::CUnaryFunctor<TFunctor, ValueOut, Value>));
     const IOComponentType componentType = getITKComponentType( filename );
     switch ( componentType )
     {

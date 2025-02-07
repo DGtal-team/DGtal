@@ -41,6 +41,7 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename S, typename P, typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 void
 DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
@@ -66,6 +67,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
 }
 
 template <typename S, typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 void
 DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
@@ -112,6 +114,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
 template <typename S,typename P, typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 void
 DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
                                                   const Dimension dim) const
@@ -272,6 +275,7 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
  * Constructor.
  */
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
                                           ConstAlias<PointPredicate> aPredicate,
@@ -287,6 +291,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
 }
 
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
                                           ConstAlias<PointPredicate> aPredicate,
@@ -308,6 +313,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
 }
 
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point
 DGtal::VoronoiMap<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
@@ -319,6 +325,7 @@ DGtal::VoronoiMap<S, P, TSep, TImage>::projectPoint( Point aPoint  ) const
 }
 
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 typename DGtal::VoronoiMap<S, P, TSep, TImage>::Point::Coordinate
 DGtal::VoronoiMap<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
@@ -328,6 +335,7 @@ DGtal::VoronoiMap<S, P, TSep, TImage>::projectCoordinate( typename Point::Coordi
 }
 
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 void
 DGtal::VoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
@@ -340,6 +348,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
 // ///////////////////////////////////////////////////////////////////////////////
 
 template <typename S,typename P,typename TSep, typename TImage>
+requires DGtal::concepts::CPointPredicate<P>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

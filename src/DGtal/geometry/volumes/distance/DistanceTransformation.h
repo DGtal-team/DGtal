@@ -88,7 +88,7 @@ namespace DGtal
    * @see distancetransform3D.cpp
    */
   template < typename TSpace,
-             typename TPointPredicate,
+             concepts::CPointPredicate TPointPredicate,
              typename TSeparableMetric,
              typename TImageContainer =
                ImageContainerBySTLVector< HyperRectDomain<TSpace>,
@@ -100,7 +100,6 @@ namespace DGtal
 
   public:
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
     ///Separable Metric type

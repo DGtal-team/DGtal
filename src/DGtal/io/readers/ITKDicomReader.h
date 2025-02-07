@@ -105,6 +105,7 @@ namespace DGtal
      */
     template <typename TFunctor =
               typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor>
+    requires concepts::CUnaryFunctor<TFunctor, typename ITKIOTrait<typename TImage::Value>::ValueOut, typename TImage::Value>
     static Image importDICOM( const std::vector<std::string> & filenames,
 			      const TFunctor & aFunctor = TFunctor() );
 

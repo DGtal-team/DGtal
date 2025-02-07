@@ -48,10 +48,9 @@ using namespace DGtal;
  * @tparam DSS a model of arithmetical DSS,
  * either naive or standard
  */
-template <typename DSS>
+template <concepts::CPointPredicate DSS>
 bool mainTest()
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
   BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
@@ -736,10 +735,9 @@ bool compatibleStepsTest(const DSS& dss)
  * @tparam DSS a model of arithmetical DSS,
  * either naive or standard
  */
-template <typename DSS>
+template <concepts::CPointPredicate DSS>
 bool constructorsTest()
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSS> ));
   BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;

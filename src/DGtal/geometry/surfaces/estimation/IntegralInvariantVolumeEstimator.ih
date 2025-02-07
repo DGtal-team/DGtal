@@ -44,6 +44,7 @@
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 ~IntegralInvariantVolumeEstimator()
@@ -53,6 +54,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -65,6 +67,7 @@ clear()
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 IntegralInvariantVolumeEstimator( VolumeFunctor fct )
@@ -81,6 +84,7 @@ IntegralInvariantVolumeEstimator( VolumeFunctor fct )
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 IntegralInvariantVolumeEstimator
@@ -105,6 +109,7 @@ IntegralInvariantVolumeEstimator
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 IntegralInvariantVolumeEstimator
@@ -120,6 +125,7 @@ IntegralInvariantVolumeEstimator
 {}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Self&
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -145,6 +151,7 @@ operator= ( const Self& other )
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Scalar
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -154,6 +161,7 @@ h() const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -170,6 +178,7 @@ attach
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -183,6 +192,7 @@ setParams
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename SurfelConstIterator>
 inline
 void
@@ -252,6 +262,7 @@ init
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename SurfelConstIterator>
 inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Quantity
@@ -264,6 +275,7 @@ eval
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
 OutputIterator
@@ -278,6 +290,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::selfDisplay
@@ -289,6 +302,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 bool
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::isValid() const
@@ -298,6 +312,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<<

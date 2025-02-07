@@ -101,6 +101,7 @@ DGtal::functors::IsWithinPointPredicate<TPoint>
 
 //------------------------------------------------------------------------------
 template <typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::functors::NotPointPredicate<TPointPredicate>
 ::NotPointPredicate( ConstAlias<PointPredicate> pred )
@@ -109,6 +110,8 @@ DGtal::functors::NotPointPredicate<TPointPredicate>
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate>
+requires DGtal::concepts::CPointPredicate<TPointPredicate>
+
 inline
 bool
 DGtal::functors::NotPointPredicate<TPointPredicate>
@@ -135,6 +138,8 @@ DGtal::functors::EqualPointPredicate<TPointPredicate>
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 ::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<TBinaryFunctor> boolFunctor )
@@ -143,6 +148,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryF
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 bool
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
@@ -153,6 +160,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryF
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::AndBoolFct2>
 ::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<DGtal::functors::AndBoolFct2> boolFunctor )
@@ -161,6 +170,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::f
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 bool
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::AndBoolFct2>
@@ -170,6 +181,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::f
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::OrBoolFct2>
 ::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<DGtal::functors::OrBoolFct2> boolFunctor )
@@ -178,6 +191,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::f
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2>
+requires DGtal::concepts::CPointPredicate< TPointPredicate1 > && 
+         DGtal::concepts::CPointPredicate< TPointPredicate2 >
 inline
 bool
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::OrBoolFct2>
@@ -187,6 +202,8 @@ DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::f
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
+requires DGtal::concepts::CUnaryFunctor<TPredicate, typename TPointFunctor::Value, bool> && 
+         DGtal::concepts::CPointFunctor<TPointFunctor>
 inline
 DGtal::functors::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::PointFunctorPredicate( ConstAlias<PointFunctor> aFun, ConstAlias<Predicate> aPred )
@@ -195,6 +212,8 @@ DGtal::functors::PointFunctorPredicate<TPointFunctor, TPredicate>
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
+requires DGtal::concepts::CUnaryFunctor<TPredicate, typename TPointFunctor::Value, bool> && 
+         DGtal::concepts::CPointFunctor<TPointFunctor>
 inline
 bool
 DGtal::functors::PointFunctorPredicate<TPointFunctor, TPredicate>

@@ -145,8 +145,8 @@ namespace DGtal
    * @see exampleFMM3D.cpp
    * @see testFMM.cpp
    */
-  template <typename TImage, typename TSet, typename TPointPredicate, 
-	    typename TPointFunctor = L2FirstOrderLocalDistance<TImage,TSet> >
+  template <typename TImage, typename TSet, concepts::CPointPredicate TPointPredicate, 
+	    concepts::CPointFunctor TPointFunctor = L2FirstOrderLocalDistance<TImage,TSet> >
   class FMM
   {
 
@@ -157,8 +157,6 @@ namespace DGtal
     //concept assert
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TPointFunctor> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 

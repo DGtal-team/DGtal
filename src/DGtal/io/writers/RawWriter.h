@@ -113,6 +113,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     template <typename Word>
+    requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImage::Value, Word>
     static bool exportRaw(const std::string& filename,
          const Image& aImage,
          const Functor& aFunctor = Functor());

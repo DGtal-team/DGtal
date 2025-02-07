@@ -344,6 +344,7 @@ namespace DGtal
    *
    */
   template<typename Image, typename PointPredicate, concepts::CQuantity TValue=DGtal::int32_t>
+  requires concepts::CPointPredicate<PointPredicate>
   class ImageToConstantFunctor
   {
   public:
@@ -352,7 +353,6 @@ namespace DGtal
     typedef TValue Value;
     
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
     {

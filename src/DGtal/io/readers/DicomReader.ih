@@ -78,6 +78,7 @@
 namespace DGtal {
 
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 template <typename Domain, typename PixelType>
 inline
 ImageContainerByITKImage<Domain, PixelType>
@@ -135,6 +136,7 @@ importDicomFiles_( const std::vector<std::string> & filenames )
 }
 
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 template <typename Image, typename Domain, typename OutPixelType,
 	  typename PixelType>
 Image
@@ -166,6 +168,7 @@ importDicomFiles( const std::vector<std::string> & filenames,
 
 //specialization
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 template <typename Domain, typename OutPixelType, typename PixelType>
 ImageContainerByITKImage<Domain, OutPixelType>
 DicomReader<TImageContainer, TFunctor>::
@@ -204,6 +207,7 @@ importDicomFiles( const std::vector<std::string> & filenames,
 
   
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 template <typename PixelType>
 inline TImageContainer
 DicomReader<TImageContainer, TFunctor>::
@@ -217,6 +221,7 @@ importDicomFiles( const std::vector<std::string> & filenames,
   
 
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 inline
 TImageContainer
 DicomReader<TImageContainer, TFunctor>::
@@ -235,6 +240,7 @@ importDicom( const std::string & aFilename,
 }
 
 template <typename TImageContainer, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
 inline
 TImageContainer
 DicomReader<TImageContainer, TFunctor>::

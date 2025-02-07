@@ -85,15 +85,14 @@ namespace DGtal
    * @see testPNMRawWriter.cpp
    */
   template <typename TImage, typename TFunctor =  functors::Identity>
+  requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, unsigned char>
   struct PGMWriter
   {
     // ----------------------- Standard services ------------------------------
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
-    
+        
     BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
        (TImage::Domain::dimension == 3));
 

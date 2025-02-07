@@ -45,6 +45,8 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/topology/CSurfelPredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -113,6 +115,7 @@ namespace DGtal
        InputException if none was found after [nbtries] iterations.
     */
     template <typename PointPredicate>
+    requires concepts::CPointPredicate<PointPredicate>
     static
     SCell findABel( const KSpace & K,
         const PointPredicate & pp,
@@ -146,6 +149,7 @@ namespace DGtal
        from a face adjacent digital point outside [dset].
     */
     template <typename PointPredicate>
+    requires concepts::CPointPredicate<PointPredicate>
     static
     SCell findABel( const KSpace & K,
                     const PointPredicate & pp,
@@ -182,6 +186,7 @@ namespace DGtal
        element of [shape] and an element not in [shape].
     */
     template <typename SCellSet, typename PointPredicate >
+    requires concepts::CPointPredicate<PointPredicate>
     static 
     void trackBoundary( SCellSet & surface,
       const KSpace & K,
@@ -257,6 +262,7 @@ namespace DGtal
        surface, ie. 'sp(start_surfel)==true'.
     */
     template <typename SCellSet, typename SurfelPredicate >
+    requires concepts::CSurfelPredicate<SurfelPredicate>
     static 
     void trackSurface( SCellSet & surface,
                        const KSpace & K,
@@ -292,6 +298,7 @@ namespace DGtal
        surface, ie. 'sp(start_surfel)==true'.
     */
     template <typename SCellSet, typename SurfelPredicate >
+    requires concepts::CSurfelPredicate<SurfelPredicate>
     static 
     void trackClosedSurface( SCellSet & surface,
                              const KSpace & K,
@@ -333,6 +340,7 @@ namespace DGtal
        element of [shape] and an element not in [shape].
     */
     template <typename PointPredicate >
+    requires concepts::CPointPredicate<PointPredicate>
     static 
     void track2DBoundary( std::vector<SCell> & aSCellContour2D,
         const KSpace & K,
@@ -382,6 +390,7 @@ namespace DGtal
        element of [shape] and an element not in [shape].
     */
     template <typename PointPredicate>
+    requires concepts::CPointPredicate<PointPredicate>
     static 
     void track2DSliceBoundary( std::vector<SCell> & aSCellContour2D,
 			       const KSpace & K, 
@@ -425,6 +434,7 @@ namespace DGtal
        @param start_surfel a signed surfel such that sp(start_surfel) is true.
     */
     template <typename SurfelPredicate >
+    requires concepts::CSurfelPredicate<SurfelPredicate>
     static 
     void track2DSurface( std::vector<SCell> & aSCellContour,
 			 const KSpace & K,
@@ -476,6 +486,7 @@ namespace DGtal
        @param start_surfel a signed surfel such that sp(start_surfel) is true.
     */
     template <typename SurfelPredicate>
+    requires concepts::CSurfelPredicate<SurfelPredicate>
     static 
     void track2DSliceSurface( std::vector<SCell> & aSCellContour,
 			       const KSpace & K, 

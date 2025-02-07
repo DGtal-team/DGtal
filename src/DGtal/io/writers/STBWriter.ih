@@ -46,6 +46,7 @@
 
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImageContainer::Value, DGtal::Color >
 inline
 bool
 DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filename,
@@ -73,6 +74,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filen
 }
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImageContainer::Value, DGtal::Color >
 inline
 bool
 DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filename,
@@ -101,6 +103,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filen
 
 
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImageContainer::Value, DGtal::Color >
 inline
 bool
 DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filename,
@@ -127,6 +130,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filen
   return error;
 }
 template <typename TImageContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImageContainer::Value, DGtal::Color >
 inline
 bool
 DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filename,

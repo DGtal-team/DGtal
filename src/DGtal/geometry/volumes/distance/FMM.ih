@@ -36,7 +36,7 @@
 
 #include "DGtal/topology/SCellsFunctors.h"
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 const typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Dimension DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::dimension = Point::dimension;
 
 
@@ -47,7 +47,7 @@ const typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Dimensi
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
@@ -64,7 +64,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
@@ -83,7 +83,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
@@ -101,7 +101,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
@@ -121,7 +121,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::~FMM()
 {
@@ -133,7 +133,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::~FMM()
 // Static functions :
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 template <typename TIteratorOnPoints>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -149,7 +149,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 template <typename KSpace, typename TIteratorOnBels>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -174,7 +174,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -237,7 +237,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 template <typename TIteratorOnPairs>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -261,7 +261,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 // Interface - public :
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::compute()
@@ -272,7 +272,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::compute()
     {   }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -281,7 +281,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   return addNewAcceptedPoint(aPoint, aValue);
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::min() const
@@ -289,7 +289,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::min() const
   return myMinValue; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::max() const
@@ -297,7 +297,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::max() const
   return myMaxValue; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMin() const
@@ -316,7 +316,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMin() const
    return vmin; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMax() const
@@ -335,7 +335,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMax() const
   return vmax; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::isValid() const
@@ -363,7 +363,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::isValid() const
   return true; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::selfDisplay ( std::ostream & out ) const
@@ -379,7 +379,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::selfDisplay ( std::ost
 ///////////////////////////////////////////////////////////////////////////////
 // Internals
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::init()
@@ -399,7 +399,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::init()
 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
@@ -458,7 +458,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   else return false; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::update(const Point& aPoint)
@@ -477,7 +477,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::update(const Point& aP
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::addNewCandidate(const Point& aPoint)
@@ -502,7 +502,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::addNewCandidate(const 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

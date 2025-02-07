@@ -58,11 +58,9 @@ namespace DGtal
    *
    * @tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
    */
-  template <typename TPredicate, ProbingMode mode>
+  template <concepts::CPointPredicate TPredicate, ProbingMode mode>
   class PlaneProbingParallelepipedEstimator
   {
-    BOOST_CONCEPT_ASSERT((concepts::CPointPredicate<TPredicate>));
-
     // ----------------------- Public types ------------------------------
   public:
       class NotAbovePredicate;

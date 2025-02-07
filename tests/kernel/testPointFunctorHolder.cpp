@@ -64,7 +64,7 @@ TEST_CASE( "2D PointFunctorHolder from functor by rvalue", "[2D][functor][rvalue
   auto fn = functors::holdPointFunctor<Point, Value>( Functor<Value, Point>( Point(1, 0), 1 ) );
 
   // Checks CPointFunctor concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
+  DGTAL_CONCEPT_CHECK( requires DGtal::concepts::CPointFunctor<decltype(fn)> );
   
   // Checking standard services
   std::cout << fn << std::endl;
@@ -84,7 +84,7 @@ TEST_CASE( "2D PointFunctorHolder from functor by lvalue", "[2D][functor][lvalue
   auto fn = functors::holdPointFunctor<Point>( functor ); // auto deduction of the return type
 
   // Checks CPointFunctor concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
+  DGTAL_CONCEPT_CHECK( requires DGtal::concepts::CPointFunctor<decltype(fn)> );
 
   // Checking standard services
   std::cout << fn << std::endl;
@@ -108,7 +108,7 @@ TEST_CASE( "2D PointFunctorHolder from lambda by rvalue", "[2D][lambda][rvalue]"
   );
 
   // Checks CPointFunctor concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
+  DGTAL_CONCEPT_CHECK( requires DGtal::concepts::CPointFunctor<decltype(fn)> );
 
   // Checking standard services
   std::cout << fn << std::endl;
@@ -131,7 +131,7 @@ TEST_CASE( "2D PointFunctorHolder from lambda by lvalue", "[2D][lambda][lvalue]"
   auto fn = functors::holdPointFunctor<Point, Value>( lambda );
 
   // Checks CPointFunctor concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
+  DGTAL_CONCEPT_CHECK( requires DGtal::concepts::CPointFunctor<decltype(fn)> );
 
   // Checking standard services
   std::cout << fn << std::endl;

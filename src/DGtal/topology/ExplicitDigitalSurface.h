@@ -77,7 +77,7 @@ namespace DGtal
      functor defines the digital surface as a characteristic function
      returning true iff the surfel belongs to it.
    */
-  template <typename TKSpace, typename TSurfelPredicate>
+  template <typename TKSpace, concepts::CSurfelPredicate TSurfelPredicate>
   class ExplicitDigitalSurface
   {
   public:
@@ -173,7 +173,6 @@ namespace DGtal
     typedef TSurfelPredicate SurfelPredicate;
 
     // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSurfelPredicate< SurfelPredicate > ));
 
     // -------------------- specific types ------------------------------
     typedef typename std::vector<Surfel> SurfelStorage;
