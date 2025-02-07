@@ -1,7 +1,10 @@
 # DGtal 2.0
 
+- *General*
+  - Upgrade of ITK to version 5 and above [#1757](https://github.com/DGtal-team/DGtal/pull/1757)
+
 - *CMake*
-  - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard)
+  - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) [#1757](https://github.com/DGtal-team/DGtal/pull/1757)
 
 - *Build*
   - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753))
