@@ -89,7 +89,8 @@ namespace DGtal
 
     */
     template <typename T, typename Value>
-    struct CBidirectionalRangeWithWritableIterator : CSinglePassRangeWithWritableIterator<T, Value>
+    requires CSinglePassRangeWithWritableIterator<T, Value>
+    struct CBidirectionalRangeWithWritableIterator
     {
       // ----------------------- Concept checks ------------------------------
     public:

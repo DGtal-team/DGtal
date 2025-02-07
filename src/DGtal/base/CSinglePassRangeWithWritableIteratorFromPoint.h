@@ -88,9 +88,9 @@ namespace DGtal
 
     */
     template <typename T, typename Value>
-    struct CSinglePassRangeWithWritableIteratorFromPoint:
-      CConstSinglePassRangeFromPoint<T,Value>,
-      CSinglePassRangeWithWritableIterator<T,Value>
+    requires CConstSinglePassRangeFromPoint<T,Value> && 
+             CSinglePassRangeWithWritableIterator<T,Value>
+    struct CSinglePassRangeWithWritableIteratorFromPoint
     {
       // ----------------------- Concept checks ------------------------------
     public:

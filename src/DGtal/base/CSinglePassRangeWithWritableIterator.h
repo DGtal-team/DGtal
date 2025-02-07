@@ -40,7 +40,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <iterator>
+#include <concepts>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -83,31 +86,14 @@ namespace DGtal
        @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
        @tparam Value the type of object t in (*it) = t.
     */
-    template <CConstSinglePassRange T, typename Value>
-    struct CSinglePassRangeWithWritableIterator
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::OutputIterator  OutputIterator;
-
-      // possibly check these types so as to satisfy a concept with
-      BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Value> ));
-
-      BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIterator )
+    template <typename T, typename Value>
+    concept CSinglePassRangeWithWritableIterator = 
+      CConstSinglePassRange<T> && 
+      ConceptUtils::OutputIterator<typename T::OutputIterator, Value> &&
+      requires(T myX, typename T::OutputIterator it)
       {
-        concepts::ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      OutputIterator myOutput;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CSinglePassRangeWithWritableIterator
-
+        { myX.outputIterator() } -> std::same_as<typename T::OutputIterator>;
+      };
   } // namespace concepts
 
 } // namespace DGtal
