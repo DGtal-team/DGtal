@@ -33,9 +33,9 @@ manage the project build on various systems.
 To build DGtal in is minimal configuration, you need at least these
 dependencies:
 
-- \e c++ compiler (g++, clang++, ...) with C++17 features
-- \e [cmake](http://cmake.org) (>3.1, optionally cmake-gui),
-- \e |boost](http://www.boost.org) boost >= 1.50.0  (no need to have the libraries installed)
+- \e c++ compiler (g++, clang++, ...) with C++20 features
+- \e [cmake](http://cmake.org) (>3.2, optionally cmake-gui),
+- \e [boost](http://www.boost.org) boost >= 1.50.0  (no need to have the libraries installed)
 - \e zlib (already available in most OS)
 
 To build DGtal in is full configuration, you may need these dependencies too:
@@ -45,7 +45,7 @@ To build DGtal in is full configuration, you may need these dependencies too:
 - \e [libIGL](https://libigl.github.io),
 - \e cairo,
 - \e qglviewer,
-- \e insighttoolkit (ITK),
+- \e insighttoolkit, itk >= 5.0
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 
 If you want to generate the documentation, you would need:
