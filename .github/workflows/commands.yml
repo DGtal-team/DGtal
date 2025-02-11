@@ -186,7 +186,7 @@ jobs:
         if: steps.get_round.outputs.result == 'fullbuild'
         run: |
           set -x
-          sudo apt-get update && sudo apt-get install -y libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev
+          sudo apt-get update && sudo apt-get install -y libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev  libinsighttoolkit5-dev
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 
