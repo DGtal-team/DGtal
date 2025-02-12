@@ -97,42 +97,6 @@ jobs:
        # Execute the build.  You can specify a specific target with "--target <NAME>"
        run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
 
-     - name: Test
-       working-directory: ${{runner.workspace}}/build
-       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-       shell: bash
-       run: |
-           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-           ctest -C $${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-
-     - name: Test
-       working-directory: ${{runner.workspace}}/build
-       if: matrix.os == 'windows-latest' 
-       shell: bash
-       run: |
-           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-           ctest -C ${{ matrix.BUILD_TYPE }} --output-on-failure -E $TESTBLACKLIST  
-
-
-     - name: Import module Test 
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: |
-          python -c "import dgtal"
-      
-     - name: Install python dependencies
-       shell: bash
-       run: |
-          python -m pip install pytest    
-          python -m pip install numpy
-          python -m pip install itk 
-
-     - name: Run unit tests
-       shell: bash
-       working-directory: ${{runner.workspace}}/build  
-       run: |
-          ctest -R python -C ${{ matrix.BUILD_TYPE }} -V --output-on-failure
-
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
@@ -149,6 +113,32 @@ jobs:
            cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
            ninja
 
+     - name: Import module Test 
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: |
+          python -c "import dgtal"
+      
+     - name: Install python dependencies
+       shell: bash
+       run: |
+          python -m pip install pytest    
+          python -m pip install numpy
+          python -m pip install itk 
+
+     - name: Test
+       working-directory: ${{runner.workspace}}/build
+       if: matrix.os == 'windows-latest' 
+       shell: bash
+       run: |
+           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
+           ctest -C ${{ matrix.BUILD_TYPE }} --output-on-failure -E $TESTBLACKLIST  
+
+     - name: Run unit tests
+       shell: bash
+       working-directory: ${{runner.workspace}}/build  
+       run: |
+          ctest -R python -C ${{ matrix.BUILD_TYPE }} -V --output-on-failure
   # Documentatin (build, check and deploy)
   Documentation:
     runs-on: ubuntu-latest
