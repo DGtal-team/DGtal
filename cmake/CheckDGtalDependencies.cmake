@@ -43,3 +43,4 @@ endif()
 # Eigen (already fetched)
 # -----------------------------------------------------------------------------
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+target_compile_definitions(DGtal PUBLIC "-DDGTAL_WITH_EIGEN=true")
