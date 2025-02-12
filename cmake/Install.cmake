@@ -15,6 +15,15 @@ install(TARGETS
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+# Export file locally also, so the DGtalConfig.cmake 
+# in the build/ directory can work 
+export(TARGETS 
+    DGtal 
+      # Dependancies also built by the project
+      DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+  FILE DGtalTargets.cmake
+)
+
 # Install headers 
 # Note : this also copies a few .cpp and CMakeLists but simplifies the code here
 install(DIRECTORY
