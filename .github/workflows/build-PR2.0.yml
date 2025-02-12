@@ -30,8 +30,8 @@ jobs:
           fetch-depth: 5
 
      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with: 
+       uses: actions/setup-python@v4
+       with: 
           python-version: ${{ matrix.python-version }}
 
      - name: Install linux deps
@@ -91,19 +91,6 @@ jobs:
           conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
           cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON
 
-     - name: Import module Test 
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: |
-          python -c "import dgtal"
-      
-      - name: Install python dependencies
-        shell: bash
-        run: |
-          python -m pip install pytest    
-          python -m pip install numpy
-          python -m pip install itk 
-
      - name: Build
        working-directory: ${{runner.workspace}}/build
        shell: bash
@@ -126,6 +113,25 @@ jobs:
            echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
            ctest -C ${{ matrix.BUILD_TYPE }} --output-on-failure -E $TESTBLACKLIST  
 
+
+     - name: Import module Test 
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: |
+          python -c "import dgtal"
+      
+     - name: Install python dependencies
+       shell: bash
+       run: |
+          python -m pip install pytest    
+          python -m pip install numpy
+          python -m pip install itk 
+
+     - name: Run unit tests
+       shell: bash
+       working-directory: ${{runner.workspace}}/build  
+       run: |
+          ctest -R python -C ${{ matrix.BUILD_TYPE }} -V --output-on-failure
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)
        if: matrix.os == 'ubuntu-latest'
