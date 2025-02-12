@@ -1,16 +1,18 @@
-name: CI (linux/macOS/windows), master
+name: CI (linux/macOS/windows), PR
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main2.0 ]
+  pull_request:
+    branches: [ main2.0 ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10  
-  CONFIG_LINUX:   -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true  -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true    -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true 
-  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true  #-DDGTAL_WITH_GMP=true #-DDGTAL_WITH_FFTW3=true  # -DDGTAL_WITH_CAIRO=true # -DDGTAL_WITH_ITK=true  
+  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=false -DDGTAL_BUILD_TESTS=false -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
+  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTS_PYTHON=ON
+  CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
+  CONFIG_MAC:     -DUSE_CCACHE=NO -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
+  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   #-DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
 
 jobs:
   build:
@@ -19,25 +21,28 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        BUILD_TYPE: [Debug,Release]
-        exclude:
-          -  os: windows-latest
-             BUILD_TYPE: Debug
+        BUILD_TYPE: [Release]
+        python-version: ["3.9"]
 
     steps:
      - uses: actions/checkout@v3
        with:
-          fetch-depth: 10
+          fetch-depth: 5
+
+     - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with: 
+          python-version: ${{ matrix.python-version }}
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp cgal
+       run: brew install boost ninja gmp libomp ccache cgal
 
      - name: Install conan
        if: matrix.os == 'windows-latest'
@@ -49,8 +54,9 @@ jobs:
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'
        run: |
-          conan profile detect --force
-  
+         conan profile detect --force
+
+
      - uses: actions/cache@v4
        if: matrix.os == 'windows-latest'
        with:
@@ -69,21 +75,34 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON -G Ninja
 
      - name: Configure CMake (macOS)
        if: matrix.os == 'macOS-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }}  $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }}  $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON
 
      - name: Configure CMake (windows)
        if: matrix.os == 'windows-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
        run: |
-            conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
-            cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+          conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
+          cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON
+
+     - name: Import module Test 
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: |
+          python -c "import dgtal"
+      
+      - name: Install python dependencies
+        shell: bash
+        run: |
+          python -m pip install pytest    
+          python -m pip install numpy
+          python -m pip install itk 
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
@@ -115,10 +134,13 @@ jobs:
        run: |
            git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
            cd DGtalTools
+           git fetch origin pull/467/head:main2.0
+           git checkout main2.0
            mkdir buildDGtalTools
            cd buildDGtalTools
-           echo  cmake .. -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
-           cmake .. -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           ls 
+           echo  cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
            ninja
 
   # Documentatin (build, check and deploy)
@@ -126,18 +148,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Set up
       run: |
          sudo apt-get update
-         sudo apt-get install  zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev  libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev  graphviz texlive doxygen
+         sudo apt-get install libboost-dev graphviz texlive doxygen
 
     - name: Building pages
       run: |
          mkdir build
          cd build
-         cmake .. $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=1000
+         cmake ..
          wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
          make doc > buildDoc.log
 

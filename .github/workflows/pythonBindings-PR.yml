@@ -2,7 +2,7 @@ name: CI Python bindings (linux/macOS/windows)
 
 on:
   pull_request:
-    branches: [ master, main2.0 ]
+    branches: [ master ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)

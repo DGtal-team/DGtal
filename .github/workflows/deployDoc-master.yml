@@ -2,7 +2,7 @@ name: Nightly-build documentation and deploy
 
 on:
   push:
-    branches: [ master, main2.0 ]
+    branches: [ master ]
 
 jobs:
   # This workflow contains a single job called "build"
