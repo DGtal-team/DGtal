@@ -815,7 +815,7 @@ public:
     
     // Previous : typename Alloc::const_reference
     // const value_type& should be equivalent according to : https://stackoverflow.com/questions/16360068/why-is-allocatorreference-being-phased-out 
-    void create( Size begin, Size end, const Alloc::value_type& entry)
+    void create( Size begin, Size end, const typename Alloc::value_type& entry)
     {
       for (Size i = begin; i < end; ++i)
         {
