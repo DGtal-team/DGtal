@@ -18,7 +18,7 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
-set(WITH_EIGEN 1)
+set(DGTAL_WITH_EIGEN 1)
 include(eigen)
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
@@ -96,3 +96,6 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
+
+set(DGTAL_LIBRARIES DGtal::DGtal DGtal::DGTAL_LibBoard DGtal::DGTAL_BoostAddons DGtal::DGtal_STB ${DGtalLibDependencies})
+get_target_property(DGTAL_INCLUDE_DIRS DGtal::DGtal INTERFACE_INCLUDE_DIRECTORIES)
