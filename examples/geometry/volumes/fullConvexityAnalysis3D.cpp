@@ -230,7 +230,7 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   template < typename ImagePtr >
   static
   std::vector< Geometry >
-  multiscale_run( std::vector<Point> pts )
+  multiscale_run( const std::vector<Point>& pts )
   {
     return std::vector< Geometry >( pts.size(), std::make_pair( 0, 0 ) );
   }
