@@ -97,24 +97,6 @@ jobs:
        # Execute the build.  You can specify a specific target with "--target <NAME>"
        run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
 
-     - name: DGtalTools (linux only, we check this PR against DGtalTools master)
-       if: matrix.os == 'ubuntu-latest'
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: |
-           git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
-           cd DGtalTools
-           git fetch origin pull/467/head:main2.0
-           git checkout main2.0
-           mkdir buildDGtalTools
-           cd buildDGtalTools
-           ls 
-           ls ${{runner.workspace}}
-           echo  cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DCMAKE_MODULE_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGTAL_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
-           ls ${{runner.workspace}}/DGtal/cmake/deps
-           cmake .. -DCMAKE_PREFIX_PATH=${{runner.workspace}}/DGtal/cmake/deps -DCMAKE_MODULE_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
-           ninja
-
      - name: Import module Test 
        shell: bash
        working-directory: ${{runner.workspace}}/build
@@ -141,30 +123,46 @@ jobs:
        working-directory: ${{runner.workspace}}/build  
        run: |
           ctest -R python -C ${{ matrix.BUILD_TYPE }} -V --output-on-failure
+
+     - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
+       if: matrix.os == 'ubuntu-latest'
+       shell: bash
+       working-directory: ${{runner.workspace}}/build
+       run: |
+           git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
+           cd DGtalTools
+           git fetch origin pull/467/head:main2.0
+           git checkout main2.0
+           mkdir buildDGtalTools
+           cd buildDGtalTools
+           cmake .. -DCMAKE_MODULE_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+           ninja
+
+
   # Documentatin (build, check and deploy)
-  # Documentation:
-  #   runs-on: ubuntu-latest
-  # 
-  #   steps:
-  #   - uses: actions/checkout@v3
-  # 
-  #   - name: Set up
-  #     run: |
-  #        sudo apt-get update
-  #        sudo apt-get install libboost-dev graphviz texlive doxygen
-  # 
-  #   - name: Building pages
-  #     run: |
-  #        mkdir build
-  #        cd build
-  #        cmake ..
-  #        wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
-  #        make doc > buildDoc.log
-  # 
-  #   - name: Checking doc
-  #     run: |
-  #         pwd
-  #         export BUILD_DIR=${{runner.workspace}}/DGtal/build
-  #         export SRC_DIR=${{runner.workspace}}/DGtal/
-  #         .github/workflows/checkDoxygenDocumentation.sh
-  #     #&& .github/workflows/check_src_file_tag.sh
+  Documentation:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v3
+  
+    - name: Set up
+      run: |
+         sudo apt-get update
+         sudo apt-get install libboost-dev graphviz texlive doxygen
+  
+    - name: Building pages
+      run: |
+         mkdir build
+         cd build
+         cmake ..
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         make doc > buildDoc.log
+  
+    - name: Checking doc
+      run: |
+          pwd
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          .github/workflows/checkDoxygenDocumentation.sh
+      #&& .github/workflows/check_src_file_tag.sh
