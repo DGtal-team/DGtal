@@ -8,7 +8,7 @@ on:
 
 env:
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=false -DDGTAL_BUILD_TESTS=false -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
+  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
   CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTS_PYTHON=ON
   CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
   CONFIG_MAC:     -DUSE_CCACHE=NO -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] # , macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         BUILD_TYPE: [Release]
         python-version: ["3.9"]
 
@@ -96,7 +96,7 @@ jobs:
        shell: bash
        # Execute the build.  You can specify a specific target with "--target <NAME>"
        run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
-       
+
      - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
        if: matrix.os == 'ubuntu-latest'
        shell: bash
