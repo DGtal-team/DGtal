@@ -21,6 +21,7 @@ export(TARGETS
     DGtal 
       # Dependancies also built by the project
       DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+  NAMESPACE DGtal::
   FILE DGtalTargets.cmake
 )
 
