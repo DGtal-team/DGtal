@@ -9,7 +9,6 @@ on:
 env:
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
   CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
-  CONFIG_PYTHON:  -DDGTAL_WRAP_PYTHON=ON -DDGTAL_BUILD_TESTS_PYTHON=ON
   CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
   CONFIG_MAC:     -DUSE_CCACHE=NO -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
   CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   #-DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
@@ -75,13 +74,14 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON -G Ninja
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" -G Ninja
 
      - name: Configure CMake (macOS)
        if: matrix.os == 'macOS-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }}  $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON
+       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }}  $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" 
+
 
      - name: Configure CMake (windows)
        if: matrix.os == 'windows-latest'
@@ -89,7 +89,7 @@ jobs:
        working-directory: ${{runner.workspace}}/build
        run: |
           conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
-          cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" $CONFIG_PYTHON
+          cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
