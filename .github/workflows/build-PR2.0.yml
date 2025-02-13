@@ -96,6 +96,14 @@ jobs:
        shell: bash
        # Execute the build.  You can specify a specific target with "--target <NAME>"
        run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
+     
+     - name: Test
+       working-directory: ${{runner.workspace}}/build
+       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+       shell: bash
+       run: |
+           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
+           ctest -C $${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
        if: matrix.os == 'ubuntu-latest'
