@@ -85,25 +85,13 @@ namespace DGtal
        @tparam T the type that is checked. T should be a model of CBidirectionalRange.
 
     */
-    template <CConstBidirectionalRange T>
-    struct CBidirectionalRange
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::ReverseIterator ReverseIterator;
-    
-      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    
-      BOOST_CONCEPT_USAGE(CBidirectionalRange)
-      {
+    template <typename T>
+    concept CBidirectionalRange = 
+       CConstBidirectionalRange<typename T::ReverseIterator> && 
+       requires (T i, typename T::ReverseIterator it) {
         concepts::ConceptUtils::sameType( it, i.rbegin() );
-        concepts::ConceptUtils::sameType( it, i.rend() );
-      };
-    
-    private:
-      T i;
-      ReverseIterator it;
-    }; // end of concept CBidirectionalRange
+        concepts::ConceptUtils::sameType( it, i.rend() ); 
+       };
   
   } // namespace concepts
 

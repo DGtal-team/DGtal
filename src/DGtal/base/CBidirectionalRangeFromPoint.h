@@ -90,10 +90,8 @@ namespace DGtal
 
        @tparam T the type that should be a model of CBidirectionalRangeFromPoint.
     */
-    template <typename T>
-
+    template <CBidirectionalRange T>
     struct CBidirectionalRangeFromPoint:
-      CBidirectionalRange<T>,
       CConstBidirectionalRangeFromPoint<T>
     {
       // ----------------------- Concept checks ------------------------------
