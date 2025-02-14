@@ -89,19 +89,11 @@ namespace DGtal
     */
     template <typename Container>
     concept CConstSinglePassRange = 
-    requires(const Container& x, typename Container::ConstIterator it) {
-        ++it;
-        requires std::convertible_to<decltype(  it == it) , bool>;
-        requires std::convertible_to<decltype(!(it == it)), bool>;
-        requires std::convertible_to<
-          typename boost::iterator_traversal<typename Container::ConstIterator>::type, 
-          boost::single_pass_traversal_tag
-        >; 
-
-        concepts::ConceptUtils::sameType(it, x.begin());
-        concepts::ConceptUtils::sameType(it, x.end());
-    };
-
+      ConceptUtils::SinglePassRange<typename Container::ConstIterator> && 
+      requires(const Container& x, typename Container::ConstIterator it) {
+          concepts::ConceptUtils::sameType(it, x.begin());
+          concepts::ConceptUtils::sameType(it, x.end());
+      };
   } // namespace concepts
     
 } // namespace DGtal

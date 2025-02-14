@@ -85,30 +85,13 @@ namespace DGtal
        @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
 
     */
-    template <CConstSinglePassRange T>
-    struct CConstBidirectionalRange
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::ConstReverseIterator ConstReverseIterator;
-  
-      BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-  
-      BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
-      {
-        checkConstConstraints();
-      }
-      void checkConstConstraints() const
-      {
-        concepts::ConceptUtils::sameType( it, i.rbegin() );
-        concepts::ConceptUtils::sameType( it, i.rend() );
-      }
-  
-    private:
-      T i;
-      ConstReverseIterator it;
-    }; // end of concept CConstBidirectionalRange
-
+    template <typename Container> 
+    concept CConstBidirectionalRange =
+      CConstSinglePassRange<Container> && // Also include SinglePassRange
+      requires(const Container& x, typename Container::ConstReverseIterator it) {
+          concepts::ConceptUtils::sameType(it, x.rbegin());
+          concepts::ConceptUtils::sameType(it, x.rend());
+      };
   } // namespace concepts
 
 } // namespace DGtal

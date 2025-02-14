@@ -85,8 +85,8 @@ namespace DGtal
        @tparam T the type that is checked. T should be a model of CBidirectionalRange.
 
     */
-    template <typename T>
-    struct CBidirectionalRange : public CConstBidirectionalRange<T>
+    template <CConstBidirectionalRange T>
+    struct CBidirectionalRange
     {
       // ----------------------- Concept checks ------------------------------
     public:

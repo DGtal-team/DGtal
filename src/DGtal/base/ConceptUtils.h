@@ -295,6 +295,17 @@ namespace ConceptUtils
     *it++ = v;
   };
 
+  template <typename I>
+  concept SinglePassRange = requires(I it) {
+    ++it;
+    requires std::convertible_to<decltype(  it == it) , bool>;
+    requires std::convertible_to<decltype(!(it == it)), bool>;
+    requires std::convertible_to<
+      typename boost::iterator_traversal<I>::type, 
+      boost::single_pass_traversal_tag
+    >; 
+  };
+
   /**
      \brief Equivalent of boost::Container
    
