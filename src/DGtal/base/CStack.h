@@ -88,36 +88,17 @@ namespace DGtal
        @tparam T the type that should be a model of CStack.
     */
     template <typename T>
-    struct CStack : boost::CopyConstructible<T>, boost::Assignable<T>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::value_type Value;
-      typedef typename T::size_type Size;
+    concept CStack = 
+      std::is_copy_constructible_v<T> &&
+      std::is_copy_assignable_v<T>  &&
+      requires (T myX, typename T::Value v ) {
+        { myX.empty() } -> std::same_as<bool>;
+        { myX.size()  } -> std::same_as<typename T::size_type>;
 
-      BOOST_CONCEPT_USAGE( CStack )
-      {
-        concepts::ConceptUtils::sameType( myV, myX.top() ); 
-        myX.push( myV );
-        myX.pop(); 
-
-        // check const methods.
-        checkConstConstraints();
-      }
-      void checkConstConstraints() const
-      {
-        concepts::ConceptUtils::sameType( myS, myX.size() );
-        concepts::ConceptUtils::sameType( myB, myX.empty() );
-        concepts::ConceptUtils::sameType( myV, myX.top() );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      Value myV; 
-      Size myS; 
-      bool myB; 
-
-    }; // end of concept CStack
+        ConceptUtils::sameType(v, myX.top());
+        myX.pop();
+        myX.push(v);
+      };
   }//namespace concepts
 } // namespace DGtal
 

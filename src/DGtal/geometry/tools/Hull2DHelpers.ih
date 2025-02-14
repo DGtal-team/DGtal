@@ -47,12 +47,10 @@ namespace DGtal
     {
       
       //----------------------------------------------------------------------------
-      template <typename Stack, typename Point, typename Predicate>
+      template <concepts::CStack Stack, typename Point, typename Predicate>
       inline
       void updateHullWithStack(Stack& aStack, const Point& aNewPoint, const Predicate& aPredicate)
-      {
-        BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
-        
+      { 
         Point Q = aStack.top();
         aStack.pop();
         if (aStack.size() != 0)
@@ -80,13 +78,12 @@ namespace DGtal
       }
       
       //----------------------------------------------------------------------------
-      template <typename Stack, typename ForwardIterator, typename Predicate>
+      template <concepts::CStack Stack, typename ForwardIterator, typename Predicate>
       inline
       void buildHullWithStack(Stack& aStack,
                               const ForwardIterator& itb, const ForwardIterator& ite,
                               const Predicate& aPredicate)
       {
-        BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> ));
         
