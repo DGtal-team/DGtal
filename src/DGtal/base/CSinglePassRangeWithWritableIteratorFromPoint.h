@@ -88,33 +88,12 @@ namespace DGtal
 
     */
     template <typename T, typename Value>
-    requires CConstSinglePassRangeFromPoint<T,Value> && 
-             CSinglePassRangeWithWritableIterator<T,Value>
-    struct CSinglePassRangeWithWritableIteratorFromPoint
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::OutputIterator OutputIterator;
-      typedef typename T::Point Point;
-
-      // 2. then check the presence of data members, operators and methods with
-      BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIteratorFromPoint )
-      {
-        ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      Point myPoint;
-      OutputIterartor myIt;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CSinglePassRangeWithWritableIteratorFromPoint
-
+    concept CSinglePassRangeWithWritableIteratorFromPoint = 
+      CConstSinglePassRangeFromPoint<T> && 
+      CSinglePassRangeWithWritableIterator<T,Value> && 
+    requires (T myX, typename T::Point pt, typename T::OutputIterator it) {
+      ConceptUtils::sameType(it, myX.begin(pt));
+    };
   } // namespace concepts
 
 } // namespace DGtal

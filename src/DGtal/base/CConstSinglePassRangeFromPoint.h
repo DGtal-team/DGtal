@@ -81,9 +81,10 @@ namespace DGtal
        #  Notes
        @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
     */
-    template <CConstSinglePassRange T>
+    template <typename T>
     concept CConstSinglePassRangeFromPoint = 
-      requires(const Container& x, typename T::Point p, typename T::ConstIterator it) {
+      CConstSinglePassRange<T> &&
+      requires(const T& x, typename T::Point p, typename T::ConstIterator it) {
         ConceptUtils::sameType( it, x.begin( p ) );
       };
       
