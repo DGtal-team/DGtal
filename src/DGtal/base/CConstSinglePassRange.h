@@ -89,7 +89,7 @@ namespace DGtal
     */
     template <typename Container>
     concept CConstSinglePassRange = 
-      ConceptUtils::SinglePassRange<typename Container::ConstIterator> && 
+      ConceptUtils::SinglePassIterator<typename Container::ConstIterator> && 
       requires(const Container& x, typename Container::ConstIterator it) {
           concepts::ConceptUtils::sameType(it, x.begin());
           concepts::ConceptUtils::sameType(it, x.end());

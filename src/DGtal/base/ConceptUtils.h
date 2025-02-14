@@ -294,9 +294,15 @@ namespace ConceptUtils
     it++;
     *it++ = v;
   };
-
+   
+   /**
+     \brief Equivalent of boost::SinglePassIteratorConcept
+   
+     See https://www.boost.org/doc/libs/1_78_0/libs/iterator/doc/SinglePassIterator.html 
+     for requirements and associated types
+   */ 
   template <typename I>
-  concept SinglePassRange = requires(I it) {
+  concept SinglePassIterator = requires(I it) {
     ++it;
     requires std::convertible_to<decltype(  it == it) , bool>;
     requires std::convertible_to<decltype(!(it == it)), bool>;
