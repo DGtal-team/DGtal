@@ -85,7 +85,7 @@ namespace DGtal
    * @tparam TContainer STL associative container to store points (model of concepts::CSTLAssociativeContainer).
    *
    */
-  template <typename TDomain, typename TContainer >
+  template <typename TDomain, concepts::CSTLAssociativeContainer TContainer >
   class DigitalSetByAssociativeContainer
   {
   public:
@@ -113,7 +113,6 @@ namespace DGtal
     
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TContainer > ));
     BOOST_STATIC_ASSERT(( boost::is_same<typename Container::key_type, Point>::value ));
     
     // ----------------------- Standard services ------------------------------

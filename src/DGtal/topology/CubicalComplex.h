@@ -171,7 +171,7 @@ namespace DGtal
   *
   */
   template < typename TKSpace,
-             typename TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
+             concepts::CSTLAssociativeContainer TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
   class CubicalComplex
   {
     // ----------------------- associated types ------------------------------
@@ -185,7 +185,6 @@ namespace DGtal
     // these concept checks.
     // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
     template < typename K, typename C > 
     friend CubicalComplex<K,C>&

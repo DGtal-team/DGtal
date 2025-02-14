@@ -49,7 +49,7 @@
 /**
  * Destructor.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::~DigitalSetByAssociativeContainer()
 {
@@ -61,7 +61,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::~DigitalSetByAssocia
  *
  * @param d any counted pointer on domain.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociativeContainer
 ( Clone<Domain> d)
@@ -73,7 +73,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociat
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociativeContainer( const DigitalSetByAssociativeContainer<Domain, Container> & other )
 : myDomain( other.myDomain ), mySet( other.mySet )
@@ -85,7 +85,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::DigitalSetByAssociat
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container> &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator= ( const DigitalSetByAssociativeContainer<Domain, Container> & other )
@@ -101,7 +101,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator= ( const Di
 /**
  * @return the embedding domain.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 const Domain &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domain() const
@@ -109,7 +109,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domain() const
   return *myDomain;
 }
 
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::CowPtr<Domain>
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domainPointer() const
@@ -126,7 +126,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::domainPointer() cons
 /**
  * @return the number of elements in the set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Size
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::size() const
@@ -137,7 +137,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::size() const
 /**
  * @return 'true' iff the set is empty (no element).
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 bool
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::empty() const
@@ -152,7 +152,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::empty() const
  * @param p any digital point.
  * @pre p should belong to the associated domain.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( const Point & p )
@@ -170,7 +170,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( const Point 
  * @param last the last point in the collection of Point.
  * @pre all points should belong to the associated domain.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 template <typename PointInputIterator>
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( PointInputIterator first,
@@ -189,7 +189,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insert( PointInputIt
  * @pre p should belong to the associated domain.
  * @pre p should not belong to this.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insertNew( const Point & p )
@@ -208,7 +208,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insertNew( const Poi
  * @pre all points should belong to the associated domain.
  * @pre each point should not belong to this.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 template <typename PointInputIterator>
 inline
 void
@@ -224,7 +224,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::insertNew
  * @param p the point to remove.
  * @return the number of removed elements (0 or 1).
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Size
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::erase( const Point & p )
 {
@@ -237,7 +237,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::erase( const Point &
  * @param it an iterator on this set.
  * Note: generally faster than giving just the point.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::erase( Iterator it )
@@ -249,7 +249,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::erase( Iterator it )
  * Clears the set.
  * @post this set is empty.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::clear()
@@ -261,7 +261,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::clear()
  * @param p any digital point.
  * @return a const iterator pointing on [p] if found, otherwise end().
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::find( const Point & p ) const
@@ -273,7 +273,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::find( const Point & 
  * @param p any digital point.
  * @return an iterator pointing on [p] if found, otherwise end().
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Iterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::find( const Point & p )
@@ -284,7 +284,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::find( const Point & 
 /**
  * @return a const iterator on the first element in this set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::begin() const
@@ -295,7 +295,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::begin() const
 /**
  * @return a const iterator on the element after the last in this set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::ConstIterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::end() const
@@ -306,7 +306,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::end() const
 /**
  * @return an iterator on the first element in this set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Iterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::begin()
@@ -317,7 +317,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::begin()
 /**
  * @return a iterator on the element after the last in this set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Iterator
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::end()
@@ -325,7 +325,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::end()
   return mySet.end();
 }
 
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 const typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Container &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container() const
@@ -333,7 +333,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container() const
   return mySet;
 }
 
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 typename DGtal::DigitalSetByAssociativeContainer<Domain, Container>::Container &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container()
@@ -345,7 +345,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::container()
  * set union to left.
  * @param aSet any other set.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 DGtal::DigitalSetByAssociativeContainer<Domain, Container> &
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator+=( const DigitalSetByAssociativeContainer<Domain, Container> & aSet )
@@ -365,7 +365,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::operator+=( const Di
 }
 
 //-----------------------------------------------------------------------------
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 bool
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>
@@ -378,7 +378,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>
 // ----------------------- Other Set services -----------------------------
 
 
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 template <typename TOutputIterator>
 inline
 void
@@ -402,7 +402,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::computeComplement(TO
  *
  * @param other_set defines the set whose complement is assigned to 'this'.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::assignFromComplement
@@ -429,7 +429,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::assignFromComplement
  * @param upper the last point of the bounding box (highest in all
  * directions).
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::computeBoundingBox
@@ -454,7 +454,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::computeBoundingBox
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 void
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::selfDisplay ( std::ostream & out ) const
@@ -466,7 +466,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::selfDisplay ( std::o
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 bool
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::isValid() const
@@ -485,7 +485,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::isValid() const
 /**
  * @return the style name used for drawing this object.
  */
-template<typename Domain, typename Container>
+template<typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 std::string
 DGtal::DigitalSetByAssociativeContainer<Domain, Container>::className() const
@@ -496,7 +496,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::className() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //
 
-template <typename Domain, typename Container>
+template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
 inline
 std::ostream &
 DGtal::operator<< ( std::ostream & out, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & object )

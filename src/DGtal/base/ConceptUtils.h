@@ -294,6 +294,56 @@ namespace ConceptUtils
     it++;
     *it++ = v;
   };
+
+  /**
+     \brief Equivalent of boost::Container
+   
+     See https://www.boost.org/sgi/stl/Container.html for requirements and associated types
+   */ 
+  template<typename T>
+  concept Container = 
+   std::is_copy_constructible_v<T> && 
+   std::is_copy_assignable_v<T> && 
+   std::is_destructible_v<T> && 
+  requires(T x)
+  {
+    typename T::value_type;
+    typename T::iterator;
+    typename T::const_iterator;
+    typename T::reference;
+    typename T::const_reference;
+    typename T::pointer;
+    typename T::difference_type;
+    typename T::size_type;
+
+    { x.begin() } -> std::same_as<typename T::iterator>;
+    { x.end() } -> std::same_as<typename T::iterator>;
+    { x.size() } -> std::same_as<typename T::size_type>;
+    { x.max_size() } -> std::same_as<typename T::size_type>;
+    { x.empty() } -> std::convertible_to<bool>;
+    x.swap(x);
+  };
+
+   /**
+     \brief Equivalent of boost::ForwardContainer
+      
+     See https://www.boost.org/sgi/stl/ForwardContainer.html for requirements and associated types.
+
+     This concept is not strictly equivalent to ForwardContainer as it does not requires the 
+     container to overload comparaison operator. If done as described by boost, the concept 
+     does not compile with current DGtal library. 
+
+     The concept shoud be: 
+     ( std::totally_ordered<typename T::value_type> && std::totally_ordered<T>) ||
+     (!std::totally_ordered<typename T::value_type>)
+   */ 
+  template<typename T>
+  concept ForwardContainer = 
+   Container<T> &&
+   std::equality_comparable<T> &&
+   std::totally_ordered<typename T::value_type>;
+
+
 } // end of namespace ConceptUtils
   } //end of namespace concepts.
 } // namespace DGtal

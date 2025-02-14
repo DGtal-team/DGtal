@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -99,47 +100,26 @@ namespace DGtal
 
     */
     template <typename T>
-      struct CSTLAssociativeContainer : boost::ForwardContainer<T>, boost::DefaultConstructible<T>
+    concept CSTLAssociativeContainer = 
+      ConceptUtils::ForwardContainer<T> && 
+      std::is_default_constructible_v<T> && 
+    requires (T x, const T& cx, typename T::key_type key, typename T::iterator p)
     {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::iterator iterator;
-      typedef typename T::value_type value_type;
-      typedef typename T::key_type key_type;
-      typedef typename T::size_type size_type;
-      typedef typename T::const_iterator const_iterator;
+      x.erase(key);
+      x.erase(p);
+      x.erase(p, p);
+      x.clear();
 
-      BOOST_CONCEPT_USAGE(CSTLAssociativeContainer)
-      {
-        x.erase(key);
-        x.erase(p);
-        x.erase(p, q);
-        x.clear();
-        p = x.find(key);
-        r = x.equal_range(key);
-        n = x.count(key);
-      };
+      { x.find(key) } -> std::same_as<typename T::iterator>;
+      { x.equal_range(key) } -> std::same_as<std::pair<typename T::iterator, typename T::iterator>>;
+      { x.count(key) } -> std::same_as<typename T::size_type>;
 
-    private:
-      void const_constraints(const T& cc)
-      {
-        ci = cc.find(key);
-        n = cc.count(key);
-        cr = cc.equal_range(key);
-      }
-    
-
-    private:
-      T x;
-      iterator p,q;
-      const_iterator ci;
-      value_type val;
-      key_type key;
-      size_type n;
-      std::pair<iterator,iterator> r;
-      std::pair<const_iterator,const_iterator> cr;
-    
-    }; // end of concept CSTLAssociativeContainer
+      // Those were not technically checked by the concept but are left here in case it is needed
+      // Note: they were not checked for compilation
+      // { cx.find(key) } -> std::same_as<typename T::const_iterator>
+      // { cx.count(key) } -> std::same_as<typename T::size_type>
+      // { cx.equal_range(key) } -> std::same_as<std::pair<typename T::const_iterator, typename T::const_iterator>>;
+    };
   } // namespace concept
 } // namespace DGtal
 
