@@ -87,7 +87,7 @@ namespace DGtal
     */
     template <typename T>
     concept CBidirectionalRange = 
-       CConstBidirectionalRange<typename T::ReverseIterator> && 
+       CConstBidirectionalRange<T> && 
        requires (T i, typename T::ReverseIterator it) {
         concepts::ConceptUtils::sameType( it, i.rbegin() );
         concepts::ConceptUtils::sameType( it, i.rend() ); 

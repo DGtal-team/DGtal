@@ -125,11 +125,9 @@ bool testRange(const Range &aRange)
 }
 
 
-template <typename Range>
+template <concepts::CConstBidirectionalRange Range>
 void testRangeConceptChecking()
-{
-  BOOST_CONCEPT_ASSERT(( concepts::CConstBidirectionalRange<Range> ));
-}
+{ }
 
 /*
  * Standard services - public :

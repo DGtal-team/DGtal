@@ -99,13 +99,13 @@ namespace concepts
  */
 
 template <typename I>
+requires CConstBidirectionalRangeFromPoint<typename I::Range>
 struct CImage: CConstImage<I>, CTrivialImage<I>
 {
 
 public:
 
     typedef typename I::Range Range;
-    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<Range>));
     BOOST_CONCEPT_ASSERT((CBidirectionalRangeWithWritableIteratorFromPoint<Range, typename
     I::Value>));
 

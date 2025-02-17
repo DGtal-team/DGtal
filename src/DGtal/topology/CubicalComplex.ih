@@ -42,7 +42,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 ~CubicalComplex()
@@ -50,7 +50,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 CubicalComplex()
@@ -59,7 +59,7 @@ CubicalComplex()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 CubicalComplex( ConstAlias<KSpace> aK )
@@ -68,7 +68,7 @@ CubicalComplex( ConstAlias<KSpace> aK )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
 CubicalComplex( const CubicalComplex& other )
@@ -77,7 +77,7 @@ CubicalComplex( const CubicalComplex& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename TDigitalSet>
 inline
 void DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -96,7 +96,7 @@ construct( const TDigitalSet & set )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 const typename DGtal::CubicalComplex<TKSpace, TCellContainer>::KSpace &
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -106,7 +106,7 @@ space() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::ConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -116,7 +116,7 @@ begin() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::ConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -126,7 +126,7 @@ end() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -136,7 +136,7 @@ begin()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -146,7 +146,7 @@ end()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>&
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -161,7 +161,7 @@ operator=( const CubicalComplex& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -172,7 +172,7 @@ clear()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -182,7 +182,7 @@ count( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -191,7 +191,7 @@ clear( Dimension d )
   myCells[ d ].clear();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -201,7 +201,7 @@ fillData( Data data )
     fillData( d, data );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -215,7 +215,7 @@ fillData( Dimension d, Data data )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::Dimension
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -228,7 +228,7 @@ dim() const
   return 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::Dimension
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -238,7 +238,7 @@ dim( const Cell& c ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -248,7 +248,7 @@ nbCells( Dimension d ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -260,7 +260,7 @@ size() const
   return n;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -274,7 +274,7 @@ max_size() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -286,7 +286,7 @@ empty() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Integer
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -304,7 +304,7 @@ euler() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 std::pair< typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator,
            typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator >
@@ -319,7 +319,7 @@ equal_range( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 std::pair< typename DGtal::CubicalComplex<TKSpace, TCellContainer>::ConstIterator,
            typename DGtal::CubicalComplex<TKSpace, TCellContainer>::ConstIterator >
@@ -334,7 +334,7 @@ equal_range( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -344,7 +344,7 @@ erase( Iterator it )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -354,7 +354,7 @@ erase( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -368,7 +368,7 @@ erase( Iterator first, Iterator last )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -381,7 +381,7 @@ find( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::ConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -394,7 +394,7 @@ find( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 std::pair< typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator,
            bool >
@@ -410,7 +410,7 @@ insert( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Iterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -426,7 +426,7 @@ insert( Iterator position, const Cell& aCell )
                      myCells[ d ].insert( std::make_pair( aCell, Data() ) ).first );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <class InputIterator>
 inline
 void
@@ -438,7 +438,7 @@ insert( InputIterator first, InputIterator last )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -455,7 +455,7 @@ swap( CubicalComplex& other )
 
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Data&
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -466,7 +466,7 @@ operator[]( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -477,7 +477,7 @@ operator()( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -486,7 +486,7 @@ insertCell( const Cell& aCell, const Data& data )
   insertCell( myKSpace->uDim( aCell ), aCell, data );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -496,7 +496,7 @@ insertCell( Dimension d, const Cell& aCell, const Data& data )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellConstIterator>
 inline
 void
@@ -508,7 +508,7 @@ insertCells( CellConstIterator it, CellConstIterator itE, const Data& data )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellConstIterator>
 inline
 void
@@ -520,7 +520,7 @@ insertCells( Dimension d, CellConstIterator it, CellConstIterator itE, const Dat
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -530,7 +530,7 @@ eraseCell( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -540,7 +540,7 @@ eraseCell( Dimension d, const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -551,7 +551,7 @@ eraseCell( CellMapIterator it )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -562,7 +562,7 @@ eraseCells( CellMapIterator it, CellMapIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellConstIterator>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
@@ -575,7 +575,7 @@ eraseCells( CellConstIterator it, CellConstIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellConstIterator>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Size
@@ -588,7 +588,7 @@ eraseCells( Dimension d, CellConstIterator it, CellConstIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -597,7 +597,7 @@ belongs( const Cell& aCell ) const
   return belongs( myKSpace->uDim( aCell ), aCell );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -608,7 +608,7 @@ belongs( Dimension d, const Cell& aCell ) const
   return it != myCells[ d ].end();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -617,7 +617,7 @@ belongs( const PreCell& aCell ) const
   return belongs( TKSpace::PreCellularGridSpace::uDim( aCell ), aCell );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -627,7 +627,7 @@ belongs( Dimension d, const PreCell& aCell ) const
   return belongs(d, myKSpace->uCell(aCell) );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellOutputIterator>
 inline
 void
@@ -644,7 +644,7 @@ faces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) const
         *outIt++ = *it;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellOutputIterator>
 inline
 void
@@ -661,7 +661,7 @@ coFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) const
         *outIt++ = *it;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellOutputIterator>
 inline
 void
@@ -678,7 +678,7 @@ directFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintClosed ) con
         *outIt++ = *it;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellMapIteratorOutputIterator>
 inline
 void
@@ -696,7 +696,7 @@ directFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellOutputIterator>
 inline
 void
@@ -713,7 +713,7 @@ directCoFaces( CellOutputIterator& outIt, const Cell& aCell, bool hintOpen ) con
         *outIt++ = *it;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 template <typename CellMapIteratorOutputIterator>
 inline
 void
@@ -732,21 +732,21 @@ directCoFacesIterators( CellMapIteratorOutputIterator& outIt, const Cell& aCell 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMap &
 DGtal::CubicalComplex<TKSpace, TCellContainer>::getCells(const Dimension d)
 {
   return myCells[d];
 }
 
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 const typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMap &
 DGtal::CubicalComplex<TKSpace, TCellContainer>::getCells(const Dimension d) const
 {
   return myCells[d];
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -756,7 +756,7 @@ begin( Dimension d ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -766,7 +766,7 @@ end( Dimension d ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -776,7 +776,7 @@ begin( Dimension d )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -786,7 +786,7 @@ end( Dimension d )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -796,7 +796,7 @@ close()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -816,7 +816,7 @@ close( Dimension k )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -826,7 +826,7 @@ open()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -855,7 +855,7 @@ open( Dimension k )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -865,7 +865,7 @@ findCell( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapConstIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -875,7 +875,7 @@ findCell( Dimension d, const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -885,7 +885,7 @@ findCell( const Cell& aCell )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellMapIterator
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -897,7 +897,7 @@ findCell( Dimension d, const Cell& aCell )
 
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Cells
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -921,7 +921,7 @@ cellBoundary( const Cell& aCell, bool hintClosed ) const
   return proper_faces;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::Cells
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -946,7 +946,7 @@ cellCoBoundary( const Cell& aCell, bool hintOpen ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -963,7 +963,7 @@ isCellInterior( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -973,7 +973,7 @@ isCellBoundary( const Cell& aCell ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -992,7 +992,7 @@ interior() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1015,7 +1015,7 @@ boundary( bool hintClosed ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1042,7 +1042,7 @@ getInteriorAndBoundary( CubicalComplex& intcc, CubicalComplex& bdcc,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1057,7 +1057,7 @@ closure( const CubicalComplex& S, bool hintClosed ) const
   return cl_S;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1072,7 +1072,7 @@ star( const CubicalComplex& S, bool hintOpen ) const
   return star_S;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1086,7 +1086,7 @@ link( const CubicalComplex& S, bool hintClosed, bool hintOpen ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 typename DGtal::CubicalComplex<TKSpace, TCellContainer>::CellType
 DGtal::CubicalComplex<TKSpace, TCellContainer>::
@@ -1126,7 +1126,7 @@ computeCellType( const Cell& c, CellMapIterator& it_cell_up, Dimension n )
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 void
 DGtal::CubicalComplex<TKSpace, TCellContainer>::selfDisplay ( std::ostream & out ) const
@@ -1141,7 +1141,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::selfDisplay ( std::ostream & out
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 bool
 DGtal::CubicalComplex<TKSpace, TCellContainer>::isValid() const
@@ -1150,7 +1150,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::isValid() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 std::string
 DGtal::CubicalComplex<TKSpace, TCellContainer>::className() const
@@ -1163,7 +1163,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::className() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TKSpace, typename TCellContainer>
+template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

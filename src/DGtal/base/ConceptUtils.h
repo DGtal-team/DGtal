@@ -357,9 +357,7 @@ namespace ConceptUtils
   template<typename T>
   concept ForwardContainer = 
    Container<T> &&
-   std::equality_comparable<T> &&
-   std::totally_ordered<typename T::value_type>;
-
+   std::equality_comparable<T>;
 
 } // end of namespace ConceptUtils
   } //end of namespace concepts.

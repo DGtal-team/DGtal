@@ -91,6 +91,7 @@ namespace DGtal
    */
 
   template <typename I>
+  requires CConstBidirectionalRangeFromPoint<typename I::ConstRange>
   struct CConstImage: CTrivialConstImage<I>
   {
 
@@ -101,7 +102,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((concepts::CDomain<Domain>));
 
     typedef typename I::ConstRange ConstRange;
-    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
 
     BOOST_CONCEPT_USAGE(CConstImage)
     {

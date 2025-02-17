@@ -83,12 +83,9 @@ namespace DGtal
    *
    * @see ConstIteratorAdapter BasicFunctors.h
    */
-  template <typename TRange, typename TFunctor, typename TReturnType>
+  template <CConstBidirectionalRangeFromPoint TRange, typename TFunctor, typename TReturnType>
   class ConstRangeFromPointAdapter
   {
-
-    BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint<TRange> )); 
-
     // ------------------------- inner types --------------------------------
   public: 
 

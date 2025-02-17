@@ -80,7 +80,7 @@ namespace DGtal
   };
 
   // Forward definitions.
-  template < typename TKSpace, typename TCellContainer >
+  template < typename TKSpace, concepts::CSTLAssociativeContainer TCellContainer >
   class CubicalComplex;
 
   template < typename TKSpace, typename TCellContainer >
