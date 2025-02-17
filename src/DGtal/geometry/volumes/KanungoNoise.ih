@@ -128,7 +128,7 @@ DGtal::KanungoNoise<TP,TD, TS>::isValid() const
     return mySet->isValid();
 }
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, typename TD, typename TS>
+template <typename TP, typename TD, typename TS>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

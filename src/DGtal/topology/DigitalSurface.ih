@@ -195,8 +195,7 @@ writeNeighbors( OutputIterator & it,
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
-template <typename OutputIterator, typename VertexPredicate>
-requires DGtal::concepts::CVertexPredicate<VertexPredicate>
+template <typename OutputIterator, DGtal::concepts::CVertexPredicate VertexPredicate>
 inline
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::

@@ -347,8 +347,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
 
-template <typename S,typename P,typename TSep, typename TImage>
-requires DGtal::concepts::CPointPredicate<P>
+template <typename S, typename P,typename TSep, typename TImage>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

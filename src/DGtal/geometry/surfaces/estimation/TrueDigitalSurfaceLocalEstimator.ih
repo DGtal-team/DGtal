@@ -257,9 +257,6 @@ isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
-requires DGtal::concepts::CUnaryFunctor<
-  TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
->
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

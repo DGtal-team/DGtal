@@ -381,7 +381,7 @@ namespace DGtal
    * @param object the object of class 'DigitalSetByAssociativeContainer' to write.
    * @return the output stream after the writing.
    */
-  template <typename Domain, DGtal::concepts::CSTLAssociativeContainer Container>
+  template <typename Domain, typename Container>
   std::ostream&
   operator<< ( std::ostream & out, const DigitalSetByAssociativeContainer<Domain, Container> & object );
 

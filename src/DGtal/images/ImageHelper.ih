@@ -37,8 +37,7 @@
 
 
 //------------------------------------------------------------------------------
-template<typename I, typename O, typename P>
-requires DGtal::concepts::CPointPredicate<P> 
+template<typename I, typename O, DGtal::concepts::CPointPredicate P>
 inline
 void 
 DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
@@ -51,8 +50,7 @@ DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, 
 }
 
 //------------------------------------------------------------------------------
-template<typename I, typename O, typename F>
-requires DGtal::concepts::CPointFunctor<F>
+template<typename I, typename O, DGtal::concepts::CPointFunctor F>
 inline
 void 
 DGtal::setFromPointsRangeAndFunctor(const I& itb, const I& ite, const O& ito, 
@@ -135,8 +133,7 @@ DGtal::imageFromRangeAndValue(const R& aRange, I& aImg,
 }
 
 //------------------------------------------------------------------------------
-template<typename I, typename F>
-requires DGtal::concepts::CPointFunctor<F>
+template<typename I, DGtal::concepts::CPointFunctor F>
 inline
 void 
 DGtal::imageFromFunctor(I& aImg, const F& aFun)

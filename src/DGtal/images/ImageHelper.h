@@ -82,7 +82,7 @@ namespace DGtal
    * @tparam O any model of output iterator
    * @tparam P any model of concepts::CPointPredicate
    */
-  template<typename I, typename O, typename P>
+  template<typename I, typename O, concepts::CPointPredicate P>
   void setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
 
   /**
@@ -102,7 +102,7 @@ namespace DGtal
    * @tparam O any model of output iterator
    * @tparam F any model of CPointFunctor
    */
-  template<typename I, typename O, typename F>
+  template<typename I, typename O, concepts::CPointFunctor F>
   void setFromPointsRangeAndFunctor(const I& itb, const I& ite, 
 				    const O& ito, const F& aFunctor, 
 				    const typename F::Value& aThreshold = 0); 
@@ -175,7 +175,7 @@ namespace DGtal
    * @tparam R any model of CConstSinglePassRange
    * @tparam I any model of CImage
    */
-  template<DGtal::concepts::CConstSinglePassRange R, typename I>
+  template<concepts::CConstSinglePassRange R, typename I>
   void imageFromRangeAndValue(const R& aRange, I& aImg, 
 			      const typename I::Value& aValue = 0); 
 
@@ -189,7 +189,7 @@ namespace DGtal
    * @tparam I any model of CImage
    * @tparam F any model of CPointFunctor
    */
-  template<typename I, typename F>
+  template<typename I, concepts::CPointFunctor F>
   void imageFromFunctor(I& aImg, const F& aFun); 
 
   /**

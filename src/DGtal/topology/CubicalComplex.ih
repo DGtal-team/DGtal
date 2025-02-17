@@ -1163,7 +1163,7 @@ DGtal::CubicalComplex<TKSpace, TCellContainer>::className() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TKSpace, DGtal::concepts::CSTLAssociativeContainer TCellContainer>
+template <typename TKSpace, typename TCellContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

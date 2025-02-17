@@ -1333,7 +1333,7 @@ namespace DGtal
   * @param object the object of class 'CubicalComplex' to write.
   * @return the output stream after the writing.
   */
-  template <typename TKSpace, concepts::CSTLAssociativeContainer TCellContainer>
+  template <typename TKSpace, typename TCellContainer>
   std::ostream&
   operator<< ( std::ostream & out,
                const CubicalComplex<TKSpace, TCellContainer> & object );

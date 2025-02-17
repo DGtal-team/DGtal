@@ -297,7 +297,7 @@ DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianc
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, DGtal::concepts::CPointPredicate TPointPredicate, typename TCovarianceMatrixFunctor>
+template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 std::ostream&
 DGtal::operator<<

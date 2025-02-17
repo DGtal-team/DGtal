@@ -417,11 +417,6 @@ isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
-requires DGtal::concepts::CUnaryFunctor<
-    TKernelFunction,
-    typename TDigitalSurfaceContainer::KSpace::Point, 
-    typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
->
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

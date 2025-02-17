@@ -216,7 +216,6 @@ eval ( const SurfelConstIterator& itb,
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
-requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

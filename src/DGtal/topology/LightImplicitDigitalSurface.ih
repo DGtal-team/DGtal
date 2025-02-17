@@ -401,7 +401,6 @@ DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TKSpace, typename TPointPredicate>
-requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
