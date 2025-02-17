@@ -40,19 +40,19 @@
 
 namespace DGtal {
 
-template<typename I,typename C>
-requires concepts::CUnaryFunctor<C, typename I::Value, unsigned char>
+template <typename TImage, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, unsigned char> 
 bool
-PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
+PGMWriter<TImage,TFunctor>::exportPGM(const std::string & filename, const TImage & aImage,
 			  const Functor & aFunctor,  bool saveASCII, bool topbotomOrder)
 {
-  BOOST_STATIC_ASSERT(I::Domain::dimension == 2);
+  BOOST_STATIC_ASSERT(TImage::Domain::dimension == 2);
 
   std::ofstream out;
-  typename I::Domain domain = aImage.domain();
-  typename I::Value val;
-  typename I::Domain::Point p = I::Domain::Point::diagonal(1);
-  typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
+  typename TImage::Domain domain = aImage.domain();
+  typename TImage::Value val;
+  typename TImage::Domain::Point p = TImage::Domain::Point::diagonal(1);
+  typename TImage::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
 
   out.open(filename.c_str(), std::ios::out | std::ios::binary);
   
@@ -70,7 +70,7 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   if(!topbotomOrder){
     //We scan the domain instead of the image becaus we cannot
     //trust the image container Iterator
-    for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+    for(typename TImage::Domain::ConstIterator it = domain.begin(), itend=domain.end();
 	it!=itend;
 	++it)
       {
@@ -83,13 +83,13 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 	}
       }
   }else{
-    typename I::Domain::Point ptUpper=  domain.upperBound();
+    typename TImage::Domain::Point ptUpper=  domain.upperBound();
     
-    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
+    for(typename HyperRectDomain<typename TImage::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
       {    
-	typename I::Domain::Point ptUpperY=  *itY;
+	typename TImage::Domain::Point ptUpperY=  *itY;
 	
-	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
+	for(typename HyperRectDomain<typename TImage::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
 	    it!=itend;
 	    ++it)
 	  {
@@ -110,22 +110,22 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   return true;
 }
 
-template<typename I,typename C>
-requires concepts::CUnaryFunctor<C, typename I::Value, unsigned char>
+template <typename TImage, typename TFunctor>
+requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, unsigned char>
 bool
-PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
+PGMWriter<TImage,TFunctor>::exportPGM3D(const std::string & filename, const TImage & aImage,
 			    const Functor&aFunctor, bool saveASCII)
 
 {
   ///@todo  the Value of I should match with the one in C
 
-  BOOST_STATIC_ASSERT(I::Domain::dimension == 3);
+  BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
   std::ofstream out;
-  typename I::Domain domain(aImage.domain().lowerBound(), aImage.domain().upperBound());
-  typename I::Value val;
-  typename I::Domain::Point p = I::Domain::Point::diagonal(1);
-  typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
+  typename TImage::Domain domain(aImage.domain().lowerBound(), aImage.domain().upperBound());
+  typename TImage::Value val;
+  typename TImage::Domain::Point p = TImage::Domain::Point::diagonal(1);
+  typename TImage::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
 
   Color col;
   out.open(filename.c_str(), std::ios::out | std::ios::binary);
@@ -144,7 +144,7 @@ PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
 
   //We scan the domain instead of the image because we cannot
   //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+  for(typename TImage::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it)
     {

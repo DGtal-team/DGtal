@@ -35,11 +35,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename T, typename TFunctor>
+template <typename TImageContainer, typename TFunctor>
 template <typename Word>
-requires DGtal::concepts::CUnaryFunctor<TFunctor, Word, typename T::Value >
-T
-DGtal::RawReader<T, TFunctor>::importRaw(const std::string& filename, const Vector& extent, const Functor& aFunctor)
+requires DGtal::concepts::CUnaryFunctor<TFunctor, Word, typename TImageContainer::Value >
+TImageContainer
+DGtal::RawReader<TImageContainer, TFunctor>::importRaw(const std::string& filename, const Vector& extent, const Functor& aFunctor)
 {
     FILE * fin;
     fin = fopen( filename.c_str() , "rb" );
@@ -47,23 +47,23 @@ DGtal::RawReader<T, TFunctor>::importRaw(const std::string& filename, const Vect
     if (fin == NULL)
         trace.error() << "RawReader : can't open "<< filename << std::endl;
 
-    typename T::Point firstPoint;
-    typename T::Point lastPoint;
+    typename TImageContainer::Point firstPoint;
+    typename TImageContainer::Point lastPoint;
 
-    firstPoint = T::Point::zero;
+    firstPoint = TImageContainer::Point::zero;
     lastPoint = extent;
     unsigned int size=1;
-    for(unsigned int i=0; i < T::Domain::dimension; i++)
+    for(unsigned int i=0; i < TImageContainer::Domain::dimension; i++)
     {
         size *= lastPoint[i];
         lastPoint[i]--;
     }
 
-    typename T::Domain domain(firstPoint, lastPoint);
-    T image(domain);
+    typename TImageContainer::Domain domain(firstPoint, lastPoint);
+    TImageContainer image(domain);
 
     //We scan the Raw file
-    typename T::Domain::ConstIterator it=domain.begin(), itend=domain.end();
+    typename TImageContainer::Domain::ConstIterator it=domain.begin(), itend=domain.end();
     unsigned int count=0;
     Word val;
 

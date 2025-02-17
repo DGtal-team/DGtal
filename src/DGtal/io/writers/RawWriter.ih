@@ -37,20 +37,20 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename I,typename C>
+template <typename TImage,typename TFunctor>
 template <typename Word>
-requires DGtal::concepts::CUnaryFunctor<C, typename I::Value, Word>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TImage::Value, Word>
 bool
-DGtal::RawWriter<I, C>::exportRaw(const std::string& filename, const I& aImage, const Functor& aFunctor)
+DGtal::RawWriter<TImage, TFunctor>::exportRaw(const std::string& filename, const TImage& aImage, const Functor& aFunctor)
 {
   std::ofstream out;
-  typename I::Domain domain = aImage.domain();
-  typename I::Value val;
+  typename TImage::Domain domain = aImage.domain();
+  typename TImage::Value val;
 
   out.open(filename.c_str(), std::ios_base::binary);
 
   //We scan the domain
-  for (typename I::Domain::ConstIterator it=domain.begin(), itend=domain.end(); it!=itend; ++it)
+  for (typename TImage::Domain::ConstIterator it=domain.begin(), itend=domain.end(); it!=itend; ++it)
   {
       val = aImage(*it);
       raw_writer_write_word<Word>(out, aFunctor(val));
