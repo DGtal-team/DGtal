@@ -48,14 +48,18 @@ using namespace DGtal::concepts;
  * Example of a test. To be completed.
  *
  */
-template <typename PointFunctor1,typename Predicate1, typename PointFunctor2, typename Predicate2>
 bool
 testPointPredicateConcepts()
 {
+    typedef ImageSelector<Z3i::Domain, int>::Type IntImage;
+    using IntPredicate = std::function<bool(int)>;
+    typedef ImageSelector<Z3i::Domain, float>::Type FloatImage;
+    using FloatPredicate = std::function<bool(float)>;
+    
     // PointFunctorPredicate
-    typedef PointFunctorPredicate<PointFunctor1, Predicate1> PointPredicate1;
+    typedef PointFunctorPredicate<IntImage, IntPredicate> PointPredicate1;
     DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< PointPredicate1 > );
-    typedef PointFunctorPredicate<PointFunctor2, Predicate2> PointPredicate2;
+    typedef PointFunctorPredicate<FloatImage, FloatPredicate> PointPredicate2;
     DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< PointPredicate2 > );
 
     // Binary PointPredicate
@@ -66,7 +70,7 @@ testPointPredicateConcepts()
     DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< NotPointPredicate<PointPredicate1> > );
     DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< NotPointPredicate<PointPredicate2> > );
 
-    typedef typename PointFunctor1::Point Point;
+    typedef typename IntImage::Point Point;
     // EqualPointPredicate
     DGTAL_CONCEPT_CHECK( requires concepts::CPointPredicate< EqualPointPredicate<Point> > );
     // IsWithinPointPredicate
@@ -94,12 +98,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = true;
-  typedef ImageSelector<Z3i::Domain, int>::Type IntImage;
-  using IntPredicate = std::function<bool(int)>;
-  typedef ImageSelector<Z3i::Domain, float>::Type FloatImage;
-  using FloatPredicate = std::function<bool(float)>;
-  res &= testPointPredicateConcepts<IntImage, IntPredicate, FloatImage, FloatPredicate>();
+  bool res = testPointPredicateConcepts();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
