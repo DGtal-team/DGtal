@@ -91,36 +91,12 @@ namespace DGtal
        @tparam T the type that should be a model of CBidirectionalRangeFromPoint.
     */
     template <typename T>
-    requires CBidirectionalRange<T> && CConstBidirectionalRangeFromPoint<T>
-    struct CBidirectionalRangeFromPoint
-    {
-      // ----------------------- Concept checks ------------------------------
-
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::Point Point;
-      typedef typename T::ReverseIterator ReverseIterator;
-
-
-      // 2. then check the presence of data members, operators and methods with
-      BOOST_CONCEPT_USAGE ( CBidirectionalRangeFromPoint )
-      {
-        concepts::ConceptUtils::sameType ( myIt, myX.rbegin ( myPoint ) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-
-    private:
-      T myX; // do not require T to be default constructible.
-      Point myPoint;
-      ReverseIterator myIt;
-
-      // ------------------------- Internals ------------------------------------
-
-    private:
-
-    }; // end of concept CBidirectionalRangeFromPoint
-
+    concept CBidirectionalRangeFromPoint = 
+       CBidirectionalRange<T> && 
+       CConstBidirectionalRangeFromPoint<T> && 
+       requires(T myX, typename T::Point myPoint) {
+         { myX.rbegin(myPoint) } -> std::same_as<typename T::ReverseIterator>;
+       };
   } // namespace concepts
 
 } // namespace DGtal
