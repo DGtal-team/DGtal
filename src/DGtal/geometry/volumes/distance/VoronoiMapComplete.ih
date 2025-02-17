@@ -399,7 +399,7 @@ std::ostream & out ) const
 // // //
 // ///////////////////////////////////////////////////////////////////////////////
 
-template <typename S, DGtal::concepts::CPointPredicate P, typename TSep, typename TImage>
+template <typename S, typename P, typename TSep, typename TImage>
 inline std::ostream &
 DGtal::operator<<( std::ostream & out,
                    const VoronoiMapComplete<S, P, TSep, TImage> & object )

@@ -318,7 +318,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TKSpace, DGtal::concepts::CSurfelPredicate TSurfelPredicate>
+template <typename TKSpace, typename TSurfelPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

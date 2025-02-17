@@ -424,7 +424,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside () 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <DGtal::concepts::CPointPredicate TPredicate, DGtal::ProbingMode mode>
+template <typename TPredicate, DGtal::ProbingMode mode>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

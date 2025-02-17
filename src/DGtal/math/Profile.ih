@@ -277,7 +277,6 @@ DGtal::Profile<TValueFunctor, TValue>::isValid() const
  * @return the output stream after the writing.
  */
 template<typename TValueFunctor, typename TValue>
-requires DGtal::concepts::CUnaryFunctor<TValueFunctor, TValue, TValue>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

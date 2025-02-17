@@ -84,7 +84,6 @@ DGtal::FunctorOnCells<TF, TKS>::isValid() const
 // Implementation of inline functions                                        //
 
 template <typename TF, typename TKS>
-requires DGtal::concepts::CPointFunctor<TF>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

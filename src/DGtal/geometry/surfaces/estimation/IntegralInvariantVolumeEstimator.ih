@@ -312,7 +312,6 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
-requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<<

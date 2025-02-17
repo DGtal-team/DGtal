@@ -502,7 +502,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::addNewCandidate(const 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImage, typename TSet, DGtal::concepts::CPointPredicate TPointPredicate, DGtal::concepts::CPointFunctor TPointFunctor>
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

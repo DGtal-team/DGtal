@@ -314,7 +314,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TKSpace, DGtal::concepts::CPointPredicate TPointPredicate>
+template <typename TKSpace, typename TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

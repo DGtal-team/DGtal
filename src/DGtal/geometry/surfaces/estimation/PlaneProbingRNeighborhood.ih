@@ -189,7 +189,7 @@ DGtal::PlaneProbingRNeighborhood<TPredicate>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <DGtal::concepts::CPointPredicate TPredicate>
+template <typename TPredicate>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
