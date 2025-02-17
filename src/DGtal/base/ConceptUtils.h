@@ -25,7 +25,7 @@
  *
  * @date 2010/07/02
  *
- * Header file for module ConceptUtils.cpp
+ * Header file for module //////////////////////////////////////////////////////////////////////////////ConceptUtils.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -46,65 +46,64 @@
 #include <concepts>
 //////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////
-// Maccros to check for concept
-//    
-// C++20 doesn't currently allow typedefs in requires clauses. This is a 
-// problem because DGtal may use many nested types, which makes it unclear 
-// what is checked and what the proper requirements are. Instead, we use a 
-// small macro system that enables typedefs to be forwarded.
-// 
-// Example usage: 
-//    template <typename T>
-//    class Test { 
-//       using CRef = const T&;
-//       DGTAL_CONCEPT_CHECK( requires SomeConcept<CRef> ); 
-//    };
-// It can also be used inside functions:
-// 
-//    void func() {
-//        using Type = int;
-//        DGTAL_CONCEPT_CHECK( requires SomeConcept<Type> );
-//    }
-// 
-//
 // The preprocessor may peform substitution only if no concatenation (##) is 
 // used. Therefore, we need to add one level of indirection for the compiler
 // to expand __LINE__ maccro properly
 #define DGTAL_VARIABLE_NAME_IMPL(line) concept_check_ ## line 
 #define DGTAL_VARIABLE_NAME(line) DGTAL_VARIABLE_NAME_IMPL(line) 
-//
-// Main macro to check for concept
-//
-// In short, it creates a variable that is constructed by an immediate call
-// to a lambda (IIFE).
-// 
-// It can be used within both class declaration and functions. 
-//
-// Notes:
-// - The macro is not terminated by semi-colon to avoid warnings with clang.
-// - This is a variadic macro. For concepts using multiple types, the ','
-//   will parsed as different arguments to the macro; which causes the macro
-//   to be called with different number of argument each time. Another option
-//   would be to use double parentheses when invoking the macro; but errors 
-//   generated when requirements are not met become less clear. 
-// - The use of __LINE__ here is to give a unique identifier, __COUNTER__
-//   could also be used, this is arbitrary choice.
-// - The variable is static which means it costs one byte per class and not 
-//   one byte per instance.
-// - The variable is also constexpr which further implies the inline property 
-//   without naming it. This allows for both direct initialization without 
-//   redeclaration in class and to use the macro inside functions (inline 
-//   cannot be used at block scope levels).
-// - The type is 'auto' which is necessary to force the compiler to instantiate
-//   the variable (as it is static, it is instantiated independently) and thus
-//   to check the concept.  
-// - The x variable is here to implicitly template the lambda, allowing for the
-//   requires clause to exist (here, on the operator(), not on the class). This
-//   is important because the template keyword is disallowed inside functions. 
+
+/**
+ * \brief Main macro to check for concept
+ *
+ * C++20 doesn't currently allow typedefs in requires clauses. This is a 
+ * problem because DGtal may use many nested types, which makes it unclear 
+ * what is checked and what the proper requirements are. Instead, we use a 
+ * small macro system that enables typedefs to be forwarded.
+ * Example usage: 
+ *    template <typename T>
+ *    class Test { 
+ *       using CRef = const T&;
+ *       DGTAL_CONCEPT_CHECK( requires SomeConcept<CRef> ); 
+ *    };
+ * It can also be used inside functions:
+ * 
+ *    void func() {
+ *        using Type = int;
+ *        DGTAL_CONCEPT_CHECK( requires SomeConcept<Type> );
+ *    }
+ * 
+ * In short, it creates a variable that is constructed by an immediate call
+ * to a lambda (IIFE).
+ * 
+ * It can be used within both class declaration and functions. 
+ *
+ * Notes:
+ * - This is a variadic macro. For concepts using multiple types, the ','
+ *   will parsed as different arguments to the macro; which causes the macro
+ *   to be called with different number of argument each time. Another option
+ *   would be to use double parentheses when invoking the macro; but errors 
+ *   generated when requirements are not met become less clear. 
+ * - The use of __LINE__ here is to give a unique identifier, __COUNTER__
+ *   could also be used, this is arbitrary choice.
+ * - The variable is static which means it costs one byte per class and not 
+ *   one byte per instance.
+ * - The variable is also constexpr which further implies the inline property 
+ *   without naming it. This allows for both direct initialization without 
+ *   redeclaration in class and to use the macro inside functions (inline 
+ *   cannot be used at block scope levels).
+ * - The type is 'auto' which is necessary to force the compiler to instantiate
+ *   the variable (as it is static, it is instantiated independently) and thus
+ *   to check the concept.  
+ * - The x variable is here to implicitly template the lambda, allowing for the
+ *   requires clause to exist (here, on the operator(), not on the class). This
+ *   is important because the template keyword is disallowed inside functions. 
+ * - The macro is not terminated by semi-colon to avoid warnings with clang.
+ * - When compiling with clang, this macro can not be used within templated 
+ *   functions.
+ */
 #define DGTAL_CONCEPT_CHECK(...) \
   static constexpr auto DGTAL_VARIABLE_NAME(__LINE__) = [](auto x) -> char __VA_ARGS__ { return 0; }(0)
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 namespace DGtal
 {

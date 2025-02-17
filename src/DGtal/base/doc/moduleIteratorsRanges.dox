@@ -205,10 +205,9 @@ the decrement operator instead of the increment operator and conversely.
 Bidirectional ranges provide reverse iterators that can be used 
 as follows: 
 
-    template<typename Range>
+    template<concepts::CBidirectionalRange Range>
     void anyProcedure(const Range& aRange)
       {
-        BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalRange<Range> )); 
         ...
         for (typename Range::ReverseIterator ri = r.rbegin(), 
              typename Range::ReverseIterator riEnd = r.rend(); 

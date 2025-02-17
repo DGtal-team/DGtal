@@ -522,7 +522,7 @@ auto fn = holdPointFunctor<Point, double>(
   [] (Point const& pt) { return pt.norm(); }
 );
 
-BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
+DGTAL_CONCEPT_CHECK( requires DGtal::concepts::CPointFunctor<decltype(fn)> );
 @endcode
 
 
