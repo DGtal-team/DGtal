@@ -47,6 +47,7 @@
 #include "DGtal/base/IteratorAdapter.h"
 #include "DGtal/base/CBidirectionalRangeFromPoint.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -85,14 +86,14 @@ namespace DGtal
       typedef typename TiledImage::OutputIterator Iterator;
       typedef typename TiledImage::ConstIterator ConstIterator;
 
-      typedef std::reverse_iterator<Iterator> ReverseIterator;
-      typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+      typedef boost::reverse_iterator<Iterator> ReverseIterator;
+      typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef typename TiledImage::OutputIterator OutputIterator;
-      typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
+      typedef boost::reverse_iterator<Iterator> ReverseOutputIterator;
 
       // typedef Circulator<Iterator> Circulator;
-      // typedef std::reverse_iterator<Circulator> ReverseCirculator;
+      // typedef boost::reverse_iterator<Circulator> ReverseCirculator;
 
       // ------------------------- standard services --------------------------------
 

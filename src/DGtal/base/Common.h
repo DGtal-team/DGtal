@@ -149,8 +149,8 @@ namespace DGtal
   /** DGtal Global variables
    *
    **/
-  extern TraceWriterTerm traceWriterTerm;
-  extern Trace trace;
+  inline TraceWriterTerm traceWriterTerm(std::cerr);
+  inline Trace trace(traceWriterTerm);
 
   class Board2D;
 

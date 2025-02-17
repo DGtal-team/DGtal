@@ -690,7 +690,7 @@ Image::flushCairo( cairo_t *cr,
   cairo_surface_t *image;
   cairo_save (cr);
   std::string extension = _filename.substr(_filename.find_last_of(".") + 1);
-  ASSERT(extension=="png");
+  assert(extension=="png");
   image = cairo_image_surface_create_from_png (_filename.c_str());
   assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
   w = cairo_image_surface_get_width (image);

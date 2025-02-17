@@ -40,7 +40,7 @@ RUN apt -y install doxygen
 
 RUN apt -y install libcgal-dev
 
-#RUN apt-get -y install libinsighttoolkit4-dev
+#RUN apt-get -y install libinsighttoolkit5-dev
 
 #RUN apt -y install libqglviewer-dev-qt5
 

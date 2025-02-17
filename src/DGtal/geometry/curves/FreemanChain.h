@@ -62,6 +62,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/ConstAlias.h"
 
+#include "boost/iterator/reverse_iterator.hpp"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -399,7 +401,7 @@ public:
   typedef std::string::const_iterator ConstIterator; 
   typedef std::string::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
-  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+  typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 

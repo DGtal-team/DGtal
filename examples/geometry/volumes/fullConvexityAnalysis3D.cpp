@@ -206,7 +206,7 @@ struct MultiScaleAnalyzer {
                   ImagePtr bimage )
   {
     auto prev_geometry
-      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( aK, pts, bimage );
+      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( pts );
     trace.info() << "------- Analyzing scale " << N << " --------" << std::endl;
     std::vector< int > geom( prev_geometry.size() );
     for ( int i = 0; i < geom.size(); i++ )
@@ -230,9 +230,7 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   template < typename ImagePtr >
   static
   std::vector< Geometry >
-  multiscale_run( const KSpace& aK,
-                  std::vector<Point> pts,
-                  ImagePtr bimage )
+  multiscale_run( const std::vector<Point>& pts )
   {
     return std::vector< Geometry >( pts.size(), std::make_pair( 0, 0 ) );
   }
@@ -335,7 +333,7 @@ int main( int argc, char** argv )
     {
       trace.beginBlock ( "Multiscale analysis" );
       auto geometry =
-        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( K, points, bimage );
+        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( points );
       trace.endBlock();
       Color colors_planar[ 6 ] =
         { Color( 0, 255, 255, 255),

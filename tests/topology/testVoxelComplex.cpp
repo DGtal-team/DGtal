@@ -80,8 +80,8 @@ struct Fixture_complex_diamond {
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureComplex complex_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
+    FixtureComplex complex_fixture;
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
@@ -461,8 +461,8 @@ struct Fixture_complex_fig4 {
 
     ///////////////////////////////////////////////////////////
     // fixture data
-    FixtureComplex complex_fixture;
     KSpace ks_fixture; // needed because ConstAlias in CC constructor.
+    FixtureComplex complex_fixture;
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
@@ -627,9 +627,9 @@ struct Fixture_isthmus {
 
     ///////////////////////////////////////////////////////////
     // fixture data
+    KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     FixtureComplex complex_fixture;
     FixtureDigitalSet set_fixture;
-    KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////
@@ -898,9 +898,9 @@ struct Fixture_X {
 
     ///////////////////////////////////////////////////////////
     // fixture data
+    KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     FixtureComplex complex_fixture;
     FixtureDigitalSet set_fixture;
-    KSpace ks_fixture; // needed because ConstAlias in CC constructor.
     ///////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////

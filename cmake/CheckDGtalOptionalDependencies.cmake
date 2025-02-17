@@ -2,6 +2,7 @@
 # Check Optional Dependencies
 # -----------------------------------------------------------------------------
 
+
 # -----------------------------------------------------------------------------
 # Global options
 # -----------------------------------------------------------------------------
@@ -164,7 +165,24 @@ if (DGTAL_WITH_ITK)
     target_link_libraries(DGtal PUBLIC ${ITK_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_ITK)
-    target_include_directories(DGtal PUBLIC ${ITK_INCLUDE_DIRS})
+    
+    # -------------------------------------------------------------------------
+    # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 
+    # does not exists on "new" (for example in Docker containers) systems. 
+    # When linking with DGTal, a cmake Error is raised 
+    #  "Imported target "DGtal::DGtal" includes non-existent path"
+    # 
+    # In case the name is not the same accross unix distributions and windows
+    # we filter out all directories that do not exist on the system 
+    # --------------------------------------------------------------------------
+    set(FILTERED_ITK_INCLUDE_DIRS "")
+    foreach (includedir ${ITK_INCLUDE_DIRS})
+      if(EXISTS ${includedir})
+        list(APPEND FILTERED_ITK_INCLUDE_DIRS ${includedir})
+      endif()
+    endforeach()
+    
+    target_include_directories(DGtal PUBLIC ${FILTERED_ITK_INCLUDE_DIRS})
 
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
@@ -196,7 +214,14 @@ if(DGTAL_WITH_CAIRO)
     target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+    
+    target_compile_definitions(DGTAL_LibBoard PUBLIC  -DDGTAL_WITH_CAIRO)
+    target_include_directories(DGTAL_LibBoard PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
+    target_link_libraries(DGTAL_LibBoard PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+
     message(STATUS "cairo found")
+
+
     set(CAIRO_FOUND_DGTAL 1)
   else()
     message(FATAL_ERROR "cairo not found. Check the cmake variables associated to this package or disable it." )
