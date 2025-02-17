@@ -42,22 +42,22 @@
 
 
 namespace DGtal {
-  template<typename I,typename C>
-  requires concepts::CUnaryFunctor<C, typename I::Value, DGtal::uint64_t /*ValueLongvol*/ >
+  template <typename TImage, typename TFunctor>
+  requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, DGtal::uint64_t /*ValueLongvol*/ >
   bool
-  LongvolWriter<I,C>::exportLongvol(const std::string & filename, const I & aImage, const bool compressed,
+  LongvolWriter<TImage,TFunctor>::exportLongvol(const std::string & filename, const TImage & aImage, const bool compressed,
                                     const Functor  & aFunctor)
   {
     DGtal::IOException dgtalio;
     
     std::ofstream out;
-    typename I::Domain domain = aImage.domain();
-    const typename I::Domain::Point &upBound = domain.upperBound();
-    const typename I::Domain::Point &lowBound = domain.lowerBound();
-    typename I::Domain::Point p = I::Domain::Point::diagonal(1);
-    typename I::Domain::Vector size =  (upBound - lowBound) + p;
-    typename I::Domain::Vector center = lowBound + ((upBound - lowBound)/2);
-    typename I::Value val;
+    typename TImage::Domain domain = aImage.domain();
+    const typename TImage::Domain::Point &upBound = domain.upperBound();
+    const typename TImage::Domain::Point &lowBound = domain.lowerBound();
+    typename TImage::Domain::Point p = TImage::Domain::Point::diagonal(1);
+    typename TImage::Domain::Vector size =  (upBound - lowBound) + p;
+    typename TImage::Domain::Vector center = lowBound + ((upBound - lowBound)/2);
+    typename TImage::Value val;
     
     try
     {
@@ -85,7 +85,7 @@ namespace DGtal {
       out.open(filename.c_str(),std::ios_base::binary | std::ios_base::app);
       
       //We scan the domain
-      for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+      for(typename TImage::Domain::ConstIterator it = domain.begin(), itend=domain.end();
           it!=itend;
           ++it)
       {
