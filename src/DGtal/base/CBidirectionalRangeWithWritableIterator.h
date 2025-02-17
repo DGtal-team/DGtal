@@ -89,30 +89,10 @@ namespace DGtal
 
     */
     template <typename T, typename Value>
-    requires CSinglePassRangeWithWritableIterator<T, Value>
-    struct CBidirectionalRangeWithWritableIterator
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::ReverseOutputIterator  ReverseOutputIterator;
-      // possibly check these types so as to satisfy a concept with
-      //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-
-      BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIterator )
-      {
-        concepts::ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      ReverseOutputIterator myOutput;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CBidirectionalRangeWithWritableIterator
-
+    concept CBidirectionalRangeWithWritableIterator = 
+    CSinglePassRangeWithWritableIterator<T, Value> && requires (T myX) {
+      { myX.routputIterator() } -> std::same_as<typename T::ReverseOutputIterator>;
+    };
   } // namespace concepts
 
 } // namespace DGtal

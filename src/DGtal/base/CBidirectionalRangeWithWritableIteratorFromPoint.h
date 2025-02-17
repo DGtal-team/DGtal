@@ -88,32 +88,10 @@ namespace DGtal
        @tparam Value the type of object t in (*it) = t.
     */
     template <typename T, typename Value>
-    struct CBidirectionalRangeWithWritableIteratorFromPoint:
-      CBidirectionalRangeWithWritableIterator<T,Value>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::Point Point;
-      typedef typename T::ReverseOutputIterator ReverseOutputIterator;
-
-      // 2. then check the presence of data members, operators and methods with
-      BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIteratorFromPoint )
-      {
-        concepts::ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      Point myPoint;
-      ReverseOutputIterator myIt;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CBidirectionalRangeWithWritableIteratorFromPoint
-
+    concept CBidirectionalRangeWithWritableIteratorFromPoint = 
+      CBidirectionalRangeWithWritableIterator<T, Value> && requires(T myX, typename T::Point myPoint) {
+        { myX.routputIterator( myPoint) } -> std::same_as<typename T::ReverseOutputIterator>;
+      };
   } // namespace concepts
 
 } // namespace DGtal
