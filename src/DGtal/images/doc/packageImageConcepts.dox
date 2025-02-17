@@ -36,7 +36,7 @@ digraph GIMAGE {
                  node [style=filled,color=white];
                  label="base";
 
-                 CLabel [label="CLabel" URL="@ref concepts::CLabel"];  
+                 CLabel [label="CLabel" URL="@ref DGtal::concepts::CLabel"];  
 		 }
 
         subgraph cluster_kernel {
@@ -45,10 +45,10 @@ digraph GIMAGE {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CPointFunctor [label="CPointFunctor" URL="@ref concepts::CPointFunctor"];   
+                 CPointFunctor [label="CPointFunctor" URL="@ref DGtal::concepts::CPointFunctor"];   
 		 CDomain [label="CDomain" URL="@ref concepts::CDomain"]; 
-		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref concepts::CConstBidirectionalRangeFromPoint"]; 
-		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref concepts::CBidirectionalRangeWithWritableIteratorFromPoint"]; 
+		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref DGtal::concepts::CConstBidirectionalRangeFromPoint"]; 
+		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref DGtal::concepts::CBidirectionalRangeWithWritableIteratorFromPoint"]; 
 		 }
 	 }
 

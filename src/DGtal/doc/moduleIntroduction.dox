@@ -72,7 +72,7 @@ in order to construct an ad hoc domain or to bound some local computations withi
 
  \subsection dgtalintroBasicConceptsImplicitSet Implicit sets of points
 
-concepts::CPointFunctor, concepts::CPointPredicate: 
+DGtal::concepts::CPointFunctor, DGtal::concepts::CPointPredicate: 
 The concept of point <em>functor</em> describe a mapping between 
 the points of a digital space and a set of values. 
 If the set of values is {0,1}, this mapping is called a point <em>predicate</em>.  
@@ -92,7 +92,7 @@ It is thus a refinement of the concept of point functor,
 describing a mapping between points and values, but having in addition a domain, 
 returned by the method domain(), and a range of values, returned by the method range().  
 The returned range has begin(), end(), rbegin() and rend() methods returning 
-constant iterators as every models of concepts::CConstBidirectionalRange, but has also 
+constant iterators as every models of DGtal::concepts::CConstBidirectionalRange, but has also 
 overloaded versions of begin() and rbegin() methods taking a point as
 input argument in order to iterate on the values from a given location.  
 The concept of image provides extra services to update values.  

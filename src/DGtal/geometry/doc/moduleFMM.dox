@@ -156,7 +156,7 @@ distance values.
 In DGtal, the class FMM is parametrized by the following types: 
 - a model of concepts::CDigitalSet (for the accepted point set)
 - a model of concepts::CImage (which stores the distance values)
-- a model of concepts::CPointPredicate (which implicitly represents the finite point set where the distance values
+- a model of DGtal::concepts::CPointPredicate (which implicitly represents the finite point set where the distance values
   must be computed) 
 - an optional type to compute the distance value of a given point from the 
 distance values of its neighbors (a model of concepts::CPointFunctor set to L2FirstOrderLocalDistance

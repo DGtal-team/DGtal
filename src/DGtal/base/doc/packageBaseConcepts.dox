@@ -43,24 +43,24 @@ digraph GBASE {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CSinglePassRange [ label="CSinglePassRange" URL="\ref concepts::CSinglePassRange"];
-    CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref concepts::CConstSinglePassRange"];
-    CSinglePassRangeFromPoint [ label="CSinglePassRangeFromPoint" URL="\ref concepts::CSinglePassRangeFromPoint"];
-    CConstSinglePassRangeFromPoint [ label="CConstSinglePassRangeFromPoint" URL="\ref concepts::CConstSinglePassRangeFromPoint"];
-    CBidirectionalRange [ label="CBidirectionalRange" URL="\ref concepts::CBidirectionalRange"];
-    CConstBidirectionalRange [ label="CConstBidirectionalRange" URL="\ref concepts::CConstBidirectionalRange"];
-    CBidirectionalRangeFromPoint [ label="CBidirectionalRangeFromPoint" URL="\ref concepts::CBidirectionalRangeFromPoint"];
-    CConstBidirectionalRangeFromPoint [ label="CConstBidirectionalRangeFromPoint" URL="\ref concepts::CConstBidirectionalRangeFromPoint"];
-    CSinglePassRangeWithWritableIterator [ label="CSinglePassRangeWithWritableIterator" URL="\ref concepts::CSinglePassRangeWithWritableIterator"];
-    CSinglePassRangeWithWritableIteratorFromPoint [ label="CSinglePassRangeWithWritableIteratorFromPoint" URL="\ref concepts::CSinglePassRangeWithWritableIteratorFromPoint"];
-    CBidirectionalRangeWithWritableIterator [ label="CBidirectionalRangeWithWritableIterator" URL="\ref concepts::CBidirectionalRangeWithWritableIterator"];
-    CBidirectionalRangeWithWritableIteratorFromPoint [ label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="\ref concepts::CBidirectionalRangeWithWritableIteratorFromPoint"];
+    CSinglePassRange [ label="CSinglePassRange" URL="\ref DGtal::concepts::CSinglePassRange"];
+    CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref DGtal::concepts::CConstSinglePassRange"];
+    CSinglePassRangeFromPoint [ label="CSinglePassRangeFromPoint" URL="\ref DGtal::concepts::CSinglePassRangeFromPoint"];
+    CConstSinglePassRangeFromPoint [ label="CConstSinglePassRangeFromPoint" URL="\ref DGtal::concepts::CConstSinglePassRangeFromPoint"];
+    CBidirectionalRange [ label="CBidirectionalRange" URL="\ref DGtal::concepts::CBidirectionalRange"];
+    CConstBidirectionalRange [ label="CConstBidirectionalRange" URL="\ref DGtal::concepts::CBidirectionalRange"];
+    CBidirectionalRangeFromPoint [ label="CBidirectionalRangeFromPoint" URL="\ref DGtal::concepts::CBidirectionalRangeFromPoint"];
+    CConstBidirectionalRangeFromPoint [ label="CConstBidirectionalRangeFromPoint" URL="\ref DGtal::concepts::CBidirectionalRangeFromPoint"];
+    CSinglePassRangeWithWritableIterator [ label="CSinglePassRangeWithWritableIterator" URL="\ref DGtal::concepts::CSinglePassRangeWithWritableIterator"];
+    CSinglePassRangeWithWritableIteratorFromPoint [ label="CSinglePassRangeWithWritableIteratorFromPoint" URL="\ref DGtal::concepts::CSinglePassRangeWithWritableIteratorFromPoint"];
+    CBidirectionalRangeWithWritableIterator [ label="CBidirectionalRangeWithWritableIterator" URL="\ref DGtal::concepts::CBidirectionalRangeWithWritableIterator"];
+    CBidirectionalRangeWithWritableIteratorFromPoint [ label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="\ref DGtal::concepts::CBidirectionalRangeWithWritableIteratorFromPoint"];
 
-    CLabel [ label="CLabel" URL="\ref concepts::CLabel"];
-    CQuantity [ label="CQuantity" URL="\ref concepts::CQuantity"];
-    CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate"];
-    CBackInsertable [ label="CBackInsertable" URL="\ref concepts::CBackInsertable"];
-    CUnaryFunctor [ label="CUnaryFunctor" URL="\ref concepts::CUnaryFunctor"];
+    CLabel [ label="CLabel" URL="\ref DGtal::concepts::CLabel"];
+    CQuantity [ label="CQuantity" URL="\ref DGtal::concepts::CQuantity"];
+    CPredicate [ label="CPredicate" URL="\ref DGtal::concepts::CPredicate"];
+    CBackInsertable [ label="CBackInsertable" URL="\ref DGtal::concepts::CBackInsertable"];
+    CUnaryFunctor [ label="CUnaryFunctor" URL="\ref DGtal::concepts::CUnaryFunctor"];
 
     CSinglePassRange -> CConstSinglePassRange ;
     CSinglePassRangeFromPoint -> CConstSinglePassRangeFromPoint;

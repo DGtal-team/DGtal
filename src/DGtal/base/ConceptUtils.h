@@ -43,6 +43,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <concepts>
 //////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
@@ -349,10 +350,6 @@ namespace ConceptUtils
      This concept is not strictly equivalent to ForwardContainer as it does not requires the 
      container to overload comparaison operator. If done as described by boost, the concept 
      does not compile with current DGtal library. 
-
-     The concept shoud be: 
-     ( std::totally_ordered<typename T::value_type> && std::totally_ordered<T>) ||
-     (!std::totally_ordered<typename T::value_type>)
    */ 
   template<typename T>
   concept ForwardContainer = 

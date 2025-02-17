@@ -111,7 +111,7 @@ In DGtal, the class VoronoiMap implements such digital Vornoi map
 extraction. Such class is parametrized by the following types:
 - a type representing the underlying digital space (model of CSpace);
 - a type representing the object @f$ X @f$ as a point predicate (model
- of concepts::CPointPredicate)  ;
+ of DGtal::concepts::CPointPredicate)  ;
 - a type representing the underlying metric (model of
 CSeparableMetric, see below)
 - and an optional image container to store the resulting Voronoi map

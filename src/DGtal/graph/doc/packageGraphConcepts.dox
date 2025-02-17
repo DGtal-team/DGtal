@@ -38,7 +38,7 @@ digraph GGraph {
                  node [style=filled,color=white];
                  label="base";
 
-                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
+                 CPredicate [ label="CPredicate" URL="\ref DGtal::concepts::CPredicate" ];
         }
         subgraph cluster_kernel {
                  style=filled;
@@ -83,7 +83,7 @@ digraph GGraph {
         
         CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ] ;
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ] ;
-        CVertexPredicate [ label="CVertexPredicate" URL="\ref concepts::CVertexPredicate" ] ;
+        CVertexPredicate [ label="CVertexPredicate" URL="\ref DGtal::concepts::CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref concepts::CVertexMap" ] ;
         CGraphVisitor [ label="CGraphVisitor" URL="\ref concepts::CGraphVisitor" ] ;
     }
@@ -104,7 +104,7 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Graph (main models and classes)";
 
-        CVertexPredicateArchetype [ label="CVertexPredicateArchetype" URL="\ref concepts::CVertexPredicateArchetype" ] ;
+        CVertexPredicateArchetype [ label="CVertexPredicateArchetype" URL="\ref DGtal::concepts::CVertexPredicateArchetype" ] ;
         STLMapToVertexMapAdapter [ label="STLMapToVertexMapAdapter" URL="\ref STLMapToVertexMapAdapter" ] ;
         BreadthFirstVisitor [ label="BreadthFirstVisitor" URL="\ref BreadthFirstVisitor" ] ;
         DepthFirstVisitor [ label="DepthFirstVisitor" URL="\ref DepthFirstVisitor" ] ;

@@ -68,7 +68,7 @@ It has never been so easy to calculate the distance map to Mickey!
 Given any type of callable object (function, functor and lambda) passed
 by value, reference or pointer, @ref FunctorHolder stores it in the most
 appropriate way so that the returned object is a model of DGtal functor
-concept (@ref concepts::CUnaryFunctor so far), and especially the
+concept (@ref DGtal::concepts::CUnaryFunctor so far), and especially the
 @ref boost::Assignable concept.
 
 More precisely, the storage mode depends on the lifetime of the given
@@ -145,9 +145,9 @@ penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utilit
 
 @subsection functorholder_derivates Which derivative class of FunctorHolder should I use ?
 Depending on the concept you want to fullfil, here are the available classes that rely on @ref FunctorHolder "":
-- for a @ref concepts::CUnaryFunctor model, use @ref FunctorHolder.
-- for a @ref concepts::CPointFunctor model, use @ref PointFunctorHolder.
-- for a @ref concepts::CConstImage model, use @ref ConstImageFunctorHolder.
+- for a @ref DGtal::concepts::CUnaryFunctor model, use @ref FunctorHolder.
+- for a @ref DGtal::concepts::CPointFunctor model, use @ref PointFunctorHolder.
+- for a @ref DGtal::concepts::CConstImage model, use @ref ConstImageFunctorHolder.
 
 
 @section holding_an_object Holding a callable object
@@ -267,7 +267,7 @@ a callable object of any arity:
 
 A @ref FunctorHolder instance is copyable, movable and assignable,
 thus making it a @ref boost::Assignable model and of any other concept
-that trivially inherit from it (e.g. @ref concepts::CUnaryFunctor).
+that trivially inherit from it (e.g. @ref DGtal::concepts::CUnaryFunctor).
 
 @warning
 When copying or assigning a @ref FunctorHolder, the two involved instances
@@ -421,8 +421,8 @@ like @ref DGtal::concepts::CPointFunctor.
 
 @subsection tutorial_pointfunctorholder A simple CUnaryFunctor model with additional typedef
 
-In this section, we will explain how to write a @ref concepts::CPointFunctor model
-that is basically a @ref concepts::CUnaryFunctor model with additional typedef
+In this section, we will explain how to write a @ref DGtal::concepts::CPointFunctor model
+that is basically a @ref DGtal::concepts::CUnaryFunctor model with additional typedef
 (the point and value types).
 
 The resulting class is more or less the @ref PointFunctorHolder class which
@@ -514,7 +514,7 @@ be removed.
 
 @subsubsection pointfunctorholder_usage First test
 
-That's it ! You can enjoy using this @ref concepts::CPointFunctor model,
+That's it ! You can enjoy using this @ref DGtal::concepts::CPointFunctor model,
 for example to hold a lambda returning the point norm:
 @code
 using Point = PointVector<2, int>;
@@ -522,7 +522,7 @@ auto fn = holdPointFunctor<Point, double>(
   [] (Point const& pt) { return pt.norm(); }
 );
 
-BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
 @endcode
 
 
@@ -564,7 +564,7 @@ auto fn = holdPointFunctor<Point>( // Value template parameter deduced to double
   [] (Point const& pt) { return pt.norm(); }
 );
 
-BOOST_CONCEPT_ASSERT( (concepts::CPointFunctor<decltype(fn)>) );
+BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
 @endcode
 
 
@@ -675,9 +675,9 @@ Finally, you should link to this module page for more informations.
 In this section, we will explain how to write a class that may hold an unary or
 binary functor.
 It will be based on the @ref ConstImageFunctorHolder class that transforms a given
-callable object into a @ref concepts::CConstImage model.
+callable object into a @ref DGtal::concepts::CConstImage model.
 
-Basically, to define an image, a @ref concepts::CPointFunctor model (i.e
+Basically, to define an image, a @ref DGtal::concepts::CPointFunctor model (i.e
 a functor that returns a value from a given point) would be enough but we want
 to allow the user to pass a functor that also depends on the image's domain
 (e.g. when calculating distance to the bounds).

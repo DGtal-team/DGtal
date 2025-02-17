@@ -67,7 +67,7 @@ The concept concepts::CConstImage is a refinement of concepts::CPointFunctor.
 Its models must have two extra nested types: 
 
   - Domain, a model of concepts::CDomain
-  - ConstRange, a model of concepts::CConstBidirectionalRangeFromPoint
+  - ConstRange, a model of DGtal::concepts::CConstBidirectionalRangeFromPoint
 
 Obviously, there are two methods 
 that return instances of these two types: 
@@ -91,8 +91,8 @@ following method:
 Moreover, in addition to the ConstRange, images must have
 the following inner type: 
 
-  - Range, a model of concepts::CConstBidirectionalRangeFromPoint, like ConstRange,
-and a model of concepts::CBidirectionalRangeWithWritableIteratorFromPoint, which must provide 
+  - Range, a model of DGtal::concepts::CConstBidirectionalRangeFromPoint, like ConstRange,
+and a model of DGtal::concepts::CBidirectionalRangeWithWritableIteratorFromPoint, which must provide 
 output iterators for incrementally updating a (sub)range of values.   
 
 Obviously, you can get an instance of this type using the following method: 
@@ -101,7 +101,7 @@ Obviously, you can get an instance of this type using the following method:
 iterators and output iterators. 
 
 Lastly, note that the Value type in the (constant) images
-is expected to be at least a model of concepts::CLabel, ie.  
+is expected to be at least a model of DGtal::concepts::CLabel, ie.  
 to be default-constructible, assignable and equality comparable.
 
 @note In the snippets of the following subsections, 
@@ -160,8 +160,8 @@ for (Image::ConstRange::ConstIterator it = r.begin(), itEnd = r.end();
 {} 
 @endcode
 
-However, this range is also a model of concepts::CConstBidirectionalRangeFromPoint, 
-which is a refinement of concepts::CConstBidirectionalRange. That is why it also has 
+However, this range is also a model of DGtal::concepts::CConstBidirectionalRangeFromPoint, 
+which is a refinement of DGtal::concepts::CConstBidirectionalRange. That is why it also has 
 overloaded versions of the `begin` and `rbegin` methods taking a point as input argument. 
 This provides a way of iterating on sub-ranges defined from points.  
 
@@ -179,8 +179,8 @@ ASSERT( image.constRange().begin( image.domain().end() ) == image.constRange().e
 @endcode
 
 Images provide in addition to a constant range, a richer range returned by the `range` method.
-This range is not only a model of concepts::CBidirectionalRangeFromPoint, but also a model 
-of concepts::CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:   
+This range is not only a model of DGtal::concepts::CBidirectionalRangeFromPoint, but also a model 
+of DGtal::concepts::CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:   
 `outputIterator` and `routputIterator` returning output iterators. Moreover, 
 it must have overloaded versions of these methods taking a point as input argument. 
 Thus, these output iterators are useful in order to incrementaly fill (a part of) an image. 

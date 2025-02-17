@@ -147,7 +147,7 @@ namespace DGtal {
    @image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
 
    @note The traversal of the graph can be changed dynamically in two ways:
-     - visited vertices can be limited with a model of concepts::CVertexPredicate
+     - visited vertices can be limited with a model of DGtal::concepts::CVertexPredicate
        (e.g. see BreadthFirstVisitor::expand( const VertexPredicate & )
        ).
      - you may forbid some visited vertices to have descendants

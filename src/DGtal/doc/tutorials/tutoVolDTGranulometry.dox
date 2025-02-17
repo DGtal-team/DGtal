@@ -118,7 +118,7 @@ check the template type you have to specified to this class to create
 an instance.
 
 4. As you may have seen, one of the input is a binary predicate which
-characterizes the shape (model of concepts::CPointPredicate concept). Use the
+characterizes the shape (model of DGtal::concepts::CPointPredicate concept). Use the
 functors::SimpleThresholdForegroundPredicate to create a point predicate from an
 image and a thresold.
 

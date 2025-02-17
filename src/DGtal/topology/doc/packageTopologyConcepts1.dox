@@ -34,7 +34,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="base";
 
-                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref concepts::CConstSinglePassRange" ];
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref DGtal::concepts::CConstSinglePassRange" ];
         }
         subgraph cluster_2 {
                  style=filled;

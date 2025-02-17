@@ -153,7 +153,7 @@ Integral Invariant estimators:
 the constructor of the class (see above).
 	- You can also give them the cellular grid space model of CCellularGridSpaceND 
   in which the shape is defined (Z3i::KSpace for example in 3d) and a point 
-  predicate model of concepts::CPointPredicate (the digital shape of interest, used to 
+  predicate model of DGtal::concepts::CPointPredicate (the digital shape of interest, used to 
   know if a point of the domain is inside or outside the shape), either in the 
   constructor, or in the <tt>attach()</tt> method.
 

@@ -114,7 +114,7 @@ moduleDigitalSurfaces). To address this diversity, the class
 DigitalSurface is templated by a model of
 CDigitalSurfaceContainer. Here we wish to define a digital surface as
 the boundary of a characteristic function (a model of
-concepts::CPointPredicate). We choose in our case the container \ref
+DGtal::concepts::CPointPredicate). We choose in our case the container \ref
 ImplicitDigitalSurface, which does exactly this but around one
 boundary component only. You must provide one starting surfel for the
 implicitly defined surface, which indicates the component of the

@@ -269,7 +269,7 @@ simply 4-connected sequence of points belonging to a standard DSL.
 As ArithmeticalDSL, ArithmeticalDSS is a model of CPointFunctor, ie. 
 it has a function operator ArithmeticalDSS.operator\(\) that returns 'true' 
 iff the input point belongs to the DSS. As ArithmeticalDSL, it provides 
-services to iterate over the DSS points. Indeed, ArithmeticalDSS is a model of concepts::CConstBidirectionalRange. 
+services to iterate over the DSS points. Indeed, ArithmeticalDSS is a model of DGtal::concepts::CConstBidirectionalRange. 
 It has two inner types called ArithmeticalDSS::ConstIterator and ArithmeticalDSS::ConstReverseIterator, 
 which are both models of readable iterator and bidirectional iterator.
 

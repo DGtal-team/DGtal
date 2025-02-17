@@ -35,10 +35,10 @@ digraph GKERNEL {
 	   color="#eeeeff";
 	   node [style=filled,color=white];
 	   label="base";
-	   CQuantity [ label="CQuantity" URL="\ref concepts::CQuantity" ];
-	   CUnaryFunctor [ label="CUnaryFunctor" URL="\ref concepts::CUnaryFunctor" ];
-	   CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
-	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref concepts::CConstSinglePassRange"]
+	   CQuantity [ label="CQuantity" URL="\ref DGtal::concepts::CQuantity" ];
+	   CUnaryFunctor [ label="CUnaryFunctor" URL="\ref DGtal::concepts::CUnaryFunctor" ];
+	   CPredicate [ label="CPredicate" URL="\ref DGtal::concepts::CPredicate" ];
+	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref DGtal::concepts::CConstSinglePassRange"]
 	   }
 	   
        subgraph cluster_boost {
@@ -63,8 +63,8 @@ digraph GKERNEL {
       node [style=filled,color=white];
       label="kernel (main concepts)";
       
-      CPointPredicate [label="CPointPredicate" URL="@ref  concepts::CPointPredicate"];
-      CPointFunctor [label="CPointFunctor" URL="@ref concepts::CPointFunctor"];
+      CPointPredicate [label="CPointPredicate" URL="@ref DGtal::concepts::CPointPredicate"];
+      CPointFunctor [label="CPointFunctor" URL="@ref DGtal::concepts::CPointFunctor"];
       CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
       CInteger [label="CInteger" URL="@ref concepts::CInteger"];
       CUnsignedNumber [label="CUnsignedNumber" URL="@ref concepts::CUnsignedNumber"];
@@ -74,7 +74,7 @@ digraph GKERNEL {
       CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
       CCommutativeRing [label="CCommutativeRing" URL="@ref concepts::CCommutativeRing"];
       CDomain [label="CDomain" URL="@ref concepts::CDomain"];
-      CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref concepts::CSTLAssociativeContainer"];
+      CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref DGtal::concepts::CSTLAssociativeContainer"];
 
       CPointFunctor -> CUnaryFunctor;
       CPointPredicate -> CPredicate;

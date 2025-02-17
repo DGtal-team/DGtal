@@ -139,16 +139,16 @@ return two iterators bounding the range of elements contained
 in the data structure. Similarly, in DGtal, there are several 
 concepts of range having at least these `begin()` and `end()` methods. 
 
-The concept [CConstSinglePassRange](@ref concepts::CConstSinglePassRange)
+The concept [CConstSinglePassRange](@ref DGtal::concepts::CConstSinglePassRange)
  describes any object for which, 
 one can iterate at least one time over a range of elements.  
-Models of concepts::CConstSinglePassRange have a nested type ConstIterator, 
+Models of DGtal::concepts::CConstSinglePassRange have a nested type ConstIterator, 
 which is a readable and (at least) single-pass iterator.  
 Instances of ConstIterator are returned by `begin()` 
 and `end()` methods.     
 
-The concept [CConstBidirectionalRange](@ref concepts::CConstBidirectionalRange), 
-which is a refinement of concepts::CConstSinglePassRange,
+The concept [CConstBidirectionalRange](@ref DGtal::concepts::CConstBidirectionalRange), 
+which is a refinement of DGtal::concepts::CConstSinglePassRange,
 describes any collection of elements that can be scanned several times, 
 either forward or backward.  
 Models of this concept have obviously a nested type ConstIterator, but it 
@@ -158,9 +158,9 @@ iterator too. Finally, `begin()` and `end()` methods return instances of
 ConstIterator, whereas `rbegin()` and `rend()` methods return instances of 
 ConstReverseIterator. 
      
-The concept [CSinglePassRange](@ref concepts::CSinglePassRange) 
-(resp. [CBidirectionalRange](@ref concepts::CBidirectionalRange)) is 
-a refinement of concepts::CConstSinglePassRange (resp. concepts::CConstBidirectionalRange) 
+The concept [CSinglePassRange](@ref DGtal::concepts::CSinglePassRange) 
+(resp. [CBidirectionalRange](@ref DGtal::concepts::CBidirectionalRange)) is 
+a refinement of DGtal::concepts::CConstSinglePassRange (resp. DGtal::concepts::CConstBidirectionalRange) 
 for not constant, mutable elements. All their models have a nested type
 Iterator (resp. ReverseIterator), which are the readable and writable 
 counterparts of ConstIterator (resp. ConstReverseIterator).    
@@ -176,10 +176,10 @@ digraph GBASE {
     color=lightgrey;
     node [style=filled,color=white];
 
-    CSinglePassRange [ label="CSinglePassRange" URL="\ref concepts::CSinglePassRange"];
-    CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref concepts::CConstSinglePassRange"];
-    CBidirectionalRange [ label="CBidirectionalRange" URL="\ref concepts::CBidirectionalRange"];
-    CConstBidirectionalRange [ label="CConstBidirectionalRange" URL="\ref concepts::CConstBidirectionalRange"];
+    CSinglePassRange [ label="CSinglePassRange" URL="\ref DGtal::concepts::CSinglePassRange"];
+    CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref DGtal::concepts::CConstSinglePassRange"];
+    CBidirectionalRange [ label="CBidirectionalRange" URL="\ref DGtal::concepts::CBidirectionalRange"];
+    CConstBidirectionalRange [ label="CConstBidirectionalRange" URL="\ref DGtal::concepts::CBidirectionalRange"];
 
     CSinglePassRange-> CConstSinglePassRange;
     CConstBidirectionalRange -> CConstSinglePassRange;

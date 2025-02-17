@@ -382,11 +382,11 @@ Depending of what is your digital surface, you should choose your
 container accordingly:
 - an explicit set of oriented surfels: model SetOfSurfels, or if
   you wish to keep only one connected component, the model
-  ExplicitDigitalSurface together with a model of concepts::CSurfelPredicate
+  ExplicitDigitalSurface together with a model of DGtal::concepts::CSurfelPredicate
   on your set.
 - the boundary of an explicit set of spels: either convert it to a
   DigitalSet and use model DigitalSetBoundary, or use model
-  ImplicitDigitalSurface and a concepts::CPointPredicate on your set of spels
+  ImplicitDigitalSurface and a DGtal::concepts::CPointPredicate on your set of spels
   (require connectedness).
 - the boundary of an explicit set of digital points: model
   DigitalSetBoundary directly
@@ -396,10 +396,10 @@ container accordingly:
   Surfel -> bool: model ExplicitDigitalSurface and a start surfel.
 - the boundary of a region in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  functors::BoundaryPredicate, which is model of concepts::CSurfelPredicate.
+  functors::BoundaryPredicate, which is model of DGtal::concepts::CSurfelPredicate.
 - the frontier between two regions in a labelled image: model
   ExplicitDigitalSurface and a start surfel, and the class
-  functors::FrontierPredicate, which is model of concepts::CSurfelPredicate.
+  functors::FrontierPredicate, which is model of DGtal::concepts::CSurfelPredicate.
 
 Light versions of containers should be preferred in mostly two
 cases:

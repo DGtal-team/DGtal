@@ -34,7 +34,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="base";
 
-                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ]; 
+                 CPredicate [ label="CPredicate" URL="\ref DGtal::concepts::CPredicate" ]; 
         }
         subgraph cluster_2 {
                  style=filled;
@@ -80,7 +80,7 @@ digraph GTOPOLOGY {
 
         CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref concepts::CDigitalSurfaceContainer" ]; 
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
-        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref concepts::CSurfelPredicate" ];
+        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref DGtal::concepts::CSurfelPredicate" ];
         CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;

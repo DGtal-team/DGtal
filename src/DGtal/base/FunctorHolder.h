@@ -119,7 +119,7 @@ namespace
  * Given any type of callable object (function, functor and lambda) passed
  * by value, reference or pointer, stores it in the most appropriate way so
  * that the returned object is compatible with DGtal functor concept
- * (@ref concepts::CUnaryFunctor so far), and especially the @ref boost::Assignable concept.
+ * (@ref DGtal::concepts::CUnaryFunctor so far), and especially the @ref boost::Assignable concept.
  *
  * More precisely, the storage mode depends on the lifetime of the given
  * object, deduced from its passing mode :
