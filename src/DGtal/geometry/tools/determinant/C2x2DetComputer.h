@@ -104,6 +104,7 @@ namespace DGtal
      @tparam T the type that should be a model of C2x2DetComputer.
   */
   template <typename T>
+  requires concepts::CSignedNumber<typename T::ResultInteger>
   struct C2x2DetComputer : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -112,7 +113,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing< ArgumentType > ));
 
     typedef typename T::ResultInteger ResultType;
-    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< ResultType > ));
 
     BOOST_CONCEPT_USAGE( C2x2DetComputer )
     {

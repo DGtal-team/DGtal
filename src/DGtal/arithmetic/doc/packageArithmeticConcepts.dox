@@ -44,7 +44,7 @@ digraph GARITHMETIC {
                  label="kernel";
 
                  CInteger [ label="CInteger" URL="\ref concepts::CInteger" ];
-                 CSignedNumber [ label="CSignedNumber" URL="\ref concepts::CSignedNumber" ];
+                 CSignedNumber [ label="CSignedNumber" URL="\ref DGtal::concepts::CSignedNumber" ];
                  CUnsignedNumber [ label="CUnsignedNumber" URL="\ref concepts::CUnsignedNumber" ];
                  CSpace [ label="CSpace" URL="\ref concepts::CSpace" ];
         }

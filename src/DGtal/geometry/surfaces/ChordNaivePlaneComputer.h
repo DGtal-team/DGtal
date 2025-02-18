@@ -153,12 +153,11 @@ namespace DGtal
    */
   template < typename TSpace,
              typename TInputPoint,
-             typename TInternalScalar >
+             DGtal::concepts::CSignedNumber TInternalScalar >
   class ChordNaivePlaneComputer
   {
 
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< TInternalScalar > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
     BOOST_STATIC_ASSERT(( TInputPoint::dimension == 3 ));
 

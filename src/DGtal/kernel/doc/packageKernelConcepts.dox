@@ -68,7 +68,7 @@ digraph GKERNEL {
       CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
       CInteger [label="CInteger" URL="@ref concepts::CInteger"];
       CUnsignedNumber [label="CUnsignedNumber" URL="@ref concepts::CUnsignedNumber"];
-      CSignedNumber [label="CSignedNumber" URL="@ref concepts::CSignedNumber"];
+      CSignedNumber [label="CSignedNumber" URL="@ref DGtal::concepts::CSignedNumber"];
       CIntegralNumber [label="CIntegralNumber" URL="@ref concepts::CIntegralNumber"];
       CBoundedNumber [label="CBoundedNumber" URL="@ref concepts::CBoundedNumber"];
       CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];

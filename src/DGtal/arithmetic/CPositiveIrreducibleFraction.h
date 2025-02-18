@@ -158,8 +158,8 @@ except the last one. In this sense, a fraction is a sequence
 @tparam T the type that should be a model of CPositiveIrreducibleFraction.
 */
 template <typename T> 
-    requires CBackInsertable<T> && 
-             CConstSinglePassRange<T>
+requires CBackInsertable<T> && 
+         CConstSinglePassRange<T>
 struct CPositiveIrreducibleFraction 
   : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>
 

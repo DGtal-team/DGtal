@@ -93,25 +93,10 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
      CBoundedInteger.
     
    */
-  template <concepts::CQuantity T>
-  struct CSignedNumber
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    BOOST_CONCEPT_USAGE(CSignedNumber)
-    {
-      // Will compile iff Signed.
-      ConceptUtils::checkTrue(myIsSigned );
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    typename NumberTraits<T>::IsSigned myIsSigned;
-
-  }; // end of concept CSignedNumber
+  template <typename T>
+  concept CSignedNumber = 
+    concepts::CQuantity<T> && 
+    std::same_as<typename NumberTraits<T>::IsSigned, DGtal::TagTrue>;
   } 
 } // namespace DGtal
 

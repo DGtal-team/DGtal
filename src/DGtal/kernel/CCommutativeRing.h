@@ -96,8 +96,8 @@ Opposite operator                    | - @e x     |                    | @a X   
 
 @tparam T the type that should be a model of commutative ring.
    */
-  template <typename T>
-  struct CCommutativeRing : concepts::CSignedNumber<T>
+  template <concepts::CSignedNumber T>
+  struct CCommutativeRing
   {
     // ----------------------- Concept checks ------------------------------
   public:

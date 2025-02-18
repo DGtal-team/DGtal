@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // DEFINITION of static members
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Transform
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::myTransforms[4] = {
   Transform( true, true ), Transform( true, false ), Transform( false, true ), Transform( false, false ) };
@@ -47,14 +47,14 @@ DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 ~ChordGenericStandardPlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 ChordGenericStandardPlaneComputer()
@@ -62,7 +62,7 @@ ChordGenericStandardPlaneComputer()
   _orthantsToErase.reserve( 4 );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 ChordGenericStandardPlaneComputer( const ChordGenericStandardPlaneComputer & other )
@@ -74,7 +74,7 @@ ChordGenericStandardPlaneComputer( const ChordGenericStandardPlaneComputer & oth
   _orthantsToErase.reserve( 4 );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar> &
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -90,7 +90,7 @@ operator=( const ChordGenericStandardPlaneComputer & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 DGtal::Dimension
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -100,7 +100,7 @@ active() const
   return myOrthants[ 0 ];
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 void
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -114,7 +114,7 @@ clear()
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 void
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -131,7 +131,7 @@ init( InternalScalar widthNumerator,
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -140,7 +140,7 @@ size() const
   return myComputers[ active() ].size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -149,7 +149,7 @@ empty() const
   return myComputers[ active() ].empty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -158,7 +158,7 @@ begin() const
   return ConstIterator( myComputers[ active() ].begin(), invT( active() ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -168,7 +168,7 @@ end() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -177,7 +177,7 @@ max_size() const
   return myComputers[ active() ].max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -186,7 +186,7 @@ maxSize() const
   return max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -196,7 +196,7 @@ operator()( const Point & p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -228,7 +228,7 @@ extendAsIs( const InputPoint & p )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 extend( const InputPoint & p )
@@ -258,7 +258,7 @@ extend( const InputPoint & p )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 isExtendable( const InputPoint & p ) const
@@ -273,7 +273,7 @@ isExtendable( const InputPoint & p ) const
   return nbok != 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 template <typename TInputIterator>
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -309,7 +309,7 @@ extend( TInputIterator it, TInputIterator itE )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 template <typename TInputIterator>
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -332,7 +332,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Primitive
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -353,7 +353,7 @@ primitive() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 template <typename Vector3D>
 inline
 void
@@ -365,7 +365,7 @@ getNormal( Vector3D & normal ) const
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 template <typename Vector3D>
 inline
 void
@@ -379,7 +379,7 @@ getUnitNormal( Vector3D & normal ) const
                   +normal[2]*normal[2] );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 void
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -394,7 +394,7 @@ getBounds( double & min, double & max ) const
   max = ( NumberTraits<InternalScalar>::castToDouble( imax ) + 0.5 ) / ddenom;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::InputPoint
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -407,7 +407,7 @@ minimalPoint() const
   return p_min;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::InputPoint
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -421,7 +421,7 @@ maximalPoint() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 void
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -461,7 +461,7 @@ getCharacteristics( InternalVector & n,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 void
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
@@ -477,7 +477,7 @@ DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 bool
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::isValid() const
@@ -491,7 +491,7 @@ DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Transform
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
@@ -501,7 +501,7 @@ t( Dimension orthant )
   return myTransforms[ orthant ];
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+template <typename TSpace, typename TInputPoint, DGtal::concepts::CSignedNumber TInternalScalar>
 inline
 typename DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::Transform
 DGtal::ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar>::
