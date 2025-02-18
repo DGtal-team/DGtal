@@ -72,7 +72,7 @@ digraph GKERNEL {
       CIntegralNumber [label="CIntegralNumber" URL="@ref concepts::CIntegralNumber"];
       CBoundedNumber [label="CBoundedNumber" URL="@ref concepts::CBoundedNumber"];
       CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
-      CCommutativeRing [label="CCommutativeRing" URL="@ref concepts::CCommutativeRing"];
+      CCommutativeRing [label="CCommutativeRing" URL="@ref DGtal::concepts::CCommutativeRing"];
       CDomain [label="CDomain" URL="@ref concepts::CDomain"];
       CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref DGtal::concepts::CSTLAssociativeContainer"];
 

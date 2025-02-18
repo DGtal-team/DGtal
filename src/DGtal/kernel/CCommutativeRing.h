@@ -96,30 +96,20 @@ Opposite operator                    | - @e x     |                    | @a X   
 
 @tparam T the type that should be a model of commutative ring.
    */
-  template <concepts::CSignedNumber T>
-  struct CCommutativeRing
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
+  template <typename T>
+  concept CCommutativeRing = 
+     concepts::CSignedNumber<T> && requires(T a, T b){ 
+        { T( 25) } -> std::same_as<T>;
+        { T(-25) } -> std::same_as<T>;
+        { T(  0) } -> std::same_as<T>;
+        { T(  1) } -> std::same_as<T>;
+        { T( -a) } -> std::same_as<T>;
+        { T(a+b) } -> std::same_as<T>;
+        { T(a-b) } -> std::same_as<T>;
+        { T(a*b) } -> std::same_as<T>;
 
-    BOOST_CONCEPT_USAGE( CCommutativeRing )
-    {
-      ConceptUtils::sameType( c, T( 25 ) );
-      ConceptUtils::sameType( c, T( -25 ) );
-      ConceptUtils::sameType( c, T( a+b ) );
-      ConceptUtils::sameType( c, T( -a ) );
-      ConceptUtils::sameType( c, T( a-b ) );
-      ConceptUtils::sameType( c, T( a*b ) );
-      ConceptUtils::sameType( c, T( 0 ) );
-      ConceptUtils::sameType( c, T( 1 ) );
-
-      ///The 0 and 1 neutral elements should be tested.
-    }
-    // ------------------------- Internals ------------------------------------
-  private:
-    T a,b,c;
-
-  };
+        ///The 0 and 1 neutral elements should be tested.
+     };
   }
 } // namespace DGtal
 

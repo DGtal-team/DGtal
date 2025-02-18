@@ -65,14 +65,13 @@ namespace DGtal
 
     @tparam TQuantity any model of CCommutativeRing.
    */
-  template <typename TQuantity>
+  template <concepts::CCommutativeRing TQuantity>
   class Statistic
   {
 
     // ----------------------- public types -----------------------------------
   public:
     typedef TQuantity Quantity;
-    BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing<Quantity> ) );
     typedef std::vector< Quantity > Container;
     typedef typename Container::const_iterator ConstIterator;
     

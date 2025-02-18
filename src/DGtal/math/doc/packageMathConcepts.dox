@@ -39,7 +39,7 @@ digraph GMath {
                  node [style=filled,color=white];
                  label="kernel";
 
-		 CCommutativeRing [ label="CCommutativeRing" URL="\ref concepts::CCommutativeRing" ];
+		 CCommutativeRing [ label="CCommutativeRing" URL="\ref DGtal::concepts::CCommutativeRing" ];
 		 CEuclideanRing [ label="CEuclideanRing" URL="\ref concepts::CEuclideanRing" ];
         }
         subgraph cluster_io {

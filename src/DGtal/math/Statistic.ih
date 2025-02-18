@@ -39,13 +39,13 @@
 /**
  * Destructor. 
  */
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity>::~Statistic()
 {}
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity>::Statistic(bool storeSample)
   : mySamples( 0 ), myExp( NumberTraits<Quantity>::ZERO ), myExp2( NumberTraits<Quantity>::ZERO ),  myMax( NumberTraits<Quantity>::ZERO ),myMin( NumberTraits<Quantity>::ZERO ), myMedian(NumberTraits<Quantity>::ZERO),  myStoreSamples (storeSample),
@@ -56,7 +56,7 @@ DGtal::Statistic<TQuantity>::Statistic(bool storeSample)
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity>::Statistic
 ( const Statistic<TQuantity> & other )
@@ -80,7 +80,7 @@ DGtal::Statistic<TQuantity>::Statistic
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity> & 
 DGtal::Statistic<TQuantity>::operator=
@@ -109,7 +109,7 @@ DGtal::Statistic<TQuantity>::operator=
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity> & 
 DGtal::Statistic<TQuantity>::operator+=
@@ -140,7 +140,7 @@ DGtal::Statistic<TQuantity>::operator+=
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 DGtal::Statistic<TQuantity> 
 DGtal::Statistic<TQuantity>::operator+
@@ -153,7 +153,7 @@ DGtal::Statistic<TQuantity>::operator+
 
 
 //-----------------------------------------------------------------------------
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 typename DGtal::Statistic<TQuantity>::ConstIterator
 DGtal::Statistic<TQuantity>::begin() const
@@ -161,7 +161,7 @@ DGtal::Statistic<TQuantity>::begin() const
   return myValues.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 typename DGtal::Statistic<TQuantity>::ConstIterator
 DGtal::Statistic<TQuantity>::end() const
@@ -175,7 +175,7 @@ DGtal::Statistic<TQuantity>::end() const
 // ----------------------- Accessors ------------------------------
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 unsigned int 
 DGtal::Statistic<TQuantity>::samples() const
@@ -183,14 +183,14 @@ DGtal::Statistic<TQuantity>::samples() const
   return mySamples;
 }
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 unsigned int 
 DGtal::Statistic<TQuantity>::size() const
 {
   return myValues.size();
 }
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 TQuantity
 DGtal::Statistic<TQuantity>::operator[]( unsigned int i ) const
@@ -198,7 +198,7 @@ DGtal::Statistic<TQuantity>::operator[]( unsigned int i ) const
   return i < size() ? myValues[ i ] : Quantity();
 }
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 double
 DGtal::Statistic<TQuantity>::mean() const
@@ -208,7 +208,7 @@ DGtal::Statistic<TQuantity>::mean() const
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 double
 DGtal::Statistic<TQuantity>::variance() const
@@ -217,7 +217,7 @@ DGtal::Statistic<TQuantity>::variance() const
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 double
 DGtal::Statistic<TQuantity>::unbiasedVariance() const
@@ -228,7 +228,7 @@ DGtal::Statistic<TQuantity>::unbiasedVariance() const
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 TQuantity
 DGtal::Statistic<TQuantity>::max() const
@@ -237,7 +237,7 @@ DGtal::Statistic<TQuantity>::max() const
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 TQuantity
 DGtal::Statistic<TQuantity>::min() const
@@ -246,7 +246,7 @@ DGtal::Statistic<TQuantity>::min() const
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 TQuantity
 DGtal::Statistic<TQuantity>::median() 
@@ -265,7 +265,7 @@ DGtal::Statistic<TQuantity>::median()
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 void 
 DGtal::Statistic<TQuantity>::addValue( TQuantity v )
@@ -287,7 +287,7 @@ DGtal::Statistic<TQuantity>::addValue( TQuantity v )
   
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 template <class Iter>
 inline
 void 
@@ -299,7 +299,7 @@ DGtal::Statistic<TQuantity>::addValues( Iter b, Iter e )
 
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 void
 DGtal::Statistic<TQuantity>::clear()
@@ -319,7 +319,7 @@ DGtal::Statistic<TQuantity>::clear()
 
 
 
-template< typename TQuantity> 
+template< DGtal::concepts::CCommutativeRing TQuantity> 
 inline
 void 
 DGtal::Statistic<TQuantity>::terminate()
@@ -339,7 +339,7 @@ DGtal::Statistic<TQuantity>::terminate()
 // Interface - public :
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 void 
 DGtal::Statistic<TQuantity>::selfDisplay
@@ -359,7 +359,7 @@ DGtal::Statistic<TQuantity>::selfDisplay
 }
 
 
-template <typename TQuantity>
+template <DGtal::concepts::CCommutativeRing TQuantity>
 inline
 bool 
 DGtal::Statistic<TQuantity>::OK() const

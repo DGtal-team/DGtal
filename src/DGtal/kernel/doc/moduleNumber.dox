@@ -63,8 +63,8 @@ the following concepts:
 
 Concept name   | Short description | Model examples
 ---------------|-------------------|--------------
- concepts::CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
- concepts::CEuclideanRing | Refinement of concepts::CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
+ DGtal::concepts::CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
+ concepts::CEuclideanRing | Refinement of DGtal::concepts::CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
  concepts::CInteger | Refinement of both concepts::CEuclideanRing and concepts::CIntegralNumber | DGtal::int32_t, .....
  
 
@@ -73,12 +73,12 @@ Concept name   | Short description | Model examples
 
 First of all, BasicTypes refines in DGtal classical built-in integer
 types such as DGtal::uint64_t or DGtal::int32_t. However, not all
-these types are models of the concept concepts::CCommutativeRing. Indeed,
+these types are models of the concept DGtal::concepts::CCommutativeRing. Indeed,
 DGtal::uint64_t has no inverse for the addition operator.
 
 Hence, if we have a templated class SpaceND with two arguments: a
 static dimension and a type of integer. And if we add a constraint
-that the integer type must be a model of concepts::CCommutativeRing, the
+that the integer type must be a model of DGtal::concepts::CCommutativeRing, the
 following code:
 @code
 typedef DGtal::SpaceND<2, DGtal::uint64_t> MySpace;
@@ -102,7 +102,7 @@ If you want to use your own integer type in DGtal, two things have to
 be done:
 
 - Create a facade or a wrapper to make sure that your own type is a
-  model of the concepts::CCommutativeRing concept.
+  model of the DGtal::concepts::CCommutativeRing concept.
 - Add a specialization for your type in the NumberTraits structure.
 
 */
