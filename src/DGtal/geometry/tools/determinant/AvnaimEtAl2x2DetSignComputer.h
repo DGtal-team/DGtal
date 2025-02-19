@@ -140,7 +140,7 @@ namespace DGtal
    *
    * @see Simple2x2DetComputer
    */
-  template <typename TInteger>
+  template <concepts::CEuclideanRing TInteger>
   class AvnaimEtAl2x2DetSignComputer
   {
     // ----------------------- Types  ------------------------------------
@@ -149,7 +149,6 @@ namespace DGtal
      * Type of integer for the input coefficients of the 2x2 matrix
      */
     typedef TInteger ArgumentInteger; 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
     BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber<ArgumentInteger> )); 
 
     /**

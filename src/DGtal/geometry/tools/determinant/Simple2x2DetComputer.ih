@@ -37,9 +37,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer()
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::Simple2x2DetComputer()
   : myA (NumberTraits<ResultInteger>::ZERO),  
     myB (NumberTraits<ResultInteger>::ZERO), 
     myAY (NumberTraits<ResultInteger>::ZERO),  
@@ -48,9 +48,9 @@ DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer()
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer(const DGtal::Simple2x2DetComputer<TI,TO>& aOther)
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::Simple2x2DetComputer(const DGtal::Simple2x2DetComputer<TArgumentInteger,TO>& aOther)
   : myA (aOther.myA),  
     myB (aOther.myB), 
     myAY (aOther.myAY),  
@@ -59,10 +59,10 @@ DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer(const DGtal::Simple2x2D
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-DGtal::Simple2x2DetComputer<TI,TO>& 
-DGtal::Simple2x2DetComputer<TI,TO>::operator=(const DGtal::Simple2x2DetComputer<TI,TO>& aOther)
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>& 
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::operator=(const DGtal::Simple2x2DetComputer<TArgumentInteger,TO>& aOther)
 {
   if (this != &aOther)
     {
@@ -75,27 +75,27 @@ DGtal::Simple2x2DetComputer<TI,TO>::operator=(const DGtal::Simple2x2DetComputer<
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-DGtal::Simple2x2DetComputer<TI,TO>::~Simple2x2DetComputer()
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::~Simple2x2DetComputer()
 {
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
 void 
-DGtal::Simple2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
 {
   myA = static_cast<ResultInteger>(aA); 
   myB = static_cast<ResultInteger>(aB);
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-typename DGtal::Simple2x2DetComputer<TI,TO>::ResultInteger
-DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
+typename DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::ResultInteger
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
 {
   myAY = myA * static_cast<ResultInteger>(aY);
   myBX = myB * static_cast<ResultInteger>(aX);  
@@ -103,10 +103,10 @@ DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aX, const 
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
-typename DGtal::Simple2x2DetComputer<TI,TO>::ResultInteger
-DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+typename DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::ResultInteger
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
 					       const ArgumentInteger& aX, const ArgumentInteger& aY)
 {
   init(aA,aB); 
@@ -114,19 +114,19 @@ DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const 
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
 void
-DGtal::Simple2x2DetComputer<TI,TO>::selfDisplay ( std::ostream & out ) const
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Simple2x2DetComputer]";
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <DGtal::concepts::CEuclideanRing TArgumentInteger, typename TO>
 inline
 bool
-DGtal::Simple2x2DetComputer<TI,TO>::isValid() const
+DGtal::Simple2x2DetComputer<TArgumentInteger,TO>::isValid() const
 {
   return true;
 }

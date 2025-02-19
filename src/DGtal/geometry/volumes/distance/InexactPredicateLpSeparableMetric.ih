@@ -37,23 +37,23 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T,V>::InexactPredicateLpSeparableMetric(const double anExponent):
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::InexactPredicateLpSeparableMetric(const double anExponent):
   myExponent(anExponent)
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T,V>::~InexactPredicateLpSeparableMetric()
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::~InexactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Value
-DGtal::InexactPredicateLpSeparableMetric<T,V>::rawDistance (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Value
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::rawDistance (const Point &aP,
                                                           const Point &aQ) const
 {
   Value res= 0.0;
@@ -64,19 +64,19 @@ DGtal::InexactPredicateLpSeparableMetric<T,V>::rawDistance (const Point &aP,
   return res;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Value
-DGtal::InexactPredicateLpSeparableMetric<T,V>::operator() (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Value
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::operator() (const Point &aP,
                                                        const Point &aQ) const
 {
   return std::pow( rawDistance(aP,aQ) , 1.0/myExponent);
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
 DGtal::Closest
-DGtal::InexactPredicateLpSeparableMetric<T,V>::closest (const Point &origin,
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::closest (const Point &origin,
                                                       const Point &first,
                                                       const Point &second) const
 {
@@ -94,10 +94,10 @@ DGtal::InexactPredicateLpSeparableMetric<T,V>::closest (const Point &origin,
       return ClosestBOTH;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T,V>::Abscissa
-DGtal::InexactPredicateLpSeparableMetric<T,V>::binarySearchHidden(const Abscissa &udim,
+typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Abscissa
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::binarySearchHidden(const Abscissa &udim,
                                                                 const Abscissa &vdim,
                                                                 const Value &nu,
                                                                 const Value &nv,
@@ -131,10 +131,10 @@ DGtal::InexactPredicateLpSeparableMetric<T,V>::binarySearchHidden(const Abscissa
 
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T,V>::hiddenBy(const Point &u,
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::hiddenBy(const Point &u,
                                                       const Point &v,
                                                       const Point &w,
                                                       const Point &startingPoint,
@@ -203,27 +203,27 @@ DGtal::InexactPredicateLpSeparableMetric<T,V>::hiddenBy(const Point &u,
     }
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
 void
-DGtal::InexactPredicateLpSeparableMetric<T,V>::selfDisplay ( std::ostream & out ) const
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::selfDisplay ( std::ostream & out ) const
 {
   out << "[InexactPredicateLpSeparableMetric] p="<<myExponent;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, DGtal::concepts::CEuclideanRing TValue>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T,V>::isValid() const
+DGtal::InexactPredicateLpSeparableMetric<T, TValue>::isValid() const
 {
   return true;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename V>
+template <typename T, typename TValue>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const InexactPredicateLpSeparableMetric<T,V> & object )
+                    const InexactPredicateLpSeparableMetric<T, TValue> & object )
 {
   object.selfDisplay( out );
   return out;

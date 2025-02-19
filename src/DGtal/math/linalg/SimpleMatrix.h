@@ -71,7 +71,7 @@ namespace DGtal
    * @tparam TM number of rows of the matrix
    * @tparam TN number of columns of the matrix
    */
-  template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
+  template <concepts::CEuclideanRing TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   class SimpleMatrix
   {
 
@@ -89,7 +89,6 @@ namespace DGtal
 		typedef Dimension Index;
 		typedef Component Scalar;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TComponent> ));
     BOOST_STATIC_ASSERT(TM > 0 );
     BOOST_STATIC_ASSERT(TM > 0 );
 

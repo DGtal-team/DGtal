@@ -58,7 +58,7 @@ namespace DGtal
 
     @tparam TEuclideanRing any model of CEuclideanRing like int, double, etc.
    */
-  template <typename TEuclideanRing>
+  template <concepts::CEuclideanRing TEuclideanRing>
   class LagrangeInterpolation
   {
 
@@ -66,7 +66,6 @@ namespace DGtal
   public:
     typedef LagrangeInterpolation< TEuclideanRing > Self;
     typedef TEuclideanRing Ring;
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing< Ring > ) );
 
     /// The monovariate polynomial type
     typedef DGtal::MPolynomial< 1, Ring > Polynomial;

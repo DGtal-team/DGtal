@@ -37,9 +37,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::AvnaimEtAl2x2DetSignComputer()
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::AvnaimEtAl2x2DetSignComputer()
   : myA(NumberTraits<Integer>::ZERO), 
     myB(NumberTraits<Integer>::ZERO), 
     myMax(NumberTraits<Integer>::ONE)
@@ -57,10 +57,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::AvnaimEtAl2x2DetSignComputer()
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
 void 
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
 {
   ASSERT( aA <= myMax ); 
   ASSERT( aB <= myMax ); 
@@ -70,10 +70,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::init(const ArgumentInteger& aA, const Ar
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
 int
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::quadrant(const Integer& aX, const Integer& aY) const
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::quadrant(const Integer& aX, const Integer& aY) const
 {
   ASSERT( aX != 0 ); 
   ASSERT( aY != 0 );
@@ -95,10 +95,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::quadrant(const Integer& aX, const Intege
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
-typename DGtal::AvnaimEtAl2x2DetSignComputer<T>::Integer
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::recursiveComputation(const Integer& aA, const Integer& aB, 
+typename DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::Integer
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::recursiveComputation(const Integer& aA, const Integer& aB, 
 							     const Integer& aX, const Integer& aY) const
 {
   //  std::cerr << " >>> " << aA << "." << aY << " - " << aB << "." << aX << std::endl;	
@@ -162,10 +162,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::recursiveComputation(const Integer& aA, 
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
-typename DGtal::AvnaimEtAl2x2DetSignComputer<T>::Integer
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::computation(const Integer& aA, const Integer& aB, 
+typename DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::Integer
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::computation(const Integer& aA, const Integer& aB, 
 						    const Integer& aX, const Integer& aY) const
 {
   //  std::cerr << " >>> " << aA << "." << aY << " - " << aB << "." << aX << std::endl;	
@@ -198,10 +198,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::computation(const Integer& aA, const Int
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
-typename DGtal::AvnaimEtAl2x2DetSignComputer<T>::ResultInteger
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
+typename DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::ResultInteger
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
 {
   ASSERT( aX <= myMax ); 
   ASSERT( aY <= myMax ); 
@@ -315,10 +315,10 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::operator()(const ArgumentInteger& aX, co
 }
 
 // ---------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
-typename DGtal::AvnaimEtAl2x2DetSignComputer<T>::ResultInteger
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+typename DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::ResultInteger
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
 						   const ArgumentInteger& aX, const ArgumentInteger& aY)
 {
   ASSERT( aA <= myMax ); 
@@ -331,19 +331,19 @@ DGtal::AvnaimEtAl2x2DetSignComputer<T>::operator()(const ArgumentInteger& aA, co
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
 void
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::selfDisplay ( std::ostream & out ) const
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::selfDisplay ( std::ostream & out ) const
 {
   out << "[AvnaimEtAl2x2DetSignComputer]";
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::CEuclideanRing TNumber>
 inline
 bool
-DGtal::AvnaimEtAl2x2DetSignComputer<T>::isValid() const
+DGtal::AvnaimEtAl2x2DetSignComputer<TNumber>::isValid() const
 {
   return true;
 }

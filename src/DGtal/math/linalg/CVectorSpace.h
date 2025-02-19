@@ -89,13 +89,12 @@ namespace DGtal
        @tparam T the type that should be a model of CVectorSpace.
     */
     template <typename T>
+    requires concepts::CEuclideanRing<typename T::Scalar>
     struct CVectorSpace : boost::Assignable<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:
       typedef typename T::Scalar Scalar;
-
-      BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Scalar> ));
 
       BOOST_CONCEPT_USAGE( CVectorSpace )
       {

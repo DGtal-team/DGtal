@@ -37,10 +37,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------------------------------------------------------------
-template <typename TP, typename TI>
+template <typename TP, DGtal::concepts::CEuclideanRing TInteger>
 inline
 void
-DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const Point& aP, const Point& aQ )
+DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::init( const Point& aP, const Point& aQ )
 {
   myMatrix.setComponent( 0, 0, static_cast<Integer>( aP[0] ) ); 
   myMatrix.setComponent( 0, 1, static_cast<Integer>( aP[1] ) ); 
@@ -51,19 +51,19 @@ DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const Point& aP, const Point& 
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TI>
+template <typename TP, DGtal::concepts::CEuclideanRing TInteger>
 inline
 void
-DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const PointArray& aA )
+DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::init( const PointArray& aA )
 {
   init( aA[0], aA[1] ); 
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TI>
+template <typename TP, DGtal::concepts::CEuclideanRing TInteger>
 inline
-typename DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::Value
-DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::operator()( const Point& aR ) const
+typename DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::Value
+DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::operator()( const Point& aR ) const
 {
   myMatrix.setComponent( 2, 0, static_cast<Integer>( aR[0] ) ); 
   myMatrix.setComponent( 2, 1, static_cast<Integer>( aR[1] ) ); 
@@ -72,19 +72,19 @@ DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::operator()( const Point& aR ) const
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TI>
+template <typename TP, DGtal::concepts::CEuclideanRing TInteger>
 inline
 void
-DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::selfDisplay ( std::ostream & out ) const
+DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << "[InHalfPlaneBySimple3x3Matrix]";
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TI>
+template <typename TP, DGtal::concepts::CEuclideanRing TInteger>
 inline
 bool
-DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::isValid() const
+DGtal::InHalfPlaneBySimple3x3Matrix<TP, TInteger>::isValid() const
 {
   return true;
 }
@@ -98,7 +98,7 @@ template <typename TP, typename TI>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const InHalfPlaneBySimple3x3Matrix<TP,TI> & object )
+		    const InHalfPlaneBySimple3x3Matrix<TP, TI> & object )
 {
   object.selfDisplay( out );
   return out;

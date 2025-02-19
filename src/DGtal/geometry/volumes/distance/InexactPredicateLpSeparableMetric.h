@@ -77,7 +77,7 @@ namespace DGtal
  * @tparam TValue value type of the distance computation (e.g. float
  * or double --defaut--). Model of CEuclideanRing.
  */
-  template <typename TSpace, typename TValue = double>
+  template <typename TSpace, concepts::CEuclideanRing TValue = double>
   class InexactPredicateLpSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
@@ -87,7 +87,6 @@ namespace DGtal
     typedef TSpace Space;
 
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TValue> ));
 
     ///Type for points
     typedef typename Space::Point Point;

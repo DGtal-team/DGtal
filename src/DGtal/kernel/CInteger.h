@@ -83,8 +83,8 @@ BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
  # Notes
 
    */
-  template <typename T>
-  struct CInteger: CEuclideanRing<T>, CIntegralNumber<T>
+  template <CEuclideanRing T>
+  struct CInteger: CIntegralNumber<T>
   {
     
 

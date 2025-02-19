@@ -37,9 +37,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer()
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::SimpleIncremental2x2DetComputer()
   : myA (NumberTraits<ResultInteger>::ZERO),  
     myB (NumberTraits<ResultInteger>::ZERO), 
     myAY (NumberTraits<ResultInteger>::ZERO),  
@@ -57,9 +57,9 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer()
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer(const DGtal::SimpleIncremental2x2DetComputer<TI,TO>& aOther)
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::SimpleIncremental2x2DetComputer(const DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>& aOther)
   : myA (aOther.myA),  
     myB (aOther.myB), 
     myAY (aOther.myAY),  
@@ -77,10 +77,10 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer(c
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>& 
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator=(const DGtal::SimpleIncremental2x2DetComputer<TI,TO>& aOther)
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>& 
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::operator=(const DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>& aOther)
 {
   if (this != &aOther)
     {
@@ -101,17 +101,17 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator=(const DGtal::SimpleIncr
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::~SimpleIncremental2x2DetComputer()
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::~SimpleIncremental2x2DetComputer()
 {
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
 void 
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
 {
   //memorize the first column vector
   myA = static_cast<ResultInteger>(aA); 
@@ -123,10 +123,10 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, c
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-typename DGtal::SimpleIncremental2x2DetComputer<TI,TO>::ResultInteger
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
+typename DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::ResultInteger
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
 {
   //compute the difference with the last second column vector
   myDX = aX - static_cast<ResultInteger>(myX); 
@@ -160,10 +160,10 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger&
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
-typename DGtal::SimpleIncremental2x2DetComputer<TI,TO>::ResultInteger
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+typename DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::ResultInteger
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
 							  const ArgumentInteger& aX, const ArgumentInteger& aY)
 {
   init(aA,aB); 
@@ -172,10 +172,10 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger&
 
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
 void
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::partialComputation() const
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::partialComputation() const
 {
   if (myDY != NumberTraits<ResultInteger>::ZERO)
     {
@@ -196,19 +196,19 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::partialComputation() const
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
 void
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::selfDisplay ( std::ostream & out ) const
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << "[SimpleIncremental2x2DetComputer]";
 }
 
 // ---------------------------------------------------------------------------
-template <typename TI, typename TO>
+template <typename TI, DGtal::concepts::CEuclideanRing TResultInteger>
 inline
 bool
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::isValid() const
+DGtal::SimpleIncremental2x2DetComputer<TI, TResultInteger>::isValid() const
 {
   return true;
 }

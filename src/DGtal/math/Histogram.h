@@ -140,12 +140,11 @@ namespace DGtal
     @tparam TBinner any model of CBinner that puts a quantity into a
     bin. Default is RegularBinner<TQuantity>.
    */
-  template < typename TQuantity,
+  template < concepts::CEuclideanRing TQuantity,
              typename TBinner = RegularBinner< TQuantity > >
   class Histogram
   {
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing< TQuantity > ));
     BOOST_CONCEPT_ASSERT(( concepts::CBinner< TBinner > ));
     BOOST_STATIC_ASSERT(( boost::is_same< TQuantity, typename TBinner::Quantity >::value ));
 

@@ -94,13 +94,13 @@ continuous random variable.
 @tparam T the type that should be a model of CBinner.
  */
 template <typename T>
+requires CEuclideanRing<typename T::Quantity >
 struct CBinner : boost::CopyConstructible<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
   typedef typename T::Quantity Quantity;
   typedef typename T::Bin Bin;
-  BOOST_CONCEPT_ASSERT(( CEuclideanRing< Quantity > ));
   BOOST_STATIC_ASSERT(( boost::is_integral<Bin>::value ));
   BOOST_STATIC_ASSERT(( boost::is_unsigned<Bin>::value ));
 

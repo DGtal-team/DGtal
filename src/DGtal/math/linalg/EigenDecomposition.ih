@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
+template  <DGtal::Dimension TN, DGtal::concepts::CEuclideanRing TComponent, typename TMatrix>
 void
 DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 tridiagonalize( Matrix& V, Vector& d, Vector& e )
@@ -187,7 +187,7 @@ tridiagonalize( Matrix& V, Vector& d, Vector& e )
 }
 
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
+template  <DGtal::Dimension TN, DGtal::concepts::CEuclideanRing TComponent, typename TMatrix>
 void
 DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 decomposeQL( Matrix& V, Vector& d, Vector e )
@@ -299,7 +299,7 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
     }
 }
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
+template  <DGtal::Dimension TN, DGtal::concepts::CEuclideanRing TComponent, typename TMatrix>
 void
 DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigenValues )

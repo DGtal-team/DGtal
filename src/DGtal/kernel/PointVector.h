@@ -591,7 +591,19 @@ namespace DGtal
       typename TContainer >
   class PointVector
   {
-
+    // The check is done with the macro as it modifies when the concept is checked. 
+    // When done with the macro, the concept is only checked at instantiation, so it allows 
+    // to build invalid types temporarily (for example in ArithmetricConversion) as long as 
+    // they are not used in the end.
+    
+    // This is important because, for example, PointVector is divided by unsigned integers, 
+    // which does not satisfy the EuclideanRing concept (they are unsigned). When this is a 
+    // requirement, the ArithmeticConversion paradigm cannot compile, it will try to build 
+    // PointVector<2, unsigned int> which is invalid. This becomes more of a problem with gmp, 
+    // which constructs non-default constructible types (expressions); thus not satisfying the 
+    // EuclindeanRing concept.
+    DGTAL_CONCEPT_CHECK(requires concepts::CEuclideanRing<TEuclideanRing>);
+    
     // Friend with all PointVectors
     template <
       DGtal::Dimension otherDim,
@@ -601,8 +613,6 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
-
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TEuclideanRing> ) );
 
     ///We cannot check the TContainer since boost::array is not a
     ///model of boost::RandomAccessContainer

@@ -83,21 +83,11 @@ DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal
    
 @tparam T the type that should be a model of commutative ring.
    */
-  template <concepts::CCommutativeRing T>
-  struct CEuclideanRing
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_USAGE( CEuclideanRing )
-    {
-      ConceptUtils::sameType( c, T( a/b ) );
-    }   
-    // ------------------------- Internals ------------------------------------
-  private:
-    T a,b,c;
-  
-  };
+  template <typename T>
+  concept CEuclideanRing =
+    concepts::CCommutativeRing<T> && requires(T a, T b) {
+      { T(a / b) } -> std::same_as<T>;
+    };
   }
 } // namespace DGtal
 

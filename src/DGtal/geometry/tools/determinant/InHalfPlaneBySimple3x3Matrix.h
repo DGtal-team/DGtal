@@ -87,7 +87,7 @@ namespace DGtal
    * @see SimpleMatrix
    * @see InHalfPlaneBy2x2DetComputer
    */
-  template <typename TPoint, typename TInteger>
+  template <typename TPoint, concepts::CEuclideanRing TInteger>
   class InHalfPlaneBySimple3x3Matrix
   {
     // ----------------------- Types  ------------------------------------
@@ -118,7 +118,6 @@ namespace DGtal
      * before being stored into the matrix. 
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Integer> )); 
 
     /**
      * Type of matrix
