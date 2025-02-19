@@ -49,8 +49,8 @@ using namespace DGtal;
 bool testInteger()
 {
   trace.beginBlock ( "Checking CInteger models ..." );
-  BOOST_CONCEPT_ASSERT(( concepts::CInteger<int> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::int16_t> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CInteger<int> );
+  DGTAL_CONCEPT_CHECK(requires concepts::CInteger<DGtal::int16_t> );
 
   trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
          << std::endl;

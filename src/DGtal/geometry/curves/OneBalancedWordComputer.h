@@ -87,14 +87,13 @@ namespace DGtal
    */
 
 
-  template <typename TConstIterator, typename TInteger>
+  template <typename TConstIterator, concepts::CInteger TInteger>
     class OneBalancedWordComputer  
   {
 
     // ----------------------- Types ------------------------------
     public :
       //Required type
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
       typedef TConstIterator ConstIterator;
       typedef TInteger Integer;
 

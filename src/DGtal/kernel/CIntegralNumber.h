@@ -97,22 +97,10 @@ BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
      CBoundedInteger.
     
    */
-  template <concepts::CQuantity T>
-  struct CIntegralNumber 
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    BOOST_CONCEPT_USAGE(CIntegralNumber)
-    {
-      // Will compile iff Integral.
-      ConceptUtils::checkTrue( myIsIntegral );
-    }
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    typename NumberTraits<T>::IsIntegral myIsIntegral;
-
-  }; // end of concept CIntegralNumber
+  template<typename T>
+  concept CIntegralNumber = 
+    concepts::CQuantity<T> && 
+    std::same_as<DGtal::TagTrue, typename NumberTraits<T>::IsIntegral>;
   }  
 } // namespace DGtal
 

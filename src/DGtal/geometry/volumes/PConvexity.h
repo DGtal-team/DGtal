@@ -62,10 +62,9 @@ namespace DGtal
     /// @tparam dim the dimension of the digital space
     /// @tparam TInteger any model of integer (used to represent digital point coordinates).
     template < Dimension dim,
-	       typename TInteger = DGtal::int32_t >
+	       concepts::CInteger TInteger = DGtal::int32_t >
     struct RecursivePConvexity {
       /// Integer must be a model of the concept CInteger.
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
       using Integer        = TInteger;
       using Point          = DGtal::PointVector< dim, Integer >;
       using ProjPoint      = DGtal::PointVector< dim-1, Integer >;
@@ -247,10 +246,9 @@ namespace DGtal
     ///
     /// @tparam dim the dimension of the digital space
     /// @tparam TInteger any model of integer (used to represent digital point coordinates).
-    template < typename TInteger >
+    template < concepts::CInteger TInteger >
     struct RecursivePConvexity< 1, TInteger> {
       /// Integer must be a model of the concept CInteger.
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
       using Integer     = TInteger;
       using Point       = PointVector< 1, Integer >;
 

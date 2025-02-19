@@ -39,14 +39,14 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 ~InputIteratorWithRankOnSequence()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 InputIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it )
@@ -54,7 +54,7 @@ InputIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 InputIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it )
@@ -62,7 +62,7 @@ InputIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 InputIteratorWithRankOnSequence
@@ -71,7 +71,7 @@ InputIteratorWithRankOnSequence
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 InputIteratorWithRankOnSequence( const Self & other )
@@ -79,7 +79,7 @@ InputIteratorWithRankOnSequence( const Self & other )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self &
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -93,7 +93,7 @@ operator= ( const Self & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Value
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -102,7 +102,7 @@ operator*() const
   return std::make_pair( *myIterator, (Rank) ( myIterator - mySequence->begin() ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Pointer 
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -112,7 +112,7 @@ operator->() const
   return &myTmpValue;
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self &
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -122,7 +122,7 @@ operator++()
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -133,7 +133,7 @@ operator++( int )
   return tmp;
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 bool
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -155,7 +155,7 @@ operator==( const Self & other ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 bool
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -171,7 +171,7 @@ operator!=( const Self & other ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 void
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
@@ -184,7 +184,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSequence, typename TRank>
+template <typename TSequence, DGtal::concepts::CInteger TRank>
 inline
 bool
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::

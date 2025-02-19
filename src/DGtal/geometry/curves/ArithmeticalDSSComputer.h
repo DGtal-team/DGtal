@@ -81,8 +81,9 @@ namespace DGtal
    * @see exampleArithmeticalDSS.cpp exampleArithmeticalDSSComputer.cpp
    */
   template <typename TIterator,
-    typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
+    concepts::CInteger TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
     unsigned short adjacency = 8>
+  requires concepts::CInteger<typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
   class ArithmeticalDSSComputer
   {
 
@@ -106,13 +107,11 @@ namespace DGtal
      * Type of coordinate
      */
     typedef typename IteratorCirculatorTraits<TIterator>::Value::Coordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
 
     /**
      * Type of integer, devoted to remainders (and intercepts)
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of objects that represents DSSs

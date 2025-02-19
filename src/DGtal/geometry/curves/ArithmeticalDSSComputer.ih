@@ -49,7 +49,8 @@
 // Implementation of inline methods                                          //
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputer()
@@ -59,7 +60,8 @@ ArithmeticalDSSComputer()
 
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputer(const ConstIterator& it)
@@ -69,7 +71,8 @@ ArithmeticalDSSComputer(const ConstIterator& it)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 void DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 init(const ConstIterator& it)
@@ -82,7 +85,8 @@ init(const ConstIterator& it)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputer ( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & other )
@@ -91,7 +95,8 @@ ArithmeticalDSSComputer ( const ArithmeticalDSSComputer<TIterator,TInteger,adjac
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>&
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
@@ -107,7 +112,8 @@ operator=( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Reverse
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>
@@ -117,7 +123,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Self
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>
@@ -127,7 +134,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
@@ -139,7 +147,8 @@ operator==( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency>& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
@@ -152,7 +161,8 @@ operator!=( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & other 
 //                       Update methods                                      //
 ///////////////////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableFront()
@@ -161,7 +171,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableFront(
 }
 
 //--------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableBack()
@@ -172,7 +183,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableBack()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendFront()
@@ -187,7 +199,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendFront()
 }
 
 //--------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendBack()
@@ -204,7 +217,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendBack()
 }
 
 //--------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractFront()
@@ -219,7 +233,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractFront()
 }
 
 //--------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractBack()
@@ -237,7 +252,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractBack()
 //                       Accessors                                           //
 ///////////////////////////////////////////////////////////////////////////////
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 const typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Primitive&
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::primitive() const
@@ -246,7 +262,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::primitive() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const Point & aPoint) const
@@ -255,7 +272,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const Po
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const ConstIterator & it) const
@@ -264,7 +282,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const Co
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const Point & aPoint) const
@@ -273,7 +292,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const Poi
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const ConstIterator & it) const
@@ -282,7 +302,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const Con
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSL(const Point & aPoint) const
@@ -291,7 +312,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSL(const Poin
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSL(const ConstIterator & it) const
@@ -300,7 +322,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSL(const Cons
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const Point & aPoint) const
@@ -309,7 +332,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const Poin
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const ConstIterator & it) const
@@ -318,7 +342,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const Cons
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::a() const
@@ -327,7 +352,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::a() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::b() const
@@ -336,7 +362,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::b() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::mu() const
@@ -345,7 +372,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::mu() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TInteger
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::omega() const
@@ -354,7 +382,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::omega() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Uf() const
@@ -363,7 +392,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Uf() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ul() const
@@ -372,7 +402,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ul() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Lf() const
@@ -381,7 +412,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Lf() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ll() const
@@ -390,7 +422,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ll() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::back() const
@@ -399,7 +432,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::back() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::front() const
@@ -408,7 +442,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::front() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TIterator
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::begin() const
@@ -417,7 +452,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::begin() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 TIterator
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::end() const
@@ -426,7 +462,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::end() const
 }
 
 //-----------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isValid() const
@@ -435,7 +472,8 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isValid() const
 }
 
 //-----------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
+requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
 inline
 void
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::selfDisplay ( std::ostream & out) const

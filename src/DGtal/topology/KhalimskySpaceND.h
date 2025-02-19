@@ -59,7 +59,7 @@ namespace DGtal
   // Pre-declaration
   template <
       Dimension dim,
-      typename TInteger = DGtal::int32_t
+      concepts::CInteger TInteger = DGtal::int32_t
   >
   class KhalimskySpaceND;
 
@@ -78,14 +78,9 @@ namespace DGtal
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    */
   template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
+             concepts::CInteger TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
-
-    /// Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
-
     // Aliases
   public:
     using Integer = TInteger;
@@ -204,12 +199,9 @@ namespace DGtal
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    */
   template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
+             concepts::CInteger TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
-    /// Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
     // Aliases
   public:
     using Integer = TInteger;
@@ -387,7 +379,7 @@ namespace DGtal
   */
   template <
       Dimension dim,
-      typename TInteger
+      concepts::CInteger TInteger
   >
   class KhalimskySpaceND
     : private KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >
@@ -395,9 +387,6 @@ namespace DGtal
 
     typedef KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > > Helper; ///< Features basic operations on coordinates, especially for periodic dimensions.
     friend class KhalimskySpaceNDHelper< KhalimskySpaceND< dim, TInteger > >;
-
-    /// Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     /// Arithmetic ring induced by (+,-,*) and Integer numbers.

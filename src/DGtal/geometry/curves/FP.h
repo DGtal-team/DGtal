@@ -288,15 +288,12 @@ namespace DGtal
    *
    * @see testFP.cpp
    */
-  template <typename TIterator, typename TInteger, int connectivity>
+  template <typename TIterator, concepts::CInteger TInteger, int connectivity>
   class FP
   {
 
     // ----------------------- Types ------------------------------
   public:
-
-
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     
     typedef DGtal::PointVector<2,TInteger> Point;
     typedef DGtal::PointVector<2,TInteger> Vector;

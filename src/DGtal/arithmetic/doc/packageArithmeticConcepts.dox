@@ -43,7 +43,7 @@ digraph GARITHMETIC {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CInteger [ label="CInteger" URL="\ref concepts::CInteger" ];
+                 CInteger [ label="CInteger" URL="\ref DGtal::concepts::CInteger" ];
                  CSignedNumber [ label="CSignedNumber" URL="\ref DGtal::concepts::CSignedNumber" ];
                  CUnsignedNumber [ label="CUnsignedNumber" URL="\ref concepts::CUnsignedNumber" ];
                  CSpace [ label="CSpace" URL="\ref concepts::CSpace" ];

@@ -39,12 +39,12 @@
 // Implementation of inline methods                                          //
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC()
 {}
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC(const Integer x0, const Integer y0)
 {
@@ -52,7 +52,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC(const Integer x0, const Integ
   y = y0;
 }
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC(const Integer p , const Integer q, const Integer r, const Integer slope)
 {
@@ -60,14 +60,14 @@ DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC(const Integer p , const Integ
   y = (r+p*x)/q;
 }
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::RayC::~RayC()
 {
 }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersectionVertical(Point &P, Vector &v, Integer n)
 {
@@ -86,7 +86,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point &P, Vector &v, Vector &aL, Integer r)
 {
@@ -106,7 +106,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point &P, Vector &v, Number s)
 {
@@ -143,7 +143,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point& A, Vector &l, Integer r, Vector *v)
 {
@@ -157,7 +157,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point& A, Vector 
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point &A, Number s, Vector *v)
 {
@@ -171,7 +171,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point &A, Number 
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector &l, Integer n, Point *inf, Point *sup)
 {
@@ -229,7 +229,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector &l, Integ
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector &l, Integer r, Integer n, Point *inf, Point *sup)
 {
@@ -323,7 +323,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector &l, Integer
       }
 }
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector &l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv)
 {
@@ -493,7 +493,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector &l
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer n, Point *inf, Point *sup)
 {
@@ -598,7 +598,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
 // Compute the term following f=p/q in the Farey Series of order n. We
 // have -q'p+p'q = 1, q' max such that q'<=n
 // Complexity of extendedEuclid
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Point DGtal::DSLSubsegment<TInteger,TNumber>::nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n)
 {
@@ -623,7 +623,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Point DGtal::DSLSubsegment<TInt
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n)
  {
@@ -632,15 +632,15 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
+requires DGtal::concepts::CInteger<TNumber>
 {
-  BOOST_CONCEPT_ASSERT((concepts::CInteger<TNumber>));
   return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q));
 }
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number alpha, Number beta)
 {
@@ -655,11 +655,11 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC &r, Number a, Number b, Number mu)
+requires DGtal::concepts::CInteger<TNumber>
 {
-  BOOST_CONCEPT_ASSERT((concepts::CInteger<TNumber>));
   Integer v = -a*r.x + r.y*b - mu;
 
 
@@ -674,7 +674,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
 }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC &r, Number alpha, Number beta)
 {
@@ -693,7 +693,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r)
  {
@@ -715,12 +715,11 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
  }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound)
+requires DGtal::concepts::CInteger<TNumber>
 {
-  BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
-
   RayC myRay;
   Position myPosition;
   Integer r = 0;
@@ -794,7 +793,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
  }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number alpha, Number beta, Integer n, bool *flagRayFound)
 {
@@ -871,12 +870,12 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu, Integer n)
+requires DGtal::concepts::CInteger<TNumber>
 {
   boost::ignore_unused_variable_warning( n );
-  BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
   
 
@@ -900,7 +899,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
  }
 
 // With a dichotomy
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta,  Integer n)
 {
@@ -963,7 +962,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::raySup(Integer fp, Integer fq, RayC r)
  {
@@ -981,7 +980,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
  }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP)  // resBetaQ = resAlphaQ
 {
@@ -1033,7 +1032,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found)  // resBetaQ = resAlphaQ
 {
@@ -1162,7 +1161,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 
 
 // Constructor in the case of integer input parameters
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type)
 {
@@ -1185,7 +1184,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point &A, Point &B)
 {
@@ -1268,7 +1267,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B,
                                                              Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
@@ -1344,7 +1343,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer 
 
 
 // Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B)
 {
@@ -1438,7 +1437,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
                                                       Point &A, Point &B, Number precision)
@@ -1518,7 +1517,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 
 //------------------------- Accessors --------------------------
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 TInteger
 DGtal::DSLSubsegment<TInteger,TNumber>::getA() const {
@@ -1526,7 +1525,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::getA() const {
 }
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 TInteger
 DGtal::DSLSubsegment<TInteger,TNumber>::getB() const {
@@ -1535,7 +1534,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::getB() const {
 
 
 
-template <typename TInteger, DGtal::concepts::CEuclideanRing TNumber>
+template <DGtal::concepts::CInteger TInteger, DGtal::concepts::CEuclideanRing TNumber>
 inline
 TInteger
 DGtal::DSLSubsegment<TInteger,TNumber>::getMu() const {

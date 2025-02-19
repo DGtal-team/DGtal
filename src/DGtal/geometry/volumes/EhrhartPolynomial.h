@@ -62,11 +62,10 @@ namespace DGtal
     @tparam TSpace an arbitrary model of CSpace, which tells in which space live bounded lattice polytopes.
     @tparam TInteger an arbitrary model of CInteger, which must be precise enough to compute the Ehrhart polynomial (either int64_t or BigInteger).
    */
-  template <typename TSpace, typename TInteger>
+  template <typename TSpace, concepts::CInteger TInteger>
   class EhrhartPolynomial
   {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger< TInteger > ));
 
     // ----------------------- public types -----------------------------------
   public:

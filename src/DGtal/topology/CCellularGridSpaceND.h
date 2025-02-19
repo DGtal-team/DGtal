@@ -159,6 +159,7 @@ details.
 @tparam T the type that should be a model of CCellularGridSpaceND.
  */
 template <typename T>
+requires CIntegralNumber<typename T::Size>
 struct CCellularGridSpaceND
   : CPreCellularGridSpaceND<T>
 {
@@ -167,7 +168,6 @@ public:
   typedef typename T::Size Size;
 
   BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Size > ));
-  BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
 
   BOOST_CONCEPT_USAGE( CCellularGridSpaceND )
   {

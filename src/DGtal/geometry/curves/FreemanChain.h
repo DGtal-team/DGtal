@@ -111,13 +111,11 @@ namespace DGtal
    * @see freemanChainDisplay.cpp  freemanChainFromImage.cpp  testFreemanChain.cpp
    */
 
-  template <typename TInteger>
+  template <concepts::CInteger TInteger>
   class FreemanChain
   {
 
   public :
-
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
     typedef FreemanChain<Integer> Self;
 

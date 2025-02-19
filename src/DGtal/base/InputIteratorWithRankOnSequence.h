@@ -75,13 +75,12 @@ namespace DGtal
      @tparam TSequence the type of sequence (a model of Sequence).
      @tparam TRank the type of the rank (a model of CInteger).
    */
-  template <typename TSequence, typename TRank = typename TSequence::difference_type>
+  template <typename TSequence, concepts::CInteger TRank = typename TSequence::difference_type>
   class InputIteratorWithRankOnSequence
   {
     // ----------------------- public types ------------------------------
   public:
     BOOST_CONCEPT_ASSERT(( boost::Sequence<TSequence> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TRank> ));
 
     typedef TSequence Sequence;
     typedef TRank Rank;

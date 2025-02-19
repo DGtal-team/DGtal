@@ -107,15 +107,13 @@ namespace DGtal
    */
   
   
-  template <typename TIterator,typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
+  template <typename TIterator,concepts::CInteger TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
     class FrechetShortcut
     {
       // ----------------------- Standard services ------------------------------
     public:
     
     //entier
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
     typedef TInteger Integer;
     
     

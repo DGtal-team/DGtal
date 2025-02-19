@@ -49,8 +49,8 @@ namespace DGtal
 {
 
   //forward declaration of ArithmeticalDSS
-  template <typename TCoordinate,
-	    typename TInteger,
+  template <concepts::CInteger TCoordinate,
+	    concepts::CInteger TInteger,
 	    unsigned short adjacency>
   class ArithmeticalDSS;
 

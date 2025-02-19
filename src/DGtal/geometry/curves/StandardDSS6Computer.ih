@@ -52,7 +52,7 @@
  * Default constructor.
  * not valid
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer()
 {
@@ -75,7 +75,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Comput
 /**
  * Constructor with initialisation
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer(const ConstIterator& it)
 {
@@ -99,7 +99,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Comput
  * Initialisation.
  * @param it an iterator on a sequence of points
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
@@ -127,7 +127,7 @@ void DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::init(const Co
  * @param other the object to clone.
  * Forbidden by default.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer (
 									      const StandardDSS6Computer<TIterator,TInteger,connectivity> & other ) :
@@ -142,7 +142,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Comput
  * @return a reference on 'this'.
  * Forbidden by default.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> &
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator= (
@@ -161,7 +161,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator= (
   return *this;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::Self
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getSelf() const {
@@ -169,14 +169,14 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getSelf() const {
 }
 
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::Reverse
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getReverse() const {
   return Reverse();
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const
@@ -189,7 +189,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Po
 }
 
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const
@@ -210,7 +210,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isInDSS ( const Co
  * (same DSS scanned in the conversed way)
  * and 'false' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator==(
@@ -229,7 +229,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator==(
  * @return 'false' if equal
  * 'true' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=(
@@ -250,7 +250,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=(
  * with the adding point if true.
  * @return 'true' if the union is a DSS, 'false' otherwise.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendFront()
@@ -276,7 +276,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendFront()
  *
  * @return 'true' if yes, 'false' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableFront()
@@ -296,14 +296,14 @@ DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableFront
 
 
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 TIterator
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::begin() const {
   return myBegin;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 TIterator
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::end() const {
@@ -319,7 +319,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::end() const {
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isValid() const
@@ -335,7 +335,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isValid() const
  * (direction, intercept, thickness)
  * of the DSS
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
@@ -413,7 +413,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY() const
@@ -421,7 +421,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dX
   return myXYalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ() const
@@ -429,7 +429,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dX
   return myXZalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ() const
@@ -437,7 +437,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dY
   return myYZalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
@@ -454,7 +454,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2d(
 /**
  * @return the style name used for drawing this object.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 std::string
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::className() const
@@ -469,7 +469,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::className() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void
 DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out) const

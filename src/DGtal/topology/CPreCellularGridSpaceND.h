@@ -283,8 +283,9 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
  */
 template <typename T>
 requires 
-  CConstSinglePassRange<typename T::Cells> &&
-  CConstSinglePassRange<typename T::SCells>
+  CConstSinglePassRange<typename T::Cells>  &&
+  CConstSinglePassRange<typename T::SCells> &&
+  CInteger<typename T::Integer>
 struct CPreCellularGridSpaceND
   : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
 {
@@ -310,7 +311,6 @@ public:
   typedef typename T::template SCellMap<Dummy>::Type SCellMap;
   typedef typename T::template SurfelMap<Dummy>::Type SurfelMap;
 
-  BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Integer, typename Space::Integer >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector, typename Space::Vector >::value ));

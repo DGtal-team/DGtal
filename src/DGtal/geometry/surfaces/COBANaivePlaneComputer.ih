@@ -39,14 +39,14 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 ~COBANaivePlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 COBANaivePlaneComputer()
@@ -54,7 +54,7 @@ COBANaivePlaneComputer()
 { // Object is invalid
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 COBANaivePlaneComputer( const COBANaivePlaneComputer & other )
@@ -68,7 +68,7 @@ COBANaivePlaneComputer( const COBANaivePlaneComputer & other )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger> &
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -87,7 +87,7 @@ operator=( const COBANaivePlaneComputer & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::MyIntegerComputer &
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -96,7 +96,7 @@ ic() const
   return myState.cip.ic();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -112,7 +112,7 @@ clear()
   computeCentroidAndNormal( myState );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -133,7 +133,7 @@ init( Dimension axis, InternalInteger diameter,
   clear();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::ConstIterator
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -142,7 +142,7 @@ begin() const
   return myPointSet.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::ConstIterator
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -152,7 +152,7 @@ end() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Size
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -161,7 +161,7 @@ size() const
   return myPointSet.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -170,7 +170,7 @@ empty() const
   return myPointSet.empty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Size
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -179,7 +179,7 @@ max_size() const
   return myPointSet.max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Size
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -188,7 +188,7 @@ maxSize() const
   return max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Size
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -197,7 +197,7 @@ complexity() const
   return myState.cip.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -207,7 +207,7 @@ operator()( const Point & p ) const
   return ( _v >= myState.min ) && ( _v <= myState.max );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -220,7 +220,7 @@ extendAsIs( const Point & p )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 extend( const Point & p )
@@ -316,7 +316,7 @@ extend( const Point & p )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 isExtendable( const Point & p ) const
@@ -381,7 +381,7 @@ isExtendable( const Point & p ) const
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename TInputIterator>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -483,7 +483,7 @@ extend( TInputIterator it, TInputIterator itE )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename TInputIterator>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -560,7 +560,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Primitive
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -578,7 +578,7 @@ primitive() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename Vector3D>
 inline
 void
@@ -605,7 +605,7 @@ getNormal( Vector3D & normal ) const
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::IntegerVector3 & 
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -615,7 +615,7 @@ exactNormal() const
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename Vector3D>
 inline
 void
@@ -631,7 +631,7 @@ getUnitNormal( Vector3D & normal ) const
   normal[ 2 ] /= l;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -645,7 +645,7 @@ getBounds( double & min, double & max ) const
   max = NumberTraits<InternalInteger>::castToDouble( myState.max ) / l;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Point &
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -655,7 +655,7 @@ minimalPoint() const
   return myState.ptMin;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Point &
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -674,7 +674,7 @@ maximalPoint() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
@@ -697,7 +697,7 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostr
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::isValid() const
@@ -710,7 +710,7 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::isValid() const
 // Internals
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -739,7 +739,7 @@ computeCentroidAndNormal( State & state ) const
 
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -757,7 +757,7 @@ doubleCut( InternalPoint2 & grad, State & state ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename TInputIterator>
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -787,7 +787,7 @@ computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 template <typename TInputIterator>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
@@ -817,7 +817,7 @@ updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
   return changed;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 checkPlaneWidth( const State & state ) const
@@ -827,7 +827,7 @@ checkPlaneWidth( const State & state ) const
            < ( _v * myWidth[ 0 ] / myWidth[ 1 ] ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, DGtal::concepts::CInteger TInternalInteger>
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 computeGradient( InternalPoint2 & grad, const State & state ) const

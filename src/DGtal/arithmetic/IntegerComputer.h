@@ -79,6 +79,8 @@ It is a backport of \e ImaGene.
    
    */
   template <typename TInteger>
+  requires concepts::CIntegralNumber<typename NumberTraits<TInteger>::UnsignedVersion> &&
+           concepts::CInteger<typename NumberTraits<TInteger>::SignedVersion>
   class IntegerComputer
   {
     // ----------------------- Associated types ------------------------------
@@ -95,9 +97,7 @@ It is a backport of \e ImaGene.
     typedef typename SpaceND<3,Integer>::Point Point3I;
     typedef typename SpaceND<3,Integer>::Vector Vector3I;
 
-    BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
     BOOST_CONCEPT_ASSERT((concepts::CUnsignedNumber<UnsignedInteger>));
-    BOOST_CONCEPT_ASSERT((concepts::CIntegralNumber<UnsignedInteger>));
 
     // ----------------------- Standard services ------------------------------
   public:

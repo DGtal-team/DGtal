@@ -83,7 +83,7 @@ namespace DGtal
    *
    */
   template <typename TSpace, DGtal::uint32_t p,
-            typename TRawValue=DGtal::int64_t>
+            concepts::CInteger TRawValue=DGtal::int64_t>
   class ExactPredicateLpSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
@@ -101,7 +101,6 @@ namespace DGtal
 
     ///Type for internal distance values
     typedef TRawValue RawValue;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<RawValue> ));
 
     ///Type for distance values
     typedef double Value;

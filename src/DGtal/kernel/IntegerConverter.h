@@ -112,9 +112,8 @@ namespace DGtal
   ///
   /// @tparam TInteger an integral type, a model of concepts::CInteger
   template < DGtal::Dimension dim,
-             typename TInteger >
+             concepts::CInteger TInteger >
   struct IntegerConverter {
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
     typedef TInteger Integer;
 
     /// @param i any integer

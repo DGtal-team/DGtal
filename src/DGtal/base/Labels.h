@@ -68,11 +68,11 @@ namespace DGtal
      @see bitset
    */
   template <unsigned int L, typename TWord = DGtal::uint8_t>
+  requires concepts::CIntegralNumber<TWord>
   class Labels
   {
     BOOST_STATIC_ASSERT(( L >= 1 ));
     BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<TWord> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CIntegralNumber<TWord> ));
 
   public:
     typedef TWord Word;

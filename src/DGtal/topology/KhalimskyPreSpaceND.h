@@ -55,7 +55,7 @@ namespace DGtal
   // Pre-declaration
   template <
       Dimension dim,
-      typename TInteger = DGtal::int32_t
+      concepts::CInteger TInteger = DGtal::int32_t
   >
   class KhalimskyPreSpaceND;
 
@@ -67,13 +67,9 @@ namespace DGtal
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    */
   template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
+             concepts::CInteger TInteger = DGtal::int32_t >
   struct KhalimskyPreCell
   {
-
-    /// Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
     // Aliases
   public:
     using Integer = TInteger;
@@ -165,13 +161,9 @@ namespace DGtal
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    */
   template < Dimension dim,
-             typename TInteger = DGtal::int32_t >
+             concepts::CInteger TInteger = DGtal::int32_t >
   struct SignedKhalimskyPreCell
   {
-
-    // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
     // Aliases
   public:
     using Integer = TInteger;
@@ -373,13 +365,10 @@ namespace DGtal
    */
   template <
     Dimension dim,
-    typename TInteger
+    concepts::CInteger TInteger
   >
   class KhalimskyPreSpaceND
   {
-    /// Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
   public:
     /// Arithmetic ring induced by (+,-,*) and Integer numbers.
     using Integer = TInteger;

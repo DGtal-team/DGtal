@@ -159,14 +159,10 @@ namespace DGtal
      @see \ref moduleQuickHull
   */
   template < int dim,
-             typename TInteger = DGtal::int32_t,
-             typename TInternalInteger = DGtal::int64_t >
+             concepts::CInteger TInteger = DGtal::int32_t,
+             concepts::CInteger TInternalInteger = DGtal::int64_t >
   struct ConvexityHelper {
     BOOST_STATIC_ASSERT( dim > 1 );
-    // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
-    // Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
     
     static const Dimension dimension = dim;
 

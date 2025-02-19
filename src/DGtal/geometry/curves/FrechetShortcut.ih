@@ -44,7 +44,7 @@
 
 //creation of a backPath
 // Default constructor
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath()
 {
@@ -54,20 +54,20 @@ DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath()
 
 
 //creation of a backPath
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const FrechetShortcut<TIterator,TInteger> *s,int q): myS(s),myQuad(q),myFlag(false)  
 {
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const Backpath & other): myS(other.myS),myQuad(other.myQuad),myFlag(other.myFlag),myOcculters(other.myOcculters),myForbiddenIntervals(other.myForbiddenIntervals)  
 {
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Backpath& DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::operator=(const Backpath & other)
 {
@@ -80,7 +80,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Backpath& DGtal::FrechetSho
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::reset()
 {
@@ -91,12 +91,12 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::reset()
 
 
 //destruction of a backPath
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::~Backpath()              
 { }      
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::updateBackPathFirstQuad(int d, const ConstIterator& it)
 {  
@@ -125,7 +125,7 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::updateBackPathFirstQ
 }
 
 // update the list of active occulters 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 {
@@ -260,7 +260,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 
 
 // update the set of intervals
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,  TInteger>::Backpath::updateIntervals()
 {
@@ -312,7 +312,7 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::Backpath::updateIntervals()
 
 
 // update the length of the longest backpath on a curve part
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addPositivePoint()
 {
@@ -329,7 +329,7 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addPositivePoint()
 /************************************************************/
 
  
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addNegativePoint()
 {
@@ -365,7 +365,7 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addNegativePoint()
 
 //creation of a cone
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone()
 {
@@ -376,7 +376,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone()
 
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double angle0, double angle1)
 {
@@ -423,7 +423,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double angle0, double ang
   myInf = false;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double x, double y, double x0, double y0, double x1, double y1)
 {
@@ -436,7 +436,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double x, double y, doubl
   myInf = false;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::Cone::isEmpty() const
 {
@@ -450,7 +450,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::Cone::isEmpty() const
       return false;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone& DGtal::FrechetShortcut<TIterator,TInteger>::Cone::operator=(const Cone& c)
 {
@@ -461,7 +461,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone& DGtal::FrechetShortcu
 }
 
 // // Computes the symmetrical cone
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut<TIterator,TInteger>::Cone::symmetricalCone()
 {
@@ -470,7 +470,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
 }
 
 // Computes the intersection between the self Cone and another one.
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::intersectCones(Cone c)
 {
@@ -491,7 +491,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::intersectCones(Cone c)
 
 
 //intersection of the self cone with another cone: considers only one half of the cone
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut<TIterator,TInteger>::Cone::intersectConesSimple(Cone c)
 {
@@ -531,7 +531,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
   return res;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostream & out) const
 {
@@ -551,7 +551,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostrea
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
 {
@@ -568,7 +568,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
 {
@@ -587,7 +587,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
 
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
 {
@@ -598,7 +598,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>  DGtal::FrechetShortcut<TIterator,TInteger>::getSelf()
 {
@@ -607,7 +607,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>  DGtal::FrechetShortcut<TIterator,TIn
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myError(other.myError), myBackpath(other.myBackpath),    myCone(other.myCone), myBegin(other.myBegin), myEnd(other.myEnd){    
   resetBackpath();
@@ -615,7 +615,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortc
   
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TInteger>::operator=(const FrechetShortcut<TIterator,TInteger> & other)
 {
@@ -631,7 +631,7 @@ DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TI
   return *this;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 DGtal::FrechetShortcut<boost::reverse_iterator<TIterator>,TInteger>
 DGtal::FrechetShortcut<TIterator,TInteger>
@@ -640,7 +640,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>
   return Reverse(myError);
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::operator==(
@@ -650,7 +650,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::operator==(
 
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::operator!=(
@@ -659,7 +659,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::operator!=(
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::extendFront()
@@ -673,7 +673,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::extendFront()
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableFront()
@@ -683,7 +683,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableFront()
   
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone 
 DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
@@ -730,7 +730,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
 
 // Test if the new direction belongs to the new cone, but does not
 // modify myCone
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
 {
@@ -754,7 +754,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateBackpath()
 {
@@ -780,7 +780,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateBackpath()
 
 
 // Same as testUpdateWidth() but myCone is modified.
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::updateWidth()
 {
@@ -809,7 +809,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::updateWidth()
   return flag;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::updateBackpath()
 {
@@ -826,7 +826,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::updateBackpath()
   
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
 {
@@ -863,7 +863,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::resetBackpath()
 {
@@ -873,7 +873,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::resetBackpath()
     }
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::resetCone()
 {
@@ -883,14 +883,14 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::resetCone()
 }
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 TIterator
 DGtal::FrechetShortcut<TIterator,TInteger>::begin() const {
   return myBegin;
 }
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 TIterator
 DGtal::FrechetShortcut<TIterator,TInteger>::end() const {
@@ -900,7 +900,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::end() const {
 
 
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 std::string
 DGtal::FrechetShortcut<TIterator,TInteger>::className() const
@@ -915,7 +915,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::className() const
  * @param out the output stream where the object is written.
  */
 
-template <typename TIterator, typename TInteger>
+template <typename TIterator, DGtal::concepts::CInteger TInteger>
 inline
 void
 DGtal::FrechetShortcut<TIterator,TInteger>::selfDisplay ( std::ostream & out) const

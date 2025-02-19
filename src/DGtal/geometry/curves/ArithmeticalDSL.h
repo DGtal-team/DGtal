@@ -59,8 +59,8 @@ namespace DGtal
 {
 
   //forward declaration of ArithmeticalDSS for the friendship
-  template <typename TCoordinate,
-	    typename TInteger,
+  template <concepts::CInteger TCoordinate,
+	    concepts::CInteger TInteger,
 	    unsigned short adjacency>
   class ArithmeticalDSS;
 
@@ -100,8 +100,8 @@ namespace DGtal
    * @see ArithmeticalDSL NaiveDSL StandardDSL
    * @see exampleArithmeticalDSL.cpp
    */
-  template <typename TCoordinate,
-	    typename TInteger = TCoordinate,
+  template <concepts::CInteger TCoordinate,
+	    concepts::CInteger TInteger = TCoordinate,
 	    unsigned short adjacency = 8>
   class ArithmeticalDSL
   {
@@ -125,12 +125,10 @@ namespace DGtal
      * and the slope parameters.
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> ));
     /**
      * Type used for the intercepts and the remainders.
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
     /**
      * Type of digital plane.
      */
@@ -827,11 +825,13 @@ namespace DGtal
      * @tparam TInput type of the input value
      * @tparam TOutput type of the return value
      */
-    template <concepts::CSignedNumber TInput, concepts::CSignedNumber TOutput >
+    template <typename TInput, typename TOutput >
+    requires concepts::CSignedNumber<TInput> && 
+             concepts::CInteger<TInput> &&
+             concepts::CSignedNumber<TOutput> && 
+             concepts::CInteger<TOutput>
     struct toCoordinateImpl
     {
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInput> ));
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
       /**
        * cast operator
        * @return the conversion of @a aInput into an object of type TOutput.
@@ -844,11 +844,11 @@ namespace DGtal
     };
 #ifdef WITH_BIGINTEGER
     //specialized versions for DGtal::BigInteger
-    template <concepts::CSignedNumber TOutput>
+    template <typename TOutput>
+    requires concepts::CSignedNumber<TOutput> && 
+             concepts::CInteger<TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
     {
-      BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
-
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)
       {

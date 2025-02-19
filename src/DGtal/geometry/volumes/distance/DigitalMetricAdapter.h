@@ -67,7 +67,7 @@ namespace DGtal
    * value type. By default, it corresponds to the Integer type of the
    * digital space in which the TMetric is defined.
    */
-  template <typename TMetric, typename TInteger = typename TMetric::Space::Integer>
+  template <typename TMetric, concepts::CInteger TInteger = typename TMetric::Space::Integer>
   class DigitalMetricAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -79,8 +79,6 @@ namespace DGtal
 
     ///Values are integer numbers
     typedef TInteger Value;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Value> ));
-
     // ----------------------- CDigitalMetric------------------------------------
     ///Point type
     typedef typename Metric::Point Point;

@@ -108,11 +108,9 @@ namespace DGtal
          *
          * @tparam Integer the integer type, model of concepts::CInteger.
          */
-      template < typename Integer = int, typename Index = std::size_t >
+      	template < concepts::CInteger Integer = int, typename Index = std::size_t >
         class PointOnProbingRay
         {
-            BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
-
             // ----------------------- Public types ------------------------------
             public:
                 using Permutation = std::array<Index, 3>;
@@ -234,11 +232,9 @@ namespace DGtal
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
        */
-      template < typename Integer = int, typename Index = std::size_t >
+      template < concepts::CInteger Integer = int, typename Index = std::size_t >
       class GridPoint
       {
-	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
-	
       public:
 	
 	/**
@@ -419,11 +415,9 @@ namespace DGtal
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
        */
-      template < typename Integer = int, typename Index = std::size_t >
+      template < concepts::CInteger Integer = int, typename Index = std::size_t >
       class GridPointOnProbingRay
       {
-	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
-
       public: 
 	/**
 	 * Default constructor.

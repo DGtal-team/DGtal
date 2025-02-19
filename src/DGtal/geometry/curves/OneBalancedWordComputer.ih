@@ -41,14 +41,14 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::OneBalancedWordComputer()
 { }
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::~OneBalancedWordComputer()
 { }
@@ -57,7 +57,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::~OneBalancedWordCompute
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void 
 DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::init( 
@@ -90,7 +90,7 @@ DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::init(
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const ConstPointIterator & i)
 {
@@ -100,7 +100,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const ConstPo
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const FreemanChainCode & fc)
 {
@@ -110,7 +110,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const Freeman
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
 {
@@ -120,7 +120,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const typenam
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::OneBalancedWordComputer ( const Self & other ) :
   myCodeHandler       ( other.myCodeHandler ),
@@ -141,7 +141,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::OneBalancedWordComputer
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger> & 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator= ( const Self & other )
@@ -165,7 +165,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator= ( const Self 
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Self 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSelf( ) const
@@ -174,7 +174,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSelf( ) const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator==( const Self & other ) const
 {
@@ -183,7 +183,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator==( const 
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator!=( const Self & other ) const
 {
@@ -192,7 +192,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator!=( const 
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Reverse
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getReverse() const
@@ -203,7 +203,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getReverse() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendFront()
 {
@@ -270,7 +270,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendFront()
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBack()
 {
@@ -362,7 +362,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBack()
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBack()
 {
@@ -447,7 +447,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBack()
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractFront()
 {
@@ -527,7 +527,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractFront()
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableFront()
 {
@@ -555,7 +555,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableFront(
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBack()
 {
@@ -581,7 +581,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBack()
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::setPosition( 
    const typename DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Point & p )
@@ -593,7 +593,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::setPosition(
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::translate( 
    const typename DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Vector & v )
@@ -604,7 +604,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::translate(
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isValid() const
 {
@@ -624,7 +624,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isValid() const
 // Interface - public :
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void
 DGtal::OneBalancedWordComputer<TConstIterator, TInteger >::selfDisplay ( std::ostream & out ) const
@@ -655,7 +655,7 @@ DGtal::OneBalancedWordComputer<TConstIterator, TInteger >::selfDisplay ( std::os
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSmallLetter() const
@@ -665,7 +665,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSmallLetter() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getBigLetter() const
@@ -676,7 +676,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getBigLetter() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)  
@@ -685,7 +685,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)  const
@@ -696,7 +696,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)  con
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternLength() const
@@ -704,7 +704,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternLength() con
   return myPatternEnd - myPatternBegin + 1;
 }
 
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Vector
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternVector() const
@@ -725,7 +725,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternVector() con
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::suffixLength() const
@@ -735,7 +735,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::suffixLength() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::prefixLength() const
@@ -744,7 +744,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::prefixLength() const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isUL ( Index pos ) const
 {
@@ -754,7 +754,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isUL ( Index pos )
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::nextIsLL ( Index pos ) const
 {
@@ -762,7 +762,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::nextIsLL ( Index p
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::previousIsLL ( Index pos ) const
 {
@@ -771,7 +771,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::previousIsLL ( Ind
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isTrivial() const
 {
@@ -781,7 +781,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isTrivial() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstIterator 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::begin() const
@@ -790,7 +790,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::begin() const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstIterator 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::end() const
@@ -800,7 +800,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::end() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstPointIterator 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointBegin() const
@@ -810,7 +810,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointBegin() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstPointIterator 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointEnd() const
@@ -823,7 +823,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointEnd() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
@@ -832,7 +832,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
@@ -842,7 +842,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
   
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
@@ -852,7 +852,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getOmega() const
@@ -862,7 +862,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getOmega() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::DSL
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDescription() const
@@ -894,7 +894,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDescript
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoints( 
               Point & uf, Point & ul, 
@@ -927,7 +927,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoin
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Uf() const
@@ -938,7 +938,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Uf() const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ul() const
@@ -949,7 +949,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ul() const
 }
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Lf() const
@@ -961,7 +961,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Lf() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ll() const
@@ -973,7 +973,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ll() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Vector 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::displacement( Code c ) const
@@ -983,7 +983,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::displacement( Code c ) 
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::remainder(const Point & aPoint) const
@@ -996,7 +996,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::remainder(const Point &
 // ----------------------- Accessors --------------------------------------
 
 
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::back() const
@@ -1006,7 +1006,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::back() const
 
 
 // ------------------------------------------------------------------------
-template < typename TConstIterator, typename TInteger >
+template < typename TConstIterator, DGtal::concepts::CInteger TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::front() const

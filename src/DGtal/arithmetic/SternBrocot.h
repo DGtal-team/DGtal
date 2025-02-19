@@ -73,16 +73,14 @@ namespace DGtal
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
   */
-  template <typename TInteger, typename TQuotient = int32_t>
+  template <concepts::CInteger TInteger, typename TQuotient = int32_t>
   class SternBrocot
   {
   public:
     typedef TInteger Integer;
     typedef TQuotient Quotient;
     typedef SternBrocot<Integer,Quotient> Self;
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
-
+   
   public:
 
     /**

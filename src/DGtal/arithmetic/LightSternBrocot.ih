@@ -38,7 +38,7 @@
 // DEFINITION of static data members
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>*
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
 
@@ -52,7 +52,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
 ///////////////////////////////////////////////////////////////////////////////
 // DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Node
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Node::
 Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
@@ -67,7 +67,7 @@ Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
 ///////////////////////////////////////////////////////////////////////////////
 // DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 Fraction( Integer aP, Integer aQ, Fraction )
@@ -103,7 +103,7 @@ Fraction( Integer aP, Integer aQ, Fraction )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 Fraction( Node* sb_node, bool sup1 )
@@ -111,7 +111,7 @@ Fraction( Node* sb_node, bool sup1 )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 Fraction( const Self & other )
@@ -119,7 +119,7 @@ Fraction( const Self & other )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction &
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -133,7 +133,7 @@ operator=( const Self & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -142,7 +142,7 @@ null() const
   return myNode == 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Integer
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -151,7 +151,7 @@ p() const
   return myNode ? ( mySup1 ? myNode->q : myNode->p ) : 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Integer
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -160,7 +160,7 @@ q() const
   return myNode ? ( mySup1 ? myNode->p : myNode->q ) : 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Quotient
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -170,7 +170,7 @@ u() const
   return myNode->u;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Quotient
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -208,7 +208,7 @@ k() const
   return myNode->k;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -217,7 +217,7 @@ equals( Integer p1, Integer q1 ) const
   return ( this->p() == p1 ) && ( this->q() == q1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -227,7 +227,7 @@ lessThan( Integer p1, Integer q1 ) const
   return d < NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -237,7 +237,7 @@ moreThan( Integer p1, Integer q1 ) const
   return d > NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -250,7 +250,7 @@ operator==( const Fraction & other ) const
              && ( myNode->q == other.myNode->p ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -259,7 +259,7 @@ operator!=( const Fraction & other ) const
   return ! this->operator==( other );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -268,7 +268,7 @@ operator<( const Fraction & other ) const
   return this->lessThan( other.p(), other.q() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -279,7 +279,7 @@ operator>( const Fraction & other ) const
 //-----------------------------------------------------------------------------
 /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
 /// is the current fraction. Construct it if it does not exist yet.
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -329,7 +329,7 @@ next( Quotient v ) const
 //-----------------------------------------------------------------------------
 /// @return the fraction [u_0, ..., u_n -1, 1, v] if [u_0, ..., u_n]
 /// is the current fraction. Construct it if it does not exist yet.
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -362,7 +362,7 @@ next1( Quotient v ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -375,7 +375,7 @@ left() const
     return next1( NumberTraits<Quotient>::ONE );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -388,7 +388,7 @@ right() const
     return next1( NumberTraits<Quotient>::ONE );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -397,7 +397,7 @@ even() const
   return NumberTraits<Quotient>::even( k() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -406,7 +406,7 @@ odd() const
   return NumberTraits<Quotient>::odd( k() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -415,7 +415,7 @@ ancestor() const
   return Fraction( myNode->ascendant, mySup1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -424,7 +424,7 @@ isAncestorDirect() const
   return myNode->k == myNode->ascendant->k + NumberTraits<Quotient>::ONE;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -436,7 +436,7 @@ father() const
     return ancestor().next1( u() - NumberTraits<Quotient>::ONE );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -455,7 +455,7 @@ father( Quotient m ) const
   //     : ancestor();
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -464,7 +464,7 @@ previousPartial() const
   return ancestor();
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -473,7 +473,7 @@ inverse() const
   return Fraction( myNode, ! mySup1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -483,7 +483,7 @@ partial( Quotient kp ) const
   return reduced( myNode->k - kp );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -500,7 +500,7 @@ reduced( Quotient i ) const
   return f;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -509,7 +509,7 @@ push_back( const std::pair<Quotient, Quotient> & quotient )
   pushBack( quotient );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -519,7 +519,7 @@ pushBack( const std::pair<Quotient, Quotient> & ) //quotient )
           && "UNIMPLEMENTED. Use SternBrocot::Fraction or LighterSternBrocot::Fraction instead." );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -537,7 +537,7 @@ getSplit( Fraction & f1, Fraction & f2 ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -561,7 +561,7 @@ getSplitBerstel( Fraction & f1, Quotient & nb1,
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -582,7 +582,7 @@ getCFrac( std::vector<Quotient> & quotients ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::ConstIterator
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -593,7 +593,7 @@ begin() const
   return ConstIterator( seq, seq->begin() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::ConstIterator
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -603,7 +603,7 @@ end() const
   return ConstIterator( 0, dummy.end() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction::
@@ -634,7 +634,7 @@ selfDisplay( std::ostream & out ) const
 // DGtal::LightSternBrocot<TInteger, TQuotient, TMap>
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::~LightSternBrocot()
 {
@@ -643,7 +643,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::~LightSternBrocot()
   if ( myOneOverOne != 0 ) delete myOneOverOne;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::LightSternBrocot()
 {
@@ -692,7 +692,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::LightSternBrocot()
   nbFractions = 3;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap> &
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::instance()
@@ -703,7 +703,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::instance()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::zeroOverOne()
@@ -711,7 +711,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::zeroOverOne()
   return Fraction( instance().myZeroOverOne, false );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::oneOverZero()
@@ -726,7 +726,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::oneOverZero()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::display( std::ostream & out,
@@ -758,7 +758,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::display( std::ostream & out,
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 bool
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::isValid() const
@@ -769,7 +769,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // class LightSternBrocot
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TInteger, typename TQuotient, typename TMap>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 inline
 typename DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
@@ -811,7 +811,7 @@ DGtal::LightSternBrocot<TInteger, TQuotient, TMap>::fraction
 // Implementation of inline functions                                        //
 
 // JOL: invalid overloading
-// template <typename TInteger, typename TQuotient, typename TMap>
+// template <DGtal::concepts::CInteger TInteger, typename TQuotient, typename TMap>
 // inline
 // std::ostream&
 // DGtal::operator<< ( std::ostream & out,

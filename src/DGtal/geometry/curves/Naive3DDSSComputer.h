@@ -93,11 +93,9 @@ namespace DGtal
  * @see exampleNaive3DDSSComputer.cpp
  */
 
-template <typename TIterator, typename TInteger, int connectivity = 8>
+template <typename TIterator, concepts::CInteger TInteger, int connectivity = 8>
 class Naive3DDSSComputer
-{
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-    // ----------------------- Types ------------------------------
+{    // ----------------------- Types ------------------------------
   public:
      /// Type of integer, devoted to remainders (and intercepts)
     typedef TInteger Integer;

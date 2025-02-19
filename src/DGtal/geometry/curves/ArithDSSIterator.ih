@@ -39,7 +39,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 DGtal::ArithDSSIterator<TInteger,c>::ArithDSSIterator(const Integer a, const Integer b, const Integer mu, const Point & p)
 {
@@ -49,7 +49,7 @@ DGtal::ArithDSSIterator<TInteger,c>::ArithDSSIterator(const Integer a, const Int
   myP = p;
 }
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 DGtal::ArithDSSIterator<TInteger,c>::ArithDSSIterator(const ArithDSSIterator<TInteger,c> &other):myA(other.myA),myB(other.myB),myMu(other.myMu),myP(other.myP)
 {
@@ -58,7 +58,7 @@ DGtal::ArithDSSIterator<TInteger,c>::ArithDSSIterator(const ArithDSSIterator<TIn
 
 
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TInteger,c>::operator=(const ArithDSSIterator<TInteger,c> & other)
 {
@@ -76,14 +76,14 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
 
 
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 TInteger DGtal::ArithDSSIterator<TInteger,c>::remainder(const Point &Q)
 {
   return myA*Q[0] - myB*Q[1];
 }
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 typename DGtal::ArithDSSIterator<TInteger,c>::reference DGtal::ArithDSSIterator<TInteger,c>::operator*() const
 {
@@ -91,7 +91,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::reference DGtal::ArithDSSIterator<
 }
 
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TInteger,c>::operator++()
 {
@@ -112,7 +112,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
   return *this;
 }
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 typename DGtal::ArithDSSIterator<TInteger,c>::Self DGtal::ArithDSSIterator<TInteger,c>::operator++(int)
 {
@@ -122,7 +122,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self DGtal::ArithDSSIterator<TInte
 }
 
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 bool DGtal::ArithDSSIterator<TInteger,c>::operator==(const ArithDSSIterator<TInteger,c> & other) const
 {
@@ -130,7 +130,7 @@ bool DGtal::ArithDSSIterator<TInteger,c>::operator==(const ArithDSSIterator<TInt
 }
 
 
-template<typename TInteger, int c>
+template<DGtal::concepts::CInteger TInteger, int c>
 inline
 bool DGtal::ArithDSSIterator<TInteger,c>::operator!=(const ArithDSSIterator<TInteger, c> & other) const
 {

@@ -83,7 +83,7 @@ namespace DGtal
    *
    */
   template <typename TSpace, DGtal::uint32_t p,
-            typename TPromoted=DGtal::int64_t>
+            concepts::CInteger TPromoted=DGtal::int64_t>
   class ExactPredicateLpPowerSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
@@ -106,7 +106,6 @@ namespace DGtal
 
     ///Type for internal distance values
     typedef TPromoted Weight;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Promoted> ));
 
     ///Type for Value (alias)
     typedef TPromoted Value;

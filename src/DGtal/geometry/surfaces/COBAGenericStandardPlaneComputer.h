@@ -124,12 +124,11 @@ namespace DGtal
    * iterator (notably in \ref begin and \ref end method).
    */
   template < typename TSpace,
-             typename TInternalInteger >
+             concepts::CInteger TInternalInteger >
   class COBAGenericStandardPlaneComputer
   {
 
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger< TInternalInteger > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------

@@ -69,7 +69,7 @@ digraph GKERNEL {
       CInteger [label="CInteger" URL="@ref concepts::CInteger"];
       CUnsignedNumber [label="CUnsignedNumber" URL="@ref concepts::CUnsignedNumber"];
       CSignedNumber [label="CSignedNumber" URL="@ref DGtal::concepts::CSignedNumber"];
-      CIntegralNumber [label="CIntegralNumber" URL="@ref concepts::CIntegralNumber"];
+      CIntegralNumber [label="CIntegralNumber" URL="@ref DGtal::concepts::CIntegralNumber"];
       CBoundedNumber [label="CBoundedNumber" URL="@ref concepts::CBoundedNumber"];
       CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
       CCommutativeRing [label="CCommutativeRing" URL="@ref DGtal::concepts::CCommutativeRing"];

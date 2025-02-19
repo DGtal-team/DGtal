@@ -75,7 +75,7 @@ namespace DGtal
    *   ...
    *  @endcode
    */
-  template <typename TInteger>
+  template <concepts::CInteger TInteger>
   class ModuloComputer
   {
   public:    
@@ -84,8 +84,6 @@ namespace DGtal
 
     typedef typename NumberTraits<TInteger>::UnsignedVersion UnsignedInteger;
     typedef typename NumberTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
-
-    BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
     
     /**
      * Initializes the modulo computer with the value [m].

@@ -76,9 +76,8 @@ namespace DGtal
        * @param b denominator
        * @return Euclidean division @a a / @a b
        */
-      static TNumber compute(const TNumber& a, const TNumber& b)
+      static TNumber compute(const TNumber& a, const TNumber& b) requires concepts::CInteger<TNumber>
       {
-	BOOST_CONCEPT_ASSERT(( concepts::CInteger<TNumber> )); 
 	return a / b; 
       }
     }; 

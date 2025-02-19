@@ -119,102 +119,102 @@ DGtal::detail::isBasisReduced (Point const& aU, Point const& aV)
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer,Index>::
-PointOnProbingRay (Permutation const& aSigma, Integer const& aPosition)
+DGtal::detail::PointOnProbingRay<TInteger,Index>::
+PointOnProbingRay (Permutation const& aSigma, TInteger const& aPosition)
     : mySigma(aSigma), myPosition(aPosition)
 {
 }
 
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer,Index>
-DGtal::detail::PointOnProbingRay<Integer,Index>::getBase () const
+DGtal::detail::PointOnProbingRay<TInteger,Index>
+DGtal::detail::PointOnProbingRay<TInteger,Index>::getBase () const
 {
     return PointOnProbingRay(mySigma, 0);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-typename DGtal::detail::PointOnProbingRay<Integer,Index>::Permutation const&
-DGtal::detail::PointOnProbingRay<Integer,Index>::sigma () const
+typename DGtal::detail::PointOnProbingRay<TInteger,Index>::Permutation const&
+DGtal::detail::PointOnProbingRay<TInteger,Index>::sigma () const
 {
     return mySigma;
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
 Index
-DGtal::detail::PointOnProbingRay<Integer,Index>::sigma (Index const& aIndex) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>::sigma (Index const& aIndex) const
 {
     assert(aIndex >= 0 && aIndex <= 2);
     return mySigma[aIndex];
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-Integer const&
-DGtal::detail::PointOnProbingRay<Integer,Index>::position () const
+TInteger const&
+DGtal::detail::PointOnProbingRay<TInteger,Index>::position () const
 {
     return myPosition;
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 template < typename Point >
 inline
 Point
-DGtal::detail::PointOnProbingRay<Integer,Index>::relativePoint (std::array<Point, 3> const& aM) const {
+DGtal::detail::PointOnProbingRay<TInteger,Index>::relativePoint (std::array<Point, 3> const& aM) const {
   return -aM[mySigma[0]] + aM[mySigma[1]] + aM[mySigma[2]] * myPosition;
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
 bool
-DGtal::detail::PointOnProbingRay<Integer,Index>::operator== (PointOnProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>::operator== (PointOnProbingRay const& aRay) const
 {
     return (mySigma == aRay.mySigma) && (myPosition == aRay.position());
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
 bool
-DGtal::detail::PointOnProbingRay<Integer,Index>::operator!= (PointOnProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>::operator!= (PointOnProbingRay const& aRay) const
 {
     return !(*this == aRay);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
 bool
-DGtal::detail::PointOnProbingRay<Integer,Index>::operator<= (PointOnProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>::operator<= (PointOnProbingRay const& aRay) const
 {
     return (mySigma == aRay.mySigma) && (myPosition <= aRay.position());
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer,Index>
-DGtal::detail::PointOnProbingRay<Integer,Index>::next (Integer const& aInc) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>
+DGtal::detail::PointOnProbingRay<TInteger,Index>::next (TInteger const& aInc) const
 {
     return PointOnProbingRay(mySigma, myPosition + aInc);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer, typename Index >
+template < DGtal::concepts::CInteger TInteger, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer,Index>
-DGtal::detail::PointOnProbingRay<Integer,Index>::previous (Integer const& aDec) const
+DGtal::detail::PointOnProbingRay<TInteger,Index>
+DGtal::detail::PointOnProbingRay<TInteger,Index>::previous (TInteger const& aDec) const
 {
     return PointOnProbingRay(mySigma, myPosition - aDec);
 }

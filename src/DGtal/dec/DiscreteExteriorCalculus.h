@@ -66,7 +66,7 @@
 namespace DGtal
 {
   // forward factory declaration
-  template <typename TLinearAlgebraBackend, typename TInteger>
+  template <typename TLinearAlgebraBackend, concepts::CInteger TInteger>
   class DiscreteExteriorCalculusFactory;
 
   /**
@@ -93,7 +93,7 @@ namespace DGtal
    * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
    * @tparam TInteger integer type forwarded to khalimsky space.
    */
-  template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
+  template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, concepts::CInteger TInteger = DGtal::int32_t>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
@@ -109,8 +109,6 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
 
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));

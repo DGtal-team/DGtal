@@ -159,7 +159,9 @@ except the last one. In this sense, a fraction is a sequence
 */
 template <typename T> 
 requires CBackInsertable<T> && 
-         CConstSinglePassRange<T>
+         CConstSinglePassRange<T> && 
+         CInteger<typename T::Integer> && 
+         CInteger<typename T::Quotient>
 struct CPositiveIrreducibleFraction 
   : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>
 
@@ -173,8 +175,6 @@ public:
   typedef typename T::ConstIterator ConstIterator;
   typedef typename T::const_iterator const_iterator;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CInteger< Quotient > ));
   BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
   BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, Value >::value ));
 

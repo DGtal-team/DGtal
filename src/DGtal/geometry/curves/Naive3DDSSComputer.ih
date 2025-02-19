@@ -37,7 +37,7 @@
  * Default constructor.
  * not valid
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer()
 {
@@ -58,7 +58,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer()
 /**
  * Constructor with initialisation
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer(const ConstIterator& it)
 {
@@ -81,7 +81,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer(c
  * Initialisation.
  * @param it an iterator on a sequence of points
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::init ( const ConstIterator& it )
 {
@@ -104,7 +104,7 @@ void DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::init ( const Co
  * @param other the object to clone.
  * Forbidden by default.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer (
                                           const Naive3DDSSComputer<TIterator,TInteger,connectivity> & other ) :
@@ -123,7 +123,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer (
  * @return a reference on 'this'.
  * Forbidden by default.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity> &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator= (
@@ -143,7 +143,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator= (
   return *this;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Self
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getSelf() const 
@@ -151,7 +151,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getSelf() const
   return Self();
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Reverse
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getReverse() const 
@@ -159,7 +159,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getReverse() const
   return Reverse();
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const 
@@ -171,7 +171,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Poin
   return test >= 2 ? true : false;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const 
@@ -191,7 +191,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Cons
  * (same DSS scanned in the conversed way)
  * and 'false' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator==(
@@ -210,7 +210,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator==(
  * @return 'false' if equal
  * 'true' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator!=(
@@ -228,7 +228,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator!=(
  * with the added point if true.
  * @return 'true' if the union is a DSS, 'false' otherwise.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront()
@@ -247,7 +247,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront()
     return test == 1;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & blocked )
@@ -272,7 +272,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront ( Arithm
  *
  * @return 'true' if yes, 'false' otherwise
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator, TInteger,connectivity>::isExtendableFront()
@@ -284,14 +284,14 @@ DGtal::Naive3DDSSComputer<TIterator, TInteger,connectivity>::isExtendableFront()
     return test >= 2;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 TIterator
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::begin() const {
   return myBegin;
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 TIterator
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::end() const {
@@ -304,7 +304,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::end() const {
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isValid() const
@@ -319,7 +319,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isValid() const
  * (direction, intercept, thickness)
  * of the DSS
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
@@ -419,7 +419,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY() const
@@ -427,7 +427,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY(
   return myXYalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ() const
@@ -435,7 +435,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ(
   return myXZalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ() const
@@ -443,7 +443,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ(
   return myYZalgo;
 }
 //-----------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 const typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
@@ -456,7 +456,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::arithmeticalDSS2d( D
   }
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS2d( Dimension i ) const
@@ -477,7 +477,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS
 /**
  * @return the style name used for drawing this object.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 std::string
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::className() const
@@ -496,7 +496,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::className() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, DGtal::concepts::CInteger TInteger, int connectivity>
 inline
 void
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)

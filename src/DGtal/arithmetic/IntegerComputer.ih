@@ -40,21 +40,29 @@
 
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 DGtal::IntegerComputer<TInteger>::~IntegerComputer()
 {}
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 DGtal::IntegerComputer<TInteger>::IntegerComputer()
 {}
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & /*other*/ )
 {}
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 DGtal::IntegerComputer<TInteger> &
 DGtal::IntegerComputer<TInteger>::operator=( const Self & /*other*/ )
@@ -65,60 +73,74 @@ DGtal::IntegerComputer<TInteger>::operator=( const Self & /*other*/ )
 // ----------------------- Integer services ------------------------------
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isZero( IntegerParamType a )
 {
-  return a == NumberTraits<Integer>::ZERO;
+  return a == DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isNotZero( IntegerParamType a )
 {
-  return a != NumberTraits<Integer>::ZERO;
+  return a != DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isPositive( IntegerParamType a )
 {
-  return a > NumberTraits<Integer>::ZERO;
+  return a > DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isNegative( IntegerParamType a )
 {
-  return a < NumberTraits<Integer>::ZERO;
+  return a < DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isPositiveOrZero( IntegerParamType a )
 {
-  return a >= NumberTraits<Integer>::ZERO;
+  return a >= DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::
 isNegativeOrZero( IntegerParamType a )
 {
-  return a <= NumberTraits<Integer>::ZERO;
+  return a <= DGtal::NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -131,6 +153,8 @@ abs( IntegerParamType a )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -140,6 +164,8 @@ max( IntegerParamType a, IntegerParamType b )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -149,6 +175,8 @@ max( IntegerParamType a, IntegerParamType b, IntegerParamType c )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -158,6 +186,8 @@ min( IntegerParamType a, IntegerParamType b )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -167,6 +197,8 @@ min( IntegerParamType a, IntegerParamType b, IntegerParamType c )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -178,6 +210,8 @@ getEuclideanDiv( Integer & q, Integer & r,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -203,10 +237,12 @@ floorDiv( IntegerParamType na, IntegerParamType nb ) const
   if ( isPositive( _m_a ) || isZero( _m_a % _m_b ) )
     return _m_a/_m_b;
   else
-    return _m_a/_m_b - NumberTraits<Integer>::ONE;
+    return _m_a/_m_b - DGtal::NumberTraits<Integer>::ONE;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -232,10 +268,12 @@ ceilDiv( IntegerParamType na, IntegerParamType nb ) const
   if ( isNegative( _m_a ) || isZero( _m_a % _m_b ) )
     return _m_a/_m_b;
   else
-    return _m_a/_m_b + NumberTraits<Integer>::ONE;
+    return _m_a/_m_b + DGtal::NumberTraits<Integer>::ONE;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -258,6 +296,8 @@ getFloorCeilDiv( Integer & fl, Integer & ce,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -278,6 +318,8 @@ staticGcd( IntegerParamType a, IntegerParamType b )
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -297,6 +339,8 @@ gcd( IntegerParamType a, IntegerParamType b ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -317,6 +361,8 @@ getGcd( Integer & g, IntegerParamType a, IntegerParamType b ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -337,6 +383,8 @@ getCFrac( std::vector<Integer> & quotients,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 template <typename OutputIterator>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
@@ -359,6 +407,8 @@ getCFrac( OutputIterator outIt,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Point2I
 DGtal::IntegerComputer<TInteger>::
@@ -366,11 +416,11 @@ convergent( const std::vector<Integer> & quotients,
             unsigned int k ) const
 {
   _m_bezout[ 0 ].clear(); // p
-  _m_bezout[ 0 ].push_back( NumberTraits<Integer>::ZERO );
-  _m_bezout[ 0 ].push_back( NumberTraits<Integer>::ONE );
+  _m_bezout[ 0 ].push_back( DGtal::NumberTraits<Integer>::ZERO );
+  _m_bezout[ 0 ].push_back( DGtal::NumberTraits<Integer>::ONE );
   _m_bezout[ 1 ].clear(); // q
-  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ONE );
-  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
+  _m_bezout[ 1 ].push_back( DGtal::NumberTraits<Integer>::ONE );
+  _m_bezout[ 1 ].push_back( DGtal::NumberTraits<Integer>::ZERO );
   if ( k >= quotients.size() ) 
     k = (quotients.size() - 1);
   for ( unsigned int i = 0; i <= k; ++i )
@@ -388,17 +438,21 @@ convergent( const std::vector<Integer> & quotients,
 // ----------------------- Point2I services ------------------------------
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
 reduce( Vector2I & p ) const
 {
   _m_a = gcd( p[ 0 ], p[ 1 ] );
-  if ( ( _m_a != NumberTraits<Integer>::ONE ) && ( isNotZero( _m_a ) ) )
+  if ( ( _m_a != DGtal::NumberTraits<Integer>::ONE ) && ( isNotZero( _m_a ) ) )
     p /= _m_a;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -410,6 +464,8 @@ crossProduct( const Vector2I & u, const Vector2I & v) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -421,6 +477,8 @@ getCrossProduct( Integer & cp,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -432,6 +490,8 @@ dotProduct( const Vector2I & u, const Vector2I & v ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -443,24 +503,26 @@ getDotProduct( Integer & dp,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 typename DGtal::IntegerComputer<TInteger>::Vector2I
 DGtal::IntegerComputer<TInteger>::
 extendedEuclid( IntegerParamType a, IntegerParamType b, 
                 IntegerParamType c ) const
 {
-  if( isZero( a ) )  return Point2I( NumberTraits<Integer>::ZERO, b * c );
-  if( isZero( b ) )  return Point2I( a * c, NumberTraits<Integer>::ZERO );
+  if( isZero( a ) )  return Point2I( DGtal::NumberTraits<Integer>::ZERO, b * c );
+  if( isZero( b ) )  return Point2I( a * c, DGtal::NumberTraits<Integer>::ZERO );
 
   for ( unsigned int i = 0; i < 4; ++i )
     _m_bezout[ i ].clear();
 
   _m_bezout[ 0 ].push_back( abs( a ) );
   _m_bezout[ 0 ].push_back( abs( b ) );
-  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
-  _m_bezout[ 2 ].push_back( NumberTraits<Integer>::ONE );
-  _m_bezout[ 2 ].push_back( NumberTraits<Integer>::ZERO );
-  _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ZERO );
-  _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ONE );
+  _m_bezout[ 1 ].push_back( DGtal::NumberTraits<Integer>::ZERO );
+  _m_bezout[ 2 ].push_back( DGtal::NumberTraits<Integer>::ONE );
+  _m_bezout[ 2 ].push_back( DGtal::NumberTraits<Integer>::ZERO );
+  _m_bezout[ 3 ].push_back( DGtal::NumberTraits<Integer>::ZERO );
+  _m_bezout[ 3 ].push_back( DGtal::NumberTraits<Integer>::ONE );
   
   unsigned int k = 0; // index of the iteration during the computation.
   while( isNotZero( _m_bezout[ 0 ][ k+1 ] ) )
@@ -501,6 +563,8 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -519,6 +583,8 @@ getCoefficientIntersection( Integer & fl, Integer & ce,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -530,7 +596,7 @@ getValidBezout ( Vector2I & v,
 {
   if ( compute_v )
     {
-      v = extendedEuclid( -u[ 1 ], u[ 0 ], NumberTraits<Integer>::ONE );
+      v = extendedEuclid( -u[ 1 ], u[ 0 ], DGtal::NumberTraits<Integer>::ONE );
       _m_v0 = A + v;
       getDotProduct( _m_c0, _m_v0, N );
       if ( _m_c0 > c )
@@ -550,6 +616,8 @@ getValidBezout ( Vector2I & v,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -561,6 +629,8 @@ reduce( Vector3I & p ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
@@ -573,6 +643,8 @@ dotProduct( const Vector3I & u, const Vector3I & v) const
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
@@ -593,6 +665,8 @@ getDotProduct( Integer & dp,
  * @param out the output stream where the object is written.
  */
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 void
 DGtal::IntegerComputer<TInteger>::selfDisplay ( std::ostream & out ) const
@@ -605,6 +679,8 @@ DGtal::IntegerComputer<TInteger>::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename TInteger>
+requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+         DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
 inline
 bool
 DGtal::IntegerComputer<TInteger>::isValid() const

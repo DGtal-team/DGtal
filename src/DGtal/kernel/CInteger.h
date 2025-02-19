@@ -83,12 +83,8 @@ BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
  # Notes
 
    */
-  template <CEuclideanRing T>
-  struct CInteger: CIntegralNumber<T>
-  {
-    
-
-  }; // end of concept CInteger
+  template <typename T>
+  concept CInteger = CEuclideanRing<T> && CIntegralNumber<T>;
   }  
 } // namespace DGtal
 

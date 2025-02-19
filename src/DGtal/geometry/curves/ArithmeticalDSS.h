@@ -89,8 +89,8 @@ namespace DGtal
    * @see ArithmeticalDSL NaiveDSL StandardDSL 
    * @see exampleArithmeticalDSL.cpp exampleArithmeticalDSS.cpp
    */
-  template <typename TCoordinate, 
-	    typename TInteger = TCoordinate, 
+  template <concepts::CInteger TCoordinate, 
+	    concepts::CInteger TInteger = TCoordinate, 
 	    unsigned short adjacency = 8>
   class ArithmeticalDSS
   {
@@ -111,12 +111,10 @@ namespace DGtal
      * and the slope parameters. 
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> )); 
     /**
      * Type used for the intercepts and the remainders. 
      */
     typedef TInteger Integer; 
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of the bounding DSL. 

@@ -117,12 +117,11 @@ namespace DGtal
    * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
   template < typename TSpace, 
-             typename TInternalInteger >
+             concepts::CInteger TInternalInteger >
   class COBAGenericNaivePlaneComputer
   {
 
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger< TInternalInteger > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------

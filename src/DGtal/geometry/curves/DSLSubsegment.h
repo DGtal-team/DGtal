@@ -71,7 +71,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  template <typename TInteger, concepts::CEuclideanRing TNumber>
+  template <concepts::CInteger TInteger, concepts::CEuclideanRing TNumber>
     class DSLSubsegment
   {
       // ----------------------- Standard services ------------------------------
@@ -130,13 +130,6 @@ namespace DGtal
        * 2D real vector
        */
       typedef DGtal::PointVector<2,Number> VectorF;
-
-      /**
-       * Check that Number type verifies the Euclidean Rign concept and
-       * Integer type verifies the Integer concept
-       */
-      BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
-
   protected:
       /**
        * The minimal characteristics of the subsegment AB of the
@@ -461,7 +454,7 @@ namespace DGtal
        * @return the ceil of the slope of the line passing through
        * the two points
        */
-      Integer slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
+      Integer slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu) requires DGtal::concepts::CInteger<TNumber>;
 
       /**
        * Compute the ceil of the slope of the line through (f=p/q,r/q)
@@ -488,7 +481,8 @@ namespace DGtal
        * @param mu numerator of x-coordinate
        * @return Position equal to BELOW, ABOVE or ONTO
        */
-      Position positionWrtRay(RayC &r, Number a, Number b, Number mu);
+      Position positionWrtRay(RayC &r, Number a, Number b, Number mu)
+        requires DGtal::concepts::CInteger<TNumber>;
 
 
       /**
@@ -549,7 +543,8 @@ namespace DGtal
        * @return an integer
        */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq,
-                                  Number a, Number b, Number mu, Integer n, bool *flagRayFound);
+                                  Number a, Number b, Number mu, Integer n, bool *flagRayFound)
+      requires DGtal::concepts::CInteger<TNumber>;
 
       /**
        * Performs a dichotomy among the rays of smallest slope passing
@@ -603,7 +598,8 @@ namespace DGtal
        * @return a ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
-                       Integer r, Number a, Number b, Number mu, Integer n);
+                       Integer r, Number a, Number b, Number mu, Integer n)
+        requires DGtal::concepts::CInteger<TNumber>;
       
       
       /**

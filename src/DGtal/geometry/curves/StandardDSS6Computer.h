@@ -72,11 +72,9 @@ namespace DGtal
    * Dynamic recognition of a 3d-digital straight segment (DSS)
 
    */
-  template <typename TIterator, typename TInteger, int connectivity>
+  template <typename TIterator, concepts::CInteger TInteger, int connectivity>
   class StandardDSS6Computer
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-
     // ----------------------- Types ------------------------------
   public:
      /// Type of integer, devoted to remainders (and intercepts)

@@ -38,7 +38,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aPoint)
@@ -57,7 +57,7 @@ myF(aPoint), myL(aPoint),
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
@@ -74,7 +74,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const DSL& aDSL, 
@@ -89,7 +89,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
@@ -105,7 +105,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
@@ -121,7 +121,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL)
@@ -132,7 +132,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS, 
@@ -144,7 +144,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -168,7 +168,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther)
@@ -179,7 +179,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>&
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -199,7 +199,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -213,7 +213,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -229,7 +229,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -239,7 +239,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -249,14 +249,14 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::~ArithmeticalDSS()
 {
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isValid() const
@@ -265,7 +265,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isValid() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 const typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::DSL&
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::dsl() const
@@ -274,7 +274,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::dsl() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Coordinate
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::a() const
@@ -283,7 +283,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::a() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Coordinate
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::b() const
@@ -292,7 +292,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::b() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::mu() const
@@ -301,7 +301,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::mu() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::omega() const
@@ -310,7 +310,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::omega() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Vector
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::shift() const
@@ -319,7 +319,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::shift() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Steps
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::steps() const
@@ -328,7 +328,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::steps() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::back() const
@@ -337,7 +337,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::back() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::front() const
@@ -346,7 +346,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::front() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Uf() const
@@ -355,7 +355,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Uf() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ul() const
@@ -364,7 +364,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ul() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Lf() const
@@ -373,7 +373,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Lf() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ll() const
@@ -382,7 +382,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ll() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::remainder(const Point& aPoint) const
@@ -391,7 +391,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::remainder(const Point&
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::orthogonalPosition(const Point& aPoint) const
@@ -400,7 +400,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::orthogonalPosition(con
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Position
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::position(const Point& aPoint) const
@@ -409,7 +409,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::position(const Point& 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::before(const Point& aP1, const Point& aP2) const
@@ -418,7 +418,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::before(const Point& aP
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::beforeOrEqual(const Point& aP1, const Point& aP2) const
@@ -427,7 +427,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::beforeOrEqual(const Po
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSL(const Point& aPoint) const
@@ -436,7 +436,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSL(const Point& a
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSS(const Point& aPoint) const
@@ -460,7 +460,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSS(const Point& a
 
 
 //----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL) const
@@ -495,7 +495,7 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL)
 
 
 //----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL, std::vector<Point> &Ulp, std::vector<Point> &Llp, Point &outP) const
@@ -541,7 +541,7 @@ DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::isInDSL(const DSL& aDSL,
 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -820,7 +820,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::operator()(const Point& aPoint) const
@@ -829,7 +829,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::operator()(const Point
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstIterator
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::begin() const
@@ -838,7 +838,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::begin() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstIterator
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::end() const
@@ -849,7 +849,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::end() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstReverseIterator
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rbegin() const
@@ -858,7 +858,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rbegin() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstReverseIterator
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rend() const
@@ -867,7 +867,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rend() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 void
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::selfDisplay ( std::ostream & out ) const
@@ -880,7 +880,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::selfDisplay ( std::ost
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 unsigned short int
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -966,7 +966,7 @@ isExtendableFront( const Point& aNewPoint ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 unsigned short int
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -976,7 +976,7 @@ isExtendableBack( const Point& aNewPoint ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1067,7 +1067,7 @@ extendFront( const Point& aNewPoint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1084,7 +1084,7 @@ extendBack( const Point& aNewPoint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1101,7 +1101,7 @@ retractFront()
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1158,7 +1158,7 @@ retractBack()
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1195,7 +1195,7 @@ retractUpdateLeaningPoints( const Vector& aDirection,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 void
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1220,7 +1220,7 @@ retractUpdateParameters( const Vector& aNewDirection )
 //                     Drawing services                                      //
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::PointD
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1242,7 +1242,7 @@ project( const Point& aM, double aR ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::PointD
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
@@ -1253,7 +1253,7 @@ project( const Point& aM, const Point& aP ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+template <DGtal::concepts::CInteger TCoordinate, DGtal::concepts::CInteger TInteger, unsigned short adjacency>
 inline
 std::string
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::

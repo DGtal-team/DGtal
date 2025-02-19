@@ -173,11 +173,9 @@ namespace DGtal
      TCoordinateInteger.
   */
   template < Dimension dim,
-             typename TCoordinateInteger  = DGtal::int64_t,
-             typename TInternalInteger = DGtal::int64_t >
+             concepts::CInteger TCoordinateInteger  = DGtal::int64_t,
+             concepts::CInteger TInternalInteger = DGtal::int64_t >
   struct ConvexHullCommonKernel {
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TCoordinateInteger> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
     typedef TCoordinateInteger         CoordinateInteger;
     typedef TInternalInteger           InternalInteger;
     //typedef CoordinateInteger          Scalar;

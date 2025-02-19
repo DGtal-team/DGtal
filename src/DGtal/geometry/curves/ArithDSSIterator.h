@@ -59,7 +59,7 @@ namespace DGtal
  * connectivity of the DSS (8-connectivity as default value).
  */
 
-  template<typename TInteger, int connectivity = 8>
+  template<concepts::CInteger TInteger, int connectivity = 8>
     class ArithDSSIterator
     {
       // ----------------------- Standard services ------------------------------
@@ -74,8 +74,6 @@ namespace DGtal
      * Integer type.
      */
     typedef TInteger Integer;
-
-    BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
 
     /**
      * 2D integer point type.

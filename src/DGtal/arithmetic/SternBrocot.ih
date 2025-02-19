@@ -38,7 +38,7 @@
 // DEFINITION of static data members
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 DGtal::SternBrocot<TInteger, TQuotient>*
 DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
 
@@ -52,7 +52,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
 ///////////////////////////////////////////////////////////////////////////////
 // DGtal::SternBrocot<TInteger, TQuotient>::Node 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::Node::
 Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
@@ -72,7 +72,7 @@ Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
 //////////////////////////////////////////////////////////////////////////////
 // DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 Fraction( Integer aP, Integer aQ, Fraction ancestor )
@@ -80,7 +80,7 @@ Fraction( Integer aP, Integer aQ, Fraction ancestor )
   this->operator=( SternBrocotTree::fraction( aP, aQ, ancestor ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 Fraction( Node* sb_node )
@@ -88,7 +88,7 @@ Fraction( Node* sb_node )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 Fraction( const Self & other )
@@ -96,7 +96,7 @@ Fraction( const Self & other )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction &
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -109,7 +109,7 @@ operator=( const Self & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool 
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -118,7 +118,7 @@ null() const
   return myNode == 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Integer
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -127,7 +127,7 @@ p() const
   return myNode ? myNode->p : 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Integer
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -136,7 +136,7 @@ q() const
   return myNode ? myNode->q : 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Quotient
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -146,7 +146,7 @@ u() const
   return myNode->u;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Quotient
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -156,7 +156,7 @@ k() const
   return myNode->k;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -165,7 +165,7 @@ equals( Integer p1, Integer q1 ) const
   return ( this->p() == p1 ) && ( this->q() == q1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -175,7 +175,7 @@ lessThan( Integer p1, Integer q1 ) const
   return d < NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -185,7 +185,7 @@ moreThan( Integer p1, Integer q1 ) const
   return d > NumberTraits<Integer>::ZERO;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -194,7 +194,7 @@ operator==( const Fraction & other ) const
   return myNode == other.myNode;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -203,7 +203,7 @@ operator!=( const Fraction & other ) const
   return myNode != other.myNode;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -212,7 +212,7 @@ operator<( const Fraction & other ) const
   return this->lessThan( other.p(), other.q() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -221,7 +221,7 @@ operator>( const Fraction & other ) const
   return this->moreThan( other.p(), other.q() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -252,7 +252,7 @@ left() const
   return Fraction( myNode->descendantLeft );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -267,7 +267,7 @@ right() const
   return Fraction( myNode->descendantRight );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -276,7 +276,7 @@ even() const
   return ( k() & 1 ) == 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -285,7 +285,7 @@ odd() const
   return ( k() & 1 ) != 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -294,7 +294,7 @@ father() const
   return Fraction( odd() ? myNode->ascendantRight : myNode->ascendantLeft );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -315,7 +315,7 @@ father( Quotient m ) const
     return reduced( 2 ); //previousPartial().previousPartial();
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -327,7 +327,7 @@ previousPartial() const
   // 		     : myNode->ascendantRight->descendantLeft );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -336,7 +336,7 @@ inverse() const
   return Fraction( myNode->inverse );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -346,7 +346,7 @@ partial( Quotient kp ) const
   return reduced( k() - kp );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -365,7 +365,7 @@ reduced( Quotient i ) const
   return Fraction( n );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -374,7 +374,7 @@ push_back( const std::pair<Quotient, Quotient> & quotient )
   pushBack( quotient );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -428,7 +428,7 @@ pushBack( const std::pair<Quotient, Quotient> & quotient )
   // std::cerr << "]" << std::endl;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -438,7 +438,7 @@ getSplit( Fraction & f1, Fraction & f2 ) const
   f2.myNode = myNode->ascendantRight;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -461,7 +461,7 @@ getSplitBerstel( Fraction & f1, Quotient & nb1,
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -484,7 +484,7 @@ getCFrac( std::vector<Quotient> & quotients ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction::ConstIterator
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -495,7 +495,7 @@ begin() const
   return ConstIterator( seq, seq->begin() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction::ConstIterator
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -505,7 +505,7 @@ end() const
   return ConstIterator( 0, dummy.end() );
 }
 
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -515,7 +515,7 @@ median(const Fraction & g) const
 }
 
 //----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -637,7 +637,7 @@ simplestFractionInBetween(const Fraction & other) const
 
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
@@ -668,7 +668,7 @@ selfDisplay( std::ostream & out ) const
 // DGtal::SternBrocot<TInteger, TQuotient>
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::~SternBrocot()
 {
@@ -677,7 +677,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::~SternBrocot()
   if ( myZeroOverOne != 0 ) delete myZeroOverOne;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::SternBrocot()
 {
@@ -708,7 +708,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::SternBrocot()
   nbFractions = 3;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient> &
 DGtal::SternBrocot<TInteger, TQuotient>::instance()
@@ -720,7 +720,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::instance()
 
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::zeroOverOne()
@@ -728,7 +728,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::zeroOverOne()
   return Fraction( instance().myZeroOverOne );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::oneOverZero()
@@ -743,7 +743,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::oneOverZero()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::display( std::ostream & out, 
@@ -774,7 +774,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::display( std::ostream & out,
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 bool
 DGtal::SternBrocot<TInteger, TQuotient>::isValid() const
@@ -785,7 +785,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // class SternBrocot
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TInteger, typename TQuotient>
+template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 inline
 typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::fraction
@@ -819,7 +819,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::fraction
 // Implementation of inline functions                                        //
 
 // JOL: invalid overloading
-// template <typename TInteger, typename TQuotient>
+// template <DGtal::concepts::CInteger TInteger, typename TQuotient>
 // inline
 // std::ostream&
 // DGtal::operator<< ( std::ostream & out, 

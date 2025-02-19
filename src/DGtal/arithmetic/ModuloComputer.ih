@@ -43,9 +43,9 @@
  * Initializes the modulo computer with the value [m].
  * @param m any non-zero integer.
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
-DGtal::ModuloComputer<T>::ModuloComputer( UnsignedIntegerParamType  m )
+DGtal::ModuloComputer<TInteger>::ModuloComputer( UnsignedIntegerParamType  m )
   : k( m )
 {
 }
@@ -59,10 +59,10 @@ DGtal::ModuloComputer<T>::ModuloComputer( UnsignedIntegerParamType  m )
  * Increment the value [i] modulo.
  * @param i any value between 0 and [k] (excluded).
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
 void 
-DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
+DGtal::ModuloComputer<TInteger>::increment( UnsignedInteger & i ) const
 {
   if ( ++i == k ) i = 0;
 }
@@ -72,10 +72,10 @@ DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
  * Decrement the value [i] modulo.
  * @param i any value between 0 and [k] (excluded).
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
 void 
-DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
+DGtal::ModuloComputer<TInteger>::decrement( UnsignedInteger & i ) const
 {
   if ( i == 0 ) i = k;
   --i;
@@ -86,10 +86,10 @@ DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
  * @param i any value between 0 and [k] (excluded).
  * @return the incremented value of [i] modulo [k].
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::next( UnsignedIntegerParamType i ) const
+typename DGtal::ModuloComputer<TInteger>::UnsignedInteger 
+DGtal::ModuloComputer<TInteger>::next( UnsignedIntegerParamType i ) const
 {
   
   return ( (i+1) == k ) ? 0 : (i+1);
@@ -100,10 +100,10 @@ DGtal::ModuloComputer<T>::next( UnsignedIntegerParamType i ) const
  * @param i any value between 0 and [k] (excluded).
  * @return the decremented value of [i] modulo [k].
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::previous( UnsignedIntegerParamType i ) const
+typename DGtal::ModuloComputer<TInteger>::UnsignedInteger 
+DGtal::ModuloComputer<TInteger>::previous( UnsignedIntegerParamType i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
 }
@@ -113,10 +113,10 @@ DGtal::ModuloComputer<T>::previous( UnsignedIntegerParamType i ) const
  * @param i any integer value.
  * @return the value of [i] modulo [k].
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::cast( IntegerParamType i ) const
+typename DGtal::ModuloComputer<TInteger>::UnsignedInteger 
+DGtal::ModuloComputer<TInteger>::cast( IntegerParamType i ) const
 {
   Integer tmp = i;
   while ( tmp < 0 ) tmp += k;
@@ -134,16 +134,16 @@ DGtal::ModuloComputer<T>::cast( IntegerParamType i ) const
  * value between 0 and [k] (excluded).  @return 'true' if [i] strictly
  * precedes [j] in a window 'floor([k]/2)'.  @see k
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
 bool 
-DGtal::ModuloComputer<T>::less( UnsignedIntegerParamType i, UnsignedIntegerParamType j ) const
+DGtal::ModuloComputer<TInteger>::less( UnsignedIntegerParamType i, UnsignedIntegerParamType j ) const
 {
-  Integer d = ( (T) j ) - ( (T) i );
+  Integer d = ( (TInteger) j ) - ( (TInteger) i );
   if ( d > 0 )
-    return d < (T) ( k / 2 );
+    return d < (TInteger) ( k / 2 );
   else
-    return (-d) >= (T) ( k / 2 );
+    return (-d) >= (TInteger) ( k / 2 );
 }
 
 
@@ -154,10 +154,10 @@ DGtal::ModuloComputer<T>::less( UnsignedIntegerParamType i, UnsignedIntegerParam
  * @param i any value between 0 and [k] (excluded).
  * @return the value j - i, always positive. 
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
-DGtal::ModuloComputer<T>::posDiff( UnsignedIntegerParamType  j, UnsignedIntegerParamType i ) const
+typename DGtal::ModuloComputer<TInteger>::UnsignedInteger 
+DGtal::ModuloComputer<TInteger>::posDiff( UnsignedIntegerParamType  j, UnsignedIntegerParamType i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
 }
@@ -168,10 +168,10 @@ DGtal::ModuloComputer<T>::posDiff( UnsignedIntegerParamType  j, UnsignedIntegerP
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <DGtal::concepts::CInteger TInteger>
 inline
 void
-DGtal::ModuloComputer<T>::selfDisplay ( std::ostream & out ) const
+DGtal::ModuloComputer<TInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ModuloComputer]";
 }
@@ -180,7 +180,7 @@ DGtal::ModuloComputer<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <DGtal::concepts::CInteger T>
 inline
 bool
 DGtal::ModuloComputer<T>::isValid() const

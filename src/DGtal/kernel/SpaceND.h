@@ -91,12 +91,9 @@ Point4Int a= {2, 3 , -5 , 6};
    **/
 
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+	     concepts::CInteger TInteger = DGtal::int32_t >
   class SpaceND
-  {
-    //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
- 
+  { 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;

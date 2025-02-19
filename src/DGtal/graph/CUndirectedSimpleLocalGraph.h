@@ -97,6 +97,7 @@ namespace DGtal {
     @tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
     */
     template <typename T> 
+    requires concepts::CIntegralNumber<typename T::Size>
     struct CUndirectedSimpleLocalGraph 
     {
       // ----------------------- Concept checks ------------------------------
@@ -111,7 +112,6 @@ namespace DGtal {
       };
  
       // possibly check these types so as to satisfy a concept with
-      BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
       BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Vertex > ));
       BOOST_CONCEPT_ASSERT(( boost::Assignable< Vertex > ));
       BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Vertex > ));

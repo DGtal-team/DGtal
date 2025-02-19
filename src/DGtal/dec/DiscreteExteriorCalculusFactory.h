@@ -57,7 +57,7 @@ namespace DGtal
  * @tparam TInteger integer type forwarded to khalimsky space.
  */
 
-template <typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
+template <typename TLinearAlgebraBackend, concepts::CInteger TInteger = DGtal::int32_t>
 class DiscreteExteriorCalculusFactory
 {
     // ----------------------- Standard services ------------------------------
@@ -66,8 +66,6 @@ public:
     typedef typename TLinearAlgebraBackend::DenseVector DenseVector;
     typedef typename TLinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename TLinearAlgebraBackend::SparseMatrix SparseMatrix;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
 
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
