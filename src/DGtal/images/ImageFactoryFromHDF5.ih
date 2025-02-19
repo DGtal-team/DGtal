@@ -47,6 +47,7 @@
  * @param out the output stream where the object is written.
  */
 template <typename TImageContainer>
+requires DGtal::concepts::CBoundedNumber<typename TImageContainer::Value>
 inline
 void
 DGtal::ImageFactoryFromHDF5<TImageContainer>::selfDisplay ( std::ostream & out ) const

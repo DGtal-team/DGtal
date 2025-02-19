@@ -58,12 +58,10 @@ namespace DGtal
      @note Useful to represent points of (especially convex) lattice
      polytopes or points of digital sets.
   */
-  template < typename TInteger >
+  template <concepts::CBoundedNumber TInteger >
   class IntegralIntervals
   {
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< TInteger > ));
-
     typedef TInteger Integer;
     using Self      = IntegralIntervals< Integer >;
     using Interval  = std::pair<Integer,Integer>;

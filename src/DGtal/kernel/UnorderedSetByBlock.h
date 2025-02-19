@@ -63,14 +63,13 @@ namespace DGtal
   /// a model of concepts::CIntegralNumber and concepts::CUnsignedNumber.
   ///
   /// @see UnorderedSetByBlock
-  template < typename TElement, typename TWord = uint32_t >
+  template < typename TElement, concepts::CBoundedNumber TWord = uint32_t >
   struct Splitter {
     typedef Splitter< TElement,TWord >   Self;
     typedef TElement                     Element;
     typedef TWord                        Word;
     typedef typename Element::Coordinate Coordinate;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Word > ));
     BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber< Word > ));
 
     /// Splits an element \a e into a pair grouping its block

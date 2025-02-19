@@ -92,28 +92,10 @@ uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
 @tparam T the type that is checked. T should be a model of
      CBoundedNumber.
    */
-  template <concepts::CQuantity T>
-  struct CBoundedNumber
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    BOOST_CONCEPT_USAGE(CBoundedNumber)
-    {
-
-      // Bounded Number should have a TagTrue tag to IsBounded type.
-      ConceptUtils::checkTrue( myIsBounded );
-
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
-    typename NumberTraits<T>::IsBounded myIsBounded;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CBoundedNumber
+  template <typename T>
+  concept CBoundedNumber = 
+    concepts::CQuantity<T> && 
+    std::same_as<DGtal::TagTrue, typename NumberTraits<T>::IsBounded>;
   }
 } // namespace DGtal
 

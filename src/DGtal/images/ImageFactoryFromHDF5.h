@@ -193,6 +193,7 @@ namespace DGtal
    * The update of the original image is done with the function 'flushImage'.
    */
   template <typename TImageContainer>
+  requires concepts::CBoundedNumber<typename TImageContainer::Value>
   class ImageFactoryFromHDF5
   {
 
@@ -211,8 +212,6 @@ namespace DGtal
     ///New types
     typedef ImageContainer OutputImage;
     typedef typename OutputImage::Value Value;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber< Value > ));
 
     // ----------------------- Standard services ------------------------------
 
