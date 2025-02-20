@@ -40,7 +40,7 @@ digraph GMath {
                  label="kernel";
 
 		 CCommutativeRing [ label="CCommutativeRing" URL="\ref DGtal::concepts::CCommutativeRing" ];
-		 CEuclideanRing [ label="CEuclideanRing" URL="\ref concepts::CEuclideanRing" ];
+		 CEuclideanRing [ label="CEuclideanRing" URL="\ref DGtal::concepts::CEuclideanRing" ];
         }
         subgraph cluster_io {
                  style=filled;

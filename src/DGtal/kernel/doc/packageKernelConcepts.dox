@@ -66,12 +66,12 @@ digraph GKERNEL {
       CPointPredicate [label="CPointPredicate" URL="@ref DGtal::concepts::CPointPredicate"];
       CPointFunctor [label="CPointFunctor" URL="@ref DGtal::concepts::CPointFunctor"];
       CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
-      CInteger [label="CInteger" URL="@ref concepts::CInteger"];
+      CInteger [label="CInteger" URL="@ref DGtal::concepts::CInteger"];
       CUnsignedNumber [label="CUnsignedNumber" URL="@ref concepts::CUnsignedNumber"];
       CSignedNumber [label="CSignedNumber" URL="@ref DGtal::concepts::CSignedNumber"];
       CIntegralNumber [label="CIntegralNumber" URL="@ref DGtal::concepts::CIntegralNumber"];
-      CBoundedNumber [label="CBoundedNumber" URL="@ref concepts::CBoundedNumber"];
-      CEuclideanRing [label="CEuclideanRing" URL="@ref concepts::CEuclideanRing"];
+      CBoundedNumber [label="CBoundedNumber" URL="@ref DGtal::concepts::CBoundedNumber"];
+      CEuclideanRing [label="CEuclideanRing" URL="@ref DGtal::concepts::CEuclideanRing"];
       CCommutativeRing [label="CCommutativeRing" URL="@ref DGtal::concepts::CCommutativeRing"];
       CDomain [label="CDomain" URL="@ref concepts::CDomain"];
       CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref DGtal::concepts::CSTLAssociativeContainer"];
