@@ -167,7 +167,7 @@ writeEdgeLinesOBJ( std::string            objfile,
                    const Color&           specular_color )
 {
   typedef KhalimskySpaceND< 3, int >    KSpace;
-  typedef Shortcuts< KSpace >           SH;
+  typedef DGtal::Shortcuts< KSpace >           SH;
   typedef typename SH::RealPoints       RealPoints;
   typedef typename SH::RealVectors      RealVectors;
   typedef typename SurfaceMesh::Edge Edge;

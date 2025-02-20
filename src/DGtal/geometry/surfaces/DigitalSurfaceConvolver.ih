@@ -786,7 +786,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+  typedef typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix CovMatrix;
+  CovMatrix innerCovarianceMatrix, outerCovarianceMatrix;
 
   core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, false );
 
@@ -804,8 +805,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
-  CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
-  CovarianceMatrix resultCovarianceMatrix;
+  typedef typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix CovMatrix;
+  CovMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+  CovMatrix resultCovarianceMatrix;
 
   core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, false );
 
@@ -833,7 +835,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   std::vector<Quantity> lastInnerMoments( nbMoments );
   std::vector<Quantity> lastOuterMoments( nbMoments );
 
-  CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+  typedef typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix CovMatrix;
+  CovMatrix innerCovarianceMatrix, outerCovarianceMatrix;
 
   Spel lastInnerSpel, lastOuterSpel;
 
@@ -886,8 +889,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   std::vector<Quantity> lastInnerMoments( nbMoments );
   std::vector<Quantity> lastOuterMoments( nbMoments );
 
-  CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
-  CovarianceMatrix resultCovarianceMatrix;
+  typedef typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix CovMatrix;
+  CovMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+  CovMatrix resultCovarianceMatrix;
 
   Spel lastInnerSpel, lastOuterSpel;
 
