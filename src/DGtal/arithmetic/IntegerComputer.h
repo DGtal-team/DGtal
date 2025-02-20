@@ -79,8 +79,8 @@ It is a backport of \e ImaGene.
    
    */
   template <typename TInteger>
-  requires DGtal::concepts::CIntegralNumber<typename NumberTraits<TInteger>::UnsignedVersion> &&
-           DGtal::concepts::CInteger<typename NumberTraits<TInteger>::SignedVersion>
+  requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
+           DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
   class IntegerComputer
   {
     // ----------------------- Associated types ------------------------------
