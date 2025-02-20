@@ -83,7 +83,7 @@ namespace DGtal
   template <typename TIterator,
     DGtal::concepts::CInteger TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
     unsigned short adjacency = 8>
-  requires DGtal::concepts::CInteger<typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
+  requires DGtal::concepts::CInteger<typename DGtal::IteratorCirculatorTraits<TIterator>::Value::Coordinate>
   class ArithmeticalDSSComputer
   {
 
