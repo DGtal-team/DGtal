@@ -81,9 +81,9 @@ namespace DGtal
    * @see exampleArithmeticalDSS.cpp exampleArithmeticalDSSComputer.cpp
    */
   template <typename TIterator,
-    concepts::CInteger TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
+    DGtal::concepts::CInteger TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
     unsigned short adjacency = 8>
-  requires concepts::CInteger<typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
+  requires DGtal::concepts::CInteger<typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
   class ArithmeticalDSSComputer
   {
 
