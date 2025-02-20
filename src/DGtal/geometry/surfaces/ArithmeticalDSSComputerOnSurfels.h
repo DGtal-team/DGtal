@@ -81,8 +81,8 @@ namespace DGtal
    * @see ArithmeticalDSS NaiveDSS8 StandardDSS4
    */
   template <typename TKSpace, typename TIterator,
-    concepts::CInteger TInteger = typename TKSpace::Space::Integer>
-  requires concepts::CInteger<typename PointVector<2, TInteger>::Coordinate>
+    DGtal::concepts::CInteger TInteger = typename TKSpace::Space::Integer>
+  requires concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
   class ArithmeticalDSSComputerOnSurfels
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
