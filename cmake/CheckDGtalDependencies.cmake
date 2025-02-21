@@ -16,16 +16,14 @@ include(boost)
 set(DGtalLibDependencies ${DGtalLibDependencies} Boost::headers)
 
 target_compile_definitions(DGTAL_BoostAddons PUBLIC ${BOOST_DEFINITIONS})
-target_include_directories(DGTAL_BoostAddons SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
-target_link_libraries(DGTAL_BoostAddons PUBLIC Boost::headers)
+#target_include_directories(DGTAL_BoostAddons SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
 
 # -----------------------------------------------------------------------------
 # Looking for zlib
 # -----------------------------------------------------------------------------
 find_package(ZLIB REQUIRED)
 target_link_libraries(DGtal PUBLIC ZLIB::ZLIB)
-target_link_libraries(DGTAL_BoostAddons PUBLIC ZLIB::ZLIB)
-
+target_link_libraries(DGTAL_BoostAddons PUBLIC ZLIB::ZLIB Boost::headers)
 set(DGtalLibDependencies ${DGtalLibDependencies} ${ZLIB_LIBRARIES})
 
 # -----------------------------------------------------------------------------
