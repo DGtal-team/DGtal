@@ -57,7 +57,7 @@ install(EXPORT DGtalTargets
 # DGtalConfig.cmake variables
 #------------------------------------------------------------------------------
 set(_dependencies_list
-  Boost ZLIB
+  Boost::headers ZLIB
   LibBoard
   GMP  ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )
@@ -70,6 +70,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/boost.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
 )
 foreach(dep ${_dependencies_list})
