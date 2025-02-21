@@ -85,9 +85,6 @@ namespace DGtal
 
     ///Copy the space type
     typedef TSpace Space;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-
     ///Type for points
     typedef typename Space::Point Point;
     ///Type for points

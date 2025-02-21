@@ -219,11 +219,11 @@ DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::isValid() const
   return true;
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSpace TSpaceValue>
+template <typename T, typename V>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const InexactPredicateLpSeparableMetric<TSpace, TValue> & object )
+                    const InexactPredicateLpSeparableMetric<T, V> & object )
 {
   object.selfDisplay( out );
   return out;

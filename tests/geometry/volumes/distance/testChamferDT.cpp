@@ -50,8 +50,8 @@ using namespace Z2i;
 
 bool checkCMetricConcept()
 {
-  DGTAL_CONCEPT_CHECK(requires concepts::CMetricSpace<experimental::ChamferNorm2D<Z2i::Space > > );
-  DGTAL_CONCEPT_CHECK(requires concepts::CSeparableMetric<experimental::ChamferNorm2D<Z2i::Space > > );
+  BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<experimental::ChamferNorm2D<Z2i::Space > > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<experimental::ChamferNorm2D<Z2i::Space > > ));
   return true;
 }
 

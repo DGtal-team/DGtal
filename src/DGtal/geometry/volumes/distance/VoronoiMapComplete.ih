@@ -185,7 +185,7 @@ const Point & startingPoint, const Dimension dim ) const
       // Along other than the first dimension, the break index is at the lowest
       // site found.
       auto minRawDist =
-      DGtal::NumberTraits<DGtal::concepts::CSpace SeparableMetric::RawValue>::max();
+      DGtal::NumberTraits<typename SeparableMetric::RawValue>::max();
 
       for ( auto point = startPoint; point[ dim ] <= myUpperBoundCopy[ dim ];
             ++point[ dim ] )
@@ -207,7 +207,7 @@ const Point & startingPoint, const Dimension dim ) const
 
       // If no sites are found, then there is nothing to do.
       if ( minRawDist ==
-           DGtal::NumberTraits<DGtal::concepts::CSpace SeparableMetric::RawValue>::max() )
+           DGtal::NumberTraits<typename SeparableMetric::RawValue>::max() )
         return;
 
       endPoint[ dim ] = startPoint[ dim ] + extent - 1;
@@ -399,7 +399,7 @@ std::ostream & out ) const
 // // //
 // ///////////////////////////////////////////////////////////////////////////////
 
-template <DGtal::concepts::CSpace S, typename P, typename TSep, typename TImage>
+template <typename S, typename P, typename TSep, typename TImage>
 inline std::ostream &
 DGtal::operator<<( std::ostream & out,
                    const VoronoiMapComplete<S, P, TSep, TImage> & object )
