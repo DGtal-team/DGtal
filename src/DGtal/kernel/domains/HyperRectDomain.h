@@ -95,11 +95,9 @@ namespace DGtal
    *
    * \see testHyperRectDomain.cpp
    */
-  template<typename TSpace>
+  template<DGtal::concepts::CSpace TSpace>
   class HyperRectDomain
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-
     // ----------------------- Standard services ------------------------------
   public:
 

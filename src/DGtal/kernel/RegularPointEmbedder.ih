@@ -41,18 +41,18 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::RegularPointEmbedder<TSpace>::~RegularPointEmbedder()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::RegularPointEmbedder<TSpace>::RegularPointEmbedder()
 {}
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::RegularPointEmbedder<TSpace> &
 DGtal::RegularPointEmbedder<TSpace>::
@@ -65,7 +65,7 @@ operator=( const RegularPointEmbedder & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void 
 DGtal::RegularPointEmbedder<TSpace>
@@ -74,7 +74,7 @@ DGtal::RegularPointEmbedder<TSpace>
   myGridSteps = RealVector::diagonal( gridStep );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void 
 DGtal::RegularPointEmbedder<TSpace>
@@ -83,7 +83,7 @@ DGtal::RegularPointEmbedder<TSpace>
   myGridSteps = aGridSteps;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::Point
 DGtal::RegularPointEmbedder<TSpace>
@@ -95,7 +95,7 @@ DGtal::RegularPointEmbedder<TSpace>
   return aPoint;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::Point
 DGtal::RegularPointEmbedder<TSpace>
@@ -107,7 +107,7 @@ DGtal::RegularPointEmbedder<TSpace>
   return aPoint;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::Point
 DGtal::RegularPointEmbedder<TSpace>
@@ -119,7 +119,7 @@ DGtal::RegularPointEmbedder<TSpace>
   return aPoint;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::RealPoint
 DGtal::RegularPointEmbedder<TSpace>
@@ -128,7 +128,7 @@ DGtal::RegularPointEmbedder<TSpace>
   return this->operator()( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::RealPoint
 DGtal::RegularPointEmbedder<TSpace>
@@ -141,7 +141,7 @@ DGtal::RegularPointEmbedder<TSpace>
   return aRealPoint;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::RegularPointEmbedder<TSpace>::RealVector
 DGtal::RegularPointEmbedder<TSpace>
@@ -158,7 +158,7 @@ DGtal::RegularPointEmbedder<TSpace>
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::RegularPointEmbedder<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -170,7 +170,7 @@ DGtal::RegularPointEmbedder<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::RegularPointEmbedder<TSpace>::isValid() const

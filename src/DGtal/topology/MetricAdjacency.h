@@ -74,11 +74,10 @@ namespace DGtal
    *
    * @see testAdjacency.cpp
    */
-  template <typename TSpace, Dimension maxNorm1, 
+  template <DGtal::concepts::CSpace  TSpace, Dimension maxNorm1, 
 	    Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency

@@ -122,7 +122,8 @@ LpMetric, ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
  */
 template <typename T>
   requires concepts::CQuantity<typename T::Value> && 
-           concepts::CQuantity<typename T::RawValue>
+           concepts::CQuantity<typename T::RawValue> && 
+           concepts::CSpace<typename T::Space>
 struct CMetricSpace:  boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
@@ -131,8 +132,6 @@ public:
   typedef typename T::Space Space;
   typedef typename T::Value Value;
   typedef typename T::RawValue RawValue;
-
-  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
 
   BOOST_CONCEPT_USAGE( CMetricSpace )
   {

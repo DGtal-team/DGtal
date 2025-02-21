@@ -40,7 +40,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedRationalPolytope<TSpace>::
 BoundedRationalPolytope()
   : q( NumberTraits<Integer>::ZERO ),
@@ -50,7 +50,7 @@ BoundedRationalPolytope()
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
 clear()
@@ -65,7 +65,7 @@ clear()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedRationalPolytope<TSpace>::
 BoundedRationalPolytope( std::initializer_list<Point> l )
 {
@@ -79,7 +79,7 @@ BoundedRationalPolytope( std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointIterator>
 DGtal::BoundedRationalPolytope<TSpace>::
 BoundedRationalPolytope( Integer denom, PointIterator itB, PointIterator itE )
@@ -89,7 +89,7 @@ BoundedRationalPolytope( Integer denom, PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename HalfSpaceIterator>
 DGtal::BoundedRationalPolytope<TSpace>::
 BoundedRationalPolytope( Integer denom,
@@ -104,7 +104,7 @@ BoundedRationalPolytope( Integer denom,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename HalfSpaceIterator>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
@@ -170,7 +170,7 @@ init( Integer denom,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromTriangle3D( Point a, Point b, Point c )
@@ -202,7 +202,7 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromSegment3D( Point a, Point b )
@@ -233,7 +233,7 @@ internalInitFromSegment3D( Point a, Point b )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 internalInitFromSegment2D( Point a, Point b )
@@ -250,7 +250,7 @@ internalInitFromSegment2D( Point a, Point b )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Domain 
 DGtal::BoundedRationalPolytope<TSpace>::
 computeLatticeDomain( const Domain& d )
@@ -264,7 +264,7 @@ computeLatticeDomain( const Domain& d )
   return Domain( lo, hi );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Domain 
 DGtal::BoundedRationalPolytope<TSpace>::
 computeRationalDomain( const Domain& d )
@@ -279,7 +279,7 @@ computeRationalDomain( const Domain& d )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointIterator>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
@@ -379,7 +379,7 @@ init( Integer denom, PointIterator itB, PointIterator itE )
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedRationalPolytope<TSpace>
 DGtal::BoundedRationalPolytope<TSpace>::
 interiorPolytope() const
@@ -392,7 +392,7 @@ interiorPolytope() const
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedRationalPolytope<TSpace>::
 cut( Dimension k, bool pos, Integer b, bool large )
@@ -411,7 +411,7 @@ cut( Dimension k, bool pos, Integer b, bool large )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedRationalPolytope<TSpace>::
 cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
@@ -436,7 +436,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedRationalPolytope<TSpace>::
 cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
@@ -447,7 +447,7 @@ cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void 
 DGtal::BoundedRationalPolytope<TSpace>::
 swap( BoundedRationalPolytope & other )
@@ -462,7 +462,7 @@ swap( BoundedRationalPolytope & other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 isInside( const Point& p ) const
@@ -480,7 +480,7 @@ isInside( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 isDomainPointInside( const Point& p ) const
@@ -498,7 +498,7 @@ isDomainPointInside( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 isInterior( const Point& p ) const
@@ -513,7 +513,7 @@ isInterior( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::
 isBoundary( const Point& p ) const
@@ -530,7 +530,7 @@ isBoundary( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Self&
 DGtal::BoundedRationalPolytope<TSpace>::
 operator*=( Integer t )
@@ -546,7 +546,7 @@ operator*=( Integer t )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Self&
 DGtal::BoundedRationalPolytope<TSpace>::
 operator*=( Rational r )
@@ -563,7 +563,7 @@ operator*=( Rational r )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Self&
 DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( UnitSegment s )
@@ -582,7 +582,7 @@ operator+=( UnitSegment s )
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Self&
 DGtal::BoundedRationalPolytope<TSpace>::
 operator+=( UnitCell c )
@@ -594,7 +594,7 @@ operator+=( UnitCell c )
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::
 count() const
@@ -606,7 +606,7 @@ count() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::
 countInterior() const
@@ -617,7 +617,7 @@ countInterior() const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::
 countBoundary() const
@@ -628,7 +628,7 @@ countBoundary() const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::
 countWithin( Point lo, Point hi ) const
@@ -640,7 +640,7 @@ countWithin( Point lo, Point hi ) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::
 countUpTo( Integer max) const
@@ -653,7 +653,7 @@ countUpTo( Integer max) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
 getPoints( std::vector<Point>& pts ) const
@@ -663,7 +663,7 @@ getPoints( std::vector<Point>& pts ) const
     if ( isDomainPointInside( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
@@ -673,7 +673,7 @@ insertPoints( PointSet& pts_set ) const
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
 getInteriorPoints( std::vector<Point>& pts ) const
@@ -683,7 +683,7 @@ getInteriorPoints( std::vector<Point>& pts ) const
     if ( isInterior( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedRationalPolytope<TSpace>::
 getBoundaryPoints( std::vector<Point>& pts ) const
@@ -694,7 +694,7 @@ getBoundaryPoints( std::vector<Point>& pts ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::Domain&
 DGtal::BoundedRationalPolytope<TSpace>::getDomain() const
 {
@@ -702,7 +702,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getDomain() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::Domain&
 DGtal::BoundedRationalPolytope<TSpace>::getLatticeDomain() const
 {
@@ -710,7 +710,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getLatticeDomain() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::Domain&
 DGtal::BoundedRationalPolytope<TSpace>::getRationalDomain() const
 {
@@ -718,7 +718,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getRationalDomain() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int
 DGtal::BoundedRationalPolytope<TSpace>::nbHalfSpaces() const
 {
@@ -726,7 +726,7 @@ DGtal::BoundedRationalPolytope<TSpace>::nbHalfSpaces() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::denominator() const
 {
@@ -735,7 +735,7 @@ DGtal::BoundedRationalPolytope<TSpace>::denominator() const
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::Vector&
 DGtal::BoundedRationalPolytope<TSpace>::getA( unsigned int i ) const
 {
@@ -744,7 +744,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getA( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedRationalPolytope<TSpace>::Integer
 DGtal::BoundedRationalPolytope<TSpace>::getB( unsigned int i ) const
 {
@@ -753,7 +753,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getB( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::isLarge( unsigned int i ) const
 {
@@ -762,7 +762,7 @@ DGtal::BoundedRationalPolytope<TSpace>::isLarge( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::InequalityMatrix&
 DGtal::BoundedRationalPolytope<TSpace>::getA() const
 {
@@ -770,7 +770,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getA() const
 }
     
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::InequalityVector&
 DGtal::BoundedRationalPolytope<TSpace>::getB() const
 {
@@ -778,7 +778,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getB() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const std::vector<bool>&
 DGtal::BoundedRationalPolytope<TSpace>::getI() const
 {
@@ -786,7 +786,7 @@ DGtal::BoundedRationalPolytope<TSpace>::getI() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedRationalPolytope<TSpace>::canBeSummed() const
 {
@@ -800,7 +800,7 @@ DGtal::BoundedRationalPolytope<TSpace>::canBeSummed() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::BoundedRationalPolytope<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -821,7 +821,7 @@ DGtal::BoundedRationalPolytope<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::BoundedRationalPolytope<TSpace>::isValid() const
@@ -829,7 +829,7 @@ DGtal::BoundedRationalPolytope<TSpace>::isValid() const
   return q > 0 && ! rationalD.isEmpty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 std::string
 DGtal::BoundedRationalPolytope<TSpace>::className

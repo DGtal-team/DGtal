@@ -70,7 +70,7 @@ namespace DGtal
  * @tparam TSpace the model of CSpace on which the metric is
  * defined.
  */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class LpMetric
   {
     // ----------------------- Standard services ------------------------------
@@ -78,7 +78,6 @@ namespace DGtal
 
     ///Copy the space type
     typedef TSpace Space;
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     
     ///Type for points (RealPoint for this class)
     typedef typename Space::RealPoint Point;

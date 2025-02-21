@@ -59,11 +59,10 @@ namespace DGtal
      A model of boost::DefaultConstructible, boost::CopyConstructible,
      boost::Assignable, concepts::CPointPredicate.
   */
-  template <typename TSpace>
+  template <concepts::CSpace TSpace>
   struct ClosedIntegerHalfPlane
   {
     typedef ClosedIntegerHalfPlane<TSpace> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     
     typedef TSpace Space;
     typedef typename Space::Integer Integer;

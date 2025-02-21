@@ -68,10 +68,9 @@ namespace DGtal
 
      Model of CopyConstructible
    */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class SpatialCubicalSubdivision
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;

@@ -65,7 +65,7 @@ digraph GKERNEL {
       
       CPointPredicate [label="CPointPredicate" URL="@ref DGtal::concepts::CPointPredicate"];
       CPointFunctor [label="CPointFunctor" URL="@ref DGtal::concepts::CPointFunctor"];
-      CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
+      CSpace [label="CSpace" ULR="@ref DGtal::concepts::CSpace"];
       CInteger [label="CInteger" URL="@ref DGtal::concepts::CInteger"];
       CUnsignedNumber [label="CUnsignedNumber" URL="@ref DGtal::concepts::CUnsignedNumber"];
       CSignedNumber [label="CSignedNumber" URL="@ref DGtal::concepts::CSignedNumber"];

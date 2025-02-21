@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::DigitalPlanePredicate<TSpace>::
 DigitalPlanePredicate (Vector const& aNormal, Integer const& aMu, Integer const& aNu)
@@ -47,7 +47,7 @@ DigitalPlanePredicate (Vector const& aNormal, Integer const& aMu, Integer const&
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::DigitalPlanePredicate<TSpace>::
 DigitalPlanePredicate (const DGtal::DigitalPlanePredicate<TSpace> & other)
@@ -55,7 +55,7 @@ DigitalPlanePredicate (const DGtal::DigitalPlanePredicate<TSpace> & other)
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::DigitalPlanePredicate<TSpace>::
 DigitalPlanePredicate (DGtal::DigitalPlanePredicate<TSpace> && other)
@@ -63,7 +63,7 @@ DigitalPlanePredicate (DGtal::DigitalPlanePredicate<TSpace> && other)
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::DigitalPlanePredicate<TSpace>&
 DGtal::DigitalPlanePredicate<TSpace>::operator= (const DGtal::DigitalPlanePredicate<TSpace> & other)
@@ -79,7 +79,7 @@ DGtal::DigitalPlanePredicate<TSpace>::operator= (const DGtal::DigitalPlanePredic
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::DigitalPlanePredicate<TSpace>&
 DGtal::DigitalPlanePredicate<TSpace>::operator= (DGtal::DigitalPlanePredicate<TSpace> && other)
@@ -95,7 +95,7 @@ DGtal::DigitalPlanePredicate<TSpace>::operator= (DGtal::DigitalPlanePredicate<TS
 //-------------------- plane services -----------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::DigitalPlanePredicate<TSpace>::Vector const&
 DGtal::DigitalPlanePredicate<TSpace>::normal () const
@@ -104,7 +104,7 @@ DGtal::DigitalPlanePredicate<TSpace>::normal () const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::DigitalPlanePredicate<TSpace>::Integer
 DGtal::DigitalPlanePredicate<TSpace>::mu () const
@@ -113,7 +113,7 @@ DGtal::DigitalPlanePredicate<TSpace>::mu () const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::DigitalPlanePredicate<TSpace>::Integer
 DGtal::DigitalPlanePredicate<TSpace>::nu () const
@@ -125,7 +125,7 @@ DGtal::DigitalPlanePredicate<TSpace>::nu () const
 //-------------------- model of concepts::CPointPredicate -----------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool DGtal::DigitalPlanePredicate<TSpace>::
 operator() (Point const& aPoint) const
@@ -141,7 +141,7 @@ operator() (Point const& aPoint) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::DigitalPlanePredicate<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -161,7 +161,7 @@ DGtal::DigitalPlanePredicate<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::DigitalPlanePredicate<TSpace>::isValid() const

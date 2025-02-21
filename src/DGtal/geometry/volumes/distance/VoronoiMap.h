@@ -116,7 +116,7 @@ namespace DGtal
    * container value type must be TSpace::Vector. Lastly, the domain
    * of the container must be HyperRectDomain.
    */
-  template < typename TSpace,
+  template < DGtal::concepts::CSpace  TSpace,
              typename TPointPredicate,
              typename TSeparableMetric,
              typename TImageContainer =
@@ -128,7 +128,6 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 

@@ -77,11 +77,10 @@ namespace DGtal
      @tparam TSpace an arbitrary 2-dimensional model of CSpace.
      @tparam TSequence a model of boost::Sequence whose elements are points (TSpace::Point). Default is list of points.
    */
-  template < typename TSpace, 
+  template < concepts::CSpace TSpace, 
              typename TSequence = std::list< typename TSpace::Point > >
   class LatticePolytope2D 
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( boost::Sequence< TSequence > ));
 

@@ -57,13 +57,11 @@ namespace DGtal
    * utility class that contains methods to perform integral linear
    * algebra.
    */
-  template <typename Space>
+  template <DGtal::concepts::CSpace  Space>
   struct LinearAlgebra
   {
     // ----------------------- Standard services ------------------------------
-   
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<Space> ));
-    
+       
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;

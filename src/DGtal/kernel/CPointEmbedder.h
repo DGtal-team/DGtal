@@ -92,7 +92,8 @@ It adds inner types to functor.
 @tparam T the type that should be a model of CPointEmbedder.
 */
 template <typename T>
-requires CUnaryFunctor<T, typename T::Point, typename T::RealPoint>
+requires CUnaryFunctor<T, typename T::Point, typename T::RealPoint> &&
+         CSpace<typename T::Space>
 struct CPointEmbedder 
 {
     // ----------------------- Concept checks ------------------------------
@@ -103,7 +104,6 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
-  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, Argument >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename Space::RealPoint >::value ));

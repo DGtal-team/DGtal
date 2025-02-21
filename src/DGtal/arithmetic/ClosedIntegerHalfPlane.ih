@@ -39,14 +39,14 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::ClosedIntegerHalfPlane<TSpace>::
 ClosedIntegerHalfPlane( const Vector & aN, const Integer & aC )
   : N( aN ), c( aC ) 
 {}
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::ClosedIntegerHalfPlane<TSpace>::
@@ -55,7 +55,7 @@ operator()( const Point & p ) const
   return N.dot( p ) <= c;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::ClosedIntegerHalfPlane<TSpace>::
@@ -64,7 +64,7 @@ isOnBoundary( const Point & p ) const
   return N.dot( p ) == c;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::ClosedIntegerHalfPlane<TSpace>::Vector
 DGtal::ClosedIntegerHalfPlane<TSpace>::
@@ -73,7 +73,7 @@ tangent() const
   return Vector( -N[ 1 ], N[ 0 ] );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::ClosedIntegerHalfPlane<TSpace>::
@@ -84,7 +84,7 @@ negate()
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::ClosedIntegerHalfPlane<TSpace>::
 ClosedIntegerHalfPlane( const Point & A, const Point & B, 
@@ -113,7 +113,7 @@ ClosedIntegerHalfPlane( const Point & A, const Point & B,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::ClosedIntegerHalfPlane<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -125,7 +125,7 @@ DGtal::ClosedIntegerHalfPlane<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::ClosedIntegerHalfPlane<TSpace>::isValid() const

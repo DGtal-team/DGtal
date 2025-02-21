@@ -69,11 +69,9 @@ namespace DGtal
 
      @tparam TSpace an arbitrary model of CSpace.
    */
-  template < typename TSpace >
+  template < DGtal::concepts::CSpace TSpace >
   class BoundedLatticePolytope 
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
   public:
     typedef BoundedLatticePolytope<TSpace>  Self;
     typedef TSpace                          Space;

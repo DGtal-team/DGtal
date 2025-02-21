@@ -57,12 +57,10 @@ namespace DGtal
 
      @tparam TSpace any model of concepts::CSpace, for instance any SpaceND like Z2i::Space, Z3i::Space.
   */
-  template < typename TSpace >
+  template < DGtal::concepts::CSpace  TSpace >
   class LatticeSetByIntervals
   {
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
     typedef TSpace Space;
     using Self      = LatticeSetByIntervals< Space >;
     using Point     = typename Space::Point;

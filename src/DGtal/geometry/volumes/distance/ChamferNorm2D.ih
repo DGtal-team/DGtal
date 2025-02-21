@@ -37,13 +37,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::experimental::ChamferNorm2D<TSpace>::~ChamferNorm2D()
 {
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
 {
@@ -88,7 +88,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
 
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const Directions &aDirSet,
                                                           const Directions &aNormalDirSet,
@@ -97,7 +97,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const Directions &aDir
 {
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::experimental::ChamferNorm2D<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -105,7 +105,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::selfDisplay ( std::ostream & out ) c
   out << "[ChamferNorm2D] mask size= "<<myDirections.size();
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::experimental::ChamferNorm2D<TSpace>::isValid() const
@@ -113,7 +113,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::isValid() const
   return true;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Abscissa
 DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector &aP, const Vector &aQ,
@@ -158,7 +158,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Vector
 DGtal::experimental::ChamferNorm2D<TSpace>::getNormalFromCone(ConstIterator aCone) const
@@ -167,7 +167,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getNormalFromCone(ConstIterator aCon
   return  myNormals[pos];
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Abscissa
 DGtal::experimental::ChamferNorm2D<TSpace>::getUpperRayIntersection(const Vector &aP, const Vector &aQ,
@@ -212,7 +212,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getUpperRayIntersection(const Vector
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::ConstIterator
 DGtal::experimental::ChamferNorm2D<TSpace>::getCone(const Vector &aDirection,
@@ -222,7 +222,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getCone(const Vector &aDirection,
   return std::upper_bound(aBegin, aEnd , canonicalRay(aDirection), myLessThanAngular) -1;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Vector
 DGtal::experimental::ChamferNorm2D<TSpace>::canonicalRay(const Vector &aRay) const
@@ -230,7 +230,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::canonicalRay(const Vector &aRay) con
   return Vector( (aRay[0]<0)? -aRay[0]:aRay[0], aRay[1] );
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::RawValue
 DGtal::experimental::ChamferNorm2D<TSpace>::rawDistance(const Point &P,
@@ -247,7 +247,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::rawDistance(const Point &P,
   return ray[0]*normalDir[0] + ray[1]*normalDir[1];
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Value
 DGtal::experimental::ChamferNorm2D<TSpace>::operator()(const Point &P,
@@ -256,7 +256,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::operator()(const Point &P,
   return this->rawDistance(P,Q)/myNorm;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::ConstIterator
 DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
@@ -351,7 +351,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
   return aBegin;
 }
   ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::ConstIterator
 DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
@@ -427,7 +427,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
   return c;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::experimental::ChamferNorm2D<TSpace>::Abscissa
 DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Point &P, const Point &Q,
@@ -535,7 +535,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
   return voroAbscissa;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::experimental::ChamferNorm2D<TSpace>::hiddenBy(const Point &u, const Point &v, const Point &w,

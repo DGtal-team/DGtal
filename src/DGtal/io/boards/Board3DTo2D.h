@@ -66,12 +66,9 @@ namespace DGtal
    * Description of class 'Board3DTo2D' <p> @brief Class for PDF, PNG,
    * PS, EPS, SVG export drawings with Cairo with 3D->2D projection.
    */
-template < typename  Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+template < DGtal::concepts::CSpace   Space = Z3i::Space, typename KSpace = Z3i::KSpace>
 class Board3DTo2D : public Display3D<Space, KSpace>
 {
-
-  BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
-
 protected:
   using Display3D<Space, KSpace>::myQuadsMap;
 

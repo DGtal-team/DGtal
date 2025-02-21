@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::SpatialCubicalSubdivision<TSpace>::
 ~SpatialCubicalSubdivision()
@@ -53,7 +53,7 @@ DGtal::SpatialCubicalSubdivision<TSpace>::
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::SpatialCubicalSubdivision<TSpace>::
 SpatialCubicalSubdivision( const SpatialCubicalSubdivision& other )
@@ -72,7 +72,7 @@ SpatialCubicalSubdivision( const SpatialCubicalSubdivision& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 DGtal::SpatialCubicalSubdivision<TSpace>::
 SpatialCubicalSubdivision( Point lo, Point up, Coordinate size )
@@ -87,7 +87,7 @@ SpatialCubicalSubdivision( Point lo, Point up, Coordinate size )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 const typename DGtal::SpatialCubicalSubdivision<TSpace>::Domain &
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -96,7 +96,7 @@ domain() const
   return myDomain;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 const typename DGtal::SpatialCubicalSubdivision<TSpace>::Domain &
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -106,7 +106,7 @@ binDomain() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -117,7 +117,7 @@ bin( Point p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -128,7 +128,7 @@ lowest( Point b ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -139,7 +139,7 @@ uppermost( Point b ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -156,7 +156,7 @@ push( const Point& p )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointConstIterator>
 inline
 void
@@ -168,7 +168,7 @@ push( PointConstIterator it, PointConstIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointPredicate>
 inline
 void
@@ -188,7 +188,7 @@ getPoints( std::vector<Point> & pts,
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::
@@ -215,7 +215,7 @@ getPoints( std::vector<Point> & pts,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -230,7 +230,7 @@ DGtal::SpatialCubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) con
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::SpatialCubicalSubdivision<TSpace>::isValid() const

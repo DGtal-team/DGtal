@@ -124,12 +124,11 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
-  template < typename TSpace, 
+  template < DGtal::concepts::CSpace TSpace, 
              concepts::CInteger TInternalInteger >
   class COBANaivePlaneComputer
   {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------

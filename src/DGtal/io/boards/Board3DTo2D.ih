@@ -69,7 +69,7 @@
  * @param aColor: a DGtal::Color (allow to set a trasnparency value).
  *
  **/
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 inline
 DGtal::Board3DTo2D<Space, KSpace> &
 DGtal::Board3DTo2D<Space, KSpace>::operator<<(const DGtal::Color & aColor)
@@ -87,7 +87,7 @@ DGtal::Board3DTo2D<Space, KSpace>::operator<<(const DGtal::Color & aColor)
  * @param object any drawable object.
  * @return a reference on 'this'.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 template <typename TDrawableWithBoard3DTo2D>
 inline
 DGtal::Board3DTo2D<Space, KSpace> &
@@ -109,7 +109,7 @@ DGtal::Board3DTo2D<Space, KSpace>::operator<<( const TDrawableWithBoard3DTo2D & 
 /*!
  * \brief Constructor.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 DGtal::Board3DTo2D<Space, KSpace>::Board3DTo2D()
 {
   init();
@@ -124,7 +124,7 @@ DGtal::Board3DTo2D<Space, KSpace>::Board3DTo2D()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::selfDisplay ( std::ostream & out ) const
 {
@@ -135,7 +135,7 @@ DGtal::Board3DTo2D<Space, KSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 bool
 DGtal::Board3DTo2D<Space, KSpace>::isValid() const
 {
@@ -148,7 +148,7 @@ DGtal::Board3DTo2D<Space, KSpace>::isValid() const
  * @param tmat destination matrix.
  * @param mat source matrix.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::TransposeMt(double tmat[16], double mat[16])
 {
@@ -164,7 +164,7 @@ DGtal::Board3DTo2D<Space, KSpace>::TransposeMt(double tmat[16], double mat[16])
  * @param mat source matrix.
  * @param b source vector.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::MulMt(double v[4], double mat[16], double b[4])
 {
@@ -187,7 +187,7 @@ DGtal::Board3DTo2D<Space, KSpace>::MulMt(double v[4], double mat[16], double b[4
  * @param upy y coordinate of up-vector.
  * @param upz z coordinate of up-vector.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::LookAtMt(double mat[16],
                                             double eyex, double eyey, double eyez,
@@ -216,7 +216,7 @@ DGtal::Board3DTo2D<Space, KSpace>::LookAtMt(double mat[16],
 /**
  * Precompute 4x4 projection matrix for 3D->2D projection.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void DGtal::Board3DTo2D<Space, KSpace>::precompute_projection_matrix()
 {
   // Projection: from qglviewer
@@ -264,7 +264,7 @@ void DGtal::Board3DTo2D<Space, KSpace>::precompute_projection_matrix()
  * @param x2d x destination projection position of the 2d point.
  * @param y2d y destination projection position of the 2d point.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void DGtal::Board3DTo2D<Space, KSpace>::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
   double v[4], vs[4];
@@ -297,7 +297,7 @@ void DGtal::Board3DTo2D<Space, KSpace>::project(double x3d, double y3d, double z
  * @param bWidth width of the image to save.
  * @param bHeight height of the image to save.
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType type, int bWidth, int bHeight)
 {
@@ -639,7 +639,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
 /*!
  * \brief init function (should be in Constructor).
  */
-template < typename Space, typename KSpace>
+template < DGtal::concepts::CSpace Space, typename KSpace>
 void
 DGtal::Board3DTo2D<Space, KSpace>::init()
 {

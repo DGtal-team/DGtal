@@ -27,11 +27,11 @@
 namespace DGtal
 {
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   inline
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::LambdaMST2DEstimator() : dssSegments ( 0 ) {}
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   inline
   void
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::init ( ConstIterator itb, ConstIterator ite )
@@ -40,7 +40,7 @@ namespace DGtal
     myEnd = ite;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   inline
   void
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( Alias<TSegmentation>  segmentComputer )
@@ -48,7 +48,7 @@ namespace DGtal
     dssSegments = &segmentComputer;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   inline
   bool
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::isValid () const
@@ -56,7 +56,7 @@ namespace DGtal
     return ( dssSegments != 0 );
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   inline
   typename TSpace::RealVector
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const Point & p )
@@ -82,7 +82,7 @@ namespace DGtal
       return tangent.first;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   template <typename OutputIterator>
   inline
   OutputIterator
@@ -105,7 +105,7 @@ namespace DGtal
     return result;
   }
 
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   template <typename OutputIterator>
   inline
   void

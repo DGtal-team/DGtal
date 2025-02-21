@@ -41,10 +41,10 @@
 // ----------------------- Standard services ------------------------------
 namespace DGtal{
 
-  template<typename Space>  
+  template<DGtal::concepts::CSpace Space>  
   const typename Space::Dimension LinearAlgebra<Space>::dimension = Space::dimension;
 
-  template<typename Space>
+  template<DGtal::concepts::CSpace Space>
   inline
   typename LinearAlgebra<Space>::Integer 
   LinearAlgebra<Space>::determinant(const Point &a, const Point &b)

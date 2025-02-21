@@ -53,12 +53,11 @@ namespace DGtal {
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
    */
-  template < typename TSpace, typename TSegmentation, typename Functor >
+  template < concepts::CSpace TSpace, typename TSegmentation, typename Functor >
   class LambdaMST2DEstimator
   {
     //Checking concepts
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
     BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer < typename TSegmentation::SegmentComputer > ));
     // ----------------------- Types ------------------------------

@@ -37,23 +37,23 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::InexactPredicateLpSeparableMetric(const double anExponent):
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::InexactPredicateLpSeparableMetric(const double anExponent):
   myExponent(anExponent)
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::~InexactPredicateLpSeparableMetric()
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::~InexactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Value
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::rawDistance (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::Value
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::rawDistance (const Point &aP,
                                                           const Point &aQ) const
 {
   Value res= 0.0;
@@ -64,19 +64,19 @@ DGtal::InexactPredicateLpSeparableMetric<T, TValue>::rawDistance (const Point &a
   return res;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Value
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::operator() (const Point &aP,
+typename DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::Value
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::operator() (const Point &aP,
                                                        const Point &aQ) const
 {
   return std::pow( rawDistance(aP,aQ) , 1.0/myExponent);
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
 DGtal::Closest
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::closest (const Point &origin,
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::closest (const Point &origin,
                                                       const Point &first,
                                                       const Point &second) const
 {
@@ -94,10 +94,10 @@ DGtal::InexactPredicateLpSeparableMetric<T, TValue>::closest (const Point &origi
       return ClosestBOTH;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T, TValue>::Abscissa
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::binarySearchHidden(const Abscissa &udim,
+typename DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::Abscissa
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::binarySearchHidden(const Abscissa &udim,
                                                                 const Abscissa &vdim,
                                                                 const Value &nu,
                                                                 const Value &nv,
@@ -131,10 +131,10 @@ DGtal::InexactPredicateLpSeparableMetric<T, TValue>::binarySearchHidden(const Ab
 
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::hiddenBy(const Point &u,
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::hiddenBy(const Point &u,
                                                       const Point &v,
                                                       const Point &w,
                                                       const Point &startingPoint,
@@ -203,27 +203,27 @@ DGtal::InexactPredicateLpSeparableMetric<T, TValue>::hiddenBy(const Point &u,
     }
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
 void
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::selfDisplay ( std::ostream & out ) const
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::selfDisplay ( std::ostream & out ) const
 {
   out << "[InexactPredicateLpSeparableMetric] p="<<myExponent;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::concepts::CEuclideanRing TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CEuclideanRing TValue>
 inline
 bool
-DGtal::InexactPredicateLpSeparableMetric<T, TValue>::isValid() const
+DGtal::InexactPredicateLpSeparableMetric<TSpace, TValue>::isValid() const
 {
   return true;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename TValue>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSpace TSpaceValue>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const InexactPredicateLpSeparableMetric<T, TValue> & object )
+                    const InexactPredicateLpSeparableMetric<TSpace, TValue> & object )
 {
   object.selfDisplay( out );
   return out;

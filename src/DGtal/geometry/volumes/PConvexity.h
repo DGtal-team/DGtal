@@ -348,11 +348,9 @@ namespace DGtal
 
      @tparam TSpace an arbitrary model of digital space, i.e. see CSpace.
   */
-  template < typename TSpace >
+  template < DGtal::concepts::CSpace TSpace >
   class PConvexity
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
   public:
     typedef PConvexity<TSpace>       Self;
     typedef TSpace                   Space;

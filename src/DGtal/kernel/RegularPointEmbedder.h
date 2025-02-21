@@ -64,11 +64,9 @@ namespace DGtal
      @tparam TSpace the type of digital Space where the digitized
      object lies. A model of CSpace.
    */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class RegularPointEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
     // ----------------------- Standard services ------------------------------
   public:
     typedef TSpace Space;

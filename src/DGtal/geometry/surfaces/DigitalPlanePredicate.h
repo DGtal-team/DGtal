@@ -68,11 +68,9 @@ namespace DGtal
    *
    * \b Models: A DigitalPlanePredicate is a model of concepts::CPointPredicate.
    */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class DigitalPlanePredicate
   {
-    BOOST_CONCEPT_ASSERT((concepts::CSpace<TSpace>));
-
     // ----------------------- public types ------------------------------
   public:
     using Self    = DigitalPlanePredicate<TSpace>;

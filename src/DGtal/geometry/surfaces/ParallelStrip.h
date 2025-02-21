@@ -86,11 +86,9 @@ namespace DGtal
      large, i.e. \f$ N \cdot X \le \mu + \nu\f$, otherwise it is
      strict, i.e. \f$ N \cdot X < \mu + \nu\f$
    */
-  template <typename TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
+  template <DGtal::concepts::CSpace TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
   class ParallelStrip
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
     // ----------------------- public types ------------------------------
   public:
     typedef TSpace Space;

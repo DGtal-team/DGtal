@@ -88,12 +88,10 @@ namespace DGtal
    * @tparam Space any model of Digital 3D Space
    * @tparam KSpace any mode of Khalimksky 3D space
    */
-  template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+  template < DGtal::concepts::CSpace  Space = Z3i::Space, typename KSpace = Z3i::KSpace>
   class Display3D
   {
   public:
-
-    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
   public:
 
     typedef Display3D<Space,KSpace> Self;

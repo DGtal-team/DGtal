@@ -82,7 +82,7 @@ namespace DGtal
    * p sums (default: DGtal::int64_t)
    *
    */
-  template <typename TSpace, DGtal::uint32_t p,
+  template <DGtal::concepts::CSpace  TSpace, DGtal::uint32_t p,
             concepts::CInteger TRawValue=DGtal::int64_t>
   class ExactPredicateLpSeparableMetric
   {
@@ -90,7 +90,6 @@ namespace DGtal
   public:
     ///Copy the space type
     typedef TSpace Space;
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
 
     ///Type for points
     typedef typename Space::Point Point;

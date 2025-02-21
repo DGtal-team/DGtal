@@ -96,7 +96,8 @@ power metrics.
  */
 template <typename T>
   requires concepts::CQuantity<typename T::Value> &&
-           concepts::CQuantity<typename T::Weight>
+           concepts::CQuantity<typename T::Weight> &&
+           concepts::CSpace<typename T::Space>
 struct CPowerMetric: boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
@@ -105,9 +106,6 @@ public:
   typedef typename T::Weight Weight;
   typedef typename T::Value Value;
   typedef typename T::Point Point;
-  
-  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
-
 
   BOOST_CONCEPT_USAGE( CPowerMetric )
   {

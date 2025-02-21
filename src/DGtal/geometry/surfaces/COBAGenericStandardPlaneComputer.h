@@ -123,12 +123,11 @@ namespace DGtal
    * points are transformed back when accessing to the value of the
    * iterator (notably in \ref begin and \ref end method).
    */
-  template < typename TSpace,
+  template < DGtal::concepts::CSpace TSpace,
              concepts::CInteger TInternalInteger >
   class COBAGenericStandardPlaneComputer
   {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------

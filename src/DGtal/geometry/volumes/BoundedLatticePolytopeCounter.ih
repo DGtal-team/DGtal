@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 BoundedLatticePolytopeCounter
 ( const Polytope& P )
@@ -48,7 +48,7 @@ BoundedLatticePolytopeCounter
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 init
@@ -62,7 +62,7 @@ init
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 intersectionIntervalAlongAxis( Point p, Dimension a ) const
@@ -113,7 +113,7 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Interval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
@@ -165,7 +165,7 @@ interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 countAlongAxis( Dimension a ) const
@@ -185,7 +185,7 @@ countAlongAxis( Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::Integer
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 countInteriorAlongAxis( Dimension a ) const
@@ -205,7 +205,7 @@ countInteriorAlongAxis( Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getPointsAlongAxis( PointRange& pts, Dimension a ) const
@@ -228,7 +228,7 @@ getPointsAlongAxis( PointRange& pts, Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
@@ -253,7 +253,7 @@ getInteriorPointsAlongAxis( PointRange& pts, Dimension a ) const
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByInterval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getLatticeSet( Dimension a ) const
@@ -273,7 +273,7 @@ getLatticeSet( Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytopeCounter<TSpace>::LatticeSetByInterval
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 getLatticeCells( Dimension a ) const
@@ -332,7 +332,7 @@ getLatticeCells( Dimension a ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::Dimension
 DGtal::BoundedLatticePolytopeCounter<TSpace>::
 longestAxis( ) const

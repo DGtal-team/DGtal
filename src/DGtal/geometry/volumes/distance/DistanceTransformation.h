@@ -87,7 +87,7 @@ namespace DGtal
    * @see distancetransform2D.cpp
    * @see distancetransform3D.cpp
    */
-  template < typename TSpace,
+  template < concepts::CSpace TSpace,
              concepts::CPointPredicate TPointPredicate,
              typename TSeparableMetric,
              typename TImageContainer =
@@ -99,7 +99,6 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
     ///Separable Metric type

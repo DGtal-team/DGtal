@@ -116,12 +116,11 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
-  template < typename TSpace,
+  template < DGtal::concepts::CSpace TSpace,
              typename TInputPoint,
              DGtal::concepts::CSignedNumber TInternalScalar >
   class ChordGenericStandardPlaneComputer
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
     BOOST_STATIC_ASSERT(( TInputPoint::dimension == 3 ));
 

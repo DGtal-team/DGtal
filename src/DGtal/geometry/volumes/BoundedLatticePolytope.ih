@@ -41,7 +41,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 clear()
@@ -54,7 +54,7 @@ clear()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedLatticePolytope<TSpace>::
 BoundedLatticePolytope( std::initializer_list<Point> l )
 {
@@ -63,7 +63,7 @@ BoundedLatticePolytope( std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointIterator>
 DGtal::BoundedLatticePolytope<TSpace>::
 BoundedLatticePolytope( PointIterator itB, PointIterator itE )
@@ -73,7 +73,7 @@ BoundedLatticePolytope( PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename HalfSpaceIterator>
 DGtal::BoundedLatticePolytope<TSpace>::
 BoundedLatticePolytope( const Domain& domain,
@@ -87,7 +87,7 @@ BoundedLatticePolytope( const Domain& domain,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename HalfSpaceIterator>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -150,7 +150,7 @@ init( const Domain& domain,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 internalInitFromTriangle3D( Point a, Point b, Point c )
@@ -178,7 +178,7 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 internalInitFromSegment3D( Point a, Point b )
@@ -203,7 +203,7 @@ internalInitFromSegment3D( Point a, Point b )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 internalInitFromSegment2D( Point a, Point b )
@@ -220,7 +220,7 @@ internalInitFromSegment2D( Point a, Point b )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointIterator>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -317,7 +317,7 @@ init( PointIterator itB, PointIterator itE )
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedLatticePolytope<TSpace>
 DGtal::BoundedLatticePolytope<TSpace>::
 interiorPolytope() const
@@ -329,7 +329,7 @@ interiorPolytope() const
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 DGtal::BoundedLatticePolytope<TSpace>
 DGtal::BoundedLatticePolytope<TSpace>::
 closurePolytope() const
@@ -341,7 +341,7 @@ closurePolytope() const
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
 cut( Dimension k, bool pos, Integer b, bool large )
@@ -359,7 +359,7 @@ cut( Dimension k, bool pos, Integer b, bool large )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
 cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
@@ -384,7 +384,7 @@ cut( const Vector& a, Integer b, bool large, bool valid_edge_constraint )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int 
 DGtal::BoundedLatticePolytope<TSpace>::
 cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
@@ -395,7 +395,7 @@ cut( const HalfSpace& hs, bool large, bool valid_edge_constraint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void 
 DGtal::BoundedLatticePolytope<TSpace>::
 swap( BoundedLatticePolytope & other )
@@ -408,7 +408,7 @@ swap( BoundedLatticePolytope & other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 isInside( const Point& p ) const
@@ -426,7 +426,7 @@ isInside( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 isDomainPointInside( const Point& p ) const
@@ -444,7 +444,7 @@ isDomainPointInside( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 isInterior( const Point& p ) const
@@ -459,7 +459,7 @@ isInterior( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::
 isBoundary( const Point& p ) const
@@ -476,7 +476,7 @@ isBoundary( const Point& p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator*=( Integer t )
@@ -487,7 +487,7 @@ operator*=( Integer t )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( UnitSegment s )
@@ -504,7 +504,7 @@ operator+=( UnitSegment s )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( LeftStrictUnitSegment s )
@@ -524,7 +524,7 @@ operator+=( LeftStrictUnitSegment s )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( RightStrictUnitSegment s )
@@ -543,7 +543,7 @@ operator+=( RightStrictUnitSegment s )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( UnitCell c )
@@ -554,7 +554,7 @@ operator+=( UnitCell c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( RightStrictUnitCell c )
@@ -565,7 +565,7 @@ operator+=( RightStrictUnitCell c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( LeftStrictUnitCell c )
@@ -576,7 +576,7 @@ operator+=( LeftStrictUnitCell c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 count() const
@@ -586,7 +586,7 @@ count() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countInterior() const
@@ -595,7 +595,7 @@ countInterior() const
   return C.countInteriorAlongAxis( C.longestAxis() );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countBoundary() const
@@ -604,7 +604,7 @@ countBoundary() const
   return clP.count() - countInterior();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countWithin( Point lo, Point hi ) const
@@ -630,7 +630,7 @@ countWithin( Point lo, Point hi ) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countUpTo( Integer max) const
@@ -651,7 +651,7 @@ countUpTo( Integer max) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getPoints( std::vector<Point>& pts ) const
@@ -661,7 +661,7 @@ getPoints( std::vector<Point>& pts ) const
   C.getPointsAlongAxis( pts, C.longestAxis() );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const
@@ -687,7 +687,7 @@ getKPoints( std::vector<Point>& pts, const Point& alpha_shift ) const
     }  
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -698,7 +698,7 @@ insertPoints( PointSet& pts_set ) const
   pts_set.insert( pts.cbegin(), pts.cend() );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -724,7 +724,7 @@ insertKPoints( PointSet& pts_set, const Point& alpha_shift ) const
     }  
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getInteriorPoints( std::vector<Point>& pts ) const
@@ -734,7 +734,7 @@ getInteriorPoints( std::vector<Point>& pts ) const
   C.getInteriorPointsAlongAxis( pts, C.longestAxis() );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getBoundaryPoints( std::vector<Point>& pts ) const
@@ -785,7 +785,7 @@ getBoundaryPoints( std::vector<Point>& pts ) const
 
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countByScanning() const
@@ -797,7 +797,7 @@ countByScanning() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countInteriorByScanning() const
@@ -808,7 +808,7 @@ countInteriorByScanning() const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countBoundaryByScanning() const
@@ -819,7 +819,7 @@ countBoundaryByScanning() const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countWithinByScanning( Point lo, Point hi ) const
@@ -831,7 +831,7 @@ countWithinByScanning( Point lo, Point hi ) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::
 countUpToByScanning( Integer max) const
@@ -844,7 +844,7 @@ countUpToByScanning( Integer max) const
   return nb;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getPointsByScanning( std::vector<Point>& pts ) const
@@ -854,7 +854,7 @@ getPointsByScanning( std::vector<Point>& pts ) const
     if ( isDomainPointInside( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 template <typename PointSet>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
@@ -864,7 +864,7 @@ insertPointsByScanning( PointSet& pts_set ) const
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getInteriorPointsByScanning( std::vector<Point>& pts ) const
@@ -874,7 +874,7 @@ getInteriorPointsByScanning( std::vector<Point>& pts ) const
     if ( isInterior( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 void
 DGtal::BoundedLatticePolytope<TSpace>::
 getBoundaryPointsByScanning( std::vector<Point>& pts ) const
@@ -885,7 +885,7 @@ getBoundaryPointsByScanning( std::vector<Point>& pts ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::Domain&
 DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 {
@@ -893,7 +893,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getDomain() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 unsigned int
 DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
 {
@@ -901,7 +901,7 @@ DGtal::BoundedLatticePolytope<TSpace>::nbHalfSpaces() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::Vector&
 DGtal::BoundedLatticePolytope<TSpace>::getA( unsigned int i ) const
 {
@@ -910,7 +910,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getA( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Integer
 DGtal::BoundedLatticePolytope<TSpace>::getB( unsigned int i ) const
 {
@@ -919,7 +919,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getB( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
 {
@@ -928,7 +928,7 @@ DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityMatrix&
 DGtal::BoundedLatticePolytope<TSpace>::getA() const
 {
@@ -936,7 +936,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getA() const
 }
     
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityVector&
 DGtal::BoundedLatticePolytope<TSpace>::getB() const
 {
@@ -944,7 +944,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getB() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 const std::vector<bool>&
 DGtal::BoundedLatticePolytope<TSpace>::getI() const
 {
@@ -952,7 +952,7 @@ DGtal::BoundedLatticePolytope<TSpace>::getI() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 bool
 DGtal::BoundedLatticePolytope<TSpace>::canBeSummed() const
 {
@@ -966,7 +966,7 @@ DGtal::BoundedLatticePolytope<TSpace>::canBeSummed() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 void
 DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
@@ -987,7 +987,7 @@ DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::BoundedLatticePolytope<TSpace>::isValid() const
@@ -995,7 +995,7 @@ DGtal::BoundedLatticePolytope<TSpace>::isValid() const
   return ! D.isEmpty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 std::string
 DGtal::BoundedLatticePolytope<TSpace>::className

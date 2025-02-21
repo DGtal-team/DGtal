@@ -41,7 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::Point
 DGtal::CanonicEmbedder<TSpace>::floor( const RealPoint & p ) const
@@ -52,7 +52,7 @@ DGtal::CanonicEmbedder<TSpace>::floor( const RealPoint & p ) const
   return dp;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::Point
 DGtal::CanonicEmbedder<TSpace>::ceil( const RealPoint & p ) const
@@ -63,7 +63,7 @@ DGtal::CanonicEmbedder<TSpace>::ceil( const RealPoint & p ) const
   return dp;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::Point
 DGtal::CanonicEmbedder<TSpace>::round( const RealPoint & p ) const
@@ -74,7 +74,7 @@ DGtal::CanonicEmbedder<TSpace>::round( const RealPoint & p ) const
   return dp;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::RealPoint
 DGtal::CanonicEmbedder<TSpace>::embed( const Point & dp ) const
@@ -82,7 +82,7 @@ DGtal::CanonicEmbedder<TSpace>::embed( const Point & dp ) const
   return this->operator()( dp );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::RealPoint
 DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
@@ -93,7 +93,7 @@ DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
   return p;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <DGtal::concepts::CSpace TSpace>
 inline
 bool
 DGtal::CanonicEmbedder<TSpace>::isValid( ) const

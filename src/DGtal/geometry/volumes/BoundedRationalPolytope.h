@@ -70,11 +70,9 @@ namespace DGtal
 
      @tparam TSpace an arbitrary model of CSpace.
    */
-  template < typename TSpace >
+  template < DGtal::concepts::CSpace TSpace >
   class BoundedRationalPolytope 
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-
   public:
     typedef BoundedRationalPolytope<TSpace>  Self;
     typedef TSpace                          Space;

@@ -44,8 +44,12 @@
 #include <limits>
 
 #include <boost/call_traits.hpp>
+#include <boost/concept_archetype.hpp>
+#include <boost/iterator/iterator_concepts.hpp>
 
-#include "DGtal/base/Common.h"
+#include "DGtal/base/Trace.h"
+#include "DGtal/base/BasicTypes.h"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

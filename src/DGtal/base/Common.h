@@ -126,6 +126,8 @@
 #include "DGtal/base/BasicArchetypes.h"
 #include "DGtal/base/Exceptions.h"
 
+#include "DGtal/kernel/CSpace.h"
+
 //////////////////////////////////////////////////////////////////////////////
 namespace DGtal
 {
@@ -154,14 +156,18 @@ namespace DGtal
 
   class Board2D;
 
-  template < class Space, class KSpace>  class Display3D;
+
+  template <typename T>
+  struct NumberTraits;
+
+  template < DGtal::concepts::CSpace Space, class KSpace>  class Display3D;
 
 
 #if defined( DGTAL_WITH_CAIRO )
-  template < class Space, class KSpace> class Board3DTo2D;
+  template < DGtal::concepts::CSpace Space, class KSpace> class Board3DTo2D;
 #endif
 #if defined( WITH_VISU3D_QGLVIEWER )
-  template < class Space, class KSpace> class Viewer3D;
+  template < DGtal::concepts::CSpace Space, class KSpace> class Viewer3D;
 #endif
 
 

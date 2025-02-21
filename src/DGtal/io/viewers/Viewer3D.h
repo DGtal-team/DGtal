@@ -126,13 +126,10 @@ namespace DGtal
    *
    * @see Display3D, Board3DTo2D
    */
-  template <typename TSpace  = SpaceND<3>,
+  template <DGtal::concepts::CSpace  TSpace  = SpaceND<3>,
             typename TKSpace = KhalimskySpaceND<3>>
   class Viewer3D : public QGLViewer, public Display3D<TSpace, TKSpace>
   {
-
-    BOOST_CONCEPT_ASSERT( (concepts::CSpace<TSpace>));
-
     //---------------overwritting some functions of Display3D -------------------
 
     // ----------------------- public types ------------------------------

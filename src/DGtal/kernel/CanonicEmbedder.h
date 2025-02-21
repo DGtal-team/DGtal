@@ -60,12 +60,11 @@ namespace DGtal
 
    @tparam TSpace the type of digital Space where the embedder works.
  */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace  TSpace>
   struct CanonicEmbedder
   {
   public:
     typedef CanonicEmbedder<TSpace> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
     typedef TSpace Space;
     typedef typename Space::Integer Integer;

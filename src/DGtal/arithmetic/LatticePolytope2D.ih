@@ -43,19 +43,19 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 DGtal::LatticePolytope2D<TSpace,TSequence>::~LatticePolytope2D()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 DGtal::LatticePolytope2D<TSpace,TSequence>::LatticePolytope2D()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 DGtal::LatticePolytope2D<TSpace,TSequence>::LatticePolytope2D
 ( const Self & other )
@@ -63,7 +63,7 @@ DGtal::LatticePolytope2D<TSpace,TSequence>::LatticePolytope2D
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Self &
 DGtal::LatticePolytope2D<TSpace,TSequence>::operator=
@@ -74,7 +74,7 @@ DGtal::LatticePolytope2D<TSpace,TSequence>::operator=
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::ConstIterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -83,7 +83,7 @@ begin() const
   return myVertices.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::ConstIterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -92,7 +92,7 @@ end() const
   return myVertices.end();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Iterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -101,7 +101,7 @@ begin()
   return myVertices.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Iterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -110,7 +110,7 @@ end()
   return myVertices.end();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 bool
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -119,7 +119,7 @@ empty() const
   return myVertices.empty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Size
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -128,7 +128,7 @@ size() const
   return myVertices.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Size
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -137,7 +137,7 @@ max_size() const
   return myVertices.max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -146,7 +146,7 @@ clear()
   myVertices.clear();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Iterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -155,7 +155,7 @@ erase( Iterator it )
   return myVertices.erase( it );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -165,7 +165,7 @@ swap( LatticePolytope2D & other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::MyIntegerComputer &
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -175,7 +175,7 @@ ic() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Domain
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 boundingBoxDomain() const
@@ -192,7 +192,7 @@ boundingBoxDomain() const
   return Domain( infimum, supremum );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 purge()
@@ -213,7 +213,7 @@ purge()
     erase( begin() );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Iterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -222,7 +222,7 @@ insertBefore( const Iterator & pos, const Point & K )
   return myVertices.insert( pos, K );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -231,7 +231,7 @@ pushBack( const Point & K )
   myVertices.push_back( K );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -240,7 +240,7 @@ pushFront( const Point & K )
   myVertices.push_front( K );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -249,7 +249,7 @@ push_back( const Point & K )
   myVertices.push_back( K );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -258,7 +258,7 @@ push_front( const Point & K )
   myVertices.push_front( K );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 const typename DGtal::LatticePolytope2D<TSpace,TSequence>::Integer &
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -277,7 +277,7 @@ twiceArea() const
   return _a;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Point3I
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -287,7 +287,7 @@ centroid() const
   return centroid( _a );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Point3I
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -327,7 +327,7 @@ centroid( const Integer & twice_area ) const
   return Point3I( _A[ 0 ], _A[ 1 ], _den );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Integer
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -350,7 +350,7 @@ numberBoundaryPoints() const
   return _a;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::Integer
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -363,7 +363,7 @@ numberInteriorPoints() const
   return _c / 2;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::SizeCouple
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -408,7 +408,7 @@ findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 bool
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -462,7 +462,7 @@ cut( const HalfSpace & hs )
   return true;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::HalfSpace
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -487,7 +487,7 @@ halfSpace( ConstIterator it ) const
   return HalfSpace( _N, _ic.floorDiv( _c, _g) );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 typename DGtal::LatticePolytope2D<TSpace,TSequence>::HalfSpace
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -517,7 +517,7 @@ halfSpace( const Point & A, const Point & B, const Point & inP ) const
        @todo this method is for now not efficient.
     */
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 template <typename DigitalSet>
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -586,7 +586,7 @@ getIncludedDigitalPoints( DigitalSet & aSet ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 bool
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 getFirstPointsOfHull
@@ -673,7 +673,7 @@ getFirstPointsOfHull
    @param hs3 the limiting half-space which defines the bounds of the approximation.
  */
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 getAllPointsOfHull( std::vector<Point> & inPts,
@@ -797,7 +797,7 @@ getAllPointsOfHull( std::vector<Point> & inPts,
  * these points that's why they appear in the code.
  */
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 template <typename OutputIterator>
 OutputIterator
 DGtal::LatticePolytope2D<TSpace,TSequence>::
@@ -862,7 +862,7 @@ computeConvexHullBorder
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::selfDisplay ( std::ostream & out ) const
@@ -874,7 +874,7 @@ DGtal::LatticePolytope2D<TSpace,TSequence>::selfDisplay ( std::ostream & out ) c
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 bool
 DGtal::LatticePolytope2D<TSpace,TSequence>::isValid() const
@@ -882,7 +882,7 @@ DGtal::LatticePolytope2D<TSpace,TSequence>::isValid() const
     return true;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TSequence>
+template <DGtal::concepts::CSpace TSpace, typename TSequence>
 inline
 std::string
 DGtal::LatticePolytope2D<TSpace,TSequence>::className

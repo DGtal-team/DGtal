@@ -57,10 +57,9 @@ namespace DGtal
      
      @tparam TSpace any type of 3-dimensional digital space.
   */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class SphericalTriangle
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     typedef TSpace                         Space;
     typedef SphericalTriangle<Space>       Self;
     typedef typename Space::RealPoint      RealPoint;

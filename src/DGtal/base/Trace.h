@@ -238,11 +238,11 @@ namespace DGtal
 
 } // namespace DGtal
 
-#include "DGtal/base/Assert.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions
 #include "DGtal/base/Trace.ih"
+#include "DGtal/base/Assert.h"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

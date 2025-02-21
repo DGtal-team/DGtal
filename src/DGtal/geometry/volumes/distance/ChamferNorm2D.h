@@ -82,13 +82,11 @@ namespace DGtal
      * @tparam TSpace a model CSpace of dimension 2.
      *
      */
-    template <typename TSpace>
+    template <DGtal::concepts::CSpace TSpace>
     class ChamferNorm2D
     {
       // ----------------------- Standard services ------------------------------
     public:
-
-      BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
       BOOST_STATIC_ASSERT( TSpace::dimension == 2 );
 
       ///Underlying Space

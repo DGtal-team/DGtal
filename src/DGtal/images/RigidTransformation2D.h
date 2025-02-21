@@ -67,12 +67,11 @@ namespace functors
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+template < DGtal::concepts::CSpace  TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class ForwardRigidTransformation2D
 {
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
     BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));
@@ -137,12 +136,11 @@ protected:
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template < typename TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
+template < DGtal::concepts::CSpace  TSpace, typename TInputValue = typename TSpace::RealPoint, typename TOutputValue = typename TSpace::Point,
            typename TFunctor = VectorRounding < TInputValue, TOutputValue > >
 class BackwardRigidTransformation2D
 {
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_STATIC_ASSERT(( TOutputValue::dimension == 2 ));
     BOOST_STATIC_ASSERT(( TInputValue::dimension == 2 ));

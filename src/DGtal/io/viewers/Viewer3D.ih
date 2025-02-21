@@ -61,7 +61,7 @@ using namespace qglviewer;
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods //
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::rotateDomain(
 Image2DDomainD3D & anDom, double angleRotation, ImageDirection rotationDir )
 {
@@ -81,7 +81,7 @@ Image2DDomainD3D & anDom, double angleRotation, ImageDirection rotationDir )
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TValues>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::rotatePoint(
 TValues & x, TValues & y, TValues & z, double cx, double cy, double cz,
@@ -102,7 +102,7 @@ double angleRotation, ImageDirection rotationDir )
   }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TContainer>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::rotateLineD3D(
 typename DGtal::Display3D<TSpace, TKSpace>::LineD3D & aLine,
@@ -136,19 +136,19 @@ ImageDirection dirRotation )
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline unsigned int DGtal::Viewer3D<TSpace, TKSpace>::getCurrentDomainNumber()
 {
   return static_cast<unsigned int>(myImageDomainList.size());
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline unsigned int DGtal::Viewer3D<TSpace, TKSpace>::getCurrentGLImageNumber()
 {
   return static_cast<unsigned int>(myGSImageList.size());
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::addTextureImage(
 const typename Viewer3D<TSpace, TKSpace>::TextureImage & image )
 {
@@ -159,7 +159,7 @@ const typename Viewer3D<TSpace, TKSpace>::TextureImage & image )
   Display3D<TSpace, TKSpace>::updateBoundingBox( image.point4 );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TImageType, typename TFunctor>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::updateTextureImage(
 unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
@@ -194,7 +194,7 @@ double rotationAngle, ImageDirection rotationDir )
   }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::updateOrientationTextureImage(
 unsigned int imageIndex, double xPosition, double yPosition, double zPosition,
 ImageDirection newDirection )
@@ -216,7 +216,7 @@ ImageDirection newDirection )
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::updateEmbeddingTextureImage(
 unsigned int anImageIndex, typename Space::Point aPoint1,
 typename Space::Point aPoint2, typename Space::Point aPoint3,
@@ -232,7 +232,7 @@ typename Space::Point aPoint4 )
   anImage.updateImage3DEmbedding(aPoint1, aPoint2, aPoint3, aPoint4);
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void
 DGtal::Viewer3D<TSpace, TKSpace>::TextureImage::updateImageOrientation(
 ImageDirection normalDir, double xBottomLeft, double yBottomLeft,
@@ -260,7 +260,7 @@ double zBottomLeft )
   myDirection=normalDir;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void
 DGtal::Viewer3D<TSpace, TKSpace>::Image2DDomainD3D::updateDomainOrientation(
 ImageDirection normalDir, double xBottomLeft, double yBottomLeft,
@@ -288,7 +288,7 @@ double zBottomLeft )
   myDirection=normalDir;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::Image2DDomainD3D::translateDomain(
 double xTranslation, double yTranslation, double zTranslation )
 {
@@ -298,7 +298,7 @@ double xTranslation, double yTranslation, double zTranslation )
   point4[0] += xTranslation; point4[1] += yTranslation; point4[2] += zTranslation;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TDomain>
 void DGtal::Viewer3D<TSpace, TKSpace>::addImage2DDomainD3D(
 const TDomain & aDomain, std::string mode, const DGtal::Color & aColor )
@@ -321,7 +321,7 @@ const TDomain & aDomain, std::string mode, const DGtal::Color & aColor )
   Viewer3D<TSpace, TKSpace>::myLineSetList.push_back( vectLines );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline std::vector<typename DGtal::Viewer3D<TSpace, TKSpace>::LineD3D>
 DGtal::Viewer3D<TSpace, TKSpace>::compute2DDomainLineRepresentation(
 typename DGtal::Viewer3D<TSpace, TKSpace>::Image2DDomainD3D & anImageDomain )
@@ -337,7 +337,7 @@ typename DGtal::Viewer3D<TSpace, TKSpace>::Image2DDomainD3D & anImageDomain )
   return vectLinesResu;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline std::vector<typename DGtal::Viewer3D<TSpace, TKSpace>::LineD3D>
 DGtal::Viewer3D<TSpace, TKSpace>::compute2DDomainLineRepresentation(
 typename DGtal::Viewer3D<TSpace, TKSpace>::Image2DDomainD3D & anImageDomain,
@@ -472,7 +472,7 @@ double delta )
   return aLineSet;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::updateAn2DDomainOrientation(
 unsigned int domainIndex, double xPosition, double yPosition, double zPosition,
 ImageDirection newDirection )
@@ -499,7 +499,7 @@ ImageDirection newDirection )
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::translateAn2DDomain(
 unsigned int domainIndex, double xTranslation, double yTranslation,
 double zTranslation )
@@ -523,14 +523,14 @@ double zTranslation )
   }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline std::string
 DGtal::Viewer3D<TSpace, TKSpace>::TextureImage::className() const
 {
   return "TextureImage";
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline DGtal::Viewer3D<TSpace, TKSpace> & DGtal::Viewer3D<TSpace, TKSpace>::
 operator<<( const DGtal::Color & aColor )
 {
@@ -538,7 +538,7 @@ operator<<( const DGtal::Color & aColor )
   return *this;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline DGtal::Viewer3D<TSpace, TKSpace> & DGtal::Viewer3D<TSpace, TKSpace>::
 operator<<( const typename Viewer3D<TSpace, TKSpace>::StreamKey & key )
 {
@@ -559,7 +559,7 @@ operator<<( const typename Viewer3D<TSpace, TKSpace>::StreamKey & key )
   return *this;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TDrawableWithViewer3D>
 inline DGtal::Viewer3D<TSpace, TKSpace> & DGtal::Viewer3D<TSpace, TKSpace>::
 operator<<( const TDrawableWithViewer3D & object )
@@ -574,7 +574,7 @@ operator<<( const TDrawableWithViewer3D & object )
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators //
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline std::ostream & DGtal::
 operator<<( std::ostream & out, const Viewer3D<TSpace, TKSpace> & object )
 {
@@ -602,7 +602,7 @@ operator<<( std::ostream & out, const Viewer3D<TSpace, TKSpace> & object )
 // end of surcharge //
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::drawWithNames()
 {
   // JOL: 2014/10/15. This method is called only when the user tries
@@ -631,7 +631,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::drawWithNames()
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
 {
 
@@ -781,19 +781,19 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::draw()
    glPopMatrix();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::selfDisplay( std::ostream & out ) const
 {
   out << "[Viewer3D]";
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 bool DGtal::Viewer3D<TSpace, TKSpace>::isValid() const
 {
   return true;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::init()
 {
   if ( myExtension != 0 )
@@ -898,7 +898,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::init()
   setManipulatedFrame ( new ManipulatedFrame() );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::sortSurfelFromCamera()
 {
   CompFarthestVoxelFromCamera comp;
@@ -919,7 +919,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::sortSurfelFromCamera()
         Viewer3D<TSpace, TKSpace>::myPrismList.end(), compSurf );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::sortTriangleFromCamera()
 {
   CompFarthestTriangleFromCamera comp;
@@ -930,7 +930,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::sortTriangleFromCamera()
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::sortQuadFromCamera()
 {
   CompFarthestSurfelFromCamera comp;
@@ -944,7 +944,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::sortQuadFromCamera()
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::sortPolygonFromCamera()
 {
   CompFarthestPolygonFromCamera comp;
@@ -958,7 +958,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::sortPolygonFromCamera()
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::postSelection( const QPoint & point )
 {
   bool handled = false;
@@ -988,7 +988,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::postSelection( const QPoint & point )
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::updateList(
 bool needToUpdateBoundingBox )
 {
@@ -1101,7 +1101,7 @@ bool needToUpdateBoundingBox )
     glPopMatrix();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glDrawGLBall(
 const typename Viewer3D<TSpace, TKSpace>::BallD3D & aBall )
 {
@@ -1133,7 +1133,7 @@ const typename Viewer3D<TSpace, TKSpace>::BallD3D & aBall )
   
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::mousePressEvent( QMouseEvent * e )
 {
   bool handled = false;
@@ -1166,7 +1166,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mousePressEvent( QMouseEvent * e )
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::mouseReleaseEvent( QMouseEvent * e )
 {
   bool handled = false;
@@ -1186,7 +1186,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mouseReleaseEvent( QMouseEvent * e )
   }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::mouseMoveEvent( QMouseEvent * e )
 {
   bool handled = false;
@@ -1218,7 +1218,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::mouseMoveEvent( QMouseEvent * e )
   }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
 {
   bool handled = false;
@@ -1408,7 +1408,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::keyPressEvent( QKeyEvent * e )
     QGLViewer::keyPressEvent ( e );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 QString DGtal::Viewer3D<TSpace, TKSpace>::helpString() const
 {
   QString text;
@@ -1433,7 +1433,7 @@ QString DGtal::Viewer3D<TSpace, TKSpace>::helpString() const
   return text;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListCubesMaps(
 const typename DGtal::Display3D<TSpace, TKSpace>::CubesMap & aCubeMap,
 unsigned int idList )
@@ -1519,7 +1519,7 @@ unsigned int idList )
   
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListQuadD3D(
 const VectorQuad & aVectQuad, unsigned int idList )
 {
@@ -1546,7 +1546,7 @@ const VectorQuad & aVectQuad, unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListLines(
 const VectorLine & aVectLine, unsigned int idList )
 {
@@ -1566,7 +1566,7 @@ const VectorLine & aVectLine, unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListBalls(
 const VectorBall & aVectBall, unsigned int idList )
 {
@@ -1605,7 +1605,7 @@ const VectorBall & aVectBall, unsigned int idList )
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListQuadMaps(
 const typename DGtal::Display3D<TSpace, TKSpace>::QuadsMap & aQuadMap,
 unsigned int idList )
@@ -1657,7 +1657,7 @@ unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListQuadMapsWired(
 const typename DGtal::Display3D<TSpace, TKSpace>::QuadsMap & aQuadMap,
 unsigned int idList )
@@ -1699,7 +1699,7 @@ unsigned int idList )
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListTriangles(
 const std::vector<VectorTriangle> & aVectTriangle, unsigned int idList )
 {
@@ -1722,7 +1722,7 @@ const std::vector<VectorTriangle> & aVectTriangle, unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListTrianglesWired(
 const std::vector<VectorTriangle> & aVectTriangle, unsigned int idList )
 {
@@ -1751,7 +1751,7 @@ const std::vector<VectorTriangle> & aVectTriangle, unsigned int idList )
 
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListPolygons(
 const std::vector<VectorPolygon> & aVectPolygon, unsigned int idList )
 {
@@ -1776,7 +1776,7 @@ const std::vector<VectorPolygon> & aVectPolygon, unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glCreateListPolygonsWired(
 const std::vector<VectorPolygon> & aVectPolygon, unsigned int idList )
 {
@@ -1805,7 +1805,7 @@ const std::vector<VectorPolygon> & aVectPolygon, unsigned int idList )
   glEndList();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateTextureImages(
 const VectorTextureImage & aVectImage )
 {
@@ -1843,7 +1843,7 @@ const VectorTextureImage & aVectImage )
     }
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateLightRenderingMode() const
 {
   if(myIsDoubleFaceRendering)
@@ -1853,7 +1853,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateLightRenderingMode() const
 }
 
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateBackground() 
 {
   
@@ -1871,7 +1871,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::glUpdateBackground()
 }
 
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 QDomElement
 DGtal::Viewer3D<TSpace, TKSpace>::domElement( const QString & name,
                                               QDomDocument & document ) const
@@ -1890,7 +1890,7 @@ DGtal::Viewer3D<TSpace, TKSpace>::domElement( const QString & name,
   return res;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::initFromDOMElement(
 const QDomElement & element )
 {
@@ -1928,7 +1928,7 @@ const QDomElement & element )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::closeEvent( QCloseEvent * e )
 {
   if (myAutoSaveState)
@@ -1938,7 +1938,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::closeEvent( QCloseEvent * e )
   QGLViewer::closeEvent(e);
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLDoubleRenderingMode(
 bool doubleSidedRendering )
 {
@@ -1946,7 +1946,7 @@ bool doubleSidedRendering )
   glUpdateLightRenderingMode();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLMaterialShininessCoefficient(
 const GLfloat matShininessCoeff )
 {
@@ -1954,7 +1954,7 @@ const GLfloat matShininessCoeff )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLLightAmbientCoefficients(
 const GLfloat lightAmbientCoeffs[ 4 ] )
 {
@@ -1965,7 +1965,7 @@ const GLfloat lightAmbientCoeffs[ 4 ] )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLLightDiffuseCoefficients(
 const GLfloat lightDiffuseCoeffs[ 4 ] )
 {
@@ -1976,14 +1976,14 @@ const GLfloat lightDiffuseCoeffs[ 4 ] )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setUseGLPointForBalls(
 const bool useOpenGLPt )
 {
   myUseGLPointsForBalls = useOpenGLPt;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::updateRenderingCoefficients(
 const RenderingMode aRenderMode, bool displayState )
 {
@@ -2027,7 +2027,7 @@ const RenderingMode aRenderMode, bool displayState )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLLightSpecularCoefficients(
 const GLfloat lightSpecularCoeffs[ 4 ] )
 {
@@ -2038,14 +2038,14 @@ const GLfloat lightSpecularCoeffs[ 4 ] )
   update();
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::show()
 {
   QGLViewer::show();
   updateList(false);
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::paintGL()
 {
   if ( displaysInStereo() )
@@ -2077,7 +2077,7 @@ inline void DGtal::Viewer3D<TSpace, TKSpace>::paintGL()
   Q_EMIT drawFinished( true );
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::updateLightCoordsFromCamera()
 {
   Vec posLCam;
@@ -2091,7 +2091,7 @@ void DGtal::Viewer3D<TSpace, TKSpace>::updateLightCoordsFromCamera()
   myLightPosition[3] = 1.0f;
 }
 
-template <typename TSpace, typename TKSpace>
+template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::updateRelativeCameraFromLightPosition()
 {
   Vec posL;

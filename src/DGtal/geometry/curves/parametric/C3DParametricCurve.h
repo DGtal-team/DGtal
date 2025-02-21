@@ -84,6 +84,7 @@ Description of \b concept '\b 3DParametricCurve' <p>
 @tparam T the type that should be a model of 3DParametricCurve.
  */
 template <typename T>
+requires concepts::CSpace<typename T::Space>
 struct C3DParametricCurve
 {
     // ----------------------- Concept checks ------------------------------
@@ -91,7 +92,6 @@ public:
     typedef typename T::Space Space;
     typedef typename T::RealPoint RealPoint;
     typedef typename T::Point Point;
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace <Space> ));
     BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
     // check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( C3DParametricCurve )

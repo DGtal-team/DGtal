@@ -102,38 +102,13 @@ Description of \b concept '\b CSpace' <p>
 
    */
   template <typename T>
-  requires CIntegralNumber<typename T::Dimension> &&
-           CUnsignedNumber<typename T::Dimension> &&
-           CIntegralNumber<typename T::Size> &&
-           CUnsignedNumber<typename T::Size> && 
-           CInteger<typename T::Integer>
-  struct CSpace
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Space Space;
-    typedef typename T::Integer Integer;
-    typedef typename T::Point Point;
-    typedef typename T::Vector Vector;
-    typedef typename T::Dimension Dimension;
-    typedef typename T::Size Size;
-    typedef typename T::RealPoint RealPoint;
-    typedef typename T::RealVector RealVector;
-
-    BOOST_CONCEPT_USAGE( CSpace )
-    {
-      //Should have a static dimension.
-      ConceptUtils::sameType( myDim, T::dimension );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    Dimension myDim;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CSpace
+  concept CSpace = 
+    CIntegralNumber<typename T::Dimension> &&
+    CUnsignedNumber<typename T::Dimension> &&
+    CIntegralNumber<typename T::Size> &&
+    CUnsignedNumber<typename T::Size> && 
+    CInteger<typename T::Integer> && 
+    std::same_as<typename T::Dimension, std::remove_const_t<decltype(T::dimension)>>;
   }
 } // namespace DGtal
 

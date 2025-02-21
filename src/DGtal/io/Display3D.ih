@@ -54,7 +54,7 @@
 // Implementation of inline functions and external operators //
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::setFillColor(DGtal::Color aColor)
@@ -62,7 +62,7 @@ DGtal::Display3D< Space ,KSpace >::setFillColor(DGtal::Color aColor)
   myCurrentFillColor=aColor;
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::setFillTransparency(unsigned char alpha)
@@ -70,7 +70,7 @@ DGtal::Display3D< Space ,KSpace >::setFillTransparency(unsigned char alpha)
   myCurrentFillColor.alpha(alpha);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::setLineColor(DGtal::Color aColor)
@@ -79,7 +79,7 @@ DGtal::Display3D< Space ,KSpace >::setLineColor(DGtal::Color aColor)
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::setKSpace( const KSpace & aKSpace )
@@ -90,7 +90,7 @@ DGtal::Display3D< Space ,KSpace >::setKSpace( const KSpace & aKSpace )
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 DGtal::Color
 DGtal::Display3D< Space ,KSpace >::getLineColor()
@@ -98,7 +98,7 @@ DGtal::Display3D< Space ,KSpace >::getLineColor()
   return myCurrentLineColor;
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 DGtal::Color
 DGtal::Display3D< Space ,KSpace >::getFillColor()
@@ -107,7 +107,7 @@ DGtal::Display3D< Space ,KSpace >::getFillColor()
 }
 
 //-----------------------------------------------------------------------------
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::
@@ -117,7 +117,7 @@ setName3d( DGtal::int32_t name )
 }
 
 //-----------------------------------------------------------------------------
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 DGtal::int32_t
 DGtal::Display3D< Space ,KSpace >::
@@ -126,7 +126,7 @@ name3d() const
   return myName3d;
 }
 //-----------------------------------------------------------------------------
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::
@@ -136,7 +136,7 @@ setSelectCallback3D( SelectCallbackFct fct, void* data,
   mySelectCallBackFcts.insert( SelectCallbackFctStore( fct, data, min_name, max_name ) );
 }
 //-----------------------------------------------------------------------------
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::SelectCallbackFct 
 DGtal::Display3D< Space ,KSpace >::
@@ -165,7 +165,7 @@ getSelectCallback3D( DGtal::int32_t aName, void*& data ) const
 
 
 //-----------------------------------------------------------------------------
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 std::string
 DGtal::Display3D< Space ,KSpace >::getMode( const std::string & objectName ) const
@@ -175,7 +175,7 @@ DGtal::Display3D< Space ,KSpace >::getMode( const std::string & objectName ) con
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 DGtal::int32_t
 DGtal::Display3D< Space ,KSpace >::createNewCubeList()
@@ -195,7 +195,7 @@ DGtal::Display3D< Space ,KSpace >::createNewCubeList()
    return -1;
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 bool
 DGtal::Display3D< Space ,KSpace >::deleteCubeList(const DGtal::int32_t idList)
@@ -204,7 +204,7 @@ DGtal::Display3D< Space ,KSpace >::deleteCubeList(const DGtal::int32_t idList)
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::createNewBallList(std::string str)
@@ -214,7 +214,7 @@ DGtal::Display3D< Space ,KSpace >::createNewBallList(std::string str)
   myBallSetNameList.push_back(str);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
@@ -224,7 +224,7 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
   myLineSetNameList.push_back(str);
 }
 
- template < typename Space ,typename KSpace >
+ template < DGtal::concepts::CSpace Space ,typename KSpace >
  inline
  DGtal::int32_t
  DGtal::Display3D< Space ,KSpace >::createNewQuadList()
@@ -247,7 +247,7 @@ DGtal::Display3D< Space ,KSpace >::createNewLineList(std::string str)
 
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 bool
 DGtal::Display3D< Space ,KSpace >::deleteQuadList(const DGtal::int32_t idList)
@@ -257,7 +257,7 @@ DGtal::Display3D< Space ,KSpace >::deleteQuadList(const DGtal::int32_t idList)
 
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::createNewTriangleList(std::string str)
@@ -267,7 +267,7 @@ DGtal::Display3D< Space ,KSpace >::createNewTriangleList(std::string str)
   myTriangleSetNameList.push_back(str);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::createNewPolygonList(std::string str)
@@ -278,7 +278,7 @@ DGtal::Display3D< Space ,KSpace >::createNewPolygonList(std::string str)
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width)
@@ -296,7 +296,7 @@ DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
@@ -319,7 +319,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center,
 
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, const double width)
@@ -340,7 +340,7 @@ DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint 
   (myLineSetList.at(myLineSetList.size()-1)).push_back(l);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint &p2,
@@ -354,7 +354,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint 
   normalize(n);
   addQuadWithNormal(p1, p2, p3, p4, RealPoint(n[0], n[1], n[2]), false);
 }
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
@@ -438,7 +438,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addTriangle(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3)
@@ -475,7 +475,7 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(const RealPoint &p1, const RealPo
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vertices)
@@ -527,7 +527,7 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
 
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
@@ -702,7 +702,7 @@ DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
 
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &baseQuadCenter,
@@ -741,7 +741,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &base
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter,
@@ -800,7 +800,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
 
 
 // add multiple triangular faces which form a hexagonal-based pyramid
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint &p2,
@@ -936,7 +936,7 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 }
 
 // add multiple triangular faces which form a hexagonal-based cylinder
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPoint &p2,
@@ -1093,7 +1093,7 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPo
 
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
@@ -1177,7 +1177,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
@@ -1231,7 +1231,7 @@ DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) const
@@ -1240,7 +1240,7 @@ DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) con
   return myEmbedder->embed(dp);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell ) const
@@ -1249,7 +1249,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell
   return mySCellEmbedder->embed(scell);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) const
@@ -1259,7 +1259,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) co
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) const
@@ -1268,7 +1268,7 @@ DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) 
   return myCellEmbedder->embed(cell);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) const
@@ -1386,7 +1386,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<RealPoint> &aMesh) c
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 template<typename TDrawableWithDisplay3D>
 inline
 DGtal::Display3D< Space ,KSpace >&
@@ -1433,7 +1433,7 @@ DGtal::operator>> ( const Display3D< Space ,KSpace >&aDisplay3D, std::string aFi
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::cross (double dst[3], double srcA[3], double srcB[3])
@@ -1444,7 +1444,7 @@ DGtal::Display3D< Space ,KSpace >::cross (double dst[3], double srcA[3], double 
 }
 
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
@@ -1455,7 +1455,7 @@ DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
   vec[2] /= sqrt (squaredLen);
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 bool
 DGtal::Display3D< Space ,KSpace >::isValid() const
@@ -1465,7 +1465,7 @@ DGtal::Display3D< Space ,KSpace >::isValid() const
           &&  mySCellEmbedder->isValid();
 }
 
-template < typename Space ,typename KSpace >
+template < DGtal::concepts::CSpace Space ,typename KSpace >
 inline
 void
 DGtal::Display3D< Space ,KSpace >::clear()

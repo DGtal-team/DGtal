@@ -43,7 +43,7 @@
 /**
  * Destructor.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
 {
@@ -53,7 +53,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
  * Constructor. Does nothing. Due to the symmetry and translation
  * invariance of this digital topology, all methods are static.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
 {
@@ -70,7 +70,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
@@ -87,7 +87,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation and p1 != p2.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
@@ -110,7 +110,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
 /**
  * @return maximum number of neighbors for this adjacency
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
@@ -123,7 +123,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity()
  * 
  * @return the number of neighbors of this vertex
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
@@ -143,7 +143,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
  * 
  * @param v the vertex whose neighbors will be written
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator>
 inline
 void  
@@ -185,7 +185,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
   * 
   * @param pred the predicate that must be satisfied
   */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator, typename VertexPredicate>
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
@@ -217,7 +217,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay 
@@ -231,7 +231,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
@@ -258,7 +258,7 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of hidden services                                         //
-template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CSpace TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity() 
@@ -276,10 +276,9 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity()
 
 namespace DGtal {
 
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class MetricAdjacency<TSpace, 2, 2>
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -404,10 +403,9 @@ namespace DGtal {
   }; // end of class MetricAdjacency
 
 
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class MetricAdjacency<TSpace, 1, 2>
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -519,10 +517,9 @@ namespace DGtal {
   }; // end of class MetricAdjacency
 
     /** Specialize 26-adjacency. */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class MetricAdjacency<TSpace, 3, 3>
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -696,10 +693,9 @@ namespace DGtal {
 
 
     /** Specialize 18-adjacency. */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class MetricAdjacency<TSpace, 2, 3>
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
@@ -853,10 +849,9 @@ namespace DGtal {
 
 
     /** Specialize 6-adjacency. */
-  template <typename TSpace>
+  template <DGtal::concepts::CSpace TSpace>
   class MetricAdjacency<TSpace, 1, 3>
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
     // ----------------------- public types ------------------------------
   public:
     // Required by CAdjacency
