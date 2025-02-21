@@ -90,26 +90,11 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 
 
    */
-  template <concepts::CQuantity T>
-  struct CUnsignedNumber
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    BOOST_CONCEPT_USAGE(CUnsignedNumber)
-    {
-      // Will compile iff Unsigned.
-      ConceptUtils::checkTrue( myIsUnsigned );
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    typename NumberTraits<T>::IsUnsigned myIsUnsigned;
-
-  }; // end of concept CUnsignedNumber
-}
+  template <typename T>
+  concept CUnsignedNumber = 
+    concepts::CQuantity<T> && 
+    std::same_as<typename NumberTraits<T>::IsUnsigned, DGtal::TagTrue>; 
+  }
 } // namespace DGtal
 
                                                                            //

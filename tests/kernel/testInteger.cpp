@@ -80,7 +80,7 @@ bool testInteger()
   trace.endBlock();
 
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
-  BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<unsigned int> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUnsignedNumber<unsigned int> );
   trace.endBlock();
 
   trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );

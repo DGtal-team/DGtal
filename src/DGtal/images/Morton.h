@@ -73,16 +73,16 @@ namespace DGtal
    *
    * @see testImageContainerByHashTree.cpp
    */
-  template <concepts::CIntegralNumber THashKey, typename TPoint >
-  requires concepts::CInteger<typename TPoint::Coordinate>
+  template <typename THashKey, typename TPoint >
+  requires concepts::CInteger<typename TPoint::Coordinate> &&
+           concepts::CIntegralNumber<THashKey> && 
+           concepts::CUnsignedNumber<THashKey>
   class Morton
   {
   public:
     typedef THashKey HashKey;
     typedef TPoint Point;
     typedef typename Point::Coordinate Coordinate;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<THashKey> ));
 
     BOOST_STATIC_CONSTANT(Dimension, dimension = TPoint::dimension);
 

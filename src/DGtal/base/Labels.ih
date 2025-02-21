@@ -45,14 +45,16 @@
 // ----------------------- Standard services ------------------------------
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::ConstEnumerator::
 ~ConstEnumerator()
 {}
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::ConstEnumerator::
 ConstEnumerator()
@@ -60,7 +62,8 @@ ConstEnumerator()
 {}
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::ConstEnumerator::
 ConstEnumerator( const Word* address, SizeType firstWord )
@@ -81,7 +84,8 @@ ConstEnumerator( const Word* address, SizeType firstWord )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::ConstEnumerator::
 ConstEnumerator( const ConstEnumerator & other )
@@ -90,7 +94,8 @@ ConstEnumerator( const ConstEnumerator & other )
 {}
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstEnumerator::Self &
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -107,7 +112,8 @@ operator= ( const Self & other )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstEnumerator::Reference
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -117,7 +123,8 @@ operator*() const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstEnumerator::Pointer
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -127,7 +134,8 @@ operator->() const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstEnumerator::Self&
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -154,7 +162,8 @@ operator++()
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstEnumerator::Self
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -166,7 +175,8 @@ operator++( int )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 bool
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -177,7 +187,8 @@ operator==( const Self & other ) const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 bool
 DGtal::Labels<L, TWord>::ConstEnumerator::
@@ -191,7 +202,8 @@ operator!=( const Self & other ) const
 
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::SizeType
 DGtal::Labels<L, TWord>::_word( Label l )
@@ -200,7 +212,8 @@ DGtal::Labels<L, TWord>::_word( Label l )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::SizeType
 DGtal::Labels<L, TWord>::_digit( Label l )
@@ -209,7 +222,8 @@ DGtal::Labels<L, TWord>::_digit( Label l )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Word
 DGtal::Labels<L, TWord>::_mask( Label l )
@@ -218,14 +232,16 @@ DGtal::Labels<L, TWord>::_mask( Label l )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::~Labels()
 {
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::Labels()
 {
@@ -233,7 +249,8 @@ DGtal::Labels<L, TWord>::Labels()
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 DGtal::Labels<L, TWord>::Labels( const Self & other )
 {
@@ -242,7 +259,8 @@ DGtal::Labels<L, TWord>::Labels( const Self & other )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::operator=( const Self & other )
@@ -254,7 +272,8 @@ DGtal::Labels<L, TWord>::operator=( const Self & other )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::reset()
@@ -267,7 +286,8 @@ DGtal::Labels<L, TWord>::reset()
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 bool
 DGtal::Labels<L, TWord>::test( Label l ) const
@@ -276,7 +296,8 @@ DGtal::Labels<L, TWord>::test( Label l ) const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::set( Label l, bool val )
@@ -289,7 +310,8 @@ DGtal::Labels<L, TWord>::set( Label l, bool val )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::reset( Label l )
@@ -299,7 +321,8 @@ DGtal::Labels<L, TWord>::reset( Label l )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::flip( Label l )
@@ -309,7 +332,8 @@ DGtal::Labels<L, TWord>::flip( Label l )
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::SizeType
 DGtal::Labels<L, TWord>::
@@ -324,7 +348,8 @@ count() const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::SizeType
 DGtal::Labels<L, TWord>::
@@ -334,7 +359,8 @@ size()
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 void
 DGtal::Labels<L, TWord>::
@@ -361,7 +387,8 @@ getLabels( std::vector<Label> & labels ) const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::SizeType
 DGtal::Labels<L, TWord>::
@@ -379,7 +406,8 @@ index( Label l ) const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstIterator
 DGtal::Labels<L, TWord>::
@@ -389,7 +417,8 @@ begin() const
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 typename DGtal::Labels<L, TWord>::ConstIterator
 DGtal::Labels<L, TWord>::
@@ -407,7 +436,8 @@ end() const
  * @param out the output stream where the object is written.
  */
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 void
 DGtal::Labels<L, TWord>::selfDisplay ( std::ostream & out ) const
@@ -430,7 +460,8 @@ DGtal::Labels<L, TWord>::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <unsigned int L, typename TWord>
-requires DGtal::concepts::CIntegralNumber<TWord>
+requires DGtal::concepts::CIntegralNumber<TWord> &&
+         DGtal::concepts::CUnsignedNumber<TWord>
 inline
 bool
 DGtal::Labels<L, TWord>::isValid() const

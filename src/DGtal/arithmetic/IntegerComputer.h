@@ -80,7 +80,8 @@ It is a backport of \e ImaGene.
    */
   template <typename TInteger>
   requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
-           DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion>
+           DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion> &&
+           DGtal::concepts::CUnsignedNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion>
   class IntegerComputer
   {
     // ----------------------- Associated types ------------------------------
@@ -96,9 +97,6 @@ It is a backport of \e ImaGene.
     typedef typename SpaceND<2,Integer>::Vector Vector2I;
     typedef typename SpaceND<3,Integer>::Point Point3I;
     typedef typename SpaceND<3,Integer>::Vector Vector3I;
-
-    BOOST_CONCEPT_ASSERT((concepts::CUnsignedNumber<UnsignedInteger>));
-
     // ----------------------- Standard services ------------------------------
   public:
 

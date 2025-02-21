@@ -35,8 +35,10 @@
 namespace DGtal
   {
    
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   Morton<HashKey,TPoint>::Morton()
   {
     // @todo precomputation of the dilate masks
@@ -44,8 +46,10 @@ namespace DGtal
   }
 
 
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   void Morton<HashKey,TPoint>:: interleaveBits ( const Point  & aPoint, HashKey & output ) const
     {
       //number of bits of the input integers (casted according to the hashkeysize)
@@ -62,8 +66,10 @@ namespace DGtal
     }
 
 
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   HashKey  Morton<HashKey,TPoint>::keyFromCoordinates ( const std::size_t treeDepth,
       const Point & coordinates ) const
     {
@@ -80,8 +86,10 @@ namespace DGtal
 
 
 
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   void Morton<HashKey,TPoint>::childrenKeys ( const HashKey key, HashKey* result ) const
     {
       HashKey keycopy = key;
@@ -97,8 +105,10 @@ namespace DGtal
         }
     }
 
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   void Morton<HashKey,TPoint>::brotherKeys ( const HashKey key, HashKey* result ) const
     {
       //generate a mask of the form 1..111000 with dimension "0"
@@ -115,8 +125,10 @@ namespace DGtal
         }
     }
 
-  template  <DGtal::concepts::CIntegralNumber HashKey, typename TPoint >
-  requires DGtal::concepts::CInteger<typename TPoint::Coordinate>
+  template  <typename HashKey, typename TPoint >
+    requires DGtal::concepts::CInteger<typename TPoint::Coordinate> && 
+             DGtal::concepts::CIntegralNumber<HashKey> && 
+             DGtal::concepts::CUnsignedNumber<HashKey>
   void Morton<HashKey,TPoint>::coordinatesFromKey ( const HashKey key, Point & coordinates ) const
     {
       HashKey akey = key;

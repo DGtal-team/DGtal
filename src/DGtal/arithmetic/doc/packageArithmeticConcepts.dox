@@ -45,7 +45,7 @@ digraph GARITHMETIC {
 
                  CInteger [ label="CInteger" URL="\ref DGtal::concepts::CInteger" ];
                  CSignedNumber [ label="CSignedNumber" URL="\ref DGtal::concepts::CSignedNumber" ];
-                 CUnsignedNumber [ label="CUnsignedNumber" URL="\ref concepts::CUnsignedNumber" ];
+                 CUnsignedNumber [ label="CUnsignedNumber" URL="\ref DGtal::concepts::CUnsignedNumber" ];
                  CSpace [ label="CSpace" URL="\ref concepts::CSpace" ];
         }
         subgraph cluster_boost {

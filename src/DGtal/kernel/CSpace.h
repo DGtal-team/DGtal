@@ -103,7 +103,9 @@ Description of \b concept '\b CSpace' <p>
    */
   template <typename T>
   requires CIntegralNumber<typename T::Dimension> &&
+           CUnsignedNumber<typename T::Dimension> &&
            CIntegralNumber<typename T::Size> &&
+           CUnsignedNumber<typename T::Size> && 
            CInteger<typename T::Integer>
   struct CSpace
   {
@@ -117,8 +119,6 @@ Description of \b concept '\b CSpace' <p>
     typedef typename T::Size Size;
     typedef typename T::RealPoint RealPoint;
     typedef typename T::RealVector RealVector;
-    BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Dimension > ));
-    BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Size > ));
 
     BOOST_CONCEPT_USAGE( CSpace )
     {
