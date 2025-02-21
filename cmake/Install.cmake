@@ -8,6 +8,8 @@ install(TARGETS
     DGtal 
       # Dependancies also built by the project
       DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+      # Other dependancies
+      boost_headers
   EXPORT DGtalTargets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -21,6 +23,8 @@ export(TARGETS
     DGtal 
       # Dependancies also built by the project
       DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+      # Other dependancies
+      boost_headers
   NAMESPACE DGtal::
   FILE DGtalTargets.cmake
 )
