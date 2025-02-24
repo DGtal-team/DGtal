@@ -699,6 +699,7 @@ exportEmbeddedSurfaceAs3DOFF
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename CellEmbedder>
+requires DGtal::concepts::CWithGradientMap< CellEmbedder >
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportEmbeddedSurfaceAs3DNOFF
@@ -706,7 +707,6 @@ exportEmbeddedSurfaceAs3DNOFF
   const CellEmbedder & cembedder ) const
 {
   BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< CellEmbedder > ));
 
   typedef typename CellEmbedder::GradientMap GradientMap;
   typedef typename CellEmbedder::Cell MyCell;
@@ -780,6 +780,7 @@ exportEmbeddedSurfaceAs3DNOFF
 //-----------------------------------------------------------------------------  
 template <typename TDigitalSurfaceContainer>
 template <typename SCellEmbedderWithGradientMap>
+requires DGtal::concepts::CWithGradientMap< SCellEmbedderWithGradientMap >
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportAs3DNOFF
@@ -787,7 +788,6 @@ exportAs3DNOFF
   const SCellEmbedderWithGradientMap & scembedder ) const
 {
   BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedderWithGradientMap > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CWithGradientMap< SCellEmbedderWithGradientMap > ));
 
   typedef typename SCellEmbedderWithGradientMap::GradientMap GradientMap;
   typedef typename SCellEmbedderWithGradientMap::SCell MySCell;

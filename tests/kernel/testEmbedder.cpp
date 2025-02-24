@@ -85,7 +85,7 @@ bool testEmbedder()
   typedef ImplicitFunctionDiff1LinearCellEmbedder
     < KSpace, ImplicitShape, MyEmbedder2 > MyCellEmbedder2;
   BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder2 > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyCellEmbedder2 > ));
+  DGTAL_CONCEPT_CHECK(requires CWithGradientMap< MyCellEmbedder2 > );
   typedef CanonicCellEmbedder<KSpace> MyCellEmbedder3;
   BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder3 > ));
   typedef CanonicSCellEmbedder<KSpace> MySCellEmbedder1;
@@ -100,7 +100,7 @@ bool testEmbedder()
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder2 > ));
-  BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyDSEmbedder2 > ));
+  DGTAL_CONCEPT_CHECK(requires CWithGradientMap< MyDSEmbedder2 > );
 
   trace.beginBlock ( "Testing block ..." );
   KSpace K;

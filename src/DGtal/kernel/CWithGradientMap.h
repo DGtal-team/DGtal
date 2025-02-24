@@ -88,32 +88,12 @@ Such object provides a gradient map that associates to each argument some real v
 @tparam T the type that should be a model of CWithGradientMap.
  */
 template <typename T>
-requires CUnaryFunctor<typename T::GradientMap, typename T::Argument, typename T::RealVector>
-struct CWithGradientMap
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Argument Argument;
-  typedef typename T::RealVector RealVector;
-  typedef typename T::GradientMap GradientMap;
-  BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< GradientMap > ));
-  BOOST_CONCEPT_USAGE( CWithGradientMap )
+concept CWithGradientMap = 
+  CUnaryFunctor<typename T::GradientMap, typename T::Argument, typename T::RealVector> &&
+  requires(T myX)
   {
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myGMap, myX.gradientMap() );
-    }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  GradientMap myGMap;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CWithGradientMap
+    { myX.gradientMap() } -> std::same_as<typename T::GradientMap>;
+  };
   }
 } // namespace DGtal
 
