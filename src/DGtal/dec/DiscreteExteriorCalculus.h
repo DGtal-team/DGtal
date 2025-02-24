@@ -239,7 +239,7 @@ namespace DGtal
      * @tparam TDomain type of digital domain.
      * @param domain domain used to initialize Khalimsky space.
      */
-    template <typename TDomain>
+    template <DGtal::concepts::CDomain TDomain>
     void
     initKSpace(ConstAlias<TDomain> domain);
 

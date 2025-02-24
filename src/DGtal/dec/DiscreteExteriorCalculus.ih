@@ -47,12 +47,10 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::initKSpace(DGtal::ConstAlias<TDomain> _domain)
 {
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
-
     // FIXME borders are removed from set => better not initialize kspace
     // FIXME should be open or closed? => closed = true
     const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(_domain->lowerBound(), _domain->upperBound(), true);

@@ -42,7 +42,7 @@
  * Constructor from a domain.
  * @param aDomain any domain.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::DomainMetricAdjacency( ConstAlias<Domain> aDomain )
@@ -54,7 +54,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
  * Copy Constructor.
  * @param other the object to clone.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::DomainMetricAdjacency( const DomainMetricAdjacency & other )
@@ -65,7 +65,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 /**
  * Destructor.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
 ::~DomainMetricAdjacency()
@@ -83,7 +83,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isAdjacentTo
@@ -101,7 +101,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isAdjacentT
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation and p1 != p2.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isProperlyAdjacentTo
@@ -127,7 +127,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isProperlyA
  * @param p any point of this space.
  * @param out_it any output iterator.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator>
 void 
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighborhood
@@ -165,7 +165,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeNeighb
  * @param p any point of this space.
  * @param out_it any output iterator.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator>
 void
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProperNeighborhood
@@ -202,7 +202,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::writeProper
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 void
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::selfDisplay ( std::ostream & out ) const
@@ -215,7 +215,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool
 DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() const
@@ -228,7 +228,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() c
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename Domain, DGtal::Dimension maxNorm1>
+template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::deprecated::operator<< ( std::ostream & out, 

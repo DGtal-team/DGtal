@@ -80,7 +80,7 @@ namespace DGtal
     locally constructed domain. With CowPtr, you are sure that the
     domain remains valid during the lifetime of your set.
    */
-  template <typename TDomain, typename TCompare = std::less<typename TDomain::Point> >
+  template <concepts::CDomain TDomain, typename TCompare = std::less<typename TDomain::Point> >
   class DigitalSetBySTLSet
   {
   public:
@@ -93,9 +93,6 @@ namespace DGtal
     typedef std::set<Point> Container;
     typedef typename std::set<Point>::iterator Iterator;
     typedef typename std::set<Point>::const_iterator ConstIterator;
-
-    ///Concept checks
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
 
     // ----------------------- Standard services ------------------------------
   public:

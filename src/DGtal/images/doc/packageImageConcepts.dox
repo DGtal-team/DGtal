@@ -46,7 +46,7 @@ digraph GIMAGE {
                  label="kernel";
 
                  CPointFunctor [label="CPointFunctor" URL="@ref DGtal::concepts::CPointFunctor"];   
-		 CDomain [label="CDomain" URL="@ref concepts::CDomain"]; 
+		 CDomain [label="CDomain" URL="@ref DGtal::concepts::CDomain"]; 
 		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref DGtal::concepts::CConstBidirectionalRangeFromPoint"]; 
 		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref DGtal::concepts::CBidirectionalRangeWithWritableIteratorFromPoint"]; 
 		 }

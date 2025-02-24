@@ -86,14 +86,13 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
 
   template <typename I> 
   requires concepts::CLabel<typename I::Value> &&
-           concepts::CPointFunctor<I>
+           concepts::CPointFunctor<I> &&
+           concepts::CDomain<typename I::Domain>
   struct CTrivialConstImage
   {
   public:
     //Inner types
     typedef typename I::Domain Domain;
-    BOOST_CONCEPT_ASSERT((concepts::CDomain<Domain>));
-
 
     BOOST_CONCEPT_USAGE(CTrivialConstImage)
     {

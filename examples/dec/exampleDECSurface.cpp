@@ -35,11 +35,9 @@
 typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
 
-template <DGtal::concepts::CPointPredicate Predicate, typename Domain>
+template <DGtal::concepts::CPointPredicate Predicate, DGtal::concepts::CDomain Domain>
 struct FalseOutsideDomain
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<Domain> ));
-
     typedef typename Predicate::Point Point;
 
     FalseOutsideDomain(DGtal::ConstAlias<Predicate> predicate, DGtal::ConstAlias<Domain> adomain) :

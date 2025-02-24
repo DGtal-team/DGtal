@@ -348,7 +348,7 @@ bool testDigitalSetDomain()
   trace.endBlock();
 
   typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
-  BOOST_CONCEPT_ASSERT(( concepts::CDomain< RestrictedDomain > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDomain< RestrictedDomain > );
 
   RestrictedDomain disk_domain( disk );
   trace.beginBlock ( "Iterating over disk domain ..." );
@@ -373,7 +373,7 @@ bool testDigitalSetConcept()
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Z3i::DigitalSet> ));
 
   typedef Z2i::Space Space;
-  BOOST_CONCEPT_ASSERT(( concepts::CDomain< concepts::CDomainArchetype< Space > > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDomain< concepts::CDomainArchetype< Space > > );
   typedef concepts::CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetArchetype> ));
 

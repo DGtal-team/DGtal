@@ -121,7 +121,7 @@ namespace DGtal
    * @see testImageContainerBenchmark.cpp
    */
 
-  template <typename TDomain, concepts::CLabel TValue>
+  template <concepts::CDomain TDomain, concepts::CLabel TValue>
   class ImageContainerBySTLVector: public std::vector<TValue>
   {
 
@@ -132,7 +132,6 @@ namespace DGtal
     typedef Parent Container;
 
     /// domain
-    BOOST_CONCEPT_ASSERT ( ( concepts::CDomain<TDomain> ) );
     typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;

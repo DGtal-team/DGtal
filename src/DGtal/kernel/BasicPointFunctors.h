@@ -566,7 +566,7 @@ namespace functors
   /**
    * \brief Create a point functor from a point predicate and a domain.
    */
-  template< typename TPointPredicate, typename TDomain, concepts::CQuantity TValue=typename TDomain::Integer >
+  template< typename TPointPredicate, concepts::CDomain TDomain, concepts::CQuantity TValue=typename TDomain::Integer >
   requires concepts::CPointPredicate< TPointPredicate >
   struct PointFunctorFromPointPredicateAndDomain
   {
@@ -574,9 +574,6 @@ namespace functors
       typedef TDomain Domain;
       typedef TValue Value;
       typedef typename Domain::Point Point;
-
-      BOOST_CONCEPT_ASSERT(( concepts::CDomain< Domain > ));
-
       /**
        * @brief Constructor.
        * @param[in] aPtrPredicate a predicate on digital point

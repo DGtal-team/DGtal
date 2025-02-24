@@ -124,7 +124,7 @@ namespace DGtal
    * @see testImageContainerByHashTree.cpp
    *
    * */
-  template < typename TDomain, concepts::CLabel TValue, typename THashKey = typename DGtal::uint64_t >
+  template < concepts::CDomain TDomain, concepts::CLabel TValue, typename THashKey = typename DGtal::uint64_t >
   class ImageContainerByHashTree
   {
 
@@ -139,7 +139,6 @@ namespace DGtal
     typedef THashKey HashKey;
 
     /// domain
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
     typedef TDomain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;

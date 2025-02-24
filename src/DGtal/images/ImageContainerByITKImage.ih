@@ -41,12 +41,12 @@
 
 namespace DGtal
 {
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     ImageContainerByITKImage<TDomain, TValue>::~ImageContainerByITKImage()
     {
     }
 
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ImageContainerByITKImage& other)
         : myITKImagePointer(ITKImage::New()), myDomain()
     {
@@ -54,7 +54,7 @@ namespace DGtal
         updateDomain();
     }
 
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const TDomain& aDomain)
         : myITKImagePointer(ITKImage::New()), myDomain(aDomain)
     {
@@ -78,7 +78,7 @@ namespace DGtal
       myITKImagePointer->FillBuffer(0);
     }
 
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ITKImagePointer &aRef)
         :  myITKImagePointer(aRef)
     {
@@ -88,7 +88,7 @@ namespace DGtal
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
     
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     void
     ImageContainerByITKImage<TDomain, TValue>::updateDomain(const Point & inputDomainShift)
     {
@@ -114,7 +114,7 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     TValue
     ImageContainerByITKImage<TDomain, TValue>::operator()(const Point &domainPoint) const
@@ -128,7 +128,7 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     TValue
     ImageContainerByITKImage<TDomain, TValue>::operator()(const ConstIterator &it) const
@@ -142,7 +142,7 @@ namespace DGtal
      * @param aPoint  position in the image.
      * @return the value at aPoint.
      */
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     TValue
     ImageContainerByITKImage<TDomain, TValue>::operator()(const Iterator &it) const
@@ -150,7 +150,7 @@ namespace DGtal
       return it.Get();
     }
 
-    template <typename TDomain, concepts::CLabel TValue>
+    template <DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     DGtal::ImageContainerByITKImage<TDomain,TValue>&
     DGtal::ImageContainerByITKImage<TDomain,TValue>
@@ -164,7 +164,7 @@ namespace DGtal
       return *this;
     }
 
-    template <typename Domain, concepts::CLabel T>
+    template <DGtal::concepts::CDomain Domain, concepts::CLabel T>
     inline
     void
     ImageContainerByITKImage<Domain, T>::setValue(const Point &domainPoint, const T &V)
@@ -172,7 +172,7 @@ namespace DGtal
       myITKImagePointer->SetPixel(getItkIndexFromDomainPoint(domainPoint), V);
     }
 
-    template <typename Domain, concepts::CLabel T>
+    template <DGtal::concepts::CDomain Domain, concepts::CLabel T>
     inline
     void
     ImageContainerByITKImage<Domain, T>::setValue(Iterator &it, const T &V)
@@ -184,7 +184,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     void
     ImageContainerByITKImage<TDomain, TValue>::selfDisplay ( std::ostream & out ) const
@@ -199,7 +199,7 @@ namespace DGtal
     }
 
     // ----------------- DomainPoint to/from IndexPoint interface -------------
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::Point
     ImageContainerByITKImage<TDomain, TValue>::getDomainPointFromIndex ( const Point & indexPoint ) const
@@ -207,7 +207,7 @@ namespace DGtal
       return indexPoint + myDomainShift;
     }
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::Point
     ImageContainerByITKImage<TDomain, TValue>::getIndexFromDomainPoint ( const Point &  domainPoint ) const
@@ -215,7 +215,7 @@ namespace DGtal
       return domainPoint - myDomainShift;
     }
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::Point
     ImageContainerByITKImage<TDomain, TValue>::getDomainPointFromItkIndex (
@@ -229,7 +229,7 @@ namespace DGtal
     }
 
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::ITKImage::IndexType
     ImageContainerByITKImage<TDomain, TValue>::getItkIndexFromDomainPoint(
@@ -243,7 +243,7 @@ namespace DGtal
     }
 
     // ------------------------- PhysicalPoint interface ----------------------
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
     ImageContainerByITKImage<TDomain, TValue>::getPhysicalPointFromDomainPoint(const Point &domainPoint) const
@@ -263,7 +263,7 @@ namespace DGtal
       return dgtal_real_point;
     }
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::Point
     ImageContainerByITKImage<TDomain, TValue>::getDomainPointFromPhysicalPoint(const PhysicalPoint &physicalPoint) const
@@ -280,7 +280,7 @@ namespace DGtal
       return getDomainPointFromItkIndex(itk_index);
     }
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
     ImageContainerByITKImage<TDomain, TValue>::getLowerBoundAsPhysicalPoint() const
@@ -288,7 +288,7 @@ namespace DGtal
       return getPhysicalPointFromDomainPoint(myDomain.lowerBound());
     }
 
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::PhysicalPoint
     ImageContainerByITKImage<TDomain, TValue>::getUpperBoundAsPhysicalPoint() const
@@ -296,7 +296,7 @@ namespace DGtal
       return getPhysicalPointFromDomainPoint(myDomain.upperBound());
     }
     
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::ImageSpacing
     ImageContainerByITKImage<TDomain, TValue>::getImageSpacing() const
@@ -307,7 +307,7 @@ namespace DGtal
         r[k] = s[k];
       return r;
     }
-    template<typename TDomain, concepts::CLabel TValue>
+    template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
     inline
     void
     ImageContainerByITKImage<TDomain, TValue>::setImageSpacing(const ImageContainerByITKImage<TDomain, TValue>::ImageSpacing &s) const
@@ -321,7 +321,7 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
 
-  template<typename TDomain, concepts::CLabel TValue>
+  template<DGtal::concepts::CDomain TDomain, concepts::CLabel TValue>
   inline
   std::ostream&
   operator<< ( std::ostream & out,

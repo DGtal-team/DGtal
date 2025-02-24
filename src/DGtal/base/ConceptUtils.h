@@ -44,6 +44,7 @@
 // Inclusions
 #include <iostream>
 #include <concepts>
+#include <type_traits>
 //////////////////////////////////////////////////////////////////////////////
 
 // The preprocessor may peform substitution only if no concatenation (##) is 

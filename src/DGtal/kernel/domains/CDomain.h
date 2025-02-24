@@ -125,52 +125,15 @@ namespace DGtal
    *
    * @todo Complete domain checking.
    */
-  template <CConstSinglePassRange T>
-  struct CDomain
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Domain Domain;
-    typedef typename T::Space Space;
-    typedef typename T::Point Point;
-    typedef typename T::Vector Vector;
-    typedef typename T::Integer Integer;
-    typedef typename T::Size Size;
-    typedef typename T::Dimension Dimension;
-    typedef typename T::Predicate Predicate;
-    typedef typename T::ConstIterator ConstIterator;
-
-    BOOST_CONCEPT_USAGE( CDomain )
-    {
-      // Domain should have a lowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.lowerBound() );
-      // Domain should have an upperBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.upperBound() );
-      // Domain should have a size() returning a Size.
-      ConceptUtils::sameType( mySize, myT.size() );
-      // Domain should have a isInside(p) returning a bool.
-      ConceptUtils::sameType( myBool, myT.isInside( myP ) );
-      // Domain should have a predicate() returning a Predicate.
-      ConceptUtils::sameType( myPred, myT.predicate() );
-      // Domain should have a begin(Point) method returning an
-      // ConstIterator starting from Point
-      ConceptUtils::sameType( myIt, myT.begin(myP) );
-
-
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myT;
-    Point myP;
-    Predicate myPred;
-    bool myBool;
-    Size mySize; 
-    ConstIterator myIt;
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDomain
+  template <typename T>
+  concept CDomain = CConstSinglePassRange<T> && requires(T myT, typename T::Point myP){
+    requires std::same_as<std::remove_cvref_t<decltype(myT.lowerBound())>, typename T::Point>;
+    requires std::same_as<std::remove_cvref_t<decltype(myT.upperBound())>, typename T::Point>;
+    requires std::same_as<std::remove_cvref_t<decltype(myT.predicate())>, typename T::Predicate>;
+    requires std::same_as<std::remove_cvref_t<decltype(myT.begin())>, typename T::ConstIterator>;
+    { myT.size() } -> std::same_as<typename T::Size>;
+    { myT.isInside(myP) } -> std::same_as<bool>;
+  };
   }
 } // namespace DGtal
 

@@ -67,12 +67,9 @@ namespace DGtal
    *
    * @tparam TDomain the type of the domain in which shapes are created.
    */
-  template <typename TDomain>
+  template <concepts::CDomain TDomain>
   class Shapes
   {
-    // Concept checks
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ) );
-
     // ----------------------- public types ------------------------------
   public:
     typedef TDomain Domain;

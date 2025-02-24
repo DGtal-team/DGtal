@@ -237,12 +237,11 @@ private:
      *
      * @see exampleRigidtransformation3d.cpp
      */
-template <typename TDomain, typename TRigidTransformFunctor >
+template <concepts::CDomain TDomain, typename TRigidTransformFunctor >
 class DomainRigidTransformation3D
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 3 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
     // ----------------------- Types ------------------------------
 public:

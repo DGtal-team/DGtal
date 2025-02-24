@@ -97,14 +97,12 @@ auto image = DGtal::holdConstImageFunctor(
  *
  */
 template <
-  typename TDomain,
+  DGtal::concepts::CDomain TDomain,
   typename TValue,
   typename TFunctor
 >
 class ConstImageFunctorHolder
 {
-  BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDomain<TDomain> ));
-
   // ----------------------- Interface --------------------------------------
 public:
 

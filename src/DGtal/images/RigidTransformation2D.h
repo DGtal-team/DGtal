@@ -202,12 +202,11 @@ protected:
      *
      * @see exampleRigidtransformation2d.cpp
      */
-template <typename TDomain, typename TRigidTransformFunctor >
+template <concepts::CDomain TDomain, typename TRigidTransformFunctor >
 class DomainRigidTransformation2D
 {
     ///Checking concepts
     BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TDomain> ));
 
     // ----------------------- Types ------------------------------
 public:

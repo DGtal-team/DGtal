@@ -74,6 +74,7 @@ namespace DGtal
    * TODO: inherits from DefaultConstImageRange
    */
   template <typename TImage>
+  requires DGtal::concepts::CDomain<typename TImage::Domain>
   class DefaultImageRange
   {
 
@@ -87,7 +88,6 @@ namespace DGtal
     typedef typename TImage::Value Value; 
 
     /// constant iterator types 
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
     typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
     typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 

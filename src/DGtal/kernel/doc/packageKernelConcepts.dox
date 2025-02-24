@@ -73,7 +73,7 @@ digraph GKERNEL {
       CBoundedNumber [label="CBoundedNumber" URL="@ref DGtal::concepts::CBoundedNumber"];
       CEuclideanRing [label="CEuclideanRing" URL="@ref DGtal::concepts::CEuclideanRing"];
       CCommutativeRing [label="CCommutativeRing" URL="@ref DGtal::concepts::CCommutativeRing"];
-      CDomain [label="CDomain" URL="@ref concepts::CDomain"];
+      CDomain [label="CDomain" URL="@ref DGtal::concepts::CDomain"];
       CSTLAssociativeContainer [label="CSTLAssociativeContainer" URL="@ref DGtal::concepts::CSTLAssociativeContainer"];
 
       CPointFunctor -> CUnaryFunctor;

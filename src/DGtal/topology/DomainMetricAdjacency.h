@@ -71,11 +71,10 @@ namespace DGtal
      * maxNorm1.
      *
      */
-    template <typename Domain, Dimension maxNorm1, 
+    template <concepts::CDomain Domain, Dimension maxNorm1, 
         Dimension dimension = Domain::Space::dimension >
     class DomainMetricAdjacency
     {
-      BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
       // ----------------------- public types ------------------------------
     public:
       typedef typename Domain::Space Space;

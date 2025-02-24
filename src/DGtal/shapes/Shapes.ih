@@ -41,7 +41,7 @@
 /**
  * Destructor.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 inline
 DGtal::Shapes<TDomain>::~Shapes()
 {
@@ -57,7 +57,7 @@ DGtal::Shapes<TDomain>::~Shapes()
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -92,7 +92,7 @@ DGtal::Shapes<TDomain>::removeNorm1Ball
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -129,7 +129,7 @@ DGtal::Shapes<TDomain>::addNorm1Ball
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -166,7 +166,7 @@ DGtal::Shapes<TDomain>::removeNorm2Ball
  * @param aCenter the center of the ball.
  * @param aRadius the radius of the ball.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet>
 inline
 void
@@ -193,7 +193,7 @@ DGtal::Shapes<TDomain>::addNorm2Ball
     }
 }
 
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet, typename ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
@@ -219,7 +219,7 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
 }
 
 
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet, typename ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
@@ -240,7 +240,7 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
   Shapes<Domain>::digitalShaper( aSet, dig );
 }
 
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 template <typename DigitalSet, typename PointPredicate>
 requires DGtal::concepts::CPointPredicate< PointPredicate >
 void
@@ -270,7 +270,7 @@ DGtal::Shapes<TDomain>::makeSetFromPointPredicate
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 inline
 void
 DGtal::Shapes<TDomain>::selfDisplay ( std::ostream & out ) const
@@ -282,7 +282,7 @@ DGtal::Shapes<TDomain>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 inline
 bool
 DGtal::Shapes<TDomain>::isValid() const
@@ -295,7 +295,7 @@ DGtal::Shapes<TDomain>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TDomain>
+template <DGtal::concepts::CDomain TDomain>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

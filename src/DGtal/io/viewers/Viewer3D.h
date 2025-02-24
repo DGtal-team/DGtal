@@ -517,11 +517,10 @@ namespace DGtal
        * @param zBottomLeft the z coordinate of bottom left image point.
        * @param mode the mode of representation
        */
-      template<typename TDomain>
+      template<concepts::CDomain TDomain>
       Image2DDomainD3D( TDomain aDomain, ImageDirection normalDir=zDirection,
                         double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox")
       {
-        BOOST_CONCEPT_ASSERT(( concepts::CDomain < TDomain >));
         myMode = mode;
         myDirection=normalDir;
         myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;

@@ -101,7 +101,7 @@ namespace DGtal
  * during the use of the adapter
  */
 template <typename TImageContainer,
-          typename TNewDomain,
+          concepts::CDomain TNewDomain,
           typename TFunctorD,
           typename TNewValue,
           typename TFunctorV,
@@ -119,7 +119,6 @@ public:
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<TNewDomain> ));
    
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;

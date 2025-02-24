@@ -72,7 +72,7 @@ TEST_CASE( "Simple HyperRectDomain", "[domain][4D]" )
 
   // Checking that HyperRectDomain is a model of CDomain.
   typedef HyperRectDomain<Space4Type> HRDomain4;
-  BOOST_CONCEPT_ASSERT(( concepts::CDomain< HRDomain4 > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDomain< HRDomain4 > );
   DGTAL_CONCEPT_CHECK(requires concepts::CConstBidirectionalRange<HRDomain4> );
 
   // Empty domain using the default constructor

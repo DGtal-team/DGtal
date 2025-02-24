@@ -135,7 +135,8 @@ namespace DGtal
 @tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
-  requires concepts::CPointPredicate<T>
+  requires concepts::CPointPredicate<T> &&
+           concepts::CDomain<typename T::Domain>
   struct CDigitalSet :
     boost::CopyConstructible< T >
   {
@@ -148,7 +149,6 @@ namespace DGtal
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator > ));
     

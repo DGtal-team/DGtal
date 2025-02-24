@@ -45,7 +45,7 @@
 /**
  * Destructor.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare>::~DigitalSetBySTLSet()
 {
@@ -57,7 +57,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::~DigitalSetBySTLSet()
  *
  * @param d any counted pointer on domain.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet
 ( Clone<Domain> d, const Compare & c )
@@ -69,7 +69,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet( const DigitalSetBySTLSet<Domain, Compare> & other )
   : myDomain( other.myDomain ), mySet( other.mySet )
@@ -81,7 +81,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet( const DigitalSet
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare> &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::operator= ( const DigitalSetBySTLSet<Domain, Compare> & other )
@@ -97,7 +97,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::operator= ( const DigitalSetBySTLSet
 /**
  * @return the embedding domain.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 const Domain &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::domain() const
@@ -105,7 +105,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::domain() const
   return *myDomain;
 }
 
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::CowPtr<Domain> 
 DGtal::DigitalSetBySTLSet<Domain, Compare>::domainPointer() const
@@ -122,7 +122,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::domainPointer() const
 /**
  * @return the number of elements in the set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Size
 DGtal::DigitalSetBySTLSet<Domain, Compare>::size() const
@@ -133,7 +133,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::size() const
 /**
  * @return 'true' iff the set is empty (no element).
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 bool
 DGtal::DigitalSetBySTLSet<Domain, Compare>::empty() const
@@ -148,7 +148,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::empty() const
  * @param p any digital point.
  * @pre p should belong to the associated domain.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::insert( const Point & p )
@@ -166,7 +166,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::insert( const Point & p )
  * @param last the last point in the collection of Point.
  * @pre all points should belong to the associated domain.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 template <typename PointInputIterator>
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::insert( PointInputIterator first, PointInputIterator last )
@@ -184,7 +184,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::insert( PointInputIterator first, Po
  * @pre p should belong to the associated domain.
  * @pre p should not belong to this.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::insertNew( const Point & p )
@@ -203,7 +203,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::insertNew( const Point & p )
  * @pre all points should belong to the associated domain.
  * @pre each point should not belong to this.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 template <typename PointInputIterator>
 inline
 void
@@ -219,7 +219,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::insertNew
  * @param p the point to remove.
  * @return the number of removed elements (0 or 1).
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Size
 DGtal::DigitalSetBySTLSet<Domain, Compare>::erase( const Point & p )
 {
@@ -232,7 +232,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::erase( const Point & p )
  * @param it an iterator on this set.
  * Note: generally faster than giving just the point.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::erase( Iterator it )
@@ -244,7 +244,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::erase( Iterator it )
  * Clears the set.
  * @post this set is empty.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::clear()
@@ -256,7 +256,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::clear()
  * @param p any digital point.
  * @return a const iterator pointing on [p] if found, otherwise end().
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::find( const Point & p ) const
@@ -268,7 +268,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::find( const Point & p ) const
  * @param p any digital point.
  * @return an iterator pointing on [p] if found, otherwise end().
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Iterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::find( const Point & p )
@@ -279,7 +279,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::find( const Point & p )
 /**
  * @return a const iterator on the first element in this set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::begin() const
@@ -290,7 +290,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::begin() const
 /**
  * @return a const iterator on the element after the last in this set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::ConstIterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::end() const
@@ -301,7 +301,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::end() const
 /**
  * @return an iterator on the first element in this set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Iterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::begin()
@@ -312,7 +312,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::begin()
 /**
  * @return a iterator on the element after the last in this set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Iterator
 DGtal::DigitalSetBySTLSet<Domain, Compare>::end()
@@ -320,7 +320,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::end()
   return mySet.end();
 }
 
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 const typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Container &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::container() const
@@ -328,7 +328,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::container() const
   return mySet;
 }
 
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 typename DGtal::DigitalSetBySTLSet<Domain, Compare>::Container &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::container()
@@ -340,7 +340,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::container()
  * set union to left.
  * @param aSet any other set.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare> &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::operator+=( const DigitalSetBySTLSet<Domain, Compare> & aSet )
@@ -360,7 +360,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::operator+=( const DigitalSetBySTLSet
 }
 
 //-----------------------------------------------------------------------------
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 bool
 DGtal::DigitalSetBySTLSet<Domain, Compare>
@@ -373,7 +373,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>
 // ----------------------- Other Set services -----------------------------
 
 
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 template <typename TOutputIterator>
 inline
 void
@@ -395,7 +395,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::computeComplement(TOutputIterator& i
  *
  * @param other_set defines the set whose complement is assigned to 'this'.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::assignFromComplement
@@ -420,7 +420,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::assignFromComplement
  * @param upper the last point of the bounding box (highest in all
  * directions).
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::computeBoundingBox
@@ -444,7 +444,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::computeBoundingBox
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::selfDisplay ( std::ostream & out ) const
@@ -456,7 +456,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::selfDisplay ( std::ostream & out ) c
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Domain, typename Compare>
+template <DGtal::concepts::CDomain Domain, typename Compare>
 inline
 bool
 DGtal::DigitalSetBySTLSet<Domain, Compare>::isValid() const
@@ -475,7 +475,7 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::isValid() const
 /**
  * @return the style name used for drawing this object.
  */
-template<typename Domain, typename Compare>
+template<DGtal::concepts::CDomain Domain, typename Compare>
 inline
 std::string
 DGtal::DigitalSetBySTLSet<Domain, Compare>::className() const
