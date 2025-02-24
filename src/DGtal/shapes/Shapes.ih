@@ -295,7 +295,7 @@ DGtal::Shapes<TDomain>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <DGtal::concepts::CDomain TDomain>
+template <typename TDomain>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

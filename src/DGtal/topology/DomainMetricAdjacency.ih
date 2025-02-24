@@ -228,7 +228,7 @@ DGtal::deprecated::DomainMetricAdjacency<Domain,maxNorm1,dimension>::isValid() c
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <DGtal::concepts::CDomain Domain, DGtal::Dimension maxNorm1>
+template <typename Domain, DGtal::Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::deprecated::operator<< ( std::ostream & out, 

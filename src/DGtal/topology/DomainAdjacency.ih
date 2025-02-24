@@ -119,7 +119,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
     return true;
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <typename TDomain, typename TAdjacency>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

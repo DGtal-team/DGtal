@@ -77,7 +77,7 @@ DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFun
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, DGtal::concepts::CDomain TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,

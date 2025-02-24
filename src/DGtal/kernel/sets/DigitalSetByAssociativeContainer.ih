@@ -496,7 +496,7 @@ DGtal::DigitalSetByAssociativeContainer<Domain, Container>::className() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //
 
-template <DGtal::concepts::CDomain Domain, typename Container>
+template <typename Domain, typename Container>
 inline
 std::ostream &
 DGtal::operator<< ( std::ostream & out, const DGtal::DigitalSetByAssociativeContainer<Domain, Container> & object )

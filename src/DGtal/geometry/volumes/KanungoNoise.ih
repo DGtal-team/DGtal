@@ -128,7 +128,7 @@ DGtal::KanungoNoise<TP,TD, TS>::isValid() const
     return mySet->isValid();
 }
 // -----------------------------------------------------
-template <typename TP, DGtal::concepts::CDomain TD, typename TS>
+template <typename TP, typename TD, typename TS>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
