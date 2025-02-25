@@ -78,25 +78,12 @@ namespace DGtal
 
        @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
     */
-    template <concepts::CBidirectionalSegmentComputer T>
-    requires concepts::CDynamicSegmentComputer<T>
-    struct CDynamicBidirectionalSegmentComputer
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // Methods
-      BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
-      {
-        concepts::ConceptUtils::sameType( myB, myX.retractFront() );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // only if T is default constructible.
-      bool myB;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-    }; // end of concept CDynamicBidirectionalSegmentComputer
+    template <typename T>
+    concept CDynamicBidirectionalSegmentComputer = 
+      CBidirectionalSegmentComputer<T> && CDynamicSegmentComputer<T> &&
+      requires(T myX) {
+          { myX.retractFront() } -> std::same_as<bool>;  
+      };
   }// namespace concepts
 } // namespace DGtal
 
