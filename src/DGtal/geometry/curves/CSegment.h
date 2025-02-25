@@ -98,30 +98,16 @@ namespace DGtal
        @tparam T the type that should be a model of CSegment.
     */
     template <typename T>
-    struct CSegment : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // Inner types
-      typedef typename T::ConstIterator ConstIterator;
-      //Uncomment if all iterators have been cleaned
-      //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<T> ));
-
-      // Methods
-      BOOST_CONCEPT_USAGE( CSegment )
+    concept CSegment = 
+      std::default_initializable<T> &&
+      std::copy_constructible<T> &&
+      std::is_copy_assignable_v<T> && 
+      std::equality_comparable<T> &&
+      requires(T myX)
       {
-        concepts::ConceptUtils::sameType( it, myX.begin() );
-        concepts::ConceptUtils::sameType( it, myX.end() );      
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // only if T is default constructible.
-      ConstIterator it;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CSegment
+          { myX.begin() } -> std::same_as<typename T::ConstIterator>;
+          { myX.end()   } -> std::same_as<typename T::ConstIterator>;
+      };
   }
 } // namespace DGtal
 

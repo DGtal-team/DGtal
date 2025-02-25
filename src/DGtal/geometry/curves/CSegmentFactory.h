@@ -88,8 +88,8 @@ namespace DGtal
 
        @tparam T the type that should be a model of CSegmentFactory.
     */
-    template <typename T>
-    struct CSegmentFactory : concepts::CSegment<T>
+    template <concepts::CSegment T>
+    struct CSegmentFactory
     {
       // ----------------------- Concept checks ------------------------------
     public:

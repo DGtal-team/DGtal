@@ -249,7 +249,7 @@ digraph SegmentComputerHierarchy   {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CSegment [ URL="\ref concepts::CSegment" ];
+    CSegment [ URL="\ref DGtal::concepts::CSegment" ];
     CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
     CIncrementalSegmentComputer [ URL="\ref concepts::CIncrementalSegmentComputer" ];
     CForwardSegmentComputer [ URL="\ref concepts::CForwardSegmentComputer" ];

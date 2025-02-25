@@ -108,8 +108,8 @@ namespace DGtal
 
        @tparam T the type that should be a model of CIncrementalSegmentComputer.
     */
-    template <typename T> 
-    struct CIncrementalSegmentComputer : concepts::CSegmentFactory<T>
+    template <CSegment T> 
+    struct CIncrementalSegmentComputer
     {
       // ----------------------- Concept checks ------------------------------
     public:
