@@ -80,11 +80,11 @@ namespace DGtal
    * @see SaturatedSegmentation.h 
    */
   template <concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
-  requires concepts::CCurveLocalGeometricEstimator<SCEstimator>
+  requires concepts::CCurveLocalGeometricEstimator<SCEstimator> &&
+           concepts::CSegmentComputerEstimator<SCEstimator>
   class MostCenteredMaximalSegmentEstimator
   {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
     BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
 			  typename SCEstimator::SegmentComputer >::value ));
 
