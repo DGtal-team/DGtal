@@ -58,14 +58,13 @@ namespace DGtal {
    * @tparam Functor model of CLMSTTangentFrom2DSS
    * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
    */
-  template < concepts::CSpace TSpace, typename TSegmentation, typename Functor, concepts::CLMSTDSSFilter DSSFilter >
+  template < concepts::CSpace TSpace, typename TSegmentation, concepts::CLMSTTangentFromDSS Functor, concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   class LambdaMST3DEstimator
   {
   public: 
     //Checking concepts
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
     // ----------------------- Types ------------------------------
   public:
     /// Tangential cover algorithm

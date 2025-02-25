@@ -90,36 +90,22 @@ namespace DGtal
      * @tparam T the type that should be a model of CLMSTTangentFromDSS.
      */
     template <typename T>
-    requires CBidirectionalRange<typename T::RealVector> &&
-             CForwardSegmentComputer<typename T::TDSS>
-    struct CLMSTTangentFromDSS : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-    {
-      // ----------------------- Types ------------------------------
-      typedef typename T::Value Value;
-      typedef typename T::RealVector RealVector;
-      typedef typename T::TDSS TDSS;
-      // ----------------------- Concept checks ------------------------------
-    public:
-      BOOST_CONCEPT_USAGE(CLMSTTangentFromDSS)
+    concept CLMSTTangentFromDSS = 
+      std::is_default_constructible_v<T> && 
+      std::is_copy_constructible_v<T> && 
+      std::is_copy_assignable_v<T> &&
+      CBidirectionalRange<typename T::RealVector> &&
+      CForwardSegmentComputer<typename T::TDSS> &&
+      requires(T x, typename T::Value v1, typename T::TDSS dss)
       {
-	concepts::ConceptUtils::sameType( vec, v1.first );
-	concepts::ConceptUtils::sameType( d, v1.second );
-	concepts::ConceptUtils::sameType( v1, x.operator()( dss, 0, 10 ) );
-	concepts::ConceptUtils::sameType( v1, v1 += v2 );
-      }
-      void checkConstConstraints() const
-      {
-	ConceptUtils::sameType( v1, x.operator()( dss, 0, 10 ) );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      RealVector vec;
-      Value v1, v2;
-      T x;
-      double d;
-      TDSS dss;
-    }; // end of concept CLMSTTangentFromDSS
-    
+         requires std::same_as<std::remove_cvref_t<decltype(v1.first)>, 
+                               typename T::RealVector>;
+         requires std::same_as<std::remove_cvref_t<decltype(v1.second)>, 
+                               double>;
+         requires std::same_as<std::remove_cvref_t<decltype(v1 += v1)>, 
+                               typename T::Value>;
+         { x.operator()(dss, 0, 10) } -> std::same_as<typename T::Value>;
+      };    
   } // namespace concepts
 } // namespace DGtal
 
