@@ -93,37 +93,13 @@ namespace DGtal
        @tparam T the type that should be a model of CGlobalGeometricEstimator.
     */
     template <typename T>
-      requires concepts::CQuantity<typename T::Quantity>
-    struct CGlobalGeometricEstimator
-    {
-
-      // ----------------------- Concept checks ------------------------------
-    public:
-
-      typedef typename T::Quantity Quantity;
-
-      typedef typename T::ConstIterator ConstIterator;
-      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
-      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
-
-
-      BOOST_CONCEPT_USAGE( CGlobalGeometricEstimator )
-      {
-        ConceptUtils::sameType( myQ, myX.eval( ) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX;
-    
-      double myH; 
-      ConstIterator myItb, myIte; 
-      Quantity myQ;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CGlobalGeometricEstimator
+    concept CGlobalGeometricEstimator = 
+       concepts::CQuantity<typename T::Quantity> && 
+       ConceptUtils::ReadableIteratorConcept<typename T::ConstIterator> && 
+       ConceptUtils::ForwardTraversalConcept<typename T::ConstIterator> && 
+       requires(T myX) {
+          { myX.eval() } -> std::same_as<typename T::Quantity>;
+       };
   }
 } // namespace DGtal
 
