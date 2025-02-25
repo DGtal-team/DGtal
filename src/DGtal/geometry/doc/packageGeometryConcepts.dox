@@ -47,7 +47,7 @@ digraph GGeom   {
     CIncrementalSegmentComputer [ URL="\ref DGtal::concepts::CIncrementalSegmentComputer" ];
     CForwardSegmentComputer [ URL="\ref DGtal::concepts::CForwardSegmentComputer" ];
     CSegmentFactory [ URL="\ref DGtal::concepts::CSegmentFactory" ];
-    CDynamicBidirectionalSegmentComputer [ URL="\ref concepts::CDynamicBidirectionalSegmentComputer" ];
+    CDynamicBidirectionalSegmentComputer [ URL="\ref DGtal::concepts::CDynamicBidirectionalSegmentComputer" ];
     CDynamicSegmentComputer [ URL="\ref concepts::CDynamicSegmentComputer" ];
 
     CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment;

@@ -79,8 +79,8 @@ namespace DGtal
        @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
     */
     template <concepts::CBidirectionalSegmentComputer T>
-    struct CDynamicBidirectionalSegmentComputer :
-      concepts::CDynamicSegmentComputer<T>
+    requires concepts::CDynamicSegmentComputer<T>
+    struct CDynamicBidirectionalSegmentComputer
     {
       // ----------------------- Concept checks ------------------------------
     public:

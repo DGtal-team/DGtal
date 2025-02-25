@@ -84,25 +84,10 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
 
 @tparam T the type that should be a model of CDynamicSegmentComputer.
    */
-  template <concepts::CForwardSegmentComputer T> 
-  struct CDynamicSegmentComputer
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Methods
-    BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
-    {
-      concepts::ConceptUtils::sameType( myB, myX.retractBack() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    bool myB; 
-  
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDynamicSegmentComputer
+  template <typename T>
+  concept CDynamicSegmentComputer = CForwardSegmentComputer<T> && requires(T myX) {
+    { myX.retractBack() } -> std::same_as<bool>;
+  };
   }
 } // namespace DGtal
 
