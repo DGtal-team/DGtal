@@ -85,35 +85,18 @@ namespace DGtal
      * 
      * @tparam T the type that should be a model of CLMSTDSSFilter.
      */
-    template <typename T>
-    requires concepts::CForwardSegmentComputer<typename T::DSSType>
-    struct CLMSTDSSFilter : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-    {
-      // ----------------------- Types ------------------------------
-      typedef typename T::DSSType TDSS;
-      // ----------------------- Concept checks ------------------------------
-    public:
-      BOOST_CONCEPT_USAGE(CLMSTDSSFilter)
+    template<typename T>
+    concept CLMSTDSSFilter = 
+      std::is_default_constructible_v<T> && 
+      std::is_copy_constructible_v<T> && 
+      std::is_copy_assignable_v<T> &&
+      CForwardSegmentComputer<typename T::DSSType> && 
+      requires(T x, typename T::DSSType dss, typename T::Point p) 
       {
-         ConceptUtils::sameType( c, x.operator()( dss ) );
-         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
-         ConceptUtils::sameType( i, x.position ( dss, p ) );
-      }
-      void checkConstConstraints() const
-      {
-         ConceptUtils::sameType( c, x.operator()( dss ) );
-         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
-         ConceptUtils::sameType( i, x.position ( dss, p ) );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      bool c;
-      long int i;
-      T x;
-      typename T::Point p;
-      TDSS dss;
-    }; // end of concept CLMSTDSSFilter
-    
+          { x.operator()(dss) } -> std::same_as<bool>;
+          { x.admissibility(dss, p) } -> std::same_as<bool>;
+          { x.position(dss, p) } -> std::same_as<long int>;
+      };
   } // namespace concepts
 } // namespace DGtal
 

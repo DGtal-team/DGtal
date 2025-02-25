@@ -27,13 +27,13 @@
 namespace DGtal
 {
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
 
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
@@ -43,7 +43,7 @@ namespace DGtal
     myEnd = ite;
   }
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
@@ -52,7 +52,7 @@ namespace DGtal
     dssSegments = &segmentComputer;
   }
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   bool
@@ -62,7 +62,7 @@ namespace DGtal
   }
 
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   DSSFilter &
@@ -71,7 +71,7 @@ namespace DGtal
     return myDSSFilter;
   }
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
@@ -94,7 +94,7 @@ namespace DGtal
   }
 
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template < typename DSSesIterator, typename OrphanIterator >
   inline
@@ -121,7 +121,7 @@ namespace DGtal
   }
 
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
@@ -169,7 +169,7 @@ namespace DGtal
       return tangent.first;
   }
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template < typename OutputIterator >
   inline
@@ -212,7 +212,7 @@ namespace DGtal
     return result;
   }
 
-  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, DGtal::concepts::CLMSTDSSFilter DSSFilter >
   requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template <typename OutputIterator>
   inline
