@@ -40,6 +40,7 @@
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 inline
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 ::MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
@@ -50,6 +51,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 inline
 void
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
@@ -63,6 +65,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 inline
 bool
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::isValid() const
@@ -72,6 +75,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::isValid
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -86,6 +90,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -101,6 +106,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -134,6 +140,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -203,6 +210,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 // ------------------------------------------------------------------------
 template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
+requires DGtal::concepts::CCurveLocalGeometricEstimator<SCEstimator>
 inline
 typename DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::Quantity
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>

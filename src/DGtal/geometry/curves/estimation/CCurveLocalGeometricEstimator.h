@@ -94,42 +94,26 @@ namespace DGtal
 
        @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
     */
+    namespace _priv {
+      template<typename T>
+      using Ito = boost::iterator_archetype<T, 
+                                             boost::iterator_archetypes::writable_iterator_t, 
+                                             boost::incrementable_traversal_tag>;
+    };
+
     template <typename T>
-      requires concepts::CQuantity<typename T::Quantity>
-    struct CCurveLocalGeometricEstimator
-    {
-
-      // ----------------------- Concept checks ------------------------------
-    public:
-
-      typedef typename T::Quantity Quantity;
-
-      typedef typename T::ConstIterator ConstIterator;
-      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
-      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
-
-
-      BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
+    concept CCurveLocalGeometricEstimator = 
+      CQuantity<typename T::Quantity> &&
+      ConceptUtils::ReadableIterator<typename T::ConstIterator> &&
+      ConceptUtils::ForwardTraversal<typename T::ConstIterator> &&
+      requires(T myX, typename T::ConstIterator myItb, typename T::ConstIterator myIte, _priv::Ito<typename T::Quantity> myIto)
       {
-        concepts::ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-        concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX;
-    
-      double myH; 
-      ConstIterator myItb, myIte; 
-      Quantity myQ;
-      boost::iterator_archetype<Quantity,
-                                boost::iterator_archetypes::writable_iterator_t,
-                                boost::incrementable_traversal_tag > myIto; 
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CCurveLocalGeometricEstimator
+         //
+         // BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
+         // BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
+         { myX.eval(myItb) } -> std::same_as<typename T::Quantity>;
+         { myX.eval(myItb, myIte, myIto) } -> std::same_as<_priv::Ito<typename T::Quantity>>;
+      };
   }//namespace concepts
 } // namespace DGtal
 

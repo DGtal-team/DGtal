@@ -356,6 +356,43 @@ namespace ConceptUtils
    Container<T> &&
    std::equality_comparable<T>;
 
+ /** 
+  *  \brief Equivalent of boost_concepts::ReadableIterator
+  * 
+  *  See https://www.boost.org/doc/libs/1_34_1/libs/iterator/doc/ReadableIterator.html
+  */
+  template <typename T>
+  concept ReadableIterator = 
+      std::is_copy_constructible_v<T> && 
+      std::is_copy_assignable_v<T> &&
+      requires(T myX)
+      {
+         requires std::same_as<
+            std::remove_cvref_t<decltype(*myX)>, 
+            typename std::iterator_traits<T>::value_type
+         >;
+         // Can not check for myX->m, where is a member
+      };
+
+   /** 
+    *  \brief Equivalent of boost_concepts::ForwardTraversal
+    * 
+    *  See https://www.boost.org/doc/libs/1_34_1/libs/iterator/doc/ReadableIterator.html
+    */
+   template <typename T>
+   concept ForwardTraversal = 
+      std::is_default_constructible_v<T> && 
+      SinglePassIterator<T> && 
+      requires(T myX)
+      {
+         { ++myX } -> std::same_as<T&>;
+         requires std::signed_integral<typename std::iterator_traits<T>::difference_type>;
+         requires std::convertible_to<
+            typename boost::iterator_traversal<T>::type, 
+            boost::forward_traversal_tag
+          >; 
+      };
+
 } // end of namespace ConceptUtils
   } //end of namespace concepts.
 } // namespace DGtal

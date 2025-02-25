@@ -94,9 +94,10 @@ namespace DGtal
        @tparam T the type that should be a model of CSegmentComputerEstimator.
     */
     template <typename T>
-    requires CSegment<typename T::SegmentComputer>
+    requires CSegment<typename T::SegmentComputer> && 
+             concepts::CCurveLocalGeometricEstimator<T>
     struct CSegmentComputerEstimator: 
-      concepts::CCurveLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+      boost::CopyConstructible<T>, boost::Assignable<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:

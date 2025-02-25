@@ -67,6 +67,9 @@ using namespace LibBoard;
  * Test
  *
  */
+template<concepts::CCurveLocalGeometricEstimator T>
+void check_CCurveLocalGeometricEstimator() { }
+
 template<typename I>
 bool test(const I& itb, const I& ite)
 {
@@ -76,7 +79,11 @@ bool test(const I& itb, const I& ite)
   typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
   typedef typename SCEstimator::Quantity Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
-  BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< Estimator > ));
+
+  // Can not DGTAL_CONCEPT_CHECK because clang
+  // won't allow IIFE to be constant within templated functions...
+  check_CCurveLocalGeometricEstimator<Estimator>();
+  
   SegmentComputer sc;
   SCEstimator f; 
 
