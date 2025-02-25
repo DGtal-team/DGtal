@@ -54,12 +54,12 @@ namespace DGtal {
    * @tparam Functor model of CLMSTTangentFrom2DSS
    */
   template < concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   class LambdaMST2DEstimator
   {
     //Checking concepts
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( concepts::CLMSTTangentFromDSS < Functor > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer < typename TSegmentation::SegmentComputer > ));
     // ----------------------- Types ------------------------------
   public:
     /// Tangential cover algorithm

@@ -98,19 +98,7 @@ namespace DGtal
        @tparam T the type that should be a model of CForwardSegmentComputer.
     */
     template <typename T>
-    struct CForwardSegmentComputer : concepts::CIncrementalSegmentComputer<T>
-    {
-      //no new syntactic constraints to check
-      // ----------------------- Concept checks ------------------------------
-    public:
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CForwardSegmentComputer
+    concept CForwardSegmentComputer = concepts::CIncrementalSegmentComputer<T>;
   } //namespace concepts
 } // namespace DGtal
 

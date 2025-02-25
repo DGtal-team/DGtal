@@ -28,11 +28,13 @@ namespace DGtal
 {
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
 
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::init ( ConstIterator itb, ConstIterator ite )
@@ -42,6 +44,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::attach ( Alias<TSegmentation> segmentComputer )
@@ -50,6 +53,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   bool
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::isValid () const
@@ -59,6 +63,7 @@ namespace DGtal
 
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   DSSFilter &
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::getDSSFilter ( )
@@ -67,6 +72,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphan ( OrphanDSSIterator begin, OrphanDSSIterator end,
@@ -89,6 +95,7 @@ namespace DGtal
 
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template < typename DSSesIterator, typename OrphanIterator >
   inline
   void
@@ -115,6 +122,7 @@ namespace DGtal
 
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
   LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
@@ -162,6 +170,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template < typename OutputIterator >
   inline
   OutputIterator
@@ -204,6 +213,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template <typename OutputIterator>
   inline
   void

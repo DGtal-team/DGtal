@@ -108,30 +108,14 @@ namespace DGtal
 
        @tparam T the type that should be a model of CIncrementalSegmentComputer.
     */
-    template <CSegment T> 
-    struct CIncrementalSegmentComputer
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
+    template<typename T>
+    concept CIncrementalSegmentComputer = CSegment<T> && requires(T myX, typename T::ConstIterator myIt){
+        myX.init(myIt);
 
-      // Methods
-      BOOST_CONCEPT_USAGE( CIncrementalSegmentComputer )
-      {
-        myX.init(myI);     
+        { myX.isExtendableFront() } -> std::same_as<bool>;
+        { myX.extendFront() } -> std::same_as<bool>;
+    };
 
-        concepts::ConceptUtils::sameType( myB, myX.isExtendableFront() );
-        concepts::ConceptUtils::sameType( myB, myX.extendFront() );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // only if T is default constructible.
-      typename T::ConstIterator myI;
-      bool myB; 
-    
-      // ------------------------- Internals ------------------------------------
-    private:
-    
-    }; // end of concept CIncrementalSegmentComputer
   } //namespace concepts 
 } // namespace DGtal
 

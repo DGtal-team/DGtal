@@ -86,8 +86,8 @@ namespace DGtal
 
        @tparam T the type that should be a model of CBidirectionalSegmentComputer.
     */
-    template <typename T> 
-    struct CBidirectionalSegmentComputer : concepts::CForwardSegmentComputer<T>
+    template <concepts::CForwardSegmentComputer T> 
+    struct CBidirectionalSegmentComputer
     {
       // ----------------------- Concept checks ------------------------------
     public:

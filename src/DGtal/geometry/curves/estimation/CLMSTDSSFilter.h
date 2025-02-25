@@ -86,12 +86,12 @@ namespace DGtal
      * @tparam T the type that should be a model of CLMSTDSSFilter.
      */
     template <typename T>
+    requires concepts::CForwardSegmentComputer<typename T::DSSType>
     struct CLMSTDSSFilter : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
     {
       // ----------------------- Types ------------------------------
       typedef typename T::DSSType TDSS;
       // ----------------------- Concept checks ------------------------------
-      BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer < TDSS > ));
     public:
       BOOST_CONCEPT_USAGE(CLMSTDSSFilter)
       {

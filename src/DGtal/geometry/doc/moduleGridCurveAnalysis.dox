@@ -251,8 +251,8 @@ digraph SegmentComputerHierarchy   {
                
     CSegment [ URL="\ref DGtal::concepts::CSegment" ];
     CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
-    CIncrementalSegmentComputer [ URL="\ref concepts::CIncrementalSegmentComputer" ];
-    CForwardSegmentComputer [ URL="\ref concepts::CForwardSegmentComputer" ];
+    CIncrementalSegmentComputer [ URL="\ref DGtal::concepts::CIncrementalSegmentComputer" ];
+    CForwardSegmentComputer [ URL="\ref DGtal::concepts::CForwardSegmentComputer" ];
     CSegmentFactory [ URL="\ref DGtal::concepts::CSegmentFactory" ];
     CDynamicBidirectionalSegmentComputer [ URL="\ref concepts::CDynamicBidirectionalSegmentComputer" ];
     CDynamicSegmentComputer [ URL="\ref concepts::CDynamicSegmentComputer" ];

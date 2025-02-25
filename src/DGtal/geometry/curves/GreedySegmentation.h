@@ -145,13 +145,11 @@ namespace DGtal
    * @see testSegmentation.cpp 
    */
 
-  template <typename TSegmentComputer>
+  template <concepts::CForwardSegmentComputer TSegmentComputer>
   class GreedySegmentation
   {
 
   public: 
-
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<TSegmentComputer> ) );
     typedef TSegmentComputer SegmentComputer;
     typedef typename SegmentComputer::ConstIterator ConstIterator;
 

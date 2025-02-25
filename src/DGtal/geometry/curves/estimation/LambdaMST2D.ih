@@ -28,10 +28,12 @@ namespace DGtal
 {
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::LambdaMST2DEstimator() : dssSegments ( 0 ) {}
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::init ( ConstIterator itb, ConstIterator ite )
@@ -41,6 +43,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   void
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::attach ( Alias<TSegmentation>  segmentComputer )
@@ -49,6 +52,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   bool
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::isValid () const
@@ -57,6 +61,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   inline
   typename TSpace::RealVector
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const Point & p )
@@ -83,6 +88,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template <typename OutputIterator>
   inline
   OutputIterator
@@ -106,6 +112,7 @@ namespace DGtal
   }
 
   template < DGtal::concepts::CSpace TSpace, typename TSegmentation, typename Functor >
+  requires concepts::CForwardSegmentComputer<typename TSegmentation::SegmentComputer >
   template <typename OutputIterator>
   inline
   void

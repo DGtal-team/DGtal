@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 inline
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 ::MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
@@ -49,7 +49,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 inline
 void
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
@@ -62,7 +62,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 inline
 bool
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::isValid() const
@@ -71,7 +71,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::isValid
 }
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -85,7 +85,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 }
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -100,7 +100,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 }
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -133,7 +133,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 }
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -202,7 +202,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 
 // ------------------------------------------------------------------------
-template <typename SegmentComputer, typename SCEstimator>
+template <DGtal::concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
 inline
 typename DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>::Quantity
 DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>

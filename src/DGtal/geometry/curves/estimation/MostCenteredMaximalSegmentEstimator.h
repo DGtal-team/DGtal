@@ -79,11 +79,10 @@ namespace DGtal
    * @see exampleCurvature.cpp
    * @see SaturatedSegmentation.h 
    */
-  template <typename SegmentComputer, typename SCEstimator>
+  template <concepts::CForwardSegmentComputer SegmentComputer, typename SCEstimator>
   class MostCenteredMaximalSegmentEstimator
   {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<SegmentComputer> )); 
     BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
     BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
 			  typename SCEstimator::SegmentComputer >::value ));

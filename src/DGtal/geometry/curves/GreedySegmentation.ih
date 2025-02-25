@@ -42,7 +42,7 @@
 // ------------------------- Main processings -----------------------
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
@@ -51,7 +51,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
   return this->doesIntersectNext( it, itb, ite, Type() );
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
@@ -71,7 +71,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
   DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& /*itb*/, const ConstIterator& /*ite*/, CirculatorType )
@@ -80,7 +80,7 @@ bool
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
@@ -93,7 +93,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
 }
 
 
-template <typename TSegmentComputer>
+template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSegment(const ConstIterator& it)
@@ -129,7 +129,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
@@ -155,7 +155,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
 // ------------------------- Standard services -----------------------
 
 
- template <typename TSegmentComputer>
+ template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
   const GreedySegmentation<TSegmentComputer> *s,
@@ -188,7 +188,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
@@ -202,7 +202,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator& 
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
@@ -221,7 +221,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 }
     
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentComputerIterator()
 {
@@ -231,7 +231,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentCo
 // ------------------------- iteration services -------------------------
     
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 const TSegmentComputer&
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator*() const
@@ -239,7 +239,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator*(
   return mySegmentComputer;
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 const TSegmentComputer*
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator->() const
@@ -248,7 +248,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator->
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 TSegmentComputer
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::get() const
@@ -256,7 +256,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::get() cons
   return mySegmentComputer;
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator & 
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
@@ -267,7 +267,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator++
     
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
@@ -283,7 +283,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
@@ -295,7 +295,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
 
 // ------------------------- accessors -------------------------
   
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectNext() const
@@ -303,7 +303,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectN
   return myFlagIntersectNext;
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectPrevious() const
@@ -313,7 +313,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::intersectP
 
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() const
@@ -321,7 +321,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::begin() co
   return mySegmentComputer.begin();
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 const typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::ConstIterator
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() const
@@ -339,7 +339,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::end() cons
 // Interface - public :
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
 (const ConstIterator& itb, const ConstIterator& ite, const SegmentComputer& aSegmentComputer)
  : myBegin(itb),
@@ -352,7 +352,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::setSubRange
@@ -363,7 +363,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::setSubRange
   myMode = "Truncate";
 }
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::setMode
@@ -374,14 +374,14 @@ DGtal::GreedySegmentation<TSegmentComputer>::setMode
 
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 DGtal::GreedySegmentation<TSegmentComputer>::~GreedySegmentation()
 {
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
 DGtal::GreedySegmentation<TSegmentComputer>::begin() const
@@ -390,7 +390,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::begin() const
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
 DGtal::GreedySegmentation<TSegmentComputer>::end() const
@@ -400,7 +400,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::end() const
 
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 void
 DGtal::GreedySegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) const
@@ -409,7 +409,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::selfDisplay ( std::ostream & out ) 
 }
 
 
-  template <typename TSegmentComputer>
+  template <DGtal::concepts::CForwardSegmentComputer TSegmentComputer>
 inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::isValid() const

@@ -164,7 +164,7 @@ void testStandardDSS6ComputerConceptChecking()
 
   trace.beginBlock("Concept checking");
 
-  BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<ArithDSS3d> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CForwardSegmentComputer<ArithDSS3d> );
   
   trace.endBlock();
 

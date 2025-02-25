@@ -90,7 +90,8 @@ namespace DGtal
      * @tparam T the type that should be a model of CLMSTTangentFromDSS.
      */
     template <typename T>
-    requires CBidirectionalRange<typename T::RealVector>
+    requires CBidirectionalRange<typename T::RealVector> &&
+             CForwardSegmentComputer<typename T::TDSS>
     struct CLMSTTangentFromDSS : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
     {
       // ----------------------- Types ------------------------------
@@ -98,7 +99,6 @@ namespace DGtal
       typedef typename T::RealVector RealVector;
       typedef typename T::TDSS TDSS;
       // ----------------------- Concept checks ------------------------------
-      BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer < TDSS > ));
     public:
       BOOST_CONCEPT_USAGE(CLMSTTangentFromDSS)
       {
