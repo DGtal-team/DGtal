@@ -88,30 +88,11 @@ namespace DGtal
 
        @tparam T the type that should be a model of CSegmentFactory.
     */
-    template <concepts::CSegment T>
-    struct CSegmentFactory
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // Inner types
-      typedef typename T::Self Self;
-      BOOST_STATIC_ASSERT(( boost::is_same< T, Self >::value ));
-      typedef typename T::Reverse Reverse;
-      // Methods
-      BOOST_CONCEPT_USAGE( CSegmentFactory )
-      {
-        concepts::ConceptUtils::sameType( myT, myT.getSelf() );
-        concepts::ConceptUtils::sameType( myRT, myT.getReverse() );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myT; // only if T is default constructible.
-      Reverse myRT; 
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CSegmentFactory
+    template <typename T>
+    concept CSegmentFactory = concepts::CSegment<T> && std::same_as<T, typename T::Self> && requires(T myT) {
+        { myT.getSelf() } -> std::same_as<T>;
+        { myT.getReverse() } -> std::same_as<typename T::Reverse>; 
+    };
   }
 } // namespace DGtal
 
