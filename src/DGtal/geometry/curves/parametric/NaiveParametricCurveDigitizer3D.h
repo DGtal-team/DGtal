@@ -68,10 +68,9 @@ namespace DGtal
  * digitization step.
  *
  */
-template <typename TParametricCurve>
+template <concepts::C3DParametricCurve TParametricCurve>
 class NaiveParametricCurveDigitizer3D
 {
-    BOOST_CONCEPT_ASSERT(( concepts::C3DParametricCurve < TParametricCurve > ));
     // ----------------------- Standard services ------------------------------
 public:
     /// Integer point type

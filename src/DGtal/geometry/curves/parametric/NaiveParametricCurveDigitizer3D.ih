@@ -48,7 +48,7 @@ template <typename T> int sgn(T val) {
 namespace DGtal
 {
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   bool NaiveParametricCurveDigitizer3D<T>::is26Connected ( const Point &x, const Point &y )
   {
@@ -57,7 +57,7 @@ namespace DGtal
 
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline methods                                          //
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   NaiveParametricCurveDigitizer3D<T>::NaiveParametricCurveDigitizer3D ()
   {
@@ -68,7 +68,7 @@ namespace DGtal
       BUFFER_SIZE = K_NEXT * 3;
   }
   
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::attach ( ConstAlias<T> p_curve )
   {
@@ -76,7 +76,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::init ( long double tmin, long double tmax, long double timeStep )
   {
@@ -93,7 +93,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   unsigned int NaiveParametricCurveDigitizer3D<T>::setKNext ( unsigned int knext )
   {
@@ -108,7 +108,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   bool NaiveParametricCurveDigitizer3D<T>::isValid ( ) const
   {
@@ -116,7 +116,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::syncData ( ConstIterator bbegin, ConstIterator bend, DataInfo & weights )
   {
@@ -152,7 +152,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::flashBuffers ( Buffer & buffer, DataInfo & weights )
   {
@@ -163,7 +163,7 @@ namespace DGtal
     buffer.erase ( buffer.begin(), buffer.end() - K_NEXT );
   }
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::updateMetaData ( const Point & p, const RealPoint & pc,
                                                             DataInfo & weights, long double t )
@@ -177,7 +177,7 @@ namespace DGtal
     }
   }
 
-   template <typename T>
+   template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::cleanClosedPart ( )
   {
@@ -205,7 +205,7 @@ namespace DGtal
     }
   }
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::cleanCurve ( )
   {
@@ -234,7 +234,7 @@ namespace DGtal
   }
 
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter )
   {
@@ -263,7 +263,7 @@ namespace DGtal
     digitalCurve.clear ();
   }
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::digitize ( std::back_insert_iterator < DigitalCurve > inserter,
                                                           std::back_insert_iterator < MetaData > meta_inserter )
@@ -275,7 +275,7 @@ namespace DGtal
     metaData = false;
   }
 
-  template <typename T>
+  template <DGtal::concepts::C3DParametricCurve T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::selfDisplay ( std::ostream & out ) const
   {

@@ -84,39 +84,16 @@ Description of \b concept '\b 3DParametricCurve' <p>
 @tparam T the type that should be a model of 3DParametricCurve.
  */
 template <typename T>
-requires concepts::CSpace<typename T::Space>
-struct C3DParametricCurve
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Space Space;
-    typedef typename T::RealPoint RealPoint;
-    typedef typename T::Point Point;
-    BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
-    // check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( C3DParametricCurve )
-    {
-        // check const methods.
-        checkConstConstraints();
-    }
-    virtual void checkConstConstraints() const
-    {
-        ConceptUtils::sameType( x , self.xp ( 0.1f ) );
-        ConceptUtils::sameType( x , self.x ( 0.1f ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-protected:
-    T self;
-    RealPoint x;
-    Point y;
-    double c;
+concept C3DParametricCurve = 
+    CSpace<typename T::Space> &&
+    (T::Space::dimension == 3) &&
+    requires(T self) {
+        typename T::Space;
+        typename T::Point;
 
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept 3DParametricCurve
-
-
+        { self.xp(0.1f) } -> std::same_as<typename T::RealPoint>;
+        { self.x(0.1f)  } -> std::same_as<typename T::RealPoint>;
+    };
 
 /////////////////////////////////////////////////////////////////////////////
 // class 3DParametricCurveDecorator
@@ -152,27 +129,9 @@ Description of \b concept '\b 3DParametricCurveDecorator' <p>
 @tparam T the type that should be a model of 3DParametricCurve.
  */
 template <typename T>
-struct C3DParametricCurveDecorator : public C3DParametricCurve< T >
-{
-  // ----------------------- Concept checks ------------------------------
-public:
-  // check the presence of data members, operators and methods with
-  BOOST_CONCEPT_USAGE( C3DParametricCurveDecorator )
-  {
-    // check const methods.
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-    ConceptUtils::sameType( curve, self.curve );
-  }
-  // ------------------------- Private Datas --------------------------------
-protected:
-  T self;
-  typename T::TypeCurve curve;
-  // ------------------------- Private Datas --------------------------------
-  // ------------------------- Internals ------------------------------------
-}; // end of concept 3DParametricCurve
+concept C3DParametricCurveDecorator =  C3DParametricCurve<T> && requires(T self) {
+    { self.curve } -> std::same_as<typename T::TypeCurve>;
+};
 
    } // namespace concepts
 } // namespace DGtal

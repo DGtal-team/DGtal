@@ -31,7 +31,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
-template <typename TCurve, typename TTransfromation>
+template <DGtal::concepts::C3DParametricCurve TCurve, typename TTransfromation>
 inline
 DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::DecoratorParametricCurveTransformation
 ( const TCurve  & c, const TTransfromation & t ) : curve ( c ), trans ( t ) {}
@@ -39,7 +39,7 @@ DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::Decorato
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
-template <typename TCurve, typename TTransfromation>
+template <DGtal::concepts::C3DParametricCurve TCurve, typename TTransfromation>
 inline
 typename DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::RealPoint
 DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::x ( const double t ) const
@@ -47,7 +47,7 @@ DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::x ( cons
     return trans ( curve.x ( t ) );
 }
 
-template <typename TCurve, typename TTransfromation>
+template <DGtal::concepts::C3DParametricCurve TCurve, typename TTransfromation>
 inline
 typename DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::RealPoint
 DGtal::DecoratorParametricCurveTransformation<TCurve, TTransfromation>::xp ( const double t ) const

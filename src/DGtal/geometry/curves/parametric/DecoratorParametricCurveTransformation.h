@@ -59,10 +59,9 @@ namespace DGtal
  * @tparam TTransfromation a functor taking an instance of TCurve::Space::RealPoint and returning an
  * instance of TCurve::Space::RealPoint
  */
-template <typename TCurve, typename TTransfromation >
+template <concepts::C3DParametricCurve TCurve, typename TTransfromation >
 class DecoratorParametricCurveTransformation
 {
-    BOOST_CONCEPT_ASSERT(( concepts::C3DParametricCurve < TCurve > ));
     // ----------------------- Standard services ------------------------------
 public:
 
