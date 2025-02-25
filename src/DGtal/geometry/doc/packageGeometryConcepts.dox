@@ -43,7 +43,7 @@ digraph GGeom   {
     node [style=filled,color=white];
 
     CSegment [ URL="\ref DGtal::concepts::CSegment" ];
-    CBidirectionalSegmentComputer  [ URL="\ref concepts::CBidirectionalSegmentComputer" ];
+    CBidirectionalSegmentComputer  [ URL="\ref DGtal::concepts::CBidirectionalSegmentComputer" ];
     CIncrementalSegmentComputer [ URL="\ref DGtal::concepts::CIncrementalSegmentComputer" ];
     CForwardSegmentComputer [ URL="\ref DGtal::concepts::CForwardSegmentComputer" ];
     CSegmentFactory [ URL="\ref DGtal::concepts::CSegmentFactory" ];

@@ -184,7 +184,7 @@ void testStabbingLineComputerConceptChecking()
    typedef std::vector<Pair>::const_iterator ConstIterator; 
    typedef StabbingLineComputer<ConstIterator> GeomDSS; 
    BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<GeomDSS> ));
-   BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalSegmentComputer<GeomDSS> ));
+   DGTAL_CONCEPT_CHECK(requires concepts::CBidirectionalSegmentComputer<GeomDSS> );
 }
 
 template <typename TCurve>

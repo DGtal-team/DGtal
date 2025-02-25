@@ -86,26 +86,11 @@ namespace DGtal
 
        @tparam T the type that should be a model of CBidirectionalSegmentComputer.
     */
-    template <concepts::CForwardSegmentComputer T> 
-    struct CBidirectionalSegmentComputer
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // Methods
-      BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
-      {
-        concepts::ConceptUtils::sameType( myB, myX.isExtendableBack() );
-        concepts::ConceptUtils::sameType( myB, myX.extendBack() );
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // only if T is default constructible.
-      bool myB; 
-  
-      // ------------------------- Internals ------------------------------------
-    private:
-    
-    }; // end of concept CBidirectionalSegmentComputer
+    template<typename T>
+    concept CBidirectionalSegmentComputer = CForwardSegmentComputer<T> && requires(T myX) {
+        { myX.isExtendableBack() } -> std::same_as<bool>;
+        { myX.extendBack() } -> std::same_as<bool>;
+    };
   } //namespace concepts
 } // namespace DGtal
 
