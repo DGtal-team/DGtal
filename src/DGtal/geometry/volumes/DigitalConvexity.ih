@@ -33,14 +33,14 @@
 //////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
 DigitalConvexity( Clone<KSpace> K, bool safe )
   : myK( K ), mySafe( safe )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
 DigitalConvexity( Point lo, Point hi, bool safe )
   : mySafe( safe )
@@ -49,7 +49,7 @@ DigitalConvexity( Point lo, Point hi, bool safe )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 const TKSpace&
 DGtal::DigitalConvexity<TKSpace>::
 space() const
@@ -58,7 +58,7 @@ space() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::
@@ -68,7 +68,7 @@ makeSimplex( PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::
 makeSimplex( std::initializer_list<Point> l )
@@ -77,7 +77,7 @@ makeSimplex( std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::RationalPolytope
 DGtal::DigitalConvexity<TKSpace>::
@@ -87,7 +87,7 @@ makeRationalSimplex( Integer d, PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::RationalPolytope
 DGtal::DigitalConvexity<TKSpace>::
 makeRationalSimplex( std::initializer_list<Point> l )
@@ -96,7 +96,7 @@ makeRationalSimplex( std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 bool
 DGtal::DigitalConvexity<TKSpace>::
@@ -118,7 +118,7 @@ isSimplexFullDimensional( PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isSimplexFullDimensional( std::initializer_list<Point> l )
@@ -127,7 +127,7 @@ isSimplexFullDimensional( std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::SimplexType
 DGtal::DigitalConvexity<TKSpace>::
@@ -151,7 +151,7 @@ simplexType( PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::DigitalConvexity<TKSpace>::
 displaySimplex( std::ostream& out, std::initializer_list<Point> l )
@@ -160,7 +160,7 @@ displaySimplex( std::ostream& out, std::initializer_list<Point> l )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 void
 DGtal::DigitalConvexity<TKSpace>::
@@ -190,7 +190,7 @@ displaySimplex( std::ostream& out, PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::SimplexType
 DGtal::DigitalConvexity<TKSpace>::
 simplexType( std::initializer_list<Point> l )
@@ -200,7 +200,7 @@ simplexType( std::initializer_list<Point> l )
 
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 insidePoints( const LatticePolytope& polytope )
@@ -210,7 +210,7 @@ insidePoints( const LatticePolytope& polytope )
   return pts;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 interiorPoints( const LatticePolytope& polytope )
@@ -221,7 +221,7 @@ interiorPoints( const LatticePolytope& polytope )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 insidePoints( const RationalPolytope& polytope )
@@ -231,7 +231,7 @@ insidePoints( const RationalPolytope& polytope )
   return pts;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 interiorPoints( const RationalPolytope& polytope )
@@ -242,7 +242,7 @@ interiorPoints( const RationalPolytope& polytope )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
@@ -257,7 +257,7 @@ makeCellCover( PointIterator itB, PointIterator itE,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const LatticePolytope& P,
@@ -271,7 +271,7 @@ makeCellCover( const LatticePolytope& P,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::CellGeometry
 DGtal::DigitalConvexity<TKSpace>::
 makeCellCover( const RationalPolytope& P,
@@ -285,7 +285,7 @@ makeCellCover( const RationalPolytope& P,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
 DGtal::DigitalConvexity<TKSpace>::
 makePolytope( const PointRange& X, bool make_minkowski_summable ) const
@@ -307,7 +307,7 @@ makePolytope( const PointRange& X, bool make_minkowski_summable ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 U( Dimension i, const PointRange& X ) const
@@ -323,7 +323,7 @@ U( Dimension i, const PointRange& X ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 is0Convex( const PointRange& X ) const
@@ -334,7 +334,7 @@ is0Convex( const PointRange& X ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const PointRange& Z, bool convex0 ) const
@@ -370,7 +370,7 @@ isFullyConvex( const PointRange& Z, bool convex0 ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvexFast( const PointRange& Z  ) const
@@ -382,7 +382,7 @@ isFullyConvexFast( const PointRange& Z  ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 ExtrCvxH( const PointRange& X ) const
@@ -404,7 +404,7 @@ ExtrCvxH( const PointRange& X ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 StarCvxH( const PointRange& X, Dimension axis ) const
@@ -425,7 +425,7 @@ StarCvxH( const PointRange& X, Dimension axis ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 StarCvxH( const Point& a, const Point& b, const Point& c,
@@ -471,7 +471,7 @@ StarCvxH( const Point& a, const Point& b, const Point& c,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 Star( const PointRange& X, const Dimension axis ) const
@@ -481,7 +481,7 @@ Star( const PointRange& X, const Dimension axis ) const
   return L.starOfPoints();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 StarCells( const PointRange& C, const Dimension axis ) const
@@ -492,7 +492,7 @@ StarCells( const PointRange& C, const Dimension axis ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 toLatticeSet( const PointRange& X, const Dimension axis ) const
@@ -502,7 +502,7 @@ toLatticeSet( const PointRange& X, const Dimension axis ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 toPointRange( const LatticeSet& L ) const
@@ -511,7 +511,7 @@ toPointRange( const LatticeSet& L ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::Integer
 DGtal::DigitalConvexity<TKSpace>::
 sizeStarCvxH( const PointRange& X ) const
@@ -541,7 +541,7 @@ sizeStarCvxH( const PointRange& X ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 Extr( const PointRange& C ) const
@@ -569,7 +569,7 @@ Extr( const PointRange& C ) const
   return E;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 Extr( const LatticeSet& C ) const
@@ -577,7 +577,7 @@ Extr( const LatticeSet& C ) const
   return C.extremaOfCells();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 Skel( const LatticeSet& C ) const
@@ -585,7 +585,7 @@ Skel( const LatticeSet& C ) const
   return C.skeletonOfCells();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 ExtrSkel( const LatticeSet& C ) const
@@ -594,7 +594,7 @@ ExtrSkel( const LatticeSet& C ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 FC_direct( const PointRange& Z ) const
@@ -748,7 +748,7 @@ FC_direct( const PointRange& Z ) const
   return Extr( O );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 FC_LatticeSet( const PointRange& Z ) const
@@ -759,7 +759,7 @@ FC_LatticeSet( const PointRange& Z ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
@@ -773,7 +773,7 @@ FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
@@ -792,7 +792,7 @@ envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
 relativeEnvelope( const PointRange& Z, const PointRange& Y,
@@ -813,7 +813,7 @@ relativeEnvelope( const PointRange& Z, const PointRange& Y,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename Predicate>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
@@ -832,7 +832,7 @@ relativeEnvelope( const PointRange& Z, const Predicate& PredY,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::Size
 DGtal::DigitalConvexity<TKSpace>::
 depthLastEnvelope() const
@@ -841,7 +841,7 @@ depthLastEnvelope() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const LatticePolytope& P, const Dimension k ) const
@@ -856,7 +856,7 @@ isKConvex( const LatticePolytope& P, const Dimension k ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const LatticePolytope& P ) const
@@ -875,7 +875,7 @@ isFullyConvex( const LatticePolytope& P ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const LatticePolytope& P, const CellGeometry& C, const Dimension k ) const
@@ -884,7 +884,7 @@ isKSubconvex( const LatticePolytope& P, const CellGeometry& C, const Dimension k
   return intersected_cells.subset( C );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
@@ -894,7 +894,7 @@ isFullySubconvex( const LatticePolytope& P, const CellGeometry& C ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const
@@ -909,7 +909,7 @@ isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const
@@ -919,7 +919,7 @@ isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const Point& a, const Point& b, const Point& c,
@@ -931,7 +931,7 @@ isFullySubconvex( const Point& a, const Point& b, const Point& c,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const Point& a, const Point& b,
@@ -943,7 +943,7 @@ isKSubconvex( const Point& a, const Point& b,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const Point& a, const Point& b,
@@ -955,7 +955,7 @@ isFullySubconvex( const Point& a, const Point& b,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const Point& a, const Point& b,
@@ -994,7 +994,7 @@ isFullySubconvex( const Point& a, const Point& b,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const RationalPolytope& P, const Dimension k ) const
@@ -1008,7 +1008,7 @@ isKConvex( const RationalPolytope& P, const Dimension k ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const RationalPolytope& P ) const
@@ -1026,7 +1026,7 @@ isFullyConvex( const RationalPolytope& P ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
@@ -1036,7 +1036,7 @@ isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
   return intersected_cells.subset( C );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
@@ -1046,7 +1046,7 @@ isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void 
 DGtal::DigitalConvexity<TKSpace>::
 eraseInterval( Interval I, std::vector< Interval > & V )
@@ -1089,7 +1089,7 @@ eraseInterval( Interval I, std::vector< Interval > & V )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename Predicate>
 typename DGtal::DigitalConvexity<TKSpace>::PointRange 
 DGtal::DigitalConvexity<TKSpace>::
@@ -1109,7 +1109,7 @@ filter( const PointRange& E, const Predicate& Pred )
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::DigitalConvexity<TKSpace>::selfDisplay ( std::ostream & out ) const
@@ -1121,7 +1121,7 @@ DGtal::DigitalConvexity<TKSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::DigitalConvexity<TKSpace>::isValid() const

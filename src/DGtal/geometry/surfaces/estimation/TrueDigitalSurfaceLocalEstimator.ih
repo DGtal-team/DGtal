@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -49,7 +49,7 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -62,7 +62,7 @@ TrueDigitalSurfaceLocalEstimator()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -75,7 +75,7 @@ TrueDigitalSurfaceLocalEstimator( const Self& other )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -99,7 +99,7 @@ operator=( const Self& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -111,7 +111,7 @@ h() const
   return myH;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -124,7 +124,7 @@ attach( ConstAlias<Shape> aShape )
   if ( ( myShape != 0 ) && ( myFct != 0 ) ) myFct->attach( myShape );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -146,7 +146,7 @@ setParams(  ConstAlias<KSpace> ks,
   myGamma = gamma;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -162,7 +162,7 @@ init( const Scalar _h,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -177,7 +177,7 @@ eval( SurfelConstIterator it ) const
   return myFct->operator()( embed( *it ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -196,7 +196,7 @@ eval( SurfelConstIterator itb,
   return result;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -220,7 +220,7 @@ embed( Surfel surfel ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >
@@ -236,7 +236,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TShape, typename TGeometricFunctor>
 requires DGtal::concepts::CUnaryFunctor<
   TGeometricFunctor, typename TKSpace::Space::RealPoint, typename TGeometricFunctor::Quantity 
 >

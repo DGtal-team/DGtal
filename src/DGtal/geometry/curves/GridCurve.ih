@@ -40,26 +40,26 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::GridCurve<TKSpace>::~GridCurve()
 {
   if (myFlagIsOwned) 
     delete myKPtr; 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::GridCurve<TKSpace>::GridCurve()
   : myKPtr( new KSpace() ), myFlagIsOwned( true )
 {
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::GridCurve<TKSpace>::GridCurve( ConstAlias<KSpace> aKSpace)
   : myKPtr( &aKSpace ), myFlagIsOwned( false )
 {
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
   : myFlagIsOwned( aOther.myFlagIsOwned ), mySCells( aOther.mySCells )
 {
@@ -69,7 +69,7 @@ DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
     myKPtr = aOther.myKPtr; //copy of the alias
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::GridCurve<TKSpace> & 
 DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
 {
@@ -90,7 +90,7 @@ DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
   return *this;
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::isValid() const
@@ -103,7 +103,7 @@ DGtal::GridCurve<TKSpace>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // private methods                                                           //
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::SCell
 DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector& aVector) 
@@ -117,7 +117,7 @@ DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector
   return myKPtr->sIncident( pointel,d,(aVector[d]>0)?myKPtr->POS:myKPtr->NEG );
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::isInside(const SCell& aSCell) const
@@ -133,7 +133,7 @@ DGtal::GridCurve<TKSpace>::isInside(const SCell& aSCell) const
 //////////////////////////////////////////////////////////////////////////////
 
 //deprecated
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints ) 
@@ -141,7 +141,7 @@ DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPo
   return initFromPointsVector( aVectorOfPoints ); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::initFromPointsVector( const std::vector<Point>& aVectorOfPoints )  
@@ -157,7 +157,7 @@ DGtal::GridCurve<TKSpace>::initFromPointsVector( const std::vector<Point>& aVect
   }
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename TIterator>
 inline
 bool
@@ -200,7 +200,7 @@ DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIte
 }
 
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) 
@@ -216,7 +216,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
   }
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename TIterator> 
 inline
 bool
@@ -258,7 +258,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIte
 
 //------------------------------------------------------------------------------
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in ) 
@@ -280,7 +280,7 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
   }
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out ) 
@@ -299,7 +299,7 @@ DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out )
 
 //------------------------------------------------------------------------------
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::isClosed() const
@@ -311,7 +311,7 @@ DGtal::GridCurve<TKSpace>::isClosed() const
   return ( myKPtr->sKCoords(nextLast) == myKPtr->sKCoords(previousFirst) );
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::isOpen() const
@@ -320,7 +320,7 @@ DGtal::GridCurve<TKSpace>::isOpen() const
 }
 
 //------------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::ConstIterator
 DGtal::GridCurve<TKSpace>::begin() const
@@ -328,7 +328,7 @@ DGtal::GridCurve<TKSpace>::begin() const
   return mySCells.begin(); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::ConstIterator
 DGtal::GridCurve<TKSpace>::end() const
@@ -336,7 +336,7 @@ DGtal::GridCurve<TKSpace>::end() const
   return mySCells.end(); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::ConstReverseIterator
 DGtal::GridCurve<TKSpace>::rbegin() const
@@ -344,7 +344,7 @@ DGtal::GridCurve<TKSpace>::rbegin() const
   return mySCells.rbegin(); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::ConstReverseIterator
 DGtal::GridCurve<TKSpace>::rend() const
@@ -352,7 +352,7 @@ DGtal::GridCurve<TKSpace>::rend() const
   return mySCells.rend(); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::SCell
 DGtal::GridCurve<TKSpace>::back() const
@@ -360,7 +360,7 @@ DGtal::GridCurve<TKSpace>::back() const
   return mySCells.back(); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::GridCurve<TKSpace>::push_back( const SCell& aSCell )
@@ -368,7 +368,7 @@ DGtal::GridCurve<TKSpace>::push_back( const SCell& aSCell )
   pushBack(aSCell); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::GridCurve<TKSpace>::pushBack( const SCell& aSCell )
@@ -376,7 +376,7 @@ DGtal::GridCurve<TKSpace>::pushBack( const SCell& aSCell )
   mySCells.push_back(aSCell); 
 }
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::Storage::size_type
 DGtal::GridCurve<TKSpace>::size() const
@@ -386,7 +386,7 @@ DGtal::GridCurve<TKSpace>::size() const
 
 //------------------------------------------------------------------------------
 
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
@@ -399,7 +399,7 @@ DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
 }
 
 //------------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 std::string
 DGtal::GridCurve<TKSpace>::className() const

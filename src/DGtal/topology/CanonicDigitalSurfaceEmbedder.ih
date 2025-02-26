@@ -42,12 +42,14 @@
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
 ~CanonicDigitalSurfaceEmbedder()
 {}
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
 CanonicDigitalSurfaceEmbedder()
@@ -55,6 +57,7 @@ CanonicDigitalSurfaceEmbedder()
 {}
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
 CanonicDigitalSurfaceEmbedder( ConstAlias<Surface> aSurface )
@@ -62,6 +65,7 @@ CanonicDigitalSurfaceEmbedder( ConstAlias<Surface> aSurface )
 {}
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
 CanonicDigitalSurfaceEmbedder( const Self & other )
@@ -69,6 +73,7 @@ CanonicDigitalSurfaceEmbedder( const Self & other )
 {}
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::Self &
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
@@ -79,6 +84,7 @@ operator=( const Self & other )
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 const typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::Surface &
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::surface() const
@@ -88,6 +94,7 @@ DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::surface() const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::RealPoint
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::embed( const SCell & scell ) const
@@ -96,6 +103,7 @@ DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::embed( const SCell & scel
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::RealPoint
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::operator()( const SCell & scell ) const
@@ -109,6 +117,7 @@ DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::operator()( const SCell &
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurface>
+requires DGtal::concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
 inline
 bool
 DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::isValid( ) const

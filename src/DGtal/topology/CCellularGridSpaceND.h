@@ -159,21 +159,21 @@ details.
 @tparam T the type that should be a model of CCellularGridSpaceND.
  */
 template <typename T>
-requires CIntegralNumber<typename T::Size> && 
-         CUnsignedNumber<typename T::Size> && 
-         CPreCellularGridSpaceND<T>
-struct CCellularGridSpaceND
-{
-  // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Size Size;
-
-  BOOST_CONCEPT_USAGE( CCellularGridSpaceND )
-  {
-    ConceptUtils::sameType( myBool, myX.init( myP1, myP2, myBool ) );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
+concept CCellularGridSpaceND = 
+  CIntegralNumber<typename T::Size> && 
+  CUnsignedNumber<typename T::Size> && 
+  CPreCellularGridSpaceND<T> && 
+  requires(    
+    T myX,
+    typename T::Integer myInteger,
+    typename T::Size mySize,
+    Dimension myDim,
+    typename T::Point myP1, 
+    typename T::Point myP2,
+    typename T::Cell myCell,
+    typename T::SCell mySCell,
+    bool myBool
+  )
   {
     ConceptUtils::sameType( mySize, myX.size( myDim ) );
     ConceptUtils::sameType( myInteger, myX.min( myDim ) );
@@ -197,23 +197,7 @@ public:
     ConceptUtils::sameType( mySCell, myX.sGetMin( mySCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.sDistanceToMax( mySCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.sDistanceToMin( mySCell, myDim ) );
-
-}
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  typename T::Integer myInteger;
-  Size mySize;
-  Dimension myDim;
-  typename T::Point myP1, myP2;
-  typename T::Cell myCell;
-  typename T::SCell mySCell;
-  bool myBool;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CCellularGridSpaceND
+  };
 
 } // namespace concepts
 } // namespace DGtal

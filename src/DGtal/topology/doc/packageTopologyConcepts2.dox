@@ -81,7 +81,7 @@ digraph GTOPOLOGY {
         CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref concepts::CDigitalSurfaceContainer" ]; 
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
         CSurfelPredicate [ label="CSurfelPredicate" URL="\ref DGtal::concepts::CSurfelPredicate" ];
-        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
+        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref DGtal::concepts::CCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;

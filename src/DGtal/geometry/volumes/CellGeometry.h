@@ -70,11 +70,9 @@ namespace DGtal
 
      @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
    */
-  template < typename TKSpace >
+  template < concepts::CCellularGridSpaceND TKSpace >
   class CellGeometry
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-
   public:
     typedef CellGeometry<TKSpace>           Self;
     typedef TKSpace                         KSpace;
@@ -429,10 +427,9 @@ namespace DGtal
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
   /// @tparam i the integer specifying the dimension of cells.
   /// @tparam N the integer specifying the dimension of the digital space.
-  template <typename TKSpace, int i, int N>
+  template <concepts::CCellularGridSpaceND TKSpace, int i, int N>
   struct CellGeometryFunctions
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Cell  Cell;
@@ -526,10 +523,9 @@ namespace DGtal
 
   /// Specialization for 1-cells in 2D.
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace>
+  template <concepts::CCellularGridSpaceND TKSpace>
   struct CellGeometryFunctions< TKSpace, 1, 2 >
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
@@ -610,10 +606,9 @@ namespace DGtal
 
   /// Specialization for 1-cells in 3D.
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace>
+  template <concepts::CCellularGridSpaceND TKSpace>
   struct CellGeometryFunctions< TKSpace, 1, 3 >
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( TKSpace::dimension == 3 );
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
@@ -702,10 +697,9 @@ namespace DGtal
 
   /// Specialization for 2-cells in 2D.
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace>
+  template <concepts::CCellularGridSpaceND TKSpace>
   struct CellGeometryFunctions< TKSpace, 2, 2 >
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
@@ -792,10 +786,9 @@ namespace DGtal
 
   /// Specialization for 2-cells in 3D.
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace>
+  template <concepts::CCellularGridSpaceND TKSpace>
   struct CellGeometryFunctions< TKSpace, 2, 3 >
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( TKSpace::dimension == 2 );
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;
@@ -910,10 +903,9 @@ namespace DGtal
 
   /// Specialization for 3-cells in 3D.
   /// @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
-  template <typename TKSpace>
+  template <concepts::CCellularGridSpaceND TKSpace>
   struct CellGeometryFunctions< TKSpace, 3, 3 >
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( TKSpace::dimension == 3 );
     typedef TKSpace                KSpace;
     typedef typename KSpace::Space Space;

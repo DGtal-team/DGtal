@@ -100,11 +100,9 @@ namespace DGtal
    * @tparam TKSpace any cellular grid space, a model of
    * concepts::CCellularGridSpaceND like KhalimskySpaceND.
    */
-  template  < typename TKSpace >
+  template  < concepts::CCellularGridSpaceND TKSpace >
     class Shortcuts
     {
-      BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-
       // ----------------------- Usual space types --------------------------------------
     public:
       /// Digital cellular space

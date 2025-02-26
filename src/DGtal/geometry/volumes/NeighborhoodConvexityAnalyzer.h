@@ -90,11 +90,9 @@ namespace DGtal
      - you can switch on/off the memoizer at object construction
        (e.g. it is useless in 2D).
   */
-  template < typename TKSpace, int K >
+  template < concepts::CCellularGridSpaceND TKSpace, int K >
   class NeighborhoodConvexityAnalyzer
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-
   public:
     typedef NeighborhoodConvexityAnalyzer<TKSpace,K> Self;
     typedef TKSpace                         KSpace;

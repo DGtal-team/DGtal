@@ -93,7 +93,8 @@ It adds inner types to functor.
 @tparam T the type that should be a model of CCellEmbedder.
 */
 template <typename T>
-requires CUnaryFunctor<T, typename T::Cell, typename T::RealPoint>
+requires CUnaryFunctor<T, typename T::Cell, typename T::RealPoint> &&
+         CCellularGridSpaceND<typename T::KSpace>
 struct CCellEmbedder
 {
     // ----------------------- Concept checks ------------------------------
@@ -104,7 +105,6 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Cell, typename KSpace::Cell >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Cell, Argument >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));

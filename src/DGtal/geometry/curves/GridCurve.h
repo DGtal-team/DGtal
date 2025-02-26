@@ -168,13 +168,12 @@ namespace DGtal
     * @see exampleGridCurve2d.cpp testGridCurve.cpp
     */
 
-  template <typename TKSpace = KhalimskySpaceND<2> >
+  template <concepts::CCellularGridSpaceND TKSpace = KhalimskySpaceND<2> >
   class GridCurve
   {
 
   public: 
     typedef TKSpace KSpace; 
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > )); 
   
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Point Vector;

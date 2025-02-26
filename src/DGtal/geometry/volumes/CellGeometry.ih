@@ -42,7 +42,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::CellGeometry<TKSpace>::
 CellGeometry()
   : myK(), myKPoints(),
@@ -52,7 +52,7 @@ CellGeometry()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::CellGeometry<TKSpace>::
 CellGeometry( const KSpace & K,
               Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
@@ -64,7 +64,7 @@ CellGeometry( const KSpace & K,
   ASSERT( myMaxCellDim <= myK.dimension );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 init( const KSpace & K,
@@ -80,7 +80,7 @@ init( const KSpace & K,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPoint( const Point& p )
@@ -89,7 +89,7 @@ addCellsTouchingPoint( const Point& p )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPointel( const Cell& pointel )
@@ -115,7 +115,7 @@ addCellsTouchingPointel( const Cell& pointel )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingCell( const Cell& c )
@@ -134,7 +134,7 @@ addCellsTouchingCell( const Cell& c )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingSegment( const Point& a, const Point& b )
@@ -169,7 +169,7 @@ addCellsTouchingSegment( const Point& a, const Point& b )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointIterator>
 void
 DGtal::CellGeometry<TKSpace>::
@@ -205,7 +205,7 @@ addCellsTouchingPoints( PointIterator itB, PointIterator itE )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename PointelIterator>
 void
 DGtal::CellGeometry<TKSpace>::
@@ -240,7 +240,7 @@ addCellsTouchingPointels( PointelIterator itB, PointelIterator itE )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytopePoints( const LatticePolytope& polytope )
@@ -250,7 +250,7 @@ addCellsTouchingPolytopePoints( const LatticePolytope& polytope )
   addCellsTouchingPoints( points.begin(), points.end() );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
@@ -260,7 +260,7 @@ addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
   addCellsTouchingPoints( points.cbegin(), points.cend() );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytope( const LatticePolytope& polytope )
@@ -272,7 +272,7 @@ addCellsTouchingPolytope( const LatticePolytope& polytope )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytope( const RationalPolytope& polytope )
@@ -284,7 +284,7 @@ addCellsTouchingPolytope( const RationalPolytope& polytope )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::CellGeometry<TKSpace>&
 DGtal::CellGeometry<TKSpace>::
 operator+=( const CellGeometry& other )
@@ -299,7 +299,7 @@ operator+=( const CellGeometry& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::CellGeometry<TKSpace>::Size
 DGtal::CellGeometry<TKSpace>::
 nbCells() const
@@ -307,7 +307,7 @@ nbCells() const
   return (DGtal::CellGeometry<TKSpace>::Size)myKPoints.size();
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::CellGeometry<TKSpace>::Size
 DGtal::CellGeometry<TKSpace>::
 computeNbCells( const Dimension k ) const
@@ -320,7 +320,7 @@ computeNbCells( const Dimension k ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
 DGtal::CellGeometry<TKSpace>::
 getKPoints( const Dimension k ) const
@@ -333,7 +333,7 @@ getKPoints( const Dimension k ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 typename DGtal::CellGeometry<TKSpace>::Integer
 DGtal::CellGeometry<TKSpace>::
 computeEuler() const
@@ -349,7 +349,7 @@ computeEuler() const
   return euler;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::Dimension
 DGtal::CellGeometry<TKSpace>::
 minCellDim() const
@@ -357,7 +357,7 @@ minCellDim() const
   return myMinCellDim;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::Dimension
 DGtal::CellGeometry<TKSpace>::
 maxCellDim() const
@@ -366,7 +366,7 @@ maxCellDim() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other ) const
@@ -374,7 +374,7 @@ subset( const CellGeometry& other ) const
   return other.myKPoints.includes( myKPoints );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 bool
 DGtal::CellGeometry<TKSpace>::
 subset( const CellGeometry& other, const Dimension k ) const
@@ -387,7 +387,7 @@ subset( const CellGeometry& other, const Dimension k ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 template <typename RandomIterator>
 bool
 DGtal::CellGeometry<TKSpace>::
@@ -421,7 +421,7 @@ includes( RandomIterator it1, RandomIterator itE1,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
 DGtal::CellGeometry<TKSpace>::
 getIntersectedKPoints( const LatticePolytope& polytope,
@@ -485,7 +485,7 @@ getIntersectedKPoints( const LatticePolytope& polytope,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
 DGtal::CellGeometry<TKSpace>::
 getIntersectedCells( const LatticePolytope& polytope,
@@ -548,7 +548,7 @@ getIntersectedCells( const LatticePolytope& polytope,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
 DGtal::CellGeometry<TKSpace>::
 getIntersectedCells( const RationalPolytope& polytope,
@@ -611,7 +611,7 @@ getIntersectedCells( const RationalPolytope& polytope,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
 DGtal::CellGeometry<TKSpace>::
 getIntersectedKPoints( const RationalPolytope& polytope,
@@ -675,7 +675,7 @@ getIntersectedKPoints( const RationalPolytope& polytope,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Cell >
 DGtal::CellGeometry<TKSpace>::
 getTouchedCells( const std::vector< Point >& points, const Dimension i ) const
@@ -705,7 +705,7 @@ getTouchedCells( const std::vector< Point >& points, const Dimension i ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 std::vector< typename DGtal::CellGeometry<TKSpace>::Point >
 DGtal::CellGeometry<TKSpace>::
 getTouchedKPoints( const std::vector< Point >& points, const Dimension i ) const
@@ -736,7 +736,7 @@ getTouchedKPoints( const std::vector< Point >& points, const Dimension i ) const
 
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::Dimension
 DGtal::CellGeometry<TKSpace>::
 dim( const Point & kp )
@@ -754,7 +754,7 @@ dim( const Point & kp )
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 void
 DGtal::CellGeometry<TKSpace>::selfDisplay ( std::ostream & out ) const
@@ -776,7 +776,7 @@ DGtal::CellGeometry<TKSpace>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::CellGeometry<TKSpace>::isValid() const
@@ -784,7 +784,7 @@ DGtal::CellGeometry<TKSpace>::isValid() const
   return true;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 inline
 std::string
 DGtal::CellGeometry<TKSpace>::className

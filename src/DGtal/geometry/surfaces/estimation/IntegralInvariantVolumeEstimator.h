@@ -109,7 +109,7 @@ namespace DGtal
 *
 * @see testIntegralInvariantVolumeEstimator.cpp
 */
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires concepts::CPointPredicate<TPointPredicate>
 class IntegralInvariantVolumeEstimator
 {
@@ -118,8 +118,6 @@ public:
   typedef TKSpace KSpace;
   typedef TPointPredicate PointPredicate;
   typedef TVolumeFunctor VolumeFunctor;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;

@@ -65,12 +65,11 @@ namespace DGtal {
      @tparam TKSpace any model of cellular space
      @tparam TImage any model of Image
   */
-  template <typename TKSpace, typename TImage>
+  template <concepts::CCellularGridSpaceND TKSpace, typename TImage>
   class BoundaryPredicate
   {
     // ----------------------- public types ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TImage > ));
     typedef TKSpace KSpace;
     typedef TImage Image;

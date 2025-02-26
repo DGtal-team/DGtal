@@ -74,7 +74,7 @@ digraph GTOPOLOGY {
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
         CDomainAdjacency [ label="CDomainAdjacency" URL="\ref DGtal::concepts::CDomainAdjacency" ];
         CAdjacency [ label="CAdjacency" URL="\ref concepts::CAdjacency" ];
-        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
+        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref DGtal::concepts::CCellularGridSpaceND" ];
         CPreCellularGridSpaceND [ label="CPreCellularGridSpaceND" URL="\ref DGtal::concepts::CPreCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;

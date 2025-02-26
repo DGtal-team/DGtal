@@ -715,9 +715,9 @@ TEST_CASE( "Checking concepts" )
   DGTAL_CONCEPT_CHECK(requires concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<3> > );
   DGTAL_CONCEPT_CHECK(requires concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<4> > );
 
-  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KhalimskySpaceND<2> > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KhalimskySpaceND<3> > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KhalimskySpaceND<4> > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CCellularGridSpaceND< KhalimskySpaceND<2> > );
+  DGTAL_CONCEPT_CHECK(requires concepts::CCellularGridSpaceND< KhalimskySpaceND<3> > );
+  DGTAL_CONCEPT_CHECK(requires concepts::CCellularGridSpaceND< KhalimskySpaceND<4> > );
 }
 
 TEST_CASE( "2D Khalimsky pre-space", "[KPreSpace][2D]" )

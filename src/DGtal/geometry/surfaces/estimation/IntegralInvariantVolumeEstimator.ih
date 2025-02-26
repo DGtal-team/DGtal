@@ -43,7 +43,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -53,7 +53,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
@@ -66,7 +66,7 @@ clear()
   myRadius = 0.0;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -83,7 +83,7 @@ IntegralInvariantVolumeEstimator( VolumeFunctor fct )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -108,7 +108,7 @@ IntegralInvariantVolumeEstimator
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
@@ -124,7 +124,7 @@ IntegralInvariantVolumeEstimator
     myH( other.myH ), myRadius( other.myRadius )
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Self&
@@ -150,7 +150,7 @@ operator= ( const Self& other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Scalar
@@ -160,7 +160,7 @@ h() const
   return myH;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
@@ -177,7 +177,7 @@ attach
   myConvolver = CountedPtr<Convolver>( new Convolver( *myShapeSpelFunctor, myKernelFunctor, K ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
@@ -191,7 +191,7 @@ setParams
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename SurfelConstIterator>
 inline
@@ -261,7 +261,7 @@ init
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename SurfelConstIterator>
 inline
@@ -274,7 +274,7 @@ eval
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
@@ -289,7 +289,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 void
@@ -301,7 +301,7 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 requires DGtal::concepts::CPointPredicate<TPointPredicate>
 inline
 bool

@@ -80,7 +80,7 @@ namespace DGtal
   };
 
   // Forward definitions.
-  template < typename TKSpace, concepts::CSTLAssociativeContainer TCellContainer >
+  template < concepts::CCellularGridSpaceND TKSpace, concepts::CSTLAssociativeContainer TCellContainer >
   class CubicalComplex;
 
   template < typename TKSpace, typename TCellContainer >
@@ -170,7 +170,7 @@ namespace DGtal
   * cannot check concepts here.
   *
   */
-  template < typename TKSpace,
+  template < concepts::CCellularGridSpaceND TKSpace,
              concepts::CSTLAssociativeContainer TCellContainer = typename TKSpace::template CellMap< CubicalCellData >::Type >
   class CubicalComplex
   {
@@ -178,7 +178,6 @@ namespace DGtal
   public:
     typedef CubicalComplex< TKSpace, TCellContainer > Self;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_STATIC_ASSERT( IsPairAssociativeContainer< TCellContainer >::value );
 
     // JOL: Not used, because unordered_set and unordered_map do not pass

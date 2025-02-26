@@ -100,15 +100,13 @@ namespace deprecated
 *
 * @see testVoronoiCovarianceMeasureOnSurface.cpp
 */
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 class IntegralInvariantNormalVectorEstimator
 {
 public:
   typedef IntegralInvariantNormalVectorEstimator< TKSpace, TPointPredicate> Self;
   typedef TKSpace KSpace;
   typedef TPointPredicate PointPredicate;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;

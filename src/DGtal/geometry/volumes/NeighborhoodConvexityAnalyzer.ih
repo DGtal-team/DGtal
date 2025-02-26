@@ -32,7 +32,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 template < typename PointPredicate >
 void 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
@@ -68,7 +68,7 @@ setCenter( Point c, const PointPredicate& X )
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 void 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 getLocalX( std::vector< Point >& localX, bool with_center ) const
@@ -89,7 +89,7 @@ getLocalX( std::vector< Point >& localX, bool with_center ) const
     }
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 void 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
@@ -111,7 +111,7 @@ getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 bool 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 checkBasicConfigurationsFullConvexity
@@ -134,7 +134,7 @@ checkBasicConfigurationsFullConvexity
   return true;
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 bool 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 checkBasicConfigurations0Convexity
@@ -157,7 +157,7 @@ checkBasicConfigurations0Convexity
   return true;
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 void 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeBasicConfigurations
@@ -173,7 +173,7 @@ computeBasicConfigurations
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 typename DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::BasicConfiguration
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeCentralBasicConfiguration
@@ -197,7 +197,7 @@ computeCentralBasicConfiguration
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, int K >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, int K >
 void 
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeBasicFullConvexityTable()

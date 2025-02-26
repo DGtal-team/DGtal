@@ -73,12 +73,11 @@ namespace DGtal
     @todo assert dimensions of space, embedder and implicit function.
    */
   
-  template < typename TKSpace,
+  template < concepts::CCellularGridSpaceND TKSpace,
              typename TImplicitFunctionDiff1,
              typename TEmbedder >
   class ImplicitFunctionDiff1LinearCellEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunctionDiff1< TImplicitFunctionDiff1 > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointEmbedder< TEmbedder > ));
 

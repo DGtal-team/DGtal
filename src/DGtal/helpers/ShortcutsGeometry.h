@@ -70,10 +70,9 @@ namespace DGtal
    * @tparam TKSpace any cellular grid space, a model of
    * concepts::CCellularGridSpaceND like KhalimskySpaceND.
    */
-  template  < typename TKSpace >
+  template  < concepts::CCellularGridSpaceND TKSpace >
     class ShortcutsGeometry : public Shortcuts< TKSpace >
     {
-      BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
     public:
       typedef Shortcuts< TKSpace >                     Base;
       typedef ShortcutsGeometry< TKSpace >             Self;

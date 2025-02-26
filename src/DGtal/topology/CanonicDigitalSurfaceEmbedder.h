@@ -62,6 +62,7 @@ namespace DGtal
    @tparam TDigitalSurface the type of digital surface where the embedder works.
  */
   template <typename TDigitalSurface>
+  requires concepts::CCellularGridSpaceND<typename TDigitalSurface::KSpace>
   struct CanonicDigitalSurfaceEmbedder
   {
   public:
@@ -69,7 +70,6 @@ namespace DGtal
 
     typedef TDigitalSurface Surface;
     typedef typename Surface::KSpace KSpace;
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<KSpace> ));
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;

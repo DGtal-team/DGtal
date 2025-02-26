@@ -43,7 +43,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 ~IntegralInvariantNormalVectorEstimator()
@@ -52,7 +52,7 @@ DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredica
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 void
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
@@ -64,7 +64,7 @@ clear()
   myRadius = 0.0;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator()
@@ -79,7 +79,7 @@ IntegralInvariantNormalVectorEstimator()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator
@@ -100,7 +100,7 @@ IntegralInvariantNormalVectorEstimator
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator
@@ -114,7 +114,7 @@ IntegralInvariantNormalVectorEstimator
     myH( other.myH ), myRadius( other.myRadius )
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Self&
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
@@ -138,7 +138,7 @@ operator= ( const Self& other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Scalar
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
@@ -147,7 +147,7 @@ h() const
   return myH;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 void
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
@@ -163,7 +163,7 @@ attach
   myConvolver = CountedPtr<Convolver>( new Convolver( *myShapeSpelFunctor, myKernelFunctor, K ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 void
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
@@ -176,7 +176,7 @@ setParams
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 template <typename SurfelConstIterator>
 inline
 void
@@ -244,7 +244,7 @@ init
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 template <typename SurfelConstIterator>
 inline
 typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Quantity
@@ -257,7 +257,7 @@ eval
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
 OutputIterator
@@ -272,7 +272,7 @@ DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredica
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 void
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::selfDisplay
@@ -283,7 +283,7 @@ DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredica
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate>
 inline
 bool
 DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::isValid() const
@@ -292,7 +292,7 @@ DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredica
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate>
+template <typename, typename TPointPredicate>
 inline
 std::ostream&
 DGtal::operator<<

@@ -112,7 +112,7 @@ namespace DGtal
 *
 * @see testIntegralInvariantCovarianceEstimator.cpp
 */
-template <typename TKSpace, concepts::CPointPredicate TPointPredicate, typename TCovarianceMatrixFunctor>
+template <concepts::CCellularGridSpaceND TKSpace, concepts::CPointPredicate TPointPredicate, typename TCovarianceMatrixFunctor>
 class IntegralInvariantCovarianceEstimator
 {
 public:
@@ -120,8 +120,6 @@ public:
   typedef TKSpace KSpace;
   typedef TPointPredicate PointPredicate;
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;

@@ -73,11 +73,9 @@ namespace DGtal
 
      @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
    */
-  template < typename TKSpace >
+  template < concepts::CCellularGridSpaceND TKSpace >
   class DigitalConvexity
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-
   public:
     typedef DigitalConvexity<TKSpace>       Self;
     typedef TKSpace                         KSpace;

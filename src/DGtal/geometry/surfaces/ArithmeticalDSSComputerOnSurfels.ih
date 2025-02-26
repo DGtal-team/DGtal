@@ -49,7 +49,7 @@
 // Implementation of inline methods                                          //
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
@@ -60,7 +60,7 @@ ArithmeticalDSSComputerOnSurfels()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
@@ -83,7 +83,7 @@ ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimensi
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
@@ -94,7 +94,7 @@ ArithmeticalDSSComputerOnSurfels ( const ArithmeticalDSSComputerOnSurfels<TKSpac
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>&
@@ -117,7 +117,7 @@ operator=( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger> & 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Reverse
@@ -128,7 +128,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Self
@@ -139,7 +139,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool
@@ -152,7 +152,7 @@ operator==( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>& 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool
@@ -166,7 +166,7 @@ operator!=( const ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger> &
 //                       Update methods                                      //
 ///////////////////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -177,7 +177,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::isExtendabl
 }
 
 //--------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -190,7 +190,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::isExtendabl
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -207,7 +207,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::extendFront
 }
 
 //--------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -226,7 +226,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::extendBack(
 }
 
 //--------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -242,7 +242,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::retractFron
 }
 
 //--------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool 
@@ -261,7 +261,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::retractBack
 //                       Accessors                                           //
 ///////////////////////////////////////////////////////////////////////////////
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 const typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Primitive&
@@ -271,7 +271,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::primitive()
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TInteger
@@ -281,7 +281,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::a() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TInteger
@@ -291,7 +291,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::b() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TInteger
@@ -301,7 +301,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::mu() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TInteger
@@ -311,7 +311,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::omega() con
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -321,7 +321,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Uf() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -331,7 +331,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Ul() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -341,7 +341,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Lf() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -351,7 +351,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Ll() const
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -361,7 +361,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::back() cons
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -371,7 +371,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::front() con
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TIterator
@@ -381,7 +381,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::begin() con
 }
 
 //-------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 TIterator
@@ -391,7 +391,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::end() const
 }
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 bool
@@ -401,7 +401,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::isValid() c
 }
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 void
@@ -415,7 +415,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::selfDisplay
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 void DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::
@@ -441,7 +441,7 @@ init(const ConstIterator& it)
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 std::pair<typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point,
@@ -462,7 +462,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getProjecte
 }
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -472,7 +472,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getNextProj
 }
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point
@@ -487,7 +487,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getPrevious
 
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 std::pair<typename DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::Point,
@@ -506,7 +506,7 @@ DGtal::ArithmeticalDSSComputerOnSurfels<TKSpace,TIterator,TInteger>::getProjecte
 }
 
 //-----------------------------------------------------------------
-template <typename TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TIterator, DGtal::concepts::CInteger TInteger>
 requires DGtal::concepts::CInteger<typename DGtal::PointVector<2, TInteger>::Coordinate>
 inline
 DGtal::Dimension

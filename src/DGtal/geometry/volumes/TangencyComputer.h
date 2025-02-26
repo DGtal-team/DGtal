@@ -69,11 +69,9 @@ namespace DGtal
 
      @tparam TKSpace an arbitrary model of CCellularGridSpaceND.
    */
-  template < typename TKSpace >
+  template < concepts::CCellularGridSpaceND TKSpace >
   class TangencyComputer
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
-
   public:
     typedef TangencyComputer< TKSpace > Self;
     typedef TKSpace                     KSpace;

@@ -36,7 +36,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 DGtal::TangencyComputer<TKSpace>::
 TangencyComputer( Clone<KSpace> K )
   : myK( K ), myDConv( myK ), myLatticeCellCover( false )
@@ -45,7 +45,7 @@ TangencyComputer( Clone<KSpace> K )
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 template < typename PointIterator >
 void
 DGtal::TangencyComputer<TKSpace>::
@@ -63,7 +63,7 @@ init( PointIterator itB, PointIterator itE, bool use_lattice_cell_cover )
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 bool
 DGtal::TangencyComputer<TKSpace>::
 arePointsCotangent( const Point& a, const Point& b ) const
@@ -74,7 +74,7 @@ arePointsCotangent( const Point& a, const Point& b ) const
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 bool
 DGtal::TangencyComputer<TKSpace>::
 arePointsCotangent( const Point& a, const Point& b, const Point& c ) const
@@ -87,7 +87,7 @@ arePointsCotangent( const Point& a, const Point& b, const Point& c ) const
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
 DGtal::TangencyComputer<TKSpace>::
 getCotangentPoints( const Point& a ) const
@@ -123,7 +123,7 @@ getCotangentPoints( const Point& a ) const
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
 DGtal::TangencyComputer<TKSpace>::
 getCotangentPoints( const Point& a,
@@ -163,7 +163,7 @@ getCotangentPoints( const Point& a,
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
 DGtal::TangencyComputer<TKSpace>::ShortestPaths::
 getCotangentPoints( Index idx_a ) const
@@ -207,7 +207,7 @@ getCotangentPoints( Index idx_a ) const
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 typename DGtal::TangencyComputer<TKSpace>::ShortestPaths
 DGtal::TangencyComputer<TKSpace>::
 makeShortestPaths( double secure ) const
@@ -217,7 +217,7 @@ makeShortestPaths( double secure ) const
 
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Path >
 DGtal::TangencyComputer<TKSpace>::
 shortestPaths( const std::vector< Index >& sources,
@@ -241,7 +241,7 @@ shortestPaths( const std::vector< Index >& sources,
 }
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace >
 typename DGtal::TangencyComputer<TKSpace>::Path
 DGtal::TangencyComputer<TKSpace>::
 shortestPath( Index source, Index target,
@@ -279,7 +279,7 @@ shortestPath( Index source, Index target,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::TangencyComputer<TKSpace>::
 setUp()
@@ -303,7 +303,7 @@ setUp()
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::TangencyComputer<TKSpace>::ShortestPaths::
 expand()
@@ -333,7 +333,7 @@ expand()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace>
 void
 DGtal::TangencyComputer<TKSpace>::ShortestPaths::
 propagate( Index current )

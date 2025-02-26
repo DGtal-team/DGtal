@@ -91,6 +91,7 @@ Description of \b concept '\b CNormalVectorEstimator' <p>
 @tparam T the type that should be a model of CNormalVectorEstimator.
  */
 template <typename T>
+requires concepts::CCellularGridSpaceND<typename T::Surface::KSpace>
 struct CNormalVectorEstimator
 {
     // ----------------------- Concept checks ------------------------------
@@ -100,7 +101,6 @@ public:
   typedef typename T::ConstIterator ConstIterator;
   typedef typename T::Quantity Quantity;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< typename Surface::KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename Surface::SCell >::value ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
   
