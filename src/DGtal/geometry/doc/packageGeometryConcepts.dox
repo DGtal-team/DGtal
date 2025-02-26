@@ -68,7 +68,7 @@ subgraph cluster_concepts_2 {
     CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref DGtal::concepts::CDigitalMetricSpace"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref concepts::CSeparableMetric"];
     CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
-    CPowerMetric [label="CPowerMetric" URL="@ref concepts::CPowerMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref DGtal::concepts::CPowerMetric"];
     CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref concepts::CPowerSeparableMetric"];
 
     CSeparableMetric -> CMetricSpace;

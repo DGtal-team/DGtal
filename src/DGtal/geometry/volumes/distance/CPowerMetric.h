@@ -95,39 +95,18 @@ power metrics.
 @tparam T the type that should be a model of CPowerMetric.
  */
 template <typename T>
-  requires concepts::CQuantity<typename T::Value> &&
-           concepts::CQuantity<typename T::Weight> &&
-           concepts::CSpace<typename T::Space>
-struct CPowerMetric: boost::CopyConstructible<T>, boost::Assignable<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Space Space;
-  typedef typename T::Weight Weight;
-  typedef typename T::Value Value;
-  typedef typename T::Point Point;
-
-  BOOST_CONCEPT_USAGE( CPowerMetric )
+concept CPowerMetric = 
+  std::copy_constructible<T> &&
+  std::is_copy_assignable_v<T> && 
+  CQuantity<typename T::Value> &&
+  CQuantity<typename T::Weight> &&
+  CSpace<typename T::Space> &&
+  requires(T myX, typename T::Point myPoint, typename T::Weight myW)
   {
-    checkConstConstraints();
-  }
-  
-  void checkConstConstraints() const
-  {
-    ConceptUtils::sameType( myW3, myX.powerDistance( myPoint,  myPoint2, myW1 ) );
-    ConceptUtils::sameType( aclosest, myX.closestPower( myPoint , myPoint2, myW2,myPoint3, myW3 ) );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Point myPoint, myPoint2, myPoint3;
-  Value myValue;
-  Weight myW1,myW2, myW3;
-  DGtal::Closest aclosest;
-  // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CPowerMetric
+      { myX.powerDistance(myPoint, myPoint, myW) } -> std::same_as<typename T::Weight>;
+      { myX.closestPower(myPoint, myPoint, myW, myPoint, myW) } -> std::same_as<DGtal::Closest>;
+      
+  };
 }
 } // namespace DGtal
 

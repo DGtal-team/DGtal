@@ -85,8 +85,8 @@ ExactPredicateLpPowerSeparableMetric,
 
  @tparam T the type that should be a model of CPowerSeparableMetric.
   */
-  template <typename T>
-  struct CPowerSeparableMetric: CPowerMetric<T>
+  template <CPowerMetric T>
+  struct CPowerSeparableMetric
   {
     // ----------------------- Concept checks ------------------------------
   public:

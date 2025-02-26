@@ -77,12 +77,12 @@ on C++ "double").
 
 @dot
 digraph metric_concepts_2_vor {
-    CMetricSpace [label="CMetricSpace" URL="@ref DGtal::CMetricSpace"];
-    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref DGtal::CDigitalMetricSpace"];
-    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
-    CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
-    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
-    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
+    CMetricSpace [label="CMetricSpace" URL="@ref DGtal::concepts::CMetricSpace"];
+    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref DGtal::concepts::CDigitalMetricSpace"];
+    CSeparableMetric [label="CSeparableMetric" URL="@ref DGtal::concepts::CSeparableMetric"];
+    CDigitalSeparableMetric [label="DGtal::concepts::CDigitalSeparableMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref DGtal::concepts::CPowerMetric"];
+    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref DGtal::concepts::CPowerSeparableMetric"];
 
     CSeparableMetric -> CMetricSpace;
     CSeparableMetric -> CMetricSpace;
