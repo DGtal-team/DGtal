@@ -75,7 +75,7 @@ namespace DGtal
    *
    */
   template <typename TPoint, 
-	    typename TDetComputer = Simple2x2DetComputer<typename TPoint::Coordinate, DGtal::int64_t > >
+	    concepts::C2x2DetComputer TDetComputer = Simple2x2DetComputer<typename TPoint::Coordinate, DGtal::int64_t > >
   class PolarPointComparatorBy2x2DetComputer
   {
     // ----------------------- Inner types ------------------------------------
@@ -99,7 +99,6 @@ namespace DGtal
      * determine the orientation of three points or compare the norm of two vectors. 
      */
     typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
 
     /**
      * Type of integer returned by the determinant computer

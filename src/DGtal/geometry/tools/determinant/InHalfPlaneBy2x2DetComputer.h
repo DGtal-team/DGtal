@@ -88,7 +88,7 @@ namespace DGtal
    * @see Simple2x2DetComputer SimpleIncremental2x2DetComputer 
    * AvnaimEtAl2x2DetComputer FilteredDetComputer
    */
-  template <typename TPoint, typename TDetComputer>
+  template <typename TPoint, concepts::C2x2DetComputer TDetComputer>
   class InHalfPlaneBy2x2DetComputer
   {
     // ----------------------- Types  ------------------------------------
@@ -116,7 +116,6 @@ namespace DGtal
      * Type of determinant computer
      */
     typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
 
     /**
      * Type of input integers for the determinant computer

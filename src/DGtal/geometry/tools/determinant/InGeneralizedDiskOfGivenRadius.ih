@@ -39,7 +39,7 @@
 
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 InGeneralizedDiskOfGivenRadius(bool isPositive, 
@@ -75,7 +75,7 @@ InGeneralizedDiskOfGivenRadius(bool isPositive,
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 void 
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -92,7 +92,7 @@ init ( const Point& aP, const Point& aQ )
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 void 
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -102,7 +102,7 @@ init ( const PointArray& aA )
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 typename DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::Value
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -153,7 +153,7 @@ operator() ( const Point& aR ) const
 
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 void
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -175,7 +175,7 @@ finalizeComputation () const
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 void
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -191,7 +191,7 @@ selfDisplay ( std::ostream & out ) const
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 bool
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
@@ -204,7 +204,7 @@ lengthIsValid(const Integer& aL2) const
 }
 
 // ----------------------------------------------------------------------------
-template <typename TPoint, typename TDetComputer>
+template <typename TPoint, DGtal::concepts::C2x2DetComputer TDetComputer>
 inline
 bool
 DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::

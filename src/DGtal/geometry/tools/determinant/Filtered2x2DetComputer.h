@@ -79,13 +79,11 @@ namespace DGtal
    *
    * @tparam TDetComputer any model of C2x2DetComputer
    */
-  template <typename TDetComputer>
+  template <concepts::C2x2DetComputer TDetComputer>
   class Filtered2x2DetComputer
   {
     // ----------------------- Types  ------------------------------------
   public:
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<TDetComputer> )); 
-
     /**
      * Type of integer for the input coefficients of the 2x2 matrix
      */

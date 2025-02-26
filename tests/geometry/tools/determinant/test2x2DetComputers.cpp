@@ -52,10 +52,9 @@ using namespace DGtal;
  * @param aComputer any determinant computer
  * @tparam DetComputer a model of CIncremental2x2DetComputer
  */
-template<typename DetComputer>
+template<concepts::C2x2DetComputer DetComputer>
 bool simpleTest2x2DetComputer(DetComputer aComputer)
 {
-  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
   typedef typename DetComputer::Integer Integer; 
   typedef typename DetComputer::Value Value; 
 
@@ -201,11 +200,9 @@ DGtal::int32_t adHocRandom ()
  * @param aComputer a determinant computer to test
  * @tparam DetComputer a model of CIncremental2x2DetComputer
  */
-template<typename DetComputer>
+template<concepts::C2x2DetComputer DetComputer>
 bool randomTest2x2DetComputer(DetComputer aComputer)
 {
-  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
-
   typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> TrueComputer; 
   TrueComputer trueComputer; 
 

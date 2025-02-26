@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts 
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class C2x2DetComputer
   /**
@@ -104,32 +105,19 @@ namespace DGtal
      @tparam T the type that should be a model of C2x2DetComputer.
   */
   template <typename T>
-  requires concepts::CSignedNumber<typename T::ResultInteger> && 
-           concepts::CEuclideanRing<typename T::ArgumentInteger>
-  struct C2x2DetComputer : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::ArgumentInteger ArgumentType;
-    
-    typedef typename T::ResultInteger ResultType;
-
-    BOOST_CONCEPT_USAGE( C2x2DetComputer )
-    {
-      concepts::ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
-      myX.init(myA, myB); 
-      concepts::ConceptUtils::sameType( myR, myX( myA, myB ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; 
-    ArgumentType myA, myB, myC, myD;
-    ResultType myR; 
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept C2x2DetComputer
-
+  concept C2x2DetComputer = 
+      std::default_initializable<T> &&
+      std::copy_constructible<T> &&
+      std::is_copy_assignable_v<T> &&
+      CSignedNumber<typename T::ResultInteger> && 
+      CEuclideanRing<typename T::ArgumentInteger> && 
+      requires(T myX, typename T::ArgumentInteger myA)
+      {
+          myX.init(myA, myA);
+          { myX(myA, myA) } -> std::same_as<typename T::ResultInteger>;
+          { myX(myA, myA, myA, myA) } -> std::same_as<typename T::ResultInteger>;
+      };
+  }
 } // namespace DGtal
 
 //                                                                           //

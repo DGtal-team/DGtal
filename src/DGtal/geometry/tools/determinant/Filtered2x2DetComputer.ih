@@ -43,7 +43,7 @@
 // Interface - public :
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::C2x2DetComputer T>
 inline
 void
 DGtal::Filtered2x2DetComputer<T>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
@@ -53,7 +53,7 @@ DGtal::Filtered2x2DetComputer<T>::init(const ArgumentInteger& aA, const Argument
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::C2x2DetComputer T>
 inline
 typename DGtal::Filtered2x2DetComputer<T>::ResultInteger
 DGtal::Filtered2x2DetComputer<T>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
@@ -71,7 +71,7 @@ DGtal::Filtered2x2DetComputer<T>::operator()(const ArgumentInteger& aX, const Ar
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::C2x2DetComputer T>
 inline
 typename DGtal::Filtered2x2DetComputer<T>::ResultInteger
 DGtal::Filtered2x2DetComputer<T>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
@@ -82,7 +82,7 @@ DGtal::Filtered2x2DetComputer<T>::operator()(const ArgumentInteger& aA, const Ar
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::C2x2DetComputer T>
 inline
 void
 DGtal::Filtered2x2DetComputer<T>::selfDisplay ( std::ostream & out ) const
@@ -91,7 +91,7 @@ DGtal::Filtered2x2DetComputer<T>::selfDisplay ( std::ostream & out ) const
 }
 
 // ----------------------------------------------------------------------------
-template <typename T>
+template <DGtal::concepts::C2x2DetComputer T>
 inline
 bool
 DGtal::Filtered2x2DetComputer<T>::isValid() const

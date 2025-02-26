@@ -37,7 +37,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------------------------------------------------------------
-template <typename TP, typename TDC>
+template <typename TP, DGtal::concepts::C2x2DetComputer TDC>
 inline
 void
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const Point& aP, const Point& aQ )
@@ -50,7 +50,7 @@ DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const Point& aP, const Point& 
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TDC>
+template <typename TP, DGtal::concepts::C2x2DetComputer TDC>
 inline
 void
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const PointArray& aA )
@@ -59,7 +59,7 @@ DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const PointArray& aA )
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TDC>
+template <typename TP, DGtal::concepts::C2x2DetComputer TDC>
 inline
 typename DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::Value
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::operator()( const Point& aR ) const
@@ -69,7 +69,7 @@ DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::operator()( const Point& aR ) const
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TDC>
+template <typename TP, DGtal::concepts::C2x2DetComputer TDC>
 inline
 void
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::selfDisplay ( std::ostream & out ) const
@@ -78,7 +78,7 @@ DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::selfDisplay ( std::ostream & out ) c
 }
 
 // ----------------------------------------------------------------------------
-template <typename TP, typename TDC>
+template <typename TP, DGtal::concepts::C2x2DetComputer TDC>
 inline
 bool
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::isValid() const

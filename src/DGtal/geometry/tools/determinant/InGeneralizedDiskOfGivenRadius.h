@@ -122,7 +122,7 @@ namespace DGtal
    * @tparam TPoint a model of point
    * @tparam TDetComputer a model of C2x2DetComputer
    */
-  template <typename TPoint, typename TDetComputer>
+  template <typename TPoint, concepts::C2x2DetComputer TDetComputer>
   class InGeneralizedDiskOfGivenRadius
   {
     // ----------------------- Inner types ------------------------------------
@@ -149,7 +149,6 @@ namespace DGtal
      * Type of determinant computer
      */
     typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
     /**
      * Type of integers used during the computation
      */
