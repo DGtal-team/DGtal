@@ -103,7 +103,7 @@ namespace DGtal
    * of the container must be HyperRectDomain.
     */
   template < typename TWeightImage,
-             typename TPowerSeparableMetric,
+             concepts::CPowerSeparableMetric TPowerSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
                                        typename TWeightImage::Domain::Space::Vector> >
@@ -114,7 +114,6 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<TPowerSeparableMetric> ));
 
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;

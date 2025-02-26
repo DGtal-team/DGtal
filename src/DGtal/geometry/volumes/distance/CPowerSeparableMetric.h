@@ -85,36 +85,13 @@ ExactPredicateLpPowerSeparableMetric,
 
  @tparam T the type that should be a model of CPowerSeparableMetric.
   */
-  template <CPowerMetric T>
-  struct CPowerSeparableMetric
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Point Point;
-    typedef typename T::Weight Weight;
-
-    BOOST_CONCEPT_USAGE( CPowerSeparableMetric )
+  template <typename T>
+  concept CPowerSeparableMetric = 
+    CPowerMetric<T> && 
+    requires (T myX, typename T::Point u, typename T::Weight w, DGtal::Dimension dim)
     {
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myBool, myX.hiddenByPower(u,wu,v,wv,w,ww,start,end,dim) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point u,v,w,start,end;
-    Weight ww,wu,wv;
-    bool myBool;
-    DGtal::Dimension dim;
-  
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CPowerSeparableMetric
+        { myX.hiddenByPower(u, w, u, w, u, w, u, u, dim) } -> std::same_as<bool>;
+    };
   }
 } // namespace DGtal
 
