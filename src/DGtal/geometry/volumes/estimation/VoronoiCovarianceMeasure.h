@@ -75,11 +75,9 @@ namespace DGtal
    * computing the Voronoi map (e.g. Euclidean metric is
    * DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
    */
-  template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+  template <DGtal::concepts::CSpace TSpace, concepts::CSeparableMetric TSeparableMetric>
   class VoronoiCovarianceMeasure
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
-
   public:
     typedef TSpace Space;                         ///< the type of digital space
     typedef TSeparableMetric Metric;              ///< the type of metric

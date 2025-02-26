@@ -470,9 +470,9 @@ bool testSpecialCasesL2()
 
 bool testConcepts()
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > );
   DGTAL_CONCEPT_CHECK(requires concepts::CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > );
-  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
+  DGTAL_CONCEPT_CHECK(requires concepts::CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > );  
   return true;
 }
 

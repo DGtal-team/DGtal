@@ -97,33 +97,13 @@ ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 
 @tparam T the type that should be a model of concepts::CSeparableMetric.
  */
-template <CMetricSpace T>
-struct CSeparableMetric
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Point Point;
-    BOOST_CONCEPT_USAGE( CSeparableMetric )
-    {
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-        // const method dummyConst should take parameter myA of type A and return
-        // something of type B
-      ConceptUtils::sameType( myBool, myX.hiddenBy(u,v,w,start,end,dim) );
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Point u,v,w,start,end;
-  bool myBool;
-  DGtal::Dimension dim;
-  
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CSeparableMetric
+template <typename T>
+concept CSeparableMetric = 
+  CMetricSpace<T> && 
+  requires(T myX, typename T::Point u, DGtal::Dimension dim)
+  {
+      { myX.hiddenBy(u, u, u, u, u, dim) } -> std::same_as<bool>;
+  };
 }
 } // namespace DGtal
 

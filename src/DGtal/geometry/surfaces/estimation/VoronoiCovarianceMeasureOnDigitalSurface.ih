@@ -45,7 +45,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -57,7 +57,7 @@ DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSepar
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -152,7 +152,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -166,7 +166,7 @@ surface() const
   return mySurface;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -180,7 +180,7 @@ surfelEmbedding() const
   return mySurfelEmbedding;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -194,7 +194,7 @@ R() const
   return myVCM.R();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -208,7 +208,7 @@ r() const
   return myVCM.r();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -222,7 +222,7 @@ radiusTrivial() const
   return myRadiusTrivial;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -236,7 +236,7 @@ mapSurfel2Normals() const
   return mySurfel2Normals;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -251,7 +251,7 @@ mapPoint2ChiVCM() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -285,7 +285,7 @@ getChiVCMEigenvalues( VectorN& values, Surfel s ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -324,7 +324,7 @@ getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -376,7 +376,7 @@ getPoints( PointOutputIterator outIt, Surfel s ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
@@ -397,7 +397,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
 requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 

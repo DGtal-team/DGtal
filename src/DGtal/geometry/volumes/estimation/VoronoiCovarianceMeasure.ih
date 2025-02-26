@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 ~VoronoiCovarianceMeasure()
@@ -47,7 +47,7 @@ DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
   clean();
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 VoronoiCovarianceMeasure( double _R, double _r, Metric aMetric, bool verbose )
@@ -60,7 +60,7 @@ VoronoiCovarianceMeasure( double _R, double _r, Metric aMetric, bool verbose )
   mySmallR = (_r >= 2.0) ? _r : 2.0;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 VoronoiCovarianceMeasure( const VoronoiCovarianceMeasure& other )
@@ -77,7 +77,7 @@ VoronoiCovarianceMeasure( const VoronoiCovarianceMeasure& other )
   else                   myProximityStructure = 0;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>&
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -99,7 +99,7 @@ operator=( const VoronoiCovarianceMeasure& other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Scalar
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -108,7 +108,7 @@ R() const
   return myBigR; 
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Scalar
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -117,7 +117,7 @@ r() const
   return mySmallR; 
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 void
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -130,7 +130,7 @@ clean()
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 const typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Domain&
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -139,7 +139,7 @@ domain() const
   return myDomain;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 const typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Voronoi&
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -150,7 +150,7 @@ voronoiMap() const
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 template <typename PointInputIterator>
 inline
 void
@@ -239,7 +239,7 @@ init( PointInputIterator itb, PointInputIterator ite )
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 template <typename Point2ScalarFunction>
 inline
 typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::MatrixNN
@@ -272,7 +272,7 @@ measure( Point2ScalarFunction chi_r, Point p ) const
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 const typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Point2MatrixNN&
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
@@ -288,7 +288,7 @@ vcmMap() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 void
 DGtal::VoronoiCovarianceMeasure<TSpace, TSeparableMetric>::
@@ -301,7 +301,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <DGtal::concepts::CSpace TSpace, typename TSeparableMetric>
+template <DGtal::concepts::CSpace TSpace, DGtal::concepts::CSeparableMetric TSeparableMetric>
 inline
 bool
 DGtal::VoronoiCovarianceMeasure<TSpace, TSeparableMetric>::

@@ -127,7 +127,7 @@ namespace DGtal
    */
   template < DGtal::concepts::CSpace  TSpace,
              concepts::CPointPredicate TPointPredicate,
-             typename TSeparableMetric,
+             concepts::CSeparableMetric TSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<TSpace>,
                                        std::set<typename TSpace::Vector> >
@@ -136,7 +136,6 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
 
     ///Both Space points and PointPredicate points must be the same.

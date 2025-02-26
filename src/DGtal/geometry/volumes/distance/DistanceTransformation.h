@@ -89,7 +89,7 @@ namespace DGtal
    */
   template < concepts::CSpace TSpace,
              concepts::CPointPredicate TPointPredicate,
-             typename TSeparableMetric,
+             concepts::CSeparableMetric TSeparableMetric,
              typename TImageContainer =
                ImageContainerBySTLVector< HyperRectDomain<TSpace>,
                                           typename TSpace::Vector >
@@ -99,8 +99,6 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
-
     ///Separable Metric type
     typedef TSeparableMetric SeparableMetric;
 
