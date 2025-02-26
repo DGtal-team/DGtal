@@ -95,35 +95,14 @@ namespace DGtal {
   
   @tparam T the type that should be a model of CIncrementalPrimitiveComputer.
   */
-  template <CPrimitiveComputer T>
-  struct CIncrementalPrimitiveComputer
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Inner types
-    typedef typename T::Point Point;
-
-    // Methods
-    BOOST_CONCEPT_USAGE( CIncrementalPrimitiveComputer )
+  template <typename T>
+  concept CIncrementalPrimitiveComputer = 
+    CPrimitiveComputer<T> && 
+    requires(T myX, typename T::Point myPoint)
     {
-      ConceptUtils::sameType( myBool, myX.extend( myPoint ) );
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myBool, myX.isExtendable( myPoint ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    Point myPoint;
-    bool myBool;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CIncrementalPrimitiveComputer
-
+        { myX.extend(myPoint) } -> std::same_as<bool>;
+        { myX.isExtendable(myPoint) } -> std::same_as<bool>;
+    };
 } // namespace concepts
 } // namespace DGtal
 

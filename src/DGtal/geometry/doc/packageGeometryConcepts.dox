@@ -86,7 +86,7 @@ subgraph cluster_concepts_2 {
     node [style=filled,color=white];
 
     CPrimitiveComputer [ URL="\ref DGtal::concepts::CPrimitiveComputer" ];
-    CIncrementalPrimitiveComputer [ URL="\ref concepts::CIncrementalPrimitiveComputer" ];
+    CIncrementalPrimitiveComputer [ URL="\ref DGtal::concepts::CIncrementalPrimitiveComputer" ];
     CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
     CDigitalSurfaceLocalEstimator [ URL="\ref concepts::CDigitalSurfaceLocalEstimator" ];
 
