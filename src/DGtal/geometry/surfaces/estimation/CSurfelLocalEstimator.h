@@ -103,48 +103,21 @@ namespace DGtal {
   *  @tparam T the type that should be a model of CSurfelLocalEstimator.
   */
   template <typename T>
-      requires concepts::CQuantity<typename T::Quantity>
-  struct CSurfelLocalEstimator
-    : boost::DefaultConstructible<T>,  boost::CopyConstructible<T>, boost::Assignable<T>
-  {
-
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    typedef typename T::Quantity Quantity;
-    typedef typename T::Surfel Surfel;
-
-    BOOST_CONCEPT_USAGE( CSurfelLocalEstimator )
-    {
-      //init method
-      myX.init( myH, myItb, myIte ); 
-
-      ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-      check_const_constraints();
-    }
-    void check_const_constraints() const
-    {
-      ConceptUtils::sameType( myH, myX.h() );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
-    
-    double myH; 
-    Quantity myQ;
-    boost::iterator_archetype<Surfel,
-			      boost::iterator_archetypes::readable_iterator_t,
-			      boost::forward_traversal_tag > myItb, myIte; 
-    boost::iterator_archetype<Quantity,
-			      boost::iterator_archetypes::writable_iterator_t,
-			      boost::incrementable_traversal_tag > myIto; 
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CSurfelLocalEstimator
+  concept CSurfelLocalEstimator =
+      std::default_initializable<T> &&
+      std::copy_constructible<T> &&
+      std::is_copy_assignable_v<T> && 
+      requires(
+        T myX,
+        double myH,
+        ConceptUtils::Ito<typename T::Quantity> myIto, 
+        ConceptUtils::Itb<typename T::Surfel>   myItb)
+      {
+          myX.init( myH, myItb, myItb );
+          { myX.eval(myItb) } -> std::same_as<typename T::Quantity>;
+          { myX.eval( myItb, myItb, myIto ) } -> std::same_as<ConceptUtils::Ito<typename T::Quantity>>;
+          { myX.h() } -> std::same_as<double>;
+      };
 
 } // namespace concepts
 } // namespace DGtal

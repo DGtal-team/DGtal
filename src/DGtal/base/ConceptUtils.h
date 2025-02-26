@@ -45,6 +45,8 @@
 #include <iostream>
 #include <concepts>
 #include <type_traits>
+
+#include <boost/iterator/iterator_archetypes.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 // The preprocessor may peform substitution only if no concatenation (##) is 
@@ -393,6 +395,16 @@ namespace ConceptUtils
           >; 
       };
 
+   // Helper types to simplify some concept writings
+   template<typename T>
+   using Ito = boost::iterator_archetype<T, 
+                                         boost::iterator_archetypes::writable_iterator_t, 
+                                         boost::incrementable_traversal_tag>;
+
+   template<typename T>
+   using Itb = boost::iterator_archetype<T,
+                                         boost::iterator_archetypes::readable_iterator_t,
+                                         boost::forward_traversal_tag >;; 
 } // end of namespace ConceptUtils
   } //end of namespace concepts.
 } // namespace DGtal

@@ -129,7 +129,7 @@ bool testEstimatorCache(double h)
   
   typedef EstimatorCache<MyIICurvatureEstimator> GaussianCache;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator<GaussianCache> ));
+ DGTAL_CONCEPT_CHECK(requires concepts::CSurfelLocalEstimator<GaussianCache> );
     
   GaussianCache cache( curvatureEstimator );
   cache.init( h, ibegin2, iend2 );

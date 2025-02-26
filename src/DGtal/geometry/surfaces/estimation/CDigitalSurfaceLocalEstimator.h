@@ -98,9 +98,8 @@ namespace DGtal {
   *
   *  @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.
   */
-  template <typename T>
+  template <CSurfelLocalEstimator T>
   struct CDigitalSurfaceLocalEstimator
-    : CSurfelLocalEstimator<T>
   {
 
     // ----------------------- Concept checks ------------------------------

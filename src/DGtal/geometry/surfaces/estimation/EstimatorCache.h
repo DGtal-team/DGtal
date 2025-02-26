@@ -71,7 +71,7 @@ namespace DGtal
    * @tparam TEstimator any model of CSurfelLocalEstimator
    * @tparam TContainer the associative container to use (default type: std::map<Surfel,Quantity>)
    */
-  template <typename TEstimator,
+  template <concepts::CSurfelLocalEstimator TEstimator,
             typename TContainer = std::map<typename TEstimator::Surfel,
                                            typename TEstimator::Quantity> >
   class EstimatorCache
@@ -82,7 +82,6 @@ namespace DGtal
     
     ///Estimator type
     typedef TEstimator Estimator;
-    BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator<TEstimator> ));
     
     ///Container type
     typedef TContainer Container;
