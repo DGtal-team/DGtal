@@ -41,7 +41,7 @@
 /**
  * Constructor.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>
 ::LocalConvolutionNormalVectorEstimator ( 
@@ -54,7 +54,7 @@ DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunct
 /**
  * Init.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 void
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::init ( const double h,
@@ -69,7 +69,7 @@ DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunct
  * @return the estimated quantity at *it
  * from itb till ite
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -88,7 +88,7 @@ eval ( const ConstIterator& itb,
 }
 
 //-----------------------------------------------------------------------------
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 const typename DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Surface &
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
@@ -98,7 +98,7 @@ surface() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 template <typename OutputIterator>
 inline
 OutputIterator
@@ -118,7 +118,7 @@ evalAll ( OutputIterator result ) const
  * @return the estimated quantity at *it
  */
 
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 typename DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval ( const ConstIterator& it ) const
@@ -126,7 +126,7 @@ DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunct
     return eval ( *it );
 }
 //-----------------------------------------------------------------------------
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 typename DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
@@ -171,7 +171,7 @@ eval ( const SCell & scell ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  DGtal::deprecated::concepts::CConvolutionWeights KernelFunctor>
 inline
 bool
 DGtal::deprecated::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::isValid() const

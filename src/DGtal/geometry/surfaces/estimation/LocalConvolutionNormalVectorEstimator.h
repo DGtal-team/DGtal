@@ -80,7 +80,7 @@ namespace DGtal
    * @tparam TKernelFunctor type of Functor used to represent
    * convolution kernel functor (see BasicConvolutionKernels.h).
    */
-  template <typename TDigitalSurface, typename TKernelFunctor>
+  template <typename TDigitalSurface, concepts::CConvolutionWeights TKernelFunctor>
   class LocalConvolutionNormalVectorEstimator
   {
 
@@ -93,8 +93,6 @@ namespace DGtal
     typedef typename Surface::ConstIterator ConstIterator;
     typedef typename Surface::KSpace::Space::RealVector Quantity;
     typedef typename Surface::SCell SCell;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CConvolutionWeights<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:

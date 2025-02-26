@@ -91,35 +91,13 @@ namespace DGtal
          @tparam T the type that should be a model of CConvolutionWeights.
       */
       template <typename T>
-      struct CConvolutionWeights:  boost::CopyConstructible<T>, boost::Assignable<T>
-        // Use derivation for coarser concepts, like
-        // : CoarserConcept<T>
-        // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-        // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
-      {
-        // ----------------------- Concept checks ------------------------------
-      public:
-
-        //inner type
-        typedef typename T::Distance Distance;
-
-        // 2. then check the presence of data members, operators and methods with
-        BOOST_CONCEPT_USAGE( CConvolutionWeights )
+      concept CConvolutionWeights = 
+        std::copy_constructible<T> &&
+        std::is_copy_assignable_v<T> && 
+        requires(T myX, typename T::Distance myA)
         {
-
-          DGtal::concepts::ConceptUtils::sameType( myB, myX( myA ) );
-        }
-
-        // ------------------------- Private Datas --------------------------------
-      private:
-        T myX; // do not require T to be default constructible.
-        Distance myA;
-        double myB;
-
-        // ------------------------- Internals ------------------------------------
-      private:
-
-      }; // end of concept CConvolutionWeights
+           { myX(myA) } -> std::same_as<double>;
+        };
     }
   }
 } // namespace DGtal
