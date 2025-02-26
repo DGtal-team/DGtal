@@ -227,11 +227,9 @@ DGtal::BigInteger signedRandomBigInt62 ()
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor, typename RandomFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor, typename RandomFunctor>
 bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
 
@@ -269,11 +267,9 @@ bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n 
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor, typename RandomFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor, typename RandomFunctor>
 bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
 
@@ -309,11 +305,9 @@ bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::i
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor, typename RandomFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor, typename RandomFunctor>
 bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
 
@@ -350,11 +344,9 @@ bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::in
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor, typename RandomFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor, typename RandomFunctor>
 bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
   P = Point(0,0); 
@@ -400,11 +392,9 @@ bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor, typename RandomFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor, typename RandomFunctor>
 bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
   P = Point(0,0); 
@@ -454,11 +444,9 @@ bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t
  * @param n number of tries 
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
-template<typename OrientationFunctor>
+template<DGtal::concepts::COrientationFunctor2 OrientationFunctor>
 bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT((  DGtal::concepts::COrientationFunctor2<OrientationFunctor> )); 
-
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
 

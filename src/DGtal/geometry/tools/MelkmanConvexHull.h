@@ -85,7 +85,7 @@ namespace DGtal
    * (whose inner type 'Point' match to 'TPoint')
    */
   template <typename TPoint, 
-	    typename TOrientationFunctor >
+	    concepts::COrientationFunctor2 TOrientationFunctor >
   class MelkmanConvexHull
   {
     // ----------------------- Types ------------------------------------------
@@ -104,7 +104,6 @@ namespace DGtal
      * Type of orientation functor
      */
     typedef TOrientationFunctor Functor;
-    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
     //the two types of points must be the same
     BOOST_STATIC_ASSERT (( boost::is_same< Point, typename Functor::Point >::value )); 
 

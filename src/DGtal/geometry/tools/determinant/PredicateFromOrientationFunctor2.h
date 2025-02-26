@@ -77,7 +77,7 @@ namespace DGtal
    * for null values, but equal to 'false' for strictly positive or negative 
    * values (default).  
    */
-  template <typename TOrientationFunctor, bool acceptNeg = false, bool acceptZero = false >
+  template <concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg = false, bool acceptZero = false >
   class PredicateFromOrientationFunctor2
   {
     // ----------------------- Types ------------------------------------------
@@ -86,7 +86,6 @@ namespace DGtal
      * Type of the adapter orientation functor
      */
     typedef TOrientationFunctor Functor; 
-    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
     
     /**
      * Type of input points

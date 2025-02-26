@@ -110,26 +110,14 @@ namespace DGtal
      @tparam T the type that should be a model of COrientationFunctor.
   */
   template <typename T>
-  requires concepts::CPointFunctor<T> && concepts::CSignedNumber< typename T::Value >
-  struct COrientationFunctor
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:    
-    typedef typename T::PointArray PointArray; 
-    typedef typename T::SizeArray SizeArray; 
-
-    BOOST_CONCEPT_USAGE( COrientationFunctor )
+  concept COrientationFunctor = 
+    concepts::CPointFunctor<T> && 
+    concepts::CSignedNumber< typename T::Value > && 
+    std::same_as<typename T::SizeArray, std::remove_cvref_t<decltype(T::size)>> &&
+    requires(T myX, typename T::PointArray myA)
     {
-      concepts::ConceptUtils::sameType( myS, T::size ); 
-      myX.init( myA );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; 
-    PointArray myA; 
-    SizeArray myS;
-
-  }; // end of concept COrientationFunctor
+        myX.init(myA);
+    };
  }
 } // namespace DGtal
 

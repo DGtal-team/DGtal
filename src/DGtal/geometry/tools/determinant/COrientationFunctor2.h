@@ -81,21 +81,12 @@ namespace DGtal
      @tparam T the type that should be a model of COrientationFunctor2.
   */
   template <typename T>
-  struct COrientationFunctor2 : concepts::COrientationFunctor<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    BOOST_CONCEPT_USAGE( COrientationFunctor2 )
+  concept COrientationFunctor2 = 
+    concepts::COrientationFunctor<T> && 
+    requires(T myX, typename T::Point myA)
     {
-      myX.init( myA, myB );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; 
-    typename T::Point myA, myB;
-
-  }; // end of concept COrientationFunctor2
+        myX.init(myA, myA);
+    };
  }
 } // namespace DGtal
 

@@ -36,7 +36,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::PredicateFromOrientationFunctor2(Alias<Functor> aFunctor)
@@ -45,7 +45,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 }
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 void
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
@@ -55,7 +55,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 }
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
@@ -65,7 +65,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 }
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
@@ -76,7 +76,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 }
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 void
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
@@ -91,7 +91,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 }
 
 // ------------------------------------------------------------------------
-template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
+template <DGtal::concepts::COrientationFunctor2 TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
