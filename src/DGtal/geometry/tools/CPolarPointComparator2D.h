@@ -93,33 +93,15 @@ namespace DGtal
      @tparam T the type that should be a model of CPolarPointComparator2D.
   */
   template <typename T>
-  struct CPolarPointComparator2D
-    : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Point Point; 
-
-    BOOST_CONCEPT_USAGE( CPolarPointComparator2D )
-    {
-      myX.setPole( myP ); 
-
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      concepts::ConceptUtils::sameType( myB, myX( myP, myP ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Point myP;
-    bool myB; 
-
-
-  }; // end of concept CPolarPointComparator2D
+    concept CPolarPointComparator2D = 
+      std::default_initializable<T> &&
+      std::copy_constructible<T> &&
+      std::is_copy_assignable_v<T> &&
+      requires(T myX, typename T::Point myP)
+      {
+          myX.setPole(myP);
+          { myX(myP, myP) } -> std::same_as<bool>;
+      };
  }
 } // namespace DGtal
 

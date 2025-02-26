@@ -281,7 +281,7 @@ namespace DGtal
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
 	      typename Predicate, 
-	      typename PolarComparator >
+	      concepts::CPolarPointComparator2D PolarComparator >
     void grahamConvexHullAlgorithm(const ForwardIterator& itb, 
 				   const ForwardIterator& ite,  
 				   OutputIterator res, 

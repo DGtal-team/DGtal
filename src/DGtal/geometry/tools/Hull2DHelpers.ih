@@ -207,7 +207,7 @@ namespace DGtal
       template <typename ForwardIterator,
                 typename OutputIterator,
                 typename Predicate,
-                typename PolarComparator >
+                concepts::CPolarPointComparator2D PolarComparator >
       inline
       void grahamConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,
                                      OutputIterator res,
@@ -219,7 +219,6 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        BOOST_CONCEPT_ASSERT(( concepts::CPolarPointComparator2D<PolarComparator> ));
         
         if ( itb != ite )
           {
