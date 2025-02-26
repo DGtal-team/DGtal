@@ -97,8 +97,8 @@ ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 
 @tparam T the type that should be a model of concepts::CSeparableMetric.
  */
-template <typename T>
-struct CSeparableMetric: CMetricSpace<T>
+template <CMetricSpace T>
+struct CSeparableMetric
 {
     // ----------------------- Concept checks ------------------------------
 public:

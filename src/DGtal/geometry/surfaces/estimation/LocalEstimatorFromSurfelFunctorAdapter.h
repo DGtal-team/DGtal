@@ -98,7 +98,7 @@ namespace DGtal
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
    */
-  template <typename TDigitalSurfaceContainer, typename TMetric, 
+  template <typename TDigitalSurfaceContainer, concepts::CMetricSpace TMetric, 
             typename TFunctorOnSurfel, typename TConvolutionFunctor>
   requires concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
   class LocalEstimatorFromSurfelFunctorAdapter
@@ -107,7 +107,6 @@ namespace DGtal
   public:
 
     ///Concept Checks
-    BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric>));
     BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 

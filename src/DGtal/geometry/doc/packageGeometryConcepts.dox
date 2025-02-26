@@ -64,8 +64,8 @@ subgraph cluster_concepts_2 {
     color=lightgrey;
     node [style=filled,color=white];
 
-  CMetricSpace [label="CMetricSpace" URL="@ref concepts::CMetricSpace"];
-    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref concepts::CDigitalMetricSpace"];
+  CMetricSpace [label="CMetricSpace" URL="@ref DGtal::concepts::CMetricSpace"];
+    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref DGtal::concepts::CDigitalMetricSpace"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref concepts::CSeparableMetric"];
     CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
     CPowerMetric [label="CPowerMetric" URL="@ref concepts::CPowerMetric"];

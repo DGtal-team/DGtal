@@ -121,42 +121,18 @@ LpMetric, ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric.
 @tparam T the type that should be a model of CMetricSpace.
  */
 template <typename T>
-  requires concepts::CQuantity<typename T::Value> && 
-           concepts::CQuantity<typename T::RawValue> && 
-           concepts::CSpace<typename T::Space>
-struct CMetricSpace:  boost::CopyConstructible<T>, boost::Assignable<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Point Point;
-  typedef typename T::Space Space;
-  typedef typename T::Value Value;
-  typedef typename T::RawValue RawValue;
-
-  BOOST_CONCEPT_USAGE( CMetricSpace )
-  {
-    checkConstConstraints();
-  }
-
-  void checkConstConstraints() const
-  {
-    // const method dummyConst should take parameter myA of type A and return
-    // something of type B
-    ConceptUtils::sameType( myValue, myX.operator()( myPoint , myPoint2 ) );
-    ConceptUtils::sameType( myRawValue, myX.rawDistance( myPoint , myPoint2 ) );
-    ConceptUtils::sameType( myClosest, myX.closest( myPoint , myPoint2,myPoint3 ) );
- }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Point myPoint, myPoint2, myPoint3;
-  Value myValue;
-  RawValue myRawValue;
-  DGtal::Closest myClosest;
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CMetricSpace
+concept CMetricSpace =  
+    std::copy_constructible<T> &&
+    std::is_copy_assignable_v<T> && 
+    CQuantity<typename T::Value> && 
+    CQuantity<typename T::RawValue> && 
+    CSpace<typename T::Space> &&
+    requires(T myX, typename T::Point myPoint)
+    {
+        { myX.operator()(myPoint, myPoint)  } -> std::same_as<typename T::Value>;
+        { myX.rawDistance(myPoint, myPoint) } -> std::same_as<typename T::RawValue>;
+        { myX.closest(myPoint, myPoint, myPoint) } -> std::same_as<DGtal::Closest>;
+    };
   } //namespace concept
 } // namespace DGtal
 

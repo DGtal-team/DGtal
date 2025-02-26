@@ -75,7 +75,7 @@ namespace DGtal
    * @tparam TMetric the type of input metric (model of CMetric)
    *
    */
-  template <typename TMetric>
+  template <concepts::CMetricSpace TMetric>
   class SeparableMetricAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -84,7 +84,6 @@ namespace DGtal
 
     ///Copy the space type
     typedef TMetric Metric;
-    BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric> ));
 
     ///Type for points
     typedef typename Metric::Point Point;

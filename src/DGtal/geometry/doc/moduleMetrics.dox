@@ -77,8 +77,8 @@ on C++ "double").
 
 @dot
 digraph metric_concepts_2_vor {
-    CMetricSpace [label="CMetricSpace" URL="@ref CMetricSpace"];
-    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref CDigitalMetricSpace"];
+    CMetricSpace [label="CMetricSpace" URL="@ref DGtal::CMetricSpace"];
+    CDigitalMetricSpace [label="CDigitalMetricSpace" URL="@ref DGtal::CDigitalMetricSpace"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
     CDigitalSeparableMetric [label="CDigitalSeparableMetric"];
     CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];

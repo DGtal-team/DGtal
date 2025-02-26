@@ -37,7 +37,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //------------------------------------------------------------------------------
-template <typename TM>
+template <DGtal::concepts::CMetricSpace TM>
 inline
 typename DGtal::SeparableMetricAdapter<TM>::Abscissa 
 DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
@@ -72,7 +72,7 @@ DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
   
 }
 //------------------------------------------------------------------------------
-template <typename TM>
+template <DGtal::concepts::CMetricSpace TM>
 inline
 bool 
 DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
@@ -130,7 +130,7 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
     }
 }
 //------------------------------------------------------------------------------
-template <typename TM>
+template <DGtal::concepts::CMetricSpace TM>
 inline
 void
 DGtal::SeparableMetricAdapter<TM>::selfDisplay ( std::ostream & out ) const

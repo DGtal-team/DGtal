@@ -57,7 +57,7 @@ bool testConcepts()
 
   Adapted adapted(l2);
   
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalMetricSpace<Adapted> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalMetricSpace<Adapted> );
   
   return nbok == nb;
 }/**
@@ -74,7 +74,7 @@ bool testVal()
   typedef DigitalMetricAdapter<L2> Adapted;
   Adapted adapted(l2);
 
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalMetricSpace<Adapted> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalMetricSpace<Adapted> );
 
   L2::Point a(0,0), b(5,2);
 

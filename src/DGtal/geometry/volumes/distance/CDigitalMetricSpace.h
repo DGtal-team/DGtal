@@ -95,21 +95,10 @@ CInteger).
 @tparam T the type that should be a model of CDigitalMetricSpace.
  */
     template <typename T>
-    requires CInteger<typename T::Value> && 
-             CInteger<typename T::RawValue>
-    struct CDigitalMetricSpace: concepts::CMetricSpace<T>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::Point Point;
-      typedef typename T::Space Space;
-      typedef typename T::Value Value;
-      typedef typename T::RawValue RawValue;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CDigitalMetricSpace
+    concept CDigitalMetricSpace =  
+             CInteger<typename T::Value> && 
+             CInteger<typename T::RawValue> &&
+             CMetricSpace<T>;
 
 } // namespace concepts
 

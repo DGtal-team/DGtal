@@ -46,7 +46,7 @@ using namespace DGtal;
 TEST_CASE( "Testing LpMetric" )
 {
   
-  BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<LpMetric<Z2i::Space>> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CMetricSpace<LpMetric<Z2i::Space>> );
 
   LpMetric<Z2i::Space> l2_2D(2.0);
   LpMetric<Z3i::Space> l2_3D(2.0);
