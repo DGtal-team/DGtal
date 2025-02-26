@@ -91,33 +91,17 @@ namespace DGtal {
   
   @tparam T the type that should be a model of CPrimitiveComputer.
   */
-  template <typename T>
-  struct CPrimitiveComputer : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Inner types
-    typedef typename T::Primitive Primitive;
-    typedef typename T::Space Space;
+  template<typename T>
+  concept CPrimitiveComputer =
+      std::default_initializable<T> &&
+      std::copy_constructible<T> &&
+      std::is_copy_assignable_v<T> &&
+      requires(T myX)
+      {
+          typename T::Space;
+          { myX.primitive() } -> std::same_as<typename T::Primitive>;
+      };
 
-    // Methods
-    BOOST_CONCEPT_USAGE( CPrimitiveComputer )
-    {
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myP, myX.primitive() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    Primitive myP;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CPrimitiveComputer
 
 } // namespace concepts
 } // namespace DGtal

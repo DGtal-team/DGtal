@@ -95,8 +95,8 @@ namespace DGtal {
   
   @tparam T the type that should be a model of CIncrementalPrimitiveComputer.
   */
-  template <typename T>
-  struct CIncrementalPrimitiveComputer : CPrimitiveComputer<T>
+  template <CPrimitiveComputer T>
+  struct CIncrementalPrimitiveComputer
   {
     // ----------------------- Concept checks ------------------------------
   public:
