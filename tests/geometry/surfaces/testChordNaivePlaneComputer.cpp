@@ -533,8 +533,8 @@ bool testChordNaivePlaneComputer()
   typedef ChordNaivePlaneComputer<Space, Point, Integer> NaivePlaneComputer;
   typedef ChordGenericNaivePlaneComputer<Space, Point, Integer> GenericNaivePlaneComputer;
 
-  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< NaivePlaneComputer > ));
-  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< GenericNaivePlaneComputer > ));
+  DGTAL_CONCEPT_CHECK(requires CAdditivePrimitiveComputer< NaivePlaneComputer > );
+  DGTAL_CONCEPT_CHECK(requires CAdditivePrimitiveComputer< GenericNaivePlaneComputer > );
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlaneComputer > ));
   DGTAL_CONCEPT_CHECK( requires CPointPredicate< NaivePlaneComputer::Primitive > );

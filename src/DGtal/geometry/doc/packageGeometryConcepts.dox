@@ -87,7 +87,7 @@ subgraph cluster_concepts_2 {
 
     CPrimitiveComputer [ URL="\ref DGtal::concepts::CPrimitiveComputer" ];
     CIncrementalPrimitiveComputer [ URL="\ref DGtal::concepts::CIncrementalPrimitiveComputer" ];
-    CAdditivePrimitiveComputer [ URL="\ref concepts::CAdditivePrimitiveComputer" ];
+    CAdditivePrimitiveComputer [ URL="\ref DGtal::concepts::CAdditivePrimitiveComputer" ];
     CDigitalSurfaceLocalEstimator [ URL="\ref concepts::CDigitalSurfaceLocalEstimator" ];
 
     CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;

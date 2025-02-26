@@ -95,34 +95,14 @@ namespace DGtal {
   
   @tparam T the type that should be a model of CAdditivePrimitiveComputer.
   */
-  template <CIncrementalPrimitiveComputer T>
-  struct CAdditivePrimitiveComputer 
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // Inner types
-    typedef typename T::Point Point; // already required in CIncrementalPrimitiveComputer
-    // Methods
-    BOOST_CONCEPT_USAGE( CAdditivePrimitiveComputer )
+  template <typename T>
+  concept CAdditivePrimitiveComputer =  
+    CIncrementalPrimitiveComputer<T> && 
+    requires(T myX, CForwardIteratorArchetype<typename T::Point> myIt)
     {
-      ConceptUtils::sameType( myBool, myX.extend( myIt, myIt ) );
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myBool, myX.isExtendable( myIt, myIt ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    bool myBool;
-    CForwardIteratorArchetype<Point> myIt;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CAdditivePrimitiveComputer
-
+        { myX.extend(myIt, myIt) } -> std::same_as<bool>;
+        { myX.isExtendable(myIt, myIt) } -> std::same_as<bool>;
+    };
 } // namespace concepts
 } // namespace DGtal
 
