@@ -41,34 +41,34 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 DGtal::CanonicSCellEmbedder<TKSpace>::
 ~CanonicSCellEmbedder()
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 DGtal::CanonicSCellEmbedder<TKSpace>::
 CanonicSCellEmbedder()
   : myKSpace( 0 )
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 DGtal::CanonicSCellEmbedder<TKSpace>::
 CanonicSCellEmbedder( ConstAlias<KSpace> aKSpace )
   : myKSpace( &aKSpace )
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 DGtal::CanonicSCellEmbedder<TKSpace>::
 CanonicSCellEmbedder( const Self & other )
   : myKSpace( other.myKSpace )
 {}
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 typename DGtal::CanonicSCellEmbedder<TKSpace>::Self &
 DGtal::CanonicSCellEmbedder<TKSpace>::
@@ -78,7 +78,7 @@ operator=( const Self & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 const typename DGtal::CanonicSCellEmbedder<TKSpace>::KSpace &
 DGtal::CanonicSCellEmbedder<TKSpace>::space() const
@@ -87,7 +87,7 @@ DGtal::CanonicSCellEmbedder<TKSpace>::space() const
   return *myKSpace;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 typename DGtal::CanonicSCellEmbedder<TKSpace>::RealPoint
 DGtal::CanonicSCellEmbedder<TKSpace>::embed( const SCell & scell ) const
@@ -95,7 +95,7 @@ DGtal::CanonicSCellEmbedder<TKSpace>::embed( const SCell & scell ) const
   return this->operator()( scell );
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 typename DGtal::CanonicSCellEmbedder<TKSpace>::RealPoint
 DGtal::CanonicSCellEmbedder<TKSpace>::operator()( const SCell & scell ) const
@@ -108,7 +108,7 @@ DGtal::CanonicSCellEmbedder<TKSpace>::operator()( const SCell & scell ) const
   return p;
 }
 //-----------------------------------------------------------------------------
-template <typename TKSpace>
+template <DGtal::concepts::CPreCellularGridSpaceND TKSpace>
 inline
 bool
 DGtal::CanonicSCellEmbedder<TKSpace>::isValid( ) const

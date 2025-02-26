@@ -282,61 +282,50 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 @tparam T the type that should be a model of CPreCellularGridSpaceND.
  */
 template <typename T>
-requires 
+concept CPreCellularGridSpaceND = 
+  std::default_initializable<T> &&
+  std::copy_constructible<T> && 
   CConstSinglePassRange<typename T::Cells>  &&
   CConstSinglePassRange<typename T::SCells> &&
-  CInteger<typename T::Integer>
-struct CPreCellularGridSpaceND
-  : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
-{
-  // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Integer Integer;
-  typedef typename T::Space Space;
-  typedef typename T::PreCellularGridSpace PreCellularGridSpace;
-  typedef typename T::Cell Cell;
-  typedef typename T::SCell SCell;
-  typedef typename T::Surfel Surfel;
-  typedef typename T::Sign Sign;
-  typedef typename T::DirIterator DirIterator;
-  typedef typename T::Point Point;
-  typedef typename T::Vector Vector;
-  typedef typename T::Cells Cells;
-  typedef typename T::SCells SCells;
-  typedef typename T::CellSet CellSet;
-  typedef typename T::SCellSet SCellSet;
-  typedef typename T::SurfelSet SurfelSet;
-  typedef int Dummy;
-  typedef typename T::template CellMap<Dummy>::Type CellMap;
-  typedef typename T::template SCellMap<Dummy>::Type SCellMap;
-  typedef typename T::template SurfelMap<Dummy>::Type SurfelMap;
-
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Integer, typename Space::Integer >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector, typename Space::Vector >::value ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< CellSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SCellSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SurfelSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< CellSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< SCellSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< SurfelSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< CellMap > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SCellMap > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< SurfelMap > ));
-  BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< CellMap > ));
-  BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< SCellMap > ));
-  BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< SurfelMap > ));
-
-  BOOST_CONCEPT_USAGE( CPreCellularGridSpaceND )
+  CInteger<typename T::Integer> &&
+  std::same_as<typename T::Integer, typename T::Space::Integer> &&
+  std::same_as<typename T::Point  , typename T::Space::Point> &&
+  std::same_as<typename T::Vector , typename T::Space::Vector> &&
+  std::same_as<Dimension, std::remove_cv_t<decltype(T::dimension)>> && 
+  std::same_as<Dimension, std::remove_cv_t<decltype(T::DIM)>> && 
+  std::same_as<typename T::Sign, std::remove_cv_t<decltype(T::POS)>> && 
+  std::same_as<typename T::Sign, std::remove_cv_t<decltype(T::NEG)>> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::CellSet> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::SCellSet> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::SurfelSet> && 
+  ConceptUtils::SimpleAssociativeContainer<typename T::CellSet> && 
+  ConceptUtils::SimpleAssociativeContainer<typename T::SCellSet> && 
+  ConceptUtils::SimpleAssociativeContainer<typename T::SurfelSet> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::template CellMap<int>::Type> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::template SCellMap<int>::Type> && 
+  ConceptUtils::UniqueAssociativeContainer<typename T::template SurfelMap<int>::Type> &&  
+  ConceptUtils::PairAssociativeContainer<typename T::template CellMap<int>::Type> && 
+  ConceptUtils::PairAssociativeContainer<typename T::template SCellMap<int>::Type> && 
+  ConceptUtils::PairAssociativeContainer<typename T::template SurfelMap<int>::Type> && 
+  requires(
+    T myX, // do not require T to be default constructible.
+    typename T::Integer myInteger,
+    Dimension myDim,
+    typename T::Point myP1, 
+    typename T::Point myP2,
+    typename T::Vector myV,
+    typename T::Cell myCell,
+    typename T::SCell mySCell,
+    typename T::Cell myMutableCell,
+    typename T::SCell myMutableSCell,
+    bool myBool,
+    typename T::Sign mySign,
+    typename T::DirIterator myDirIt,
+    typename T::Cells myCells,
+    typename T::SCells mySCells
+  )
   {
-    ConceptUtils::sameType( myDim, T::dimension );
-    ConceptUtils::sameType( myDim, T::DIM );
-    ConceptUtils::sameType( mySign, T::POS );
-    ConceptUtils::sameType( mySign, T::NEG );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
+    // TODO: Use concept to check for types
     ConceptUtils::sameType( myCell, myX.uCell( myP1 ) );
     ConceptUtils::sameType( myCell, myX.uCell( myP1, myCell ) );
     ConceptUtils::sameType( mySCell, myX.sCell( myP1 ) );
@@ -355,8 +344,7 @@ public:
     ConceptUtils::sameType( myInteger, myX.sKCoord( mySCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.sCoord( mySCell, myDim ) );
     ConceptUtils::sameType( myP1, myX.sKCoords( mySCell ) );
-    ConceptUtils::sameType( myP1, myX.sCoords( mySCell ) );
-    myX.uSetKCoord( myMutableCell, myDim, myInteger );
+    ConceptUtils::sameType( myP1, myX.sCoords( mySCell ) );myX.uSetKCoord( myMutableCell, myDim, myInteger );
     myX.uSetCoord( myMutableCell, myDim, myInteger );
     myX.uSetKCoords( myMutableCell, myP1 );
     myX.uSetCoords( myMutableCell, myP1 );
@@ -429,30 +417,7 @@ public:
     ConceptUtils::sameType( mySCell, myX.sIndirectIncident( mySCell, myDim ) );
     ConceptUtils::sameType( myP1, myX.interiorVoxel( mySCell) );
     ConceptUtils::sameType( myP1, myX.exteriorVoxel( mySCell) );
-
-}
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Integer myInteger;
-  Dimension myDim;
-  Point myP1, myP2;
-  Vector myV;
-  Cell myCell;
-  SCell mySCell;
-  mutable Cell myMutableCell;
-  mutable SCell myMutableSCell;
-  bool myBool;
-  Sign mySign;
-  DirIterator myDirIt;
-  Cells myCells;
-  SCells mySCells;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CPreCellularGridSpaceND
-
+  };
 } // namespace concepts
 } // namespace DGtal
 

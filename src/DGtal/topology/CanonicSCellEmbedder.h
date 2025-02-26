@@ -61,12 +61,11 @@ namespace DGtal
 
    @tparam TKSpace the type of cellular grid space where the embedder works, a model of CPreCellularGridSpaceND.
  */
-  template <typename TKSpace>
+  template <concepts::CPreCellularGridSpaceND TKSpace>
   struct CanonicSCellEmbedder
   {
   public:
     typedef CanonicSCellEmbedder<TKSpace> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND<TKSpace> ));
 
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell SCell;

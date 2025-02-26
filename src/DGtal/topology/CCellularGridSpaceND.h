@@ -160,9 +160,9 @@ details.
  */
 template <typename T>
 requires CIntegralNumber<typename T::Size> && 
-         CUnsignedNumber<typename T::Size>
+         CUnsignedNumber<typename T::Size> && 
+         CPreCellularGridSpaceND<T>
 struct CCellularGridSpaceND
-  : CPreCellularGridSpaceND<T>
 {
   // ----------------------- Concept checks ------------------------------
 public:
@@ -202,12 +202,12 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
-  typename CPreCellularGridSpaceND<T>::Integer myInteger;
+  typename T::Integer myInteger;
   Size mySize;
   Dimension myDim;
-  typename CPreCellularGridSpaceND<T>::Point myP1, myP2;
-  typename CPreCellularGridSpaceND<T>::Cell myCell;
-  typename CPreCellularGridSpaceND<T>::SCell mySCell;
+  typename T::Point myP1, myP2;
+  typename T::Cell myCell;
+  typename T::SCell mySCell;
   bool myBool;
 
     // ------------------------- Internals ------------------------------------

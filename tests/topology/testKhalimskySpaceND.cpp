@@ -711,9 +711,9 @@ void testCellularGridSpaceNDCoFaces( KSpace const & K )
 
 TEST_CASE( "Checking concepts" )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<2> > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<3> > ));
-  BOOST_CONCEPT_ASSERT(( concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<4> > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<2> > );
+  DGTAL_CONCEPT_CHECK(requires concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<3> > );
+  DGTAL_CONCEPT_CHECK(requires concepts::CPreCellularGridSpaceND< KhalimskyPreSpaceND<4> > );
 
   BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KhalimskySpaceND<2> > ));
   BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KhalimskySpaceND<3> > ));

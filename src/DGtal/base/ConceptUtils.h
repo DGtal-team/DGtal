@@ -395,6 +395,76 @@ namespace ConceptUtils
           >; 
       };
 
+   /**
+    *  \brief Equivalent of boost::AssociativeContainer
+    * 
+    *  See https://www.boost.org/sgi/stl/AssociativeContainer.html
+    */
+   template <typename T>
+   concept AssociativeContainer = 
+      std::is_default_constructible_v<T> && 
+      ForwardContainer<T> &&
+      requires(T a, const T ca, typename T::key_type k, typename T::iterator p)
+      {
+         a.erase(k); // Not checked for size_type as it is unclear which one (boost, std, dgtal, ...)
+         a.erase(p);
+         a.erase(p, p);
+         a.clear();
+         {  a.find(k) } -> std::same_as<typename T::iterator>;
+         { ca.find(k) } -> std::same_as<typename T::const_iterator>;
+
+         a.count(k); // Not checked for size_type as it is unclear which one (boost, std, dgtal, ...)
+         
+         // One way to check for pair without naming it (could be pair from boost, std, dgtal, ... )
+         {  a.equal_range(k).first  } -> std::same_as<typename T::iterator&&>;
+         {  a.equal_range(k).second } -> std::same_as<typename T::iterator&&>;
+         { ca.equal_range(k).first  } -> std::same_as<typename T::const_iterator&&>;
+         { ca.equal_range(k).second } -> std::same_as<typename T::const_iterator&&>;      
+      };
+
+   /**
+    * \brief Equivalent of boost::UniqueAssociativeContainer
+    * 
+    * See https://www.boost.org/sgi/stl/UniqueAssociativeContainer.html
+    */
+   template <typename T>
+   concept UniqueAssociativeContainer =
+      AssociativeContainer<T> && 
+      std::constructible_from<T, typename T::iterator, typename T::iterator> &&
+      requires(T a, typename T::value_type t, typename T::iterator p)
+      {
+         // One way to check for pair without naming it (could be pair from boost, std, dgtal, ... )
+         { a.insert(t).first  } -> std::same_as<typename T::iterator&&>;
+         { a.insert(t).second } -> std::same_as<bool&&>; 
+         a.insert(p, p);
+      };
+
+   /**
+    * \brief Equivalent of boost::SimpleAssociativeContainer
+    * 
+    * See https://www.boost.org/sgi/stl/SimpleAssociativeContainer.html
+    */
+   template <typename T>
+   concept SimpleAssociativeContainer = 
+      UniqueAssociativeContainer<T> &&
+      std::same_as<typename T::value_type, typename T::key_type> && 
+      std::same_as<typename T::iterator  , typename T::const_iterator>;
+ 
+   /**
+    * \brief Equivalent of boost::PairAssociativeContainer
+    * 
+    * See https://www.boost.org/sgi/stl/PairAssociativeContainer.html
+    */
+   template <typename T>
+   concept PairAssociativeContainer = 
+      UniqueAssociativeContainer<T> &&
+      requires(typename T::value_type x)
+      {
+         { x.first  } -> std::same_as<const typename T::key_type&>;
+         { x.second } -> std::same_as<typename T::mapped_type&>; // Should be ::data_type
+      };
+
+
    // Helper types to simplify some concept writings
    template<typename T>
    using Ito = boost::iterator_archetype<T, 
