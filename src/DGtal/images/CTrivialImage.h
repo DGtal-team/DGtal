@@ -79,24 +79,13 @@ namespace DGtal
 ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
    
    */
-
-  template <CTrivialConstImage I>
-  struct CTrivialImage
-  {
-
-   public:
-
-    BOOST_CONCEPT_USAGE(CTrivialImage)
+  template <typename I>
+  concept CTrivialImage =
+    CTrivialConstImage<I> && 
+    requires(I myI, typename I::Point myPoint, typename I::Value myValue)
     {
-      myI.setValue( myPoint, myValue ); 
-    }
-
-   private:
-    I myI;
-    typename I::Point myPoint; 
-    typename I::Value myValue; 
-    
-  };
+        myI.setValue(myPoint, myValue);
+    };
   }
 } // namespace DGtal
 

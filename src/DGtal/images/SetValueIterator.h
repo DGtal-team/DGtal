@@ -66,6 +66,9 @@ namespace DGtal
 	    = typename TImage::Domain::ConstIterator>
   class SetValueIterator
   {
+    // Macro as this class may by used with TImage being an
+    // incomplete type.
+    DGTAL_CONCEPT_CHECK(requires concepts::CTrivialImage<TImage>);
     // ----------------------- Types definitions ------------------------------
   public:
 
@@ -76,8 +79,6 @@ namespace DGtal
     using reference = void;
     
     typedef TImage Image;
-    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<Image> ));
-
 
     // ----------------------- Standard services ------------------------------
   public:

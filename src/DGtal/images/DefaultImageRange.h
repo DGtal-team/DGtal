@@ -77,12 +77,12 @@ namespace DGtal
   requires DGtal::concepts::CDomain<typename TImage::Domain>
   class DefaultImageRange
   {
-
+    // Macro as this class may by used with TImage being an
+    // incomplete type.
+    DGTAL_CONCEPT_CHECK(requires concepts::CTrivialImage<TImage>);
 
     // ------------------------- inner types --------------------------------
   public: 
-  
-    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 

@@ -60,7 +60,7 @@ digraph GIMAGE {
 
     CImage [label="CImage" URL="@ref concepts::CImage"];
     CConstImage [label="CConstImage" URL="@ref concepts::CConstImage"];
-    CTrivialImage [label="CTrivialImage" URL="@ref concepts::CTrivialImage"];
+    CTrivialImage [label="CTrivialImage" URL="@ref DGtal::concepts::CTrivialImage"];
     CTrivialConstImage [label="CTrivialConstImage" URL="@ref DGtal::concepts::CTrivialConstImage"];
 
     CImage -> CConstImage;

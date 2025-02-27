@@ -100,8 +100,9 @@ namespace concepts
 
 template <typename I>
 requires CConstBidirectionalRangeFromPoint<typename I::Range> &&
-         CBidirectionalRangeWithWritableIteratorFromPoint<typename I::Range, typename I::Value>
-struct CImage: CConstImage<I>, CTrivialImage<I>
+         CBidirectionalRangeWithWritableIteratorFromPoint<typename I::Range, typename I::Value> &&
+         CTrivialImage<I>
+struct CImage: CConstImage<I>
 {
 public:
 
