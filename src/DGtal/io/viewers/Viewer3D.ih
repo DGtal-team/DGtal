@@ -160,13 +160,12 @@ const typename Viewer3D<TSpace, TKSpace>::TextureImage & image )
 }
 
 template <DGtal::concepts::CSpace TSpace, typename TKSpace>
-template <typename TImageType, typename TFunctor>
+template <DGtal::concepts::CConstImage TImageType, typename TFunctor>
 inline void DGtal::Viewer3D<TSpace, TKSpace>::updateTextureImage(
 unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
 double xTranslation, double yTranslation, double zTranslation,
 double rotationAngle, ImageDirection rotationDir )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   typename Viewer3D<TSpace, TKSpace>::TextureImage & anImage =
   myGSImageList.at( imageIndex );

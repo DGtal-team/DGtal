@@ -39,13 +39,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::
 ~BoundaryPredicate()
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
@@ -54,7 +54,7 @@ BoundaryPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
     myLabel1( l1 )
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( const BoundaryPredicate & other )
@@ -62,7 +62,7 @@ BoundaryPredicate( const BoundaryPredicate & other )
     myLabel1( other.myLabel1 )
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::BoundaryPredicate<TKSpace,TImage> &
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
@@ -77,7 +77,7 @@ operator=( const BoundaryPredicate & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 bool 
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
@@ -93,7 +93,7 @@ operator()( const Surfel & s ) const
     && ( (*myPtrImage)( out_p ) != myLabel1 );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 void
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  
@@ -102,7 +102,7 @@ selfDisplay ( std::ostream & out ) const
   out << "[BoundaryPredicate]";
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 bool 
 DGtal::functors::BoundaryPredicate<TKSpace,TImage>::  

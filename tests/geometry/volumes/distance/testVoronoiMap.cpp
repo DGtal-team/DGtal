@@ -219,7 +219,7 @@ bool checkVoronoi(const Set &aSet, const Voro & voro)
 bool testCheckConcept()
 {
   typedef ExactPredicateLpSeparableMetric<Z3i::Space,2> L2Metric;
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage< VoronoiMap<Z3i::Space, Z3i::DigitalSet, L2Metric> >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CConstImage< VoronoiMap<Z3i::Space, Z3i::DigitalSet, L2Metric> >);
 
   return true;
 }

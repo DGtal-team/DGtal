@@ -50,7 +50,7 @@ typename TPoint::Scalar binary_kernel( TPoint const& pt, TDomain const& domain, 
   return cst * (pt - domain.lowerBound()).norm();
 }
 
-template < typename TImage, typename TFunction >
+template < DGtal::concepts::CConstImage TImage, typename TFunction >
 void checkImage( TImage const& anImage, TFunction const& fn )
 {
   using Image = TImage;
@@ -59,9 +59,6 @@ void checkImage( TImage const& anImage, TFunction const& fn )
   // Image's domain
   Domain const& domain = anImage.domain();
   REQUIRE( !domain.isEmpty() );
-
-  // Checks CConstImage concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage<TImage>) );
 
   // Checking standard services
   std::cout << anImage << std::endl;

@@ -201,7 +201,7 @@ namespace DGtal
    * @tparam I1 any model of CImage
    * @tparam I2 any model of CConstImage
    */
-  template<typename I1, typename I2>
+  template<typename I1, concepts::CConstImage I2>
   void imageFromImage(I1& aImg1, const I2& aImg2); 
 
   /**
@@ -343,7 +343,7 @@ namespace DGtal
    * @tparam TValue a model of CQuantity. Type return by the functor.
    *
    */
-  template<typename Image, typename PointPredicate, concepts::CQuantity TValue=DGtal::int32_t>
+  template<concepts::CConstImage Image, typename PointPredicate, concepts::CQuantity TValue=DGtal::int32_t>
   requires concepts::CPointPredicate<PointPredicate>
   class ImageToConstantFunctor
   {
@@ -351,9 +351,7 @@ namespace DGtal
 
     typedef typename Image::Point Point;
     typedef TValue Value;
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    
+        
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
     {
         Point p1;

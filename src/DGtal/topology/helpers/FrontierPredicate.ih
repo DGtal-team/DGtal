@@ -39,13 +39,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::
 ~FrontierPredicate()
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
 FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
@@ -54,7 +54,7 @@ FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
     myLabel1( l1 ), myLabel2( l2 )
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
 FrontierPredicate( const FrontierPredicate & other )
@@ -62,7 +62,7 @@ FrontierPredicate( const FrontierPredicate & other )
     myLabel1( other.myLabel1 ), myLabel2( other.myLabel2 )
 {}
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 DGtal::functors::FrontierPredicate<TKSpace,TImage> &
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
@@ -78,7 +78,7 @@ operator=( const FrontierPredicate & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 bool
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::
@@ -94,7 +94,7 @@ operator()( const Surfel & s ) const
     && ( (*myPtrImage)( out_p ) == myLabel2 );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 void
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::
@@ -103,7 +103,7 @@ selfDisplay ( std::ostream & out ) const
   out << "[FrontierPredicate]";
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CCellularGridSpaceND TKSpace, typename TImage>
+template <DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CConstImage TImage>
 inline
 bool
 DGtal::functors::FrontierPredicate<TKSpace,TImage>::

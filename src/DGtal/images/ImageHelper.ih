@@ -71,8 +71,6 @@ inline
 void 
 DGtal::setFromImage(const I& aImg, const O& ito, const typename I::Value& aThreshold)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
-
   typename I::Domain d = aImg.domain(); 
   setFromPointsRangeAndFunctor(d.begin(), d.end(), ito, aImg, aThreshold); 
 }
@@ -85,7 +83,6 @@ DGtal::setFromImage(const I& aImg, const O& ito,
 		    const typename I::Value& low, 
 		    const typename I::Value& up)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
   ASSERT( low < up ); 
 
   //domain
@@ -146,13 +143,12 @@ DGtal::imageFromFunctor(I& aImg, const F& aFun)
 }
 
 //------------------------------------------------------------------------------
-template<typename I1, typename I2>
+template<typename I1, DGtal::concepts::CConstImage I2>
 inline
 void 
 DGtal::imageFromImage(I1& aImg1, const I2& aImg2)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CImage<I1> )); 
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I2> )); 
 
   typename I2::ConstRange r = aImg2.constRange(); 
   std::copy( r.begin(), r.end(), aImg1.range().outputIterator() ); 
@@ -330,15 +326,13 @@ struct FindAndGetValue<
 }; 
 
 //------------------------------------------------------------------------------
-template<typename I, typename S>
+template<DGtal::concepts::CConstImage I, typename S>
 inline
 bool
 DGtal::findAndGetValue(const I& aImg, const S& aSet, 
 		       const typename I::Point& aPoint, 
 		       typename I::Value& aValue ) 
 {
-  
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage<I> )); 
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<S> )); 
   BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
 

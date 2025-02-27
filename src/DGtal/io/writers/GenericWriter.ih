@@ -50,7 +50,7 @@
 // Implementation of inline functions                                        //
 
 
-template < typename TContainer, int TDim, typename TValue, typename TFunctor >
+template < DGtal::concepts::CConstImage TContainer, int TDim, typename TValue, typename TFunctor >
 inline
 bool
 DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::
@@ -74,7 +74,7 @@ exportFile( const std::string & filename,
   return true;
 }
 
-template < typename TContainer, typename TValue, typename TFunctor >
+template < DGtal::concepts::CConstImage TContainer, typename TValue, typename TFunctor >
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::
@@ -123,7 +123,7 @@ exportFile( const std::string & filename,
 
 
 
-template <typename TContainer, typename TFunctor>
+template <DGtal::concepts::CConstImage TContainer, typename TFunctor>
 requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t >
 inline
 bool
@@ -161,8 +161,8 @@ exportFile( const std::string & filename,
 
 
 
-template <typename TContainer, typename TFunctor>
-requires DGtal::concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char>
+template <DGtal::concepts::CConstImage TContainer, typename TFunctor>
+requires DGtal::concepts::CUnaryFunctor<TFunctor, DGtal::concepts::CConstImage TContainer::Value, unsigned char>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::
@@ -210,7 +210,7 @@ exportFile( const std::string & filename,
   return false;
 }
 
-template <typename TContainer, typename TValue, typename TFunctor>
+template <DGtal::concepts::CConstImage TContainer, typename TValue, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::
@@ -240,7 +240,7 @@ exportFile( const std::string & filename,
 
 
 
-template <typename TContainer, typename TFunctor>
+template <DGtal::concepts::CConstImage TContainer, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, DGtal::Color, TFunctor>::
@@ -280,7 +280,7 @@ exportFile( const std::string & filename,
 
 
 
-template <typename TContainer, typename TFunctor >
+template <DGtal::concepts::CConstImage TContainer, typename TFunctor >
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::

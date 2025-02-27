@@ -51,7 +51,7 @@
 
 namespace DGtal {
   
-  template<typename I,typename F>
+  template<DGtal::concepts::CConstImage I,typename F>
   requires concepts::CUnaryFunctor<F, typename I::Value, typename ITKIOTrait<typename I::Value>::ValueOut>
   bool
   ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const Functor& aFunctor)
@@ -59,7 +59,7 @@ namespace DGtal {
     return ITKWriter<I,F>::exportITK(filename, aImage, SpacingType::diagonal(1), aFunctor);
   }
   
-  template<typename I,typename F>
+  template<DGtal::concepts::CConstImage I,typename F>
   requires concepts::CUnaryFunctor<F, typename I::Value, typename ITKIOTrait<typename I::Value>::ValueOut>
   bool
   ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const SpacingType &anImgSpacing,

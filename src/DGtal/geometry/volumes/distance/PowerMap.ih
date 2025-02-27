@@ -334,7 +334,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 /**
  * Constructor.
  */
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<WeightImage> aWeightImage,
@@ -349,7 +349,7 @@ DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
   compute();
 }
 
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<WeightImage> aWeightImage,
@@ -370,7 +370,7 @@ DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
   compute();
 }
 
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 typename DGtal::PowerMap<W,TSep,Im>::Point
 DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint, const Dimension aMaxDim ) const
@@ -381,7 +381,7 @@ DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint, const Dimension aMaxDim 
   return aPoint;
 }
 
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 typename DGtal::PowerMap<W,TSep,Im>::Point
 DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint  ) const
@@ -392,7 +392,7 @@ DGtal::PowerMap<W,TSep,Im>::projectPoint( Point aPoint  ) const
   return aPoint;
 }
 
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 typename DGtal::PowerMap<W,TSep,Im>::Point::Coordinate
 DGtal::PowerMap<W,TSep,Im>::projectCoordinate( typename Point::Coordinate aCoordinate, const Dimension aDim ) const
@@ -401,7 +401,7 @@ DGtal::PowerMap<W,TSep,Im>::projectCoordinate( typename Point::Coordinate aCoord
   return ( aCoordinate - myDomainPtr->lowerBound()[aDim] + myDomainExtent[aDim] ) % myDomainExtent[aDim] + myDomainPtr->lowerBound()[aDim];
 }
 
-template <typename W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
+template <DGtal::concepts::CConstImage W,DGtal::concepts::CPowerSeparableMetric TSep,typename Im>
 inline
 void
 DGtal::PowerMap<W,TSep,Im>::selfDisplay ( std::ostream & out ) const

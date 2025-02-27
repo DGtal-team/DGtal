@@ -633,14 +633,13 @@ namespace DGtal
        * @param zBottomLeft the x coordinate of bottom left image point (default 0).
        * @param aMode the mode of representation (default GrayScaleMode).
        */
-      template <typename TImageType, typename TFunctor>
+      template <concepts::CConstImage TImageType, typename TFunctor>
       requires concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int>
       TextureImage( const TImageType & image, const TFunctor &aFunctor,
                     ImageDirection normalDir=zDirection,
                     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
                     TextureMode aMode= GrayScaleMode)
       {
-        BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
         myDrawDomain=false;
         myDirection=normalDir;
         myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -697,12 +696,11 @@ namespace DGtal
        * @param yTranslation the image translation in the y direction (default 0).
        * @param zTranslation the image translation in the z direction (default 0).
        **/
-      template <typename TImageType, typename TFunctor>
+      template <concepts::CConstImage TImageType, typename TFunctor>
       requires concepts::CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int>
       void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0,
                                    double yTranslation=0.0, double zTranslation=0.0)
       {
-        BOOST_CONCEPT_ASSERT(( concepts::CConstImage < TImageType > ));
         assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== static_cast<int>(myImageWidth) &&
                  (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== static_cast<int>(myImageHeight));
 
@@ -844,8 +842,7 @@ namespace DGtal
      * @param rotationAngle the angle of rotation.
       * @param rotationDir the rotation is applied around the given direction.
       **/
-    template <typename TImageType, typename TFunctor>
-
+    template <concepts::CConstImage TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const TImageType & image, const TFunctor & aFunctor,
                             double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0,
           double rotationAngle=0.0, ImageDirection rotationDir=zDirection);

@@ -160,7 +160,7 @@ bool test_g_f_fm1()
     //ConstAdapter
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
     typedef ConstImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, DGtal::functors::ConstValue<VImage::Value> > MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage< MyImageAdapter > ));
+    DGTAL_CONCEPT_CHECK(requires concepts::CConstImage< MyImageAdapter > );
     functors::Identity idD;
     DGtal::functors::ConstValue<VImage::Value> idV(3);
     MyImageAdapter restimage(image, domain, idD, idV);

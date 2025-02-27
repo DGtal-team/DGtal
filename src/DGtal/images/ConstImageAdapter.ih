@@ -51,7 +51,7 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, DGtal::concepts::CDomain TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <DGtal::concepts::CConstImage TImageContainer, DGtal::concepts::CDomain TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
 requires DGtal::concepts::CUnaryFunctor<TFunctorD, typename TNewDomain::Point, typename TImageContainer::Point> && 
          DGtal::concepts::CUnaryFunctor<TFunctorV, TNewValue, typename TImageContainer::Value> 
 inline
@@ -62,7 +62,7 @@ DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFun
 }
 
 
-template <typename TImageContainer, DGtal::concepts::CDomain TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <DGtal::concepts::CConstImage TImageContainer, DGtal::concepts::CDomain TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
 requires DGtal::concepts::CUnaryFunctor<TFunctorD, typename TNewDomain::Point, typename TImageContainer::Point> && 
          DGtal::concepts::CUnaryFunctor<TFunctorV, TNewValue, typename TImageContainer::Value> 
 inline

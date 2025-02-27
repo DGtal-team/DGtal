@@ -87,13 +87,12 @@ namespace DGtal
    *
    */
 
-  template <typename TContainer,
+  template <concepts::CConstImage TContainer,
             int Tdim=TContainer::Point::dimension,
             typename TValue = typename TContainer::Value,
             typename TFunctor = functors::Identity >
   struct GenericWriter
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
     /**
      * Export an  image.
      * @param filename the filename of the saved image (with a extension name).
@@ -110,12 +109,10 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for volume images of dimension 3 and unsigned char value type (which allows to export vol, pgm3D, h5 and raw file format).
    **/
-  template <typename TContainer, typename TFunctor>
+  template <concepts::CConstImage TContainer, typename TFunctor>
   requires concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
-
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name).
@@ -133,13 +130,10 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for volume images of dimension 3 and DGtal::uint64_t value type (which allows to export longvol file format).
    **/
-  template <typename TContainer, typename TFunctor>
+  template <concepts::CConstImage TContainer, typename TFunctor>
   requires concepts::CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t >
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
-
-
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name).
@@ -157,10 +151,9 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for volume images of dimension 3
    **/
-  template <typename TContainer, typename TValue, typename TFunctor>
+  template <concepts::CConstImage TContainer, typename TValue, typename TFunctor>
   struct GenericWriter<TContainer, 3 , TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name).
@@ -180,11 +173,9 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for images of dimension 2
    **/
-  template <typename TContainer, typename TValue,  typename TFunctor>
+  template <concepts::CConstImage TContainer, typename TValue,  typename TFunctor>
   struct GenericWriter<TContainer, 2, TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
-
     /**
      * Export the 2D image file.
      * @param filename the filename of the saved image (with a extension name).
@@ -204,11 +195,9 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for images of dimension 2 with image value DGtal::Color 
    **/
-  template <typename TContainer,  typename TFunctor>
+  template <concepts::CConstImage TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, DGtal::Color, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
-
     /**
      * Export the 2D image file.
      * @param filename the filename of the saved image (with a extension name).
@@ -228,10 +217,9 @@ namespace DGtal
    * GenericWriter
    * Template partial specialisation for images of dimension 2 and unsigned char value type (which allows to export pgm, ppm file format ).
    **/
-  template <typename TContainer,  typename TFunctor>
+  template <concepts::CConstImage TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TContainer> )) ;
     /**
      * Export the 2D image file.
      * @param filename the filename of the saved image (with a extension name).

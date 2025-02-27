@@ -60,7 +60,7 @@ namespace DGtal
 	 * @see ITKReader
    * @see ITKIOTrait
    */
-  template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
+  template <concepts::CConstImage TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
   requires concepts::CUnaryFunctor<TFunctor, typename TImage::Value, typename ITKIOTrait<typename TImage::Value>::ValueOut>
   struct ITKWriter
   {
@@ -74,7 +74,6 @@ namespace DGtal
 
     typedef TFunctor Functor;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImage> ));
     BOOST_STATIC_ASSERT(( (dimension == 3) || (dimension == 2) ));
 
     /**

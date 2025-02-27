@@ -52,7 +52,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="image";
 
-		 CConstImage [ label="CConstImage" URL="\ref concepts::CConstImage" ];
+		 CConstImage [ label="CConstImage" URL="\ref DGtal::concepts::CConstImage" ];
         }
         subgraph cluster_4 {
                  style=filled;

@@ -494,14 +494,13 @@ namespace DGtal
     typename TImage,
     typename TDomain = typename TImage::Domain
   >
+  // Remove constness because CConstImage requires assignability.
+  requires DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
   ArrayImageAdapter< decltype( ((TImage*)nullptr)->begin() ), TDomain >
   makeArrayImageAdapterFromImage( TImage & anImage, TDomain const& aViewDomain )
     {
-      // Remove constness because CConstImage requires assignability.
-      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
-
       return { anImage.begin(), anImage.domain(), aViewDomain };
     }
 
@@ -515,14 +514,13 @@ namespace DGtal
     typename TImage,
     typename TDomain = typename TImage::Domain
   >
+  // Remove constness because CConstImage requires assignability.
+  requires DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >
   // We use decltype on begin() iterator because it returns the constant iterator
   //  if the image is constant while ::Iterator typedef returns the mutable iterator.
   ArrayImageAdapter< decltype( ((TImage*)nullptr)->begin() ), TDomain >
   makeArrayImageAdapterFromImage( TImage & anImage )
     {
-      // Remove constness because CConstImage requires assignability.
-      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CConstImage< typename std::remove_const<TImage>::type >) );
-
       return { anImage.begin(), anImage.domain(), anImage.domain() };
     }
 

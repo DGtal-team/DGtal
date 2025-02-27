@@ -60,12 +60,10 @@ namespace DGtal {
    *
    * @tparam Image an model of CImageContainer concept. 
    */
-  template <typename Image>
+  template <concepts::CConstImage Image>
   class IntervalForegroundPredicate
   {
-  public:
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    
+  public:    
     typedef typename Image::Value Value;
     typedef typename Image::Point Point; 
 

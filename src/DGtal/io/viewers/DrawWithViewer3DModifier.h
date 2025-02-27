@@ -247,10 +247,9 @@ namespace DGtal
    *
    * @see AddTextureImage3DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
-  template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
+  template <concepts::CConstImage TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
     typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
     
     /**
@@ -294,10 +293,9 @@ namespace DGtal
    *
    * @see AddTextureImage2DWithFunctor viewer3D-8-2DSliceImages.cpp viewer3D-9-3Dimages.cpp
    */
-  template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
+  template <concepts::CConstImage TImageType, typename TFunctor, typename Space, typename KSpace>
   struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CConstImage<TImageType> )) ;
     typedef typename Viewer3D<Space,KSpace>::TextureMode TTextureMode;
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.

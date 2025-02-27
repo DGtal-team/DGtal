@@ -98,7 +98,7 @@ namespace DGtal
  * The pointed objects must exist and must not be deleted
  * during the use of the adapter
  */
-template <typename TImageContainer,
+template <concepts::CConstImage TImageContainer,
 	  DGtal::concepts::CDomain TNewDomain,
 	  typename TFunctorD,
 	  typename TNewValue, typename TFunctorV>
@@ -111,9 +111,6 @@ class ConstImageAdapter
 
 public:
     typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self;
-
-    ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<TImageContainer> ));
 
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;

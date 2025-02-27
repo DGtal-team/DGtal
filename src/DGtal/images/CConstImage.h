@@ -91,28 +91,20 @@ namespace DGtal
    */
 
   template <typename I>
-  requires CConstBidirectionalRangeFromPoint<typename I::ConstRange> &&
-           CDomain<typename I::Domain> &&
-           CTrivialConstImage<I>
-  struct CConstImage
-  {
-  public:
-    //Inner types
-    typedef typename I::Domain Domain;
-    typedef typename I::ConstRange ConstRange;
-
-    BOOST_CONCEPT_USAGE(CConstImage)
+  concept CConstImage =  
+    CConstBidirectionalRangeFromPoint<typename I::ConstRange> &&
+    CDomain<typename I::Domain> &&
+    CTrivialConstImage<I> &&
+    requires(I i)
     {
-      ConceptUtils::sameType(i.domain(), d);
-      ConceptUtils::sameType(i.constRange(), r);
-    }
-
-  private:
-    I i;
-    Domain d;
-    ConstRange r;
-
-  };
+        requires std::same_as<
+          std::remove_cvref_t<
+            decltype(i.domain())
+          >, 
+          typename I::Domain
+        >;
+        { i.constRange() } -> std::same_as<typename I::ConstRange>;
+    };
   }
 } // namespace DGtal
 

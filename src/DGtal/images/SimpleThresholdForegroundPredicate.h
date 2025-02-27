@@ -61,12 +61,10 @@ namespace DGtal {
    *
    * @tparam Image an model of CConstImage concept. 
    */
-  template <typename Image>
+  template <concepts::CConstImage Image>
   class SimpleThresholdForegroundPredicate
   {
-  public:
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    
+  public:    
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
 

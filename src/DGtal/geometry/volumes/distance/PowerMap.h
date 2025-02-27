@@ -102,7 +102,7 @@ namespace DGtal
    * container value type must be TSpace::Vector. Lastly, the domain
    * of the container must be HyperRectDomain.
     */
-  template < typename TWeightImage,
+  template < concepts::CConstImage TWeightImage,
              concepts::CPowerSeparableMetric TPowerSeparableMetric,
              typename TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
@@ -113,7 +113,6 @@ namespace DGtal
   public:
 
     BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CConstImage< TWeightImage > ));
 
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;

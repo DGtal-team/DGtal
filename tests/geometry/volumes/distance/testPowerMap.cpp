@@ -280,7 +280,7 @@ bool testCheckConcept()
   using Image       = ImageContainerBySTLMap< SetDomain , DGtal::int64_t>;
   using PowerMetric = Z2i::L2PowerMetric;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CConstImage< PowerMap< Image, PowerMetric > >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CConstImage< PowerMap< Image, PowerMetric > >);
 
   return true;
 }
