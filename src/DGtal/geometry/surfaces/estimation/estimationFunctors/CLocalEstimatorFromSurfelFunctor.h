@@ -102,39 +102,15 @@ LocalEstimatorFromSurfelFunctorAdapter.
 @tparam T the type that should be a model of CLocalEstimatorFromSurfelFunctor.
  */
 template <typename T>
-requires concepts::CQuantity<typename T::Quantity> &&
-         concepts::CSCellEmbedder< typename T::SCellEmbedder >
-struct CLocalEstimatorFromSurfelFunctor
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-
-  typedef typename T::Quantity Quantity;
-  typedef typename T::SCellEmbedder SCellEmbedder;
-  typedef typename T::Surfel Surfel;
-
-  // 2. then check the presence of data members, operators and methods with
-  BOOST_CONCEPT_USAGE( CLocalEstimatorFromSurfelFunctor )
+concept CLocalEstimatorFromSurfelFunctor =  
+  CQuantity<typename T::Quantity> &&
+  CSCellEmbedder<typename T::SCellEmbedder> &&
+  requires(T myX, const typename T::Surfel myCa, double myDist)
   {
-    ConceptUtils::sameType( myQ, myX.eval( ) );
-    myX.reset( );
-    myX.pushSurfel( myCA, myDist );
-  }
-
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Surfel myA;
-  const Surfel myCA;
-  Quantity myQ;
-  SCellEmbedder myEmb;
-  double myH;
-  double myDist;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CLocalEstimatorFromSurfelFunctor
+      { myX.eval() } -> std::same_as<typename T::Quantity>;
+      myX.reset();
+      myX.pushSurfel(myCa, myDist);
+  };
   }
 } // namespace DGtal
 

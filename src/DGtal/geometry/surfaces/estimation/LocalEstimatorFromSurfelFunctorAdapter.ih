@@ -35,7 +35,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -46,7 +46,7 @@ LocalEstimatorFromSurfelFunctorAdapter()
 }
 
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -63,7 +63,7 @@ LocalEstimatorFromSurfelFunctorAdapter
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
@@ -74,7 +74,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
 
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
@@ -86,7 +86,7 @@ selfDisplay ( std::ostream & out ) const
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 bool
@@ -100,7 +100,7 @@ isValid() const
 
 //-----------------------------------------------------------------------------
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
@@ -114,7 +114,7 @@ attach( ConstAlias<Surface> aSurface )
 
 //-----------------------------------------------------------------------------
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 void
@@ -134,7 +134,7 @@ setParams( ConstAlias<TMetric> aMetric,
 
 //-----------------------------------------------------------------------------
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
 typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, TFunctorOnSurfel, TConvolutionFunctor>::Scalar
@@ -147,7 +147,7 @@ h() const
 
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template<typename SurfelIt>
 inline
@@ -164,7 +164,7 @@ init(const double _h,
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator>
 inline
@@ -195,7 +195,7 @@ eval( const SurfelConstIterator& it ) const
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
-          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+          DGtal::concepts::CLocalEstimatorFromSurfelFunctor TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator, typename OutputIterator>
 inline

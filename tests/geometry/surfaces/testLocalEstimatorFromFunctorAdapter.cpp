@@ -183,14 +183,14 @@ bool testConcepts()
   typedef Z3i::KSpace::Surfel Surfel;
   typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
   trace.beginBlock("Checking concepts");
-  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >);
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >);
 
 #ifdef  DGTAL_WITH_CGAL
-  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >);
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >);
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >);
+  DGTAL_CONCEPT_CHECK(requires concepts::CLocalEstimatorFromSurfelFunctor< functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >);
 #endif
 
   trace.endBlock();
