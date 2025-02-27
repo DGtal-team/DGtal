@@ -86,33 +86,13 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 @tparam T the type that should be a model of CVector.
  */
-template <CVectorSpace T>
-struct CVector
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Scalar Scalar;
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CVector )
+template <typename T>
+concept CVector =
+    CVectorSpace<T> &&
+    requires(const T z)
     {
-        checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-        ConceptUtils::sameType(i, z.rows());
-    }
-
-    // ------------------------- Private Datas --------------------------------
-private:
-  T z;
-  Index i;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CVector
+        { z.rows() } -> std::same_as<typename T::Index>;
+    };
 }
 } // namespace DGtal
 

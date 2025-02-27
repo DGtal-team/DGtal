@@ -85,24 +85,9 @@ Represent any dynamic sized column vector having sparse or dense representation.
 @tparam T the type that should be a model of CDynamicVector.
  */
 template <typename T>
-struct CDynamicVector : CVector<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CDynamicVector )
-    {
-      T zz(i);
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Index i;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDynamicVector
+concept CDynamicVector = 
+    CVector<T> &&
+    std::is_constructible_v<T, typename T::Index>;
 }
 } // namespace DGtal
 

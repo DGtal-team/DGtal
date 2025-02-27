@@ -94,6 +94,7 @@ namespace DGtal
      @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenLinearAlgebraBackend).
   */
   template < typename TLinearAlgebraBackend >
+  requires concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
   class DirichletConditions
   {
   public:
@@ -107,7 +108,6 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::SparseMatrix        SparseMatrix;
     typedef typename LinearAlgebraBackend::Triplet             Triplet;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<SparseMatrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));

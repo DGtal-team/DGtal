@@ -87,10 +87,10 @@ digraph GMath {
                  CDenseMatrix [ label="CDenseMatrix" URL="\ref concepts::CDenseMatrix" ];
                  CSparseMatrix [ label="CSparseMatrix" URL="\ref concepts::CSparseMatrix" ];
 
-                 CVector [ label="CVector" URL="\ref concepts::CVector" ];
-                 CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
-                 CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
-                 CDenseVector [ label="CDenseVector" URL="\ref concepts::CDenseVector" ];
+                 CVector [ label="CVector" URL="\ref DGtal::concepts::CVector" ];
+                 CStaticVector [ label="CStaticVector" URL="\ref DGtal::concepts::CStaticVector" ];
+                 CDynamicVector [ label="CDynamicVector" URL="\ref DGtal::concepts::CDynamicVector" ];
+                 CDenseVector [ label="CDenseVector" URL="\ref DGtal::concepts::CDenseVector" ];
 
                  CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
                  CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];

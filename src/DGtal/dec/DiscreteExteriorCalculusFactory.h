@@ -58,6 +58,7 @@ namespace DGtal
  */
 
 template <typename TLinearAlgebraBackend, concepts::CInteger TInteger = DGtal::int32_t>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
 class DiscreteExteriorCalculusFactory
 {
     // ----------------------- Standard services ------------------------------
@@ -67,7 +68,6 @@ public:
     typedef typename TLinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename TLinearAlgebraBackend::SparseMatrix SparseMatrix;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<SparseMatrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));

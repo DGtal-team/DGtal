@@ -386,13 +386,13 @@ bool testConcepts()
   typedef DGtal::SimpleMatrix<double,3,3> Matrix;
   typedef Matrix::ColumnVector Vector;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CStaticVector<Vector> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CDenseVector<Vector> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CStaticVector<Vector>);
+  DGTAL_CONCEPT_CHECK(requires concepts::CDenseVector<Vector> );
   BOOST_CONCEPT_ASSERT(( concepts::CStaticMatrix<Matrix> ));
   BOOST_CONCEPT_ASSERT(( concepts::CDenseMatrix<Matrix> ));
   BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<Vector, Matrix> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CStaticVector<DGtal::Z3i::Space::Vector> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CDenseVector<DGtal::Z3i::Space::Vector> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CStaticVector<DGtal::Z3i::Space::Vector> );
+  DGTAL_CONCEPT_CHECK(requires concepts::CDenseVector<DGtal::Z3i::Space::Vector> );
 
   return true;
 }

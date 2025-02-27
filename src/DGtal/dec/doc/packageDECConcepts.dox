@@ -49,9 +49,9 @@ digraph GDEC {
                  CMatrix [ label="CMatrix" URL="\ref concepts::CMatrix" ];
                  CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
                  CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
-                 CVector [ label="CVector" URL="\ref concepts::CVector" ];
-                 CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
-                 CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
+                 CVector [ label="CVector" URL="\ref DGtal::concepts::CVector" ];
+                 CStaticVector [ label="CStaticVector" URL="\ref DGtal::concepts::CStaticVector" ];
+                 CDynamicVector [ label="CDynamicVector" URL="\ref DGtal::concepts::CDynamicVector" ];
                  CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
                  CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }

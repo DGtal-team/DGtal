@@ -85,8 +85,8 @@ Lift linear algebra container concept into the dec package.
 
 @tparam T the type that should be a model of CDiscreteExteriorCalculusVectorSpace.
 */
-template <typename T>
-struct CDiscreteExteriorCalculusVectorSpace : CVectorSpace<T>
+template <CVectorSpace T>
+struct CDiscreteExteriorCalculusVectorSpace
 {
     // ----------------------- Concept checks ------------------------------
 public:

@@ -87,24 +87,10 @@ Represent any static sized column vector having sparse or dense representation.
 @tparam T the type that should be a model of CStaticVector.
  */
 template <typename T>
-struct CStaticVector : CVector<T>, boost::DefaultConstructible<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CStaticVector )
-    {
-        ConceptUtils::sameType( i, T::dimension );
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Index i;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CStaticVector
+concept CStaticVector = 
+    std::is_default_constructible_v<T> &&
+    CVector<T> && 
+    std::same_as<const typename T::Index, decltype(T::dimension)>;
 }
 } // namespace DGtal
 

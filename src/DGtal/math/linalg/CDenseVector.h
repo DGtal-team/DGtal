@@ -85,36 +85,13 @@ Represent any dynamic or static sized matrix having dense representation.
 @tparam T the type that should be a model of CDenseVector.
  */
 template <typename T>
-struct CDenseVector : CVector<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-    typedef typename T::Scalar Scalar;
-
-    BOOST_CONCEPT_USAGE( CDenseVector )
-    {
-      Scalar& aa = z(i);
-      (void)aa; // to avoid compiler warning
-      
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
+concept CDenseVector = 
+  CVector<T> &&
+  requires(T z, const T cz, typename T::Index i)
   {
-    Scalar bb = z(i);
-    (void)bb; // to avoid compiler warning
-  }
-
-    // ------------------------- Private Datas --------------------------------
-private:
-    T z;
-    Index i;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDenseVector
+      { z(i)  } -> std::same_as<typename T::Scalar&>;
+      { cz(i) } -> std::same_as<const typename T::Scalar&>;
+  };
 }
 } // namespace DGtal
 
