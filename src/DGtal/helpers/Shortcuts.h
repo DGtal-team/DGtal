@@ -2724,7 +2724,7 @@ namespace DGtal
       /// @param[in] surfels the range of surfels (oriented cells of dimension 2).
       /// @param[in] embedder the embedder for mapping surfel vertices (cells of dimension 0) to points in space.
       /// @return 'true' if the output stream is good.
-      template <typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+      template <concepts::CCellEmbedder TCellEmbedder = CanonicCellEmbedder< KSpace > >
         static bool
         outputSurfelsAsObj
         ( std::ostream&              output,
@@ -2733,7 +2733,6 @@ namespace DGtal
         {
           typedef unsigned long Size;
           BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
-          BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
           const KSpace& K = embedder.space();
           // Number and output vertices.
           std::map< Cell, Size > vtx_numbering;
@@ -2909,7 +2908,7 @@ namespace DGtal
       ///
       /// @return 'true' if the output stream is good.
       template < typename TDigitalSurfaceContainer,
-        typename TCellEmbedder = CanonicCellEmbedder< KSpace > >
+        concepts::CCellEmbedder TCellEmbedder = CanonicCellEmbedder< KSpace > >
         static bool
         outputDualDigitalSurfaceAsObj
         ( std::ostream&              output,
@@ -2919,7 +2918,6 @@ namespace DGtal
         {
           typedef unsigned long Size;
           BOOST_STATIC_ASSERT (( KSpace::dimension == 3 ));
-          BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< TCellEmbedder > ));
           std::string dualFaceSubdivision = params[ "faceSubdivision" ].as<std::string>();
           const int   subdivide
           = dualFaceSubdivision == "Naive"    ? 1

@@ -81,13 +81,13 @@ bool testEmbedder()
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef ImplicitFunctionLinearCellEmbedder
     < KSpace, ImplicitShape, MyEmbedder1 > MyCellEmbedder1;
-  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder1 > ));
+  DGTAL_CONCEPT_CHECK(requires CCellEmbedder< MyCellEmbedder1 > );
   typedef ImplicitFunctionDiff1LinearCellEmbedder
     < KSpace, ImplicitShape, MyEmbedder2 > MyCellEmbedder2;
-  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder2 > ));
+  DGTAL_CONCEPT_CHECK(requires CCellEmbedder< MyCellEmbedder2 > );
   DGTAL_CONCEPT_CHECK(requires CWithGradientMap< MyCellEmbedder2 > );
   typedef CanonicCellEmbedder<KSpace> MyCellEmbedder3;
-  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder3 > ));
+  DGTAL_CONCEPT_CHECK(requires CCellEmbedder< MyCellEmbedder3 > );
   typedef CanonicSCellEmbedder<KSpace> MySCellEmbedder1;
   DGTAL_CONCEPT_CHECK(requires CSCellEmbedder< MySCellEmbedder1 > );
   typedef DigitalSetBoundary<KSpace, DigitalSet> DigitalSurfaceContainer;

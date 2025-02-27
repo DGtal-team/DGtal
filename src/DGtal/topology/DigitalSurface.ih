@@ -632,14 +632,13 @@ exportSurfaceAs3DOFF ( std::ostream & out ) const
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
-template <typename CellEmbedder>
+template <DGtal::concepts::CCellEmbedder CellEmbedder>
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportEmbeddedSurfaceAs3DOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
 
   typedef DGtal::uint64_t Number;
   // Numbers all vertices.
@@ -698,7 +697,7 @@ exportEmbeddedSurfaceAs3DOFF
   
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
-template <typename CellEmbedder>
+template <DGtal::concepts::CCellEmbedder CellEmbedder>
 requires DGtal::concepts::CWithGradientMap< CellEmbedder >
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -706,8 +705,6 @@ exportEmbeddedSurfaceAs3DNOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CCellEmbedder< CellEmbedder > ));
-
   typedef typename CellEmbedder::GradientMap GradientMap;
   typedef typename CellEmbedder::Cell MyCell;
   typedef typename CellEmbedder::RealPoint RealPoint;

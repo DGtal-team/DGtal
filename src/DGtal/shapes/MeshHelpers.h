@@ -152,7 +152,7 @@ namespace DGtal
     /// @param[out] trisurf the output triangulated surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a trisurf.
     template < typename DigitalSurfaceContainer,
-               typename CellEmbedder,
+               concepts::CCellEmbedder CellEmbedder,
                typename VertexMap >
     static
     void digitalSurface2DualTriangulatedSurface
@@ -173,7 +173,7 @@ namespace DGtal
     /// @param[out] polysurf the output polygonal surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a polysurf.
     template < typename DigitalSurfaceContainer,
-               typename CellEmbedder,
+               concepts::CCellEmbedder CellEmbedder,
                typename VertexMap >
     static
     void digitalSurface2DualPolygonalSurface
@@ -196,7 +196,7 @@ namespace DGtal
     /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
     /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
     template < typename DigitalSurfaceContainer,
-               typename CellEmbedder,
+               concepts::CCellEmbedder CellEmbedder,
                typename CellMap >
     static
     bool digitalSurface2PrimalPolygonalSurface
@@ -220,7 +220,7 @@ namespace DGtal
     /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
     /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
     template < typename DigitalSurfaceContainer,
-    typename CellEmbedder,
+    concepts::CCellEmbedder CellEmbedder,
     typename CellMap >
     static
     bool digitalSurface2PrimalSurfaceMesh
