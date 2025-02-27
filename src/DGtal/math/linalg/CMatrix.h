@@ -86,8 +86,8 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 
 @tparam T the type that should be a model of CMatrix.
  */
-template <typename T>
-struct CMatrix : CVectorSpace<T>
+template <CVectorSpace T>
+struct CMatrix
 {
     // ----------------------- Concept checks ------------------------------
 public:

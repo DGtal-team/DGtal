@@ -89,29 +89,15 @@ namespace DGtal
        @tparam T the type that should be a model of CVectorSpace.
     */
     template <typename T>
-    requires concepts::CEuclideanRing<typename T::Scalar>
-    struct CVectorSpace : boost::Assignable<T>
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      typedef typename T::Scalar Scalar;
-
-      BOOST_CONCEPT_USAGE( CVectorSpace )
+    concept CVectorSpace = 
+      std::is_copy_assignable_v<T> &&
+      CEuclideanRing<typename T::Scalar> &&
+      requires(T z, const T x, T::Scalar a)
       {
-        z = x + y;
-        z = x - y;
-        z = a * x;
-      }
-      // ------------------------- Private Datas --------------------------------
-    private:
-      const T x,y;
-      T z;
-      Scalar a;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CVectorSpace
+          z = x + x;
+          z = x - x;
+          z = a * x;
+      };
   }
 } // namespace DGtal
 

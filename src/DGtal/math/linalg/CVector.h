@@ -86,8 +86,8 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 @tparam T the type that should be a model of CVector.
  */
-template <typename T>
-struct CVector : CVectorSpace<T>
+template <CVectorSpace T>
+struct CVector
 {
     // ----------------------- Concept checks ------------------------------
 public:
