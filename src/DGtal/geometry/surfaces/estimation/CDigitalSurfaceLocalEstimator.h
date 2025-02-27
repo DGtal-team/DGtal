@@ -98,33 +98,15 @@ namespace DGtal {
   *
   *  @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.
   */
-  template <CSurfelLocalEstimator T>
-  requires CDigitalSurfaceContainer<typename T::Surface::DigitalSurfaceContainer>
-  struct CDigitalSurfaceLocalEstimator
-  {
-
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    typedef typename T::Surface Surface;
-    typedef typename Surface::DigitalSurfaceContainer DigitalSurfaceContainer;
-    typedef typename T::Surfel Surfel;
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Surfel, typename Surface::Surfel >::value ));
-    BOOST_CONCEPT_USAGE( CDigitalSurfaceLocalEstimator )
+  template <typename T>
+  concept CDigitalSurfaceLocalEstimator = 
+    CSurfelLocalEstimator<T> &&
+    CDigitalSurfaceContainer<typename T::Surface::DigitalSurfaceContainer> &&
+    std::same_as<typename T::Surfel, typename T::Surface::Surfel> && 
+    requires (T myX, typename T::Surface myS)
     {
-      myX.attach( myS );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
-    Surface myS;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of concept CDigitalSurfaceLocalEstimator
-
+       myX.attach( myS );
+    };
 } // namespace concepts
 } // namespace DGtal
 

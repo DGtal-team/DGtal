@@ -142,7 +142,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
   DGTAL_CONCEPT_CHECK(requires concepts::CSurfelLocalEstimator< IINormalEstimator > );
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSurfaceLocalEstimator< VCMNormalEstimator > );
   DGTAL_CONCEPT_CHECK(requires concepts::CSurfelLocalEstimator< TrueNormalEstimator > );
 
   TrueNormalEstimator true_estimator;
@@ -228,7 +228,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   DGTAL_CONCEPT_CHECK(requires concepts::CSurfelLocalEstimator< IICurvatureEstimator > );
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > );
   DGTAL_CONCEPT_CHECK(requires concepts::CSurfelLocalEstimator< TrueCurvatureEstimator > );
 
   
