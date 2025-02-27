@@ -82,7 +82,7 @@ digraph GGraph {
         label="Graph (main concepts)";
         
         CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref DGtal::concepts::CUndirectedSimpleLocalGraph" ] ;
-        CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ] ;
+        CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref DGtal::concepts::CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref DGtal::concepts::CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref DGtal::concepts::CVertexMap" ] ;
         CGraphVisitor [ label="CGraphVisitor" URL="\ref concepts::CGraphVisitor" ] ;

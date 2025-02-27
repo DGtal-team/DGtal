@@ -215,7 +215,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > flip tests", "[trisurf][flip]" )
 
 SCENARIO( "TriangulatedSurface< RealPoint3 > concept check tests", "[trisurf][concepts]" )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< TriMesh > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUndirectedSimpleGraph< TriMesh > );
 }
 
 /** @ingroup Tests **/

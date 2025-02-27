@@ -99,36 +99,14 @@ namespace DGtal {
   @tparam T the type that should be a model of CUndirectedSimpleGraph.
   */
   template <typename T> 
-  requires CConstSinglePassRange<T> && CUndirectedSimpleLocalGraph<T>
-  struct CUndirectedSimpleGraph
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Edge Edge;
-    typedef typename T::Size Size;
-
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CUndirectedSimpleGraph )
+  concept CUndirectedSimpleGraph = 
+    CConstSinglePassRange<T> && 
+    CUndirectedSimpleLocalGraph<T> && 
+    requires(const T myX)
     {
-      // check const methods.
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( mySize, myX.size() );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Size mySize;
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CUndirectedSimpleGraph
-
+        typename T::Edge;
+        { myX.size() } -> std::same_as<typename T::Size>;
+    };
   } // namespace concepts  
 } // namespace DGtal
 

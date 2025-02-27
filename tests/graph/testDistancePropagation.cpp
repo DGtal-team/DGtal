@@ -63,7 +63,7 @@ bool testDistancePropagation()
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
   
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
+  DGTAL_CONCEPT_CHECK(requires CUndirectedSimpleGraph<Z2i::Object4_8> );
 
   trace.beginBlock( "Distance propagation in 2D object" );
   Point p1( -41, -36 );

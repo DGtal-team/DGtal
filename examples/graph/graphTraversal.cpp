@@ -70,7 +70,7 @@ int main( int /* argc */, char** /* argv */ )
   Object4_8 g( dt4_8, shape_set ); // 4-adjacency graph.
   typedef Object4_8 Graph;
   typedef Point Vertex;
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< Graph > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUndirectedSimpleGraph< Graph > );
   //! [graphTraversal-graph-instanciation]
 
   HueShadeColorMap<int> cmap_hue( 0, 400, 10 );

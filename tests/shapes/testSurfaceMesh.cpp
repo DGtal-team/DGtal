@@ -130,7 +130,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > concept check tests", "[surfmesh][concepts]
   typedef PointVector<3,double>                RealPoint;
   typedef PointVector<3,double>                RealVector;
   typedef SurfaceMesh< RealPoint, RealVector > PolygonMesh;
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUndirectedSimpleGraph< PolygonMesh > );
 }
 
 SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )

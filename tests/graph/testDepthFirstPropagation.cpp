@@ -59,7 +59,7 @@ void testDepthFirstPropagation()
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
   
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
+  DGTAL_CONCEPT_CHECK(requires CUndirectedSimpleGraph<Z2i::Object4_8> );
   
   Point p1( -41, -36 );
   Point p2( 18, 18 );

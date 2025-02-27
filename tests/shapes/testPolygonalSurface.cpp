@@ -211,7 +211,7 @@ SCENARIO( "PolygonalSurface< RealPoint3 > concept check tests", "[polysurf][conc
 {
   typedef PointVector<3,double>                 RealPoint;
   typedef PolygonalSurface< RealPoint >         PolygonMesh;
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< PolygonMesh > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUndirectedSimpleGraph< PolygonMesh > );
 }
 
 /** @ingroup Tests **/

@@ -510,6 +510,17 @@ template <typename KSpace>
         >::Type
       >
     >
+  > &&
+  CUndirectedSimpleGraph<
+    DigitalSurface<
+        DigitalSetBoundary<
+          KSpace, 
+          typename DigitalSetSelector< 
+            HyperRectDomain<typename KSpace::Space>, 
+            BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS
+          >::Type
+        >
+      >
   >
 bool testDigitalSurface()
 {
@@ -542,11 +553,7 @@ bool testDigitalSurface()
 
   trace.beginBlock ( "Testing DigitalSurface" );
   typedef DigitalSetBoundary<KSpace,DigitalSet> DSContainer;
-  typedef DigitalSurface<DSContainer> MyDS;
-
-  //Checking the type as a model of CSinglePassConstRange
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph < MyDS> ));
-  
+  typedef DigitalSurface<DSContainer> MyDS;  
 
   typedef typename MyDS::Surfel Surfel;
   DSContainer* ptrBdry = new DSContainer( K, dig_set );

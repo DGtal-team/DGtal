@@ -114,7 +114,7 @@ SCENARIO( "IndexedDigitalSurface< RealPoint3 > concept check tests", "[idxdsurf]
 {
   typedef DigitalSetBoundary< KSpace, DigitalSet > DigitalSurfaceContainer;
   typedef IndexedDigitalSurface< DigitalSurfaceContainer > DigSurface;
-  BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< DigSurface > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CUndirectedSimpleGraph< DigSurface > );
 }
 
 /** @ingroup Tests **/
