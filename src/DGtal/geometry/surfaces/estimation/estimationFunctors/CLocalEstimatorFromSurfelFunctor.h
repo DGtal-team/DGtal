@@ -102,7 +102,8 @@ LocalEstimatorFromSurfelFunctorAdapter.
 @tparam T the type that should be a model of CLocalEstimatorFromSurfelFunctor.
  */
 template <typename T>
-  requires concepts::CQuantity<typename T::Quantity>
+requires concepts::CQuantity<typename T::Quantity> &&
+         concepts::CSCellEmbedder< typename T::SCellEmbedder >
 struct CLocalEstimatorFromSurfelFunctor
 {
     // ----------------------- Concept checks ------------------------------
@@ -111,8 +112,6 @@ public:
   typedef typename T::Quantity Quantity;
   typedef typename T::SCellEmbedder SCellEmbedder;
   typedef typename T::Surfel Surfel;
-
-  BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedder > ));
 
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CLocalEstimatorFromSurfelFunctor )

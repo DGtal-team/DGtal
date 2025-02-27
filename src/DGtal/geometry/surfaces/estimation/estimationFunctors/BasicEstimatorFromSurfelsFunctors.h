@@ -50,7 +50,7 @@ namespace DGtal
 {
   namespace functors
   {
-  template<typename TSurfel, typename TSCellEmbedder>
+  template<typename TSurfel, concepts::CSCellEmbedder TSCellEmbedder>
   struct DummyEstimatorFromSurfels
   {
   public:
@@ -60,8 +60,6 @@ namespace DGtal
 
     ///Embedder type
     typedef TSCellEmbedder SCellEmbedder;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder<SCellEmbedder> ));
 
     ///Type of output values
     typedef int Quantity;

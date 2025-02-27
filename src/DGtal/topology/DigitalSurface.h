@@ -640,7 +640,8 @@ namespace DGtal
 
        @tparam CellEmbedder any model of CCellEmbedder and CWithGradientMap.
      */
-    template <typename CellEmbedder> requires concepts::CWithGradientMap< CellEmbedder >
+    template <typename CellEmbedder> 
+    requires concepts::CWithGradientMap< CellEmbedder >
     void exportEmbeddedSurfaceAs3DNOFF ( std::ostream & out,
                                         const CellEmbedder & cembedder ) const;
 
@@ -655,7 +656,9 @@ namespace DGtal
        @tparam SCellEmbedderWithGradientMap any model of
        CSCellEmbedder and CWithGradientMap.
      */
-    template <typename SCellEmbedderWithGradientMap> requires concepts::CWithGradientMap< SCellEmbedderWithGradientMap >
+    template <typename SCellEmbedderWithGradientMap> 
+    requires concepts::CWithGradientMap< SCellEmbedderWithGradientMap > &&
+             concepts::CSCellEmbedder  < SCellEmbedderWithGradientMap >
     void exportAs3DNOFF( std::ostream & out,
                          const SCellEmbedderWithGradientMap & scembedder ) const;
  

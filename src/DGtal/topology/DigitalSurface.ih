@@ -780,15 +780,14 @@ exportEmbeddedSurfaceAs3DNOFF
 //-----------------------------------------------------------------------------  
 template <typename TDigitalSurfaceContainer>
 template <typename SCellEmbedderWithGradientMap>
-requires DGtal::concepts::CWithGradientMap< SCellEmbedderWithGradientMap >
+requires DGtal::concepts::CWithGradientMap< SCellEmbedderWithGradientMap > &&
+         DGtal::concepts::CSCellEmbedder  < SCellEmbedderWithGradientMap >
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportAs3DNOFF
 ( std::ostream & out,
   const SCellEmbedderWithGradientMap & scembedder ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CSCellEmbedder< SCellEmbedderWithGradientMap > ));
-
   typedef typename SCellEmbedderWithGradientMap::GradientMap GradientMap;
   typedef typename SCellEmbedderWithGradientMap::SCell MySCell;
   typedef typename SCellEmbedderWithGradientMap::RealPoint RealPoint;

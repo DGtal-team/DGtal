@@ -94,43 +94,17 @@ It adds inner types to functor.
 @tparam T the type that should be a model of CSCellEmbedder.
 */
 template <typename T>
-requires CUnaryFunctor<T, typename T::SCell, typename T::RealPoint> &&
-         CCellularGridSpaceND< typename T::KSpace >
-struct CSCellEmbedder
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::KSpace KSpace;
-  typedef typename T::SCell SCell;
-  typedef typename T::RealPoint RealPoint;
-  typedef typename T::Argument Argument;
-  typedef typename T::Value Value;
-
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
-  BOOST_CONCEPT_USAGE( CSCellEmbedder )
+concept CSCellEmbedder = 
+  CUnaryFunctor<T, typename T::SCell, typename T::RealPoint> &&
+  CCellularGridSpaceND< typename T::KSpace > &&
+  std::same_as<typename T::SCell, typename T::KSpace::SCell> &&
+  std::same_as<typename T::SCell, typename T::Argument> &&
+  std::same_as<typename T::RealPoint, typename T::Value> &&
+  requires(T myX, typename T::SCell myP)
   {
-    checkConstConstraints();
-  }
-
-  void checkConstConstraints() const
-  { // operator()
-    ConceptUtils::sameType( myRP, myX( myP ) );
-    ConceptUtils::sameType( myK, myX.space() );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  SCell myP;
-  RealPoint myRP;
-  const KSpace myK;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CSCellEmbedder
-
+      { myX(myP)    } -> std::same_as<typename T::RealPoint>;
+      { myX.space() } -> std::same_as<const typename T::KSpace&>;
+  };
 } // namespace concepts
 } // namespace DGtal
 

@@ -89,7 +89,7 @@ bool testEmbedder()
   typedef CanonicCellEmbedder<KSpace> MyCellEmbedder3;
   BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder3 > ));
   typedef CanonicSCellEmbedder<KSpace> MySCellEmbedder1;
-  BOOST_CONCEPT_ASSERT(( CSCellEmbedder< MySCellEmbedder1 > ));
+  DGTAL_CONCEPT_CHECK(requires CSCellEmbedder< MySCellEmbedder1 > );
   typedef DigitalSetBoundary<KSpace, DigitalSet> DigitalSurfaceContainer;
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;

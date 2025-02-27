@@ -92,8 +92,8 @@ It adds inner types to functor as well as a method to access the digital surface
 
 @tparam T the type that should be a model of CDigitalSurfaceEmbedder.
 */
-template <typename T>
-struct CDigitalSurfaceEmbedder : CSCellEmbedder<T>
+template <CSCellEmbedder T>
+struct CDigitalSurfaceEmbedder
 {
     // ----------------------- Concept checks ------------------------------
 public:
