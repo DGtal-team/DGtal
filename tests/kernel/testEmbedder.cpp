@@ -93,13 +93,13 @@ bool testEmbedder()
   typedef DigitalSetBoundary<KSpace, DigitalSet> DigitalSurfaceContainer;
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
+  DGTAL_CONCEPT_CHECK(requires CDigitalSurfaceEmbedder< MyDSEmbedder1 > );
   typedef deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
   typedef deprecated::LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface, Kernel > MyEstimator;
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder2 > ));
+  DGTAL_CONCEPT_CHECK(requires CDigitalSurfaceEmbedder< MyDSEmbedder2 > );
   DGTAL_CONCEPT_CHECK(requires CWithGradientMap< MyDSEmbedder2 > );
 
   trace.beginBlock ( "Testing block ..." );

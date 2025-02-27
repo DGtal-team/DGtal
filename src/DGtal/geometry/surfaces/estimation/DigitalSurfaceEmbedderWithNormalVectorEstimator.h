@@ -51,7 +51,7 @@ namespace DGtal
 {
 
   // Forward declaration.
-  template < typename TDigitalSurfaceEmbedder,
+  template < concepts::CDigitalSurfaceEmbedder TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
   class DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap;
 
@@ -69,14 +69,13 @@ namespace DGtal
     @todo assert dimensions of space, embedder and implicit function.
    */
 
-  template < typename TDigitalSurfaceEmbedder,
+  template < concepts::CDigitalSurfaceEmbedder TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
   class DigitalSurfaceEmbedderWithNormalVectorEstimator
   {
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < TDigitalSurfaceEmbedder, TNormalVectorEstimator > Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;
@@ -212,13 +211,12 @@ namespace DGtal
 
      @see DigitalSurfaceEmbedderWithNormalVectorEstimator::gradientMap
   */
-  template < typename TDigitalSurfaceEmbedder,
+  template < concepts::CDigitalSurfaceEmbedder TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
   class DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
   {
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder,TNormalVectorEstimator> Self;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;

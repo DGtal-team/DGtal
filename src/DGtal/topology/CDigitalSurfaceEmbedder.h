@@ -92,45 +92,19 @@ It adds inner types to functor as well as a method to access the digital surface
 
 @tparam T the type that should be a model of CDigitalSurfaceEmbedder.
 */
-template <CSCellEmbedder T>
-struct CDigitalSurfaceEmbedder
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::KSpace KSpace;
-  typedef typename T::Surface Surface;
-  typedef typename T::SCell SCell;
-  typedef typename T::RealPoint RealPoint;
-  typedef typename T::Argument Argument;
-  typedef typename T::Value Value;
-
-  // Already checked in CSCellEmbedder
-  // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
-  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
-  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename KSpace::RealPoint >::value ));
-  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
-  BOOST_CONCEPT_USAGE( CDigitalSurfaceEmbedder )
+template <typename T>
+concept CDigitalSurfaceEmbedder = 
+  CSCellEmbedder<T> &&
+  requires(T myX)
   {
-    checkConstConstraints();
-  }
-  
-  void checkConstConstraints() const
-  { // operator()
-    // ConceptUtils::sameType( myRP, myX( myP ) );
-    ConceptUtils::sameType( mySurface, myX.surface() );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  // SCell myP;
-  // RealPoint myRP;
-  Surface mySurface;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDigitalSurfaceEmbedder
+      // Check for existence too
+      typename T::KSpace;
+      typename T::SCell;
+      typename T::RealPoint;
+      typename T::Argument;
+      typename T::Value;
+      { myX.surface() } -> std::same_as<const typename T::Surface&>;
+  };
 
 } // namespace concepts
 } // namespace DGtal
