@@ -100,34 +100,15 @@ Matrix and vector types should be a model of CLinearAlgebra.
 @tparam M the type that should be a model of CMatrix
  */
 template <typename S, typename V, typename M>
-requires CLinearAlgebra<V, M>
-struct CLinearAlgebraSolver : boost::DefaultConstructible<S>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef S Solver;
-    typedef V Vector;
-    typedef M Matrix;
-
-    BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
+concept CLinearAlgebraSolver = 
+    std::is_default_constructible_v<S> &&
+    CLinearAlgebra<V, M> &&
+    requires(S solver, const S csolver, const M a, const V y)
     {
         solver.compute(a);
-        status_return = static_cast<int>(const_solver.info());
-        x = const_solver.solve(y);
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    int status_return;
-    const Solver const_solver;
-    Solver solver;
-    const Matrix a;
-    const Vector y;
-    V x;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CLinearAlgebraSolver
+        csolver.info();
+        { csolver.solve(y) } -> std::convertible_to<V>;
+    };
 }
 } // namespace DGtal
 

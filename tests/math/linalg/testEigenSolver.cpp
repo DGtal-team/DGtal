@@ -65,12 +65,12 @@ bool testEigenSolverConcepts()
     DGTAL_CONCEPT_CHECK(requires concepts::CDynamicMatrix<Matrix> );
     DGTAL_CONCEPT_CHECK(requires concepts::CSparseMatrix<Matrix, TripletsVector::const_iterator> );
     DGTAL_CONCEPT_CHECK(requires concepts::CSparseMatrix<Matrix, TripletsList::const_iterator> );
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> ));
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> );
 
     return true;
 }

@@ -93,7 +93,7 @@ digraph GMath {
                  CDenseVector [ label="CDenseVector" URL="\ref DGtal::concepts::CDenseVector" ];
 
                  CLinearAlgebra [ label="CLinearAlgebra" URL="\ref DGtal::concepts::CLinearAlgebra" ];
-                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
+                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref DGtal::concepts::CLinearAlgebraSolver" ];
         }
 
         CVector -> CVectorSpace;
