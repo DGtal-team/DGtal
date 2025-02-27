@@ -94,37 +94,16 @@ continuous random variable.
 @tparam T the type that should be a model of CBinner.
  */
 template <typename T>
-requires CEuclideanRing<typename T::Quantity >
-struct CBinner : boost::CopyConstructible<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Quantity Quantity;
-  typedef typename T::Bin Bin;
-  BOOST_STATIC_ASSERT(( boost::is_integral<Bin>::value ));
-  BOOST_STATIC_ASSERT(( boost::is_unsigned<Bin>::value ));
-
-  // 2. then check the presence of data members, operators and methods with
-  BOOST_CONCEPT_USAGE( CBinner )
+concept CBinner =
+  std::is_copy_constructible_v<T> &&   
+  std::is_integral_v<typename T::Bin> && 
+  std::is_unsigned_v<typename T::Bin> &&
+  CEuclideanRing<typename T::Quantity > &&
+  requires(T myX, const T cmyX, typename T::Quantity myQ, typename T::Bin myBin)
   {
-    myClone = new T( myQ, myQ, myBin );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-    ConceptUtils::sameType( myBin, myX( myQ ) );
-  }
-    // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Quantity myQ;
-  Bin myBin;
-  T* myClone;
-  
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CBinner
+      new T( myQ, myQ, myBin );
+      { cmyX(myQ) } -> std::same_as<typename T::Bin>;
+  };
   }
 } // namespace DGtal
 

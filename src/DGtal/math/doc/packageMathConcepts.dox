@@ -122,7 +122,7 @@ digraph GMath {
         node [style=filled,color=white];
         label="Math (main concepts)";
         
-        CBinner [ label="CBinner" URL="\ref concepts::CBinner" ] ;
+        CBinner [ label="CBinner" URL="\ref DGtal::concepts::CBinner" ] ;
     }
 }
     CBinner -> boost_CopyConstructible;

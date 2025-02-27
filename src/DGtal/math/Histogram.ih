@@ -39,21 +39,21 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 DGtal::Histogram<TQuantity, TBinner>::~Histogram()
 {
   if ( myBinner != 0 ) delete myBinner;
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 DGtal::Histogram<TQuantity, TBinner>::Histogram()
   : myBinner( 0 )
 {
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::clear()
@@ -68,7 +68,7 @@ DGtal::Histogram<TQuantity, TBinner>::clear()
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::init( Clone<Binner> binner )
@@ -79,7 +79,7 @@ DGtal::Histogram<TQuantity, TBinner>::init( Clone<Binner> binner )
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 void
 DGtal::Histogram<TQuantity, TBinner>::init( Formula formula, const Statistic<Quantity> & stat )
 {
@@ -106,7 +106,7 @@ DGtal::Histogram<TQuantity, TBinner>::init( Formula formula, const Statistic<Qua
   if ( myBinner != 0 ) prepare( myBinner->size() );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 void
 DGtal::Histogram<TQuantity, TBinner>::init( Bin nbBins, const Statistic<Quantity> & stat )
 {
@@ -115,7 +115,7 @@ DGtal::Histogram<TQuantity, TBinner>::init( Bin nbBins, const Statistic<Quantity
   prepare( myBinner->size() );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Bin
 DGtal::Histogram<TQuantity, TBinner>::bin( Quantity q ) const
@@ -124,7 +124,7 @@ DGtal::Histogram<TQuantity, TBinner>::bin( Quantity q ) const
   return (*myBinner)( q );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::addValue( Quantity q )
@@ -132,7 +132,7 @@ DGtal::Histogram<TQuantity, TBinner>::addValue( Quantity q )
   ++myHistogram[ bin( q ) ];
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 template <typename TInputIterator>
 inline
 void
@@ -143,7 +143,7 @@ DGtal::Histogram<TQuantity, TBinner>::addValues( TInputIterator it, TInputIterat
     addValue( *it );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Bin
 DGtal::Histogram<TQuantity, TBinner>::size() const
@@ -151,7 +151,7 @@ DGtal::Histogram<TQuantity, TBinner>::size() const
   return static_cast<Bin>( myHistogram.size() );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Size
 DGtal::Histogram<TQuantity, TBinner>::area() const
@@ -159,7 +159,7 @@ DGtal::Histogram<TQuantity, TBinner>::area() const
   return myCumulativeHistogram.back();
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Size
 DGtal::Histogram<TQuantity, TBinner>::nb( Bin b ) const
@@ -168,7 +168,7 @@ DGtal::Histogram<TQuantity, TBinner>::nb( Bin b ) const
   return myHistogram[ b ];
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Size
 DGtal::Histogram<TQuantity, TBinner>::accumulation( Bin b ) const
@@ -177,7 +177,7 @@ DGtal::Histogram<TQuantity, TBinner>::accumulation( Bin b ) const
   return myCumulativeHistogram[ b ];
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 double
 DGtal::Histogram<TQuantity, TBinner>::pdf( Bin b ) const
@@ -186,7 +186,7 @@ DGtal::Histogram<TQuantity, TBinner>::pdf( Bin b ) const
     / NumberTraits<Size>::castToDouble( area() );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 double
 DGtal::Histogram<TQuantity, TBinner>::cdf( Bin b ) const
@@ -195,7 +195,7 @@ DGtal::Histogram<TQuantity, TBinner>::cdf( Bin b ) const
     / NumberTraits<Size>::castToDouble( area() );
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::terminate()
@@ -218,7 +218,7 @@ DGtal::Histogram<TQuantity, TBinner>::terminate()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::selfDisplay ( std::ostream & out ) const
@@ -230,7 +230,7 @@ DGtal::Histogram<TQuantity, TBinner>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 bool
 DGtal::Histogram<TQuantity, TBinner>::isValid() const
@@ -239,7 +239,7 @@ DGtal::Histogram<TQuantity, TBinner>::isValid() const
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CEuclideanRing TQuantity, typename TBinner>
+template <DGtal::concepts::CEuclideanRing TQuantity, DGtal::concepts::CBinner TBinner>
 inline
 void
 DGtal::Histogram<TQuantity, TBinner>::prepare( Bin aSize )

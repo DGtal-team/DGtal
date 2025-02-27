@@ -141,11 +141,10 @@ namespace DGtal
     bin. Default is RegularBinner<TQuantity>.
    */
   template < concepts::CEuclideanRing TQuantity,
-             typename TBinner = RegularBinner< TQuantity > >
+             concepts::CBinner TBinner = RegularBinner< TQuantity > >
   class Histogram
   {
   public:
-    BOOST_CONCEPT_ASSERT(( concepts::CBinner< TBinner > ));
     BOOST_STATIC_ASSERT(( boost::is_same< TQuantity, typename TBinner::Quantity >::value ));
 
     // ----------------------- public types ------------------------------
