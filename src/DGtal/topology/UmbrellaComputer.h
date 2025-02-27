@@ -82,12 +82,9 @@ namespace DGtal
 
      @tparam TDigitalSurfaceTracker the type of the domain in which shapes are created.
    */
-  template <typename TDigitalSurfaceTracker>
+  template <concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
   class UmbrellaComputer
   {
-    // Concept checks
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceTracker<TDigitalSurfaceTracker> ) );
-
     // ----------------------- public types ------------------------------
   public:
     typedef TDigitalSurfaceTracker DigitalSurfaceTracker;

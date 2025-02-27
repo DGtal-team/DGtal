@@ -89,12 +89,11 @@ namespace DGtal
      the digital surface.
 
    */
-  template <typename TDigitalSurfaceTracker>
+  template <concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
   class DigitalSurface2DSlice
   {
   public:
     typedef TDigitalSurfaceTracker DigitalSurfaceTracker;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
 
     typedef DigitalSurface2DSlice<DigitalSurfaceTracker> Self;
     typedef typename DigitalSurfaceTracker::DigitalSurfaceContainer DigitalSurfaceContainer;

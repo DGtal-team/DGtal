@@ -81,57 +81,17 @@ namespace DGtal {
 
   @tparam T the type that should be a model of CDigitalSurfaceTracker.
   */
-  template <typename T> 
-  struct CDigitalSurfaceTracker : boost::CopyConstructible<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Self Self;
-    typedef typename T::DigitalSurfaceContainer DigitalSurfaceContainer;
-    typedef typename T::Surfel Surfel;
-    // possibly check these types so as to satisfy a concept with
-    // BOOST_CONCEPT_ASSERT
-    // (( CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
-    // To test if two types A and Y are equals, use
-    BOOST_STATIC_ASSERT
-    ( (ConceptUtils::SameType< Surfel,
-       typename DigitalSurfaceContainer::Surfel >::value) );    
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CDigitalSurfaceTracker )
+  template <typename T>
+  concept CDigitalSurfaceTracker = 
+    std::is_copy_constructible_v<T> && 
+    requires(T myX, typename T::Surfel mySurfel, Dimension myDim, bool myBool) 
     {
-      // x.move( Surfel ) should exist.
-      myX.move( mySurfel );
-      // check const methods.
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // x.surface() const, returns a const DigitalSurfaceContainer &
-      ConceptUtils::sameType( myDSC, myX.surface() );
-      // x.current() const, returns a Surfel
-      ConceptUtils::sameType( mySurfel, myX.current() );
-      // x.orthDir() const, returns a Dimension
-      ConceptUtils::sameType( myDim, myX.orthDir() );
-      // x.adjacent( Surfel&, Dimension, bool ) const, returns a uint8_t
-      Surfel modifiableSurfel;
-      ConceptUtils::sameType( myInt, 
-			      myX.adjacent( modifiableSurfel, myDim, myBool ) );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    DigitalSurfaceContainer myDSC;
-    Surfel mySurfel;
-    Dimension myDim;
-    bool myBool;
-    uint8_t myInt;
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDigitalSurfaceTracker
+        myX.move( mySurfel );
+        { myX.surface() } -> std::same_as<const typename T::DigitalSurfaceContainer&>;
+        { myX.current() } -> std::same_as<const typename T::Surfel&>;
+        { myX.orthDir() }  -> std::same_as<Dimension>;
+        { myX.adjacent(mySurfel, myDim, myBool) } -> std::same_as<uint8_t>;
+    };
   
 } // namespace concepts
 } // namespace DGtal

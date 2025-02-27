@@ -39,21 +39,21 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::~UmbrellaComputer()
 {
   if ( myTracker != 0 ) delete myTracker;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::UmbrellaComputer()
   : myTracker( 0 )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::
 UmbrellaComputer( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
@@ -66,7 +66,7 @@ UmbrellaComputer( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker> & 
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::
@@ -88,7 +88,7 @@ operator=( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 void 
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::init
 ( const DigitalSurfaceTracker & tracker, 
@@ -105,7 +105,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::init
   myState.j = j;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 void
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::getState
@@ -115,7 +115,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::getState
   aState = myState;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 void
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::setState( const State & aState )
@@ -125,7 +125,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::setState( const State & aState 
   myState = aState;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 const typename DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::State &
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::state() const
@@ -133,7 +133,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::state() const
   return myState;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 const typename DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::KSpace &
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::space() const
@@ -143,7 +143,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::space() const
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Accessor services ------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 const typename DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::Surfel &
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::surfel() const
@@ -153,7 +153,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::surfel() const
   return myState.surfel; 
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::SCell
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separator() const
@@ -164,7 +164,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separator() const
 			    separatorOrientation() );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::SCell
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::pivot() const
@@ -173,7 +173,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::pivot() const
   return space()->sDirectIncident( separator(), trackDir() );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::orthDir() const
@@ -182,7 +182,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::orthDir() const
   return myTracker->orthDir();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackDir() const
@@ -190,7 +190,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackDir() const
   return myState.j;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackOrientation() const
@@ -198,7 +198,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackOrientation() const
   return space().sDirect( separator(), trackDir() );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separatorDir() const
@@ -206,7 +206,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separatorDir() const
   return myState.k;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separatorOrientation() const
@@ -216,7 +216,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separatorOrientation() const
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Pivoting services ------------------------------
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 unsigned int
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
@@ -253,7 +253,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
   return code;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 unsigned int 
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::previous()
@@ -306,7 +306,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::previous()
 
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool 
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::adjacent()
@@ -328,7 +328,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::adjacent()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 void
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::selfDisplay ( std::ostream & out ) const
@@ -340,7 +340,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::selfDisplay ( std::ostream & ou
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::isValid() const

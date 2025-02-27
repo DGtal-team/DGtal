@@ -41,14 +41,14 @@
 /**
  * Destructor.
  */
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 ~DigitalSurface2DSlice()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 DigitalSurface2DSlice( DigitalSurfaceTracker* tracker, 
@@ -57,7 +57,7 @@ DigitalSurface2DSlice( DigitalSurfaceTracker* tracker,
   init( tracker, i );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 bool 
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 init( DigitalSurfaceTracker* tracker, Dimension i )
@@ -105,7 +105,7 @@ init( DigitalSurfaceTracker* tracker, Dimension i )
   return true;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::Size
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -114,7 +114,7 @@ size() const
   return static_cast<Size>(mySurfels.size());
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -123,7 +123,7 @@ isClosed() const
   return myIsClosed;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -132,7 +132,7 @@ start() const
   return myStart;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseIterator 
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -141,7 +141,7 @@ rstart() const
   return ConstReverseIterator( myStart + 1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstCirculator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -150,7 +150,7 @@ cstart() const
   return ConstCirculator( myStart, begin(), end() );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseCirculator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -160,7 +160,7 @@ rcstart() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -169,7 +169,7 @@ begin() const
   return mySurfels.begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -178,7 +178,7 @@ end() const
   return mySurfels.end();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -187,7 +187,7 @@ rbegin() const
   return mySurfels.rbegin();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -196,7 +196,7 @@ rend() const
   return mySurfels.rend();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstCirculator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -205,7 +205,7 @@ c() const
   return ConstCirculator( this->begin(), this->begin(), this->end() );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseCirculator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
@@ -223,7 +223,7 @@ rc() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 void
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::selfDisplay ( std::ostream & out ) const
@@ -235,7 +235,7 @@ DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::selfDisplay ( std::ostream
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalSurfaceTracker>
+template <DGtal::concepts::CDigitalSurfaceTracker TDigitalSurfaceTracker>
 inline
 bool
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::isValid() const
