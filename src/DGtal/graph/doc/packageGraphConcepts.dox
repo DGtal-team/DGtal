@@ -81,7 +81,7 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Graph (main concepts)";
         
-        CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ] ;
+        CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref DGtal::concepts::CUndirectedSimpleLocalGraph" ] ;
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref DGtal::concepts::CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref DGtal::concepts::CVertexMap" ] ;

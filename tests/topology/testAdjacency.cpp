@@ -177,7 +177,7 @@ bool testLocalGraphModel()
   unsigned int nbok=0,nb=0;
 
   typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Adj> ));
+  DGTAL_CONCEPT_CHECK(requires CUndirectedSimpleLocalGraph<Adj> );
   
   
   nbok += Adj::bestCapacity() == 72 ? 1 : 0; 

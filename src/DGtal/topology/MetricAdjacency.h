@@ -233,6 +233,7 @@ namespace DGtal
      */
     MetricAdjacency & operator= ( const MetricAdjacency & other );
 
+
     // ------------------------- Internals ------------------------------------
   private:
 

@@ -107,6 +107,7 @@ the traversal with a given predicate.
 @tparam T the type that should be a model of CGraphVisitor.
  */
 template <typename T>
+requires CUndirectedSimpleLocalGraph<typename T::Graph>
 struct CGraphVisitor : boost::CopyConstructible<T>
 {
   // ----------------------- Concept checks ------------------------------
@@ -120,7 +121,6 @@ public:
   typedef typename T::Node Node;
   typedef CVertexPredicateArchetype<Vertex> VertexPredicate;
 
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Vertex, typename Graph::Vertex>::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Size, typename Graph::Size>::value ));
   BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< MarkSet > ));

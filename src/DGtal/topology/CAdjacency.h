@@ -95,8 +95,8 @@ namespace DGtal {
    
   # Notes
   */
-  template <typename Adj>
-  struct CAdjacency : CUndirectedSimpleLocalGraph<Adj>
+  template <CUndirectedSimpleLocalGraph Adj>
+  struct CAdjacency
   {
     // ----------------------- Concept checks ------------------------------
   public:

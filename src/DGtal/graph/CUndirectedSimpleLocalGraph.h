@@ -96,53 +96,23 @@ namespace DGtal {
 
     @tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
     */
-    template <typename T> 
-    requires concepts::CIntegralNumber<typename T::Size>
-    struct CUndirectedSimpleLocalGraph 
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      // 1. define first provided types (i.e. inner types), like
-      typedef typename T::Vertex Vertex;
-      typedef typename T::Size Size;
-      typedef typename T::VertexSet VertexSet;
-      // What is it supposed to mean ?
-      // template <typename Value> struct VertexMap {
-      //   typedef typename T::template VertexMap<Value>::Type Type;
-      //   BOOST_CONCEPT_ASSERT(( CVertexMap< VertexMap<Value> > ));
-      // };
- 
-      // possibly check these types so as to satisfy a concept with
-      BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Vertex > ));
-      BOOST_CONCEPT_ASSERT(( boost::Assignable< Vertex > ));
-      BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Vertex > ));
-
-      // 2. then check the presence of data members, operators and methods with
-      BOOST_CONCEPT_USAGE( CUndirectedSimpleLocalGraph )
+    template <typename T>
+    concept CUndirectedSimpleLocalGraph = 
+      std::default_initializable<typename T::Vertex> &&
+      std::copy_constructible<typename T::Vertex> &&
+      std::is_copy_assignable_v<typename T::Vertex> && 
+      CIntegralNumber<typename T::Size> && 
+      requires(
+        const T myX, const typename T::Vertex myVertex, 
+        const CVertexPredicateArchetype<typename T::Vertex> myVPred,
+        const boost::output_iterator_archetype<typename T::Vertex> myOutIt
+      )
       {
-        // check const methods.
-        checkConstConstraints();
-      }
-      void checkConstConstraints() const
-      {
-        ConceptUtils::sameType( mySize, myX.bestCapacity() );
-        ConceptUtils::sameType( mySize, myX.degree( myVertex ) );
-        myX.writeNeighbors( myOutIt, myVertex );
-        myX.writeNeighbors( myOutIt, myVertex, myVPred );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myX; // do not require T to be default constructible.
-      Size mySize;
-      Vertex myVertex;
-      mutable boost::output_iterator_archetype<Vertex> myOutIt;
-      CVertexPredicateArchetype<Vertex> myVPred;
-      // ------------------------- Internals ------------------------------------
-    private:
-    
-    }; // end of concept CUndirectedSimpleLocalGraph
-  
+          { myX.bestCapacity() } -> std::same_as<typename T::Size>;
+          { myX.degree(myVertex) } -> std::same_as<typename T::Size>;
+          myX.writeNeighbors( myOutIt, myVertex );
+          myX.writeNeighbors( myOutIt, myVertex, myVPred );
+      };
   } // namespace concepts
 } // namespace DGtal
 

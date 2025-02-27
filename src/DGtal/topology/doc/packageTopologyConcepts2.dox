@@ -43,7 +43,7 @@ digraph GTOPOLOGY {
                  label="graph";
 
 		 CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ];
-		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ];
+		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref DGtal::concepts::CUndirectedSimpleLocalGraph" ];
 
         }
         subgraph cluster_3 {

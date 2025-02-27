@@ -99,9 +99,8 @@ namespace DGtal {
   @tparam T the type that should be a model of CUndirectedSimpleGraph.
   */
   template <typename T> 
-  requires CConstSinglePassRange<T>
-  struct CUndirectedSimpleGraph : 
-    CUndirectedSimpleLocalGraph<T>
+  requires CConstSinglePassRange<T> && CUndirectedSimpleLocalGraph<T>
+  struct CUndirectedSimpleGraph
   {
     // ----------------------- Concept checks ------------------------------
   public:
