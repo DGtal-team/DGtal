@@ -80,8 +80,8 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
    
    */
 
-  template <typename I>
-  struct CTrivialImage: CTrivialConstImage<I>
+  template <CTrivialConstImage I>
+  struct CTrivialImage
   {
 
    public:

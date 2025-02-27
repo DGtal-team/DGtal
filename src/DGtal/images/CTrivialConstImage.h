@@ -85,25 +85,17 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
    */
 
   template <typename I> 
-  requires concepts::CLabel<typename I::Value> &&
-           concepts::CPointFunctor<I> &&
-           concepts::CDomain<typename I::Domain>
-  struct CTrivialConstImage
-  {
-  public:
-    //Inner types
-    typedef typename I::Domain Domain;
-
-    BOOST_CONCEPT_USAGE(CTrivialConstImage)
+  concept CTrivialConstImage = 
+    CLabel<typename I::Value> &&
+    CPointFunctor<I> &&
+    CDomain<typename I::Domain> &&
+    requires(I i)
     {
-      ConceptUtils::sameType(i.domain(), d);
-    }
-
-  private:
-    I i;
-    Domain d;
-
-  };
+      requires std::same_as<
+        std::remove_cvref_t<decltype(i.domain())>,   
+        typename I::Domain
+      >;
+    };
   }
 } // namespace DGtal
 

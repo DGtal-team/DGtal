@@ -77,12 +77,16 @@ namespace DGtal
   requires DGtal::concepts::CDomain<typename TImage::Domain>
   class DefaultConstImageRange
   {
-
-
     // ------------------------- inner types --------------------------------
   public: 
-  
-    BOOST_CONCEPT_ASSERT(( concepts::CTrivialConstImage<TImage> ));
+    // Leave this as a macro because ConstImageAdapter requires the type
+    //  DefaultConstImageRange<ConstImageAdapter> but ConstImageAdapter is
+    // an incomplete type at this time. Hence the concepts would be undefined 
+    // behaviours.
+    // The macro delay when the concept is checked, allowing the type to be
+    // completed at this time. . 
+    DGTAL_CONCEPT_CHECK(requires concepts::CTrivialConstImage<TImage>);
+
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 

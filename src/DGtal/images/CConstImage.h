@@ -92,12 +92,11 @@ namespace DGtal
 
   template <typename I>
   requires CConstBidirectionalRangeFromPoint<typename I::ConstRange> &&
-           CDomain<typename I::Domain>
-  struct CConstImage: CTrivialConstImage<I>
+           CDomain<typename I::Domain> &&
+           CTrivialConstImage<I>
+  struct CConstImage
   {
-
   public:
-
     //Inner types
     typedef typename I::Domain Domain;
     typedef typename I::ConstRange ConstRange;
