@@ -89,32 +89,16 @@ Matrix and vector scalar types should be the same.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
  */
-template <CVector V, CMatrix M>
-struct CLinearAlgebra
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef V Vector;
-    typedef M Matrix;
-
-    BOOST_STATIC_ASSERT(( boost::is_same<typename Vector::Scalar, typename Matrix::Scalar>::value ));
-
-    BOOST_CONCEPT_USAGE( CLinearAlgebra )
+template <typename V, typename M>
+concept CLinearAlgebra = 
+    CVector<V> &&
+    CMatrix<M> &&
+    std::same_as<typename V::Scalar, typename M::Scalar> && 
+    requires(const V v, const M m)
     {
-        x = a * y;
-        c = a * b;
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Matrix c;
-    const Matrix a, b;
-    Vector x;
-    const Vector y;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CLinearAlgebra
+        m * v;
+        m * m;
+    };
 }
 } // namespace DGtal
 

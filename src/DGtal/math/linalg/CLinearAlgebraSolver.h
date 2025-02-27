@@ -100,6 +100,7 @@ Matrix and vector types should be a model of CLinearAlgebra.
 @tparam M the type that should be a model of CMatrix
  */
 template <typename S, typename V, typename M>
+requires CLinearAlgebra<V, M>
 struct CLinearAlgebraSolver : boost::DefaultConstructible<S>
 {
     // ----------------------- Concept checks ------------------------------
@@ -107,8 +108,6 @@ public:
     typedef S Solver;
     typedef V Vector;
     typedef M Matrix;
-
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {

@@ -52,7 +52,7 @@ digraph GDEC {
                  CVector [ label="CVector" URL="\ref DGtal::concepts::CVector" ];
                  CStaticVector [ label="CStaticVector" URL="\ref DGtal::concepts::CStaticVector" ];
                  CDynamicVector [ label="CDynamicVector" URL="\ref DGtal::concepts::CDynamicVector" ];
-                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
+                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref DGtal::concepts::CLinearAlgebra" ];
                  CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }
 

@@ -96,7 +96,11 @@ namespace DGtal
   template < typename TLinearAlgebraBackend >
   requires concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
            concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
-           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> 
+           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::DenseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::SparseMatrix>
   class DirichletConditions
   {
   public:
@@ -109,9 +113,6 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseMatrix         DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix        SparseMatrix;
     typedef typename LinearAlgebraBackend::Triplet             Triplet;
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     /// Typically you have a system of the form \f$ A x = b \f$, where
     /// you wish to set up Dirichlet boundary conditions \f$ u \f$ at

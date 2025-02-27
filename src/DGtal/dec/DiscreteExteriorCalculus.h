@@ -69,7 +69,11 @@ namespace DGtal
   template <typename TLinearAlgebraBackend, concepts::CInteger TInteger>
   requires concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
            concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
-           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> 
+           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::DenseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::SparseMatrix>
   class DiscreteExteriorCalculusFactory;
 
   /**
@@ -99,7 +103,11 @@ namespace DGtal
   template <Dimension dimEmbedded, Dimension dimAmbient, typename TLinearAlgebraBackend, concepts::CInteger TInteger = DGtal::int32_t>
   requires concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
            concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
-           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> 
+           concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::DenseMatrix> &&
+           concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
+                                    typename TLinearAlgebraBackend::SparseMatrix>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
@@ -115,9 +123,6 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseVector DenseVector;
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 

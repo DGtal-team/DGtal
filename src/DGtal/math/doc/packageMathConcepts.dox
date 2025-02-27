@@ -92,7 +92,7 @@ digraph GMath {
                  CDynamicVector [ label="CDynamicVector" URL="\ref DGtal::concepts::CDynamicVector" ];
                  CDenseVector [ label="CDenseVector" URL="\ref DGtal::concepts::CDenseVector" ];
 
-                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
+                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref DGtal::concepts::CLinearAlgebra" ];
                  CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }
 
