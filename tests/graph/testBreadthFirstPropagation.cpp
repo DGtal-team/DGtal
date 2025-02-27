@@ -92,7 +92,7 @@ void testBreadthFirstPropagation()
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
   typedef BreadthFirstVisitor<Object, set<Point> > Visitor;
-  BOOST_CONCEPT_ASSERT(( CGraphVisitor< Visitor > ));
+  DGTAL_CONCEPT_CHECK(requires CGraphVisitor< Visitor > );
   Visitor bfv (obj, c1);
   
   

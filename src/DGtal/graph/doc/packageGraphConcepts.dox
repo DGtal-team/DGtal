@@ -85,7 +85,7 @@ digraph GGraph {
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref DGtal::concepts::CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref DGtal::concepts::CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref DGtal::concepts::CVertexMap" ] ;
-        CGraphVisitor [ label="CGraphVisitor" URL="\ref concepts::CGraphVisitor" ] ;
+        CGraphVisitor [ label="CGraphVisitor" URL="\ref DGtal::concepts::CGraphVisitor" ] ;
     }
 
     CVertexPredicate -> CPredicate;

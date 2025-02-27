@@ -92,7 +92,7 @@ void testDepthFirstPropagation()
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
   typedef DepthFirstVisitor<Object, set<Point> > Visitor;
-  BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
+  DGTAL_CONCEPT_CHECK(requires CGraphVisitor<Visitor> );
   Visitor bfv (obj, c1);
   
   int cpt=0;

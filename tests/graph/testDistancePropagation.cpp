@@ -106,7 +106,7 @@ bool testDistancePropagation()
   typedef DGtal::functors::Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
-  BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
+  DGTAL_CONCEPT_CHECK(requires CGraphVisitor<Visitor> );
 
 
   VertexEmbedder embedder;

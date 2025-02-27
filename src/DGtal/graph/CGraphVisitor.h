@@ -107,60 +107,31 @@ the traversal with a given predicate.
 @tparam T the type that should be a model of CGraphVisitor.
  */
 template <typename T>
-requires CUndirectedSimpleLocalGraph<typename T::Graph>
-struct CGraphVisitor : boost::CopyConstructible<T>
-{
-  // ----------------------- Concept checks ------------------------------
-public:
-  // 1. define first provided types (i.e. inner types), like
-  typedef typename T::Graph Graph;
-  typedef typename T::Vertex Vertex;
-  typedef typename T::Size Size;
-  typedef typename T::Data Data;
-  typedef typename T::MarkSet MarkSet;
-  typedef typename T::Node Node;
-  typedef CVertexPredicateArchetype<Vertex> VertexPredicate;
-
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Vertex, typename Graph::Vertex>::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Size, typename Graph::Size>::value ));
-  BOOST_CONCEPT_ASSERT(( boost::SimpleAssociativeContainer< MarkSet > ));
-  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< MarkSet > ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Vertex, typename MarkSet::key_type>::value ));
-  BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Data > ));
-  BOOST_CONCEPT_ASSERT(( boost::Assignable< Data > ));
-  BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Data > ));
-  BOOST_STATIC_ASSERT(( boost::is_convertible<Node, std::pair<Vertex,Data> >::value ));
-  
-  // To test if two types A and Y are equals, use
-  // 2. then check the presence of data members, operators and methods with
-  BOOST_CONCEPT_USAGE( CGraphVisitor )
+concept CGraphVisitor =  
+  std::is_copy_constructible_v<T> && 
+  CUndirectedSimpleLocalGraph<typename T::Graph> &&
+  ConceptUtils::SimpleAssociativeContainer<typename T::MarkSet> &&
+  ConceptUtils::UniqueAssociativeContainer<typename T::MarkSet> &&
+  std::default_initializable<typename T::Data> &&
+  std::copy_constructible<typename T::Data> &&
+  std::is_copy_assignable_v<typename T::Data> && 
+  std::same_as<typename T::Vertex, typename T::Graph::Vertex> && 
+  std::same_as<typename T::Vertex, typename T::MarkSet::key_type> &&
+  std::same_as<typename T::Size, typename T::Graph::Size> &&
+  std::is_convertible_v<typename T::Node, std::pair<typename T::Vertex, typename T::Data>> &&
+  requires(T myX, const T cmyX, CVertexPredicateArchetype<typename T::Vertex> myVPred)
   {
-    // check non-const methods.
-    myX.expand();
-    myX.expand( myVPred );
-    myX.ignore();
-    myX.terminate();
-    // check const methods.
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-    ConceptUtils::sameType( myGraph, myX.graph() );
-    ConceptUtils::sameType( myNode, myX.current() );
-    ConceptUtils::sameType( myBool, myX.finished() );
-    ConceptUtils::sameType( myMarkSet, myX.markedVertices() );
-    ConceptUtils::sameType( myMarkSet, myX.visitedVertices() );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Graph myGraph;
-  Node myNode;
-  bool myBool;
-  VertexPredicate myVPred;
-  MarkSet myMarkSet;
+      myX.expand();
+      myX.expand(myVPred);
+      myX.ignore();
+      myX.terminate();
 
-}; // end of concept CGraphVisitor
+      { cmyX.graph() } -> std::same_as<const typename T::Graph&>;
+      { cmyX.current() } -> std::same_as<const typename T::Node&>;
+      { cmyX.finished() } -> std::same_as<bool>;
+      { cmyX.markedVertices() } -> std::same_as<const typename T::MarkSet&>;
+      { cmyX.visitedVertices() } -> std::same_as<typename T::MarkSet>;
+  };
 
 } // namespace concepts
 } // namespace DGtal
