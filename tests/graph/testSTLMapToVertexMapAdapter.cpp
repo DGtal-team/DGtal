@@ -62,7 +62,7 @@ bool testMapToVertexMap()
   typedef map<Vertex, Value> Map;
   typedef STLMapToVertexMapAdapter<Map> VertexMap;
   VertexMap myMap;
-  BOOST_CONCEPT_ASSERT((CVertexMap<VertexMap>));
+  DGTAL_CONCEPT_CHECK(requires CVertexMap<VertexMap>);
   myMap.setValue(Point(1,1), 10);
   myMap.setValue(Point(2,3), 2);
   

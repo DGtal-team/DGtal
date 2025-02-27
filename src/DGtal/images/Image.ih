@@ -47,6 +47,7 @@
  * @param out the output stream where the object is written.
  */
 template <typename T>
+requires DGtal::concepts::CVertexMap<T>
 inline
 void
 DGtal::Image<T>::selfDisplay ( std::ostream & out ) const

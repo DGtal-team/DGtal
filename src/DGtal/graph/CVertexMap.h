@@ -93,30 +93,13 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
-  struct CVertexMap:
-    boost::Assignable<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Vertex Vertex;
-    typedef typename T::Value Value;
-    
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CVertexMap )
+  concept CVertexMap = 
+    std::is_copy_assignable_v<T> &&
+    requires(T myX, typename T::Vertex myVertex, typename T::Value myValue)
     {
-      ConceptUtils::sameType( myValue, myX.operator()(myVertex) );
-      myX.setValue(myVertex, myValue);
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX;
-    Vertex myVertex;
-    Value myValue;
-    
-  }; // end of concept CVertexMap
-  
+        { myX.operator()(myVertex) } -> std::same_as<typename T::Value>;
+        myX.setValue(myVertex, myValue);
+    };
 } // namespace concepts
 } // namespace DGtal
 
