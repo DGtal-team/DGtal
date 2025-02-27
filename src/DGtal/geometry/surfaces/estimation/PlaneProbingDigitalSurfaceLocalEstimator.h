@@ -67,10 +67,9 @@ namespace DGtal
    * \b Models: A PlaneProbingDigitalSurfaceLocalEstimator is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
   template <typename TSurface, typename TInternalProbingAlgorithm>
+  requires concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer>
   class PlaneProbingDigitalSurfaceLocalEstimator
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer> ));
-
     // ----------------------- Public types ------------------------------
   public:
       using Surface                  = TSurface;

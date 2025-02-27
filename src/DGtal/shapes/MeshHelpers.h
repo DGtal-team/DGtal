@@ -151,7 +151,7 @@ namespace DGtal
     /// @param[in]  cembedder the embedder for 2-cells of the digital surface, which are vertices in the output triangulated surface.
     /// @param[out] trisurf the output triangulated surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a trisurf.
-    template < typename DigitalSurfaceContainer,
+    template < concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
                concepts::CCellEmbedder CellEmbedder,
                typename VertexMap >
     static
@@ -172,7 +172,7 @@ namespace DGtal
     /// @param[in]  cembedder the embedder for 2-cells of the digital surface, which are vertices in the output polygonal surface.
     /// @param[out] polysurf the output polygonal surface mesh.
     /// @param[out] vertexmap the output mapping between a Vertex of \a dsurf and an Index in \a polysurf.
-    template < typename DigitalSurfaceContainer,
+    template < concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
                concepts::CCellEmbedder CellEmbedder,
                typename VertexMap >
     static
@@ -195,7 +195,7 @@ namespace DGtal
     /// @param[out] polysurf the output polygonal surface mesh.
     /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
     /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
-    template < typename DigitalSurfaceContainer,
+    template < concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
                concepts::CCellEmbedder CellEmbedder,
                typename CellMap >
     static
@@ -219,7 +219,7 @@ namespace DGtal
     /// @param[out] polysurf the output polygonal surface mesh.
     /// @param[out] cellmap the output mapping between a 0-cell of \a dsurf and an Index in \a polysurf.
     /// @return 'true' if it was able to build the primal polygonal surface, otherwise the digital surface was not a combinatorial 2-manifold and is not valid.
-    template < typename DigitalSurfaceContainer,
+    template < concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
     concepts::CCellEmbedder CellEmbedder,
     typename CellMap >
     static

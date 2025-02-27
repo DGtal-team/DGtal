@@ -172,7 +172,7 @@ Mesh< RealPoint >& mesh, const std::vector<Color> &cols )
 }
 
 
-template < typename DigitalSurfaceContainer,
+template < DGtal::concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
            DGtal::concepts::CCellEmbedder CellEmbedder,
 	   typename VertexMap >
 inline
@@ -183,7 +183,6 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   TriangulatedSurface<typename CellEmbedder::Value>& trisurf,
   VertexMap& vertexmap )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
   typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
   typedef typename Surface::KSpace                     SKSpace;
   typedef typename Surface::Vertex                     SVertex;
@@ -226,7 +225,7 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   trisurf.build();
 }
 
-template < typename DigitalSurfaceContainer,
+template < DGtal::concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
            DGtal::concepts::CCellEmbedder CellEmbedder,
 	   typename VertexMap >
 inline
@@ -237,7 +236,6 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
   PolygonalSurface<typename CellEmbedder::Value>& polysurf,
   VertexMap& vertexmap )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
   typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
   typedef typename Surface::KSpace                     KSpace;
   typedef typename Surface::Vertex                     Vertex;
@@ -268,7 +266,7 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
   polysurf.build();
 }
 
-template < typename DigitalSurfaceContainer,
+template < DGtal::concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
 	   DGtal::concepts::CCellEmbedder CellEmbedder,
 	   typename CellMap >
 inline
@@ -279,7 +277,6 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   PolygonalSurface<typename CellEmbedder::Value>& polysurf,
   CellMap& cellmap )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
   typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
   typedef typename Surface::KSpace                     KSpace;
   typedef typename KSpace::Cell                        Cell;
@@ -312,7 +309,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   return polysurf.build();
 }
 
-template < typename DigitalSurfaceContainer,
+template < DGtal::concepts::CDigitalSurfaceContainer DigitalSurfaceContainer,
 DGtal::concepts::CCellEmbedder CellEmbedder,
 typename CellMap >
 inline
@@ -323,7 +320,6 @@ DGtal::MeshHelpers::digitalSurface2PrimalSurfaceMesh
   SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>& polysurf,
   CellMap& cellmap )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
   typedef DigitalSurface< DigitalSurfaceContainer >    Surface;
   typedef typename Surface::KSpace                     KSpace;
   typedef typename KSpace::Cell                        Cell;

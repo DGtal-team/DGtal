@@ -123,62 +123,24 @@ See @ref dgtal_digsurf_sec3_2
 # Notes
 @tparam T the type that should be a model of CDigitalSurfaceContainer.
    */
-  template <typename T> 
-  requires concepts::CCellularGridSpaceND<typename T::KSpace> &&
-           CDigitalSurfaceTracker<typename T::DigitalSurfaceTracker>
-  struct CDigitalSurfaceContainer : boost::CopyConstructible<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::KSpace KSpace;
-    typedef typename T::Surfel Surfel;
-    typedef typename T::SurfelConstIterator SurfelConstIterator;
-    typedef typename T::DigitalSurfaceTracker DigitalSurfaceTracker;
-    typedef typename T::Size Size;
-
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<SurfelConstIterator> ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<SurfelConstIterator> ));
-
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CDigitalSurfaceContainer )
+  template <typename T>
+  concept CDigitalSurfaceContainer = 
+    std::is_copy_constructible_v<T> &&  
+    CCellularGridSpaceND<typename T::KSpace> &&
+    CDigitalSurfaceTracker<typename T::DigitalSurfaceTracker> &&
+    ConceptUtils::SinglePassIterator<typename T::SurfelConstIterator> && 
+    ConceptUtils::ReadableIterator<typename T::SurfelConstIterator> &&
+    requires(const T myX, typename T::Surfel mySurfel)
     {
-      // check const methods.
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // x.space() const, returns a const KSpace &
-      ConceptUtils::sameType( myKSpace, myX.space() );
-      // x.isInside( Surfel ) const, returns bool.
-      ConceptUtils::sameType( myBool, myX.isInside( mySurfel ) );
-      // x.begin() const, returns SurfelConstIterator
-      ConceptUtils::sameType( mySurfelCIt, myX.begin() );
-      // x.end() const, returns SurfelConstIterator
-      ConceptUtils::sameType( mySurfelCIt, myX.end() );
-      // x.newTracker( Surfel ) const, returns DigitalSurfaceTracker*
-      ConceptUtils::sameType( myPtrTracker, myX.newTracker( mySurfel ) );
-      // x.connectedness() const, returns Connectedness
-      ConceptUtils::sameType( myConnectedness, myX.connectedness() );
-      // x.nbSurfels() const, returns Connectedness
-      ConceptUtils::sameType( mySize, myX.nbSurfels() );
-      // x.empty() const, returns bool
-      ConceptUtils::sameType( myBool, myX.empty() );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    KSpace myKSpace;
-    Surfel mySurfel;
-    bool myBool;
-    SurfelConstIterator mySurfelCIt;
-    DigitalSurfaceTracker* myPtrTracker;
-    Connectedness myConnectedness;
-    Size mySize;
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDigitalSurfaceContainer
-  
+        { myX.space() } -> std::same_as<const typename T::KSpace&>;
+        { myX.isInside(mySurfel) } -> std::same_as<bool>;
+        { myX.begin() } -> std::same_as<typename T::SurfelConstIterator>;
+        { myX.end() } -> std::same_as<typename T::SurfelConstIterator>;
+        { myX.newTracker(mySurfel) } -> std::same_as<typename T::DigitalSurfaceTracker*>;
+        { myX.connectedness() } -> std::same_as<Connectedness>;
+        { myX.nbSurfels() } -> std::same_as<typename T::Size>;
+        { myX.empty() } -> std::same_as<bool>;
+    };
 } // namespace concepts
 } // namespace DGtal
 

@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
@@ -48,7 +48,7 @@ DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetri
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
@@ -62,7 +62,7 @@ VCMDigitalSurfaceLocalEstimator()
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
@@ -76,7 +76,7 @@ VCMDigitalSurfaceLocalEstimator( const Self& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 typename DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::Self&
@@ -95,7 +95,7 @@ operator=( const Self& other )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
@@ -108,7 +108,7 @@ VCMDigitalSurfaceLocalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
@@ -122,7 +122,7 @@ VCMDigitalSurfaceLocalEstimator( ConstAlias< Surface > surface )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 void
@@ -134,7 +134,7 @@ attach( ConstAlias<Surface> surface )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 void
@@ -150,7 +150,7 @@ setParams( Surfel2PointEmbedding surfelEmbedding,
   myGeomFct.attach( myVCMOnSurface );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 template <typename SurfelConstIterator>
 inline
@@ -166,7 +166,7 @@ init( const Scalar _h,
   myH = _h;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 template <typename SurfelConstIterator>
 inline
@@ -180,7 +180,7 @@ eval( SurfelConstIterator it ) const
   return myGeomFct( *it );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 template <typename SurfelConstIterator, typename OutputIterator>
 inline
@@ -201,7 +201,7 @@ eval( SurfelConstIterator itb,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 typename DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::Scalar
@@ -218,7 +218,7 @@ h() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 void
@@ -232,7 +232,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CSeparableMetric TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 bool

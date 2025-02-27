@@ -77,12 +77,10 @@ namespace DGtal
    * Quantity which chooses what is the returned estimation. Any
    * VCMGeometricFunctors::VCMNormalVectorFunctor, ... is ok.
    */
-  template <typename TDigitalSurfaceContainer, concepts::CSeparableMetric TSeparableMetric, 
+  template <concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, concepts::CSeparableMetric TSeparableMetric, 
             typename TKernelFunction, typename TVCMGeometricFunctor>
   class VCMDigitalSurfaceLocalEstimator
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
-
     // ----------------------- public types ------------------------------
   public:
     typedef VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> Self; ///< my own type

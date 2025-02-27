@@ -92,13 +92,12 @@ namespace DGtal
    *
    * See \ref dgtal_digsurf_sec3_2 and \ref HalfEdgeDataStructure.
    */
-  template <typename TDigitalSurfaceContainer>
+  template <concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
   class IndexedDigitalSurface
   {
   public:
     typedef IndexedDigitalSurface<TDigitalSurfaceContainer> Self;
     typedef TDigitalSurfaceContainer             DigitalSurfaceContainer;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
 
     typedef typename DigitalSurfaceContainer::KSpace KSpace;
     typedef typename KSpace::Space                   Space;

@@ -31,7 +31,7 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 energyArea()
@@ -56,7 +56,7 @@ energyArea()
   return E;
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 energySnake()
@@ -90,7 +90,7 @@ energySnake()
   return E;
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 energySquaredCurvature() 
@@ -124,7 +124,7 @@ energySquaredCurvature()
   return E;
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepAreaMinimization( const double randomization )
@@ -174,7 +174,7 @@ oneStepAreaMinimization( const double randomization )
   return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSnakeMinimization
@@ -237,7 +237,7 @@ oneStepSnakeMinimization
   return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 std::pair<double,double>
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 oneStepSquaredCurvatureMinimization
@@ -369,7 +369,7 @@ oneStepSquaredCurvatureMinimization
   return std::make_pair( loo, sqrt( l2 / myT.size() ) );
 }
 
-template < typename TDigitalSurfaceContainer >
+template < DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer >
 void
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
 enforceBounds()

@@ -34,7 +34,7 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -45,7 +45,7 @@ LocalEstimatorFromSurfelFunctorAdapter()
   myInit = false;
 }
 
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -62,7 +62,7 @@ LocalEstimatorFromSurfelFunctorAdapter
   myInit = false;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -73,7 +73,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -85,7 +85,7 @@ selfDisplay ( std::ostream & out ) const
   out << "[LocalEstimatorFromSurfelFunctorAdapter]";
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -99,7 +99,7 @@ isValid() const
 
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -113,7 +113,7 @@ attach( ConstAlias<Surface> aSurface )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -133,7 +133,7 @@ setParams( ConstAlias<TMetric> aMetric,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 inline
@@ -146,7 +146,7 @@ h() const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template<typename SurfelIt>
@@ -163,7 +163,7 @@ init(const double _h,
   myInit = true;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator>
@@ -194,7 +194,7 @@ eval( const SurfelConstIterator& it ) const
   return val;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, DGtal::concepts::CMetricSpace TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
 requires DGtal::concepts::CUnaryFunctor<TConvolutionFunctor,double,double>
 template <typename SurfelConstIterator, typename OutputIterator>

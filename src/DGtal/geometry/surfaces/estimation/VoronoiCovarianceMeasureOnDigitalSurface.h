@@ -81,16 +81,14 @@ namespace DGtal
    * @tparam TKernelFunction the type of the kernel function chi_r used
    * for integrating the VCM, a map: Point -> Scalar.
    */
-  template <typename TDigitalSurfaceContainer, concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
+  template <concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer, concepts::CSeparableMetric TSeparableMetric, typename TKernelFunction>
   requires DGtal::concepts::CUnaryFunctor<
     TKernelFunction,
     typename TDigitalSurfaceContainer::KSpace::Point, 
     typename DGtal::VoronoiCovarianceMeasure<typename TDigitalSurfaceContainer::KSpace::Space, TSeparableMetric>::Scalar
   >
   class VoronoiCovarianceMeasureOnDigitalSurface
-  {
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
-    // ----------------------- public types ------------------------------
+  {    // ----------------------- public types ------------------------------
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; ///< the chosen container
     typedef TSeparableMetric                         Metric;  ///< the chosen metric

@@ -369,11 +369,12 @@ namespace ConceptUtils
       std::is_copy_assignable_v<T> &&
       requires(T myX)
       {
+         // DGtal is currently inconsistent with what iterator returns (cvref or not)
          requires std::same_as<
             std::remove_cvref_t<decltype(*myX)>, 
-            typename std::iterator_traits<T>::value_type
+            std::remove_cvref_t<typename std::iterator_traits<T>::value_type>
          >;
-         // Can not check for myX->m, where is a member
+         // Can not check for myX->m, where m is any member
       };
 
    /** 

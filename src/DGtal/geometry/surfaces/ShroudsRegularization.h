@@ -69,12 +69,9 @@ namespace DGtal {
   /// SetOfSurfels.
   ///
   /// @see testShroudsRegularization.cpp
-  template <typename TDigitalSurfaceContainer>
+  template <concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
   class ShroudsRegularization
   {
-    BOOST_CONCEPT_ASSERT
-    (( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ) );
-    
   public:
     typedef TDigitalSurfaceContainer           Container;
     typedef ShroudsRegularization< Container > Self;

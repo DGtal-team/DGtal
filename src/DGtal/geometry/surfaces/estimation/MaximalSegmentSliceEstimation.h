@@ -62,10 +62,9 @@ namespace DGtal
    * \b Models: A MaximalSegmentSliceEstimation is a model of concepts::CSurfelLocalEstimator and concepts::CDigitalSurfaceLocalEstimator.
    */
   template <typename TSurface>
+  requires concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer>
   class MaximalSegmentSliceEstimation
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer<typename TSurface::DigitalSurfaceContainer> ));
-
     // ----------------------- Public types ------------------------------
   public:
       using Surface      = TSurface;

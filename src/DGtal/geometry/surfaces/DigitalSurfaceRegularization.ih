@@ -40,6 +40,7 @@
  * @param out the output stream where the object is written.
  */
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void
 DGtal::DigitalSurfaceRegularization<T>::selfDisplay ( std::ostream & out ) const
@@ -54,6 +55,7 @@ DGtal::DigitalSurfaceRegularization<T>::selfDisplay ( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 bool
 DGtal::DigitalSurfaceRegularization<T>::isValid() const
@@ -65,6 +67,7 @@ DGtal::DigitalSurfaceRegularization<T>::isValid() const
 // Implementation of inline functions                                        //
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void DGtal::DigitalSurfaceRegularization<T>::attachConvolvedTrivialNormalVectors(const Parameters someParams)
 {
@@ -74,6 +77,7 @@ void DGtal::DigitalSurfaceRegularization<T>::attachConvolvedTrivialNormalVectors
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void
 DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc)
@@ -86,6 +90,7 @@ DGtal::DigitalSurfaceRegularization<T>::attachNormalVectors(const std::function<
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
 {
@@ -168,6 +173,7 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
                                                   const double beta,
@@ -183,6 +189,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(const double alpha,
 ///////////////////////////////////////////////////////////////////////////////
 //
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 void DGtal::DigitalSurfaceRegularization<T>::init(ConstAlias< std::vector<double> > alphas,
                                                   ConstAlias< std::vector<double> > betas,
@@ -206,6 +213,7 @@ void DGtal::DigitalSurfaceRegularization<T>::init(ConstAlias< std::vector<double
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 double
 DGtal::DigitalSurfaceRegularization<T>::computeGradient()
@@ -278,6 +286,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 inline
 double
 DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
@@ -353,6 +362,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
+requires DGtal::concepts::CDigitalSurfaceContainer<typename T::DigitalSurfaceContainer>
 template <typename AdvectionFunction>
 inline
 double

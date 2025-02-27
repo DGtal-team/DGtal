@@ -85,6 +85,7 @@ namespace DGtal
    * @tparam TDigitalSurface a Digital Surface type (see DigitalSurface).
    */
   template <typename TDigitalSurface>
+  requires concepts::CDigitalSurfaceContainer<typename TDigitalSurface::DigitalSurfaceContainer>
   class DigitalSurfaceRegularization
   {
     // ----------------------- Standard services ------------------------------
@@ -94,7 +95,6 @@ namespace DGtal
     typedef TDigitalSurface DigSurface;
     ///Digital Surface Container type
     typedef typename TDigitalSurface::DigitalSurfaceContainer DigitalSurfaceContainer;
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
     
     ///We rely on the Shortcuts 3D types
     typedef Shortcuts<Z3i::KSpace> SH3;

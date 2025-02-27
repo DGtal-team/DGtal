@@ -41,14 +41,14 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::~DigitalSurface()
 {
   if ( myTracker != 0 ) delete myTracker;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 ( const DigitalSurface & other )
@@ -58,7 +58,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 ( const TDigitalSurfaceContainer & aContainer )
@@ -74,7 +74,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
     myTracker = 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
 ( TDigitalSurfaceContainer* containerPtr )
@@ -90,7 +90,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
     myTracker = 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer> &
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
@@ -106,7 +106,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 const TDigitalSurfaceContainer &
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::container() const
@@ -114,7 +114,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::container() const
   return *myContainer;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 TDigitalSurfaceContainer &
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::container()
@@ -122,7 +122,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::container()
   return *myContainer;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::begin() const
@@ -130,7 +130,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::begin() const
   return myContainer->begin();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::end() const
@@ -138,7 +138,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::end() const
   return myContainer->end();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::size() const
@@ -146,7 +146,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::size() const
   return myContainer->nbSurfels();
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::bestCapacity() const
@@ -154,7 +154,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::bestCapacity() const
   return KSpace::dimension*2 - 2;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::degree
@@ -174,7 +174,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::degree
   return d;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <typename OutputIterator>
 inline
 void
@@ -194,7 +194,7 @@ writeNeighbors( OutputIterator & it,
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <typename OutputIterator, DGtal::concepts::CVertexPredicate VertexPredicate>
 inline
 void
@@ -220,7 +220,7 @@ writeNeighbors( OutputIterator & it,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ArcRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -241,7 +241,7 @@ outArcs( const Vertex & v ) const
   return arcs;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ArcRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -263,7 +263,7 @@ inArcs( const Vertex & v ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -308,7 +308,7 @@ facesAroundVertex( const Vertex & v, bool order_ccw_in_3d ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Vertex
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -321,7 +321,7 @@ head( const Arc & a ) const
   return s;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Vertex
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -330,7 +330,7 @@ tail( const Arc & a ) const
   return a.base;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Arc
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -351,7 +351,7 @@ opposite( const Arc & a ) const
     } 
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Arc
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -380,7 +380,7 @@ arc( const Vertex & t, const Vertex & h ) const
   // return Arc( t, 0, true );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -401,7 +401,7 @@ facesAroundArc( const Arc & a ) const
   
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::VertexRange
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -417,7 +417,7 @@ verticesAroundFace( const Face & f ) const
   return vertices;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceSet
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -432,7 +432,7 @@ allFaces() const
   return all_faces;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceSet
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -450,7 +450,7 @@ allClosedFaces() const
   return all_faces;
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::FaceSet
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -469,7 +469,7 @@ allOpenFaces() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Face
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -507,7 +507,7 @@ computeFace( UmbrellaState state ) const
     return Face( state, nb, true );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -516,7 +516,7 @@ separator( const Arc & a ) const
   return container().space().sIncident( a.base, a.k, a.epsilon );
 }
 //-----------------------------------------------------------------------------
-// template <typename TDigitalSurfaceContainer>
+// template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 // inline
 // typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
 // DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -526,7 +526,7 @@ separator( const Arc & a ) const
 //                                         f.state.epsilon );
 // }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -546,7 +546,7 @@ pivot( const Face & f ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::selfDisplay ( std::ostream & out ) const
@@ -558,7 +558,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::selfDisplay ( std::ostream & ou
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 inline
 bool
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::isValid() const
@@ -571,7 +571,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::isValid() const
    Writes/Displays the object on an output stream.
    @param out the output stream where the object is written.
 */
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportSurfaceAs3DOFF ( std::ostream & out ) const
@@ -631,7 +631,7 @@ exportSurfaceAs3DOFF ( std::ostream & out ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <DGtal::concepts::CCellEmbedder CellEmbedder>
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
@@ -696,7 +696,7 @@ exportEmbeddedSurfaceAs3DOFF
 }
   
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <DGtal::concepts::CCellEmbedder CellEmbedder>
 requires DGtal::concepts::CWithGradientMap< CellEmbedder >
 void
@@ -775,7 +775,7 @@ exportEmbeddedSurfaceAs3DNOFF
 }
 
 //-----------------------------------------------------------------------------  
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <typename SCellEmbedderWithGradientMap>
 requires DGtal::concepts::CWithGradientMap< SCellEmbedderWithGradientMap > &&
          DGtal::concepts::CSCellEmbedder  < SCellEmbedderWithGradientMap >
@@ -854,7 +854,7 @@ exportAs3DNOFF
 }
 
 //-----------------------------------------------------------------------------  
-template <typename TDigitalSurfaceContainer>
+template <DGtal::concepts::CDigitalSurfaceContainer TDigitalSurfaceContainer>
 template <typename CellEmbedder>
 void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
