@@ -59,12 +59,10 @@ namespace DGtal
    * @tparam TPointPredicate an arbitrary model of predicate Point -> bool
    **/
 
-  template < typename TKSpace,
+  template < concepts::CCellularGridSpaceND TKSpace,
              typename TPointPredicate >
   class SymmetricConvexExpander
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
- 
   public:
     typedef DigitalConvexity<TKSpace>       Self;
     typedef TKSpace                         KSpace;
