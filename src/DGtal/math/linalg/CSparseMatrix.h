@@ -86,28 +86,13 @@ Represent any dynamic or static sized matrix having sparse representation.
 @tparam TripletInterator the type that should be a model of boost::InputIterator<Triplet>
  */
 template <typename T, typename TripletInterator>
-struct CSparseMatrix : CMatrix<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_ASSERT(( boost::InputIterator<TripletInterator> ));
-
-    BOOST_CONCEPT_USAGE( CSparseMatrix )
+concept CSparseMatrix = 
+    CMatrix<T> && 
+    ConceptUtils::InputIterator<TripletInterator> && 
+    requires(T z, TripletInterator ti)
     {
-        z.setFromTriplets(ti, te);
-    }
-
-    // ------------------------- Private Datas --------------------------------
-private:
-    T z;
-    TripletInterator ti, te;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CSparseMatrix
+        z.setFromTriplets(ti, ti);
+    };
 }
 } // namespace DGtal
 

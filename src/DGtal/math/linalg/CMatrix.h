@@ -86,34 +86,15 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 
 @tparam T the type that should be a model of CMatrix.
  */
-template <CVectorSpace T>
-struct CMatrix
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Scalar Scalar;
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CMatrix )
+template <typename T>
+concept CMatrix = 
+    CVectorSpace<T> &&
+    requires(T z, const T cz)
     {
         z.setIdentity();
-        checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-        ConceptUtils::sameType(i, z.rows());
-        ConceptUtils::sameType(j, z.cols());
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    T z;
-    Index i, j;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CMatrix
+        { cz.rows() } -> std::same_as<typename T::Index>;
+        { cz.cols() } -> std::same_as<typename T::Index>;
+    };
 }
 } // namespace DGtal
 

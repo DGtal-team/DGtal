@@ -85,24 +85,9 @@ Represent any dynamic sized matrix having sparse or dense representation.
 @tparam T the type that should be a model of CDynamicMatrix.
  */
 template <typename T>
-struct CDynamicMatrix : CMatrix<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CDynamicMatrix )
-    {
-        T xx(i, j);
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Index i, j;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDynamicMatrix
+concept CDynamicMatrix =
+    CMatrix<T> &&
+    std::is_constructible_v<T, typename T::Index, typename T::Index>;
 }
 } // namespace DGtal
 

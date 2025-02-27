@@ -81,11 +81,11 @@ digraph GMath {
                  label="math/linalg";
 
                  CVectorSpace [ label="CVectorSpace" URL="\ref DGtal::concepts::CVectorSpace" ];
-                 CMatrix [ label="CMatrix" URL="\ref concepts::CMatrix" ];
-                 CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
-                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
-                 CDenseMatrix [ label="CDenseMatrix" URL="\ref concepts::CDenseMatrix" ];
-                 CSparseMatrix [ label="CSparseMatrix" URL="\ref concepts::CSparseMatrix" ];
+                 CMatrix [ label="CMatrix" URL="\ref DGtal::concepts::CMatrix" ];
+                 CStaticMatrix [ label="CStaticMatrix" URL="\ref DGtal::concepts::CStaticMatrix" ];
+                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref DGtal::concepts::CDynamicMatrix" ];
+                 CDenseMatrix [ label="CDenseMatrix" URL="\ref DGtal::concepts::CDenseMatrix" ];
+                 CSparseMatrix [ label="CSparseMatrix" URL="\ref DGtal::concepts::CSparseMatrix" ];
 
                  CVector [ label="CVector" URL="\ref DGtal::concepts::CVector" ];
                  CStaticVector [ label="CStaticVector" URL="\ref DGtal::concepts::CStaticVector" ];

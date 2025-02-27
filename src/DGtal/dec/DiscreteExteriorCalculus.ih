@@ -41,14 +41,18 @@ DGtal::hash_value(const DGtal::KhalimskyCell<dim, TInteger>& cell)
 // ----------------------- Standard services ------------------------------
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
     : myKSpace(), myCachedOperatorsNeedUpdate(true), myIndexesNeedUpdate(false)
 {
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::concepts::CDomain TDomain>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::initKSpace(DGtal::ConstAlias<TDomain> _domain)
@@ -64,7 +68,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 // Interface - public :
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::eraseCell(const Cell& _cell)
 {
@@ -81,7 +87,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell)
 {
@@ -89,7 +97,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::insertSCell(const SCell& signed_cell, const Scalar& primal_size, const Scalar& dual_size)
 {
@@ -123,7 +133,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::resetSizes()
 {
@@ -137,7 +149,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 std::string
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::className() const
 {
@@ -145,7 +159,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::selfDisplay(std::ostream & os) const
 {
@@ -156,7 +172,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality, typename TConstIterator>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::reorder(const TConstIterator& begin_range, const TConstIterator& end_range) const
@@ -191,7 +209,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::identity() const
@@ -205,7 +225,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::laplace() const
@@ -218,7 +240,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h, 
@@ -281,7 +305,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order-1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::antiderivative() const
@@ -300,7 +326,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, order+1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::derivative() const
@@ -355,7 +383,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, order, duality, dimEmbedded-order, DGtal::OppositeDuality<duality>::duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::hodge() const
@@ -394,7 +424,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
@@ -417,7 +449,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality, 0, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::sharpDirectional(const DGtal::Dimension& direction) const
@@ -433,7 +467,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
@@ -512,7 +548,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::KForm<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
@@ -533,7 +571,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 1, duality>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::flatDirectional(const DGtal::Dimension& direction) const
@@ -548,7 +588,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Duality duality>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
@@ -624,7 +666,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateIndexes()
 {
@@ -651,7 +695,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 void
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::updateCachedOperators()
 {
@@ -665,7 +711,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 const typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Properties&
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getProperties() const
 {
@@ -673,7 +721,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Order order, DGtal::Duality duality>
 const typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::SCells&
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getIndexedSCells() const
@@ -683,7 +733,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::SCell
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getSCell(const Order& order, const Duality& duality, const Index& index) const
 {
@@ -695,7 +747,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::containsCell(const Cell& cell) const
 {
@@ -703,7 +757,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::isCellFlipped(const Cell& cell) const
 {
@@ -713,7 +769,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::getCellIndex(const Cell& cell) const
 {
@@ -724,7 +782,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin() const
 {
@@ -733,7 +793,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::ConstIterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end() const
 {
@@ -742,7 +804,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::begin()
 {
@@ -751,7 +815,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Iterator
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::end()
 {
@@ -760,7 +826,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Index
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::kFormLength(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
@@ -769,7 +837,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 DGtal::Order
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::actualOrder(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
@@ -777,7 +847,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::Scalar
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::hodgeSign(const Cell& cell, const DGtal::Duality& duality) const
 {
@@ -788,7 +860,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 typename DGtal::Dimension
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::edgeDirection(const Cell& cell, const DGtal::Duality& duality) const
 {
@@ -807,7 +881,9 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 }
 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 bool
 DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::isValid() const
 {

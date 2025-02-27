@@ -46,9 +46,9 @@ digraph GDEC {
                  label="math/linalg";
 
                  CVectorSpace [ label="CVectorSpace" URL="\ref DGtal::concepts::CVectorSpace" ];
-                 CMatrix [ label="CMatrix" URL="\ref concepts::CMatrix" ];
-                 CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
-                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
+                 CMatrix [ label="CMatrix" URL="\ref DGtal::concepts::CMatrix" ];
+                 CStaticMatrix [ label="CStaticMatrix" URL="\ref DGtal::concepts::CStaticMatrix" ];
+                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref DGtal::concepts::CDynamicMatrix" ];
                  CVector [ label="CVector" URL="\ref DGtal::concepts::CVector" ];
                  CStaticVector [ label="CStaticVector" URL="\ref DGtal::concepts::CStaticVector" ];
                  CDynamicVector [ label="CDynamicVector" URL="\ref DGtal::concepts::CDynamicVector" ];

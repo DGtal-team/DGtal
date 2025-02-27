@@ -63,7 +63,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IINormalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -76,8 +76,6 @@ namespace DGtal {
       typedef Matrix Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
-
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
 
       /// Default constructor.
       IINormalDirectionFunctor() {}
@@ -136,7 +134,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IITangentDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -150,7 +148,6 @@ namespace DGtal {
       typedef RealVector Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
       /// Default constructor.
@@ -213,7 +210,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IIFirstPrincipalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -227,7 +224,6 @@ namespace DGtal {
       typedef RealVector Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 2 ));
 
       /// Default constructor.
@@ -291,7 +287,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IISecondPrincipalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -305,7 +301,6 @@ namespace DGtal {
       typedef RealVector Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -368,7 +363,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IIPrincipalDirectionsFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -382,7 +377,6 @@ namespace DGtal {
       typedef std::pair<RealVector,RealVector> Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -450,7 +444,7 @@ namespace DGtal {
     * @see IntegralInvariantCovarianceEstimator
     */
     template  <DGtal::concepts::CSpace TSpace,
-               typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension,
+               concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension,
                TSpace::dimension> >
     class IIPrincipalCurvaturesAndDirectionsFunctor
     {
@@ -465,7 +459,6 @@ namespace DGtal {
       typedef std::tuple<double, double, RealVector, RealVector> Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
        /**
@@ -654,7 +647,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIGaussianCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -668,7 +661,6 @@ namespace DGtal {
       typedef Component Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -736,7 +728,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIFirstPrincipalCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -750,7 +742,6 @@ namespace DGtal {
       typedef Component Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -817,7 +808,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IISecondPrincipalCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -831,7 +822,6 @@ namespace DGtal {
       typedef Component Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -897,7 +887,7 @@ namespace DGtal {
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <DGtal::concepts::CSpace TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
+    template  <DGtal::concepts::CSpace TSpace, concepts::CMatrix TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIPrincipalCurvatures3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -911,7 +901,6 @@ namespace DGtal {
       typedef std::pair<Component, Component> Quantity;
       typedef Quantity Value;
 
-      BOOST_CONCEPT_ASSERT(( concepts::CMatrix<Matrix> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**

@@ -297,7 +297,17 @@ namespace ConceptUtils
     it++;
     *it++ = v;
   };
+
+  template<typename I>
+  concept InputIterator = requires(I it)
+  {
+    { *it } -> std::convertible_to<typename I::value_type>;
+    { ++it } -> std::same_as<I&>;
+    it++;
+    { *it++ } -> std::convertible_to<typename I::value_type>;
+  };
    
+
    /**
      \brief Equivalent of boost::SinglePassIteratorConcept
    

@@ -86,25 +86,11 @@ Represent any static sized matrix having sparse or dense representation.
 @tparam T the type that should be a model of CStaticMatrix.
  */
 template <typename T>
-struct CStaticMatrix : CMatrix<T>, boost::DefaultConstructible<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-
-    BOOST_CONCEPT_USAGE( CStaticMatrix )
-    {
-        ConceptUtils::sameType( i, T::M );
-        ConceptUtils::sameType( j, T::N );
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Index i, j;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CStaticMatrix
+concept CStaticMatrix = 
+    std::is_default_constructible_v<T> && 
+    CMatrix<T> &&
+    std::same_as<const typename T::Index, decltype(T::M)> && 
+    std::same_as<const typename T::Index, decltype(T::N)>;
 }
 } // namespace DGtal
 

@@ -62,9 +62,9 @@ bool testEigenSolverConcepts()
     typedef std::list<Triplet> TripletsList;
     DGTAL_CONCEPT_CHECK(requires concepts::CDynamicVector<Vector> );
     DGTAL_CONCEPT_CHECK(requires concepts::CDenseVector<Vector> );
-    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<Matrix> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSparseMatrix<Matrix, TripletsVector::const_iterator> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CSparseMatrix<Matrix, TripletsList::const_iterator> ));
+    DGTAL_CONCEPT_CHECK(requires concepts::CDynamicMatrix<Matrix> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CSparseMatrix<Matrix, TripletsVector::const_iterator> );
+    DGTAL_CONCEPT_CHECK(requires concepts::CSparseMatrix<Matrix, TripletsList::const_iterator> );
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
     BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));

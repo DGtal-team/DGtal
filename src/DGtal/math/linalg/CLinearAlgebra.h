@@ -89,15 +89,13 @@ Matrix and vector scalar types should be the same.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
  */
-template <CVector V, typename M>
+template <CVector V, CMatrix M>
 struct CLinearAlgebra
 {
     // ----------------------- Concept checks ------------------------------
 public:
     typedef V Vector;
     typedef M Matrix;
-
-    BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
 
     BOOST_STATIC_ASSERT(( boost::is_same<typename Vector::Scalar, typename Matrix::Scalar>::value ));
 

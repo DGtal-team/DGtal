@@ -30,7 +30,9 @@
 // Implementation of inline methods                                          //
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <typename TDigitalSet>
 DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromDigitalSet(const TDigitalSet& _set, const bool add_border)
@@ -95,7 +97,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 }
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <typename KSpace, typename CellsSet>
 void
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::insertAllLowerIncidentCells(const KSpace& kspace, const typename CellsSet::value_type& cell, CellsSet& cells_set)
@@ -110,7 +114,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::insertA
 }
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <typename KSpace, typename CellsAccum>
 void
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum)
@@ -126,7 +132,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumul
 }
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <typename KSpace, typename CellsAccum, typename MeasureAccum>
 void
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum, 
@@ -150,7 +158,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumul
 }
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, const bool add_border)
@@ -232,7 +242,9 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 }
 
 template <typename TLinearAlgebraBackend, DGtal::concepts::CInteger TInteger>
-requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector>
+requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVector> &&
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::DenseMatrix> && 
+         DGtal::concepts::CDynamicMatrix<typename TLinearAlgebraBackend::SparseMatrix>
 template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, 

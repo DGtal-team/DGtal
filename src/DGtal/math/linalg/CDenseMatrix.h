@@ -85,35 +85,13 @@ Represent any dynamic or static sized matrix having dense representation.
 @tparam T the type that should be a model of CDenseMatrix.
  */
 template <typename T>
-struct CDenseMatrix : CMatrix<T>
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Index Index;
-    typedef typename T::Scalar Scalar;
-
-    BOOST_CONCEPT_USAGE( CDenseMatrix )
+concept CDenseMatrix = 
+    CMatrix<T> &&
+    requires(T z, const T cz, typename T::Index i)
     {
-      Scalar& aa = z(i, j);
-      (void)aa; // to avoid compiler warning     
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-      Scalar bb = z(i, j);
-      (void)bb; // to avoid compiler warning
-    }
-
-    // ------------------------- Private Datas --------------------------------
-private:
-    T z;
-    Index i, j;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDenseMatrix
+        {  z(i, i) } -> std::same_as<typename T::Scalar&>;
+        { cz(i, i) } -> std::same_as<typename T::Scalar>;
+    };
 }
 } // namespace DGtal
 
