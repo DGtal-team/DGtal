@@ -93,32 +93,13 @@ namespace DGtal {
   # Notes
   */
   template <typename T>
-  struct CDomainAdjacency : CAdjacency<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-
-    typedef typename Adj::Domain Domain;
-    typedef typename Adj::Predicate Predicate;
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    BOOST_CONCEPT_USAGE( CDomainAdjacency )
+  concept CDomainAdjacency = 
+    CAdjacency<T> && 
+    requires(T myT)
     {
-      // check domain()
-      ConceptUtils::sameType( myDomain, myT.domain() );
-      // check predicate()
-      ConceptUtils::sameType( myPredicate, myT.predicate() );
-    }
-
-    // ------------------------- Internals ------------------------------------
-  private:
-    T myT;
-    Domain myDomain;
-    Predicate myPredicate;
-    
-  }; // end of concept CDomainAdjacency
-  
+       { myT.domain() } -> std::same_as<typename T::Domain>;
+       { myT.predicate() } -> std::same_as<typename T::Predicate>;
+    };  
 } // namespace concepts
 } // namespace DGtal
 
