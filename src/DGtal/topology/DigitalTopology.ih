@@ -41,7 +41,7 @@
 /**
  * Destructor.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::~DigitalTopology()
@@ -60,7 +60,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
  * @param props an hint of the properties of this digital
  * topology, default is UNKNOWN.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa, 
@@ -77,7 +77,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology ( const DigitalTopology & other )
@@ -90,7 +90,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 /**
  * @return a const reference to the foreground connectedness.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 const TForegroundAdjacency & 
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::kappa() const
@@ -101,7 +101,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::kappa() const
 /**
  * @return a const reference to the background connectedness.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 const TBackgroundAdjacency & 
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::lambda() const
@@ -113,7 +113,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::lambda() cons
  * @return JORDAN iff the topology is Jordan, NOT_JORDAN iff the
  * topology is known to be NOT_JORDAN, UNKNOWN otherwise.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 DGtal::DigitalTopologyProperties 
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::properties() const
@@ -125,7 +125,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::properties() 
  * @return a digital topology object which is the reverse
  * topology of this (ie. \f[ (\lambda,\kappa) \f].
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 typename DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::ReverseTopology 
@@ -142,7 +142,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 void
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
@@ -161,7 +161,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+template <DGtal::concepts::CAdjacency TForegroundAdjacency, DGtal::concepts::CAdjacency TBackgroundAdjacency>
 inline
 bool
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>

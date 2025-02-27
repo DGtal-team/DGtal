@@ -118,7 +118,7 @@ digraph GGraph {
         node [style=filled,color=white];
         label="Topology (related concepts and models)";
 
-        CAdjacency  [ label="CAdjacency" URL="\ref concepts::CAdjacency" ] ;
+        CAdjacency  [ label="CAdjacency" URL="\ref DGtal::concepts::CAdjacency" ] ;
         DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ] ;
         IndexedDigitalSurface [ label="IndexedDigitalSurface" URL="\ref IndexedDigitalSurface" ] ;
         Object [ label="Object" URL="\ref Object" ] ;

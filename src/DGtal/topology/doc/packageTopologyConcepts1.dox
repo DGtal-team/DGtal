@@ -73,7 +73,7 @@ digraph GTOPOLOGY {
         CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref DGtal::concepts::CDigitalSurfaceContainer" ];
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
         CDomainAdjacency [ label="CDomainAdjacency" URL="\ref DGtal::concepts::CDomainAdjacency" ];
-        CAdjacency [ label="CAdjacency" URL="\ref concepts::CAdjacency" ];
+        CAdjacency [ label="CAdjacency" URL="\ref DGtal::concepts::CAdjacency" ];
         CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref DGtal::concepts::CCellularGridSpaceND" ];
         CPreCellularGridSpaceND [ label="CPreCellularGridSpaceND" URL="\ref DGtal::concepts::CPreCellularGridSpaceND" ];
     }

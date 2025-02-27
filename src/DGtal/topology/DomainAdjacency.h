@@ -69,10 +69,9 @@ namespace DGtal
    * @tparam TDomain the type of the domain.
    * @tparam TAdjacency the type of the adjacency.
    */
-  template <concepts::CDomain TDomain, typename TAdjacency>
+  template <concepts::CDomain TDomain, concepts::CAdjacency TAdjacency>
   class DomainAdjacency
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency<TAdjacency> ));
   public:
 
     // Required as model of CAdjacency

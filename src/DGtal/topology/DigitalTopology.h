@@ -91,7 +91,7 @@ namespace DGtal
    * @tparam TForegroundAdjacency any model of CAdjacency.
    * @tparam TBackgroundAdjacency any model of CAdjacency.
    */
-  template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
+  template <concepts::CAdjacency TForegroundAdjacency, concepts::CAdjacency TBackgroundAdjacency>
   class DigitalTopology
   {
     // ----------------------- Standard services ------------------------------
@@ -101,9 +101,6 @@ namespace DGtal
     typedef typename ForegroundAdjacency::Point Point;
     // should be the same as Point.
     typedef typename BackgroundAdjacency::Point BackPoint; 
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< ForegroundAdjacency > ));
-    BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< BackgroundAdjacency > ));
     
     /**
      * Opposite topology type.

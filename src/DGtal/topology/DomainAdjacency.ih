@@ -38,13 +38,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::~DomainAdjacency()
 {}
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::DomainAdjacency( ConstAlias<Domain> aDomain, 
@@ -53,7 +53,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 {
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
 ::DomainAdjacency( const DomainAdjacency & other )
@@ -61,7 +61,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 {
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 const TDomain &
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -70,7 +70,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
   return myPred.domain();
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 const typename DGtal::DomainAdjacency<TDomain,TAdjacency>::Predicate &
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -79,7 +79,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
   return myPred;
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 bool
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -90,7 +90,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
   return myAdjacency.isAdjacentTo( p1, p2 );
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 bool
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -101,7 +101,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
   return myAdjacency.isProperlyAdjacentTo( p1, p2 );
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 void
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -110,7 +110,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
   out << "[DomainAdjacency]";
 }
 //------------------------------------------------------------------------------
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 bool
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -135,7 +135,7 @@ DGtal::operator<< ( std::ostream & out,
 /**
  * @return maximum number of neighbors for this adjacency
  */
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
 DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
@@ -148,7 +148,7 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
  * 
  * @return the number of neighbors of this vertex
  */
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 inline
 typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
 DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
@@ -172,7 +172,7 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
  * 
  * @param v the vertex whose neighbors will be written
  */
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 template <typename OutputIterator>
 inline
 void  
@@ -201,7 +201,7 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
   * 
   * @param pred the predicate that must be satisfied
   */
-template <DGtal::concepts::CDomain TDomain, typename TAdjacency>
+template <DGtal::concepts::CDomain TDomain, DGtal::concepts::CAdjacency TAdjacency>
 template <typename OutputIterator, typename VertexPredicate>
 void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors

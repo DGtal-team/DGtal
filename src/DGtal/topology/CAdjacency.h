@@ -95,37 +95,16 @@ namespace DGtal {
    
   # Notes
   */
-  template <CUndirectedSimpleLocalGraph Adj>
-  struct CAdjacency
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    
-    typedef typename Adj::Space Space;
-    typedef typename Adj::Point Point;
-    typedef typename Adj::Adjacency Adjacency;
-
-    BOOST_CONCEPT_USAGE( CAdjacency )
+  template <typename Adj>
+  concept CAdjacency = 
+    CUndirectedSimpleLocalGraph<Adj> &&
+    requires(Adj myAdj, typename Adj::Point myP)
     {
-      // check isAdjacentTo
-      ConceptUtils::sameType( myBool, myAdj.isAdjacentTo( myP1, myP2 ) );
-      // check isProperlyAdjacentTo
-      ConceptUtils::sameType( myBool, 
-            myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    Adj myAdj;
-    Point myP1;
-    Point myP2;
-    bool myBool;
-    std::back_insert_iterator< std::vector<Point> > myInserter;
-
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CAdjacency
+        typename Adj::Space;
+        typename Adj::Adjacency;
+        { myAdj.isAdjacentTo(myP, myP) } -> std::same_as<bool>;
+        { myAdj.isProperlyAdjacentTo(myP, myP) } -> std::same_as<bool>;
+    };
   
 } // namespace concepts
 } // namespace DGtal
