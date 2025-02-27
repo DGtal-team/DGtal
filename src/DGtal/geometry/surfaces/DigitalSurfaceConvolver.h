@@ -71,7 +71,7 @@ namespace DGtal
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TDigitalKernel type of a convolution kernel (ImplicitBall in general case).
    */
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel, Dimension dimension = TKSpace::dimension >
+template< concepts::CCellFunctor TFunctor, concepts::CCellFunctor TKernelFunctor, typename TKSpace, typename TDigitalKernel, Dimension dimension = TKSpace::dimension >
 class DigitalSurfaceConvolver
 {
 public:
@@ -95,9 +95,6 @@ public:
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -435,7 +432,7 @@ private:
 
 }; // end of class DigitalSurfaceConvolver
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel >
+template< concepts::CCellFunctor TFunctor, concepts::CCellFunctor TKernelFunctor, typename TKSpace, typename TDigitalKernel >
 class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TDigitalKernel, 2 >
 {
   // ----------------------- Types ------------------------------------------
@@ -461,9 +458,6 @@ public:
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -802,7 +796,7 @@ private:
 
 }; // end of class DigitalSurfaceConvolver
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel >
+template< concepts::CCellFunctor TFunctor, concepts::CCellFunctor TKernelFunctor, typename TKSpace, typename TDigitalKernel >
 class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TDigitalKernel, 3 >
 {
   // ----------------------- Types ------------------------------------------
@@ -829,9 +823,6 @@ public:
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
   typedef CanonicSCellEmbedder< KSpace > Embedder;
-
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< Functor > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 

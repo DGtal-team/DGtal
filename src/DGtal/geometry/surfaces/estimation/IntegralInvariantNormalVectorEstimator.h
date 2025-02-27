@@ -144,7 +144,7 @@ public:
   typedef typename Convolver::CovarianceMatrix Matrix;
   typedef typename Matrix::Component Component;
   typedef double Scalar;
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CCellFunctor< ShapeSpelFunctor > );
 
   /**
   * This functor extracts the eigenvector associated with the smallest

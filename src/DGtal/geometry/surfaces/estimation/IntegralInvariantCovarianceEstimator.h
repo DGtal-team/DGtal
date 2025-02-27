@@ -157,8 +157,8 @@ public:
   typedef typename Convolver::CovarianceMatrix Matrix;
   typedef typename Matrix::Component Component;
   typedef double Scalar;
-  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
-  
+
+  DGTAL_CONCEPT_CHECK(requires concepts::CCellFunctor< ShapeSpelFunctor > );
   DGTAL_CONCEPT_CHECK(requires concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity >);
 
   BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 

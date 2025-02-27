@@ -86,28 +86,7 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
-  requires CUnaryFunctor<T, typename T::Cell, typename T::Quantity>
-  struct CCellFunctor
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Cell Cell;
-    typedef typename T::Quantity Quantity;
-    
-    BOOST_CONCEPT_USAGE( CCellFunctor )
-    {
-      check_const_constraints();
-    }
-    void check_const_constraints() const
-    {
-    }
-      
-    // ------------------------- Private Datas --------------------------------
-  private:
-    // ------------------------- Internals ------------------------------------
-  private:
-    T myT;
-  }; // end of concept CCellFunctor
+  concept CCellFunctor = CUnaryFunctor<T, typename T::Cell, typename T::Quantity>;
   }
 } // namespace DGtal
 

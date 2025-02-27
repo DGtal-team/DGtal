@@ -49,7 +49,7 @@
 ///////////////////////////////////////////////////// nD /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >
 ::DigitalSurfaceConvolver( ConstAlias< Functor > f,
@@ -64,7 +64,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   myEmbedder = Embedder( myKSpace );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >
 ::DigitalSurfaceConvolver( const DigitalSurfaceConvolver& other )
@@ -81,7 +81,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 {
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::init
@@ -99,7 +99,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   isInitKernelAndMasks = false;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::init
@@ -117,7 +117,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   isInitKernelAndMasks = true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
@@ -134,7 +134,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   return ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -154,7 +154,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   return functor( resultQuantity );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -206,7 +206,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -265,7 +265,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::CovarianceMatrix
@@ -282,7 +282,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -302,7 +302,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   return functor( resultCovarianceMatrix );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -354,7 +354,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -412,7 +412,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 inline
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::isValid() const
@@ -420,7 +420,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::fillMoments
 ( Quantity * aMomentMatrix,
@@ -439,7 +439,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   aMomentMatrix[ 5 ] += direction * x * x;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
@@ -473,36 +473,36 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 
 #ifndef _MSC_VER
 // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::nbMoments = 6;
 #endif //_MSC_VER
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultInnerSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultOuterSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultInnerMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultOuterMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultInnerSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::defaultOuterSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_eval
@@ -528,7 +528,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_evalCovarianceMatrix
@@ -559,7 +559,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 ///////////////////////////////////////////////////// 2D /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >
 ::DigitalSurfaceConvolver( ConstAlias< Functor > f,
@@ -575,7 +575,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   myEmbedder = Embedder( myKSpace );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel>
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel>
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >
 ::DigitalSurfaceConvolver( const DigitalSurfaceConvolver& other )
@@ -593,7 +593,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 {
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::init
@@ -611,7 +611,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   isInitKernelAndMasks = false;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::init
@@ -629,7 +629,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   isInitKernelAndMasks = true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
@@ -646,7 +646,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   return ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -666,7 +666,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   return functor( resultQuantity );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -718,7 +718,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -777,7 +777,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix
@@ -795,7 +795,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -816,7 +816,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   return functor( resultCovarianceMatrix );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -869,7 +869,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -928,7 +928,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::isValid() const
@@ -936,7 +936,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::fillMoments
 ( Quantity * aMomentMatrix,
@@ -955,7 +955,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   aMomentMatrix[ 5 ] += direction * x * x;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
@@ -982,36 +982,36 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
 #ifndef _MSC_VER
 // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::nbMoments = 6;
 #endif //_MSC_VER
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultInnerSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultOuterSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultInnerMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultOuterMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultInnerSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::defaultOuterSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::core_eval
@@ -1300,7 +1300,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::core_evalCovarianceMatrix
@@ -1594,7 +1594,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 ///////////////////////////////////////////////////// 3D /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >
 ::DigitalSurfaceConvolver( ConstAlias< Functor > f,
@@ -1610,7 +1610,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   myEmbedder = Embedder( myKSpace );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel>
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel>
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >
 ::DigitalSurfaceConvolver( const DigitalSurfaceConvolver& other )
@@ -1628,7 +1628,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 {
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::init
@@ -1646,7 +1646,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   isInitKernelAndMasks = false;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::init
@@ -1667,7 +1667,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
@@ -1684,7 +1684,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return ( innerSum * lambda + outerSum * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -1704,7 +1704,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return functor( resultQuantity );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -1756,7 +1756,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -1813,7 +1813,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::CovarianceMatrix
@@ -1830,7 +1830,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename EvalFunctor >
 inline
 typename EvalFunctor::Value
@@ -1850,7 +1850,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return functor( resultCovarianceMatrix );
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator >
 inline
 void
@@ -1902,7 +1902,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
 inline
 void
@@ -1962,7 +1962,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 inline
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::isValid() const
@@ -1970,7 +1970,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::fillMoments
 ( Quantity * aMomentMatrix,
@@ -1996,7 +1996,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
@@ -2033,36 +2033,36 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
 #ifndef _MSC_VER
 // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::nbMoments = 10;
 #endif //_MSC_VER
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultInnerSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Spel
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultOuterSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultInnerMoments[ 10 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultOuterMoments[ 10 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultInnerSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::defaultOuterSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::core_eval
@@ -2361,7 +2361,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
+template< DGtal::concepts::CCellFunctor Functor, DGtal::concepts::CCellFunctor KernelFunctor, typename KSpace, typename DigitalKernel >
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::core_evalCovarianceMatrix
