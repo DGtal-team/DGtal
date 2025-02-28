@@ -98,7 +98,9 @@ namespace DGtal
      * @tparam TShapeFunctor a model of CDigitalBoundedShape and
      * CDigitalOrientedShape.
      */
-    template <typename TDigitalSet, concepts::CDigitalBoundedShape TShapeFunctor>
+    template <typename TDigitalSet, typename TShapeFunctor>
+    requires concepts::CDigitalBoundedShape<TShapeFunctor> &&
+             concepts::CDigitalOrientedShape<TShapeFunctor>
     static void digitalShaper( TDigitalSet & aSet,
                                const TShapeFunctor & aFunctor);
 

@@ -87,28 +87,11 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
 @tparam T the type that should be a model of CDigitalOrientedShape.
    */
   template <typename T> 
-  struct CDigitalOrientedShape
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Point Point;
-   
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CDigitalOrientedShape )
+  concept CDigitalOrientedShape = 
+    requires(T myX, typename T::Point p)
     {
-      ConceptUtils::sameType( myA, myX.orientation( p ));
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    Orientation myA;
-    Point p;
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDigitalOrientedShape
+        { myX.orientation(p) } -> std::same_as<Orientation>;
+    };
   } 
 } // namespace DGtal
 

@@ -33,7 +33,7 @@ namespace DGtal {
                
     CEuclideanOrientedShape [ URL="\ref concepts::CEuclideanOrientedShape" ];
     CEuclideanBoundedShape [ URL="\ref concepts::CEuclideanBoundedShape" ];
-    CDigitalOrientedShape [ URL="\ref concepts::CDigitalOrientedShape" ];
+    CDigitalOrientedShape [ URL="\ref DGtal::concepts::CDigitalOrientedShape" ];
     CDigitalBoundedShape [ URL="\ref DGtal::concepts::CDigitalBoundedShape" ];
    
     CImplicitFunction [ URL="\ref concepts::CImplicitFunction" ];
