@@ -77,7 +77,7 @@ digraph GDEC {
         node [style=filled,color=white];
         label="DEC (main concepts)";
 
-        CDiscreteExteriorCalculusVectorSpace [ label="CDiscreteExteriorCalculusVectorSpace" URL="\ref concepts::CDiscreteExteriorCalculusVectorSpace" ] ;
+        CDiscreteExteriorCalculusVectorSpace [ label="CDiscreteExteriorCalculusVectorSpace" URL="\ref DGtal::concepts::CDiscreteExteriorCalculusVectorSpace" ] ;
     }
     CDiscreteExteriorCalculusVectorSpace -> CVectorSpace;
     CVectorSpace -> boost_Assignable;

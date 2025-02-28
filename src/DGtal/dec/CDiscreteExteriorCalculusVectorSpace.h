@@ -85,28 +85,12 @@ Lift linear algebra container concept into the dec package.
 
 @tparam T the type that should be a model of CDiscreteExteriorCalculusVectorSpace.
 */
-template <CVectorSpace T>
-struct CDiscreteExteriorCalculusVectorSpace
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-    typedef typename T::Container Container;
-    typedef typename T::Calculus Calculus;
+template <typename T>
+concept CDiscreteExteriorCalculusVectorSpace = 
+    CVectorSpace<T> &&
+    std::is_constructible_v<T, typename T::Calculus> &&
+    std::is_constructible_v<T, typename T::Calculus, typename T::Container>;
 
-    BOOST_CONCEPT_USAGE( CDiscreteExteriorCalculusVectorSpace )
-    {
-        T t0(calculus);
-        T t1(calculus, container);
-    }
-    // ------------------------- Private Datas --------------------------------
-private:
-    Container container;
-    Calculus calculus;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CDiscreteExteriorCalculusVectorSpace
   }
 } // namespace DGtal
 

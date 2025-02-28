@@ -312,117 +312,95 @@ test_derivative(int domain_size)
 }
 
 template <typename LinearAlgebraBackend>
+requires
+    // 2d
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalVectorField> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualVectorField> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalDerivative0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalDerivative1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualDerivative0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualDerivative1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalHodge0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalHodge1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalHodge2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualHodge0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualHodge1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualHodge2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalIdentity0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalIdentity1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::PrimalIdentity2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualIdentity0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualIdentity1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend>::DualIdentity2> &&
+    // 2d embedded in 3d
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalVectorField> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualVectorField> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalDerivative0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalDerivative1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualDerivative0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualDerivative1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalHodge0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalHodge1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalHodge2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualHodge0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualHodge1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualHodge2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalIdentity0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalIdentity1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::PrimalIdentity2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualIdentity0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualIdentity1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend>::DualIdentity2> &&
+    // 3d
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalForm3> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualForm0> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualForm1> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualForm2> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualForm3> &&
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalVectorField> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualVectorField> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalDerivative0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalDerivative1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalDerivative2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualDerivative0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualDerivative1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualDerivative2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalHodge0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalHodge1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalHodge2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalHodge3> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualHodge0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualHodge1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualHodge2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualHodge3> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalIdentity0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalIdentity1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalIdentity2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::PrimalIdentity3> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualIdentity0> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualIdentity1> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualIdentity2> && 
+    DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend>::DualIdentity3>
+
 void
 test_concepts()
 {
-    DGtal::trace.beginBlock("concepts");
-
-    //FIXME add 1d
-
-    { // 2d
-        typedef DGtal::DiscreteExteriorCalculus<2, 2, LinearAlgebraBackend> Calculus;
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
-    }
-
-    { // 2d embedded in 3d
-        typedef DGtal::DiscreteExteriorCalculus<2, 3, LinearAlgebraBackend> Calculus;
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
-    }
-
-    { // 3d
-        typedef DGtal::DiscreteExteriorCalculus<3, 3, LinearAlgebraBackend> Calculus;
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm3> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm3> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative2> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge3> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge3> ));
-
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity3> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity3> ));
-    }
-
+    DGtal::trace.beginBlock("concepts"):
     DGtal::trace.endBlock();
 }
 
