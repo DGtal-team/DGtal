@@ -76,9 +76,6 @@ namespace DGtal
     typedef TSet Set;
     typedef typename TSet::Domain Domain;
 
-    // Does not work
-    //BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
-
     typedef double Quantity;
 
     /**

@@ -219,7 +219,6 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Boost Graph Concepts", "[con
       BOOST_CONCEPT_ASSERT(( boost::AdjacencyGraphConcept<Graph> ));
       BOOST_CONCEPT_ASSERT(( boost::IncidenceGraphConcept<Graph> ));
       BOOST_CONCEPT_ASSERT(( boost::EdgeListGraphConcept<Graph> ));
-      // BOOST_CONCEPT_ASSERT(( boost::BidirectionalGraphConcept<Graph> ));
     }
   }
 }

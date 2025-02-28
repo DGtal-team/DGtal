@@ -70,23 +70,20 @@ bool DGtal::detail::isNotEmpty( const IC& c1, const IC& c2, CirculatorType )
 }
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 void DGtal::advanceIterator(IC& ic, 
 			    typename IteratorCirculatorTraits<IC>::Difference n)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
-
   typedef typename IteratorCirculatorTraits<IC>::Category Category; 
   DGtal::detail::advanceIterator( ic, n, Category() ); 
 }
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 void DGtal::detail::advanceIterator(IC& ic, 
 				    typename IteratorCirculatorTraits<IC>::Difference n,
 				    ForwardCategory)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
   ASSERT(n >= 0); 
 
   int counter = 0; 
@@ -109,35 +106,29 @@ void DGtal::detail::advanceIterator(IC& ic,
 }
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 typename DGtal::IteratorCirculatorTraits<IC>::Difference 
 DGtal::rangeSize(const IC& itb, const IC& ite) 
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
-
   typedef typename IteratorCirculatorTraits<IC>::Type Type; 
   typedef typename IteratorCirculatorTraits<IC>::Category Category; 
   return DGtal::detail::rangeSize( itb, ite, Type(), Category() ); 
 } 
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 typename DGtal::IteratorCirculatorTraits<IC>::Difference 
 DGtal::subRangeSize(const IC& itb, const IC& ite) 
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
-
   typedef typename IteratorCirculatorTraits<IC>::Category Category; 
   return DGtal::detail::rangeSize( itb, ite, IteratorType(), Category() ); 
 } 
 
 //-----------------------------------------------------------------------------
-template<typename I>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal I>
 typename DGtal::IteratorCirculatorTraits<I>::Difference 
 DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, ForwardCategory)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<I> )); 
-
   //size of the range
   I i( itb ); 
   typename DGtal::IteratorCirculatorTraits<I>::Difference counter = 0; 
@@ -150,12 +141,10 @@ DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, ForwardCatego
 }
 
 //-----------------------------------------------------------------------------
-template<typename C>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal C>
 typename DGtal::IteratorCirculatorTraits<C>::Difference 
 DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, ForwardCategory)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<C> )); 
-
   if (isNotEmpty(cb, ce))
     {
       //size of the range
@@ -212,32 +201,26 @@ DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, RandomAccessC
 }
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 IC DGtal::rangeMiddle(const IC& itb, const IC& ite) 
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
-
   typedef typename IteratorCirculatorTraits<IC>::Type Type; 
   typedef typename IteratorCirculatorTraits<IC>::Category Category; 
   return DGtal::detail::rangeMiddle( itb, ite, Type(), Category() ); 
 } 
 
 //-----------------------------------------------------------------------------
-template<typename IC>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal IC>
 IC DGtal::subRangeMiddle(const IC& itb, const IC& ite) 
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
-
   typedef typename IteratorCirculatorTraits<IC>::Category Category; 
   return DGtal::detail::rangeMiddle( itb, ite, IteratorType(), Category() ); 
 } 
 
 //-----------------------------------------------------------------------------
-template<typename I>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal I>
 I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, ForwardCategory)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<I> )); 
-
   //size of the range
   typename DGtal::IteratorCirculatorTraits<I>::Difference s
     = DGtal::detail::rangeSize(itb, ite, IteratorType(), ForwardCategory()); 
@@ -251,11 +234,9 @@ I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, ForwardCa
 }
 
 //-----------------------------------------------------------------------------
-template<typename C>
+template<DGtal::concepts::ConceptUtils::ForwardTraversal C>
 C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, ForwardCategory)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<C> )); 
-
   //size of the range
   typename DGtal::IteratorCirculatorTraits<C>::Difference s
     = DGtal::detail::rangeSize(cb, ce, CirculatorType(), ForwardCategory()); 

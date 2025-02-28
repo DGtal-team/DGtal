@@ -84,8 +84,6 @@ namespace DGtal
     typedef typename Fraction::Integer Integer;
     typedef typename Fraction::Quotient Quotient;
     
-    // BOOST_CONCEPT_ASSERT(( CInteger< Quotient > ));
-
     // ----------------------- associated types ------------------------------
   public:
 

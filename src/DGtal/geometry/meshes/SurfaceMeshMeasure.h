@@ -88,10 +88,6 @@ namespace DGtal
     typedef TRealVector                    RealVector;
     typedef TValue                         Value;
     typedef SurfaceMeshMeasure< RealPoint, RealVector, Value > Self;
-    // JOL: cannot check commutative ring on Tensor matrices, since it
-    // is required in the concept to be constructible from the (int)
-    // 0.
-    // BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing< Value > ));
     typedef DGtal::SurfaceMesh< RealPoint, RealVector > SurfaceMesh;
     typedef typename SurfaceMesh::Index    Index;
     typedef typename SurfaceMesh::Size     Size;

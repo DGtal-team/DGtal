@@ -171,8 +171,6 @@ int main ( int argc, char** argv )
   typedef HyperRectDomain<Space> Dom;
   typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
   Tree tree ( 12,5,1 );
-  // Do not pass concept.
-  //BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<Tree>));
 
   //tree.printInternalState(cerr, 12);
   Dom::Point p1, p2, p3;

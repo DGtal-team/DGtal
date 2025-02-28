@@ -85,7 +85,6 @@ namespace DGtal
   template  <DGtal::Dimension TN, concepts::CEuclideanRing TComponent, typename TMatrix=SimpleMatrix<TComponent, TN, TN> >
   class EigenDecomposition
   {
-    // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
     BOOST_STATIC_ASSERT(TN > 0 );
 
     // ----------------------- Public types -----------------------------------

@@ -73,7 +73,6 @@ bool testImplicitFunctionModels()
   DGTAL_CONCEPT_CHECK(requires concepts::CImplicitFunction< _ImplicitRoundedHyperCube2D > );
   DGTAL_CONCEPT_CHECK(requires concepts::CImplicitFunction< _ImplicitRoundedHyperCube3D > );
   DGTAL_CONCEPT_CHECK(requires concepts::CImplicitFunction< _ImplicitPolynomial3Shape > );
-  //BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< _ImplicitBall2D > ));
   DGTAL_CONCEPT_CHECK(requires concepts::CImplicitFunctionDiff1< _ImplicitPolynomial3Shape > );
   return true;
 }

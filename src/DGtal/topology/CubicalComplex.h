@@ -180,11 +180,6 @@ namespace DGtal
 
     BOOST_STATIC_ASSERT( IsPairAssociativeContainer< TCellContainer >::value );
 
-    // JOL: Not used, because unordered_set and unordered_map do not pass
-    // these concept checks.
-    // BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< TCellContainer > ));
-    // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
-
     template < typename K, typename C > 
     friend CubicalComplex<K,C>&
     DGtal::operator|=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );

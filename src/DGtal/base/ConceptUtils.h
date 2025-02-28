@@ -364,9 +364,7 @@ namespace ConceptUtils
      does not compile with current DGtal library. 
    */ 
   template<typename T>
-  concept ForwardContainer = 
-   Container<T> &&
-   std::equality_comparable<T>;
+  concept ForwardContainer = Container<T>;
 
  /** 
   *  \brief Equivalent of boost_concepts::ReadableIterator

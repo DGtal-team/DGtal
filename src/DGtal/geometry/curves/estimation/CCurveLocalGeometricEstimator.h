@@ -105,9 +105,6 @@ namespace DGtal
       ConceptUtils::ForwardTraversal<typename T::ConstIterator> &&
       requires(T myX, typename T::ConstIterator myItb, typename T::ConstIterator myIte, ConceptUtils::Ito<typename T::Quantity> myIto)
       {
-         //
-         // BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept< ConstIterator > ));
-         // BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
          { myX.eval(myItb) } -> std::same_as<typename T::Quantity>;
          { myX.eval(myItb, myIte, myIto) } -> std::same_as<ConceptUtils::Ito<typename T::Quantity>>;
       };

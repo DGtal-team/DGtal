@@ -408,7 +408,6 @@ bool testImageAdapter()
     
 
     typedef ImageAdapter<VImage, DigitalSetDomain<Z2i::DigitalSet>, functors::Identity, VImage::Value, functors::Identity, functors::Identity> MyImageAdapter2;
-    // BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter2 > )); // pb here
 
     functors::Identity idflD, idflV, idflVm1;
     MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idflD, idflV, idflVm1);

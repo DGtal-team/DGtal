@@ -41,6 +41,7 @@ Computation of the alpha shape of the border of a digital shape.
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -76,11 +77,11 @@ using namespace DGtal;
  * @tparam Board equivalent to Board2D
  */
 template <typename ForwardIterator, typename Board>
+requires concepts::ConceptUtils::ForwardTraversal<ForwardIterator> &&
+         concepts::ConceptUtils::ReadableIterator<ForwardIterator> 
 void drawPolygon(const ForwardIterator& itb, const ForwardIterator& ite, 
 		 Board& aBoard, bool isClosed = true)
 {
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
-  BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
   typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
 
   ForwardIterator it = itb; 

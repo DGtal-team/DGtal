@@ -432,15 +432,14 @@ template <typename TInteger>
 requires DGtal::concepts::CIntegralNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion> &&
          DGtal::concepts::CInteger<typename DGtal::NumberTraits<TInteger>::SignedVersion> &&
          DGtal::concepts::CUnsignedNumber<typename DGtal::NumberTraits<TInteger>::UnsignedVersion>
-
 template <typename OutputIterator>
+requires DGtal::concepts::ConceptUtils::OutputIterator< OutputIterator, TInteger >
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 getCFrac( OutputIterator outIt,
        IntegerParamType a, IntegerParamType b ) const
 {
-  BOOST_CONCEPT_ASSERT(( boost::OutputIterator< OutputIterator, Integer > ));
   ASSERT( isPositiveOrZero( a ) && isPositiveOrZero( b ) );
   _m_a0 = a;
   _m_a1 = b;

@@ -216,8 +216,6 @@ while ( ! visitor.finished() )
     typedef Scalar Data;
 
     // Cannot check this since some types using it are incomplete.
-    // BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
-    // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------
   public:

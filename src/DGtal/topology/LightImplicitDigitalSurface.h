@@ -207,8 +207,6 @@ namespace DGtal
     // Model of concepts::CPointPredicate
     typedef TPointPredicate PointPredicate;
 
-    // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-
     // ----------------------- other types ------------------------------
   public:
     typedef SurfelAdjacency<KSpace::dimension> Adjacency;

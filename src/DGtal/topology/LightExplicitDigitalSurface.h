@@ -209,7 +209,6 @@ namespace DGtal
     // Model of CSurfelPredicate
     typedef TSurfelPredicate SurfelPredicate;
 
-    // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
     // ----------------------- other types ------------------------------
   public:
     typedef SurfelAdjacency<KSpace::dimension> Adjacency;

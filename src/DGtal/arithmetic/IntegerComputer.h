@@ -313,6 +313,7 @@ It is a backport of \e ImaGene.
        @return the gcd of \a a and \a b.
     */
     template <typename OutputIterator>
+    requires concepts::ConceptUtils::OutputIterator< OutputIterator, TInteger >
     Integer getCFrac( OutputIterator outIt,
                       IntegerParamType a, IntegerParamType b ) const;
 

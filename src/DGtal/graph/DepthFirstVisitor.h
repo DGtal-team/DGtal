@@ -103,10 +103,6 @@ namespace DGtal
     typedef typename Graph::Vertex Vertex;
     typedef Size Data; ///< Data attached to each Vertex is the depth distance to the seed.
 
-    //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
-    // Cannot check this since some types using it are incomplete.
-    //BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
-
     // ----------------------- defined types ------------------------------
   public:
 

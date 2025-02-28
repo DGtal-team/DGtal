@@ -106,7 +106,7 @@ namespace DGtal
    * @param n any positive distance
    * @tparam IC any model o fiterator or circulator
    */
-  template<typename IC>
+  template<concepts::ConceptUtils::ForwardTraversal IC>
   inline
   void advanceIterator(IC& ic, 
 		       typename IteratorCirculatorTraits<IC>::Difference n);  
@@ -119,7 +119,7 @@ namespace DGtal
      * @param n any positive distance
      * @tparam IC any iterator or circulator
      */
-    template<typename IC>
+    template<concepts::ConceptUtils::ForwardTraversal IC>
     inline
     void advanceIterator(IC& ic, 
 			 typename IteratorCirculatorTraits<IC>::Difference n, 
@@ -145,7 +145,7 @@ namespace DGtal
    * @return the size 
    * @tparam IC any model of iterator or circulator
    */
-  template<typename IC>
+  template<concepts::ConceptUtils::ForwardTraversal IC>
   inline
   typename IteratorCirculatorTraits<IC>::Difference 
   rangeSize(const IC& itb, const IC& ite);  
@@ -159,7 +159,7 @@ namespace DGtal
    * @return the size 
    * @tparam IC any model of iterator or circulator
    */
-  template<typename IC>
+  template<concepts::ConceptUtils::ForwardTraversal IC>
   inline
   typename IteratorCirculatorTraits<IC>::Difference 
   subRangeSize(const IC& itb, const IC& ite);  
@@ -174,7 +174,7 @@ namespace DGtal
      * NB: in O(ite-itb)
      * @tparam I any iterator
      */
-    template<typename I>
+    template<concepts::ConceptUtils::ForwardTraversal I>
     inline
     typename IteratorCirculatorTraits<I>::Difference 
     rangeSize(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
@@ -188,7 +188,7 @@ namespace DGtal
      * NB: linear in the range size
      * @tparam C any circulator
      */
-    template<typename C>
+    template<concepts::ConceptUtils::ForwardTraversal C>
     inline
     typename IteratorCirculatorTraits<C>::Difference 
     rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/);
@@ -234,7 +234,7 @@ namespace DGtal
    * @return the middle iterator of the range [ @a itb , @a ite ) 
    * @tparam IC any model iterator or circulator
    */
-  template<typename IC>
+  template<concepts::ConceptUtils::ForwardTraversal IC>
   inline
   IC rangeMiddle(const IC& itb, const IC& ite);  
 
@@ -246,7 +246,7 @@ namespace DGtal
    * @return the middle iterator of the subrange [ @a itb , @a ite ) 
    * @tparam IC any model of iterator or circulator
    */
-  template<typename IC>
+  template<concepts::ConceptUtils::ForwardTraversal IC>
   inline
   IC subRangeMiddle(const IC& itb, const IC& ite);  
 
@@ -260,7 +260,7 @@ namespace DGtal
      * NB: in O(ite-itb)
      * @tparam I any iterator
      */
-    template<typename I>
+    template<concepts::ConceptUtils::ForwardTraversal I>
     inline
     I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
 
@@ -273,7 +273,7 @@ namespace DGtal
      * NB: linear in the range size
      * @tparam C any circulator
      */
-    template<typename C>
+    template<concepts::ConceptUtils::ForwardTraversal C>
     inline
     C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/); 
 

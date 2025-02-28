@@ -162,10 +162,6 @@ namespace DGtal
     typedef typename KSpace::Size Size;
     // Model of CSurfelSet
     typedef TSurfelSet SurfelSet;
-
-    // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    // BOOST_CONCEPT_ASSERT(( CSurfelSet< SurfelSet > ));
-
     // -------------------- specific types ------------------------------
     typedef typename SurfelSet::const_iterator SurfelConstIterator;
     typedef typename KSpace::Space Space;

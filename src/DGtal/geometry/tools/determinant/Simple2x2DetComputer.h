@@ -110,7 +110,6 @@ namespace DGtal
      * Type of integer for the returned determinant
      */
     typedef TResultInteger ResultInteger; 
-    //BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
 
     /**
      * DGtal alias type of ResultInteger

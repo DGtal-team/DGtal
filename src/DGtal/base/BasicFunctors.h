@@ -497,12 +497,10 @@ namespace DGtal
  *
  */
 template <typename T, bool isLower = true, bool isEqual = true >
+requires std::totally_ordered<T>
 class Thresholder
  {
   public:
-    BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-    BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
-
     typedef T Input;
 
     /**
@@ -528,12 +526,10 @@ class Thresholder
 
 //specializations
 template <typename T>
+requires std::totally_ordered<T>
 struct Thresholder<T,false,false>
 {
-
   public:
-    BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-    BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
 
     typedef T Input;
 
@@ -548,12 +544,10 @@ struct Thresholder<T,false,false>
     Input myT;
 };
 template <typename T>
+requires std::totally_ordered<T>
 struct Thresholder<T,false,true>
  {
   public:
-    BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-    BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
-
     typedef T Input;
 
     Thresholder(const Input& aT = 0):myT(aT) {}
@@ -567,12 +561,10 @@ struct Thresholder<T,false,true>
 };
 
 template <typename T>
+requires std::totally_ordered<T>
 struct Thresholder<T,true,false>
   {
   public:
-    BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-    BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
-
     typedef T Input;
 
     Thresholder(const Input& aT = 0):myT(aT) {}
@@ -587,12 +579,10 @@ struct Thresholder<T,true,false>
 };
 
 template <typename T>
+requires std::totally_ordered<T>
 struct Thresholder<T,true,true>
  {
   public:
-    BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-    BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
-
     typedef T Input;
 
     Thresholder(const Input& aT = 0):myT(aT) {}
@@ -697,12 +687,10 @@ struct Thresholder<T,true,true>
  * @tparam T  type for a value that must be equality and less-than comparable
  */
 template <typename T>
+requires std::totally_ordered<T>
 class IntervalThresholder
 {
 public:
-  BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
-  BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
-
   /// input type
   typedef T Input;
 

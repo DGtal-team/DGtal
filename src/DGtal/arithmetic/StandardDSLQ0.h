@@ -85,9 +85,7 @@ namespace DGtal
     typedef typename Fraction::Integer Integer;
     typedef typename Fraction::UnsignedInteger UnsignedInteger;
     typedef typename Fraction::Quotient Quotient;
-
-    // BOOST_CONCEPT_ASSERT(( CFraction<Fraction> ));
-
+    
     typedef IntegerComputer<Integer> IC;
     typedef typename IC::IntegerParamType IntegerParamType;
     typedef typename IC::Vector2I Vector2I;

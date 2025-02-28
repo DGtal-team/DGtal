@@ -107,8 +107,6 @@ int main()
   BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< MyLabelledMap > ));
   BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< MyLabelledMap > ));
   BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< MyLabelledMap > ));
-  // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::Iterator > ));
-  // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::ConstIterator > ));
   unsigned int nb = 0;
   unsigned int nbok = 0;
   trace.beginBlock ( "Testing LabelledMap" );
