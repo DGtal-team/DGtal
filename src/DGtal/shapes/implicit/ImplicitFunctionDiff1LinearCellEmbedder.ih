@@ -39,20 +39,20 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 ~ImplicitFunctionDiff1LinearCellEmbedder()
 {}
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 ImplicitFunctionDiff1LinearCellEmbedder()
   : myPtrK( 0 ), myPtrFct( 0 ), myPtrEmbedder( 0 )
 {}
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 ImplicitFunctionDiff1LinearCellEmbedder( const ImplicitFunctionDiff1LinearCellEmbedder & other )
@@ -61,7 +61,7 @@ ImplicitFunctionDiff1LinearCellEmbedder( const ImplicitFunctionDiff1LinearCellEm
     myPtrEmbedder( other.myPtrEmbedder )
 {}
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder> &
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -76,7 +76,7 @@ operator=( const ImplicitFunctionDiff1LinearCellEmbedder & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 void 
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -87,7 +87,7 @@ init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunctionDiff1> f, ConstAlias<Embe
   myPtrEmbedder = &e;
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::GradientMap
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -96,7 +96,7 @@ gradientMap() const
   return GradientMap( *this );
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -106,7 +106,7 @@ embed( const Point & p ) const
   return myPtrEmbedder->embed( p );
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -115,7 +115,7 @@ embedCell( const Cell & cell ) const
   return this->operator()( cell );
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -139,7 +139,7 @@ operator()( const Cell & cell ) const
   return x1;
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -163,7 +163,7 @@ embedSCell( const SCell & scell ) const
   return x1;
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 void
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -173,7 +173,7 @@ embed( const Point & p, RealPoint & x, RealVector & grad ) const
   grad = myPtrFct->gradient( x );
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 void
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -183,7 +183,7 @@ embedCell( const Cell & cell, RealPoint & x, RealVector & grad ) const
   grad = myPtrFct->gradient( x );
 }
 //-----------------------------------------------------------------------------
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 void
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -202,7 +202,7 @@ embedSCell( const SCell & scell, RealPoint & x, RealVector & grad ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 void
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
@@ -215,7 +215,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, typename TEmbedder >
+template < DGtal::concepts::CCellularGridSpaceND TKSpace, DGtal::concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1, DGtal::concepts::CPointEmbedder TEmbedder >
 inline
 bool
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::

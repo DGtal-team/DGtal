@@ -92,41 +92,17 @@ It adds inner types to functor.
 @tparam T the type that should be a model of CPointEmbedder.
 */
 template <typename T>
-requires CUnaryFunctor<T, typename T::Point, typename T::RealPoint> &&
-         CSpace<typename T::Space>
-struct CPointEmbedder 
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Space Space;
-  typedef typename T::Point Point;
-  typedef typename T::RealPoint RealPoint;
-  typedef typename T::Argument Argument;
-  typedef typename T::Value Value;
-
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, Argument >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename Space::RealPoint >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
-  BOOST_CONCEPT_USAGE( CPointEmbedder )
+concept CPointEmbedder = 
+  CUnaryFunctor<T, typename T::Point, typename T::RealPoint> &&
+  CSpace<typename T::Space> &&
+  std::same_as<typename T::Point, typename T::Space::Point> &&
+  std::same_as<typename T::Point, typename T::Argument> &&
+  std::same_as<typename T::RealPoint, typename T::Space::RealPoint> && 
+  std::same_as<typename T::RealPoint, typename T::Value> &&
+  requires(T myX, typename T::Point myP)
   {
-    checkConstConstraints();
-  }
-  
-  void checkConstConstraints() const
-  { // operator()
-    ConceptUtils::sameType( myRP, myX( myP ) );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Point myP;
-  RealPoint myRP;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CPointEmbedder
+    { myX(myP) } -> std::same_as<typename T::RealPoint>;
+  };
   }
 } // namespace DGtal
 

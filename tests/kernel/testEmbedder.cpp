@@ -75,9 +75,9 @@ bool testEmbedder()
   using Z3i::DigitalSet;
 
   typedef CanonicEmbedder<Space> MyEmbedder1;
-  BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder1 > ));
+  DGTAL_CONCEPT_CHECK(requires CPointEmbedder< MyEmbedder1 > );
   typedef RegularPointEmbedder<Space> MyEmbedder2;
-  BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder2 > ));
+  DGTAL_CONCEPT_CHECK(requires CPointEmbedder< MyEmbedder2 > );
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef ImplicitFunctionLinearCellEmbedder
     < KSpace, ImplicitShape, MyEmbedder1 > MyCellEmbedder1;
