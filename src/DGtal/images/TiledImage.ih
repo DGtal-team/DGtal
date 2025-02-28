@@ -46,7 +46,7 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <DGtal::concepts::CImage TImageContainer, typename TImageFactory, DGtal::concepts::CImageCacheReadPolicy TImageCacheReadPolicy, DGtal::concepts::CImageCacheWritePolicy TImageCacheWritePolicy>
+template <DGtal::concepts::CImage TImageContainer, DGtal::concepts::CImageFactory TImageFactory, DGtal::concepts::CImageCacheReadPolicy TImageCacheReadPolicy, DGtal::concepts::CImageCacheWritePolicy TImageCacheWritePolicy>
 inline
 void
 DGtal::TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy>::selfDisplay ( std::ostream & out ) const

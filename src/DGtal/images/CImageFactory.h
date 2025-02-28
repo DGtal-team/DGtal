@@ -87,36 +87,14 @@ ImageFactoryFromImage ImageFactoryFromHDF5
 @tparam T the type that should be a model of CImageFactory.
  */
 template <typename T>
-requires CImage<typename T::OutputImage>
-struct CImageFactory
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-
-    typedef typename T::OutputImage OutputImage;
-    BOOST_CONCEPT_USAGE( CImageFactory )
+concept CImageFactory =  
+    CImage<typename T::OutputImage> &&
+    requires(T myT, typename T::OutputImage* myOI, typename T::Domain myDomain)
     {
-        ConceptUtils::sameType( myOI, myT.requestImage(myDomain) );
+        { myT.requestImage(myDomain) } -> std::same_as<typename T::OutputImage*>;
         myT.flushImage(myOI);
         myT.detachImage(myOI);
-
-        // check const methods.
-        checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-    }
-
-    // ------------------------- Private Datas --------------------------------
-private:
-    T myT; // do not require T to be default constructible.
-    OutputImage * myOI;
-    typename T::Domain myDomain;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CImageFactory
+    };
   }
 } // namespace DGtal
 
