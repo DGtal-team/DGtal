@@ -89,32 +89,12 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
 @tparam T the type that should be a model of CImplicitFunctionDiff1.
    */
   template <typename T> 
-  struct CImplicitFunctionDiff1 : CImplicitFunction<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::RealPoint RealPoint;
-    typedef typename T::RealVector RealVector;
-
-    BOOST_CONCEPT_USAGE( CImplicitFunctionDiff1 )
+  concept CImplicitFunctionDiff1 =  
+    CImplicitFunction<T> &&
+    requires(const T myX, const typename T::RealPoint myA)
     {
-      // check const methods.
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myB, myX.gradient( myA ) );
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    RealPoint myA;
-    RealVector myB;
-    
-  }; // end of concept CImplicitFunctionDiff1
+        { myX.gradient(myA) } -> std::same_as<typename T::RealVector>;
+    };
   }
 } // namespace DGtal
 

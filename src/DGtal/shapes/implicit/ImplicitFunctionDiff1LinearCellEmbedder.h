@@ -74,11 +74,10 @@ namespace DGtal
    */
   
   template < concepts::CCellularGridSpaceND TKSpace,
-             typename TImplicitFunctionDiff1,
+             concepts::CImplicitFunctionDiff1 TImplicitFunctionDiff1,
              typename TEmbedder >
   class ImplicitFunctionDiff1LinearCellEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunctionDiff1< TImplicitFunctionDiff1 > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointEmbedder< TEmbedder > ));
 
   public:

@@ -86,17 +86,9 @@ Description of \b concept '\b CImplicitFunction' <p>
 @tparam T the type that should be a model of CImplicitFunction.
    */
   template <typename T> 
-  struct CImplicitFunction 
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::RealPoint RealPoint;
-    typedef typename T::Value Value;
-    // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( boost::UnaryFunction< T, Value, RealPoint > ));
-    
-  }; // end of concept CImplicitFunction
+  concept CImplicitFunction = 
+    std::is_invocable_r_v<typename T::Value, T, typename T::RealPoint>;
+  // Should also be assignable but models listed does not all satisfy such requirment
   } 
 } // namespace DGtal
 

@@ -36,8 +36,8 @@ namespace DGtal {
     CDigitalOrientedShape [ URL="\ref DGtal::concepts::CDigitalOrientedShape" ];
     CDigitalBoundedShape [ URL="\ref DGtal::concepts::CDigitalBoundedShape" ];
    
-    CImplicitFunction [ URL="\ref concepts::CImplicitFunction" ];
-    CImplicitFunctionDiff1 [ URL="\ref concepts::CImplicitFunctionDiff1" ];
+    CImplicitFunction [ URL="\ref DGtal::concepts::CImplicitFunction" ];
+    CImplicitFunctionDiff1 [ URL="\ref DGtal::concepts::CImplicitFunctionDiff1" ];
     
     CImplicitFunctionDiff1 -> CImplicitFunction;
 
