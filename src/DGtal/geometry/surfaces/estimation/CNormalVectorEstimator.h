@@ -91,42 +91,16 @@ Description of \b concept '\b CNormalVectorEstimator' <p>
 @tparam T the type that should be a model of CNormalVectorEstimator.
  */
 template <typename T>
-requires concepts::CCellularGridSpaceND<typename T::Surface::KSpace>
-struct CNormalVectorEstimator
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Surface Surface;
-  typedef typename T::SCell SCell;
-  typedef typename T::ConstIterator ConstIterator;
-  typedef typename T::Quantity Quantity;
-
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename Surface::SCell >::value ));
-  BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
-  
-  BOOST_CONCEPT_USAGE( CNormalVectorEstimator )
+concept CNormalVectorEstimator =  
+  CCellularGridSpaceND<typename T::Surface::KSpace> && 
+  ConceptUtils::InputIterator<typename T::ConstIterator> && 
+  std::same_as<typename T::SCell, typename T::Surface::SCell> && 
+  requires(T myX, typename T::SCell mySCell, typename boost::output_iterator_archetype<typename T::Quantity> myOutIt)
   {
-    ConceptUtils::sameType( mySurface, myX.surface() );
-    ConceptUtils::sameType( myQuantity, myX.eval( mySCell ) );
-    ConceptUtils::sameType( myOutIt, myX.evalAll( myOutIt ) );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  Surface mySurface;
-  SCell mySCell;
-  Quantity myQuantity;
-  boost::output_iterator_archetype<Quantity> myOutIt;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CNormalVectorEstimator
-
+      { myX.surface() } -> std::same_as<const typename T::Surface&>;
+      { myX.eval(mySCell) } -> std::same_as<typename T::Quantity>;
+      { myX.evalAll(myOutIt) } -> std::same_as<typename boost::output_iterator_archetype<typename T::Quantity>>;
+  };
 } // namespace concepts
 } // namespace DGtal
 
