@@ -74,12 +74,11 @@ namespace DGtal
 
      @see dgtal_digstraighness_sec2
   */
-  template <typename TFraction>
+  template <concepts::CPositiveIrreducibleFraction TFraction>
   class Pattern
   {
   public:
     typedef TFraction Fraction;
-    BOOST_CONCEPT_ASSERT(( concepts::CPositiveIrreducibleFraction< Fraction > ));
 
     typedef Pattern<TFraction> Self;
     typedef typename Fraction::Integer Integer;

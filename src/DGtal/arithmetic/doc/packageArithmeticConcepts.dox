@@ -67,7 +67,7 @@ digraph GARITHMETIC {
         node [style=filled,color=white];
         label="arithmetic (main concepts)";
 
-        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref concepts::CPositiveIrreducibleFraction" ] ;
+        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref DGtal::concepts::CPositiveIrreducibleFraction" ] ;
     }
     CPositiveIrreducibleFraction -> CBackInsertable;
     CPositiveIrreducibleFraction -> CConstSinglePassRange;

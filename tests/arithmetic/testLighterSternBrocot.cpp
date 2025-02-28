@@ -855,7 +855,7 @@ int main( int , char** )
   typedef SB::Fraction Fraction;
   typedef Fraction::ConstIterator ConstIterator;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CPositiveIrreducibleFraction< Fraction > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CPositiveIrreducibleFraction< Fraction > );
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
   
   testTrivial<SB>( "LrSB" );

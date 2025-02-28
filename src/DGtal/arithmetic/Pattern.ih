@@ -39,27 +39,27 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 DGtal::Pattern<TFraction>::~Pattern()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 DGtal::Pattern<TFraction>::Pattern( Fraction f )
   : mySlope( f )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 DGtal::Pattern<TFraction>::Pattern( const Self & other )
   : mySlope( other.mySlope )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction> &
 DGtal::Pattern<TFraction>::operator=( const Self & other )
@@ -68,7 +68,7 @@ DGtal::Pattern<TFraction>::operator=( const Self & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 DGtal::Pattern<TFraction>::Pattern( Integer p, Integer q )
 {
@@ -79,7 +79,7 @@ DGtal::Pattern<TFraction>::Pattern( Integer p, Integer q )
   mySlope = Fraction( p, q );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 std::string
 DGtal::Pattern<TFraction>::
@@ -114,7 +114,7 @@ rE() const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 std::string
 DGtal::Pattern<TFraction>::
@@ -155,7 +155,7 @@ rEs( const std::string & seps ) const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Fraction
 DGtal::Pattern<TFraction>::
@@ -164,7 +164,7 @@ slope() const
   return mySlope;
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Integer
 DGtal::Pattern<TFraction>::
@@ -173,7 +173,7 @@ length() const
   return mySlope.p() + mySlope.q();
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Integer
 DGtal::Pattern<TFraction>::
@@ -185,7 +185,7 @@ posU( Quotient k ) const
   else return length() * ((Integer) k);
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Integer
 DGtal::Pattern<TFraction>::
@@ -199,7 +199,7 @@ posL( Quotient k ) const
   else return pL + length() * ((Integer) k);
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Point2I
 DGtal::Pattern<TFraction>::
@@ -217,7 +217,7 @@ U( Quotient k ) const
                     slope().p() * ((Integer) k) );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Point2I
 DGtal::Pattern<TFraction>::
@@ -233,7 +233,7 @@ L( Quotient k ) const
     return pL + U( k );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Vector2I
 DGtal::Pattern<TFraction>::
@@ -244,7 +244,7 @@ bezout() const
     : previousPattern().U( 1 );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 typename DGtal::Pattern<TFraction>::Vector2I
 DGtal::Pattern<TFraction>::
@@ -253,7 +253,7 @@ v() const
   return Vector2I( slope().q(), slope().p() );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 DGtal::Pattern<TFraction>
 DGtal::Pattern<TFraction>::
@@ -271,7 +271,7 @@ previousPattern() const
   //     : Self( Fraction( 0, 1 ) );
 }
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 bool
 DGtal::Pattern<TFraction>::
@@ -359,7 +359,7 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 bool
 DGtal::Pattern<TFraction>::
@@ -466,7 +466,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 void
 DGtal::Pattern<TFraction>::selfDisplay ( std::ostream & out ) const
@@ -479,7 +479,7 @@ DGtal::Pattern<TFraction>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TFraction>
+template <DGtal::concepts::CPositiveIrreducibleFraction TFraction>
 inline
 bool
 DGtal::Pattern<TFraction>::isValid() const
@@ -492,7 +492,7 @@ DGtal::Pattern<TFraction>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TFraction>
+template <typename  TFraction>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 

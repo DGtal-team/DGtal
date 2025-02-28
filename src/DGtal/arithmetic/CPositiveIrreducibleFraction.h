@@ -158,83 +158,55 @@ except the last one. In this sense, a fraction is a sequence
 @tparam T the type that should be a model of CPositiveIrreducibleFraction.
 */
 template <typename T> 
-requires CBackInsertable<T> && 
-         CConstSinglePassRange<T> && 
-         CInteger<typename T::Integer> && 
-         CInteger<typename T::Quotient>
-struct CPositiveIrreducibleFraction 
-  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>
-
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-  typedef typename T::Integer Integer;
-  typedef typename T::Quotient Quotient;
-  typedef typename T::value_type value_type;
-  typedef typename T::Value Value;
-  typedef typename T::ConstIterator ConstIterator;
-  typedef typename T::const_iterator const_iterator;
-
-  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
-  BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<value_type, Value >::value ));
-
-  BOOST_CONCEPT_USAGE( CPositiveIrreducibleFraction )
+concept CPositiveIrreducibleFraction = 
+  CBackInsertable<T> && 
+  CConstSinglePassRange<T> && 
+  CInteger<typename T::Integer> && 
+  CInteger<typename T::Quotient> &&
+  std::same_as<typename T::value_type, std::pair<typename T::Quotient, typename T::Quotient>> &&
+  std::same_as<typename T::value_type, typename T::Value> &&
+  std::is_constructible_v<T, typename T::Integer, typename T::Integer> &&
+  requires(
+    T myX, const T cmyX, 
+    typename T::Integer myP, 
+    typename T::value_type myValue, typename T::Quotient myU, std::vector<typename T::Quotient> myQuots)
   {
-    concepts::ConceptUtils::sameType( myX, T( myP, myQ ) );
-    myX.push_back( myValue );
-    myX.pushBack( myValue );
-    checkConstConstraints();
-  }
-  void checkConstConstraints() const
-  {
-    concepts::ConceptUtils::sameType( myP, myX.p() );
-    concepts::ConceptUtils::sameType( myQ, myX.q() );
-    concepts::ConceptUtils::sameType( myU, myX.u() );
-    concepts::ConceptUtils::sameType( myU, myX.k() );
-    concepts::ConceptUtils::sameType( myBool, myX.null() );
-    concepts::ConceptUtils::sameType( myX, myX.left() );
-    concepts::ConceptUtils::sameType( myX, myX.right() );
-    concepts::ConceptUtils::sameType( myBool, myX.even() );
-    concepts::ConceptUtils::sameType( myBool, myX.odd() );
-    concepts::ConceptUtils::sameType( myX, myX.father() );
-    concepts::ConceptUtils::sameType( myX, myX.father( myU ) );
-    concepts::ConceptUtils::sameType( myX, myX.previousPartial() );
-    concepts::ConceptUtils::sameType( myX, myX.inverse() );
-    concepts::ConceptUtils::sameType( myX, myX.partial( myU ) );
-    concepts::ConceptUtils::sameType( myX, myX.reduced( myU ) );
-    myX.getSplit( myF1, myF2 );
-    myX.getSplitBerstel( myF1, myN1, myF2, myN2 );
-    myX.getCFrac( myQuots );
-    concepts::ConceptUtils::sameType( myBool, myX.equals( myP, myQ ) );
-    concepts::ConceptUtils::sameType( myBool, myX.lessThan( myP, myQ ) );
-    concepts::ConceptUtils::sameType( myBool, myX.moreThan( myP, myQ ) );
-    concepts::ConceptUtils::sameType( myBool, myX == myY );
-    concepts::ConceptUtils::sameType( myBool, myX != myY );
-    concepts::ConceptUtils::sameType( myBool, myX < myY );
-    concepts::ConceptUtils::sameType( myBool, myX > myY );
-    concepts::ConceptUtils::sameType( myIterator, myX.begin() );
-    concepts::ConceptUtils::sameType( myIterator, myX.end() );
-  }
-  // ------------------------- Private Datas --------------------------------
-private:
-  T myX; // do not require T to be default constructible.
-  T myY; // do not require T to be default constructible.
-  Integer myP;
-  Integer myQ;
-  Quotient myU;
-  bool myBool;
-  mutable Quotient myN1;
-  mutable Quotient myN2;
-  mutable T myF1; 
-  mutable T myF2; 
-  mutable std::vector<Quotient> myQuots; 
-  std::pair<Quotient,Quotient> myValue;
-  ConstIterator myIterator;
-  // ------------------------- Internals ------------------------------------
-private:
+      myX.push_back(myValue);
+      myX.pushBack(myValue);
 
-}; // end of concept CPositiveIrreducibleFraction
+      { cmyX.p() } -> std::same_as<typename T::Integer>;
+      { cmyX.q() } -> std::same_as<typename T::Integer>;
+      { cmyX.u() } -> std::same_as<typename T::Quotient>;
+      { cmyX.k() } -> std::same_as<typename T::Quotient>;
+      { cmyX.left() } -> std::same_as<T>;
+      { cmyX.right() } -> std::same_as<T>;
+      { cmyX.null() } -> std::same_as<bool>;
+      { cmyX.even() } -> std::same_as<bool>;
+      { cmyX.odd()  } -> std::same_as<bool>;
+      { cmyX.father() } -> std::same_as<T>;
+      { cmyX.father(myU) } -> std::same_as<T>;
+      { cmyX.previousPartial() } -> std::same_as<T>;
+      { cmyX.inverse() } -> std::same_as<T>;
+      { cmyX.partial(myU) } -> std::same_as<T>;
+      { cmyX.reduced(myU) } -> std::same_as<T>;
 
+      cmyX.getSplit(myX, myX);
+      cmyX.getSplitBerstel(myX, myU, myX, myU);
+      cmyX.getCFrac(myQuots);
+
+      { cmyX.equals(myP, myP) } -> std::same_as<bool>;
+      { cmyX.lessThan(myP, myP) } -> std::same_as<bool>;
+      { cmyX.moreThan(myP, myP) } -> std::same_as<bool>;
+      
+      // Does not implement <=...: requires std::totally_ordered<T>;
+      { myX == myX } -> std::same_as<bool>;
+      { myX != myX } -> std::same_as<bool>;
+      { myX < myX } -> std::same_as<bool>;
+      { myX > myX } -> std::same_as<bool>; 
+
+      { cmyX.begin() } -> std::same_as<typename T::ConstIterator>;
+      { cmyX.end() } -> std::same_as<typename T::ConstIterator>;
+  };
 } // namespace concepts
 
 } // namespace DGtal
