@@ -67,12 +67,11 @@ DGtal::Board3D<Space, KSpace>::operator<<(const DGtal::Color & aColor)
  */
 template < typename Space, typename KSpace>
 template <typename TDrawableWithDisplay3D>
+requires DGtal::concepts::CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>
 inline
 DGtal::Board3D<Space, KSpace> &
-DGtal::Board3D<Space, KSpace>::operator<<( const TDrawableWithDisplay3D & object )
+DGtal::Board3D<Space, KSpace>::operator<<( const TDrawableWithDisplay3D & object ) 
 {
-  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>));
-  
   DGtal::Display3DFactory<Space,KSpace>::draw(*this, object);
   return *this;
 }

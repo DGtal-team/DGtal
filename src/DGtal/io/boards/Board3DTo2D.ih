@@ -48,7 +48,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-#include "DGtal/io/boards/CDrawableWithBoard3DTo2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/boards/Board3DTo2DFactory.h"
 
@@ -89,12 +88,11 @@ DGtal::Board3DTo2D<Space, KSpace>::operator<<(const DGtal::Color & aColor)
  */
 template < DGtal::concepts::CSpace Space, typename KSpace>
 template <typename TDrawableWithBoard3DTo2D>
+requires DGtal::concepts::CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, Space, KSpace>
 inline
 DGtal::Board3DTo2D<Space, KSpace> &
 DGtal::Board3DTo2D<Space, KSpace>::operator<<( const TDrawableWithBoard3DTo2D & object )
 {
-  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, Space, KSpace>));
-  
   DGtal::Board3DTo2DFactory<Space,KSpace>::draw(*this, object);
   return *this;
 }

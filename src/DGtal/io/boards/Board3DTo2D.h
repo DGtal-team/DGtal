@@ -54,6 +54,7 @@
 #include "DGtal/io/Color.h"
 
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/io/boards/CDrawableWithBoard3DTo2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -184,6 +185,7 @@ public:
      * @return a reference on 'this'.
      */
     template <typename TDrawableWithDisplay3D>
+    requires concepts::CDrawableWithBoard3DTo2D< TDrawableWithDisplay3D, Space, KSpace>
     Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
     /**

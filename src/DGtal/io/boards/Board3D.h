@@ -143,6 +143,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     template <typename TDrawableWithDisplay3D>
+    requires concepts::CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>
     Board3D & operator<<( const  TDrawableWithDisplay3D & object );
 
 

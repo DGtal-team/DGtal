@@ -97,27 +97,7 @@ namespace DGtal
   
   
     template <typename T, typename S, typename KS>
-    struct CDrawableWithViewer3D  : public concepts::CDrawableWithDisplay3D<T, S, KS>
-    {
-
-      BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
-      {
-        //Drawable model should have a className() returning a string
-        concepts::ConceptUtils::sameType( myS, myT.className() );
-
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-
-      T myT; //! the drawable class
-      DrawableWithViewer3D *myD;
-
-      std::string myS;
-
-      // ------------------------- Internals ------------------------------------
-
-    }; // end of concept CDrawableWithViewer3D
+    concept CDrawableWithViewer3D = CDrawableWithDisplay3D< T, S, KS>;
   }  // namespace concepts
 } // namespace DGtal
 

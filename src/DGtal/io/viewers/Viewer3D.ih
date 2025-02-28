@@ -560,11 +560,10 @@ operator<<( const typename Viewer3D<TSpace, TKSpace>::StreamKey & key )
 
 template <DGtal::concepts::CSpace TSpace, typename TKSpace>
 template <typename TDrawableWithViewer3D>
+requires DGtal::concepts::CDrawableWithViewer3D< TDrawableWithViewer3D, Space, KSpace >
 inline DGtal::Viewer3D<TSpace, TKSpace> & DGtal::Viewer3D<TSpace, TKSpace>::
 operator<<( const TDrawableWithViewer3D & object )
 {
-  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithViewer3D< TDrawableWithViewer3D, Space, KSpace >));
-
   DGtal::Viewer3DFactory<TSpace, TKSpace>::draw( *this, object );
   return *this;
 }

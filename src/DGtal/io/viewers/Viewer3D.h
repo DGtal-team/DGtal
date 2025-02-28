@@ -779,6 +779,7 @@ namespace DGtal
      * @param object any drawable object.
      * @return a reference on 'this'.
      */
+    requires concepts::CDrawableWithViewer3D< TDrawableWithViewer3D, Space, KSpace >
     Viewer3D<Space, KSpace> & operator<< ( const TDrawableWithViewer3D & object );
 
 

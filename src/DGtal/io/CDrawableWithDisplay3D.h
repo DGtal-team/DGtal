@@ -99,32 +99,11 @@ namespace DGtal
     template < class S, class KS> class Display3D;
   
     template <typename T, typename Sp, typename KSp>
-    struct CDrawableWithDisplay3D
-    {
-
-      BOOST_CONCEPT_USAGE( CDrawableWithDisplay3D )
+    concept CDrawableWithDisplay3D =
+      requires(T myT) 
       {
-        //Drawable model should have a className() returning a string
-        concepts::ConceptUtils::sameType( myS, myT.className() );
-
-        //Drawable model should be associated to global functions draw and defaultStyle.
-        //draw(myD3D, myT);
-        //concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-
-      T myT; //! the drawable class
-      DrawableWithDisplay3D *myD;
-
-      DGtal::Display3D< Sp, KSp> myD3D;
-      std::string myS;
-
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CDrawableWithDisplay3D
+          { myT.className() } -> std::same_as<std::string>;
+      };
   }//namespace concepts
 } // namespace DGtal
 
