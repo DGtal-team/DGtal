@@ -64,6 +64,8 @@ namespace DGtal
    * @tparam ShapeB type of a second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
+  requires concepts::CEuclideanBoundedShape<ShapeA> && 
+           concepts::CEuclideanOrientedShape<ShapeA>
   class EuclideanShapesCSG
   {
   protected:
@@ -75,9 +77,6 @@ namespace DGtal
     };
 
   public:
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
-
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
 
@@ -156,10 +155,9 @@ namespace DGtal
       * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     void plus( ConstAlias<ShapeB> b )
+    requires concepts::CEuclideanBoundedShape<ShapeB> &&
+             concepts::CEuclideanOrientedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_plus, b );
@@ -180,10 +178,9 @@ namespace DGtal
       * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     void intersection( ConstAlias<ShapeB> b )
+    requires concepts::CEuclideanBoundedShape<ShapeB> &&
+             concepts::CEuclideanOrientedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_intersection, b );
@@ -204,10 +201,9 @@ namespace DGtal
       * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     void minus( ConstAlias<ShapeB> b )
+    requires concepts::CEuclideanBoundedShape<ShapeB> &&
+             concepts::CEuclideanOrientedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-      BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
 
       std::pair<e_operator, CountedConstPtrOrConstPtr< ShapeB > > shape( e_minus, b );
@@ -347,17 +343,15 @@ namespace deprecated
  * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
  * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
  */
-
-  template <typename ShapeA, typename ShapeB>
+template <typename ShapeA, typename ShapeB>
+requires concepts::CEuclideanBoundedShape<ShapeA> &&
+         concepts::CEuclideanOrientedShape<ShapeA> && 
+         concepts::CEuclideanBoundedShape<ShapeB> &&
+         concepts::CEuclideanOrientedShape<ShapeB>
   class EuclideanShapesUnion
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
 
@@ -486,15 +480,13 @@ namespace deprecated
    * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
-  class EuclideanShapesIntersection
+  requires concepts::CEuclideanBoundedShape<ShapeA> &&
+           concepts::CEuclideanOrientedShape<ShapeA> && 
+           concepts::CEuclideanBoundedShape<ShapeB> &&
+           concepts::CEuclideanOrientedShape<ShapeB>  class EuclideanShapesIntersection
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
 
@@ -630,15 +622,14 @@ namespace deprecated
    * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
+  requires concepts::CEuclideanBoundedShape<ShapeA> &&
+           concepts::CEuclideanOrientedShape<ShapeA> && 
+           concepts::CEuclideanBoundedShape<ShapeB> &&
+           concepts::CEuclideanOrientedShape<ShapeB>
   class EuclideanShapesMinus
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( concepts::CEuclideanOrientedShape< ShapeB > ));
-
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
 

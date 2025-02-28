@@ -93,27 +93,12 @@ namespace DGtal
    * <p> Notes#
    */
   template <typename TShape>
-  struct CEuclideanBoundedShape
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    
-    typedef typename TShape::RealPoint RealPoint;
-    
-     BOOST_CONCEPT_USAGE( CEuclideanBoundedShape )
+  concept CEuclideanBoundedShape = 
+    requires(TShape myT)
     {
-      // Shape should have a getUpperBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getUpperBound() );
-      // Shape should have a getLowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getLowerBound() );    
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    TShape myT;
-    RealPoint myP;
-    
-  }; // end of concept CEuclideanBoundedShape
+        { myT.getUpperBound() } -> std::same_as<typename TShape::RealPoint>;
+        { myT.getLowerBound() } -> std::same_as<typename TShape::RealPoint>;
+    };
   }
 } // namespace DGtal
 

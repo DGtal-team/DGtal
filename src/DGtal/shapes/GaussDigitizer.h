@@ -78,6 +78,8 @@ namespace DGtal
   template <typename TSpace, typename TEuclideanShape>
   class GaussDigitizer
   {
+    // Use macro here to allow Shorcuts to be built with 2D space as required by examples. 
+    DGTAL_CONCEPT_CHECK(requires concepts::CEuclideanOrientedShape<TEuclideanShape>);
     // ----------------------- Standard services ------------------------------
   public:
     typedef TSpace Space;
@@ -89,8 +91,6 @@ namespace DGtal
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
     typedef RegularPointEmbedder<Space> PointEmbedder;
-
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanOrientedShape<TEuclideanShape> ));
    
     /**
      * Destructor.

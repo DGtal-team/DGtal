@@ -53,7 +53,7 @@ TEST_CASE( "Testing WindingNumbersShape" )
 
   SECTION("Checking concept")
     {
-      BOOST_CONCEPT_ASSERT( (DGtal::concepts::CEuclideanOrientedShape<WNShape>) );
+      DGTAL_CONCEPT_CHECK(requires DGtal::concepts::CEuclideanOrientedShape<WNShape>);
     }
   
   SECTION("Simple testof the API")

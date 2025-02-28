@@ -120,6 +120,8 @@ namespace DGtal
      * CEuclideanOrientedShape.
      */
     template <typename TDigitalSet, typename TShapeFunctor>
+    requires concepts::CEuclideanBoundedShape<TShapeFunctor> &&
+             concepts::CEuclideanOrientedShape<TShapeFunctor>
     static void euclideanShaper( TDigitalSet & aSet,
                                  const TShapeFunctor & aFunctor,
                                  const double h = 1.0);

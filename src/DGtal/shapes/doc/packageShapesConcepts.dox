@@ -31,8 +31,8 @@ namespace DGtal {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CEuclideanOrientedShape [ URL="\ref concepts::CEuclideanOrientedShape" ];
-    CEuclideanBoundedShape [ URL="\ref concepts::CEuclideanBoundedShape" ];
+    CEuclideanOrientedShape [ URL="\ref DGtal::concepts::CEuclideanOrientedShape" ];
+    CEuclideanBoundedShape [ URL="\ref DGtal::concepts::CEuclideanBoundedShape" ];
     CDigitalOrientedShape [ URL="\ref DGtal::concepts::CDigitalOrientedShape" ];
     CDigitalBoundedShape [ URL="\ref DGtal::concepts::CDigitalBoundedShape" ];
    

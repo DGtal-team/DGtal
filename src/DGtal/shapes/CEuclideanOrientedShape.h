@@ -88,28 +88,11 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
 @tparam T the type that should be a model of CEuclideanOrientedShape.
    */
   template <typename T> 
-  struct CEuclideanOrientedShape
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::RealPoint RealPoint;
-   
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CEuclideanOrientedShape )
+  concept CEuclideanOrientedShape = 
+    requires(T myX, typename T::RealPoint p)
     {
-      ConceptUtils::sameType( myA, myX.orientation( p ));
-    }
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    Orientation myA;
-    RealPoint p;
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CEuclideanOrientedShape
+        { myX.orientation(p) } -> std::same_as<Orientation>;
+    };
   }
 } // namespace DGtal
 

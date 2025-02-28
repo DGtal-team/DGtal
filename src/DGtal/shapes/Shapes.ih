@@ -219,15 +219,13 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
 
 template <DGtal::concepts::CDomain TDomain>
 template <typename TDigitalSet, typename ShapeFunctor>
+requires DGtal::concepts::CEuclideanBoundedShape<ShapeFunctor> &&
+         DGtal::concepts::CEuclideanOrientedShape<ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
                                          const ShapeFunctor & aFunctor,
                                          const double h)
 {
-  
-  BOOST_CONCEPT_ASSERT((concepts::CEuclideanBoundedShape<ShapeFunctor>));
-  BOOST_CONCEPT_ASSERT((concepts::CEuclideanOrientedShape<ShapeFunctor>));
-
   RealPoint pLow = aFunctor.getLowerBound();
   RealPoint pUpp = aFunctor.getUpperBound();
   GaussDigitizer<Space,ShapeFunctor> dig;  
