@@ -88,37 +88,12 @@ ImageCacheWritePolicyWT, ImageCacheWritePolicyWB
 @tparam T the type that should be a model of CImageCacheWritePolicy.
  */
 template <typename T>
-struct CImageCacheWritePolicy
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-
-    typedef typename T::ImageContainer ImageContainer;
-
-    BOOST_CONCEPT_USAGE( CImageCacheWritePolicy )
+concept CImageCacheWritePolicy = 
+    requires(T myT, typename T::ImageContainer* myIC, typename T::Point myPoint, typename T::Value myValue)
     {
         myT.writeInPage(myIC, myPoint, myValue);
         myT.flushPage(myIC);
-
-        // check const methods.
-        checkConstConstraints();
-    }
-    
-    void checkConstConstraints() const
-    {
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-private:
-    T myT; // do not require T to be default constructible.
-    ImageContainer * myIC;
-    typename T::Point myPoint;
-    typename T::Value myValue;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CImageCacheWritePolicy
+    };
   }
 } // namespace DGtal
 

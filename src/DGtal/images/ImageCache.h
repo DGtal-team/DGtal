@@ -73,7 +73,7 @@ namespace DGtal
  *  - write :   for setting a   value on an image from cache at a given position given by a point only if that point belongs to an image from cache
  *  - update :  for updating the cache according to the read cache policy
  */
-template <concepts::CImage TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+template <concepts::CImage TImageContainer, typename TImageFactory, concepts::CImageCacheReadPolicy TReadPolicy, concepts::CImageCacheWritePolicy TWritePolicy>
 class ImageCache
 {
 
@@ -84,8 +84,6 @@ public:
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheReadPolicy<TReadPolicy> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CImageCacheWritePolicy<TWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

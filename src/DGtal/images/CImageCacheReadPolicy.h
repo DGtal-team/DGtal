@@ -90,40 +90,15 @@ ImageCacheReadPolicyLAST, ImageCacheReadPolicyFIFO
 @tparam T the type that should be a model of CImageCacheReadPolicy.
  */
 template <typename T>
-struct CImageCacheReadPolicy
-{
-    // ----------------------- Concept checks ------------------------------
-public:
-
-    typedef typename T::ImageContainer ImageContainer;
-
-    BOOST_CONCEPT_USAGE( CImageCacheReadPolicy )
+concept CImageCacheReadPolicy = 
+    requires(T myT, typename T::Point myPoint, typename T::Domain myDomain)
     {
-        ConceptUtils::sameType( myIC, myT.getPage(myDomain) );
-        ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
-        ConceptUtils::sameType( myIC, myT.getPageToDetach() );
-        myT.updateCache(myDomain); 
+        { myT.getPage(myDomain) } -> std::same_as<typename T::ImageContainer*>;
+        { myT.getPage(myPoint)  } -> std::same_as<typename T::ImageContainer*>;
+        { myT.getPageToDetach() } -> std::same_as<typename T::ImageContainer*>;
+        myT.updateCache(myDomain);
         myT.clearCache();
-
-        // check const methods.
-        checkConstConstraints();
-    }
-    
-    void checkConstConstraints() const
-    {
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-private:
-    T myT; // do not require T to be default constructible.
-    ImageContainer * myIC;
-    typename T::Point myPoint;
-    typename T::Domain myDomain;
-
-    // ------------------------- Internals ------------------------------------
-private:
-
-}; // end of concept CImageCacheReadPolicy
+    };
   }
 } // namespace DGtal
 
