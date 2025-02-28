@@ -327,7 +327,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndSetValue
    */
-  template<typename I, typename S>
+  template<DGtal::concepts::CConstImage I, typename S>
   bool findAndGetValue(const I& aImg, const S& aSet, 
 		       const typename I::Point& aPoint, 
 		       typename I::Value& aValue ); 

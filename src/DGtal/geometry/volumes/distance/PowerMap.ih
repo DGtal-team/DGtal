@@ -45,7 +45,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template < typename W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
+template < DGtal::concepts::CConstImage W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
 inline
 void
 DGtal::PowerMap<W, Sep,Im>::compute( )
@@ -73,7 +73,7 @@ DGtal::PowerMap<W, Sep,Im>::compute( )
     computeOtherSteps ( dim );
 }
 
-template < typename W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
+template < DGtal::concepts::CConstImage W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
 inline
 void
 DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
@@ -120,7 +120,7 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
-template <typename W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
+template <DGtal::concepts::CConstImage W, DGtal::concepts::CPowerSeparableMetric Sep, typename Im>
 void
 DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
                                                 const Dimension dim) const
