@@ -52,6 +52,9 @@ DGtal::Board2D::getMode( const std::string & objectName ) const
   return itm == myModes.end() ? "" : itm->second;
 }
 
+template <DGtal::concepts::CDrawableWithBoard2D> 
+void __check_board2d_tdrawablewithboard2d(){}
+
 /**
  * Draws the drawable [object] in this board. It should satisfy
  * the concept CDrawableWithBoard2D, which requires for instance a
@@ -65,8 +68,11 @@ inline
 DGtal::Board2D &
 DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 {
-
-  BOOST_CONCEPT_ASSERT((concepts::CDrawableWithBoard2D<TDrawableWithBoard2D>));
+  // Trick here because the concept requires Board2D
+  // Hence can not be used within Board2D
+  // The macro can not be used here because clang says it is
+  // not a constant expression...
+  __check_board2d_tdrawablewithboard2d<TDrawableWithBoard2D>();
 
   CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) );
 #ifdef DEBUG_VERBOSE

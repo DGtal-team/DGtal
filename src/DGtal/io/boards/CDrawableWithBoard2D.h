@@ -101,31 +101,13 @@ namespace DGtal
        @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
     */
     template <typename T>
-    struct CDrawableWithBoard2D
-    {
-      // ----------------------- Concept checks ------------------------------
-    public:
-      BOOST_CONCEPT_USAGE( CDrawableWithBoard2D )
+    concept CDrawableWithBoard2D = 
+      requires(T myT, Board2D myB)
       {
-        //Drawable model should have a className() returning a string
-        concepts::ConceptUtils::sameType( myS, myT.className() );
-
-        //Drawable model should be associated to global functions draw and defaultStyle.
-        DGtal::Display2DFactory::draw(myB, myT);
-        concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
-      }
-
-      // ------------------------- Private Datas --------------------------------
-    private:
-      T myT;
-      DrawableWithBoard2D *myD;
-      Board2D myB;
-      std::string myS;
-    
-      // ------------------------- Internals ------------------------------------
-    private:
-
-    }; // end of concept CDrawableWithBoard2D
+          { myT.className()   } -> std::same_as<std::string>;
+          { defaultStyle(myT) } -> std::same_as<DrawableWithBoard2D*>;
+          DGtal::Display2DFactory::draw(myB, myT);
+      };
   }// namespace concepts
 } // namespace DGtal
 

@@ -314,10 +314,11 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   return true;
 }
 
-template <concepts::CConstBidirectionalRange Range>
+template <typename Range>
+requires concepts::CConstBidirectionalRange<Range> &&
+         concepts::CDrawableWithBoard2D<Range>
 void testRangeConceptChecking()
 {
-    BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<Range> ));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

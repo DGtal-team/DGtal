@@ -183,7 +183,7 @@ void testStabbingLineComputerConceptChecking()
    typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
    typedef std::vector<Pair>::const_iterator ConstIterator; 
    typedef StabbingLineComputer<ConstIterator> GeomDSS; 
-   BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<GeomDSS> ));
+   DGTAL_CONCEPT_CHECK(requires concepts::CDrawableWithBoard2D<GeomDSS> );
    DGTAL_CONCEPT_CHECK(requires concepts::CBidirectionalSegmentComputer<GeomDSS> );
 }
 

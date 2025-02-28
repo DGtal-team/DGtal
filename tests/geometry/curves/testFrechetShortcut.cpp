@@ -122,7 +122,7 @@ void testFrechetShortcutConceptChecking()
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::const_iterator ConstIterator;
   typedef FrechetShortcut<ConstIterator,int> Shortcut;
-  BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<Shortcut> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDrawableWithBoard2D<Shortcut> );
   DGTAL_CONCEPT_CHECK(requires concepts::CForwardSegmentComputer<Shortcut> );
 }
 
