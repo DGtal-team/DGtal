@@ -87,27 +87,12 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
 # Notes
    */
   template <typename TShape>
-  struct CDigitalBoundedShape
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    
-    typedef typename TShape::Point Point;
-    
-     BOOST_CONCEPT_USAGE( CDigitalBoundedShape )
+  concept CDigitalBoundedShape =
+    requires(TShape myT)
     {
-      // Shape should have a getUpperBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getUpperBound() );
-      // Shape should have a getLowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getLowerBound() );    
-    }
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    TShape myT;
-    Point myP;
-    
-  }; // end of concept CDigitalBoundedShape
+        { myT.getUpperBound() } -> std::same_as<const typename TShape::Point&>;
+        { myT.getLowerBound() } -> std::same_as<const typename TShape::Point&>;
+    };
   }
 } // namespace DGtal
 

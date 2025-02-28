@@ -194,14 +194,13 @@ DGtal::Shapes<TDomain>::addNorm2Ball
 }
 
 template <DGtal::concepts::CDomain TDomain>
-template <typename TDigitalSet, typename ShapeFunctor>
+template <typename TDigitalSet, DGtal::concepts::CDigitalBoundedShape ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
                                        const ShapeFunctor & aFunctor)
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   
-  BOOST_CONCEPT_ASSERT((concepts::CDigitalBoundedShape<ShapeFunctor>));
   BOOST_CONCEPT_ASSERT((concepts::CDigitalOrientedShape<ShapeFunctor>));
  
 

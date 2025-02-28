@@ -65,7 +65,7 @@ using namespace DGtal;
 bool testConcept()
 {
   typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig; 
-  BOOST_CONCEPT_ASSERT((concepts::CDigitalBoundedShape<Dig>));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalBoundedShape<Dig>);
   BOOST_CONCEPT_ASSERT((concepts::CDigitalOrientedShape<Dig>));
   return true;
 }

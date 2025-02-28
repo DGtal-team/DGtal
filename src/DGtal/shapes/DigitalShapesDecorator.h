@@ -63,7 +63,7 @@ namespace DGtal
    * @tparam ShapeA type of a first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
    * @tparam ShapeB type of a second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
    */
-  template <typename ShapeA, typename ShapeB>
+  template <concepts::CDigitalBoundedShape ShapeA, typename ShapeB>
   class DigitalShapesCSG
   {
   protected:
@@ -75,7 +75,6 @@ namespace DGtal
     };
 
   public:
-    BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
     BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
 
     typedef typename ShapeA::Space Space;
@@ -156,9 +155,9 @@ namespace DGtal
       *
       * @param[in] b a ShapeB, model of CDigitalBoundedShape and CDigitalOrientedShape
       */
-    void plus( ConstAlias<ShapeB> b )
+    void plus( ConstAlias<ShapeB> b ) 
+    requires concepts::CDigitalBoundedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
@@ -181,8 +180,8 @@ namespace DGtal
       * @param[in] b a ShapeB, model of CDigitalBoundedShape and CDigitalOrientedShape
       */
     void intersection( ConstAlias<ShapeB> b )
+    requires concepts::CDigitalBoundedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
@@ -205,8 +204,8 @@ namespace DGtal
       * @param[in] b a ShapeB, model of CDigitalBoundedShape and CDigitalOrientedShape
       */
     void minus( ConstAlias<ShapeB> b )
+    requires concepts::CDigitalBoundedShape<ShapeB>
     {
-      BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
       BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
       FATAL_ERROR_MSG( isValid(), "Operation invalid. Maybe you don't set a ShapeA object." );
@@ -350,14 +349,12 @@ namespace deprecated
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
-template <typename ShapeA, typename ShapeB>
+template <concepts::CDigitalBoundedShape ShapeA, concepts::CDigitalBoundedShape ShapeB>
 class DigitalShapesUnion
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
@@ -488,14 +485,12 @@ private:
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
-template <typename ShapeA, typename ShapeB>
+template <concepts::CDigitalBoundedShape ShapeA, concepts::CDigitalBoundedShape ShapeB>
 class DigitalShapesIntersection
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
@@ -632,14 +627,12 @@ private:
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
-template <typename ShapeA, typename ShapeB>
+template <concepts::CDigitalBoundedShape ShapeA, concepts::CDigitalBoundedShape ShapeB>
 class DigitalShapesMinus
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
   BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
